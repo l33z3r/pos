@@ -1,0 +1,5 @@
+//replace the active employees div
+$('#active_employees').html("<%= escape_javascript(render :partial => 'active_employees') %>");
+
+//rebuild the table
+$('#active_employees').show();

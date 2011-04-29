@@ -1,0 +1,19 @@
+<div id="show_display">
+
+  <h3>Display Info</h3>
+
+  <section id="display_info">
+    <p>
+      <b>Name:</b>
+      <%= @display.name %>
+    </p>
+
+    <div id="actions">
+      <%= button_to 'Edit', edit_admin_display_path(@display), :method => :get %>
+      <%= button_to 'Delete', admin_display_path(@display), :method => :delete, :confirm => "Are You Sure?" %>
+      <%= button_to 'Build Display', builder_admin_display_path(@display), :method => :get %>
+      <%= link_to "Back", :back %>
+    </div>
+
+  </section>
+</div>

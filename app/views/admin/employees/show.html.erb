@@ -1,0 +1,72 @@
+<div id="show_employee">
+
+  <h3>User Info</h3>
+  
+  <section id="employee_info">
+    <p>
+      <b>Staff ID:</b>
+      <%= @employee.staff_id %>
+    </p>
+
+    <p>
+      <b>Name:</b>
+      <%= @employee.name %>
+    </p>
+
+    <p>
+      <b>Nickname:</b>
+      <%= @employee.nickname %>
+    </p>
+
+    <p>
+      <b>Passcode:</b>
+      <%= @employee.passcode %>
+    </p>
+
+    <p>
+      <b>Address:</b>
+      <%= @employee.address %>
+    </p>
+
+    <p>
+      <b>Telephone:</b>
+      <%= @employee.telephone %>
+    </p>
+
+    <p>
+      <b>Hourly rate:</b>
+      <%= number_to_currency @employee.hourly_rate %>
+    </p>
+
+    <p>
+      <b>Overtime rate:</b>
+      <%= number_to_currency @employee.overtime_rate %>
+    </p>
+
+    <p>
+      <b>Last login:</b>
+      <%= @employee.last_login.to_s(:short) %>
+    </p>
+
+    <p>
+      <b>Last Active:</b>
+      <%= @employee.last_active.to_s(:short) %>
+    </p>
+
+    <p>
+      <b>Last Logout:</b>
+      <%= @employee.last_logout.to_s(:short) %>
+    </p>
+
+    <p>
+      <b>Role:</b>
+      <%= @employee.role.name %>
+    </p>
+
+    <div id="actions">
+      <%= button_to 'Edit', edit_admin_employee_path(@employee), :method => :get %>
+      <%= link_to "Back", :back %>
+    </div>
+
+  </section>
+</div>

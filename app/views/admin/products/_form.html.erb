@@ -1,0 +1,65 @@
+<%= form_for([:admin, @product], :html => { :multipart => true }) do |f| %>
+  <% if @product.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
+
+      <ul>
+        <% @product.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div id="fields">
+    <div class="field">
+      <%= f.label :brand %><br />
+      <%= f.text_field :brand %>
+    </div>
+    <div class="field">
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+    </div>
+    <div class="field">
+      <%= f.label :category_id %><br />
+      <%= f.collection_select :category_id, Category.find(:all), :id, :name, :prompt => "Select a Category" %>
+    </div>
+    <div class="field">
+      <%= f.label :price %><br />
+      <%= f.text_field :price %>
+    </div>
+    <div class="field">
+      <%= f.label :description %><br />
+      <%= f.text_field :description %>
+    </div>
+    <div class="field">
+      <%= f.label :size %><br />
+      <%= f.text_field :size %>
+    </div>
+    <div class="field">
+      <%= f.label :unit %><br />
+      <%= f.text_field :unit %>
+    </div>
+    <div class="field">
+      <%= f.label :items_per_unit %><br />
+      <%= f.text_field :items_per_unit %>
+    </div>
+    <div class="field">
+      <%= f.label :sales_tax_rate %><br />
+      <%= f.text_field :sales_tax_rate %>
+    </div>
+    <div class="field">
+      <%= f.label :product_image %><br />
+      <%= f.file_field :product_image %>
+    </div>
+    <div class="field">
+      <%= f.label :modifier_category_id %><br />
+      <%= f.collection_select :modifier_category_id, ModifierCategory.find(:all), :id, :name, :prompt => "Select a Modifier Category" %>
+    </div>
+    <div id="actions">
+      <%= f.submit %>
+      <%= link_to "Back", :back %>
+    </div>
+  </div>
+
+<% end %>

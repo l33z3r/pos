@@ -1,0 +1,13 @@
+//initialize the draggable and droppable items for touch interface using the
+//webkitdragdrop js library found in public/javascripts
+var draggables = new Array();
+var item_droppable_ids = new Array();
+
+function doInitTouchUIDragDrop() {
+
+    <% Product.all.each do |p| %>
+      draggables.push(new webkit_draggable('select_product_<%=p.id%>', {}));
+    <% end %>
+
+    //alert("init " + draggables.length + " draggables and " + droppable_ids.length + " droppables");
+}

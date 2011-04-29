@@ -1,0 +1,1448 @@
+/* 
+    Document   : style
+    Created on : 28-Mar-2011, 22:19:16
+    Author     : Lee
+    Description:
+        Main stylesheet.
+*/
+
+/* Global Styles */
+
+body {
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    color: #333333;
+}
+
+a:hover {
+    background-color: transparent;
+    color: #333;
+}
+
+div.clear {
+    height: 1px;
+    clear: both;
+}
+
+form label {
+    font-weight: bold;
+}
+
+input[type="submit"] {
+    cursor: pointer;
+}
+
+div#wrapper {
+    width: 1000px;
+    margin: auto;
+    text-align: center;
+}
+
+div#wrapper div {
+    text-align: center;
+}
+
+header {
+    width: 100%;
+    background-color: #4297d7;
+    height: 60px;
+}
+
+header div#logo {
+    float: left;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+/* End Global Styles */
+
+/* Flash Messages */
+
+.flash {
+    text-align: center;
+    width: 70%;
+    PADDING-RIGHT: 10px;
+    BACKGROUND-POSITION: 5px 50%;
+    TEXT-INDENT: 40px;
+    padding: 10px 0px 10px 10px;
+    MARGIN: 2px;
+    margin-left: auto;
+    margin-right: auto;
+    BACKGROUND-REPEAT: no-repeat
+}
+
+.flash_notice {
+    BORDER: #090 2px solid;
+    BACKGROUND-IMAGE: url(/images/icon_success_lrg.gif);
+}
+
+.flash_warning {
+    BORDER: #c60 2px solid;
+    BACKGROUND-IMAGE: url(/images/icon_warning_lrg.gif);
+}
+
+.flash_error {
+    BORDER: #f00 2px solid;
+    BACKGROUND-IMAGE: url(/images/icon_error_lrg.gif);
+}
+
+/* End Flash Messages */
+
+/* Landing Page */
+
+div#landing {
+
+}
+
+div#landing div#active_users_credentials_container {
+    width: 728px;
+    float: right
+}
+
+div#landing div#active_users_credentials_container div#login_credentials {
+    margin-top: 90px;
+    margin-left: 150px;
+}
+
+div#landing div#active_users_credentials_container div#login_credentials span {
+    float: left;
+    margin-top: 7px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+div#landing div#active_users_credentials_container div#login_credentials div#passcode_show {
+    border: 1px solid #DDD;
+    width: 200px;
+    height: 25px;
+    font-size: 14px;
+    margin-left: 10px;
+    padding-top: 5px;
+    float: left;
+}
+
+div#landing div#active_users_credentials_container div#login_credentials div.login {
+    float: left;
+    vertical-align: middle;
+    margin-left: 10px;
+    padding: 4px 5px;
+    height: 22px;
+    font-weight: bold;
+    border: 1px solid #CCC;
+    background-color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+div#landing div#active_users_credentials_container div#active_users {
+    height: 480px;
+    border: 1px solid #DDD;
+}
+
+div#landing div#active_users_credentials_container div#active_users div.employee_box {
+    float: left;
+    width: 120px;
+    font-size: 15px;
+    height: 25px;
+    font-weight: bold;
+    padding-top: 5px;
+    border: 2px outset #DDD;
+    margin: 10px;
+    cursor: pointer;
+}
+
+div.fullscreen{
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+div#landing div#login_receipt_keypad_container {
+    width: 265px;
+    float: left;
+    border: 1px solid #CCC;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt {
+    height: 430px;
+    overflow-y: auto;
+    display: block;
+    padding-left: 5px;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt_header {
+    background-color: #CCC;
+    border: 1px solid #AAA;
+    padding: 2px;
+    font-weight: bold;
+    text-align: left;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.order_line {
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.amount {
+    float: left;
+    text-align: left;
+    width: 37px;
+    margin-left: 3px;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.name {
+    float: left;
+    width: 160px;
+    text-align: left;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.modifier_name {
+    float: left;
+    width: 140px;
+    margin-left: 60px;
+    text-align: left;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.modifier_price {
+    float: left;
+    width: 40px;
+    text-align: right;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.total {
+    float: left;
+    width: 40px;
+    text-align: right;
+    font-weight: bold;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.spacer {
+    clear: both;
+    height: 30px;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_user_nickname {
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 2px;
+    margin-top: 10px;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_served_time {
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_total_label,
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_tendered_label,
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_change_label {
+    float: left;
+    text-align: left;
+    font-weight: bold;
+    width: 80px;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_total_value,
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_tendered_value,
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_change_value {
+    float: left;
+    font-weight: bold;
+    width: 120px;
+    text-align: right;
+    margin-left: 40px;
+}
+
+div#landing div#login_receipt_keypad_container div#keypad {
+    height: 275px;
+    padding-top: 10px;
+    background-color: #DDD;
+}
+
+div#keypad div#keys {
+    width: 190px;
+    margin: auto;
+}
+
+div#keypad div#keys div {
+    vertical-align: middle;
+    float: left;
+    margin: 2px;
+    width: 55px;
+    padding-top: 20px;
+    height: 40px;
+    border: 1px solid #CCC;
+    background-color: white;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+div#keypad div#keys div.pad {
+    width: 57px;
+    border: none;
+    background-color: transparent;
+}
+
+/* End Landing Page */
+
+/* Admin Users Page */
+
+div#admin_employee_list section#employees {
+    width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#admin_employee_list section#employees div#actions {
+    float: right;
+}
+
+div#new_employee section#form_container {
+    width: 470px;
+    margin: auto;
+    text-align: center;
+}
+
+div#new_employee section#form_container h3 {
+    width: 250px;
+    margin: auto;
+    text-align: left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+div#new_employee section#form_container div#fields {
+    width: 250px;
+    margin: auto;
+}
+
+div#new_employee section#form_container form div {
+    text-align: left;
+}
+
+div#new_employee section#form_container form div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#new_employee section#form_container form div#actions input {
+    float: right;
+}
+
+div#show_employee section#employee_info {
+    margin: 20px auto 20px auto;
+    width: 270px;
+    text-align: left;
+}
+
+div#show_employee section#employee_info div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#show_employee section#employee_info div#actions input {
+    float: right;
+}
+
+div#edit_employee section#form_container {
+    width: 470px;
+    margin: auto;
+    text-align: center;
+}
+
+div#edit_employee section#form_container h3 {
+    width: 250px;
+    margin: auto;
+    text-align: left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+div#edit_employee section#form_container div#fields {
+    width: 250px;
+    margin: auto;
+}
+
+div#edit_employee section#form_container form div {
+    text-align: left;
+}
+
+div#edit_employee section#form_container form div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#edit_employee section#form_container form div#actions input {
+    float: right;
+}
+
+/* End Admin Users Page */
+
+/* Admin Products Page */
+
+div#admin_product_list section#products {
+    width: 920px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#admin_product_list section#products div#actions {
+    float: right;
+}
+
+div#new_product section#form_container {
+    width: 470px;
+    margin: auto;
+    text-align: center;
+}
+
+div#new_product section#form_container h3 {
+    width: 250px;
+    margin: auto;
+    text-align: left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+div#new_product section#form_container div#fields {
+    width: 250px;
+    margin: auto;
+}
+
+div#new_product section#form_container form div {
+    text-align: left;
+}
+
+div#new_product section#form_container form div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#new_product section#form_container form div#actions input {
+    float: right;
+}
+
+div#show_product section#product_info {
+    margin: 20px auto 20px auto;
+    width: 270px;
+    text-align: left;
+}
+
+div#show_product section#product_info div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#show_product section#product_info div#actions input {
+    float: right;
+}
+
+div#edit_product section#form_container {
+    width: 470px;
+    margin: auto;
+    text-align: center;
+}
+
+div#edit_product section#form_container h3 {
+    width: 250px;
+    margin: auto;
+    text-align: left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+div#edit_product section#form_container div#fields {
+    width: 250px;
+    margin: auto;
+}
+
+div#edit_product section#form_container form div {
+    text-align: left;
+}
+
+div#edit_product section#form_container form div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#edit_product section#form_container form div#actions input {
+    float: right;
+}
+
+/* End Admin Products Page */
+
+/* Admin Modifier Categories Page */
+
+div#admin_modifier_categories_list section#modifier_categories {
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#admin_modifier_categories_list section#modifier_categories div#actions {
+    float: right;
+}
+
+div#new_modifier_category section#form_container {
+    width: 470px;
+    margin: auto;
+    text-align: center;
+}
+
+div#new_modifier_category section#form_container h3 {
+    width: 250px;
+    margin: auto;
+    text-align: left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+div#new_modifier_category section#form_container div#fields {
+    width: 250px;
+    margin: auto;
+}
+
+div#new_modifier_category section#form_container form div {
+    text-align: left;
+}
+
+div#new_modifier_category section#form_container form div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#new_modifier_category section#form_container form div#actions input {
+    float: right;
+}
+
+div#show_modifier_category section#modifier_category_info {
+    margin: 20px auto 20px auto;
+    width: 340px;
+    text-align: left;
+}
+
+div#show_modifier_category section#modifier_category_info div#actions {
+    margin-top: 20px;
+}
+
+div#show_modifier_category section#modifier_category_info div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#show_modifier_category section#modifier_category_info div#actions input {
+    float: right;
+}
+
+div#edit_modifier_category section#form_container {
+    width: 470px;
+    margin: auto;
+    text-align: center;
+}
+
+div#edit_modifier_category section#form_container h3 {
+    width: 250px;
+    margin: auto;
+    text-align: left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+div#edit_modifier_category section#form_container div#fields {
+    width: 250px;
+    margin: auto;
+}
+
+div#edit_modifier_category section#form_container form div {
+    text-align: left;
+}
+
+div#edit_modifier_category section#form_container form div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#edit_modifier_category section#form_container form div#actions input {
+    float: right;
+}
+
+/* End Admin Modifier Categories Page */
+
+/* Admin Categories Page */
+
+div#admin_category_list section#categories {
+    width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#admin_category_list section#categories div#actions {
+    float: right;
+}
+
+div#new_category section#form_container {
+    width: 470px;
+    margin: auto;
+    text-align: center;
+}
+
+div#new_category section#form_container h3 {
+    width: 250px;
+    margin: auto;
+    text-align: left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+div#new_category section#form_container div#fields {
+    width: 250px;
+    margin: auto;
+}
+
+div#new_category section#form_container form div {
+    text-align: left;
+}
+
+div#new_category section#form_container form div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#new_category section#form_container form div#actions input {
+    float: right;
+}
+
+div#show_category section#category_info {
+    margin: 20px auto 20px auto;
+    width: 270px;
+    text-align: left;
+}
+
+div#show_category section#category_info div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#show_category section#category_info div#actions input {
+    float: right;
+}
+
+div#edit_category section#form_container {
+    width: 470px;
+    margin: auto;
+    text-align: center;
+}
+
+div#edit_category section#form_container h3 {
+    width: 250px;
+    margin: auto;
+    text-align: left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+div#edit_category section#form_container div#fields {
+    width: 250px;
+    margin: auto;
+}
+
+div#edit_category section#form_container form div {
+    text-align: left;
+}
+
+div#edit_category section#form_container form div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#edit_category section#form_container form div#actions input {
+    float: right;
+}
+
+/* End Admin Categories Page */
+
+/* Admin Displays Page */
+
+div#admin_display_list section#displays {
+    width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#admin_display_list section#displays div#actions {
+    float: right;
+}
+
+div#new_display section#form_container {
+    width: 470px;
+    margin: auto;
+    text-align: center;
+}
+
+div#new_display section#form_container h3 {
+    width: 250px;
+    margin: auto;
+    text-align: left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+div#new_display section#form_container div#fields {
+    width: 250px;
+    margin: auto;
+}
+
+div#new_display section#form_container form div {
+    text-align: left;
+}
+
+div#new_display section#form_container form div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#new_display section#form_container form div#actions input {
+    float: right;
+}
+
+div#show_display section#display_info {
+    margin: 20px auto 20px auto;
+    width: 270px;
+    text-align: left;
+}
+
+div#show_display section#display_info div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#show_display section#display_info div#actions input {
+    float: right;
+}
+
+div#edit_display section#form_container {
+    width: 470px;
+    margin: auto;
+    text-align: center;
+}
+
+div#edit_display section#form_container h3 {
+    width: 250px;
+    margin: auto;
+    text-align: left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+div#edit_display section#form_container div#fields {
+    width: 250px;
+    margin: auto;
+}
+
+div#edit_display section#form_container form div {
+    text-align: left;
+}
+
+div#edit_display section#form_container form div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#edit_display section#form_container form div#actions input {
+    float: right;
+}
+
+/* End Admin Displays Page */
+
+/* Main Menu Screen */
+
+nav#main_nav {
+    font-weight: bold;
+    background-color: #4297D7;
+    text-align: left;
+    padding: 2px 4px;
+    margin-bottom: 2px;
+}
+
+nav#main_nav div#business_name,
+nav#main_nav div#e_name,
+nav#main_nav div#terminal_id,
+nav#main_nav div#date,
+nav#main_nav div#clock {
+    float: left;
+    margin: 0px 3px;
+    padding: 2px 5px;
+    background-color: #DDD;
+}
+
+div#menu_screen div#receipt_keypad_container {
+    width: 265px;
+    float: left;
+    border: 1px solid #CCC;
+}
+
+div#menu_screen div#menu_pages_container {
+    width: 728px;
+    float: right;
+    border: 1px solid #CCC;
+}
+
+div#menu_screen div#receipt_keypad_container div#receipt {
+    height: 373px;
+    overflow-y: auto;
+    display: block;
+}
+
+div#menu_screen div#receipt_keypad_container div#top_buttons {
+    background-color: #CCC;
+    border: 1px solid #AAA;
+    padding: 2px;
+    font-weight: bold;
+}
+
+div#menu_screen div#receipt_keypad_container div#table_select_container {
+    float: left;
+}
+
+div#menu_screen div#receipt_keypad_container div#till_keypad {
+    height: 275px;
+    padding-top: 10px;
+    background-color: #DDD;
+}
+
+div#menu_screen div#menu_pages_container div#pages {
+    height: 100px;
+    padding-left: 2px;
+    padding-top: 2px;
+}
+
+div#menu_screen div#menu_pages_container div#menu_items_container {
+    height: 360px;
+    padding-left: 2px;
+}
+
+div#menu_screen div#menu_pages_container div#menu_buttons {
+    border-spacing: 2px;
+    height: 255px;
+    padding: 5px;
+    background-color: #DDD;
+}
+
+div#menu_screen div#menu_pages_container div#menu_buttons div#menu_buttons_loading_message {
+    text-align: center;
+    padding-top: 100px;
+    font-weight: bold;
+}
+
+div#menu_screen div#menu_pages_container div#menu_buttons div.button {
+    width: 85px;
+    vertical-align: middle;
+    display: table-cell;
+    height: 85px;
+    text-align: center;
+    font-weight: bold;
+    border: 2px outset #CCC;
+    background-color: #FFF;
+    cursor: pointer;
+}
+
+div#menu_screen div#menu_pages_container div#menu_buttons div.button div.button_name {
+    
+}
+
+div#menu_screen div#menu_pages_container div#menu_buttons div.button div.button_name a {
+    text-decoration: none;
+    color: #333333;
+}
+
+div#menu_screen div#menu_pages_container div#menu_buttons div.button div.button_name a:hover {
+    background-color: transparent;
+}
+
+div#menu_screen div#menu_pages_container div#pages div.page {
+    float: left;
+    width: 100px;
+    background-color: #fad42e;
+    margin: 1px;
+    border-bottom: none;
+    cursor: pointer;
+    height: 100px;
+}
+
+div#menu_screen div#menu_pages_container div#pages div.selected {
+    background-color: #fbec88;
+}
+
+div#menu_screen div#menu_pages_container div#pages div.page div.name {
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 38px;
+    color: black;
+    text-decoration: none;
+    padding: 4px;
+}
+
+div#menu_screen div#menu_pages_container div#pages div.page div.name a:hover {
+    background-color: transparent;
+}
+
+div#menu_screen div#menu_pages_container div#menu_items_container div#items {
+
+}
+
+div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item {
+    float: left;
+    width: 117px;
+    margin: 1px;
+    border: 1px solid #CCC;
+    cursor: pointer;
+    height: 115px;
+}
+
+div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_pic {
+    height: 90px;
+}
+
+div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_pic img {
+    position: relative;
+    z-index: -1;
+}
+
+div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_name {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: -20px;
+    text-decoration: none;
+    background-color: #FFF;
+    padding: 4px;
+    width: -moz-fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Main Menu Screen */
+
+/* Menu Screen keypad */
+
+div#till_keypad div#keys {
+    width: 190px;
+    margin: auto;
+}
+
+div#till_keypad div#keys div {
+    vertical-align: middle;
+    float: left;
+    margin: 2px;
+    width: 55px;
+    padding-top: 20px;
+    height: 40px;
+    border: 1px solid #CCC;
+    background-color: white;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+div#till_keypad div#keys div.pad {
+    border: none;
+    background-color: transparent;
+}
+
+/* End Menu Screen keypad */
+
+/* Till Roll */
+
+div#menu_screen div#receipt_keypad_container div#receipt div#till_roll {
+    height: 98%;
+    display: block;
+}
+
+div#menu_screen div#receipt_keypad_container div#total_container {
+    margin-top: 10px;
+    font-size: 14px;
+    background-color: #CCC;
+    border: 1px solid #AAA;
+    padding: 2px;
+}
+
+div#menu_screen div#receipt_keypad_container div#total_container div#label {
+    font-weight: bold;
+    width: 50%;
+    text-align: left;
+    float: left;
+}
+
+div#menu_screen div#receipt_keypad_container div#total_container div#total_value {
+    float: left;
+    width: 50%;
+    text-align: right;
+    font-weight: bold;
+}
+
+div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.order_line {
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.amount {
+    float: left;
+    text-align: left;
+    width: 37px;
+    margin-left: 3px;
+}
+
+div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.name {
+    float: left;
+    width: 168px;
+    text-align: left;
+}
+
+div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.modifier_name {
+    float: left;
+    width: 125px;
+    margin-left: 80px;
+    text-align: left;
+}
+
+div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.modifier_price {
+    float: left;
+    width: 40px;
+    text-align: right;
+}
+
+div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.total {
+    float: left;
+    width: 40px;
+    text-align: right;
+    font-weight: bold;
+}
+
+/* End Till Roll */
+
+/* Totals Screen */
+
+div#total_screen div#totals_receipt {
+    height: 300px;
+    width: 350px;
+    margin: auto;
+    margin-top: 10px;
+    border: 1px solid #CCC;
+    padding: 5px;
+}
+
+div#total_screen div#totals_receipt div#totals_total_container div#totals_label {
+    width: 200px;
+    text-align: left;
+    float: left;
+}
+
+div#total_screen div#totals_receipt div#totals_total_container div#totals_total_value {
+    width: 150px;
+    text-align: right;
+    float: left;
+    font-weight: bold;
+}
+
+div#total_screen div#totals_receipt div#totals_tendered_container div#tendered_label {
+    width: 200px;
+    text-align: left;
+    float: left;
+}
+
+div#total_screen div#totals_receipt div#totals_tendered_container div#totals_tendered_value {
+    width: 150px;
+    text-align: right;
+    float: left;
+    font-weight: bold;
+}
+
+div#total_screen div#totals_receipt div#change_container div#change_label {
+    width: 200px;
+    text-align: left;
+    float: left;
+}
+
+div#total_screen div#totals_receipt div#change_container div#totals_change_value {
+    width: 150px;
+    text-align: right;
+    float: left;
+    font-weight: bold;
+}
+
+div#total_screen div#totals_keypad {
+    background-color: #DDD;
+    height: 330px;
+    width: 250px;
+    margin: auto;
+    border: 1px solid #CCC;
+    margin-top: 10px;
+}
+
+div#total_screen div#totals_keypad div#tendered_button {
+    vertical-align: middle;
+    margin: 2px;
+    margin: auto;
+    width: 55px;
+    padding-top: 20px;
+    height: 40px;
+    border: 1px solid #CCC;
+    background-color: white;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+div#total_screen div#totals_keypad div#finish_sale_button {
+    vertical-align: middle;
+    margin: 2px;
+    margin: auto;
+    width: 150px;
+    padding-top: 20px;
+    height: 40px;
+    border: 1px solid #CCC;
+    background-color: white;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* End Totals Screen */
+
+/* Totals Screen keypad */
+
+div#totals_keypad div#keys {
+    width: 190px;
+    margin: auto;
+}
+
+div#totals_keypad div#keys div {
+    vertical-align: middle;
+    float: left;
+    margin: 2px;
+    width: 55px;
+    padding-top: 20px;
+    height: 40px;
+    border: 1px solid #CCC;
+    background-color: white;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+div#totals_keypad div#keys div.pad {
+    border: none;
+    background-color: transparent;
+}
+
+/* End Totals Screen keypad */
+
+/* Menu Builder */
+
+div#display_builder {
+    width: 1000px;
+    margin: auto;
+}
+
+div#display_builder div#tree_container {
+    width: 265px;
+    float: left;
+}
+
+div#display_builder ul#products_tree,
+div#display_builder ul#products_tree ul {
+    list-style-type: none;
+    padding-left: 7px;
+}
+
+div#display_builder ul#products_tree li ul li{
+    text-align: left;
+    margin: 12px 1px;
+}
+
+div#display_builder ul#products_tree li ul ul li {
+    text-align: left;
+    margin: 18px 1px;
+}
+
+div#display_builder ul#products_tree li ul li a,
+div#display_builder ul#products_tree li ul li ul li a {
+    text-decoration: none;
+}
+
+div#display_builder ul#products_tree li ul li a {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+div#display_builder ul#products_tree li ul li ul li a {
+    font-weight: normal;
+}
+
+div#display_builder ul#products_tree div.select_product {
+    cursor: pointer;
+    font-weight: bold;
+    width: -moz-max-content;
+}
+
+div#display_builder ul#products_tree div.select_product img {
+    width: 34px;
+    height: 34px;
+    float: left;
+    margin: -12px 10px 0px 0px;
+}
+
+div#display_builder ul#products_tree div.name {
+    float: left;
+}
+
+div#display_builder ul#products_tree .menuTree:before {
+    content: "+ ";
+}
+
+div#display_builder ul#products_tree .expanded:before {
+    content: "- ";
+}
+
+div#display_builder ul#products_tree .collapsed {
+    display: none;
+}
+
+/* End Menu Builder  */
+
+/* Admin Role Page */
+
+div#admin_role_list section#roles {
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#admin_role_list section#roles div#actions {
+    float: right;
+}
+
+div#new_role section#form_container {
+    width: 470px;
+    margin: auto;
+    text-align: center;
+}
+
+div#new_role section#form_container h3 {
+    width: 250px;
+    margin: auto;
+    text-align: left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+div#new_role section#form_container div#fields {
+    width: 250px;
+    margin: auto;
+}
+
+div#new_role section#form_container form div {
+    text-align: left;
+}
+
+div#new_role section#form_container form div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#new_role section#form_container form div#actions input {
+    float: right;
+}
+
+div#show_role section#role_info {
+    margin: 20px auto 20px auto;
+    width: 270px;
+    text-align: left;
+}
+
+div#show_role section#role_info div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#show_role section#role_info div#actions input {
+    float: right;
+}
+
+div#edit_role section#form_container {
+    width: 470px;
+    margin: auto;
+    text-align: center;
+}
+
+div#edit_role section#form_container h3 {
+    width: 250px;
+    margin: auto;
+    text-align: left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+div#edit_role section#form_container div#fields {
+    width: 250px;
+    margin: auto;
+}
+
+div#edit_role section#form_container form div {
+    text-align: left;
+}
+
+div#edit_role section#form_container form div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#edit_role section#form_container form div#actions input {
+    float: right;
+}
+
+/* End Admin Role Page */
+
+/* Admin Display Buttons Page */
+
+div#admin_display_buttons section#display_buttons {
+    width: 530px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* End Admin Display Buttons Page */
+
+/* Modifier Popup */
+
+div#menu_screen div.modifier_category_popup div.header {
+    font-weight: bold;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+div#menu_screen div.modifier_category_popup div.modifier_choices {
+    width: 300px;
+    margin: auto;
+}
+
+div#menu_screen div.modifier_category_popup div.modifier_choices div.modifier {
+    margin: 3px 0px;
+    border: 2px outset #CCC;
+    padding: 4px;
+    cursor: pointer;
+}
+
+div#menu_screen div.modifier_category_popup div.modifier_choices div.modifier div.name {
+    float: left;
+    font-weight: bold;
+    font-size: 14px;
+    width: 50%;
+    text-align: left;
+    padding-left: 10px;
+}
+
+div#menu_screen div.modifier_category_popup div.modifier_choices div.modifier div.price {
+    float: left;
+    font-weight: bold;
+    font-size: 14px;
+    width: 40%;
+    text-align: center;
+}
+
+/* Modifier Popup */
+
+/* jQuery Popup Styling */
+
+.brwsbanner {
+    position: absolute;
+    z-index: 1002;
+}
+
+.liss ul {
+    padding: 0px;
+    margin: 0px;
+    padding-left: 20px;
+}
+
+.liss li {
+    padding-left: 20px;
+}
+
+.disable_masking {
+    width: 400px;
+    z-index: 6001;
+    position: absolute;
+    display: none;
+    background-color: #FFF;
+    border: 3px solid #AAA;
+    padding: 10px;
+}
+
+.closebutton,
+.myclosebutton {
+    float: right;
+    text-decoration: none;
+}
+
+.data {
+    font-size: 12px;
+    text-align: justify;
+}
+
+.viewsiurce {
+    background-color: #F0F0F0;
+    border: 2px dashed #000;
+    padding: 20px;
+    color: #006633;
+    font-size: 15px;
+    font-size: 12px;
+}
+
+#all {
+    text-align: center;
+}
+
+#all div {
+    text-align: left;
+}
+
+/* jQuery Popup Styling */
+
+/* Options Screen */
+
+div#options_screen div#options_screen_menu_buttons {
+    border-spacing: 7px;
+    padding: 10px 15px;
+    height: 720px;
+    background-color: #DDD;
+}
+
+div#options_screen div#options_screen_menu_buttons div.button {
+    width: 85px;
+    height: 85px;
+    text-align: center;
+    font-weight: bold;
+    border: 2px outset #CCC;
+    background-color: #FFF;
+    cursor: pointer;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+div#options_screen div#options_screen_menu_buttons div.button div.button_name {
+    
+}
+
+div#options_screen div#options_screen_menu_buttons div.button div.button_name a {
+    text-decoration: none;
+    color: #333333;
+}
+
+div#options_screen div#options_screen_menu_buttons div.button div.button_name a:hover {
+    background-color: transparent;
+}
+
+/* End Options Screen */

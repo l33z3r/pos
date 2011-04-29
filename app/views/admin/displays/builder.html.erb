@@ -1,0 +1,95 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "menu-builder" %>
+  <script type="text/javascript" src="/javascripts/init_touch_draggable.js?id=<%=@display.id%>"></script>
+  <%= stylesheet_link_tag "menu_builder"  %>
+<% end %>
+
+<div id="display_builder">
+
+  <section id="header">
+
+    <h3>Display Builder For Display: <%= @display.name %></h3>
+
+  </section>
+
+  <section id="builder">
+
+    <div id="tree_container">
+
+      <ul id="products_tree">
+        <li>
+          <ul>
+            <% Category.all.each do |category| %>
+              <li>
+                <a href="#" class="select_category" id="select_category_<%=category.id%>"><%= category.name %></a>
+                <ul>
+                  <% category.products.each do |product| %>
+                    <li>
+                      <div class="select_product" id="select_product_<%=product.id%>">
+                        <%= product_image_thumb product, true %>
+                      </div>
+                      <div class="name"><%= product.name %></div>
+                      <div class="clear">&nbsp;</div>
+                    </li>
+                  <% end %>
+                </ul>
+              </li>
+            <% end %>
+          </ul>
+        </li>
+      </ul>
+
+    </div>
+
+    <div id="grid">
+      <div id="menu_pages_container">
+        <div id="pages">
+          <% @display.menu_pages.each_with_index do |page, index| %>
+            <div class="page <%=index==0 ? "selected" : "" %>" id="menu_page_<%=page.id%>"
+                 onclick="doBuilderMenuPageSelect(<%= page.page_num %>, <%= page.id %>);">
+              <div class="delete_link">
+                <%= link_to "X", delete_menu_page_admin_display_path(@display, :menu_page_id => page.id), :method => :post, :confirm => "Are You Sure?" %>
+              </div>
+              <div class="name" id="page_name_<%=page.id%>" ondblclick="openEditNameTextBox(<%=page.id%>)">
+                <%= page.name %>
+              </div>
+              <input style="display: none;" type="text" name="page_name_<%=page.id%>"
+                     id="edit_page_name_<%=page.id%>" value="<%=page.name%>"/>
+            </div>
+
+            <div style="display: none;" id="builder_menu_items_<%= page.page_num %>">
+              <div id="items">
+                <% page.menu_items.each do |item| %>
+                  <%= render :partial => "builder_menu_item_with_wrapper_div", :locals => {:item => item} %>
+                <% end %>
+
+                <div class="item new_item" data-theid="new_menu_item">
+                  <div class="item_name">
+                    Drag New Item Here
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          <% end %>
+
+          <div class="new_page" id="new_menu_page">
+            <div class="name">
+              <%= link_to "New Page", create_menu_page_admin_display_path(@display), :method => :post %>
+            </div>
+          </div>
+        </div>
+
+        <div class="clear">&nbsp;</div>
+
+        <div id="builder_menu_items_container">
+          Loading...
+        </div>
+
+        <div class="clear">&nbsp;</div>
+      </div>
+    </div>
+
+</div>
+</section>
+</div>

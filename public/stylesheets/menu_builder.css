@@ -1,0 +1,197 @@
+/* 
+    Document   : menu_builder
+    Created on : 15-Apr-2011, 10:34:01
+    Author     : Lee
+    Description:
+        For the menu builder interface grid.
+*/
+
+/* Main Menu Screen */
+
+div#display_builder {
+    width: 1000px;
+    margin: auto;
+}
+
+div#display_builder div#menu_pages_container {
+    width: 728px;
+    float: right;
+    border: 1px solid #CCC;
+}
+
+div#display_builder div#menu_pages_container div#pages {
+    height: 100px;
+    padding-left: 2px;
+    padding-top: 2px;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container {
+    height: 360px;
+    padding-left: 2px;
+}
+
+div#display_builder div#menu_pages_container div#pages div.page {
+    float: left;
+    width: 100px;
+    background-color: #fad42e;
+    margin: 1px;
+    border-bottom: none;
+    cursor: pointer;
+    height: 100px;
+}
+
+div#display_builder div#menu_pages_container div#pages div.page div.delete_link {
+    margin-right: 4px;
+    margin-top: 4px;
+    padding: 1px 3px;
+    float: right;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    cursor: pointer;
+}
+
+div#display_builder div#menu_pages_container div#pages div.page input {
+    margin-top: 15px;
+    margin-left: 3px;
+    width: 70px;
+}
+
+div#display_builder div#menu_pages_container div#pages div.page div.delete_link a {
+    font-weight: bold;
+    color: red;
+    text-decoration: none;
+}
+
+div#display_builder div#menu_pages_container div#pages div.selected {
+    background-color: #fbec88;
+}
+
+div#display_builder div#menu_pages_container div#pages div.new_page {
+    float: left;
+    width: 100px;
+    margin: 1px;
+    cursor: pointer;
+    height: 98px;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+}
+
+div#display_builder div#menu_pages_container div#pages div.new_page div.name {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 37px;
+    color: black;
+    padding: 4px;
+    text-decoration: underline;
+}
+
+div#display_builder div#menu_pages_container div#pages div.page div.name {
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 38px;
+    color: black;
+    text-decoration: none;
+    padding: 4px;
+    cursor: text;
+}
+
+div#display_builder div#menu_pages_container div#pages div.page div.name a:hover {
+    background-color: transparent;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items {
+
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item {
+    float: left;
+    width: 117px;
+    margin: 1px;
+    border: 1px solid #CCC;
+    height: 115px;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_pic {
+    height: 90px;
+    margin-top: -1px;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.delete_link {
+    font-weight: bold;
+    color: red;
+    margin-right: 4px;
+    margin-top: 4px;
+    padding: 1px 3px;
+    float: right;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    cursor: pointer;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.drag_message {
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    background-color: #FFF;
+    padding: 4px;
+    width: 70px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.loading_message {
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    background-color: #FFF;
+    padding: 4px;
+    width: 70px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_pic img {
+    position: relative;
+    z-index: -1;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_name {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: -20px;
+    text-decoration: none;
+    background-color: #FFF;
+    padding: 4px;
+    width: -moz-fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.new_item {
+    float: left;
+    width: 117px;
+    margin: 1px;
+    border: 1px solid #CCC;
+    cursor: pointer;
+    height: 115px;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.new_item div.item_name {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 29px;
+    background-color: #FFF;
+    padding: 4px;
+    width: -moz-fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Main Menu Screen */
+
+
+

@@ -1,0 +1,39 @@
+<div id="admin_category_list">
+
+  <section id="categories">
+
+    <h3>Categories</h3>
+
+    <table id="category_list" style="display: none;">
+      <thead>
+        <tr>
+          <th width="130">Name</th>
+          <th width="130">Parent Category</th>
+          <th width="200">Description</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @categories.each do |category| %>
+          <tr>
+            <td><%= link_to category.name, admin_category_path(category) %></td>
+            <td><%= category.parent_category.try(:name) %></td>
+            <td><%= category.description %></td>
+            <!--
+            <td><%= link_to 'Show', admin_category_path(category) %></td>
+            <td><%= link_to 'Edit', edit_admin_category_path(category) %></td>
+            <td><%= link_to 'Destroy', admin_category_path(category), :confirm => 'Are you sure?', :method => :delete %></td>
+            -->
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <br />
+
+    <div id="actions">
+      <%= button_to 'New Category', new_admin_category_path, :method => :get %>
+    </div>
+
+  </section>
+</div>

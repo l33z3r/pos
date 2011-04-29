@@ -1,0 +1,39 @@
+<div id="show_modifier_category">
+
+  <h3>Modifier Category Info</h3>
+
+  <section id="modifier_category_info">
+    <p>
+      <b>Name:</b>
+      <%= @modifier_category.name %>
+    </p>
+
+    <p>
+      <b>Modifier List:</b>
+    </p>
+
+    <table id="modifier_list" style="display: none;">
+      <thead>
+        <tr>
+          <th width="180">Name</th>
+          <th width="100">Price</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @modifier_category.modifiers.each do |modifier| %>
+          <tr>
+            <td><%= modifier.name %></td>
+            <td><%= number_to_currency modifier.price %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div id="actions">
+      <%= button_to 'Edit', edit_admin_modifier_category_path(@modifier_category), :method => :get %>
+      <%= link_to "Back", :back %>
+    </div>
+
+  </section>
+</div>

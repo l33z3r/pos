@@ -1,0 +1,21 @@
+<title>Pos</title>
+
+<%= stylesheet_link_tag :all, :cache => true, :recursive => true %>
+
+<%= javascript_include_tag "jquery.min", "jquery-ui.min", :cache => "jq" %>
+
+<!--cant cache the following scripts as they are erb templates -->
+<%= javascript_include_tag "init", "employees" %>
+
+<%= javascript_include_tag "rails", "application", "flexigrid.pack",
+  "menu", "touch-scroll", "util", "jquery.cookie", "jquery.clock",
+  "jquery.plugin.menuTree.pack", "webkitdragdrop", "floatdialog", :cache => "libs" %>
+
+<%= csrf_meta_tag %>
+
+<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
+
+<%= yield :head %>
+
+<!-- disable the double tap to zoom -->
+<meta name="viewport" content="user-scalable=0;" />

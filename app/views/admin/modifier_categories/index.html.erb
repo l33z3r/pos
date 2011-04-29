@@ -1,0 +1,30 @@
+<div id="admin_modifier_categories_list">
+
+  <section id="modifier_categories">
+
+    <h3>Modifier Categories</h3>
+
+    <table id="modifier_categories_list" style="display: none;">
+      <thead>
+        <tr>
+          <th width="200">Name</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @modifier_categories.each do |modifier_category| %>
+          <tr>
+            <td><%= link_to modifier_category.name, admin_modifier_category_path(modifier_category) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <br />
+
+    <div id="actions">
+      <%= button_to 'New Modifier Category', new_admin_modifier_category_path, :method => :get %>
+    </div>
+
+  </section>
+</div>

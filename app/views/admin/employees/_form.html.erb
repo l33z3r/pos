@@ -1,0 +1,56 @@
+<%= form_for([:admin, @employee]) do |f| %>
+  <% if @employee.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
+
+      <ul>
+        <% @employee.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div id="fields">
+    <div class="field">
+      <%= f.label :staff_id, "Staff ID" %><br />
+      <%= f.text_field :staff_id %>
+    </div>
+    <div class="field">
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+    </div>
+    <div class="field">
+      <%= f.label :nickname %><br />
+      <%= f.text_field :nickname %>
+    </div>
+    <div class="field">
+      <%= f.label :passcode %><br />
+      <%= f.text_field :passcode %>
+    </div>
+    <div class="field">
+      <%= f.label :address %><br />
+      <%= f.text_field :address %>
+    </div>
+    <div class="field">
+      <%= f.label :telephone %><br />
+      <%= f.text_field :telephone %>
+    </div>
+    <div class="field">
+      <%= f.label :hourly_rate %><br />
+      <%= f.text_field :hourly_rate %>
+    </div>
+    <div class="field">
+      <%= f.label :overtime_rate %><br />
+      <%= f.text_field :overtime_rate %>
+    </div>
+    <div class="field">
+      <%= f.label :role_id %><br />
+      <%= f.collection_select :role_id, Role.find(:all), :id, :name, :prompt => "Select a Role" %>
+    </div>
+    <div id="actions">
+      <%= f.submit %>
+      <%= link_to "Back", :back %>
+    </div>
+  </div>
+<% end %>

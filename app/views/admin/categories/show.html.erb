@@ -1,0 +1,27 @@
+<div id="show_category">
+
+  <h3>Category Info</h3>
+
+  <section id="category_info">
+    <p>
+      <b>Name:</b>
+      <%= @category.name %>
+    </p>
+
+    <p>
+      <b>Parent category:</b>
+      <%= @category.parent_category.try(:name) %>
+    </p>
+
+    <p>
+      <b>Description:</b>
+      <%= @category.description %>
+    </p>
+
+    <div id="actions">
+      <%= button_to 'Edit', edit_admin_category_path(@category), :method => :get %>
+      <%= link_to "Back", :back %>
+    </div>
+
+  </section>
+</div>

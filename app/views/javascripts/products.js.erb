@@ -1,0 +1,25 @@
+var products = new Array();
+
+<% Product.all.each do |p|%>
+  products[<%= p.id %>] = {'id':'<%= p.id %>', 'name':'<%= p.name %>', 'price':<%= p.price %>};
+  <% if p.modifier_category_id %>
+    products[<%= p.id %>]['modifier_category_id'] = <%=p.modifier_category_id%>;
+  <% end %>
+<% end %>
+
+var modifier_categories = new Array();
+
+<% ModifierCategory.all.each do |mc| %>
+  modifier_categories[<%=mc.id%>] = {'id':<%=mc.id%>, 'name':'<%=mc.name%>'}
+  modifier_categories[<%=mc.id%>]['modifiers'] = new Array();
+  <% mc.modifiers.all.each do |m| %>
+    modifier_categories[<%=mc.id%>]['modifiers'][<%=m.id%>] = {'id':<%=m.id%>, 'name':'<%=m.name%>', 'price':<%=m.price%>}
+  <% end %>
+<% end %>
+
+//initialize the modifier category popup dialogs
+$(function() {
+<% ModifierCategory.all.each do |mc| %>
+  $("#modifier_category_popup_link_<%=mc.id%>").floatdialog("modifier_category_popup_<%=mc.id%>");
+<% end %>
+});

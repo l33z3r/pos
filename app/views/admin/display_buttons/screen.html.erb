@@ -1,0 +1,33 @@
+<div id="admin_display_buttons">
+
+  <section id="display_buttons">
+
+    <h3>Which buttons are shown on the sales screen?</h3>
+
+    <table id="display_button_list" style="display: none;">
+      <thead>
+        <tr>
+          <th width="100">Button</th>
+          <% Role.find(:all, :order => :id).each do |role| %>
+            <th width="60"><%=role.name%></th>
+          <% end %>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% DisplayButton.all.each do |db| %>
+          <tr>
+            <td><%= db.button_text %></td>
+            <% Role.find(:all, :order => :id).each do |role| %>
+              <td>
+                <% dbr = DisplayButtonRole.find_or_create_by_display_button_id_and_role_id(db.id, role.id) %>
+                <%= check_box_tag "#{db.button_text}_#{role.name}", dbr.show_on_sales_screen, dbr.show_on_sales_screen,
+                  :onchange => "displayButtonRoleSalesScreenSelect(#{dbr.id}, this.checked);" %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+</div>

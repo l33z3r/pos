@@ -1,0 +1,137 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "products" %>
+<% end %>
+
+<div id="menu_screen">
+
+  <%= render "modifier_category_popups" %>
+
+  <div id="receipt_keypad_container">
+
+    <div id="top_buttons">
+      <div id="table_select_container">
+        Table:
+        <select onchange="doSelectTable($(this).val())" id="table_select">
+          <!-- todo: load tables dynamically -->
+          <option value="0">None</option>
+          <option value="1">Table 1</option>
+          <option value="2">Table 2</option>
+          <option value="3">Table 3</option>
+          <option value="4">Table 4</option>
+        </select>
+      </div>
+
+      <div class="clear">&nbsp;</div>
+
+    </div>
+
+    <div id="receipt">
+      <div id="till_roll">
+      </div>
+
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div id="total_container">
+
+      <div id="label">Sub-Total:</div>
+      <div id="total_value"></div>
+
+      <div class="clear">&nbsp;</div>
+
+    </div>
+
+    <div id="till_keypad">
+      <div id="keys">
+        <% [[7,9],[4,6],[1,3]].each do |x,y| %>
+          <% (x..y).each do |num| %>
+            <div id="keypad_num_<%= num %>"><%= num %></div>
+          <% end %>
+        <% end %>
+
+        <div id="keypad_num_0">0</div>
+        <div id="decimal_key">.</div>
+        <div id="cancel_key" onclick="doCancelTillKeypad()">C</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="menu_pages_container">
+    <div id="pages">
+      <% @display.menu_pages.each_with_index do |page, index| %>
+        <div class="page <%=index==0 ? "selected" : "" %>"  id="menu_page_<%=page.id%>"
+             onclick="doMenuPageSelect(<%= page.page_num %>, <%= page.id %>);">
+          <div class="name">
+            <%= page.name %>
+          </div>
+        </div>
+
+        <div style="display: none;" id="menu_items_<%= page.page_num %>">
+          <div id="items">
+            <% page.menu_items.each do |item| %>
+              <% if item.product %>
+                <div class="item" onclick="doSelectMenuItem(<%= item.product_id %>)">
+                  <div class="item_pic">
+                    <%= product_image_thumb item.product %>
+                  </div>
+                  <div class="item_name">
+                    <%= item.name %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+
+      <% end %>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div id="menu_items_container">
+      Loading...
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div id="menu_buttons">
+
+      <div id="menu_buttons_loading_message">Loading Permissions...</div>
+
+      <div style="display: none;" id="menu_buttons_panel">
+        <!-- these buttons are always shown on cash screen -->
+        <div class="button" onclick="doTotalFinal()">
+          <div class="button_name">Total</div>
+        </div>
+
+        <div class="button" onclick="doTotal()">
+          <div class="button_name">Sub-Total</div>
+        </div>
+
+        <div class="button" onclick="doLogout()">
+          <div class="button_name">Save</div>
+        </div>
+
+        <div class="button" onclick="doClockout()">
+          <div class="button_name">Clock Out</div>
+        </div>
+
+        <div id="admin_button" class="button">
+          <div class="button_name">
+            <%= link_to("Options", :admin) %>
+          </div>
+        </div>
+
+        <!-- these are the optional buttons -->
+        <% DisplayButton.all.each do |button| %>
+          <div style="display: none;" id="sales_button_<%=button.id%>" class="button" onclick="<%= button_action button %>">
+            <div class="button_name"><%=button.button_text%></div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="clear">&nbsp;</div>
+</div>

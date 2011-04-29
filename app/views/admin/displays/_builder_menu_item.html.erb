@@ -1,0 +1,15 @@
+<div onclick="doDeleteMenuItem(<%=item.id%>)" class="delete_link">
+  X
+</div>
+<% if item.product %>
+  <div class="item_pic">
+    <%= product_image_thumb item.product %>
+  </div>
+  <div class="item_name">
+    <%= item.name %>
+  </div>
+<% else %>
+  <div class="drag_message">
+    Drag Product Here
+  </div>
+<% end %>

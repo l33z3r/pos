@@ -1,0 +1,42 @@
+<div id="admin_employee_list">
+
+  <section id="employees">
+
+    <h3>System Users</h3>
+
+    <table id="employee_list" style="display: none;">
+      <thead>
+        <tr>
+          <th width="25">#ID</th>
+          <th width="110">Name</th>
+          <th width="80">Nickname</th>
+          <th width="70">Pass Code</th>
+          <th width="90">Role</th>
+          <th width="90">Last Log In</th>
+          <th width="90">Last Logout</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @employees.each do |employee| %>
+          <tr>
+            <td><%= link_to employee.staff_id, admin_employee_path(employee) %></td>
+            <td><%= link_to employee.name, admin_employee_path(employee) %></td>
+            <td><%= employee.nickname %></td>
+            <td><%= employee.passcode %></td>
+            <td><%= employee.role.name %></td>
+            <td><%= employee.last_login.to_s(:short) %></td>
+            <td><%= employee.last_logout.to_s(:short) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <br />
+
+    <div id="actions">
+      <%= button_to 'New User', new_admin_employee_path, :method => :get %>
+    </div>
+
+  </section>
+</div>

@@ -1,0 +1,35 @@
+<%= form_for([:admin, @modifier_category]) do |f| %>
+  <% if @modifier_category.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@modifier_category.errors.count, "error") %> prohibited this modifier_category from being saved:</h2>
+
+      <ul>
+        <% @modifier_category.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div id="fields">
+    <div class="field">
+      <%= f.label :name %><br/>
+      <%= f.text_field :name %>
+    </div>
+
+    <h3>Modifiers:</h3>
+
+    <%= f.fields_for :modifiers do |builder| %>
+      <%= render "modifier_fields", :f => builder %>
+    <% end %>
+
+    <div class="field">
+      <%= link_to_add_modifier_fields f %>
+    </div>
+
+    <div id="actions">
+      <%= f.submit %>
+      <%= link_to "Back", :back %>
+    </div>
+  </div>
+<% end %>

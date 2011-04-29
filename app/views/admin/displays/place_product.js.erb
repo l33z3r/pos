@@ -1,0 +1,7 @@
+<% if @menu_item_id == "-1" %>
+  //add a new square to the end of the menu items
+  $("<%= escape_javascript(render :partial => "builder_menu_item_with_wrapper_div", :locals => {:item => @menu_item}) %>").insertBefore('.new_item');
+<% else %>
+  //replace the menu item square
+  $('#menu_item_<%=@menu_item.id%>').html("<%= escape_javascript(render :partial => "builder_menu_item", :locals => {:item => @menu_item}) %>");
+<% end %>

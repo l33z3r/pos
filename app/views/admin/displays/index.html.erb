@@ -1,0 +1,32 @@
+<div id="admin_display_list">
+
+  <section id="displays">
+
+    <h3>System Displays</h3>
+
+    <table id="display_list" style="display: none;">
+      <thead>
+        <tr>
+          <th width="180">Name</th>
+          <th width="70">Default?</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @displays.each do |display| %>
+          <tr>
+            <td><%= link_to display.name, admin_display_path(display) %></td>
+            <td><%= radio_button_tag "set_default_display", "#{display.id}", display.is_default, :onchange => "doSetDefaultDisplay(this.value);" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <br />
+
+    <div id="actions">
+      <%= button_to 'New Display', new_admin_display_path, :method => :get %>
+    </div>
+
+  </section>
+</div>

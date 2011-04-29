@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%= render :partial => "/layouts/common_head" %>
+  </head>
+  <body>
+
+    <div id="wrapper">
+      <div id="body">
+        <%= raw show_flash %>
+
+        <div id="content_container">
+          <%= render :partial => "/layouts/nav" %>
+
+          <%= yield %>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+<section id="active_employees">
+
+  <% if @active_employees.size > 0 %>
+
+    <% @active_employees.each do |e| %>
+      <div class="employee_box" onclick="doLoginWithoutPin(<%=e.id%>);"><%= e.nickname %></div>
+    <% end %>
+  <% end %>
+
+</section>

@@ -1,0 +1,49 @@
+<div id="admin_product_list">
+
+  <section id="products">
+
+    <h3>Products</h3>
+
+    <table id="product_list" style="display: none;">
+      <thead>
+        <tr>
+          <th width="200">Name</th>
+          <th width="200">Brand</th>
+          <th width="170">Category</th>
+          <th width="60">Price</th>
+          <th width="60">Size</th>
+          <th width="50">Unit</th>
+          <th width="70">Items per unit</th>
+          <th width="80">Sales tax rate</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @products.each do |product| %>
+          <tr>
+            <td><%= link_to product.name, admin_product_path(product) %></td>
+            <td><%= product.brand %></td>
+            <td><%= product.category.name %></td>
+            <td><%= number_to_currency product.price %></td>
+            <td><%= product.size %></td>
+            <td><%= product.unit %></td>
+            <td><%= product.items_per_unit %></td>
+            <td><%= product.sales_tax_rate %>%</td>
+              <!--
+              <td><%= link_to 'Show', admin_product_path(product) %></td>
+              <td><%= link_to 'Edit', edit_admin_product_path(product) %></td>
+              <td><%= link_to 'Destroy', admin_product_path(product), :confirm => 'Are you sure?', :method => :delete %></td>
+              -->
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <br />
+
+    <div id="actions">
+      <%= button_to 'New Product', new_admin_product_path, :method => :get %>
+    </div>
+
+  </section>
+</div>

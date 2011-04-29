@@ -1,0 +1,13 @@
+var employees = new Array();
+
+<% Employee.all.each do |e|-%>
+employee_info = {
+id : '<%= e.id %>',
+nickname : '<%=h e.nickname %>',
+passcode : '<%= e.passcode %>',
+is_admin : <%= e.is_admin %>
+}
+
+employees.push(employee_info);
+  
+<% end -%>

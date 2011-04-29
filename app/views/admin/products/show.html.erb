@@ -1,0 +1,70 @@
+<div id="show_product">
+
+  <h3>Product Info</h3>
+
+  <section id="product_info">
+    <p>
+      <b>Brand:</b>
+      <%= @product.brand %>
+    </p>
+
+    <p>
+      <b>Name:</b>
+      <%= @product.name %>
+    </p>
+
+    <p>
+      <b>Category:</b>
+      <%= link_to @product.category.name, admin_category_path(@product.category) %>
+    </p>
+
+    <p>
+      <b>Description:</b>
+      <%= @product.description %>
+    </p>
+
+    <p>
+      <b>Price:</b>
+      <%= number_to_currency @product.price %>
+    </p>
+
+    <p>
+      <b>Size:</b>
+      <%= @product.size %>
+    </p>
+
+    <p>
+      <b>Unit:</b>
+      <%= @product.unit %>
+    </p>
+
+    <p>
+      <b>Items per unit:</b>
+      <%= @product.items_per_unit %>
+    </p>
+
+    <p>
+      <b>Sales tax rate:</b>
+      <%= @product.sales_tax_rate %>
+    </p>
+
+    <p>
+      <b>Modifier Category:</b>
+      <%= link_to @product.modifier_category.name, admin_modifier_category_path(@product.modifier_category) if @product.modifier_category %>
+    </p>
+
+    <p>
+      <b>Product Image:</b>
+    </p>
+    
+    <p>
+      <%= image_tag @product.product_image.url(:thumb) %>
+    </p>
+
+    <div id="actions">
+      <%= button_to 'Edit', edit_admin_product_path(@product), :method => :get %>
+      <%= link_to "Back", :back %>
+    </div>
+
+  </section>
+</div>
