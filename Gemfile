@@ -6,7 +6,9 @@ gem 'rails', '3.0.5'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'mysql2'
-
+gem 'populator'
+gem 'faker'
+  
 # Use unicorn as the web server
 # gem 'unicorn'
 
@@ -26,10 +28,7 @@ gem 'mysql2'
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test do
-  #   gem 'webrat'
   gem 'annotate-models', :require => 'annotate_models'
   gem 'ruby-debug19'
-  gem 'populator'
-  gem 'faker'
   gem "mongrel", '1.2.0.pre2'
 end

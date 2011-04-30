@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110413094534
+# Schema version: 20110429080107
 #
 # Table name: products
 #
@@ -19,6 +19,7 @@
 #  product_image_content_type :string(255)
 #  product_image_file_size    :integer(4)
 #  product_image_updated_at   :datetime
+#  modifier_category_id       :integer(4)
 #
 
 class Product < ActiveRecord::Base

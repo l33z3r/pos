@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110420190211
+# Schema version: 20110429080107
 #
 # Table name: employees
 #
@@ -12,9 +12,9 @@
 #  telephone     :string(255)
 #  hourly_rate   :float
 #  overtime_rate :float
-#  last_login    :datetime        default(2011-03-31 09:40:41 UTC)
-#  last_active   :datetime        default(2011-03-31 09:40:41 UTC)
-#  last_logout   :datetime        default(2011-03-31 09:40:41 UTC)
+#  last_login    :datetime        default(2011-04-30 09:10:05 UTC)
+#  last_active   :datetime        default(2011-04-30 09:10:05 UTC)
+#  last_logout   :datetime        default(2011-04-30 09:10:05 UTC)
 #  created_at    :datetime
 #  updated_at    :datetime
 #  role_id       :integer(4)      default(1)
