@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110420190211
+# Schema version: 20110429080107
 #
 # Table name: display_buttons
 #
@@ -7,6 +7,7 @@
 #  button_text :string(255)
 #  created_at  :datetime
 #  updated_at  :datetime
+#  perm_id     :integer(4)
 #
 
 class DisplayButton < ActiveRecord::Base
