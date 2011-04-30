@@ -4,6 +4,6 @@ class AddModifierCategoryToProducts < ActiveRecord::Migration
   end
 
   def self.down
-    remove_column :products, :modifier_category_id, :integer
+    remove_column :products, :modifier_category_id
   end
 end

@@ -29,21 +29,15 @@ namespace :db do
         
         page_count += 1
 
-        x = 1
-        y = 1
+        order_num = 1
 
         MenuItem.populate 10..20 do |menu_item|
           menu_item.menu_page_id = menu_page.id
           menu_item.product_id = Product.first(:order => "RAND()")
 
-          menu_item.grid_x = x
-          menu_item.grid_y = y
-
-          x += 1
-          if x==5
-            y += 1
-            x = 1
-          end
+          menu_item.order_num = order_num
+          
+          order_num += 1
         end
       end
     end
