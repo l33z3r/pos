@@ -34,6 +34,6 @@ production:
   reconnect: false
   database: Pos_production
   pool: 5
-  username: root
-  password:
+  username: pos
+  password: pospos1
   host: localhost
