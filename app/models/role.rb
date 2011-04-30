@@ -16,5 +16,5 @@ class Role < ActiveRecord::Base
   validates :name, :presence => true
 
   #TODO: load from config file
-  SUPER_USER_ROLE_ID = find_by_name("Super User").id
+  SUPER_USER_ROLE_ID = find_by_name("Super User").try(:id)
 end

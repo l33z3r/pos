@@ -5,7 +5,7 @@ class AddModifierToOrderItem < ActiveRecord::Migration
   end
 
   def self.down
-    remove_column :order_item, :modifier_name
-    remove_column :order_item, :modifier_price
+    remove_column :order_items, :modifier_name
+    remove_column :order_items, :modifier_price
   end
 end
