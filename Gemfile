@@ -6,6 +6,7 @@ gem 'rails', '3.0.5'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'mysql2'
+gem "mongrel", '1.2.0.pre2'
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -31,5 +32,4 @@ group :development, :test do
   gem 'ruby-debug19'
   gem 'populator'
   gem 'faker'
-  gem "mongrel", '1.2.0.pre2'
 end
