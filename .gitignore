@@ -5,3 +5,4 @@ public/javascripts/jq.js
 public/javascripts/libs.js
 Gemfile
 Gemfile.lock
+db/schema.rb
