@@ -12,8 +12,7 @@ class CreateEmployees < ActiveRecord::Migration
       t.datetime :last_login, :default => Time.now
       t.datetime :last_active, :default => Time.now
       t.datetime :last_logout, :default => Time.now
-      t.boolean :is_admin
-
+      
       t.timestamps
     end
   end

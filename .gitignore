@@ -1,4 +1,7 @@
-tmp/*
 log/*
+tmp/*
+stylesheets/all.css
+javascripts/jq.js
+javascripts/libs.js
+Gemfile
 Gemfile.lock
-
