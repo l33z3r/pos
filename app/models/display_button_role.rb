@@ -17,10 +17,12 @@ class DisplayButtonRole < ActiveRecord::Base
   belongs_to :display_button
 
   def self.admin_screen_buttons_for_role role_id
-    @super_user_role_id = Role::SUPER_USER_ROLE_ID
+    if role_id = Role::SUPER_USER_ROLE_ID
+      return DisplayButton.find(:all)
+    end
 
     #bypass permissions for super user role
-    find(:all, :conditions => "role_id = #{role_id} and (show_on_admin_screen = 1 or role_id = #{@super_user_role_id})")
+    find(:all, :conditions => "role_id = #{role_id} and show_on_admin_screen = 1").collect(&:display_button)
   end
 
   def show_on_admin_screen

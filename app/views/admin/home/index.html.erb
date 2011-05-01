@@ -1,8 +1,8 @@
 <div id="options_screen">
   <div id="options_screen_menu_buttons">
-    <% DisplayButtonRole.admin_screen_buttons_for_role(current_employee.role.id).each_with_index do |dbr, index| %>
-      <div id="admin_screen_button_<%=dbr.display_button.id%>" class="button" onclick="<%= button_action dbr.display_button %>">
-        <div class="button_name"><%=dbr.display_button.button_text%></div>
+    <% DisplayButtonRole.admin_screen_buttons_for_role(current_employee.role.id).each_with_index do |display_button, index| %>
+      <div id="admin_screen_button_<%=display_button.id%>" class="button" onclick="<%= button_action display_button %>">
+        <div class="button_name"><%=display_button.button_text%></div>
       </div>
     <% if index != 0 and index % 9 == 0 %><div class="clear">&nbsp;</div><% end %>
     <% end %>
