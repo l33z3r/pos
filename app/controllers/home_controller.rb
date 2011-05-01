@@ -7,7 +7,10 @@ class HomeController < ApplicationController
   end
 
   def init_sales_screen_buttons
-    @employee = Employee.find(session[:current_employee_id])
+    #we get passed the user id as it may not have been set in the session yet,
+    #as the ajax login call may not yet have happened
+    @current_employee_id = params[:current_user_id]
+    @employee = Employee.find(@current_employee_id)
 
     @dbrs = DisplayButtonRole.find_all_by_role_id(@employee.role.id)
   end

@@ -515,7 +515,10 @@ function initOptionButtons() {
         $.ajax({
             type: 'GET',
             url: '/init_sales_screen_buttons.js',
-            complete: revealSalesScreenButtons
+            complete: revealSalesScreenButtons,
+            data: {
+                current_user_id : current_user_id
+            }
         });
     }
 }
