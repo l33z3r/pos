@@ -1,7 +1,7 @@
 log/*
 tmp/*
-stylesheets/all.css
-javascripts/jq.js
-javascripts/libs.js
+public/stylesheets/all.css
+public/javascripts/jq.js
+public/javascripts/libs.js
 Gemfile
 Gemfile.lock
