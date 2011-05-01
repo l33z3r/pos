@@ -468,7 +468,7 @@ function retrieveOrdersForLaterSend() {
         return ordersForLaterSendOBJ.ordersForLaterSend;
     }
 
-    return null;
+    return new Array();
 }
 
 function saveOrdersForLaterSend(ordersForLaterSend) {
