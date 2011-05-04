@@ -1,18 +1,14 @@
 function revealOptionalSalesScreenButtons() {
-//first hide them all
-<% DisplayButton.all.each do |db| %>
-  $('#sales_button_<%=db.id%>').hide();
-<% end %>
-
 //show the ones we have access to and remove the others
 <% @dbrs.each do |dbr| %>
-  $('#sales_button_<%=dbr.display_button.id%>').<%= dbr.show_on_admin_screen && dbr.show_on_sales_screen ? "show();" : "remove();" %>
+  $('#sales_button_<%=dbr.display_button.id%>').<%= dbr.show_on_admin_screen && dbr.show_on_sales_screen ? "show();" : "hide();" %>
 <% end %>
 
-//we now have to insert a break after every 7 buttons
-buttonCount = 0;
+setTimeout("insertButtonBreaks()", 10);
+}
 
-$('#menu_buttons_panel .button').each(function(index) {
+function insertButtonBreaks() {
+$('#menu_buttons_panel .button:visible').each(function(index) {
 if(index != 0 && index%6==0) {
 $('<div class="clear">&nbsp;</div>').insertAfter($(this));
 }

@@ -117,9 +117,9 @@
           <div class="button_name">Clock Out</div>
         </div>
 
-        <div id="admin_button" class="button">
+        <div id="admin_button" class="button" onclick="window.location = '<%= admin_path %>'; return false;">
           <div class="button_name">
-            <%= link_to("Options", :admin) %>
+            More Options
           </div>
         </div>
 

@@ -22,6 +22,8 @@
 
 class Employee < ActiveRecord::Base
 
+  has_attached_file :employee_image, :styles => { :medium => "300x300>", :thumb => "115x115>" }
+
   has_many :orders
 
   belongs_to :role
@@ -30,10 +32,8 @@ class Employee < ActiveRecord::Base
   validates :name, :presence => true
   validates :nickname, :presence => true, :uniqueness => true
   validates :passcode, :presence => true, :numericality => true
-  validates :address, :presence => true
-  validates :telephone, :presence => true
-  validates :hourly_rate, :presence => true, :numericality => true
-  validates :overtime_rate, :presence => true, :numericality => true
+  validates :hourly_rate, :numericality => true, :allow_blank => true
+  validates :overtime_rate, :numericality => true, :allow_blank => true
   validates :role_id, :presence => true
   
   def is_admin

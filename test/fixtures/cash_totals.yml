@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  type: MyString
+  total: 1.5
+  start_calc_order_id: 1
+  end_calc_order_id: 1
+
+two:
+  type: MyString
+  total: 1.5
+  start_calc_order_id: 1
+  end_calc_order_id: 1

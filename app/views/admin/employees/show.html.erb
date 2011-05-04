@@ -59,6 +59,14 @@
     </p>
 
     <p>
+      <b>Avatar:</b>
+    </p>
+    
+    <p>
+      <%= image_tag @employee.employee_image.url(:thumb) %>
+    </p>
+
+    <p>
       <b>Role:</b>
       <%= @employee.role.name %>
     </p>

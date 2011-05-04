@@ -1,4 +1,4 @@
-<%= form_for([:admin, @employee]) do |f| %>
+<%= form_for([:admin, @employee], :html => { :multipart => true }) do |f| %>
   <% if @employee.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
@@ -43,6 +43,10 @@
     <div class="field">
       <%= f.label :overtime_rate %><br />
       <%= f.text_field :overtime_rate %>
+    </div>
+    <div class="field">
+      <%= f.label :employee_image, "Avatar" %><br />
+      <%= f.file_field :employee_image %>
     </div>
     <div class="field">
       <%= f.label :role_id %><br />

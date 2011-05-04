@@ -25,6 +25,11 @@ class OrderController < ApplicationController
       render :inline => "{success : false}"
     end
   end
+  
+  def cash_total
+    @total_type = params[:total_type]
+    @cash_total = CashTotal.do_total @total_type
+  end
 
   private
 

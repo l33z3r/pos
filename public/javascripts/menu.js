@@ -26,6 +26,11 @@ function initMenu() {
             }
         });
     }
+    
+    //init sales screen decimal key
+    $('#decimal_key').click(function() {
+        currentMenuItemQuantity = "";
+    });
 
     //init totals screen keypad
     for(i=0; i<10; i++) {
@@ -33,6 +38,11 @@ function initMenu() {
             $('#totals_tendered_value').html($('#totals_tendered_value').html() + this.innerHTML);
         });
     }
+
+    //init sales screen decimal key
+    $('#totals_decimal_key').click(function() {
+        $('#totals_tendered_value').html($('#totals_tendered_value').html() + ".");
+    });
 
     $('#till_roll').touchScroll();
 
@@ -52,6 +62,7 @@ function loadCurrentOrder() {
     currentOrder = $.getJSONCookie("user_" + current_user_id + "_current_order");
 }
 
+//this loads up the last receipt that a user was looking at before logging out
 function displayLastReceipt() {
     //retrieve the users last receipt from cookie
     lastReceiptIDOBJ = $.getJSONCookie("user_" + current_user_id + "_last_receipt");
@@ -212,12 +223,17 @@ function writeOrderItemToReceipt(orderItem) {
     orderHTML = "<div class='order_line'>";
     orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
     orderHTML += "<div class='name'>" + orderItem.product.name + "</div>";
-    orderHTML += "<div class='total'>€" + (orderItem.product_price * orderItem.amount) + "</div>";
+    orderHTML += "<div class='total'>" + (orderItem.product_price * orderItem.amount) + "</div>";
     
     if(orderItem.modifier) {
         orderHTML += "<div class='clear'>&nbsp;</div>";
         orderHTML += "<div class='modifier_name'>- " + orderItem.modifier.name + "</div>";
-        orderHTML += "<div class='modifier_price'>€" + (orderItem.modifier.price * orderItem.amount) + "</div>";
+        
+        //only show modifier price if not zero
+        if(orderItem.modifier.price > 0) {
+            orderHTML += "<div class='modifier_price'>" + (orderItem.modifier.price * orderItem.amount) + "</div>";
+        }
+        
         orderHTML += "<div class='clear'>&nbsp;</div>";
     }
 
@@ -232,6 +248,10 @@ function writeTotalToReceipt(orderTotal) {
 }
 
 function doSelectTable(tableNum) {
+    if(current_user_id == null) {
+        return
+    }
+    
     selectedTable = tableNum;
 
     //write to cookie that this user was last looking at this receipt

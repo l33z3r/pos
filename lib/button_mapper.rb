@@ -20,9 +20,9 @@ class ButtonMapper
 
     case button.perm_id
     when X_TOTAL_BUTTON
-      @retval = "alert('x total clicked')"
+      @retval = "doXTotal();"
     when Z_TOTAL_BUTTON
-      @retval = "alert('z ddtotal clicked')"
+      @retval = "doZTotal();"
     when X_REPORTS_BUTTON
       @retval = "alert('x reports clicked')"
     when Z_REPORTS_BUTTON

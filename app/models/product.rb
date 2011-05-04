@@ -34,11 +34,10 @@ class Product < ActiveRecord::Base
   validates :name, :presence => true
   validates :category_id, :presence => true, :numericality => true
   validates :description, :presence => true
-  validates :size, :presence => true, :numericality => true
+  validates :size, :numericality => true, :allow_blank => true
   validates :price, :presence => true, :numericality => true
-  validates :unit, :presence => true
-  validates :items_per_unit, :presence => true, :numericality => true
-  validates :sales_tax_rate, :presence => true, :numericality => true
+  validates :items_per_unit, :numericality => true, :allow_blank => true
+  validates :sales_tax_rate, :numericality => true, :allow_blank => true
 
   def has_product_image?
     return (!product_image_file_name.nil? and !product_image_file_name.blank?)

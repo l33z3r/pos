@@ -221,9 +221,12 @@ function displayNotice(message) {
 }
 
 function copyReceiptToLoginScreen() {
-    if(totalOrder != null)
+    if(totalOrder != null) {
         total = totalOrder.total;
-
+    } else {
+        total = 0;
+    }
+    
     totalTendered = $('#totals_tendered_value').html();
     change = $('#totals_change_value').html();
 
@@ -232,7 +235,7 @@ function copyReceiptToLoginScreen() {
     newHTML += $('#till_roll').html();
     newHTML += "<div class='spacer'>&nbsp;</div>";
 
-    if(total.length>0)
+    if(total>0)
         newHTML += "<div id='login_till_roll_total_label'>Total:</div><div id='login_till_roll_total_value'>€" + total + "</div>";
 
     //tendered includes the euro sign, so if it is bigger

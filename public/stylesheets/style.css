@@ -145,14 +145,22 @@ div#landing div#active_users_credentials_container div#active_users {
 
 div#landing div#active_users_credentials_container div#active_users div.employee_box {
     float: left;
-    width: 120px;
+    width: 95px;
     font-size: 15px;
-    height: 25px;
+    height: 83px;
     font-weight: bold;
     padding-top: 5px;
     border: 2px outset #DDD;
     margin: 10px;
     cursor: pointer;
+}
+
+div#landing div#active_users_credentials_container div#active_users div.employee_box div.nickname {
+    
+}
+
+div#landing div#active_users_credentials_container div#active_users div.employee_box div.avatar img {
+    height: 60px;
 }
 
 div.fullscreen{
