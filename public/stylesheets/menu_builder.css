@@ -185,7 +185,76 @@ div#display_builder div#menu_pages_container div#builder_menu_items_container di
     margin-right: auto;
 }
 
-/* Main Menu Screen */
+div#display_builder {
+    width: 1000px;
+    margin: auto;
+}
+
+div#display_builder div#tree_container {
+    width: 265px;
+    float: left;
+}
+
+div#display_builder ul#products_tree,
+div#display_builder ul#products_tree ul {
+    list-style-type: none;
+    padding-left: 7px;
+}
+
+div#display_builder ul#products_tree li ul li{
+    text-align: left;
+    margin: 12px 1px;
+}
+
+div#display_builder ul#products_tree li ul ul li {
+    text-align: left;
+    margin: 18px 1px;
+}
+
+div#display_builder ul#products_tree li ul li a,
+div#display_builder ul#products_tree li ul li ul li a {
+    text-decoration: none;
+}
+
+div#display_builder ul#products_tree li ul li a {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+div#display_builder ul#products_tree li ul li ul li a {
+    font-weight: normal;
+}
+
+div#display_builder ul#products_tree div.select_product {
+    cursor: pointer;
+    font-weight: bold;
+    width: -moz-max-content;
+}
+
+div#display_builder ul#products_tree div.select_product img {
+    width: 34px;
+    height: 34px;
+    float: left;
+    margin: -12px 10px 0px 0px;
+}
+
+div#display_builder ul#products_tree div.name {
+    float: left;
+}
+
+div#display_builder ul#products_tree .menuTree:before {
+    content: "+ ";
+}
+
+div#display_builder ul#products_tree .expanded:before {
+    content: "- ";
+}
+
+div#display_builder ul#products_tree .collapsed {
+    display: none;
+}
+
+/* End Menu Builder  */
 
 
 

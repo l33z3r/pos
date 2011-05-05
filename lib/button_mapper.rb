@@ -13,7 +13,8 @@ class ButtonMapper
   MANAGE_SALES_SCREEN_BUTTON = 10
   ACCESS_CONTROL_BUTTON = 11
   MANAGE_MODIFIER_CATEGORIES_BUTTON = 12
-
+  ROOM_BUILDER_BUTTON = 13
+  
   def action_for_button button
 
     @retval = ""
@@ -43,6 +44,8 @@ class ButtonMapper
       @retval = "window.location = '#{access_admin_display_buttons_path}'; return false;"
     when MANAGE_MODIFIER_CATEGORIES_BUTTON
       @retval = "window.location = '#{admin_modifier_categories_path}'; return false;"
+    when ROOM_BUILDER_BUTTON
+      @retval = "window.location = '#{admin_rooms_path}'; return false;"
     end
 
     @retval

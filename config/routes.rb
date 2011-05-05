@@ -5,16 +5,6 @@ Pos::Application.routes.draw do
   match 'cash_total' => "order#cash_total", :via => :post
   match 'outstanding_orders' => "order#create_outstanding", :via => :post
 
-  #menu_pages routes
-  post "menu_page/create"
-  put "menu_page/update"
-  delete "menu_page/destroy"
-
-  #menu_items routes
-  post "menu_item/create"
-  put "menu_item/update"
-  delete "menu_item/destroy"
-
   #routes for screens to login etc
   match 'home' => "home#index"
   get "home/active_employees"
@@ -49,6 +39,16 @@ Pos::Application.routes.draw do
     resources :products
     resources :roles
     resources :modifier_categories
+    
+    resources :rooms, :only => [:index, :new, :create, :destroy] do
+      member do
+        get 'builder'
+        
+        #room builder ajax functions
+        post 'place_object'
+        post 'label_table'
+      end
+    end
     
     #display_button routes
     resources :display_buttons, :only => [:index] do

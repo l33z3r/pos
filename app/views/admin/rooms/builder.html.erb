@@ -1,0 +1,46 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "room-builder" %>
+  <!-- TODO: WILL NEED TO IMPLEMENT DRAG FOR TOUCH UI -->
+  <!--script type="text/javascript" src="/javascripts/init_touch_draggable.js?id=ROOMID"></script-->
+  <%= stylesheet_link_tag "room_builder"  %>
+<% end %>
+
+<div id="room_builder">
+
+  <!-- must set the room_id js var -->
+  <script type="text/javascript">
+    $(function() {room_id = <%=@room.id%>;});
+  </script>
+  
+  <section id="header">
+
+    <h3>Room Builder For Room: <%= @room.name %></h3>
+
+  </section>
+
+  <section id="builder">
+
+    <div id="tree_container">
+
+      <ul id="objects_tree">
+        <% RoomObject.available_objects.each do |room_object| %>
+          <li>
+            <a href="#" class="select_room_object" id="<%=room_object.permid%>"><%= room_object.label %></a>
+          </li>
+        <% end %>
+      </ul>
+
+    </div>
+
+    <div id="grid">
+      <% (1..@room.grid_y_size).each do |y| %>
+        <% (1..@room.grid_x_size).each do |x| %>
+          <div class="grid_square" id="<%=x%>_<%=y%>"><%=x%>_<%=y%></div>
+        <% end %>
+        <div class="clear">&nbsp;</div>
+      <% end %>
+    </div>
+
+</div>
+</section>
+</div>

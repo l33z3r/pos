@@ -11,7 +11,7 @@ class CashTotal < ActiveRecord::Base
   Z_TOTAL = "Z"
   VALID_TOTAL_TYPES = [X_TOTAL, Z_TOTAL]
   
-  validates :total_type, :inclusion => { :in => VALID_TOTAL_TYPES }
+  validates :total_type, :presence => true, :inclusion => { :in => VALID_TOTAL_TYPES }
   
   def self.do_total total_type, employee
     #validate total_type

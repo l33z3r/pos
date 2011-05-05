@@ -1,0 +1,31 @@
+<div id="admin_room_list">
+
+  <section id="rooms">
+
+    <h3>Rooms</h3>
+
+    <table id="room_list" style="display: none;">
+      <thead>
+        <tr>
+          <th width="180">Name</th>
+          <th width="180">Dimension</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @rooms.each do |room| %>
+          <tr>
+            <td><%= link_to room.name, builder_admin_room_path(room) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <br />
+
+    <div id="actions">
+      <%= button_to 'New Room', new_admin_room_path, :method => :get %>
+    </div>
+
+  </section>
+</div>

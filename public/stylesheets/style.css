@@ -859,6 +859,52 @@ div#edit_display section#form_container form div#actions input {
 
 /* End Admin Displays Page */
 
+/* Admin Rooms Page */
+
+div#admin_room_list section#rooms {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#admin_room_list section#rooms div#actions {
+    float: right;
+}
+
+div#new_room section#form_container {
+    width: 470px;
+    margin: auto;
+    text-align: center;
+}
+
+div#new_room section#form_container h3 {
+    width: 250px;
+    margin: auto;
+    text-align: left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+div#new_room section#form_container div#fields {
+    width: 250px;
+    margin: auto;
+}
+
+div#new_room section#form_container form div {
+    text-align: left;
+}
+
+div#new_room section#form_container form div#actions a {
+    float: right;
+    margin: 3px 8px 0px 0px;
+}
+
+div#new_room section#form_container form div#actions input {
+    float: right;
+}
+
+/* End Admin Rooms Page */
+
 /* Main Menu Screen */
 
 nav#main_nav {
@@ -1251,79 +1297,6 @@ div#totals_keypad div#keys div.pad {
 }
 
 /* End Totals Screen keypad */
-
-/* Menu Builder */
-
-div#display_builder {
-    width: 1000px;
-    margin: auto;
-}
-
-div#display_builder div#tree_container {
-    width: 265px;
-    float: left;
-}
-
-div#display_builder ul#products_tree,
-div#display_builder ul#products_tree ul {
-    list-style-type: none;
-    padding-left: 7px;
-}
-
-div#display_builder ul#products_tree li ul li{
-    text-align: left;
-    margin: 12px 1px;
-}
-
-div#display_builder ul#products_tree li ul ul li {
-    text-align: left;
-    margin: 18px 1px;
-}
-
-div#display_builder ul#products_tree li ul li a,
-div#display_builder ul#products_tree li ul li ul li a {
-    text-decoration: none;
-}
-
-div#display_builder ul#products_tree li ul li a {
-    font-weight: bold;
-    font-size: 14px;
-}
-
-div#display_builder ul#products_tree li ul li ul li a {
-    font-weight: normal;
-}
-
-div#display_builder ul#products_tree div.select_product {
-    cursor: pointer;
-    font-weight: bold;
-    width: -moz-max-content;
-}
-
-div#display_builder ul#products_tree div.select_product img {
-    width: 34px;
-    height: 34px;
-    float: left;
-    margin: -12px 10px 0px 0px;
-}
-
-div#display_builder ul#products_tree div.name {
-    float: left;
-}
-
-div#display_builder ul#products_tree .menuTree:before {
-    content: "+ ";
-}
-
-div#display_builder ul#products_tree .expanded:before {
-    content: "- ";
-}
-
-div#display_builder ul#products_tree .collapsed {
-    display: none;
-}
-
-/* End Menu Builder  */
 
 /* Admin Role Page */
 

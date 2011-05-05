@@ -1,0 +1,32 @@
+<%= form_for([:admin, @room]) do |f| %>
+  <% if @room.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@room.errors.count, "error") %> prohibited this room from being saved:</h2>
+
+      <ul>
+        <% @room.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div id="fields">
+    <div class="field">
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+    </div>
+    <div class="field">
+      <%= f.label :grid_x_size, "Dimension: how many tiles across?" %><br />
+      <%= f.text_field :grid_x_size %>
+    </div>
+    <div class="field">
+      <%= f.label :grid_y_size, "Dimension: how many tiles down?" %><br />
+      <%= f.text_field :grid_y_size %>
+    </div>
+    <div id="actions">
+      <%= f.submit %>
+      <%= link_to "Back", :back %>
+    </div>
+  </div>
+<% end %>

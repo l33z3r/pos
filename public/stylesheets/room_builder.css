@@ -1,0 +1,32 @@
+/* 
+    Document   : menu_builder
+    Created on : 5-May-2011, 20:19:01
+    Author     : Lee
+    Description:
+        For the room builder interface grid.
+*/
+
+div#room_builder {
+    width: 1000px;
+    margin: auto;
+}
+
+div#room_builder div#tree_container {
+    width: 265px;
+    float: left;
+}
+
+div#grid {
+    width: 728px;
+    float: right;
+    border: 1px solid #CCC;
+    margin: auto;
+}
+
+div#grid div.grid_square {
+    width: 60px;
+    height: 60px;
+    border: 1px solid #CCC;
+    float: left;
+    display: block;
+}

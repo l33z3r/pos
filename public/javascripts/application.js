@@ -30,6 +30,9 @@ $(function(){
     $('table#modifier_list').flexigrid({
         height:'auto'
     });
+    $('table#room_list').flexigrid({
+        height:'auto'
+    });
 });
 
 $(function(){
