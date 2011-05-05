@@ -1,1 +1,3 @@
-alert("<%= @total_type %> Total (Not taking open orders into account): " + <%=@cash_total.total%>);
+total = number_to_currency(<%=@cash_total.total%>, {precision : 2, showunit : true});
+
+alert("<%= @total_type %> Total (Not taking open orders into account): " + total);
