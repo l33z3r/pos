@@ -5,4 +5,5 @@ public/javascripts/jq.js
 public/javascripts/libs.js
 Gemfile.lock
 db/schema.rb
-/nbproject/private/
+nbproject/private/
+public/system/
