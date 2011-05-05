@@ -64,7 +64,7 @@
     </div>
     <div class="field">
       <%= f.label :modifier_category_id, "Link a Modifier Category" %><br />
-      <%= f.collection_select :modifier_category_id, ModifierCategory.find(:all), :id, :name, :prompt => "None" %>
+      <%= f.collection_select :modifier_category_id, ModifierCategory.find(:all), :id, :name, :prompt => "None", :include_blank => "None" %>
     </div>
     <div id="actions">
       <%= f.submit %>
