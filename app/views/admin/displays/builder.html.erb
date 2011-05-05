@@ -47,14 +47,14 @@
           <% @display.menu_pages.each_with_index do |page, index| %>
             <div class="page <%=index==0 ? "selected" : "" %>" id="menu_page_<%=page.id%>"
                  onclick="doBuilderMenuPageSelect(<%= page.page_num %>, <%= page.id %>);">
-              <div class="delete_link">
-                <%= link_to "X", delete_menu_page_admin_display_path(@display, :menu_page_id => page.id), :method => :post, :confirm => "Are You Sure?" %>
-              </div>
+            <div class="delete_link">
+              <%= link_to "X", delete_menu_page_admin_display_path(@display, :menu_page_id => page.id), :method => :post, :confirm => "Are You Sure?" %>
+            </div>
               <div class="name" id="page_name_<%=page.id%>" ondblclick="openEditNameTextBox(<%=page.id%>)">
                 <%= page.name %>
               </div>
               <input style="display: none;" type="text" name="page_name_<%=page.id%>"
-                     id="edit_page_name_<%=page.id%>" value="<%=page.name%>"/>
+                     id="edit_page_name_<%=page.id%>" size="6" value="<%=page.name%>"/>
             </div>
 
             <div style="display: none;" id="builder_menu_items_<%= page.page_num %>">

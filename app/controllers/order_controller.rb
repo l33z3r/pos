@@ -28,7 +28,7 @@ class OrderController < ApplicationController
   
   def cash_total
     @total_type = params[:total_type]
-    @cash_total = CashTotal.do_total @total_type
+    @cash_total = CashTotal.do_total @total_type, current_employee 
   end
 
   private

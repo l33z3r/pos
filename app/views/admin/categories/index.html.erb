@@ -16,14 +16,9 @@
       <tbody>
         <% @categories.each do |category| %>
           <tr>
-            <td><%= link_to category.name, admin_category_path(category) %></td>
+            <td><%= link_to category.name, edit_admin_category_path(category) %></td>
             <td><%= category.parent_category.try(:name) %></td>
             <td><%= category.description %></td>
-            <!--
-            <td><%= link_to 'Show', admin_category_path(category) %></td>
-            <td><%= link_to 'Edit', edit_admin_category_path(category) %></td>
-            <td><%= link_to 'Destroy', admin_category_path(category), :confirm => 'Are you sure?', :method => :delete %></td>
-            -->
           </tr>
         <% end %>
       </tbody>

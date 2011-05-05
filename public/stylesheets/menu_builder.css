@@ -20,7 +20,6 @@ div#display_builder div#menu_pages_container {
 }
 
 div#display_builder div#menu_pages_container div#pages {
-    height: 100px;
     padding-left: 2px;
     padding-top: 2px;
 }
@@ -31,32 +30,29 @@ div#display_builder div#menu_pages_container div#builder_menu_items_container {
 }
 
 div#display_builder div#menu_pages_container div#pages div.page {
-    float: left;
+    border: 1px solid #CCC;
     width: 100px;
     background-color: #fad42e;
     margin: 1px;
-    border-bottom: none;
     cursor: pointer;
     height: 100px;
+    display: table-cell;
+    height: 115px;
+    width: 117px;
+    vertical-align: middle;
 }
 
-div#display_builder div#menu_pages_container div#pages div.page div.delete_link {
-    margin-right: 4px;
-    margin-top: 4px;
+div#display_builder div#menu_pages_container div#pages div.delete_link {
     padding: 1px 3px;
     float: right;
     background-color: #FFF;
     border: 1px solid #CCC;
     cursor: pointer;
+    margin-top: -37px;
+    margin-right: 4px;
 }
 
-div#display_builder div#menu_pages_container div#pages div.page input {
-    margin-top: 15px;
-    margin-left: 3px;
-    width: 70px;
-}
-
-div#display_builder div#menu_pages_container div#pages div.page div.delete_link a {
+div#display_builder div#menu_pages_container div#pages div.delete_link a {
     font-weight: bold;
     color: red;
     text-decoration: none;
@@ -67,19 +63,19 @@ div#display_builder div#menu_pages_container div#pages div.selected {
 }
 
 div#display_builder div#menu_pages_container div#pages div.new_page {
-    float: left;
-    width: 100px;
     margin: 1px;
     cursor: pointer;
-    height: 98px;
     background-color: #FFF;
     border: 1px solid #CCC;
+    display: table-cell;
+    height: 115px;
+    width: 117px;
+    vertical-align: middle;
 }
 
 div#display_builder div#menu_pages_container div#pages div.new_page div.name {
     font-size: 14px;
     font-weight: bold;
-    margin-top: 37px;
     color: black;
     padding: 4px;
     text-decoration: underline;
@@ -88,10 +84,8 @@ div#display_builder div#menu_pages_container div#pages div.new_page div.name {
 div#display_builder div#menu_pages_container div#pages div.page div.name {
     font-weight: bold;
     font-size: 14px;
-    margin-top: 38px;
     color: black;
     text-decoration: none;
-    padding: 4px;
     cursor: text;
 }
 
@@ -183,7 +177,7 @@ div#display_builder div#menu_pages_container div#builder_menu_items_container di
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.new_item div.item_name {
     font-size: 14px;
     font-weight: bold;
-    margin-top: 29px;
+    margin-top: 38px;
     background-color: #FFF;
     padding: 4px;
     width: -moz-fit-content;

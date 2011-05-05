@@ -62,8 +62,8 @@
       <b>Avatar:</b>
     </p>
     
-    <p>
-      <%= image_tag @employee.employee_image.url(:thumb) %>
+    <p class="employee_image">
+      <%= employee_image_thumb @employee, true %>
     </p>
 
     <p>
@@ -73,7 +73,7 @@
 
     <div id="actions">
       <%= button_to 'Edit', edit_admin_employee_path(@employee), :method => :get %>
-      <%= link_to "Back", :back %>
+      <%= link_to "Back", admin_employees_path %>
     </div>
 
   </section>

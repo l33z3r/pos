@@ -7,6 +7,14 @@ module ApplicationHelper
       image_tag "default_product_image.jpg"
     end
   end
+  
+  def employee_image_thumb employee, show_default=false
+    if employee.has_employee_image?
+      image_tag employee.employee_image.url(:thumb)
+    elsif show_default
+      image_tag "default_employee_image.jpg"
+    end
+  end
 
   def button_action button
     ButtonMapper.new.action_for_button button

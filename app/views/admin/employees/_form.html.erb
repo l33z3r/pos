@@ -46,7 +46,17 @@
     </div>
     <div class="field">
       <%= f.label :employee_image, "Avatar" %><br />
-      <%= f.file_field :employee_image %>
+      <div class="employee_image">
+        <p class="label">Current:</p>
+        <%= employee_image_thumb(@employee, true) %>
+        <% if @employee.has_employee_image? %>
+          <%= check_box_tag :delete_employee_image, false %>
+          Delete?
+        <% end %>
+      </div>
+      <p>
+        <%= f.file_field :employee_image %>
+      </p>
     </div>
     <div class="field">
       <%= f.label :role_id %><br />
@@ -54,7 +64,7 @@
     </div>
     <div id="actions">
       <%= f.submit %>
-      <%= link_to "Back", :back %>
+      <%= link_to "Back", admin_employees_path %>
     </div>
   </div>
 <% end %>

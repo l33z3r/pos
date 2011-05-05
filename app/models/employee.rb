@@ -39,4 +39,8 @@ class Employee < ActiveRecord::Base
   def is_admin
     return role.id == Role::SUPER_USER_ROLE_ID
   end
+  
+  def has_employee_image?
+    return (!employee_image_file_name.nil? and !employee_image_file_name.blank?)
+  end
 end

@@ -1,25 +1,20 @@
 class Admin::ProductsController < Admin::AdminController
-  # GET /products
   def index
     @products = Product.all
   end
 
-  # GET /products/1
   def show
     @product = Product.find(params[:id])
   end
 
-  # GET /products/new
   def new
     @product = Product.new
   end
 
-  # GET /products/1/edit
   def edit
     @product = Product.find(params[:id])
   end
 
-  # POST /products
   def create
     @product = Product.new(params[:product])
 
@@ -30,10 +25,14 @@ class Admin::ProductsController < Admin::AdminController
     end
   end
 
-  # PUT /products/1
   def update
     @product = Product.find(params[:id])
 
+    if params[:delete_product_image]
+      @product.product_image.destroy #Will remove the attachment and save the model
+      @product.product_image.clear #Will queue the attachment to be deleted
+    end
+    
     if @product.update_attributes(params[:product])
       redirect_to([:admin, @product], :notice => 'Product was successfully updated.')
     else
@@ -41,7 +40,6 @@ class Admin::ProductsController < Admin::AdminController
     end
   end
 
-  # DELETE /products/1
   def destroy
     @product = Product.find(params[:id])
     @product.destroy

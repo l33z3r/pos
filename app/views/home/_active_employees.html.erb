@@ -4,7 +4,7 @@
 
     <% @active_employees.each do |e| %>
       <div class="employee_box" onclick="doLoginWithoutPin(<%=e.id%>);">
-        <% if e.employee_image %><div class="avatar"><%= image_tag e.employee_image.url(:thumb) %></div><% end %>
+        <div class="avatar"><%= employee_image_thumb e, true %></div>
         <div class="nickname"><%= e.nickname %></div>
       </div>
     <% end %>

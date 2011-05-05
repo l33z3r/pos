@@ -7,6 +7,7 @@
     <table id="product_list" style="display: none;">
       <thead>
         <tr>
+          <th width="50">&nbsp;</th>
           <th width="200">Name</th>
           <th width="200">Brand</th>
           <th width="170">Category</th>
@@ -21,19 +22,17 @@
       <tbody>
         <% @products.each do |product| %>
           <tr>
-            <td><%= link_to product.name, admin_product_path(product) %></td>
+            <td class="product_image">
+              <%= link_to product_image_thumb(product, true), edit_admin_product_path(product) %>
+            </td>
+            <td><%= link_to product.name, edit_admin_product_path(product) %></td>
             <td><%= product.brand %></td>
-            <td><%= product.category.name %></td>
-            <td><%= number_to_currency product.price %></td>
+            <td><%= link_to product.category.name, admin_category_path(product.category) %></td>
+            <td><%= print_money product.price %></td>
             <td><%= product.size %></td>
             <td><%= product.unit %></td>
             <td><%= product.items_per_unit %></td>
             <td><%= product.sales_tax_rate %>%</td>
-              <!--
-              <td><%= link_to 'Show', admin_product_path(product) %></td>
-              <td><%= link_to 'Edit', edit_admin_product_path(product) %></td>
-              <td><%= link_to 'Destroy', admin_product_path(product), :confirm => 'Are you sure?', :method => :delete %></td>
-              -->
           </tr>
         <% end %>
       </tbody>

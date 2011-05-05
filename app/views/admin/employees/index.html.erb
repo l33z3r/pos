@@ -7,6 +7,7 @@
     <table id="employee_list" style="display: none;">
       <thead>
         <tr>
+          <th width="50">&nbsp;</th>
           <th width="25">#ID</th>
           <th width="110">Name</th>
           <th width="80">Nickname</th>
@@ -20,11 +21,14 @@
       <tbody>
         <% @employees.each do |employee| %>
           <tr>
-            <td><%= link_to employee.staff_id, admin_employee_path(employee) %></td>
-            <td><%= link_to employee.name, admin_employee_path(employee) %></td>
+            <td class="avatar">
+              <%= link_to employee_image_thumb(employee, true), edit_admin_employee_path(employee) %>
+            </td>
+            <td><%= employee.staff_id %></td>
+            <td><%= link_to employee.name, edit_admin_employee_path(employee) %></td>
             <td><%= employee.nickname %></td>
             <td><%= employee.passcode %></td>
-            <td><%= employee.role.name %></td>
+            <td><%= link_to employee.role.name, admin_role_path(employee.role) %></td>
             <td><%= employee.last_login.to_s(:short) %></td>
             <td><%= employee.last_logout.to_s(:short) %></td>
           </tr>

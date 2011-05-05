@@ -53,6 +53,10 @@ $(function(){
         }
     } else {
         $('#menu_screen').show();
+        
+        //show the red x 
+        $('#nav_save_button').show();
+        
         if(current_user_nickname != null) $('#e_name').html(current_user_nickname);
     }
 });
@@ -117,7 +121,6 @@ function doLoginWithoutPin(e_id) {
 function doLogout() {
     if(current_user_id == null) {
         //not logged in
-        displayError("You are not logged in.")
         return;
     }
 
@@ -128,6 +131,9 @@ function doLogout() {
     $('#menu_screen').hide();
     $('#num').val("");
     $('#passcode_show').html("");
+
+    //hide the red x 
+    $('#nav_save_button').hide();
 
     $('#e_name').hide();
 
@@ -153,6 +159,9 @@ function doClockout() {
     $('#num').val("");
     $('#passcode_show').html("");
 
+    //hide the red x 
+    $('#nav_save_button').hide();
+    
     $('#active_employees').hide();
 
     $('#e_name').hide();
@@ -182,6 +191,9 @@ function loginSuccess(id, nickname, is_admin) {
     
     $('#menu_screen').show();
 
+    //show the red x 
+    $('#nav_save_button').show();
+    
     $('#e_name').show();
 
     loadCurrentOrder();
@@ -235,17 +247,29 @@ function copyReceiptToLoginScreen() {
     newHTML += $('#till_roll').html();
     newHTML += "<div class='spacer'>&nbsp;</div>";
 
-    if(total>0)
-        newHTML += "<div id='login_till_roll_total_label'>Total:</div><div id='login_till_roll_total_value'>€" + total + "</div>";
-
+    if(total>0) {
+        totalText = number_to_currency(total, {precision : 2, showunit : true})
+        newHTML += "<div id='login_till_roll_total_label'>Total:</div><div id='login_till_roll_total_value'>" + totalText + "</div>";
+    }
+    
     //tendered includes the euro sign, so if it is bigger
     //than one, it has been set on totals screen and we should show it
-    if(totalTendered.length>1)
-        newHTML += "<div id='login_till_roll_tendered_label'>Tendered:</div><div id='login_till_roll_tendered_value'>" + totalTendered + "</div>";
-
-    if(change.length>0)
-        newHTML += "<div id='login_till_roll_change_label'>Change:</div><div id='login_till_roll_change_value'>" + change + "</div>";
-
+    if(totalTendered.length>1) {
+        //strip off the euro sign
+        totalTendered = totalTendered.substring(1);
+        totalTenderedText = number_to_currency(totalTendered, {precision : 2, showunit : true})
+        newHTML += "<div id='login_till_roll_tendered_label'>Tendered:</div><div id='login_till_roll_tendered_value'>" + totalTenderedText + "</div>";
+    }
+    
+    //change includes the euro sign, so if it is bigger
+    //than one, it has been set on totals screen and we should show it
+    if(change.length>1) {
+        //strip off the euro sign
+        change = change.substring(1);
+        changeText = number_to_currency(change, {precision : 2, showunit : true})
+        newHTML += "<div id='login_till_roll_change_label'>Change:</div><div id='login_till_roll_change_value'>" + changeText + "</div>";
+    }
+    
     $('#login_till_roll').html(newHTML);
 
     newHTMLOBJ = {

@@ -1,16 +1,14 @@
 function initAdminScreen() {
-    //start the clock in the nav bar
-    $("div#clock").clock({
-        "calendar":"false"
-    });
+    //hide the red x 
+    $('#nav_save_button').hide();
 }
 
-$(initAdminScreen());
+$(function(){$(initAdminScreen())});
 
 function addModifierFields(link, content) {
-  var new_id = new Date().getTime();
-  var regexp = new RegExp("new_modifier", "g")
-  $(link).parent().before(content.replace(regexp, new_id));
+    var new_id = new Date().getTime();
+    var regexp = new RegExp("new_modifier", "g")
+    $(link).parent().before(content.replace(regexp, new_id));
 }
 
 function deleteModifier(link) {

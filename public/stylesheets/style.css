@@ -300,12 +300,68 @@ div#keypad div#keys div.pad {
 
 /* End Landing Page */
 
+/* Admin Global */
+
+div#admin_subnav {
+    margin-top: 6px;
+}
+
+div#admin_subnav div.link {
+    float: left;
+    border: 2px outset #CCC;
+    font-size: 13px;
+    font-weight: bold;
+    margin-left: 10px;
+    padding: 5px 9px;
+    cursor: pointer;
+}
+
+div#admin_subnav div#exit_options_link {
+    padding: 3px 9px;
+    padding-bottom: 1px;
+    font-size: 18px;
+    margin-top: 2px;
+    height: 22px;
+    float: right;
+    background-color: #FFF;
+    border: 2px outset #CCC;
+    cursor: pointer;
+    font-weight: bold;
+    color: red;
+    text-decoration: none;
+}
+
+div#admin_subnav div#back_link,
+div#admin_subnav div#forward_link{
+    float: left;
+    margin-right: 4px;
+    cursor: pointer;
+    height: 32px;
+}
+
+div#admin_subnav div#back_link img,
+div#admin_subnav div#forward_link img {
+    height: 32px;
+}
+
+/* Admin Global */
+
 /* Admin Users Page */
 
 div#admin_employee_list section#employees {
-    width: 650px;
+    width: 735px;
     margin-left: auto;
     margin-right: auto;
+}
+
+div#admin_employee_list section#employees table#employee_list td.avatar {
+    height: 40px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#admin_employee_list section#employees table#employee_list td.avatar img {
+    height: 40px;
 }
 
 div#admin_employee_list section#employees div#actions {
@@ -350,6 +406,10 @@ div#show_employee section#employee_info {
     text-align: left;
 }
 
+div#show_employee section#employee_info p.employee_image img {
+    height: 70px;
+}
+
 div#show_employee section#employee_info div#actions a {
     float: right;
     margin: 3px 8px 0px 0px;
@@ -363,6 +423,14 @@ div#edit_employee section#form_container {
     width: 470px;
     margin: auto;
     text-align: center;
+}
+
+div#edit_employee section#form_container div.employee_image p.label {
+    font-weight: bold;
+}
+
+div#edit_employee section#form_container div.employee_image img {
+    height: 100px;
 }
 
 div#edit_employee section#form_container h3 {
@@ -399,6 +467,16 @@ div#admin_product_list section#products {
     width: 920px;
     margin-left: auto;
     margin-right: auto;
+}
+
+div#admin_product_list section#products table#product_list td.product_image {
+    height: 40px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#admin_product_list section#products table#product_list td.product_image img {
+    height: 40px;
 }
 
 div#admin_product_list section#products div#actions {
@@ -443,6 +521,10 @@ div#show_product section#product_info {
     text-align: left;
 }
 
+div#show_product section#product_info p.product_image img {
+    height: 70px;
+}
+
 div#show_product section#product_info div#actions a {
     float: right;
     margin: 3px 8px 0px 0px;
@@ -469,6 +551,14 @@ div#edit_product section#form_container h3 {
 div#edit_product section#form_container div#fields {
     width: 250px;
     margin: auto;
+}
+
+div#edit_product section#form_container div.product_image p.label {
+    font-weight: bold;
+}
+
+div#edit_product section#form_container div.product_image img {
+    height: 100px;
 }
 
 div#edit_product section#form_container form div {
@@ -790,6 +880,17 @@ nav#main_nav div#clock {
     background-color: #DDD;
 }
 
+nav#main_nav div#nav_save_button {
+    padding: 1px 3px;
+    float: right;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    cursor: pointer;
+    font-weight: bold;
+    color: red;
+    text-decoration: none;
+}
+
 div#menu_screen div#receipt_keypad_container {
     width: 265px;
     float: left;
@@ -826,7 +927,6 @@ div#menu_screen div#receipt_keypad_container div#till_keypad {
 }
 
 div#menu_screen div#menu_pages_container div#pages {
-    height: 100px;
     padding-left: 2px;
     padding-top: 2px;
 }
@@ -874,14 +974,20 @@ div#menu_screen div#menu_pages_container div#menu_buttons div.button div.button_
     background-color: transparent;
 }
 
+div#menu_screen div#menu_pages_container div#pages {
+    border-spacing: 2px;
+}
+
 div#menu_screen div#menu_pages_container div#pages div.page {
-    float: left;
-    width: 100px;
     background-color: #fad42e;
+    border: 1px solid #CCC;
     margin: 1px;
-    border-bottom: none;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    height: 85px;
+    width: 90px;
     cursor: pointer;
-    height: 100px;
 }
 
 div#menu_screen div#menu_pages_container div#pages div.selected {
@@ -891,7 +997,6 @@ div#menu_screen div#menu_pages_container div#pages div.selected {
 div#menu_screen div#menu_pages_container div#pages div.page div.name {
     font-weight: bold;
     font-size: 14px;
-    margin-top: 38px;
     color: black;
     text-decoration: none;
     padding: 4px;
@@ -907,26 +1012,26 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items {
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item {
     float: left;
-    width: 117px;
+    width: 112px;
     margin: 1px;
     border: 1px solid #CCC;
     cursor: pointer;
-    height: 115px;
+    height: 123px;
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_pic {
-    height: 90px;
+    height: 78px;
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_pic img {
     position: relative;
+    height: 78px;
     z-index: -1;
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_name {
     font-size: 14px;
     font-weight: bold;
-    margin-top: -20px;
     text-decoration: none;
     background-color: #FFF;
     padding: 4px;
@@ -1420,6 +1525,10 @@ div#menu_screen div.modifier_category_popup div.modifier_choices div.modifier di
 /* jQuery Popup Styling */
 
 /* Options Screen */
+
+div#options_screen {
+    margin-top: 6px;
+}
 
 div#options_screen div#options_screen_menu_buttons {
     border-spacing: 7px;

@@ -50,11 +50,21 @@
     </div>
     <div class="field">
       <%= f.label :product_image %><br />
-      <%= f.file_field :product_image %>
+      <div class="product_image">
+        <p class="label">Current:</p>
+        <%= product_image_thumb(@product, true) %>
+        <% if @product.has_product_image? %>
+          <%= check_box_tag :delete_product_image, false %>
+          Delete?
+        <% end %>
+      </div>
+      <p>
+        <%= f.file_field :product_image %>
+      </p>
     </div>
     <div class="field">
-      <%= f.label :modifier_category_id %><br />
-      <%= f.collection_select :modifier_category_id, ModifierCategory.find(:all), :id, :name, :prompt => "Select a Modifier Category" %>
+      <%= f.label :modifier_category_id, "Link a Modifier Category" %><br />
+      <%= f.collection_select :modifier_category_id, ModifierCategory.find(:all), :id, :name, :prompt => "None" %>
     </div>
     <div id="actions">
       <%= f.submit %>

@@ -25,7 +25,7 @@
 
     <p>
       <b>Price:</b>
-      <%= number_to_currency @product.price %>
+      <%= print_money @product.price %>
     </p>
 
     <p>
@@ -57,13 +57,13 @@
       <b>Product Image:</b>
     </p>
     
-    <p>
-      <%= image_tag @product.product_image.url(:thumb) %>
+    <p class="product_image">
+      <%= product_image_thumb @product, true %>
     </p>
 
     <div id="actions">
       <%= button_to 'Edit', edit_admin_product_path(@product), :method => :get %>
-      <%= link_to "Back", :back %>
+      <%= link_to "Back", admin_products_path %>
     </div>
 
   </section>

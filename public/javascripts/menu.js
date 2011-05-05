@@ -223,7 +223,8 @@ function writeOrderItemToReceipt(orderItem) {
     orderHTML = "<div class='order_line'>";
     orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
     orderHTML += "<div class='name'>" + orderItem.product.name + "</div>";
-    orderHTML += "<div class='total'>" + (orderItem.product_price * orderItem.amount) + "</div>";
+    orderItemTotalPriceText = number_to_currency((orderItem.product_price * orderItem.amount), {precision : 2});
+    orderHTML += "<div class='total'>" + orderItemTotalPriceText + "</div>";
     
     if(orderItem.modifier) {
         orderHTML += "<div class='clear'>&nbsp;</div>";
@@ -231,7 +232,8 @@ function writeOrderItemToReceipt(orderItem) {
         
         //only show modifier price if not zero
         if(orderItem.modifier.price > 0) {
-            orderHTML += "<div class='modifier_price'>" + (orderItem.modifier.price * orderItem.amount) + "</div>";
+            modifierPriceText = number_to_currency((orderItem.modifier.price * orderItem.amount), {precision : 2});
+            orderHTML += "<div class='modifier_price'>" + modifierPriceText + "</div>";
         }
         
         orderHTML += "<div class='clear'>&nbsp;</div>";
@@ -243,7 +245,7 @@ function writeOrderItemToReceipt(orderItem) {
 }
 
 function writeTotalToReceipt(orderTotal) {
-    $('#total_value').html('€' + orderTotal);
+    $('#total_value').html(number_to_currency(orderTotal, {precision : 2, showunit : true}));
     currentTotal = orderTotal;
 }
 
@@ -355,7 +357,7 @@ function doTotal() {
     $('#menu_screen').hide();
     $('#total_screen').show();
 
-    $('#totals_total_value').html("€" + currentTotal);
+    $('#totals_total_value').html(number_to_currency(currentTotal, {precision : 2, showunit : true}));
 }
 
 function takeTendered() {
@@ -369,7 +371,7 @@ function takeTendered() {
 
     //calculate change and show the finish sale button
     change = cashTendered - currentTotal;
-    $('#totals_change_value').html("€" + change);
+    $('#totals_change_value').html(number_to_currency(change, {precision : 2, showunit : true}));
 
     $('#tendered_button').hide();
     $('#finish_sale_button').show();

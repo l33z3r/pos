@@ -3,13 +3,17 @@ class CashTotal < ActiveRecord::Base
   belongs_to :start_order, :class_name => "Order", :foreign_key => "start_calc_order_id"
   belongs_to :end_order, :class_name => "Order", :foreign_key => "end_calc_order_id"
   
+  belongs_to :employee
+  
+  validates :employee_id, :presence => true
+  
   X_TOTAL = "X"
   Z_TOTAL = "Z"
   VALID_TOTAL_TYPES = [X_TOTAL, Z_TOTAL]
   
   validates :total_type, :inclusion => { :in => VALID_TOTAL_TYPES }
   
-  def self.do_total total_type
+  def self.do_total total_type, employee
     #validate total_type
     return nil unless VALID_TOTAL_TYPES.include?(total_type)
     
@@ -52,7 +56,7 @@ class CashTotal < ActiveRecord::Base
     end
     
     #insert a row
-    @cash_total = CashTotal.new({:start_order => @first_order, 
+    @cash_total = CashTotal.new({:employee_id => employee.id, :start_order => @first_order, 
         :end_order => @last_order, :total_type => total_type, :total => @total})
     @cash_total.save!
       
