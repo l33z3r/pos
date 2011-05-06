@@ -47,6 +47,9 @@ Pos::Application.routes.draw do
         #room builder ajax functions
         post 'place_object'
         post 'label_table'
+        post 'update_grid_resolution'
+        post 'dimension_change'
+        post 'rename_room'
       end
     end
     

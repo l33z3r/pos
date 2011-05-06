@@ -11,22 +11,113 @@ div#room_builder {
     margin: auto;
 }
 
-div#room_builder div#tree_container {
-    width: 265px;
+div#room_builder section#header {
+    width: -moz-fit-content;
+    margin: 20px auto 20px auto;
+}
+
+div#room_builder section#header div#room_name {
+    font-weight: bold;
+    font-size: 14px;
     float: left;
 }
 
-div#grid {
-    width: 728px;
-    float: right;
-    border: 1px solid #CCC;
+div#room_builder section#header a#rename_link {
+    float: left;
+    margin-left: 8px;
+    margin-top: -2px;
+}
+
+div#room_builder div#options {
+    width: 800px;
     margin: auto;
+    padding-top: 5px;
+}
+
+div#room_builder div#main_builder_section {
+    width: 1000px;
+    overflow: scroll;
+    height: 700px;
+}
+
+div#room_builder div#options div#resolution_slider_label {
+    float: left;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+div#room_builder div#options div#resolution_slider {
+    width: 300px;
+    float: left;
+    margin-top: 4px;
+}
+
+div#room_builder div#options div#resolution_slider a.ui-slider-handle {
+    cursor: pointer;
+}
+
+div#room_builder div#options div#dimensions {
+    float: left;
+    margin-left: 10px;
+}
+
+div#room_builder div#options div#dimensions div {
+    float: left;
+}
+
+div#room_builder div#options div#dimensions div.label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+div#room_builder div#options div#dimensions div input {
+    width: 30px;
+    margin-top: -3px;
+    margin-right: 5px;
+}
+
+div#room_builder div#main_builder_section h4 {
+    text-align: left;
+}
+
+div#room_builder div#tree_container div#objects_tree {
+    
+}
+
+div#room_builder div#tree_container div#objects_tree div.room_object {
+    display: table-cell;
+    vertical-align: middle;
+    margin: 5px;
+    height: 40px;
+}
+
+div#room_builder div#tree_container div#objects_tree div.room_object {
+    text-align: center;
+    height: 40px;
+    width: 40px;
+}
+
+div#grid {
+    margin: auto;
+    width: -moz-fit-content;
+    border-top: 1px solid #CCC;
+    border-left: 1px solid #CCC;
 }
 
 div#grid div.grid_square {
     width: 60px;
     height: 60px;
-    border: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
     float: left;
     display: block;
+}
+
+div#grid div.grid_row {
+    width: -moz-max-content;
+    clear: both;
+}
+
+div#grid div.grid_square div.grid_graphic {
+    position: absolute;
 }

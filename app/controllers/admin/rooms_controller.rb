@@ -1,6 +1,6 @@
 class Admin::RoomsController < Admin::AdminController
   
-  before_filter :load_room, :only => [:builder, :label_table, :place_table, :place_wall, :place_object]
+  before_filter :load_room, :except => [:index, :new, :create]
   
   def index
     @rooms = Room.all
@@ -20,6 +20,13 @@ class Admin::RoomsController < Admin::AdminController
     end
   end
   
+  def rename_room
+    @room.name = params[:name]
+    @room.save!
+    
+    render :inline => "{success : true}"
+  end
+  
   def builder
     
   end
@@ -37,6 +44,23 @@ class Admin::RoomsController < Admin::AdminController
     @new_room_object.room_id = @room.id
     
     @new_room_object.save!
+  end
+  
+  def update_grid_resolution
+    @room.grid_resolution =  params[:grid_resolution]
+    @room.save!
+    
+    render :inline => "{success : true}"
+  end
+  
+  def dimension_change
+    if params[:new_x]
+      @room.grid_x_size = params[:new_x]
+    else
+      @room.grid_y_size = params[:new_y]
+    end
+    
+    @room.save!
   end
   
   private

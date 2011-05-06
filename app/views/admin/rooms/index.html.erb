@@ -16,6 +16,7 @@
         <% @rooms.each do |room| %>
           <tr>
             <td><%= link_to room.name, builder_admin_room_path(room) %></td>
+            <td><%= room.dimension %></td>
           </tr>
         <% end %>
       </tbody>

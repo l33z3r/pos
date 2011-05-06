@@ -7,40 +7,82 @@
 
 <div id="room_builder">
 
-  <!-- must set the room_id js var -->
+  <!-- must set some vars for init -->
   <script type="text/javascript">
-    $(function() {room_id = <%=@room.id%>;});
+    $(function() {
+      //must set the room_id js var
+      room_id = <%=@room.id%>;
+      
+      
+      //init slider
+      $("#resolution_slider").slider({
+        max : maxGridSize,
+        min : minGridSize,
+        value : <%=@room.grid_resolution%>,
+        animate : true,
+        change: resolutionSliderChanged
+      });
+      
+      //init the grid square size
+      currentGridSize = <%=@room.grid_resolution%>;
+      setGridSize(currentGridSize);
+      
+      initDragDrop();
+      setGridGraphicDimensions();
+    });
   </script>
-  
+
   <section id="header">
 
-    <h3>Room Builder For Room: <%= @room.name %></h3>
+    <div id="room_name">
+      <%= @room.name %>
+    </div>
+    <a id="rename_link" href="#" onclick="showRenameRoom();">(rename)</a>
+    <input type="text" id="room_name_input" style="display: none;" value="<%= @room.name %>"/>
+
 
   </section>
 
   <section id="builder">
 
-    <div id="tree_container">
+    <div class="clear_top_margin_20">&nbsp;</div>
 
-      <ul id="objects_tree">
-        <% RoomObject.available_objects.each do |room_object| %>
-          <li>
-            <a href="#" class="select_room_object" id="<%=room_object.permid%>"><%= room_object.label %></a>
-          </li>
-        <% end %>
-      </ul>
+    <div id="main_builder_section">
 
+      <div id="options">
+        <div id="resolution_slider_label">Grid Resolution:</div>
+        <div id="resolution_slider"></div>
+
+        <div id="dimensions">
+          <div id="x_dimension_label" class="label">Horizontal Squares:</div>
+          <div id="x_dimension"><input type="text" value="<%=@room.grid_x_size%>" onchange="doXDimensionChange(this.value);"/></div>
+          <div id="y_dimension_label" class="label">Vertical Squares:</div>
+          <div id="y_dimension"><input type="text" value="<%=@room.grid_y_size%>" onchange="doYDimensionChange(this.value);"/></div>
+        </div>
+      </div>
+
+      <div class="clear_top_margin_20">&nbsp;</div>
+
+      <div id="tree_container">
+
+        <div id="objects_tree">
+          <% RoomObject.available_objects.each do |room_object| %>
+            <div class="room_object">
+              <a href="#" class="select_room_object" id="<%=room_object.permid%>">
+                <%= preview_graphic_for_room_object room_object %>
+              </a>
+            </div>
+          <% end %>
+        </div>
+
+      </div>
+
+      <div class="clear_top_margin_20">&nbsp;</div>
+
+      <div id="grid_container">
+        <%= render "grid", {:room => @room} %>
+      </div>
     </div>
-
-    <div id="grid">
-      <% (1..@room.grid_y_size).each do |y| %>
-        <% (1..@room.grid_x_size).each do |x| %>
-          <div class="grid_square" id="<%=x%>_<%=y%>"><%=x%>_<%=y%></div>
-        <% end %>
-        <div class="clear">&nbsp;</div>
-      <% end %>
-    </div>
-
 </div>
 </section>
 </div>

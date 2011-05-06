@@ -1,0 +1,8 @@
+<% room_object = room.room_object_for_grid_square(xval, yval) %>
+
+<% if room_object %>
+  <div class="grid_graphic" data-permid="<%=room_object.permid%>" 
+       data-x_size="<%=room_object.grid_x_size%>" data-y_size="<%=room_object.grid_y_size%>">
+    <%= graphic_for_room_object room_object %>
+  </div>
+<% end %>

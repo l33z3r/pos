@@ -48,6 +48,7 @@ function refreshDragDrop() {
     });
 
     $('#builder_menu_items_container .item').each(function(index) {
+        //TODO: replace with $(this).data("theid") and test it
         theid = $(this).attr("data-theid");
         $(this).attr("id", theid);
 

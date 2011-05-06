@@ -1,0 +1,9 @@
+<div id="grid">
+  <% (1..room.grid_y_size).each do |y| %>
+    <div class="grid_row">
+      <% (1..room.grid_x_size).each do |x| %>
+        <%= render "grid_square_with_wrapper", {:room => room, :xval => x, :yval => y} %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

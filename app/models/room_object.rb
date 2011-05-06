@@ -9,7 +9,7 @@ class RoomObject < ActiveRecord::Base
   
   validates :object_type, :presence => true, :inclusion => { :in => VALID_OBJECT_TYPES }
   
-  validates :permid, :presence => true, :uniqueness => true
+  validates :permid, :presence => true
   validates :label, :presence => true
   validates :grid_x, :presence => true, :numericality => true
   validates :grid_y, :presence => true, :numericality => true
@@ -33,6 +33,8 @@ class RoomObject < ActiveRecord::Base
     @available_objects = @available_walls | @available_tables
     
     @available_objects
+    
+    return [@table_1_2, @table_2_1]
   end
   
   def self.new_from_permid permid
@@ -45,6 +47,15 @@ class RoomObject < ActiveRecord::Base
         :grid_y_size => @grid_y_size, :permid => permid, :label => permid})
     
     @new_room_object
+  end
+  
+  def graphic_for
+    #map the permid to the name of an image
+    @image_path = "room_builder/#{permid}.png"
+  end
+  
+  def preview_graphic_for
+    return "room_builder/#{permid}_preview.png"
   end
   
 end

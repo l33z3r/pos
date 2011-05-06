@@ -25,6 +25,11 @@ div.clear {
     clear: both;
 }
 
+div.clear_top_margin_20 {
+    height: 20px;
+    clear: both;
+}
+
 form label {
     font-weight: bold;
 }
@@ -862,7 +867,7 @@ div#edit_display section#form_container form div#actions input {
 /* Admin Rooms Page */
 
 div#admin_room_list section#rooms {
-    width: 300px;
+    width: 400px;
     margin-left: auto;
     margin-right: auto;
 }

@@ -1,1 +1,3 @@
-alert("Successfully placed room object: <%=@new_room_object.permid%>");
+$('#<%=@new_room_object.grid_x%>_<%=@new_room_object.grid_y%>').html("<%= escape_javascript(render "grid_square", 
+  {:room => @new_room_object.room, :xval => @new_room_object.grid_x, :yval => @new_room_object.grid_y}) %>");
+setGridGraphicDimensions();
