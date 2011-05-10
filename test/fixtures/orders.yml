@@ -1,11 +1,11 @@
 # == Schema Information
-# Schema version: 20110413094534
+# Schema version: 20110510063013
 #
 # Table name: orders
 #
 #  id              :integer(4)      not null, primary key
 #  employee_id     :integer(4)
-#  total           :integer(4)
+#  total           :float
 #  payment_type    :string(255)
 #  amount_tendered :integer(4)
 #  is_table_order  :boolean(1)

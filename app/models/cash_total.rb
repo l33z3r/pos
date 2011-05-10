@@ -1,3 +1,18 @@
+# == Schema Information
+# Schema version: 20110510063013
+#
+# Table name: cash_totals
+#
+#  id                  :integer(4)      not null, primary key
+#  total_type          :string(255)
+#  total               :float
+#  start_calc_order_id :integer(4)
+#  end_calc_order_id   :integer(4)
+#  created_at          :datetime
+#  updated_at          :datetime
+#  employee_id         :integer(4)
+#
+
 class CashTotal < ActiveRecord::Base
   #the start and end order ids tell us how the calculation was arrived at
   belongs_to :start_order, :class_name => "Order", :foreign_key => "start_calc_order_id"

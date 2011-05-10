@@ -26,15 +26,21 @@ class HomeController < ApplicationController
     session[:current_employee_id] = @employee.id
     session[:current_employee_nickname] = @employee.nickname
     session[:current_employee_admin] = 1 if @employee.is_admin
+      
+    @employee.last_login = Time.now
+    @employee.save!
 
+    render :inline => "{success : true}"
+  end
+  
+  def clockin
+    @employee = Employee.find(params[:id])
+    
     session[:active_employee_ids] ||= []
 
     if !session[:active_employee_ids].include? @employee.id
       #add this employee to the active users list
       session[:active_employee_ids] << @employee.id
-      
-      @employee.last_login = Time.now
-      @employee.save!
     end
 
     update_last_active @employee
@@ -45,12 +51,9 @@ class HomeController < ApplicationController
   end
 
   def clockout
-    @employee = Employee.find(e)
+    @employee = Employee.find(params[:id])
 
     redirect_to :back, :flash => {:error => "Employee not found."} and return if @employee.nil?
-
-    @employee.last_logout = Time.now
-    @employee.save!
 
     #remove the user from active employee list and refetch the list
     @active_employee_ids = session[:active_employee_ids]

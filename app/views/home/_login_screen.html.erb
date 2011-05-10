@@ -33,13 +33,17 @@
     </div>
 
     <div id="login_credentials">
-      <span>Passcode:</span>
+      <span>Clock In Code:</span>
 
-      <div id="passcode_show"></div>
+      <div id="clockincode_show"></div>
       
-      <%= hidden_field_tag :passcode, nil, :id => :num, :size => "18" %>
+      <%= hidden_field_tag :num, nil, :id => :num, :size => "18" %>
+      
+      <!-- this one is for the login popup box -->
+      <%= hidden_field_tag :passcode, nil, :id => :passcode, :size => "18" %>
 
-      <div class="login" onclick="doLogin($('#num').val());return false;">Log In</div>
+      <div class="login" onclick="doClockin($('#num').val());return false;">Clock In</div>
+      <div class="login" onclick="doClockout($('#num').val());return false;">Clock Out</div>
     </div>
     <div class="clear">&nbsp;</div>
   </div>

@@ -120,7 +120,7 @@ div#landing div#active_users_credentials_container div#login_credentials span {
     font-weight: bold;
 }
 
-div#landing div#active_users_credentials_container div#login_credentials div#passcode_show {
+div#landing div#active_users_credentials_container div#login_credentials div#clockincode_show {
     border: 1px solid #DDD;
     width: 200px;
     height: 25px;
@@ -132,15 +132,61 @@ div#landing div#active_users_credentials_container div#login_credentials div#pas
 
 div#landing div#active_users_credentials_container div#login_credentials div.login {
     float: left;
-    vertical-align: middle;
     margin-left: 10px;
-    padding: 4px 5px;
+    padding: 6px 5px 2px 5px;
     height: 22px;
     font-weight: bold;
     border: 1px solid #CCC;
     background-color: white;
     cursor: pointer;
     font-size: 14px;
+}
+
+div#login_popup {
+    width: 200px;
+    height: 80px;
+    padding: 10px;
+}
+
+div#login_popup div#header {
+    width: 100%;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+div#login_popup div.passcode_show {
+    width: 100%;
+    border: 1px solid #DDD;
+    height: 20px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+div#login_popup div#submit_passcode {
+    text-align: center;
+    float: right;
+    width: 70px;
+    padding: 3px;
+    border: 1px solid #DDD;
+    height: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+div#login_popup div#cancel_show_login {
+    text-align: center;
+    float: right;
+    width: 70px;
+    padding: 3px;
+    border: 1px solid #DDD;
+    height: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
 }
 
 div#landing div#active_users_credentials_container div#active_users {

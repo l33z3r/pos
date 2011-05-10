@@ -3,7 +3,7 @@
   <% if @active_employees.size > 0 %>
 
     <% @active_employees.each do |e| %>
-      <div class="employee_box" onclick="doLoginWithoutPin(<%=e.id%>);">
+      <div class="employee_box" id="employee_box_<%=e.id%>" onclick="showLoginDialog(<%=e.id%>);">
         <div class="avatar"><%= employee_image_thumb e, true %></div>
         <div class="nickname"><%= e.nickname %></div>
       </div>

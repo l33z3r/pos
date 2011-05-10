@@ -14,6 +14,7 @@ Pos::Application.routes.draw do
 
   match 'login' => "home#login", :via => :post
   match 'logout' => "home#logout", :via => :post
+  match 'clockin' => "home#clockin", :via => :post
   match 'clockout' => "home#clockout", :via => :post
 
   # admin homepage

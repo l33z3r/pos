@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110429080107
+# Schema version: 20110510063013
 #
 # Table name: order_items
 #
@@ -8,7 +8,7 @@
 #  employee_id    :integer(4)
 #  product_id     :integer(4)
 #  quantity       :integer(4)
-#  total_price    :integer(4)
+#  total_price    :float
 #  created_at     :datetime
 #  updated_at     :datetime
 #  modifier_name  :string(255)

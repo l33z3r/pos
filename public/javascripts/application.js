@@ -2,6 +2,9 @@ var current_user_id;
 var current_user_nickname;
 var current_user_is_admin;
 
+//this is so we can use the keypad for both clock in and log in
+var showingPassCodeDialog = false;
+
 $(function(){
     initMenu();
 
@@ -33,7 +36,33 @@ $(function(){
     $('table#room_list').flexigrid({
         height:'auto'
     });
+    
+    resetLoginBubblePopups();
 });
+
+function resetLoginBubblePopups() {
+    for (var i = 0; i < employees.length; i++) {
+        boxEl = $('#employee_box_' + employees[i].id);
+        
+        if(boxEl.length>0) {
+            if(!boxEl.HasBubblePopup()) {
+                boxEl.CreateBubblePopup();
+            }
+        }
+    }
+}
+
+function hideAllLoginBubblePopups() {
+    for (var i = 0; i < employees.length; i++) {
+        boxEl = $('#employee_box_' + employees[i].id);
+        
+        if(boxEl.length>0) {
+            if(boxEl.HasBubblePopup()) {
+                boxEl.HideBubblePopup();
+            }
+        }
+    }
+}
 
 $(function(){
     $('#menu_screen').hide();
@@ -68,8 +97,13 @@ $(function(){
 $(function(){
     for(i=0; i<10; i++) {
         $('#num_' + i).click(function() {
-            $('#passcode_show').html($('#passcode_show').html() + this.innerHTML);
-            $('#num').val($('#num').val() + this.innerHTML);
+            if(showingPassCodeDialog) {
+                $('.passcode_show').html($('.passcode_show').html() + this.innerHTML);
+                $('#passcode').val($('#passcode').val() + this.innerHTML);
+            } else {
+                $('#clockincode_show').html($('#clockincode_show').html() + this.innerHTML);
+                $('#num').val($('#num').val() + this.innerHTML);
+            }
         });
     }
 });
@@ -80,19 +114,50 @@ $(function() {
     });
 });
 
-function doLogin(entered_code) {
+function showLoginDialog(id) {
+    hideAllLoginBubblePopups();
+    $('#passcode').val("");
+    $('.passcode_show').html("");
+    
+    showingPassCodeDialog = true;
+    
+    boxEl = $('#employee_box_' + id);
+    
+    boxEl.ShowBubblePopup({
+        align: 'center',
+        innerHtml: "<div id='login_popup'><div id='header'>Enter Pass Code:</div>" + 
+        "<div class='passcode_show'></div>" + 
+        "<div id='submit_passcode' onclick='doLogin(" + id + ");'>Log In</div>" + 
+        "<div id='cancel_show_login' onclick='cancelShowLoginDialog(" + id + ");return false;'>Cancel</div></div>",
+														   
+        innerHtmlStyle:{ 
+            color:'#666666', 
+            'text-align':'left'
+        },
+												   
+        themeName: 	'black',
+        themePath: 	'/images/jquerybubblepopup-theme'
+
+    }, false);//save_options = false; it will use new options only on click event, it does not overwrite old options.
+    
+    boxEl.FreezeBubblePopup();
+}
+
+function cancelShowLoginDialog(id) {
+    showingPassCodeDialog = false;
+    $('#employee_box_' + id).HideBubblePopup();
+}
+
+function doLogin(user_id) {
+    entered_code = $('#passcode').val();
+    
     if(current_user_id != null) {
         //already logged in
         displayError("You are already logged in. Please log out.")
         return;
     }
 
-    if(employees.length==0) {
-        alert("Please try again in, system initializing...");
-        return;
-    }
-
-    for (var i = 0; i < employees.length; i++){
+    for (var i = 0; i < employees.length; i++) {
         id = employees[i].id
         nickname = employees[i].nickname
         
@@ -100,25 +165,13 @@ function doLogin(entered_code) {
 
         is_admin = employees[i].is_admin;
 
-        if(entered_code == passcode) {
+        if(entered_code == passcode && user_id == id) {
             loginSuccess(id, nickname, is_admin);
             return;
         }
     }
 
     loginFailure();
-}
-
-function doLoginWithoutPin(e_id) {
-    //simply fetch this users pin and do the normal login to reuse the code
-    for (var i = 0; i < employees.length; i++) {
-        if(employees[i].id == e_id) {
-            thePasscode = employees[i].passcode;
-            break;
-        }
-    }
-    
-    doLogin(thePasscode);
 }
 
 function doLogout() {
@@ -133,7 +186,7 @@ function doLogout() {
     $('#landing').show();
     $('#menu_screen').hide();
     $('#num').val("");
-    $('#passcode_show').html("");
+    $('#clockincode_show').html("");
 
     //hide the red x 
     $('#nav_save_button').hide();
@@ -147,38 +200,79 @@ function doLogout() {
     });
 }
 
-function doClockout() {
-    if(current_user_id == null) {
-        //not logged in
-        displayError("You are not logged in.")
+function doClockin(entered_code) {
+    if(employees.length==0) {
+        alert("Please try again... system initializing...");
         return;
     }
 
-    current_user_id = null;
+    for (var i = 0; i < employees.length; i++){
+        id = employees[i].id
+        nickname = employees[i].nickname
+        
+        clockinCode = employees[i].clockin_code;
 
-    //show login overlay
-    $('#landing').show();
-    $('#menu_screen').hide();
+        is_admin = employees[i].is_admin;
+
+        if(entered_code == clockinCode) {
+            clockinSuccess(id);
+            return;
+        }
+    }
+
+    clockinFailure();
+}
+
+function doClockout(entered_code) {
+    for (var i = 0; i < employees.length; i++){
+        id = employees[i].id
+        nickname = employees[i].nickname
+        
+        clockinCode = employees[i].clockin_code;
+
+        is_admin = employees[i].is_admin;
+
+        if(entered_code == clockinCode) {
+            clockoutSuccess(id);
+            return;
+        }
+    }
+
+    clockoutFailure();
+}
+
+function clockinSuccess(id) {
     $('#num').val("");
-    $('#passcode_show').html("");
-
-    //hide the red x 
-    $('#nav_save_button').hide();
+    $('#clockincode_show').html("");
     
-    $('#active_employees').hide();
+    //send ajax logout
+    $.ajax({
+        type: 'POST',
+        url: '/clockin',
+        data: {
+            id : id
+        }
+    });
+}
 
-    $('#e_name').hide();
-
-    copyReceiptToLoginScreen();
-
+function clockoutSuccess(id) {
+    $('#num').val("");
+    $('#clockincode_show').html("");
+    
     //send ajax clockout
     $.ajax({
         type: 'POST',
-        url: '/clockout'
+        url: '/clockout',
+        data: {
+            id : id
+        }
     });
 }
 
 function loginSuccess(id, nickname, is_admin) {
+    showingPassCodeDialog = false;
+    hideAllLoginBubblePopups();
+    
     current_user_id = id;
     current_user_nickname = nickname;
     current_user_is_admin = is_admin;
@@ -214,17 +308,38 @@ function loginSuccess(id, nickname, is_admin) {
     trySendOutstandingOrdersToServer();
 }
 
-function loginFailure() {
+function clockinFailure() {
     //set an error message in the flash area
-    displayError("Wrong passcode, please try again.");
+    displayError("Wrong clock in code, please try again.");
 
     $('#num').val("");
-    $('#passcode_show').html("");
+    $('#clockincode_show').html("");
+}
+
+function loginFailure() {
+    //set an error message in the flash area
+    displayError("Wrong pass code, please try again.");
+
+    $('#passcode').val("");
+    $('.passcode_show').html("");
+}
+
+function clockoutFailure() {
+    //set an error message in the flash area
+    displayError("You are either not clocked in, or entered the wrong code!");
+
+    $('#num').val("");
+    $('#clockincode_show').html("");
 }
 
 function doCancelLoginKeypad() {
-    $('#num').val("");
-    $('#passcode_show').html("");
+    if(showingPassCodeDialog) {
+        $('#passcode').val("");
+        $('.passcode_show').html("");
+    } else {
+        $('#num').val("");
+        $('#clockincode_show').html("");
+    }
 }
 
 function displayError(message) {
@@ -251,7 +366,10 @@ function copyReceiptToLoginScreen() {
     newHTML += "<div class='spacer'>&nbsp;</div>";
 
     if(total>0) {
-        totalText = number_to_currency(total, {precision : 2, showunit : true})
+        totalText = number_to_currency(total, {
+            precision : 2, 
+            showunit : true
+        })
         newHTML += "<div id='login_till_roll_total_label'>Total:</div><div id='login_till_roll_total_value'>" + totalText + "</div>";
     }
     
@@ -260,7 +378,10 @@ function copyReceiptToLoginScreen() {
     if(totalTendered.length>1) {
         //strip off the euro sign
         totalTendered = totalTendered.substring(1);
-        totalTenderedText = number_to_currency(totalTendered, {precision : 2, showunit : true})
+        totalTenderedText = number_to_currency(totalTendered, {
+            precision : 2, 
+            showunit : true
+        })
         newHTML += "<div id='login_till_roll_tendered_label'>Tendered:</div><div id='login_till_roll_tendered_value'>" + totalTenderedText + "</div>";
     }
     
@@ -269,7 +390,10 @@ function copyReceiptToLoginScreen() {
     if(change.length>1) {
         //strip off the euro sign
         change = change.substring(1);
-        changeText = number_to_currency(change, {precision : 2, showunit : true})
+        changeText = number_to_currency(change, {
+            precision : 2, 
+            showunit : true
+        })
         newHTML += "<div id='login_till_roll_change_label'>Change:</div><div id='login_till_roll_change_value'>" + changeText + "</div>";
     }
     
