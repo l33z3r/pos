@@ -7,24 +7,46 @@
     <table id="display_button_list" style="display: none;">
       <thead>
         <tr>
-          <th width="100">Button</th>
+          <th width="100"></th>
           <% Role.find(:all, :order => :id).each do |role| %>
-            <% next if role.id == Role::SUPER_USER_ROLE_ID %>
-            <th width="60"><%=role.name%></th>
+            <th width="70">&nbsp;</th>
+            <th width="70">&nbsp;</th>
           <% end %>
         </tr>
+
       </thead>
 
       <tbody>
+        <tr>
+          <td><b>Button</b></td>
+          <% Role.find(:all, :order => :id).each do |role| %>
+            <td colspan="2" align="center"><b><%=role.name%></b></td>
+          <% end %>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <% Role.find(:all, :order => :id).each do |role| %>
+            <td>
+              Access?
+            </td>
+            <td>Passcode?</td>
+          <% end %>
+        </tr>
+
         <% DisplayButton.all.each do |db| %>
           <tr>
             <td><%= db.button_text %></td>
             <% Role.find(:all, :order => :id).each do |role| %>
               <% dbr = DisplayButtonRole.find_or_create_by_display_button_id_and_role_id(db.id, role.id) %>
-              <% next if role.id == Role::SUPER_USER_ROLE_ID %>
-              <td>
-                <%= check_box_tag "#{db.button_text}_#{role.name}", dbr.show_on_admin_screen, dbr.show_on_admin_screen,
-                  :onchange => "displayButtonRoleAdminScreenSelect(#{dbr.id}, this.checked);" %>
+              <td align="center">
+                <% if role.id != Role::SUPER_USER_ROLE_ID %>
+                  <%= check_box_tag "#{db.button_text}_#{role.name}", dbr.show_on_admin_screen, dbr.show_on_admin_screen,
+                    :onchange => "displayButtonRoleAdminScreenSelect(#{dbr.id}, this.checked);" %>
+                <% end %>
+              </td>
+              <td align="center">
+                <%= check_box_tag "#{db.button_text}_#{role.name}", dbr.passcode_required, dbr.passcode_required,
+                  :onchange => "displayButtonRoleAdminScreenSelectPasscode(#{dbr.id}, this.checked);" %>
               </td>
             <% end %>
           </tr>

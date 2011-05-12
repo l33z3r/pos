@@ -1,16 +1,14 @@
-function revealOptionalSalesScreenButtons() {
-//show the ones we have access to and remove the others
+//stash the button permissions into an array
+display_button_passcode_permissions = new Array();
+
 <% @dbrs.each do |dbr| %>
-  $('#sales_button_<%=dbr.display_button.id%>').<%= dbr.show_on_admin_screen && dbr.show_on_sales_screen ? "show();" : "hide();" %>
+  display_button_passcode_permissions['<%=dbr.display_button.id%>'] = <%= dbr.passcode_required ? "true" : "false" %>
 <% end %>
 
-setTimeout("insertButtonBreaks()", 10);
-}
+//replace the screen buttons div
+$('#menu_buttons_panel').html("<%= escape_javascript(render :partial => 'screen_buttons', :locals => {:dbrs => @dbrs}) %>");
 
-function insertButtonBreaks() {
-$('#menu_buttons_panel .button:visible').each(function(index) {
-if(index != 0 && index%6==0) {
-$('<div class="clear">&nbsp;</div>').insertAfter($(this));
-}
-});
-}
+
+//show the button panel
+$('#menu_buttons_panel').show();
+$('#menu_buttons_loading_message').hide();

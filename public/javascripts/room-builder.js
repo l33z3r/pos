@@ -14,8 +14,79 @@ function initDragDrop() {
         drop: function( event, ui ) {
             //alert("Product " + ui.draggable.attr("id") + " dropped on menu item " + $(this).attr("id"));
             room_object_permid_string = ui.draggable.attr("id");
+            existing_room_object_id = ui.draggable.data("room_object_id");
             grid_square_id_string = $(this).attr("id");
-            doAjaxRoomObjectPlacement(room_object_permid_string, grid_square_id_string);
+            doAjaxRoomObjectPlacement(room_object_permid_string, existing_room_object_id, grid_square_id_string);
+        }
+    });
+    
+    initGridDragDrop();
+    initGridTablePopupDialogs();
+}
+
+function initGridDragDrop() {
+    scale = (maxGridSize - currentGridSize) + minGridSize;
+    
+    //take into account the 1px border;
+    scale++;
+    
+    $('.grid_graphic').draggable({
+        grid: [scale, scale]
+    });
+}
+
+function initGridTablePopupDialogs() {
+    hideAllGridTablePopups();
+    
+    //create popups for elements that have none already
+    $('.grid_graphic .table').each(function() {
+        if(!$(this).HasBubblePopup()) {
+            $(this).CreateBubblePopup({
+                themeName: 	'black',
+                themePath: 	'/images/jquerybubblepopup-theme'
+            });
+            
+            $(this).FreezeBubblePopup();
+        }
+    });
+    
+    $('.grid_graphic .table').click(function(){
+        table_perm_id = $(this).data("perm_id");
+        table_id = $(this).data("table_id");
+        room_object_id = $(this).data("room_object_id");
+        
+        $(this).ShowBubblePopup({
+            align: 'center',
+            innerHtml: "<div class='table_info_popup'>" + 
+            "<div id='table_name_" + room_object_id + "' class='info'>" + table_perm_id + "</div>" +
+            "<div class='rename' onclick='renameTable(" + room_object_id + ");'>(rename)</div>" + 
+            "<div class='clear'>&nbsp;</div>" +
+            "<div class='delete' onclick='deleteTable(" + table_id + ", " + room_object_id + ");'>Delete Table</div>" + 
+            "<div class='cancel' onclick='cancelShowTableInfo(" + table_id + ");return false;'>Cancel</div></div>",
+														   
+            innerHtmlStyle:{ 
+                'text-align':'left'
+            },
+												   
+            themeName: 	'black',
+            themePath: 	'/images/jquerybubblepopup-theme'
+
+        }, false);//save_options = false; it will use new options only on click event, it does not overwrite old options.
+    
+        $(this).FreezeBubblePopup(); 
+    });
+}
+
+function cancelShowTableInfo(table_id) {
+    $('#table_grid_div_' + table_id).HideBubblePopup();
+    $('#table_grid_div_' + table_id).FreezeBubblePopup();
+}
+
+function hideAllGridTablePopups() {
+    $('.grid_graphic .table').each(function() {
+        if($(this).HasBubblePopup()) {
+            $(this).HideBubblePopup();
+            $(this).FreezeBubblePopup();
         }
     });
 }
@@ -47,7 +118,7 @@ function setGridSize(size) {
     });
 }
 
-function doAjaxRoomObjectPlacement(room_object_permid_string, grid_square_id_string) {
+function doAjaxRoomObjectPlacement(room_object_permid_string, existing_room_object_id, grid_square_id_string) {
     //alert("Object " + room_object_permid_string + " placed on square " + grid_square_id_string);
     
     $('#' + grid_square_id_string).html("<div class='loading_message'>Loading...</div>");
@@ -59,6 +130,7 @@ function doAjaxRoomObjectPlacement(room_object_permid_string, grid_square_id_str
         data: {
             id : room_id,
             room_object_permid : room_object_permid_string,
+            room_object_id : existing_room_object_id,
             grid_square_id : grid_square_id_string
         }
     });
@@ -120,7 +192,6 @@ function showRenameRoom() {
     });
 }
 
-
 function setGridGraphicDimensions() {
     $('.grid_graphic').each(function() {
         x_size = $(this).data("x_size");
@@ -137,7 +208,43 @@ function setGridGraphicDimensions() {
         $(this).height(height);
         $(this).width(width);
         
-        $(this).children("img").height(height);
-        $(this).children("img").width(width);
+        targetImage = $(this).children("div:first").children("img");
+        
+        targetImage.height(height);
+        targetImage.width(width);
+    });
+}
+
+function deleteTable(table_id, room_object_id) {
+    var doDelete = confirm("Are you sure you want to delete this table?");
+    
+    if(doDelete) {
+        $('#table_grid_div_' + table_id).HideBubblePopup();
+        $('#room_object_' + room_object_id).remove();
+    
+        $.ajax({
+            type: 'POST',
+            url: 'remove_table',
+            data: {
+                room_object_id : room_object_id
+            }
+        });
+    }
+}
+
+function renameTable(room_object_id) {
+    currentName = $('#table_name_' + room_object_id).html();
+    
+    var newName = prompt("Enter a new table Name:", currentName);
+    
+    $('#table_name_' + room_object_id).html(newName);
+    
+    $.ajax({
+        type: 'POST',
+        url: 'label_table',
+        data: {
+            room_object_id : room_object_id,
+            new_name : newName
+        }
     });
 }

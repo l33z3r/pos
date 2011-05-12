@@ -18,11 +18,16 @@ function initMenu() {
     //init menu screen keypad
     for(i=0; i<10; i++) {
         $('#keypad_num_' + i).click(function() {
-            if(this.innerHTML == '0') {
-                if(currentMenuItemQuantity.length > 0)
-                    currentMenuItemQuantity += this.innerHTML
+            if(showingDisplayButtonPasscodePromptPopup) {
+                $('#display_button_passcode').val($('#display_button_passcode').val() + this.innerHTML);
+                $('#display_button_passcode_show').html($('#display_button_passcode_show').html() + this.innerHTML);
             } else {
-                currentMenuItemQuantity += this.innerHTML;
+                if(this.innerHTML == '0') {
+                    if(currentMenuItemQuantity.length > 0)
+                        currentMenuItemQuantity += this.innerHTML
+                } else {
+                    currentMenuItemQuantity += this.innerHTML;
+                }
             }
         });
     }
@@ -223,7 +228,9 @@ function writeOrderItemToReceipt(orderItem) {
     orderHTML = "<div class='order_line'>";
     orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
     orderHTML += "<div class='name'>" + orderItem.product.name + "</div>";
-    orderItemTotalPriceText = number_to_currency((orderItem.product_price * orderItem.amount), {precision : 2});
+    orderItemTotalPriceText = number_to_currency((orderItem.product_price * orderItem.amount), {
+        precision : 2
+    });
     orderHTML += "<div class='total'>" + orderItemTotalPriceText + "</div>";
     
     if(orderItem.modifier) {
@@ -232,7 +239,9 @@ function writeOrderItemToReceipt(orderItem) {
         
         //only show modifier price if not zero
         if(orderItem.modifier.price > 0) {
-            modifierPriceText = number_to_currency((orderItem.modifier.price * orderItem.amount), {precision : 2});
+            modifierPriceText = number_to_currency((orderItem.modifier.price * orderItem.amount), {
+                precision : 2
+            });
             orderHTML += "<div class='modifier_price'>" + modifierPriceText + "</div>";
         }
         
@@ -245,7 +254,10 @@ function writeOrderItemToReceipt(orderItem) {
 }
 
 function writeTotalToReceipt(orderTotal) {
-    $('#total_value').html(number_to_currency(orderTotal, {precision : 2, showunit : true}));
+    $('#total_value').html(number_to_currency(orderTotal, {
+        precision : 2, 
+        showunit : true
+    }));
     currentTotal = orderTotal;
 }
 
@@ -357,7 +369,10 @@ function doTotal() {
     $('#menu_screen').hide();
     $('#total_screen').show();
 
-    $('#totals_total_value').html(number_to_currency(currentTotal, {precision : 2, showunit : true}));
+    $('#totals_total_value').html(number_to_currency(currentTotal, {
+        precision : 2, 
+        showunit : true
+    }));
 }
 
 function takeTendered() {
@@ -371,7 +386,10 @@ function takeTendered() {
 
     //calculate change and show the finish sale button
     change = cashTendered - currentTotal;
-    $('#totals_change_value').html(number_to_currency(change, {precision : 2, showunit : true}));
+    $('#totals_change_value').html(number_to_currency(change, {
+        precision : 2, 
+        showunit : true
+    }));
 
     $('#tendered_button').hide();
     $('#finish_sale_button').show();
@@ -537,21 +555,9 @@ function initOptionButtons() {
         $.ajax({
             type: 'GET',
             url: '/init_sales_screen_buttons.js',
-            complete: revealSalesScreenButtons,
             data: {
                 current_user_id : current_user_id
             }
         });
     }
-}
-
-function revealSalesScreenButtons() {
-    //try show the optional buttons
-    try {
-        revealOptionalSalesScreenButtons();
-    } catch(err){}
-    
-    //show the button panel
-    $('#menu_buttons_panel').show();
-    $('#menu_buttons_loading_message').hide();
 }

@@ -17,7 +17,8 @@ module ApplicationHelper
   end
 
   def button_action button
-    ButtonMapper.new.action_for_button button
+    @action = ButtonMapper.new.action_for_button button
+    @function_call = "doDisplayButtonPasscodePrompt(#{button.id}, function () {#{@action}});"
   end
 
   def link_to_add_modifier_fields(f)

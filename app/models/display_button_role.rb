@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110420190211
+# Schema version: 20110512185508
 #
 # Table name: display_button_roles
 #
@@ -10,6 +10,7 @@
 #  show_on_admin_screen :boolean(1)
 #  created_at           :datetime
 #  updated_at           :datetime
+#  passcode_required    :boolean(1)
 #
 
 class DisplayButtonRole < ActiveRecord::Base
@@ -17,12 +18,13 @@ class DisplayButtonRole < ActiveRecord::Base
   belongs_to :display_button
 
   def self.admin_screen_buttons_for_role role_id
-    if role_id = Role::SUPER_USER_ROLE_ID
-      return DisplayButton.find(:all)
+    #bypass permissions for super user role
+    if role_id == Role::SUPER_USER_ROLE_ID
+      return DisplayButton.find(:all, :conditions => "perm_id != #{ButtonMapper::MORE_OPTIONS_BUTTON}")
     end
 
-    #bypass permissions for super user role
-    find(:all, :conditions => "role_id = #{role_id} and show_on_admin_screen = 1").collect(&:display_button)
+    find(:all, :conditions => "role_id = #{role_id} and show_on_admin_screen = 1 
+      and perm_id != #{ButtonMapper::MORE_OPTIONS_BUTTON}").collect(&:display_button)
   end
 
   def show_on_admin_screen

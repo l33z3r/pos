@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110420190211
+# Schema version: 20110512185508
 #
 # Table name: display_button_roles
 #
@@ -10,6 +10,7 @@
 #  show_on_admin_screen :boolean(1)
 #  created_at           :datetime
 #  updated_at           :datetime
+#  passcode_required    :boolean(1)
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

@@ -14,7 +14,12 @@ class ButtonMapper
   ACCESS_CONTROL_BUTTON = 11
   MANAGE_MODIFIER_CATEGORIES_BUTTON = 12
   ROOM_BUILDER_BUTTON = 13
-  
+  TOTAL_BUTTON = 14
+  SUBTOTAL_BUTTON = 15
+  SAVE_BUTTON = 16
+  MORE_OPTIONS_BUTTON = 17
+  BUTTON_CONFIG_BUTTON = 18
+      
   def action_for_button button
 
     @retval = ""
@@ -46,6 +51,16 @@ class ButtonMapper
       @retval = "window.location = '#{admin_modifier_categories_path}'; return false;"
     when ROOM_BUILDER_BUTTON
       @retval = "window.location = '#{admin_rooms_path}'; return false;"
+    when TOTAL_BUTTON
+      @retval = "doTotalFinal();"
+    when SUBTOTAL_BUTTON
+      @retval = "doTotal();"
+    when SAVE_BUTTON
+      @retval = "doLogout();"
+    when MORE_OPTIONS_BUTTON
+      @retval = "window.location = '#{admin_path}'; return false;"
+    when BUTTON_CONFIG_BUTTON
+      @retval = "window.location = '#{edit_multiple_admin_display_buttons_path}'; return false;"
     end
 
     @retval

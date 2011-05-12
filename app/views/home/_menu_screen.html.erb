@@ -95,36 +95,16 @@
 
     <div class="clear">&nbsp;</div>
 
+    <!-- the following markup is used for the display button passcode popup -->
+    <div id="menu_buttons_popup_anchor">&nbsp;</div>
+    <input type="text" id="display_button_passcode" style="display: none;"/>
+
     <div id="menu_buttons">
 
       <div id="menu_buttons_loading_message">Loading Permissions...</div>
 
       <div style="display: none;" id="menu_buttons_panel">
-        <!-- these buttons are always shown on cash screen -->
-        <div class="button" onclick="doTotalFinal()">
-          <div class="button_name">Total</div>
-        </div>
 
-        <div class="button" onclick="doTotal()">
-          <div class="button_name">Sub-Total</div>
-        </div>
-
-        <div class="button" onclick="doLogout()">
-          <div class="button_name">Save</div>
-        </div>
-
-        <div id="admin_button" class="button" onclick="window.location = '<%= admin_path %>'; return false;">
-          <div class="button_name">
-            More Options
-          </div>
-        </div>
-
-        <!-- these are the optional buttons -->
-        <% DisplayButton.all.each do |button| %>
-          <div style="display: none;" id="sales_button_<%=button.id%>" class="button" onclick="<%= button_action button %>">
-            <div class="button_name"><%=button.button_text%></div>
-          </div>
-        <% end %>
       </div>
     </div>
   </div>

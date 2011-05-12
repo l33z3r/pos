@@ -21,6 +21,7 @@
             <% Role.find(:all, :order => :id).each do |role| %>
               <td>
                 <% dbr = DisplayButtonRole.find_or_create_by_display_button_id_and_role_id(db.id, role.id) %>
+                <% next if role.id == Role::SUPER_USER_ROLE_ID && db.perm_id == ButtonMapper::MORE_OPTIONS_BUTTON %>
                 <%= check_box_tag "#{db.button_text}_#{role.name}", dbr.show_on_sales_screen, dbr.show_on_sales_screen,
                   :onchange => "displayButtonRoleSalesScreenSelect(#{dbr.id}, this.checked);" %>
               </td>

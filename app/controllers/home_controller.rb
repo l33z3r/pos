@@ -12,7 +12,10 @@ class HomeController < ApplicationController
     @current_employee_id = params[:current_user_id]
     @employee = Employee.find(@current_employee_id)
 
-    @dbrs = DisplayButtonRole.find_all_by_role_id(@employee.role.id)
+    @dbrs = DisplayButtonRole.find(:all, :include => "display_button",
+      :conditions => "role_id = #{@employee.role.id} and (show_on_sales_screen is true 
+      and (show_on_admin_screen is true or role_id = #{Role::SUPER_USER_ROLE_ID}) 
+      or (display_buttons.perm_id = #{ButtonMapper::MORE_OPTIONS_BUTTON} and role_id = #{Role::SUPER_USER_ROLE_ID}))")
   end
 
   def active_employees
@@ -26,7 +29,9 @@ class HomeController < ApplicationController
     session[:current_employee_id] = @employee.id
     session[:current_employee_nickname] = @employee.nickname
     session[:current_employee_admin] = 1 if @employee.is_admin
-      
+    session[:current_employee_role_id] = @employee.role.id
+    session[:current_employee_passcode] = @employee.passcode 
+    
     @employee.last_login = Time.now
     @employee.save!
 
@@ -86,6 +91,8 @@ class HomeController < ApplicationController
     session[:current_employee_id] = nil
     session[:current_employee_nickname] = nil
     session[:current_employee_admin] = nil
+    session[:current_employee_role_id] = nil
+    session[:current_employee_passcode] = nil
   end
   
   def update_last_active employee

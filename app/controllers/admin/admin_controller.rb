@@ -1,6 +1,7 @@
 class Admin::AdminController < ApplicationController
-
-  before_filter :check_admin
+  #we used to check for admin, we use the access page now
+  #before_filter :check_admin
+  
   layout 'admin'
 
   private

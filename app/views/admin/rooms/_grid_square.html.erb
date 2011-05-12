@@ -2,7 +2,8 @@
 
 <% if room_object %>
   <div class="grid_graphic" data-permid="<%=room_object.permid%>" 
+       data-room_object_id="<%=room_object.id%>" id="room_object_<%=room_object.id%>"
        data-x_size="<%=room_object.grid_x_size%>" data-y_size="<%=room_object.grid_y_size%>">
-    <%= graphic_for_room_object room_object %>
+    <%= markup_for_room_object room_object %>
   </div>
 <% end %>

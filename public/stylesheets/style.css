@@ -1033,6 +1033,10 @@ div#menu_screen div#menu_pages_container div#menu_items_container {
     padding-left: 2px;
 }
 
+div#menu_screen div#menu_pages_container div#menu_buttons_popup_anchor {
+    height: 0px;
+}
+
 div#menu_screen div#menu_pages_container div#menu_buttons {
     border-spacing: 2px;
     height: 255px;
@@ -1450,7 +1454,68 @@ div#admin_display_buttons section#display_buttons {
     margin-right: auto;
 }
 
+div#edit_display_buttons section#display_buttons {
+    width: 340px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#edit_display_buttons section#display_buttons div#actions {
+    float: right;
+}
+
 /* End Admin Display Buttons Page */
+
+/* Display Button Passcode Popup */
+
+div#display_button_passcode_popup {
+    width: 200px;
+    height: 80px;
+    padding: 10px;
+}
+
+div#display_button_passcode_popup div#header {
+    width: 100%;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+div#display_button_passcode_popup div#display_button_passcode_show {
+    width: 100%;
+    border: 1px solid #DDD;
+    height: 20px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+div#display_button_passcode_popup div#display_button_submit_passcode {
+    text-align: center;
+    float: right;
+    width: 70px;
+    padding: 3px;
+    border: 1px solid #DDD;
+    height: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+div#display_button_passcode_popup div#cancel_display_button_passcode_prompt {
+    text-align: center;
+    float: right;
+    width: 70px;
+    padding: 3px;
+    border: 1px solid #DDD;
+    height: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* End Display Button Passcode Popup */
 
 /* Modifier Popup */
 

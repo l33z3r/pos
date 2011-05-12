@@ -81,7 +81,7 @@ div#room_builder div#main_builder_section h4 {
 }
 
 div#room_builder div#tree_container div#objects_tree {
-    
+
 }
 
 div#room_builder div#tree_container div#objects_tree div.room_object {
@@ -120,4 +120,41 @@ div#grid div.grid_row {
 
 div#grid div.grid_square div.grid_graphic {
     position: absolute;
+    cursor: pointer;
 }
+
+/* Table Info Popup */
+
+div.table_info_popup {
+    width: 120px;
+    height: 60px;
+    text-align: left;
+}
+
+div.table_info_popup div.info {
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 18px;
+    margin-right: 5px;
+    float: left;
+}
+
+div.table_info_popup div.rename {
+    float: left;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+div.table_info_popup div.delete {
+    cursor: pointer;
+    text-decoration: underline;
+    float: left;
+}
+
+div.table_info_popup div.cancel {
+    float: right;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* Table Info Popup */

@@ -18,6 +18,7 @@
 
 class RoomObject < ActiveRecord::Base
   belongs_to :room
+  has_one :table_info, :dependent => :destroy
   
   validates :room_id, :presence => true
   

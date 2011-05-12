@@ -48,6 +48,7 @@ Pos::Application.routes.draw do
         #room builder ajax functions
         post 'place_object'
         post 'label_table'
+        post 'remove_table'
         post 'update_grid_resolution'
         post 'dimension_change'
         post 'rename_room'
@@ -59,8 +60,11 @@ Pos::Application.routes.draw do
       collection do
         get 'screen'
         get 'access'
+        get 'edit_multiple'
+        
         post 'update_admin_screen_button_role'
         post 'update_sales_screen_button_role'
+        post 'update_multiple'
       end
     end
 

@@ -1,6 +1,13 @@
 var current_user_id;
 var current_user_nickname;
 var current_user_is_admin;
+var current_user_passcode;
+
+var showingDisplayButtonPasscodePromptPopup;
+
+//this array stores wether or not to call for a 
+//passcode prompt when a screen button is pressed
+var display_button_passcode_permissions;
 
 //this is so we can use the keypad for both clock in and log in
 var showingPassCodeDialog = false;
@@ -38,6 +45,14 @@ $(function(){
     });
     
     resetLoginBubblePopups();
+    
+    //init the display button passcode request popup
+    $('#menu_buttons_popup_anchor').CreateBubblePopup({
+        themeName: 	'black',
+        themePath: 	'/images/jquerybubblepopup-theme'
+    });
+            
+    $('#menu_buttons_popup_anchor').FreezeBubblePopup();
 });
 
 function resetLoginBubblePopups() {
@@ -46,7 +61,12 @@ function resetLoginBubblePopups() {
         
         if(boxEl.length>0) {
             if(!boxEl.HasBubblePopup()) {
-                boxEl.CreateBubblePopup();
+                boxEl.CreateBubblePopup({
+                    themeName: 	'black',
+                    themePath: 	'/images/jquerybubblepopup-theme'
+                });
+            
+                boxEl.FreezeBubblePopup();
             }
         }
     }
@@ -59,6 +79,7 @@ function hideAllLoginBubblePopups() {
         if(boxEl.length>0) {
             if(boxEl.HasBubblePopup()) {
                 boxEl.HideBubblePopup();
+                boxEl.FreezeBubblePopup();
             }
         }
     }
@@ -131,7 +152,6 @@ function showLoginDialog(id) {
         "<div id='cancel_show_login' onclick='cancelShowLoginDialog(" + id + ");return false;'>Cancel</div></div>",
 														   
         innerHtmlStyle:{ 
-            color:'#666666', 
             'text-align':'left'
         },
 												   
@@ -146,6 +166,7 @@ function showLoginDialog(id) {
 function cancelShowLoginDialog(id) {
     showingPassCodeDialog = false;
     $('#employee_box_' + id).HideBubblePopup();
+    $('#employee_box_' + id).FreezeBubblePopup();
 }
 
 function doLogin(user_id) {
@@ -166,7 +187,7 @@ function doLogin(user_id) {
         is_admin = employees[i].is_admin;
 
         if(entered_code == passcode && user_id == id) {
-            loginSuccess(id, nickname, is_admin);
+            loginSuccess(id, nickname, is_admin, passcode);
             return;
         }
     }
@@ -269,13 +290,14 @@ function clockoutSuccess(id) {
     });
 }
 
-function loginSuccess(id, nickname, is_admin) {
+function loginSuccess(id, nickname, is_admin, passcode) {
     showingPassCodeDialog = false;
     hideAllLoginBubblePopups();
     
     current_user_id = id;
     current_user_nickname = nickname;
     current_user_is_admin = is_admin;
+    current_user_passcode = passcode;
     
     //set the username in the menu
     $('#e_name').html(nickname);
@@ -441,6 +463,17 @@ function displayButtonRoleAdminScreenSelect(dbr_id, checked) {
     });
 }
 
+function displayButtonRoleAdminScreenSelectPasscode(dbr_id, checked) {
+    $.ajax({
+        type: 'POST',
+        url: '/admin/display_buttons/update_admin_screen_button_role',
+        data: {
+            id : dbr_id,
+            passcode_required : checked
+        }
+    });
+}
+
 function displayButtonRoleSalesScreenSelect(dbr_id, checked) {
     $.ajax({
         type: 'POST',
@@ -450,4 +483,68 @@ function displayButtonRoleSalesScreenSelect(dbr_id, checked) {
             checked : checked
         }
     });
+}
+
+var displayButtonForwardFunction;
+
+function doDisplayButtonPasscodePrompt(button_id, forwardFunction) {
+    if(display_button_passcode_permissions[button_id]) {
+        displayButtonForwardFunction = forwardFunction;
+        
+        showDisplayButtonPasscodePromptPopup();
+    } else {
+        forwardFunction.call();
+    }
+}
+
+function displayButtonPasscodeEntered() {
+    enteredCode = $('#display_button_passcode').val();
+    
+    if(enteredCode == current_user_passcode) {
+        showingDisplayButtonPasscodePromptPopup = false;
+        $('#display_button_passcode').val('');
+        $('#display_button_passcode_show').html('');
+    
+        $('#menu_buttons_popup_anchor').HideBubblePopup();
+        $('#menu_buttons_popup_anchor').FreezeBubblePopup();
+    
+        displayButtonForwardFunction.call();
+        displayButtonForwardFunction = null;
+    } else {
+        alert("Passcode Incorrect, try again!");
+        $('#display_button_passcode').val('');
+        $('#display_button_passcode_show').html('');
+    }
+}
+
+function showDisplayButtonPasscodePromptPopup() {
+    $('#display_button_passcode').val('');
+    $('#display_button_passcode_show').html('');
+            
+    showingDisplayButtonPasscodePromptPopup = true;
+    
+    //show the popup
+    $('#menu_buttons_popup_anchor').ShowBubblePopup({
+        align: 'center',
+        innerHtml: "<div id='display_button_passcode_popup'><div id='header'>Enter Pass Code:</div>" + 
+        "<div id='display_button_passcode_show'></div>" + 
+        "<div id='display_button_submit_passcode' onclick='displayButtonPasscodeEntered()'>Submit</div>" + 
+        "<div id='cancel_display_button_passcode_prompt' onclick='cancelDisplayButtonPasscodePromptPopup();return false;'>Cancel</div></div>",
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+												   
+        themeName: 	'black',
+        themePath: 	'/images/jquerybubblepopup-theme'
+
+    }, false);//save_options = false; it will use new options only on click event, it does not overwrite old options.
+    
+    $('#menu_buttons_popup_anchor').FreezeBubblePopup();
+}
+
+function cancelDisplayButtonPasscodePromptPopup() {
+    showingDisplayButtonPasscodePromptPopup = false;
+    $('#menu_buttons_popup_anchor').HideBubblePopup();
+    $('#menu_buttons_popup_anchor').FreezeBubblePopup();
 }
