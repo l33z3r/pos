@@ -62,7 +62,7 @@ function initGridTablePopupDialogs() {
             "<div class='rename' onclick='renameTable(" + room_object_id + ");'>(rename)</div>" + 
             "<div class='clear'>&nbsp;</div>" +
             "<div class='delete' onclick='deleteTable(" + table_id + ", " + room_object_id + ");'>Delete Table</div>" + 
-            "<div class='cancel' onclick='cancelShowTableInfo(" + table_id + ");return false;'>Cancel</div></div>",
+            "<div class='cancel' onclick='cancelShowTableInfo(" + table_id + ");return false;'>Close</div></div>",
 														   
             innerHtmlStyle:{ 
                 'text-align':'left'

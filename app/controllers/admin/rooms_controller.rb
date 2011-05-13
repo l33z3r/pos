@@ -35,10 +35,17 @@ class Admin::RoomsController < Admin::AdminController
     #check does this object already exist and we are simply moving it on the grid
     @place_error = false
     
+    @grid_parts = params[:grid_square_id].split("_")
+    
+    @grid_x = @grid_parts.first.to_i
+    @grid_y = @grid_parts.last.to_i
+    
     if params[:room_object_id]
       @room_object = RoomObject.find(params[:room_object_id])
       
-      if set_grid_position(@room, @room_object, params[:grid_square_id])
+      if check_intersection(@room, @grid_x, @grid_y, @room_object.permid)
+        @room_object.grid_x = @grid_x
+        @room_object.grid_y = @grid_y
         @room_object.save!
       else
         @place_error = true
@@ -47,7 +54,10 @@ class Admin::RoomsController < Admin::AdminController
       @room_object = RoomObject.new_from_permid(params[:room_object_permid])
       @room_object.room_id = @room.id
       
-      if set_grid_position(@room, @room_object, params[:grid_square_id]) 
+      if check_intersection(@room, @grid_x, @grid_y, @room_object.permid)
+        @room_object.grid_x = @grid_x
+        @room_object.grid_y = @grid_y
+        
         #need to save here to generate an id
         @room_object.save!
       
@@ -100,34 +110,26 @@ class Admin::RoomsController < Admin::AdminController
     @room = Room.find(params[:id])
   end
   
-  def set_grid_position room, room_object, position_string
-    @grid_parts = position_string.split("_")
-    
-    @grid_x = @grid_parts.first.to_i
-    @grid_y = @grid_parts.last.to_i
-    
+  def check_intersection room, target_x, target_y, permid
     #check that this position is not already occupied
     @existing_object = false
     
+    @temp_room_object = RoomObject.new_from_permid(permid)
+    @temp_room_object.grid_x = target_x
+    @temp_room_object.grid_y = target_y
+    
+    @new_room_object_coords = @temp_room_object.coords
+    
     room.room_objects.each do |room_object|
-      @room_object
-      room_object.coords.each do |x, y|
-        logger.info "LOGINFO!!!! Room Object: #{room_object.permid} #{x} #{y} #{@grid_x} #{@grid_y}"
-        @x = x
-        if x == @grid_x and y == @grid_y
-          logger.info "CLLLLLLLLLLASH!"
-          @existing_object = true
-          break;
-        end
+      @intersecting_coords = room_object.coords & @new_room_object_coords
+      logger.info "Coords1: #{room_object.coords} Coords2: #{@new_room_object_coords} Inter: #{@intersecting_coords}"
+      if @intersecting_coords.length > 0
+        @existing_object = true
+        break;
       end
     end
     
-    return false if @existing_object
-    
-    room_object.grid_x = @grid_x
-    room_object.grid_y = @grid_y
-    
-    return true
+    return !@existing_object
   end
 
 end
