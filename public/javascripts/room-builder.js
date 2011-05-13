@@ -94,7 +94,8 @@ function hideAllGridTablePopups() {
 function resolutionSliderChanged(event, ui) {
     console.log("Slider changed to " + ui.value);
     setGridSize(ui.value);
-    setGridGraphicDimensions()
+    setGridGraphicDimensions();
+    initGridDragDrop();
 }
 
 function setGridSize(size) {
@@ -121,7 +122,7 @@ function setGridSize(size) {
 function doAjaxRoomObjectPlacement(room_object_permid_string, existing_room_object_id, grid_square_id_string) {
     //alert("Object " + room_object_permid_string + " placed on square " + grid_square_id_string);
     
-    $('#' + grid_square_id_string).html("<div class='loading_message'>Loading...</div>");
+    $('#loading_message').slideDown();
     
     //send ajax object placement update
     $.ajax({

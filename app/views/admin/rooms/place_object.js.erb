@@ -1,16 +1,19 @@
-<% if !params[:room_object_id] %>
+$('#loading_message').slideUp();
+
+<% if !@place_error %> 
+  $('#room_object_<%=@room_object.id%>').remove();  
   $('#<%=@room_object.grid_x%>_<%=@room_object.grid_y%>').html("<%= escape_javascript(render "grid_square", 
     {:room => @room_object.room, :xval => @room_object.grid_x, :yval => @room_object.grid_y}) %>");
   setGridGraphicDimensions();
+
+  initGridDragDrop();
+  initGridTablePopupDialogs();
+
+  <% if !params[:room_object_id] && @room_object.object_type == RoomObject::TABLE %>
+    //show the popup and ask for a table label
+    $('#table_grid_div_' + <%=@room_object.table_info.id%>).click();
+    renameTable(<%=@room_object.id%>);
+  <% end %>
 <% else %>
-  $('#<%=@room_object.grid_x%>_<%=@room_object.grid_y%>').html("");
-<% end %>
-
-initGridDragDrop();
-initGridTablePopupDialogs();
-
-<% if !params[:room_object_id] %>
-  //show the popup and ask for a table label
-  $('#table_grid_div_' + <%=@room_object.table_info.id%>).click();
-  renameTable(<%=@room_object.id%>);
+  alert("Error, object already exists on this square!");
 <% end %>

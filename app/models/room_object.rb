@@ -36,31 +36,41 @@ class RoomObject < ActiveRecord::Base
   validates :grid_y_size, :presence => true, :numericality => true
   
   def self.available_objects
-    @wall_3_1 = RoomObject.new({:object_type => WALL, :grid_x_size => 3, :grid_y_size => 1, :permid => "wall_3_1", :label => "3x1 Wall"})
-    @wall_2_1 = RoomObject.new({:object_type => WALL, :grid_x_size => 2, :grid_y_size => 1, :permid => "wall_2_1", :label => "2x1 Wall"})
-    @wall_1_3 = RoomObject.new({:object_type => WALL, :grid_x_size => 1, :grid_y_size => 3, :permid => "wall_1_3", :label => "1x3 Wall"})
-    @wall_1_2 = RoomObject.new({:object_type => WALL, :grid_x_size => 1, :grid_y_size => 2, :permid => "wall_1_2", :label => "1x2 Wall"})
+    @wall_1_1_v = RoomObject.new({:object_type => WALL, :grid_x_size => 1, :grid_y_size => 1, :permid => "wall_1_1_v", :label => "1x1 Wall V"})
+    @wall_1_1_h = RoomObject.new({:object_type => WALL, :grid_x_size => 1, :grid_y_size => 1, :permid => "wall_1_1_h", :label => "1x1 Wall H"})
     
-    @available_walls = [@wall_3_1, @wall_2_1, @wall_1_3, @wall_1_2]
+    @wall_1_1_lt = RoomObject.new({:object_type => WALL, :grid_x_size => 1, :grid_y_size => 1, :permid => "wall_1_1_lt", :label => "1x1 Wall CLT"})
+    @wall_1_1_lb = RoomObject.new({:object_type => WALL, :grid_x_size => 1, :grid_y_size => 1, :permid => "wall_1_1_lb", :label => "1x1 Wall CLB"})
+    @wall_1_1_rt = RoomObject.new({:object_type => WALL, :grid_x_size => 1, :grid_y_size => 1, :permid => "wall_1_1_rt", :label => "1x1 Wall CRT"})
+    @wall_1_1_rb = RoomObject.new({:object_type => WALL, :grid_x_size => 1, :grid_y_size => 1, :permid => "wall_1_1_rb", :label => "1x1 Wall CRB"})
     
+    @wall_1_1_tt = RoomObject.new({:object_type => WALL, :grid_x_size => 1, :grid_y_size => 1, :permid => "wall_1_1_ttop", :label => "1x1 Wall TT"})
+    @wall_1_1_tr = RoomObject.new({:object_type => WALL, :grid_x_size => 1, :grid_y_size => 1, :permid => "wall_1_1_tright", :label => "1x1 Wall TR"})
+    @wall_1_1_tb = RoomObject.new({:object_type => WALL, :grid_x_size => 1, :grid_y_size => 1, :permid => "wall_1_1_tbottom", :label => "1x1 Wall TB"})
+    @wall_1_1_tl = RoomObject.new({:object_type => WALL, :grid_x_size => 1, :grid_y_size => 1, :permid => "wall_1_1_tleft", :label => "1x1 Wall TL"})
+    
+    @available_walls = [@wall_1_1_v, @wall_1_1_h, @wall_1_1_lt, @wall_1_1_lb, 
+      @wall_1_1_rt, @wall_1_1_rb, @wall_1_1_tt, @wall_1_1_tr, @wall_1_1_tb, @wall_1_1_tl]
+    
+    @table_2_2_s = RoomObject.new({:object_type => TABLE, :grid_x_size => 2, :grid_y_size => 2, :permid => "table_2_2_s", :label => "2x2 Table S"})
+    @table_2_2_d = RoomObject.new({:object_type => TABLE, :grid_x_size => 2, :grid_y_size => 2, :permid => "table_2_2_d", :label => "2x2 Table D"})
+    @table_2_2_h = RoomObject.new({:object_type => TABLE, :grid_x_size => 2, :grid_y_size => 2, :permid => "table_2_2_h", :label => "2x2 Table H"})
+    @table_2_2_v = RoomObject.new({:object_type => TABLE, :grid_x_size => 2, :grid_y_size => 2, :permid => "table_2_2_v", :label => "2x2 Table V"})
     @table_2_1 = RoomObject.new({:object_type => TABLE, :grid_x_size => 2, :grid_y_size => 1, :permid => "table_2_1", :label => "2x1 Table"})
     @table_1_2 = RoomObject.new({:object_type => TABLE, :grid_x_size => 1, :grid_y_size => 2, :permid => "table_1_2", :label => "1x2 Table"})
-    @table_2_2 = RoomObject.new({:object_type => TABLE, :grid_x_size => 2, :grid_y_size => 2, :permid => "table_2_2", :label => "2x2 Table"})
     
-    @available_tables = [@table_2_1, @table_1_2, @table_2_2]
+    @available_tables = [@table_2_2_s, @table_2_2_d, @table_2_2_h, @table_2_2_v, @table_2_1, @table_1_2]
     
-    @available_objects = @available_walls | @available_tables
+    @available_objects = @available_tables | @available_walls
     
     @available_objects
-    
-    return [@table_1_2, @table_2_1]
   end
   
   def self.new_from_permid permid
     @parts = permid.split("_")
     @object_type = @parts.first
     @grid_x_size = @parts.second
-    @grid_y_size = @parts.last
+    @grid_y_size = @parts.third
     
     @new_room_object = RoomObject.new({:object_type => @object_type, :grid_x_size => @grid_x_size, 
         :grid_y_size => @grid_y_size, :permid => permid, :label => permid})
@@ -75,6 +85,18 @@ class RoomObject < ActiveRecord::Base
   
   def preview_graphic_for
     return "room_builder/#{permid}_preview.png"
+  end
+  
+  def coords
+    @coords = []
+    
+    (grid_x..(grid_x + grid_x_size - 1)).each do |xval|
+      (grid_y..(grid_y + grid_y_size - 1)).each do |yval|
+        @coords << [xval, yval]
+      end
+    end
+    
+    @coords
   end
   
 end

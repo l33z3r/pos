@@ -40,6 +40,24 @@ div#room_builder div#main_builder_section {
     height: 700px;
 }
 
+div#room_builder div#main_builder_section div#loading_message {
+    margin: auto;
+    display: none;
+    position: absolute;
+    z-index: 2;
+    background-color: #FFF;
+    margin-left: 300px;
+    margin-top: 100px;
+    padding: 5px 10px;
+    border: 1px solid #CCC;
+    font-size: 17px;
+    font-weight: bold;
+    width: 350px;
+    padding-top: 80px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
 div#room_builder div#options div#resolution_slider_label {
     float: left;
     font-weight: bold;
@@ -95,6 +113,11 @@ div#room_builder div#tree_container div#objects_tree div.room_object {
     text-align: center;
     height: 40px;
     width: 40px;
+    padding-right: 5px;
+}
+
+div#room_builder div#tree_container div#objects_tree div.room_object a {
+    z-index: 100;
 }
 
 div#grid {
