@@ -105,9 +105,19 @@ function doMenuPageSelect(pageNum, pageId) {
     currentMenuPage = pageNum;
 }
 
-function doSelectMenuItem(productId) {
+var currentSelectedMenuItemElement;
+
+function doSelectMenuItem(productId, element) {
     if(currentMenuItemQuantity == "")
         currentMenuItemQuantity = "1";
+
+    //close the dialog of the popup for previous modifier if it not closed
+    if(currentSelectedMenuItemElement) {
+        $(currentSelectedMenuItemElement).HideBubblePopup();
+        $(currentSelectedMenuItemElement).FreezeBubblePopup();
+    }
+    
+    currentSelectedMenuItemElement = element;
 
     //fetch this product from the products js array
     product = products[productId]
@@ -137,10 +147,34 @@ function doSelectMenuItem(productId) {
 }
 
 function showModifierDialog(modifierCategoryId) {
-    $("#modifier_category_popup_link_" + modifierCategoryId).click();
+    boxEl = $(currentSelectedMenuItemElement);
+    
+    if(!boxEl.HasBubblePopup()) {
+        boxEl.CreateBubblePopup({
+            themeName: 	'black',
+            themePath: 	'/images/jquerybubblepopup-theme'
+        });
+    }
+         
+    popupHTML = $("#modifier_category_popup_" + modifierCategoryId).html();
+         
+    boxEl.ShowBubblePopup({
+        align: 'center',
+        innerHtml: popupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+												   
+        themeName: 	'black',
+        themePath: 	'/images/jquerybubblepopup-theme'
+
+    }, false);
+    
+    boxEl.FreezeBubblePopup();
 }
 
-function modifierSelected(modifierCategoryId, modifierId, modifierName, modifierPrice) {
+function modifierSelected(modifierId, modifierName, modifierPrice) {
     currentOrderItem['modifier'] = {
         'id':modifierId,
         'name':modifierName,
@@ -149,7 +183,8 @@ function modifierSelected(modifierCategoryId, modifierId, modifierName, modifier
     currentOrderItem['total_price'] = currentOrderItem['total_price'] + (currentOrderItem['amount'] * modifierPrice);
 
     //close the dialog
-    $('#modifier_category_popup_close_button_' + modifierCategoryId).click();
+    $(currentSelectedMenuItemElement).HideBubblePopup();
+    $(currentSelectedMenuItemElement).FreezeBubblePopup();
     
     finishDoSelectMenuItem();
 }
@@ -267,7 +302,8 @@ function doSelectTable(tableNum) {
     }
     
     selectedTable = tableNum;
-
+    currentSelectedRoom = $('#table_select :selected').data("room_id");
+    
     //write to cookie that this user was last looking at this receipt
     $.JSONCookie("user_" + current_user_id + "_last_receipt", {
         'table_num':tableNum
@@ -302,6 +338,15 @@ function doSelectTable(tableNum) {
 
     //display the receipt for this table
     loadReceipt(tableOrders[tableNum]);
+}
+
+function tableScreenSelectTable(tableId) {
+    $('#table_select').val(tableId);
+    doSelectTable(tableId);
+    
+    //back to menu screen
+    $('#table_select_screen').hide();
+    $('#menu_screen').show();
 }
 
 function loadReceipt(order) {
@@ -412,6 +457,7 @@ function doTotalFinal() {
 
         //TODO: pick up num persons
         isTableOrder = true;
+        tableInfoId = selectedTable;
         numPersons = 4
     }
 
@@ -425,6 +471,7 @@ function doTotalFinal() {
         'amount_tendered':cashTendered,
         'num_persons':numPersons,
         'is_table_order':isTableOrder,
+        'table_info_id':tableInfoId,
         'order_details':totalOrder
     }
 

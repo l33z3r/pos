@@ -1,25 +1,19 @@
 <% ModifierCategory.all.each do |mc| %>
+  <div style="display: none;" id="modifier_category_popup_<%=mc.id%>">
+    <div class="modifier_category_popup">
+      <div class="header">
+        Options for <%=mc.name%>
+      </div>
 
-  <a href="javascript:void(0);" style="display: none;" id="modifier_category_popup_link_<%=mc.id%>">link_<%=mc.id%></a>
-
-  <div style="display: none;" class="modifier_category_popup" id="modifier_category_popup_<%=mc.id%>">
-
-    <a href="javascript:void(0);" style="display: none;" id="modifier_category_popup_close_button_<%=mc.id%>" class="closebutton">X</a>
-
-    <div class="header">
-      Options for <%=mc.name%>
+      <div class="modifier_choices data">
+        <% mc.modifiers.all.each do |m| %>
+          <div class="modifier" onclick="modifierSelected(<%=m.id%>, '<%=m.name%>', <%=m.price%>)">
+            <div class="name"><%=m.name%></div>
+            <div class="price"><%=number_to_currency m.price%></div>
+            <div class="clear">&nbsp;</div>
+          </div>
+        <% end %>
+      </div>
     </div>
-    
-    <div class="modifier_choices data">
-      <% mc.modifiers.all.each do |m| %>
-        <div class="modifier" onclick="modifierSelected(<%=mc.id%>, <%=m.id%>, '<%=m.name%>', <%=m.price%>)">
-          <div class="name"><%=m.name%></div>
-          <div class="price"><%=number_to_currency m.price%></div>
-          <div class="clear">&nbsp;</div>
-        </div>
-      <% end %>
-    </div>
-
   </div>
-
 <% end %>

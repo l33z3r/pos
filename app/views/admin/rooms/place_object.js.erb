@@ -8,6 +8,7 @@ $('#loading_message').slideUp();
 
   initGridDragDrop();
   initGridTablePopupDialogs();
+  initGridWallPopupDialogs();
 
   <% if !params[:room_object_id] && @room_object.object_type == RoomObject::TABLE %>
     //show the popup and ask for a table label

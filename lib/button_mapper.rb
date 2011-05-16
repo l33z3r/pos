@@ -19,7 +19,8 @@ class ButtonMapper
   SAVE_BUTTON = 16
   MORE_OPTIONS_BUTTON = 17
   BUTTON_CONFIG_BUTTON = 18
-      
+    TABLES_BUTTON = 19
+    
   def action_for_button button
 
     @retval = ""
@@ -61,6 +62,8 @@ class ButtonMapper
       @retval = "window.location = '#{admin_path}'; return false;"
     when BUTTON_CONFIG_BUTTON
       @retval = "window.location = '#{edit_multiple_admin_display_buttons_path}'; return false;"
+    when TABLES_BUTTON
+      @retval = "showTablesScreen(); return false;"
     end
 
     @retval

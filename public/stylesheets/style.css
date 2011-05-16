@@ -207,7 +207,7 @@ div#landing div#active_users_credentials_container div#active_users div.employee
 }
 
 div#landing div#active_users_credentials_container div#active_users div.employee_box div.nickname {
-    
+
 }
 
 div#landing div#active_users_credentials_container div#active_users div.employee_box div.avatar img {
@@ -1017,6 +1017,16 @@ div#menu_screen div#receipt_keypad_container div#table_select_container {
     float: left;
 }
 
+div#menu_screen div#receipt_keypad_container div#table_screen_button {
+    float: left;
+    margin-left: 5px;
+    border: 2px outset #CCC;
+    background-color: #CCC;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 2px 4px;
+}
+
 div#menu_screen div#receipt_keypad_container div#till_keypad {
     height: 275px;
     padding-top: 10px;
@@ -1063,7 +1073,7 @@ div#menu_screen div#menu_pages_container div#menu_buttons div.button {
 }
 
 div#menu_screen div#menu_pages_container div#menu_buttons div.button div.button_name {
-    
+    padding: 0px 2px;
 }
 
 div#menu_screen div#menu_pages_container div#menu_buttons div.button div.button_name a {
@@ -1519,25 +1529,31 @@ div#display_button_passcode_popup div#cancel_display_button_passcode_prompt {
 
 /* Modifier Popup */
 
-div#menu_screen div.modifier_category_popup div.header {
+div.modifier_category_popup {
+    padding: 10px;
+}
+
+div.modifier_category_popup div.header {
     font-weight: bold;
     margin-bottom: 15px;
     font-size: 15px;
 }
 
-div#menu_screen div.modifier_category_popup div.modifier_choices {
+div.modifier_category_popup div.modifier_choices {
     width: 300px;
     margin: auto;
 }
 
-div#menu_screen div.modifier_category_popup div.modifier_choices div.modifier {
+div.modifier_category_popup div.modifier_choices div.modifier {
     margin: 3px 0px;
-    border: 2px outset #CCC;
+    border: 1px solid #CCC;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
     padding: 4px;
     cursor: pointer;
 }
 
-div#menu_screen div.modifier_category_popup div.modifier_choices div.modifier div.name {
+div.modifier_category_popup div.modifier_choices div.modifier div.name {
     float: left;
     font-weight: bold;
     font-size: 14px;
@@ -1546,7 +1562,7 @@ div#menu_screen div.modifier_category_popup div.modifier_choices div.modifier di
     padding-left: 10px;
 }
 
-div#menu_screen div.modifier_category_popup div.modifier_choices div.modifier div.price {
+div.modifier_category_popup div.modifier_choices div.modifier div.price {
     float: left;
     font-weight: bold;
     font-size: 14px;
@@ -1639,7 +1655,7 @@ div#options_screen div#options_screen_menu_buttons div.button {
 }
 
 div#options_screen div#options_screen_menu_buttons div.button div.button_name {
-    
+    padding: 0px 2px;
 }
 
 div#options_screen div#options_screen_menu_buttons div.button div.button_name a {
@@ -1652,3 +1668,57 @@ div#options_screen div#options_screen_menu_buttons div.button div.button_name a:
 }
 
 /* End Options Screen */
+
+/* Select Table Screen */
+
+div#table_select_screen div#room_list {
+    margin: 10px 0px;
+}
+
+div#table_select_screen div#room_list div.room_name {
+    margin-right: 10px;
+    float: left;
+    padding: 3px 1px;
+    width: 80px;
+    border: 2px outset #CCC;
+    background-color: #FFF;
+    cursor: pointer;
+}
+
+div#table_select_screen div#room_list div.selected {
+    background-color: #CCC;
+    font-weight: bold;
+}
+
+div#table_select_screen div#room_layout {
+    position: relative;
+    border: 1px solid #CCC;
+    width: 990px;
+    margin: 20px auto auto auto;
+    height: 600px;
+}
+
+div#table_select_screen div#room_layout div.room_object {
+    position: absolute;
+}
+
+div#table_select_screen div#room_layout div.room_object img {
+    cursor: pointer;
+}
+
+div#table_select_screen div#room_layout div.room_object div.label {
+    margin-left: -5px;
+    margin-top: -5px;
+    border: 1px solid #CCC;
+    background-color: #FFF;
+    font-size: 11px;
+    z-index: 3; 
+}
+
+div#table_select_screen div#room_layout div.room_object div.selected_table {
+    border: 1px solid red;
+    background-color: #CCC;
+    font-weight: bold;
+}
+
+/* Select Table Screen */

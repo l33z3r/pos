@@ -1,0 +1,24 @@
+<div id="table_select_screen">
+
+  <h3>Select Table</h3>
+
+  <div id="room_list">
+    <% @rooms.each do |room| %>
+      <div class="room_name" id="select_room_button_<%=room.id%>" onclick="loadRoomGraphic(<%=room.id%>)"><%= room.name %></div>
+
+      <div id="room_graphic_<%= room.id %>" data-room_id="<%=room.id%>" 
+           data-grid_x_size="<%=room.grid_x_size%>" data-room_grid_resolution="<%=room.grid_resolution%>" 
+           data-grid_y_size="<%=room.grid_y_size%>" class="room_graphic" style="display: none;">
+             <%= render "admin/rooms/room_graphic", {:room => room} %>
+      </div>
+
+    <% end %>
+  </div>
+
+  <div class="clear">&nbsp;</div>
+
+  <div id="room_layout">
+
+  </div>
+
+</div>

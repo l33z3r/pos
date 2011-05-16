@@ -15,3 +15,9 @@ function doCashTotalReport(total_type) {
         }
     });
 }
+
+function showTablesScreen() {
+    $('#table_select_screen').show();
+    $('#menu_screen').hide();
+    initTableSelectScreen();
+}

@@ -14,6 +14,7 @@
 
 class Room < ActiveRecord::Base
   has_many :room_objects
+  has_many :table_infos, :through => :room_objects
   
   validates :name, :presence => true, :uniqueness => true
   validates :grid_x_size, :presence => true, :numericality => true

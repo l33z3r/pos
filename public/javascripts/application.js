@@ -88,6 +88,7 @@ function hideAllLoginBubblePopups() {
 $(function(){
     $('#menu_screen').hide();
     $('#total_screen').hide();
+    $('#table_select_screen').hide();
 
     if(current_user_id == null) {
         $('#landing').show();
@@ -547,4 +548,91 @@ function cancelDisplayButtonPasscodePromptPopup() {
     showingDisplayButtonPasscodePromptPopup = false;
     $('#menu_buttons_popup_anchor').HideBubblePopup();
     $('#menu_buttons_popup_anchor').FreezeBubblePopup();
+}
+
+var roomScaleX;
+var roomScaleY;
+
+var currentSelectedRoom = -1;
+
+function initTableSelectScreen() {
+    if(currentSelectedRoom == 0) {
+        currentSelectedRoom = $('.room_graphic').first().data('room_id');
+    }
+    
+    $('#select_room_button_' + currentSelectedRoom).click();
+    setSelectedTable();
+}
+
+function setSelectedTable() {
+    //set selected table for this room
+    $('.room_graphic').children('div.label').removeClass("selected_table");
+    
+    //set a class on the div to make it look selected
+    $('#table_' + selectedTable).children('div.label').addClass("selected_table");
+}
+
+function loadRoomGraphic(room_id) {
+    $('.room_name').removeClass("selected");
+    $('#select_room_button_' + room_id).addClass("selected");
+    
+    currentSelectedRoom = room_id;
+    
+    $('#room_layout').html($('#room_graphic_' + room_id).html());
+    
+    room_grid_x_size = $('#room_graphic_' + room_id).data("grid_x_size");
+    room_grid_y_size = $('#room_graphic_' + room_id).data("grid_y_size");
+    room_grid_resolution = $('#room_graphic_' + room_id).data("room_grid_resolution");
+    
+    setScale(room_grid_resolution, room_grid_x_size, room_grid_y_size);
+    setRoomObjectGridPositions();
+    
+    //copy the dynamic ids over
+    $('#room_layout .room_object').each(function(index) {
+        theid = $(this).attr("data-theid");
+        $(this).attr("id", theid);
+    });
+    
+    setSelectedTable();
+}
+
+var maxGridSize = 70;
+var minGridSize = 30;
+
+function setScale(room_grid_resolution, room_grid_x_size, room_grid_y_size) {
+    scale = (maxGridSize - room_grid_resolution) + minGridSize;
+    
+    $('#room_layout').width(room_grid_x_size * scale);
+    $('#room_layout').height(room_grid_y_size * scale);
+    
+    container_div_width = $('#room_layout').width();
+    container_div_height = $('#room_layout').height();
+   
+    roomScaleX = container_div_width / room_grid_x_size;
+    roomScaleY = container_div_height / room_grid_y_size;
+    
+//alert("X: " + roomScaleX + " Y: " + roomScaleY);
+}
+
+function setRoomObjectGridPositions() {
+    $('.room_object').each(function() {
+        ro = $(this);
+        ro_image = ro.children('img');
+        
+        grid_x = ro.data("grid_x");
+        grid_y = ro.data("grid_y");
+        
+        grid_x_size = ro.data("grid_x_size");
+        grid_y_size = ro.data("grid_y_size");
+        
+        //have to subtract 1 from grid_x and grid_y
+        grid_x--;
+        grid_y--;
+        
+        ro.css("margin-left", grid_x * roomScaleX);
+        ro.css("margin-top", grid_y * roomScaleY);
+    
+        ro_image.width(grid_x_size * roomScaleX);
+        ro_image.height(grid_y_size * roomScaleY);
+    });
 }

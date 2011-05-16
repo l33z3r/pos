@@ -181,4 +181,17 @@ div.table_info_popup div.cancel {
     text-decoration: underline;
 }
 
+div.wall_info_popup div.delete {
+    cursor: pointer;
+    text-decoration: underline;
+    float: left;
+}
+
+div.wall_info_popup div.cancel {
+    float: right;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-left: 10px;
+}
+
 /* Table Info Popup */

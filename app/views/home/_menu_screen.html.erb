@@ -12,15 +12,20 @@
       <div id="table_select_container">
         Table:
         <select onchange="doSelectTable($(this).val())" id="table_select">
-          <!-- todo: load tables dynamically -->
-          <option value="0">None</option>
-          <option value="1">Table 1</option>
-          <option value="2">Table 2</option>
-          <option value="3">Table 3</option>
-          <option value="4">Table 4</option>
+          <option data-room_id="0" value="0">None</option>
+          <% Room.all.each do |room|%>
+            <optgroup label="<%=room.name%>">
+              <% room.table_infos.each do |table_info| %>
+                <option data-room_id="<%=table_info.room_object.room.id%>"
+                        value="<%= table_info.id %>"><%= table_info.perm_id %></option>
+                      <% end %>
+            </optgroup>
+          <% end %>
         </select>
       </div>
 
+      <div id="table_screen_button" onclick="showTablesScreen(); return false;">Table Screen</div>
+      
       <div class="clear">&nbsp;</div>
 
     </div>
@@ -71,7 +76,7 @@
           <div id="items">
             <% page.menu_items.each do |item| %>
               <% if item.product %>
-                <div class="item" onclick="doSelectMenuItem(<%= item.product_id %>)">
+                <div class="item" onclick="doSelectMenuItem(<%= item.product_id %>, this)">
                   <div class="item_pic">
                     <%= product_image_thumb item.product %>
                   </div>

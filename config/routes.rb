@@ -8,7 +8,7 @@ Pos::Application.routes.draw do
   #routes for screens to login etc
   match 'home' => "home#index"
   get "home/active_employees"
-
+  
   #init the sales screen buttons based on role permissions
   match 'init_sales_screen_buttons' => "home#init_sales_screen_buttons"
 
@@ -49,6 +49,7 @@ Pos::Application.routes.draw do
         post 'place_object'
         post 'label_table'
         post 'remove_table'
+        post 'remove_wall'
         post 'update_grid_resolution'
         post 'dimension_change'
         post 'rename_room'

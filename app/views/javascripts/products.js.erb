@@ -16,10 +16,3 @@ var modifier_categories = new Array();
     modifier_categories[<%=mc.id%>]['modifiers'][<%=m.id%>] = {'id':<%=m.id%>, 'name':'<%=m.name%>', 'price':<%=m.price%>}
   <% end %>
 <% end %>
-
-//initialize the modifier category popup dialogs
-$(function() {
-<% ModifierCategory.all.each do |mc| %>
-  $("#modifier_category_popup_link_<%=mc.id%>").floatdialog("modifier_category_popup_<%=mc.id%>");
-<% end %>
-});

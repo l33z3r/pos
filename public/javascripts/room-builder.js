@@ -22,6 +22,7 @@ function initDragDrop() {
     
     initGridDragDrop();
     initGridTablePopupDialogs();
+    initGridWallPopupDialogs();
 }
 
 function initGridDragDrop() {
@@ -77,13 +78,65 @@ function initGridTablePopupDialogs() {
     });
 }
 
+function initGridWallPopupDialogs() {
+    hideAllGridWallPopups();
+    
+    //create popups for elements that have none already
+    $('.grid_graphic .wall').each(function() {
+        if(!$(this).HasBubblePopup()) {
+            $(this).CreateBubblePopup({
+                themeName: 	'black',
+                themePath: 	'/images/jquerybubblepopup-theme'
+            });
+            
+            $(this).FreezeBubblePopup();
+        }
+    });
+    
+    $('.grid_graphic .wall').click(function(){
+        wall_id = $(this).data("wall_id");
+        room_object_id = $(this).data("room_object_id");
+        
+        $(this).ShowBubblePopup({
+            align: 'center',
+            innerHtml: "<div class='wall_info_popup'>" + 
+            "<div class='delete' onclick='deleteWall(" + wall_id + ", " + room_object_id + ");'>Delete Wall</div>" + 
+            "<div class='cancel' onclick='cancelShowWallInfo(" + wall_id + ");return false;'>Close</div></div>",
+														   
+            innerHtmlStyle:{ 
+                'text-align':'left'
+            },
+												   
+            themeName: 	'black',
+            themePath: 	'/images/jquerybubblepopup-theme'
+
+        }, false);//save_options = false; it will use new options only on click event, it does not overwrite old options.
+    
+        $(this).FreezeBubblePopup(); 
+    });
+}
+
 function cancelShowTableInfo(table_id) {
     $('#table_grid_div_' + table_id).HideBubblePopup();
     $('#table_grid_div_' + table_id).FreezeBubblePopup();
 }
 
+function cancelShowWallInfo(wall_id) {
+    $('#wall_grid_div_' + wall_id).HideBubblePopup();
+    $('#wall_grid_div_' + wall_id).FreezeBubblePopup();
+}
+
 function hideAllGridTablePopups() {
     $('.grid_graphic .table').each(function() {
+        if($(this).HasBubblePopup()) {
+            $(this).HideBubblePopup();
+            $(this).FreezeBubblePopup();
+        }
+    });
+}
+
+function hideAllGridWallPopups() {
+    $('.grid_graphic .wall').each(function() {
         if($(this).HasBubblePopup()) {
             $(this).HideBubblePopup();
             $(this).FreezeBubblePopup();
@@ -248,4 +301,21 @@ function renameTable(room_object_id) {
             new_name : newName
         }
     });
+}
+
+function deleteWall(wall_id) {
+    var doDelete = confirm("Are you sure you want to delete this wall?");
+    
+    if(doDelete) {
+        $('#wall_grid_div_' + wall_id).HideBubblePopup();
+        $('#room_object_' + wall_id).remove();
+    
+        $.ajax({
+            type: 'POST',
+            url: 'remove_wall',
+            data: {
+                wall_id : wall_id
+            }
+        });
+    }
 }

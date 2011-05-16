@@ -4,6 +4,8 @@ class HomeController < ApplicationController
   def index
     load_active_employees
     @display = Display.load_default
+    
+    @rooms = Room.all
   end
 
   def init_sales_screen_buttons

@@ -1,6 +1,6 @@
 class Admin::RoomsController < Admin::AdminController
   
-  before_filter :load_room, :except => [:index, :new, :create]
+  before_filter :load_room, :except => [:index, :new, :create, :tables]
   
   def index
     @rooms = Room.all
@@ -43,7 +43,7 @@ class Admin::RoomsController < Admin::AdminController
     if params[:room_object_id]
       @room_object = RoomObject.find(params[:room_object_id])
       
-      if check_intersection(@room, @grid_x, @grid_y, @room_object.permid)
+      if check_intersection(@room, @grid_x, @grid_y, @room_object.permid, @room_object.id)
         @room_object.grid_x = @grid_x
         @room_object.grid_y = @grid_y
         @room_object.save!
@@ -54,7 +54,7 @@ class Admin::RoomsController < Admin::AdminController
       @room_object = RoomObject.new_from_permid(params[:room_object_permid])
       @room_object.room_id = @room.id
       
-      if check_intersection(@room, @grid_x, @grid_y, @room_object.permid)
+      if check_intersection(@room, @grid_x, @grid_y, @room_object.permid, nil)
         @room_object.grid_x = @grid_x
         @room_object.grid_y = @grid_y
         
@@ -104,13 +104,18 @@ class Admin::RoomsController < Admin::AdminController
     render :inline => "{success : true}"
   end
   
+  def remove_wall
+    RoomObject.find(params[:wall_id]).destroy
+    render :inline => "{success : true}"
+  end
+  
   private
   
   def load_room
     @room = Room.find(params[:id])
   end
   
-  def check_intersection room, target_x, target_y, permid
+  def check_intersection room, target_x, target_y, permid, existing_room_object_id
     #check that this position is not already occupied
     @existing_object = false
     
@@ -121,6 +126,8 @@ class Admin::RoomsController < Admin::AdminController
     @new_room_object_coords = @temp_room_object.coords
     
     room.room_objects.each do |room_object|
+      next if existing_room_object_id == room_object.id
+      
       @intersecting_coords = room_object.coords & @new_room_object_coords
       logger.info "Coords1: #{room_object.coords} Coords2: #{@new_room_object_coords} Inter: #{@intersecting_coords}"
       if @intersecting_coords.length > 0
