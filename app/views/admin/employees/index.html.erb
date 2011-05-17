@@ -4,6 +4,15 @@
 
     <h3>System Users</h3>
 
+    <div class="pagination_links">
+      <div class="links">
+        <%= will_paginate @employees %>
+      </div>
+      <div class="info">
+        <%= page_entries_info @employees %>
+      </div>
+    </div>
+
     <table id="employee_list" style="display: none;">
       <thead>
         <tr>
@@ -36,7 +45,16 @@
       </tbody>
     </table>
 
-    <br />
+    <div class="clear_top_margin_20">&nbsp;</div>
+
+    <div class="pagination_links">
+      <div class="links">
+        <%= will_paginate @employees %>
+      </div>
+      <div class="info">
+        <%= page_entries_info @employees %>
+      </div>
+    </div>
 
     <div id="actions">
       <%= button_to 'New User', new_admin_employee_path, :method => :get %>

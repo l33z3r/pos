@@ -28,13 +28,27 @@
                       <div class="select_product" id="select_product_<%=product.id%>">
                         <%= product_image_thumb product, true %>
                       </div>
-                      <div class="name"><%= product.name %></div>
+                      <div class="name"><%= link_to product.name, edit_admin_product_path(product) %></div>
                       <div class="clear">&nbsp;</div>
                     </li>
                   <% end %>
                 </ul>
               </li>
             <% end %>
+              <li>
+                <a href="#" class="select_category" id="select_category_0">No Category</a>
+                <ul>
+                  <% Product.categoryless.each do |product| %>
+                    <li>
+                      <div class="select_product" id="select_product_<%=product.id%>">
+                        <%= product_image_thumb product, true %>
+                      </div>
+                      <div class="name"><%= link_to product.name, edit_admin_product_path(product) %></div>
+                      <div class="clear">&nbsp;</div>
+                    </li>
+                  <% end %>
+                </ul>
+              </li>
           </ul>
         </li>
       </ul>

@@ -4,12 +4,23 @@
 
     <h3>Categories</h3>
 
+    <div class="pagination_links">
+      <div class="links">
+        <%= will_paginate @products %>
+      </div>
+      <div class="info">
+        <%= page_entries_info @posts %>
+      </div>
+    </div>
+
     <table id="category_list" style="display: none;">
       <thead>
         <tr>
           <th width="130">Name</th>
           <th width="130">Parent Category</th>
           <th width="200">Description</th>
+          <th width="60">Products</th>
+          <th width="50">Delete</th>
         </tr>
       </thead>
 
@@ -19,12 +30,23 @@
             <td><%= link_to category.name, edit_admin_category_path(category) %></td>
             <td><%= category.parent_category.try(:name) %></td>
             <td><%= category.description %></td>
+            <td><%= category.products.count %></td>
+            <td><%= link_to "Delete", admin_category_path(category), :method => :delete, :confirm => "Are You Sure?" %>
           </tr>
         <% end %>
       </tbody>
     </table>
 
-    <br />
+    <div class="clear_top_margin_20">&nbsp;</div>
+
+    <div class="pagination_links">
+      <div class="links">
+        <%= will_paginate @categories %>
+      </div>
+      <div class="info">
+        <%= page_entries_info @categories %>
+      </div>
+    </div>
 
     <div id="actions">
       <%= button_to 'New Category', new_admin_category_path, :method => :get %>

@@ -29,17 +29,26 @@ class Product < ActiveRecord::Base
   belongs_to :category
   belongs_to :modifier_category
   has_many :order_items
-
+  has_many :menu_items, :dependent => :destroy
+  
   validates :brand, :presence => true
   validates :name, :presence => true
-  validates :category_id, :presence => true, :numericality => true
+  validates :category_id, :numericality => true, :allow_blank => true
   validates :description, :presence => true
   validates :size, :numericality => true, :allow_blank => true
   validates :price, :presence => true, :numericality => true
   validates :items_per_unit, :numericality => true, :allow_blank => true
   validates :sales_tax_rate, :numericality => true, :allow_blank => true
 
+  #for will_paginate
+  cattr_reader :per_page
+  @@per_page = 10
+  
   def has_product_image?
     return (!product_image_file_name.nil? and !product_image_file_name.blank?)
+  end
+  
+  def self.categoryless
+    find_all_by_category_id(nil)
   end
 end

@@ -3,7 +3,9 @@ function initAdminScreen() {
     $('#nav_save_button').hide();
 }
 
-$(function(){$(initAdminScreen())});
+$(function(){
+    $(initAdminScreen())
+    });
 
 function addModifierFields(link, content) {
     var new_id = new Date().getTime();
@@ -21,5 +23,26 @@ function doSetDefaultDisplay(displayId) {
     $.ajax({
         type: 'POST',
         url: '/admin/displays/' + displayId + '/default'
+    });
+}
+
+function updateProductPrice(product_id, currentPrice) {
+    newPrice = prompt("Enter a new price:", currentPrice);
+    
+    //send an update to display controller
+    $.ajax({
+        type: 'POST',
+        url: '/admin/products/' + product_id + '/update_price',
+        success : function() {
+            $('#product_price_' + product_id).html(number_to_currency(newPrice, {
+                precision : 2, 
+                showunit : true
+            }));
+            $('#product_price_' + product_id).parent().effect("highlight", {}, 3000);
+            },
+        data: {
+            id : product_id,
+            price : newPrice
+        }
     });
 }

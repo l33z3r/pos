@@ -21,7 +21,7 @@ div#display_builder div#menu_pages_container {
 
 div#display_builder div#menu_pages_container div#pages {
     padding-left: 2px;
-    padding-top: 2px;
+    border-spacing: 2px;
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container {
@@ -33,7 +33,6 @@ div#display_builder div#menu_pages_container div#pages div.page {
     border: 1px solid #CCC;
     width: 100px;
     background-color: #fad42e;
-    margin: 1px;
     cursor: pointer;
     height: 100px;
     display: table-cell;

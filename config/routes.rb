@@ -37,9 +37,14 @@ Pos::Application.routes.draw do
        
     resources :employees
     resources :categories
-    resources :products
     resources :roles
     resources :modifier_categories
+    
+    resources :products do
+      member do
+        post 'update_price'
+      end
+    end
     
     resources :rooms, :only => [:index, :new, :create, :destroy] do
       member do

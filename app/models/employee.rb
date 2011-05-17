@@ -42,6 +42,10 @@ class Employee < ActiveRecord::Base
   validates :overtime_rate, :numericality => true, :allow_blank => true
   validates :role_id, :presence => true
   
+  #for will_paginate
+  cattr_reader :per_page
+  @@per_page = 10
+  
   def is_admin
     return role.id == Role::SUPER_USER_ROLE_ID
   end

@@ -121,14 +121,14 @@ div#room_builder div#tree_container div#objects_tree div.room_object a {
     z-index: 100;
 }
 
-div#grid {
+div#room_builder div#grid {
     margin: auto;
     width: -moz-fit-content;
     border-top: 1px solid #CCC;
     border-left: 1px solid #CCC;
 }
 
-div#grid div.grid_square {
+div#room_builder div#grid div.grid_square {
     width: 60px;
     height: 60px;
     border-right: 1px solid #CCC;
@@ -137,12 +137,12 @@ div#grid div.grid_square {
     display: block;
 }
 
-div#grid div.grid_row {
+div#room_builder div#grid div.grid_row {
     width: -moz-max-content;
     clear: both;
 }
 
-div#grid div.grid_square div.grid_graphic {
+div#room_builder div#grid div.grid_square div.grid_graphic {
     position: absolute;
     cursor: pointer;
 }

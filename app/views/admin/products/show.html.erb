@@ -15,7 +15,7 @@
 
     <p>
       <b>Category:</b>
-      <%= link_to @product.category.name, admin_category_path(@product.category) %>
+      <%= link_to @product.category.name, admin_category_path(@product.category) if @product.category %>
     </p>
 
     <p>
@@ -45,7 +45,7 @@
 
     <p>
       <b>Sales tax rate:</b>
-      <%= @product.sales_tax_rate %>
+      <%= number_to_percentage(@product.sales_tax_rate, :precision => 0) %>
     </p>
 
     <p>

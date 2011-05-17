@@ -1,6 +1,6 @@
 class Admin::ProductsController < Admin::AdminController
   def index
-    @products = Product.all
+    @products = Product.paginate :page => params[:page], :order => 'name'
   end
 
   def show
@@ -19,7 +19,7 @@ class Admin::ProductsController < Admin::AdminController
     @product = Product.new(params[:product])
 
     if @product.save
-      redirect_to([:admin, @product], :notice => 'Product was successfully created.')
+      redirect_to(admin_products_url, :notice => 'Product was successfully created.')
     else
       render :action => "new"
     end
@@ -34,16 +34,24 @@ class Admin::ProductsController < Admin::AdminController
     end
     
     if @product.update_attributes(params[:product])
-      redirect_to([:admin, @product], :notice => 'Product was successfully updated.')
+      redirect_to(admin_products_url, :notice => 'Product was successfully updated.')
     else
       render :action => "edit"
     end
+  end
+  
+  def update_price
+    @product = Product.find(params[:id])
+    @product.price = params[:price]
+    @product.save!
+    
+    render :json => {:success => true}.to_json
   end
 
   def destroy
     @product = Product.find(params[:id])
     @product.destroy
 
-    redirect_to(admin_products_url)
+    redirect_to(admin_products_url, :notice => 'Product was successfully deleted.')
   end
 end

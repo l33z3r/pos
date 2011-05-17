@@ -254,6 +254,7 @@ div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_
     text-align: left;
     width: 37px;
     margin-left: 3px;
+    font-weight: bold;
 }
 
 div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.name {
@@ -515,7 +516,7 @@ div#edit_employee section#form_container form div#actions input {
 /* Admin Products Page */
 
 div#admin_product_list section#products {
-    width: 920px;
+    width: 1000px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -727,7 +728,7 @@ div#edit_modifier_category section#form_container form div#actions input {
 /* Admin Categories Page */
 
 div#admin_category_list section#categories {
-    width: 540px;
+    width: 640px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -1219,6 +1220,7 @@ div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.amoun
     text-align: left;
     width: 37px;
     margin-left: 3px;
+    font-weight: bold;
 }
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.name {
@@ -1696,6 +1698,7 @@ div#table_select_screen div#room_layout {
     width: 990px;
     margin: 20px auto auto auto;
     height: 600px;
+    background: transparent url("/images/room_builder/wooden_floor.jpg") repeat left top;
 }
 
 div#table_select_screen div#room_layout div.room_object {
@@ -1707,8 +1710,6 @@ div#table_select_screen div#room_layout div.room_object img {
 }
 
 div#table_select_screen div#room_layout div.room_object div.label {
-    margin-left: -5px;
-    margin-top: -5px;
     border: 1px solid #CCC;
     background-color: #FFF;
     font-size: 11px;
@@ -1722,3 +1723,34 @@ div#table_select_screen div#room_layout div.room_object div.selected_table {
 }
 
 /* Select Table Screen */
+
+/* pagination */
+
+div.pagination_links {
+    clear: both;
+    margin-bottom: 5px;
+}
+
+div.pagination_links div.links {
+    
+}
+
+div.pagination_links div.info {
+    padding: 5px 2px;
+    margin-top: 5px;
+}
+
+div.pagination_links div.links div.pagination a {
+    border: 1px solid #CCC;
+    margin: 2px 3px;
+    text-decoration: none;
+    font-weight: bold;
+    background-color: #EEE;
+    padding: 3px 6px;
+    color: #666;
+    cursor: pointer;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+/* pagination */

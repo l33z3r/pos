@@ -9,6 +9,8 @@ gem 'mysql2', '0.2.6'
 gem 'populator'
 gem 'faker'
   
+gem "will_paginate", "~> 3.0.pre2"
+
 # Use unicorn as the web server
 # gem 'unicorn'
 

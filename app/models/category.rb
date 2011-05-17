@@ -18,4 +18,8 @@ class Category < ActiveRecord::Base
   validates :name, :presence => true, :uniqueness => true
   validates :description, :presence => true
   
+  #for will_paginate
+  cattr_reader :per_page
+  @@per_page = 10
+  
 end

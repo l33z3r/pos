@@ -22,7 +22,8 @@
     </div>
     <div class="field">
       <%= f.label :category_id %><br />
-      <%= f.collection_select :category_id, Category.find(:all), :id, :name, :prompt => "Select a Category" %>
+      <%= f.collection_select :category_id, Category.find(:all), :id, :name, 
+        :prompt => "Select a Category", :include_blank => "None" %>
     </div>
     <div class="field">
       <%= f.label :price %><br />
@@ -64,7 +65,8 @@
     </div>
     <div class="field">
       <%= f.label :modifier_category_id, "Link a Modifier Category" %><br />
-      <%= f.collection_select :modifier_category_id, ModifierCategory.find(:all), :id, :name, :prompt => "None", :include_blank => "None" %>
+      <%= f.collection_select :modifier_category_id, ModifierCategory.find(:all), :id, :name, 
+        :prompt => "Select Modifier Category", :include_blank => "None" %>
     </div>
     <div id="actions">
       <%= f.submit %>
