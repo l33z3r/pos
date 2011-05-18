@@ -5,6 +5,12 @@
   <%= stylesheet_link_tag "room_builder"  %>
 <% end %>
 
+<% content_for :admin_subnav_links do %>
+  <div class="link">
+    <%=link_to "Room List", admin_rooms_path %>
+  </div>
+<% end %>
+
 <div id="room_builder">
 
   <!-- must set some vars for init -->
@@ -37,9 +43,12 @@
     <div id="room_name">
       <%= @room.name %>
     </div>
-    <a id="rename_link" href="#" onclick="showRenameRoom();">(rename)</a>
+
+    <a id="rename_link" href="#" onclick="showRenameRoom();">(Rename)</a>
     <input type="text" id="room_name_input" style="display: none;" value="<%= @room.name %>"/>
 
+    <%= link_to "(Delete)", admin_room_path(@room), :method => :delete, 
+      :confirm => "Are You Sure?", :id => "delete_link" %>
 
   </section>
 
@@ -64,11 +73,11 @@
       <div class="clear_top_margin_20">&nbsp;</div>
 
       <div id="loading_message">Loading...</div>
-      
+
       <div class="clear">&nbsp;</div>
-      
+
       <div id="tree_container">
-        
+
         <div id="objects_tree">
           <% RoomObject.available_objects.each do |room_object| %>
             <div class="room_object">

@@ -28,7 +28,7 @@ class Admin::DisplayButtonsController < Admin::AdminController
     @dbr.show_on_sales_screen = params[:checked]
     @dbr.save!
     
-    render :inline => "{success : true}"
+    render :json => {:success => true}.to_json
   end
 
   def update_admin_screen_button_role
@@ -42,6 +42,6 @@ class Admin::DisplayButtonsController < Admin::AdminController
     
     @dbr.save!
 
-    render :inline => "{success : true}"
+    render :json => {:success => true}.to_json
   end
 end

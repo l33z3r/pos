@@ -4,6 +4,9 @@
   <div class="link" onclick="goTo('<%=admin_path%>');">
     Options Screen
   </div>
+  
+  <%= yield :admin_subnav_links %>
+  
   <div id="exit_options_link" onclick="goTo('<%=home_path%>');">
     X
   </div>

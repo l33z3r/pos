@@ -4,11 +4,27 @@
   <%= stylesheet_link_tag "menu_builder"  %>
 <% end %>
 
+<% content_for :admin_subnav_links do %>
+  <div class="link">
+    <%=link_to "Display List", admin_displays_path %>
+  </div>
+<% end %>
+
 <div id="display_builder">
 
   <section id="header">
 
-    <h3>Display Builder For Display: <%= @display.name %></h3>
+    <div id="display_name">
+      <%= @display.name %>
+    </div>
+
+    <a id="rename_link" href="#" onclick="showRenameDisplay();">(Rename)</a>
+    <input type="text" id="display_name_input" style="display: none;" value="<%= @display.name %>"/>
+
+    <%= link_to "(Delete)", admin_display_path(@display), :method => :delete, 
+      :confirm => "Are You Sure?", :id => "delete_link" %>
+
+    <div class="clear">&nbsp;</div>
 
   </section>
 
@@ -36,20 +52,20 @@
                 </ul>
               </li>
             <% end %>
-              <li>
-                <a href="#" class="select_category" id="select_category_0">No Category</a>
-                <ul>
-                  <% Product.categoryless.each do |product| %>
-                    <li>
-                      <div class="select_product" id="select_product_<%=product.id%>">
-                        <%= product_image_thumb product, true %>
-                      </div>
-                      <div class="name"><%= link_to product.name, edit_admin_product_path(product) %></div>
-                      <div class="clear">&nbsp;</div>
-                    </li>
-                  <% end %>
-                </ul>
-              </li>
+            <li>
+              <a href="#" class="select_category" id="select_category_0">No Category</a>
+              <ul>
+                <% Product.categoryless.each do |product| %>
+                  <li>
+                    <div class="select_product" id="select_product_<%=product.id%>">
+                      <%= product_image_thumb product, true %>
+                    </div>
+                    <div class="name"><%= link_to product.name, edit_admin_product_path(product) %></div>
+                    <div class="clear">&nbsp;</div>
+                  </li>
+                <% end %>
+              </ul>
+            </li>
           </ul>
         </li>
       </ul>
@@ -62,9 +78,9 @@
           <% @display.menu_pages.each_with_index do |page, index| %>
             <div class="page <%=index==0 ? "selected" : "" %>" id="menu_page_<%=page.id%>"
                  onclick="doBuilderMenuPageSelect(<%= page.page_num %>, <%= page.id %>);">
-            <div class="delete_link">
-              <%= link_to "X", delete_menu_page_admin_display_path(@display, :menu_page_id => page.id), :method => :post, :confirm => "Are You Sure?" %>
-            </div>
+              <div class="delete_link">
+                <%= link_to "X", delete_menu_page_admin_display_path(@display, :menu_page_id => page.id), :method => :post, :confirm => "Are You Sure?" %>
+              </div>
               <div class="name" id="page_name_<%=page.id%>" ondblclick="openEditNameTextBox(<%=page.id%>)">
                 <%= page.name %>
               </div>

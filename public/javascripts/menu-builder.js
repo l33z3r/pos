@@ -173,3 +173,31 @@ function openEditMenuItemNameTextBox(menuItemId, productId, element) {
         }
     });
 }
+
+function showRenameDisplay() {
+    nameEl = $('#display_name');
+    editNameEl = $('#display_name_input');
+    
+    nameEl.hide();
+    editNameEl.show();
+    $('#rename_link').hide();
+    
+    editNameEl.select();
+
+    editNameEl.keypress(function(e){
+        if(e.which == 13){
+            nameEl.html(editNameEl.val());
+            editNameEl.hide();
+            nameEl.show();
+            $('#rename_link').show();
+            
+            $.ajax({
+                type: 'POST',
+                url: 'rename_display',
+                data: {
+                    name : editNameEl.val()
+                }
+            });
+        }
+    });
+}

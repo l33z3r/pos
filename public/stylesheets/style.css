@@ -355,7 +355,7 @@ div#keypad div#keys div.pad {
 /* Admin Global */
 
 div#admin_subnav {
-    margin-top: 6px;
+    margin: 6px;
 }
 
 div#admin_subnav div.link {
@@ -366,6 +366,10 @@ div#admin_subnav div.link {
     margin-left: 10px;
     padding: 5px 9px;
     cursor: pointer;
+}
+
+div#admin_subnav div.link a {
+    text-decoration: none;
 }
 
 div#admin_subnav div#exit_options_link {
@@ -829,7 +833,7 @@ div#edit_category section#form_container form div#actions input {
 /* Admin Displays Page */
 
 div#admin_display_list section#displays {
-    width: 350px;
+    width: 400px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -922,7 +926,7 @@ div#edit_display section#form_container form div#actions input {
 /* Admin Rooms Page */
 
 div#admin_room_list section#rooms {
-    width: 400px;
+    width: 500px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -1030,10 +1034,12 @@ div#menu_screen div#receipt_keypad_container div#table_screen_button {
     float: left;
     margin-left: 5px;
     border: 2px outset #CCC;
-    background-color: #CCC;
+    background-color: #FFF;
     font-weight: bold;
     cursor: pointer;
     padding: 2px 4px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 
 div#menu_screen div#receipt_keypad_container div#till_keypad {
@@ -1218,8 +1224,21 @@ div#menu_screen div#receipt_keypad_container div#total_container div#total_value
 }
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.order_line {
-    margin-top: 1px;
-    margin-bottom: 1px;
+    border: 2px solid #FFF;
+    margin: 1px 2px;
+    cursor: pointer;
+}
+
+div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.order_line:hover {
+    border: 2px solid #4297D7;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.order_line.selected {
+    border: 2px solid #4297D7;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.amount {
@@ -1257,6 +1276,115 @@ div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.total
 }
 
 /* End Till Roll */
+
+/* Edit Order Item Popup */
+
+div#edit_receipt_item_popup_markup {
+    display: none;
+}
+
+div#edit_receipt_item_popup_markup_container {
+    width: 170px;
+}
+
+div#edit_receipt_item_popup_markup_container div#header {
+    margin: 3px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+div#edit_receipt_item_popup_markup_container div#quantity_editor div#quantity_label {
+    font-weight: bold;
+    float: left;
+    margin: 4px 4px 1px 1px;
+    font-size: 12px;
+}
+
+div#edit_receipt_item_popup_markup_container div#quantity_editor input.quantity {
+    float: left;
+    margin: 1px 4px 1px 1px;
+}
+
+div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_container {
+    float: right;
+    margin: 1px 4px 1px 1px;
+    width: 40px;
+    margin-top: -10px;
+}
+
+div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_container div#plus_button,
+div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_container div#minus_button {
+    cursor: pointer;
+    border: 1px solid #CCC;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    height: 10px;
+    width: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+} 
+
+div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_container div#plus_button {
+    padding: 1px 1px 6px 5px;
+    margin-bottom: 4px;
+    margin: 0px 1px 10px 8px;
+} 
+
+div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_container div#minus_button {
+    padding: 1px 1px 6px 5px;
+    margin: 0px 1px 10px 8px;
+}
+
+div#edit_receipt_item_popup_markup_container div#price_editor {
+    padding-bottom: 10px;
+}
+
+div#edit_receipt_item_popup_markup_container div#price_editor div.price_label {
+    font-weight: bold;
+    float: left;
+    margin: 4px 4px 1px 1px;
+    font-size: 12px;
+}
+
+div#edit_receipt_item_popup_markup_container div#price_editor input.price {
+    float: left;
+    margin: 1px 4px 1px 1px;
+}
+
+div#edit_receipt_item_popup_markup_container div#save_button {
+    padding: 4px;
+    padding-left: 7px;
+    float: right;
+    cursor: pointer;
+    border: 1px solid #CCC;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    height: 18px;
+    width: 52px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    margin: 3px;
+}
+
+div#edit_receipt_item_popup_markup_container div#cancel_button {
+    padding: 4px;
+    float: left;
+    cursor: pointer;
+    border: 1px solid #CCC;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    height: 18px;
+    width: 52px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    margin: 3px;
+}
+
+/* End Edit Order Item Popup */
 
 /* Totals Screen */
 
@@ -1739,7 +1867,7 @@ div.pagination_links {
 }
 
 div.pagination_links div.links {
-    
+
 }
 
 div.pagination_links div.info {

@@ -25,7 +25,13 @@ div#room_builder section#header div#room_name {
 div#room_builder section#header a#rename_link {
     float: left;
     margin-left: 8px;
-    margin-top: -2px;
+    text-decoration: none;
+}
+
+div#room_builder section#header a#delete_link {
+    float: left;
+    margin-left: 8px;
+    text-decoration: none;
 }
 
 div#room_builder div#options {

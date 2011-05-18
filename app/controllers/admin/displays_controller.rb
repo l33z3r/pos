@@ -4,16 +4,8 @@ class Admin::DisplaysController < Admin::AdminController
     @displays = Display.all
   end
 
-  def show
-    @display = Display.find(params[:id])
-  end
-
   def new
     @display = Display.new
-  end
-
-  def edit
-    @display = Display.find(params[:id])
   end
 
   def create
@@ -32,19 +24,9 @@ class Admin::DisplaysController < Admin::AdminController
         @page_2.menu_items.build({:order_num => num}).save!
       end
     
-      redirect_to([:admin, @display], :notice => 'Display was successfully created.')
+      redirect_to(builder_admin_display_path(@display), :notice => 'Display was successfully created.')
     else
       render :action => "new"
-    end
-  end
-
-  def update
-    @display = Display.find(params[:id])
-
-    if @display.update_attributes(params[:display])
-      redirect_to([:admin, @display], :notice => 'Display was successfully updated.')
-    else
-      render :action => "edit"
     end
   end
 
@@ -55,6 +37,15 @@ class Admin::DisplaysController < Admin::AdminController
     redirect_to(admin_displays_url, :notice => 'Display was deleted.')
   end
 
+  def rename_display
+    @display = Display.find(params[:id])
+    
+    @display.name = params[:name]
+    @display.save!
+    
+    render :json => {:success => true}.to_json
+  end
+  
   #where the building gets done (mostly via ajax)
   #try to use as much ajax as possible here
   def builder
@@ -96,7 +87,7 @@ class Admin::DisplaysController < Admin::AdminController
 
     @menu_item.destroy
 
-    render :inline => "{success : true}"
+    render :json => {:success => true}.to_json
   end
 
   def create_menu_page
@@ -131,7 +122,7 @@ class Admin::DisplaysController < Admin::AdminController
     @menu_page.name = params[:new_name]
     @menu_page.save!
 
-    render :inline => "{success : true}"
+    render :json => {:success => true}.to_json
   end
   
   def rename_menu_item
@@ -142,7 +133,7 @@ class Admin::DisplaysController < Admin::AdminController
     @menu_item.product.name = params[:new_name]
     @menu_item.product.save!
 
-    render :inline => "{success : true}"
+    render :json => {:success => true}.to_json
   end
 
   def default
@@ -154,7 +145,7 @@ class Admin::DisplaysController < Admin::AdminController
     @new_default_display.is_default = true
     @new_default_display.save
 
-    render :inline => "{success : true}"
+    render :json => {:success => true}.to_json
   end
 
 end

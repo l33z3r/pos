@@ -214,6 +214,10 @@ function finishDoSelectMenuItem() {
         };
     }
 
+    //attach the item number to the order item 
+    //which is its number in the receipt
+    orderItem.itemNumber = currentOrder.items.length + 1;
+    
     //add this item to the order array
     currentOrder.items.push(orderItem);
     
@@ -244,6 +248,10 @@ function tableSelectMenuItem(orderItem) {
     //add this item to the order array
     currentTableOrder = tableOrders[selectedTable];
 
+    //attach the item number to the order item 
+    //which is its number in the receipt
+    orderItem.itemNumber = currentTableOrder.items.length + 1;
+    
     currentTableOrder.items.push(orderItem);
 
     currentTableOrderTotal = 0;
@@ -267,14 +275,17 @@ function tableSelectMenuItem(orderItem) {
     recptScroll();
 }
 
+//TODO: replace with jquery template => http://api.jquery.com/jQuery.template/
 function writeOrderItemToReceipt(orderItem) {
-    orderHTML = "<div class='order_line'>";
+    clearHTML = "<div class='clear'>&nbsp;</div>";
+    
+    orderHTML = "<div class='order_line' data-item_number='" + orderItem.itemNumber + "' onclick='doSelectReceiptItem(this)'>";
     orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
     orderHTML += "<div class='name'>" + orderItem.product.name + "</div>";
     orderItemTotalPriceText = number_to_currency((orderItem.product_price * orderItem.amount), {
         precision : 2
     });
-    orderHTML += "<div class='total'>" + orderItemTotalPriceText + "</div>";
+    orderHTML += "<div class='total' data-per_unit_price='" + orderItem.product_price + "'>" + orderItemTotalPriceText + "</div>";
     
     if(orderItem.modifier) {
         orderHTML += "<div class='clear'>&nbsp;</div>";
@@ -288,12 +299,148 @@ function writeOrderItemToReceipt(orderItem) {
             orderHTML += "<div class='modifier_price'>" + modifierPriceText + "</div>";
         }
         
-        orderHTML += "<div class='clear'>&nbsp;</div>";
+        orderHTML += clearHTML;
     }
 
-    orderHTML += "</div><div class='clear'>&nbsp;</div>";
+    orderHTML += clearHTML + "</div>" + clearHTML;
     
     $('#till_roll').html($('#till_roll').html() + orderHTML);
+}
+
+var currentSelectedReceiptItemEl;
+
+function doSelectReceiptItem(orderItemEl) {
+    orderItemEl = $(orderItemEl);
+    
+    //save the currently opened dialog
+    currentSelectedReceiptItemEl = orderItemEl;
+    
+    //keep the border
+    orderItemEl.addClass("selected");
+    
+    if(!orderItemEl.HasBubblePopup()) {
+        orderItemEl.CreateBubblePopup({
+            themeName: 	'black',
+            themePath: 	'/images/jquerybubblepopup-theme'
+        });
+    }
+    
+    popupHTML = $("#edit_receipt_item_popup_markup").html();
+    
+    orderItemEl.ShowBubblePopup({
+        align: 'center',
+        innerHtml: popupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+												   
+        themeName: 	'black',
+        themePath: 	'/images/jquerybubblepopup-theme'
+
+    }, false);
+    
+    orderItemEl.FreezeBubblePopup();
+         
+    //set the current price and quantity
+    popupId = orderItemEl.GetBubblePopupID();
+    currentPrice = orderItemEl.children('.total').data("per_unit_price");
+    currentPrice = number_to_currency(currentPrice, {
+        precision : 2
+    })
+    $('#' + popupId).find('.price').val(currentPrice);
+    
+    currentQuantity = orderItemEl.children('.amount').html();
+    $('#' + popupId).find('.quantity').val(currentQuantity);
+}
+
+function editOrderItemIncreaseQuantity(el) {
+    targetInputEl = $(el).parent().parent().find('.quantity');
+    currentVal = parseInt(targetInputEl.val());
+    targetInputEl.val(currentVal + 1);
+}
+
+function editOrderItemDecreaseQuantity(el) {
+    targetInputEl = $(el).parent().parent().find('.quantity');
+    currentVal = parseInt(targetInputEl.val());
+    
+    if(currentVal != 1) {
+        targetInputEl.val(currentVal - 1);
+    }
+}
+
+function closeEditOrderItem() {
+    currentSelectedReceiptItemEl.HideBubblePopup();
+    currentSelectedReceiptItemEl.FreezeBubblePopup();
+    currentSelectedReceiptItemEl.removeClass("selected");
+    
+    currentSelectedReceiptItemEl = null;
+}
+
+function saveEditOrderItem(el) {
+    //fetch the item number
+    itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    
+    closeEditOrderItem();
+    
+    //fetch the order from the order array and modify it
+    //then modify the html in the receipt
+    targetInputQuantityEl = $(el).parent().find('.quantity');
+    newQuantity = parseInt(targetInputQuantityEl.val());
+    
+    targetInputPricePerUnitEl = $(el).parent().find('.price');
+    newPricePerUnit = parseFloat(targetInputPricePerUnitEl.val());
+    
+    if(selectedTable != 0) {
+        order = tableOrders[selectedTable];
+        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
+    
+        //store this item in the current order cookie
+        $.JSONCookie("table_" + selectedTable + "_current_order", order, {
+            path: '/'
+        });
+    }else {
+        order = currentOrder;
+        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
+        
+        //store this item in the current order cookie
+        $.JSONCookie("user_" + current_user_id + "_current_order", order, {
+            path: '/'
+        });
+    }
+    
+    //redraw the receipt
+    loadReceipt(order);
+}
+
+function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit) {
+    targetOrderItem = order.items[itemNumber-1];
+    
+    targetOrderItem.amount = newQuantity;
+    targetOrderItem.product_price = newPricePerUnit;
+    targetOrderItem.total_price = newPricePerUnit * newQuantity;
+        
+    //add the new modifier price to the total
+    if(targetOrderItem.modifier) {
+        targetOrderItem.total_price += targetOrderItem.modifier.price * newQuantity;
+    }
+               
+    //        'id':modifierId,
+    //        'name':modifierName,
+    //        'price':modifierPrice
+    
+    //    currentOrderItem['total_price'] = currentOrderItem['total_price'] + (currentOrderItem['amount'] * modifierPrice);
+    
+    orderTotal = 0;
+
+    for(i=0; i<order.items.length; i++) {
+        item = order.items[i];
+        orderTotal += item['total_price']
+    }
+
+    order['total'] = orderTotal;
+        
+    return order;
 }
 
 function writeTotalToReceipt(orderTotal) {

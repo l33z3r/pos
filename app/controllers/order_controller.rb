@@ -4,9 +4,9 @@ class OrderController < ApplicationController
     @success = create_order(params[:order])
 
     if @success
-      render :inline => "{success : true}"
+      render :json => {:success => true}.to_json
     else
-      render :inline => "{success : false}"
+      render :json => {:success => false}.to_json
     end
   end
 

@@ -9,6 +9,7 @@
         <tr>
           <th width="180">Name</th>
           <th width="180">Dimension</th>
+          <th width="80">Delete</th>
         </tr>
       </thead>
 
@@ -17,6 +18,7 @@
           <tr>
             <td><%= link_to room.name, builder_admin_room_path(room) %></td>
             <td><%= room.dimension %></td>
+            <td><%= link_to "Delete", admin_room_path(room), :method => :delete, :confirm => "Are You Sure?" %></td>
           </tr>
         <% end %>
       </tbody>

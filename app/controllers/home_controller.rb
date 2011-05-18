@@ -37,7 +37,7 @@ class HomeController < ApplicationController
     @employee.last_login = Time.now
     @employee.save!
 
-    render :inline => "{success : true}"
+    render :json => {:success => true}.to_json
   end
   
   def clockin
@@ -84,7 +84,7 @@ class HomeController < ApplicationController
 
     clear_session
 
-    render :inline => "{success : true}"
+    render :json => {:success => true}.to_json
   end
 
   private

@@ -13,7 +13,7 @@
 #
 
 class Room < ActiveRecord::Base
-  has_many :room_objects
+  has_many :room_objects, :dependent => :destroy
   has_many :table_infos, :through => :room_objects
   
   validates :name, :presence => true, :uniqueness => true

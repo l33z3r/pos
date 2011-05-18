@@ -24,7 +24,7 @@ class Admin::RoomsController < Admin::AdminController
     @room.name = params[:name]
     @room.save!
     
-    render :inline => "{success : true}"
+    render :json => {:success => true}.to_json
   end
   
   def builder
@@ -76,7 +76,7 @@ class Admin::RoomsController < Admin::AdminController
     @room.grid_resolution =  params[:grid_resolution]
     @room.save!
     
-    render :inline => "{success : true}".to_json
+    render :json => {:success => true}.to_json
   end
   
   def dimension_change
@@ -96,17 +96,24 @@ class Admin::RoomsController < Admin::AdminController
     @table_info.perm_id = params[:new_name]
     @table_info.save!
     
-    render :inline => "{success : true}"
+    render :json => {:success => true}.to_json
   end
   
   def remove_table
     RoomObject.find(params[:room_object_id]).destroy
-    render :inline => "{success : true}"
+    render :json => {:success => true}.to_json
   end
   
   def remove_wall
     RoomObject.find(params[:wall_id]).destroy
-    render :inline => "{success : true}"
+    render :json => {:success => true}.to_json
+  end
+  
+  def destroy
+    @room = Room.find(params[:id])
+    @room.destroy
+
+    redirect_to(admin_rooms_url, :notice => 'Room was deleted.')
   end
   
   private

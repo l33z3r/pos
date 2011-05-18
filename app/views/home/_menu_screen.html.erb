@@ -25,7 +25,7 @@
       </div>
 
       <div id="table_screen_button" onclick="showTablesScreen(); return false;">Table Screen</div>
-      
+
       <div class="clear">&nbsp;</div>
 
     </div>
@@ -33,7 +33,40 @@
     <div id="receipt">
       <div id="till_roll">
       </div>
+    </div>
 
+    <div id="edit_receipt_item_popup_markup">
+      <div id="edit_receipt_item_popup_markup_container">
+
+        <div id="header">Edit Order Item</div>
+
+        <div class="clear">&nbsp;</div>
+
+        <div id="quantity_editor">
+          
+          <div id="quantity_label">Quantity:</div>
+          <input type="text" class="quantity" size="2" id="current_selected_receipt_item_quantity"/>
+          
+          <div id="buttons_container">
+            <div id="plus_button" onclick="editOrderItemIncreaseQuantity(this)"><div>+</div></div>
+            <div id="minus_button" onclick="editOrderItemDecreaseQuantity(this)"><div>-</div></div>
+          </div>
+          <div class="clear">&nbsp;</div>
+        </div>
+
+        <div class="clear">&nbsp;</div>
+
+        <div id="price_editor">
+          <div class="price_label">Price Per Unit:</div>
+          <input type="text" class="price" size="2" id="current_selected_receipt_item_price"/>
+          <div class="clear">&nbsp;</div>
+        </div>
+
+        <div class="clear">&nbsp;</div>
+
+        <div id="cancel_button" onclick="closeEditOrderItem()">Cancel</div>
+        <div id="save_button" onclick="saveEditOrderItem(this)">Save</div>
+      </div>
     </div>
 
     <div class="clear">&nbsp;</div>
