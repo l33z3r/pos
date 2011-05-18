@@ -458,6 +458,7 @@ function doTotalFinal() {
 
     if(selectedTable == 0) {
         totalOrder = currentOrder;
+        tableInfoId = null;
         isTableOrder = false;
     } else {
         //get total for table
