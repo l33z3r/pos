@@ -34,7 +34,14 @@ class Admin::ProductsController < Admin::AdminController
     end
     
     if @product.update_attributes(params[:product])
-      redirect_to(admin_products_url, :notice => 'Product was successfully updated.')
+      #we may have came to this page directly from the menu builder screen
+      #we want to store the fact, so that when we update the product, we go back to that screen 
+      if !params[:back_builder_screen_id].blank?
+        @display = Display.find(params[:back_builder_screen_id])
+        redirect_to(builder_admin_display_path(@display), :notice => 'Product was successfully updated.')
+      else
+        redirect_to(admin_products_url, :notice => 'Product was successfully updated.')
+      end
     else
       render :action => "edit"
     end

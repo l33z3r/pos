@@ -36,8 +36,8 @@ div#display_builder div#menu_pages_container div#pages div.page {
     cursor: pointer;
     height: 100px;
     display: table-cell;
-    height: 115px;
-    width: 117px;
+    height: 85px;
+    width: 112px;
     vertical-align: middle;
 }
 
@@ -98,14 +98,14 @@ div#display_builder div#menu_pages_container div#builder_menu_items_container di
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item {
     float: left;
-    width: 117px;
     margin: 1px;
     border: 1px solid #CCC;
-    height: 115px;
+    height: 123px;
+    width: 112px;
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_pic {
-    height: 90px;
+    height: 78px;
     margin-top: -1px;
 }
 
@@ -150,12 +150,11 @@ div#display_builder div#menu_pages_container div#builder_menu_items_container di
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_pic img {
     position: relative;
     z-index: -1;
+    height: 78px;
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_name {
-    font-size: 14px;
-    font-weight: bold;
-    margin-top: -20px;
+    font-size: 13px;
     text-decoration: none;
     background-color: #FFF;
     padding: 4px;
@@ -166,17 +165,17 @@ div#display_builder div#menu_pages_container div#builder_menu_items_container di
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.new_item {
     float: left;
-    width: 117px;
     margin: 1px;
     border: 1px solid #CCC;
     cursor: pointer;
-    height: 115px;
+    width: 112px;
+    height: 123px;
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.new_item div.item_name {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
-    margin-top: 38px;
+    margin-top: 42px;
     background-color: #FFF;
     padding: 4px;
     width: -moz-fit-content;
@@ -239,6 +238,15 @@ div#display_builder ul#products_tree div.select_product img {
 
 div#display_builder ul#products_tree div.name {
     float: left;
+}
+
+div#display_builder ul#products_tree div.edit_link {
+    float: right;
+}
+
+div#display_builder ul#products_tree div.edit_link a {
+    font-size: 10px;
+    text-decoration: underline;
 }
 
 div#display_builder ul#products_tree .menuTree:before {

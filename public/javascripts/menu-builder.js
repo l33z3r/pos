@@ -140,3 +140,36 @@ function openEditNameTextBox(pageId) {
         }
     });
 }
+
+function openEditMenuItemNameTextBox(menuItemId, productId, element) {
+    //we have to get a pointer to the element as the menu items are loaded 
+    //dynamically with ajax and it is hard to get the proper ids
+    
+    itemNameEl = $(element);
+    itemNameEl.hide();
+    
+    editBox = $(element).next('input');
+    editBox.show();
+
+    editBox.select();
+
+    editBox.keypress(function(e){
+        if(e.which == 13){
+            itemNameEl.html(editBox.val());
+            editBox.hide();
+            itemNameEl.show();
+        
+            //change the name of the product in the left nav
+            $('#left_nav_product_name_' + productId).html(editBox.val());
+            
+            $.ajax({
+                type: 'POST',
+                url: 'rename_menu_item',
+                data: {
+                    menu_item_id : menuItemId,
+                    new_name : editBox.val()
+                }
+            });
+        }
+    });
+}

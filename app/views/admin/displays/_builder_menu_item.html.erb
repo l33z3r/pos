@@ -5,10 +5,13 @@
   <div class="item_pic">
     <%= product_image_thumb item.product %>
   </div>
-  <div class="item_name">
-    <%= item.name %>
+  <div class="item_name" id="menu_item_name_<%=item.id%>" 
+       ondblclick="openEditMenuItemNameTextBox(<%=item.id%>, <%=item.product.id%>, this)">
+         <%= item.name %>
   </div>
-<% else %>
+  <input style="display: none;" type="text" name="menu_item_name_<%=item.id%>"
+         id="edit_menu_item_name_<%=item.id%>" size="8" value="<%=item.name%>"/>
+       <% else %>
   <div class="drag_message">
     Drag Product Here
   </div>

@@ -11,14 +11,18 @@
     </div>
   <% end %>
 
+  <!-- we may have came to this page directly from the menu builder screen -->
+  <!-- we want to store the fact, so that when we update the product, we go back to that screen -->
+  <input type="hidden" name="back_builder_screen_id" value="<%=params[:back_builder_screen_id]%>"/>
+  
   <div id="fields">
-    <div class="field">
-      <%= f.label :brand %><br />
-      <%= f.text_field :brand %>
-    </div>
     <div class="field">
       <%= f.label :name %><br />
       <%= f.text_field :name %>
+    </div>
+    <div class="field">
+      <%= f.label :brand %><br />
+      <%= f.text_field :brand %>
     </div>
     <div class="field">
       <%= f.label :category_id %><br />

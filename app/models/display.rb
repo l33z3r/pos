@@ -13,7 +13,8 @@
 class Display < ActiveRecord::Base
   has_many :display_buttons
   has_many :menu_pages, :dependent => :destroy, :order => "page_num"
-
+  has_many :menu_items, :through => :menu_pages
+  
   validates :name, :presence => true, :uniqueness => true
 
   def self.load_default

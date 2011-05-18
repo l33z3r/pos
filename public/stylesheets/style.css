@@ -439,6 +439,10 @@ div#new_employee section#form_container div#fields {
     margin: auto;
 }
 
+div#new_employee section#form_container div.employee_image img {
+    height: 100px;
+}
+
 div#new_employee section#form_container form div {
     text-align: left;
 }
@@ -552,6 +556,10 @@ div#new_product section#form_container h3 {
 div#new_product section#form_container div#fields {
     width: 250px;
     margin: auto;
+}
+
+div#new_product section#form_container div.product_image img {
+    height: 100px;
 }
 
 div#new_product section#form_container form div {
@@ -1142,8 +1150,7 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_name {
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 13px;
     text-decoration: none;
     background-color: #FFF;
     padding: 4px;

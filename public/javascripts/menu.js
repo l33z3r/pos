@@ -10,7 +10,8 @@ var tableOrders = new Array();
 
 //this function is called from application.js on page load
 function initMenu() {
-    $('#menu_items_container').html($('#menu_items_1').html());
+    loadFirstMenuPage();
+    
     currentMenuPage = 1;
     currentOrder = new Array();
     currentMenuItemQuantity = "";
@@ -59,6 +60,13 @@ function initMenu() {
     $("div#clock").clock({
         "calendar":"false"
     });
+}
+
+function loadFirstMenuPage() {
+    //set the inital menu page selected to be the first
+    $('#menu_items_container').html($('#menu_items_1').html());
+    $('#pages .page').removeClass("selected");
+    $('#pages .page').first().addClass("selected");
 }
 
 //load the current bar receipt order into memory

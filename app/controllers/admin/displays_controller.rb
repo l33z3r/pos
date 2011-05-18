@@ -21,7 +21,7 @@ class Admin::DisplaysController < Admin::AdminController
 
     if @display.save!
       #give the display an initial 2 pages
-      @page_1 = @display.menu_pages.build({:name => "Page 1", :page_num => 1})
+      @page_1 = @display.menu_pages.build({:name => "Favourites", :page_num => 1})
       @page_2 = @display.menu_pages.build({:name => "Page 2", :page_num => 2})
 
       @page_1.save!
@@ -130,6 +130,17 @@ class Admin::DisplaysController < Admin::AdminController
 
     @menu_page.name = params[:new_name]
     @menu_page.save!
+
+    render :inline => "{success : true}"
+  end
+  
+  def rename_menu_item
+    @display = Display.find(params[:id])
+
+    @menu_item = @display.menu_items.find(params[:menu_item_id])
+
+    @menu_item.product.name = params[:new_name]
+    @menu_item.product.save!
 
     render :inline => "{success : true}"
   end

@@ -32,6 +32,7 @@ Pos::Application.routes.draw do
         post 'create_menu_page'
         post 'delete_menu_page'
         post 'rename_menu_page'
+        post 'rename_menu_item'
       end
     end
        

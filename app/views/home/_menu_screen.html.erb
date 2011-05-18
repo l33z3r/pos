@@ -64,8 +64,8 @@
 
   <div id="menu_pages_container">
     <div id="pages">
-      <% @display.menu_pages.each_with_index do |page, index| %>
-        <div class="page <%=index==0 ? "selected" : "" %>"  id="menu_page_<%=page.id%>"
+      <% @display.menu_pages.each do |page| %>
+        <div class="page"  id="menu_page_<%=page.id%>"
              onclick="doMenuPageSelect(<%= page.page_num %>, <%= page.id %>);">
           <div class="name">
             <%= page.name %>

@@ -318,6 +318,7 @@ function loginSuccess(id, nickname, is_admin, passcode) {
 
     loadCurrentOrder();
     displayLastReceipt();
+    loadFirstMenuPage();
     
     //send ajax login
     $.ajax({
