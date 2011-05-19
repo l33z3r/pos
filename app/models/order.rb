@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110510063013
+# Schema version: 20110519162432
 #
 # Table name: orders
 #
@@ -12,6 +12,7 @@
 #  num_persons     :integer(4)
 #  created_at      :datetime
 #  updated_at      :datetime
+#  table_info_id   :integer(4)
 #
 
 class Order < ActiveRecord::Base

@@ -73,6 +73,7 @@ Pos::Application.routes.draw do
         post 'update_admin_screen_button_role'
         post 'update_sales_screen_button_role'
         post 'update_multiple'
+        post 'create_button_group'
       end
     end
 

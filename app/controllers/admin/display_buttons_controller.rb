@@ -44,4 +44,10 @@ class Admin::DisplayButtonsController < Admin::AdminController
 
     render :json => {:success => true}.to_json
   end
+  
+  def create_button_group
+    DisplayButtonGroup.create({:name => params[:name]})
+    
+    render :json => {:success => true}.to_json
+  end
 end

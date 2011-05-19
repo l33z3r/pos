@@ -1257,7 +1257,7 @@ div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.name 
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.modifier_name {
     float: left;
-    width: 125px;
+    width: 128px;
     margin-left: 80px;
     text-align: left;
 }
@@ -1284,26 +1284,34 @@ div#edit_receipt_item_popup_markup {
 }
 
 div#edit_receipt_item_popup_markup_container {
-    width: 170px;
+    width: 200px;
 }
 
 div#edit_receipt_item_popup_markup_container div#header {
+    float: left;
     margin: 3px;
-    margin-bottom: 10px;
+    margin-top: 8px;
     font-size: 14px;
     font-weight: bold;
+}
+
+div#edit_receipt_item_popup_markup_container div#quantity_editor {
+    padding-top: 20px;
 }
 
 div#edit_receipt_item_popup_markup_container div#quantity_editor div#quantity_label {
     font-weight: bold;
     float: left;
-    margin: 4px 4px 1px 1px;
+    margin: 4px 35px 1px 1px;
     font-size: 12px;
 }
 
 div#edit_receipt_item_popup_markup_container div#quantity_editor input.quantity {
     float: left;
     margin: 1px 4px 1px 1px;
+    border: 2px solid #000;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 
 div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_container {
@@ -1316,7 +1324,7 @@ div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_con
 div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_container div#plus_button,
 div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_container div#minus_button {
     cursor: pointer;
-    border: 1px solid #CCC;
+    border: 2px solid #000;
     -moz-border-radius: 5px;
     border-radius: 5px;
     height: 10px;
@@ -1349,8 +1357,11 @@ div#edit_receipt_item_popup_markup_container div#price_editor div.price_label {
 }
 
 div#edit_receipt_item_popup_markup_container div#price_editor input.price {
+    border: 2px solid #000;
     float: left;
     margin: 1px 4px 1px 1px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 
 div#edit_receipt_item_popup_markup_container div#save_button {
@@ -1358,11 +1369,11 @@ div#edit_receipt_item_popup_markup_container div#save_button {
     padding-left: 7px;
     float: right;
     cursor: pointer;
-    border: 1px solid #CCC;
+    border: 2px solid #000;
     -moz-border-radius: 5px;
     border-radius: 5px;
     height: 18px;
-    width: 52px;
+    width: 38px;
     font-size: 14px;
     font-weight: bold;
     color: #666;
@@ -1373,11 +1384,26 @@ div#edit_receipt_item_popup_markup_container div#cancel_button {
     padding: 4px;
     float: left;
     cursor: pointer;
-    border: 1px solid #CCC;
+    border: 2px solid #000;
     -moz-border-radius: 5px;
     border-radius: 5px;
     height: 18px;
     width: 52px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    margin: 3px;
+}
+
+div#edit_receipt_item_popup_markup_container div#delete_button {
+    padding: 4px;
+    float: right;
+    cursor: pointer;
+    border: 2px solid #000;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    height: 18px;
+    width: 43px;
     font-size: 14px;
     font-weight: bold;
     color: #666;
@@ -1601,8 +1627,20 @@ div#admin_display_buttons section#display_buttons {
     margin-right: auto;
 }
 
+div#admin_display_buttons section#display_buttons h3.button_group_header {
+    text-align: left;
+}
+
+div#admin_display_buttons section#display_buttons div.display_button_list_container {
+    display: none;
+}
+
+div#admin_display_buttons section#display_buttons h3.button_group_header a {
+    text-decoration: none;
+}
+
 div#edit_display_buttons section#display_buttons {
-    width: 340px;
+    width: 640px;
     margin-left: auto;
     margin-right: auto;
 }

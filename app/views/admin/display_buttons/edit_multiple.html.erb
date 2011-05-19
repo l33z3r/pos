@@ -4,23 +4,32 @@
 
     <h3>Display Buttons</h3>
 
-    <% form_tag update_multiple_admin_display_buttons_path do %>
+    <%= form_tag update_multiple_admin_display_buttons_path do %>
       <table id="display_button_list">
         <thead>
           <tr>
             <th width="50">ID</th>
             <th width="240">Button Text</th>
+            <th width="280">Button Group</th>
           </tr>
         </thead>
 
         <tbody>
-          <% DisplayButton.all.each do |display_button| %>
+          <% DisplayButton.all(:order => "button_text").each do |display_button| %>
             <tr>
               <td><%=display_button.perm_id%></td>
               <td>
                 <%= fields_for "display_buttons[]", display_button do |f| %>
                   <%= f.text_field :button_text, :size => 20 %>
                 <% end %>
+              </td>
+              <td>
+                <%= fields_for "display_buttons[]", display_button do |f| %>
+                  <%= f.label :display_button_group_id, "Button Group:" %>
+                  <%= f.collection_select :display_button_group_id, DisplayButtonGroup.find(:all), 
+                    :id, :name, :include_blank => "None" %>
+                <% end %>
+                <a href="#" onclick="newButtonGroup()">New</a>
               </td>
             </tr>
           <% end %>

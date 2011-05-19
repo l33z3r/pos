@@ -5,7 +5,7 @@ function initAdminScreen() {
 
 $(function(){
     $(initAdminScreen())
-    });
+});
 
 function addModifierFields(link, content) {
     var new_id = new Date().getTime();
@@ -39,10 +39,39 @@ function updateProductPrice(product_id, currentPrice) {
                 showunit : true
             }));
             $('#product_price_' + product_id).parent().effect("highlight", {}, 3000);
-            },
+        },
         data: {
             id : product_id,
             price : newPrice
         }
     });
+}
+
+function newButtonGroup() {
+    name = prompt("Button Group Name:");
+    
+    $.ajax({
+        type: 'POST',
+        url: 'create_button_group',
+        success : function() {
+            location.reload();
+        },
+        data: {
+            name : name
+        }
+    });
+}
+
+function toggleButtonGroup(bg_id) {
+    targetEl = $('#display_button_list_container_' + bg_id);
+    
+    $('.display_button_list_container').each(function(index, el) {
+        el = $(el);
+        
+        if(el!=targetEl && el.is(":visible")){
+            el.slideToggle();
+        }
+    });
+    
+    targetEl.slideToggle()
 }

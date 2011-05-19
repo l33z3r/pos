@@ -230,10 +230,7 @@ function finishDoSelectMenuItem() {
 
     currentOrder['total'] = ((currentOrderTotal == null) ? 0 : currentOrderTotal);
 
-    //store this item in the current order cookie
-    $.JSONCookie("user_" + current_user_id + "_current_order", currentOrder, {
-        path: '/'
-    });
+    storeOrderInCookie(current_user_id, currentOrder);
 
     //add a line to the receipt
     writeOrderItemToReceipt(orderItem);
@@ -263,10 +260,7 @@ function tableSelectMenuItem(orderItem) {
 
     currentTableOrder['total'] = currentTableOrderTotal;
 
-    //store this item in the current order cookie
-    $.JSONCookie("table_" + selectedTable + "_current_order", currentTableOrder, {
-        path: '/'
-    });
+    storeTableOrderInCookie(selectedTable, currentTableOrder);
 
     //add a line to the receipt
     writeOrderItemToReceipt(orderItem);
@@ -311,6 +305,9 @@ var currentSelectedReceiptItemEl;
 
 function doSelectReceiptItem(orderItemEl) {
     orderItemEl = $(orderItemEl);
+    
+    //close any open popup
+    closeEditOrderItem();
     
     //save the currently opened dialog
     currentSelectedReceiptItemEl = orderItemEl;
@@ -370,11 +367,13 @@ function editOrderItemDecreaseQuantity(el) {
 }
 
 function closeEditOrderItem() {
-    currentSelectedReceiptItemEl.HideBubblePopup();
-    currentSelectedReceiptItemEl.FreezeBubblePopup();
-    currentSelectedReceiptItemEl.removeClass("selected");
+    if(currentSelectedReceiptItemEl) {
+        currentSelectedReceiptItemEl.HideBubblePopup();
+        currentSelectedReceiptItemEl.FreezeBubblePopup();
+        currentSelectedReceiptItemEl.removeClass("selected");
     
-    currentSelectedReceiptItemEl = null;
+        currentSelectedReceiptItemEl = null;
+    }
 }
 
 function saveEditOrderItem(el) {
@@ -395,18 +394,12 @@ function saveEditOrderItem(el) {
         order = tableOrders[selectedTable];
         order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
     
-        //store this item in the current order cookie
-        $.JSONCookie("table_" + selectedTable + "_current_order", order, {
-            path: '/'
-        });
+        storeTableOrderInCookie(selectedTable, order);
     }else {
         order = currentOrder;
         order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
         
-        //store this item in the current order cookie
-        $.JSONCookie("user_" + current_user_id + "_current_order", order, {
-            path: '/'
-        });
+        storeOrderInCookie(current_user_id, order);
     }
     
     //redraw the receipt
@@ -424,13 +417,52 @@ function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit) {
     if(targetOrderItem.modifier) {
         targetOrderItem.total_price += targetOrderItem.modifier.price * newQuantity;
     }
-               
-    //        'id':modifierId,
-    //        'name':modifierName,
-    //        'price':modifierPrice
     
-    //    currentOrderItem['total_price'] = currentOrderItem['total_price'] + (currentOrderItem['amount'] * modifierPrice);
+    orderTotal = 0;
+
+    for(i=0; i<order.items.length; i++) {
+        item = order.items[i];
+        orderTotal += item['total_price']
+    }
+
+    order['total'] = orderTotal;
+        
+    return order;
+}
+
+function removeOrderItem(el) {
+    doIt = confirm("Are you sure?");
     
+    if(!doIt) {
+        return;
+    }
+    
+    //fetch the item number
+    itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    
+    if(selectedTable != 0) {
+        order = tableOrders[selectedTable];
+        order = doRemoveOrderItem(order, itemNumber);
+    
+        storeTableOrderInCookie(selectedTable, order);
+    }else {
+        order = currentOrder;
+        order = doRemoveOrderItem(order, itemNumber);
+        
+        storeOrderInCookie(current_user_id, order);
+    }
+    
+    currentSelectedReceiptItemEl.slideUp('slow', function() {
+        loadReceipt(order);
+    });
+    
+    closeEditOrderItem();
+}
+
+function doRemoveOrderItem(order, itemNumber) {
+    order.items.splice(itemNumber-1, 1);
+    
+    //have to retotal the order
     orderTotal = 0;
 
     for(i=0; i<order.items.length; i++) {
@@ -763,4 +795,16 @@ function initOptionButtons() {
             }
         });
     }
+}
+
+function storeOrderInCookie(current_user_id, order_to_store) {
+    $.JSONCookie("user_" + current_user_id + "_current_order", order_to_store, {
+        path: '/'
+    });
+}
+
+function storeTableOrderInCookie(table_num, order_to_store) {
+    $.JSONCookie("table_" + table_num + "_current_order", order_to_store, {
+        path: '/'
+    });
 }
