@@ -1,14 +1,15 @@
 <div id="admin_subnav">
   <div id="back_link" onclick="history.go(-1);"><%=image_tag "back_arrow_tiny.png"%></div>
   <div id="back_link" onclick="history.go(1);"><%=image_tag "forward_arrow_tiny.png"%></div>
+  
+  <div class="link" onclick="goTo('<%=home_path%>');">
+    Menu Screen
+  </div>
+  
   <div class="link" onclick="goTo('<%=admin_path%>');">
     Options Screen
   </div>
   
   <%= yield :admin_subnav_links %>
-  
-  <div id="exit_options_link" onclick="goTo('<%=home_path%>');">
-    X
-  </div>
 </div>
 <div class="clear">&nbsp;</div>

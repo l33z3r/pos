@@ -25,6 +25,15 @@ div.clear {
     clear: both;
 }
 
+div.clear_blue_spacer {
+    height: 25px;
+    clear: both;
+    width: 100%;
+    background-color: #4297D7;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+}
+
 div.clear_top_margin_20 {
     height: 20px;
     clear: both;
@@ -109,8 +118,17 @@ div#landing div#active_users_credentials_container {
 }
 
 div#landing div#active_users_credentials_container div#login_credentials {
+    height: 80px;
+    width: 550px;
+    margin: auto;
     margin-top: 90px;
-    margin-left: 150px;
+    border: 1px solid #000;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding-top: 43px;
+    padding-left: 45px;
+    box-shadow: 2px 2px 2px #CCC;
+    background: -moz-linear-gradient(#FFF, #4297D7) repeat scroll 0 0 transparent;
 }
 
 div#landing div#active_users_credentials_container div#login_credentials span {
@@ -125,21 +143,28 @@ div#landing div#active_users_credentials_container div#login_credentials div#clo
     width: 200px;
     height: 25px;
     font-size: 14px;
+    font-weight: bold;
     margin-left: 10px;
     padding-top: 5px;
     float: left;
+    border: 2px outset #000;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 2px 2px 2px #CCC;
+    background-color: #FFF;
 }
 
 div#landing div#active_users_credentials_container div#login_credentials div.login {
     float: left;
-    margin-left: 10px;
-    padding: 6px 5px 2px 5px;
-    height: 22px;
+    margin-left: 5px;
     font-weight: bold;
-    border: 1px solid #CCC;
-    background-color: white;
     cursor: pointer;
-    font-size: 14px;
+    padding: 6px;
+    border: 2px outset #AAA;
+    -moz-border-radius: 4px;
+    border-radius: 4px;  
+    box-shadow: 1px 1px 3px #CCC;
+    background: -moz-linear-gradient(#FFF, #4297D7) repeat scroll 0 0 transparent;
 }
 
 div#login_popup {
@@ -190,8 +215,10 @@ div#login_popup div#cancel_show_login {
 }
 
 div#landing div#active_users_credentials_container div#active_users {
-    height: 480px;
-    border: 1px solid #DDD;
+    height: 456px;
+    border: 1px solid #000;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
 }
 
 div#landing div#active_users_credentials_container div#active_users div.employee_box {
@@ -201,9 +228,11 @@ div#landing div#active_users_credentials_container div#active_users div.employee
     height: 83px;
     font-weight: bold;
     padding-top: 5px;
-    border: 2px outset #DDD;
+    border: 2px outset #000;
     margin: 10px;
     cursor: pointer;
+    -moz-border-radius: 4px;
+    border-radius: 4px;  
 }
 
 div#landing div#active_users_credentials_container div#active_users div.employee_box div.nickname {
@@ -226,22 +255,29 @@ div.fullscreen{
 div#landing div#login_receipt_keypad_container {
     width: 265px;
     float: left;
-    border: 1px solid #CCC;
+    border: 1px solid #000;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
 }
 
 div#landing div#login_receipt_keypad_container div#login_receipt {
-    height: 430px;
+    height: 405px;
     overflow-y: auto;
     display: block;
     padding-left: 5px;
 }
 
 div#landing div#login_receipt_keypad_container div#login_receipt_header {
-    background-color: #CCC;
+    background-color: #4297D7;
     border: 1px solid #AAA;
     padding: 2px;
     font-weight: bold;
     text-align: left;
+    font-size: 14px;
+    -moz-border-top-left-radius: 7px;
+    -moz-border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
 }
 
 div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.order_line {
@@ -321,33 +357,47 @@ div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_
 }
 
 div#landing div#login_receipt_keypad_container div#keypad {
-    height: 275px;
+    height: 325px;
     padding-top: 10px;
-    background-color: #DDD;
 }
 
 div#keypad div#keys {
-    width: 190px;
+    width: 240px;
     margin: auto;
 }
 
 div#keypad div#keys div {
     vertical-align: middle;
     float: left;
-    margin: 2px;
-    width: 55px;
-    padding-top: 20px;
-    height: 40px;
-    border: 1px solid #CCC;
-    background-color: white;
-    cursor: pointer;
+    margin: 1px;
+    width: 74px;
+    padding-top: 25px;
+    height: 47px;
     font-size: 18px;
+    font-weight: bold;
+    border: 2px outset #AAA;
+    cursor: pointer;
+    -moz-border-radius: 5px;
+    border-radius: 5px;  
+    box-shadow: 2px 2px 2px #CCC;
+    background: -moz-linear-gradient(#FFF, #4297D7) repeat scroll 0 0 transparent;
 }
 
 div#keypad div#keys div.pad {
-    width: 57px;
-    border: none;
-    background-color: transparent;
+    vertical-align: middle;
+    float: left;
+    margin: 1px;
+    width: 74px;
+    padding-top: 25px;
+    height: 47px;
+    font-size: 18px;
+    font-weight: bold;
+    border: 2px outset #AAA;
+    cursor: pointer;
+    -moz-border-radius: 5px;
+    border-radius: 5px;  
+    box-shadow: 2px 2px 2px #CCC;
+    background: -moz-linear-gradient(#FFF, #4297D7) repeat scroll 0 0 transparent;
 }
 
 /* End Landing Page */
@@ -360,31 +410,25 @@ div#admin_subnav {
 
 div#admin_subnav div.link {
     float: left;
-    border: 2px outset #CCC;
-    font-size: 13px;
+    margin-left: 5px;
     font-weight: bold;
-    margin-left: 10px;
-    padding: 5px 9px;
     cursor: pointer;
+    padding: 6px;
+    border: 2px outset #AAA;
+    -moz-border-radius: 4px;
+    border-radius: 4px;  
+    box-shadow: 1px 1px 3px #CCC;
+    background: -moz-linear-gradient(#FFF, #4297D7) repeat scroll 0 0 transparent;
 }
 
 div#admin_subnav div.link a {
     text-decoration: none;
+    color: #000;
 }
 
-div#admin_subnav div#exit_options_link {
-    padding: 3px 9px;
-    padding-bottom: 1px;
-    font-size: 18px;
-    margin-top: 2px;
-    height: 22px;
-    float: right;
-    background-color: #FFF;
-    border: 2px outset #CCC;
-    cursor: pointer;
-    font-weight: bold;
-    color: red;
+div#admin_subnav div.link a:hover {
     text-decoration: none;
+    color: #000;
 }
 
 div#admin_subnav div#back_link,
@@ -977,6 +1021,10 @@ nav#main_nav {
     text-align: left;
     padding: 2px 4px;
     margin-bottom: 2px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    border: 1px solid #000;
+    margin-top: 1px;
 }
 
 nav#main_nav div#business_name,
@@ -987,7 +1035,10 @@ nav#main_nav div#clock {
     float: left;
     margin: 0px 3px;
     padding: 2px 5px;
-    background-color: #DDD;
+    background-color: #FFF;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #000;
 }
 
 nav#main_nav div#nav_save_button {
@@ -999,53 +1050,74 @@ nav#main_nav div#nav_save_button {
     font-weight: bold;
     color: red;
     text-decoration: none;
+    -moz-border-radius: 4px;
+    border-radius: 4px;  
 }
 
 div#menu_screen div#receipt_keypad_container {
     width: 265px;
     float: left;
-    border: 1px solid #CCC;
+    border: 1px solid #000;
+    -moz-border-radius: 7px;
+    border-radius: 7px; 
 }
 
 div#menu_screen div#menu_pages_container {
     width: 728px;
     float: right;
-    border: 1px solid #CCC;
+    border: 1px solid #000;
+    -moz-border-radius: 7px;
+    border-radius: 7px; 
 }
 
 div#menu_screen div#receipt_keypad_container div#receipt {
-    height: 373px;
+    height: 320px;
     overflow-y: auto;
     display: block;
 }
 
 div#menu_screen div#receipt_keypad_container div#top_buttons {
-    background-color: #CCC;
+    background-color: #4297D7;
     border: 1px solid #AAA;
     padding: 2px;
     font-weight: bold;
+    -moz-border-top-left-radius: 7px;
+    -moz-border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
 }
 
 div#menu_screen div#receipt_keypad_container div#table_select_container {
     float: left;
+    font-size: 14px;
+}
+
+div#menu_screen div#receipt_keypad_container div#table_select_container select {
+    cursor: pointer;
+    border: 2px outset #AAA;
+    -moz-border-radius: 4px;
+    border-radius: 4px;  
+    background-color: #FFF;
+    color: #000;
+    height: 26px;
 }
 
 div#menu_screen div#receipt_keypad_container div#table_screen_button {
     float: left;
     margin-left: 5px;
-    border: 2px outset #CCC;
-    background-color: #FFF;
     font-weight: bold;
     cursor: pointer;
     padding: 2px 4px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    border: 2px outset #AAA;
+    -moz-border-radius: 4px;
+    border-radius: 4px;  
+    box-shadow: 1px 1px 3px #CCC;
+    background: -moz-linear-gradient(#FFF, #4297D7) repeat scroll 0 0 transparent;
 }
 
 div#menu_screen div#receipt_keypad_container div#till_keypad {
-    height: 275px;
-    padding-top: 10px;
-    background-color: #DDD;
+    height: 326px;
+    padding-top: 12px;
 }
 
 div#menu_screen div#menu_pages_container div#pages {
@@ -1054,7 +1126,7 @@ div#menu_screen div#menu_pages_container div#pages {
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container {
-    height: 360px;
+    height: 400px;
     padding-left: 2px;
 }
 
@@ -1064,9 +1136,8 @@ div#menu_screen div#menu_pages_container div#menu_buttons_popup_anchor {
 
 div#menu_screen div#menu_pages_container div#menu_buttons {
     border-spacing: 2px;
-    height: 255px;
+    height: 198px;
     padding: 5px;
-    background-color: #DDD;
 }
 
 div#menu_screen div#menu_pages_container div#menu_buttons div#menu_buttons_loading_message {
@@ -1082,13 +1153,17 @@ div#menu_screen div#menu_pages_container div#menu_buttons div.button {
     height: 85px;
     text-align: center;
     font-weight: bold;
-    border: 2px outset #CCC;
     background-color: #FFF;
     cursor: pointer;
+    border: 2px outset #AAA;
+    -moz-border-radius: 7px;
+    border-radius: 7px;  
+    box-shadow: 3px 3px 7px #CCC;
+    background: -moz-linear-gradient(#4297D7, #FFF, #4297D7) repeat scroll 0 0 transparent;
 }
 
 div#menu_screen div#menu_pages_container div#menu_buttons div.button div.button_name {
-    padding: 0px 2px;
+    padding: 0px 3px;
 }
 
 div#menu_screen div#menu_pages_container div#menu_buttons div.button div.button_name a {
@@ -1105,15 +1180,18 @@ div#menu_screen div#menu_pages_container div#pages {
 }
 
 div#menu_screen div#menu_pages_container div#pages div.page {
-    background-color: #fad42e;
-    border: 1px solid #CCC;
     margin: 1px;
     display: table-cell;
     text-align: center;
     vertical-align: middle;
     height: 85px;
     width: 90px;
+    border: 2px outset #AAA;
     cursor: pointer;
+    -moz-border-radius: 7px;
+    border-radius: 7px;  
+    box-shadow: 1px 1px 2px #fad42e;
+    background: -moz-linear-gradient(#FFF, #fad42e) repeat scroll 0 0 transparent;
 }
 
 div#menu_screen div#menu_pages_container div#pages div.selected {
@@ -1138,11 +1216,15 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items {
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item {
     float: left;
-    width: 112px;
-    margin: 1px;
-    border: 1px solid #CCC;
-    cursor: pointer;
+    width: 110px;
+    margin: 3px;
     height: 123px;
+    border: 2px outset #AAA;
+    cursor: pointer;
+    -moz-border-radius: 7px;
+    border-radius: 7px;  
+    box-shadow: 1px 1px 3px #CCC;
+    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_pic {
@@ -1152,13 +1234,12 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_pic img {
     position: relative;
     height: 78px;
-    z-index: -1;
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_name {
     font-size: 13px;
     text-decoration: none;
-    background-color: #FFF;
+    font-weight: bold;
     padding: 4px;
     width: -moz-fit-content;
     margin-left: auto;
@@ -1170,21 +1251,25 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 /* Menu Screen keypad */
 
 div#till_keypad div#keys {
-    width: 190px;
+    width: 240px;
     margin: auto;
 }
 
 div#till_keypad div#keys div {
     vertical-align: middle;
     float: left;
-    margin: 2px;
-    width: 55px;
-    padding-top: 20px;
-    height: 40px;
-    border: 1px solid #CCC;
-    background-color: white;
-    cursor: pointer;
+    margin: 1px;
+    width: 74px;
+    padding-top: 25px;
+    height: 47px;
     font-size: 18px;
+    font-weight: bold;
+    border: 2px outset #AAA;
+    cursor: pointer;
+    -moz-border-radius: 5px;
+    border-radius: 5px;  
+    box-shadow: 2px 2px 2px #CCC;
+    background: -moz-linear-gradient(#FFF, #4297D7) repeat scroll 0 0 transparent;
 }
 
 div#till_keypad div#keys div.pad {
@@ -1204,9 +1289,10 @@ div#menu_screen div#receipt_keypad_container div#receipt div#till_roll {
 div#menu_screen div#receipt_keypad_container div#total_container {
     margin-top: 10px;
     font-size: 14px;
-    background-color: #CCC;
-    border: 1px solid #AAA;
+    background-color: #4297D7;
+    border: 1px solid #000;
     padding: 2px;
+    color: #000;
 }
 
 div#menu_screen div#receipt_keypad_container div#total_container div#label {
@@ -1814,23 +1900,26 @@ div#options_screen div#options_screen_menu_buttons {
     border-spacing: 7px;
     padding: 10px 15px;
     height: 720px;
-    background-color: #DDD;
 }
 
 div#options_screen div#options_screen_menu_buttons div.button {
     width: 85px;
+    vertical-align: middle;
+    display: table-cell;
     height: 85px;
     text-align: center;
     font-weight: bold;
-    border: 2px outset #CCC;
+    border: 2px outset #AAA;
     background-color: #FFF;
     cursor: pointer;
-    display: table-cell;
-    vertical-align: middle;
+    -moz-border-radius: 7px;
+    border-radius: 7px;  
+    box-shadow: 3px 3px 7px #CCC;
+    background: -moz-linear-gradient(#4297D7, #FFF, #4297D7) repeat scroll 0 0 transparent;
 }
 
 div#options_screen div#options_screen_menu_buttons div.button div.button_name {
-    padding: 0px 2px;
+    padding: 0px 3px;
 }
 
 div#options_screen div#options_screen_menu_buttons div.button div.button_name a {
