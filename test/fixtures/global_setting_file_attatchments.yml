@@ -1,0 +1,22 @@
+# == Schema Information
+# Schema version: 20110523214441
+#
+# Table name: global_setting_file_attatchments
+#
+#  id                            :integer(4)      not null, primary key
+#  global_setting_id             :integer(4)
+#  file_attatchment_file_name    :string(255)
+#  file_attatchment_content_type :string(255)
+#  file_attatchment_file_size    :integer(4)
+#  file_attatchment_updated_at   :datetime
+#  created_at                    :datetime
+#  updated_at                    :datetime
+#
+
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  global_setting_id: 1
+
+two:
+  global_setting_id: 1

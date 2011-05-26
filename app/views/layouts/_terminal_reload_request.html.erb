@@ -1,0 +1,18 @@
+<div id="terminal_reload_notice">
+
+  <div id="notice">
+    Any changes you make will require you to request that all 
+    other terminals are updated. You can do so by clicking the following button
+  </div>
+
+  <div id="button_container">
+    <%= form_tag '/request_terminal_reload' do %>
+      <%= submit_tag "Request Reload" %>
+    <% end %>
+  </div>
+  
+  <div class="clear">&nbsp;</div>
+
+</div>
+
+<div class="clear">&nbsp;</div>

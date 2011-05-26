@@ -9,6 +9,10 @@ Pos::Application.routes.draw do
   match 'home' => "home#index"
   get "home/active_employees"
   
+  #this route is to call home with js polling
+  match 'call_home' => "home#call_home"
+  match 'request_terminal_reload' => "home#request_terminal_reload", :via => :post
+        
   #init the sales screen buttons based on role permissions
   match 'init_sales_screen_buttons' => "home#init_sales_screen_buttons"
 
@@ -42,6 +46,15 @@ Pos::Application.routes.draw do
     resources :roles
     resources :modifier_categories
     
+    resources :tax_rates, :only => [:create, :destroy] do
+      member do
+        post 'default'
+      end
+      collection do
+        post 'update_multiple'
+      end
+    end
+    
     resources :products do
       member do
         post 'update_price'
@@ -74,9 +87,20 @@ Pos::Application.routes.draw do
         post 'update_sales_screen_button_role'
         post 'update_multiple'
         post 'create_button_group'
+        post 'update_multiple_groups'
+        post 'destroy_button_group'
       end
     end
+    
+    #system settings interface
+    get 'global_settings' => "global_settings#index"
+    post 'update_global_settings' => "global_settings#update_multiple"
 
+    #dynamic css that picks up styles from the styles in the settings table
+    get 'custom_themes' => "custom_themes#index"
+    post 'update_custom_themes' => "custom_themes#update_multiple"
+    get 'custom_theme' => "custom_themes#custom_theme"
+    
   end
 
   match 'javascripts/:action.:format' => "javascripts"

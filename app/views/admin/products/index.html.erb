@@ -46,8 +46,8 @@
             <td><%= product.size %></td>
             <td><%= product.unit %></td>
             <td><%= product.items_per_unit %></td>
-            <td><%= number_to_percentage(product.sales_tax_rate, :precision => 0) %></td>
-            <td><%= link_to "Delete", admin_product_path(product), :method => :delete, :confirm => "Are You Sure?" %>
+            <td><%= number_to_percentage(product.sales_tax_rate, :precision => 1) %></td>
+            <td><%= link_to "Delete", admin_product_path(product), :method => :delete, :confirm => "Are You Sure?" %></td>
           </tr>
         <% end %>
       </tbody>

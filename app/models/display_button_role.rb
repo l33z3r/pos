@@ -23,8 +23,8 @@ class DisplayButtonRole < ActiveRecord::Base
       return DisplayButton.find(:all, :conditions => "perm_id != #{ButtonMapper::MORE_OPTIONS_BUTTON}")
     end
 
-    find(:all, :conditions => "role_id = #{role_id} and show_on_admin_screen = 1 
-      and perm_id != #{ButtonMapper::MORE_OPTIONS_BUTTON}").collect(&:display_button)
+    find(:all, :include => "display_button", :conditions => "role_id = #{role_id} and show_on_admin_screen = 1 
+      and display_buttons.perm_id != #{ButtonMapper::MORE_OPTIONS_BUTTON}").collect(&:display_button)
   end
 
   def show_on_admin_screen

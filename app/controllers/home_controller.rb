@@ -19,6 +19,33 @@ class HomeController < ApplicationController
       and (show_on_admin_screen is true or role_id = #{Role::SUPER_USER_ROLE_ID}) 
       or (display_buttons.perm_id = #{ButtonMapper::MORE_OPTIONS_BUTTON} and role_id = #{Role::SUPER_USER_ROLE_ID}))")
   end
+  
+  def call_home
+    @got_update = false
+    
+    #check if we need to reload the interface due to room builder or menu screen being accessed
+    @last_update_time = params[:lastUpdateTime]
+    
+    @reload_app = fetch_reload_app @last_update_time
+    
+    if @reload_app
+      @reload_request_time = @reload_app['reload_request_time']
+      @reload_request_terminal_id = @reload_app['reload_request_terminal_id']
+        
+      @new_update_time = @reload_request_time + 1
+      @got_update = true
+    end
+    
+    if need_sync_table_orders? @last_update_time
+      @js_code = "alert('sync table orders requested');"
+    end
+    
+  end
+  
+  def request_terminal_reload
+    request_reload_app @terminal_id, Time.now.to_i
+    redirect_to(:back, :notice => 'Reload request sent.')
+  end
 
   def active_employees
     load_active_employees

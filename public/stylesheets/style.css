@@ -13,11 +13,30 @@ body {
     margin: 0px;
     padding: 0px;
     color: #333333;
+    font-family: verdana;
+    font-size: 12px;
+}
+
+input[type=radio], input[type=checkbox], select {
+    cursor: pointer;
 }
 
 a:hover {
     background-color: transparent;
     color: #333;
+}
+
+input[type=checkbox], 
+input[type=radio],
+input[type=submit] {
+    cursor: pointer;
+}
+
+div.label_subtext {
+    clear: both;
+    font-style: italic;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 div.clear {
@@ -32,6 +51,16 @@ div.clear_blue_spacer {
     background-color: #4297D7;
     border-top: 1px solid #000;
     border-bottom: 1px solid #000;
+}
+
+div.clear_top_margin_5 {
+    height: 5px;
+    clear: both;
+}
+
+div.clear_top_margin_10 {
+    height: 10px;
+    clear: both;
 }
 
 div.clear_top_margin_20 {
@@ -70,6 +99,27 @@ header div#logo {
     font-weight: bold;
     margin-top: 20px;
     margin-left: 20px;
+}
+
+div#terminal_reload_notice {
+    width: 670px;
+    margin: 10px auto;
+    clear: both;
+    border: 1px solid #CCC;
+    padding: 6px;
+}
+
+div#terminal_reload_notice div#notice {
+    float: left;
+    width: 65%;
+    text-align: justify;
+}
+
+div#terminal_reload_notice div#button_container {
+    float: left;
+    margin-left: 10px;
+    width: 30%;
+    margin-top: 5px;
 }
 
 /* End Global Styles */
@@ -128,7 +178,7 @@ div#landing div#active_users_credentials_container div#login_credentials {
     padding-top: 43px;
     padding-left: 45px;
     box-shadow: 2px 2px 2px #CCC;
-    background: -moz-linear-gradient(#FFF, #4297D7) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
 }
 
 div#landing div#active_users_credentials_container div#login_credentials span {
@@ -164,7 +214,7 @@ div#landing div#active_users_credentials_container div#login_credentials div.log
     -moz-border-radius: 4px;
     border-radius: 4px;  
     box-shadow: 1px 1px 3px #CCC;
-    background: -moz-linear-gradient(#FFF, #4297D7) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
 }
 
 div#login_popup {
@@ -222,17 +272,18 @@ div#landing div#active_users_credentials_container div#active_users {
 }
 
 div#landing div#active_users_credentials_container div#active_users div.employee_box {
-    float: left;
     width: 95px;
     font-size: 15px;
     height: 83px;
     font-weight: bold;
-    padding-top: 5px;
+    padding: 7px;
     border: 2px outset #000;
     margin: 10px;
     cursor: pointer;
-    -moz-border-radius: 4px;
-    border-radius: 4px;  
+    float: left;
+    border: 1px solid #AAAAAA;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 1px 1px 3px #CCCCCC;
 }
 
 div#landing div#active_users_credentials_container div#active_users div.employee_box div.nickname {
@@ -265,6 +316,12 @@ div#landing div#login_receipt_keypad_container div#login_receipt {
     overflow-y: auto;
     display: block;
     padding-left: 5px;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#receipt_message {
+    margin-top: 50px;
+    font-weight: bold;
+    color: green;
 }
 
 div#landing div#login_receipt_keypad_container div#login_receipt_header {
@@ -380,7 +437,7 @@ div#keypad div#keys div {
     -moz-border-radius: 5px;
     border-radius: 5px;  
     box-shadow: 2px 2px 2px #CCC;
-    background: -moz-linear-gradient(#FFF, #4297D7) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
 }
 
 div#keypad div#keys div.pad {
@@ -397,7 +454,7 @@ div#keypad div#keys div.pad {
     -moz-border-radius: 5px;
     border-radius: 5px;  
     box-shadow: 2px 2px 2px #CCC;
-    background: -moz-linear-gradient(#FFF, #4297D7) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
 }
 
 /* End Landing Page */
@@ -418,7 +475,7 @@ div#admin_subnav div.link {
     -moz-border-radius: 4px;
     border-radius: 4px;  
     box-shadow: 1px 1px 3px #CCC;
-    background: -moz-linear-gradient(#FFF, #4297D7) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
 }
 
 div#admin_subnav div.link a {
@@ -657,7 +714,7 @@ div#edit_product section#form_container h3 {
 }
 
 div#edit_product section#form_container div#fields {
-    width: 250px;
+    width: 300px;
     margin: auto;
 }
 
@@ -855,7 +912,7 @@ div#edit_category section#form_container h3 {
 }
 
 div#edit_category section#form_container div#fields {
-    width: 250px;
+    width: 300px;
     margin: auto;
 }
 
@@ -1023,6 +1080,12 @@ nav#main_nav {
     margin-bottom: 2px;
     -moz-border-radius: 7px;
     border-radius: 7px;
+    -moz-border-radius-topleft: 0px; 
+    -webkit-border-top-left-radius: 0px; 
+    border-top-left-radius: 0px;
+    -moz-border-radius-topright: 0px; 
+    -webkit-border-top-right-radius: 0px; 
+    border-top-right-radius: 0px;
     border: 1px solid #000;
     margin-top: 1px;
 }
@@ -1031,7 +1094,8 @@ nav#main_nav div#business_name,
 nav#main_nav div#e_name,
 nav#main_nav div#terminal_id,
 nav#main_nav div#date,
-nav#main_nav div#clock {
+nav#main_nav div#clock,
+nav#main_nav div#misc_notice {
     float: left;
     margin: 0px 3px;
     padding: 2px 5px;
@@ -1042,7 +1106,7 @@ nav#main_nav div#clock {
 }
 
 nav#main_nav div#nav_save_button {
-    padding: 1px 3px;
+    padding: 2px 3px;
     float: right;
     background-color: #FFF;
     border: 1px solid #CCC;
@@ -1052,6 +1116,22 @@ nav#main_nav div#nav_save_button {
     text-decoration: none;
     -moz-border-radius: 4px;
     border-radius: 4px;  
+}
+
+nav#main_nav div#misc_notice {
+    float: right;
+    margin-right: 5px;
+    width: -moz-fit-content;
+    display: none;
+}
+
+nav#main_nav div#misc_notice div#reload_message {
+    cursor: pointer;
+    color: red;
+}
+
+nav#main_nav div#misc_notice input {
+    height: 10px;
 }
 
 div#menu_screen div#receipt_keypad_container {
@@ -1112,7 +1192,7 @@ div#menu_screen div#receipt_keypad_container div#table_screen_button {
     -moz-border-radius: 4px;
     border-radius: 4px;  
     box-shadow: 1px 1px 3px #CCC;
-    background: -moz-linear-gradient(#FFF, #4297D7) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
 }
 
 div#menu_screen div#receipt_keypad_container div#till_keypad {
@@ -1159,7 +1239,7 @@ div#menu_screen div#menu_pages_container div#menu_buttons div.button {
     -moz-border-radius: 7px;
     border-radius: 7px;  
     box-shadow: 3px 3px 7px #CCC;
-    background: -moz-linear-gradient(#4297D7, #FFF, #4297D7) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(#CCC, #FFF, #CCC) repeat scroll 0 0 transparent;
 }
 
 div#menu_screen div#menu_pages_container div#menu_buttons div.button div.button_name {
@@ -1186,12 +1266,11 @@ div#menu_screen div#menu_pages_container div#pages div.page {
     vertical-align: middle;
     height: 85px;
     width: 90px;
-    border: 2px outset #AAA;
+    border: 1px solid #AAA;
     cursor: pointer;
-    -moz-border-radius: 7px;
-    border-radius: 7px;  
+    -moz-border-radius: 3px;
+    border-radius: 3px;  
     box-shadow: 1px 1px 2px #fad42e;
-    background: -moz-linear-gradient(#FFF, #fad42e) repeat scroll 0 0 transparent;
 }
 
 div#menu_screen div#menu_pages_container div#pages div.selected {
@@ -1219,12 +1298,11 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
     width: 110px;
     margin: 3px;
     height: 123px;
-    border: 2px outset #AAA;
+    border: 1px solid #AAA;
     cursor: pointer;
-    -moz-border-radius: 7px;
-    border-radius: 7px;  
+    -moz-border-radius: 3px;
+    border-radius: 3px;  
     box-shadow: 1px 1px 3px #CCC;
-    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_pic {
@@ -1269,7 +1347,7 @@ div#till_keypad div#keys div {
     -moz-border-radius: 5px;
     border-radius: 5px;  
     box-shadow: 2px 2px 2px #CCC;
-    background: -moz-linear-gradient(#FFF, #4297D7) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
 }
 
 div#till_keypad div#keys div.pad {
@@ -1337,13 +1415,13 @@ div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.amoun
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.name {
     float: left;
-    width: 168px;
+    width: 160px;
     text-align: left;
 }
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.modifier_name {
     float: left;
-    width: 128px;
+    width: 120px;
     margin-left: 80px;
     text-align: left;
 }
@@ -1501,8 +1579,8 @@ div#edit_receipt_item_popup_markup_container div#delete_button {
 /* Totals Screen */
 
 div#total_screen div#totals_receipt {
-    height: 300px;
-    width: 350px;
+    height: 330px;
+    width: 300px;
     margin: auto;
     margin-top: 10px;
     border: 1px solid #CCC;
@@ -1510,42 +1588,99 @@ div#total_screen div#totals_receipt {
 }
 
 div#total_screen div#totals_receipt div#totals_total_container div#totals_label {
-    width: 200px;
+    width: 120px;
     text-align: left;
     float: left;
 }
 
 div#total_screen div#totals_receipt div#totals_total_container div#totals_total_value {
-    width: 150px;
-    text-align: right;
-    float: left;
+    float: right;
     font-weight: bold;
 }
 
 div#total_screen div#totals_receipt div#totals_tendered_container div#tendered_label {
-    width: 200px;
+    width: 120px;
     text-align: left;
     float: left;
 }
 
+div#total_screen div#totals_receipt div#totals_tendered_container div#currency_symbol {
+    float: right;
+    font-weight: bold;
+}
+
 div#total_screen div#totals_receipt div#totals_tendered_container div#totals_tendered_value {
-    width: 150px;
+    width: -moz-fit-content;
     text-align: right;
-    float: left;
+    float: right;
     font-weight: bold;
 }
 
 div#total_screen div#totals_receipt div#change_container div#change_label {
-    width: 200px;
+    width: 120px;
     text-align: left;
     float: left;
 }
 
+div#total_screen div#totals_receipt div#change_container div#currency_symbol {
+    float: right;
+    font-weight: bold;
+}
+
 div#total_screen div#totals_receipt div#change_container div#totals_change_value {
-    width: 150px;
+    width: -moz-fit-content;
     text-align: right;
+    float: right;
+    font-weight: bold;
+}
+
+div#total_screen div#totals_receipt div#payment_method {
+    margin-top: 20px;
+}
+
+div#total_screen div#totals_receipt div#payment_method div#payment_method_label {
+    width: 120px;
+    float: left;
+    text-align: left;
+}
+
+div#total_screen div#totals_receipt div#payment_method div#payment_method_values {
+    float: right;
+    width: 150px;
+    text-align: left;
+}
+
+div#total_screen div#totals_receipt div#payment_method div#payment_method_values div.value {
     float: left;
     font-weight: bold;
+    text-align: left;
+}
+
+div#total_screen div#totals_receipt div#payment_method div#payment_method_values div.value input {
+    margin-top: 2px;
+}
+
+div#total_screen div#totals_receipt div#payment_method div#card_type_label {
+    width: 120px;
+    font-style: italic;
+    float: left;
+    text-align: left;
+}
+
+div#total_screen div#totals_receipt div#payment_method div#card_type_values {
+    float: right;
+    width: 150px;
+    text-align: left;
+}
+
+div#total_screen div#totals_receipt div#payment_method div#card_type_values div.value {
+    float: left;
+    font-weight: bold;
+    text-align: left;
+}
+
+div#total_screen div#totals_receipt div#payment_method div#card_type_values div.value input {
+    margin-top: 2px;
 }
 
 div#total_screen div#totals_keypad {
@@ -1726,16 +1861,120 @@ div#admin_display_buttons section#display_buttons h3.button_group_header a {
 }
 
 div#edit_display_buttons section#display_buttons {
-    width: 640px;
+    width: 560px;
     margin-left: auto;
     margin-right: auto;
+}
+
+div#edit_display_buttons section#display_buttons div.container {
+    display: none;
+}
+
+div#edit_display_buttons section#display_buttons h3.edit_display_buttons_header {
+    float: left;
+}
+
+div#edit_display_buttons section#display_buttons h3.edit_display_buttons_header a {
+    text-decoration: none;
 }
 
 div#edit_display_buttons section#display_buttons div#actions {
     float: right;
 }
 
+div#edit_display_buttons section#display_buttons div#actions input,
+div#edit_display_buttons section#display_buttons div#actions div {
+    float: left;
+    cursor: pointer;
+}
+
 /* End Admin Display Buttons Page */
+
+/* Global Settings Page */
+
+div#edit_global_settings section#global_settings {
+    width: 760px;
+    margin: auto;
+}
+
+div#edit_global_settings section#global_settings h3.global_settings_header {
+    text-align: left;
+}
+
+div#edit_global_settings section#global_settings h3.global_settings_header a {
+    text-decoration: none;
+}
+
+div#edit_global_settings section#global_settings div#actions {
+    float: right;
+}
+
+div#edit_global_settings section#global_settings div.container {
+    display: none;
+}
+
+div#edit_global_settings section#global_settings div.container h4 {
+    float: left;
+}
+
+div#edit_global_settings section#global_settings div.container div.business_logo div.label {
+    font-weight: bold;
+    float: left;
+}
+
+div#edit_global_settings section#global_settings div.container div.business_logo img {
+    width: 100px;
+}
+
+/* End Global Settings Page */
+
+/* Theme Settings Page */
+
+div#edit_theme_settings section#theme_settings {
+    width: 760px;
+    margin: auto;
+}
+
+div#edit_theme_settings section#theme_settings h3.theme_settings_header {
+    text-align: left;
+}
+
+div#edit_theme_settings section#theme_settings h3.theme_settings_header a {
+    text-decoration: none;
+}
+
+div#edit_theme_settings section#theme_settings div#actions {
+    float: right;
+}
+
+div#edit_theme_settings section#theme_settings div.container {
+    display: none;
+}
+
+div#edit_theme_settings section#theme_settings div#global_font_color_container {
+    margin: 20px 0px;
+    text-align: center;
+    border: 1px solid #CCC;
+    background-color: #F7F7F7;
+}
+
+div#edit_theme_settings section#theme_settings div#global_font_color_container div.header {
+    text-align: left;
+    font-weight: bold;
+    margin: 10px 0px 20px 7px;
+}
+
+div#edit_theme_settings section#theme_settings div#global_font_color_container div#colourPicker {
+    margin: auto;
+    width: -moz-fit-content;
+    margin-bottom: 20px;
+}
+
+div#edit_theme_settings section#theme_settings div#global_font_color_container input#global_font_color_input {
+    display: none;
+}
+
+/* End Theme Settings Page */
 
 /* Display Button Passcode Popup */
 
@@ -1915,7 +2154,7 @@ div#options_screen div#options_screen_menu_buttons div.button {
     -moz-border-radius: 7px;
     border-radius: 7px;  
     box-shadow: 3px 3px 7px #CCC;
-    background: -moz-linear-gradient(#4297D7, #FFF, #4297D7) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(#CCC, #FFF, #CCC) repeat scroll 0 0 transparent;
 }
 
 div#options_screen div#options_screen_menu_buttons div.button div.button_name {
@@ -1942,11 +2181,14 @@ div#table_select_screen div#room_list {
 div#table_select_screen div#room_list div.room_name {
     margin-right: 10px;
     float: left;
-    padding: 3px 1px;
-    width: 80px;
-    border: 2px outset #CCC;
-    background-color: #FFF;
+    width: 150px;
     cursor: pointer;
+    padding: 2px 4px;
+    border: 2px outset #AAA;
+    -moz-border-radius: 4px;
+    border-radius: 4px;  
+    box-shadow: 1px 1px 3px #CCC;
+    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
 }
 
 div#table_select_screen div#room_list div.selected {

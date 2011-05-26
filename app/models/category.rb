@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110331071526
+# Schema version: 20110526094125
 #
 # Table name: categories
 #
@@ -9,10 +9,13 @@
 #  description        :string(255)
 #  created_at         :datetime
 #  updated_at         :datetime
+#  tax_rate_id        :integer(4)
 #
 
 class Category < ActiveRecord::Base
   has_many :products
+  belongs_to :tax_rate
+  
   belongs_to :parent_category, :class_name => "Category"
 
   validates :name, :presence => true, :uniqueness => true

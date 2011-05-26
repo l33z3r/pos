@@ -3,6 +3,8 @@
   <h3>Select Table</h3>
 
   <div id="room_list">
+    <div class="room_name" id="select_room_button_0" onclick="tableScreenSelectTable(selectedTable);">Back to Menu</div>
+    
     <% @rooms.each do |room| %>
       <div class="room_name" id="select_room_button_<%=room.id%>" onclick="loadRoomGraphic(<%=room.id%>)"><%= room.name %></div>
 

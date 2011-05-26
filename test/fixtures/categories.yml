@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110331071526
+# Schema version: 20110526094125
 #
 # Table name: categories
 #
@@ -9,6 +9,7 @@
 #  description        :string(255)
 #  created_at         :datetime
 #  updated_at         :datetime
+#  tax_rate_id        :integer(4)
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

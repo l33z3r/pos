@@ -1,11 +1,13 @@
 <nav id="main_nav">
-  <div id="business_name">Cluey</div>
+  <div id="business_name"><%=GlobalSetting.parsed_setting_for GlobalSetting::BUSINESS_NAME%></div>
   <div id="e_name" <%= session[:current_employee_nickname] ? "" : "style='display: none;'" %>><%= session[:current_employee_nickname] %></div>
-  <div id="terminal_id">Terminal #1</div>
+  <div id="terminal_id"><%= @terminal_id %></div>
   <div id="date"><%= Time.now.to_s(:short) %></div>
   <div id="clock"></div>
-
+  
   <div style="display: none;" id="nav_save_button" onclick="doLogout();">X</div>
+
+  <div id="misc_notice"></div>
 
   <div class="clear">&nbsp;</div>
 </nav>

@@ -9,7 +9,7 @@
         <% mc.modifiers.all.each do |m| %>
           <div class="modifier" onclick="modifierSelected(<%=m.id%>, '<%=m.name%>', <%=m.price%>)">
             <div class="name"><%=m.name%></div>
-            <div class="price"><%=number_to_currency m.price%></div>
+            <div class="price"><%=print_money m.price%></div>
             <div class="clear">&nbsp;</div>
           </div>
         <% end %>

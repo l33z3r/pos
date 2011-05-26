@@ -16,7 +16,7 @@ function number_to_currency(number, options) {
     try {
         var options   = options || {};
         var precision = options["precision"] || 2;
-        var unit      = options["unit"] || "€";
+        var unit      = options["unit"] || dynamicCurrencySymbol;
         var separator = precision > 0 ? options["separator"] || "." : "";
         var delimiter = options["delimiter"] || ",";
   

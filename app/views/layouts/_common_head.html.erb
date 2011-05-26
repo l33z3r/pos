@@ -2,6 +2,9 @@
 
 <%= stylesheet_link_tag :all, :cache => true, :recursive => true %>
 
+<!-- load the dynamic theme -->
+<link type="text/css" href="<%= admin_custom_theme_path(:format => :css) %> " media="screen" rel="stylesheet" />
+
 <%= javascript_include_tag "jquery.min", "jquery-ui.min", :cache => "jq" %>
 
 <!--cant cache the following scripts as they are erb templates -->
@@ -12,10 +15,36 @@
   "jquery.plugin.menuTree.pack", "webkitdragdrop",
   "screen_button_functions", "jquery.bubblepopup", :cache => "libs" %>
 
+<!-- only load the fingerprint libraries if the fingerprint has not yet been set -->
+<% if !request.cookies["terminal_fingerprint"] %>
+  <%= javascript_include_tag "md5", "detector", :cache => "fingerprint_libs" %>
+<% end %>
+
 <%= csrf_meta_tag %>
 
 <!-- include firebug lite -->
 <!--script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script-->
+
+<!-- must set some vars from the system settings -->
+<script type="text/javascript">
+  //load the setting for bypass pin
+  var bypassPin = <%= GlobalSetting.parsed_setting_for GlobalSetting::BYPASS_PIN %>;
+    
+  //load the dynamically set currency symbol
+  var dynamicCurrencySymbol = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL %>";
+  
+  //load the dynamically set screen that appears after a sale and login screen
+  var defaultHomeScreen = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_HOME_SCREEN %>;
+  var defaultPostLoginScreen = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_POST_LOGIN_SCREEN %>;
+  var LOGIN_SCREEN = <%= GlobalSetting::LOGIN_SCREEN %>;
+  var MENU_SCREEN = <%= GlobalSetting::MENU_SCREEN %>;
+  var TABLES_SCREEN = <%= GlobalSetting::TABLES_SCREEN %>;
+  
+  //this variable is used for polling and gets updated by the dynamic javascript
+  var lastUpdateTime = <%=Time.now.to_i%>;
+  
+  var receiptMessage = "<%= GlobalSetting.parsed_setting_for GlobalSetting::RECEIPT_MESSAGE %>";
+</script>
 
 <%= yield :head %>
 

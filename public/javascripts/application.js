@@ -13,36 +13,12 @@ var display_button_passcode_permissions;
 var showingPassCodeDialog = false;
 
 $(function(){
+    setFingerPrintCookie();
+    
     initMenu();
 
     //the following code initializes all the flexigrid tables
-    $('table#employee_list').flexigrid({
-        height:'auto'
-    });
-    $('table#role_list').flexigrid({
-        height:'auto'
-    });
-    $('table#product_list').flexigrid({
-        height:'auto'
-    });
-    $('table#category_list').flexigrid({
-        height:'auto'
-    });
-    $('table#display_list').flexigrid({
-        height:'auto'
-    });
-    $('table#display_button_list').flexigrid({
-        height:'auto'
-    });
-    $('table#modifier_categories_list').flexigrid({
-        height:'auto'
-    });
-    $('table#modifier_list').flexigrid({
-        height:'auto'
-    });
-    $('table#room_list').flexigrid({
-        height:'auto'
-    });
+    initFlexigridTables();
     
     resetLoginBubblePopups();
     
@@ -53,7 +29,26 @@ $(function(){
     });
             
     $('#menu_buttons_popup_anchor').FreezeBubblePopup();
+    
+    setTimeout(callHomePoll, 10000);
 });
+
+function callHomePoll() {
+    callHomeURL = "/call_home.js"
+    
+    $.ajax({
+        url: callHomeURL,
+        dataType: 'script',
+        success: callHomePollComplete,
+        data : {
+            lastUpdateTime : lastUpdateTime
+        }
+    });
+}
+
+function callHomePollComplete() {
+    setTimeout(callHomePoll, 5000);
+}
 
 function resetLoginBubblePopups() {
     for (var i = 0; i < employees.length; i++) {
@@ -137,6 +132,19 @@ $(function() {
 });
 
 function showLoginDialog(id) {
+    if(bypassPin) {
+        //load the user credentials and call login success function
+        for (var i = 0; i < employees.length; i++) {
+            if(id == employees[i].id) {
+                nickname = employees[i].nickname;
+                is_admin = employees[i].is_admin;
+                passcode = employees[i].passcode;
+                loginSuccess(id, nickname, is_admin, passcode);
+                return;
+            }
+        }
+    }
+    
     hideAllLoginBubblePopups();
     $('#passcode').val("");
     $('.passcode_show').html("");
@@ -180,14 +188,12 @@ function doLogin(user_id) {
     }
 
     for (var i = 0; i < employees.length; i++) {
-        id = employees[i].id
-        nickname = employees[i].nickname
-        
         passcode = employees[i].passcode;
-
-        is_admin = employees[i].is_admin;
-
+        id = employees[i].id
+        
         if(entered_code == passcode && user_id == id) {
+            nickname = employees[i].nickname;
+            is_admin = employees[i].is_admin;
             loginSuccess(id, nickname, is_admin, passcode);
             return;
         }
@@ -205,8 +211,11 @@ function doLogout() {
     current_user_id = null;
 
     //show login overlay
-    $('#landing').show();
     $('#menu_screen').hide();
+    $('#table_select_screen').hide();
+    $('#total_screen').hide();
+    $('#landing').show();
+    
     $('#num').val("");
     $('#clockincode_show').html("");
 
@@ -330,6 +339,12 @@ function loginSuccess(id, nickname, is_admin, passcode) {
     });
 
     trySendOutstandingOrdersToServer();
+    
+    //finally, if the default screen to show 
+    //after login is the tables screen then show it!
+    if(defaultPostLoginScreen == TABLES_SCREEN) {
+        showTablesScreen();
+    }
 }
 
 function clockinFailure() {
@@ -375,6 +390,8 @@ function displayNotice(message) {
 }
 
 function copyReceiptToLoginScreen() {
+    clearHTML = "<div class='clear'>&nbsp;</div>";
+    
     if(totalOrder != null) {
         total = totalOrder.total;
     } else {
@@ -399,9 +416,7 @@ function copyReceiptToLoginScreen() {
     
     //tendered includes the euro sign, so if it is bigger
     //than one, it has been set on totals screen and we should show it
-    if(totalTendered.length>1) {
-        //strip off the euro sign
-        totalTendered = totalTendered.substring(1);
+    if(totalTendered.length>0) {
         totalTenderedText = number_to_currency(totalTendered, {
             precision : 2, 
             showunit : true
@@ -411,15 +426,16 @@ function copyReceiptToLoginScreen() {
     
     //change includes the euro sign, so if it is bigger
     //than one, it has been set on totals screen and we should show it
-    if(change.length>1) {
-        //strip off the euro sign
-        change = change.substring(1);
+    if(change.length>0) {
         changeText = number_to_currency(change, {
             precision : 2, 
             showunit : true
         })
         newHTML += "<div id='login_till_roll_change_label'>Change:</div><div id='login_till_roll_change_value'>" + changeText + "</div>";
     }
+    
+    receiptMessageHTML = "<div id='receipt_message'>" + receiptMessage + "</div>";
+    newHTML += clearHTML + receiptMessageHTML;
     
     $('#login_till_roll').html(newHTML);
 
@@ -635,5 +651,58 @@ function setRoomObjectGridPositions() {
     
         ro_image.width(grid_x_size * roomScaleX);
         ro_image.height(grid_y_size * roomScaleY);
+    });
+}
+
+//this checks if we are on menu screen as some buttons will only work on that screen
+//this code is in lib/button_mapper.rb
+function checkMenuScreenForFunction() {
+    if(!$('#menu_screen').is(":visible")) {
+        alert("Functionality Only Available On Menu Screen!");
+        return false;
+    }
+    
+    return true;
+}
+
+//used for setting the terminal id using the browsers fingerprint and save it in a cookie
+//uses the fingerprint library with md5 hash
+function setFingerPrintCookie() {
+    c_name = "terminal_fingerprint";
+    
+    if(getRawCookie(c_name) == null) {
+        c_value = pstfgrpnt(true).toString();
+        exdays = 365;
+    
+        setRawCookie(c_name, c_value, exdays);
+    }
+}
+
+function setRawCookie(c_name, value, exdays) {
+    var exdate=new Date();
+    exdate.setDate(exdate.getDate() + exdays);
+    var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+    document.cookie=c_name + "=" + c_value;
+}
+
+function getRawCookie(c_name) {
+    var i,x,y,ARRcookies=document.cookie.split(";");
+    for (i=0;i<ARRcookies.length;i++)
+    {
+        x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+        y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+        x=x.replace(/^\s+|\s+$/g,"");
+        if (x==c_name)
+        {
+            return unescape(y);
+        }
+    }
+
+    return null;
+}
+
+function initFlexigridTables() {
+    $('table').flexigrid({
+        height:'auto'
     });
 }

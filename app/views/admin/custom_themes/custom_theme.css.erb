@@ -1,0 +1,23 @@
+/* 
+Document   : style
+Created on : 28-Mar-2011, 22:19:16
+Author     : Lee
+Description:
+Main stylesheet.
+*/
+
+/* Global Styles */
+
+body * {
+
+<% @font_gs = GlobalSetting.setting_for GlobalSetting::THEME, {:theme_property => "global_font"} %>
+<% if @font_gs.value.present? %>
+  font-family: <%= @font_gs.value %>;
+<% end %>
+
+<% @font_color_gs = GlobalSetting.setting_for GlobalSetting::THEME, {:theme_property => "global_font_color"} %>
+<% if @font_color_gs.value.present? %>
+  color:  <%= @font_color_gs.value %>;
+<% end %>
+  
+}

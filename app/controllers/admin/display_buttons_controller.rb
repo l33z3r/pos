@@ -22,6 +22,31 @@ class Admin::DisplayButtonsController < Admin::AdminController
       render :action => "edit_multiple"
     end
   end
+  
+  def update_multiple_groups
+    @display_button_groups = DisplayButtonGroup.update(params[:display_button_groups].keys, params[:display_button_groups].values).reject { |p| p.errors.empty? }
+    
+    if @display_button_groups.empty?
+      flash[:notice] = "Button Groups updated!"
+      redirect_to edit_multiple_admin_display_buttons_path
+    else
+      render :action => "edit_multiple"
+    end
+  end
+  
+  def destroy_button_group
+    @dbg = DisplayButtonGroup.find(params[:dbg_id])
+    
+    @dbg.display_buttons.each do |db|
+      db.display_button_group_id = nil
+      db.save!
+    end
+    
+    @dbg.destroy
+    
+    flash[:notice] = "Button Group deleted!"
+    redirect_to edit_multiple_admin_display_buttons_path
+  end
 
   def update_sales_screen_button_role
     @dbr = DisplayButtonRole.find(params[:id])

@@ -4,7 +4,7 @@ function initAdminScreen() {
 }
 
 $(function(){
-    $(initAdminScreen())
+    initAdminScreen();
 });
 
 function addModifierFields(link, content) {
@@ -23,6 +23,14 @@ function doSetDefaultDisplay(displayId) {
     $.ajax({
         type: 'POST',
         url: '/admin/displays/' + displayId + '/default'
+    });
+}
+
+function doSetDefaultTaxRate(taxRateId) {
+    //send an update to display controller
+    $.ajax({
+        type: 'POST',
+        url: '/admin/tax_rates/' + taxRateId + '/default'
     });
 }
 
@@ -63,12 +71,18 @@ function newButtonGroup() {
 }
 
 function toggleButtonGroup(bg_id) {
+    
+    //this hack is to allow the empty category to toggle
+    if(typeof bg_id  == "undefined") {
+        bg_id = '';
+    }
+    
     targetEl = $('#display_button_list_container_' + bg_id);
     
     $('.display_button_list_container').each(function(index, el) {
         el = $(el);
         
-        if(el!=targetEl && el.is(":visible")){
+        if(el.attr('id') != targetEl.attr('id') && el.is(":visible")){
             el.slideToggle();
         }
     });

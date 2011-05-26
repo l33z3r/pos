@@ -2,48 +2,126 @@
 
   <section id="display_buttons">
 
-    <h3>Display Buttons</h3>
+    <h3>Edit Display Buttons and Button Groups</h3>
 
-    <%= form_tag update_multiple_admin_display_buttons_path do %>
-      <table id="display_button_list">
-        <thead>
-          <tr>
-            <th width="50">ID</th>
-            <th width="240">Button Text</th>
-            <th width="280">Button Group</th>
-          </tr>
-        </thead>
+    <div class="clear">&nbsp;</div>
 
-        <tbody>
-          <% DisplayButton.all(:order => "button_text").each do |display_button| %>
+    <h3 class="edit_display_buttons_header">
+      <a href="#" onclick="$(this).parent().next().slideToggle()">
+        Display Buttons >
+      </a>
+    </h3>
+
+    <div class="container">
+
+      <div class="clear">&nbsp;</div>
+
+      <%= form_tag update_multiple_admin_display_buttons_path do %>
+
+        <div id="actions">
+          <%= submit_tag "Save" %>
+        </div>
+
+        <div class="clear_top_margin_10">&nbsp;</div>
+
+        <table id="display_button_list">
+          <thead>
             <tr>
-              <td><%=display_button.perm_id%></td>
-              <td>
-                <%= fields_for "display_buttons[]", display_button do |f| %>
-                  <%= f.text_field :button_text, :size => 20 %>
-                <% end %>
-              </td>
-              <td>
-                <%= fields_for "display_buttons[]", display_button do |f| %>
-                  <%= f.label :display_button_group_id, "Button Group:" %>
-                  <%= f.collection_select :display_button_group_id, DisplayButtonGroup.find(:all), 
-                    :id, :name, :include_blank => "None" %>
-                <% end %>
-                <a href="#" onclick="newButtonGroup()">New</a>
-              </td>
+              <th width="50">ID</th>
+              <th width="240">Button Text</th>
+              <th width="220">Button Group</th>
             </tr>
-          <% end %>
+          </thead>
 
-        </tbody>
-      </table>
+          <tbody>
+            <% DisplayButton.all(:order => "button_text").each do |display_button| %>
+              <tr>
+                <td><%=display_button.perm_id%></td>
+                <td>
+                  <%= fields_for "display_buttons[]", display_button do |f| %>
+                    <%= f.text_field :button_text, :size => 20 %>
+                  <% end %>
+                </td>
+                <td>
+                  <%= fields_for "display_buttons[]", display_button do |f| %>
+                    <%= f.label :display_button_group_id, "Button Group:" %>
+                    <%= f.collection_select :display_button_group_id, DisplayButtonGroup.find(:all), 
+                      :id, :name, :include_blank => "None" %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
 
-      <br />
+          </tbody>
+        </table>
 
-      <div id="actions">
-        <%= submit_tag "Save" %>
-      </div>
+        <div class="clear_top_margin_10">&nbsp;</div>
 
-    <% end %>
+        <div id="actions">
+          <%= submit_tag "Save" %>
+        </div>
 
+      <% end %>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
+    <h3 class="edit_display_buttons_header">
+      <a href="#" onclick="$(this).parent().next().slideToggle()">
+        Display Button Groups >
+      </a>
+    </h3>
+
+    <div class="container">
+
+      <div class="clear">&nbsp;</div>
+
+      <%= form_tag update_multiple_groups_admin_display_buttons_path do %>
+
+        <div id="actions">
+          <%= submit_tag "Save" %>
+          <%= button_to_function "New Button Group", "newButtonGroup()" %>
+        </div>
+
+        <div class="clear_top_margin_10">&nbsp;</div>
+
+        <table id="display_button_group_list">
+          <thead>
+            <tr>
+              <th width="280">Name</th>
+              <th width="80">Delete</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% DisplayButtonGroup.all(:order => "name").each do |dbg| %>
+              <tr>
+                <td>
+                  <%= fields_for "display_button_groups[]", dbg do |f| %>
+                    <%= f.text_field :name, :size => 20 %>
+                  <% end %>
+                </td>
+                <td>
+                  <%= link_to "Delete", destroy_button_group_admin_display_buttons_path(:dbg_id => dbg.id),
+                    :method => "post", :confirm => "Are You Sure?" %>
+                </td>
+              </tr>
+            <% end %>
+
+          </tbody>
+        </table>
+
+        <div class="clear_top_margin_10">&nbsp;</div>
+
+        <div id="actions">
+          <%= submit_tag "Save" %>
+        </div>
+
+      <% end %>
+
+    </div>
+
+    <div class="clear_top_margin_10">&nbsp;</div>
+    
   </section>
 </div>

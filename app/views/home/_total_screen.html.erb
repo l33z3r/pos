@@ -9,14 +9,41 @@
 
     <div id="totals_tendered_container">
       <div id="tendered_label">Cash Tendered:</div>
-      <div id="totals_tendered_value">€</div>
+      <div id="totals_tendered_value"></div>
+      <div id="currency_symbol"><%= GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL %></div>
       <div class="clear">&nbsp;</div>
     </div>
 
     <div id="change_container">
       <div id="change_label">Change:</div>
       <div id="totals_change_value"></div>
+      <div id="currency_symbol"><%= GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL %></div>
       <div class="clear">&nbsp;</div>
+    </div>
+
+    <div id="payment_method">
+      <div id="payment_method_label">Payment Method:</div>
+      <div id="payment_method_values">
+        <% GlobalSetting.accepted_payment_methods.each do |pm| %>
+        <% next if pm == "credit_card" %>
+          <div class="value">
+            <input type="radio" name="payment_method" value="<%=pm%>" <%=pm == "cash" ? "checked" : "" %>/><%=pm.titleize%>
+          </div>
+          <div class="clear">&nbsp;</div>
+        <% end %>
+      </div>
+
+      <div class="clear_top_margin_10">&nbsp;</div>
+
+      <div id="card_type_label">Credit Cards:</div>
+      <div id="card_type_values">
+        <% GlobalSetting.accepted_card_types.each do |pm| %>
+          <div class="value">
+            <input type="radio" name="payment_method" value="<%=pm%>"/><%=pm.titleize%>
+          </div>
+          <div class="clear">&nbsp;</div>
+        <% end %>
+      </div>
     </div>
 
   </div>

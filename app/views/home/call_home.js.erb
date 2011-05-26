@@ -1,0 +1,8 @@
+<% if @got_update %>
+  lastUpdateTime = <%=@new_update_time%>;
+<% end %>
+
+<% if @reload_app %>
+  $('#misc_notice').html("<%= escape_javascript(render :partial => '/layouts/reload_terminal_notice') %>");
+  $('#misc_notice').fadeIn();
+<% end %>

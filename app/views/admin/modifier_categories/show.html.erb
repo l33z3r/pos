@@ -24,7 +24,7 @@
         <% @modifier_category.modifiers.each do |modifier| %>
           <tr>
             <td><%= modifier.name %></td>
-            <td><%= number_to_currency modifier.price %></td>
+            <td><%= print_money modifier.price %></td>
           </tr>
         <% end %>
       </tbody>

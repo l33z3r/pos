@@ -1,5 +1,6 @@
 var currentMenuPage;
-var currentOrder;
+var currentOrder = null;
+var currentTableOrder = null;
 var totalOrder = null;
 var currentOrderItem;
 var currentTotal;
@@ -431,12 +432,6 @@ function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit) {
 }
 
 function removeOrderItem(el) {
-    doIt = confirm("Are you sure?");
-    
-    if(!doIt) {
-        return;
-    }
-    
     //fetch the item number
     itemNumber = currentSelectedReceiptItemEl.data("item_number");
     
@@ -611,7 +606,7 @@ function takeTendered() {
     cashTendered = getTendered();
 
     if(cashTendered < currentTotal) {
-        alert("Must enter a higher value than total (€" + currentTotal + ")");
+        alert("Must enter a higher value than total (" + dynamicCurrencySymbol + currentTotal + ")");
         resetTendered();
         return;
     }
@@ -619,8 +614,7 @@ function takeTendered() {
     //calculate change and show the finish sale button
     change = cashTendered - currentTotal;
     $('#totals_change_value').html(number_to_currency(change, {
-        precision : 2, 
-        showunit : true
+        precision : 2
     }));
 
     $('#tendered_button').hide();
@@ -651,11 +645,13 @@ function doTotalFinal() {
 
     cashTendered = getTendered();
 
+    paymentMethod = $("input[name='payment_method']:checked").val();
+
     //attach the employee id
     orderData = {
         'employee_id':current_user_id,
         'total':totalOrder.total,
-        'payment_type':'cash',
+        'payment_type':paymentMethod,
         'amount_tendered':cashTendered,
         'num_persons':numPersons,
         'is_table_order':isTableOrder,
@@ -670,11 +666,17 @@ function doTotalFinal() {
     //clear the order
     clearOrder(selectedTable);
 
+    //clear the receipt and print the message in system settings
+    $('#till_roll').slideUp('slow', function() {
+        $('#till_roll').html('');
+        $('#till_roll').show();
+    });
+    
     //print receipt
 
 
-    //back to login screen
-    doLogout();
+    //pick up the default home screen and load it
+    loadAfterSaleScreen();
 
     //reset for next sale
     $('#total_screen').hide();
@@ -683,6 +685,26 @@ function doTotalFinal() {
     resetTendered();
     $('#totals_change_value').html("");
     totalOrder = null;
+}
+
+function loadAfterSaleScreen() {
+    //hide all screens first
+    $('#total_screen').hide();
+    $('#landing').hide();
+    $('#menu_screen').hide();
+    $('#table_select_screen').hide();
+    
+    if(defaultHomeScreen == LOGIN_SCREEN) {
+        //back to login screen
+        doLogout();
+    } else if(defaultHomeScreen == MENU_SCREEN) {
+        $('#menu_screen').show();
+    } else if(defaultHomeScreen == TABLES_SCREEN) {
+        showTablesScreen();
+    } else {
+        //back to login screen
+        doLogout();
+    }
 }
 
 function sendOrderToServer(orderData) {
@@ -758,12 +780,11 @@ function saveOrdersForLaterSend(ordersForLaterSend) {
 }
 
 function getTendered() {
-    //peel off euro sign
-    return $('#totals_tendered_value').html().substring(1);
+    return $('#totals_tendered_value').html();
 }
 
 function resetTendered() {
-    $('#totals_tendered_value').html("€");
+    $('#totals_tendered_value').html("");
 }
 
 function doCancelTillKeypad() {
@@ -771,7 +792,7 @@ function doCancelTillKeypad() {
 }
 
 function doCancelTotalsKeypad() {
-    $('#totals_tendered_value').html("€");
+    $('#totals_tendered_value').html("");
 }
 
 function initOptionButtons() {

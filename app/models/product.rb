@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110429080107
+# Schema version: 20110526094125
 #
 # Table name: products
 #
@@ -20,6 +20,7 @@
 #  product_image_file_size    :integer(4)
 #  product_image_updated_at   :datetime
 #  modifier_category_id       :integer(4)
+#  tax_rate_id                :integer(4)
 #
 
 class Product < ActiveRecord::Base
@@ -27,6 +28,8 @@ class Product < ActiveRecord::Base
   has_attached_file :product_image, :styles => { :medium => "300x300>", :thumb => "115x115>" }
 
   belongs_to :category
+  belongs_to :tax_rate
+  
   belongs_to :modifier_category
   has_many :order_items
   has_many :menu_items, :dependent => :destroy
@@ -50,5 +53,21 @@ class Product < ActiveRecord::Base
   
   def self.categoryless
     find_all_by_category_id(nil)
+  end
+  
+  def sales_tax_rate
+    if tax_rate_id.blank?
+      if category_id
+        if category.tax_rate_id.blank?
+          TaxRate.load_default.rate
+        else
+          category.tax_rate.rate
+        end
+      else
+        TaxRate.load_default.rate
+      end
+    else
+      tax_rate.rate
+    end
   end
 end

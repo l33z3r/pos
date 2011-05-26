@@ -1,0 +1,102 @@
+<% content_for :head do %>
+
+  <%= javascript_include_tag  "Colour.compressed", "ColourPicker.compressed" %>
+
+  <script type="text/javascript">
+  
+    function colourChanged(newColour, colourPickerObj) {
+      newColorCSSVal = newColour.getCSSHexadecimalRGB();
+      $('#global_font_color_input').val(newColorCSSVal);
+    }
+  
+    $(function(){
+      //init color picker for font color property
+      var colourPicker = new ColourPicker(
+      document.getElementById('colourPicker'),
+      '/images/jquery_colour_picker/');
+        
+      colourPicker.addChangeListener(colourChanged);
+    });
+  
+  </script>
+
+<% end %>
+
+<div id="edit_theme_settings">
+
+  <%= render :partial => "layouts/terminal_reload_request" %>
+
+  <section id="theme_settings">
+
+    <h3>Theme Settings</h3>
+
+    <div class="clear">&nbsp;</div>
+
+    <h3 class="theme_settings_header">
+      <a href="#" onclick="$(this).parent().next().slideToggle(); return false;">
+        General >
+      </a>
+    </h3>
+
+    <div class="container">
+      <div class="clear">&nbsp;</div>
+
+      <%= form_tag admin_update_custom_themes_path do %>
+
+        <div id="actions">
+          <%= submit_tag "Save" %>
+        </div>
+
+        <div class="clear_top_margin_10">&nbsp;</div>
+
+        <table id="theme_settings_list">
+          <thead>
+            <tr>
+              <th width="330">Setting</th>
+              <th width="320">Value</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Global Font Style</td>
+              <td>
+                <% @gs = GlobalSetting.setting_for GlobalSetting::THEME, {:theme_property => "global_font"} %>
+                <%= fields_for "global_settings[]", @gs do |f| %>
+                  <%= f.text_field :value, {:id => "global_font_input"} %>
+                <% end %>
+              </td>
+            </tr>
+            <tr>
+              <td>Some other setting</td>
+              <td>
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div id="global_font_color_container">
+          <div class="header">Global Font Color</div>
+
+
+          <div id="colourPicker"></div>
+
+          <% @gs = GlobalSetting.setting_for GlobalSetting::THEME, {:theme_property => "global_font_color"} %>
+          <%= fields_for "global_settings[]", @gs do |f| %>
+            <%= f.text_field :value, {:id => "global_font_color_input"} %>
+          <% end %>
+        </div>
+
+        <div class="clear_top_margin_10">&nbsp;</div>
+
+        <div id="actions">
+          <%= submit_tag "Save" %>
+        </div>
+
+      <% end %>
+    </div>
+
+  </section>
+
+</div>

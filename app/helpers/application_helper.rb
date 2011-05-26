@@ -15,6 +15,16 @@ module ApplicationHelper
       image_tag "default_employee_image.jpg"
     end
   end
+  
+  def business_logo_thumb show_default=false
+    @gs = GlobalSetting.setting_for GlobalSetting::LOGO, {:logo_type => "business_logo"}
+    
+    if @gs.has_logo?
+      image_tag @gs.logo.url(:thumb)
+    elsif show_default
+      image_tag "default_business_logo_image.jpg"
+    end
+  end
 
   def button_action button
     @action = ButtonMapper.new.action_for_button button

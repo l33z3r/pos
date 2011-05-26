@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110429080107
+# Schema version: 20110526094125
 #
 # Table name: products
 #
@@ -20,6 +20,7 @@
 #  product_image_file_size    :integer(4)
 #  product_image_updated_at   :datetime
 #  modifier_category_id       :integer(4)
+#  tax_rate_id                :integer(4)
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

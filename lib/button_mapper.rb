@@ -19,7 +19,10 @@ class ButtonMapper
   SAVE_BUTTON = 16
   MORE_OPTIONS_BUTTON = 17
   BUTTON_CONFIG_BUTTON = 18
-    TABLES_BUTTON = 19
+  TABLES_BUTTON = 19
+  SYSTEM_BUTTON = 20
+  THEMES_BUTTON = 21
+  DISCOUNT_BUTTON = 22
     
   def action_for_button button
 
@@ -63,9 +66,20 @@ class ButtonMapper
     when BUTTON_CONFIG_BUTTON
       @retval = "window.location = '#{edit_multiple_admin_display_buttons_path}'; return false;"
     when TABLES_BUTTON
-      @retval = "showTablesScreen(); return false;"
+      @retval = wrap_with_menu_screen_function_check "showTablesScreen(); return false;"
+    when SYSTEM_BUTTON
+      @retval = "window.location = '#{admin_global_settings_path}'; return false;"
+    when THEMES_BUTTON
+      @retval = "window.location = '#{admin_custom_themes_path}'; return false;"
+    when DISCOUNT_BUTTON
+      @retval = "alert('discount clicked');"
     end
 
     @retval
   end
+  
+  def wrap_with_menu_screen_function_check the_script
+    return "if(checkMenuScreenForFunction()){#{the_script}}"
+  end
+  
 end
