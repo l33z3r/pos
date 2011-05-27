@@ -70,7 +70,7 @@ class ButtonMapper
     when SYSTEM_BUTTON
       @retval = "window.location = '#{admin_global_settings_path}'; return false;"
     when THEMES_BUTTON
-      @retval = "window.location = '#{admin_custom_themes_path}'; return false;"
+      @retval = "alert('not yet implemented');"#"window.location = '#{admin_custom_themes_path}'; return false;"
     when DISCOUNT_BUTTON
       @retval = "alert('discount clicked');"
     end
