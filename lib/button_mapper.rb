@@ -23,7 +23,29 @@ class ButtonMapper
   SYSTEM_BUTTON = 20
   THEMES_BUTTON = 21
   DISCOUNT_BUTTON = 22
-    
+  CLIENT_BUTTON = 23
+  WASTE_BUTTON = 24
+  COMPLIMENTARY_BUTTON = 25
+  CHANGE_PRICE_BUTTON = 26
+  FLOAT_BUTTON = 27
+  NO_SALE_BUTTON = 28
+  REFUND_BUTTON = 29
+  REMOVE_ITEM_BUTTON = 30
+  ADD_NOTE_BUTTON = 31
+  CHANGE_WAITER_BUTTON = 32
+  PRINTERS_BUTTON = 33
+  TRANSFER_ORDER_BUTTON = 34
+  SPLIT_ORDER_BUTTON = 35
+  STOCK_TAKE_BUTTON = 36
+  DELIVERY_BUTTON = 37
+  CASH_OUT_BUTTON = 38
+  RECEIPT_SETUP_BUTTON = 39
+  PAYMENT_METHODS_BUTTON = 40
+  GIFT_VOUCHER_BUTTON = 41
+  ORDER_TYPES_BUTTON = 42
+  DISCOUNTS_SURCHARGES_BUTTON = 43
+  PRINT_RECEIPT_BUTTON = 44
+  
   def action_for_button button
 
     @retval = ""
@@ -34,9 +56,9 @@ class ButtonMapper
     when Z_TOTAL_BUTTON
       @retval = "doZTotal();"
     when X_REPORTS_BUTTON
-      @retval = "alert('x reports clicked')"
+      @retval = "alert('x reports clicked');"
     when Z_REPORTS_BUTTON
-      @retval = "alert('z reports clicked')"
+      @retval = "alert('z reports clicked');"
     when MANAGE_USERS_BUTTON
       @retval = "window.location = '#{admin_employees_path}'; return false;"
     when MANAGE_ROLES_BUTTON
@@ -73,9 +95,65 @@ class ButtonMapper
       @retval = "window.location = '#{admin_custom_themes_path}'; return false;"
     when DISCOUNT_BUTTON
       @retval = "showDiscountPopup(null);"
+    when CLIENT_BUTTON
+      @retval = "alert('client button clicked');"
+    when WASTE_BUTTON
+      @retval = "alert('waste button clicked');"
+    when COMPLIMENTARY_BUTTON
+      @retval = "alert('complimentary button clicked');"
+    when CHANGE_PRICE_BUTTON
+      @retval = "alert('change price button clicked');"
+    when FLOAT_BUTTON
+      @retval = "alert('float button clicked');"
+    when NO_SALE_BUTTON
+      @retval = "alert('no sale button clicked');"
+    when REFUND_BUTTON
+      @retval = "alert('refund button clicked');"
+    when REMOVE_ITEM_BUTTON
+      @retval = "alert('remove item button clicked');"
+    when ADD_NOTE_BUTTON
+      @retval = "alert('add note button clicked');"
+    when CHANGE_WAITER_BUTTON
+      @retval = "alert('change waiter button clicked');"
+    when PRINTERS_BUTTON
+      @retval = "alert('printers button clicked');"
+    when TRANSFER_ORDER_BUTTON
+      @retval = "alert('transfer order button clicked');"
+    when SPLIT_ORDER_BUTTON
+      @retval = "alert('split order button clicked');"
+    when STOCK_TAKE_BUTTON
+      @retval = "alert('stock take button clicked');"
+    when DELIVERY_BUTTON
+      @retval = "alert('delivery button clicked');"
+    when CASH_OUT_BUTTON
+      @retval = "alert('cash out button clicked');"
+    when RECEIPT_SETUP_BUTTON
+      @retval = "alert('receipt setup button clicked');"
+    when PAYMENT_METHODS_BUTTON
+      @retval = "alert('payment methods button clicked');"
+    when GIFT_VOUCHER_BUTTON
+      @retval = "alert('gift voucher button clicked');"
+    when ORDER_TYPES_BUTTON
+      @retval = "alert('order types button clicked');"
+    when DISCOUNTS_SURCHARGES_BUTTON
+      @retval = "alert('discounts/surcharges button clicked');"
+    when PRINT_RECEIPT_BUTTON
+      @retval = "alert('print receipt button clicked');"
     end
 
     @retval
+  end
+  
+  def icon_path_for button
+    ButtonMapper.constants.each do |constant_name|
+      #puts "#{constant_name.to_s} : #{eval(constant_name.to_s)}"
+    
+      if button.perm_id.to_s == eval(constant_name.to_s).to_s
+        return "#{constant_name.to_s.downcase}.png"
+      end
+    end
+    
+    return ""
   end
   
   def wrap_with_menu_screen_function_check the_script

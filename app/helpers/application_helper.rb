@@ -29,6 +29,16 @@ module ApplicationHelper
   def button_action button
     @action = ButtonMapper.new.action_for_button button
     @function_call = "doDisplayButtonPasscodePrompt(#{button.id}, function () {#{@action}});"
+    @function_call
+  end
+  
+  def button_icon button
+    @icon_path = ButtonMapper.new.icon_path_for button
+    if @icon_path
+      image_tag "button_logos/#{@icon_path}", :alt => nil
+    else
+      return nil
+    end
   end
 
   def link_to_add_modifier_fields(f)
