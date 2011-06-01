@@ -34,6 +34,14 @@ function doSetDefaultTaxRate(taxRateId) {
     });
 }
 
+function doSetDefaultDiscount(discountId) {
+    //send an update to display controller
+    $.ajax({
+        type: 'POST',
+        url: '/admin/discounts/' + discountId + '/default'
+    });
+}
+
 function updateProductPrice(product_id, currentPrice) {
     newPrice = prompt("Enter a new price:", currentPrice);
     

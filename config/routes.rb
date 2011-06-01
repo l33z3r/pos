@@ -55,6 +55,15 @@ Pos::Application.routes.draw do
       end
     end
     
+    resources :discounts, :only => [:create, :destroy] do
+      member do
+        post 'default'
+      end
+      collection do
+        post 'update_multiple'
+      end
+    end
+    
     resources :products do
       member do
         post 'update_price'

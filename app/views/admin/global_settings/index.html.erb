@@ -423,27 +423,70 @@
     <div class="container">
       <div class="clear">&nbsp;</div>
 
-      <%= form_tag admin_update_global_settings_path do %>
+      <h4>Current Discounts</h4>
 
-        <div id="actions">
-          <%= submit_tag "Save" %>
-        </div>
+      <%= form_tag update_multiple_admin_discounts_path do %>
 
         <div class="clear_top_margin_10">&nbsp;</div>
 
         <table id="global_settings_list">
           <thead>
             <tr>
-              <th width="330">Setting</th>
-              <th width="320">Value</th>
+              <th width="330">Name</th>
+              <th width="70">Percent</th>
+              <th width="150">Delete</th>
+              <th width="150">Set Default</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% Discount.all(:order => :name).each do |discount| %>
+              <%= fields_for "discounts[]", discount do |f| %>
+                <tr><% Discount.load_default  %>
+                  <td><%= f.text_field :name %></td>
+                  <td><%= f.text_field :percent, :size => 4 %></td>
+                  <td><%= link_to "Delete", admin_discount_path(discount), :method => :delete, :confirm => "Are You Sure?" %></td>
+                  <td>
+                    <%= radio_button_tag "set_default_discount", "#{discount.id}", discount.is_default, 
+                      :onchange => "doSetDefaultDiscount(this.value);" %>
+                  </td>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+
+        <div class="clear_top_margin_10">&nbsp;</div>
+
+        <div id="actions">
+          <%= submit_tag "Save" %>
+        </div>
+
+      <% end %>
+
+      <h4>New Discount</h4>
+
+      <%= form_for [:admin, Discount.new] do |f| %>
+
+        <div class="clear_top_margin_10">&nbsp;</div>
+
+        <table id="global_settings_list">
+          <thead>
+            <tr>
+              <th width="330">Name</th>
+              <th width="320">Percent</th>
             </tr>
           </thead>
 
           <tbody>
             <tr>
-              <td>Default Home Screen</td>
-              <td></td>
-            </tr> 
+              <td>
+                <%= f.text_field :name %>
+              </td>
+              <td>
+                <%= f.text_field :percent, :size => 4 %>
+              </td>
+            </tr>
           </tbody>
         </table>
 

@@ -101,7 +101,7 @@ function displayLastReceipt() {
 
 function clearReceipt() {
     $('#till_roll').html('');
-    writeTotalToReceipt(0);
+    writeTotalToReceipt(null, 0);
 }
 
 function doMenuPageSelect(pageNum, pageId) {
@@ -222,20 +222,13 @@ function finishDoSelectMenuItem() {
     //add this item to the order array
     currentOrder.items.push(orderItem);
     
-    currentOrderTotal = 0;
-
-    for(i=0; i<currentOrder.items.length; i++) {
-        item = currentOrder.items[i];
-        currentOrderTotal += item['total_price']
-    }
-
-    currentOrder['total'] = ((currentOrderTotal == null) ? 0 : currentOrderTotal);
+    calculateOrderTotal(currentOrder);
 
     storeOrderInCookie(current_user_id, currentOrder);
 
     //add a line to the receipt
     writeOrderItemToReceipt(orderItem);
-    writeTotalToReceipt(currentOrder['total']);
+    writeTotalToReceipt(currentOrder, currentOrder['total']);
 
     recptScroll();
 }
@@ -252,28 +245,21 @@ function tableSelectMenuItem(orderItem) {
     
     currentTableOrder.items.push(orderItem);
 
-    currentTableOrderTotal = 0;
-
-    for(i=0; i<currentTableOrder.items.length; i++) {
-        item = currentTableOrder.items[i];
-        currentTableOrderTotal += item['total_price']
-    }
-
-    currentTableOrder['total'] = currentTableOrderTotal;
+    calculateOrderTotal(currentTableOrder);
 
     storeTableOrderInCookie(selectedTable, currentTableOrder);
 
     //add a line to the receipt
     writeOrderItemToReceipt(orderItem);
-    writeTotalToReceipt(currentTableOrder['total']);
+    writeTotalToReceipt(currentTableOrder, currentTableOrder['total']);
     
     recptScroll();
 }
 
+var clearHTML = "<div class='clear'>&nbsp;</div>";
+    
 //TODO: replace with jquery template => http://api.jquery.com/jQuery.template/
 function writeOrderItemToReceipt(orderItem) {
-    clearHTML = "<div class='clear'>&nbsp;</div>";
-    
     orderHTML = "<div class='order_line' data-item_number='" + orderItem.itemNumber + "' onclick='doSelectReceiptItem(this)'>";
     orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
     orderHTML += "<div class='name'>" + orderItem.product.name + "</div>";
@@ -297,6 +283,17 @@ function writeOrderItemToReceipt(orderItem) {
         orderHTML += clearHTML;
     }
 
+    if(orderItem.discount_percent && orderItem.discount_percent > 0) {
+        newPrice = number_to_currency(orderItem.total_price, {
+            precision : 2
+        });
+            
+        orderHTML += clearHTML;
+        orderHTML += "<div class='discount'><div class='header'>Discount</div>";
+        orderHTML += "<div class='discount_amount'>@ " + orderItem.discount_percent + "%</div>";
+        orderHTML += "<div class='new_price'>" + newPrice + "</div></div>";
+    }
+    
     orderHTML += clearHTML + "</div>" + clearHTML;
     
     $('#till_roll').html($('#till_roll').html() + orderHTML);
@@ -419,14 +416,8 @@ function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit) {
         targetOrderItem.total_price += targetOrderItem.modifier.price * newQuantity;
     }
     
-    orderTotal = 0;
-
-    for(i=0; i<order.items.length; i++) {
-        item = order.items[i];
-        orderTotal += item['total_price']
-    }
-
-    order['total'] = orderTotal;
+    applyExistingDiscountToOrderItem(order, itemNumber);
+    calculateOrderTotal(order);
         
     return order;
 }
@@ -457,7 +448,18 @@ function removeOrderItem(el) {
 function doRemoveOrderItem(order, itemNumber) {
     order.items.splice(itemNumber-1, 1);
     
+    //update the order items of following items
+    for(i=itemNumber-1; i<order.items.length; i++) {
+        order.items[i].itemNumber--;
+    }
+    
     //have to retotal the order
+    calculateOrderTotal(order);
+        
+    return order;
+}
+
+function calculateOrderTotal(order) {
     orderTotal = 0;
 
     for(i=0; i<order.items.length; i++) {
@@ -466,11 +468,42 @@ function doRemoveOrderItem(order, itemNumber) {
     }
 
     order['total'] = orderTotal;
+
+    //apply the discount if there is one
+    discountAmount = order['discount_percent'];
+
+    if(discountAmount) {
+        //store the pre discount price 
+        order['pre_discount_price'] = orderTotal;
         
-    return order;
+        oldPrice = order['total'];
+        order['pre_discount_price'] = oldPrice;
+    
+        newPrice = oldPrice - ((oldPrice * discountAmount) / 100);
+        order['total'] = newPrice;
+    }
 }
 
-function writeTotalToReceipt(orderTotal) {
+function writeTotalToReceipt(order, orderTotal) {
+    //write the total order discount to the end of the order items
+    if(order && order['discount_percent']) {
+        
+        preDiscountFormatted = number_to_currency(order.pre_discount_price, {
+            precision : 2, 
+            showunit : true
+        })
+        
+        tillRollDiscountHTML = clearHTML;
+        tillRollDiscountHTML += "<div class='discount'><div class='header'>Pre Discount Sub-Total:</div>";
+        tillRollDiscountHTML += "<div class='pre_discount_total'>" + preDiscountFormatted + "</div>";
+        tillRollDiscountHTML += clearHTML + "<div class='header'>Total Order Discount</div>";
+        tillRollDiscountHTML += "<div class='discount_amount'>@ " + order.discount_percent + "%</div></div>";
+    } else {
+        tillRollDiscountHTML = "";
+    }
+    
+    $('#till_roll_discount').html(tillRollDiscountHTML);
+    
     $('#total_value').html(number_to_currency(orderTotal, {
         precision : 2, 
         showunit : true
@@ -516,6 +549,11 @@ function doSelectTable(tableNum) {
         }
 
         tableOrders[tableNum].total = currentTableOrderJSON.total;
+        
+        if(currentTableOrderJSON.discount_percent) {
+            tableOrders[tableNum].discount_percent = currentTableOrderJSON.discount_percent;
+            tableOrders[tableNum].pre_discount_price = currentTableOrderJSON.pre_discount_price;
+        }
     }
 
     //display the receipt for this table
@@ -547,7 +585,7 @@ function loadReceipt(order) {
     }
 
     if(orderTotal != null) {
-        writeTotalToReceipt(orderTotal);
+        writeTotalToReceipt(order, orderTotal);
     }
 
     recptScroll();
@@ -588,7 +626,7 @@ function clearOrder() {
 }
 
 function doTotal() {
-    if(currentTotal == 0) {
+    if(getCurrentOrder().items.length == 0) {
         alert("No order present to sub-total!");
         return;
     }
@@ -622,7 +660,7 @@ function takeTendered() {
 }
 
 function doTotalFinal() {
-    if(currentTotal == 0) {
+    if(getCurrentOrder().items.length == 0) {
         alert("No order present to total!");
         return;
     }
@@ -647,7 +685,9 @@ function doTotalFinal() {
 
     paymentMethod = $("input[name='payment_method']:checked").val();
 
-    //attach the employee id
+    discountPercent = totalOrder.discount_percent;
+    preDiscountPrice = totalOrder.pre_discount_price;
+
     orderData = {
         'employee_id':current_user_id,
         'total':totalOrder.total,
@@ -656,6 +696,8 @@ function doTotalFinal() {
         'num_persons':numPersons,
         'is_table_order':isTableOrder,
         'table_info_id':tableInfoId,
+        'discount_percent':discountPercent,
+        'pre_discount_price':preDiscountPrice,
         'order_details':totalOrder
     }
 
@@ -828,4 +870,196 @@ function storeTableOrderInCookie(table_num, order_to_store) {
     $.JSONCookie("table_" + table_num + "_current_order", order_to_store, {
         path: '/'
     });
+}
+
+var currentTargetPopupAnchor = null;
+var individualItemDiscount = false;
+
+function showDiscountPopup(el) {
+    if(getCurrentOrder().items.length == 0) {
+        alert("No order present to discount!");
+        return;
+    }
+    
+    //make sure both discount popups are closed
+    closeDiscountPopup();
+    
+    //was the discount button hit on the menu panel, or via the edit item popup?
+    if(el) {
+        currentTargetPopupAnchor = currentSelectedReceiptItemEl;
+        $("#apply_discount_to").hide();
+        individualItemDiscount = true;
+    } else {
+        currentTargetPopupAnchor = $('#receipt_item_discount_popup_anchor');
+        $("#apply_discount_to").show();
+        individualItemDiscount = false;
+    }
+    
+    if(!currentTargetPopupAnchor.HasBubblePopup()) {
+        currentTargetPopupAnchor.CreateBubblePopup({
+            themeName: 	'black',
+            themePath: 	'/images/jquerybubblepopup-theme'
+        });
+    }
+    
+    discountsPopupHTML = $("#discounts_popup_markup").html();
+    
+    currentTargetPopupAnchor.ShowBubblePopup({
+        align: 'center',
+        innerHtml: discountsPopupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+												   
+        themeName: 	'black',
+        themePath: 	'/images/jquerybubblepopup-theme'
+
+    }, false);
+    
+    currentTargetPopupAnchor.FreezeBubblePopup();
+    
+    popupId = currentTargetPopupAnchor.GetBubblePopupID();
+    
+    //fill in the input with either existing or default discount percent
+    if(el) {
+        itemNumber = currentSelectedReceiptItemEl.data("item_number");
+        existingDiscountPercent = getExistingDiscountPercentForCurrentOrderItem(itemNumber);
+        
+        if(existingDiscountPercent) {
+            $('#' + popupId).find('#discount_percent_input').val(existingDiscountPercent);
+        } else {
+            $('#' + popupId).find('#discount_percent_input').val(defaultDiscountPercent);
+        }
+    } else {
+        //fill in the input with default discount percent
+        $('#' + popupId).find('#discount_percent_input').val(defaultDiscountPercent);
+    }
+    
+    //highlight the input box
+    $('#' + popupId).find('#discount_percent_input').select();
+}
+
+function closeDiscountPopup() {
+    if(currentTargetPopupAnchor) {
+        currentTargetPopupAnchor.HideBubblePopup();
+        currentTargetPopupAnchor.FreezeBubblePopup();
+    }
+}
+
+function setDiscountVal(val) {
+    popupId = currentTargetPopupAnchor.GetBubblePopupID();
+    $('#' + popupId).find('#discount_percent_input').val(val);
+}
+
+function saveDiscount() {
+    popupId = currentTargetPopupAnchor.GetBubblePopupID();
+    selectedValue = $('#' + popupId).find('#discount_percent_input').val();
+    
+    selectedValue = parseFloat(selectedValue);
+    
+    if(selectedValue<0 || selectedValue>100) {
+        alert("You must enter a number between 0 and 100");
+        return;
+    }
+    
+    order = getCurrentOrder();
+    
+    wholeOrderDiscount = ($("input[name='discount_type']:checked").val() == 'whole_order');
+    
+    //discount on whole order or individual item?
+    if(individualItemDiscount) {
+        //fetch the item number
+        itemNumber = currentSelectedReceiptItemEl.data("item_number");
+        applyDiscountToOrderItem(order, itemNumber, selectedValue);
+    } else if(wholeOrderDiscount) {
+        addDiscountToOrder(order, selectedValue);
+    } else {
+        //last item
+        applyDiscountToOrderItem(order, -1, selectedValue);
+    }
+    
+    //store the modified order
+    if(selectedTable != 0) {
+        storeTableOrderInCookie(selectedTable, order);
+    }else {
+        storeOrderInCookie(current_user_id, order);
+    }
+    
+    closeDiscountPopup();
+    
+    //redraw the receipt
+    loadReceipt(order);
+}
+
+function addDiscountToOrder(order, amount) {
+    order['discount_percent'] = amount;
+    
+    calculateOrderTotal(order);
+}
+
+function applyExistingDiscountToOrderItem(order, itemNumber) {
+    // -1 itemNumber signifies to apply the existing discount
+    if(itemNumber != -1) {
+        //we must first clear the last pre_discount_price
+        order.items[itemNumber-1]['pre_discount_price'] = null;
+    }
+    
+    applyDiscountToOrderItem(order, itemNumber, -1);
+}
+
+function applyDiscountToOrderItem(order, itemNumber, amount) {
+    //should already be a float, but just to be sure
+    amount = parseFloat(amount);
+    
+    if(itemNumber == -1) {
+        orderItem = order.items[order.items.length-1];
+    } else {
+        orderItem = order.items[itemNumber-1];
+    }
+    
+    //overwrite the discount amount, or just apply the existing one?
+    if(amount == -1) {
+        //return if no existing discount
+        if(!orderItem['discount_percent']) {
+            return;
+        }
+        
+        amount = orderItem['discount_percent']
+    } else {
+        orderItem['discount_percent'] = amount;
+    }
+    
+    oldPrice = orderItem['total_price'];
+    
+    if(!orderItem['pre_discount_price']) {
+        orderItem['pre_discount_price'] = oldPrice;
+    }
+    
+    preDiscountPrice = orderItem['pre_discount_price'];
+
+    //alert("PreDiscountPrice: " + preDiscountPrice + " NewDiscount: " + ((preDiscountPrice * amount)/100));
+    
+    newPrice = preDiscountPrice - ((preDiscountPrice * amount) / 100);
+    orderItem['total_price'] = newPrice;
+
+    calculateOrderTotal(order);
+}
+
+function getExistingDiscountPercentForCurrentOrderItem(itemNumber) {
+    order = getCurrentOrder();
+    
+    orderItem = order.items[itemNumber-1];
+    
+    existingDiscount = orderItem['discount_percent'];
+    
+    return existingDiscount;
+}
+
+function getCurrentOrder() {
+    if(selectedTable == 0) {
+        return currentOrder;
+    } else {
+        return tableOrders[selectedTable];
+    }
 }

@@ -44,6 +44,8 @@
   var lastUpdateTime = <%=Time.now.to_i%>;
   
   var receiptMessage = "<%= GlobalSetting.parsed_setting_for GlobalSetting::RECEIPT_MESSAGE %>";
+  
+  var defaultDiscountPercent = "<%=Discount.load_default.percent%>";
 </script>
 
 <%= yield :head %>

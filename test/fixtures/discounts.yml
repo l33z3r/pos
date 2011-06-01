@@ -1,19 +1,14 @@
 # == Schema Information
 # Schema version: 20110531092627
 #
-# Table name: order_items
+# Table name: discounts
 #
-#  id               :integer(4)      not null, primary key
-#  order_id         :integer(4)
-#  employee_id      :integer(4)
-#  product_id       :integer(4)
-#  quantity         :integer(4)
-#  total_price      :float
-#  created_at       :datetime
-#  updated_at       :datetime
-#  modifier_name    :string(255)
-#  modifier_price   :integer(4)
-#  discount_percent :float
+#  id         :integer(4)      not null, primary key
+#  name       :string(255)
+#  percent    :float
+#  is_default :boolean(1)
+#  created_at :datetime
+#  updated_at :datetime
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

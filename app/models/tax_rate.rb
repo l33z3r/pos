@@ -27,6 +27,8 @@ class TaxRate < ActiveRecord::Base
     
     if !tax_rate
       tax_rate = find(:first)
+      tax_rate.is_default = true
+      tax_rate.save
     end
 
     tax_rate

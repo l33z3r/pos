@@ -58,6 +58,12 @@ class OrderController < ApplicationController
         @order_item.modifier_name = item[:modifier][:name]
         @order_item.modifier_price = item[:modifier][:price]
       end
+      
+      #discount
+      if item[:discount_percent]
+        @order_item.discount_percent = item[:discount_percent]
+        @order_item.pre_discount_price = item[:pre_discount_price]
+      end
 
       @order_item_saved = @order_item_saved and @order_item.save
     end
