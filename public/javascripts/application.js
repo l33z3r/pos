@@ -406,6 +406,9 @@ function copyReceiptToLoginScreen() {
     newHTML += $('#till_roll').html();
     newHTML += "<div class='spacer'>&nbsp;</div>";
 
+    newHTML += $('#till_roll_discount').html() + clearHTML;
+    newHTML += $('#sales_tax_total').html() + clearHTML;
+    
     if(total>0) {
         totalText = number_to_currency(total, {
             precision : 2, 

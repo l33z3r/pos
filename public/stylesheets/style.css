@@ -413,6 +413,48 @@ div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_
     margin-left: 40px;
 }
 
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.discount div.header {
+    float: left;
+    width: 150px;
+    text-align: right;
+    font-style: italic;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.discount div.discount_amount {
+    float: left;
+    width: 50px;
+    text-align: right;
+    font-style: italic;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.discount div.new_price {
+    float: left;
+    width: 40px;
+    text-align: right;
+    font-style: italic;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.discount div.pre_discount_total {
+    float: left;
+    width: 60px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.tax div.header {
+    float: left;
+    width: 150px;
+    text-align: right;
+    font-style: italic;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.tax div.amount {
+    float: left;
+    width: 44px;
+    text-align: right;
+    font-style: italic;
+}
+
 div#landing div#login_receipt_keypad_container div#keypad {
     height: 325px;
     padding-top: 10px;
@@ -1246,8 +1288,8 @@ div#menu_screen div#menu_pages_container div#menu_buttons div.button {
 }
 
 div#menu_screen div#menu_pages_container div#menu_buttons div.button div.icon img {
-    width: 40px;
-    height: 40px;
+    max-height: 40px;
+    max-width: 40px;
 }
 
 div#menu_screen div#menu_pages_container div#menu_buttons div.button div.button_name {
@@ -1470,7 +1512,7 @@ div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.disco
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll_discount div.discount div.header {
     float: left;
-    width: 200px;
+    width: 180px;
     text-align: right;
     font-style: italic;
 }
@@ -1487,6 +1529,20 @@ div#menu_screen div#receipt_keypad_container div#receipt div#till_roll_discount 
     width: 50px;
     font-weight: bold;
     margin-right: 10px;
+}
+
+div#menu_screen div#receipt_keypad_container div#receipt div#sales_tax_total div.header {
+    float: left;
+    width: 180px;
+    text-align: right;
+    font-style: italic;
+}
+
+div#menu_screen div#receipt_keypad_container div#receipt div#sales_tax_total div.amount {
+    float: left;
+    width: 50px;
+    text-align: right;
+    font-style: italic;
 }
 
 /* End Till Roll */
@@ -2320,8 +2376,8 @@ div#options_screen div#options_screen_menu_buttons div.button {
 }
 
 div#options_screen div#options_screen_menu_buttons div.button div.icon img {
-    width: 40px;
-    height: 40px;
+    max-height: 40px;
+    max-width: 40px;
 }
 
 div#options_screen div#options_screen_menu_buttons div.button div.button_name {

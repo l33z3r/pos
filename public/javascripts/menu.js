@@ -482,9 +482,60 @@ function calculateOrderTotal(order) {
         newPrice = oldPrice - ((oldPrice * discountAmount) / 100);
         order['total'] = newPrice;
     }
+    
+    //calculate order taxes
+    calculateOrderTaxes(order);
+}
+
+function calculateOrderTaxes(order) {
+    orderTaxes = new Array();
+    
+    for(i=0; i<order.items.length; i++) {
+        item = order.items[i];
+        
+        taxRate = item.product.tax_rate;
+        //alert("TAx rate: " + taxRate);
+        if(!orderTaxes[taxRate]) {
+            orderTaxes[taxRate] = 0;
+        }
+        
+        orderTaxes[taxRate] += item.total_price;
+    }
+    
+    order['order_taxes'] = orderTaxes;
 }
 
 function writeTotalToReceipt(order, orderTotal) {
+    if(order) {
+        //write the tax total
+        totalTaxAmount = 0;
+    
+        for(var key in order.order_taxes) {
+            //alert("Rate: " + key);
+            taxRate = key;
+            taxableAmount = order.order_taxes[key];
+        
+            taxAmount = (taxRate * taxableAmount)/100;
+        
+            totalTaxAmount += taxAmount;
+        }
+
+        //apply the whole order discount
+        if(order['discount_percent']) {
+            totalTaxAmount -= (order['discount_percent'] * totalTaxAmount)/100;
+        }
+            
+        totalTaxHTML = clearHTML + "<div class='tax'><div class='header'>Total Tax:</div>";
+        totalTaxHTML += "<div class='amount'>";
+        totalTaxHTML += number_to_currency(totalTaxAmount, {
+            precision : 2, 
+            showunit : true
+        });
+        totalTaxHTML += "</div></div>" + clearHTML;
+    
+        $('#sales_tax_total').html(totalTaxHTML);
+    }
+    
     //write the total order discount to the end of the order items
     if(order && order['discount_percent']) {
         
@@ -528,6 +579,10 @@ function doSelectTable(tableNum) {
 
     if(tableNum == 0) {
         loadCurrentOrder();
+        
+        //total the order first
+        calculateOrderTotal(currentOrder);
+        
         loadReceipt(currentOrder);
         return;
     }
@@ -554,8 +609,13 @@ function doSelectTable(tableNum) {
             tableOrders[tableNum].discount_percent = currentTableOrderJSON.discount_percent;
             tableOrders[tableNum].pre_discount_price = currentTableOrderJSON.pre_discount_price;
         }
+        
+        tableOrders[tableNum].order_taxes = currentTableOrderJSON.order_taxes;
     }
-
+        
+    //total the order first
+    calculateOrderTotal(tableOrders[tableNum]);
+        
     //display the receipt for this table
     loadReceipt(tableOrders[tableNum]);
 }
@@ -708,11 +768,10 @@ function doTotalFinal() {
     //clear the order
     clearOrder(selectedTable);
 
-    //clear the receipt and print the message in system settings
-    $('#till_roll').slideUp('slow', function() {
-        $('#till_roll').html('');
-        $('#till_roll').show();
-    });
+    //clear the receipt
+    $('#till_roll').html('');
+    $('#till_roll_discount').html('');
+    $('#sales_tax_total').html('');
     
     //print receipt
 

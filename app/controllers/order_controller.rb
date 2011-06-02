@@ -64,6 +64,9 @@ class OrderController < ApplicationController
         @order_item.discount_percent = item[:discount_percent]
         @order_item.pre_discount_price = item[:pre_discount_price]
       end
+      
+      #tax rate
+      @order_item.tax_rate = item[:product][:tax_rate]
 
       @order_item_saved = @order_item_saved and @order_item.save
     end

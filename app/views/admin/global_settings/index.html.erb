@@ -1,3 +1,16 @@
+<% if params[:section] %>
+  <% content_for :head do %>
+    <script type="text/javascript">
+      $(function() {
+        el = $('#<%=params[:section]%>_section');
+        if(el) {
+          el.slideToggle();
+        }
+      });
+    </script>
+  <% end %>
+<% end %>
+
 <div id="edit_global_settings">
 
   <%= render :partial => "layouts/terminal_reload_request" %>
@@ -14,7 +27,7 @@
       </a>
     </h3>
 
-    <div class="container">
+    <div class="container" id="general_section">
       <div class="clear">&nbsp;</div>
 
       <%= form_tag admin_update_global_settings_path do %>
@@ -96,7 +109,7 @@
       </a>
     </h3>
 
-    <div class="container">
+    <div class="container" id="business_info_section">
       <div class="clear">&nbsp;</div>
 
       <%= form_tag admin_update_global_settings_path, :multipart => true do %>
@@ -196,7 +209,7 @@
       </a>
     </h3>
 
-    <div class="container">
+    <div class="container" id="payment_methods_section">
       <div class="clear">&nbsp;</div>
 
       <%= form_tag admin_update_global_settings_path do %>
@@ -240,6 +253,9 @@
             <tr>
               <td>
                 Credit Card
+                  <div class="label_subtext">
+                    (Hit Save To Enable Card Types)
+                  </div>
               </td>
               <td>
                 <% @cc_gs = GlobalSetting.setting_for GlobalSetting::PAYMENT_METHOD, {:payment_method => "credit_card"} %>
@@ -253,10 +269,7 @@
             <% if @cc_gs.parsed_value %>
               <tr>
                 <td>
-                  Acepted Cards 
-                  <div class="label_subtext">
-                    (Reload To Enable After Accepting Credit Cards Above)
-                  </div>
+                  Acepted Cards
                 </td>
                 <td>
                   <% @gs = GlobalSetting.setting_for GlobalSetting::ACCEPTED_CREDIT_CARD_TYPE, {:credit_card_type => "visa"} %>
@@ -333,7 +346,7 @@
       </a>
     </h3>
 
-    <div class="container">
+    <div class="container" id="tax_rates_section">
       <div class="clear">&nbsp;</div>
 
       <h4>Current Tax Rates</h4>
@@ -420,7 +433,7 @@
       </a>
     </h3>
 
-    <div class="container">
+    <div class="container" id="discounts_section">
       <div class="clear">&nbsp;</div>
 
       <h4>Current Discounts</h4>
@@ -507,7 +520,7 @@
       </a>
     </h3>
 
-    <div class="container">
+    <div class="container" id="misc_section">
       <div class="clear">&nbsp;</div>
 
       <%= form_tag admin_update_global_settings_path do %>
