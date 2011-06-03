@@ -47,7 +47,7 @@ function callHomePoll() {
 }
 
 function callHomePollComplete() {
-    setTimeout(callHomePoll, 5000);
+    setTimeout(callHomePoll, 10000);
 }
 
 function resetLoginBubblePopups() {

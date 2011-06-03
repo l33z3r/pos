@@ -61,7 +61,12 @@ class Admin::DisplaysController < Admin::AdminController
     if @menu_item_id == "-1"
       @menu_page_num = params[:menu_page_num]
       @menu_page = Display.load_default.menu_pages.find_by_page_num @menu_page_num
-      @next_order_num = @menu_page.menu_items.last.order_num + 1
+      
+      if(!@menu_page.menu_items.last) 
+        @next_order_num = 1
+      else
+        @next_order_num = @menu_page.menu_items.last.order_num + 1
+      end
 
       @menu_item = MenuItem.create({:menu_page_id => @menu_page.id, :order_num => @next_order_num})
     else

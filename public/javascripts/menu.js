@@ -686,7 +686,9 @@ function clearOrder() {
 }
 
 function doTotal() {
-    if(getCurrentOrder().items.length == 0) {
+    targetCurrentOrder = getCurrentOrder();
+    
+    if(!targetCurrentOrder || targetCurrentOrder.items.length == 0) {
         alert("No order present to sub-total!");
         return;
     }
@@ -1121,4 +1123,6 @@ function getCurrentOrder() {
     } else {
         return tableOrders[selectedTable];
     }
+    
+    return nil;
 }
