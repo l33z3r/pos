@@ -27,6 +27,9 @@ class Discount < ActiveRecord::Base
     
     if !discount
       discount = find(:first)
+      
+      return nil if !discount
+      
       discount.is_default = true
       discount.save
     end

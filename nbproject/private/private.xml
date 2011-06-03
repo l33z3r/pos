@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file>file:/home/lee/work/pos/pos/app/controllers/order_controller.rb</file>
+        <file>file:/home/lee/work/pos/pos/app/views/javascripts/products.js.erb</file>
+        <file>file:/home/lee/work/pos/pos/app/models/product.rb</file>
+        <file>file:/home/lee/work/pos/pos/app/views/home/_menu_screen.html.erb</file>
+        <file>file:/home/lee/work/pos/pos/public/javascripts/menu.js</file>
+        <file>file:/home/lee/work/pos/pos/public/stylesheets/style.css</file>
+        <file>file:/home/lee/work/pos/pos/public/javascripts/application.js</file>
+    </open-files>
 </project-private>
