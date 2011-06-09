@@ -153,6 +153,8 @@ class HomeController < ApplicationController
   end
 
   def load_active_employees
+    session[:active_employee_ids] ||= []
+    
     @ids = session[:active_employee_ids]
     @active_employees ||= []
     @active_employees = Employee.find(@ids) if @ids
