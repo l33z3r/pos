@@ -1,14 +1,15 @@
 var employees = new Array();
 
 <% Employee.all.each do |e|-%>
-employee_info = {
-id : '<%= e.id %>',
-nickname : '<%=h e.nickname %>',
-passcode : '<%= e.passcode %>',
-clockin_code : '<%= e.clockin_code %>',
-is_admin : <%= e.is_admin %>
-}
+  employee_info = {
+  id : '<%= e.id %>',
+  nickname : '<%=h e.nickname %>',
+  passcode : '<%= e.passcode %>',
+  clockin_code : '<%= e.clockin_code %>',
+  is_admin : <%= e.is_admin %>,
+  clocked_in : <%= session[:active_employee_ids].include?(e.id) ? "true" : "false" %>
+  }
 
-employees.push(employee_info);
-  
+  employees.push(employee_info);
+
 <% end -%>

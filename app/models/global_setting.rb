@@ -42,6 +42,8 @@ class GlobalSetting < ActiveRecord::Base
   ACCEPTED_CREDIT_CARD_TYPE = 13
   THEME = 14
   DEFAULT_POST_LOGIN_SCREEN = 15
+  CLOCK_FORMAT = 16
+  TAX_CHARGABLE = 17
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -58,7 +60,9 @@ class GlobalSetting < ActiveRecord::Base
     RECEIPT_MESSAGE => "Receipt Message",
     ACCEPTED_CREDIT_CARD_TYPE => "Accepted Credit Card Type",
     THEME => "Theme",
-    DEFAULT_POST_LOGIN_SCREEN => "Post Login Screen"
+    DEFAULT_POST_LOGIN_SCREEN => "Post Login Screen", 
+    CLOCK_FORMAT => "Clock Format", 
+    TAX_CHARGABLE => "Tax Chargable"
   }
   
   def self.setting_for property, args={}
@@ -102,6 +106,12 @@ class GlobalSetting < ActiveRecord::Base
     when DEFAULT_POST_LOGIN_SCREEN
       @gs = find_or_create_by_key(:key => DEFAULT_POST_LOGIN_SCREEN, :value => 2, :label_text => LABEL_MAP[DEFAULT_POST_LOGIN_SCREEN])
       @gs.parsed_value = @gs.value.to_i
+    when CLOCK_FORMAT
+      @gs = find_or_create_by_key(:key => CLOCK_FORMAT, :value => "12", :label_text => LABEL_MAP[CLOCK_FORMAT])
+      @gs.parsed_value = @gs.value
+    when TAX_CHARGABLE
+      @gs = find_or_create_by_key(:key => TAX_CHARGABLE, :value => "no", :label_text => LABEL_MAP[TAX_CHARGABLE])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -124,6 +134,12 @@ class GlobalSetting < ActiveRecord::Base
     when LOGO
       #value not used in logo
       new_value = "Not Used For Logo"
+      write_attribute("value", new_value)
+    when CLOCK_FORMAT
+      new_value = ((value == "12") ? "12" : "24")
+      write_attribute("value", new_value)
+    when TAX_CHARGABLE
+      new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     else
     end
@@ -186,5 +202,9 @@ class GlobalSetting < ActiveRecord::Base
   LOGIN_SCREEN = 1
   MENU_SCREEN = 2
   TABLES_SCREEN = 3
+  
+  #properties for clock
+  CLOCK_FORMAT_12 = "12"
+  CLOCK_FORMAT_24 = "24"
   
 end

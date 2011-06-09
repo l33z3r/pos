@@ -21,23 +21,46 @@ class HomeController < ApplicationController
   end
   
   def call_home
-    @got_update = false
-    
     #check if we need to reload the interface due to room builder or menu screen being accessed
-    @last_update_time = params[:lastUpdateTime]
+    @last_interface_reload_time = params[:lastInterfaceReloadTime]
     
-    @reload_app = fetch_reload_app @last_update_time
+    @reload_app = fetch_reload_app @last_interface_reload_time
     
     if @reload_app
       @reload_request_time = @reload_app['reload_request_time']
       @reload_request_terminal_id = @reload_app['reload_request_terminal_id']
-        
-      @new_update_time = @reload_request_time + 1
-      @got_update = true
+      @new_reload_app_update_time = @reload_request_time + 1
     end
     
-    if need_sync_table_orders? @last_update_time
-      @js_code = "alert('sync table orders requested');"
+    #check the last timestamp for the table order sync
+    @last_sync_table_order_time = params[:lastSyncTableOrderTime]
+    
+    @sync_table_order = fetch_sync_table_order @last_sync_table_order_time
+    
+    if @sync_table_order
+      
+      if @sync_table_order[:clear_table_order]
+        @clear_table_order = @sync_table_order
+        @sync_table_order = nil
+        @table_label = TableInfo.find(@clear_table_order[:table_id]).perm_id
+        
+        @serving_employee_id = @clear_table_order[:serving_employee_id];
+        @terminal_employee = Employee.find(@serving_employee_id).nickname;
+        
+        @clear_table_order_request_time = @clear_table_order[:sync_table_order_request_time]
+        @new_clear_table_order_time = @clear_table_order_request_time + 1
+      else
+        @sync_table_order_request_time = @sync_table_order[:sync_table_order_request_time]
+        @sync_table_order_request_terminal_id = @sync_table_order[:sync_table_order_request_terminal_id]
+        @sync_table_order_data = @sync_table_order[:order_data]
+      
+        @table_label = TableInfo.find(@sync_table_order_data[:tableID]).perm_id
+      
+        @serving_employee_id = @sync_table_order[:serving_employee_id];
+        @terminal_employee = Employee.find(@serving_employee_id).nickname;
+      
+        @new_sync_table_order_time = @sync_table_order_request_time + 1
+      end
     end
     
   end
@@ -46,7 +69,7 @@ class HomeController < ApplicationController
     request_reload_app @terminal_id, Time.now.to_i
     redirect_to(:back, :notice => 'Reload request sent.')
   end
-
+  
   def active_employees
     load_active_employees
   end

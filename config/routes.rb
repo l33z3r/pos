@@ -2,6 +2,7 @@ Pos::Application.routes.draw do
 
   #orders
   match 'order' => "order#create", :via => :post
+  match 'sync_table_order' => "order#sync_table_order", :via => :post
   match 'cash_total' => "order#cash_total", :via => :post
   match 'outstanding_orders' => "order#create_outstanding", :via => :post
 

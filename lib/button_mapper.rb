@@ -141,7 +141,7 @@ class ButtonMapper
     when PRINT_RECEIPT_BUTTON
       @retval = "alert('print receipt button clicked');"
     when ORDER_BUTTON
-      @retval = "alert('order button clicked');"
+      @retval = wrap_with_menu_screen_function_check "doSyncTableOrder()"
     end
 
     @retval

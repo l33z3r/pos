@@ -30,6 +30,12 @@
   //load the setting for bypass pin
   var bypassPin = <%= GlobalSetting.parsed_setting_for GlobalSetting::BYPASS_PIN %>;
     
+  //clock format
+  var clockFormat = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CLOCK_FORMAT %>";
+    
+  //is tax chargable
+  var taxChargable = <%= GlobalSetting.parsed_setting_for GlobalSetting::TAX_CHARGABLE %>;
+    
   //load the dynamically set currency symbol
   var dynamicCurrencySymbol = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL %>";
   
@@ -40,12 +46,15 @@
   var MENU_SCREEN = <%= GlobalSetting::MENU_SCREEN %>;
   var TABLES_SCREEN = <%= GlobalSetting::TABLES_SCREEN %>;
   
-  //this variable is used for polling and gets updated by the dynamic javascript
-  var lastUpdateTime = <%=Time.now.to_i%>;
+  //these variables are used for polling and they get updated by the dynamic javascript
+  var lastInterfaceReloadTime = <%=Time.now.to_i%>;
+  var lastSyncTableOrderTime = <%=Time.now.to_i%>;
   
   var receiptMessage = "<%= GlobalSetting.parsed_setting_for GlobalSetting::RECEIPT_MESSAGE %>";
   
   var defaultDiscountPercent = "<%=Discount.load_default.percent%>";
+  
+  var terminalID = "<%=@terminal_id%>";
 </script>
 
 <%= yield :head %>

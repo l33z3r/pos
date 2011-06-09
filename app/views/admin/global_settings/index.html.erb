@@ -89,6 +89,20 @@
                        value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
               </td>
             </tr>
+            <tr>
+              <td>Clock Format</td>
+              <td>
+                <% @gs = GlobalSetting.setting_for GlobalSetting::CLOCK_FORMAT %>
+
+                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                       value="<%= GlobalSetting::CLOCK_FORMAT_12 %>" 
+                       <%= @gs.parsed_value == GlobalSetting::CLOCK_FORMAT_12 ? "checked" : "" %>/>12 Hour
+
+                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                       value="<%= GlobalSetting::CLOCK_FORMAT_24 %>" 
+                       <%= @gs.parsed_value == GlobalSetting::CLOCK_FORMAT_24 ? "checked" : "" %>/>24 Hour
+              </td>
+            </tr>
           </tbody>
         </table>
 
@@ -253,9 +267,9 @@
             <tr>
               <td>
                 Credit Card
-                  <div class="label_subtext">
-                    (Hit Save To Enable Card Types)
-                  </div>
+                <div class="label_subtext">
+                  (Hit Save To Enable Card Types)
+                </div>
               </td>
               <td>
                 <% @cc_gs = GlobalSetting.setting_for GlobalSetting::PAYMENT_METHOD, {:payment_method => "credit_card"} %>
@@ -348,6 +362,44 @@
 
     <div class="container" id="tax_rates_section">
       <div class="clear">&nbsp;</div>
+
+      <%= form_tag admin_update_global_settings_path do %>
+
+        <div id="actions">
+          <%= submit_tag "Save" %>
+        </div>
+
+        <div class="clear_top_margin_10">&nbsp;</div>
+
+        <table id="global_settings_list">
+          <thead>
+            <tr>
+              <th width="330">Setting</th>
+              <th width="320">Value</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Is Tax Chargable?</td>
+              <td>
+                <% @gs = GlobalSetting.setting_for GlobalSetting::TAX_CHARGABLE %>
+                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                       value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
+                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                       value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="clear_top_margin_10">&nbsp;</div>
+
+        <div id="actions">
+          <%= submit_tag "Save" %>
+        </div>
+
+      <% end %>
 
       <h4>Current Tax Rates</h4>
 

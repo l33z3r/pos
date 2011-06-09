@@ -30,6 +30,13 @@ class OrderController < ApplicationController
     @total_type = params[:total_type]
     @cash_total = CashTotal.do_total @total_type, current_employee 
   end
+  
+  def sync_table_order
+    @table_order_data = params[:tableOrderData]
+    
+    do_request_sync_table_order @terminal_id, Time.now.to_i, @table_order_data
+    render :json => {:success => true}.to_json
+  end
 
   private
 
@@ -53,6 +60,8 @@ class OrderController < ApplicationController
       @order_item.quantity = item[:amount]
       @order_item.total_price = item[:total_price]
 
+      @order_item.terminal_id = item[:terminal_id]
+      
       #modifier
       if item[:modifier]
         @order_item.modifier_name = item[:modifier][:name]
@@ -67,8 +76,16 @@ class OrderController < ApplicationController
       
       #tax rate
       @order_item.tax_rate = item[:product][:tax_rate]
+      
+      #the time it was added to the order
+      @order_item.time_added = item[:time_added]
 
       @order_item_saved = @order_item_saved and @order_item.save
+    end
+    
+    #must tell all terminals that this order is cleared
+    if @order.is_table_order
+      do_request_clear_table_order @terminal_id, Time.now.to_i, @order.table_info_id
     end
 
     @success = @order_saved and @order_item_saved

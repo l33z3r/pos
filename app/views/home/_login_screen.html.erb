@@ -2,7 +2,7 @@
 
   <div id="login_receipt_keypad_container">
 
-    <div id="login_receipt_header">Last Sale</div>
+    <div id="login_receipt_header">Last Sale/Order</div>
 
     <div id="login_receipt">
       <div id="login_till_roll">
@@ -20,9 +20,9 @@
           <% end %>
         <% end %>
 
-        <div class="pad">&nbsp;</div>
-        <div id="num_0">0</div>
         <div class="cancel_key" onclick="doCancelLoginKeypad()">C</div>
+        <div id="num_0">0</div>
+        <div class="go_key" onclick="doLogin($('#num').val());return false;">OK</div>
       </div>
     </div>
   </div>
@@ -33,7 +33,7 @@
     </div>
 
     <div id="login_credentials">
-      <span>Clock In Code:</span>
+      <div class="label">Code:</div>
 
       <div id="clockincode_show"></div>
       
@@ -42,8 +42,8 @@
       <!-- this one is for the login popup box -->
       <%= hidden_field_tag :passcode, nil, :id => :passcode, :size => "18" %>
 
-      <div class="login" onclick="doClockin($('#num').val());return false;">Clock In</div>
-      <div class="login" onclick="doClockout($('#num').val());return false;">Clock Out</div>
+      <div class="login" onclick="doClockin();return false;">Clock In</div>
+      <div class="login" onclick="doClockout();return false;">Clock Out</div>
     </div>
     <div class="clear">&nbsp;</div>
   </div>

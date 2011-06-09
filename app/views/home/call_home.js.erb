@@ -1,8 +1,21 @@
-<% if @got_update %>
-  lastUpdateTime = <%=@new_update_time%>;
-<% end %>
-
 <% if @reload_app %>
+  lastInterfaceReloadTime = <%=@new_reload_app_update_time%>;
   $('#misc_notice').html("<%= escape_javascript(render :partial => '/layouts/reload_terminal_notice') %>");
   $('#misc_notice').fadeIn();
+<% end %>
+
+<% if @sync_table_order %>
+  lastSyncTableOrderTime = <%= @new_sync_table_order_time %>;
+  tableOrderDataJSON = <%= raw @sync_table_order_data['orderData'].to_json %>;
+  doReceiveTableOrderSync("<%= @sync_table_order_request_terminal_id %>", <%=@sync_table_order_data['tableID']%>, "<%=@table_label%>", "<%=@terminal_employee%>", tableOrderDataJSON);
+<% end %>
+
+<% if @clear_table_order %>
+  lastSyncTableOrderTime = <%= @new_clear_table_order_time %>;
+  doClearTableOrder("<%=@clear_table_order[:terminal_id]%>", <%=@clear_table_order[:table_id]%>, "<%=@table_label%>", "<%=@terminal_employee%>");
+<% end %>
+
+<% if request.cookies["terminal_fingerprint"] and !request.cookies["terminal_id_set"] %>
+  terminalID = "<%=@terminal_id%>";
+  $('#terminal_id').html(terminalID);
 <% end %>

@@ -59,7 +59,8 @@ function initMenu() {
 
     //start the clock in the nav bar
     $("div#clock").clock({
-        "calendar":"false"
+        "calendar":"false",
+        "format": clockFormat
     });
 }
 
@@ -142,7 +143,13 @@ function doSelectMenuItem(productId, element) {
         'total_price':(product.price*amount)
     }
 
-    currentOrderItem = orderItem
+    //store the terminal id 
+    orderItem['terminal_id'] = terminalID;
+
+    //and the time that it was added
+    orderItem['time_added'] = Date.now();
+
+    currentOrderItem = orderItem;
 
     //does this product have a modifier
     modifierCategoryId = product['modifier_category_id'];
@@ -183,6 +190,13 @@ function showModifierDialog(modifierCategoryId) {
     boxEl.FreezeBubblePopup();
 }
 
+function noModifierSelected() {
+    //close the dialog
+    $(currentSelectedMenuItemElement).HideBubblePopup();
+    $(currentSelectedMenuItemElement).FreezeBubblePopup();
+    finishDoSelectMenuItem();
+}
+
 function modifierSelected(modifierId, modifierName, modifierPrice) {
     currentOrderItem['modifier'] = {
         'id':modifierId,
@@ -200,6 +214,9 @@ function modifierSelected(modifierId, modifierName, modifierPrice) {
 
 function finishDoSelectMenuItem() {
     orderItem = currentOrderItem;
+
+    //either way we want to store the user id
+    orderItem['serving_employee_id'] = current_user_id;
 
     //if this is a tables order deal with it in another function
     if(selectedTable != 0) {
@@ -234,7 +251,8 @@ function finishDoSelectMenuItem() {
 }
 
 function tableSelectMenuItem(orderItem) {
-    orderItem['serving_employee_id'] = current_user_id;
+    //mark as unsynced
+    orderItem['synced'] = false;
 
     //add this item to the order array
     currentTableOrder = tableOrders[selectedTable];
@@ -460,11 +478,13 @@ function doRemoveOrderItem(order, itemNumber) {
 }
 
 function calculateOrderTotal(order) {
+    if(!order) return;
+    
     orderTotal = 0;
 
     for(i=0; i<order.items.length; i++) {
         item = order.items[i];
-        orderTotal += item['total_price']
+        orderTotal += parseInt(item['total_price']);
     }
 
     order['total'] = orderTotal;
@@ -493,13 +513,13 @@ function calculateOrderTaxes(order) {
     for(i=0; i<order.items.length; i++) {
         item = order.items[i];
         
-        taxRate = item.product.tax_rate;
-        //alert("TAx rate: " + taxRate);
+        taxRate = item.product.tax_rate.toString();
+        
         if(!orderTaxes[taxRate]) {
             orderTaxes[taxRate] = 0;
         }
         
-        orderTaxes[taxRate] += item.total_price;
+        orderTaxes[taxRate] = parseFloat(orderTaxes[taxRate]) + parseFloat(item.total_price);
     }
     
     order['order_taxes'] = orderTaxes;
@@ -511,29 +531,31 @@ function writeTotalToReceipt(order, orderTotal) {
         totalTaxAmount = 0;
     
         for(var key in order.order_taxes) {
-            //alert("Rate: " + key);
-            taxRate = key;
-            taxableAmount = order.order_taxes[key];
+            
+            taxRate = parseFloat(key);
+            taxableAmount = parseFloat(order.order_taxes[key]);
         
             taxAmount = (taxRate * taxableAmount)/100;
-        
-            totalTaxAmount += taxAmount;
+     
+            totalTaxAmount +=  parseFloat(taxAmount);
         }
 
         //apply the whole order discount
         if(order['discount_percent']) {
-            totalTaxAmount -= (order['discount_percent'] * totalTaxAmount)/100;
+            totalTaxAmount -= (parseFloat(order['discount_percent']) * totalTaxAmount)/100;
         }
             
-        totalTaxHTML = clearHTML + "<div class='tax'><div class='header'>Total Tax:</div>";
-        totalTaxHTML += "<div class='amount'>";
-        totalTaxHTML += number_to_currency(totalTaxAmount, {
-            precision : 2, 
-            showunit : true
-        });
-        totalTaxHTML += "</div></div>" + clearHTML;
+        if(taxChargable) {
+            totalTaxHTML = clearHTML + "<div class='tax'><div class='header'>Total Tax:</div>";
+            totalTaxHTML += "<div class='amount'>";
+            totalTaxHTML += number_to_currency(totalTaxAmount, {
+                precision : 2, 
+                showunit : true
+            });
+            totalTaxHTML += "</div></div>" + clearHTML;
     
-        $('#sales_tax_total').html(totalTaxHTML);
+            $('#sales_tax_total').html(totalTaxHTML);
+        }
     }
     
     //write the total order discount to the end of the order items
@@ -587,7 +609,7 @@ function doSelectTable(tableNum) {
         return;
     }
 
-    //lazy init currentOrder
+    //init an in memory version of this order
     tableOrders[tableNum] = {
         'items': new Array(),
         'total':0
@@ -671,7 +693,7 @@ function recptScroll() {
     }
 }
 
-function clearOrder() {
+function clearOrder(selectedTable) {
     //delete the cookie
     //clear the in memory order
     if(selectedTable == 0) {
@@ -760,7 +782,8 @@ function doTotalFinal() {
         'table_info_id':tableInfoId,
         'discount_percent':discountPercent,
         'pre_discount_price':preDiscountPrice,
-        'order_details':totalOrder
+        'order_details':totalOrder,
+        'terminal_id':terminalID
     }
 
     copyReceiptToLoginScreen();
@@ -1125,4 +1148,88 @@ function getCurrentOrder() {
     }
     
     return nil;
+}
+
+function doReceiveTableOrderSync(terminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON) {
+    //the order is in json form, we need to turn it back into an array
+    syncOrderItems = new Array();
+    
+    for(var itemKey in tableOrderDataJSON.items) {
+        //        alert(tableOrderDataJSON.items[itemKey].product.name);
+        syncOrderItems.push(tableOrderDataJSON.items[itemKey]);
+    }
+   
+    //    alert("Order for sync has " + syncOrderItems.length + " items. About to sync with existing " + tableOrders[tableID].items.length + " items");
+    
+    //init the order if this table has no order already
+    if(typeof(tableOrders[tableID]) == "undefined") {
+        tableOrders[tableID] = {
+            'items': new Array(),
+            'total':0
+        };
+    }
+    
+    //delete all items that have been synced already
+    existingOrderItems = tableOrders[tableID].items;
+    
+    for(i=0;i<existingOrderItems.length;i++) {
+        if(existingOrderItems[i].synced) {
+            //            alert("deleting already synced item " + i + " " + existingOrderItems[i].synced);
+            existingOrderItems.splice(i, 1);
+            i--;
+        }
+    }
+    
+    //now merge the two based on time added
+    newOrderItems = new Array();
+    syncOrderItemsIndex = 0;
+    existingOrderItemsIndex = 0;
+    
+    loopLength = syncOrderItems.length + existingOrderItems.length;
+    
+    for(i=0;i<loopLength;i++) {
+        if(syncOrderItemsIndex == syncOrderItems.length) {
+            //there are no more items left in syncOrderItems
+            newOrderItems.push(existingOrderItems[existingOrderItemsIndex]);
+            existingOrderItemsIndex++;
+        } else if(existingOrderItemsIndex == existingOrderItems.length) {
+            //there are no more items left in existingOrderItems
+            newOrderItems.push(syncOrderItems[syncOrderItemsIndex]);
+            syncOrderItemsIndex++;
+        } else if(syncOrderItems[syncOrderItemsIndex].time_added <= existingOrderItems[existingOrderItemsIndex].time_added) {
+            newOrderItems.push(syncOrderItems[syncOrderItemsIndex]);
+            syncOrderItemsIndex++;
+        } else if(syncOrderItems[syncOrderItemsIndex].time_added > existingOrderItems[existingOrderItemsIndex].time_added) {
+            newOrderItems.push(existingOrderItems[existingOrderItemsIndex]);
+            existingOrderItemsIndex++;
+        }
+    }
+    
+    tableOrders[tableID].items = newOrderItems;
+    
+    //re number the items
+    for(i=0;i<tableOrders[tableID].items.length;i++) {
+        tableOrders[tableID].items[i].itemNumber = i + 1;
+    }
+    
+    calculateOrderTotal(tableOrders[tableID]);
+    storeTableOrderInCookie(tableID, tableOrders[tableID]);
+    
+    if(tableID == selectedTable) {
+        loadReceipt(tableOrders[tableID]);
+        setStatusMessage("<b>" + terminalEmployee + "</b> added items to the order for table <b>" + tableLabel + "</b> from terminal <b>" + terminalID + "</b>");
+    }
+}
+
+function doClearTableOrder(terminalID, tableID, tableLabel, terminalEmployee) {
+    tableOrders[tableID] = {
+        'items': new Array(),
+        'total':0
+    };
+    storeTableOrderInCookie(tableID, tableOrders[tableID]);
+        
+    if(tableID == selectedTable) {
+        loadReceipt(tableOrders[tableID]);
+        setStatusMessage("<b>" + terminalEmployee + "</b> totaled the order for table <b>" + tableLabel + "</b> from terminal <b>" + terminalID + "</b>");
+    }
 }

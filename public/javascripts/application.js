@@ -9,9 +9,6 @@ var showingDisplayButtonPasscodePromptPopup;
 //passcode prompt when a screen button is pressed
 var display_button_passcode_permissions;
 
-//this is so we can use the keypad for both clock in and log in
-var showingPassCodeDialog = false;
-
 $(function(){
     setFingerPrintCookie();
     
@@ -19,8 +16,6 @@ $(function(){
 
     //the following code initializes all the flexigrid tables
     initFlexigridTables();
-    
-    resetLoginBubblePopups();
     
     //init the display button passcode request popup
     $('#menu_buttons_popup_anchor').CreateBubblePopup({
@@ -30,7 +25,7 @@ $(function(){
             
     $('#menu_buttons_popup_anchor').FreezeBubblePopup();
     
-    setTimeout(callHomePoll, 10000);
+    setTimeout(callHomePoll, 5000);
 });
 
 function callHomePoll() {
@@ -41,43 +36,14 @@ function callHomePoll() {
         dataType: 'script',
         success: callHomePollComplete,
         data : {
-            lastUpdateTime : lastUpdateTime
+            lastInterfaceReloadTime : lastInterfaceReloadTime,
+            lastSyncTableOrderTime : lastSyncTableOrderTime
         }
     });
 }
 
 function callHomePollComplete() {
-    setTimeout(callHomePoll, 10000);
-}
-
-function resetLoginBubblePopups() {
-    for (var i = 0; i < employees.length; i++) {
-        boxEl = $('#employee_box_' + employees[i].id);
-        
-        if(boxEl.length>0) {
-            if(!boxEl.HasBubblePopup()) {
-                boxEl.CreateBubblePopup({
-                    themeName: 	'black',
-                    themePath: 	'/images/jquerybubblepopup-theme'
-                });
-            
-                boxEl.FreezeBubblePopup();
-            }
-        }
-    }
-}
-
-function hideAllLoginBubblePopups() {
-    for (var i = 0; i < employees.length; i++) {
-        boxEl = $('#employee_box_' + employees[i].id);
-        
-        if(boxEl.length>0) {
-            if(boxEl.HasBubblePopup()) {
-                boxEl.HideBubblePopup();
-                boxEl.FreezeBubblePopup();
-            }
-        }
-    }
+    setTimeout(callHomePoll, 50000);
 }
 
 $(function(){
@@ -100,6 +66,9 @@ $(function(){
         if(lastSaleHTML) {
             $('#login_till_roll').html(lastSaleHTML);
         }
+        
+        $('#clockincode_show').html("");
+        $('#num').val("");
     } else {
         $('#menu_screen').show();
         
@@ -114,88 +83,59 @@ $(function(){
 $(function(){
     for(i=0; i<10; i++) {
         $('#num_' + i).click(function() {
-            if(showingPassCodeDialog) {
-                $('.passcode_show').html($('.passcode_show').html() + this.innerHTML);
-                $('#passcode').val($('#passcode').val() + this.innerHTML);
-            } else {
-                $('#clockincode_show').html($('#clockincode_show').html() + this.innerHTML);
-                $('#num').val($('#num').val() + this.innerHTML);
-            }
+            newVal = $('#num').val().toString() + this.innerHTML;
+            $('#clockincode_show').html(newVal);
+            $('#num').val(newVal);
         });
     }
 });
 
+//TODO: want to move this flash message to a better place
 $(function() {
     $('#flash_container').delay(500).slideDown(500, function() {
         $(this).delay(3000).slideUp(500);
     });
 });
 
-function showLoginDialog(id) {
+function doQuickLogin(user_id) {
     if(bypassPin) {
-        //load the user credentials and call login success function
-        for (var i = 0; i < employees.length; i++) {
-            if(id == employees[i].id) {
-                nickname = employees[i].nickname;
-                is_admin = employees[i].is_admin;
-                passcode = employees[i].passcode;
-                loginSuccess(id, nickname, is_admin, passcode);
-                return;
+        for (var i = 0; i < employees.length; i++){
+            id = employees[i].id;
+            if(id == user_id) {
+                login_code = employees[i].passcode;
             }
         }
+        $('#num').val(login_code);
+        doLogin();
     }
-    
-    hideAllLoginBubblePopups();
-    $('#passcode').val("");
-    $('.passcode_show').html("");
-    
-    showingPassCodeDialog = true;
-    
-    boxEl = $('#employee_box_' + id);
-    
-    boxEl.ShowBubblePopup({
-        align: 'center',
-        innerHtml: "<div id='login_popup'><div id='header'>Enter Pass Code:</div>" + 
-        "<div class='passcode_show'></div>" + 
-        "<div id='submit_passcode' onclick='doLogin(" + id + ");'>Log In</div>" + 
-        "<div id='cancel_show_login' onclick='cancelShowLoginDialog(" + id + ");return false;'>Cancel</div></div>",
-														   
-        innerHtmlStyle:{ 
-            'text-align':'left'
-        },
-												   
-        themeName: 	'black',
-        themePath: 	'/images/jquerybubblepopup-theme'
-
-    }, false);//save_options = false; it will use new options only on click event, it does not overwrite old options.
-    
-    boxEl.FreezeBubblePopup();
 }
 
-function cancelShowLoginDialog(id) {
-    showingPassCodeDialog = false;
-    $('#employee_box_' + id).HideBubblePopup();
-    $('#employee_box_' + id).FreezeBubblePopup();
-}
-
-function doLogin(user_id) {
-    entered_code = $('#passcode').val();
+function doLogin() {
+    entered_code = $('#num').val();
     
     if(current_user_id != null) {
         //already logged in
-        displayError("You are already logged in. Please log out.")
+        displayError("You are already logged in. Please log out.");
         return;
     }
 
     for (var i = 0; i < employees.length; i++) {
         passcode = employees[i].passcode;
-        id = employees[i].id
         
-        if(entered_code == passcode && user_id == id) {
+        if(entered_code == passcode) {
             nickname = employees[i].nickname;
-            is_admin = employees[i].is_admin;
-            loginSuccess(id, nickname, is_admin, passcode);
-            return;
+                
+            if(employees[i]['clocked_in']) {
+                id = employees[i].id
+                is_admin = employees[i].is_admin;
+                loginSuccess(id, nickname, is_admin, passcode);
+                return;
+            } else {
+                displayError("User " + nickname + " is not clocked in.");
+                $('#clockincode_show').html("");
+                $('#num').val("");
+                return;
+            }
         }
     }
 
@@ -231,7 +171,9 @@ function doLogout() {
     });
 }
 
-function doClockin(entered_code) {
+function doClockin() {
+    entered_code = $('#num').val();
+    
     if(employees.length==0) {
         alert("Please try again... system initializing...");
         return;
@@ -246,6 +188,9 @@ function doClockin(entered_code) {
         is_admin = employees[i].is_admin;
 
         if(entered_code == clockinCode) {
+            //mark the user as clocked in
+            employees[i]['clocked_in'] = true;
+            
             clockinSuccess(id);
             return;
         }
@@ -254,7 +199,9 @@ function doClockin(entered_code) {
     clockinFailure();
 }
 
-function doClockout(entered_code) {
+function doClockout() {
+    entered_code = $('#num').val();
+    
     for (var i = 0; i < employees.length; i++){
         id = employees[i].id
         nickname = employees[i].nickname
@@ -264,6 +211,9 @@ function doClockout(entered_code) {
         is_admin = employees[i].is_admin;
 
         if(entered_code == clockinCode) {
+            //mark the user as clocked out
+            employees[i]['clocked_in'] = false;
+            
             clockoutSuccess(id);
             return;
         }
@@ -302,7 +252,6 @@ function clockoutSuccess(id) {
 
 function loginSuccess(id, nickname, is_admin, passcode) {
     showingPassCodeDialog = false;
-    hideAllLoginBubblePopups();
     
     current_user_id = id;
     current_user_nickname = nickname;
@@ -345,6 +294,9 @@ function loginSuccess(id, nickname, is_admin, passcode) {
     if(defaultPostLoginScreen == TABLES_SCREEN) {
         showTablesScreen();
     }
+    
+    $('#clockincode_show').html("");
+    $('#num').val("");
 }
 
 function clockinFailure() {
@@ -359,8 +311,8 @@ function loginFailure() {
     //set an error message in the flash area
     displayError("Wrong pass code, please try again.");
 
-    $('#passcode').val("");
-    $('.passcode_show').html("");
+    $('#num').val("");
+    $('#clockincode_show').html("");
 }
 
 function clockoutFailure() {
@@ -369,16 +321,6 @@ function clockoutFailure() {
 
     $('#num').val("");
     $('#clockincode_show').html("");
-}
-
-function doCancelLoginKeypad() {
-    if(showingPassCodeDialog) {
-        $('#passcode').val("");
-        $('.passcode_show').html("");
-    } else {
-        $('#num').val("");
-        $('#clockincode_show').html("");
-    }
 }
 
 function displayError(message) {
@@ -708,4 +650,15 @@ function initFlexigridTables() {
     $('table').flexigrid({
         height:'auto'
     });
+}
+
+function setStatusMessage(message) {
+    $('#global_status_message').html(message);
+    $('#global_status_message').fadeIn('slow', hideStatusMessage);
+}
+
+function hideStatusMessage() {
+    setTimeout(function(){
+        $('#global_status_message').fadeOut()
+    }, 5000);
 }
