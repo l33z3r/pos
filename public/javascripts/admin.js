@@ -1,6 +1,9 @@
 function initAdminScreen() {
     //hide the red x 
     $('#nav_save_button').hide();
+    
+    //allow the page to scroll in the admin pages
+    $('body').css("overflow", "scroll");
 }
 
 $(function(){

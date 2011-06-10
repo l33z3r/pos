@@ -1,5 +1,5 @@
 <% dbrs.each_with_index do |dbr, index| %>
-  <% if index != 0 and index % 7 == 0 %><div class="clear">&nbsp;</div><% end %>
+  <% if index != 0 and index % 9 == 0 %><div class="clear">&nbsp;</div><% end %>
   <div id="sales_button_<%=dbr.display_button.id%>" 
        class="button" onclick="<%= button_action dbr.display_button %>">
     <div class="icon">

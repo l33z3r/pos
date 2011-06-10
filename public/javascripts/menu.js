@@ -288,7 +288,7 @@ function writeOrderItemToReceipt(orderItem) {
     
     if(orderItem.modifier) {
         orderHTML += "<div class='clear'>&nbsp;</div>";
-        orderHTML += "<div class='modifier_name'>- " + orderItem.modifier.name + "</div>";
+        orderHTML += "<div class='modifier_name'>" + orderItem.modifier.name + "</div>";
         
         //only show modifier price if not zero
         if(orderItem.modifier.price > 0) {
@@ -484,7 +484,7 @@ function calculateOrderTotal(order) {
 
     for(i=0; i<order.items.length; i++) {
         item = order.items[i];
-        orderTotal += parseInt(item['total_price']);
+        orderTotal += parseFloat(item['total_price']);
     }
 
     order['total'] = orderTotal;
@@ -515,7 +515,7 @@ function calculateOrderTaxes(order) {
         
         taxRate = item.product.tax_rate.toString();
         
-        if(!orderTaxes[taxRate]) {
+        if(typeof(orderTaxes[taxRate]) == "undefined") {
             orderTaxes[taxRate] = 0;
         }
         
@@ -545,17 +545,17 @@ function writeTotalToReceipt(order, orderTotal) {
             totalTaxAmount -= (parseFloat(order['discount_percent']) * totalTaxAmount)/100;
         }
             
-        if(taxChargable) {
-            totalTaxHTML = clearHTML + "<div class='tax'><div class='header'>Total Tax:</div>";
-            totalTaxHTML += "<div class='amount'>";
-            totalTaxHTML += number_to_currency(totalTaxAmount, {
-                precision : 2, 
-                showunit : true
-            });
-            totalTaxHTML += "</div></div>" + clearHTML;
-    
-            $('#sales_tax_total').html(totalTaxHTML);
-        }
+//        if(taxChargable) {
+//            totalTaxHTML = clearHTML + "<div class='tax'><div class='header'>Total Tax:</div>";
+//            totalTaxHTML += "<div class='amount'>";
+//            totalTaxHTML += number_to_currency(totalTaxAmount, {
+//                precision : 2, 
+//                showunit : true
+//            });
+//            totalTaxHTML += "</div></div>" + clearHTML;
+//    
+//            $('#sales_tax_total').html(totalTaxHTML);
+//        }
     }
     
     //write the total order discount to the end of the order items
@@ -744,7 +744,7 @@ function takeTendered() {
 }
 
 function doTotalFinal() {
-    if(getCurrentOrder().items.length == 0) {
+    if(!getCurrentOrder() || getCurrentOrder().items.length == 0) {
         alert("No order present to total!");
         return;
     }
@@ -1126,6 +1126,9 @@ function applyDiscountToOrderItem(order, itemNumber, amount) {
     
     newPrice = preDiscountPrice - ((preDiscountPrice * amount) / 100);
     orderItem['total_price'] = newPrice;
+
+    //mark this item as unsynced
+    orderItem['synced'] = false;
 
     calculateOrderTotal(order);
 }

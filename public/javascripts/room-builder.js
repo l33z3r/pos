@@ -60,7 +60,7 @@ function initGridTablePopupDialogs() {
             align: 'center',
             innerHtml: "<div class='table_info_popup'>" + 
             "<div id='table_name_" + room_object_id + "' class='info'>" + table_perm_id + "</div>" +
-            "<div class='rename' onclick='renameTable(" + room_object_id + ");'>(rename)</div>" + 
+            "<div class='rename' onclick='renameTable(" + room_object_id + ", " + table_id + ");'>(rename)</div>" + 
             "<div class='clear'>&nbsp;</div>" +
             "<div class='delete' onclick='deleteTable(" + table_id + ", " + room_object_id + ");'>Delete Table</div>" + 
             "<div class='cancel' onclick='cancelShowTableInfo(" + table_id + ");return false;'>Close</div></div>",
@@ -286,12 +286,14 @@ function deleteTable(table_id, room_object_id) {
     }
 }
 
-function renameTable(room_object_id) {
+function renameTable(room_object_id, table_id) {
     currentName = $('#table_name_' + room_object_id).html();
     
     var newName = prompt("Enter a new table Name:", currentName);
     
     $('#table_name_' + room_object_id).html(newName);
+    
+    $('#table_grid_div_' + table_id).data("perm_id", newName);
     
     $.ajax({
         type: 'POST',

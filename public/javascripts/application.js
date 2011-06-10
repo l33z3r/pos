@@ -10,6 +10,11 @@ var showingDisplayButtonPasscodePromptPopup;
 var display_button_passcode_permissions;
 
 $(function(){
+    
+    //allow scroll for dev
+//    $('body').css("overflow", "scroll");
+    
+    
     setFingerPrintCookie();
     
     initMenu();
@@ -43,7 +48,7 @@ function callHomePoll() {
 }
 
 function callHomePollComplete() {
-    setTimeout(callHomePoll, 50000);
+    setTimeout(callHomePoll, 5000);
 }
 
 $(function(){
@@ -89,6 +94,13 @@ $(function(){
         });
     }
 });
+
+function doCancelLoginKeypad() {
+    oldVal = $('#num').val().toString()
+    newVal = oldVal.substring(0, oldVal.length - 1);
+    $('#clockincode_show').html(newVal);
+    $('#num').val(newVal);
+}
 
 //TODO: want to move this flash message to a better place
 $(function() {
@@ -332,6 +344,8 @@ function displayNotice(message) {
 }
 
 function copyReceiptToLoginScreen() {
+    //TODO: set the text order/sale???
+    
     clearHTML = "<div class='clear'>&nbsp;</div>";
     
     if(totalOrder != null) {
@@ -343,8 +357,14 @@ function copyReceiptToLoginScreen() {
     totalTendered = $('#totals_tendered_value').html();
     change = $('#totals_change_value').html();
 
-    newHTML = "<div id='login_till_roll_user_nickname'>Served By: " + current_user_nickname + "</div>";
-    newHTML += "<div id='login_till_roll_served_time'>@ " + $('#clock').html() + "</div>";
+    newHTML = "<div id='login_till_roll_user_nickname'>Server: " + current_user_nickname + "</div>";
+    
+    //TODO: format the time
+    newHTML += "<div id='login_till_roll_served_time'>Time: " + $('#clock').html() + "</div>";
+    
+    //TODO: pick up table and display it if table order
+    newHTML += "<div id='login_till_roll_table'>Table: X</div>" + clearHTML;
+    
     newHTML += $('#till_roll').html();
     newHTML += "<div class='spacer'>&nbsp;</div>";
 
@@ -379,8 +399,9 @@ function copyReceiptToLoginScreen() {
         newHTML += "<div id='login_till_roll_change_label'>Change:</div><div id='login_till_roll_change_value'>" + changeText + "</div>";
     }
     
-    receiptMessageHTML = "<div id='receipt_message'>" + receiptMessage + "</div>";
-    newHTML += clearHTML + receiptMessageHTML;
+    //we dont display the receipt message on the screen
+//    receiptMessageHTML = "<div id='receipt_message'>" + receiptMessage + "</div>";
+//    newHTML += clearHTML + receiptMessageHTML;
     
     $('#login_till_roll').html(newHTML);
 
@@ -388,10 +409,11 @@ function copyReceiptToLoginScreen() {
         'html':newHTML
     };
     
-    //save the last sale in a cookie to load it into the screen on a reload
-    $.JSONCookie("last_sale", newHTMLOBJ, {
-        path: '/'
-    });
+//need to send this to server and store in session variable as it makes cookie too large
+//save the last sale in a cookie to load it into the screen on a reload
+//    $.JSONCookie("last_sale", newHTMLOBJ, {
+//        path: '/'
+//    });
 }
 
 //jquery touch ui plugin init
@@ -652,9 +674,20 @@ function initFlexigridTables() {
     });
 }
 
-function setStatusMessage(message) {
+function setStatusMessage(message, hide) {
+    if (typeof hide == "undefined") {
+        hide = true;
+    }
+  
     $('#global_status_message').html(message);
-    $('#global_status_message').fadeIn('slow', hideStatusMessage);
+    
+    afterFunction = null;
+    
+    if(hide) {
+        afterFunction = hideStatusMessage;
+    }
+    
+    $('#global_status_message').fadeIn('slow', afterFunction);
 }
 
 function hideStatusMessage() {

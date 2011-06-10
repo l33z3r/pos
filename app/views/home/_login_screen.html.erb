@@ -6,11 +6,14 @@
 
     <div id="login_receipt">
       <div id="login_till_roll">
-        
+
       </div>
     </div>
 
-    <div class="clear_blue_spacer">&nbsp;</div>
+    <div id="entered_code_container">
+      <div id="clockincode_show"></div>
+      <%= hidden_field_tag :num, nil, :id => :num, :size => "18" %>
+    </div>
 
     <div id="keypad">
       <div id="keys">
@@ -27,24 +30,35 @@
     </div>
   </div>
 
-  <div id="active_users_credentials_container">
+  <div id="active_users_buttons_container">
     <div id="active_users">
       <%= render :partial => "active_employees" %>
     </div>
 
-    <div id="login_credentials">
-      <div class="label">Code:</div>
+    <div class="buttons">
+      <div id="login_screen_button_clock_in" class="button" onclick="doClockin()">
+        <div class="icon">
+          <%= image_tag "button_logos/clock_in.png", :alt => nil %>
+        </div>
+        <div class="button_name">Clock In</div>
+      </div>
 
-      <div id="clockincode_show"></div>
-      
-      <%= hidden_field_tag :num, nil, :id => :num, :size => "18" %>
-      
-      <!-- this one is for the login popup box -->
-      <%= hidden_field_tag :passcode, nil, :id => :passcode, :size => "18" %>
+      <div id="login_screen_button_clock_out" class="button" onclick="doClockout()">
+        <div class="icon">
+          <%= image_tag "button_logos/clock_out.png", :alt => nil %>
+        </div>
+        <div class="button_name">Clock Out</div>
+      </div>
+      <% display_button = DisplayButton.find_by_perm_id ButtonMapper::PRINT_RECEIPT_BUTTON %>
 
-      <div class="login" onclick="doClockin();return false;">Clock In</div>
-      <div class="login" onclick="doClockout();return false;">Clock Out</div>
+      <div id="login_screen_button_<%=display_button.id%>" class="button" onclick="<%= button_action display_button %>">
+        <div class="icon">
+          <%= button_icon display_button %>
+        </div>
+        <div class="button_name"><%=display_button.button_text%></div>
+      </div>
     </div>
+
     <div class="clear">&nbsp;</div>
   </div>
 

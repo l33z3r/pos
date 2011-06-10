@@ -1,7 +1,6 @@
 <% if @reload_app %>
   lastInterfaceReloadTime = <%=@new_reload_app_update_time%>;
-  $('#misc_notice').html("<%= escape_javascript(render :partial => '/layouts/reload_terminal_notice') %>");
-  $('#misc_notice').fadeIn();
+  setStatusMessage("<%= escape_javascript(render :partial => '/layouts/reload_terminal_notice') %>", false);
 <% end %>
 
 <% if @sync_table_order %>
@@ -16,6 +15,7 @@
 <% end %>
 
 <% if request.cookies["terminal_fingerprint"] and !request.cookies["terminal_id_set"] %>
+  <% request.cookies["terminal_id_set"] = true %>
   terminalID = "<%=@terminal_id%>";
   $('#terminal_id').html(terminalID);
 <% end %>

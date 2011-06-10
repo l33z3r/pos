@@ -15,6 +15,9 @@ body {
     color: #333333;
     font-family: verdana;
     font-size: 12px;
+    height: 768px;
+    overflow: hidden;
+    line-height: 15px;
 }
 
 input[type=radio], input[type=checkbox], select {
@@ -44,7 +47,7 @@ div.clear {
     clear: both;
 }
 
-div.clear_blue_spacer {
+div.clear_spacer {
     height: 25px;
     clear: both;
     width: 100%;
@@ -75,7 +78,7 @@ input[type="submit"] {
 }
 
 div#wrapper {
-    width: 1000px;
+    width: 1020px;
     margin: auto;
     text-align: center;
 }
@@ -124,6 +127,10 @@ div#terminal_reload_notice div#button_container {
     margin-top: 5px;
 }
 
+span#reload_message {
+    cursor: pointer;
+}
+
 /* End Global Styles */
 
 /* Flash Messages */
@@ -164,58 +171,48 @@ div#landing {
 
 }
 
-div#landing div#active_users_credentials_container {
-    width: 728px;
+div#landing div#active_users_buttons_container {
+    width: 740px;
     float: right
 }
 
-div#landing div#active_users_credentials_container div#login_credentials {
-    height: 80px;
-    width: 550px;
-    margin: auto;
-    margin-top: 90px;
-    padding-top: 43px;
-    padding-left: 45px;
+div#landing div#active_users_buttons_container div.buttons {
+    border-spacing: 6px;
 }
 
-div#landing div#active_users_credentials_container div#login_credentials div.label {
-    float: left;
-    margin-top: 15px;
-    font-size: 14px;
-    font-weight: bold;
-    float: left;
-}
-
-div#landing div#active_users_credentials_container div#login_credentials div#clockincode_show {
-    border: 1px solid #DDD;
-    width: 200px;
-    height: 25px;
-    font-size: 14px;
-    font-weight: bold;
-    padding-top: 5px;
-    float: left;
-    border: 1px solid #CCC;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    box-shadow: 0px 1px 1px 0px #777;
-    margin-left: 20px;
-    margin-top: 8px;
-    margin-right: 20px;
-    background-color: #FFF;
-}
-
-div#landing div#active_users_credentials_container div#login_credentials div.login {
-    float: left;
-    margin-left: 10px;
+div#landing div#active_users_buttons_container div.buttons div.button {
+    width: 85px;
+    max-width: 85px;
+    height: 85px;
+    max-height: 85px;
+    overflow: hidden;
+    vertical-align: middle;
+    display: table-cell;
+    text-align: center;
     cursor: pointer;
-    font-weight: bold;
-    padding: 13px;
-    width: 90px;
-    border: 1px solid #CCC;
-    -moz-border-radius: 4px;
-    border-radius: 4px;  
-    box-shadow: 0px 1px 1px 0px #777;
-    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;  
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+}
+
+div#landing div#active_users_buttons_container div.buttons div.button div.icon img {
+    max-height: 40px;
+    max-width: 40px;
+}
+
+div#landing div#active_users_buttons_container div.buttons div.button div.button_name {
+    padding: 0px 3px;
+}
+
+div#landing div#active_users_buttons_container div.buttons div.button div.button_name a {
+    text-decoration: none;
+    color: #333333;
+}
+
+div#landing div#active_users_buttons_container div.buttons div.button div.button_name a:hover {
+    background-color: transparent;
 }
 
 div#login_popup {
@@ -265,14 +262,14 @@ div#login_popup div#cancel_show_login {
     cursor: pointer;
 }
 
-div#landing div#active_users_credentials_container div#active_users {
-    height: 456px;
-    border: 1px solid #000;
+div#landing div#active_users_buttons_container div#active_users {
+    height: 632px;
+    border: 1px solid #AAA;
     -moz-border-radius: 4px;
     border-radius: 4px;
 }
 
-div#landing div#active_users_credentials_container div#active_users div.employee_box {
+div#landing div#active_users_buttons_container div#active_users div.employee_box {
     width: 95px;
     font-size: 15px;
     height: 83px;
@@ -288,11 +285,11 @@ div#landing div#active_users_credentials_container div#active_users div.employee
     background-color: #FFF;
 }
 
-div#landing div#active_users_credentials_container div#active_users div.employee_box div.nickname {
+div#landing div#active_users_buttons_container div#active_users div.employee_box div.nickname {
 
 }
 
-div#landing div#active_users_credentials_container div#active_users div.employee_box div.avatar img {
+div#landing div#active_users_buttons_container div#active_users div.employee_box div.avatar img {
     height: 60px;
 }
 
@@ -308,13 +305,14 @@ div.fullscreen{
 div#landing div#login_receipt_keypad_container {
     width: 265px;
     float: left;
-    border: 1px solid #000;
+    border: 1px solid #AAA;
     -moz-border-radius: 7px;
     border-radius: 7px;
 }
 
 div#landing div#login_receipt_keypad_container div#login_receipt {
-    height: 405px;
+    height: 380px;
+    background-color: white;
     overflow-y: auto;
     display: block;
     padding-left: 5px;
@@ -331,7 +329,6 @@ div#landing div#login_receipt_keypad_container div#login_receipt_header {
     border: 1px solid #AAA;
     padding: 2px;
     font-weight: bold;
-    text-align: left;
     font-size: 14px;
 }
 
@@ -345,7 +342,6 @@ div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_
     text-align: left;
     width: 37px;
     margin-left: 3px;
-    font-weight: bold;
 }
 
 div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.name {
@@ -371,7 +367,6 @@ div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_
     float: left;
     width: 40px;
     text-align: right;
-    font-weight: bold;
 }
 
 div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.spacer {
@@ -390,6 +385,15 @@ div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_
     text-align: left;
     font-weight: bold;
     margin-bottom: 10px;
+    float: left;
+}
+
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_table {
+    margin-left: 10px;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 10px;
+    float: left;
 }
 
 div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_total_label,
@@ -454,12 +458,37 @@ div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_
 }
 
 div#landing div#login_receipt_keypad_container div#keypad {
-    height: 325px;
-    padding-top: 10px;
+    height: 280px;
+    padding-top: 6px;
+}
+
+div#landing div#login_receipt_keypad_container div#entered_code_container {
+    height: 40px;
+    clear: both;
+    width: 100%;
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+}
+
+div#landing div#login_receipt_keypad_container div#entered_code_container div#clockincode_show {
+    border: 1px solid #DDD;
+    width: 220px;
+    height: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 5px;
+    float: left;
+    border: 1px solid #CCC;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 0px 1px 1px 0px #777;
+    margin-left: 20px;
+    margin-top: 6px;
+    margin-right: 20px;
+    background-color: #FFF;
 }
 
 div#keypad div#keys {
-    width: 240px;
+    width: 210px;
     margin: auto;
 }
 
@@ -467,9 +496,9 @@ div#keypad div#keys div {
     vertical-align: middle;
     float: left;
     margin: 2px;
-    width: 74px;
-    padding-top: 25px;
-    height: 47px;
+    width: 63px;
+    padding-top: 22px;
+    height: 40px;
     font-size: 18px;
     border: 1px solid #777;
     cursor: pointer;
@@ -1099,23 +1128,24 @@ nav#main_nav {
     font-weight: bold;
     background: -moz-linear-gradient(#737373, #000000) repeat scroll 0 0 transparent;
     text-align: left;
-    padding: 2px 4px;
+    padding: 4px;
     margin-bottom: 2px;
-    border: 1px solid #CCC;
-    margin-top: 1px;
 }
 
 nav#main_nav div#business_name,
 nav#main_nav div#e_name,
 nav#main_nav div#terminal_id,
 nav#main_nav div#clock,
-nav#main_nav div#date,
-nav#main_nav div#misc_notice {
+nav#main_nav div#date {
     float: left;
     padding: 2px 6px;
     border-right: 1px solid #DDD;
     color: #FFF;
-    width: 100px;
+    min-width: 100px;
+}
+
+nav#main_nav div#clock span {
+    color: #FFF;
 }
 
 nav#main_nav div#nav_save_button {
@@ -1123,22 +1153,11 @@ nav#main_nav div#nav_save_button {
     float: right;
     cursor: pointer;
     margin-right: 10px;
+    margin-top: -3px;
 }
 
 nav#main_nav div#nav_save_button img {
     height: 25px;
-}
-
-nav#main_nav div#misc_notice {
-    float: right;
-    margin-right: 5px;
-    width: -moz-fit-content;
-    display: none;
-}
-
-nav#main_nav div#misc_notice div#reload_message {
-    cursor: pointer;
-    color: red;
 }
 
 nav#main_nav div#misc_notice input {
@@ -1154,7 +1173,7 @@ div#menu_screen div#receipt_keypad_container {
 }
 
 div#menu_screen div#menu_pages_container {
-    width: 728px;
+    width: 740px;
     float: right;
     border: 1px solid #CCC;
     -moz-border-radius: 7px;
@@ -1173,10 +1192,11 @@ div#global_status_message {
 }
 
 div#menu_screen div#receipt_keypad_container div#receipt {
-    height: 325px;
+    height: 379px;
     overflow-y: auto;
     display: block;
     background-color: #FFF;
+    padding-top: 2px;
 }
 
 div#menu_screen div#receipt_keypad_container div#top_buttons {
@@ -1199,14 +1219,16 @@ div#menu_screen div#receipt_keypad_container div#table_select_container select {
     border-radius: 4px;  
     background-color: #FFF;
     color: #000;
-    height: 26px;
+    height: 32px;
+    width: 113px;
+    margin-right: 4px;
+    font-size: 20px;
 }
 
 div#menu_screen div#receipt_keypad_container div#table_screen_button {
     float: left;
-    margin-left: 15px;
     cursor: pointer;
-    padding: 3px 18px;
+    padding: 8px 28px;
     border: 1px solid #CCC;
     -moz-border-radius: 4px;
     radiusborder-radius: 4px;
@@ -1216,8 +1238,8 @@ div#menu_screen div#receipt_keypad_container div#table_screen_button {
 }
 
 div#menu_screen div#receipt_keypad_container div#till_keypad {
-    height: 326px;
-    padding-top: 12px;
+    height: 280px;
+    padding-top: 6px;
 }
 
 div#menu_screen div#menu_pages_container div#pages {
@@ -1226,7 +1248,7 @@ div#menu_screen div#menu_pages_container div#pages {
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container {
-    height: 400px;
+    height: 486px;
     padding-left: 2px;
     padding-top: 4px;
     background-color: #E0E0E0;
@@ -1237,9 +1259,9 @@ div#menu_screen div#menu_pages_container div#menu_buttons_popup_anchor {
 }
 
 div#menu_screen div#menu_pages_container div#menu_buttons {
-    border-spacing: 6px;
-    height: 198px;
-    padding: 5px;
+    border-spacing: 3px;
+    height: 159px;
+    padding: 1px;
 }
 
 div#menu_screen div#menu_pages_container div#menu_buttons div#menu_buttons_loading_message {
@@ -1249,10 +1271,10 @@ div#menu_screen div#menu_pages_container div#menu_buttons div#menu_buttons_loadi
 }
 
 div#menu_screen div#menu_pages_container div#menu_buttons div.button {
-    width: 85px;
-    max-width: 85px;
-    height: 85px;
-    max-height: 85px;
+    width: 73px;
+    max-width: 73px;
+    height: 73px;
+    max-height: 73px;
     overflow: hidden;
     vertical-align: middle;
     display: table-cell;
@@ -1266,12 +1288,13 @@ div#menu_screen div#menu_pages_container div#menu_buttons div.button {
 }
 
 div#menu_screen div#menu_pages_container div#menu_buttons div.button div.icon img {
-    max-height: 40px;
-    max-width: 40px;
+    max-height: 30px;
+    max-width: 30px;
 }
 
 div#menu_screen div#menu_pages_container div#menu_buttons div.button div.button_name {
     padding: 0px 3px;
+    font-size: 12px;
 }
 
 div#menu_screen div#menu_pages_container div#menu_buttons div.button div.button_name a {
@@ -1294,8 +1317,8 @@ div#menu_screen div#menu_pages_container div#pages div.page {
     display: table-cell;
     text-align: center;
     vertical-align: middle;
-    height: 85px;
-    width: 90px;
+    height: 55px;
+    width: 88px;
     cursor: pointer;
     border: 1px solid #AAA;
     top-lcursor: pointer;
@@ -1312,7 +1335,7 @@ div#menu_screen div#menu_pages_container div#pages div.selected {
 }
 
 div#menu_screen div#menu_pages_container div#pages div.page div.name {
-    font-size: 14px;
+    font-size: 13px;
     color: black;
     text-decoration: none;
     padding: 4px;
@@ -1328,28 +1351,28 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items {
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item {
     float: left;
-    width: 110px;
-    margin: 3px;
-    height: 123px;
+    width: 88px;
+    margin: 1px;
+    height: 92px;
     border: 1px solid #AAA;
     cursor: pointer;
     -moz-border-radius: 3px;
     border-radius: 3px;  
-    box-shadow: 1px 1px 3px #CCC;
+    box-shadow: 0 1px 0 #777777;
     background-color: #FFF;
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_pic {
-    height: 78px;
+    height: 58px;
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_pic img {
     position: relative;
-    height: 78px;
+    height: 63px;
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_name {
-    font-size: 13px;
+    font-size: 11px;
     text-decoration: none;
     padding: 4px;
     width: -moz-fit-content;
@@ -1362,7 +1385,7 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 /* Menu Screen keypad */
 
 div#till_keypad div#keys {
-    width: 240px;
+    width: 210px;
     margin: auto;
 }
 
@@ -1370,9 +1393,9 @@ div#till_keypad div#keys div {
     vertical-align: middle;
     float: left;
     margin: 2px;
-    width: 74px;
-    padding-top: 25px;
-    height: 47px;
+    width: 63px;
+    padding-top: 22px;
+    height: 40px;
     font-size: 18px;
     border: 1px solid #777;
     cursor: pointer;
@@ -1420,15 +1443,8 @@ div#menu_screen div#receipt_keypad_container div#total_container div#total_value
 }
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.order_line {
-    border: 2px solid #FFF;
-    margin: 1px 2px;
+    margin: 0px 2px;
     cursor: pointer;
-}
-
-div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.order_line:hover {
-    border: 2px solid #4297D7;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
 }
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.order_line.selected {
@@ -1442,7 +1458,6 @@ div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.amoun
     text-align: left;
     width: 37px;
     margin-left: 3px;
-    font-weight: bold;
 }
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.name {
@@ -1453,8 +1468,8 @@ div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.name 
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.modifier_name {
     float: left;
-    width: 120px;
-    margin-left: 80px;
+    width: 150px;
+    margin-left: 50px;
     text-align: left;
 }
 
@@ -1468,7 +1483,6 @@ div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.total
     float: left;
     width: 40px;
     text-align: right;
-    font-weight: bold;
 }
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.discount div.header {
@@ -1515,7 +1529,7 @@ div#menu_screen div#receipt_keypad_container div#receipt div#till_roll_discount 
 
 div#menu_screen div#receipt_keypad_container div#receipt div#sales_tax_total div.header {
     float: left;
-    width: 180px;
+    width: 194px;
     text-align: right;
     font-style: italic;
 }
@@ -2237,7 +2251,7 @@ div.modifier_category_popup div.header {
 }
 
 div.modifier_category_popup div.modifier_choices {
-    width: 300px;
+    width: 250px;
     margin: auto;
 }
 
@@ -2246,7 +2260,7 @@ div.modifier_category_popup div.modifier_choices div.modifier {
     border: 1px solid #CCC;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    padding: 4px;
+    padding: 8px 4px;
     cursor: pointer;
 }
 
@@ -2264,7 +2278,7 @@ div.modifier_category_popup div.modifier_choices div.modifier div.price {
     font-weight: bold;
     font-size: 14px;
     width: 40%;
-    text-align: center;
+    text-align: right;
 }
 
 /* Modifier Popup */
