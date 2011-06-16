@@ -1,31 +1,3 @@
-<title>Pos</title>
-
-<%= stylesheet_link_tag :all, :cache => true, :recursive => true %>
-
-<!-- load the dynamic theme -->
-<link type="text/css" href="<%= admin_custom_theme_path(:format => :css) %> " media="screen" rel="stylesheet" />
-
-<%= javascript_include_tag "jquery.min", "jquery-ui.min", :cache => "jq" %>
-
-<!--cant cache the following scripts as they are erb templates -->
-<%= javascript_include_tag "init", "employees" %>
-
-<%= javascript_include_tag "rails", "application", "flexigrid.pack",
-  "menu", "touch-scroll", "util", "jquery.cookie", "jquery.clock",
-  "jquery.plugin.menuTree.pack", "webkitdragdrop",
-  "screen_button_functions", "jquery.bubblepopup", :cache => "libs" %>
-
-<!-- only load the fingerprint libraries if the fingerprint has not yet been set -->
-<% if !request.cookies["terminal_fingerprint"] %>
-  <%= javascript_include_tag "md5", "detector", :cache => "fingerprint_libs" %>
-<% end %>
-
-<%= csrf_meta_tag %>
-
-<!-- include firebug lite -->
-<!--script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script-->
-
-<!-- must set some vars from the system settings -->
 <script type="text/javascript">
   //load the setting for bypass pin
   var bypassPin = <%= GlobalSetting.parsed_setting_for GlobalSetting::BYPASS_PIN %>;
@@ -35,7 +7,13 @@
     
   //is tax chargable
   var taxChargable = <%= GlobalSetting.parsed_setting_for GlobalSetting::TAX_CHARGABLE %>;
-    
+   
+  //global tax rate
+  var globalTaxRate = <%= GlobalSetting.parsed_setting_for GlobalSetting::GLOBAL_TAX_RATE %>;
+   
+  //service charge label
+  var serviceChargeLabel = "<%= GlobalSetting.parsed_setting_for GlobalSetting::SERVICE_CHARGE_LABEL %>";
+   
   //load the dynamically set currency symbol
   var dynamicCurrencySymbol = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL %>";
   
@@ -48,7 +26,9 @@
   
   //these variables are used for polling and they get updated by the dynamic javascript
   var lastInterfaceReloadTime = <%=Time.now.to_i%>;
-  var lastSyncTableOrderTime = <%=Time.now.to_i%>;
+  
+  //this will set off a bunch of requests to fill up out table order receipts
+  var lastSyncTableOrderTime = 0;
   
   var receiptMessage = "<%= GlobalSetting.parsed_setting_for GlobalSetting::RECEIPT_MESSAGE %>";
   
@@ -56,8 +36,3 @@
   
   var terminalID = "<%=@terminal_id%>";
 </script>
-
-<%= yield :head %>
-
-<!-- disable the double tap to zoom -->
-<meta name="viewport" content="user-scalable=0;" />

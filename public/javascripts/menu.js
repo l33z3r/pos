@@ -3,11 +3,13 @@ var currentOrder = null;
 var currentTableOrder = null;
 var totalOrder = null;
 var currentOrderItem;
-var currentTotal;
+var currentTotalFinal = 0;
 var currentOrderJSON;
 var currentMenuItemQuantity = "";
 var selectedTable = 0;
 var tableOrders = new Array();
+
+var serviceCharge = 0;
 
 //this function is called from application.js on page load
 function initMenu() {
@@ -74,38 +76,16 @@ function loadFirstMenuPage() {
 //load the current bar receipt order into memory
 function loadCurrentOrder() {
     //retrieve the users current order from cookie
-    currentOrder = $.getJSONCookie("user_" + current_user_id + "_current_order");
-}
-
-//this loads up the last receipt that a user was looking at before logging out
-function displayLastReceipt() {
-    //retrieve the users last receipt from cookie
-    lastReceiptIDOBJ = $.getJSONCookie("user_" + current_user_id + "_last_receipt");
-
-    if(lastReceiptIDOBJ == null) {
-        lastReceiptID = 0;
-    } else {
-        lastReceiptID = lastReceiptIDOBJ.table_num
-    }
-
-    //last receipt is a number of a table or 0 for the current order
-    if(lastReceiptID == 0) {
-        order = currentOrder;
-    } else {
-        order = tableOrders[lastReceiptID]
-    }
-
-    //set the select item
-    $('#table_select').val(lastReceiptID);
-    doSelectTable(lastReceiptID);
-}
-
-function clearReceipt() {
-    $('#till_roll').html('');
-    writeTotalToReceipt(null, 0);
+    currentOrder = getOrderFromStorage(current_user_id);
 }
 
 function doMenuPageSelect(pageNum, pageId) {
+    //make sure the modifier popups are closed
+    if(currentSelectedMenuItemElement) {
+        $(currentSelectedMenuItemElement).HideBubblePopup();
+        $(currentSelectedMenuItemElement).FreezeBubblePopup();
+    }
+    
     //set this pages class to make it look selected
     $('#pages .page').removeClass('selected');
     $('#menu_page_' + pageId).addClass('selected');
@@ -136,9 +116,16 @@ function doSelectMenuItem(productId, element) {
     //reset the quantity
     currentMenuItemQuantity = "";
 
+    if(taxChargable) {
+        taxRate = -1;
+    } else {
+        taxRate = product.tax_rate;
+    }
+    
     orderItem = {
         'amount':amount,
         'product':product,
+        'tax_rate':taxRate,
         'product_price':product.price,
         'total_price':(product.price*amount)
     }
@@ -241,7 +228,7 @@ function finishDoSelectMenuItem() {
     
     calculateOrderTotal(currentOrder);
 
-    storeOrderInCookie(current_user_id, currentOrder);
+    storeOrderInStorage(current_user_id, currentOrder);
 
     //add a line to the receipt
     writeOrderItemToReceipt(orderItem);
@@ -265,8 +252,8 @@ function tableSelectMenuItem(orderItem) {
 
     calculateOrderTotal(currentTableOrder);
 
-    storeTableOrderInCookie(selectedTable, currentTableOrder);
-
+    storeTableOrderInStorage(selectedTable, currentTableOrder);
+    
     //add a line to the receipt
     writeOrderItemToReceipt(orderItem);
     writeTotalToReceipt(currentTableOrder, currentTableOrder['total']);
@@ -278,10 +265,20 @@ var clearHTML = "<div class='clear'>&nbsp;</div>";
     
 //TODO: replace with jquery template => http://api.jquery.com/jQuery.template/
 function writeOrderItemToReceipt(orderItem) {
+    haveDiscount = orderItem.discount_percent && orderItem.discount_percent > 0;
+    
+    itemPriceWithoutDiscountOrModifier = orderItem.amount * orderItem.product_price;
+    
+    if(haveDiscount) {
+        itemPriceWithoutModifier = itemPriceWithoutDiscountOrModifier - ((itemPriceWithoutDiscountOrModifier * orderItem.discount_percent)/100);
+    } else {
+        itemPriceWithoutModifier = itemPriceWithoutDiscountOrModifier;
+    }
+    
     orderHTML = "<div class='order_line' data-item_number='" + orderItem.itemNumber + "' onclick='doSelectReceiptItem(this)'>";
     orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
     orderHTML += "<div class='name'>" + orderItem.product.name + "</div>";
-    orderItemTotalPriceText = number_to_currency((orderItem.product_price * orderItem.amount), {
+    orderItemTotalPriceText = number_to_currency(itemPriceWithoutModifier, {
         precision : 2
     });
     orderHTML += "<div class='total' data-per_unit_price='" + orderItem.product_price + "'>" + orderItemTotalPriceText + "</div>";
@@ -290,9 +287,17 @@ function writeOrderItemToReceipt(orderItem) {
         orderHTML += "<div class='clear'>&nbsp;</div>";
         orderHTML += "<div class='modifier_name'>" + orderItem.modifier.name + "</div>";
         
+        modifierPriceWithoutDiscount = orderItem.modifier.price * orderItem.amount;
+        
+        if(haveDiscount) {
+            modifierPrice = modifierPriceWithoutDiscount - ((modifierPriceWithoutDiscount * orderItem.discount_percent)/100);
+        } else {
+            modifierPrice = modifierPriceWithoutDiscount;
+        }
+    
         //only show modifier price if not zero
         if(orderItem.modifier.price > 0) {
-            modifierPriceText = number_to_currency((orderItem.modifier.price * orderItem.amount), {
+            modifierPriceText = number_to_currency(modifierPrice, {
                 precision : 2
             });
             orderHTML += "<div class='modifier_price'>" + modifierPriceText + "</div>";
@@ -301,14 +306,21 @@ function writeOrderItemToReceipt(orderItem) {
         orderHTML += clearHTML;
     }
 
-    if(orderItem.discount_percent && orderItem.discount_percent > 0) {
-        newPrice = number_to_currency(orderItem.total_price, {
+    preDiscountPrice = (orderItem.product_price * orderItem.amount);
+
+    //add the modifiers price to the preDiscountPrice
+    if(orderItem.modifier) {
+        preDiscountPrice += orderItem.modifier.price * orderItem.amount;
+    }
+    
+    if(haveDiscount) {
+        newPrice = number_to_currency(preDiscountPrice, {
             precision : 2
         });
             
         orderHTML += clearHTML;
-        orderHTML += "<div class='discount'><div class='header'>Discount</div>";
-        orderHTML += "<div class='discount_amount'>@ " + orderItem.discount_percent + "%</div>";
+        orderHTML += "<div class='discount'><div class='header'>Discounted</div>";
+        orderHTML += "<div class='discount_amount'>" + orderItem.discount_percent + "% from </div>";
         orderHTML += "<div class='new_price'>" + newPrice + "</div></div>";
     }
     
@@ -410,12 +422,12 @@ function saveEditOrderItem(el) {
         order = tableOrders[selectedTable];
         order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
     
-        storeTableOrderInCookie(selectedTable, order);
+        storeTableOrderInStorage(selectedTable, order);
     }else {
         order = currentOrder;
         order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
         
-        storeOrderInCookie(current_user_id, order);
+        storeOrderInStorage(current_user_id, order);
     }
     
     //redraw the receipt
@@ -448,12 +460,12 @@ function removeOrderItem(el) {
         order = tableOrders[selectedTable];
         order = doRemoveOrderItem(order, itemNumber);
     
-        storeTableOrderInCookie(selectedTable, order);
+        storeTableOrderInStorage(selectedTable, order);
     }else {
         order = currentOrder;
         order = doRemoveOrderItem(order, itemNumber);
         
-        storeOrderInCookie(current_user_id, order);
+        storeOrderInStorage(current_user_id, order);
     }
     
     currentSelectedReceiptItemEl.slideUp('slow', function() {
@@ -502,86 +514,27 @@ function calculateOrderTotal(order) {
         newPrice = oldPrice - ((oldPrice * discountAmount) / 100);
         order['total'] = newPrice;
     }
-    
-    //calculate order taxes
-    calculateOrderTaxes(order);
-}
-
-function calculateOrderTaxes(order) {
-    orderTaxes = new Array();
-    
-    for(i=0; i<order.items.length; i++) {
-        item = order.items[i];
-        
-        taxRate = item.product.tax_rate.toString();
-        
-        if(typeof(orderTaxes[taxRate]) == "undefined") {
-            orderTaxes[taxRate] = 0;
-        }
-        
-        orderTaxes[taxRate] = parseFloat(orderTaxes[taxRate]) + parseFloat(item.total_price);
-    }
-    
-    order['order_taxes'] = orderTaxes;
 }
 
 function writeTotalToReceipt(order, orderTotal) {
-    if(order) {
-        //write the tax total
-        totalTaxAmount = 0;
-    
-        for(var key in order.order_taxes) {
-            
-            taxRate = parseFloat(key);
-            taxableAmount = parseFloat(order.order_taxes[key]);
-        
-            taxAmount = (taxRate * taxableAmount)/100;
-     
-            totalTaxAmount +=  parseFloat(taxAmount);
-        }
-
-        //apply the whole order discount
-        if(order['discount_percent']) {
-            totalTaxAmount -= (parseFloat(order['discount_percent']) * totalTaxAmount)/100;
-        }
-            
-//        if(taxChargable) {
-//            totalTaxHTML = clearHTML + "<div class='tax'><div class='header'>Total Tax:</div>";
-//            totalTaxHTML += "<div class='amount'>";
-//            totalTaxHTML += number_to_currency(totalTaxAmount, {
-//                precision : 2, 
-//                showunit : true
-//            });
-//            totalTaxHTML += "</div></div>" + clearHTML;
-//    
-//            $('#sales_tax_total').html(totalTaxHTML);
-//        }
-    }
+    if(!order) return;
     
     //write the total order discount to the end of the order items
-    if(order && order['discount_percent']) {
+    if(order.discount_percent && parseFloat(order.discount_percent) > 0) {
+        preDiscountPrice = order.pre_discount_price;
         
-        preDiscountFormatted = number_to_currency(order.pre_discount_price, {
-            precision : 2, 
-            showunit : true
-        })
+        preDiscountFormatted = currency(preDiscountPrice);
         
-        tillRollDiscountHTML = clearHTML;
-        tillRollDiscountHTML += "<div class='discount'><div class='header'>Pre Discount Sub-Total:</div>";
-        tillRollDiscountHTML += "<div class='pre_discount_total'>" + preDiscountFormatted + "</div>";
-        tillRollDiscountHTML += clearHTML + "<div class='header'>Total Order Discount</div>";
-        tillRollDiscountHTML += "<div class='discount_amount'>@ " + order.discount_percent + "%</div></div>";
+        tillRollDiscountHTML = clearHTML + "<div class='discount'><div class='header'>Discounted</div>";
+        tillRollDiscountHTML += "<div class='discount_amount'>" + order.discount_percent + "% from</div>";
+        tillRollDiscountHTML += "<div class='pre_discount_total'>" + preDiscountFormatted + "</div></div>";
     } else {
         tillRollDiscountHTML = "";
     }
     
     $('#till_roll_discount').html(tillRollDiscountHTML);
     
-    $('#total_value').html(number_to_currency(orderTotal, {
-        precision : 2, 
-        showunit : true
-    }));
-    currentTotal = orderTotal;
+    $('#total_value').html(currency(orderTotal));
 }
 
 function doSelectTable(tableNum) {
@@ -592,12 +545,8 @@ function doSelectTable(tableNum) {
     selectedTable = tableNum;
     currentSelectedRoom = $('#table_select :selected').data("room_id");
     
-    //write to cookie that this user was last looking at this receipt
-    $.JSONCookie("user_" + current_user_id + "_last_receipt", {
-        'table_num':tableNum
-    }, {
-        path: '/'
-    });
+    //write to storage that this user was last looking at this receipt
+    storeKeyJSONValue("user_" + current_user_id + "_last_receipt", {'table_num':tableNum});
 
     if(tableNum == 0) {
         loadCurrentOrder();
@@ -616,7 +565,7 @@ function doSelectTable(tableNum) {
     };
     
     //fetch this tables order from cookie
-    currentTableOrderJSON = $.getJSONCookie("table_" + selectedTable + "_current_order");
+    currentTableOrderJSON = getTableOrderFromStorage(selectedTable);
 
     //fill in the table order array
     if(currentTableOrderJSON != null) {
@@ -697,44 +646,43 @@ function clearOrder(selectedTable) {
     //delete the cookie
     //clear the in memory order
     if(selectedTable == 0) {
-        $.removeJSONCookie("user_" + current_user_id + "_current_order");
+        clearOrderInStorage(current_user_id);
         currentOrder = null;
     } else {
-        $.removeJSONCookie("table_" + selectedTable + "_current_order");
-    //dont need to worry about clearing memory as it is read in from cookie which now no longer exists
+        clearTableOrderInStorage(selectedTable);
+        //dont need to worry about clearing memory as it is read in from cookie which now no longer exists
     }
     
     clearReceipt();
 }
 
 function doTotal() {
-    targetCurrentOrder = getCurrentOrder();
+    totalOrder = getCurrentOrder();
     
-    if(!targetCurrentOrder || targetCurrentOrder.items.length == 0) {
+    if(!totalOrder || totalOrder.items.length == 0) {
         alert("No order present to sub-total!");
         return;
     }
     
+    //get the receipt items and the taxes/discounts
+    cashScreenReceiptHTML = fetchCashScreenReceiptHTML()
+    $('#totals_till_roll').html(cashScreenReceiptHTML);
+    
     $('#menu_screen').hide();
     $('#total_screen').show();
-
-    $('#totals_total_value').html(number_to_currency(currentTotal, {
-        precision : 2, 
-        showunit : true
-    }));
 }
 
 function takeTendered() {
     cashTendered = getTendered();
 
-    if(cashTendered < currentTotal) {
-        alert("Must enter a higher value than total (" + dynamicCurrencySymbol + currentTotal + ")");
+    if(cashTendered < currentTotalFinal) {
+        alert("Must enter a higher value than current total: " + currency(currentTotalFinal));
         resetTendered();
         return;
     }
 
     //calculate change and show the finish sale button
-    change = cashTendered - currentTotal;
+    change = cashTendered - currentTotalFinal;
     $('#totals_change_value').html(number_to_currency(change, {
         precision : 2
     }));
@@ -754,6 +702,7 @@ function doTotalFinal() {
     if(selectedTable == 0) {
         totalOrder = currentOrder;
         tableInfoId = null;
+        tableInfoLabel = "No Table Selected";
         isTableOrder = false;
     } else {
         //get total for table
@@ -762,6 +711,7 @@ function doTotalFinal() {
         //TODO: pick up num persons
         isTableOrder = true;
         tableInfoId = selectedTable;
+        tableInfoLabel = tables[tableInfoId].label;
         numPersons = 4
     }
 
@@ -772,35 +722,58 @@ function doTotalFinal() {
     discountPercent = totalOrder.discount_percent;
     preDiscountPrice = totalOrder.pre_discount_price;
 
+    //do up the subtotal and total and retrieve the receipt html
+    receiptHTML = fetchFinalReceiptHTML();
+    
+    setLoginReceipt("Last Sale", receiptHTML);
+    
+    //now print the receipt
+    printReceipt(receiptHTML);
+
+    if(taxChargable) {
+        orderSalesTaxRate = globalTaxRate;
+        
+        taxAmount = (totalOrder.total * globalTaxRate)/100;
+        orderTotal = totalOrder.total + taxAmount;
+    } else {
+        orderSalesTaxRate = -1;
+        orderTotal = totalOrder.total;
+    }
+    
+    //make sure 2 decimal places
+    orderTotal = parseFloat(orderTotal).toFixed(2);
+    
     orderData = {
         'employee_id':current_user_id,
-        'total':totalOrder.total,
+        'total':orderTotal,
+        'tax_chargable':taxChargable,
+        'global_sales_tax_rate':orderSalesTaxRate,
+        'service_charge':serviceCharge,
         'payment_type':paymentMethod,
         'amount_tendered':cashTendered,
         'num_persons':numPersons,
         'is_table_order':isTableOrder,
         'table_info_id':tableInfoId,
+        'table_info_label':tableInfoLabel,
         'discount_percent':discountPercent,
         'pre_discount_price':preDiscountPrice,
         'order_details':totalOrder,
         'terminal_id':terminalID
     }
 
-    copyReceiptToLoginScreen();
-
     sendOrderToServer(orderData);
 
     //clear the order
     clearOrder(selectedTable);
+
+    //reset the service charge
+    serviceCharge = 0;
 
     //clear the receipt
     $('#till_roll').html('');
     $('#till_roll_discount').html('');
     $('#sales_tax_total').html('');
     
-    //print receipt
-
-
     //pick up the default home screen and load it
     loadAfterSaleScreen();
 
@@ -811,6 +784,7 @@ function doTotalFinal() {
     resetTendered();
     $('#totals_change_value').html("");
     totalOrder = null;
+    currentTotalFinal = 0;
 }
 
 function loadAfterSaleScreen() {
@@ -885,7 +859,7 @@ function clearOutstandingOrders() {
 }
 
 function retrieveOrdersForLaterSend() {
-    ordersForLaterSendOBJ = $.getJSONCookie("orders_for_later_send");
+    ordersForLaterSendOBJ = retrieveStorageJSONValue("orders_for_later_send");
 
     if(ordersForLaterSendOBJ && ordersForLaterSendOBJ.ordersForLaterSend) {
         return ordersForLaterSendOBJ.ordersForLaterSend;
@@ -899,10 +873,7 @@ function saveOrdersForLaterSend(ordersForLaterSend) {
         'ordersForLaterSend':ordersForLaterSend
     };
     
-    //store this item in the current order cookie
-    $.JSONCookie("orders_for_later_send", ordersForLaterSendOBJ, {
-        path: '/'
-    });
+    storeKeyJSONValue("orders_for_later_send", ordersForLaterSendOBJ);
 }
 
 function getTendered() {
@@ -944,24 +915,12 @@ function initOptionButtons() {
     }
 }
 
-function storeOrderInCookie(current_user_id, order_to_store) {
-    $.JSONCookie("user_" + current_user_id + "_current_order", order_to_store, {
-        path: '/'
-    });
-}
-
-function storeTableOrderInCookie(table_num, order_to_store) {
-    $.JSONCookie("table_" + table_num + "_current_order", order_to_store, {
-        path: '/'
-    });
-}
-
 var currentTargetPopupAnchor = null;
 var individualItemDiscount = false;
 
 function showDiscountPopup(el) {
     if(getCurrentOrder().items.length == 0) {
-        alert("No order present to discount!");
+        setStatusMessage("No order present to discount!");
         return;
     }
     
@@ -1065,9 +1024,9 @@ function saveDiscount() {
     
     //store the modified order
     if(selectedTable != 0) {
-        storeTableOrderInCookie(selectedTable, order);
+        storeTableOrderInStorage(selectedTable, order);
     }else {
-        storeOrderInCookie(current_user_id, order);
+        storeOrderInStorage(current_user_id, order);
     }
     
     closeDiscountPopup();
@@ -1215,13 +1174,17 @@ function doReceiveTableOrderSync(terminalID, tableID, tableLabel, terminalEmploy
         tableOrders[tableID].items[i].itemNumber = i + 1;
     }
     
+    //copy over the discount
+    tableOrders[tableID].discount_percent = tableOrderDataJSON.discount_percent;
+    
     calculateOrderTotal(tableOrders[tableID]);
-    storeTableOrderInCookie(tableID, tableOrders[tableID]);
+    storeTableOrderInStorage(tableID, tableOrders[tableID]);
     
     if(tableID == selectedTable) {
         loadReceipt(tableOrders[tableID]);
-        setStatusMessage("<b>" + terminalEmployee + "</b> added items to the order for table <b>" + tableLabel + "</b> from terminal <b>" + terminalID + "</b>");
     }
+    
+    setStatusMessage("<b>" + terminalEmployee + "</b> modified the order for table <b>" + tableLabel + "</b> from terminal <b>" + terminalID + "</b>");
 }
 
 function doClearTableOrder(terminalID, tableID, tableLabel, terminalEmployee) {
@@ -1229,10 +1192,16 @@ function doClearTableOrder(terminalID, tableID, tableLabel, terminalEmployee) {
         'items': new Array(),
         'total':0
     };
-    storeTableOrderInCookie(tableID, tableOrders[tableID]);
+    storeTableOrderInStorage(tableID, tableOrders[tableID]);
         
     if(tableID == selectedTable) {
         loadReceipt(tableOrders[tableID]);
-        setStatusMessage("<b>" + terminalEmployee + "</b> totaled the order for table <b>" + tableLabel + "</b> from terminal <b>" + terminalID + "</b>");
     }
+    
+    setStatusMessage("<b>" + terminalEmployee + "</b> totaled the order for table <b>" + tableLabel + "</b> from terminal <b>" + terminalID + "</b>");
+}
+
+function promptForServiceCharge() {
+    serviceCharge = prompt("Enter " + serviceChargeLabel + " amount", serviceCharge);    
+    serviceCharge = parseFloat(serviceCharge);
 }

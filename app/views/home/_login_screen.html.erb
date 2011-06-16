@@ -2,7 +2,7 @@
 
   <div id="login_receipt_keypad_container">
 
-    <div id="login_receipt_header">Last Sale/Order</div>
+    <div id="login_receipt_header"></div>
 
     <div id="login_receipt">
       <div id="login_till_roll">
@@ -33,6 +33,10 @@
   <div id="active_users_buttons_container">
     <div id="active_users">
       <%= render :partial => "active_employees" %>
+    </div>
+
+    <div class="clear_spacer">
+      <div class="global_status_message"></div>
     </div>
 
     <div class="buttons">

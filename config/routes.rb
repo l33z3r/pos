@@ -29,6 +29,7 @@ Pos::Application.routes.draw do
     resources :displays do
       member do
         get 'builder'
+        post 'duplicate'
         post 'default'
         
         #menu builder ajax functions

@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110510063013
+# Schema version: 20110616065837
 #
 # Table name: cash_totals
 #
@@ -11,6 +11,7 @@
 #  created_at          :datetime
 #  updated_at          :datetime
 #  employee_id         :integer(4)
+#  terminal_id         :string(255)
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

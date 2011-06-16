@@ -9,10 +9,12 @@ var showingDisplayButtonPasscodePromptPopup;
 //passcode prompt when a screen button is pressed
 var display_button_passcode_permissions;
 
+var clearHTML = "<div class='clear'>&nbsp;</div>";
+
 $(function(){
     
     //allow scroll for dev
-//    $('body').css("overflow", "scroll");
+    $('body').css("overflow", "scroll");
     
     
     setFingerPrintCookie();
@@ -30,7 +32,8 @@ $(function(){
             
     $('#menu_buttons_popup_anchor').FreezeBubblePopup();
     
-    setTimeout(callHomePoll, 5000);
+    //start calling home
+    callHomePoll();
 });
 
 function callHomePoll() {
@@ -47,8 +50,19 @@ function callHomePoll() {
     });
 }
 
+var currentCallHomePoll = null;
+
 function callHomePollComplete() {
-    setTimeout(callHomePoll, 5000);
+    currentCallHomePoll = setTimeout(callHomePoll, 5000);
+}
+
+function immediateCallHome() {
+    if(currentCallHomePoll) {
+        clearTimeout(currentCallHomePoll);
+        currentCallHomePoll = null;
+    }
+    
+    callHomePoll();
 }
 
 $(function(){
@@ -59,17 +73,10 @@ $(function(){
     if(current_user_id == null) {
         $('#landing').show();
 
-        //load last sale
-        lastSaleHTMLOBJ = $.getJSONCookie("last_sale");
+        lastSaleInfo = getLastSaleInfo();
 
-        if(lastSaleHTMLOBJ == null) {
-            lastSaleHTML = "";
-        } else {
-            lastSaleHTML = lastSaleHTMLOBJ.html;
-        }
-
-        if(lastSaleHTML) {
-            $('#login_till_roll').html(lastSaleHTML);
+        if(lastSaleInfo) {
+            setLoginReceipt(lastSaleInfo.title, lastSaleInfo.contentHTML)
         }
         
         $('#clockincode_show').html("");
@@ -104,8 +111,8 @@ function doCancelLoginKeypad() {
 
 //TODO: want to move this flash message to a better place
 $(function() {
-    $('#flash_container').delay(500).slideDown(500, function() {
-        $(this).delay(3000).slideUp(500);
+    $('#flash_container').delay(500).fadeIn(500, function() {
+        $(this).delay(3000).fadeOut(500);
     });
 });
 
@@ -119,6 +126,8 @@ function doQuickLogin(user_id) {
         }
         $('#num').val(login_code);
         doLogin();
+    } else {
+        setStatusMessage("You must enter your pin!");
     }
 }
 
@@ -273,6 +282,8 @@ function loginSuccess(id, nickname, is_admin, passcode) {
     //set the username in the menu
     $('#e_name').html(nickname);
     
+    setStatusMessage("Welcome " + nickname + "!");
+    
     //hide login overlay
     $('#landing').hide();
 
@@ -336,84 +347,11 @@ function clockoutFailure() {
 }
 
 function displayError(message) {
-    alert("Error: " + message);
+    setStatusMessage("Error: " + message);
 }
 
 function displayNotice(message) {
-    alert("Notice: " + message);
-}
-
-function copyReceiptToLoginScreen() {
-    //TODO: set the text order/sale???
-    
-    clearHTML = "<div class='clear'>&nbsp;</div>";
-    
-    if(totalOrder != null) {
-        total = totalOrder.total;
-    } else {
-        total = 0;
-    }
-    
-    totalTendered = $('#totals_tendered_value').html();
-    change = $('#totals_change_value').html();
-
-    newHTML = "<div id='login_till_roll_user_nickname'>Server: " + current_user_nickname + "</div>";
-    
-    //TODO: format the time
-    newHTML += "<div id='login_till_roll_served_time'>Time: " + $('#clock').html() + "</div>";
-    
-    //TODO: pick up table and display it if table order
-    newHTML += "<div id='login_till_roll_table'>Table: X</div>" + clearHTML;
-    
-    newHTML += $('#till_roll').html();
-    newHTML += "<div class='spacer'>&nbsp;</div>";
-
-    newHTML += $('#till_roll_discount').html() + clearHTML;
-    newHTML += $('#sales_tax_total').html() + clearHTML;
-    
-    if(total>0) {
-        totalText = number_to_currency(total, {
-            precision : 2, 
-            showunit : true
-        })
-        newHTML += "<div id='login_till_roll_total_label'>Total:</div><div id='login_till_roll_total_value'>" + totalText + "</div>";
-    }
-    
-    //tendered includes the euro sign, so if it is bigger
-    //than one, it has been set on totals screen and we should show it
-    if(totalTendered.length>0) {
-        totalTenderedText = number_to_currency(totalTendered, {
-            precision : 2, 
-            showunit : true
-        })
-        newHTML += "<div id='login_till_roll_tendered_label'>Tendered:</div><div id='login_till_roll_tendered_value'>" + totalTenderedText + "</div>";
-    }
-    
-    //change includes the euro sign, so if it is bigger
-    //than one, it has been set on totals screen and we should show it
-    if(change.length>0) {
-        changeText = number_to_currency(change, {
-            precision : 2, 
-            showunit : true
-        })
-        newHTML += "<div id='login_till_roll_change_label'>Change:</div><div id='login_till_roll_change_value'>" + changeText + "</div>";
-    }
-    
-    //we dont display the receipt message on the screen
-//    receiptMessageHTML = "<div id='receipt_message'>" + receiptMessage + "</div>";
-//    newHTML += clearHTML + receiptMessageHTML;
-    
-    $('#login_till_roll').html(newHTML);
-
-    newHTMLOBJ = {
-        'html':newHTML
-    };
-    
-//need to send this to server and store in session variable as it makes cookie too large
-//save the last sale in a cookie to load it into the screen on a reload
-//    $.JSONCookie("last_sale", newHTMLOBJ, {
-//        path: '/'
-//    });
+    setStatusMessage("Notice: " + message);
 }
 
 //jquery touch ui plugin init
@@ -496,7 +434,7 @@ function displayButtonPasscodeEntered() {
         displayButtonForwardFunction.call();
         displayButtonForwardFunction = null;
     } else {
-        alert("Passcode Incorrect, try again!");
+        setStatusMessage("Passcode Incorrect, try again!");
         $('#display_button_passcode').val('');
         $('#display_button_passcode_show').html('');
     }
@@ -645,29 +583,6 @@ function setFingerPrintCookie() {
     }
 }
 
-function setRawCookie(c_name, value, exdays) {
-    var exdate=new Date();
-    exdate.setDate(exdate.getDate() + exdays);
-    var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
-    document.cookie=c_name + "=" + c_value;
-}
-
-function getRawCookie(c_name) {
-    var i,x,y,ARRcookies=document.cookie.split(";");
-    for (i=0;i<ARRcookies.length;i++)
-    {
-        x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
-        y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
-        x=x.replace(/^\s+|\s+$/g,"");
-        if (x==c_name)
-        {
-            return unescape(y);
-        }
-    }
-
-    return null;
-}
-
 function initFlexigridTables() {
     $('table').flexigrid({
         height:'auto'
@@ -679,7 +594,9 @@ function setStatusMessage(message, hide) {
         hide = true;
     }
   
-    $('#global_status_message').html(message);
+    $('.global_status_message').each(function() {
+        $(this).html(message);
+    });
     
     afterFunction = null;
     
@@ -687,11 +604,15 @@ function setStatusMessage(message, hide) {
         afterFunction = hideStatusMessage;
     }
     
-    $('#global_status_message').fadeIn('slow', afterFunction);
+    $('.global_status_message').each(function() {
+        $(this).fadeIn('slow', afterFunction);
+    });
 }
 
 function hideStatusMessage() {
     setTimeout(function(){
-        $('#global_status_message').fadeOut()
+        $('.global_status_message').each(function() {
+            $(this).fadeOut();
+        })
     }, 5000);
 }

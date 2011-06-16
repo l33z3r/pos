@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110510063013
+# Schema version: 20110616065837
 #
 # Table name: cash_totals
 #
@@ -11,6 +11,7 @@
 #  created_at          :datetime
 #  updated_at          :datetime
 #  employee_id         :integer(4)
+#  terminal_id         :string(255)
 #
 
 class CashTotal < ActiveRecord::Base
@@ -28,7 +29,7 @@ class CashTotal < ActiveRecord::Base
   
   validates :total_type, :presence => true, :inclusion => { :in => VALID_TOTAL_TYPES }
   
-  def self.do_total total_type, employee
+  def self.do_total total_type, employee, terminal_id
     #validate total_type
     return nil unless VALID_TOTAL_TYPES.include?(total_type)
     
@@ -71,8 +72,8 @@ class CashTotal < ActiveRecord::Base
     end
     
     #insert a row
-    @cash_total = CashTotal.new({:employee_id => employee.id, :start_order => @first_order, 
-        :end_order => @last_order, :total_type => total_type, :total => @total})
+    @cash_total = CashTotal.new({:employee_id => employee.id, :terminal_id => terminal_id,
+        :start_order => @first_order, :end_order => @last_order, :total_type => total_type, :total => @total})
     @cash_total.save!
       
     return @cash_total

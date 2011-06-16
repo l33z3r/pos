@@ -18,6 +18,14 @@ body {
     height: 768px;
     overflow: hidden;
     line-height: 15px;
+
+    /* disable text selection */
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+    user-select: none;
+
 }
 
 input[type=radio], input[type=checkbox], select {
@@ -137,30 +145,27 @@ span#reload_message {
 
 .flash {
     text-align: center;
-    width: 70%;
-    PADDING-RIGHT: 10px;
-    BACKGROUND-POSITION: 5px 50%;
-    TEXT-INDENT: 40px;
-    padding: 10px 0px 10px 10px;
-    MARGIN: 2px;
-    margin-left: auto;
-    margin-right: auto;
-    BACKGROUND-REPEAT: no-repeat
+    width: 230px;
+    background-position: 5px 50%;
+    background-repeat: no-repeat;
+    padding: 5px;
+    float: right;
+    background-color: #FFF;
 }
 
 .flash_notice {
     BORDER: #090 2px solid;
-    BACKGROUND-IMAGE: url(/images/icon_success_lrg.gif);
+    /*BACKGROUND-IMAGE: url(/images/icon_success_lrg.gif);*/
 }
 
 .flash_warning {
     BORDER: #c60 2px solid;
-    BACKGROUND-IMAGE: url(/images/icon_warning_lrg.gif);
+    /*BACKGROUND-IMAGE: url(/images/icon_warning_lrg.gif);*/
 }
 
 .flash_error {
     BORDER: #f00 2px solid;
-    BACKGROUND-IMAGE: url(/images/icon_error_lrg.gif);
+    /*BACKGROUND-IMAGE: url(/images/icon_error_lrg.gif);*/
 }
 
 /* End Flash Messages */
@@ -173,7 +178,10 @@ div#landing {
 
 div#landing div#active_users_buttons_container {
     width: 740px;
-    float: right
+    float: right;
+    border: 1px solid #AAA;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
 }
 
 div#landing div#active_users_buttons_container div.buttons {
@@ -263,10 +271,7 @@ div#login_popup div#cancel_show_login {
 }
 
 div#landing div#active_users_buttons_container div#active_users {
-    height: 632px;
-    border: 1px solid #AAA;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
+    height: 604px;
 }
 
 div#landing div#active_users_buttons_container div#active_users div.employee_box {
@@ -330,6 +335,7 @@ div#landing div#login_receipt_keypad_container div#login_receipt_header {
     padding: 2px;
     font-weight: bold;
     font-size: 14px;
+    height: 15px;
 }
 
 div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.order_line {
@@ -986,7 +992,7 @@ div#edit_category section#form_container form div#actions input {
 /* Admin Displays Page */
 
 div#admin_display_list section#displays {
-    width: 400px;
+    width: 490px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -1160,6 +1166,18 @@ nav#main_nav div#nav_save_button img {
     height: 25px;
 }
 
+nav#main_nav div#nav_reload_button {
+    height: 22px;
+    float: right;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-top: -3px;
+}
+
+nav#main_nav div#nav_reload_button img {
+    height: 25px;
+}
+
 nav#main_nav div#misc_notice input {
     height: 10px;
 }
@@ -1180,14 +1198,14 @@ div#menu_screen div#menu_pages_container {
     border-radius: 7px; 
 }
 
-div#global_status_message {
+div.global_status_message {
     float: left;
-    margin: 0px 3px;
+    margin: 2px 3px 0px 3px;
     padding: 2px 5px;
     background-color: #FFF;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    border: 1px solid #000;
+    border: 1px solid #CCC;
     display: none;
 }
 
@@ -1226,9 +1244,9 @@ div#menu_screen div#receipt_keypad_container div#table_select_container select {
 }
 
 div#menu_screen div#receipt_keypad_container div#table_screen_button {
-    float: left;
+    float: right;
     cursor: pointer;
-    padding: 8px 28px;
+    padding: 8px 20px;
     border: 1px solid #CCC;
     -moz-border-radius: 4px;
     radiusborder-radius: 4px;
@@ -1415,7 +1433,7 @@ div#till_keypad div#keys div.pad {
 /* Till Roll */
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll {
-    height: 85%;
+    height: 350px;
     display: block;
     background-color: #FFF;
 }
@@ -1430,14 +1448,14 @@ div#menu_screen div#receipt_keypad_container div#total_container {
 
 div#menu_screen div#receipt_keypad_container div#total_container div#label {
     font-weight: bold;
-    width: 50%;
+    width: 145px;
     text-align: left;
     float: left;
 }
 
 div#menu_screen div#receipt_keypad_container div#total_container div#total_value {
     float: left;
-    width: 50%;
+    width: 92px;
     text-align: right;
     font-weight: bold;
 }
@@ -1487,14 +1505,14 @@ div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.total
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.discount div.header {
     float: left;
-    width: 150px;
+    width: 133px;
     text-align: right;
     font-style: italic;
 }
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.discount div.discount_amount {
     float: left;
-    width: 50px;
+    width: 66px;
     text-align: right;
     font-style: italic;
 }
@@ -1508,23 +1526,22 @@ div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.disco
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll_discount div.discount div.header {
     float: left;
-    width: 180px;
+    width: 120px;
     text-align: right;
     font-style: italic;
 }
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll_discount div.discount div.discount_amount {
     float: left;
-    width: 50px;
+    width: 68px;
     text-align: right;
     font-style: italic;
 }
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll_discount div.discount div.pre_discount_total {
     float: left;
-    width: 50px;
-    font-weight: bold;
-    margin-right: 10px;
+    width: 60px;
+    margin-right: 5px;
 }
 
 div#menu_screen div#receipt_keypad_container div#receipt div#sales_tax_total div.header {
@@ -2347,7 +2364,7 @@ div#options_screen {
 }
 
 div#options_screen div#options_screen_menu_buttons {
-    border-spacing: 7px;
+    border-spacing: 11px;
     padding: 10px 15px;
     height: 720px;
 }
@@ -2420,7 +2437,7 @@ div#table_select_screen div#room_layout {
     width: 990px;
     margin: 20px auto auto auto;
     height: 600px;
-    background: transparent url("/images/room_builder/wooden_floor.jpg") repeat left top;
+    background: transparent url("/images/room_builder/wooden_floor_small.png") repeat left top;
 }
 
 div#table_select_screen div#room_layout div.room_object {

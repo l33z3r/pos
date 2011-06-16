@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%= render :partial => "/layouts/common_head" %>
+    <%= render :partial => "/partials/common_head" %>
     <%= javascript_include_tag "admin" %>
   </head>
   <body>
 
     <div id="wrapper">
       <div id="body">
-        <%= raw show_flash %>
-        <%= render :partial => "/layouts/nav" %>
+        <%= render :partial => "/partials/nav" %>
 
         <div id="content_container">
-          <%= render :partial => "/layouts/admin_nav" %>
+          <%= render :partial => "/partials/admin_nav" %>
+
           <%= yield %>
         </div>
       </div>

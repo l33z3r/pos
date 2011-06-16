@@ -1,0 +1,11 @@
+var tables = new Array();
+
+<% TableInfo.all.each do |ti|-%>
+  table_info = {
+  id : '<%= ti.id %>',
+  label : '<%= ti.perm_id %>'
+  }
+
+  tables['<%=ti.id%>'] = table_info;
+
+<% end -%>

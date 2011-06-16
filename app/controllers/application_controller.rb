@@ -47,10 +47,11 @@ class ApplicationController < ActionController::Base
     @sync_table_order_times = sync_table_order_times
     
     @sync_table_order_times.each do |sync_table_order_request_time, sync_table_order_request_data|
+      
       @sync_table_order_terminal_id = sync_table_order_request_data[:terminal_id]
       
       #ignore requests from same terminal
-#      next if @sync_table_order_terminal_id == @terminal_id
+      next if @sync_table_order_terminal_id == @terminal_id
       
       if sync_table_order_request_time > time.to_i
         if sync_table_order_request_data[:clear_table_order]
@@ -80,14 +81,27 @@ class ApplicationController < ActionController::Base
     return nil
   end
   
-  def do_request_sync_table_order terminal_id, time, table_order_data
+  def do_request_sync_table_order terminal_id, time, table_order_data, table_id
     @sync_table_order_times = sync_table_order_times
-    @sync_table_order_times[time] = {:terminal_id => terminal_id, :order_data => table_order_data, :serving_employee_id => e}
+    remove_previous_sync_for_table table_id
+    @sync_table_order_times[time] = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => e}
   end
   
   def do_request_clear_table_order terminal_id, time, table_id
     @sync_table_order_times = sync_table_order_times
+    remove_previous_sync_for_table table_id
     @sync_table_order_times[time] = {:terminal_id => terminal_id, :clear_table_order => true, :table_id => table_id, :serving_employee_id => e}
+  end
+  
+  def remove_previous_sync_for_table table_id
+    @sync_table_order_times = sync_table_order_times
+    
+    @sync_table_order_times.each do |sync_table_order_request_time, sync_table_order_request_data|
+      if sync_table_order_request_data[:table_id] == table_id
+        @sync_table_order_times.delete(sync_table_order_request_time)
+        return;
+      end
+    end
   end
   
   def print_money value

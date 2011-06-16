@@ -4,9 +4,19 @@
   <div id="terminal_id"><%= @terminal_id %></div>
   <div id="date"><%= Time.now().strftime("%m %b") %></div>
   <div id="clock"></div>
-  
+
   <div style="display: none;" id="nav_save_button" onclick="doLogout();">
     <%= image_tag "exit.gif" %>
+  </div>
+
+  <% if ENV['RAILS_ENV']=='development' %>
+    <div id="nav_reload_button" onclick="doClearAndReload();">
+      <%= image_tag "button_logos/clear_refresh.png" %>
+    </div>
+  <% end %>
+
+  <div id="nav_reload_button" onclick="location.reload();">
+    <%= image_tag "button_logos/refresh.png" %>
   </div>
 
   <div class="clear">&nbsp;</div>

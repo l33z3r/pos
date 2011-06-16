@@ -29,6 +29,25 @@ class Admin::DisplaysController < Admin::AdminController
       render :action => "new"
     end
   end
+  
+  def duplicate
+    @display_to_dup = Display.find(params[:id])
+    @new_display = Display.new({:name => "#{@display_to_dup.name} (#{Time.now.to_s(:short)})"})
+    
+    @new_display.save!
+    
+    @display_to_dup.menu_pages.each do |mp|
+      @new_page = @new_display.menu_pages.build({:name => mp.name, :page_num => mp.page_num})
+      @new_page.save!
+      
+      mp.menu_items.each do |mi|
+        @new_menu_item = @new_page.menu_items.build({:product_id => mi.product_id, :order_num => mi.order_num})
+        @new_menu_item.save!
+      end
+    end
+    
+    redirect_to(admin_displays_path, :notice => 'Display was successfully duplicated.')
+  end
 
   def destroy
     @display = Display.find(params[:id])

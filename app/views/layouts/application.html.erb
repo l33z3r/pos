@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%= render :partial => "/layouts/common_head" %>
+    <%= render :partial => "/partials/common_head" %>
   </head>
   <body>
 
     <div id="wrapper">
       <div id="body">
-        <%= raw show_flash %>
-
         <div id="content_container">
-          <%= render :partial => "/layouts/nav" %>
+          <%= render :partial => "/partials/nav" %>
 
           <%= yield %>
         </div>

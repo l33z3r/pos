@@ -10,6 +10,7 @@
           <th width="180">Name</th>
           <th width="70">Default?</th>
           <th width="80">Delete</th>
+          <th width="90">Duplicate</th>
         </tr>
       </thead>
 
@@ -22,6 +23,7 @@
                 :onchange => "doSetDefaultDisplay(this.value);" %>
             </td>
             <td><%= link_to "Delete", admin_display_path(display), :method => :delete, :confirm => "Are You Sure?" %></td>
+            <td><%= link_to "Duplicate", duplicate_admin_display_path(display), :method => :post, :confirm => "Are You Sure?" %></td>
           </tr>
         <% end %>
       </tbody>

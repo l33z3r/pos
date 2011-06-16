@@ -13,7 +13,7 @@
 
 <div id="edit_global_settings">
 
-  <%= render :partial => "layouts/terminal_reload_request" %>
+  <%= render :partial => "/partials/terminal_reload_request" %>
 
   <section id="global_settings">
 
@@ -388,6 +388,26 @@
                        value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
                 <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                        value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
+              </td>
+            </tr>
+            
+            <tr>
+              <td>Enter Default Sales Tax Rate</td>
+              <td>
+                <% @gs = GlobalSetting.setting_for GlobalSetting::GLOBAL_TAX_RATE %>
+                <%= fields_for "global_settings[]", @gs do |f| %>
+                  <%= f.text_field :value %>
+                <% end %>
+              </td>
+            </tr>
+            
+            <tr>
+              <td>Enter A Label For Service Charge</td>
+              <td>
+                <% @gs = GlobalSetting.setting_for GlobalSetting::SERVICE_CHARGE_LABEL %>
+                <%= fields_for "global_settings[]", @gs do |f| %>
+                  <%= f.text_field :value %>
+                <% end %>
               </td>
             </tr>
           </tbody>

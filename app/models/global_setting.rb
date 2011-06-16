@@ -44,6 +44,8 @@ class GlobalSetting < ActiveRecord::Base
   DEFAULT_POST_LOGIN_SCREEN = 15
   CLOCK_FORMAT = 16
   TAX_CHARGABLE = 17
+  GLOBAL_TAX_RATE = 18
+  SERVICE_CHARGE_LABEL = 19
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -62,7 +64,9 @@ class GlobalSetting < ActiveRecord::Base
     THEME => "Theme",
     DEFAULT_POST_LOGIN_SCREEN => "Post Login Screen", 
     CLOCK_FORMAT => "Clock Format", 
-    TAX_CHARGABLE => "Tax Chargable"
+    TAX_CHARGABLE => "Tax Chargable",
+    GLOBAL_TAX_RATE => "Global Tax Rate",
+    SERVICE_CHARGE_LABEL => "Service Charge Label"
   }
   
   def self.setting_for property, args={}
@@ -78,7 +82,7 @@ class GlobalSetting < ActiveRecord::Base
         @gs = nil
       else
         #the key will be the key for terminal id followed by the terminal fingerprint
-        @gs = find_or_create_by_key(:key => "#{TERMINAL_ID}_#{args[:fingerprint]}", :value => "Not Set", :label_text => LABEL_MAP[TERMINAL_ID])
+        @gs = find_or_create_by_key(:key => "#{TERMINAL_ID}_#{args[:fingerprint]}", :value => "Terminal #{Time.now.to_i}", :label_text => LABEL_MAP[TERMINAL_ID])
         @gs.parsed_value = @gs.value
       end
     when CURRENCY_SYMBOL
@@ -112,6 +116,9 @@ class GlobalSetting < ActiveRecord::Base
     when TAX_CHARGABLE
       @gs = find_or_create_by_key(:key => TAX_CHARGABLE, :value => "no", :label_text => LABEL_MAP[TAX_CHARGABLE])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when GLOBAL_TAX_RATE
+      @gs = find_or_create_by_key(:key => GLOBAL_TAX_RATE, :value => 0, :label_text => LABEL_MAP[GLOBAL_TAX_RATE])
+      @gs.parsed_value = @gs.value.to_f
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -140,6 +147,9 @@ class GlobalSetting < ActiveRecord::Base
       write_attribute("value", new_value)
     when TAX_CHARGABLE
       new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when GLOBAL_TAX_RATE
+      new_value = value.to_f
       write_attribute("value", new_value)
     else
     end

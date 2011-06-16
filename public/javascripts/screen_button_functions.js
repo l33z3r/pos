@@ -27,6 +27,8 @@ function doSyncTableOrder() {
         alert("Only valid for table orders!");
         return;
     } else {
+        lastOrderSaleText = "Last Order";
+        
         order = tableOrders[selectedTable];
         if(order.items.length == 0) {
             alert("No items present in current table order!");
@@ -48,7 +50,7 @@ function doSyncTableOrder() {
     }
     
     //store the order in the cookie
-    storeTableOrderInCookie(selectedTable, order);
+    storeTableOrderInStorage(selectedTable, order);
 
     $.ajax({
         type: 'POST',
@@ -60,7 +62,9 @@ function doSyncTableOrder() {
     
     setStatusMessage("Order Sent");
 
+    orderReceiptHTML = fetchOrderReceiptHTML();
+    setLoginReceipt("Last Order", orderReceiptHTML);
+    
     //pick up the default home screen and load it
-    copyReceiptToLoginScreen();
     loadAfterSaleScreen();
 }

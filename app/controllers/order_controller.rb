@@ -28,13 +28,15 @@ class OrderController < ApplicationController
   
   def cash_total
     @total_type = params[:total_type]
-    @cash_total = CashTotal.do_total @total_type, current_employee 
+    @cash_total = CashTotal.do_total @total_type, current_employee, @terminal_id
   end
   
   def sync_table_order
     @table_order_data = params[:tableOrderData]
     
-    do_request_sync_table_order @terminal_id, Time.now.to_i, @table_order_data
+    @table_id = @table_order_data['tableID']
+    
+    do_request_sync_table_order @terminal_id, Time.now.to_i, @table_order_data, @table_id
     render :json => {:success => true}.to_json
   end
 
@@ -75,7 +77,7 @@ class OrderController < ApplicationController
       end
       
       #tax rate
-      @order_item.tax_rate = item[:product][:tax_rate]
+      @order_item.tax_rate = item[:tax_rate]
       
       #the time it was added to the order
       @order_item.time_added = item[:time_added]

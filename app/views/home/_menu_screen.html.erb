@@ -1,5 +1,5 @@
 <% content_for :head do %>
-  <%= javascript_include_tag "products" %>
+  <%= javascript_include_tag "products", "tables" %>
 <% end %>
 
 <div id="menu_screen">
@@ -35,7 +35,6 @@
     <div id="receipt">
       <div id="till_roll"></div>
       <div id="till_roll_discount"></div>
-      <div id="sales_tax_total"></div>
     </div>
 
     <div class="clear">&nbsp;</div>
@@ -101,7 +100,7 @@
     </div>
 
     <div class="clear_spacer">
-      <div id="global_status_message"></div>
+      <div class="global_status_message"></div>
     </div>
 
     <!-- the following markup is used for the display button passcode popup -->
@@ -163,13 +162,21 @@
       <div class="clear">&nbsp;</div>
 
       <div class="discount_buttons">
+        <div class="button" id="discount_button_0" onclick="setDiscountVal(0)">
+          <div class="name">
+            None
+          </div>
+          <div class="percent">
+            0%
+          </div>
+        </div>
         <% Discount.all.each do |discount| %>
           <div class="button" id="discount_button_<%=discount.id%>" onclick="setDiscountVal(<%=discount.percent%>)">
             <div class="name">
               <%=discount.name%>
             </div>
             <div class="percent">
-              <%=discount.percent%>
+              <%=discount.percent%>%
             </div>
           </div>
         <% end %>
