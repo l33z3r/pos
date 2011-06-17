@@ -150,6 +150,15 @@ function clockoutSuccess(id) {
 }
 
 function loginSuccess(id, nickname, is_admin, passcode) {
+    //send ajax login
+    $.ajax({
+        type: 'POST',
+        url: '/login',
+        data: {
+            id : id
+        }
+    });
+
     showingPassCodeDialog = false;
     
     current_user_id = id;
@@ -173,15 +182,6 @@ function loginSuccess(id, nickname, is_admin, passcode) {
     displayLastReceipt();
     loadFirstMenuPage();
     
-    //send ajax login
-    $.ajax({
-        type: 'POST',
-        url: '/login',
-        data: {
-            id : id
-        }
-    });
-
     //initialise the options buttons
     initOptionButtons();
     
