@@ -1217,7 +1217,10 @@ function doClearTableOrder(terminalID, tableID, tableLabel, terminalEmployee) {
         loadReceipt(tableOrders[tableID]);
     }
     
-    setStatusMessage("<b>" + terminalEmployee + "</b> totaled the order for table <b>" + tableLabel + "</b> from terminal <b>" + terminalID + "</b>");
+    //we don't want to show the initial messages as there may be a few of them
+    if(callHomePollInitSequenceComplete) {
+        setStatusMessage("<b>" + terminalEmployee + "</b> totaled the order for table <b>" + tableLabel + "</b> from terminal <b>" + terminalID + "</b>");
+    }
 }
 
 function promptForServiceCharge() {

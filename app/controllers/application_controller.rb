@@ -97,7 +97,7 @@ class ApplicationController < ActionController::Base
     @sync_table_order_times = sync_table_order_times
     
     @sync_table_order_times.each do |sync_table_order_request_time, sync_table_order_request_data|
-      if sync_table_order_request_data[:table_id] == table_id
+      if sync_table_order_request_data[:table_id] == table_id.to_s
         @sync_table_order_times.delete(sync_table_order_request_time)
         return;
       end
