@@ -596,8 +596,7 @@ function tableScreenSelectTable(tableId) {
     doSelectTable(tableId);
     
     //back to menu screen
-    $('#table_select_screen').hide();
-    $('#menu_screen').show();
+    showMenuScreen();
 }
 
 function loadReceipt(order) {
@@ -668,8 +667,7 @@ function doTotal() {
     cashScreenReceiptHTML = fetchCashScreenReceiptHTML()
     $('#totals_till_roll').html(cashScreenReceiptHTML);
     
-    $('#menu_screen').hide();
-    $('#total_screen').show();
+    showTotalsScreen();
 }
 
 function takeTendered() {
@@ -692,7 +690,7 @@ function takeTendered() {
 }
 
 function doTotalFinal() {
-    if(!getCurrentOrder() || getCurrentOrder().items.length == 0) {
+    if(currentOrderEmpty()) {
         alert("No order present to total!");
         return;
     }
@@ -778,7 +776,6 @@ function doTotalFinal() {
     loadAfterSaleScreen();
 
     //reset for next sale
-    $('#total_screen').hide();
     $('#tendered_button').show();
     $('#finish_sale_button').hide();
     resetTendered();
@@ -788,17 +785,13 @@ function doTotalFinal() {
 }
 
 function loadAfterSaleScreen() {
-    //hide all screens first
-    $('#total_screen').hide();
-    $('#landing').hide();
-    $('#menu_screen').hide();
-    $('#table_select_screen').hide();
+    hideAllScreens();
     
     if(defaultHomeScreen == LOGIN_SCREEN) {
         //back to login screen
         doLogout();
     } else if(defaultHomeScreen == MENU_SCREEN) {
-        $('#menu_screen').show();
+        showMenuScreen();
     } else if(defaultHomeScreen == TABLES_SCREEN) {
         showTablesScreen();
     } else {
@@ -919,7 +912,7 @@ var currentTargetPopupAnchor = null;
 var individualItemDiscount = false;
 
 function showDiscountPopup(el) {
-    if(getCurrentOrder().items.length == 0) {
+    if(currentOrderEmpty()) {
         setStatusMessage("No order present to discount!");
         return;
     }
@@ -1110,6 +1103,11 @@ function getCurrentOrder() {
     }
     
     return nil;
+}
+
+function currentOrderEmpty(){
+    fetchedCurrentOrder = getCurrentOrder();
+    return !fetchedCurrentOrder || fetchedCurrentOrder.items.length == 0
 }
 
 function doReceiveTableOrderSync(terminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON) {

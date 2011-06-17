@@ -158,3 +158,46 @@ function getRawCookie(c_name) {
 
     return null;
 }
+
+function showScreenFromHashParams() {
+    hashParams = getURLHashParams();
+    
+    if(hashParams) {
+        if(hashParams.screen) {
+            //alert("Setting screen to " + hashParams.screen);
+            
+            if(hashParams.screen == 'login') {
+                showLoginScreen();
+            } else if(hashParams.screen == 'menu') {
+                showMenuScreen();
+            } else if(hashParams.screen == 'totals') {
+                //cannot go to this screen
+            } else if(hashParams.screen == 'tables') {
+                showTablesScreen();
+            } else if(hashParams.screen == 'more_options') {
+                showMoreOptionsScreen();
+            }
+            
+            window.location.hash = "";
+        }
+    }
+    
+}
+
+function getURLHashParams() {
+    var hashParams = {};
+    
+    var e,
+    a = /\+/g,  // Regex for replacing addition symbol with a space
+    r = /([^&;=]+)=?([^&;]*)/g,
+    d = function (s) {
+        return decodeURIComponent(s.replace(a, " "));
+    },
+    q = window.location.hash.substring(1);
+
+    while (e = r.exec(q)) {
+        hashParams[d(e[1])] = d(e[2]);
+    }
+
+    return hashParams;
+}

@@ -81,16 +81,16 @@ class ApplicationController < ActionController::Base
     return nil
   end
   
-  def do_request_sync_table_order terminal_id, time, table_order_data, table_id
+  def do_request_sync_table_order terminal_id, time, table_order_data, table_id, employee_id
     @sync_table_order_times = sync_table_order_times
     remove_previous_sync_for_table table_id
-    @sync_table_order_times[time] = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => e}
+    @sync_table_order_times[time] = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => employee_id}
   end
   
-  def do_request_clear_table_order terminal_id, time, table_id
+  def do_request_clear_table_order terminal_id, time, table_id, employee_id
     @sync_table_order_times = sync_table_order_times
     remove_previous_sync_for_table table_id
-    @sync_table_order_times[time] = {:terminal_id => terminal_id, :clear_table_order => true, :table_id => table_id, :serving_employee_id => e}
+    @sync_table_order_times[time] = {:terminal_id => terminal_id, :clear_table_order => true, :table_id => table_id, :serving_employee_id => employee_id}
   end
   
   def remove_previous_sync_for_table table_id

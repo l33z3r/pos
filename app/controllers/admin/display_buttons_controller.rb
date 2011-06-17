@@ -1,5 +1,7 @@
 class Admin::DisplayButtonsController < Admin::AdminController
   
+  before_filter :invalidate_display_button_caches, :except => [:access, :screen, :edit_multiple]
+  
   def access
     
   end
@@ -74,5 +76,11 @@ class Admin::DisplayButtonsController < Admin::AdminController
     DisplayButtonGroup.create({:name => params[:name]})
     
     render :json => {:success => true}.to_json
+  end
+  
+  private
+  
+  def invalidate_display_button_caches
+    Rails.cache.delete_matched(/employee_display_buttons_/)
   end
 end

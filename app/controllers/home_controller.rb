@@ -13,11 +13,6 @@ class HomeController < ApplicationController
     #as the ajax login call may not yet have happened
     @current_employee_id = params[:current_user_id]
     @employee = Employee.find(@current_employee_id)
-
-    @dbrs = DisplayButtonRole.find(:all, :include => "display_button",
-      :conditions => "role_id = #{@employee.role.id} and (show_on_sales_screen is true 
-      and (show_on_admin_screen is true or role_id = #{Role::SUPER_USER_ROLE_ID}) 
-      or (display_buttons.perm_id = #{ButtonMapper::MORE_OPTIONS_BUTTON} and role_id = #{Role::SUPER_USER_ROLE_ID}))")
   end
   
   def call_home

@@ -16,10 +16,39 @@ function doCashTotalReport(total_type) {
     });
 }
 
+function showLoginScreen() {
+    hideAllScreens();
+    $('#landing').show();
+}
+
+function showMenuScreen() {
+    hideAllScreens();
+    $('#menu_screen').show();
+}
+
 function showTablesScreen() {
+    hideAllScreens();
     $('#table_select_screen').show();
-    $('#menu_screen').hide();
     initTableSelectScreen();
+}
+
+function showTotalsScreen() {
+    hideAllScreens();
+    $('#total_screen').show();
+}
+
+function showMoreOptionsScreen() {
+    hideAllScreens();
+    $('#more_options').show();
+}
+
+function hideAllScreens() {
+    $('#landing').hide();
+    $('#menu_screen').hide();
+    $('#table_select_screen').hide();
+    $('#total_screen').hide();
+    $('#more_options').hide();
+        
 }
 
 function doSyncTableOrder() {
@@ -56,7 +85,8 @@ function doSyncTableOrder() {
         type: 'POST',
         url: '/sync_table_order',
         data: {
-            tableOrderData : tableOrderData
+            tableOrderData : tableOrderData,
+            employee_id : current_user_id
         }
     });
     

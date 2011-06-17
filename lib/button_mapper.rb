@@ -86,7 +86,7 @@ class ButtonMapper
     when SAVE_BUTTON
       @retval = "doLogout();"
     when MORE_OPTIONS_BUTTON
-      @retval = "window.location = '#{admin_path}'; return false;"
+      @retval = "showMoreOptionsScreen(); return false;"
     when BUTTON_CONFIG_BUTTON
       @retval = "window.location = '#{edit_multiple_admin_display_buttons_path}'; return false;"
     when TABLES_BUTTON

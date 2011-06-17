@@ -33,10 +33,11 @@ class OrderController < ApplicationController
   
   def sync_table_order
     @table_order_data = params[:tableOrderData]
+    @employee_id = params[:employee_id]
     
     @table_id = @table_order_data['tableID']
     
-    do_request_sync_table_order @terminal_id, Time.now.to_i, @table_order_data, @table_id
+    do_request_sync_table_order @terminal_id, Time.now.to_i, @table_order_data, @table_id, @employee_id
     render :json => {:success => true}.to_json
   end
 
@@ -87,7 +88,8 @@ class OrderController < ApplicationController
     
     #must tell all terminals that this order is cleared
     if @order.is_table_order
-      do_request_clear_table_order @terminal_id, Time.now.to_i, @order.table_info_id
+      @employee_id = @order_params['employee_id']
+      do_request_clear_table_order @terminal_id, Time.now.to_i, @order.table_info_id, @employee_id
     end
 
     @success = @order_saved and @order_item_saved
