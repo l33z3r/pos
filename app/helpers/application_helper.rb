@@ -28,7 +28,7 @@ module ApplicationHelper
 
   def button_action button
     @action = ButtonMapper.new.action_for_button button
-    @function_call = "checkMenuScreenForFunction(); doDisplayButtonPasscodePrompt(#{button.id}, function () {#{@action}});"
+    @function_call = "doDisplayButtonPasscodePrompt(#{button.id}, function () {#{@action}});"
     @function_call
   end
   

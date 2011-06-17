@@ -1505,7 +1505,7 @@ div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.total
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.discount div.header {
     float: left;
-    width: 133px;
+    width: 120px;
     text-align: right;
     font-style: italic;
 }
@@ -1520,7 +1520,7 @@ div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.disco
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.discount div.new_price {
     float: left;
     width: 40px;
-    text-align: right;
+    text-align: leftt;
     font-style: italic;
 }
 

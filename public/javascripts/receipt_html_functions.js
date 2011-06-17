@@ -157,7 +157,7 @@ function print(content) {
 
 function clearReceipt() {
     $('#till_roll').html('');
-    writeTotalToReceipt(null, 0);
+    $('#total_value').html(currency(0));
 }
 
 function setLoginReceipt(title, contentHTML) {

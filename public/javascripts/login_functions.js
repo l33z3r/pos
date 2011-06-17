@@ -179,7 +179,11 @@ function loginSuccess(id, nickname, is_admin, passcode) {
     $('#e_name').show();
 
     loadCurrentOrder();
-    displayLastReceipt();
+    
+    //load the users personal receipt on login
+    $('#table_select').val(0);
+    doSelectTable(0);
+    
     loadFirstMenuPage();
     
     //initialise the options buttons

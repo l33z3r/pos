@@ -1,3 +1,6 @@
+//if we have a result we are gonna immediately poll again
+immediateCallHome = false;
+
 <% if @reload_app %>
   lastInterfaceReloadTime = <%=@new_reload_app_update_time%>;
   setStatusMessage("<%= escape_javascript(render :partial => '/partials/reload_terminal_notice') %>", false);
@@ -7,13 +10,13 @@
   lastSyncTableOrderTime = <%= @new_sync_table_order_time %>;
   tableOrderDataJSON = <%= raw @sync_table_order_data['orderData'].to_json %>;
   doReceiveTableOrderSync("<%= @sync_table_order_request_terminal_id %>", <%=@sync_table_order_data['tableID']%>, "<%=@table_label%>", "<%=@terminal_employee%>", tableOrderDataJSON);
-  immediateCallHome();
+  immediateCallHome = true;
 <% end %>
 
 <% if @clear_table_order %>
   lastSyncTableOrderTime = <%= @new_clear_table_order_time %>;
   doClearTableOrder("<%=@clear_table_order[:terminal_id]%>", <%=@clear_table_order[:table_id]%>, "<%=@table_label%>", "<%=@terminal_employee%>");
-  immediateCallHome();
+  immediateCallHome = true;
 <% end %>
 
 <% if cookies["terminal_fingerprint"] and !cookies["terminal_id_set"] %>

@@ -74,13 +74,15 @@ function doGlobalInit() {
     callHomePoll();
 }
 
+var callHomePollInitSequenceComplete = false;
+
 function callHomePoll() {
     callHomeURL = "/call_home.js"
     
     $.ajax({
         url: callHomeURL,
         dataType: 'script',
-        success: callHomePollComplete,
+        complete: callHomePollComplete,
         data : {
             lastInterfaceReloadTime : lastInterfaceReloadTime,
             lastSyncTableOrderTime : lastSyncTableOrderTime
@@ -88,19 +90,15 @@ function callHomePoll() {
     });
 }
 
-var currentCallHomePoll = null;
+var immediateCallHome = false;
 
 function callHomePollComplete() {
-    currentCallHomePoll = setTimeout(callHomePoll, pollingAmount);
-}
-
-function immediateCallHome() {
-    if(currentCallHomePoll) {
-        clearTimeout(currentCallHomePoll);
-        currentCallHomePoll = null;
+    if(immediateCallHome) {
+        callHomePoll();
+    } else {
+        callHomePollInitSequenceComplete = true;
+        setTimeout(callHomePoll, pollingAmount);
     }
-    
-    callHomePoll();
 }
 
 function doCancelLoginKeypad() {
@@ -176,6 +174,7 @@ var displayButtonForwardFunction;
 
 function doDisplayButtonPasscodePrompt(button_id, forwardFunction) {
     if(display_button_passcode_permissions[button_id]) {
+        checkMenuScreenForFunction();
         displayButtonForwardFunction = forwardFunction;
         
         showDisplayButtonPasscodePromptPopup();

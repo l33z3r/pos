@@ -54,13 +54,13 @@ class ButtonMapper
 
     case button.perm_id
     when X_TOTAL_BUTTON
-      @retval = "doXTotal();"
+      @retval = wrap_with_menu_screen_function_check "doXTotal();"
     when Z_TOTAL_BUTTON
-      @retval = "doZTotal();"
+      @retval = wrap_with_menu_screen_function_check "doZTotal();"
     when X_REPORTS_BUTTON
-      @retval = "alert('x reports clicked');"
+      @retval = wrap_with_menu_screen_function_check "alert('x reports clicked');"
     when Z_REPORTS_BUTTON
-      @retval = "alert('z reports clicked');"
+      @retval = wrap_with_menu_screen_function_check "alert('z reports clicked');"
     when MANAGE_USERS_BUTTON
       @retval = "window.location = '#{admin_employees_path}'; return false;"
     when MANAGE_ROLES_BUTTON
@@ -96,25 +96,25 @@ class ButtonMapper
     when THEMES_BUTTON
       @retval = "window.location = '#{admin_custom_themes_path}'; return false;"
     when DISCOUNT_BUTTON
-      @retval = "showDiscountPopup(null);"
+      @retval = wrap_with_menu_screen_function_check "showDiscountPopup(null);"
     when CLIENT_BUTTON
-      @retval = "alert('client button clicked');"
+      @retval = wrap_with_menu_screen_function_check "alert('client button clicked');"
     when WASTE_BUTTON
-      @retval = "alert('waste button clicked');"
+      @retval = wrap_with_menu_screen_function_check "alert('waste button clicked');"
     when COMPLIMENTARY_BUTTON
-      @retval = "alert('complimentary button clicked');"
+      @retval = wrap_with_menu_screen_function_check "alert('complimentary button clicked');"
     when CHANGE_PRICE_BUTTON
-      @retval = "alert('change price button clicked');"
+      @retval = wrap_with_menu_screen_function_check "alert('change price button clicked');"
     when FLOAT_BUTTON
       @retval = "alert('float button clicked');"
     when NO_SALE_BUTTON
-      @retval = "alert('no sale button clicked');"
+      @retval = wrap_with_menu_screen_function_check "alert('no sale button clicked');"
     when REFUND_BUTTON
       @retval = "alert('refund button clicked');"
     when REMOVE_ITEM_BUTTON
-      @retval = "alert('remove item button clicked');"
+      @retval = wrap_with_menu_screen_function_check "alert('remove item button clicked');"
     when ADD_NOTE_BUTTON
-      @retval = "alert('add note button clicked');"
+      @retval = wrap_with_menu_screen_function_check "alert('add note button clicked');"
     when CHANGE_WAITER_BUTTON
       @retval = "alert('change waiter button clicked');"
     when PRINTERS_BUTTON
@@ -134,7 +134,7 @@ class ButtonMapper
     when PAYMENT_METHODS_BUTTON
       @retval = "window.location = '#{admin_global_settings_path}?section=payment_methods'; return false;"
     when GIFT_VOUCHER_BUTTON
-      @retval = "alert('gift voucher button clicked');"
+      @retval = wrap_with_menu_screen_function_check "alert('gift voucher button clicked');"
     when ORDER_TYPES_BUTTON
       @retval = "alert('order types button clicked');"
     when DISCOUNTS_SURCHARGES_BUTTON
@@ -144,7 +144,7 @@ class ButtonMapper
     when ORDER_BUTTON
       @retval = "doSyncTableOrder()"
     when SERVICE_CHARGE_BUTTON
-      @retval = "promptForServiceCharge()"
+      @retval = wrap_with_menu_screen_function_check "promptForServiceCharge()"
     end
 
     @retval
@@ -160,6 +160,10 @@ class ButtonMapper
     end
     
     return ""
+  end
+  
+  def wrap_with_menu_screen_function_check the_script
+    return "checkMenuScreenForFunction(); #{the_script}"
   end
   
 end

@@ -539,14 +539,16 @@ function writeTotalToReceipt(order, orderTotal) {
 
 function doSelectTable(tableNum) {
     if(current_user_id == null) {
-        return
+        return;
     }
     
     selectedTable = tableNum;
     currentSelectedRoom = $('#table_select :selected').data("room_id");
     
     //write to storage that this user was last looking at this receipt
-    storeKeyJSONValue("user_" + current_user_id + "_last_receipt", {'table_num':tableNum});
+    storeKeyJSONValue("user_" + current_user_id + "_last_receipt", {
+        'table_num':tableNum
+    });
 
     if(tableNum == 0) {
         loadCurrentOrder();
@@ -601,7 +603,7 @@ function tableScreenSelectTable(tableId) {
 
 function loadReceipt(order) {
     clearReceipt();
-
+    
     if(order == null){
         return;
     }
@@ -649,7 +651,7 @@ function clearOrder(selectedTable) {
         currentOrder = null;
     } else {
         clearTableOrderInStorage(selectedTable);
-        //dont need to worry about clearing memory as it is read in from cookie which now no longer exists
+    //dont need to worry about clearing memory as it is read in from cookie which now no longer exists
     }
     
     clearReceipt();
@@ -1182,7 +1184,12 @@ function doReceiveTableOrderSync(terminalID, tableID, tableLabel, terminalEmploy
         loadReceipt(tableOrders[tableID]);
     }
     
-    setStatusMessage("<b>" + terminalEmployee + "</b> modified the order for table <b>" + tableLabel + "</b> from terminal <b>" + terminalID + "</b>");
+    //alert("Got sync order, complete? : " + callHomePollInitSequenceComplete);
+    
+    //we don't want to show the initial messages as there may be a few of them
+    if(callHomePollInitSequenceComplete) {
+        setStatusMessage("<b>" + terminalEmployee + "</b> modified the order for table <b>" + tableLabel + "</b> from terminal <b>" + terminalID + "</b>");
+    }
 }
 
 function doClearTableOrder(terminalID, tableID, tableLabel, terminalEmployee) {
