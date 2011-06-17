@@ -35,15 +35,15 @@ function doGlobalInit() {
             
     $('#menu_buttons_popup_anchor').FreezeBubblePopup();
     
+    lastSaleInfo = getLastSaleInfo();
+
+    if(lastSaleInfo) {
+        setLoginReceipt(lastSaleInfo.title, lastSaleInfo.contentHTML)
+    }
+        
     if(current_user_id == null) {
         showLoginScreen();
 
-        lastSaleInfo = getLastSaleInfo();
-
-        if(lastSaleInfo) {
-            setLoginReceipt(lastSaleInfo.title, lastSaleInfo.contentHTML)
-        }
-        
         $('#clockincode_show').html("");
         $('#num').val("");
     } else {

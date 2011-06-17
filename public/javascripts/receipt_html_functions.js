@@ -9,11 +9,17 @@ function fetchOrderReceiptHTML() {
     if(currentOrder.discount_percent) {
         //calculate the amount of discount
         preDiscountAmount = currentOrder.pre_discount_price;
-        orderReceiptHTML += "Discounted " + currentOrder.discount_percent + "% from " + currency(preDiscountAmount) + clearHTML;
+        
+        orderReceiptHTML += clearHTML + "<div class='whole_order_discount'>";
+        orderReceiptHTML += "Discounted " + currentOrder.discount_percent + "% from " + currency(preDiscountAmount) + "</div>";
     } 
     
+    orderReceiptHTML += "<div class='data_table'>";
+    
     subTotal = currentOrder.total;
-    orderReceiptHTML += "Sub-Total " + currency(subTotal) + clearHTML;
+    orderReceiptHTML += "<div class='label'>Sub-Total:</div><div class='data'>" + currency(subTotal) + "</div>" + clearHTML;
+    
+    orderReceiptHTML += "</div>" + clearHTML;
     
     return orderReceiptHTML;
 }
@@ -21,21 +27,25 @@ function fetchOrderReceiptHTML() {
 function fetchCashScreenReceiptHTML() {
     cashScreenReceiptHTML = clearHTML + $('#till_roll').html();
     
+    cashScreenReceiptHTML += "<div class='data_table'>";
+    
     if(totalOrder.discount_percent) {
         subTotal = totalOrder.pre_discount_price;
-        cashScreenReceiptHTML += "Sub-Total " + currency(subTotal) + clearHTML;
+        cashScreenReceiptHTML += "<div class='label'>Sub-Total:</div><div class='data'>" + currency(subTotal) + "</div>" + clearHTML;
         
         discountAmount = (totalOrder.pre_discount_price * totalOrder.discount_percent)/100;
-        cashScreenReceiptHTML += "Discount " + totalOrder.discount_percent + "% " + currency(discountAmount) + clearHTML;
+        cashScreenReceiptHTML += "<div class='label'>Discount " + totalOrder.discount_percent + "%:</div><div class='data'>" + currency(discountAmount) + "</div>" + clearHTML;
     } else {
         subTotal = totalOrder.total;
-        cashScreenReceiptHTML += "Sub-Total " + currency(subTotal) + clearHTML;
+        cashScreenReceiptHTML += "<div class='label'>Sub-Total:</div><div class='data'>" + currency(subTotal) + "</div>" + clearHTML;
         
         discountAmount = 0;
     } 
     
     cashScreenReceiptHTML += taxChargable ? fetchTotalsHTMLWithTaxChargable() : fetchTotalsWithoutTaxChargableHTML();
     cashScreenReceiptHTML += clearHTML;
+    
+    cashScreenReceiptHTML += "</div>" + clearHTML;
     
     return cashScreenReceiptHTML;
 }
@@ -45,18 +55,19 @@ function fetchFinalReceiptHTML() {
     
     finalReceiptHTML += clearHTML + $('#till_roll').html();
     
-    finalReceiptHTML += "<div class='spacer'>&nbsp;</div>";
-
+    finalReceiptHTML += "<div class='data_table'>";
+    
     if(totalOrder.discount_percent) {
         subTotal = totalOrder.pre_discount_price;
-        finalReceiptHTML += "Sub-Total " + currency(subTotal) + clearHTML;
+        
+        finalReceiptHTML += "<div class='label'>Sub-Total:</div><div class='data'>" + currency(subTotal) + "</div>" + clearHTML;
         
         //calculate the amount of discount
         discountAmount = (totalOrder.pre_discount_price * totalOrder.discount_percent)/100;
-        finalReceiptHTML += "Discount " + totalOrder.discount_percent + "% " + currency(discountAmount) + clearHTML;
+        finalReceiptHTML += "<div class='label'>Discount " + totalOrder.discount_percent + "%:</div><div class='data'>" + currency(discountAmount) + "</div>" + clearHTML;
     } else {
         subTotal = totalOrder.total;
-        finalReceiptHTML += "Sub-Total " + currency(subTotal) + clearHTML;
+        finalReceiptHTML += "<div class='label'>Sub-Total:</div><div class='data'>" + currency(subTotal) + "</div>" + clearHTML;
         discountAmount = 0;
     } 
     
@@ -65,14 +76,16 @@ function fetchFinalReceiptHTML() {
     totalTendered = $('#totals_tendered_value').html();
     
     if(totalTendered.length>0) {
-        finalReceiptHTML += "<div id='login_till_roll_tendered_label'>Cash:</div><div id='login_till_roll_tendered_value'>" + currency(totalTendered) + "</div>";
+        finalReceiptHTML += "<div class='label'>Cash:</div><div class='data'>" + currency(totalTendered) + "</div>" + clearHTML;
     }
     
     change = $('#totals_change_value').html();
 
     if(change.length>0) {
-        finalReceiptHTML += "<div id='login_till_roll_change_label'>Change:</div><div id='login_till_roll_change_value'>" + currency(change) + "</div>";
+        finalReceiptHTML += "<div class='label'>Change:</div><div class='data'>" + currency(change) + "</div>" + clearHTML;
     }
+    
+    finalReceiptHTML += "</div>" + clearHTML;
     
     return finalReceiptHTML;
 }
@@ -81,7 +94,7 @@ function fetchFinalReceiptHTML() {
 function fetchTotalsHTMLWithTaxChargable() {
     //write the tax total
     taxAmount = ((subTotal - discountAmount) * globalTaxRate)/100;
-    totalsHTML = "Sales Tax " + globalTaxRate + "% " + currency(taxAmount) + clearHTML;
+    totalsHTML = "<div class='label'>Sales Tax " + globalTaxRate + "%:</div><div class='data'>" + currency(taxAmount) + "</div>" + clearHTML;
         
     totalsHTML += fetchServiceChargeHTML();
     
@@ -89,7 +102,7 @@ function fetchTotalsHTMLWithTaxChargable() {
     total = (subTotal - discountAmount) + serviceCharge + taxAmount;
     currentTotalFinal = total;
     
-    totalsHTML += "<div id='login_till_roll_total_label'>Total:</div><div id='login_till_roll_total_value'>" + currency(total) + "</div>";
+    totalsHTML += "<div class='label'>Total:</div><div class='data'>" + currency(total) + "</div>" + clearHTML;
     
     return totalsHTML;
 }
@@ -103,7 +116,7 @@ function fetchTotalsWithoutTaxChargableHTML() {
     
     currentTotalFinal = total;
     
-    totalsHTML += "<div id='login_till_roll_total_label'>Total:</div><div id='login_till_roll_total_value'>" + currency(total) + "</div>";
+    totalsHTML += "<div class='label'>Total:</div><div class='data'>" + currency(total) + "</div>" + clearHTML;
     
     return totalsHTML;
 }
@@ -113,22 +126,25 @@ function fetchServiceChargeHTML() {
     
     //is there a service charge set?
     if(serviceCharge>0) {
-        serviceChargeHTML += "<div id='login_till_roll_service_charge_label'>" + serviceChargeLabel 
-        + "</div><div id='login_till_roll_service_charge_value'>" + currency(serviceCharge) + "</div>" + clearHTML;
+        serviceChargeHTML += "<div class='label'>" + serviceChargeLabel + ":</div><div class='data'>" + currency(serviceCharge) + "</div>" + clearHTML;
     }
     
     return serviceChargeHTML;
 }
 
 function fetchReceiptHeaderHTML() {
-    headerHTML = "<div id='login_till_roll_user_nickname'>Server: " + current_user_nickname + "</div>";
+    headerHTML = "<div class='data_table'>";
+    headerHTML += "<div class='label'>Server:</div><div class='data'>" + current_user_nickname + "</div>" + clearHTML;
     
     timestamp = $('#clock').html();
-    headerHTML += "<div id='login_till_roll_served_time'>Time: " + timestamp + "</div>";
+    headerHTML += "<div class='label'>Time:</div><div class='data'>" + timestamp + "</div>" + clearHTML;
     
     if(selectedTable!=0) {
-        headerHTML += "<div id='login_till_roll_table'>Table: '" + tables[selectedTable].label + "'</div>";
+        selectedTableLabel = tables[selectedTable].label;
+        headerHTML += "<div class='label'>Table:</div><div class='data'>" + selectedTableLabel + "</div>" + clearHTML;
     }
+    
+    headerHTML += "</div>";
     
     return headerHTML;
 }
@@ -158,6 +174,7 @@ function print(content) {
 function clearReceipt() {
     $('#till_roll').html('');
     $('#total_value').html(currency(0));
+    $('#till_roll_discount').html('');
 }
 
 function setLoginReceipt(title, contentHTML) {

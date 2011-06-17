@@ -19,6 +19,7 @@ function doCashTotalReport(total_type) {
 function showLoginScreen() {
     hideAllScreens();
     $('#landing').show();
+    loginRecptScroll();
 }
 
 function showMenuScreen() {

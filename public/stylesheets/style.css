@@ -56,10 +56,13 @@ div.clear {
 }
 
 div.clear_spacer {
-    height: 25px;
+    height: 23px;
     clear: both;
     width: 100%;
+    background-color: #CCC;
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    border-top: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
 }
 
 div.clear_top_margin_5 {
@@ -91,7 +94,7 @@ div#wrapper {
     text-align: center;
 }
 
-div#wrapper div {
+div.wrapper div {
     text-align: center;
 }
 
@@ -323,6 +326,12 @@ div#landing div#login_receipt_keypad_container div#login_receipt {
     padding-left: 5px;
 }
 
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll {
+    height: 350px;
+    display: block;
+    background-color: #FFF;
+}
+
 div#landing div#login_receipt_keypad_container div#login_receipt div#receipt_message {
     margin-top: 50px;
     font-weight: bold;
@@ -336,131 +345,6 @@ div#landing div#login_receipt_keypad_container div#login_receipt_header {
     font-weight: bold;
     font-size: 14px;
     height: 15px;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.order_line {
-    margin-top: 1px;
-    margin-bottom: 1px;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.amount {
-    float: left;
-    text-align: left;
-    width: 37px;
-    margin-left: 3px;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.name {
-    float: left;
-    width: 160px;
-    text-align: left;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.modifier_name {
-    float: left;
-    width: 140px;
-    margin-left: 60px;
-    text-align: left;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.modifier_price {
-    float: left;
-    width: 40px;
-    text-align: right;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.total {
-    float: left;
-    width: 40px;
-    text-align: right;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.spacer {
-    clear: both;
-    height: 30px;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_user_nickname {
-    text-align: left;
-    font-weight: bold;
-    margin-bottom: 2px;
-    margin-top: 10px;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_served_time {
-    text-align: left;
-    font-weight: bold;
-    margin-bottom: 10px;
-    float: left;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_table {
-    margin-left: 10px;
-    text-align: left;
-    font-weight: bold;
-    margin-bottom: 10px;
-    float: left;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_total_label,
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_tendered_label,
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_change_label {
-    float: left;
-    text-align: left;
-    font-weight: bold;
-    width: 80px;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_total_value,
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_tendered_value,
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div#login_till_roll_change_value {
-    float: left;
-    font-weight: bold;
-    width: 120px;
-    text-align: right;
-    margin-left: 40px;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.discount div.header {
-    float: left;
-    width: 150px;
-    text-align: right;
-    font-style: italic;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.discount div.discount_amount {
-    float: left;
-    width: 50px;
-    text-align: right;
-    font-style: italic;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.discount div.new_price {
-    float: left;
-    width: 40px;
-    text-align: right;
-    font-style: italic;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.discount div.pre_discount_total {
-    float: left;
-    width: 60px;
-    font-weight: bold;
-    margin-right: 10px;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.tax div.header {
-    float: left;
-    width: 150px;
-    text-align: right;
-    font-style: italic;
-}
-
-div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.tax div.amount {
-    float: left;
-    width: 44px;
-    text-align: right;
-    font-style: italic;
 }
 
 div#landing div#login_receipt_keypad_container div#keypad {
@@ -1132,6 +1016,7 @@ div#new_room section#form_container form div#actions input {
 
 nav#main_nav {
     font-weight: bold;
+    background-color: black;
     background: -moz-linear-gradient(#737373, #000000) repeat scroll 0 0 transparent;
     text-align: left;
     padding: 4px;
@@ -1200,7 +1085,7 @@ div#menu_screen div#menu_pages_container {
 
 div.global_status_message {
     float: left;
-    margin: 2px 3px 0px 3px;
+    margin: 1px 3px 0px 3px;
     padding: 2px 5px;
     background-color: #FFF;
     -moz-border-radius: 3px;
@@ -1266,7 +1151,7 @@ div#menu_screen div#menu_pages_container div#pages {
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container {
-    height: 486px;
+    height: 481px;
     padding-left: 2px;
     padding-top: 4px;
     background-color: #E0E0E0;
@@ -1284,7 +1169,7 @@ div#menu_screen div#menu_pages_container div#menu_buttons {
 
 div#menu_screen div#menu_pages_container div#menu_buttons div#menu_buttons_loading_message {
     text-align: center;
-    padding-top: 100px;
+    margin-top: 60px;
     font-weight: bold;
 }
 
@@ -1344,11 +1229,13 @@ div#menu_screen div#menu_pages_container div#pages div.page {
     -moz-border-top-right-radius: 7px;
     border-top-left-radius: 7px;
     border-top-right-radius: 7px;
+    background-color: #F8F8F8;
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
 }
 
 div#menu_screen div#menu_pages_container div#pages div.selected {
     border-bottom-width: 0px;
+    background-color: #E0E0E0;
     background: -moz-linear-gradient(#F8F8F8, #E0E0E0) repeat scroll 0 0 transparent;
 }
 
@@ -1460,88 +1347,98 @@ div#menu_screen div#receipt_keypad_container div#total_container div#total_value
     font-weight: bold;
 }
 
-div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.order_line {
+div.receipt div.till_roll div.data_table {
+    margin: 10px 0px;
+}
+
+div.receipt div.till_roll div.data_table div.label {
+    float: left;
+    text-align: left;
+    width: 130px;
+}
+
+div.receipt div.till_roll div.data_table div.data {
+    float: left;
+    text-align: right;
+    width: 112px;
+    font-weight: bold;
+}
+
+div.receipt div.till_roll div.order_line {
     margin: 0px 2px;
     cursor: pointer;
 }
 
-div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.order_line.selected {
+div.receipt div.till_roll div.order_line.selected {
     border: 2px solid #4297D7;
     -moz-border-radius: 5px;
     border-radius: 5px;
 }
 
-div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.amount {
+div.receipt div.till_roll div.amount {
     float: left;
     text-align: left;
     width: 37px;
     margin-left: 3px;
 }
 
-div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.name {
+div.receipt div.till_roll div.name {
     float: left;
     width: 160px;
     text-align: left;
 }
 
-div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.modifier_name {
+div.receipt div.till_roll div.modifier_name {
     float: left;
     width: 150px;
     margin-left: 50px;
     text-align: left;
 }
 
-div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.modifier_price {
+div.receipt div.till_roll div.modifier_price {
     float: left;
     width: 40px;
     text-align: right;
 }
 
-div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.total {
+div.receipt div.till_roll div.total {
     float: left;
     width: 40px;
     text-align: right;
 }
 
-div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.discount div.header {
+div.receipt div.till_roll div.discount div.header {
     float: left;
     width: 120px;
     text-align: right;
     font-style: italic;
 }
 
-div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.discount div.discount_amount {
+div.receipt div.till_roll div.discount div.discount_amount {
     float: left;
     width: 66px;
     text-align: right;
     font-style: italic;
 }
 
-div#menu_screen div#receipt_keypad_container div#receipt div#till_roll div.discount div.new_price {
+div.receipt div.till_roll div.discount div.new_price {
     float: left;
     width: 40px;
     text-align: leftt;
     font-style: italic;
 }
 
-div#menu_screen div#receipt_keypad_container div#receipt div#till_roll_discount div.discount div.header {
+div.receipt div.till_roll div.discount div.header {
     float: left;
     width: 120px;
     text-align: right;
     font-style: italic;
 }
 
-div#menu_screen div#receipt_keypad_container div#receipt div#till_roll_discount div.discount div.discount_amount {
-    float: left;
-    width: 68px;
-    text-align: right;
-    font-style: italic;
-}
-
-div#menu_screen div#receipt_keypad_container div#receipt div#till_roll_discount div.discount div.pre_discount_total {
-    float: left;
-    width: 60px;
-    margin-right: 5px;
+div#menu_screen div#receipt_keypad_container div#receipt div#till_roll_discount div.whole_order_discount {
+    margin-left: 50px;
+    text-align: left;
+    margin-top: 10px;
 }
 
 div#menu_screen div#receipt_keypad_container div#receipt div#sales_tax_total div.header {
@@ -1807,12 +1704,17 @@ div#discounts_popup_markup_container div.actions div#cancel_button {
 /* Totals Screen */
 
 div#total_screen div#totals_receipt {
-    height: 330px;
-    width: 300px;
-    margin: auto;
-    margin-top: 10px;
-    border: 1px solid #CCC;
-    padding: 5px;
+    height: 380px;
+    background-color: white;
+    overflow-y: auto;
+    display: block;
+    padding-left: 5px;
+}
+
+div#total_screen div#totals_receipt div#totals_till_roll {
+    height: 350px;
+    display: block;
+    background-color: #FFF;
 }
 
 div#total_screen div#totals_receipt div#totals_total_container div#totals_label {

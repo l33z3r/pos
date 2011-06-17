@@ -54,6 +54,8 @@ function initMenu() {
     });
 
     $('#till_roll').touchScroll();
+    $('#login_till_roll').touchScroll();
+    $('#totals_till_roll').touchScroll();
 
     loadCurrentOrder();
     displayLastReceipt();
@@ -234,7 +236,7 @@ function finishDoSelectMenuItem() {
     writeOrderItemToReceipt(orderItem);
     writeTotalToReceipt(currentOrder, currentOrder['total']);
 
-    recptScroll();
+    menuRecptScroll();
 }
 
 function tableSelectMenuItem(orderItem) {
@@ -258,7 +260,7 @@ function tableSelectMenuItem(orderItem) {
     writeOrderItemToReceipt(orderItem);
     writeTotalToReceipt(currentTableOrder, currentTableOrder['total']);
     
-    recptScroll();
+    menuRecptScroll();
 }
 
 var clearHTML = "<div class='clear'>&nbsp;</div>";
@@ -525,9 +527,8 @@ function writeTotalToReceipt(order, orderTotal) {
         
         preDiscountFormatted = currency(preDiscountPrice);
         
-        tillRollDiscountHTML = clearHTML + "<div class='discount'><div class='header'>Discounted</div>";
-        tillRollDiscountHTML += "<div class='discount_amount'>" + order.discount_percent + "% from</div>";
-        tillRollDiscountHTML += "<div class='pre_discount_total'>" + preDiscountFormatted + "</div></div>";
+        tillRollDiscountHTML = clearHTML + "<div class='whole_order_discount'>";
+        tillRollDiscountHTML += "Discounted " + order.discount_percent + "% from " + preDiscountFormatted + "</div>";
     } else {
         tillRollDiscountHTML = "";
     }
@@ -620,14 +621,26 @@ function loadReceipt(order) {
         writeTotalToReceipt(order, orderTotal);
     }
 
-    recptScroll();
+    menuRecptScroll();
 }
 
-function recptScroll() {
-    $('#till_roll').touchScroll('update');
+function loginRecptScroll() {
+    recptScroll("login_");
+}
 
-    currentHeight = $('#till_roll').height();
-    scrollHeight = $('#till_roll').attr('scrollHeight');
+function menuRecptScroll() {
+    recptScroll("");
+}
+
+function totalsRecptScroll() {
+    recptScroll("totals_");
+}
+
+function recptScroll(targetPrefix) {
+    $('#' + targetPrefix + 'till_roll').touchScroll('update');
+
+    currentHeight = $('#' + targetPrefix + 'till_roll').height();
+    scrollHeight = $('#' + targetPrefix + 'till_roll').attr('scrollHeight');
     newHeight = scrollHeight - currentHeight;
 
     //need an offset
@@ -637,9 +650,9 @@ function recptScroll() {
 
     if(!isTouchDevice()) {
         //this code is for pc based browsers
-        $('#receipt').scrollTop(currentHeight);
+        $('#' + targetPrefix + 'receipt').scrollTop(currentHeight);
     } else {
-        $('#till_roll').touchScroll('setPosition', newHeight);
+        $('#' + targetPrefix + 'till_roll').touchScroll('setPosition', newHeight);
     }
 }
 
@@ -670,6 +683,7 @@ function doTotal() {
     $('#totals_till_roll').html(cashScreenReceiptHTML);
     
     showTotalsScreen();
+    totalsRecptScroll();
 }
 
 function takeTendered() {
