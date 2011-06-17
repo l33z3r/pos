@@ -35,4 +35,6 @@
   var defaultDiscountPercent = "<%=Discount.load_default.percent%>";
   
   var terminalID = "<%=@terminal_id%>";
+  
+  var pollingAmount = <%= (ENV['RAILS_ENV'] == 'development') ? "4000" : "1000" %>;
 </script>

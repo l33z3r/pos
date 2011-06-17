@@ -91,7 +91,7 @@ function callHomePoll() {
 var currentCallHomePoll = null;
 
 function callHomePollComplete() {
-    currentCallHomePoll = setTimeout(callHomePoll, 5000);
+    currentCallHomePoll = setTimeout(callHomePoll, pollingAmount);
 }
 
 function immediateCallHome() {
