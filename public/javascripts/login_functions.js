@@ -162,9 +162,6 @@ function loginSuccess(id, nickname, is_admin, passcode) {
     
     setStatusMessage("Welcome " + nickname + "!");
     
-    //initialise the options buttons
-    initOptionButtons();
-    
     showMenuScreen();
 
     //show the red x 
@@ -185,6 +182,9 @@ function loginSuccess(id, nickname, is_admin, passcode) {
         }
     });
 
+    //initialise the options buttons
+    initOptionButtons();
+    
     trySendOutstandingOrdersToServer();
     
     //finally, if the default screen to show 
