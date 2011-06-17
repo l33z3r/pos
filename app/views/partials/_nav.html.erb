@@ -9,11 +9,9 @@
     <%= image_tag "exit.gif" %>
   </div>
 
-  <% if ENV['RAILS_ENV']=='development' %>
-    <div id="nav_reload_button" onclick="doClearAndReload();">
-      <%= image_tag "button_logos/clear_refresh.png" %>
-    </div>
-  <% end %>
+  <div id="nav_reload_button" onclick="doClearAndReload();">
+    <%= image_tag "button_logos/clear_refresh.png" %>
+  </div>
 
   <div id="nav_reload_button" onclick="location.reload();">
     <%= image_tag "button_logos/refresh.png" %>
