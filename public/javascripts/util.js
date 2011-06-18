@@ -98,20 +98,50 @@ function clearOrderInStorage(current_user_id) {
     deleteStorageValue("user_" + current_user_id + "_current_order");
 }
 
-function storeTableOrderInStorage(table_num, order_to_store) {
-    key = "table_" + table_num + "_current_order";
+function storeTableOrderInStorage(current_user_id, table_num, order_to_store) {
+    key = "user_" + current_user_id + "_table_" + table_num + "_current_order";
     value = JSON.stringify(order_to_store);
     return storeKeyValue(key, value);
 }
 
-function getTableOrderFromStorage(selectedTable) {
-    key = "table_" + selectedTable + "_current_order";
+function getTableOrderFromStorage(current_user_id, selectedTable) {
+    key = "user_" + current_user_id + "_table_" + selectedTable + "_current_order";
     storageData = retrieveStorageValue(key);
-    return JSON.parse(storageData);
+    tableOrderDataJSON = JSON.parse(storageData);
+    tableNum = selectedTable;
+    parseAndFillTableOrderJSON(tableOrderDataJSON);
 }
 
-function clearTableOrderInStorage(selectedTable) {
-    return deleteStorageValue("table_" + selectedTable + "_current_order");
+function clearTableOrderInStorage(current_user_id, selectedTable) {
+    return deleteStorageValue("user_" + current_user_id + "_table_" + selectedTable + "_current_order");
+}
+
+function parseAndFillTableOrderJSON(currentTableOrderJSON) {
+    //init an in memory version of this order
+    tableOrders[tableNum] = {
+        'items': new Array(),
+        'total':0
+    };
+    
+    //fill in the table order array
+    if(currentTableOrderJSON != null) {
+        for(i=0; i<currentTableOrderJSON.items.length; i++) {
+            tableOrderItem = currentTableOrderJSON.items[i];
+            tableOrders[tableNum].items.push(tableOrderItem);
+        }
+
+        tableOrders[tableNum].total = currentTableOrderJSON.total;
+        
+        if(currentTableOrderJSON.discount_percent) {
+            tableOrders[tableNum].discount_percent = currentTableOrderJSON.discount_percent;
+            tableOrders[tableNum].pre_discount_price = currentTableOrderJSON.pre_discount_price;
+        }
+        
+        tableOrders[tableNum].order_taxes = currentTableOrderJSON.order_taxes;
+    }
+        
+    //total the order first
+    calculateOrderTotal(tableOrders[tableNum]);
 }
 
 function storeKeyValue(key, value) {

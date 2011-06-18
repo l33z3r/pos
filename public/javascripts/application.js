@@ -82,7 +82,8 @@ function callHomePoll() {
     $.ajax({
         url: callHomeURL,
         dataType: 'script',
-        complete: callHomePollComplete,
+        success: callHomePollComplete,
+        error: function() {setTimeout(callHomePoll, 5000);},
         data : {
             lastInterfaceReloadTime : lastInterfaceReloadTime,
             lastSyncTableOrderTime : lastSyncTableOrderTime

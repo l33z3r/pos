@@ -50,8 +50,9 @@ class ApplicationController < ActionController::Base
       
       @sync_table_order_terminal_id = sync_table_order_request_data[:terminal_id]
       
-      #ignore requests from same terminal
-      next if @sync_table_order_terminal_id == @terminal_id
+      #we used to ignore requests from same terminal, but now we store
+      #a recpt per user per terminal so we need to sync with self
+      #next if @sync_table_order_terminal_id == @terminal_id
       
       if sync_table_order_request_time > time.to_i
         if sync_table_order_request_data[:clear_table_order]

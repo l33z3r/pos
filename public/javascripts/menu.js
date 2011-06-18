@@ -254,7 +254,7 @@ function tableSelectMenuItem(orderItem) {
 
     calculateOrderTotal(currentTableOrder);
 
-    storeTableOrderInStorage(selectedTable, currentTableOrder);
+    storeTableOrderInStorage(current_user_id,selectedTable, currentTableOrder);
     
     //add a line to the receipt
     writeOrderItemToReceipt(orderItem);
@@ -265,8 +265,32 @@ function tableSelectMenuItem(orderItem) {
 
 var clearHTML = "<div class='clear'>&nbsp;</div>";
     
-//TODO: replace with jquery template => http://api.jquery.com/jQuery.template/
 function writeOrderItemToReceipt(orderItem) {
+    $('#till_roll').html($('#till_roll').html() + getOrderItemReceiptHTML(orderItem));
+}
+
+function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick) {
+    allOrderItemsReceiptHTML = "";
+
+    for(i=0; i<order.items.length; i++) {
+        item = order.items[i];
+        allOrderItemsReceiptHTML += getOrderItemReceiptHTML(order.items[i], includeNonSyncedStyling, includeOnClick);
+    }
+    
+    return allOrderItemsReceiptHTML;
+}
+    
+//TODO: replace with jquery template => http://api.jquery.com/jQuery.template/
+function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnClick) {
+    //default the args to true
+    if (typeof includeNonSyncedStyling == "undefined") {
+        includeNonSyncedStyling = true;
+    }
+    
+    if (typeof includeOnClick == "undefined") {
+        includeOnClick = true;
+    }
+    
     haveDiscount = orderItem.discount_percent && orderItem.discount_percent > 0;
     
     itemPriceWithoutDiscountOrModifier = orderItem.amount * orderItem.product_price;
@@ -277,9 +301,14 @@ function writeOrderItemToReceipt(orderItem) {
         itemPriceWithoutModifier = itemPriceWithoutDiscountOrModifier;
     }
     
-    orderHTML = "<div class='order_line' data-item_number='" + orderItem.itemNumber + "' onclick='doSelectReceiptItem(this)'>";
+    notSyncedClass = (includeNonSyncedStyling && !orderItem.synced) ? "not_synced" : "";
+    notSyncedMarker = (includeNonSyncedStyling && !orderItem.synced) ? "*" : "";
+    
+    onclickMarkup = includeOnClick ? "onclick='doSelectReceiptItem(this)'" : "";
+    
+    orderHTML = "<div class='order_line " + notSyncedClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
     orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
-    orderHTML += "<div class='name'>" + orderItem.product.name + "</div>";
+    orderHTML += "<div class='name'>" + notSyncedMarker + " " + orderItem.product.name + "</div>";
     orderItemTotalPriceText = number_to_currency(itemPriceWithoutModifier, {
         precision : 2
     });
@@ -328,7 +357,7 @@ function writeOrderItemToReceipt(orderItem) {
     
     orderHTML += clearHTML + "</div>" + clearHTML;
     
-    $('#till_roll').html($('#till_roll').html() + orderHTML);
+    return orderHTML;
 }
 
 var currentSelectedReceiptItemEl;
@@ -424,7 +453,7 @@ function saveEditOrderItem(el) {
         order = tableOrders[selectedTable];
         order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
     
-        storeTableOrderInStorage(selectedTable, order);
+        storeTableOrderInStorage(current_user_id, selectedTable, order);
     }else {
         order = currentOrder;
         order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
@@ -462,7 +491,7 @@ function removeOrderItem(el) {
         order = tableOrders[selectedTable];
         order = doRemoveOrderItem(order, itemNumber);
     
-        storeTableOrderInStorage(selectedTable, order);
+        storeTableOrderInStorage(current_user_id, selectedTable, order);
     }else {
         order = currentOrder;
         order = doRemoveOrderItem(order, itemNumber);
@@ -561,35 +590,10 @@ function doSelectTable(tableNum) {
         return;
     }
 
-    //init an in memory version of this order
-    tableOrders[tableNum] = {
-        'items': new Array(),
-        'total':0
-    };
-    
-    //fetch this tables order from cookie
-    currentTableOrderJSON = getTableOrderFromStorage(selectedTable);
+    //fetch this tables order from storage
+    //this will fill the tableOrders[tableNum] variable
+    getTableOrderFromStorage(current_user_id, selectedTable);
 
-    //fill in the table order array
-    if(currentTableOrderJSON != null) {
-        for(i=0; i<currentTableOrderJSON.items.length; i++) {
-            tableOrderItem = currentTableOrderJSON.items[i];
-            tableOrders[tableNum].items.push(tableOrderItem);
-        }
-
-        tableOrders[tableNum].total = currentTableOrderJSON.total;
-        
-        if(currentTableOrderJSON.discount_percent) {
-            tableOrders[tableNum].discount_percent = currentTableOrderJSON.discount_percent;
-            tableOrders[tableNum].pre_discount_price = currentTableOrderJSON.pre_discount_price;
-        }
-        
-        tableOrders[tableNum].order_taxes = currentTableOrderJSON.order_taxes;
-    }
-        
-    //total the order first
-    calculateOrderTotal(tableOrders[tableNum]);
-        
     //display the receipt for this table
     loadReceipt(tableOrders[tableNum]);
 }
@@ -612,10 +616,8 @@ function loadReceipt(order) {
     orderTotal = order.total;
     orderItems = order.items;
 
-    for(i=0; i<orderItems.length; i++) {
-        item = orderItems[i];
-        writeOrderItemToReceipt(item);
-    }
+    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(order);
+    $('#till_roll').html($('#till_roll').html() + allOrderItemsRecptHTML);
 
     if(orderTotal != null) {
         writeTotalToReceipt(order, orderTotal);
@@ -663,7 +665,7 @@ function clearOrder(selectedTable) {
         clearOrderInStorage(current_user_id);
         currentOrder = null;
     } else {
-        clearTableOrderInStorage(selectedTable);
+        clearTableOrderInStorage(current_user_id, selectedTable);
     //dont need to worry about clearing memory as it is read in from cookie which now no longer exists
     }
     
@@ -1033,7 +1035,7 @@ function saveDiscount() {
     
     //store the modified order
     if(selectedTable != 0) {
-        storeTableOrderInStorage(selectedTable, order);
+        storeTableOrderInStorage(current_user_id, selectedTable, order);
     }else {
         storeOrderInStorage(current_user_id, order);
     }
@@ -1126,7 +1128,22 @@ function currentOrderEmpty(){
     return !fetchedCurrentOrder || fetchedCurrentOrder.items.length == 0
 }
 
-function doReceiveTableOrderSync(terminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON) {
+function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee, tableOrderDataJSON) {
+    for (var i = 0; i < employees.length; i++){
+        nextUserIDToSyncWith = employees[i].id;
+        
+        //skip if terminal and user same
+        //        alert("Skip? user id: " + terminalEmployeeID + " - " + nextUserIDToSyncWith + " : terminal id: " + recvdTerminalID + " - " + terminalID);
+        //        if(recvdTerminalID == terminalID && terminalEmployeeID == nextUserIDToSyncWith) {
+        //            alert("Skipping for user id: " + nextUserIDToSyncWith);
+        //            continue;
+        //        }
+        
+        doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith);
+    }
+}
+
+function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith) {
     //the order is in json form, we need to turn it back into an array
     syncOrderItems = new Array();
     
@@ -1137,13 +1154,7 @@ function doReceiveTableOrderSync(terminalID, tableID, tableLabel, terminalEmploy
    
     //    alert("Order for sync has " + syncOrderItems.length + " items. About to sync with existing " + tableOrders[tableID].items.length + " items");
     
-    //init the order if this table has no order already
-    if(typeof(tableOrders[tableID]) == "undefined") {
-        tableOrders[tableID] = {
-            'items': new Array(),
-            'total':0
-        };
-    }
+    getTableOrderFromStorage(nextUserIDToSyncWith, tableID);
     
     //delete all items that have been synced already
     existingOrderItems = tableOrders[tableID].items;
@@ -1192,34 +1203,83 @@ function doReceiveTableOrderSync(terminalID, tableID, tableLabel, terminalEmploy
     tableOrders[tableID].discount_percent = tableOrderDataJSON.discount_percent;
     
     calculateOrderTotal(tableOrders[tableID]);
-    storeTableOrderInStorage(tableID, tableOrders[tableID]);
+    storeTableOrderInStorage(nextUserIDToSyncWith, tableID, tableOrders[tableID]);
     
-    if(tableID == selectedTable) {
+    if(tableID == selectedTable && nextUserIDToSyncWith == current_user_id) {
         loadReceipt(tableOrders[tableID]);
     }
     
     //alert("Got sync order, complete? : " + callHomePollInitSequenceComplete);
     
     //we don't want to show the initial messages as there may be a few of them
-    if(callHomePollInitSequenceComplete) {
-        setStatusMessage("<b>" + terminalEmployee + "</b> modified the order for table <b>" + tableLabel + "</b> from terminal <b>" + terminalID + "</b>");
+    if(callHomePollInitSequenceComplete && recvdTerminalID != terminalID) {
+        setStatusMessage("<b>" + terminalEmployee + "</b> modified the order for table <b>" + tableLabel + "</b> from terminal <b>" + recvdTerminalID + "</b>");
     }
 }
 
-function doClearTableOrder(terminalID, tableID, tableLabel, terminalEmployee) {
-    tableOrders[tableID] = {
-        'items': new Array(),
-        'total':0
-    };
-    storeTableOrderInStorage(tableID, tableOrders[tableID]);
+function doReceiveClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee) {
+    //save the current users table order to reload it after sync
+    savedTableID = selectedTable;
+    
+    for (var i = 0; i < employees.length; i++){
+        nextUserIDToSyncWith = employees[i].id;
         
-    if(tableID == selectedTable) {
-        loadReceipt(tableOrders[tableID]);
+        //skip if terminal and user same
+        //        alert("Skip? user id: " + terminalEmployeeID + " - " + nextUserIDToSyncWith + " : terminal id: " + recvdTerminalID + " - " + terminalID);
+        //        if(recvdTerminalID == terminalID && terminalEmployeeID == nextUserIDToSyncWith) {
+        //            alert("Skipping for user id: " + nextUserIDToSyncWith);
+        //            continue;
+        //        }
+        
+        doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployee, nextUserIDToSyncWith);
     }
     
-    //we don't want to show the initial messages as there may be a few of them
-    if(callHomePollInitSequenceComplete) {
-        setStatusMessage("<b>" + terminalEmployee + "</b> totaled the order for table <b>" + tableLabel + "</b> from terminal <b>" + terminalID + "</b>");
+    if(current_user_id) {
+        //now load back up the current users order
+        getTableOrderFromStorage(current_user_id, savedTableID);
+    }
+}
+
+function doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployee, nextUserIDToSyncWith) {
+    //save the current users table order to reload it after sync
+    savedTableID = selectedTable;
+    
+    doClear = true;
+    
+    //only clear the order on this users receipt if they have no unsynced items
+    getTableOrderFromStorage(nextUserIDToSyncWith, tableID);
+    
+    //delete all items that have been synced already
+    existingOrderItems = tableOrders[tableID].items;
+    
+    for(i=0;i<existingOrderItems.length;i++) {
+        if(!existingOrderItems[i].synced) {
+            doClear = false;
+            break;
+        }
+    }
+    
+    if(doClear) {
+        tableOrders[tableID] = {
+            'items': new Array(),
+            'total':0
+        };
+    
+        storeTableOrderInStorage(nextUserIDToSyncWith, tableID, tableOrders[tableID]);
+        
+        if(tableID == selectedTable && nextUserIDToSyncWith == current_user_id) {
+            loadReceipt(tableOrders[tableID]);
+        }
+    
+        //we don't want to show the initial messages as there may be a few of them
+        if(callHomePollInitSequenceComplete && recvdTerminalID != terminalID) {
+            setStatusMessage("<b>" + terminalEmployee + "</b> totaled the order for table <b>" + tableLabel + "</b> from terminal <b>" + recvdTerminalID + "</b>");
+        }
+    }
+    
+    if(current_user_id) {
+        //now load back up the current users order
+        getTableOrderFromStorage(current_user_id, savedTableID);
     }
 }
 

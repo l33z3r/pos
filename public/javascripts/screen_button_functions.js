@@ -80,7 +80,7 @@ function doSyncTableOrder() {
     }
     
     //store the order in the cookie
-    storeTableOrderInStorage(selectedTable, order);
+    storeTableOrderInStorage(current_user_id, selectedTable, order);
 
     $.ajax({
         type: 'POST',

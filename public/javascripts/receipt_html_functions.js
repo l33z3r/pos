@@ -1,9 +1,12 @@
 function fetchOrderReceiptHTML() {
     orderReceiptHTML = fetchReceiptHeaderHTML();
     
-    orderReceiptHTML += clearHTML + $('#till_roll').html();
-    
     currentOrder = getCurrentOrder();
+    
+    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(currentOrder, false, false);
+    
+    orderReceiptHTML += clearHTML + allOrderItemsRecptHTML;
+    
     subTotal = currentOrder.total;
     
     if(currentOrder.discount_percent) {
@@ -25,7 +28,9 @@ function fetchOrderReceiptHTML() {
 }
 
 function fetchCashScreenReceiptHTML() {
-    cashScreenReceiptHTML = clearHTML + $('#till_roll').html();
+    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(totalOrder, false, false);
+    
+    cashScreenReceiptHTML = clearHTML + allOrderItemsRecptHTML;
     
     cashScreenReceiptHTML += "<div class='data_table'>";
     
@@ -53,7 +58,9 @@ function fetchCashScreenReceiptHTML() {
 function fetchFinalReceiptHTML() {
     finalReceiptHTML = fetchReceiptHeaderHTML();
     
-    finalReceiptHTML += clearHTML + $('#till_roll').html();
+    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(totalOrder, false, false);
+    
+    finalReceiptHTML += clearHTML + allOrderItemsRecptHTML;
     
     finalReceiptHTML += "<div class='data_table'>";
     
