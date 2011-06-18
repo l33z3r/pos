@@ -676,12 +676,12 @@ function clearOrder(selectedTable) {
 }
 
 function doTotal() {
-    totalOrder = getCurrentOrder();
-    
-    if(!totalOrder || totalOrder.items.length == 0) {
+    if(currentOrderEmpty()) {
         alert("No order present to sub-total!");
         return;
     }
+    
+    totalOrder = getCurrentOrder();
     
     //get the receipt items and the taxes/discounts
     cashScreenReceiptHTML = fetchCashScreenReceiptHTML()
@@ -747,7 +747,7 @@ function doTotalFinal() {
     setLoginReceipt("Last Sale", receiptHTML);
     
     //now print the receipt
-    printReceipt(receiptHTML);
+    printReceipt(receiptHTML, true);
 
     if(taxChargable) {
         orderSalesTaxRate = globalTaxRate;
@@ -1137,6 +1137,9 @@ function currentOrderEmpty(){
 }
 
 function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee, tableOrderDataJSON) {
+    //save the current users table order to reload it after sync
+    savedTableID = selectedTable;
+    
     for (var i = 0; i < employees.length; i++) {
         nextUserIDToSyncWith = employees[i].id;
         
@@ -1154,6 +1157,11 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         
     if(newlyAdded) {
         renderActiveTables();
+    }
+    
+    if(current_user_id) {
+        //now load back up the current users order
+        getTableOrderFromStorage(current_user_id, savedTableID);
     }
 }
 
@@ -1208,6 +1216,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     tableOrders[tableID].items = newOrderItems;
     
+    //alert("new order items length: " + tableOrders[tableID].items.length);
     //re number the items
     for(i=0;i<tableOrders[tableID].items.length;i++) {
         tableOrders[tableID].items[i].itemNumber = i + 1;
@@ -1298,11 +1307,6 @@ function doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmploye
         if(callHomePollInitSequenceComplete && recvdTerminalID != terminalID) {
             setStatusMessage("<b>" + terminalEmployee + "</b> totaled the order for table <b>" + tableLabel + "</b> from terminal <b>" + recvdTerminalID + "</b>");
         }
-    }
-    
-    if(current_user_id) {
-        //now load back up the current users order
-        getTableOrderFromStorage(current_user_id, savedTableID);
     }
 }
 

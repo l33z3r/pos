@@ -103,3 +103,14 @@ function doSyncTableOrder() {
     //pick up the default home screen and load it
     loadAfterSaleScreen();
 }
+
+function printCurrentReceipt() {
+    if(currentOrderEmpty()) {
+        alert("No order present to print!");
+        return;
+    }
+    
+    content = fetchOrderReceiptHTML();
+    
+    printReceipt(content, false);
+}

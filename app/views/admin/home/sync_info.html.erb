@@ -1,0 +1,50 @@
+<div id="sync_infos">
+  
+  <%= link_to "Clear All", sync_info_path(:clear_sync_infos => true) %>
+  
+  <% @sync_table_order_times.each do |sync_table_order_request_time, sync_table_order_request_data| %>
+    <%
+
+    @sync_table_order_terminal_id = sync_table_order_request_data[:terminal_id]
+    @serving_employee_id = sync_table_order_request_data[:serving_employee_id]
+    @sync_table_order_request_time = sync_table_order_request_time
+    @clear_request = sync_table_order_request_data[:clear_table_order] ? "no" : "yes"
+
+    if @clear_request
+      @table_id = sync_table_order_request_data[:table_id]
+    else
+      @table_id = sync_table_order_request_data[:table_id]
+    end
+
+  %>
+
+    <div class="sync_info">
+
+      <div class="label">Sync?:</div>
+      <div class="data"><%=@clear_request%></div>
+      <div class="clear">&nbsp;</div>
+
+      <div class="label">Terminal ID:</div>
+      <div class="data"><%=@sync_table_order_terminal_id%></div>
+      <div class="clear">&nbsp;</div>
+
+      <div class="label">Table ID:</div>
+      <div class="data"><%=@table_id%></div>
+      <div class="clear">&nbsp;</div>
+
+      <div class="label">Table Label:</div>
+      <div class="data"><%=TableInfo.find(@table_id).perm_id%></div>
+      <div class="clear">&nbsp;</div>
+
+      <div class="label">Employee:</div>
+      <div class="data"><%=Employee.find(@serving_employee_id).nickname%></div>
+      <div class="clear">&nbsp;</div>
+
+      <div class="label">Time of sync request:</div>
+      <div class="data"><%=Time.at(@sync_table_order_request_time)%></div>
+      <div class="clear">&nbsp;</div>
+
+    </div>
+
+  <% end %>
+</div>

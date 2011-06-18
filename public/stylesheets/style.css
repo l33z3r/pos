@@ -98,8 +98,13 @@ div.wrapper div {
     text-align: center;
 }
 
+div.wrapper div td {
+    text-align: left;
+}
+
 div#content_container {
     background-color: #e0e0e0;
+    min-height: 728px;
 }
 
 header {
@@ -1429,7 +1434,7 @@ div.receipt div.till_roll div.discount div.discount_amount {
 div.receipt div.till_roll div.discount div.new_price {
     float: left;
     width: 40px;
-    text-align: leftt;
+    text-align: left;
     font-style: italic;
 }
 
@@ -2400,3 +2405,25 @@ div.pagination_links div.links div.pagination a {
 }
 
 /* pagination */
+
+/* Random Stats */
+
+div#sync_infos {
+    margin: 30px;
+    width: 450px;
+    margin: auto;
+}
+
+div#sync_infos div.sync_info {
+    margin: 10px;
+    font-weight: bold;
+}
+
+div#sync_infos div.sync_info div.label,
+div#sync_infos div.sync_info div.data {
+    float: left;
+    width: 200px;
+    text-align: left;
+}
+
+/* Random Stats */

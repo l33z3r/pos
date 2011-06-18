@@ -131,6 +131,10 @@ class HomeController < ApplicationController
 
     render :json => {:success => true}.to_json
   end
+  
+  def blank_receipt_for_print
+    render :layout => nil
+  end
 
   private
 
