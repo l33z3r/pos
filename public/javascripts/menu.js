@@ -14,6 +14,7 @@ var serviceCharge = 0;
 //this function is called from application.js on page load
 function initMenu() {
     loadFirstMenuPage();
+    renderActiveTables();
     
     currentMenuPage = 1;
     currentOrder = new Array();
@@ -212,6 +213,9 @@ function finishDoSelectMenuItem() {
         tableSelectMenuItem(orderItem);
         return;
     }
+    
+    //mark the item as synced as we are not on a table receipt
+    orderItem.synced = true;
 
     //lazy init currentOrder
     if(currentOrder == null) {
@@ -599,11 +603,10 @@ function doSelectTable(tableNum) {
 }
 
 function tableScreenSelectTable(tableId) {
-    $('#table_select').val(tableId);
-    doSelectTable(tableId);
-    
     //back to menu screen
     showMenuScreen();
+    $('#table_select').val(tableId);
+    doSelectTable(tableId);
 }
 
 function loadReceipt(order) {
@@ -798,6 +801,11 @@ function doTotalFinal() {
     $('#finish_sale_button').hide();
     resetTendered();
     $('#totals_change_value').html("");
+    
+    //set the select item
+    $('#table_select').val(0);
+    doSelectTable(lastReceiptID);
+    
     totalOrder = null;
     currentTotalFinal = 0;
 }
@@ -1129,7 +1137,7 @@ function currentOrderEmpty(){
 }
 
 function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee, tableOrderDataJSON) {
-    for (var i = 0; i < employees.length; i++){
+    for (var i = 0; i < employees.length; i++) {
         nextUserIDToSyncWith = employees[i].id;
         
         //skip if terminal and user same
@@ -1140,6 +1148,12 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         //        }
         
         doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith);
+    }
+    
+    newlyAdded = addActiveTable(tableID);
+        
+    if(newlyAdded) {
+        renderActiveTables();
     }
 }
 
@@ -1234,6 +1248,15 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, tableLabel, terminal
         doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployee, nextUserIDToSyncWith);
     }
     
+    //remove the table from the active table ids array
+    newlyRemoved = removeActiveTable(tableID);
+    
+    //alert("Newly Removed " + selectedTable + " " + newlyRemoved);
+    
+    if(newlyRemoved) {
+        renderActiveTables();
+    }
+    
     if(current_user_id) {
         //now load back up the current users order
         getTableOrderFromStorage(current_user_id, savedTableID);
@@ -1264,8 +1287,8 @@ function doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmploye
             'items': new Array(),
             'total':0
         };
-    
-        storeTableOrderInStorage(nextUserIDToSyncWith, tableID, tableOrders[tableID]);
+        
+        clearTableOrderInStorage(nextUserIDToSyncWith, tableID);
         
         if(tableID == selectedTable && nextUserIDToSyncWith == current_user_id) {
             loadReceipt(tableOrders[tableID]);

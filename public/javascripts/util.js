@@ -166,6 +166,86 @@ function deleteStorageValue(key) {
     return sessionStorage.removeItem(key);
 }
 
+function getActiveTableIDS() {
+    activeTableIDSString = retrieveStorageValue("active_table_ids");
+    
+    //alert("got active table ids " + activeTableIDSString);
+    
+    if(activeTableIDSString) {
+        return activeTableIDSString.split(",");
+    } else {
+        return new Array();
+    }
+}
+
+function storeActiveTableIDS(activeTableIDS) {
+    activeTableIDSString = activeTableIDS.join(",");
+    //alert("Storing active table ids " + activeTableIDSString);
+    storeKeyValue("active_table_ids", activeTableIDSString);
+}
+
+function addActiveTable(tableID) {
+    activeTableIDS = getActiveTableIDS();
+    
+    newlyAdded = ($.inArray(tableID.toString(), activeTableIDS) == -1);
+    
+    if(newlyAdded) {
+        activeTableIDS.push(tableID);
+        storeActiveTableIDS(activeTableIDS);
+    }
+    
+    return newlyAdded;
+}
+
+function removeActiveTable(tableID) {
+    activeTableIDS = getActiveTableIDS();
+    
+    newlyRemoved = ($.inArray(tableID.toString(), activeTableIDS) != -1);
+    
+    activeTableIDS = $.grep(activeTableIDS, function(val) {
+        return val.toString() != tableID.toString();
+    });
+
+    storeActiveTableIDS(activeTableIDS);
+    
+    return newlyRemoved;
+}
+
+//mark tables in the list as active with some asterisk etc
+//need to also mark the tables in the tables screen somehow
+function renderActiveTables() {
+    activeTableIDS = getActiveTableIDS();
+    
+    //alert("render active tables " + activeTableIDS);
+    
+    //got this code from http://stackoverflow.com/questions/1227684/how-to-iterate-through-multiple-select-options-with-jquery
+    $("#table_select").children('optgroup').children('option').each( 
+        function(id, element) {
+            //alert("ID: " + $(element).val().toString() + " El " + $(element).html() + " in:" + $.inArray($(element).val().toString(), activeTableIDS));
+            
+            nextTableID = $(element).val().toString();
+            
+            if($.inArray(nextTableID, activeTableIDS) != -1) {
+                if(!$(element).html().toString().startsWith("*")) {
+                    newLabelHTML = "*" + $(element).html();
+                    $(element).html(newLabelHTML);
+                    
+                    //mark the tables screen also
+                    $('#table_label_' + nextTableID).html(newLabelHTML);
+                }
+            } else {
+                if($(element).html().toString().startsWith("*")) {
+                    newLabelHTML = $(element).html().toString().substring(1);
+                    $(element).html(newLabelHTML);
+                    
+                    //mark the tables screen also
+                    $('#table_label_' + nextTableID).html(newLabelHTML);
+                }
+            }
+        }
+        );
+}
+
 function setRawCookie(c_name, value, exdays) {
     var exdate=new Date();
     exdate.setDate(exdate.getDate() + exdays);
@@ -189,6 +269,10 @@ function getRawCookie(c_name) {
     return null;
 }
 
+String.prototype.startsWith = function(str){
+    return (this.indexOf(str) === 0);
+}
+
 function showScreenFromHashParams() {
     hashParams = getURLHashParams();
     
@@ -201,7 +285,7 @@ function showScreenFromHashParams() {
             } else if(hashParams.screen == 'menu') {
                 showMenuScreen();
             } else if(hashParams.screen == 'totals') {
-                //cannot go to this screen
+            //cannot go to this screen
             } else if(hashParams.screen == 'tables') {
                 showTablesScreen();
             } else if(hashParams.screen == 'more_options') {

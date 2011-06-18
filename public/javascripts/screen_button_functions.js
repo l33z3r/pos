@@ -96,6 +96,10 @@ function doSyncTableOrder() {
     orderReceiptHTML = fetchOrderReceiptHTML();
     setLoginReceipt("Last Order", orderReceiptHTML);
     
+    //redraw the receipt if we dont leave this screen
+    //so that the highlighted items are no longer highlighted
+    doSelectTable(selectedTable);
+    
     //pick up the default home screen and load it
     loadAfterSaleScreen();
 }
