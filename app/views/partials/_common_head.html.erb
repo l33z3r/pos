@@ -14,7 +14,8 @@
   "menu", "touch-scroll", "util", "jquery.cookie", "jquery.clock",
   "jquery.plugin.menuTree.pack", "webkitdragdrop",
   "screen_button_functions", "jquery.bubblepopup", 
-  "receipt_html_functions", "login_functions", :cache => "libs" %>
+  "receipt_html_functions", "login_functions", "touch_util", 
+  "cash_screen", :cache => "libs" %>
 
 <!-- only load the fingerprint libraries if the fingerprint has not yet been set -->
 <% if !request.cookies["terminal_fingerprint"] %>
@@ -23,8 +24,10 @@
 
 <%= csrf_meta_tag %>
 
-<!-- include firebug lite -->
-<!--script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script-->
+<% if params[:showfirebuglite] == "true" %>
+  <!-- include firebug lite -->
+  <script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
+<% end %>
 
 <!-- must set some vars from the system settings -->
 <%= render :partial => "/partials/js_global_settings" %>

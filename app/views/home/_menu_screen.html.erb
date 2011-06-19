@@ -4,9 +4,7 @@
 
 <div id="menu_screen">
 
-  <%= render "modifier_category_popups" %>
-
-  <div id="receipt_keypad_container">
+    <div id="receipt_keypad_container">
 
     <div id="top_buttons">
       <div id="table_select_container">
@@ -48,17 +46,17 @@
 
     </div>
 
-    <div id="till_keypad">
-      <div id="keys">
+    <div id="till_keypad" class="keypad">
+      <div id="keys" class="keys">
         <% [[7,9],[4,6],[1,3]].each do |x,y| %>
           <% (x..y).each do |num| %>
-            <div id="keypad_num_<%= num %>"><%= num %></div>
+            <div id="keypad_num_<%= num %>" class="key" onclick="menuScreenKeypadClick(<%=num%>);"><%= num %></div>
           <% end %>
         <% end %>
 
-        <div id="keypad_num_0">0</div>
-        <div id="decimal_key">.</div>
-        <div id="cancel_key" onclick="doCancelTillKeypad()">C</div>
+        <div id="keypad_num_0" class="key" onclick="menuScreenKeypadClick(0);">0</div>
+        <div id="decimal_key" class="key" onclick="menuScreenKeypadClickDecimal();">.</div>
+        <div id="cancel_key" class="key" onclick="menuScreenKeypadClickCancel()">C</div>
       </div>
     </div>
   </div>
@@ -100,11 +98,15 @@
     </div>
 
     <div class="clear_spacer">
-      <div class="global_status_message"></div>
+      <div id="menu_screen_status_message" class="global_status_message"></div>
     </div>
 
     <!-- the following markup is used for the display button passcode popup -->
     <div id="menu_buttons_popup_anchor">&nbsp;</div>
+
+    <!-- the following anchor is used for the default menu screen popup -->
+    <div id="menu_screen_default_popup_anchor">&nbsp;</div>
+
     <input type="text" id="display_button_passcode" style="display: none;"/>
 
     <div id="menu_buttons">
@@ -117,104 +119,26 @@
     </div>
   </div>
 
-  <div id="edit_receipt_item_popup_markup">
-    <div id="edit_receipt_item_popup_markup_container">
-
-      <div id="header">Edit Order Item</div>
-
-      <div id="discount_button" onclick="showDiscountPopup(this)">Discount</div>
-      <div id="delete_button" onclick="removeOrderItem(this)">Delete</div>
-
-      <div class="clear">&nbsp;</div>
-
-      <div id="quantity_editor">
-
-        <div id="quantity_label">Quantity:</div>
-        <input type="text" class="quantity" size="2" id="current_selected_receipt_item_quantity"/>
-
-        <div id="buttons_container">
-          <div id="plus_button" onclick="editOrderItemIncreaseQuantity(this)"><div>+</div></div>
-          <div id="minus_button" onclick="editOrderItemDecreaseQuantity(this)"><div>-</div></div>
-        </div>
-        <div class="clear">&nbsp;</div>
-      </div>
-
-      <div class="clear">&nbsp;</div>
-
-      <div id="price_editor">
-        <div class="price_label">Price Per Unit:</div>
-        <input type="text" class="price" size="2" id="current_selected_receipt_item_price"/>
-        <div class="clear">&nbsp;</div>
-      </div>
-
-      <div class="clear">&nbsp;</div>
-
-      <div id="cancel_button" onclick="closeEditOrderItem()">Cancel</div>
-      <div id="save_button" onclick="saveEditOrderItem(this)">Save</div>
-    </div>
-  </div>
-
-  <div id="discounts_popup_markup">
-    <div id="discounts_popup_markup_container">
-
-      <div class="header">Apply Discount</div>
-
-      <div class="clear">&nbsp;</div>
-
-      <div class="discount_buttons">
-        <div class="button" id="discount_button_0" onclick="setDiscountVal(0)">
-          <div class="name">
-            None
-          </div>
-          <div class="percent">
-            0%
-          </div>
-        </div>
-        <% Discount.all.each do |discount| %>
-          <div class="button" id="discount_button_<%=discount.id%>" onclick="setDiscountVal(<%=discount.percent%>)">
-            <div class="name">
-              <%=discount.name%>
-            </div>
-            <div class="percent">
-              <%=discount.percent%>%
-            </div>
-          </div>
-        <% end %>
-      </div>
-
-      <div class="clear_top_margin_10">&nbsp;</div>
-
-      <div id="manual_discount">
-        <div class="header">Or Enter a Discount Amount</div>
-
-        <div class="clear_top_margin_5">&nbsp;</div>
-
-        <div class="fields">
-          <div class="label">Amount:</div>
-          <input type="text" class="percent" size="4" id="discount_percent_input"/>
-        </div>
-      </div>
-
-      <div class="clear">&nbsp;</div>
-
-      <div id="apply_discount_to">
-        <div class="label">Apply Discount to:</div>
-
-        <input type="radio" name="discount_type" value="whole_order" checked/>Whole Order
-        <input type="radio" name="discount_type" value="last_item" checked/>Last Item
-      </div>
-
-      <div class="clear_top_margin_10">&nbsp;</div>
-
-      <div class="actions">
-        <div id="cancel_button" onclick="closeDiscountPopup()">Cancel</div>
-        <div id="save_button" onclick="saveDiscount()">Save</div>
-      </div>
-
-    </div>
-  </div>
+  <%= render :partial => "/partials/popups_markup" %>
 
   <div class="clear">&nbsp;</div>
+</div>
+
+<!-- utility keypad to be called up for anything -->
+<div id="util_keypad_container">
+  <div id="util_keypad" class="keypad">
+    <div id="util_keypad_keys" class="keys">
+      <% [[7,9],[4,6],[1,3]].each do |x,y| %>
+        <% (x..y).each do |num| %>
+          <div id="num_<%= num %>" class="util_keypadkey" onclick="utilKeypadClick(<%=num%>)"><%= num %></div>
+        <% end %>
+      <% end %>
+
+      <div class="cancel_key" class="util_keypadkey" onclick="doCancelUtilKeypad()">C</div>
+      <div id="num_0" class="util_keypadkey" onclick="utilKeypadClick(0)">0</div>
+      <div class="go_key" class="util_keypadkey" onclick="doGoUtilKeypad()">OK</div>
+    </div>
+  </div>
 </div>
 
 <!-- iframe to print in -->

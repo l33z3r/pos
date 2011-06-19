@@ -13,17 +13,17 @@
       <%= hidden_field_tag :num, nil, :id => :num, :size => "18" %>
     </div>
 
-    <div id="keypad">
-      <div id="keys">
+    <div id="keypad" class="keypad">
+      <div id="keys" class="keys">
         <% [[7,9],[4,6],[1,3]].each do |x,y| %>
           <% (x..y).each do |num| %>
-            <div id="num_<%= num %>"><%= num %></div>
+            <div id="num_<%= num %>" class="key" onclick="loginScreenKeypadClick(<%=num%>)"><%= num %></div>
           <% end %>
         <% end %>
 
-        <div class="cancel_key" onclick="doCancelLoginKeypad()">C</div>
-        <div id="num_0">0</div>
-        <div class="go_key" onclick="doLogin($('#num').val());return false;">OK</div>
+        <div class="cancel_key" class="key" onclick="doCancelLoginKeypad()">C</div>
+        <div id="num_0" class="key" onclick="loginScreenKeypadClick(0)">0</div>
+        <div class="go_key" class="key" onclick="doLogin($('#num').val());return false;">OK</div>
       </div>
     </div>
   </div>
@@ -34,7 +34,7 @@
     </div>
 
     <div class="clear_spacer">
-      <div class="global_status_message"></div>
+      <div id="login_screen_status_message" class="global_status_message"></div>
     </div>
 
     <div class="buttons">

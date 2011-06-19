@@ -9,7 +9,7 @@ function doQuickLogin(user_id) {
         $('#num').val(login_code);
         doLogin();
     } else {
-        setStatusMessage("You must enter your pin!");
+        setStatusMessage("Enter PIN!", false, true);
     }
 }
 
@@ -18,7 +18,7 @@ function doLogin() {
     
     if(current_user_id != null) {
         //already logged in
-        displayError("You are already logged in. Please log out.");
+        displayError("You are already logged in. Please log out!");
         return;
     }
 
@@ -34,9 +34,8 @@ function doLogin() {
                 loginSuccess(id, nickname, is_admin, passcode);
                 return;
             } else {
-                displayError("User " + nickname + " is not clocked in.");
-                $('#clockincode_show').html("");
-                $('#num').val("");
+                setStatusMessage("User " + nickname + " is not clocked in!", true, true);
+                clearCode();
                 return;
             }
         }
@@ -55,8 +54,7 @@ function doLogout() {
 
     showLoginScreen();
     
-    $('#num').val("");
-    $('#clockincode_show').html("");
+    clearCode();
 
     //hide the red x 
     $('#nav_save_button').hide();
@@ -87,10 +85,16 @@ function doClockin() {
         is_admin = employees[i].is_admin;
 
         if(entered_code == clockinCode) {
+            if(employees[i]['clocked_in']) {
+                setStatusMessage(nickname + " is already clocked in!");
+                clearCode();
+                return;
+            }
+            
             //mark the user as clocked in
             employees[i]['clocked_in'] = true;
             
-            clockinSuccess(id);
+            clockinSuccess(id, nickname);
             return;
         }
     }
@@ -110,10 +114,15 @@ function doClockout() {
         is_admin = employees[i].is_admin;
 
         if(entered_code == clockinCode) {
+            if(employees[i]['clocked_in'] == false) {
+                clockoutFailure();
+                return;
+            }
+            
             //mark the user as clocked out
             employees[i]['clocked_in'] = false;
             
-            clockoutSuccess(id);
+            clockoutSuccess(id, nickname);
             return;
         }
     }
@@ -121,9 +130,10 @@ function doClockout() {
     clockoutFailure();
 }
 
-function clockinSuccess(id) {
-    $('#num').val("");
-    $('#clockincode_show').html("");
+function clockinSuccess(id, nickname) {
+    clearCode();
+    
+    setStatusMessage(nickname + " clocked in successfully!");
     
     //send ajax logout
     $.ajax({
@@ -135,9 +145,10 @@ function clockinSuccess(id) {
     });
 }
 
-function clockoutSuccess(id) {
-    $('#num').val("");
-    $('#clockincode_show').html("");
+function clockoutSuccess(id, nickname) {
+    clearCode();
+    
+    setStatusMessage(nickname + " clocked out successfully!");
     
     //send ajax clockout
     $.ajax({
@@ -169,10 +180,12 @@ function loginSuccess(id, nickname, is_admin, passcode) {
     //set the username in the menu
     $('#e_name').html(nickname);
     
-    setStatusMessage("Welcome " + nickname + "!");
+    hideStatusMessage();
     
     showMenuScreen();
 
+    setStatusMessage("Welcome " + nickname + "!");
+    
     //show the red x 
     $('#nav_save_button').show();
     
@@ -197,30 +210,31 @@ function loginSuccess(id, nickname, is_admin, passcode) {
         showTablesScreen();
     }
     
-    $('#clockincode_show').html("");
-    $('#num').val("");
+    clearCode();
 }
 
 function clockinFailure() {
     //set an error message in the flash area
-    displayError("Wrong clock in code, please try again.");
+    setStatusMessage("Wrong clock in code!", true, true);
 
-    $('#num').val("");
-    $('#clockincode_show').html("");
-}
-
-function loginFailure() {
-    //set an error message in the flash area
-    displayError("Wrong pass code, please try again.");
-
-    $('#num').val("");
-    $('#clockincode_show').html("");
+    clearCode();
 }
 
 function clockoutFailure() {
     //set an error message in the flash area
-    displayError("You are either not clocked in, or entered the wrong code!");
+    setStatusMessage("You are either not clocked in, or entered the wrong code!", true, true);
 
+    clearCode();
+}
+
+function loginFailure() {
+    //set an error message in the flash area
+    setStatusMessage("Wrong pass code!", true, true);
+
+    clearCode();
+}
+
+function clearCode() {
     $('#num').val("");
     $('#clockincode_show').html("");
 }

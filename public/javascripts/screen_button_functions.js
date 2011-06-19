@@ -16,42 +16,6 @@ function doCashTotalReport(total_type) {
     });
 }
 
-function showLoginScreen() {
-    hideAllScreens();
-    $('#landing').show();
-    loginRecptScroll();
-}
-
-function showMenuScreen() {
-    hideAllScreens();
-    $('#menu_screen').show();
-}
-
-function showTablesScreen() {
-    hideAllScreens();
-    $('#table_select_screen').show();
-    initTableSelectScreen();
-}
-
-function showTotalsScreen() {
-    hideAllScreens();
-    $('#total_screen').show();
-}
-
-function showMoreOptionsScreen() {
-    hideAllScreens();
-    $('#more_options').show();
-}
-
-function hideAllScreens() {
-    $('#landing').hide();
-    $('#menu_screen').hide();
-    $('#table_select_screen').hide();
-    $('#total_screen').hide();
-    $('#more_options').hide();
-        
-}
-
 function doSyncTableOrder() {
     if(selectedTable == 0) {
         alert("Only valid for table orders!");
@@ -113,4 +77,28 @@ function printCurrentReceipt() {
     content = fetchOrderReceiptHTML();
     
     printReceipt(content, false);
+}
+
+function promptForServiceCharge() {
+    popupHTML = $("#service_charge_popup_markup").html();
+        
+    popupEl = showMenuScreenDefaultPopup(popupHTML);
+    
+    clickFunction = function() {
+        alert("Key clicked SC")
+        };
+    cancelFunction = function() {
+        hideMenuScreenDefaultPopup()
+        };
+    goFunction = function() {
+        alert("go clicked SC")
+        };
+    
+    popupId = popupEl.GetBubblePopupID();
+    
+    keypadPosition = $('#' + popupId).find('.service_charge_popup_keypad_container');
+    
+    setUtilKeypad(keypadPosition, clickFunction, cancelFunction, goFunction);
+    
+//serviceCharge = parseFloat(serviceCharge);
 }

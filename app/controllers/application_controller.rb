@@ -134,6 +134,7 @@ class ApplicationController < ActionController::Base
     else
       @terminal_id = "Initializing"
     end
-  end
 
+    @currency_symbol = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL
+  end
 end

@@ -315,3 +315,170 @@ function getURLHashParams() {
 
     return hashParams;
 }
+
+var utliKeypadClickFunction;
+var utilKeypadCancelFunction;
+var utilKeypadGoFunction;
+    
+function setUtilKeypad(position, clickFunction, cancelFunction, goFunction) {
+    $(position).html($('#util_keypad_container').html());
+    utliKeypadClickFunction = clickFunction;
+    utilKeypadCancelFunction = cancelFunction;
+    utilKeypadGoFunction = goFunction;
+}
+
+function utilKeypadClick(val) {
+    utliKeypadClickFunction(val);
+}
+
+function doCancelUtilKeypad() {
+    utilKeypadCancelFunction();
+}
+
+function doGoUtilKeypad() {
+    utilKeypadGoFunction();
+}
+
+function showMenuScreenDefaultPopup(popupHTML) {
+    popupAnchor = $('#menu_screen_default_popup_anchor');
+    
+    if(popupAnchor.HasBubblePopup()) {
+        popupAnchor.RemoveBubblePopup();
+    }
+    
+    popupAnchor.CreateBubblePopup();
+         
+    popupAnchor.ShowBubblePopup({
+        align: 'center',
+        innerHtml: popupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+												   
+        themeName: 	'black',
+        themePath: 	'/images/jquerybubblepopup-theme'
+
+    }, false);
+    
+    popupAnchor.FreezeBubblePopup();
+    
+    return popupAnchor;
+}
+
+function hideMenuScreenDefaultPopup() {
+    popupAnchor = $('#menu_screen_default_popup_anchor');
+    
+    if(popupAnchor.HasBubblePopup()) {
+        popupAnchor.RemoveBubblePopup();
+        popupAnchor.HideBubblePopup();
+        popupAnchor.FreezeBubblePopup();
+    }
+}
+
+function displayError(message) {
+    setStatusMessage("Error: " + message);
+}
+
+function displayNotice(message) {
+    setStatusMessage("Notice: " + message);
+}
+
+function setStatusMessage(message, hide, shake) {
+    if (typeof hide == "undefined") {
+        hide = true;
+    }
+  
+    if (typeof shake == "undefined") {
+        shake = false;
+    }
+    
+    if(currentScreenIsLogin()) {
+        statusEl = $('#login_screen_status_message')
+    } else if(currentScreenIsMenu()) {
+        statusEl = $('#menu_screen_status_message');
+    } else {
+        statusEl = $('#menu_screen_status_message')
+    }
+    
+    afterFunction = null;
+    
+    if(hide) {
+        afterFunction = function() {
+            setTimeout(function(){
+                statusEl.fadeOut();
+            }, 5000);
+        };
+    }
+    
+    statusEl.fadeIn('fast', afterFunction);
+    
+    if(shake) {
+        shakeFunction = function() {
+            statusEl.effect("shake", {
+                times:3,
+                distance: 3
+            }, 80);
+        };
+            
+        setTimeout(shakeFunction, 500);
+    }
+    
+    statusEl.html(message);
+}
+
+function hideStatusMessage() {
+    if(currentScreenIsLogin()) {
+        statusEl = $('#login_screen_status_message')
+    } else if(currentScreenIsMenu()) {
+        statusEl = $('#menu_screen_status_message');
+    } else {
+        statusEl = $('#menu_screen_status_message')
+    }
+    
+    statusEl.fadeOut();
+}
+
+function showLoginScreen() {
+    hideAllScreens();
+    $('#landing').show();
+    loginRecptScroll();
+}
+
+function showMenuScreen() {
+    hideAllScreens();
+    $('#menu_screen').show();
+}
+
+function showTablesScreen() {
+    hideAllScreens();
+    $('#table_select_screen').show();
+    initTableSelectScreen();
+}
+
+function showTotalsScreen() {
+    hideAllScreens();
+    $('#total_screen').show();
+}
+
+function showMoreOptionsScreen() {
+    hideAllScreens();
+    $('#more_options').show();
+}
+
+function hideAllScreens() {
+    $('#landing').hide();
+    $('#menu_screen').hide();
+    $('#table_select_screen').hide();
+    $('#total_screen').hide();
+    $('#more_options').hide();
+        
+}
+
+function currentScreenIsMenu() {
+    return $('#menu_screen').is(":visible");
+}
+
+function currentScreenIsLogin() {
+    return $('#landing').is(":visible");
+}

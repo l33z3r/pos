@@ -42,10 +42,7 @@ function initGridTablePopupDialogs() {
     //create popups for elements that have none already
     $('.grid_graphic .table').each(function() {
         if(!$(this).HasBubblePopup()) {
-            $(this).CreateBubblePopup({
-                themeName: 	'black',
-                themePath: 	'/images/jquerybubblepopup-theme'
-            });
+            $(this).CreateBubblePopup();
             
             $(this).FreezeBubblePopup();
         }
@@ -84,10 +81,7 @@ function initGridWallPopupDialogs() {
     //create popups for elements that have none already
     $('.grid_graphic .wall').each(function() {
         if(!$(this).HasBubblePopup()) {
-            $(this).CreateBubblePopup({
-                themeName: 	'black',
-                themePath: 	'/images/jquerybubblepopup-theme'
-            });
+            $(this).CreateBubblePopup();
             
             $(this).FreezeBubblePopup();
         }

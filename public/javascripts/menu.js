@@ -18,41 +18,6 @@ function initMenu() {
     
     currentMenuPage = 1;
     currentOrder = new Array();
-    currentMenuItemQuantity = "";
-    
-    //init menu screen keypad
-    for(i=0; i<10; i++) {
-        $('#keypad_num_' + i).click(function() {
-            if(showingDisplayButtonPasscodePromptPopup) {
-                $('#display_button_passcode').val($('#display_button_passcode').val() + this.innerHTML);
-                $('#display_button_passcode_show').html($('#display_button_passcode_show').html() + this.innerHTML);
-            } else {
-                if(this.innerHTML == '0') {
-                    if(currentMenuItemQuantity.length > 0)
-                        currentMenuItemQuantity += this.innerHTML
-                } else {
-                    currentMenuItemQuantity += this.innerHTML;
-                }
-            }
-        });
-    }
-    
-    //init sales screen decimal key
-    $('#decimal_key').click(function() {
-        currentMenuItemQuantity = "";
-    });
-
-    //init totals screen keypad
-    for(i=0; i<10; i++) {
-        $('#totals_keypad_num_' + i).click(function() {
-            $('#totals_tendered_value').html($('#totals_tendered_value').html() + this.innerHTML);
-        });
-    }
-
-    //init sales screen decimal key
-    $('#totals_decimal_key').click(function() {
-        $('#totals_tendered_value').html($('#totals_tendered_value').html() + ".");
-    });
 
     $('#till_roll').touchScroll();
     $('#login_till_roll').touchScroll();
@@ -67,6 +32,31 @@ function initMenu() {
         "calendar":"false",
         "format": clockFormat
     });
+}
+
+function menuScreenKeypadClick(val) {
+    if(showingDisplayButtonPasscodePromptPopup) {
+        $('#display_button_passcode').val($('#display_button_passcode').val() + val);
+        $('#display_button_passcode_show').html($('#display_button_passcode_show').html() + val);
+    } else {
+        closePreviousModifierDialog();
+        
+        if(this.innerHTML == '0') {
+            if(currentMenuItemQuantity.length > 0)
+                currentMenuItemQuantity += val
+        } else {
+            currentMenuItemQuantity += val;
+        }
+    }
+}
+
+function menuScreenKeypadClickCancel() {
+    currentMenuItemQuantity = "";
+}
+
+function menuScreenKeypadClickDecimal() {
+    alert("Decimal Clicked");
+    currentMenuItemQuantity = "";
 }
 
 function loadFirstMenuPage() {
@@ -104,11 +94,7 @@ function doSelectMenuItem(productId, element) {
     if(currentMenuItemQuantity == "")
         currentMenuItemQuantity = "1";
 
-    //close the dialog of the popup for previous modifier if it not closed
-    if(currentSelectedMenuItemElement) {
-        $(currentSelectedMenuItemElement).HideBubblePopup();
-        $(currentSelectedMenuItemElement).FreezeBubblePopup();
-    }
+    closePreviousModifierDialog();
     
     currentSelectedMenuItemElement = element;
 
@@ -156,10 +142,7 @@ function showModifierDialog(modifierCategoryId) {
     boxEl = $(currentSelectedMenuItemElement);
     
     if(!boxEl.HasBubblePopup()) {
-        boxEl.CreateBubblePopup({
-            themeName: 	'black',
-            themePath: 	'/images/jquerybubblepopup-theme'
-        });
+        boxEl.CreateBubblePopup();
     }
          
     popupHTML = $("#modifier_category_popup_" + modifierCategoryId).html();
@@ -178,6 +161,14 @@ function showModifierDialog(modifierCategoryId) {
     }, false);
     
     boxEl.FreezeBubblePopup();
+}
+
+function closePreviousModifierDialog() {
+    //close the dialog of the popup for previous modifier if it not closed
+    if(currentSelectedMenuItemElement) {
+        $(currentSelectedMenuItemElement).HideBubblePopup();
+        $(currentSelectedMenuItemElement).FreezeBubblePopup();
+    }
 }
 
 function noModifierSelected() {
@@ -379,10 +370,7 @@ function doSelectReceiptItem(orderItemEl) {
     orderItemEl.addClass("selected");
     
     if(!orderItemEl.HasBubblePopup()) {
-        orderItemEl.CreateBubblePopup({
-            themeName: 	'black',
-            themePath: 	'/images/jquerybubblepopup-theme'
-        });
+        orderItemEl.CreateBubblePopup();
     }
     
     popupHTML = $("#edit_receipt_item_popup_markup").html();
@@ -691,25 +679,6 @@ function doTotal() {
     totalsRecptScroll();
 }
 
-function takeTendered() {
-    cashTendered = getTendered();
-
-    if(cashTendered < currentTotalFinal) {
-        alert("Must enter a higher value than current total: " + currency(currentTotalFinal));
-        resetTendered();
-        return;
-    }
-
-    //calculate change and show the finish sale button
-    change = cashTendered - currentTotalFinal;
-    $('#totals_change_value').html(number_to_currency(change, {
-        precision : 2
-    }));
-
-    $('#tendered_button').hide();
-    $('#finish_sale_button').show();
-}
-
 function doTotalFinal() {
     if(currentOrderEmpty()) {
         alert("No order present to total!");
@@ -746,9 +715,6 @@ function doTotalFinal() {
     
     setLoginReceipt("Last Sale", receiptHTML);
     
-    //now print the receipt
-    printReceipt(receiptHTML, true);
-
     if(taxChargable) {
         orderSalesTaxRate = globalTaxRate;
         
@@ -808,6 +774,10 @@ function doTotalFinal() {
     
     totalOrder = null;
     currentTotalFinal = 0;
+
+    //now print the receipt
+    printReceipt(receiptHTML, true);
+
 }
 
 function loadAfterSaleScreen() {
@@ -903,14 +873,6 @@ function resetTendered() {
     $('#totals_tendered_value').html("");
 }
 
-function doCancelTillKeypad() {
-    currentMenuItemQuantity = "";
-}
-
-function doCancelTotalsKeypad() {
-    $('#totals_tendered_value').html("");
-}
-
 function initOptionButtons() {
     $('#menu_buttons_panel').hide();
     $('#menu_buttons_loading_message').show();
@@ -958,10 +920,7 @@ function showDiscountPopup(el) {
     }
     
     if(!currentTargetPopupAnchor.HasBubblePopup()) {
-        currentTargetPopupAnchor.CreateBubblePopup({
-            themeName: 	'black',
-            themePath: 	'/images/jquerybubblepopup-theme'
-        });
+        currentTargetPopupAnchor.CreateBubblePopup();
     }
     
     discountsPopupHTML = $("#discounts_popup_markup").html();
@@ -1308,9 +1267,4 @@ function doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmploye
             setStatusMessage("<b>" + terminalEmployee + "</b> totaled the order for table <b>" + tableLabel + "</b> from terminal <b>" + recvdTerminalID + "</b>");
         }
     }
-}
-
-function promptForServiceCharge() {
-    serviceCharge = prompt("Enter " + serviceChargeLabel + " amount", serviceCharge);    
-    serviceCharge = parseFloat(serviceCharge);
 }

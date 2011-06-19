@@ -23,16 +23,14 @@ function doGlobalInit() {
     setFingerPrintCookie();
     
     initMenu();
+    
+    initTouch();
 
     //the following code initializes all the flexigrid tables
     initFlexigridTables();
     
     //init the display button passcode request popup
-    $('#menu_buttons_popup_anchor').CreateBubblePopup({
-        themeName: 	'black',
-        themePath: 	'/images/jquerybubblepopup-theme'
-    });
-            
+    $('#menu_buttons_popup_anchor').CreateBubblePopup();
     $('#menu_buttons_popup_anchor').FreezeBubblePopup();
     
     lastSaleInfo = getLastSaleInfo();
@@ -57,21 +55,25 @@ function doGlobalInit() {
     
     showScreenFromHashParams();
     
-    //init login screen keypad
-    for(i=0; i<10; i++) {
-        $('#num_' + i).click(function() {
-            newVal = $('#num').val().toString() + this.innerHTML;
-            $('#clockincode_show').html(newVal);
-            $('#num').val(newVal);
-        });
-    }
-    
     $('#flash_container').delay(500).fadeIn(500, function() {
         $(this).delay(3000).fadeOut(500);
     });
     
     //start calling home
     callHomePoll();
+}
+
+function loginScreenKeypadClick(val) {
+    newVal = $('#num').val().toString() + val;
+    $('#clockincode_show').html(newVal);
+    $('#num').val(newVal);
+}
+
+function doCancelLoginKeypad() {
+    oldVal = $('#num').val().toString();
+    newVal = oldVal.substring(0, oldVal.length - 1);
+    $('#clockincode_show').html(newVal);
+    $('#num').val(newVal);
 }
 
 var callHomePollInitSequenceComplete = false;
@@ -83,7 +85,9 @@ function callHomePoll() {
         url: callHomeURL,
         dataType: 'script',
         success: callHomePollComplete,
-        error: function() {setTimeout(callHomePoll, 5000);},
+        error: function() {
+            setTimeout(callHomePoll, 5000);
+        },
         data : {
             lastInterfaceReloadTime : lastInterfaceReloadTime,
             lastSyncTableOrderTime : lastSyncTableOrderTime
@@ -101,40 +105,6 @@ function callHomePollComplete() {
         setTimeout(callHomePoll, pollingAmount);
     }
 }
-
-function doCancelLoginKeypad() {
-    oldVal = $('#num').val().toString()
-    newVal = oldVal.substring(0, oldVal.length - 1);
-    $('#clockincode_show').html(newVal);
-    $('#num').val(newVal);
-}
-
-function displayError(message) {
-    setStatusMessage("Error: " + message);
-}
-
-function displayNotice(message) {
-    setStatusMessage("Notice: " + message);
-}
-
-//jquery touch ui plugin init
-$.extend($.support, {
-    touch: "ontouchend" in document
-});
-
-// Hook up touch events
-$.fn.addTouch = function() {
-    if ($.support.touch) {
-        this.each(function(i,el){
-            el.addEventListener("touchstart", iPadTouchHandler, false);
-            el.addEventListener("touchmove", iPadTouchHandler, false);
-            el.addEventListener("touchend", iPadTouchHandler, false);
-            el.addEventListener("touchcancel", iPadTouchHandler, false);
-        });
-    }
-};
-
-var lastTap = null;
 
 //admin for display buttons
 
@@ -174,6 +144,8 @@ function displayButtonRoleSalesScreenSelect(dbr_id, checked) {
 var displayButtonForwardFunction;
 
 function doDisplayButtonPasscodePrompt(button_id, forwardFunction) {
+    closePreviousModifierDialog();
+        
     if(display_button_passcode_permissions[button_id]) {
         checkMenuScreenForFunction();
         displayButtonForwardFunction = forwardFunction;
@@ -326,7 +298,7 @@ function setRoomObjectGridPositions() {
 //this checks if we are on menu screen as some buttons will only work on that screen
 //this code is in lib/button_mapper.rb
 function checkMenuScreenForFunction() {
-    if(!$('#menu_screen').is(":visible")) {
+    if(!currentScreenIsMenu()) {
         showMenuScreen();
     }
 }
@@ -348,32 +320,4 @@ function initFlexigridTables() {
     $('table').flexigrid({
         height:'auto'
     });
-}
-
-function setStatusMessage(message, hide) {
-    if (typeof hide == "undefined") {
-        hide = true;
-    }
-  
-    $('.global_status_message').each(function() {
-        $(this).html(message);
-    });
-    
-    afterFunction = null;
-    
-    if(hide) {
-        afterFunction = hideStatusMessage;
-    }
-    
-    $('.global_status_message').each(function() {
-        $(this).fadeIn('slow', afterFunction);
-    });
-}
-
-function hideStatusMessage() {
-    setTimeout(function(){
-        $('.global_status_message').each(function() {
-            $(this).fadeOut();
-        })
-    }, 5000);
 }

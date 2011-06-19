@@ -1,69 +1,183 @@
 <div id="total_screen">
- 
-  <div id="totals_receipt">
 
-    <div id="totals_receipt" class="receipt"">
+  <div id="receipt_keypad_container">
+
+    <div id="totals_receipt_header">Current Sale</div>
+
+    <div id="totals_receipt" class="receipt">
       <div id="totals_till_roll" class="till_roll"></div>
     </div>
-    
-    <div id="totals_tendered_container">
-      <div id="tendered_label">Cash Tendered:</div>
-      <div id="totals_tendered_value"></div>
-      <div id="currency_symbol"><%= GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL %></div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div id="totals_keypad" class="keypad">
+      <div id="keys" class="keys">
+        <% [[7,9],[4,6],[1,3]].each do |x,y| %>
+          <% (x..y).each do |num| %>
+            <div id="totals_keypad_num_<%= num %>" class="key" onclick="totalsScreenKeypadClick(<%= num %>)"><%= num %></div>
+          <% end %>
+        <% end %>
+
+        <div id="totals_keypad_num_0" class="key" onclick="totalsScreenKeypadClick(0)">0</div>
+        <div id="totals_decimal_key" class="key" onclick="totalsScreenKeypadClickDecimal()">.</div>
+        <div id="totals_cancel_key" class="key" onclick="totalsScreenKeypadClickCancel()">C</div>
+      </div>
+
       <div class="clear">&nbsp;</div>
+
+
+    </div>
+  </div>
+
+  <div id="payment_options_money_info_container">
+    <div id="payment_options_section">
+      <div id="payment_options">
+        <% GlobalSetting.accepted_payment_methods.each do |pm| %>
+          <div class="button" onclick="paymentMethodSelected()">
+            <div class="icon">
+              <!--image_tag pm.logo.url(:thumb) %>-->
+            </div>
+            <div class="button_name">Some Payment Method<!--GlobalSetting.parsed_setting_for pm%>--></div>
+          </div>
+        <% end %>
+      </div>
     </div>
 
-    <div id="change_container">
-      <div id="change_label">Change:</div>
-      <div id="totals_change_value"></div>
-      <div id="currency_symbol"><%= GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL %></div>
+    <div class="clear">&nbsp;</div>
+
+    <div id="tender_section">
+
+      <div id="take_tendered_container">
+
+        <div id="tendered_popout">
+          <div id="payment_method_header">Selected Payment Method</div>
+
+          <div id="tendered_data_table">
+            <div class="label">Sub-Total:</div>
+            <div class="data"><%= @currency_symbol %>999</div>
+            <div class="clear">&nbsp;</div>
+
+            <div class="label">Service charge label**:</div>
+            <div class="data"><%= @currency_symbol %>999</div>
+            <div class="clear">&nbsp;</div>
+
+            <div class="bold label">Balance Due:</div>
+            <div class="data"><%= @currency_symbol %>999</div>
+            <div class="clear">&nbsp;</div>
+
+            <div class="label">Cash Back:</div>
+            <div class="data"><%= @currency_symbol %>999</div>
+            <div class="clear">&nbsp;</div>
+
+            <div class="bold label">Amount Tendered:</div>
+            <div class="data"><%= @currency_symbol %><div id="totals_tendered_value"></div></div>
+            <div class="clear">&nbsp;</div>
+
+            <div class="bold label">Change Due:</div>
+            <div class="data"><%= @currency_symbol %><div id="totals_change_value"></div></div>
+            <div class="clear">&nbsp;</div>
+          </div>
+
+          <div class="action_buttons">
+            <div class="button" onclick="totalsScreenCancel()">
+              <div class="icon">
+                <!--RED X-->
+              </div>
+              <div class="button_name">Cancel</div>
+            </div>
+
+            <div class="button" onclick="takeTendered()">
+              <div class="icon">
+                <!--CHEQUERED FLAG-->
+              </div>
+              <div class="button_name">Tender Cash</div>
+            </div>
+
+            <div class="button" style="display: none;" onclick="doTotalFinal()">
+              <div class="icon">
+                <!--CHEQUERED FLAG-->
+              </div>
+              <div class="button_name">Finish Sale</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="money_helper_section">
+        <div class="money" onclick="moneySelected(5)">
+          5 euro
+        </div>
+        <div class="money" onclick="moneySelected(10)">
+          5 euro
+        </div>
+        <div class="money" onclick="moneySelected(20)">
+          5 euro
+        </div>
+        <div class="money" onclick="moneySelected(50)">
+          5 euro
+        </div>
+        <div class="money" onclick="moneySelected(100)">
+          5 euro
+        </div>
+        <div class="button" style="display: none;" onclick="moneySelected(-1)">
+          <div class="button_name">Exact Amount</div>
+        </div>
+      </div>
+
       <div class="clear">&nbsp;</div>
+
     </div>
 
-    <div id="payment_method">
+    <div class="clear">&nbsp;</div>
+
+    <div id="totals_screen_misc_buttons">
+      <div class="button" onclick="serviceCharge()">
+        <div class="icon">
+          <!--MONEY-->
+        </div>
+        <div class="button_name">Add Tip</div>
+      </div>
+
+      <div class="button" onclick="doCashBack()">
+        <div class="icon">
+          <!--CASHBACK-->
+        </div>
+        <div class="button_name">Tender Cash</div>
+      </div>
+
+      <div class="button" onclick="togglePrintReceipt()">
+        <div class="icon">
+          <!--PRINT RECEIPT-->
+        </div>
+        <div class="button_name">Print Receipt: on</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--div id="payment_method">
       <div id="payment_method_label">Payment Method:</div>
       <div id="payment_method_values">
-        <% GlobalSetting.accepted_payment_methods.each do |pm| %>
-        <% next if pm == "credit_card" %>
-          <div class="value">
-            <input type="radio" name="payment_method" value="<%=pm%>" <%=pm == "cash" ? "checked" : "" %>/><%=pm.titleize%>
-          </div>
-          <div class="clear">&nbsp;</div>
-        <% end %>
+<% GlobalSetting.accepted_payment_methods.each do |pm| %>
+  <% next if pm == "credit_card" %>
+                          <div class="value">
+                            <input type="radio" name="payment_method" value="<%=pm%>" <%=pm == "cash" ? "checked" : "" %>/><%=pm.titleize%>
+                          </div>
+                          <div class="clear">&nbsp;</div>
+<% end %>
       </div>
 
       <div class="clear_top_margin_10">&nbsp;</div>
 
       <div id="card_type_label">Credit Cards:</div>
       <div id="card_type_values">
-        <% GlobalSetting.accepted_card_types.each do |pm| %>
-          <div class="value">
-            <input type="radio" name="payment_method" value="<%=pm%>"/><%=pm.titleize%>
-          </div>
-          <div class="clear">&nbsp;</div>
-        <% end %>
+<% GlobalSetting.accepted_card_types.each do |pm| %>
+                          <div class="value">
+                            <input type="radio" name="payment_method" value="<%=pm%>"/><%=pm.titleize%>
+                          </div>
+                          <div class="clear">&nbsp;</div>
+<% end %>
       </div>
     </div>
-
-  </div>
-
-  <div id="totals_keypad">
-    <div id="keys">
-      <% [[7,9],[4,6],[1,3]].each do |x,y| %>
-        <% (x..y).each do |num| %>
-          <div id="totals_keypad_num_<%= num %>"><%= num %></div>
-        <% end %>
-      <% end %>
-
-      <div id="totals_keypad_num_0">0</div>
-      <div id="totals_decimal_key">.</div>
-      <div id="totals_cancel_key" onclick="doCancelTotalsKeypad()">C</div>
-    </div>
-
-    <div class="clear">&nbsp;</div>
-
-    <div id="tendered_button" onclick="takeTendered()">OK</div>
-    <div id="finish_sale_button" style="display: none;" onclick="doTotalFinal()">Finish Sale</div>
-  </div>
-
-</div>
+  </div-->
