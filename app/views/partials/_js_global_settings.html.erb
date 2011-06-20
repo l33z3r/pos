@@ -12,10 +12,13 @@
   var globalTaxRate = <%= GlobalSetting.parsed_setting_for GlobalSetting::GLOBAL_TAX_RATE %>;
    
   //service charge label
-  var serviceChargeLabel = "<%= GlobalSetting.parsed_setting_for GlobalSetting::SERVICE_CHARGE_LABEL %>";
+  var serviceChargeLabel = "<%= @service_charge_label %>";
+  
+  //default payment method
+  var defaultPaymentMethod = "<%= PaymentMethod.load_default.name %>";
    
   //load the dynamically set currency symbol
-  var dynamicCurrencySymbol = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL %>";
+  var dynamicCurrencySymbol = "<%= @currency_symbol %>";
   
   //load the dynamically set screen that appears after a sale and login screen
   var defaultHomeScreen = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_HOME_SCREEN %>;
@@ -37,4 +40,5 @@
   var terminalID = "<%=@terminal_id%>";
   
   var pollingAmount = <%= (ENV['RAILS_ENV'] == 'development') ? "1000" : "1000" %>;
+  
 </script>

@@ -27,36 +27,40 @@ function fetchOrderReceiptHTML() {
     return orderReceiptHTML;
 }
 
-function fetchCashScreenReceiptHTML() {
-    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(totalOrder, false, false);
-    
-    cashScreenReceiptHTML = clearHTML + allOrderItemsRecptHTML;
-    
-    cashScreenReceiptHTML += "<div class='data_table'>";
+function fetchCashScreenReceiptTotalsDataTable() {
+   cashScreenReceiptTotalsDataTableHTML = "<div class='data_table'>";
     
     if(totalOrder.discount_percent) {
         subTotal = totalOrder.pre_discount_price;
-        cashScreenReceiptHTML += "<div class='label'>Sub-Total:</div><div class='data'>" + currency(subTotal) + "</div>" + clearHTML;
+        cashScreenReceiptTotalsDataTableHTML += "<div class='label'>Sub-Total:</div><div class='data'>" + currency(subTotal) + "</div>" + clearHTML;
         
         discountAmount = (totalOrder.pre_discount_price * totalOrder.discount_percent)/100;
-        cashScreenReceiptHTML += "<div class='label'>Discount " + totalOrder.discount_percent + "%:</div><div class='data'>" + currency(discountAmount) + "</div>" + clearHTML;
+        cashScreenReceiptTotalsDataTableHTML += "<div class='label'>Discount " + totalOrder.discount_percent + "%:</div><div class='data'>" + currency(discountAmount) + "</div>" + clearHTML;
     } else {
         subTotal = totalOrder.total;
-        cashScreenReceiptHTML += "<div class='label'>Sub-Total:</div><div class='data'>" + currency(subTotal) + "</div>" + clearHTML;
+        cashScreenReceiptTotalsDataTableHTML += "<div class='label'>Sub-Total:</div><div class='data'>" + currency(subTotal) + "</div>" + clearHTML;
         
         discountAmount = 0;
     } 
     
-    cashScreenReceiptHTML += taxChargable ? fetchTotalsHTMLWithTaxChargable() : fetchTotalsWithoutTaxChargableHTML();
-    cashScreenReceiptHTML += clearHTML;
+    cashScreenReceiptTotalsDataTableHTML += taxChargable ? fetchTotalsHTMLWithTaxChargable() : fetchTotalsWithoutTaxChargableHTML();
+    cashScreenReceiptTotalsDataTableHTML += clearHTML;
     
-    cashScreenReceiptHTML += "</div>" + clearHTML;
+    cashScreenReceiptTotalsDataTableHTML += "</div>" + clearHTML; 
+    
+    return cashScreenReceiptTotalsDataTableHTML;
+}
+
+function fetchCashScreenReceiptHTML() {
+    cashScreenReceiptHTML = fetchCashScreenReceiptHeaderHTML() + clearHTML;
+    cashScreenReceiptHTML += getAllOrderItemsReceiptHTML(totalOrder, false, false) + clearHTML;
+    cashScreenReceiptHTML += fetchCashScreenReceiptTotalsDataTable();
     
     return cashScreenReceiptHTML;
 }
 
 function fetchFinalReceiptHTML() {
-    finalReceiptHTML = fetchReceiptHeaderHTML();
+    finalReceiptHTML = fetchFinalReceiptHeaderHTML();
     
     allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(totalOrder, false, false);
     
@@ -109,7 +113,7 @@ function fetchTotalsHTMLWithTaxChargable() {
     total = (subTotal - discountAmount) + serviceCharge + taxAmount;
     currentTotalFinal = total;
     
-    totalsHTML += "<div class='label'>Total:</div><div class='data'>" + currency(total) + "</div>" + clearHTML;
+    totalsHTML += "<div class='label bold'>Total:</div><div class='data bold'>" + currency(total) + "</div>" + clearHTML;
     
     return totalsHTML;
 }
@@ -123,7 +127,7 @@ function fetchTotalsWithoutTaxChargableHTML() {
     
     currentTotalFinal = total;
     
-    totalsHTML += "<div class='label'>Total:</div><div class='data'>" + currency(total) + "</div>" + clearHTML;
+    totalsHTML += "<div class='label bold'>Total:</div><div class='data bold'>" + currency(total) + "</div>" + clearHTML;
     
     return totalsHTML;
 }
@@ -139,7 +143,24 @@ function fetchServiceChargeHTML() {
     return serviceChargeHTML;
 }
 
-function fetchReceiptHeaderHTML() {
+function fetchFinalReceiptHeaderHTML() {
+    headerHTML = "<div class='data_table'>";
+    headerHTML += "<div class='label'>Server:</div><div class='data'>" + current_user_nickname + "</div>" + clearHTML;
+    
+    timestamp = $('#clock').html();
+    headerHTML += "<div class='label'>Time:</div><div class='data'>" + timestamp + "</div>" + clearHTML;
+    
+    if(selectedTable!=0) {
+        selectedTableLabel = tables[selectedTable].label;
+        headerHTML += "<div class='label'>Table:</div><div class='data'>" + selectedTableLabel + "</div>" + clearHTML;
+    }
+    
+    headerHTML += "</div>";
+    
+    return headerHTML;
+}
+
+function fetchCashScreenReceiptHeaderHTML() {
     headerHTML = "<div class='data_table'>";
     headerHTML += "<div class='label'>Server:</div><div class='data'>" + current_user_nickname + "</div>" + clearHTML;
     

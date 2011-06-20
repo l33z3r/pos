@@ -32,12 +32,12 @@
   <div id="payment_options_money_info_container">
     <div id="payment_options_section">
       <div id="payment_options">
-        <% GlobalSetting.accepted_payment_methods.each do |pm| %>
-          <div class="button" onclick="paymentMethodSelected()">
+        <% PaymentMethod.all.each do |pm| %>
+          <div class="button" onclick="paymentMethodSelected('<%=pm.name%>')">
             <div class="icon">
-              <!--image_tag pm.logo.url(:thumb) %>-->
+              <%= payment_method_logo_thumb pm, true %>
             </div>
-            <div class="button_name">Some Payment Method<!--GlobalSetting.parsed_setting_for pm%>--></div>
+            <div class="button_name"><%=pm.name%></div>
           </div>
         <% end %>
       </div>
@@ -50,77 +50,100 @@
       <div id="take_tendered_container">
 
         <div id="tendered_popout">
-          <div id="payment_method_header">Selected Payment Method</div>
+          <div id="payment_method_header">Selected Payment Method: <div id="selected_payment_method_holder"></div></div>
 
-          <div id="tendered_data_table">
-            <div class="label">Sub-Total:</div>
-            <div class="data"><%= @currency_symbol %>999</div>
+          <div class="clear_top_margin_20">&nbsp;</div>
+          
+          <div id="tendered_data_tables_container">
+
+            <div id="totals_data_table"></div>
+
+            <div class="data_table">
+              <div class="label">Cash Back:</div>
+              <div class="data"><%= @currency_symbol %>0</div>
+              <div class="clear">&nbsp;</div>
+            </div>
             <div class="clear">&nbsp;</div>
 
-            <div class="label">Service charge label**:</div>
-            <div class="data"><%= @currency_symbol %>999</div>
+            <div class="data_table">
+              <div class="bold label">Amount Tendered:</div>
+              <div class="data">
+                <div id="totals_tendered_box">
+                  <div class="left"><%= @currency_symbol %></div>
+                  <div id="totals_tendered_value"></div>
+                  <div class="clear">&nbsp;</div>
+                </div>
+              </div>
+              <div class="clear">&nbsp;</div>
+            </div>
             <div class="clear">&nbsp;</div>
 
-            <div class="bold label">Balance Due:</div>
-            <div class="data"><%= @currency_symbol %>999</div>
-            <div class="clear">&nbsp;</div>
-
-            <div class="label">Cash Back:</div>
-            <div class="data"><%= @currency_symbol %>999</div>
-            <div class="clear">&nbsp;</div>
-
-            <div class="bold label">Amount Tendered:</div>
-            <div class="data"><%= @currency_symbol %><div id="totals_tendered_value"></div></div>
-            <div class="clear">&nbsp;</div>
-
-            <div class="bold label">Change Due:</div>
-            <div class="data"><%= @currency_symbol %><div id="totals_change_value"></div></div>
-            <div class="clear">&nbsp;</div>
+            <div class="data_table">
+              <div class="bold label">Change Due:</div>
+              <div class="bold data">
+                <div class="left"><%= @currency_symbol %></div>
+                <div id="totals_change_value">0</div>
+                <div class="clear">&nbsp;</div>
+              </div>
+              <div class="clear">&nbsp;</div>
+            </div>
           </div>
 
           <div class="action_buttons">
-            <div class="button" onclick="totalsScreenCancel()">
+            <div class="button" onclick="takeTenderedCancel()">
               <div class="icon">
-                <!--RED X-->
+                <%= image_tag "button_logos/cancel_tendered.png" %>
               </div>
               <div class="button_name">Cancel</div>
             </div>
 
-            <div class="button" onclick="takeTendered()">
+            <div id="tendered_button" class="button" onclick="takeTendered()">
               <div class="icon">
-                <!--CHEQUERED FLAG-->
+                <%= image_tag "button_logos/tender_cash.png" %>
               </div>
               <div class="button_name">Tender Cash</div>
             </div>
 
-            <div class="button" style="display: none;" onclick="doTotalFinal()">
+            <div id="finish_sale_button" class="button" style="display: none;" onclick="doTotalFinal()">
               <div class="icon">
-                <!--CHEQUERED FLAG-->
+                <%= image_tag "button_logos/final_sale.png" %>
               </div>
               <div class="button_name">Finish Sale</div>
             </div>
           </div>
         </div>
       </div>
-      
+
       <div id="money_helper_section">
         <div class="money" onclick="moneySelected(5)">
-          5 euro
+          <%= image_tag "5euro.jpg" %>
         </div>
+        <div class="clear">&nbsp;</div>
+
         <div class="money" onclick="moneySelected(10)">
-          5 euro
+          <%= image_tag "10euro.jpg" %>
         </div>
+        <div class="clear">&nbsp;</div>
+
         <div class="money" onclick="moneySelected(20)">
-          5 euro
+          <%= image_tag "20euro.jpg" %>
         </div>
+        <div class="clear">&nbsp;</div>
+
         <div class="money" onclick="moneySelected(50)">
-          5 euro
+          <%= image_tag "50euro.jpg" %>
         </div>
+        <div class="clear">&nbsp;</div>
+
         <div class="money" onclick="moneySelected(100)">
-          5 euro
+          <%= image_tag "100euro.jpg" %>
         </div>
-        <div class="button" style="display: none;" onclick="moneySelected(-1)">
-          <div class="button_name">Exact Amount</div>
+        <div class="clear">&nbsp;</div>
+
+        <div id="exact_amount_button_holder">
+          <div id="exact_amount_button" class="button" onclick="moneySelected(-1)">
+            <div class="button_name">Exact Amount</div>
+          </div>
         </div>
       </div>
 
@@ -133,51 +156,24 @@
     <div id="totals_screen_misc_buttons">
       <div class="button" onclick="serviceCharge()">
         <div class="icon">
-          <!--MONEY-->
+          <%= image_tag "button_logos/service_charge.png" %>
         </div>
-        <div class="button_name">Add Tip</div>
+        <div class="button_name"><%= @service_charge_label %></div>
       </div>
 
       <div class="button" onclick="doCashBack()">
         <div class="icon">
-          <!--CASHBACK-->
+          <%= image_tag "button_logos/cashback.png" %>
         </div>
-        <div class="button_name">Tender Cash</div>
+        <div class="button_name">Cash Back</div>
       </div>
 
       <div class="button" onclick="togglePrintReceipt()">
         <div class="icon">
-          <!--PRINT RECEIPT-->
+          <%= image_tag "button_logos/print_receipt_toggle.png" %>
         </div>
         <div class="button_name">Print Receipt: on</div>
       </div>
     </div>
   </div>
 </div>
-
-
-<!--div id="payment_method">
-      <div id="payment_method_label">Payment Method:</div>
-      <div id="payment_method_values">
-<% GlobalSetting.accepted_payment_methods.each do |pm| %>
-  <% next if pm == "credit_card" %>
-                          <div class="value">
-                            <input type="radio" name="payment_method" value="<%=pm%>" <%=pm == "cash" ? "checked" : "" %>/><%=pm.titleize%>
-                          </div>
-                          <div class="clear">&nbsp;</div>
-<% end %>
-      </div>
-
-      <div class="clear_top_margin_10">&nbsp;</div>
-
-      <div id="card_type_label">Credit Cards:</div>
-      <div id="card_type_values">
-<% GlobalSetting.accepted_card_types.each do |pm| %>
-                          <div class="value">
-                            <input type="radio" name="payment_method" value="<%=pm%>"/><%=pm.titleize%>
-                          </div>
-                          <div class="clear">&nbsp;</div>
-<% end %>
-      </div>
-    </div>
-  </div-->

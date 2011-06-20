@@ -37,7 +37,10 @@ class GlobalSetting < ActiveRecord::Base
   CURRENCY_SYMBOL = 8
   BYPASS_PIN = 9
   DEFAULT_HOME_SCREEN = 10
-  PAYMENT_METHOD = 11
+  
+  #No longer used
+  #PAYMENT_METHOD = 11
+  
   RECEIPT_MESSAGE = 12
   ACCEPTED_CREDIT_CARD_TYPE = 13
   THEME = 14
@@ -58,7 +61,6 @@ class GlobalSetting < ActiveRecord::Base
     CURRENCY_SYMBOL => "Currency Symbol", 
     BYPASS_PIN => "Bypass Pin Number",
     DEFAULT_HOME_SCREEN => "Default Home Screen",
-    PAYMENT_METHOD => "Payment Method",
     RECEIPT_MESSAGE => "Receipt Message",
     ACCEPTED_CREDIT_CARD_TYPE => "Accepted Credit Card Type",
     THEME => "Theme",
@@ -94,11 +96,6 @@ class GlobalSetting < ActiveRecord::Base
     when DEFAULT_HOME_SCREEN
       @gs = find_or_create_by_key(:key => DEFAULT_HOME_SCREEN, :value => 1, :label_text => LABEL_MAP[DEFAULT_HOME_SCREEN])
       @gs.parsed_value = @gs.value.to_i
-    when PAYMENT_METHOD
-      #the key will be the key for payment type followed by the actual description of that type
-      @initial_value = (args[:payment_method] == "cash" ? "yes" : "no")
-      @gs = find_or_create_by_key(:key => "#{PAYMENT_METHOD}_#{args[:payment_method]}", :value => @initial_value, :label_text => LABEL_MAP[PAYMENT_METHOD])
-      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when ACCEPTED_CREDIT_CARD_TYPE
       #the key will be the key for payment type followed by the actual description of that type
       @gs = find_or_create_by_key(:key => "#{ACCEPTED_CREDIT_CARD_TYPE}_#{args[:credit_card_type]}", :value => "no", :label_text => LABEL_MAP[ACCEPTED_CREDIT_CARD_TYPE])
@@ -132,9 +129,6 @@ class GlobalSetting < ActiveRecord::Base
     when BYPASS_PIN
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
-    when PAYMENT_METHOD
-      new_value = ((value == "true" or value == "yes") ? "yes" : "no")
-      write_attribute("value", new_value)
     when ACCEPTED_CREDIT_CARD_TYPE
       new_value = ((value == "1" or value == "yes") ? "yes" : "no")
       write_attribute("value", new_value)
@@ -158,41 +152,6 @@ class GlobalSetting < ActiveRecord::Base
   #this is just a shortcut method
   def self.parsed_setting_for property, args={}
     setting_for(property, args).try(:parsed_value)
-  end
-  
-  #load a set of strings representing the accepted payment methods
-  def self.accepted_payment_methods
-    @pms = []
-    
-    #find all where key begins with PAYMENT_METHOD
-    find(:all, :conditions => "global_settings.key like '#{PAYMENT_METHOD}%' and global_settings.value = 'yes'").each do |gs|
-      @pm_val_array = gs.key.split('_');
-      @pm_val_array.delete_at(0)
-      @pm_val = @pm_val_array.join('_')
-      @pms << @pm_val;
-    end
-    
-    @pms
-  end
-  
-  #load a set of strings representing the accepted payment methods
-  def self.accepted_card_types
-    @cts = []
-    
-    @accepting_cc_cards = parsed_setting_for GlobalSetting::PAYMENT_METHOD, {:payment_method => "credit_card"}
-    if !@accepting_cc_cards
-      return @cts
-    end
-    
-    #find all where key begins with PAYMENT_METHOD
-    find(:all, :conditions => "global_settings.key like '#{ACCEPTED_CREDIT_CARD_TYPE}%' and global_settings.value = 'yes'").each do |gs|
-      @ct_val_array = gs.key.split('_');
-      @ct_val_array.delete_at(0)
-      @ct_val = @ct_val_array.join('_')
-      @cts << @ct_val;
-    end
-    
-    @cts
   end
   
   def has_logo?

@@ -224,120 +224,72 @@
     </h3>
 
     <div class="container" id="payment_methods_section">
-      <div class="clear">&nbsp;</div>
 
-      <%= form_tag admin_update_global_settings_path do %>
+      <h4>Current Payment Methods</h4>
 
-        <div id="actions">
-          <%= submit_tag "Save" %>
-        </div>
+      <%= form_tag update_multiple_admin_payment_methods_path, :multipart => true do %>
 
         <div class="clear_top_margin_10">&nbsp;</div>
 
         <table id="global_settings_list">
           <thead>
             <tr>
-              <th width="330">Setting</th>
-              <th width="320">Value</th>
+              <th width="230">Name</th>
+              <th width="350">Logo</th>
+              <th width="100">Delete</th>
+              <th width="140">Set Default</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% PaymentMethod.all(:order => :name).each do |pm| %>
+              <%= fields_for "payment_methods[]", pm do |f| %>
+                <tr>
+                  <td><%= f.text_field :name, :size => 17 %></td>
+                  <td>
+                    <div class="payment_method_logo">
+                      <%= payment_method_logo_thumb pm, true %>
+                    </div>
+                    <p>
+                      <%= f.file_field :logo %>
+                    </p>
+                  </td>
+                  <td><%= link_to "Delete", admin_payment_method_path(pm), :method => :delete, :confirm => "Are You Sure?" %></td>
+                  <td>
+                    <%= radio_button_tag "set_default_payment_method", "#{pm.id}", pm.is_default, 
+                      :onchange => "doSetDefaultPaymentMethod(this.value);" %>
+                  </td>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+
+        <div class="clear_top_margin_10">&nbsp;</div>
+
+        <div id="actions">
+          <%= submit_tag "Save" %>
+        </div>
+
+      <% end %>
+
+      <h4>New Payment Method</h4>
+
+      <%= form_for [:admin, PaymentMethod.new] do |f| %>
+
+        <div class="clear_top_margin_10">&nbsp;</div>
+
+        <table id="global_settings_list">
+          <thead>
+            <tr>
+              <th width="330">Name</th>
             </tr>
           </thead>
 
           <tbody>
             <tr>
               <td>
-                Cash
-              </td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::PAYMENT_METHOD, {:payment_method => "cash"} %>
-                Yes
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Cheque
-              </td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::PAYMENT_METHOD, {:payment_method => "cheque"} %>
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Credit Card
-                <div class="label_subtext">
-                  (Hit Save To Enable Card Types)
-                </div>
-              </td>
-              <td>
-                <% @cc_gs = GlobalSetting.setting_for GlobalSetting::PAYMENT_METHOD, {:payment_method => "credit_card"} %>
-                <input type="radio" name="global_settings[<%=@cc_gs.id%>][value]" 
-                       value="true" <%= @cc_gs.parsed_value ? "checked" : "" %>/>Yes
-                <input type="radio" name="global_settings[<%=@cc_gs.id%>][value]" 
-                       value="false" <%= !@cc_gs.parsed_value ? "checked" : "" %>/>No
-              </td>
-            </tr>
-
-            <% if @cc_gs.parsed_value %>
-              <tr>
-                <td>
-                  Acepted Cards
-                </td>
-                <td>
-                  <% @gs = GlobalSetting.setting_for GlobalSetting::ACCEPTED_CREDIT_CARD_TYPE, {:credit_card_type => "visa"} %>
-                  <%= fields_for "global_settings[]", @gs do |f| %>
-                    <%= f.check_box :value %>Visa
-                  <% end %>
-
-                  <% @gs = GlobalSetting.setting_for GlobalSetting::ACCEPTED_CREDIT_CARD_TYPE, {:credit_card_type => "mastercard"} %>
-                  <%= fields_for "global_settings[]", @gs do |f| %>
-                    <%= f.check_box :value %>Mastercard
-                  <% end %>
-
-                  <% @gs = GlobalSetting.setting_for GlobalSetting::ACCEPTED_CREDIT_CARD_TYPE, {:credit_card_type => "american_express"} %>
-                  <%= fields_for "global_settings[]", @gs do |f| %>
-                    <%= f.check_box :value %>American Express
-                  <% end %>
-                </td>
-              </tr>
-            <% end %>
-
-            <tr>
-              <td>
-                Debit/ATM Card
-              </td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::PAYMENT_METHOD, {:payment_method => "debit_atm_card"} %>
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Gift Certificate
-              </td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::PAYMENT_METHOD, {:payment_method => "gift_certificate"} %>
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Gift Card
-              </td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::PAYMENT_METHOD, {:payment_method => "gift_card"} %>
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
+                <%= f.text_field :name %>
               </td>
             </tr>
           </tbody>
@@ -390,7 +342,7 @@
                        value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
               </td>
             </tr>
-            
+
             <tr>
               <td>Enter Default Sales Tax Rate</td>
               <td>
@@ -400,7 +352,7 @@
                 <% end %>
               </td>
             </tr>
-            
+
             <tr>
               <td>Enter A Label For Service Charge</td>
               <td>

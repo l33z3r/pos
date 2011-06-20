@@ -17,6 +17,11 @@ class Admin::DisplayButtonsController < Admin::AdminController
   def update_multiple
     @display_buttons = DisplayButton.update(params[:display_buttons].keys, params[:display_buttons].values).reject { |p| p.errors.empty? }
     
+    #have to manually set the service charge button label to the global value
+    @service_charge_button = DisplayButton.find_by_perm_id(ButtonMapper::SERVICE_CHARGE_BUTTON)
+    @service_charge_button.button_text = @service_charge_label
+    @service_charge_button.save
+    
     if @display_buttons.empty?
       flash[:notice] = "Buttons updated!"
       redirect_to edit_multiple_admin_display_buttons_path

@@ -37,6 +37,14 @@ function doSetDefaultTaxRate(taxRateId) {
     });
 }
 
+function doSetDefaultPaymentMethod(paymentMethodId) {
+    //send an update to display controller
+    $.ajax({
+        type: 'POST',
+        url: '/admin/payment_methods/' + paymentMethodId + '/default'
+    });
+}
+
 function doSetDefaultDiscount(discountId) {
     //send an update to display controller
     $.ajax({

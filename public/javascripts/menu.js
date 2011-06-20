@@ -9,6 +9,7 @@ var currentMenuItemQuantity = "";
 var selectedTable = 0;
 var tableOrders = new Array();
 
+var paymentMethod = null;
 var serviceCharge = 0;
 
 //this function is called from application.js on page load
@@ -675,6 +676,12 @@ function doTotal() {
     cashScreenReceiptHTML = fetchCashScreenReceiptHTML()
     $('#totals_till_roll').html(cashScreenReceiptHTML);
     
+    //set the data in the cash popout
+    $('#totals_data_table').html(fetchCashScreenReceiptTotalsDataTable());
+    
+    paymentMethod = defaultPaymentMethod;
+    paymentMethodSelected(paymentMethod);
+    
     showTotalsScreen();
     totalsRecptScroll();
 }
@@ -705,7 +712,9 @@ function doTotalFinal() {
 
     cashTendered = getTendered();
 
-    paymentMethod = $("input[name='payment_method']:checked").val();
+    if(!paymentMethod) {
+        paymentMethod = defaultPaymentMethod;
+    }
 
     discountPercent = totalOrder.discount_percent;
     preDiscountPrice = totalOrder.pre_discount_price;
@@ -751,9 +760,6 @@ function doTotalFinal() {
     //clear the order
     clearOrder(selectedTable);
 
-    //reset the service charge
-    serviceCharge = 0;
-
     //clear the receipt
     $('#till_roll').html('');
     $('#till_roll_discount').html('');
@@ -767,6 +773,8 @@ function doTotalFinal() {
     $('#finish_sale_button').hide();
     resetTendered();
     $('#totals_change_value').html("");
+    serviceCharge = 0;
+    paymentMethod = null;
     
     //set the select item
     $('#table_select').val(0);
@@ -863,14 +871,6 @@ function saveOrdersForLaterSend(ordersForLaterSend) {
     };
     
     storeKeyJSONValue("orders_for_later_send", ordersForLaterSendOBJ);
-}
-
-function getTendered() {
-    return $('#totals_tendered_value').html();
-}
-
-function resetTendered() {
-    $('#totals_tendered_value').html("");
 }
 
 function initOptionButtons() {
@@ -1064,9 +1064,14 @@ function applyDiscountToOrderItem(order, itemNumber, amount) {
     newPrice = preDiscountPrice - ((preDiscountPrice * amount) / 100);
     orderItem['total_price'] = newPrice;
 
-    //mark this item as unsynced
-    orderItem['synced'] = false;
-
+    if(selectedTable == 0) {
+        //mark the item as synced as we are not on a table receipt
+        orderItem.synced = true;
+    } else {
+        //mark this item as unsynced
+        orderItem['synced'] = false;
+    }
+    
     calculateOrderTotal(order);
 }
 

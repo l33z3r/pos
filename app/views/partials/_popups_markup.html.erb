@@ -5,8 +5,8 @@
 
     <div id="header">Edit Order Item</div>
 
-    <div id="discount_button" onclick="showDiscountPopup(this)">Discount</div>
-    <div id="delete_button" onclick="removeOrderItem(this)">Delete</div>
+    <div id="discount_button" class="button" onclick="showDiscountPopup(this)">Discount</div>
+    <div id="delete_button" class="button" onclick="removeOrderItem(this)">Delete</div>
 
     <div class="clear">&nbsp;</div>
 
@@ -16,8 +16,8 @@
       <input type="text" class="quantity" size="2" id="current_selected_receipt_item_quantity"/>
 
       <div id="buttons_container">
-        <div id="plus_button" onclick="editOrderItemIncreaseQuantity(this)"><div>+</div></div>
-        <div id="minus_button" onclick="editOrderItemDecreaseQuantity(this)"><div>-</div></div>
+        <div id="plus_button" class="button" onclick="editOrderItemIncreaseQuantity(this)"><div>+</div></div>
+        <div id="minus_button" class="button" onclick="editOrderItemDecreaseQuantity(this)"><div>-</div></div>
       </div>
       <div class="clear">&nbsp;</div>
     </div>
@@ -32,8 +32,8 @@
 
     <div class="clear">&nbsp;</div>
 
-    <div id="cancel_button" onclick="closeEditOrderItem()">Cancel</div>
-    <div id="save_button" onclick="saveEditOrderItem(this)">Save</div>
+    <div id="cancel_button" class="button" onclick="closeEditOrderItem()">Cancel</div>
+    <div id="save_button" class="button" onclick="saveEditOrderItem(this)">Save</div>
   </div>
 </div>
 
@@ -90,8 +90,8 @@
     <div class="clear_top_margin_10">&nbsp;</div>
 
     <div class="actions">
-      <div id="cancel_button" onclick="closeDiscountPopup()">Cancel</div>
-      <div id="save_button" onclick="saveDiscount()">Save</div>
+      <div id="cancel_button" class="button" onclick="closeDiscountPopup()">Cancel</div>
+      <div id="save_button" class="button" onclick="saveDiscount()">Save</div>
     </div>
 
   </div>
@@ -104,7 +104,7 @@
 
     <div class="service_charge_popup_keypad_container">Keypad goes here</div>
 
-    <div id="cancel_button" onclick="closeServiceChargePopup()">Cancel</div>
-    <div id="save_button" onclick="saveServiceCharge()">Save</div>
+    <div id="cancel_button" class="button" onclick="cancelServiceCharge()">Cancel</div>
+    <div id="save_button" class="button" onclick="saveServiceCharge()">Save</div>
   </div>
 </div>

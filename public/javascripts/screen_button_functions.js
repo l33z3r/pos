@@ -84,21 +84,29 @@ function promptForServiceCharge() {
         
     popupEl = showMenuScreenDefaultPopup(popupHTML);
     
-    clickFunction = function() {
-        alert("Key clicked SC")
-        };
+    clickFunction = function(val) {
+        if(val == ".") val = ".0";
+        serviceCharge = serviceCharge.toString() + val;
+        alert(serviceCharge);
+    };
     cancelFunction = function() {
-        hideMenuScreenDefaultPopup()
-        };
-    goFunction = function() {
-        alert("go clicked SC")
-        };
+        cancelServiceCharge();
+    };
     
     popupId = popupEl.GetBubblePopupID();
     
     keypadPosition = $('#' + popupId).find('.service_charge_popup_keypad_container');
     
-    setUtilKeypad(keypadPosition, clickFunction, cancelFunction, goFunction);
+    setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
     
 //serviceCharge = parseFloat(serviceCharge);
+}
+
+function saveServiceCharge() {
+    hideMenuScreenDefaultPopup();
+}
+
+function cancelServiceCharge() {
+    serviceCharge = 0;
+    hideMenuScreenDefaultPopup();
 }

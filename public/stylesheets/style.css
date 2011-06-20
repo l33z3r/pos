@@ -80,6 +80,14 @@ div.clear_top_margin_20 {
     clear: both;
 }
 
+.left { 
+    float: left;
+}
+
+.right { 
+    float: right;
+}
+
 form label {
     font-weight: bold;
 }
@@ -1440,40 +1448,34 @@ div#edit_receipt_item_popup_markup_container div#quantity_editor div#quantity_la
 div#edit_receipt_item_popup_markup_container div#quantity_editor input.quantity {
     float: left;
     margin: 1px 4px 1px 1px;
-    border: 2px solid #000;
     -moz-border-radius: 5px;
     border-radius: 5px;
 }
 
 div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_container {
     float: right;
-    margin: 1px 4px 1px 1px;
-    width: 40px;
-    margin-top: -10px;
+    margin-right: 60px;
+    width: 70px;
 }
 
 div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_container div#plus_button,
 div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_container div#minus_button {
     cursor: pointer;
-    border: 2px solid #000;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
     height: 10px;
     width: 12px;
     font-size: 14px;
     font-weight: bold;
     color: #666;
+    border-width: 0px;
+    box-shadow: none;
 } 
 
 div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_container div#plus_button {
-    padding: 1px 1px 6px 5px;
-    margin-bottom: 4px;
-    margin: 0px 1px 10px 8px;
+    padding: 6px;
 } 
 
 div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_container div#minus_button {
-    padding: 1px 1px 6px 5px;
-    margin: 0px 1px 10px 8px;
+    padding: 6px;
 }
 
 div#edit_receipt_item_popup_markup_container div#price_editor {
@@ -1488,7 +1490,6 @@ div#edit_receipt_item_popup_markup_container div#price_editor div.price_label {
 }
 
 div#edit_receipt_item_popup_markup_container div#price_editor input.price {
-    border: 2px solid #000;
     float: left;
     margin: 1px 4px 1px 1px;
     -moz-border-radius: 5px;
@@ -1500,7 +1501,6 @@ div#edit_receipt_item_popup_markup_container div#save_button {
     padding-left: 7px;
     float: right;
     cursor: pointer;
-    border: 2px solid #000;
     -moz-border-radius: 5px;
     border-radius: 5px;
     height: 18px;
@@ -1515,7 +1515,6 @@ div#edit_receipt_item_popup_markup_container div#cancel_button {
     padding: 4px;
     float: left;
     cursor: pointer;
-    border: 2px solid #000;
     -moz-border-radius: 5px;
     border-radius: 5px;
     height: 18px;
@@ -1530,7 +1529,6 @@ div#edit_receipt_item_popup_markup_container div#discount_button {
     padding: 4px;
     float: right;
     cursor: pointer;
-    border: 2px solid #000;
     -moz-border-radius: 5px;
     border-radius: 5px;
     height: 18px;
@@ -1545,7 +1543,6 @@ div#edit_receipt_item_popup_markup_container div#delete_button {
     padding: 4px;
     float: right;
     cursor: pointer;
-    border: 2px solid #000;
     -moz-border-radius: 5px;
     border-radius: 5px;
     height: 18px;
@@ -1585,7 +1582,6 @@ div#discounts_popup_markup_container div.discount_buttons {
 }
 
 div#discounts_popup_markup_container div.discount_buttons div.button {
-    border: 2px solid #000000;
     border-radius: 5px 5px 5px 5px;
     color: #666666;
     cursor: pointer;
@@ -1624,7 +1620,6 @@ div#discounts_popup_markup_container div.actions div#save_button {
     padding-left: 7px;
     float: right;
     cursor: pointer;
-    border: 2px solid #000;
     -moz-border-radius: 5px;
     border-radius: 5px;
     height: 18px;
@@ -1639,7 +1634,6 @@ div#discounts_popup_markup_container div.actions div#cancel_button {
     padding: 4px;
     float: left;
     cursor: pointer;
-    border: 2px solid #000;
     -moz-border-radius: 5px;
     border-radius: 5px;
     height: 18px;
@@ -1706,7 +1700,7 @@ div#total_screen div#payment_options_money_info_container div#payment_options_se
 div#total_screen div#payment_options_money_info_container div#tender_section {
     border-spacing: 7px;
     margin-bottom: 10px;
-    height: 470px;
+    height: 490px;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container {
@@ -1715,43 +1709,76 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout {
-    width: 300px;
+    width: 350px;
     margin: auto;
     border: 1px solid #CCC;
     -moz-border-radius: 7px;
     border-radius: 7px;
+    margin-top: 60px;
 } 
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div.action_buttons {
-    width: 200px;
-    padding: 20px;
+    width: 170px;
+    padding: 10px 20px;
     margin: auto;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#payment_method_header {
     background-color: black;
+    background: -moz-linear-gradient(#737373, #000000) repeat scroll 0 0 transparent;
     color: #FFF;
     font-size: 15px;
     font-weight: bold;
     padding: 8px;
     margin-bottom: 5px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
 }
 
-div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_table {
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#payment_method_header div#selected_payment_method_holder {
+    float: right;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table {
     text-align: left;
-    margin: 17px;
+    margin: 5px 17px;
 }
 
-div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_table div.label {
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.label {
     float: left;
     text-align: left;
     width: 70%;
 }
 
-div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_table div.data {
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.data {
     float: left;
     text-align: left;
     width: 30%;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.label.bold {
+    font-weight: bold;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.data.bold {
+    font-weight: bold;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.data div#totals_tendered_box {
+    border: 1px solid #CCC;
+    background-color: #FFF;
+    padding: 2px;
+    margin-top: -5px;
+    margin-left: -3px;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.data div#totals_tendered_box div#totals_tendered_value {
+    float: left;
+    
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.data div#totals_change_value {
+    float: left;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#money_helper_section {
@@ -1764,6 +1791,19 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#money_helper_section div.money {
     margin: 5px;
+    margin-bottom: 7px;
+    width: 130px;
+    cursor: pointer;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#money_helper_section div#exact_amount_button_holder {
+    margin: auto;
+    width: 92px;
+    font-weight: bold;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#money_helper_section div.money img {
+    width: 120px;
 }
 
 div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons {
@@ -1953,6 +1993,15 @@ div#edit_global_settings section#global_settings div.container div.business_logo
 
 div#edit_global_settings section#global_settings div.container div.business_logo img {
     width: 100px;
+}
+
+div#edit_global_settings section#global_settings div.container#payment_methods_section div.payment_method_logo {
+    float: left;
+}
+
+div#edit_global_settings section#global_settings div.container#payment_methods_section div.payment_method_logo img {
+    width: 30px;
+    height: 30px;
 }
 
 /* End Global Settings Page */

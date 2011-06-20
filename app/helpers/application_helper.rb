@@ -25,6 +25,14 @@ module ApplicationHelper
       image_tag "default_business_logo_image.jpg"
     end
   end
+  
+  def payment_method_logo_thumb pm, show_default=false
+    if pm.has_logo?
+      image_tag pm.logo.url(:thumb)
+    elsif show_default
+      image_tag "default_payment_method_image.png"
+    end
+  end
 
   def button_action button
     @action = ButtonMapper.new.action_for_button button

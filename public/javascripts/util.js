@@ -12,10 +12,14 @@ function goTo(place) {
     return false;
 }
 
-function currency(number) {
+function currency(number, showUnit) {
+    if(typeof showUnit == "undefined") {
+        showUnit = true;
+    }
+    
     return number_to_currency(number, {
         precision : 2, 
-        showunit : true
+        showunit : showUnit
     });
 }
 
@@ -320,11 +324,10 @@ var utliKeypadClickFunction;
 var utilKeypadCancelFunction;
 var utilKeypadGoFunction;
     
-function setUtilKeypad(position, clickFunction, cancelFunction, goFunction) {
+function setUtilKeypad(position, clickFunction, cancelFunction) {
     $(position).html($('#util_keypad_container').html());
     utliKeypadClickFunction = clickFunction;
     utilKeypadCancelFunction = cancelFunction;
-    utilKeypadGoFunction = goFunction;
 }
 
 function utilKeypadClick(val) {
@@ -333,10 +336,6 @@ function utilKeypadClick(val) {
 
 function doCancelUtilKeypad() {
     utilKeypadCancelFunction();
-}
-
-function doGoUtilKeypad() {
-    utilKeypadGoFunction();
 }
 
 function showMenuScreenDefaultPopup(popupHTML) {

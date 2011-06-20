@@ -136,5 +136,6 @@ class ApplicationController < ActionController::Base
     end
 
     @currency_symbol = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL
+    @service_charge_label = GlobalSetting.parsed_setting_for GlobalSetting::SERVICE_CHARGE_LABEL
   end
 end
