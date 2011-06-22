@@ -82,31 +82,138 @@ function printCurrentReceipt() {
 function promptForServiceCharge() {
     popupHTML = $("#service_charge_popup_markup").html();
         
-    popupEl = showMenuScreenDefaultPopup(popupHTML);
-    
-    clickFunction = function(val) {
-        if(val == ".") val = ".0";
-        serviceCharge = serviceCharge.toString() + val;
-        alert(serviceCharge);
-    };
-    cancelFunction = function() {
-        cancelServiceCharge();
-    };
-    
+    if(currentScreenIsMenu()) {
+        popupEl = showMenuScreenDefaultPopup(popupHTML);
+    } else if (currentScreenIsTotals()) {
+        popupEl = showTotalsScreenDefaultPopup(popupHTML);
+    }
+        
     popupId = popupEl.GetBubblePopupID();
     
     keypadPosition = $('#' + popupId).find('.service_charge_popup_keypad_container');
     
-    setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
+    clickFunction = function(val) {
+        if(serviceCharge == 0) serviceCharge = "";
+        
+        serviceCharge = serviceCharge.toString() + val;
+        
+        $('#' + popupId).find('.service_charge_popup_amount').html(serviceCharge);
+    };
     
-//serviceCharge = parseFloat(serviceCharge);
+    cancelFunction = function() {
+        oldVal = $('#' + popupId).find('.service_charge_popup_amount').html();
+        newVal = oldVal.substring(0, oldVal.length - 1);
+        $('#' + popupId).find('.service_charge_popup_amount').html(newVal);
+        
+        if(newVal == "") newVal = 0;
+        
+        serviceCharge = parseFloat(newVal);
+    };
+    
+    $('#' + popupId).find('.service_charge_popup_amount').html(serviceCharge);
+    
+    setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
 }
 
 function saveServiceCharge() {
-    hideMenuScreenDefaultPopup();
+    serviceCharge = parseFloat(serviceCharge);
+    hideServiceChargePopup();
+    
+    if (currentScreenIsTotals()) {
+        doTotal();
+    }
 }
 
 function cancelServiceCharge() {
     serviceCharge = 0;
-    hideMenuScreenDefaultPopup();
+    hideServiceChargePopup();
+}
+
+function hideServiceChargePopup() {
+    if(currentScreenIsMenu()) {
+        hideMenuScreenDefaultPopup();
+    } else if (currentScreenIsTotals()) {
+        hideTotalsScreenDefaultPopup();
+    }
+}
+
+function presetServiceChargePercentageClicked(percentage) {
+    if(currentOrderEmpty()) {
+        serviceCharge = 0;
+    } else {
+        serviceCharge = currency((percentage * parseFloat(getCurrentOrder().total))/100, false);
+    }
+    
+    if(currentScreenIsMenu()) {
+        popupEl = $('#menu_screen_default_popup_anchor');
+    } else if (currentScreenIsTotals()) {
+        popupEl = $('#totals_screen_default_popup_anchor');
+    }
+        
+    popupId = popupEl.GetBubblePopupID();
+    
+    $('#' + popupId).find('.service_charge_popup_amount').html(serviceCharge);
+}
+
+function promptForCashback() {
+    popupHTML = $("#cashback_popup_markup").html();
+        
+    popupEl = showTotalsScreenDefaultPopup(popupHTML);
+       
+    popupId = popupEl.GetBubblePopupID();
+    
+    keypadPosition = $('#' + popupId).find('.cashback_popup_keypad_container');
+    
+    clickFunction = function(val) {
+        if(cashback == 0) cashback = "";
+        
+        cashback = cashback.toString() + val;
+        
+        $('#' + popupId).find('.cashback_popup_amount').html(cashback);
+    };
+    
+    cancelFunction = function() {
+        oldVal = $('#' + popupId).find('.cashback_popup_amount').html();
+        newVal = oldVal.substring(0, oldVal.length - 1);
+        $('#' + popupId).find('.cashback_popup_amount').html(newVal);
+        
+        if(newVal == "") newVal = 0;
+        
+        cashback = parseFloat(newVal);
+    };
+    
+    $('#' + popupId).find('.cashback_popup_amount').html(cashback);
+    
+    setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
+}
+
+function saveCashback() {
+    cashback = parseFloat(cashback);
+    
+    hideCashbackPopup();
+    
+    if (currentScreenIsTotals()) {
+        doTotal();
+    }
+    
+    $('#cashback_amount_holder').html(currency(cashback));
+}
+
+function cancelCashback() {
+    cashback = 0;
+    hideServiceChargePopup();
+}
+
+function hideCashbackPopup() {
+    hideTotalsScreenDefaultPopup();
+}
+
+function presetCashbackAmountClicked(amount) {
+    cashback = amount;
+    
+    popupEl = $('#totals_screen_default_popup_anchor');
+        
+    popupId = popupEl.GetBubblePopupID();
+    
+    $('#' + popupId).find('.cashback_popup_amount').html(cashback);
 }

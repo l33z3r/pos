@@ -63,19 +63,6 @@ function doGlobalInit() {
     callHomePoll();
 }
 
-function loginScreenKeypadClick(val) {
-    newVal = $('#num').val().toString() + val;
-    $('#clockincode_show').html(newVal);
-    $('#num').val(newVal);
-}
-
-function doCancelLoginKeypad() {
-    oldVal = $('#num').val().toString();
-    newVal = oldVal.substring(0, oldVal.length - 1);
-    $('#clockincode_show').html(newVal);
-    $('#num').val(newVal);
-}
-
 var callHomePollInitSequenceComplete = false;
 
 function callHomePoll() {
@@ -194,7 +181,7 @@ function showDisplayButtonPasscodePromptPopup() {
             'text-align':'left'
         },
 												   
-        themeName: 	'black',
+        themeName: 	'all-grey',
         themePath: 	'/images/jquerybubblepopup-theme'
 
     }, false);//save_options = false; it will use new options only on click event, it does not overwrite old options.

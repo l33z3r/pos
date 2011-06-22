@@ -13,6 +13,19 @@ function doQuickLogin(user_id) {
     }
 }
 
+function loginScreenKeypadClick(val) {
+    newVal = $('#num').val().toString() + val;
+    $('#clockincode_show').html(newVal);
+    $('#num').val(newVal);
+}
+
+function doCancelLoginKeypad() {
+    oldVal = $('#num').val().toString();
+    newVal = oldVal.substring(0, oldVal.length - 1);
+    $('#clockincode_show').html(newVal);
+    $('#num').val(newVal);
+}
+
 function doLogin() {
     entered_code = $('#num').val();
     

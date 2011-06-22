@@ -1,14 +1,16 @@
 function takeTendered() {
     cashTendered = getTendered();
 
-    if(cashTendered < currentTotalFinal) {
-        alert("Must enter a higher value than current total: " + currency(currentTotalFinal));
+    totalAmountInclCashback = currentTotalFinal + cashback;
+
+    if(cashTendered < totalAmountInclCashback) {
+        alert("Must enter a higher value than current total: " + currency(totalAmountInclCashback));
         resetTendered();
         return;
     }
 
     //calculate change and show the finish sale button
-    change = cashTendered - currentTotalFinal;
+    change = cashTendered - totalAmountInclCashback;
     $('#totals_change_value').html(currency(change, false));
 
     $('#tendered_button').hide();
@@ -56,7 +58,8 @@ function moneySelected(amount) {
     $('#totals_change_value').html(0);
     
     if(amount == -1) {
-        newAmount = currentTotalFinal;
+        totalAmountInclCashback = currentTotalFinal + cashback;
+        newAmount = totalAmountInclCashback;
     } else {
         //add to amount tendered
         currentAmount = $('#totals_tendered_value').html();
@@ -73,4 +76,11 @@ function moneySelected(amount) {
     newAmount = roundNumberUp(newAmount, 2);
     
     $('#totals_tendered_value').html(newAmount);
+}
+
+function togglePrintReceipt() {
+    $.ajax({
+        type: 'POST',
+        url: '/admin/toggle_print_receipt.js'
+    });
 }

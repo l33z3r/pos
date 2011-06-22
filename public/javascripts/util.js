@@ -322,7 +322,6 @@ function getURLHashParams() {
 
 var utliKeypadClickFunction;
 var utilKeypadCancelFunction;
-var utilKeypadGoFunction;
     
 function setUtilKeypad(position, clickFunction, cancelFunction) {
     $(position).html($('#util_keypad_container').html());
@@ -339,8 +338,16 @@ function doCancelUtilKeypad() {
 }
 
 function showMenuScreenDefaultPopup(popupHTML) {
-    popupAnchor = $('#menu_screen_default_popup_anchor');
-    
+    popupAnchor = $('#menu_screen_default_popup_anchor');    
+    return showDefaultPopup(popupAnchor, popupHTML);
+}
+
+function showTotalsScreenDefaultPopup(popupHTML) {
+    popupAnchor = $('#totals_screen_default_popup_anchor');    
+    return showDefaultPopup(popupAnchor, popupHTML);
+}
+
+function showDefaultPopup(popupAnchor, popupHTML) {
     if(popupAnchor.HasBubblePopup()) {
         popupAnchor.RemoveBubblePopup();
     }
@@ -355,7 +362,7 @@ function showMenuScreenDefaultPopup(popupHTML) {
             'text-align':'left'
         },
 												   
-        themeName: 	'black',
+        themeName: 	'all-grey',
         themePath: 	'/images/jquerybubblepopup-theme'
 
     }, false);
@@ -367,7 +374,15 @@ function showMenuScreenDefaultPopup(popupHTML) {
 
 function hideMenuScreenDefaultPopup() {
     popupAnchor = $('#menu_screen_default_popup_anchor');
-    
+    hideScreenDefaultPopup(popupAnchor);
+}
+
+function hideTotalsScreenDefaultPopup() {
+    popupAnchor = $('#totals_screen_default_popup_anchor');
+    hideScreenDefaultPopup(popupAnchor);
+}
+
+function hideScreenDefaultPopup(popupAnchor) {
     if(popupAnchor.HasBubblePopup()) {
         popupAnchor.RemoveBubblePopup();
         popupAnchor.HideBubblePopup();
@@ -480,4 +495,8 @@ function currentScreenIsMenu() {
 
 function currentScreenIsLogin() {
     return $('#landing').is(":visible");
+}
+
+function currentScreenIsTotals() {
+    return $('#total_screen').is(":visible");
 }

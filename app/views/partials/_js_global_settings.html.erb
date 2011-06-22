@@ -33,6 +33,8 @@
   //this will set off a bunch of requests to fill up out table order receipts
   var lastSyncTableOrderTime = 0;
   
+  var autoPrintReceipt = <%= @auto_print_receipt %>;
+  
   var receiptMessage = "<%= GlobalSetting.parsed_setting_for GlobalSetting::RECEIPT_MESSAGE %>";
   
   var defaultDiscountPercent = "<%=Discount.load_default.percent%>";

@@ -11,6 +11,7 @@ var tableOrders = new Array();
 
 var paymentMethod = null;
 var serviceCharge = 0;
+var cashback = 0;
 
 //this function is called from application.js on page load
 function initMenu() {
@@ -156,7 +157,7 @@ function showModifierDialog(modifierCategoryId) {
             'text-align':'left'
         },
 												   
-        themeName: 	'black',
+        themeName: 	'all-grey',
         themePath: 	'/images/jquerybubblepopup-theme'
 
     }, false);
@@ -384,7 +385,7 @@ function doSelectReceiptItem(orderItemEl) {
             'text-align':'left'
         },
 												   
-        themeName: 	'black',
+        themeName: 	'all-grey',
         themePath: 	'/images/jquerybubblepopup-theme'
 
     }, false);
@@ -393,24 +394,29 @@ function doSelectReceiptItem(orderItemEl) {
          
     //set the current price and quantity
     popupId = orderItemEl.GetBubblePopupID();
+    
     currentPrice = orderItemEl.children('.total').data("per_unit_price");
-    currentPrice = number_to_currency(currentPrice, {
-        precision : 2
-    })
+    currentPrice = currency(currentPrice, false);
     $('#' + popupId).find('.price').val(currentPrice);
     
     currentQuantity = orderItemEl.children('.amount').html();
     $('#' + popupId).find('.quantity').val(currentQuantity);
 }
 
-function editOrderItemIncreaseQuantity(el) {
-    targetInputEl = $(el).parent().parent().find('.quantity');
+function editOrderItemIncreaseQuantity() {
+    popupId = currentSelectedReceiptItemEl.GetBubblePopupID();
+    
+    targetInputEl = $('#' + popupId).find('.quantity');
+    
     currentVal = parseInt(targetInputEl.val());
     targetInputEl.val(currentVal + 1);
 }
 
-function editOrderItemDecreaseQuantity(el) {
-    targetInputEl = $(el).parent().parent().find('.quantity');
+function editOrderItemDecreaseQuantity() {
+    popupId = currentSelectedReceiptItemEl.GetBubblePopupID();
+    
+    targetInputEl = $('#' + popupId).find('.quantity');
+    
     currentVal = parseInt(targetInputEl.val());
     
     if(currentVal != 1) {
@@ -428,18 +434,20 @@ function closeEditOrderItem() {
     }
 }
 
-function saveEditOrderItem(el) {
+function saveEditOrderItem() {
     //fetch the item number
     itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    
+    popupId = currentSelectedReceiptItemEl.GetBubblePopupID();
     
     closeEditOrderItem();
     
     //fetch the order from the order array and modify it
     //then modify the html in the receipt
-    targetInputQuantityEl = $(el).parent().find('.quantity');
+    targetInputQuantityEl = $('#' + popupId).find('.quantity');
     newQuantity = parseInt(targetInputQuantityEl.val());
     
-    targetInputPricePerUnitEl = $(el).parent().find('.price');
+    targetInputPricePerUnitEl = $('#' + popupId).find('.price');
     newPricePerUnit = parseFloat(targetInputPricePerUnitEl.val());
     
     if(selectedTable != 0) {
@@ -743,6 +751,7 @@ function doTotalFinal() {
         'tax_chargable':taxChargable,
         'global_sales_tax_rate':orderSalesTaxRate,
         'service_charge':serviceCharge,
+        'cashback':cashback,
         'payment_type':paymentMethod,
         'amount_tendered':cashTendered,
         'num_persons':numPersons,
@@ -774,6 +783,7 @@ function doTotalFinal() {
     resetTendered();
     $('#totals_change_value').html("");
     serviceCharge = 0;
+    cashback = 0;
     paymentMethod = null;
     
     //set the select item
@@ -784,7 +794,9 @@ function doTotalFinal() {
     currentTotalFinal = 0;
 
     //now print the receipt
-    printReceipt(receiptHTML, true);
+    if(autoPrintReceipt) {
+        printReceipt(receiptHTML, true);
+    }
 
 }
 
@@ -933,7 +945,7 @@ function showDiscountPopup(el) {
             'text-align':'left'
         },
 												   
-        themeName: 	'black',
+        themeName: 	'all-grey',
         themePath: 	'/images/jquerybubblepopup-theme'
 
     }, false);

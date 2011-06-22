@@ -50,17 +50,21 @@
       <div id="take_tendered_container">
 
         <div id="tendered_popout">
-          <div id="payment_method_header">Selected Payment Method: <div id="selected_payment_method_holder"></div></div>
+          <div id="payment_method_header">
+            <div class="label">Selected Payment Method:</div>
+            <div id="selected_payment_method_holder"></div>
+            <div class="clear">&nbsp;</div>
+          </div>
 
           <div class="clear_top_margin_20">&nbsp;</div>
-          
+
           <div id="tendered_data_tables_container">
 
             <div id="totals_data_table"></div>
 
             <div class="data_table">
               <div class="label">Cash Back:</div>
-              <div class="data"><%= @currency_symbol %>0</div>
+              <div id="cashback_amount_holder" class="data"><%= @currency_symbol %>0</div>
               <div class="clear">&nbsp;</div>
             </div>
             <div class="clear">&nbsp;</div>
@@ -153,15 +157,18 @@
 
     <div class="clear">&nbsp;</div>
 
+    <!-- the following anchor is used for the default menu screen popup -->
+    <div id="totals_screen_default_popup_anchor">&nbsp;</div>
+
     <div id="totals_screen_misc_buttons">
-      <div class="button" onclick="serviceCharge()">
+      <div class="button" onclick="promptForServiceCharge()">
         <div class="icon">
           <%= image_tag "button_logos/service_charge.png" %>
         </div>
         <div class="button_name"><%= @service_charge_label %></div>
       </div>
 
-      <div class="button" onclick="doCashBack()">
+      <div class="button" onclick="promptForCashback()">
         <div class="icon">
           <%= image_tag "button_logos/cashback.png" %>
         </div>
@@ -172,7 +179,7 @@
         <div class="icon">
           <%= image_tag "button_logos/print_receipt_toggle.png" %>
         </div>
-        <div class="button_name">Print Receipt: on</div>
+        <div class="button_name">Print Receipt: <div id="toggle_print_receipt_value"><%= @auto_print_receipt ? "On" : "Off" %></div></div>
       </div>
     </div>
   </div>

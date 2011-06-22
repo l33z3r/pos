@@ -574,6 +574,16 @@
               </td>
             </tr>
             <tr>
+              <td>Automatically Print Receipt?</td>
+              <td>
+                <% @gs = GlobalSetting.setting_for GlobalSetting::AUTO_PRINT_RECEIPT %>
+                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                       value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
+                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                       value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
+              </td>
+            </tr>
+            <tr>
               <td>Receipt Message</td>
               <td>
                 <% @gs = GlobalSetting.setting_for GlobalSetting::RECEIPT_MESSAGE %>

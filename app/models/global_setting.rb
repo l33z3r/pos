@@ -37,12 +37,12 @@ class GlobalSetting < ActiveRecord::Base
   CURRENCY_SYMBOL = 8
   BYPASS_PIN = 9
   DEFAULT_HOME_SCREEN = 10
-  
-  #No longer used
-  #PAYMENT_METHOD = 11
-  
+  AUTO_PRINT_RECEIPT = 11
   RECEIPT_MESSAGE = 12
-  ACCEPTED_CREDIT_CARD_TYPE = 13
+  
+  #Not used anymore
+  #ACCEPTED_CREDIT_CARD_TYPE = 13
+  
   THEME = 14
   DEFAULT_POST_LOGIN_SCREEN = 15
   CLOCK_FORMAT = 16
@@ -61,8 +61,8 @@ class GlobalSetting < ActiveRecord::Base
     CURRENCY_SYMBOL => "Currency Symbol", 
     BYPASS_PIN => "Bypass Pin Number",
     DEFAULT_HOME_SCREEN => "Default Home Screen",
+    AUTO_PRINT_RECEIPT => "Auto Print Receipt",
     RECEIPT_MESSAGE => "Receipt Message",
-    ACCEPTED_CREDIT_CARD_TYPE => "Accepted Credit Card Type",
     THEME => "Theme",
     DEFAULT_POST_LOGIN_SCREEN => "Post Login Screen", 
     CLOCK_FORMAT => "Clock Format", 
@@ -77,44 +77,43 @@ class GlobalSetting < ActiveRecord::Base
     case property.to_i
     when LOGO
       @logo_type = args[:logo_type]
-      @gs = find_or_create_by_key(:key => "#{LOGO}_#{@logo_type}", :value => "Not Used For Logo", :label_text => LABEL_MAP[LOGO])
+      @gs = find_or_create_by_key(:key => "#{LOGO.to_s}_#{@logo_type}", :value => "Not Used For Logo", :label_text => LABEL_MAP[LOGO])
       @gs.parsed_value = @gs.value
     when TERMINAL_ID
       if !args[:fingerprint]
         @gs = nil
       else
         #the key will be the key for terminal id followed by the terminal fingerprint
-        @gs = find_or_create_by_key(:key => "#{TERMINAL_ID}_#{args[:fingerprint]}", :value => "Terminal #{Time.now.to_i}", :label_text => LABEL_MAP[TERMINAL_ID])
+        @gs = find_or_create_by_key(:key => "#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :value => "Terminal #{Time.now.to_i}", :label_text => LABEL_MAP[TERMINAL_ID])
         @gs.parsed_value = @gs.value
       end
     when CURRENCY_SYMBOL
-      @gs = find_or_create_by_key(:key => CURRENCY_SYMBOL, :value => "$", :label_text => LABEL_MAP[CURRENCY_SYMBOL])
+      @gs = find_or_create_by_key(:key => CURRENCY_SYMBOL.to_s, :value => "$", :label_text => LABEL_MAP[CURRENCY_SYMBOL])
       @gs.parsed_value = @gs.value
     when BYPASS_PIN
-      @gs = find_or_create_by_key(:key => BYPASS_PIN, :value => "no", :label_text => LABEL_MAP[BYPASS_PIN])
+      @gs = find_or_create_by_key(:key => BYPASS_PIN.to_s, :value => "no", :label_text => LABEL_MAP[BYPASS_PIN])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when DEFAULT_HOME_SCREEN
-      @gs = find_or_create_by_key(:key => DEFAULT_HOME_SCREEN, :value => 1, :label_text => LABEL_MAP[DEFAULT_HOME_SCREEN])
+      @gs = find_or_create_by_key(:key => DEFAULT_HOME_SCREEN.to_s, :value => 1, :label_text => LABEL_MAP[DEFAULT_HOME_SCREEN])
       @gs.parsed_value = @gs.value.to_i
-    when ACCEPTED_CREDIT_CARD_TYPE
-      #the key will be the key for payment type followed by the actual description of that type
-      @gs = find_or_create_by_key(:key => "#{ACCEPTED_CREDIT_CARD_TYPE}_#{args[:credit_card_type]}", :value => "no", :label_text => LABEL_MAP[ACCEPTED_CREDIT_CARD_TYPE])
-      @gs.parsed_value = @gs.value = (@gs.value == "yes" ? true : false)
+    when AUTO_PRINT_RECEIPT
+      @gs = find_or_create_by_key(:key => AUTO_PRINT_RECEIPT.to_s, :value => "no", :label_text => LABEL_MAP[AUTO_PRINT_RECEIPT])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when THEME
       #the key will be the key for payment type followed by the actual description of that type
-      @gs = find_or_create_by_key(:key => "#{THEME}_#{args[:theme_property]}", :value => nil, :label_text => LABEL_MAP[THEME])
+      @gs = find_or_create_by_key(:key => "#{THEME.to_s}_#{args[:theme_property]}", :value => nil, :label_text => LABEL_MAP[THEME])
       @gs.parsed_value = @gs.value
     when DEFAULT_POST_LOGIN_SCREEN
-      @gs = find_or_create_by_key(:key => DEFAULT_POST_LOGIN_SCREEN, :value => 2, :label_text => LABEL_MAP[DEFAULT_POST_LOGIN_SCREEN])
+      @gs = find_or_create_by_key(:key => DEFAULT_POST_LOGIN_SCREEN.to_s, :value => 2, :label_text => LABEL_MAP[DEFAULT_POST_LOGIN_SCREEN])
       @gs.parsed_value = @gs.value.to_i
     when CLOCK_FORMAT
-      @gs = find_or_create_by_key(:key => CLOCK_FORMAT, :value => "12", :label_text => LABEL_MAP[CLOCK_FORMAT])
+      @gs = find_or_create_by_key(:key => CLOCK_FORMAT.to_s, :value => "12", :label_text => LABEL_MAP[CLOCK_FORMAT])
       @gs.parsed_value = @gs.value
     when TAX_CHARGABLE
-      @gs = find_or_create_by_key(:key => TAX_CHARGABLE, :value => "no", :label_text => LABEL_MAP[TAX_CHARGABLE])
+      @gs = find_or_create_by_key(:key => TAX_CHARGABLE.to_s, :value => "no", :label_text => LABEL_MAP[TAX_CHARGABLE])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when GLOBAL_TAX_RATE
-      @gs = find_or_create_by_key(:key => GLOBAL_TAX_RATE, :value => 0, :label_text => LABEL_MAP[GLOBAL_TAX_RATE])
+      @gs = find_or_create_by_key(:key => GLOBAL_TAX_RATE.to_s, :value => 0, :label_text => LABEL_MAP[GLOBAL_TAX_RATE])
       @gs.parsed_value = @gs.value.to_f
     else
       @gs = load_setting property
@@ -129,12 +128,12 @@ class GlobalSetting < ActiveRecord::Base
     when BYPASS_PIN
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
-    when ACCEPTED_CREDIT_CARD_TYPE
-      new_value = ((value == "1" or value == "yes") ? "yes" : "no")
-      write_attribute("value", new_value)
     when LOGO
       #value not used in logo
       new_value = "Not Used For Logo"
+      write_attribute("value", new_value)
+    when AUTO_PRINT_RECEIPT
+      new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     when CLOCK_FORMAT
       new_value = ((value == "12") ? "12" : "24")

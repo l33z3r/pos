@@ -36,6 +36,8 @@
 # been applied to them in the system settings. The tax_chargable flag in order will be false and the global_sales_tax_rate here will be -1.
 # The total will be calculated as above, just without calculating any tax. And no tax is added to the subtotal
 #
+# Service charge and cashback are stored in sepreate columns to total
+#
 
 class Order < ActiveRecord::Base
   has_many :order_items

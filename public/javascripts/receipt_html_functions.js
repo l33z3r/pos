@@ -1,5 +1,5 @@
 function fetchOrderReceiptHTML() {
-    orderReceiptHTML = fetchReceiptHeaderHTML();
+    orderReceiptHTML = fetchFinalReceiptHeaderHTML();
     
     currentOrder = getCurrentOrder();
     
@@ -83,6 +83,10 @@ function fetchFinalReceiptHTML() {
     } 
     
     finalReceiptHTML += taxChargable ? fetchTotalsHTMLWithTaxChargable() : fetchTotalsWithoutTaxChargableHTML();
+    
+    if(cashback>0) {
+        finalReceiptHTML += "<div class='label'>Cashback:</div><div class='data'>" + currency(cashback) + "</div>" + clearHTML;
+    }
     
     totalTendered = $('#totals_tendered_value').html();
     
