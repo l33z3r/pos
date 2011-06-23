@@ -1870,6 +1870,7 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#payment_method_header div#selected_payment_method_holder {
     float: left;
+    color: #FFF;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#payment_method_header div.label {
