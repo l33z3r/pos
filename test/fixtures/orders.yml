@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110616065837
+# Schema version: 20110623063424
 #
 # Table name: orders
 #
@@ -20,6 +20,7 @@
 #  tax_chargable         :boolean(1)
 #  global_sales_tax_rate :float
 #  service_charge        :float
+#  cashback              :float
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

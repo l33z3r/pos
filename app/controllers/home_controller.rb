@@ -24,7 +24,7 @@ class HomeController < ApplicationController
     if @reload_app
       @reload_request_time = @reload_app['reload_request_time']
       @reload_request_terminal_id = @reload_app['reload_request_terminal_id']
-      @new_reload_app_update_time = @reload_request_time + 1
+      @new_reload_app_update_time = @reload_request_time.to_i + 1
     end
     
     #check the last timestamp for the table order sync
@@ -43,7 +43,7 @@ class HomeController < ApplicationController
         @terminal_employee = Employee.find(@serving_employee_id).nickname;
         
         @clear_table_order_request_time = @clear_table_order[:sync_table_order_request_time]
-        @new_clear_table_order_time = @clear_table_order_request_time + 1
+        @new_clear_table_order_time = @clear_table_order_request_time.to_i + 1
       else
         @sync_table_order_request_time = @sync_table_order[:sync_table_order_request_time]
         @sync_table_order_request_terminal_id = @sync_table_order[:sync_table_order_request_terminal_id]
@@ -54,14 +54,14 @@ class HomeController < ApplicationController
         @serving_employee_id = @sync_table_order[:serving_employee_id];
         @terminal_employee = Employee.find(@serving_employee_id).nickname;
       
-        @new_sync_table_order_time = @sync_table_order_request_time + 1
+        @new_sync_table_order_time = @sync_table_order_request_time.to_i + 1
       end
     end
     
   end
   
   def request_terminal_reload
-    request_reload_app @terminal_id, Time.now.to_i
+    request_reload_app @terminal_id
     redirect_to(:back, :notice => 'Reload request sent.')
   end
   

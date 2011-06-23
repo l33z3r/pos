@@ -23,8 +23,10 @@ class ApplicationController < ActionController::Base
     #fetch the hash of reload_time => terminal_id
     @reload_interface_times = reload_interface_times
     
-    @reload_interface_times.each do |reload_request_time, reload_request_terminal_id|
-      if reload_request_time > time.to_i
+    @reload_interface_times.each do |reload_request_time, reload_request_data|
+      reload_request_terminal_id = reload_request_data[:terminal_id]
+      
+      if reload_request_time.to_i > time.to_i
         @reload_app = {}
         @reload_app['reload_request_time'] = reload_request_time
         @reload_app['reload_request_terminal_id'] = reload_request_terminal_id
@@ -36,70 +38,86 @@ class ApplicationController < ActionController::Base
     return nil
   end
   
-  def request_reload_app terminal_id, time
-    #fetch the hash of reload_time => terminal_id
-    @reload_interface_times = reload_interface_times
-    @reload_interface_times[time] = terminal_id
+  def request_reload_app terminal_id
+    TerminalSyncData.transaction do
+      TerminalSyncData.fetch_terminal_reload_request_times.each do |tsd|
+        tsd.destroy
+      end
+    
+      TerminalSyncData.create!({:sync_type => TerminalSyncData::TERMINAL_RELOAD_REQUEST, 
+          :time => Time.now.to_i.to_s, :data => {:terminal_id => terminal_id}})
+    end
   end
   
   def fetch_sync_table_order time
-    #fetch the hash of sync_time => {terminal_id => id, data => data}
-    @sync_table_order_times = sync_table_order_times
+    TerminalSyncData.transaction do
+      
+      #fetch the hash of sync_time => {terminal_id => id, data => data}
+      @sync_table_order_times = sync_table_order_times
     
-    @sync_table_order_times.each do |sync_table_order_request_time, sync_table_order_request_data|
+      @sync_table_order_times.each do |sync_table_order_request_time, sync_table_order_request_data|
       
-      @sync_table_order_terminal_id = sync_table_order_request_data[:terminal_id]
+        @sync_table_order_terminal_id = sync_table_order_request_data[:terminal_id]
       
-      #we used to ignore requests from same terminal, but now we store
-      #a recpt per user per terminal so we need to sync with self
-      #next if @sync_table_order_terminal_id == @terminal_id
+        #we used to ignore requests from same terminal, but now we store
+        #a recpt per user per terminal so we need to sync with self
+        #next if @sync_table_order_terminal_id == @terminal_id
       
-      if sync_table_order_request_time > time.to_i
-        if sync_table_order_request_data[:clear_table_order]
-          @clear_table_order = {
-            :clear_table_order => true,
-            :serving_employee_id => sync_table_order_request_data[:serving_employee_id],
-            :sync_table_order_request_time => sync_table_order_request_time,
-            :table_id => sync_table_order_request_data[:table_id], 
-            :terminal_id => @sync_table_order_terminal_id
-          }
+        if sync_table_order_request_time.to_i > time.to_i
+          if sync_table_order_request_data[:clear_table_order]
+            @clear_table_order = {
+              :clear_table_order => true,
+              :serving_employee_id => sync_table_order_request_data[:serving_employee_id],
+              :sync_table_order_request_time => sync_table_order_request_time,
+              :table_id => sync_table_order_request_data[:table_id], 
+              :terminal_id => @sync_table_order_terminal_id
+            }
           
-          return @clear_table_order
-        else
-          @sync_table_order = {
-            :sync_table_order_request_time => sync_table_order_request_time,
-            :sync_table_order_request_terminal_id => @sync_table_order_terminal_id,
-            :serving_employee_id => sync_table_order_request_data[:serving_employee_id],
-            :order_data => sync_table_order_request_data[:order_data]
-          }
+            return @clear_table_order
+          else
+            @sync_table_order = {
+              :sync_table_order_request_time => sync_table_order_request_time,
+              :sync_table_order_request_terminal_id => @sync_table_order_terminal_id,
+              :serving_employee_id => sync_table_order_request_data[:serving_employee_id],
+              :order_data => sync_table_order_request_data[:order_data]
+            }
         
-          return @sync_table_order
+            return @sync_table_order
+          end
+        
         end
-        
       end
-    end
     
-    return nil
+      return nil
+    end
   end
   
   def do_request_sync_table_order terminal_id, time, table_order_data, table_id, employee_id
-    @sync_table_order_times = sync_table_order_times
-    remove_previous_sync_for_table table_id
-    @sync_table_order_times[time] = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => employee_id}
+    TerminalSyncData.transaction do
+      remove_previous_sync_for_table table_id
+    
+      @sync_data = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => employee_id}
+      
+      TerminalSyncData.create!({:sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 
+          :time => time, :data => @sync_data})
+    end
   end
   
   def do_request_clear_table_order terminal_id, time, table_id, employee_id
-    @sync_table_order_times = sync_table_order_times
-    remove_previous_sync_for_table table_id
-    @sync_table_order_times[time] = {:terminal_id => terminal_id, :clear_table_order => true, :table_id => table_id, :serving_employee_id => employee_id}
+    TerminalSyncData.transaction do
+      remove_previous_sync_for_table table_id
+    
+      @sync_data = {:terminal_id => terminal_id, :clear_table_order => true, :table_id => table_id, :serving_employee_id => employee_id}
+      
+      TerminalSyncData.create!({:sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 
+          :time => time, :data => @sync_data})
+    end
   end
   
   def remove_previous_sync_for_table table_id
-    @sync_table_order_times = sync_table_order_times
-    
-    @sync_table_order_times.each do |sync_table_order_request_time, sync_table_order_request_data|
-      if sync_table_order_request_data[:table_id].to_s == table_id.to_s
-        @sync_table_order_times.delete(sync_table_order_request_time)
+    TerminalSyncData.fetch_sync_table_order_times.each do |tsd|
+      if tsd.data[:table_id].to_s == table_id.to_s
+        tsd.destroy
         return;
       end
     end
@@ -118,12 +136,22 @@ class ApplicationController < ActionController::Base
   private
   
   def reload_interface_times
-    @reload_interface_times = (GLOBAL_DATA['reload_interface_times'] ||= {})
+    @reload_interface_times = {}
+    
+    TerminalSyncData.fetch_terminal_reload_request_times.each do |reload|
+      @reload_interface_times[reload.time.to_i.to_s] = reload.data
+    end
+    
     @reload_interface_times
   end
   
   def sync_table_order_times
-    @sync_table_order_times = (GLOBAL_DATA['sync_table_order_times'] ||= {})
+    @sync_table_order_times = {}
+    
+    TerminalSyncData.fetch_sync_table_order_times.each do |sync_table|
+      @sync_table_order_times[sync_table.time.to_i.to_s] = sync_table.data
+    end
+    
     @sync_table_order_times
   end
   

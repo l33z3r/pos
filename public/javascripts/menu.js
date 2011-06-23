@@ -687,7 +687,10 @@ function doTotal() {
     //set the data in the cash popout
     $('#totals_data_table').html(fetchCashScreenReceiptTotalsDataTable());
     
-    paymentMethod = defaultPaymentMethod;
+    if(!paymentMethod) {
+        paymentMethod = defaultPaymentMethod;
+    }
+    
     paymentMethodSelected(paymentMethod);
     
     showTotalsScreen();
@@ -786,9 +789,9 @@ function doTotalFinal() {
     cashback = 0;
     paymentMethod = null;
     
-    //set the select item
+    //set the select item to the personal receipt
     $('#table_select').val(0);
-    doSelectTable(lastReceiptID);
+    doSelectTable(0);
     
     totalOrder = null;
     currentTotalFinal = 0;

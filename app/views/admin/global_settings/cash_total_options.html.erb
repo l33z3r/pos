@@ -1,0 +1,28 @@
+<% content_for :head do %>
+  <script type="text/javascript">
+    $(function() {
+      $("#vtabs1").jVertTabs({equalHeights: true});
+    });
+  </script>
+<% end %>
+
+<div id="edit_cash_total_options">
+  <div id="vtabs1" class="report_option_tabs">
+    <div>
+      <ul>
+        <li><a href="#vtabs-content-a">X Report Options</a></li>
+        <li><a href="#vtabs-content-b">Z Report Options</a></li>
+      </ul>
+    </div>
+    <div>
+      <div id="#vtabs-content-a">
+        <p>This is panel 1</p>		
+        <p>Some text on panel 1</p>	
+      </div>
+      <div id="#vtabs-content-b">
+        <p>This is panel 2</p>
+        <p>Some text on panel 2</p>	
+      </div>
+    </div>
+  </div>
+</div>

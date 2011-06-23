@@ -58,9 +58,9 @@ class ButtonMapper
     when Z_TOTAL_BUTTON
       @retval = wrap_with_menu_screen_function_check "doZTotal();"
     when X_REPORTS_BUTTON
-      @retval = wrap_with_menu_screen_function_check "alert('x reports clicked');"
+      @retval = "window.location = '#{admin_cash_total_options_path}?section=x_reports'; return false;"
     when Z_REPORTS_BUTTON
-      @retval = wrap_with_menu_screen_function_check "alert('z reports clicked');"
+      @retval = "window.location = '#{admin_cash_total_options_path}?section=z_reports'; return false;"
     when MANAGE_USERS_BUTTON
       @retval = "window.location = '#{admin_employees_path}'; return false;"
     when MANAGE_ROLES_BUTTON

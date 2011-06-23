@@ -1,5 +1,6 @@
 class Admin::GlobalSettingsController < Admin::AdminController
   def index
+    
   end
   
   def toggle_print_receipt
@@ -20,6 +21,18 @@ class Admin::GlobalSettingsController < Admin::AdminController
     else
       render :action => "index"
     end
+  end
+  
+  def cash_total_options
+    
+  end
+  
+  def update_show_report_in_cash_total
+    @dbr = DisplayButtonRole.find(params[:id])
+    @dbr.show_on_sales_screen = params[:checked]
+    @dbr.save!
+    
+    render :json => {:success => true}.to_json
   end
 
 end

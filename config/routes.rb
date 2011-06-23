@@ -119,6 +119,8 @@ Pos::Application.routes.draw do
     #system settings interface
     get 'global_settings' => "global_settings#index"
     post 'update_global_settings' => "global_settings#update_multiple"
+    get 'cash_total_options' => "global_settings#cash_total_options"
+    post 'update_show_report_in_cash_total' => "global_settings#update_show_report_in_cash_total"
     post 'toggle_print_receipt' => "global_settings#toggle_print_receipt"
     
     #dynamic css that picks up styles from the styles in the settings table

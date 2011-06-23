@@ -193,16 +193,6 @@ function printReceipt(content, printRecptMessage) {
 }
 
 function print(content) {
-    //    var pwin=window.open('','print_content','width=500,height=1');
-    //
-    //    pwin.document.open();
-    //    pwin.document.write('<html><body onload="window.print()">'+content+'</body></html>');
-    //    pwin.document.close();
-    // 
-    //    setTimeout(function(){
-    //        pwin.close();
-    //    },10000);
-
     $('#printFrame').contents().find('#till_roll').html(content);
     
     printFrame.focus();

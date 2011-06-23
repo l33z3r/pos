@@ -79,6 +79,13 @@ function printCurrentReceipt() {
     printReceipt(content, false);
 }
 
+function printLastReceipt() {
+    lastSaleInfo = getLastSaleInfo();
+    content = lastSaleInfo.contentHTML;
+    
+    printReceipt(content, false);
+}
+
 function promptForServiceCharge() {
     popupHTML = $("#service_charge_popup_markup").html();
         
@@ -117,6 +124,11 @@ function promptForServiceCharge() {
 
 function saveServiceCharge() {
     serviceCharge = parseFloat(serviceCharge);
+    
+    if(isNaN(serviceCharge)) {
+        serviceCharge = 0;
+    }
+    
     hideServiceChargePopup();
     
     if (currentScreenIsTotals()) {
@@ -189,6 +201,10 @@ function promptForCashback() {
 
 function saveCashback() {
     cashback = parseFloat(cashback);
+    
+    if(isNaN(cashback)) {
+        cashback = 0;
+    }
     
     hideCashbackPopup();
     

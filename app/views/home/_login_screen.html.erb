@@ -53,7 +53,7 @@
       </div>
       <% display_button = DisplayButton.find_by_perm_id ButtonMapper::PRINT_RECEIPT_BUTTON %>
 
-      <div id="login_screen_button_<%=display_button.id%>" class="button" onclick="<%= button_action display_button %>">
+      <div id="login_screen_button_<%=display_button.id%>" class="button" onclick="printLastReceipt()">
         <div class="icon">
           <%= button_icon display_button %>
         </div>

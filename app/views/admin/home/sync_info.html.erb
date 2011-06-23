@@ -7,7 +7,7 @@
 
     @sync_table_order_terminal_id = sync_table_order_request_data[:terminal_id]
     @serving_employee_id = sync_table_order_request_data[:serving_employee_id]
-    @sync_table_order_request_time = sync_table_order_request_time
+    @sync_table_order_request_time = sync_table_order_request_time.to_i
     @clear_request = sync_table_order_request_data[:clear_table_order] ? "no" : "yes"
 
     if @clear_request

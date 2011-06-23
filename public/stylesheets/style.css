@@ -1561,6 +1561,11 @@ div#discounts_popup_markup_container div.discount_buttons div.button {
     text-align: center;
 }
 
+div#discounts_popup_markup_container div#manual_discount div.fields {
+    width: 130px;
+    margin: auto;
+}
+
 div#discounts_popup_markup_container div#manual_discount div.fields div.label {
     float: left;
     font-weight: bold;
@@ -1747,25 +1752,12 @@ div#cashback_popup_markup_container div#cashback_amount_buttons div.button {
 
 /* End Cashback Popup Markup */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Generic Popup Styling */
+
+div.jquerybubblepopup table td.jquerybubblepopup-top-middle {
+    border-spacing: 0px;
+    line-height: 0em;
+}
 
 div.popup_container {
     color: #333333;

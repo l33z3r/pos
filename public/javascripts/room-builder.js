@@ -66,7 +66,7 @@ function initGridTablePopupDialogs() {
                 'text-align':'left'
             },
 												   
-            themeName: 	'black',
+            themeName: 	'all-grey',
             themePath: 	'/images/jquerybubblepopup-theme'
 
         }, false);//save_options = false; it will use new options only on click event, it does not overwrite old options.
@@ -101,7 +101,7 @@ function initGridWallPopupDialogs() {
                 'text-align':'left'
             },
 												   
-            themeName: 	'black',
+            themeName: 	'all-grey',
             themePath: 	'/images/jquerybubblepopup-theme'
 
         }, false);//save_options = false; it will use new options only on click event, it does not overwrite old options.
