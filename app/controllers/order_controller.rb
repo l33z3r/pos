@@ -28,7 +28,7 @@ class OrderController < ApplicationController
   
   def cash_total
     @total_type = params[:total_type]
-    @cash_total = CashTotal.do_total @total_type, current_employee, @terminal_id
+    @cash_total, @cash_total_data = CashTotal.do_total @total_type, current_employee, @terminal_id
   end
   
   def sync_table_order

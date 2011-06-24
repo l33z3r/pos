@@ -975,6 +975,7 @@ nav#main_nav {
     margin-bottom: 2px;
 }
 
+nav#main_nav div#nav_back_link,
 nav#main_nav div#business_name,
 nav#main_nav div#e_name,
 nav#main_nav div#terminal_id,
@@ -985,6 +986,10 @@ nav#main_nav div#date {
     border-right: 1px solid #DDD;
     color: #FFF;
     min-width: 100px;
+}
+
+nav#main_nav div#nav_back_link {
+    cursor: pointer;
 }
 
 nav#main_nav div#clock span {
@@ -1234,6 +1239,205 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 }
 
 /* Main Menu Screen */
+
+/* Cash Reports Screen */
+
+div#cash_reports_screen div#receipt_keypad_container div#cash_reports_receipt_header {
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    border: 1px solid #AAA;
+    padding: 2px;
+    font-weight: bold;
+    font-size: 14px;
+    height: 15px;
+}
+
+div#cash_reports_screen div#cash_reports_receipt div#cash_reports_till_roll {
+    height: 350px;
+    display: block;
+    background-color: #FFF;
+}
+
+div#cash_reports_screen div#report_coin_counter_container {
+    width: 740px;
+    float: right;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container {
+    width: 360px;
+    float: left;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report {
+    margin: 10px;
+    border: 1px solid #000;
+    background-color: #FFF;
+    padding: 10px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div#cash_totals_data_table_header_section {
+    margin: 20px 0px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_name {
+    font-weight: bold;
+    font-size: 13px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_address {
+    font-size: 13px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_telephone {
+    font-size: 13px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_email_address {
+    font-size: 13px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div.data_table_header {
+    font-weight: bold;
+    font-size: 14px;
+    margin: 3px;
+    margin-top: 15px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div.data_table {
+    margin-top: 10px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div.data_table div.label {
+    float: left;
+    text-align: left;
+    width: 180px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div.data_table div.data {
+    float: left;
+    text-align: right;
+    width: 120px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div.totals_data_table {
+    margin-top: 5px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div.totals_data_table div.totals_label {
+    float: left;
+    text-align: left;
+    width: 180px;
+    font-weight: bold;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div.totals_data_table div.totals_data {
+    float: left;
+    text-align: right;
+    width: 120px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div.taxes_data_table {
+    margin-top: 10px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_header {
+    width: 75px;
+    float: left;
+    text-align: right;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_label_header {
+    width: 75px;
+    float: left;
+    text-align: left;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div.taxes_data_table div.taxes_label {
+    float: left;
+    text-align: left;
+    width: 75px;
+    font-weight: bold;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div.taxes_data_table div.taxes_data {
+    float: left;
+    text-align: right;
+    width: 75px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div.taxes_totals_data_table {
+    margin-top: 5px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_label {
+    float: left;
+    text-align: left;
+    width: 75px;
+    font-weight: bold;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#report_container div#report div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_data {
+    float: left;
+    text-align: right;
+    width: 75px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#coin_counter_container {
+    padding: 10px
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#coin_counter_container div#coin_counter {
+    width: 365px;
+    float: left;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#coin_counter_container div#coin_counter div#coin_counter_table {
+    width: 220px;
+    margin: auto;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#coin_counter_container div#coin_counter div#coin_counter_table div.row {
+    margin: 5px 0px;
+    text-align: left;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#coin_counter_container div#coin_counter div#coin_counter_table div.row_header {
+    text-align: left;
+    margin-bottom: 10px;
+    height: 25px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#coin_counter_container div#coin_counter div#coin_counter_table div.row_header div {
+    text-align: left;
+    font-weight: bold;
+    float: left;
+    width: 70px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#coin_counter_container div#coin_counter div#coin_counter_table div.row {
+    text-align: left;
+    height: 25px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#coin_counter_container div#coin_counter div#coin_counter_table div.row div {
+    font-weight: bold;
+    float: left;
+    text-align: left;
+    width: 70px;
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#coin_counter_container div#coin_counter div#coin_counter_table div.row div.unit {
+    
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#coin_counter_container div#coin_counter div#coin_counter_table div.row div.quantity {
+   margin-top: -5px; 
+}
+
+div#cash_reports_screen div#report_coin_counter_container div#coin_counter_container div#coin_counter div#coin_counter_table div.row div.amount {
+    
+}
+
+/* Cash Reports Screen */
 
 /* keypad */
 
@@ -1536,6 +1740,10 @@ div#discounts_popup_markup_container {
     height: 300px;
 }
 
+div#discounts_popup_markup_container.higher {
+    height: 355px;
+}
+
 div#discounts_popup_markup_container div.header {
     margin: 3px;
     margin-top: 8px;
@@ -1576,13 +1784,13 @@ div#discounts_popup_markup_container div#manual_discount div.fields div.label {
 
 div#discounts_popup_markup_container div#apply_discount_to {
     margin-top: 10px;
+    text-align: center;
 }
 
 div#discounts_popup_markup_container div#apply_discount_to div.label {
+    text-align: left;
     font-weight: bold;
-    margin-right: 4px;
-    margin-top: 3px;
-    margin-bottom: 3px;
+    margin: 6px;
     font-size: 12px;
 }
 
@@ -1792,6 +2000,37 @@ div.popup_container div.action_buttons div.button {
 
 /* Generic Popup Styling */
 
+/* End Generic Dialog Styling */
+
+div.popout_dialog {
+    width: 350px;
+    margin: auto;
+    border: 1px solid #CCC;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+} 
+
+div.popout_dialog div.action_buttons {
+    border-spacing: 7px;
+    width: 170px;
+    padding: 10px 20px;
+    margin: auto;
+}
+
+div.popout_dialog div.header {
+    background-color: black;
+    background: -moz-linear-gradient(#737373, #000000) repeat scroll 0 0 transparent;
+    color: #FFF;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 8px;
+    margin-bottom: 5px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+}
+
+/* End Generic Dialog Styling */
+
 /* Totals Screen */
 
 div#total_screen div#payment_options_money_info_container {
@@ -1831,7 +2070,6 @@ div#total_screen div#payment_options_money_info_container div#payment_options_se
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section {
-    border-spacing: 7px;
     margin-bottom: 10px;
     height: 490px;
 }
@@ -1842,30 +2080,7 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout {
-    width: 350px;
-    margin: auto;
-    border: 1px solid #CCC;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
-    margin-top: 60px;
-} 
-
-div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div.action_buttons {
-    width: 170px;
-    padding: 10px 20px;
-    margin: auto;
-}
-
-div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#payment_method_header {
-    background-color: black;
-    background: -moz-linear-gradient(#737373, #000000) repeat scroll 0 0 transparent;
-    color: #FFF;
-    font-size: 15px;
-    font-weight: bold;
-    padding: 8px;
-    margin-bottom: 5px;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
+    margin-top: 60px;    
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#payment_method_header div#selected_payment_method_holder {
@@ -1913,7 +2128,7 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.data div#totals_tendered_box div#totals_tendered_value {
     float: left;
-    
+
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.data div#totals_change_value {
@@ -1938,6 +2153,7 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
 div#total_screen div#payment_options_money_info_container div#tender_section div#money_helper_section div#exact_amount_button_holder {
     margin: auto;
     width: 92px;
+    border-spacing: 7px;
     font-weight: bold;
 }
 

@@ -259,8 +259,6 @@ function tableSelectMenuItem(orderItem) {
     
     menuRecptScroll();
 }
-
-var clearHTML = "<div class='clear'>&nbsp;</div>";
     
 function writeOrderItemToReceipt(orderItem) {
     $('#till_roll').html($('#till_roll').html() + getOrderItemReceiptHTML(orderItem));
@@ -693,6 +691,7 @@ function doTotal() {
     
     paymentMethodSelected(paymentMethod);
     
+    showNavBackLinkMenuScreen();
     showTotalsScreen();
     totalsRecptScroll();
 }
@@ -931,6 +930,10 @@ function showDiscountPopup(el) {
     } else {
         currentTargetPopupAnchor = $('#receipt_item_discount_popup_anchor');
         $("#apply_discount_to").show();
+        
+        //need to set the height to be a bit bigger
+        $("#discounts_popup_markup_container").addClass("higher");
+        
         individualItemDiscount = false;
     }
     

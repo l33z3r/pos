@@ -1,5 +1,6 @@
 <nav id="main_nav">
-  <div id="business_name"><%=GlobalSetting.parsed_setting_for GlobalSetting::BUSINESS_NAME%></div>
+  <div id="nav_back_link" style="display: none;">< Back</div>
+  <div id="business_name"><%=@business_name%></div>
   <div id="e_name" <%= session[:current_employee_nickname] ? "" : "style='display: none;'" %>><%= session[:current_employee_nickname] %></div>
   <div id="terminal_id"><%= @terminal_id %></div>
   <div id="date"><%= Time.now().strftime("%m %b") %></div>

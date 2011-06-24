@@ -1,3 +1,6 @@
+var clearHTML = "<div class='clear'>&nbsp;</div>";
+var clear10HTML = "<div class='clear_top_margin_10'>&nbsp;</div>";
+
 function isTouchDevice() {
     try {
         document.createEvent("TouchEvent");
@@ -460,6 +463,7 @@ function showLoginScreen() {
 }
 
 function showMenuScreen() {
+    hideNavBackLinkMenuScreen();
     hideAllScreens();
     $('#menu_screen').show();
 }
@@ -480,12 +484,18 @@ function showMoreOptionsScreen() {
     $('#more_options').show();
 }
 
+function showCashReportsScreen() {
+    hideAllScreens();
+    $('#cash_reports_screen').show();
+}
+
 function hideAllScreens() {
     $('#landing').hide();
     $('#menu_screen').hide();
     $('#table_select_screen').hide();
     $('#total_screen').hide();
     $('#more_options').hide();
+    $('#cash_reports_screen').hide();
         
 }
 
@@ -499,4 +509,37 @@ function currentScreenIsLogin() {
 
 function currentScreenIsTotals() {
     return $('#total_screen').is(":visible");
+}
+
+function currentScreenIsCashReports() {
+    return $('#cash_reports_screen').is(":visible");
+}
+
+function showNavBackLinkMenuScreen() {
+    $('#nav_back_link').show();
+    $('#nav_back_link').click(function() {
+        showMenuScreen(); 
+    });
+}
+
+function hideNavBackLinkMenuScreen() {
+    $('#nav_back_link').hide();
+}
+
+function doCoinCounterTotal() {
+    valArray = new Array('10000', '5000', '2000', '1000', '500', '200', '100', '50', '20', '10', '5');
+    
+    var sum = 0;
+    
+    for(i=0; i<valArray.length; i++) {
+        amount = $('#coin_quantity_' + valArray[i]).val();
+        
+        if(amount == "") {
+            amount = 0;
+        }
+        
+        sum += ((parseFloat(amount) * parseFloat(valArray[i]))/100);
+    }
+    
+    $('#coin_counter_total_amount').html(currency(sum));
 }

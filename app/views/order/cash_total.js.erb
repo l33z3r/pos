@@ -1,3 +1,60 @@
+cash_totals_data_html = "<div id='cash_totals_data_table'>";
+
+  cash_totals_data_html += "<div id='cash_totals_data_table_header_section'>";
+  cash_totals_data_html += "<div class='business_name'><%=@business_name%></div>";
+  cash_totals_data_html += "<div class='business_address'><%=@business_address%></div>";
+  cash_totals_data_html += "<div class='business_telephone'><%=@business_telephone%></div>";
+  cash_totals_data_html += "<div class='business_email_address'><%=@business_email_address%></div>";
+  cash_totals_data_html += "</div>";
+
+  //construct the busines info data table
+  business_info_data = new Array();
+  <% @cash_total_data[:business_info_data].each do |label, data| %>
+    business_info_data.push(new Array('<%=label%>', '<%=data%>'));
+  <% end %>
+  cash_totals_data_html += "<div class='data_table_header'>Daily Report</div>";
+  cash_totals_data_html += getCashTotalDataTable(business_info_data, false) + clearHTML;
+
+  //construct the categories data table
+  sales_by_category_data = new Array();
+  <% @cash_total_data[:sales_by_category].each do |category, amount| %>
+    sales_by_category_data.push(new Array('<%=category%>', '<%=amount%>'));
+  <% end %>
+  cash_totals_data_html += "<div class='data_table_header'>Sales By Category</div>";
+  cash_totals_data_html += getCashTotalDataTable(sales_by_category_data) + clearHTML;
+  cash_totals_data_html += getCashTotalDataTableTotals("Total Sales", sales_by_category_data) + clearHTML;
+
+  //construct the server data table
+  sales_by_server_data = new Array();
+  <% @cash_total_data[:sales_by_server].each do |server, amount| %>
+    sales_by_server_data.push(new Array('<%=server%>', '<%=amount%>'));
+  <% end %>
+  cash_totals_data_html += "<div class='data_table_header'>Sales By Server</div>";
+  cash_totals_data_html += getCashTotalDataTable(sales_by_server_data) + clearHTML;
+  cash_totals_data_html += getCashTotalDataTableTotals("Total Sales", sales_by_server_data) + clearHTML;
+
+  //construct the payment type data table
+  sales_by_payment_type_data = new Array();
+  <% @cash_total_data[:sales_by_payment_type].each do |payment_type, amount| %>
+    sales_by_payment_type_data.push(new Array('<%=payment_type%>', '<%=amount%>'));
+  <% end %>
+  cash_totals_data_html += "<div class='data_table_header'>Sales By Payment Type</div>";
+  cash_totals_data_html += getCashTotalDataTable(sales_by_payment_type_data) + clearHTML;
+  cash_totals_data_html += getCashTotalDataTableTotals("Total Sales", sales_by_payment_type_data) + clearHTML;
+
+  //construct the taxes data table
+  taxes_data = new Array();
+  <% @cash_total_data[:taxes].each do |tax_rate, tax_data| %>
+    taxes_data.push(new Array('<%=tax_rate%>', '<%=tax_data[:net]%>', '<%=tax_data[:tax]%>', '<%=tax_data[:gross]%>'));
+  <% end %>
+  cash_totals_data_html += "<div class='data_table_header'>Sales Tax Summary</div>";
+  cash_totals_data_html += getCashTotalTaxesDataTable(taxes_data) + clearHTML;
+  cash_totals_data_html += getCashTotalTaxesDataTableTotals("Total", taxes_data) + clearHTML;
+  
+  cash_totals_data_html += "</div>";
+
+$('#cash_total_sales_by_category_data_table_container').html(cash_totals_data_html);
+
 total = number_to_currency(<%=@cash_total.total%>, {precision : 2, showunit : true});
 
-alert("<%= @total_type %> Total (Not taking open orders into account): " + total);
+//alert("<%= @total_type %> Total (Not taking open orders into account): " + total);

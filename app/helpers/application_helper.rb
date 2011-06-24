@@ -66,5 +66,17 @@ module ApplicationHelper
   def is_admin?
     session[:current_employee_admin] == 1
   end
+  
+  def coin_label_for val
+    val = val.to_i
+    
+    if val < 100
+      val = "#{val}#{@currency_symbol_small}"
+    else
+      val = "#{@currency_symbol}#{val/100}"
+    end
+    
+    return val
+  end
 
 end

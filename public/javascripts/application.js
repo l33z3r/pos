@@ -60,7 +60,7 @@ function doGlobalInit() {
     });
     
     //start calling home
-    callHomePoll();
+    //callHomePoll();
 }
 
 var callHomePollInitSequenceComplete = false;

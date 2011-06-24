@@ -7,6 +7,13 @@ function doZTotal() {
 }
 
 function doCashTotalReport(total_type) {
+    $('#cash_total_sales_by_category_data_table_container').html("");
+    showNavBackLinkMenuScreen();
+    
+    $('#cash_reports_receipt_header').html(total_type + " Total History");
+    
+    showCashReportsScreen();
+    
     $.ajax({
         type: 'POST',
         url: '/cash_total.js',
