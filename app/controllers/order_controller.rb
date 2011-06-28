@@ -55,7 +55,7 @@ class OrderController < ApplicationController
   end
   
   def float_history
-    @previous_floats = CashTotal.floats_since_last_z_total @terminal_id
+    @last_z_total, @previous_floats = CashTotal.floats_since_last_z_total @terminal_id
   end
   
   def cash_total_history

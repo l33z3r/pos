@@ -253,7 +253,7 @@ class CashTotal < ActiveRecord::Base
   end
 
   def self.current_float_amount terminal_id
-    @previous_floats = CashTotal.floats_since_last_z_total terminal_id
+    @last_z_total, @previous_floats = CashTotal.floats_since_last_z_total terminal_id
     
     @sum = 0
     
@@ -275,6 +275,8 @@ class CashTotal < ActiveRecord::Base
     end
     
     @previous_floats = find(:all, :conditions => "#{@time_condition} total_type = '#{CashTotal::FLOAT}' and terminal_id = '#{terminal_id}'", :order => "created_at desc")
+    
+    return @last_z_total, @previous_floats
   end
   
   def self.all_cash_totals total_type, terminal_id
