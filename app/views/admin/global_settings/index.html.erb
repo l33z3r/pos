@@ -574,6 +574,15 @@
               </td>
             </tr>
             <tr>
+              <td>Small Currency Symbol</td>
+              <td>
+                <% @gs = GlobalSetting.setting_for GlobalSetting::SMALL_CURRENCY_SYMBOL %>
+                <%= fields_for "global_settings[]", @gs do |f| %>
+                  <%= f.text_field :value %>
+                <% end %>
+              </td>
+            </tr>
+            <tr>
               <td>Automatically Print Receipt?</td>
               <td>
                 <% @gs = GlobalSetting.setting_for GlobalSetting::AUTO_PRINT_RECEIPT %>

@@ -124,22 +124,5 @@
   <div class="clear">&nbsp;</div>
 </div>
 
-<!-- utility keypad to be called up for anything -->
-<div id="util_keypad_container">
-  <div id="util_keypad" class="keypad">
-    <div id="util_keypad_keys" class="keys">
-      <% [[7,9],[4,6],[1,3]].each do |x,y| %>
-        <% (x..y).each do |num| %>
-          <div id="num_<%= num %>" class="util_keypadkey" onclick="utilKeypadClick(<%=num%>)"><%= num %></div>
-        <% end %>
-      <% end %>
-
-      <div class="util_keypadkey" onclick="utilKeypadClick(0)">0</div>
-      <div class="util_keypadkey" onclick="utilKeypadClick('.')">.</div>
-      <div class="util_keypadkey" onclick="doCancelUtilKeypad()">C</div>
-    </div>
-  </div>
-</div>
-
 <!-- iframe to print in -->
 <iframe name="printFrame" id="printFrame" width="0" frameborder="0" height="0" src="<%= blank_receipt_for_print_path %>"></iframe>

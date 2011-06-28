@@ -39,10 +39,7 @@ class GlobalSetting < ActiveRecord::Base
   DEFAULT_HOME_SCREEN = 10
   AUTO_PRINT_RECEIPT = 11
   RECEIPT_MESSAGE = 12
-  
-  #Not used anymore
-  #ACCEPTED_CREDIT_CARD_TYPE = 13
-  
+  SMALL_CURRENCY_SYMBOL = 13
   THEME = 14
   DEFAULT_POST_LOGIN_SCREEN = 15
   CLOCK_FORMAT = 16
@@ -63,6 +60,7 @@ class GlobalSetting < ActiveRecord::Base
     DEFAULT_HOME_SCREEN => "Default Home Screen",
     AUTO_PRINT_RECEIPT => "Auto Print Receipt",
     RECEIPT_MESSAGE => "Receipt Message",
+    SMALL_CURRENCY_SYMBOL => "Small Currency Symbol",
     THEME => "Theme",
     DEFAULT_POST_LOGIN_SCREEN => "Post Login Screen", 
     CLOCK_FORMAT => "Clock Format", 
@@ -99,6 +97,9 @@ class GlobalSetting < ActiveRecord::Base
     when AUTO_PRINT_RECEIPT
       @gs = find_or_create_by_key(:key => AUTO_PRINT_RECEIPT.to_s, :value => "no", :label_text => LABEL_MAP[AUTO_PRINT_RECEIPT])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when SMALL_CURRENCY_SYMBOL
+      @gs = find_or_create_by_key(:key => SMALL_CURRENCY_SYMBOL.to_s, :value => "c", :label_text => LABEL_MAP[SMALL_CURRENCY_SYMBOL])
+      @gs.parsed_value = @gs.value
     when THEME
       #the key will be the key for payment type followed by the actual description of that type
       @gs = find_or_create_by_key(:key => "#{THEME.to_s}_#{args[:theme_property]}", :value => nil, :label_text => LABEL_MAP[THEME])

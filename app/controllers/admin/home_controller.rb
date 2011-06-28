@@ -6,7 +6,13 @@ class Admin::HomeController < Admin::AdminController
   
   def sync_info
     if params[:clear_sync_infos]
-      GLOBAL_DATA['sync_table_order_times'] = nil
+      TerminalSyncData.transaction do
+        TerminalSyncData.find(:all, :lock => true).each do |tsd|
+          tsd.destroy
+        end
+      end
+      
+      flash[:notice] = "All Sync Data Destroyed!"
       redirect_to :sync_info
     end
     

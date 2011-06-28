@@ -1,0 +1,16 @@
+previous_cash_totals_data_html = "";
+
+//construct the previous cash data info table
+<% @previous_cash_totals.each do |ct| %>
+  previous_cash_totals_data = new Array();
+  previous_cash_totals_data.push(new Array('Amount', '<%=ct.total%>'));
+  previous_cash_totals_data.push(new Array('Entered By', '<%=ct.employee.nickname%>'));
+  previous_cash_totals_data.push(new Array('Date', '&nbsp;<%=ct.created_at.to_s(:short)%>'));
+
+  previous_cash_totals_data_html += "<div class='data_table_header'><%=ct.total_type%> Total</div>";
+  previous_cash_totals_data_html += getCashTotalDataTable(previous_cash_totals_data, true) + clear10HTML;
+<% end %>
+
+$('#reports_left_till_roll').html(previous_cash_totals_data_html);
+
+reportsLeftRecptScroll();

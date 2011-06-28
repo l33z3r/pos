@@ -1,0 +1,62 @@
+<!-- utility keypad to be called up for anything -->
+<div id="util_keypad_container">
+  <div id="util_keypad" class="keypad">
+    <div id="util_keypad_keys" class="keys">
+      <% [[7,9],[4,6],[1,3]].each do |x,y| %>
+        <% (x..y).each do |num| %>
+          <div id="num_<%= num %>" class="util_keypadkey" onclick="utilKeypadClick(<%=num%>)"><%= num %></div>
+        <% end %>
+      <% end %>
+
+      <div class="util_keypadkey" onclick="utilKeypadClick(0)">0</div>
+      <div class="util_keypadkey" onclick="utilKeypadClick('.')">.</div>
+      <div class="util_keypadkey" onclick="doCancelUtilKeypad()">C</div>
+    </div>
+  </div>
+</div>
+
+<!-- utility coin counter -->
+<div id="coin_counter_widget_container">
+  <div id="coin_counter_widget">
+    <div id="total_amount_container">
+      <div class="label">Enter Total Amount:</div>
+      <div id="amount_input"><input type="text" size="6" class="total_amount_input"/></div>
+      <div class="clear">&nbsp;</div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+    
+    <div id="or_container">
+      --- Or ---
+    </div>
+
+    <div id="coin_counter_table">
+      <div class="row_header">
+        <div class="unit_header">Unit</div>
+        <div class="quantity_header">Quantity</div>
+        <div class="amount">Amount</div>
+        <div class="clear">&nbsp;</div>
+      </div>
+
+      <% ['10000', '5000', '2000', '1000', '500', '200', '100', '50', '20', '10', '5'].each do |val| %>
+        <div class="row">
+          <div class="unit"><%=coin_label_for val%></div>
+          <div class="quantity">
+            <input type="text" class="coin_quantity_<%=val%>" size="3" onblur="doCoinCounterTotal()" onfocus="doCoinCounterTotal()"/>
+          </div>
+          <div class="amount" id="coin_amount_<%=val%>"></div>
+          <div class="clear">&nbsp;</div>
+        </div>
+      <% end %>
+
+      <div class="row_footer">
+        <div class="total">&nbsp;</div>
+        <div class="quantity">Total</div>
+        <div class="amount" id="coin_counter_total_amount"></div>
+        <div class="clear">&nbsp;</div>
+      </div>
+
+      <div class="clear">&nbsp;</div>
+    </div>
+  </div>
+</div>

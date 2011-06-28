@@ -3,6 +3,8 @@ var current_user_nickname;
 var current_user_is_admin;
 var current_user_passcode;
 
+var lastActiveElement;
+
 var showingDisplayButtonPasscodePromptPopup;
 
 //this array stores wether or not to call for a 
@@ -59,8 +61,11 @@ function doGlobalInit() {
         $(this).delay(3000).fadeOut(500);
     });
     
+    //any input that gains focus will call this function
+    $("input").live("focus", function() { lastActiveElement = $(this); });
+    
     //start calling home
-    callHomePoll();
+    //callHomePoll();
 }
 
 var callHomePollInitSequenceComplete = false;

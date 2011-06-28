@@ -1,26 +1,28 @@
-function doXTotal() {
-    doCashTotalReport("X");
+function prepareXTotal() {
+    var doIt = checkAllOrdersClosedForCashTotal();
+    
+    if(doIt) {
+        doCashTotalReport("X");
+    }
 }
 
-function doZTotal() {
-    doCashTotalReport("Z");
+function prepareZTotal() {
+    var doIt = checkAllOrdersClosedForCashTotal();
+    
+    if(doIt) {
+        doCashTotalReport("Z");
+    }
 }
 
-function doCashTotalReport(total_type) {
-    $('#cash_total_sales_by_category_data_table_container').html("");
-    showNavBackLinkMenuScreen();
+function checkAllOrdersClosedForCashTotal() {
+    var allOrdersClosed = (!currentOrder || currentOrder.items.length == 0) && getActiveTableIDS().length == 0;
     
-    $('#cash_reports_receipt_header').html(total_type + " Total History");
+    if(!allOrdersClosed) {
+        setStatusMessage("All Orders Must Be Closed!", true, true);
+        return false;
+    }
     
-    showCashReportsScreen();
-    
-    $.ajax({
-        type: 'POST',
-        url: '/cash_total.js',
-        data: {
-            total_type : total_type
-        }
-    });
+    return true;
 }
 
 function doSyncTableOrder() {
@@ -239,4 +241,28 @@ function presetCashbackAmountClicked(amount) {
     popupId = popupEl.GetBubblePopupID();
     
     $('#' + popupId).find('.cashback_popup_amount').html(cashback);
+}
+
+var floatTotal = 0;
+
+function initFloatScreen() {
+    showNavBackLinkMenuScreen();
+    
+    coinCounterPosition = $('#float_coin_counter_widget_container');
+    
+    totalFunction = function(total) {
+        floatTotal = total;
+    };
+    
+    setUtilCoinCounter(coinCounterPosition, totalFunction);
+    
+    $('#float_till_roll').html("Loading...");
+    
+    showFloatScreen();
+    
+    //show the last float and z total
+    $.ajax({
+        type: 'GET',
+        url: '/float_history.js'
+    }); 
 }

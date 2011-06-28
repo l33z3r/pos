@@ -1,0 +1,25 @@
+previous_cash_totals_data_html = "";
+
+//construct the previous cash data info table
+<% @previous_floats.each do |pf| %>
+  previous_float_data = new Array();
+  previous_float_data.push(new Array('Amount', '<%=pf.total%>'));
+  previous_float_data.push(new Array('Entered By', '<%=pf.employee.nickname%>'));
+  previous_float_data.push(new Array('Date', '&nbsp;<%=pf.created_at.to_s(:short)%>'));
+
+  previous_cash_totals_data_html += "<div class='data_table_header'>Previous Float</div>";
+  previous_cash_totals_data_html += getCashTotalDataTable(previous_float_data, true) + clear10HTML;
+<% end %>
+
+<% if @last_z_total %>
+  previous_z_total_data = new Array();
+  previous_z_total_data.push(new Array('Entered By', '<%=@last_z_total.employee.nickname%>'));
+  previous_z_total_data.push(new Array('Date', '<%=@last_z_total.created_at.to_s(:short)%>'));
+
+  previous_cash_totals_data_html += "<div class='data_table_header'>Previous Z Total</div>";
+  previous_cash_totals_data_html += getCashTotalDataTable(previous_z_total_data, false) + clear10HTML;
+<% end %>
+
+$('#float_till_roll').html(previous_cash_totals_data_html);
+
+floatRecptScroll();

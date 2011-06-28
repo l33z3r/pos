@@ -4,8 +4,8 @@
 
     <div id="cash_reports_receipt_header">X/Z Total History</div>
 
-    <div id="cash_reports_receipt" class="receipt">
-      <div id="cash_reports_till_roll" class="till_roll"></div>
+    <div id="reports_left_receipt" class="receipt">
+      <div id="reports_left_till_roll" class="till_roll"></div>
     </div>
 
     <div class="clear">&nbsp;</div>
@@ -19,7 +19,7 @@
         <% end %>
 
         <div id="cash_reports_keypad_num_0" class="key" onclick="cashReportsScreenKeypadClick(0)">0</div>
-        <div id="cash_reports_decimal_key" class="key" onclick="cashReportsScreenKeypadClickDecimal()">.</div>
+        <div id="cash_reports_decimal_key" class="key" onclick="cashReportsScreenKeypadClick('.')">.</div>
         <div id="cash_reports_cancel_key" class="key" onclick="cashReportsScreenKeypadClickCancel()">C</div>
       </div>
 
@@ -29,11 +29,9 @@
   </div>
 
   <div id="report_coin_counter_container">
-    <div id="report_container">
-      <div id="report">
-        <div id="cash_total_sales_by_category_data_table_container">
-
-        </div>
+    <div id="reports_center_receipt">
+      <div id="reports_center_till_roll">
+        <div id="cash_total_data_table_container"></div>
       </div>
     </div>
 
@@ -44,23 +42,34 @@
             Cash In Drawer Count
           </div>
 
-          <div class="clear_top_margin_20">&nbsp;</div>
+          <div class="clear_top_margin_10">&nbsp;</div>
 
-          <%= render :partial => "/partials/coin_counter_widget" %>
+          <div id="reports_coin_counter_widget_container"></div>
 
           <div class="action_buttons">
-            <div class="button" onclick="cancelCoinCount()">
+            <div class="button" onclick="cancelCashReportCoinCount()">
               <div class="icon">
                 <%= image_tag "button_logos/cancel_button.png" %>
               </div>
               <div class="button_name">Cancel</div>
             </div>
 
-            <div id="tendered_button" class="button" onclick="saveCoinCount()">
+            <div id="tendered_button" class="button" onclick="saveCashReportCoinCount()">
               <div class="icon">
                 <%= image_tag "button_logos/ok_button.png" %>
               </div>
               <div class="button_name">Ok</div>
+            </div>
+          </div>
+
+          <div class="clear">&nbsp;</div>
+
+          <div id="finish_cash_total_action_button" class="action_buttons">
+            <div class="button" onclick="finishCashTotal()">
+              <div class="icon">
+                <%= image_tag "button_logos/finish_cash_total.png" %>
+              </div>
+              <div class="button_name">Finish</div>
             </div>
           </div>
         </div>

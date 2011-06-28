@@ -20,15 +20,46 @@ class OrderController < ApplicationController
     end
 
     if @success
-      render :inline => "{success : true}"
+      render :json => {:success => true}.to_json
     else
-      render :inline => "{success : false}"
+      render :json => {:success => false}.to_json
     end
   end
   
   def cash_total
     @total_type = params[:total_type]
-    @cash_total, @cash_total_data = CashTotal.do_total @total_type, current_employee, @terminal_id
+    
+    @commit = params[:commit]
+    
+    if @commit
+      @commit = (@commit.to_s == "true")
+    else
+      @commit = false
+    end
+    
+    @cash_count = params[:cash_count]
+    
+    if(!@cash_count)
+      @cash_count = 0
+    end
+    
+    @cash_count = @cash_count.to_f
+    
+    @cash_total_obj, @cash_total, @cash_total_data = CashTotal.do_total @total_type, @commit, @cash_count, current_employee, @terminal_id
+  end
+  
+  def add_float
+    @float_amount = params[:float_total]
+    CashTotal.do_add_float current_employee, @terminal_id, @float_amount
+    render :json => {:success => true}.to_json
+  end
+  
+  def float_history
+    @previous_floats = CashTotal.floats_since_last_z_total @terminal_id
+  end
+  
+  def cash_total_history
+    @previous_cash_totals = CashTotal.all_cash_totals params[:total_type], @terminal_id
   end
   
   def sync_table_order

@@ -12,6 +12,6 @@
   
   <%= yield :admin_subnav_links %>
   
-  <%= raw show_flash %>
+  <%= show_flash.html_safe %>
 </div>
 <div class="clear">&nbsp;</div>

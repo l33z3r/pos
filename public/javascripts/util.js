@@ -340,6 +340,20 @@ function doCancelUtilKeypad() {
     utilKeypadCancelFunction();
 }
 
+var utilCounterTotalFunction;
+var utilCounterParent;
+    
+function setUtilCoinCounter(position, totalFunction) {
+    utilCounterParent = $(position);
+    $(position).html($('#coin_counter_widget_container').html());
+    utilCounterParent.find('.total_amount_input').focus();
+    utilCounterTotalFunction = totalFunction;
+}
+
+function utilCounterTotalCalculated(total) {
+    utilCounterTotalFunction(total);
+}
+
 function showMenuScreenDefaultPopup(popupHTML) {
     popupAnchor = $('#menu_screen_default_popup_anchor');    
     return showDefaultPopup(popupAnchor, popupHTML);
@@ -489,6 +503,11 @@ function showCashReportsScreen() {
     $('#cash_reports_screen').show();
 }
 
+function showFloatScreen() {
+    hideAllScreens();
+    $('#float_screen').show();
+}
+
 function hideAllScreens() {
     $('#landing').hide();
     $('#menu_screen').hide();
@@ -496,6 +515,7 @@ function hideAllScreens() {
     $('#total_screen').hide();
     $('#more_options').hide();
     $('#cash_reports_screen').hide();
+    $('#float_screen').hide();
         
 }
 
@@ -515,6 +535,10 @@ function currentScreenIsCashReports() {
     return $('#cash_reports_screen').is(":visible");
 }
 
+function currentScreenIsCashReports() {
+    return $('#float_screen').is(":visible");
+}
+
 function showNavBackLinkMenuScreen() {
     $('#nav_back_link').show();
     $('#nav_back_link').click(function() {
@@ -527,19 +551,30 @@ function hideNavBackLinkMenuScreen() {
 }
 
 function doCoinCounterTotal() {
+    totalAmountInputAmount = utilCounterParent.find('.total_amount_input').val();
+    
+    if(totalAmountInputAmount > 0) {
+        utilCounterTotalCalculated(totalAmountInputAmount);
+        return;
+    }
+    
     valArray = new Array('10000', '5000', '2000', '1000', '500', '200', '100', '50', '20', '10', '5');
     
     var sum = 0;
     
     for(i=0; i<valArray.length; i++) {
-        amount = $('#coin_quantity_' + valArray[i]).val();
+        amount = utilCounterParent.find('.coin_quantity_' + valArray[i]).val();
         
         if(amount == "") {
             amount = 0;
         }
         
+        //set the amount for this row on the widget
+        $('#coin_amount_' + valArray[i]).html(currency((parseFloat(amount) * parseFloat(valArray[i]))/100));
+        
         sum += ((parseFloat(amount) * parseFloat(valArray[i]))/100);
     }
     
     $('#coin_counter_total_amount').html(currency(sum));
+    utilCounterTotalCalculated(sum);
 }

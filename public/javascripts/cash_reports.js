@@ -1,5 +1,3 @@
-
-
 function getCashTotalDataTable(cash_total_data, show_currency) {
     if(typeof(show_currency) == "undefined") {
         show_currency = true
@@ -9,7 +7,7 @@ function getCashTotalDataTable(cash_total_data, show_currency) {
     
     for(i=0; i<cash_total_data.length; i++) {
         cash_total_data_html += "<div class='label'>" + cash_total_data[i][0] + "</div>";
-        cash_total_data_html += "<div class='data'>" + (show_currency ? currency(cash_total_data[i][1]) : cash_total_data[i][1]) + "</div>" + clearHTML;
+        cash_total_data_html += "<div class='data'>" + (show_currency && (!isNaN( parseFloat(cash_total_data[i][1]))) ? currency(cash_total_data[i][1]) : cash_total_data[i][1]) + "</div>" + clearHTML;
     }
     
     cash_total_data_html += "</div>";
@@ -75,10 +73,118 @@ function getCashTotalTaxesDataTableTotals(label, data) {
     return taxes_totals_html;
 }
 
-function saveCoinCount() {
+var reportsCashCount = 0;
+var currentTotalType = null;
+
+function doCashTotalReport(total_type, commit) {
+    $('#reports_left_till_roll').html("Loading...");
+    $('#cash_total_data_table_container').html("Loading...");
     
+    currentTotalType = total_type;
+    
+    if(typeof(commit) == "undefined") {
+        show_currency = false
+    }
+    
+    showNavBackLinkMenuScreen();
+    
+    $('#cash_reports_receipt_header').html(total_type + " Total History");
+    
+    coinCounterPosition = $('#reports_coin_counter_widget_container');
+    
+    totalFunction = function(total) {
+        reportsCashCount = total;
+    };
+    
+    setUtilCoinCounter(coinCounterPosition, totalFunction);
+    
+    showCashReportsScreen();
+    
+    $.ajax({
+        type: 'POST',
+        url: '/cash_total.js',
+        data: {
+            total_type : total_type,
+            cash_count : reportsCashCount,
+            commit : commit
+        }
+    });
+    
+    $.ajax({
+        type: 'GET',
+        url: '/cash_total_history.js',
+        data: {
+            total_type : total_type
+        }
+    });
 }
 
-function cancelCoinCount() {
+function saveCashReportCoinCount() {
+    doCoinCounterTotal();
+    doCashTotalReport(currentTotalType, false);
+}
+
+function cancelCashReportCoinCount() {
+    reportsCashCount = 0;
+    currentTotalType = null;
+    showMenuScreen();
+}
+
+function cashReportsScreenKeypadClick(val) {
+    lastActiveElement.val(lastActiveElement.val() + val);
+}
+
+function cashReportsScreenKeypadClickCancel() {
+    oldVal = lastActiveElement.val();
+    newVal = oldVal.substring(0, oldVal.length - 1);
     
+    lastActiveElement.val(newVal);
+}
+
+function finishCashTotal() {
+    doCashTotalReport(currentTotalType, true);
+    
+    //print receipt
+    content = $('#report').html();
+    
+    printReceipt(content, false);
+    
+    reportsCashCount = 0;
+    currentTotalType = null;
+    
+    showMenuScreen();
+}
+
+function saveFloatCoinCount() {
+    doCoinCounterTotal();
+    
+    if(floatTotal > 0) {
+        $.ajax({
+            type: 'POST',
+            url: '/add_float.js',
+            data: {
+                float_total : floatTotal
+            }
+        }); 
+    }
+    
+    floatTotal = 0;
+    showMenuScreen();
+    setStatusMessage("Float Added!");
+}
+
+function cancelFloatCoinCount() {
+    floatTotal = 0;
+    showMenuScreen();
+}
+
+function floatScreenKeypadClick(val) {
+    lastActiveElement.val(lastActiveElement.val() + val);
+}
+
+function floatScreenKeypadClickCancel() {
+    oldVal = lastActiveElement.val();
+    newVal = oldVal.substring(0, oldVal.length - 1);
+    
+    lastActiveElement.val(newVal);
 }

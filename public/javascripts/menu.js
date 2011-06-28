@@ -24,6 +24,9 @@ function initMenu() {
     $('#till_roll').touchScroll();
     $('#login_till_roll').touchScroll();
     $('#totals_till_roll').touchScroll();
+    $('#reports_center_till_roll').touchScroll();
+    $('#reports_left_till_roll').touchScroll();
+    $('#float_till_roll').touchScroll();
 
     loadCurrentOrder();
     displayLastReceipt();
@@ -634,6 +637,18 @@ function menuRecptScroll() {
 
 function totalsRecptScroll() {
     recptScroll("totals_");
+}
+
+function reportsRecptScroll() {
+    recptScroll("reports_center_");
+}
+
+function reportsLeftRecptScroll() {
+    recptScroll("reports_left_");
+}
+
+function floatRecptScroll() {
+    recptScroll("float_");
 }
 
 function recptScroll(targetPrefix) {

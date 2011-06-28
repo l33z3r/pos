@@ -15,6 +15,9 @@
 #
 
 class CashTotal < ActiveRecord::Base
+  
+  serialize :report_data
+  
   #the start and end order ids tell us how the calculation was arrived at
   belongs_to :start_order, :class_name => "Order", :foreign_key => "start_calc_order_id"
   belongs_to :end_order, :class_name => "Order", :foreign_key => "end_calc_order_id"
@@ -25,45 +28,56 @@ class CashTotal < ActiveRecord::Base
   
   X_TOTAL = "X"
   Z_TOTAL = "Z"
-  VALID_TOTAL_TYPES = [X_TOTAL, Z_TOTAL]
+  FLOAT = "F"
+  VALID_TOTAL_TYPES = [X_TOTAL, Z_TOTAL, FLOAT]
   
   validates :total_type, :presence => true, :inclusion => { :in => VALID_TOTAL_TYPES }
   
-  def self.do_total total_type, employee, terminal_id
+  def self.do_total total_type, commit, cash_count, employee, terminal_id
     #validate total_type
     return nil unless VALID_TOTAL_TYPES.include?(total_type)
     
-    @cash_total, @cash_total_data = CashTotal.prepare_cash_total_data terminal_id
+    @cash_total, @cash_total_data = CashTotal.prepare_cash_total_data terminal_id, cash_count
     
+    #prepare the next report sequence number
+    @next_report_num = CashTotal.get_next_report_number terminal_id, total_type
+      
     @cash_total_data[:business_info_data] = {}
     @cash_total_data[:business_info_data]["Terminal:"] = terminal_id
-    @cash_total_data[:business_info_data]["X/Z Report Number:"] = "Some Number"
+    @cash_total_data[:business_info_data]["#{total_type} Report Number:"] = @next_report_num
     @cash_total_data[:business_info_data]["Date:"] = Time.now.to_s(:short)
     @cash_total_data[:business_info_data]["User"] = employee.nickname
     
-    #insert a row
-    @cash_total = CashTotal.new({:employee_id => employee.id, :terminal_id => terminal_id,
-        :start_order => @first_order, :end_order => @last_order, :total_type => total_type, :total => @overall_total})
-    @cash_total.save!
-        
-    return @cash_total, @cash_total_data
+    #insert a row if commit is true
+    if commit
+      @cash_total_obj = CashTotal.new({:employee_id => employee.id, :terminal_id => terminal_id, :report_num => @next_report_num,
+          :report_data => @cash_total_data, :start_order => @first_order, :end_order => @last_order, :total_type => total_type, :total => @overall_total})
+      @cash_total_obj.save!
+    end
+    
+    return @cash_total_obj, @cash_total, @cash_total_data
   end
   
-  def self.prepare_cash_total_data terminal_id
+  def self.prepare_cash_total_data terminal_id, cash_count
     @sales_by_category = {}
+    @sales_by_department = {}
     @sales_by_server = {}
     @sales_by_payment_type = {}
+    @cash_summary = {}
     @taxes = {}
         
     @cash_total_data = {}
     
+    @cash_sales_total = 0
+    @cash_back_total = 0
+        
     #load the first order, based on the last z total or the very first if none exists
-    @last_performed_z_total = find(:last, :conditions => "total_type = '#{Z_TOTAL}' and end_calc_order_id is not null and terminal_id = '#{terminal_id}'", :order => "created_at")
+    @last_performed_non_zero_z_total = find(:last, :conditions => "total_type = '#{Z_TOTAL}' and end_calc_order_id is not null and terminal_id = '#{terminal_id}'", :order => "created_at")
     
-    if @last_performed_z_total
+    if @last_performed_non_zero_z_total
       #now load the next order after the end order from the previous z total
       @first_order = Order.find(:first, 
-        :conditions => "created_at > '#{@last_performed_z_total.end_order.created_at}' and terminal_id = '#{terminal_id}'", 
+        :conditions => "created_at > '#{@last_performed_non_zero_z_total.end_order.created_at}' and terminal_id = '#{terminal_id}'", 
         :order => "created_at")
     else
       #no z totals yet, so just grab orders
@@ -87,10 +101,21 @@ class CashTotal < ActiveRecord::Base
         order.order_items.each do |order_item|
             
           @category_name = order_item.product.category.name
+          
+          if order_item.product.category.parent_category
+            @department_name = order_item.product.category.parent_category.name
+          else 
+            @department_name = "None"
+          end
             
           #sales by category
           if !@sales_by_category[@category_name]
             @sales_by_category[@category_name] = 0
+          end
+            
+          #sales by department
+          if !@sales_by_department[@department_name]
+            @sales_by_department[@department_name] = 0
           end
             
           logger.info "Increasing sales_by_category for category: #{@category_name} for product: #{order_item.product.name} by: #{order_item.total_price}"
@@ -110,6 +135,7 @@ class CashTotal < ActiveRecord::Base
           end
           
           @sales_by_category[@category_name] += @order_item_price
+          @sales_by_department[@department_name] += @order_item_price
           
           @tax_rate = order_item.tax_rate
           
@@ -154,29 +180,105 @@ class CashTotal < ActiveRecord::Base
             
         logger.info "Increasing sales_by_payment_type for payment_type: #{@payment_type} by: #{order.total}"
         @sales_by_payment_type[@payment_type] += order.total 
-          
-          
-          
-          
-          
-        #TODO: cash paid out
-          
-          
-        #TODO: cash paid out
-          
-          
+        
         #overall total
         @overall_total += order.total
       end
-        
-    end
     
+      #total of all cash sales
+      @cash_sale_orders = Order.find(:all,
+        :conditions => "created_at >= '#{@first_order.created_at}' and created_at <= '#{@last_order.created_at}' and terminal_id = '#{terminal_id}' and payment_type = 'cash'")
+          
+      @cash_sale_orders.each do |cso|
+        @cash_sales_total += cso.total  
+      end
+        
+      #total of all cash back
+      @all_orders_for_report = Order.find(:all,
+        :conditions => "created_at >= '#{@first_order.created_at}' and created_at <= '#{@last_order.created_at}' and terminal_id = '#{terminal_id}' and payment_type = 'cash'")
+          
+      @all_orders_for_report.each do |order|
+        @cash_back_total += order.cashback
+      end
+    end
+        
+    @opening_float = CashTotal.current_float_amount terminal_id
+    @cash_paid_out = 0
+    @over_runs = 0
+        
+    @total_cash = (@opening_float + @cash_sales_total) - @cash_paid_out - @cash_back_total - @over_runs
+        
+    @shortfall = @total_cash - cash_count
+        
+    #TODO: cash paid out
+    @cash_summary["Opening Float"] = @opening_float
+    @cash_summary["Cash Sales"] = @cash_sales_total
+    @cash_summary["Cash Paid Out"] = @cash_paid_out
+    @cash_summary["Cashback"] = @cash_back_total
+    @cash_summary["Over-runs"] = @over_runs
+    @cash_summary["Total Cash"] = @total_cash
+    @cash_summary["Cash In Drawer"] = cash_count
+    @cash_summary["Shortfall"] = @shortfall
+          
     @cash_total_data[:sales_by_category] = @sales_by_category
+    @cash_total_data[:sales_by_department] = @sales_by_department
     @cash_total_data[:sales_by_server] = @sales_by_server
     @cash_total_data[:sales_by_payment_type] = @sales_by_payment_type
     @cash_total_data[:taxes] = @taxes
+    @cash_total_data[:cash_summary] = @cash_summary
     
     return @overall_total, @cash_total_data
+  end
+  
+  def self.get_next_report_number terminal_id, total_type
+    @next_report_num = 1
+    
+    @last_report_for_type = find(:last, :conditions => "total_type = '#{total_type}' and terminal_id = '#{terminal_id}'", :order => "created_at")
+    
+    if @last_report_for_type
+      @next_report_num = @last_report_for_type.report_num + 1
+    end
+    
+    @next_report_num
+  end
+  
+  def self.do_add_float employee, terminal_id, float_amount
+    @cash_total_obj = CashTotal.new({:employee_id => employee.id, :terminal_id => terminal_id,
+        :total_type => FLOAT, :total => float_amount})
+    @cash_total_obj.save
+  end
+  
+  def self.last_z_total terminal_id
+    find(:last, :conditions => "total_type = '#{Z_TOTAL}' and terminal_id = '#{terminal_id}'", :order => "created_at")
+  end
+
+  def self.current_float_amount terminal_id
+    @previous_floats = CashTotal.floats_since_last_z_total terminal_id
+    
+    @sum = 0
+    
+    @previous_floats.each do |pf|
+      @sum += pf.total
+    end
+    
+    @sum
+  end
+  
+  def self.floats_since_last_z_total terminal_id
+    @last_z_total = CashTotal.last_z_total terminal_id
+    
+    #select all previous floats since last z total
+    if @last_z_total
+      @time_condition = "created_at >= '#{@last_z_total.created_at}' and "
+    else
+      @time_condition = ""
+    end
+    
+    @previous_floats = find(:all, :conditions => "#{@time_condition} total_type = '#{CashTotal::FLOAT}' and terminal_id = '#{terminal_id}'", :order => "created_at desc")
+  end
+  
+  def self.all_cash_totals total_type, terminal_id
+    find(:all, :conditions => "total_type = '#{total_type}' and terminal_id = '#{terminal_id}'", :order => "created_at desc")
   end
   
 end

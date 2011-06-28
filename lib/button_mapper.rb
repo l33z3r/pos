@@ -54,9 +54,9 @@ class ButtonMapper
 
     case button.perm_id
     when X_TOTAL_BUTTON
-      @retval = wrap_with_menu_screen_function_check "doXTotal();"
+      @retval = wrap_with_menu_screen_function_check "prepareXTotal();"
     when Z_TOTAL_BUTTON
-      @retval = wrap_with_menu_screen_function_check "doZTotal();"
+      @retval = wrap_with_menu_screen_function_check "prepareZTotal();"
     when X_REPORTS_BUTTON
       @retval = "window.location = '#{admin_cash_total_options_path}?section=x_reports'; return false;"
     when Z_REPORTS_BUTTON
@@ -106,7 +106,7 @@ class ButtonMapper
     when CHANGE_PRICE_BUTTON
       @retval = wrap_with_menu_screen_function_check "alert('change price button clicked');"
     when FLOAT_BUTTON
-      @retval = "alert('float button clicked');"
+      @retval = "initFloatScreen();"
     when NO_SALE_BUTTON
       @retval = wrap_with_menu_screen_function_check "alert('no sale button clicked');"
     when REFUND_BUTTON
