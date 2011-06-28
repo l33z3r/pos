@@ -65,7 +65,7 @@ function doGlobalInit() {
     $("input").live("focus", function() { lastActiveElement = $(this); });
     
     //start calling home
-    //callHomePoll();
+    callHomePoll();
 }
 
 var callHomePollInitSequenceComplete = false;
