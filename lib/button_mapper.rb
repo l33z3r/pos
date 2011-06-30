@@ -47,6 +47,7 @@ class ButtonMapper
   PRINT_RECEIPT_BUTTON = 44
   ORDER_BUTTON = 45
   SERVICE_CHARGE_BUTTON = 46
+  REPORTS_BUTTON = 47
   
   def action_for_button button
 
@@ -145,6 +146,8 @@ class ButtonMapper
       @retval = "doSyncTableOrder()"
     when SERVICE_CHARGE_BUTTON
       @retval = wrap_with_menu_screen_function_check "promptForServiceCharge()"
+    when REPORTS_BUTTON
+      @retval = "window.location = '#{admin_reports_path}'; return false;"
     end
 
     @retval

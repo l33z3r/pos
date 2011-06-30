@@ -31,6 +31,19 @@ class CashTotal < ActiveRecord::Base
   FLOAT = "F"
   VALID_TOTAL_TYPES = [X_TOTAL, Z_TOTAL, FLOAT]
   
+  RS_SALES_BY_DEPARTMENT = 1
+  RS_SALES_BY_PAYMENT_TYPE = 2
+  RS_CASH_SUMMARY = 3
+  RS_SALES_BY_SERVER = 4
+  RS_CASH_PAID_OUT = 5
+  RS_SALES_TAX_SUMMARY = 6
+  RS_SALES_BY_CATEGORY = 7
+  
+  REPORT_SECTIONS = [
+    RS_SALES_BY_DEPARTMENT, RS_SALES_BY_PAYMENT_TYPE, RS_CASH_SUMMARY, RS_SALES_BY_SERVER, 
+    RS_CASH_PAID_OUT, RS_SALES_TAX_SUMMARY, RS_SALES_BY_CATEGORY
+  ]
+  
   validates :total_type, :presence => true, :inclusion => { :in => VALID_TOTAL_TYPES }
   
   def self.do_total total_type, commit, cash_count, employee, terminal_id
@@ -281,6 +294,20 @@ class CashTotal < ActiveRecord::Base
   
   def self.all_cash_totals total_type, terminal_id
     find(:all, :conditions => "total_type = '#{total_type}' and terminal_id = '#{terminal_id}'", :order => "created_at desc")
+  end
+  
+  def self.report_sections 
+    REPORT_SECTIONS
+  end
+  
+  def self.report_section_name rs
+    CashTotal.constants.each do |constant_name|
+      if rs.to_s == eval(constant_name.to_s).to_s
+        return constant_name.to_s[2..constant_name.to_s.length].humanize.titleize
+      end
+    end
+    
+    return ""
   end
   
 end

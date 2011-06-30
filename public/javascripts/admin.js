@@ -108,3 +108,16 @@ function toggleButtonGroup(bg_id) {
     
     targetEl.slideToggle()
 }
+
+function cashTotalOptionSelect(role, total_type, report_section, checked) {
+    $.ajax({
+        type: 'POST',
+        url: '/admin/toggle_cash_total_option',
+        data: {
+            total_type : total_type,
+            role : role, 
+            report_section : report_section,
+            checked : checked
+        }
+    });
+}

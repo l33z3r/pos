@@ -578,3 +578,15 @@ function doCoinCounterTotal() {
     $('#coin_counter_total_amount').html(currency(sum));
     utilCounterTotalCalculated(sum);
 }
+
+function toggleUtilKeyboard() {
+    if($('#util_keyboard_container').is(":visible")) {
+        $('#util_keyboard_container').hide();
+    } else {
+        $('#util_keyboard_container').show();
+    }
+}
+
+function doWriteToLastActiveInput(val) {
+    lastActiveElement.val(lastActiveElement.val() + val);
+}

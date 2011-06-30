@@ -27,6 +27,21 @@ class Admin::GlobalSettingsController < Admin::AdminController
     
   end
   
+  def toggle_cash_total_option
+    @total_type = params[:total_type]
+    @employee_role = params[:role]
+    @report_section = params[:report_section]
+    
+    @gs = GlobalSetting.setting_for GlobalSetting::CASH_TOTAL_OPTION, {:total_type => @total_type, :employee_role => @employee_role, :report_section => @report_section}
+    
+    @checked = params[:checked]
+    
+    @gs.value = @checked == "true" ? "true" : "false"
+    @gs.save!
+    
+    render :json => {:success => true}.to_json
+  end
+  
   def update_show_report_in_cash_total
     @dbr = DisplayButtonRole.find(params[:id])
     @dbr.show_on_sales_screen = params[:checked]

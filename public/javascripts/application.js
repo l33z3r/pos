@@ -22,6 +22,7 @@ function doGlobalInit() {
     $('body').css("overflow", "scroll");
     
     
+    
     setFingerPrintCookie();
     
     initMenu();

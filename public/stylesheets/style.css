@@ -61,6 +61,7 @@ div.clear_spacer {
     width: 100%;
     background-color: #CCC;
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
     border-top: 1px solid #CCC;
     border-bottom: 1px solid #CCC;
 }
@@ -318,6 +319,7 @@ div#landing div#login_receipt_keypad_container div#login_receipt div#receipt_mes
 
 div#landing div#login_receipt_keypad_container div#login_receipt_header {
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
     border: 1px solid #AAA;
     padding: 2px;
     font-weight: bold;
@@ -330,6 +332,7 @@ div#landing div#login_receipt_keypad_container div#entered_code_container {
     clear: both;
     width: 100%;
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
 }
 
 div#landing div#login_receipt_keypad_container div#entered_code_container div#clockincode_show {
@@ -370,6 +373,7 @@ div#admin_subnav div.link {
     border-radius: 4px;  
     box-shadow: 1px 1px 3px #CCC;
     background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
 }
 
 div#admin_subnav div.link a {
@@ -970,6 +974,7 @@ nav#main_nav {
     font-weight: bold;
     background-color: black;
     background: -moz-linear-gradient(#737373, #000000) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#737373), to(#000));
     text-align: left;
     padding: 4px;
     margin-bottom: 2px;
@@ -1008,7 +1013,7 @@ nav#main_nav div#nav_save_button img {
     height: 25px;
 }
 
-nav#main_nav div#nav_reload_button {
+nav#main_nav div#nav_util_button {
     height: 22px;
     float: right;
     cursor: pointer;
@@ -1016,7 +1021,7 @@ nav#main_nav div#nav_reload_button {
     margin-top: -3px;
 }
 
-nav#main_nav div#nav_reload_button img {
+nav#main_nav div#nav_util_button img {
     height: 25px;
 }
 
@@ -1062,6 +1067,7 @@ div#receipt_keypad_container div#receipt {
 
 div#receipt_keypad_container div#top_buttons {
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
     border: 1px solid #AAA;
     padding: 2px;
     font-weight: bold;
@@ -1092,10 +1098,11 @@ div#receipt_keypad_container div#table_screen_button {
     padding: 8px 20px;
     border: 1px solid #CCC;
     -moz-border-radius: 4px;
-    radiusborder-radius: 4px;
+    border-radius: 4px;
     background-color: #FFF;
     font-weight: normal;
     background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
 }
 
 div#menu_screen div#menu_pages_container div#pages {
@@ -1141,6 +1148,7 @@ div.button {
     border-radius: 7px;  
     box-shadow: 0px 1px 0px #777;
     background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
 }
 
 div.button div.icon img {
@@ -1184,12 +1192,14 @@ div#menu_screen div#menu_pages_container div#pages div.page {
     border-top-right-radius: 7px;
     background-color: #F8F8F8;
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
 }
 
 div#menu_screen div#menu_pages_container div#pages div.selected {
     border-bottom-width: 0px;
     background-color: #E0E0E0;
     background: -moz-linear-gradient(#F8F8F8, #E0E0E0) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F8F8F8), to(#E0E0E0));
 }
 
 div#menu_screen div#menu_pages_container div#pages div.page div.name {
@@ -1244,6 +1254,7 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 
 div#cash_reports_screen div#receipt_keypad_container div#cash_reports_receipt_header {
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
     border: 1px solid #AAA;
     padding: 2px;
     font-weight: bold;
@@ -1421,6 +1432,7 @@ div#cash_reports_screen div#report_coin_counter_container div#coin_counter_conta
 
 div#float_screen div#receipt_keypad_container div#float_receipt_header {
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
     border: 1px solid #AAA;
     padding: 2px;
     font-weight: bold;
@@ -1484,6 +1496,7 @@ div.keypad div.keys div {
     border-radius: 5px;  
     box-shadow: 0px 1px 1px 0px #777;
     background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
 }
 
 div.keypad div.keys div.pad {
@@ -1504,6 +1517,7 @@ div#menu_screen div#receipt_keypad_container div#receipt div#till_roll {
 div#menu_screen div#receipt_keypad_container div#total_container {
     font-size: 14px;
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
     border: 1px solid #CCC;
     padding: 3px 2px;
     color: #000;
@@ -2037,6 +2051,7 @@ div.popout_dialog div.action_buttons {
 div.popout_dialog div.header {
     background-color: black;
     background: -moz-linear-gradient(#737373, #000000) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#737373), to(#000000));
     color: #FFF;
     font-size: 15px;
     font-weight: bold;
@@ -2065,6 +2080,7 @@ div#total_screen div#totals_receipt {
 
 div#total_screen div#receipt_keypad_container div#totals_receipt_header {
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
     border: 1px solid #AAA;
     padding: 2px;
     font-weight: bold;
@@ -2610,6 +2626,7 @@ div#table_select_screen div#room_list div.room_name {
     border-radius: 4px;  
     box-shadow: 1px 1px 3px #CCC;
     background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
 }
 
 div#table_select_screen div#room_list div.selected {
@@ -2723,6 +2740,7 @@ div#coin_counter_widget div#total_amount_container div#amount_input {
 div#coin_counter_widget div#or_container {
     text-align: center;
     font-weight: bold;
+    font-size: 13px;
     margin: 10px 0px;
 }
 
@@ -2770,7 +2788,7 @@ div#coin_counter_table div.row {
 div#coin_counter_table div.row div {
     font-weight: bold;
     float: left;
-    text-align: left;
+    text-align: right;
     width: 70px;
 }
 

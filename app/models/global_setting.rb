@@ -46,6 +46,7 @@ class GlobalSetting < ActiveRecord::Base
   TAX_CHARGABLE = 17
   GLOBAL_TAX_RATE = 18
   SERVICE_CHARGE_LABEL = 19
+  CASH_TOTAL_OPTION = 20
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -66,7 +67,8 @@ class GlobalSetting < ActiveRecord::Base
     CLOCK_FORMAT => "Clock Format", 
     TAX_CHARGABLE => "Tax Chargable",
     GLOBAL_TAX_RATE => "Global Tax Rate",
-    SERVICE_CHARGE_LABEL => "Service Charge Label"
+    SERVICE_CHARGE_LABEL => "Service Charge Label", 
+    CASH_TOTAL_OPTION => "Cash Total Option"
   }
   
   def self.setting_for property, args={}
@@ -89,13 +91,13 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_key(:key => CURRENCY_SYMBOL.to_s, :value => "$", :label_text => LABEL_MAP[CURRENCY_SYMBOL])
       @gs.parsed_value = @gs.value
     when BYPASS_PIN
-      @gs = find_or_create_by_key(:key => BYPASS_PIN.to_s, :value => "no", :label_text => LABEL_MAP[BYPASS_PIN])
+      @gs = find_or_create_by_key(:key => BYPASS_PIN.to_s, :value => "false", :label_text => LABEL_MAP[BYPASS_PIN])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when DEFAULT_HOME_SCREEN
       @gs = find_or_create_by_key(:key => DEFAULT_HOME_SCREEN.to_s, :value => 1, :label_text => LABEL_MAP[DEFAULT_HOME_SCREEN])
       @gs.parsed_value = @gs.value.to_i
     when AUTO_PRINT_RECEIPT
-      @gs = find_or_create_by_key(:key => AUTO_PRINT_RECEIPT.to_s, :value => "no", :label_text => LABEL_MAP[AUTO_PRINT_RECEIPT])
+      @gs = find_or_create_by_key(:key => AUTO_PRINT_RECEIPT.to_s, :value => "false", :label_text => LABEL_MAP[AUTO_PRINT_RECEIPT])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when SMALL_CURRENCY_SYMBOL
       @gs = find_or_create_by_key(:key => SMALL_CURRENCY_SYMBOL.to_s, :value => "c", :label_text => LABEL_MAP[SMALL_CURRENCY_SYMBOL])
@@ -111,11 +113,14 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_key(:key => CLOCK_FORMAT.to_s, :value => "12", :label_text => LABEL_MAP[CLOCK_FORMAT])
       @gs.parsed_value = @gs.value
     when TAX_CHARGABLE
-      @gs = find_or_create_by_key(:key => TAX_CHARGABLE.to_s, :value => "no", :label_text => LABEL_MAP[TAX_CHARGABLE])
+      @gs = find_or_create_by_key(:key => TAX_CHARGABLE.to_s, :value => "false", :label_text => LABEL_MAP[TAX_CHARGABLE])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when GLOBAL_TAX_RATE
       @gs = find_or_create_by_key(:key => GLOBAL_TAX_RATE.to_s, :value => 0, :label_text => LABEL_MAP[GLOBAL_TAX_RATE])
       @gs.parsed_value = @gs.value.to_f
+    when CASH_TOTAL_OPTION
+      @gs = find_or_create_by_key(:key => "#{CASH_TOTAL_OPTION.to_s}_#{args[:total_type]}_#{args[:employee_role]}_#{args[:report_section]}", :value => "true", :label_text => LABEL_MAP[CASH_TOTAL_OPTION])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -144,6 +149,9 @@ class GlobalSetting < ActiveRecord::Base
       write_attribute("value", new_value)
     when GLOBAL_TAX_RATE
       new_value = value.to_f
+      write_attribute("value", new_value)
+    when CASH_TOTAL_OPTION
+      new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     else
     end
