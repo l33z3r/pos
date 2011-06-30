@@ -1660,7 +1660,7 @@ div#edit_receipt_item_popup_markup {
 
 div#edit_receipt_item_popup_markup_container {
     width: 280px;
-    height: 200px;
+    height: 600px;
 }
 
 div#edit_receipt_item_popup_markup_container div#header {
@@ -1768,7 +1768,7 @@ div#receipt_item_discount_popup_anchor {
 
 div#discounts_popup_markup_container {
     width: 240px;
-    height: 300px;
+    height: 610px;
 }
 
 div#discounts_popup_markup_container.higher {

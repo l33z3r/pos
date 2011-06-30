@@ -402,6 +402,25 @@ function doSelectReceiptItem(orderItemEl) {
     
     currentQuantity = orderItemEl.children('.amount').html();
     $('#' + popupId).find('.quantity').val(currentQuantity);
+    
+    $('#' + popupId).find('.quantity').focus();
+    
+    keypadPosition = $('#' + popupId).find('.edit_order_item_popup_keypad_container');
+    
+    clickFunction = function(val) {
+        currentVal = lastActiveElement.val();
+        if(currentVal == 0) currentVal = "";
+        newVal = currentVal.toString() + val;
+        lastActiveElement.val(newVal);
+    };
+    
+    cancelFunction = function() {
+        oldVal = lastActiveElement.val();
+        newVal = oldVal.substring(0, oldVal.length - 1);
+        lastActiveElement.val(newVal);
+    };
+    
+    setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
 }
 
 function editOrderItemIncreaseQuantity() {
@@ -992,6 +1011,23 @@ function showDiscountPopup(el) {
     
     //highlight the input box
     $('#' + popupId).find('#discount_percent_input').select();
+    
+    keypadPosition = $('#' + popupId).find('.discount_popup_keypad_container');
+    
+    clickFunction = function(val) {
+        currentVal = $('#' + popupId).find('#discount_percent_input').val();
+        if(currentVal == 0) currentVal = "";
+        newVal = currentVal.toString() + val;
+        $('#' + popupId).find('#discount_percent_input').val(newVal);
+    };
+    
+    cancelFunction = function() {
+        oldVal = $('#' + popupId).find('#discount_percent_input').val();
+        newVal = oldVal.substring(0, oldVal.length - 1);
+        $('#' + popupId).find('#discount_percent_input').val(newVal);
+    };
+    
+    setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
 }
 
 function closeDiscountPopup() {
