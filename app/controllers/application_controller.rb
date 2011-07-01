@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  before_filter :check_reset_session
+  
   helper_method :e, :current_employee, :print_money
   
   before_filter :load_global_vars
@@ -134,6 +136,14 @@ class ApplicationController < ActionController::Base
   end
   
   private
+  
+  def check_reset_session
+    if params[:reset_session]
+      reset_session
+      flash[:notice] = "Session reset!"
+      redirect_to home_path
+    end
+  end
   
   def reload_interface_times
     @reload_interface_times = {}

@@ -85,7 +85,7 @@ function doClearAndReload() {
             document.cookie = n + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
         }
         
-        location.reload();
+        location = location + "?reset_session=true";
     }
 }
 
@@ -581,9 +581,9 @@ function doCoinCounterTotal() {
 
 function toggleUtilKeyboard() {
     if($('#util_keyboard_container').is(":visible")) {
-        $('#util_keyboard_container').hide();
+        $('#util_keyboard_container').slideUp(200);
     } else {
-        $('#util_keyboard_container').show();
+        $('#util_keyboard_container').slideDown(200);
     }
 }
 

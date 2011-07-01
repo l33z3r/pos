@@ -3,7 +3,7 @@
   <div id="business_name"><%=@business_name%></div>
   <div id="e_name" <%= session[:current_employee_nickname] ? "" : "style='display: none;'" %>><%= session[:current_employee_nickname] %></div>
   <div id="terminal_id"><%= @terminal_id %></div>
-  <div id="date" onclick="toggleUtilKeyboard();"><%= Time.now().strftime("%m %b") %></div>
+  <div id="date"><%= Time.now().strftime("%m %b") %></div>
   <div id="clock"></div>
 
   <div style="display: none;" id="nav_save_button" onclick="doLogout();">
@@ -18,7 +18,7 @@
     <%= image_tag "button_logos/refresh.png" %>
   </div>
 
-  <div style="display: none;" id="nav_util_button" onclick="toggleUtilKeyboard();">
+  <div id="nav_util_button" onclick="toggleUtilKeyboard();">
     <%= image_tag "button_logos/keyboard.png" %>
   </div>
 

@@ -1,0 +1,54 @@
+<div id="admin_order_list">
+
+  <section id="orders">
+
+    <h3>Orders</h3>
+
+    <div class="pagination_links">
+      <div class="links">
+        <%= will_paginate @orders %>
+      </div>
+      <div class="info">
+        <%= page_entries_info @orders %>
+      </div>
+    </div>
+
+    <table id="order_list" style="display: none;">
+      <thead>
+        <tr>
+          <th width="110">Date</th>
+          <th width="25">#ID</th>
+          <th width="110">Table</th>
+          <th width="110">Terminal</th>
+          <th width="110">Server</th>
+          <th width="110">Total</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @orders.each do |order| %>
+          <tr>
+            <td><%= order.created_at.to_s(:short) %></td>
+            <td><%= order.id %></td>
+            <td><%= order.is_table_order ? order.table_info.perm_id : "None" %></td>
+            <td><%= order.terminal_id %></td>
+            <td><%= order.employee.nickname %></td>
+            <td><%= print_money order.total %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class="clear_top_margin_20">&nbsp;</div>
+
+    <div class="pagination_links">
+      <div class="links">
+        <%= will_paginate @orders %>
+      </div>
+      <div class="info">
+        <%= page_entries_info @orders %>
+      </div>
+    </div>
+
+  </section>
+</div>
