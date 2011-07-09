@@ -10,6 +10,7 @@ gem 'populator'
 gem 'faker'
   
 gem "will_paginate", "~> 3.0.pre2"
+gem "meta_search", "1.0.5"
 
 # Use unicorn as the web server
 # gem 'unicorn'

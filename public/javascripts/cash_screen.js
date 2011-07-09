@@ -18,7 +18,18 @@ function takeTendered() {
 }
 
 function getTendered() {
-    return $('#totals_tendered_value').html();
+    var val = $('#totals_tendered_value').html();
+    
+    if(val.length > 0) {
+        if(isNaN(parseFloat(val))) {
+            val = 0;
+        }
+        
+        val = currency(val, false);
+        $('#totals_tendered_value').html(val);
+    }
+    
+    return val;
 }
 
 function resetTendered() {
@@ -29,12 +40,18 @@ function resetTendered() {
 }
 
 function takeTenderedCancel() {
+    resetTendered();
     showMenuScreen();
 }
 
 function paymentMethodSelected(method) {
     paymentMethod = method;
     $('#selected_payment_method_holder').html(paymentMethod);
+    
+    //highlight the button
+    $('.payment_method_button').each(function() {$(this).removeClass('selected');});
+    
+    $('#' + method.replace(/ /g,"_") + '_payment_method_button').addClass('selected');
 }
 
 function totalsScreenKeypadClick(val) {

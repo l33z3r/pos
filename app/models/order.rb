@@ -44,4 +44,9 @@ class Order < ActiveRecord::Base
   has_many :order_items
   belongs_to :employee
   belongs_to :table_info
+
+  #for will_paginate
+  cattr_reader :per_page
+  @@per_page = 15
+  
 end

@@ -50,9 +50,9 @@
       <%= f.text_field :items_per_unit %>
     </div>
     <div class="field">
-      <%= f.label :tax_rate_id %><br />
+      <%= f.label :tax_rate_id, "Select #{@tax_label} Rate" %><br />
       <%= f.collection_select :tax_rate_id, TaxRate.find(:all), :id, :name_for_select, 
-        :prompt => "Select a Tax Rate", :include_blank => "Default" %>
+        :prompt => "Select a #{@tax_label} Rate", :include_blank => "Default" %>
     </div>
     <div class="field">
       <%= f.label :product_image %><br />

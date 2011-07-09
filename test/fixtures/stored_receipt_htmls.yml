@@ -1,0 +1,24 @@
+# == Schema Information
+# Schema version: 20110709145601
+#
+# Table name: stored_receipt_htmls
+#
+#  id           :integer(4)      not null, primary key
+#  receipt_type :string(255)
+#  receipt_key  :string(255)
+#  stored_html  :text
+#  created_at   :datetime
+#  updated_at   :datetime
+#
+
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  type: MyString
+  key: MyString
+  stored_html: MyText
+
+two:
+  type: MyString
+  key: MyString
+  stored_html: MyText

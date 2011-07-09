@@ -14,8 +14,12 @@ Pos::Application.routes.draw do
   get "home/active_employees"
   get 'blank_receipt_for_print' => "home#blank_receipt_for_print"
   
+  #routes for mobile app
+  match 'mobile' => "home#mobile_index"
+  match 'last_receipt_for_terminal' => "home#last_receipt_for_terminal"
+  
   #this route is to call home with js polling
-  match 'call_home' => "home#call_home"
+  match 'call_home' => "home#call_home", :via => :post
   match 'request_terminal_reload' => "home#request_terminal_reload", :via => :post
         
   #init the sales screen buttons based on role permissions
@@ -52,8 +56,18 @@ Pos::Application.routes.draw do
        
     resources :employees
     resources :categories
-    resources :roles
     resources :modifier_categories
+    resources :orders, :only => [:index] do
+      collection do
+        get 'previous_order'      
+      end
+    end
+    
+    resources :roles do 
+      collection do
+        post 'pin_required_for_role'
+      end
+    end
     
     resources :tax_rates, :only => [:create, :destroy] do
       member do
@@ -117,11 +131,6 @@ Pos::Application.routes.draw do
         post 'update_multiple_groups'
         post 'destroy_button_group'
       end
-    end
-    
-    #reports routes
-    resources :reports, :only => [:index] do
-      
     end
     
     #system settings interface

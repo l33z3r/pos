@@ -419,6 +419,8 @@ function setStatusMessage(message, hide, shake) {
     if (typeof hide == "undefined") {
         hide = true;
     }
+    
+    hide = false;
   
     if (typeof shake == "undefined") {
         shake = false;
@@ -471,24 +473,29 @@ function hideStatusMessage() {
 }
 
 function showLoginScreen() {
+    clearNavTitle();
     hideAllScreens();
     $('#landing').show();
     loginRecptScroll();
 }
 
 function showMenuScreen() {
+    clearNavTitle();
     hideNavBackLinkMenuScreen();
     hideAllScreens();
     $('#menu_screen').show();
 }
 
 function showTablesScreen() {
+    setNavTitle("Table Selection");
+    showNavBackLinkMenuScreen();
     hideAllScreens();
     $('#table_select_screen').show();
     initTableSelectScreen();
 }
 
 function showTotalsScreen() {
+    setNavTitle("Sub Total");
     hideAllScreens();
     $('#total_screen').show();
 }
@@ -496,6 +503,9 @@ function showTotalsScreen() {
 function showMoreOptionsScreen() {
     hideAllScreens();
     $('#more_options').show();
+    
+    //add a hash so that the history buttons work in admin
+    window.location.hash = "#screen=more_options";
 }
 
 function showCashReportsScreen() {
@@ -508,6 +518,11 @@ function showFloatScreen() {
     $('#float_screen').show();
 }
 
+function showMobileScreen() {
+    hideAllScreens();
+    $('#mobile_screen').show();
+}
+
 function hideAllScreens() {
     $('#landing').hide();
     $('#menu_screen').hide();
@@ -516,7 +531,7 @@ function hideAllScreens() {
     $('#more_options').hide();
     $('#cash_reports_screen').hide();
     $('#float_screen').hide();
-        
+    $('#mobile_screen').hide();
 }
 
 function currentScreenIsMenu() {
@@ -565,7 +580,7 @@ function doCoinCounterTotal() {
     for(i=0; i<valArray.length; i++) {
         amount = utilCounterParent.find('.coin_quantity_' + valArray[i]).val();
         
-        if(amount == "") {
+        if(amount == "" || isNaN(amount)) {
             amount = 0;
         }
         
@@ -589,4 +604,95 @@ function toggleUtilKeyboard() {
 
 function doWriteToLastActiveInput(val) {
     lastActiveElement.val(lastActiveElement.val() + val);
+}
+
+function doTabLastActiveInput() {
+    lastActiveElement.focusNextInputField();
+}
+
+function doDeleteCharLastActiveInput() {
+    oldVal = lastActiveElement.val();
+    newVal = oldVal.substring(0, oldVal.length - 1);
+    
+    lastActiveElement.val(newVal);
+}
+
+function utilFormatDate(date) {
+    return formatDate(date, defaultJSDateFormat);
+}
+
+$.fn.focusNextInputField = function() {
+    return this.each(function() {
+        var fields = $(this).parents('form:eq(0),body').find('button,input,textarea,select');
+        var index = fields.index( this );
+        if ( index > -1 && ( index + 1 ) < fields.length ) {
+            fields.eq( index + 1 ).focus();
+        }
+        return false;
+    });
+};
+
+function initNavTitle(navTitle) {
+    if(navTitle.length>0) {
+        setNavTitle(navTitle);
+    } else {
+        clearNavTitle();
+    }
+}
+
+function setNavTitle(navTitle) {
+    $('#nav_title').html(navTitle);
+    $('#nav_title').show();
+}
+
+function clearNavTitle() {
+    $('#nav_title').html("");
+    $('#nav_title').hide();
+}
+
+function initBeep() {
+    $("#js_player").jPlayer( {
+        ready: function () {
+            $(this).jPlayer("setMedia", {
+                mp3: "/sounds/beep.mp3"
+            });
+        },
+        swfPath: "/swf"
+    });
+
+    $('.button').live("click", function() {
+        playButtonClickSound();
+    });
+    
+    $(".li").each(function() {
+        $(this).click(function() {
+            playButtonClickSound();
+        });
+    });
+    
+    $('.item').live("click", function() {
+        playButtonClickSound();
+    });
+    
+    $('.key').live("click", function() {
+        playButtonClickSound();
+    });
+}
+
+function playButtonClickSound() { 
+    $("#js_player").jPlayer("play");
+}
+
+jQuery.parseQuery = function(qs,options) {
+    var q = (typeof qs === 'string'?qs:window.location.search), o = {
+        'f':function(v){
+            return unescape(v).replace(/\+/g,' ');
+        }
+    }, options = (typeof qs === 'object' && typeof options === 'undefined')?qs:options, o = jQuery.extend({}, o, options), params = {};
+    jQuery.each(q.match(/^\??(.*)$/)[1].split('&'),function(i,p){
+        p = p.split('=');
+        p[1] = o.f(p[1]);
+        params[p[0]] = params[p[0]]?((params[p[0]] instanceof Array)?(params[p[0]].push(p[1]),params[p[0]]):[params[p[0]],p[1]]):p[1];
+    });
+    return params;
 }

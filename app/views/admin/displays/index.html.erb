@@ -1,10 +1,15 @@
+<% content_for :admin_subnav_links_right do %>
+  <%= render :partial => "/partials/ok_cancel_buttons" %>
+  <%= render :partial => "/partials/terminal_reload_request" %>
+<% end %>
+
 <div id="admin_display_list">
 
   <section id="displays">
 
     <h3>System Displays</h3>
 
-    <table id="display_list" style="display: none;">
+    <table id="display_list" class="admin_table">
       <thead>
         <tr>
           <th width="180">Name</th>

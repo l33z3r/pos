@@ -7,6 +7,8 @@ var employees = new Array();
   passcode : '<%= e.passcode %>',
   clockin_code : '<%= e.clockin_code %>',
   is_admin : <%= e.is_admin %>,
+  role_id : <%= e.role.id %>,
+  pin_required : <%= Role.find(e.role.id).pin_required ? "true" : "false" %>,
   clocked_in : <%= session[:active_employee_ids].include?(e.id) ? "true" : "false" %>
   }
 

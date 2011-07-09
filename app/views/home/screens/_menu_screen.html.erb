@@ -4,7 +4,7 @@
 
 <div id="menu_screen" style="display: none;">
 
-    <div id="receipt_keypad_container">
+  <div id="receipt_keypad_container">
 
     <div id="top_buttons">
       <div id="table_select_container">
@@ -45,6 +45,9 @@
       <div class="clear">&nbsp;</div>
 
     </div>
+
+    <!-- the following markup is used for the display button passcode popup -->
+    <div id="menu_buttons_popup_anchor">&nbsp;</div>
 
     <div id="till_keypad" class="keypad">
       <div id="keys" class="keys">
@@ -98,11 +101,10 @@
     </div>
 
     <div class="clear_spacer">
-      <div id="menu_screen_status_message" class="global_status_message"></div>
+      <div id="menu_screen_status_message_container" class="global_status_message_container">
+        <div id="menu_screen_status_message" class="global_status_message"></div>
+      </div>
     </div>
-
-    <!-- the following markup is used for the display button passcode popup -->
-    <div id="menu_buttons_popup_anchor">&nbsp;</div>
 
     <!-- the following anchor is used for the default menu screen popup -->
     <div id="menu_screen_default_popup_anchor">&nbsp;</div>

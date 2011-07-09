@@ -2,6 +2,8 @@ function initAdminScreen() {
     //hide the red x 
     $('#nav_save_button').hide();
     
+    $('#admin_nav_back_link').show();
+    
     //allow the page to scroll in the admin pages
     $('body').css("overflow", "scroll");
 }
@@ -120,4 +122,71 @@ function cashTotalOptionSelect(role, total_type, report_section, checked) {
             checked : checked
         }
     });
+}
+
+//admin for display buttons
+
+function displayButtonRoleAdminScreenSelect(dbr_id, checked) {
+    $.ajax({
+        type: 'POST',
+        url: '/admin/display_buttons/update_admin_screen_button_role',
+        data: {
+            id : dbr_id,
+            checked : checked
+        }
+    });
+}
+
+function displayButtonRoleAdminScreenSelectPasscode(dbr_id, checked) {
+    $.ajax({
+        type: 'POST',
+        url: '/admin/display_buttons/update_admin_screen_button_role',
+        data: {
+            id : dbr_id,
+            passcode_required : checked
+        }
+    });
+}
+
+function displayButtonRoleSalesScreenSelect(dbr_id, checked) {
+    $.ajax({
+        type: 'POST',
+        url: '/admin/display_buttons/update_sales_screen_button_role',
+        data: {
+            id : dbr_id,
+            checked : checked
+        }
+    });
+}
+
+//admin for roles
+
+function togglePinRequired(role_id, checked) {
+    $.ajax({
+        type: 'POST',
+        url: '/admin/roles/pin_required_for_role',
+        data: {
+            id : role_id,
+            checked : checked
+        }
+    });
+}
+
+var adminOkClickedHandler = null;
+var adminCancelClickedHandler = null;
+
+function adminOkClicked() {
+    if(adminOkClickedHandler) {
+        adminOkClickedHandler;
+    } else {
+        goTo('/home#screen=more_options');
+    }
+}
+
+function adminCancelClicked() {
+    if(adminCancelClickedHandler) {
+        adminCancelClickedHandler;
+    } else {
+        goTo('/home#screen=more_options');
+    }
 }

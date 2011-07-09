@@ -6,6 +6,18 @@ class HomeController < ApplicationController
     @display = Display.load_default
     
     @rooms = Room.all
+    
+    if mobile_device?
+      redirect_to mobile_path and return 
+    end
+  end
+  
+  def mobile_index
+    if !mobile_device?
+      redirect_to :action => :index and return 
+    end
+    
+    render :layout => "mobile"
   end
 
   def init_sales_screen_buttons
@@ -58,6 +70,12 @@ class HomeController < ApplicationController
       end
     end
     
+    #store the last receipt html
+    if params[:currentTerminalRecptHTML] and !params[:currentTerminalRecptHTML].blank?
+      StoredReceiptHtml.find_all_by_receipt_type_and_receipt_key(StoredReceiptHtml::TERMINAL, @terminal_id).each(&:destroy)
+      @srh = StoredReceiptHtml.new({:receipt_type => StoredReceiptHtml::TERMINAL, :receipt_key => @terminal_id, :stored_html => params[:currentTerminalRecptHTML]})
+      @srh.save!
+    end
   end
   
   def request_terminal_reload
@@ -134,6 +152,11 @@ class HomeController < ApplicationController
   
   def blank_receipt_for_print
     render :layout => nil
+  end
+  
+  def last_receipt_for_terminal
+    @terminal_id = params[:terminal_id]
+    @receipt_html_object = StoredReceiptHtml.latest_for_terminal @terminal_id
   end
 
   private

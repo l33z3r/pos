@@ -47,7 +47,7 @@ class ButtonMapper
   PRINT_RECEIPT_BUTTON = 44
   ORDER_BUTTON = 45
   SERVICE_CHARGE_BUTTON = 46
-  REPORTS_BUTTON = 47
+  PREVIOUS_ORDERS_BUTTON = 47
   
   def action_for_button button
 
@@ -59,9 +59,9 @@ class ButtonMapper
     when Z_TOTAL_BUTTON
       @retval = wrap_with_menu_screen_function_check "prepareZTotal();"
     when X_REPORTS_BUTTON
-      @retval = "window.location = '#{admin_cash_total_options_path}?section=x_reports'; return false;"
+      @retval = "window.location = '#{admin_cash_total_options_path}?section=x'; return false;"
     when Z_REPORTS_BUTTON
-      @retval = "window.location = '#{admin_cash_total_options_path}?section=z_reports'; return false;"
+      @retval = "window.location = '#{admin_cash_total_options_path}?section=z'; return false;"
     when MANAGE_USERS_BUTTON
       @retval = "window.location = '#{admin_employees_path}'; return false;"
     when MANAGE_ROLES_BUTTON
@@ -146,8 +146,8 @@ class ButtonMapper
       @retval = "doSyncTableOrder()"
     when SERVICE_CHARGE_BUTTON
       @retval = wrap_with_menu_screen_function_check "promptForServiceCharge()"
-    when REPORTS_BUTTON
-      @retval = "window.location = '#{admin_reports_path}'; return false;"
+    when PREVIOUS_ORDERS_BUTTON
+      @retval = "window.location = '#{admin_orders_path}'; return false;"
     end
 
     @retval

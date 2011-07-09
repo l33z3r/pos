@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110616065837
+# Schema version: 20110705150431
 #
 # Table name: cash_totals
 #
@@ -12,6 +12,8 @@
 #  updated_at          :datetime
 #  employee_id         :integer(4)
 #  terminal_id         :string(255)
+#  report_num          :integer(4)
+#  report_data         :text
 #
 
 class CashTotal < ActiveRecord::Base
@@ -58,7 +60,7 @@ class CashTotal < ActiveRecord::Base
     @cash_total_data[:business_info_data] = {}
     @cash_total_data[:business_info_data]["Terminal:"] = terminal_id
     @cash_total_data[:business_info_data]["#{total_type} Report Number:"] = @next_report_num
-    @cash_total_data[:business_info_data]["Date:"] = Time.now.to_s(:short)
+    @cash_total_data[:business_info_data]["Date:"] = Time.now.strftime(GlobalSetting.default_date_format)
     @cash_total_data[:business_info_data]["User"] = employee.nickname
     
     #insert a row if commit is true

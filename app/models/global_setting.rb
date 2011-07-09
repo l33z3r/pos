@@ -47,6 +47,8 @@ class GlobalSetting < ActiveRecord::Base
   GLOBAL_TAX_RATE = 18
   SERVICE_CHARGE_LABEL = 19
   CASH_TOTAL_OPTION = 20
+  TAX_LABEL = 21
+  DO_BEEP = 22
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -68,7 +70,9 @@ class GlobalSetting < ActiveRecord::Base
     TAX_CHARGABLE => "Tax Chargable",
     GLOBAL_TAX_RATE => "Global Tax Rate",
     SERVICE_CHARGE_LABEL => "Service Charge Label", 
-    CASH_TOTAL_OPTION => "Cash Total Option"
+    CASH_TOTAL_OPTION => "Cash Total Option",
+    TAX_LABEL => "Tax Label",
+    DO_BEEP => "Do Beep"
   }
   
   def self.setting_for property, args={}
@@ -84,7 +88,7 @@ class GlobalSetting < ActiveRecord::Base
         @gs = nil
       else
         #the key will be the key for terminal id followed by the terminal fingerprint
-        @gs = find_or_create_by_key(:key => "#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :value => "Terminal #{Time.now.to_i}", :label_text => LABEL_MAP[TERMINAL_ID])
+        @gs = find_or_create_by_key(:key => "#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :value => "New Terminal ##{Time.now.to_s[0..3]}", :label_text => LABEL_MAP[TERMINAL_ID])
         @gs.parsed_value = @gs.value
       end
     when CURRENCY_SYMBOL
@@ -121,6 +125,12 @@ class GlobalSetting < ActiveRecord::Base
     when CASH_TOTAL_OPTION
       @gs = find_or_create_by_key(:key => "#{CASH_TOTAL_OPTION.to_s}_#{args[:total_type]}_#{args[:employee_role]}_#{args[:report_section]}", :value => "true", :label_text => LABEL_MAP[CASH_TOTAL_OPTION])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when TAX_LABEL
+      @gs = find_or_create_by_key(:key => TAX_LABEL.to_s, :value => "Tax", :label_text => LABEL_MAP[TAX_LABEL])
+      @gs.parsed_value = @gs.value
+    when DO_BEEP
+      @gs = find_or_create_by_key(:key => DO_BEEP.to_s, :value => "false", :label_text => LABEL_MAP[DO_BEEP])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -153,6 +163,9 @@ class GlobalSetting < ActiveRecord::Base
     when CASH_TOTAL_OPTION
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
+    when DO_BEEP
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
     else
     end
   end
@@ -171,6 +184,22 @@ class GlobalSetting < ActiveRecord::Base
   def self.load_setting property
     @setting = find_or_create_by_key(:key => property, :value => "Not Set", :label_text => LABEL_MAP[property])
     @setting
+  end
+  
+  def self.default_date_format
+    @clockFormat = GlobalSetting.parsed_setting_for GlobalSetting::CLOCK_FORMAT
+    
+    if @clockFormat == "12"
+      @defaultDateFormat = "%I:%M %d/%m/%Y"
+    else
+      @defaultDateFormat = "%H:%M %d/%m/%Y"
+    end
+    
+    return @defaultDateFormat
+  end
+  
+  def self.all_terminals
+    find(:all, :conditions => "global_settings.key like '#{TERMINAL_ID}%'").collect(&:value)
   end
   
   #these properties are for particular properties in the db

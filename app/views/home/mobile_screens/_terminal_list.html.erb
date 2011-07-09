@@ -1,0 +1,29 @@
+<div id="terminal_list" class="current">
+  <div class="toolbar">
+
+    <%= link_to "Back", nil, :class => "back" %>
+
+    <h1>Terminals<%= yield :title %></h1>
+
+    <%= link_to "Full Site", root_url(:m => 0), :class => "button", :rel => "external" %>
+
+    <%= yield :toolbar %>
+  </div>
+
+  <% unless flash.empty? %>
+    <div class="info">
+      <%- flash.each do |name, msg| -%>
+        <%= content_tag :div, msg, :id => "flash_#{name}" %>
+      <%- end -%>
+    </div>
+  <% end %>
+
+  <ul>
+    <% @all_terminals.each do |terminal_id|%>
+      <li class="arrow">
+        <a href="#terminal_info_screen" data-page_name="terminal_recpt_info" data-params="terminal_id=<%=terminal_id%>"><%=terminal_id%></a>
+      </li>
+    <% end %>
+  </ul>
+  
+</div>

@@ -59,7 +59,8 @@ class OrderController < ApplicationController
   end
   
   def cash_total_history
-    @previous_cash_totals = CashTotal.all_cash_totals params[:total_type], @terminal_id
+    @last_z_total, @previous_floats = CashTotal.floats_since_last_z_total @terminal_id
+    @previous_x_totals = CashTotal.all_cash_totals CashTotal::X_TOTAL, @terminal_id
   end
   
   def sync_table_order

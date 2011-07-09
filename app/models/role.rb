@@ -1,12 +1,13 @@
 # == Schema Information
-# Schema version: 20110420190211
+# Schema version: 20110705150431
 #
 # Table name: roles
 #
-#  id         :integer(4)      not null, primary key
-#  name       :string(255)
-#  created_at :datetime
-#  updated_at :datetime
+#  id           :integer(4)      not null, primary key
+#  name         :string(255)
+#  created_at   :datetime
+#  updated_at   :datetime
+#  pin_required :boolean(1)
 #
 
 class Role < ActiveRecord::Base

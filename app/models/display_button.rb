@@ -12,7 +12,6 @@
 #
 
 class DisplayButton < ActiveRecord::Base
-
   belongs_to :display_button_group
   has_many :display_button_roles
   

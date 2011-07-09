@@ -246,6 +246,7 @@ function presetCashbackAmountClicked(amount) {
 var floatTotal = 0;
 
 function initFloatScreen() {
+    setNavTitle("Add Float");
     showNavBackLinkMenuScreen();
     
     coinCounterPosition = $('#float_coin_counter_widget_container');

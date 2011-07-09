@@ -1,0 +1,66 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "previous_sales" %>
+<% end %>
+
+<% 
+@nav_title = "Previous Sales" 
+@hide_admin_header = true
+%>
+
+<div id="admin_order_list">
+
+  <section id="orders">
+
+    <div id="receipt_buttons_section">
+      <div id="admin_order_list_receipt_header">Order</div>
+
+      <div id="admin_order_list_receipt" class="receipt">
+        <div id="admin_order_list_till_roll" class="till_roll"></div>
+      </div>
+
+      <div class="clear">&nbsp;</div>
+
+      <div id="action_buttons_container">
+        <div class="button" onclick="doVoidOrderItem();">
+          <div class="icon">
+            <%= image_tag "/images/button_logos/void_order.png" %>
+          </div>
+          <div class="button_name">Void</div>
+        </div>
+
+        <div class="clear">&nbsp;</div>
+        
+        <%= render :partial => "/partials/menu_screen_options_screen_buttons" %>
+        
+        <div class="clear">&nbsp;</div>
+        
+        <%= render :partial => "/partials/ok_cancel_buttons" %>
+
+        <div class="clear">&nbsp;</div>
+      </div>
+    </div>
+
+    <div id="order_list_section">
+      <div id="order_list_tabs">
+        <div class="tabs">
+          <div class="tab" onclick="orderListTabSelected(this, 'closed_orders')">Closed Orders</div>
+          <div class="tab" onclick="orderListTabSelected(this, 'open_orders')">Open Orders</div>
+          <div class="tab" onclick="orderListTabSelected(this, 'search_orders')">Search</div>
+        </div>
+      </div>
+
+      <div class="clear">&nbsp;</div>
+      
+      <div id="order_list_container">
+
+      </div>
+    </div>
+
+    <div style="display: none;" id="closed_orders_content"><%= render :partial => "closed_orders_content" %></div>
+    <div style="display: none;" id="open_orders_content"><%= render :partial => "open_orders_content" %></div>
+    <div style="display: none;" id="search_orders_content"><%= render :partial => "search_orders_content" %></div>
+
+    <div class="clear_top_margin_20">&nbsp;</div>
+
+  </section>
+</div>

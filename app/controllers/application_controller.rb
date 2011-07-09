@@ -1,9 +1,9 @@
 class ApplicationController < ActionController::Base
   before_filter :check_reset_session
   
-  helper_method :e, :current_employee, :print_money
+  helper_method :e, :current_employee, :print_money, :mobile_device?
   
-  before_filter :load_global_vars
+  before_filter :load_global_vars, :prepare_for_mobile
   
   include ActionView::Helpers::NumberHelper
   
@@ -184,5 +184,29 @@ class ApplicationController < ActionController::Base
     @business_address = GlobalSetting.parsed_setting_for GlobalSetting::ADDRESS
     @business_telephone = GlobalSetting.parsed_setting_for GlobalSetting::TELEPHONE
     @business_email_address = GlobalSetting.parsed_setting_for GlobalSetting::EMAIL
+    
+    @defaultDateFormat = GlobalSetting.default_date_format
+    
+    @tax_label = GlobalSetting.parsed_setting_for GlobalSetting::TAX_LABEL
   end
+  
+  def mobile_device?
+    if session[:mobile_param]
+      session[:mobile_param] == "1"
+    else
+      request.user_agent =~ /Mobile|webOS/
+    end
+  end
+  
+  def prepare_for_mobile
+    session[:mobile_param] = params[:m] if params[:m]
+    #request.format = :mobile if mobile_device?
+    
+    #load some vars if mobile devise
+    if mobile_device?
+      @all_terminals = GlobalSetting.all_terminals
+      @all_servers = Employee.all.collect(&:nickname)
+    end
+  end
+  
 end

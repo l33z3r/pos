@@ -1,17 +1,14 @@
-<div id="admin_subnav">
-  <div id="back_link" onclick="history.go(-1);"><%=image_tag "back_arrow_tiny.png"%></div>
-  <div id="back_link" onclick="history.go(1);"><%=image_tag "forward_arrow_tiny.png"%></div>
-  
-  <div class="link" onclick="goTo('<%=home_path%>#screen=menu');">
-    Menu Screen
-  </div>
-  
-  <div class="link" onclick="goTo('<%=home_path%>#screen=more_options');">
-    Options Screen
-  </div>
-  
-  <%= yield :admin_subnav_links %>
-  
-  <%= show_flash.html_safe %>
+<%= show_flash.html_safe %>
+
+<div id="admin_subnav_left">
+  <%= render :partial => "/partials/menu_screen_options_screen_buttons" %>
+
+  <%= yield :admin_subnav_links_left %>
+
 </div>
+
+<div id="admin_subnav_right">
+  <%= yield :admin_subnav_links_right %>
+</div>
+
 <div class="clear">&nbsp;</div>

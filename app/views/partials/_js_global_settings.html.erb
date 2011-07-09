@@ -5,8 +5,18 @@
   //clock format
   var clockFormat = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CLOCK_FORMAT %>";
     
+  var defaultJSDateFormat = "";
+    
+  if(clockFormat == "12") {
+    defaultJSDateFormat = "hh:mm dd/MM/yyyy";
+  } else {
+    defaultJSDateFormat = "HH:mm dd/MM/yyyy";
+  }
+  
   //is tax chargable
   var taxChargable = <%= GlobalSetting.parsed_setting_for GlobalSetting::TAX_CHARGABLE %>;
+   
+  var taxLabel = "<%= @tax_label %>";
    
   //global tax rate
   var globalTaxRate = <%= GlobalSetting.parsed_setting_for GlobalSetting::GLOBAL_TAX_RATE %>;
@@ -43,4 +53,7 @@
   
   var pollingAmount = <%= (ENV['RAILS_ENV'] == 'development') ? "1000" : "1000" %>;
   
+  var using_mobile = <%= mobile_device? ? "true" : "false" %>;
+  
+  var doBeep = <%=  GlobalSetting.parsed_setting_for GlobalSetting::DO_BEEP %>;
 </script>

@@ -44,7 +44,7 @@
     </p>
 
     <p>
-      <b>Sales tax rate:</b>
+      <b>Sales <%=@tax_label%> Rate:</b>
       <%= number_to_percentage(@product.sales_tax_rate, :precision => 0) %>
     </p>
 

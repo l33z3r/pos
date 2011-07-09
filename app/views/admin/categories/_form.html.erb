@@ -28,7 +28,7 @@
     <div class="field">
       <%= f.label :tax_rate_id %><br />
       <%= f.collection_select :tax_rate_id, TaxRate.find(:all), :id, :name_for_select, 
-        :prompt => "Select a Tax Rate", :include_blank => "Default" %>
+        :prompt => "Select a #{@tax_label} Rate", :include_blank => "Default" %>
     </div>
     <div id="actions">
       <%= f.submit %>

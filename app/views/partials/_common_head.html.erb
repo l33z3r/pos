@@ -10,13 +10,13 @@
 <!--cant cache the following scripts as they are erb templates -->
 <%= javascript_include_tag "init", "employees" %>
 
-<%= javascript_include_tag "rails", "application", "flexigrid.pack",
+<%= javascript_include_tag "rails", "application", "iphone-style-checkboxes",
   "menu", "touch-scroll", "util", "jquery.cookie", "jquery.clock",
   "jquery.plugin.menuTree.pack", "webkitdragdrop",
   "screen_button_functions", "jquery.bubblepopup", 
   "receipt_html_functions", "login_functions", "touch_util", 
   "cash_screen", "jquery-jvert-tabs-1.1.4", "cash_reports", 
-  "keyboard", :cache => "libs" %>
+  "keyboard", "dateFormat", "jquery.jplayer.min", :cache => "libs" %>
 
 <!-- only load the fingerprint libraries if the fingerprint has not yet been set -->
 <% if !request.cookies["terminal_fingerprint"] %>
@@ -32,6 +32,12 @@
 
 <!-- must set some vars from the system settings -->
 <%= render :partial => "/partials/js_global_settings" %>
+
+<!-- are we using the mobile version? -->
+<% if mobile_device? %>
+  <%= javascript_include_tag "/jqtouch/jqtouch", "mobile/mobile" %>
+  <%= stylesheet_link_tag "/jqtouch/jqtouch", "/jqtouch/themes/apple/theme", "mobile/mobile" %>
+<% end %>
 
 <%= yield :head %>
 

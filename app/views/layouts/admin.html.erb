@@ -11,7 +11,7 @@
         <%= render :partial => "/partials/nav" %>
 
         <div id="content_container">
-          <%= render :partial => "/partials/admin_nav" %>
+          <%= render :partial => "/partials/admin_nav" unless @hide_admin_header %>
 
           <%= yield %>
         </div>

@@ -1,11 +1,11 @@
 # == Schema Information
-# Schema version: 20110623063424
+# Schema version: 20110705150431
 #
 # Table name: terminal_sync_data
 #
 #  id         :integer(4)      not null, primary key
 #  sync_type  :integer(4)
-#  time       :datetime
+#  time       :string(255)
 #  data       :text
 #  created_at :datetime
 #  updated_at :datetime

@@ -19,18 +19,27 @@ $(function(){
    
 function doGlobalInit() {
     //allow scroll for dev
-    //$('body').css("overflow", "scroll");
+    $('body').css("overflow", "scroll");
     
     
+    
+    
+    //initialize the tabs and the checkboxes
+    $(".vtabs").jVertTabs();
+    $(':checkbox').iphoneStyle({
+        resizeContainer: false, 
+        resizeHandle : false, 
+        checkedLabel: 'Yes', 
+        uncheckedLabel: 'No'
+    });
+    
+    initAdminTables();
     
     setFingerPrintCookie();
     
     initMenu();
-    
     initTouch();
-
-    //the following code initializes all the flexigrid tables
-    initFlexigridTables();
+    initTouchRecpts();
     
     //init the display button passcode request popup
     $('#menu_buttons_popup_anchor').CreateBubblePopup();
@@ -41,20 +50,8 @@ function doGlobalInit() {
     if(lastSaleInfo) {
         setLoginReceipt(lastSaleInfo.title, lastSaleInfo.contentHTML)
     }
-        
-    if(current_user_id == null) {
-        showLoginScreen();
-
-        $('#clockincode_show').html("");
-        $('#num').val("");
-    } else {
-        showMenuScreen();
-        
-        //show the red x 
-        $('#nav_save_button').show();
-        
-        if(current_user_nickname != null) $('#e_name').html(current_user_nickname);
-    }
+    
+    showInitialScreen();
     
     showScreenFromHashParams();
     
@@ -63,10 +60,47 @@ function doGlobalInit() {
     });
     
     //any input that gains focus will call this function
-    $("input").live("focus", function() { lastActiveElement = $(this); });
+    $("input").live("focus", function(event) {
+        lastActiveElement = $(this);
+        
+        event = event || window.event
+ 
+ 
+        //the following was an attempt to hide the ipad keyboard but didnt work
+        if (event.preventDefault) {  // W3C variant
+            event.preventDefault()
+        } else { // IE<9 variant:
+            event.returnValue = false
+        }
+        
+    });
+    
+    if(doBeep) {
+        initBeep();
+    }
     
     //start calling home
     callHomePoll();
+}
+
+function showInitialScreen() {
+    if(using_mobile) {
+        initMobile();
+    } else {
+        if(current_user_id == null) {
+            showLoginScreen();
+
+            $('#clockincode_show').html("");
+            $('#num').val("");
+        } else {
+            showMenuScreen();
+        
+            //show the red x 
+            $('#nav_save_button').show();
+        
+            if(current_user_nickname != null) $('#e_name').html(current_user_nickname);
+        }
+    }
 }
 
 var callHomePollInitSequenceComplete = false;
@@ -74,8 +108,15 @@ var callHomePollInitSequenceComplete = false;
 function callHomePoll() {
     callHomeURL = "/call_home.js"
     
+    currentTerminalRecptHTML = "";
+    
+    if(getCurrentOrder()) {
+        currentTerminalRecptHTML = getCurrentRecptHTML();
+    }
+        
     $.ajax({
         url: callHomeURL,
+        type : "POST",
         dataType: 'script',
         success: callHomePollComplete,
         error: function() {
@@ -83,7 +124,9 @@ function callHomePoll() {
         },
         data : {
             lastInterfaceReloadTime : lastInterfaceReloadTime,
-            lastSyncTableOrderTime : lastSyncTableOrderTime
+            lastSyncTableOrderTime : lastSyncTableOrderTime,
+            currentTerminalUser : current_user_id,
+            currentTerminalRecptHTML : currentTerminalRecptHTML
         }
     });
 }
@@ -97,41 +140,6 @@ function callHomePollComplete() {
         callHomePollInitSequenceComplete = true;
         setTimeout(callHomePoll, pollingAmount);
     }
-}
-
-//admin for display buttons
-
-function displayButtonRoleAdminScreenSelect(dbr_id, checked) {
-    $.ajax({
-        type: 'POST',
-        url: '/admin/display_buttons/update_admin_screen_button_role',
-        data: {
-            id : dbr_id,
-            checked : checked
-        }
-    });
-}
-
-function displayButtonRoleAdminScreenSelectPasscode(dbr_id, checked) {
-    $.ajax({
-        type: 'POST',
-        url: '/admin/display_buttons/update_admin_screen_button_role',
-        data: {
-            id : dbr_id,
-            passcode_required : checked
-        }
-    });
-}
-
-function displayButtonRoleSalesScreenSelect(dbr_id, checked) {
-    $.ajax({
-        type: 'POST',
-        url: '/admin/display_buttons/update_sales_screen_button_role',
-        data: {
-            id : dbr_id,
-            checked : checked
-        }
-    });
 }
 
 var displayButtonForwardFunction;
@@ -309,8 +317,16 @@ function setFingerPrintCookie() {
     }
 }
 
-function initFlexigridTables() {
-    $('table').flexigrid({
-        height:'auto'
+function initAdminTables() {
+    $('.admin_table thead tr th:first').addClass('first');
+    $('.admin_table thead tr th:last').addClass('last');
+    
+    $('.admin_table tbody tr').each(function() {
+        $(this).find('td:first').addClass('first')
     });
+    $('.admin_table tbody tr').each(function() {
+        $(this).find('td:last').addClass('last')
+    });
+    
+    $('.admin_table tbody tr:odd').addClass('odd');
 }

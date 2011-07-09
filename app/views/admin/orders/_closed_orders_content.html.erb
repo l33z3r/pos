@@ -1,0 +1,129 @@
+<%= form_for([:admin, @search]) do |f| %>
+
+  <div id="hidden_form_container" style="display: none;">
+    <%= f.label :table_info_perm_id_equals, "Table" %>
+    <%= f.text_field :table_info_perm_id_equals %>
+    <%= f.label :terminal_id_equals, "Terminal" %>
+    <%= f.text_field :terminal_id_equals %>
+    <%= f.label :employee_nickname_equals, "Server" %>
+    <%= f.text_field :employee_nickname_equals %>
+    <%= f.label :created_at_gte, "Date From" %>
+    <%= f.text_field :created_at_gte, :value => @selected_from_date %>
+    <%= f.label :created_at_lte, "Date To" %>
+    <%= f.text_field :created_at_lte, :value => @selected_to_date %>
+    <%= f.submit %>
+  </div>
+
+  <div id="date_select_container">
+    <div class="date_box">
+      <div class="label">Date From:</div>
+      <div class="date_select">
+        <input type="text" size="8" id="date_from" name="date_from"
+               value="<%=@selected_from_date%>"/>
+      </div>
+    </div>
+    <div class="date_box">
+      <div class="label">To:</div>
+      <div class="date_select">
+        <input type="text" size="8" id="date_to" name="date_to"
+               value="<%=@selected_to_date%>"/>
+      </div>
+    </div>
+    <div class="today_button" onclick="todayButtonClicked()">
+      <div class="button">Today</div>
+    </div>
+    
+    <div class="clear">&nbsp;</div>
+  </div>
+
+  <div class="clear">&nbsp;</div>
+
+  <table id="order_list" class="admin_table">
+    <thead>
+      <tr>
+        <th width="90"><%= sort_link @search, :created_at, "Date & Time" %></th>
+        <th width="65">Order No.</th>
+
+        <th width="80">
+    <div class="label">Tables</div>
+    <div class="dropdown_container">
+      <select onchange="addTableFilter($(this).val())" id="table_dropdown">
+        <option value="">All</option>
+        <% Room.all.each do |room|%>
+          <optgroup label="<%=room.name%>">
+            <% room.table_infos.each do |table_info| %>
+              <option value="<%= table_info.perm_id %>" <%=params[:search] and params[:search][:table_info_perm_id_equals] == table_info.perm_id ? 'selected' : ''%>><%= table_info.perm_id %></option>
+            <% end %>
+          </optgroup>
+        <% end %>
+      </select>
+    </div>
+  </th>
+
+  <th width="90">
+  <div class="label">Terminal</div>
+  <div class="dropdown_container">
+    <select onchange="addTerminalFilter($(this).val())" id="terminal_dropdown">
+      <option value="">All</option>
+      <% @all_terminals.each do |terminal_id|%>
+        <option value="<%= terminal_id %>" <%=params[:search] and params[:search][:terminal_id_equals] == terminal_id ? 'selected' : ''%>><%= terminal_id %></option>
+      <% end %>
+    </select>
+  </div>
+  </th>
+
+  <th width="90">
+  <div class="label">Server</div>
+  <div class="dropdown_container">
+    <select onchange="addServerFilter($(this).val())" id="server_dropdown">
+      <option value="">All</option>
+      <% @all_servers.each do |server_nickname|%>
+        <option value="<%= server_nickname %>" <%=params[:search] and params[:search][:employee_nickname_equals] == server_nickname ? 'selected' : ''%>><%= server_nickname %></option>
+      <% end %>
+    </select>
+  </div>
+  </th>
+
+  <th width="80">Total Amount</th>
+  </tr>
+  </thead>
+
+  <tbody>
+
+    <tr>
+      <td colspan="6" id="pagination_links_top">
+        <div class="pagination_links">
+          <div class="links">
+            <%= will_paginate @orders %>
+          </div>
+        </div>
+      </td>
+    </tr>
+
+    <% @orders.each do |order| %>
+      <tr>
+        <td><%= link_to_function order.created_at.strftime(@defaultDateFormat), "orderSelected(#{order.id})" %></td>
+        <td><%= link_to_function order.id, "orderSelected(#{order.id})" %></td>
+        <td><%= order.is_table_order ? order.table_info.perm_id : "None" %></td>
+        <td><%= order.terminal_id %></td>
+        <td><%= order.employee.nickname %></td>
+        <td><%= print_money order.total %></td>
+      </tr>
+    <% end %>
+
+    <tr>
+      <td colspan="6" id="pagination_links_top">
+        <div class="pagination_links">
+          <div class="links">
+            <%= will_paginate @orders %>
+          </div>
+          <div class="info">
+            <%= page_entries_info @orders %>
+          </div>
+        </div>
+      </td>
+    </tr>
+
+  </tbody>
+  </table>
+<% end %>

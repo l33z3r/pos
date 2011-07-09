@@ -1,11 +1,30 @@
 function doQuickLogin(user_id) {
-    if(bypassPin) {
-        for (var i = 0; i < employees.length; i++){
-            id = employees[i].id;
-            if(id == user_id) {
-                login_code = employees[i].passcode;
-            }
+    //load the users index in the array
+    for (var i = 0; i < employees.length; i++){
+        id = employees[i].id;
+        if(id == user_id) {
+            user_index = i;
+            break;
         }
+    }
+        
+    //check the global setting first to see if the user can log in without a pin
+    //if this setting is set to false, then it overrides all granular settings
+    //if it is true, then check the role of the user
+    
+    var allowedQuickLogin = null;
+    
+    if(bypassPin) {
+        //check the users role
+        rolePinRequired = employees[user_index].pin_required;
+        
+        allowedQuickLogin = !rolePinRequired;
+    } else {
+        allowedQuickLogin = false;
+    }
+    
+    if(allowedQuickLogin) {
+        login_code = employees[user_index].passcode;
         $('#num').val(login_code);
         doLogin();
     } else {

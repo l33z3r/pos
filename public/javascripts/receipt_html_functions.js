@@ -109,7 +109,7 @@ function fetchFinalReceiptHTML() {
 function fetchTotalsHTMLWithTaxChargable() {
     //write the tax total
     taxAmount = ((subTotal - discountAmount) * globalTaxRate)/100;
-    totalsHTML = "<div class='label'>Sales Tax " + globalTaxRate + "%:</div><div class='data'>" + currency(taxAmount) + "</div>" + clearHTML;
+    totalsHTML = "<div class='label'>" + taxLabel + " " + globalTaxRate + "%:</div><div class='data'>" + currency(taxAmount) + "</div>" + clearHTML;
         
     totalsHTML += fetchServiceChargeHTML();
     
@@ -151,7 +151,7 @@ function fetchFinalReceiptHeaderHTML() {
     headerHTML = "<div class='data_table'>";
     headerHTML += "<div class='label'>Server:</div><div class='data'>" + current_user_nickname + "</div>" + clearHTML;
     
-    timestamp = $('#clock').html();
+    timestamp = utilFormatDate(new Date());
     headerHTML += "<div class='label'>Time:</div><div class='data'>" + timestamp + "</div>" + clearHTML;
     
     if(selectedTable!=0) {
@@ -249,4 +249,8 @@ function displayLastReceipt() {
     //set the select item
     $('#table_select').val(lastReceiptID);
     doSelectTable(lastReceiptID);
+}
+
+function getCurrentRecptHTML() {
+    return fetchOrderReceiptHTML();
 }

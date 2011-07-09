@@ -4,15 +4,20 @@
   <%= stylesheet_link_tag "menu_builder"  %>
 <% end %>
 
-<% content_for :admin_subnav_links do %>
-  <div class="link">
-    <%=link_to "Display List", admin_displays_path %>
+<% content_for :admin_subnav_links_left do %>
+  <div class="button" onclick="goTo('<%=admin_displays_path%>');">
+    <div class="icon">
+      <%= image_tag "/images/button_logos/sales_screen_list_button.png" %>
+    </div>
+    <div class="button_name">Display List</div>
   </div>
 <% end %>
 
-<div id="display_builder">
-
+<% content_for :admin_subnav_links_right do %>
   <%= render :partial => "/partials/terminal_reload_request" %>
+<% end %>
+
+<div id="display_builder">
 
   <section id="header">
 

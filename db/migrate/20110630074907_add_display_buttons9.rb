@@ -1,6 +1,6 @@
 class AddDisplayButtons9 < ActiveRecord::Migration
   def self.up
-    DisplayButton.create({:button_text => "Reports", :perm_id => 47})
+    DisplayButton.create({:button_text => "Previous Sales", :perm_id => 47})
   end
 
   def self.down

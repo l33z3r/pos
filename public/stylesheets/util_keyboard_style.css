@@ -19,6 +19,16 @@
     border: 1px solid #CCC;
 }
 
+#util_keyboard_inner_container div#close_keyboard_link {
+    float: right;
+    cursor: pointer;
+    margin-right: 4px;
+}
+
+#util_keyboard_inner_container div#close_keyboard_link img {
+    height: 25px;
+}
+
 #write {
     /*
     margin: 0 0 5px;

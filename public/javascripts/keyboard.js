@@ -35,14 +35,22 @@ $(function(){
         if ($this.hasClass('delete')) {
             var html = $write.html();
 			
-            $write.html(html.substr(0, html.length - 1));
+            //$write.html(html.substr(0, html.length - 1));
+            doDeleteCharLastActiveInput();
             return false;
         }
 		
         // Special characters
         if ($this.hasClass('symbol')) character = $('span:visible', $this).html();
         if ($this.hasClass('space')) character = ' ';
-        if ($this.hasClass('tab')) character = "\t";
+        
+        //tab
+        if ($this.hasClass('tab')) {
+            //character = "\t";
+            doTabLastActiveInput();
+            return false;
+        }
+        
         if ($this.hasClass('return')) character = "\n";
 		
         // Uppercase letter

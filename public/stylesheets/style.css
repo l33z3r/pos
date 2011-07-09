@@ -101,6 +101,9 @@ div#wrapper {
     width: 1020px;
     margin: auto;
     text-align: center;
+    background-color: #e0e0e0;
+    height: 770px;
+    overflow: hidden;
 }
 
 div.wrapper div {
@@ -112,8 +115,7 @@ div.wrapper div td {
 }
 
 div#content_container {
-    background-color: #e0e0e0;
-    min-height: 728px;
+
 }
 
 header {
@@ -129,27 +131,6 @@ header div#logo {
     font-weight: bold;
     margin-top: 20px;
     margin-left: 20px;
-}
-
-div#terminal_reload_notice {
-    width: 670px;
-    margin: 10px auto;
-    clear: both;
-    border: 1px solid #CCC;
-    padding: 6px;
-}
-
-div#terminal_reload_notice div#notice {
-    float: left;
-    width: 65%;
-    text-align: justify;
-}
-
-div#terminal_reload_notice div#button_container {
-    float: left;
-    margin-left: 10px;
-    width: 30%;
-    margin-top: 5px;
 }
 
 span#reload_message {
@@ -357,46 +338,66 @@ div#landing div#login_receipt_keypad_container div#entered_code_container div#cl
 
 /* Admin Global */
 
-div#admin_subnav {
-    margin: 6px;
-    padding-top: 5px;
-}
-
-div#admin_subnav div.link {
-    float: left;
+div#admin_subnav_left {
+    margin-top: 3px;
     margin-left: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    padding: 6px;
-    border: 2px outset #AAA;
-    -moz-border-radius: 4px;
-    border-radius: 4px;  
-    box-shadow: 1px 1px 3px #CCC;
-    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
-    background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
-}
-
-div#admin_subnav div.link a {
-    text-decoration: none;
-    color: #000;
-}
-
-div#admin_subnav div.link a:hover {
-    text-decoration: none;
-    color: #000;
-}
-
-div#admin_subnav div#back_link,
-div#admin_subnav div#forward_link{
+    border-spacing: 7px;
     float: left;
-    margin-right: 4px;
-    cursor: pointer;
-    height: 32px;
 }
 
-div#admin_subnav div#back_link img,
-div#admin_subnav div#forward_link img {
-    height: 32px;
+div#admin_subnav_right {
+    margin-top: 3px;
+    margin-right: 5px;
+    border-spacing: 7px;
+    float: right;
+}
+
+table.admin_table {
+    border-spacing: 0px;
+    border: 1px solid #CCCCCC;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    background: #FFF;
+    margin: auto;
+    min-width: 805px;
+}
+
+table.admin_table thead {
+    background: -moz-linear-gradient(#D8D8D8, #848484) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#848484));
+}
+
+table.admin_table thead tr th {
+    color: #000;
+    margin-bottom: 2px;
+    padding: 8px 4px;
+}
+
+table.admin_table thead tr th.first {
+    text-align: left;
+}
+
+table.admin_table tbody tr td {
+    text-align: center;
+    padding: 6px 2px;
+    border-right: 1px solid #CCC;
+}
+
+table.admin_table tbody tr td.text_align_left {
+    text-align: left;
+}
+
+table.admin_table tbody tr td.last {
+    border-right-width: 0px;
+}
+
+table.admin_table tbody tr td.first {
+    text-align: left;
+    font-weight: bold;
+}
+
+table.admin_table .odd {
+    background: #E0E0E0;
 }
 
 /* Admin Global */
@@ -832,7 +833,7 @@ div#edit_category section#form_container form div#actions input {
 /* Admin Displays Page */
 
 div#admin_display_list section#displays {
-    width: 490px;
+    width: 820px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -968,6 +969,136 @@ div#new_room section#form_container form div#actions input {
 
 /* End Admin Rooms Page */
 
+/* Admin Order List Page */
+
+div#admin_order_list {
+
+}
+
+div#admin_order_list section#orders div#receipt_buttons_section {
+    border: 1px solid #CCCCCC;
+    border-radius: 7px 7px 7px 7px;
+    float: left;
+    width: 265px;
+}
+
+div#admin_order_list section#orders div#receipt_buttons_section div#action_buttons_container {
+    width: 168px;
+    margin: 20px auto;
+    border-spacing: 7px;
+}
+
+div#admin_order_list section#orders div#order_list_section {
+    border: 1px solid #CCCCCC;
+    border-radius: 7px 7px 7px 7px;
+    float: left;
+    width: 740px;
+}
+
+div#admin_order_list section#orders div#order_list_section div#order_list_tabs {
+    background-color: #B4B4B4;
+    border-spacing: 2px;
+    margin-bottom: -4px;
+}
+
+div#admin_order_list section#orders div#order_list_section div#order_list_tabs div.tab {
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    border: 1px solid #AAAAAA;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    cursor: pointer;
+    display: table-cell;
+    height: 55px;
+    margin: 1px;
+    text-align: center;
+    vertical-align: middle;
+    width: 88px;
+    font-weight: bold;
+}
+
+div#admin_order_list section#orders div#order_list_section div#order_list_tabs div.tab.selected {
+    background: -moz-linear-gradient(#F8F8F8, #E0E0E0) repeat scroll 0 0 transparent;
+    border-bottom-width: 0;
+}
+
+div#admin_order_list section#orders div#order_list_section div#order_list_container {
+    background-color: #E0E0E0;
+}
+
+div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container {
+    margin: 6px 10px;
+    float: right;
+}
+
+div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container div.date_box {
+    float: left;
+}
+
+div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container div.date_box div.label {
+    float: left;
+    padding-top: 6px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container div.date_box div.date_select {
+    float: left;
+}
+
+div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container div.date_box div.date_select input {
+    margin-right: 20px;
+}
+
+div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container div.today_button {
+    float: left;
+}
+
+div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container div.today_button div.button {
+    padding-top: 2px;
+    height: 25px;
+    width: 150px;
+}
+
+div#admin_order_list section#orders div#receipt_buttons_section div#admin_order_list_receipt {
+    height: 405px;
+    overflow-y: auto;
+    display: block;
+    background-color: #FFF;
+    padding-top: 2px;
+}
+
+div#admin_order_list section#orders div#receipt_buttons_section div#admin_order_list_receipt_header {
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+    border: 1px solid #AAA;
+    padding: 2px;
+    font-weight: bold;
+    font-size: 14px;
+    height: 15px;
+}
+
+div#admin_order_list section#orders table#order_list {
+    min-width: 720px;
+}
+
+div#admin_order_list section#orders table#order_list a.sort_link {
+    color: #000;
+}
+
+div#admin_order_list section#orders table#order_list div.label {
+    text-align: left;
+}
+
+div#admin_order_list section#orders table#order_list div.dropdown_container {
+    text-align: left;
+}
+
+div#admin_order_list section#orders select {
+    max-width: 100px;
+}
+
+/* Admin Order List Page */
+
 /* Main Menu Screen */
 
 nav#main_nav {
@@ -981,19 +1112,27 @@ nav#main_nav {
 }
 
 nav#main_nav div#nav_back_link,
+nav#main_nav div#admin_nav_back_link,
 nav#main_nav div#business_name,
 nav#main_nav div#e_name,
 nav#main_nav div#terminal_id,
 nav#main_nav div#clock,
-nav#main_nav div#date {
+nav#main_nav div#date,
+nav#main_nav div#nav_title {
     float: left;
-    padding: 2px 6px;
+    padding: 2px 1px;
     border-right: 1px solid #DDD;
     color: #FFF;
     min-width: 100px;
 }
 
-nav#main_nav div#nav_back_link {
+nav#main_nav div#nav_title {
+    display: none;
+    padding: 2px 8px;
+}
+
+nav#main_nav div#nav_back_link,
+nav#main_nav div#admin_nav_back_link{
     cursor: pointer;
 }
 
@@ -1017,7 +1156,7 @@ nav#main_nav div#nav_util_button {
     height: 22px;
     float: right;
     cursor: pointer;
-    margin-right: 10px;
+    margin-right: 20px;
     margin-top: -3px;
 }
 
@@ -1046,9 +1185,12 @@ div#menu_screen div#menu_pages_container {
     border-radius: 7px; 
 }
 
+div.global_status_message_container {
+    width: -moz-fit-content;
+    margin: 1px auto 0px auto;
+}
+
 div.global_status_message {
-    float: left;
-    margin: 1px 3px 0px 3px;
     padding: 2px 5px;
     background-color: #FFF;
     -moz-border-radius: 3px;
@@ -1117,10 +1259,6 @@ div#menu_screen div#menu_pages_container div#menu_items_container {
     background-color: #E0E0E0;
 }
 
-div#menu_screen div#menu_pages_container div#menu_buttons_popup_anchor {
-    height: 0px;
-}
-
 div#menu_screen div#menu_pages_container div#menu_buttons {
     border-spacing: 3px;
     height: 159px;
@@ -1149,6 +1287,12 @@ div.button {
     box-shadow: 0px 1px 0px #777;
     background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+
+div.button.selected {
+    background: -moz-linear-gradient(#C1C1C1, #101010) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#C1C1C1), to(#101010));
+    color: #FFF;
 }
 
 div.button div.icon img {
@@ -1252,7 +1396,29 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 
 /* Cash Reports Screen */
 
-div#cash_reports_screen div#receipt_keypad_container div#cash_reports_receipt_header {
+div#cash_reports_screen div#coin_counter_keypad_container {
+    width: 325px;
+    float: left;
+    border: 1px solid #CCC;
+    -moz-border-radius: 7px;
+    border-radius: 7px; 
+}
+
+div#cash_reports_screen div#coin_counter_keypad_container div.keypad {
+    width: 280px;
+    margin: auto;
+    margin-top: 14px;
+}
+
+div#cash_reports_screen div#coin_counter_keypad_container div#coin_counter_container div#reports_coin_counter_widget_container {
+    margin: 30px 0px;
+}
+
+div#cash_reports_screen div#coin_counter_keypad_container div#coin_counter_container div#coin_counter_popout {
+    width: 320px;
+}
+
+div#cash_reports_screen div#receipt_report_container div#cash_reports_receipt_header {
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
     border: 1px solid #AAA;
@@ -1262,8 +1428,15 @@ div#cash_reports_screen div#receipt_keypad_container div#cash_reports_receipt_he
     height: 15px;
 }
 
+div#reports_left_receipt_container {
+    float: left;
+    width: 300px;
+    margin-left: 8px;
+
+}
+
 div#cash_reports_screen div#reports_left_receipt {
-    height: 379px;
+    height: 617px;
     overflow-y: auto;
     display: block;
     background-color: #FFF;
@@ -1271,10 +1444,10 @@ div#cash_reports_screen div#reports_left_receipt {
 }
 
 div#cash_reports_screen div#reports_left_receipt div#reports_left_till_roll {
-    height: 350px;
     display: block;
     background-color: #FFF;
     padding: 5px;
+    padding-left: 25px;
 }
 
 div#cash_reports_screen div#reports_left_receipt div#reports_left_till_roll div.data_table_header {
@@ -1283,152 +1456,156 @@ div#cash_reports_screen div#reports_left_receipt div#reports_left_till_roll div.
     font-weight: bold;
 }
 
-div#cash_reports_screen div#report_coin_counter_container {
-    width: 740px;
+div#reports_left_receipt_container div.action_buttons_container {
+    border: 1px solid #CCCCCC;
+    border-radius: 7px 7px 7px 7px;
+    margin: auto;
+    margin-top: 4px;
+}
+
+div#reports_left_receipt_container div.action_buttons {
+    width: 255px;    
+    margin: auto;
+    border-spacing: 7px;
+}
+
+div#cash_reports_screen div#receipt_report_container {
+    width: 690px;
     float: right;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt {
     border: 1px solid #000;
     background-color: #FFF;
     width: 360px;
-    height: 660px;
+    height: 733px;
     overflow-y: auto;
     display: block;
     float: left;
+    margin-left: 8px;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll {
     background-color: #FFF;
     padding: 20px;
     display: block;
     height: 630px;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section {
     margin: 20px 0px;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_name {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_name {
     font-weight: bold;
     font-size: 13px;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_address {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_address {
     font-size: 13px;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_telephone {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_telephone {
     font-size: 13px;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_email_address {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_email_address {
     font-size: 13px;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table_header {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table_header {
     font-weight: bold;
     font-size: 14px;
     margin: 3px;
     margin-top: 15px;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table {
     margin-top: 10px;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table div.label {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table div.label {
     float: left;
     text-align: left;
     width: 180px;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table div.data {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table div.data {
     float: left;
     text-align: right;
     width: 120px;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table {
     margin-top: 5px;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table div.totals_label {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table div.totals_label {
     float: left;
     text-align: left;
     width: 180px;
     font-weight: bold;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table div.totals_data {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table div.totals_data {
     float: left;
     text-align: right;
     width: 120px;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table {
     margin-top: 10px;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_header {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_header {
     width: 75px;
     float: left;
     text-align: right;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_label_header {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_label_header {
     width: 75px;
     float: left;
     text-align: left;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_label {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_label {
     float: left;
     text-align: left;
     width: 75px;
     font-weight: bold;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data {
     float: left;
     text-align: right;
     width: 75px;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table {
     margin-top: 5px;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_label {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_label {
     float: left;
     text-align: left;
     width: 75px;
     font-weight: bold;
 }
 
-div#cash_reports_screen div#report_coin_counter_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_data {
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_data {
     float: left;
     text-align: right;
     width: 75px;
-}
-
-div#cash_reports_screen div#report_coin_counter_container div#coin_counter_container {
-
-}
-
-div#cash_reports_screen div#report_coin_counter_container div#coin_counter_container div#coin_counter {
-    width: 365px;
-    float: left;
-}
-
-div#cash_reports_screen div#report_coin_counter_container div#coin_counter_container div#coin_counter div#finish_cash_total_action_button {
-    width: 100px;
-    padding: 0px 10px;
 }
 
 /* End Cash Reports Screen */
 
 /* Float Screen */
+
+div#float_screen div#receipt_keypad_container {
+    width: 325px;
+}
 
 div#float_screen div#receipt_keypad_container div#float_receipt_header {
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
@@ -1441,7 +1618,7 @@ div#float_screen div#receipt_keypad_container div#float_receipt_header {
 }
 
 div#float_screen div#receipt_keypad_container div#float_receipt {
-    height: 379px;
+    height: 410px;
     overflow-y: auto;
     display: block;
     background-color: #FFF;
@@ -1451,6 +1628,7 @@ div#float_screen div#receipt_keypad_container div#float_receipt {
 div#float_screen div#receipt_keypad_container div#float_till_roll {
     height: 350px;
     padding: 5px;
+    padding-left: 40px;
     display: block;
     background-color: #FFF;
 }
@@ -1461,9 +1639,19 @@ div#float_screen div#receipt_keypad_container div#float_till_roll div.data_table
     font-weight: bold;
 }
 
+div#float_screen div#receipt_keypad_container div.keypad {
+    width: 280px;
+    margin: auto;
+    margin-top: 14px;
+}
+
 div#float_screen div#coin_counter_container {
     float: right;
-    width: 740px;
+    width: 680px;
+}
+
+div#float_screen div#coin_counter_container div#coin_counter {
+    margin-top: 110px;
 }
 
 /* End Float Screen */
@@ -1499,9 +1687,30 @@ div.keypad div.keys div {
     background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
 }
 
-div.keypad div.keys div.pad {
-    border: none;
-    background-color: transparent;
+div.keypad div.keys div.tab_key img {
+    height: 23px;
+}
+
+div.keypad div.left_keys_container {
+    float: left;
+    width: 207px;
+}
+
+div.keypad div.right_keys_container div.keys {
+    float: left;
+    width: 72px;
+}
+
+div.keypad div.left_keys_container div.keypad_num_0 {
+    width: 132px;
+}
+
+div.keypad div.right_keys_container div.keys div.key {
+    height: 108px;
+}
+
+div#menu_screen div#receipt_keypad_container div#menu_buttons_popup_anchor {
+    height: 0px;
 }
 
 /* End keypad */
@@ -1544,13 +1753,13 @@ div.receipt div.till_roll div.data_table {
 div.receipt div.till_roll div.data_table div.label {
     float: left;
     text-align: left;
-    width: 130px;
+    width: 117px;
 }
 
 div.receipt div.till_roll div.data_table div.data {
     float: left;
     text-align: right;
-    width: 112px;
+    width: 125px;
     font-weight: bold;
 }
 
@@ -2015,7 +2224,7 @@ div.popup_container div.action_buttons div.button {
 /* End Generic Dialog Styling */
 
 div.popout_dialog {
-    width: 350px;
+    width: 390px;
     margin: auto;
     border: 1px solid #CCC;
     -moz-border-radius: 7px;
@@ -2034,15 +2243,12 @@ div.popout_dialog div.header {
     background: -moz-linear-gradient(#737373, #000000) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#737373), to(#000000));
     color: #FFF;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
     padding: 8px;
     margin-bottom: 5px;
-    
-    
     border-top-left-radius: 7px;
     border-top-right-radius: 7px;
-    
     -moz-border-top-left-radius: 7px;
     -moz-border-top-right-radius: 7px;
 }
@@ -2057,7 +2263,7 @@ div#total_screen div#payment_options_money_info_container {
 }
 
 div#total_screen div#totals_receipt {
-    height: 380px;
+    height: 425px;
     background-color: white;
     overflow-y: auto;
     display: block;
@@ -2090,7 +2296,7 @@ div#total_screen div#payment_options_money_info_container div#payment_options_se
 
 div#total_screen div#payment_options_money_info_container div#tender_section {
     margin-bottom: 10px;
-    height: 490px;
+    height: 535px;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container {
@@ -2099,7 +2305,7 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout {
-    margin-top: 60px;    
+    margin-top: 115px;    
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#payment_method_header div#selected_payment_method_holder {
@@ -2116,6 +2322,7 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table {
     text-align: left;
     margin: 5px 17px;
+    line-height: 16px;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.label {
@@ -2161,6 +2368,7 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
     border: 1px solid #CCC;
     -moz-border-radius: 7px;
     border-radius: 7px;
+    margin-top: 20px;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#money_helper_section div.money {
@@ -2179,22 +2387,43 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#money_helper_section div.money img {
     width: 120px;
+    box-shadow: 2px 2px 3px #777777;
 }
 
-div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons {
-    border-spacing: 7px;
+div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons_container {
     border: 1px solid #CCC;
     -moz-border-radius: 7px;
-    border-radius: 7px; 
+    border-radius: 7px;
     margin-bottom: 10px;
 }
 
+div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons_container div#totals_screen_misc_buttons_left {
+    border-spacing: 7px;
+    float: left;
+}
+
+div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons_container div#totals_screen_misc_buttons_right {
+    border-spacing: 7px;
+    float: right;
+}
+
+div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons_container div#totals_screen_misc_buttons_right div#toggle_print_receipt_button {
+    max-width: 120px;
+    width: 120px;
+}
+
+div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons_container div#totals_screen_misc_buttons_right div#toggle_print_receipt_button img {
+    max-height: 50px;
+    height: 50px;
+    max-width: 90px;
+    width: 90px;
+}
 /* End Totals Screen */
 
 /* Admin Role Page */
 
 div#admin_role_list section#roles {
-    width: 250px;
+    width: 330px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -2287,31 +2516,19 @@ div#edit_role section#form_container form div#actions input {
 /* Admin Display Buttons Page */
 
 div#admin_display_buttons section#display_buttons {
-    width: 530px;
+    width: 990px;
     margin-left: auto;
     margin-right: auto;
 }
 
-div#admin_display_buttons section#display_buttons h3.button_group_header {
-    text-align: left;
-}
-
-div#admin_display_buttons section#display_buttons div.display_button_list_container {
-    display: none;
-}
-
-div#admin_display_buttons section#display_buttons h3.button_group_header a {
-    text-decoration: none;
-}
-
 div#edit_display_buttons section#display_buttons {
-    width: 560px;
+    width: 990px;
     margin-left: auto;
     margin-right: auto;
 }
 
 div#edit_display_buttons section#display_buttons div.container {
-    display: none;
+
 }
 
 div#edit_display_buttons section#display_buttons h3.edit_display_buttons_header {
@@ -2337,7 +2554,7 @@ div#edit_display_buttons section#display_buttons div#actions div {
 /* Global Settings Page */
 
 div#edit_global_settings section#global_settings {
-    width: 760px;
+    width: 990px;
     margin: auto;
 }
 
@@ -2354,7 +2571,7 @@ div#edit_global_settings section#global_settings div#actions {
 }
 
 div#edit_global_settings section#global_settings div.container {
-    display: none;
+
 }
 
 div#edit_global_settings section#global_settings div.container h4 {
@@ -2370,11 +2587,11 @@ div#edit_global_settings section#global_settings div.container div.business_logo
     width: 100px;
 }
 
-div#edit_global_settings section#global_settings div.container#payment_methods_section div.payment_method_logo {
+div#edit_global_settings section#global_settings div.container.payment_methods_section div.payment_method_logo {
     float: left;
 }
 
-div#edit_global_settings section#global_settings div.container#payment_methods_section div.payment_method_logo img {
+div#edit_global_settings section#global_settings div.container.payment_methods_section div.payment_method_logo img {
     width: 30px;
     height: 30px;
 }
@@ -2428,6 +2645,24 @@ div#edit_theme_settings section#theme_settings div#global_font_color_container i
 }
 
 /* End Theme Settings Page */
+
+/* X/Z Reports Screen */
+
+div#edit_cash_total_options section#cash_total_options {
+    width: 990px;
+    margin: auto;
+}
+
+div#edit_cash_total_options section#cash_total_options table#report_section_list {
+    width: 600px;
+    margin: auto;
+}
+
+div#edit_cash_total_options section#cash_total_options table {
+    margin-bottom: 20px;
+}
+
+/* X/Z Reports Screen */
 
 /* Display Button Passcode Popup */
 
@@ -2585,12 +2820,12 @@ div.modifier_category_popup div.modifier_choices div.modifier div.price {
 /* Options Screen */
 
 div#options_screen {
-    margin-top: 6px;
+
 }
 
 div#options_screen div#options_screen_menu_buttons {
     border-spacing: 7px;
-    padding: 10px 15px;
+    padding: 5px;
     height: 720px;
 }
 
@@ -2602,18 +2837,8 @@ div#table_select_screen div#room_list {
     margin: 10px 0px;
 }
 
-div#table_select_screen div#room_list div.room_name {
-    margin-right: 10px;
-    float: left;
-    width: 150px;
-    cursor: pointer;
-    padding: 2px 4px;
-    border: 2px outset #AAA;
-    -moz-border-radius: 4px;
-    border-radius: 4px;  
-    box-shadow: 1px 1px 3px #CCC;
-    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
-    background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
+div#table_select_screen div#room_list div#room_buttons {
+    border-spacing: 7px;
 }
 
 div#table_select_screen div#room_list div.selected {
@@ -2625,8 +2850,8 @@ div#table_select_screen div#room_layout {
     position: relative;
     border: 1px solid #CCC;
     width: 990px;
-    margin: 20px auto auto auto;
-    height: 600px;
+    margin: 5px auto 15px auto;
+    max-height: 600px;
     background: transparent url("/images/room_builder/wooden_floor_small.png") repeat left top;
 }
 
@@ -2732,8 +2957,17 @@ div#coin_counter_widget div#or_container {
 }
 
 div#coin_counter_widget div#coin_counter_table {
-    width: 220px;
+    width: 310px;
     margin: auto;
+}
+
+div#coin_counter_widget div#coin_counter_table div#column_container {
+    margin: 30px 0px;
+}
+
+div#coin_counter_widget div#coin_counter_table div#column_container div.column {
+    float: left;
+    width: 155px;
 }
 
 div#coin_counter_widget div#coin_counter_table div.row {
@@ -2743,20 +2977,33 @@ div#coin_counter_widget div#coin_counter_table div.row {
 
 div#coin_counter_table div.row_header {
     text-align: left;
-    margin-bottom: 10px;
+    margin-bottom: 2px;
     height: 25px;
 }
 
 div#coin_counter_table div.row_header div {
-    text-align: left;
+    text-align: right;
     font-weight: bold;
     float: left;
-    width: 70px;
+    width: 60px;
+}
+
+div#coin_counter_table div.row_header div.unit_header {
+    width: 40px;
+}
+
+div#coin_counter_table div.row_header div.quantity_header {
+    text-align: center;
+    width: 50px;
+}
+
+div#coin_counter_table div.row_header div.amount_header {
+    text-align: center;
 }
 
 div#coin_counter_table div.row_footer {
     text-align: left;
-    margin-bottom: 10px;
+    margin: 10px 0px;
     height: 25px;
 }
 
@@ -2776,15 +3023,16 @@ div#coin_counter_table div.row div {
     font-weight: bold;
     float: left;
     text-align: right;
-    width: 70px;
+    width: 60px;
 }
 
 div#coin_counter_table div.row div.unit {
-
+    width: 40px;
 }
 
 div#coin_counter_table div.row div.quantity {
     margin-top: -5px; 
+    width: 50px;
 }
 
 div#coin_counter_table div.row div.amount {
@@ -2805,6 +3053,11 @@ div#coin_counter_widget_container {
 
 div#menu_screen_default_popup_anchor, 
 div#totals_screen_default_popup_anchor {
+    height: 0px;
+}
+
+div#js_player {
+    width: 0px;
     height: 0px;
 }
 

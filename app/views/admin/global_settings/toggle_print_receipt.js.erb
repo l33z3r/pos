@@ -1,2 +1,9 @@
-$('#toggle_print_receipt_value').html("<%=@gs.parsed_value ? "On" : "Off" %>");
+<% if @gs.parsed_value %>
+  $('#toggle_print_receipt_button_img').attr("src", "/images/toggle_receipt_on_button.png");
+  $('#toggle_print_receipt_button').addClass('selected');
+<% else %>
+  $('#toggle_print_receipt_button_img').attr("src", "/images/toggle_receipt_off_button.png");
+  $('#toggle_print_receipt_button').removeClass('selected');
+<% end %>
+
 autoPrintReceipt = <%=@gs.parsed_value%>;

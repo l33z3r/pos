@@ -21,13 +21,6 @@ function initMenu() {
     currentMenuPage = 1;
     currentOrder = new Array();
 
-    $('#till_roll').touchScroll();
-    $('#login_till_roll').touchScroll();
-    $('#totals_till_roll').touchScroll();
-    $('#reports_center_till_roll').touchScroll();
-    $('#reports_left_till_roll').touchScroll();
-    $('#float_till_roll').touchScroll();
-
     loadCurrentOrder();
     displayLastReceipt();
     initOptionButtons();
@@ -646,6 +639,17 @@ function loadReceipt(order) {
     menuRecptScroll();
 }
 
+function initTouchRecpts() {
+    $('#till_roll').touchScroll();
+    $('#login_till_roll').touchScroll();
+    $('#totals_till_roll').touchScroll();
+    $('#reports_center_till_roll').touchScroll();
+    $('#reports_left_till_roll').touchScroll();
+    $('#float_till_roll').touchScroll();
+    $('#admin_order_list_till_roll').touchScroll();
+    $('#mobile_till_roll').touchScroll();
+}
+
 function loginRecptScroll() {
     recptScroll("login_");
 }
@@ -668,6 +672,14 @@ function reportsLeftRecptScroll() {
 
 function floatRecptScroll() {
     recptScroll("float_");
+}
+
+function adminOrderListRecptScroll() {
+    recptScroll("admin_order_list_");
+}
+
+function mobileRecptScroll() {
+    recptScroll("mobile_");
 }
 
 function recptScroll(targetPrefix) {
@@ -1161,7 +1173,7 @@ function getCurrentOrder() {
         return tableOrders[selectedTable];
     }
     
-    return nil;
+    return null;
 }
 
 function currentOrderEmpty(){

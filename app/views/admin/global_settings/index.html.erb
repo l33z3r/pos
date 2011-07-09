@@ -2,628 +2,619 @@
   <% content_for :head do %>
     <script type="text/javascript">
       $(function() {
-        el = $('#<%=params[:section]%>_section');
-        if(el) {
-          el.slideToggle();
-        }
+        $('#<%=params[:section]%>_section_link').click();
       });
     </script>
   <% end %>
 <% end %>
 
-<div id="edit_global_settings">
+<% 
+@nav_title = "System Settings" 
+%>
 
+<% content_for :admin_subnav_links_right do %>
+  <%= render :partial => "/partials/ok_cancel_buttons" %>
   <%= render :partial => "/partials/terminal_reload_request" %>
+<% end %>
+
+<div id="edit_global_settings">
 
   <section id="global_settings">
 
-    <h3>System Settings</h3>
+    <div id="report_option_tabs" class="vtabs report_option_tabs">
 
-    <div class="clear">&nbsp;</div>
+      <div>
+        <ul>
+          <li><a id="general_section_link" href="#general_section">General</a></li>
+          <li><a id="business_info_section_link" href="#business_info_section">Business Info</a></li>
+          <li><a id="payment_methods_section_link" href="#payment_methods_section">Accepted Payment Methods</a></li>
+          <li><a id="tax_rates_section_link" href="#tax_rates_section">Sales Tax Rates</a></li>
+          <li><a id="discounts_section_section_link" href="#discounts_section_section">Discounts</a></li>
+          <li><a id="misc_section_link" href="#misc_section">Misc</a></li>
+        </ul>
+      </div>
 
-    <h3 class="global_settings_header">
-      <a href="#" onclick="$(this).parent().next().slideToggle(); return false;">
-        General >
-      </a>
-    </h3>
+      <div>
 
-    <div class="container" id="general_section">
-      <div class="clear">&nbsp;</div>
+        <div class="container" id="#general_section">
+          <div class="clear">&nbsp;</div>
 
-      <%= form_tag admin_update_global_settings_path do %>
+          <%= form_tag admin_update_global_settings_path do %>
 
-        <div id="actions">
-          <%= submit_tag "Save" %>
-        </div>
+            <div class="clear_top_margin_10">&nbsp;</div>
 
-        <div class="clear_top_margin_10">&nbsp;</div>
-
-        <table id="global_settings_list">
-          <thead>
-            <tr>
-              <th width="330">Setting</th>
-              <th width="320">Value</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td>Default Home Screen</td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_HOME_SCREEN %>
-
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="<%= GlobalSetting::LOGIN_SCREEN %>" 
-                       <%= @gs.parsed_value == GlobalSetting::LOGIN_SCREEN ? "checked" : "" %>/>Login Screen
-
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="<%= GlobalSetting::MENU_SCREEN %>" 
-                       <%= @gs.parsed_value == GlobalSetting::MENU_SCREEN ? "checked" : "" %>/>Menu Screen
-
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="<%= GlobalSetting::TABLES_SCREEN %>" 
-                       <%= @gs.parsed_value == GlobalSetting::TABLES_SCREEN ? "checked" : "" %>/>Tables Screen
-              </td>
-            </tr>
-            <tr>
-              <td>Screen That Shows After Login</td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_POST_LOGIN_SCREEN %>
-
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="<%= GlobalSetting::MENU_SCREEN %>" 
-                       <%= @gs.parsed_value == GlobalSetting::MENU_SCREEN ? "checked" : "" %>/>Menu Screen
-
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="<%= GlobalSetting::TABLES_SCREEN %>" 
-                       <%= @gs.parsed_value == GlobalSetting::TABLES_SCREEN ? "checked" : "" %>/>Tables Screen
-              </td>
-            </tr>
-            <tr>
-              <td>Bypass Pin Number?</td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::BYPASS_PIN %>
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
-              </td>
-            </tr>
-            <tr>
-              <td>Clock Format</td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::CLOCK_FORMAT %>
-
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="<%= GlobalSetting::CLOCK_FORMAT_12 %>" 
-                       <%= @gs.parsed_value == GlobalSetting::CLOCK_FORMAT_12 ? "checked" : "" %>/>12 Hour
-
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="<%= GlobalSetting::CLOCK_FORMAT_24 %>" 
-                       <%= @gs.parsed_value == GlobalSetting::CLOCK_FORMAT_24 ? "checked" : "" %>/>24 Hour
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class="clear_top_margin_10">&nbsp;</div>
-
-        <div id="actions">
-          <%= submit_tag "Save" %>
-        </div>
-
-      <% end %>
-    </div>
-
-    <div class="clear">&nbsp;</div>
-
-    <h3 class="global_settings_header">
-      <a href="#" onclick="$(this).parent().next().slideToggle(); return false;">
-        Business Info >
-      </a>
-    </h3>
-
-    <div class="container" id="business_info_section">
-      <div class="clear">&nbsp;</div>
-
-      <%= form_tag admin_update_global_settings_path, :multipart => true do %>
-
-        <div id="actions">
-          <%= submit_tag "Save" %>
-        </div>
-
-        <div class="clear_top_margin_10">&nbsp;</div>
-
-        <table id="global_settings_list">
-          <thead>
-            <tr>
-              <th width="330">Setting</th>
-              <th width="320">Value</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td>Business Name</td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::BUSINESS_NAME %>
-                <%= fields_for "global_settings[]", @gs do |f| %>
-                  <%= f.text_field :value %>
-                <% end %>
-              </td>
-            </tr>
-            <tr>
-              <td>Address</td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::ADDRESS %>
-                <%= fields_for "global_settings[]", @gs do |f| %>
-                  <%= f.text_field :value %>
-                <% end %>
-              </td>
-            </tr> 
-            <tr>
-              <td>Telephone</td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::TELEPHONE %>
-                <%= fields_for "global_settings[]", @gs do |f| %>
-                  <%= f.text_field :value %>
-                <% end %>
-              </td>
-            </tr> 
-            <tr>
-              <td>Fax</td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::FAX %>
-                <%= fields_for "global_settings[]", @gs do |f| %>
-                  <%= f.text_field :value %>
-                <% end %>
-              </td>
-            </tr> 
-            <tr>
-              <td>Email</td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::EMAIL %>
-                <%= fields_for "global_settings[]", @gs do |f| %>
-                  <%= f.text_field :value %>
-                <% end %>
-              </td>
-            </tr>
-            <tr>
-              <td>Business Logo</td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::LOGO, {:logo_type => "business_logo"} %>
-                <%= fields_for "global_settings[]", @gs do |f| %>
-                  <div class="business_logo">
-                    <div class="label">Current Logo:</div>
-                    <%= business_logo_thumb true %>
-                  </div>
-                  <p>
-                    <%= f.file_field :logo %>
-                  </p>
-                <% end %>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class="clear_top_margin_10">&nbsp;</div>
-
-        <div id="actions">
-          <%= submit_tag "Save" %>
-        </div>
-
-      <% end %>
-    </div>
-
-    <div class="clear">&nbsp;</div>
-
-    <h3 class="global_settings_header">
-      <a href="#" onclick="$(this).parent().next().slideToggle(); return false;">
-        Accepted Payment Methods >
-      </a>
-    </h3>
-
-    <div class="container" id="payment_methods_section">
-
-      <h4>Current Payment Methods</h4>
-
-      <%= form_tag update_multiple_admin_payment_methods_path, :multipart => true do %>
-
-        <div class="clear_top_margin_10">&nbsp;</div>
-
-        <table id="global_settings_list">
-          <thead>
-            <tr>
-              <th width="230">Name</th>
-              <th width="350">Logo</th>
-              <th width="100">Delete</th>
-              <th width="140">Set Default</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <% PaymentMethod.all(:order => :name).each do |pm| %>
-              <%= fields_for "payment_methods[]", pm do |f| %>
+            <table id="global_settings_list" class="admin_table">
+              <thead>
                 <tr>
-                  <td><%= f.text_field :name, :size => 17 %></td>
-                  <td>
-                    <div class="payment_method_logo">
-                      <%= payment_method_logo_thumb pm, true %>
-                    </div>
-                    <p>
-                      <%= f.file_field :logo %>
-                    </p>
-                  </td>
-                  <td><%= link_to "Delete", admin_payment_method_path(pm), :method => :delete, :confirm => "Are You Sure?" %></td>
-                  <td>
-                    <%= radio_button_tag "set_default_payment_method", "#{pm.id}", pm.is_default, 
-                      :onchange => "doSetDefaultPaymentMethod(this.value);" %>
-                  </td>
+                  <th width="330">Setting</th>
+                  <th width="320">Value</th>
                 </tr>
-              <% end %>
-            <% end %>
-          </tbody>
-        </table>
+              </thead>
 
-        <div class="clear_top_margin_10">&nbsp;</div>
-
-        <div id="actions">
-          <%= submit_tag "Save" %>
-        </div>
-
-      <% end %>
-
-      <h4>New Payment Method</h4>
-
-      <%= form_for [:admin, PaymentMethod.new] do |f| %>
-
-        <div class="clear_top_margin_10">&nbsp;</div>
-
-        <table id="global_settings_list">
-          <thead>
-            <tr>
-              <th width="330">Name</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td>
-                <%= f.text_field :name %>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class="clear_top_margin_10">&nbsp;</div>
-
-        <div id="actions">
-          <%= submit_tag "Save" %>
-        </div>
-
-      <% end %>
-    </div>
-
-    <div class="clear">&nbsp;</div>
-
-    <h3 class="global_settings_header">
-      <a href="#" onclick="$(this).parent().next().slideToggle(); return false;">
-        Sales Tax Rates >
-      </a>
-    </h3>
-
-    <div class="container" id="tax_rates_section">
-      <div class="clear">&nbsp;</div>
-
-      <%= form_tag admin_update_global_settings_path do %>
-
-        <div id="actions">
-          <%= submit_tag "Save" %>
-        </div>
-
-        <div class="clear_top_margin_10">&nbsp;</div>
-
-        <table id="global_settings_list">
-          <thead>
-            <tr>
-              <th width="330">Setting</th>
-              <th width="320">Value</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td>Is Tax Chargable?</td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::TAX_CHARGABLE %>
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
-              </td>
-            </tr>
-
-            <tr>
-              <td>Enter Default Sales Tax Rate</td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::GLOBAL_TAX_RATE %>
-                <%= fields_for "global_settings[]", @gs do |f| %>
-                  <%= f.text_field :value %>
-                <% end %>
-              </td>
-            </tr>
-
-            <tr>
-              <td>Enter A Label For Service Charge</td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::SERVICE_CHARGE_LABEL %>
-                <%= fields_for "global_settings[]", @gs do |f| %>
-                  <%= f.text_field :value %>
-                <% end %>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class="clear_top_margin_10">&nbsp;</div>
-
-        <div id="actions">
-          <%= submit_tag "Save" %>
-        </div>
-
-      <% end %>
-
-      <h4>Current Tax Rates</h4>
-
-      <%= form_tag update_multiple_admin_tax_rates_path do %>
-
-        <div class="clear_top_margin_10">&nbsp;</div>
-
-        <table id="global_settings_list">
-          <thead>
-            <tr>
-              <th width="330">Name</th>
-              <th width="70">Rate</th>
-              <th width="150">Delete</th>
-              <th width="150">Set Default</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <% TaxRate.all(:order => :name).each do |tr| %>
-              <%= fields_for "tax_rates[]", tr do |f| %>
+              <tbody>
                 <tr>
-                  <td><%= f.text_field :name %></td>
-                  <td><%= f.text_field :rate, :size => 4 %></td>
-                  <td><%= link_to "Delete", admin_tax_rate_path(tr), :method => :delete, :confirm => "Are You Sure?" %></td>
-                  <td>
-                    <%= radio_button_tag "set_default_tax_rate", "#{tr.id}", tr.is_default, 
-                      :onchange => "doSetDefaultTaxRate(this.value);" %>
+                  <td>Default Home Screen</td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_HOME_SCREEN %>
+
+                    <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                           value="<%= GlobalSetting::LOGIN_SCREEN %>" 
+                           <%= @gs.parsed_value == GlobalSetting::LOGIN_SCREEN ? "checked" : "" %>/>Login Screen
+
+                    <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                           value="<%= GlobalSetting::MENU_SCREEN %>" 
+                           <%= @gs.parsed_value == GlobalSetting::MENU_SCREEN ? "checked" : "" %>/>Menu Screen
+
+                    <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                           value="<%= GlobalSetting::TABLES_SCREEN %>" 
+                           <%= @gs.parsed_value == GlobalSetting::TABLES_SCREEN ? "checked" : "" %>/>Tables Screen
                   </td>
                 </tr>
-              <% end %>
-            <% end %>
-          </tbody>
-        </table>
+                <tr>
+                  <td>Screen That Shows After Login</td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_POST_LOGIN_SCREEN %>
 
-        <div class="clear_top_margin_10">&nbsp;</div>
+                    <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                           value="<%= GlobalSetting::MENU_SCREEN %>" 
+                           <%= @gs.parsed_value == GlobalSetting::MENU_SCREEN ? "checked" : "" %>/>Menu Screen
 
-        <div id="actions">
-          <%= submit_tag "Save" %>
-        </div>
-
-      <% end %>
-
-      <h4>New Tax Rate</h4>
-
-      <%= form_for [:admin, TaxRate.new] do |f| %>
-
-        <div class="clear_top_margin_10">&nbsp;</div>
-
-        <table id="global_settings_list">
-          <thead>
-            <tr>
-              <th width="330">Name</th>
-              <th width="320">Rate</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td>
-                <%= f.text_field :name %>
-              </td>
-              <td>
-                <%= f.text_field :rate, :size => 4 %>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class="clear_top_margin_10">&nbsp;</div>
-
-        <div id="actions">
-          <%= submit_tag "Save" %>
-        </div>
-
-      <% end %>
-    </div>
-
-    <div class="clear">&nbsp;</div>
-
-    <h3 class="global_settings_header">
-      <a href="#" onclick="$(this).parent().next().slideToggle(); return false;">
-        Discounts >
-      </a>
-    </h3>
-
-    <div class="container" id="discounts_section">
-      <div class="clear">&nbsp;</div>
-
-      <h4>Current Discounts</h4>
-
-      <%= form_tag update_multiple_admin_discounts_path do %>
-
-        <div class="clear_top_margin_10">&nbsp;</div>
-
-        <table id="global_settings_list">
-          <thead>
-            <tr>
-              <th width="330">Name</th>
-              <th width="70">Percent</th>
-              <th width="150">Delete</th>
-              <th width="150">Set Default</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <% Discount.all(:order => :name).each do |discount| %>
-              <%= fields_for "discounts[]", discount do |f| %>
-                <tr><% Discount.load_default  %>
-                  <td><%= f.text_field :name %></td>
-                  <td><%= f.text_field :percent, :size => 4 %></td>
-                  <td><%= link_to "Delete", admin_discount_path(discount), :method => :delete, :confirm => "Are You Sure?" %></td>
-                  <td>
-                    <%= radio_button_tag "set_default_discount", "#{discount.id}", discount.is_default, 
-                      :onchange => "doSetDefaultDiscount(this.value);" %>
+                    <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                           value="<%= GlobalSetting::TABLES_SCREEN %>" 
+                           <%= @gs.parsed_value == GlobalSetting::TABLES_SCREEN ? "checked" : "" %>/>Tables Screen
                   </td>
                 </tr>
-              <% end %>
-            <% end %>
-          </tbody>
-        </table>
+                <tr>
+                  <td>Bypass Pin Number?</td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::BYPASS_PIN %>
+                    <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                           value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Per Role
+                    <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                           value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
+                  </td>
+                </tr>
+                <tr>
+                  <td>Clock Format</td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::CLOCK_FORMAT %>
 
-        <div class="clear_top_margin_10">&nbsp;</div>
+                    <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                           value="<%= GlobalSetting::CLOCK_FORMAT_12 %>" 
+                           <%= @gs.parsed_value == GlobalSetting::CLOCK_FORMAT_12 ? "checked" : "" %>/>12 Hour
 
-        <div id="actions">
-          <%= submit_tag "Save" %>
+                    <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                           value="<%= GlobalSetting::CLOCK_FORMAT_24 %>" 
+                           <%= @gs.parsed_value == GlobalSetting::CLOCK_FORMAT_24 ? "checked" : "" %>/>24 Hour
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <div id="actions">
+              <%= submit_tag "Save" %>
+            </div>
+
+          <% end %>
+
+          <div class="clear">&nbsp;</div>
         </div>
 
-      <% end %>
+        <div class="container" id="#business_info_section">
+          <div class="clear">&nbsp;</div>
 
-      <h4>New Discount</h4>
+          <%= form_tag admin_update_global_settings_path, :multipart => true do %>
 
-      <%= form_for [:admin, Discount.new] do |f| %>
+            <div class="clear_top_margin_10">&nbsp;</div>
 
-        <div class="clear_top_margin_10">&nbsp;</div>
+            <table id="global_settings_list" class="admin_table">
+              <thead>
+                <tr>
+                  <th width="330">Setting</th>
+                  <th width="320">Value</th>
+                </tr>
+              </thead>
 
-        <table id="global_settings_list">
-          <thead>
-            <tr>
-              <th width="330">Name</th>
-              <th width="320">Percent</th>
-            </tr>
-          </thead>
+              <tbody>
+                <tr>
+                  <td>Business Name</td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::BUSINESS_NAME %>
+                    <%= fields_for "global_settings[]", @gs do |f| %>
+                      <%= f.text_field :value %>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Address</td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::ADDRESS %>
+                    <%= fields_for "global_settings[]", @gs do |f| %>
+                      <%= f.text_field :value %>
+                    <% end %>
+                  </td>
+                </tr> 
+                <tr>
+                  <td>Telephone</td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::TELEPHONE %>
+                    <%= fields_for "global_settings[]", @gs do |f| %>
+                      <%= f.text_field :value %>
+                    <% end %>
+                  </td>
+                </tr> 
+                <tr>
+                  <td>Fax</td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::FAX %>
+                    <%= fields_for "global_settings[]", @gs do |f| %>
+                      <%= f.text_field :value %>
+                    <% end %>
+                  </td>
+                </tr> 
+                <tr>
+                  <td>Email</td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::EMAIL %>
+                    <%= fields_for "global_settings[]", @gs do |f| %>
+                      <%= f.text_field :value %>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Business Logo</td>
+                  <td>
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::LOGO, {:logo_type => "business_logo"} %>
+                    <%= fields_for "global_settings[]", @gs do |f| %>
+                      <div class="business_logo">
+                        <div class="label">Current Logo:</div>
+                        <%= business_logo_thumb true %>
+                      </div>
+                      <p>
+                        <%= f.file_field :logo %>
+                      </p>
+                    <% end %>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
 
-          <tbody>
-            <tr>
-              <td>
-                <%= f.text_field :name %>
-              </td>
-              <td>
-                <%= f.text_field :percent, :size => 4 %>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+            <div class="clear_top_margin_10">&nbsp;</div>
 
-        <div class="clear_top_margin_10">&nbsp;</div>
+            <div id="actions">
+              <%= submit_tag "Save" %>
+            </div>
 
-        <div id="actions">
-          <%= submit_tag "Save" %>
+          <% end %>
+
+          <div class="clear">&nbsp;</div>
         </div>
 
-      <% end %>
+        <div class="container payment_methods_section" id="#payment_methods_section">
+
+          <h4>Current Payment Methods</h4>
+
+          <%= form_tag update_multiple_admin_payment_methods_path, :multipart => true do %>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <table id="global_settings_list" class="admin_table">
+              <thead>
+                <tr>
+                  <th width="230">Name</th>
+                  <th width="350">Logo</th>
+                  <th width="100">Delete</th>
+                  <th width="140">Set Default</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <% PaymentMethod.all(:order => :name).each do |pm| %>
+                  <%= fields_for "payment_methods[]", pm do |f| %>
+                    <tr>
+                      <td><%= f.text_field :name, :size => 17 %></td>
+                      <td>
+                        <div class="payment_method_logo">
+                          <%= payment_method_logo_thumb pm, true %>
+                        </div>
+                        <p>
+                          <%= f.file_field :logo %>
+                        </p>
+                      </td>
+                      <td><%= link_to "Delete", admin_payment_method_path(pm), :method => :delete, :confirm => "Are You Sure?" %></td>
+                      <td>
+                        <%= radio_button_tag "set_default_payment_method", "#{pm.id}", pm.is_default, 
+                          :onchange => "doSetDefaultPaymentMethod(this.value);" %>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <div id="actions">
+              <%= submit_tag "Save" %>
+            </div>
+
+          <% end %>
+
+          <h4>New Payment Method</h4>
+
+          <%= form_for [:admin, PaymentMethod.new] do |f| %>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <table id="global_settings_list" class="admin_table">
+              <thead>
+                <tr>
+                  <th width="330">Name</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>
+                    <%= f.text_field :name %>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <div id="actions">
+              <%= submit_tag "Save" %>
+            </div>
+
+          <% end %>
+
+          <div class="clear">&nbsp;</div>
+        </div>
+
+        <div class="container" id="#tax_rates_section">
+          <div class="clear">&nbsp;</div>
+
+          <h4>Misc</h4>
+
+          <%= form_tag admin_update_global_settings_path do %>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <table id="global_settings_list" class="admin_table">
+              <thead>
+                <tr>
+                  <th width="330">Setting</th>
+                  <th width="320">Value</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>Is Tax Chargable?</td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::TAX_CHARGABLE %>
+                    <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                           value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
+                    <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                           value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>What Do You Want To Call Sales Tax(Tax/Vat etc)?</td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::TAX_LABEL %>
+                    <%= fields_for "global_settings[]", @gs do |f| %>
+                      <%= f.text_field :value %>
+                    <% end %>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>Enter Default Sales Tax Rate</td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::GLOBAL_TAX_RATE %>
+                    <%= fields_for "global_settings[]", @gs do |f| %>
+                      <%= f.text_field :value %>
+                    <% end %>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>Enter A Label For Service Charge</td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::SERVICE_CHARGE_LABEL %>
+                    <%= fields_for "global_settings[]", @gs do |f| %>
+                      <%= f.text_field :value %>
+                    <% end %>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <div id="actions">
+              <%= submit_tag "Save" %>
+            </div>
+
+          <% end %>
+
+          <h4>Current Tax Rates</h4>
+
+          <%= form_tag update_multiple_admin_tax_rates_path do %>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <table id="global_settings_list" class="admin_table">
+              <thead>
+                <tr>
+                  <th width="330">Name</th>
+                  <th width="70">Rate</th>
+                  <th width="150">Delete</th>
+                  <th width="150">Set Default</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <% TaxRate.all(:order => :name).each do |tr| %>
+                  <%= fields_for "tax_rates[]", tr do |f| %>
+                    <tr>
+                      <td><%= f.text_field :name %></td>
+                      <td><%= f.text_field :rate, :size => 4 %></td>
+                      <td><%= link_to "Delete", admin_tax_rate_path(tr), :method => :delete, :confirm => "Are You Sure?" %></td>
+                      <td>
+                        <%= radio_button_tag "set_default_tax_rate", "#{tr.id}", tr.is_default, 
+                          :onchange => "doSetDefaultTaxRate(this.value);" %>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <div id="actions">
+              <%= submit_tag "Save" %>
+            </div>
+
+          <% end %>
+
+          <h4>New Tax Rate</h4>
+
+          <%= form_for [:admin, TaxRate.new] do |f| %>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <table id="global_settings_list" class="admin_table">
+              <thead>
+                <tr>
+                  <th width="330">Name</th>
+                  <th width="320">Rate</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>
+                    <%= f.text_field :name %>
+                  </td>
+                  <td>
+                    <%= f.text_field :rate, :size => 4 %>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <div id="actions">
+              <%= submit_tag "Save" %>
+            </div>
+
+          <% end %>
+
+          <div class="clear">&nbsp;</div>
+        </div>
+
+        <div class="container" id="#discounts_section">
+          <div class="clear">&nbsp;</div>
+
+          <h4>Current Discounts</h4>
+
+          <%= form_tag update_multiple_admin_discounts_path do %>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <table id="global_settings_list" class="admin_table">
+              <thead>
+                <tr>
+                  <th width="330">Name</th>
+                  <th width="70">Percent</th>
+                  <th width="150">Delete</th>
+                  <th width="150">Set Default</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <% Discount.all(:order => :name).each do |discount| %>
+                  <%= fields_for "discounts[]", discount do |f| %>
+                    <tr><% Discount.load_default  %>
+                      <td><%= f.text_field :name %></td>
+                      <td><%= f.text_field :percent, :size => 4 %></td>
+                      <td><%= link_to "Delete", admin_discount_path(discount), :method => :delete, :confirm => "Are You Sure?" %></td>
+                      <td>
+                        <%= radio_button_tag "set_default_discount", "#{discount.id}", discount.is_default, 
+                          :onchange => "doSetDefaultDiscount(this.value);" %>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <div id="actions">
+              <%= submit_tag "Save" %>
+            </div>
+
+          <% end %>
+
+          <h4>New Discount</h4>
+
+          <%= form_for [:admin, Discount.new] do |f| %>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <table id="global_settings_list" class="admin_table">
+              <thead>
+                <tr>
+                  <th width="330">Name</th>
+                  <th width="320">Percent</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>
+                    <%= f.text_field :name %>
+                  </td>
+                  <td>
+                    <%= f.text_field :percent, :size => 4 %>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <div id="actions">
+              <%= submit_tag "Save" %>
+            </div>
+
+          <% end %>
+
+          <div class="clear">&nbsp;</div>
+        </div>
+
+        <div class="container" id="#misc_section">
+          <div class="clear">&nbsp;</div>
+
+          <%= form_tag admin_update_global_settings_path do %>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <table id="global_settings_list" class="admin_table">
+              <thead>
+                <tr>
+                  <th width="330">Setting</th>
+                  <th width="320">Value</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>Currency Symbol</td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::CURRENCY_SYMBOL %>
+                    <%= fields_for "global_settings[]", @gs do |f| %>
+                      <%= f.text_field :value %>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Small Currency Symbol</td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::SMALL_CURRENCY_SYMBOL %>
+                    <%= fields_for "global_settings[]", @gs do |f| %>
+                      <%= f.text_field :value %>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Automatically Print Receipt?</td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::AUTO_PRINT_RECEIPT %>
+                    <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                           value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
+                    <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                           value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
+                  </td>
+                </tr>
+                <tr>
+                  <td>Receipt Message</td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::RECEIPT_MESSAGE %>
+                    <%= fields_for "global_settings[]", @gs do |f| %>
+                      <%= f.text_field :value %>
+                    <% end %>
+                  </td>
+                </tr> 
+                <tr>
+                  <td>
+                    Terminal ID
+                  </td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::TERMINAL_ID, {:fingerprint => request.cookies["terminal_fingerprint"]} %>
+                    <%= fields_for "global_settings[]", @gs do |f| %>
+                      <%= f.text_field :value %>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Enable On Screen Beep?
+                  </td>
+                  <td class="text_align_left">
+                    <% @gs = GlobalSetting.setting_for GlobalSetting::DO_BEEP %>
+                    <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                           value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
+                    <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                           value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <div id="actions">
+              <%= submit_tag "Save" %>
+            </div>
+
+          <% end %>
+
+          <div class="clear">&nbsp;</div>
+        </div>
+
+      </div>
     </div>
-
-    <div class="clear">&nbsp;</div>
-
-    <h3 class="global_settings_header">
-      <a href="#" onclick="$(this).parent().next().slideToggle(); return false;">
-        Misc >
-      </a>
-    </h3>
-
-    <div class="container" id="misc_section">
-      <div class="clear">&nbsp;</div>
-
-      <%= form_tag admin_update_global_settings_path do %>
-
-        <div id="actions">
-          <%= submit_tag "Save" %>
-        </div>
-
-        <div class="clear_top_margin_10">&nbsp;</div>
-
-        <table id="global_settings_list">
-          <thead>
-            <tr>
-              <th width="330">Setting</th>
-              <th width="320">Value</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td>Currency Symbol</td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::CURRENCY_SYMBOL %>
-                <%= fields_for "global_settings[]", @gs do |f| %>
-                  <%= f.text_field :value %>
-                <% end %>
-              </td>
-            </tr>
-            <tr>
-              <td>Small Currency Symbol</td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::SMALL_CURRENCY_SYMBOL %>
-                <%= fields_for "global_settings[]", @gs do |f| %>
-                  <%= f.text_field :value %>
-                <% end %>
-              </td>
-            </tr>
-            <tr>
-              <td>Automatically Print Receipt?</td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::AUTO_PRINT_RECEIPT %>
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
-                <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                       value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
-              </td>
-            </tr>
-            <tr>
-              <td>Receipt Message</td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::RECEIPT_MESSAGE %>
-                <%= fields_for "global_settings[]", @gs do |f| %>
-                  <%= f.text_field :value %>
-                <% end %>
-              </td>
-            </tr> 
-            <tr>
-              <td>
-                Terminal ID
-              </td>
-              <td>
-                <% @gs = GlobalSetting.setting_for GlobalSetting::TERMINAL_ID, {:fingerprint => request.cookies["terminal_fingerprint"]} %>
-                <%= fields_for "global_settings[]", @gs do |f| %>
-                  <%= f.text_field :value %>
-                <% end %>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class="clear_top_margin_10">&nbsp;</div>
-
-        <div id="actions">
-          <%= submit_tag "Save" %>
-        </div>
-
-      <% end %>
-    </div>
-
   </section>
 
 </div>

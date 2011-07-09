@@ -4,10 +4,11 @@
 
     <h3>Roles</h3>
 
-    <table id="role_list" style="display: none;">
+    <table id="role_list" class="admin_table">
       <thead>
         <tr>
           <th width="180">Name</th>
+          <th width="100">Pin Required?</th>
         </tr>
       </thead>
 
@@ -15,6 +16,10 @@
         <% @roles.each do |role| %>
           <tr>
             <td><%= link_to role.name, admin_role_path(role) %></td>
+            <td>
+              <%= check_box_tag "pin_required_#{role.name}", role.pin_required, role.pin_required,
+                          :onchange => "togglePinRequired(#{role.id}, this.checked);" %>
+            </td>
           </tr>
         <% end %>
       </tbody>

@@ -20,7 +20,7 @@ function getCashTotalTaxesDataTable(taxes_data) {
     
     cash_total_data_html += "<div class='taxes_data_table_label_header'>Rate</div>";
     cash_total_data_html += "<div class='taxes_data_table_header'>Net</div>";
-    cash_total_data_html += "<div class='taxes_data_table_header'>Tax</div>";
+    cash_total_data_html += "<div class='taxes_data_table_header'>" + taxLabel + "</div>";
     cash_total_data_html += "<div class='taxes_data_table_header'>Gross</div>" + clear10HTML;
         
     for(i=0; i<taxes_data.length; i++) {
@@ -77,6 +77,9 @@ var reportsCashCount = 0;
 var currentTotalType = null;
 
 function doCashTotalReport(total_type, commit) {
+    setNavTitle(total_type + " Total");
+    showNavBackLinkMenuScreen();
+    
     $('#reports_left_till_roll').html("Loading...");
     $('#cash_total_data_table_container').html("Loading...");
     
@@ -85,10 +88,6 @@ function doCashTotalReport(total_type, commit) {
     if(typeof(commit) == "undefined") {
         show_currency = false
     }
-    
-    showNavBackLinkMenuScreen();
-    
-    $('#cash_reports_receipt_header').html(total_type + " Total History");
     
     coinCounterPosition = $('#reports_coin_counter_widget_container');
     
@@ -112,10 +111,7 @@ function doCashTotalReport(total_type, commit) {
     
     $.ajax({
         type: 'GET',
-        url: '/cash_total_history.js',
-        data: {
-            total_type : total_type
-        }
+        url: '/cash_total_history.js'
     });
 }
 
@@ -139,6 +135,10 @@ function cashReportsScreenKeypadClickCancel() {
     newVal = oldVal.substring(0, oldVal.length - 1);
     
     lastActiveElement.val(newVal);
+}
+
+function cashReportsScreenKeypadClickTab() {
+    lastActiveElement.focusNextInputField();
 }
 
 function finishCashTotal() {
@@ -187,4 +187,8 @@ function floatScreenKeypadClickCancel() {
     newVal = oldVal.substring(0, oldVal.length - 1);
     
     lastActiveElement.val(newVal);
+}
+
+function floatScreenKeypadClickTab() {
+    lastActiveElement.focusNextInputField();
 }

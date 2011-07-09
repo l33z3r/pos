@@ -34,6 +34,14 @@ class Admin::RolesController < Admin::AdminController
       render :action => "edit"
     end
   end
+  
+  def pin_required_for_role
+    @role = Role.find(params[:id])
+    @role.pin_required = params[:checked]
+    @role.save!
+    
+    render :json => {:success => true}.to_json
+  end
 
   def destroy
     @role = Role.find(params[:id])

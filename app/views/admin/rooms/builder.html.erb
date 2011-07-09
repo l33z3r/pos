@@ -5,10 +5,17 @@
   <%= stylesheet_link_tag "room_builder"  %>
 <% end %>
 
-<% content_for :admin_subnav_links do %>
-  <div class="link">
-    <%=link_to "Room List", admin_rooms_path %>
+<% content_for :admin_subnav_links_left do %>
+  <div class="button" onclick="goTo('<%=admin_rooms_path%>');">
+    <div class="icon">
+      <%= image_tag "/images/button_logos/room_builder_button.png" %>
+    </div>
+    <div class="button_name">Room List</div>
   </div>
+<% end %>
+
+<% content_for :admin_subnav_links_right do %>
+  <%= render :partial => "/partials/terminal_reload_request" %>
 <% end %>
 
 <div id="room_builder">
@@ -37,8 +44,6 @@
       setGridGraphicDimensions();
     });
   </script>
-
-  <%= render :partial => "/partials/terminal_reload_request" %>
 
   <section id="header">
 
