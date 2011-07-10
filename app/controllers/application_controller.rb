@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   before_filter :check_reset_session
   
-  helper_method :e, :current_employee, :print_money, :mobile_device?
+  helper_method :e, :current_employee, :print_money, :mobile_device?, :all_terminals, :all_servers
   
   before_filter :load_global_vars, :prepare_for_mobile
   
@@ -204,9 +204,17 @@ class ApplicationController < ActionController::Base
     
     #load some vars if mobile devise
     if mobile_device?
-      @all_terminals = GlobalSetting.all_terminals
-      @all_servers = Employee.all.collect(&:nickname)
+      @all_terminals = all_terminals
+      @all_servers = all_servers
     end
+  end
+  
+  def all_terminals
+    GlobalSetting.all_terminals
+  end
+  
+  def all_servers
+    Employee.all.collect(&:nickname)
   end
   
 end

@@ -3061,4 +3061,9 @@ div#js_player {
     height: 0px;
 }
 
+div.vtabs-content-panel {
+    max-height: 570px;
+    overflow: scroll;
+}
+
 /* End Misc Styles */

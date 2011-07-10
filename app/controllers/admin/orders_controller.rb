@@ -1,8 +1,8 @@
 class Admin::OrdersController < Admin::AdminController
   
   def index
-    @all_terminals = Order.all.collect(&:terminal_id).uniq!
-    @all_servers = Order.all.collect(&:employee).collect(&:nickname).uniq!
+    @all_terminals = all_terminals
+    @all_servers = all_servers
     
     @selected_from_date = @selected_to_date = ""
     

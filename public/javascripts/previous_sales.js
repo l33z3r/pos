@@ -78,7 +78,7 @@ function orderSelected(orderId) {
 }
 
 function parsePreviousOrder(previousOrderJSON) {
-    
+    writePreviousOrderToRecpt(previousOrderJSON.order.total);
 }
 
 function writePreviousOrderToRecpt(amount) {
