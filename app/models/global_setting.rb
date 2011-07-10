@@ -88,7 +88,7 @@ class GlobalSetting < ActiveRecord::Base
         @gs = nil
       else
         #the key will be the key for terminal id followed by the terminal fingerprint
-        @gs = find_or_create_by_key(:key => "#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :value => "New Terminal ##{Time.now.to_s[0..3]}", :label_text => LABEL_MAP[TERMINAL_ID])
+        @gs = find_or_create_by_key(:key => "#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :value => "New Terminal ##{Time.now.to_i.to_s[-4,4]}", :label_text => LABEL_MAP[TERMINAL_ID])
         @gs.parsed_value = @gs.value
       end
     when CURRENCY_SYMBOL
