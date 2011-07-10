@@ -338,7 +338,7 @@ div#landing div#login_receipt_keypad_container div#entered_code_container div#cl
 
 /* Admin Global */
 
-div#content_container section {
+div#admin div#content_container section {
     max-height: 640px;
     overflow: scroll;
 }
@@ -2848,6 +2848,7 @@ div#table_select_screen div#room_list div#room_buttons {
 
 div#table_select_screen div#room_list div.selected {
     background-color: #CCC;
+    color: #FFF;
     font-weight: bold;
 }
 
