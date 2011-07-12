@@ -82,9 +82,9 @@ ActiveRecord::Schema.define(:version => 20110709145601) do
     t.string   "telephone"
     t.float    "hourly_rate"
     t.float    "overtime_rate"
-    t.datetime "last_login",                  :default => '2011-05-02 17:01:46'
-    t.datetime "last_active",                 :default => '2011-05-02 17:01:46'
-    t.datetime "last_logout",                 :default => '2011-05-02 17:01:46'
+    t.datetime "last_login",                  :default => '2011-07-12 18:11:08'
+    t.datetime "last_active",                 :default => '2011-07-12 18:11:08'
+    t.datetime "last_logout",                 :default => '2011-07-12 18:11:08'
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "role_id",                     :default => 1
