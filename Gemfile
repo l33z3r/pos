@@ -31,7 +31,7 @@ gem "meta_search", "1.0.5"
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test do
-  gem 'annotate'
+  gem 'annotate-models', :require => 'annotate_models'
   gem 'ruby-debug19'
   gem "mongrel", '1.2.0.pre2'
 end
