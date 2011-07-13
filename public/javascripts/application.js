@@ -37,9 +37,9 @@ function doGlobalInit() {
     
     setFingerPrintCookie();
     
-    initMenu();
     initTouch();
     initTouchRecpts();
+    initMenu();
     
     //init the display button passcode request popup
     $('#menu_buttons_popup_anchor').CreateBubblePopup();

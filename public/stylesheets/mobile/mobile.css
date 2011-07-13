@@ -1,5 +1,5 @@
 div#mobile_receipt {
-    height: 200px;
+    height: 370px;
     width: 280px;
     margin: auto;
     margin-top: 10px;
@@ -9,10 +9,16 @@ div#mobile_receipt {
     -moz-border-radius: 4px;
     border-radius: 4px;
     display: block;
+    font-size: 15px;
 }
 
 div#mobile_till_roll {
-    height: 190px;
+    height: 360px;
     display: block;
     background-color: #FFF;
+    margin-left: 10px;
+}
+
+div#mobile_till_roll div.data_table div.data {
+  font-size: 15px;
 }

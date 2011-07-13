@@ -635,7 +635,7 @@ function loadReceipt(order) {
     if(orderTotal != null) {
         writeTotalToReceipt(order, orderTotal);
     }
-
+    
     menuRecptScroll();
 }
 
