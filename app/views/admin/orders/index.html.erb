@@ -21,19 +21,21 @@
       <div class="clear">&nbsp;</div>
 
       <div id="action_buttons_container">
-        <div class="button" onclick="doVoidOrderItem();">
-          <div class="icon">
-            <%= image_tag "/images/button_logos/void_order.png" %>
+        <div id="void_button_container">
+          <div class="button" onclick="doVoidOrderItem();">
+            <div class="icon">
+              <%= image_tag "/images/button_logos/void_order.png" %>
+            </div>
+            <div class="button_name">Void</div>
           </div>
-          <div class="button_name">Void</div>
         </div>
 
         <div class="clear">&nbsp;</div>
-        
+
         <%= render :partial => "/partials/menu_screen_options_screen_buttons" %>
-        
+
         <div class="clear">&nbsp;</div>
-        
+
         <%= render :partial => "/partials/ok_cancel_buttons" %>
 
         <div class="clear">&nbsp;</div>
@@ -50,7 +52,7 @@
       </div>
 
       <div class="clear">&nbsp;</div>
-      
+
       <div id="order_list_container">
 
       </div>

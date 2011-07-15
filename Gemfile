@@ -5,6 +5,9 @@ gem 'rails', '3.0.5'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+#had an issue with arel auto updating and breaking code, so sticking to 2.0.9
+gem 'arel', '2.0.9'
+
 gem 'mysql2', '0.2.6'
 gem 'populator'
 gem 'faker'

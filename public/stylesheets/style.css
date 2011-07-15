@@ -993,6 +993,11 @@ div#admin_order_list section#orders div#receipt_buttons_section div#action_butto
     border-spacing: 7px;
 }
 
+div#admin_order_list section#orders div#receipt_buttons_section div#action_buttons_container div#void_button_container {
+    width: 90px;
+    margin: auto;
+}
+
 div#admin_order_list section#orders div#order_list_section {
     border: 1px solid #CCCCCC;
     border-radius: 7px 7px 7px 7px;
