@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::Base
+  
+  before_filter :http_basic_authenticate
+  
   before_filter :check_reset_session
   
   helper_method :e, :current_employee, :print_money, :mobile_device?, :all_terminals, :all_servers
@@ -98,7 +101,7 @@ class ApplicationController < ActionController::Base
     TerminalSyncData.transaction do
       remove_previous_sync_for_table table_id
     
-      @sync_data = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => employee_id}
+      @sync_data = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => employee_id}.to_yaml
       
       TerminalSyncData.create!({:sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 
           :time => time, :data => @sync_data})
@@ -215,6 +218,14 @@ class ApplicationController < ActionController::Base
   
   def all_servers
     Employee.all.collect(&:nickname)
+  end
+  
+  def http_basic_authenticate
+    if DO_HTTP_BASIC_AUTH
+      authenticate_or_request_with_http_basic do |username, password|
+        username == HTTP_BASIC_AUTH_USERNAME && password == HTTP_BASIC_AUTH_PASSWORD
+      end
+    end
   end
   
 end

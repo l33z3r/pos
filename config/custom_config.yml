@@ -1,0 +1,14 @@
+development:
+  do_http_basic_auth: false
+  http_basic_auth_username: cluey
+  http_basic_auth_password: clueless
+
+test:
+  do_http_basic_auth: false
+  http_basic_auth_username: cluey
+  http_basic_auth_password: clueless
+
+production:
+  do_http_basic_auth: true
+  http_basic_auth_username: cluey
+  http_basic_auth_password: clueless
