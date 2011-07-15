@@ -15,7 +15,7 @@ class TerminalSyncData < ActiveRecord::Base
   TERMINAL_RELOAD_REQUEST = 1
   SYNC_TABLE_ORDER_REQUEST = 2
   
-  serialize :data
+  serialize :data, Hash
   
   validates :sync_type, :presence => true
   validates :sync_type, :inclusion => { :in => [TERMINAL_RELOAD_REQUEST, SYNC_TABLE_ORDER_REQUEST] }
