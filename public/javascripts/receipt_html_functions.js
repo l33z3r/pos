@@ -1,7 +1,7 @@
 function fetchOrderReceiptHTML() {
-    orderReceiptHTML = fetchFinalReceiptHeaderHTML();
+    totalOrder = currentOrder = getCurrentOrder();
     
-    currentOrder = getCurrentOrder();
+    orderReceiptHTML = fetchFinalReceiptHeaderHTML();
     
     allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(currentOrder, false, false);
     
@@ -150,6 +150,11 @@ function fetchServiceChargeHTML() {
 function fetchFinalReceiptHeaderHTML() {
     headerHTML = "<div class='data_table'>";
     headerHTML += "<div class='label'>Server:</div><div class='data'>" + current_user_nickname + "</div>" + clearHTML;
+    
+    //lazy init the order time
+    if(typeof(totalOrder.time) == 'undefined') {
+        totalOrder.time = new Date();
+    }
     
     timestamp = utilFormatDate(totalOrder.time);
     headerHTML += "<div class='label'>Time:</div><div class='data'>" + timestamp + "</div>" + clearHTML;
