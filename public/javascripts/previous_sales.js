@@ -70,7 +70,7 @@ function doReopenOrderItem() {
     storeTableOrderInStorage(current_user_id, tableID, totalOrder);
     
     //now go to the menu screen
-    //goTo('/home#screen=menu');
+    goTo('/home#screen=menu');
 }
 
 function orderListTabSelected(tab, selectedTabName) {
