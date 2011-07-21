@@ -220,8 +220,6 @@ function saveCashback() {
     if (currentScreenIsTotals()) {
         doTotal();
     }
-    
-    $('#cashback_amount_holder').html(currency(cashback));
 }
 
 function cancelCashback() {

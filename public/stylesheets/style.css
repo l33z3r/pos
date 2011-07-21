@@ -1061,12 +1061,36 @@ div#admin_order_list section#orders div#order_list_section div#order_list_contai
 
 div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container div.today_button {
     float: left;
+    margin-left: 10px;
 }
 
 div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container div.today_button div.button {
     padding-top: 2px;
     height: 25px;
     width: 150px;
+}
+
+div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container div.yesterday_button {
+    float: left;
+    margin-left: 10px;
+}
+
+div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container div.yesterday_button div.button {
+    padding-top: 2px;
+    height: 25px;
+    width: 150px;
+}
+
+div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container div.go_button {
+    float: left;
+    margin-right: 10px;
+}
+
+div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container div.go_button div.button {
+    padding-top: 2px;
+    height: 25px;
+    font-weight: bold;
+    width: 30px;
 }
 
 div#admin_order_list section#orders div#receipt_buttons_section div#admin_order_list_receipt {
@@ -1085,6 +1109,29 @@ div#admin_order_list section#orders div#receipt_buttons_section div#admin_order_
     font-weight: bold;
     font-size: 14px;
     height: 15px;
+}
+
+div#admin_order_list section#orders div#receipt_buttons_section div#total_container {
+    font-size: 14px;
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+    border: 1px solid #CCC;
+    padding: 3px 2px;
+    color: #000;
+}
+
+div#admin_order_list section#orders div#receipt_buttons_section div#total_container div#label {
+    font-weight: bold;
+    width: 145px;
+    text-align: left;
+    float: left;
+}
+
+div#admin_order_list section#orders div#receipt_buttons_section div#total_container div#total_value {
+    float: left;
+    width: 92px;
+    text-align: right;
+    font-weight: bold;
 }
 
 div#admin_order_list section#orders table#order_list {
@@ -1991,7 +2038,7 @@ div#discounts_popup_markup_container {
 }
 
 div#discounts_popup_markup_container.higher {
-    height: 355px;
+    height: 610px;
 }
 
 div#discounts_popup_markup_container div.header {

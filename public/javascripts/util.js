@@ -73,7 +73,6 @@ function doClearAndReload() {
     
     if(doIt) {
         //clear the local and session web storage
-        sessionStorage.clear();
         localStorage.clear();
         
         //now clear cookies
@@ -134,6 +133,12 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
     if(currentTableOrderJSON != null) {
         for(i=0; i<currentTableOrderJSON.items.length; i++) {
             tableOrderItem = currentTableOrderJSON.items[i];
+            
+            //we want to mark the item as synced if we are loading in a previous order
+            if(tableNum == -1) {
+                tableOrderItem.synced = true;
+            }
+            
             tableOrders[tableNum].items.push(tableOrderItem);
         }
 
@@ -145,23 +150,38 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
         }
         
         tableOrders[tableNum].order_taxes = currentTableOrderJSON.order_taxes;
+    
+        if(tableNum == -1) {
+            //we have a previous table order and must copy over the table number and payment method and service charge and cashback
+            tableOrders[tableNum].table_info_label = currentTableOrderJSON.table_info_label;
+            tableOrders[tableNum].payment_method = currentTableOrderJSON.payment_method;
+            serviceCharge = tableOrders[tableNum].service_charge = currentTableOrderJSON.service_charge;
+            cashback = tableOrders[tableNum].cashback = currentTableOrderJSON.cashback;
+            tableOrders[tableNum].void_order_id = currentTableOrderJSON.void_order_id;
+        }
     }
         
     //total the order first
     calculateOrderTotal(tableOrders[tableNum]);
 }
 
+function havePreviousOrder(current_user_id) {
+    var key = "user_" + current_user_id + "_table_-1_current_order";
+    var data = retrieveStorageValue(key);
+    return data;
+}
+
 function storeKeyValue(key, value) {
-    return sessionStorage.setItem(key, value);
+    return localStorage.setItem(key, value);
 }
 
 function retrieveStorageValue(key) {
-    return sessionStorage.getItem(key);
+    return localStorage.getItem(key);
 }
 
 function storeKeyJSONValue(key, value) {
     JSONValue = JSON.stringify(value);
-    return sessionStorage.setItem(key, JSONValue);
+    return localStorage.setItem(key, JSONValue);
 }
 
 function retrieveStorageJSONValue(key) {
@@ -170,7 +190,7 @@ function retrieveStorageJSONValue(key) {
 }
 
 function deleteStorageValue(key) {
-    return sessionStorage.removeItem(key);
+    return localStorage.removeItem(key);
 }
 
 function getActiveTableIDS() {
@@ -227,30 +247,30 @@ function renderActiveTables() {
     
     //got this code from http://stackoverflow.com/questions/1227684/how-to-iterate-through-multiple-select-options-with-jquery
     $("#table_select").children('optgroup').children('option').each( 
-        function(id, element) {
-            //alert("ID: " + $(element).val().toString() + " El " + $(element).html() + " in:" + $.inArray($(element).val().toString(), activeTableIDS));
+    function(id, element) {
+        //alert("ID: " + $(element).val().toString() + " El " + $(element).html() + " in:" + $.inArray($(element).val().toString(), activeTableIDS));
             
-            nextTableID = $(element).val().toString();
+        nextTableID = $(element).val().toString();
             
-            if($.inArray(nextTableID, activeTableIDS) != -1) {
-                if(!$(element).html().toString().startsWith("*")) {
-                    newLabelHTML = "*" + $(element).html();
-                    $(element).html(newLabelHTML);
+        if($.inArray(nextTableID, activeTableIDS) != -1) {
+            if(!$(element).html().toString().startsWith("*")) {
+                newLabelHTML = "*" + $(element).html();
+                $(element).html(newLabelHTML);
                     
-                    //mark the tables screen also
-                    $('#table_label_' + nextTableID).html(newLabelHTML);
-                }
-            } else {
-                if($(element).html().toString().startsWith("*")) {
-                    newLabelHTML = $(element).html().toString().substring(1);
-                    $(element).html(newLabelHTML);
+                //mark the tables screen also
+                $('#table_label_' + nextTableID).html(newLabelHTML);
+            }
+        } else {
+            if($(element).html().toString().startsWith("*")) {
+                newLabelHTML = $(element).html().toString().substring(1);
+                $(element).html(newLabelHTML);
                     
-                    //mark the tables screen also
-                    $('#table_label_' + nextTableID).html(newLabelHTML);
-                }
+                //mark the tables screen also
+                $('#table_label_' + nextTableID).html(newLabelHTML);
             }
         }
-        );
+    }
+);
 }
 
 function setRawCookie(c_name, value, exdays) {
@@ -292,7 +312,7 @@ function showScreenFromHashParams() {
             } else if(hashParams.screen == 'menu') {
                 showMenuScreen();
             } else if(hashParams.screen == 'totals') {
-            //cannot go to this screen
+                //cannot go to this screen
             } else if(hashParams.screen == 'tables') {
                 showTablesScreen();
             } else if(hashParams.screen == 'more_options') {
@@ -695,4 +715,12 @@ jQuery.parseQuery = function(qs,options) {
         params[p[0]] = params[p[0]]?((params[p[0]] instanceof Array)?(params[p[0]].push(p[1]),params[p[0]]):[params[p[0]],p[1]]):p[1];
     });
     return params;
+}
+
+function inAdminContext() {
+    return $('body div.admin').length > 0;
+}
+
+function inMenuContext() {
+    return $('body div.menu').length > 0;
 }

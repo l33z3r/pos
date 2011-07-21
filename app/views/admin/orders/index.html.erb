@@ -2,6 +2,11 @@
   <%= javascript_include_tag "previous_sales" %>
 <% end %>
 
+<script type="text/javascript">
+  selectedFromDate = "<%= !@selected_from_date.blank? ? @selected_from_date : @todaysDateFormatted %>";
+  selectedToDate = "<%= !@selected_to_date.blank? ? @selected_to_date : @todaysDateFormatted %>";
+</script>
+
 <% 
 @nav_title = "Previous Sales" 
 @hide_admin_header = true
@@ -12,21 +17,33 @@
   <section id="orders">
 
     <div id="receipt_buttons_section">
-      <div id="admin_order_list_receipt_header">Order</div>
+      <div id="admin_order_list_receipt_header">Closed Sale</div>
 
       <div id="admin_order_list_receipt" class="receipt">
         <div id="admin_order_list_till_roll" class="till_roll"></div>
+        <div id="admin_order_list_till_roll_discount"></div>
+      </div>
+
+      <div class="clear">&nbsp;</div>
+
+      <div id="total_container">
+
+        <div id="label"></div>
+        <div id="admin_order_list_total_value"></div>
+
+        <div class="clear">&nbsp;</div>
+
       </div>
 
       <div class="clear">&nbsp;</div>
 
       <div id="action_buttons_container">
         <div id="void_button_container">
-          <div class="button" onclick="doVoidOrderItem();">
+          <div class="button" onclick="doReopenOrderItem();">
             <div class="icon">
-              <%= image_tag "/images/button_logos/void_order.png" %>
+              <%= image_tag "/images/button_logos/reopen_order.png" %>
             </div>
-            <div class="button_name">Void</div>
+            <div class="button_name">Re-Open</div>
           </div>
         </div>
 

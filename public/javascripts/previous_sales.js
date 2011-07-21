@@ -3,20 +3,25 @@ $(function() {
     loadFirstTab();
 });
 
+var selectedFromDate;
+var selectedToDate;
+
 function setDatePickers() {
     $('#order_list_container').find('#date_from').datepicker({
         dateFormat: 'dd-mm-yy',
+        defaultDate: selectedFromDate,
         onSelect: function(dateText, inst) { 
+            $('#order_list_container').find('#date_to').datepicker("option", "minDate", dateText);
             $('#search_created_at_gte').val(dateText);
-            $('#order_search').submit();
         }
     });
     
     $('#order_list_container').find('#date_to').datepicker({
         dateFormat: 'dd-mm-yy',
+        defaultDate: selectedToDate,
         onSelect: function(dateText, inst) { 
+            $('#order_list_container').find('#date_from').datepicker("option", "maxDate", dateText);
             $('#search_created_at_lte').val(dateText);
-            $('#order_search').submit();
         }
     });
 }
@@ -38,16 +43,34 @@ function addServerFilter(server_nickname) {
 
 function todayButtonClicked() {
     var todayDate = formatDate(new Date(), "dd-MM-yyyy");
+    forceDateSubmit(todayDate);
+}
+
+function yesterdayButtonClicked() {
+    constructedDate = new Date();
+    constructedDate.setDate(new Date().getDate() - 1);
+    var yesterdayDate = constructedDate;
     
-    $('#search_created_at_gte').val(todayDate);
-    $('#search_created_at_lte').val(todayDate);
-    $('#date_from').val(todayDate);
-    $('#date_to').val(todayDate);
+    var yesterdayDateFormatted = formatDate(yesterdayDate, "dd-MM-yyyy");
+    forceDateSubmit(yesterdayDateFormatted);
+}
+
+function forceDateSubmit(date) {
+    $('#search_created_at_gte').val(date);
+    $('#search_created_at_lte').val(date);
+    $('#date_from').val(date);
+    $('#date_to').val(date);
     $('#order_search').submit();
 }
 
-function doVoidOrderItem() {
-    alert("Void clicked!");
+function doReopenOrderItem() {
+    //this id signifies a previous order
+    var tableID = -1;
+    
+    storeTableOrderInStorage(current_user_id, tableID, totalOrder);
+    
+    //now go to the menu screen
+    //goTo('/home#screen=menu');
 }
 
 function orderListTabSelected(tab, selectedTabName) {
@@ -78,10 +101,6 @@ function orderSelected(orderId) {
 }
 
 function parsePreviousOrder(previousOrderJSON) {
-    writePreviousOrderToRecpt(previousOrderJSON.order.total);
-}
-
-function writePreviousOrderToRecpt(amount) {
-    $('#admin_order_list_till_roll').html(amount);
-    adminOrderListRecptScroll();
+    totalOrder = previousOrderJSON;
+    $('#admin_order_list_till_roll').html(fetchFinalReceiptHTML());
 }

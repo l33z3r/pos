@@ -45,8 +45,13 @@ class Order < ActiveRecord::Base
   belongs_to :employee
   belongs_to :table_info
 
+  belongs_to :void_order
+  
   #for will_paginate
   cattr_reader :per_page
   @@per_page = 15
   
+  def total_including_cashback_and_service_charge
+    total + cashback + service_charge
+  end
 end

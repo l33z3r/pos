@@ -25,11 +25,44 @@ function initMenu() {
     displayLastReceipt();
     initOptionButtons();
 
+    //check if we have loaded a previous order
+    //this will also load it into tableOrders[-1]
+    initPreviousOrder();
+    
     //start the clock in the nav bar
     $("div#clock").clock({
         "calendar":"false",
         "format": clockFormat
     });
+}
+
+function initPreviousOrder() {
+    if(havePreviousOrder(current_user_id) && inMenuContext()) {
+        selectedTable = -1;
+        $('#previous_order_select_item').show();
+        $('#table_select').val(-1);
+        doSelectTable(-1);
+        
+        getTableOrderFromStorage(current_user_id, -1)
+        
+        previousTableOrder = tableOrders[-1];
+        
+        //carry over service charge
+        serviceCharge = previousTableOrder.service_charge;
+        
+        //carry over payment method
+        paymentMethod = previousTableOrder.payment_method;
+        
+        cashback = previousTableOrder.cashback;
+        
+        //carry over the table number
+        tables[-1] = {
+            id : '-1', 
+            label : previousTableOrder.table_info_label
+        };
+    } else {
+        $('#previous_order_select_item').hide();
+    }
 }
 
 function menuScreenKeypadClick(val) {
@@ -247,7 +280,7 @@ function tableSelectMenuItem(orderItem) {
 
     calculateOrderTotal(currentTableOrder);
 
-    storeTableOrderInStorage(current_user_id,selectedTable, currentTableOrder);
+    storeTableOrderInStorage(current_user_id, selectedTable, currentTableOrder);
     
     //add a line to the receipt
     writeOrderItemToReceipt(orderItem);
@@ -328,7 +361,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         orderHTML += clearHTML;
     }
 
-    preDiscountPrice = (orderItem.product_price * orderItem.amount);
+    var preDiscountPrice = (orderItem.product_price * orderItem.amount);
 
     //add the modifiers price to the preDiscountPrice
     if(orderItem.modifier) {
@@ -551,11 +584,8 @@ function calculateOrderTotal(order) {
 
     if(discountAmount) {
         //store the pre discount price 
-        order['pre_discount_price'] = orderTotal;
+        oldPrice = order['pre_discount_price'] = orderTotal;
         
-        oldPrice = order['total'];
-        order['pre_discount_price'] = oldPrice;
-    
         newPrice = oldPrice - ((oldPrice * discountAmount) / 100);
         order['total'] = newPrice;
     }
@@ -565,16 +595,7 @@ function writeTotalToReceipt(order, orderTotal) {
     if(!order) return;
     
     //write the total order discount to the end of the order items
-    if(order.discount_percent && parseFloat(order.discount_percent) > 0) {
-        preDiscountPrice = order.pre_discount_price;
-        
-        preDiscountFormatted = currency(preDiscountPrice);
-        
-        tillRollDiscountHTML = clearHTML + "<div class='whole_order_discount'>";
-        tillRollDiscountHTML += "Discounted " + order.discount_percent + "% from " + preDiscountFormatted + "</div>";
-    } else {
-        tillRollDiscountHTML = "";
-    }
+    tillRollDiscountHTML = getTillRollDiscountHTML(order);
     
     $('#till_roll_discount').html(tillRollDiscountHTML);
     
@@ -740,6 +761,8 @@ function doTotal() {
     showNavBackLinkMenuScreen();
     showTotalsScreen();
     totalsRecptScroll();
+    
+    $('#cashback_amount_holder').html(currency(cashback));
 }
 
 function doTotalFinal() {
@@ -753,25 +776,49 @@ function doTotalFinal() {
     if(selectedTable == 0) {
         totalOrder = currentOrder;
         tableInfoId = null;
-        tableInfoLabel = "No Table Selected";
+        tableInfoLabel = "None";
         isTableOrder = false;
     } else {
         //get total for table
         totalOrder = tableOrders[selectedTable];
 
+        if(selectedTable == -1) {
+            //we dump the id of the table when it is stored in db (to deal with tables no longer existing)
+            //so we cant carry it over here, so we test for the "none" word to test for a table order
+            
+            //pick up the previous table
+            tableInfoLabel = tables[-1].label;
+            isTableOrder = (tableInfoLabel != 'None');
+            tableInfoId = null;
+        } else {
+            isTableOrder = true;
+            tableInfoId = selectedTable;
+            tableInfoLabel = tables[tableInfoId].label;
+        }
+
         //TODO: pick up num persons
-        isTableOrder = true;
-        tableInfoId = selectedTable;
-        tableInfoLabel = tables[tableInfoId].label;
         numPersons = 4
+        
+        totalOrder.table = tables[selectedTable].label;
     }
 
     cashTendered = getTendered();
 
+    totalOrder.cash_tendered = cashTendered;
+    totalOrder.change = $('#totals_change_value').html();
+    
     if(!paymentMethod) {
         paymentMethod = defaultPaymentMethod;
     }
-
+    
+    totalOrder.time = new Date();
+    totalOrder.payment_method = paymentMethod;
+    
+    //set the service charge again in case it was changed on the totals screen
+    totalOrder.service_charge = serviceCharge;
+    
+    totalOrder.cashback = cashback;
+    
     discountPercent = totalOrder.discount_percent;
     preDiscountPrice = totalOrder.pre_discount_price;
 
@@ -809,7 +856,8 @@ function doTotalFinal() {
         'discount_percent':discountPercent,
         'pre_discount_price':preDiscountPrice,
         'order_details':totalOrder,
-        'terminal_id':terminalID
+        'terminal_id':terminalID,
+        'void_order_id': totalOrder.void_order_id
     }
 
     sendOrderToServer(orderData);
@@ -846,6 +894,8 @@ function doTotalFinal() {
         printReceipt(receiptHTML, true);
     }
 
+    //do we need to clear the previous order from the receipt dropdown selection?
+    initPreviousOrder();
 }
 
 function loadAfterSaleScreen() {

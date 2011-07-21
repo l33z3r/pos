@@ -270,11 +270,7 @@ class CashTotal < ActiveRecord::Base
   def self.current_float_amount terminal_id
     @last_z_total, @previous_floats = CashTotal.floats_since_last_z_total terminal_id
     
-    @sum = 0
-    
-    @previous_floats.each do |pf|
-      @sum += pf.total
-    end
+    @sum = @previous_floats.sum &:total
     
     @sum
   end

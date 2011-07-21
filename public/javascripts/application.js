@@ -65,7 +65,6 @@ function doGlobalInit() {
         
         event = event || window.event
  
- 
         //the following was an attempt to hide the ipad keyboard but didnt work
         if (event.preventDefault) {  // W3C variant
             event.preventDefault()
@@ -80,7 +79,7 @@ function doGlobalInit() {
     }
     
     //start calling home
-    callHomePoll();
+    //callHomePoll();
 }
 
 function showInitialScreen() {

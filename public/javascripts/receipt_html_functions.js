@@ -84,19 +84,19 @@ function fetchFinalReceiptHTML() {
     
     finalReceiptHTML += taxChargable ? fetchTotalsHTMLWithTaxChargable() : fetchTotalsWithoutTaxChargableHTML();
     
-    if(cashback>0) {
-        finalReceiptHTML += "<div class='label'>Cashback:</div><div class='data'>" + currency(cashback) + "</div>" + clearHTML;
+    if(totalOrder.cashback > 0) {
+        finalReceiptHTML += "<div class='label'>Cashback:</div><div class='data'>" + currency(totalOrder.cashback) + "</div>" + clearHTML;
     }
     
-    totalTendered = $('#totals_tendered_value').html();
+    cashTendered = totalOrder.cash_tendered;
     
-    if(totalTendered.length>0) {
-        finalReceiptHTML += "<div class='label'>Cash:</div><div class='data'>" + currency(totalTendered) + "</div>" + clearHTML;
+    if(cashTendered > 0) {
+        finalReceiptHTML += "<div class='label'>Cash:</div><div class='data'>" + currency(cashTendered) + "</div>" + clearHTML;
     }
     
-    change = $('#totals_change_value').html();
+    change = totalOrder.change;
 
-    if(change.length>0) {
+    if(change > 0) {
         finalReceiptHTML += "<div class='label'>Change:</div><div class='data'>" + currency(change) + "</div>" + clearHTML;
     }
     
@@ -151,13 +151,14 @@ function fetchFinalReceiptHeaderHTML() {
     headerHTML = "<div class='data_table'>";
     headerHTML += "<div class='label'>Server:</div><div class='data'>" + current_user_nickname + "</div>" + clearHTML;
     
-    timestamp = utilFormatDate(new Date());
+    timestamp = utilFormatDate(totalOrder.time);
     headerHTML += "<div class='label'>Time:</div><div class='data'>" + timestamp + "</div>" + clearHTML;
     
-    if(selectedTable!=0) {
-        selectedTableLabel = tables[selectedTable].label;
-        headerHTML += "<div class='label'>Table:</div><div class='data'>" + selectedTableLabel + "</div>" + clearHTML;
+    if(totalOrder.table) {
+        headerHTML += "<div class='label'>Table:</div><div class='data'>" + totalOrder.table + "</div>" + clearHTML;
     }
+    
+    headerHTML += "<div class='label'>Payment Method:</div><div class='data'>" + totalOrder.payment_method + "</div>" + clearHTML;
     
     headerHTML += "</div>";
     
@@ -179,6 +180,21 @@ function fetchCashScreenReceiptHeaderHTML() {
     headerHTML += "</div>";
     
     return headerHTML;
+}
+
+function getTillRollDiscountHTML(order) {
+    if(order.discount_percent && parseFloat(order.discount_percent) > 0) {
+        preDiscountPrice = order.pre_discount_price;
+        
+        preDiscountFormatted = currency(preDiscountPrice);
+        
+        tillRollDiscountHTML = clearHTML + "<div class='whole_order_discount'>";
+        tillRollDiscountHTML += "Discounted " + order.discount_percent + "% from " + preDiscountFormatted + "</div>";
+    } else {
+        tillRollDiscountHTML = "";
+    }
+    
+    return tillRollDiscountHTML;
 }
 
 function printReceipt(content, printRecptMessage) {
