@@ -101,6 +101,8 @@ class ApplicationController < ActionController::Base
     TerminalSyncData.transaction do
       remove_previous_sync_for_table table_id
     
+      table_order_data = table_order_data.to_s
+      
       @sync_data = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => employee_id}.to_yaml
       
       TerminalSyncData.create!({:sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 

@@ -65,7 +65,6 @@ class OrderController < ApplicationController
   
   def sync_table_order
     @table_order_data = params[:tableOrderData]
-    logger.error "!!!!!#{params[:tableOrderData].class.name}"
     @employee_id = params[:employee_id]
     
     @table_id = @table_order_data['tableID']
