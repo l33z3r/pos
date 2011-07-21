@@ -8,8 +8,8 @@ immediateCallHome = false;
 
 <% if @sync_table_order %>
   lastSyncTableOrderTime = <%= @new_sync_table_order_time %>;
-  tableOrderDataJSON = <%= @sync_table_order_data['orderData'].to_json.html_safe %>;
-  doReceiveTableOrderSync("<%= @sync_table_order_request_terminal_id %>", <%=@sync_table_order_data['tableID']%>, 
+  tableOrderDataJSON = <%= @sync_table_order_data[:orderData].to_json.html_safe %>;
+  doReceiveTableOrderSync("<%= @sync_table_order_request_terminal_id %>", <%=@sync_table_order_data[:tableID]%>, 
   "<%=@table_label%>", "<%=@serving_employee_id%>", "<%=@terminal_employee%>", tableOrderDataJSON);
   immediateCallHome = true;
 <% end %>

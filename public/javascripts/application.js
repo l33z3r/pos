@@ -79,7 +79,7 @@ function doGlobalInit() {
     }
     
     //start calling home
-    //callHomePoll();
+    callHomePoll();
 }
 
 function showInitialScreen() {

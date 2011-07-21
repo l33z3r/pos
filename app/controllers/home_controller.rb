@@ -59,7 +59,7 @@ class HomeController < ApplicationController
       else
         @sync_table_order_request_time = @sync_table_order[:sync_table_order_request_time]
         @sync_table_order_request_terminal_id = @sync_table_order[:sync_table_order_request_terminal_id]
-        @sync_table_order_data = @sync_table_order[:order_data]
+        @sync_table_order_data = JSON.parse(@sync_table_order[:order_data]).symbolize_keys!
       
         @table_label = TableInfo.find(@sync_table_order_data[:tableID]).perm_id
       
