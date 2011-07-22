@@ -1,28 +1,3 @@
-# == Schema Information
-# Schema version: 20110623063424
-#
-# Table name: orders
-#
-#  id                    :integer(4)      not null, primary key
-#  employee_id           :integer(4)
-#  total                 :float
-#  payment_type          :string(255)
-#  amount_tendered       :integer(4)
-#  is_table_order        :boolean(1)
-#  num_persons           :integer(4)
-#  created_at            :datetime
-#  updated_at            :datetime
-#  table_info_id         :integer(4)
-#  discount_percent      :float
-#  pre_discount_price    :float
-#  terminal_id           :string(255)
-#  table_info_label      :string(255)
-#  tax_chargable         :boolean(1)
-#  global_sales_tax_rate :float
-#  service_charge        :float
-#  cashback              :float
-#
-
 # Tax can either be chargable or not in the system. 
 # 
 # If it is chargable, the flag in order will be set and the global tax rate will be picked up from
@@ -45,7 +20,11 @@ class Order < ActiveRecord::Base
   belongs_to :employee
   belongs_to :table_info
 
-  belongs_to :void_order
+  #point to original order
+  belongs_to :void_order, :class_name => "Order"
+  
+  #point to replacement order
+  has_one :replacement_order, :class_name => "Order", :foreign_key => "void_order_id"
   
   #for will_paginate
   cattr_reader :per_page
@@ -55,3 +34,30 @@ class Order < ActiveRecord::Base
     total + cashback + service_charge
   end
 end
+
+# == Schema Information
+#
+# Table name: orders
+#
+#  id                    :integer(4)      not null, primary key
+#  employee_id           :integer(4)
+#  total                 :float
+#  payment_type          :string(255)
+#  amount_tendered       :integer(4)
+#  is_table_order        :boolean(1)      default(FALSE)
+#  num_persons           :integer(4)
+#  created_at            :datetime
+#  updated_at            :datetime
+#  table_info_id         :integer(4)
+#  discount_percent      :float
+#  pre_discount_price    :float
+#  terminal_id           :string(255)
+#  table_info_label      :string(255)
+#  tax_chargable         :boolean(1)      default(FALSE)
+#  global_sales_tax_rate :float
+#  service_charge        :float
+#  cashback              :float
+#  void_order_id         :integer(4)
+#  is_void               :boolean(1)      default(FALSE)
+#
+

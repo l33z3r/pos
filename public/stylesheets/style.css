@@ -1150,6 +1150,10 @@ div#admin_order_list section#orders table#order_list div.dropdown_container {
     text-align: left;
 }
 
+div#admin_order_list section#orders table#order_list tr.void td {
+    text-decoration: line-through;
+}
+
 div#admin_order_list section#orders select {
     max-width: 100px;
 }

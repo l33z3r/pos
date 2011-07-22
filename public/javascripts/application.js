@@ -37,9 +37,21 @@ function doGlobalInit() {
     
     setFingerPrintCookie();
     
-    initTouch();
+    if(isTouchDevice()) {
+        initTouch();
+    }
+    
     initTouchRecpts();
-    initMenu();
+    
+    if(inMenuContext()) {
+        initMenu();
+    }
+    
+    //start the clock in the nav bar
+    $("div#clock").clock({
+        "calendar":"false",
+        "format": clockFormat
+    });
     
     //init the display button passcode request popup
     $('#menu_buttons_popup_anchor').CreateBubblePopup();

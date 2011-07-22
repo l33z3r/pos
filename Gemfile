@@ -34,8 +34,7 @@ gem "meta_search", "1.0.5"
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test do
-  #comment annotate models out as having problems with it on other machines
-  #gem 'annotate-models', :require => 'annotate_models'
+  gem 'annotate'
   
   gem "rspec-rails", "2.6.1"
   gem 'ruby-debug19'

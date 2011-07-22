@@ -6,3 +6,21 @@ class RoomObjectTest < ActiveSupport::TestCase
     assert true
   end
 end
+
+# == Schema Information
+#
+# Table name: room_objects
+#
+#  id          :integer(4)      not null, primary key
+#  object_type :string(255)
+#  permid      :string(255)
+#  label       :string(255)
+#  room_id     :integer(4)
+#  grid_x      :integer(4)
+#  grid_y      :integer(4)
+#  grid_x_size :integer(4)
+#  grid_y_size :integer(4)
+#  created_at  :datetime
+#  updated_at  :datetime
+#
+

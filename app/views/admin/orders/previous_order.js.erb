@@ -42,4 +42,8 @@ previousOrderJSON.items = orderItems;
 //store the previous order id for voiding purposes
 previousOrderJSON.void_order_id = <%= @order.id %>;
 
+//load the void order info
+previousOrderJSON.void_order_id = <%= @order.void_order ? @order.void_order.id : 0 %>;
+previousOrderJSON.replacement_order_id = <%= @order.replacement_order ? @order.replacement_order.id : 0 %>;
+
 parsePreviousOrder(previousOrderJSON);

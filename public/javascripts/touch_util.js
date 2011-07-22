@@ -1,6 +1,11 @@
 var lastTap = null;
 
 function initTouch() {
+    //replace all click events with touch events
+    if(!inMobileContext()) {
+        new NoClickDelay(document.getElementById('wrapper'));
+    }
+    
     //jquery touch ui plugin init
 
     $.extend($.support, {

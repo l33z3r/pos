@@ -110,9 +110,9 @@
     </tr>
 
     <% @orders.each do |order| %>
-      <tr>
-        <td><%= link_to_function order.created_at.strftime(@defaultDateFormat), "orderSelected(#{order.id})" %></td>
-        <td><%= link_to_function order.id, "orderSelected(#{order.id})" %></td>
+      <tr class="<%= order.is_void ? "void" : "" %>">
+        <td><%= link_to_function order.created_at.strftime(@defaultDateFormat), "orderSelected(#{order.id}, #{order.is_void})" %></td>
+        <td><%= link_to_function order.id, "orderSelected(#{order.id}, #{order.is_void})" %></td>
         <td><%= order.table_info_label %></td>
         <td><%= order.terminal_id %></td>
         <td><%= order.employee.nickname %></td>

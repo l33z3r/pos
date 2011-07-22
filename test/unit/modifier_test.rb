@@ -6,3 +6,16 @@ class ModifierTest < ActiveSupport::TestCase
     assert true
   end
 end
+
+# == Schema Information
+#
+# Table name: modifiers
+#
+#  id                   :integer(4)      not null, primary key
+#  modifier_category_id :integer(4)
+#  name                 :string(255)
+#  price                :float
+#  created_at           :datetime
+#  updated_at           :datetime
+#
+

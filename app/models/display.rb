@@ -1,15 +1,3 @@
-# == Schema Information
-# Schema version: 20110429080107
-#
-# Table name: displays
-#
-#  id         :integer(4)      not null, primary key
-#  name       :string(255)
-#  created_at :datetime
-#  updated_at :datetime
-#  is_default :boolean(1)
-#
-
 class Display < ActiveRecord::Base
   has_many :display_buttons
   has_many :menu_pages, :dependent => :destroy, :order => "page_num"
@@ -48,3 +36,15 @@ class Display < ActiveRecord::Base
     display
   end
 end
+
+# == Schema Information
+#
+# Table name: displays
+#
+#  id         :integer(4)      not null, primary key
+#  name       :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#  is_default :boolean(1)      default(FALSE)
+#
+

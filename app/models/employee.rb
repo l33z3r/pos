@@ -1,30 +1,3 @@
-# == Schema Information
-# Schema version: 20110510063013
-#
-# Table name: employees
-#
-#  id                          :integer(4)      not null, primary key
-#  staff_id                    :string(255)
-#  name                        :string(255)
-#  nickname                    :string(255)
-#  passcode                    :string(255)
-#  address                     :string(255)
-#  telephone                   :string(255)
-#  hourly_rate                 :float
-#  overtime_rate               :float
-#  last_login                  :datetime        default(2011-05-02 17:01:46 UTC)
-#  last_active                 :datetime        default(2011-05-02 17:01:46 UTC)
-#  last_logout                 :datetime        default(2011-05-02 17:01:46 UTC)
-#  created_at                  :datetime
-#  updated_at                  :datetime
-#  role_id                     :integer(4)      default(1)
-#  employee_image_file_name    :string(255)
-#  employee_image_content_type :string(255)
-#  employee_image_file_size    :integer(4)
-#  employee_image_updated_at   :datetime
-#  clockin_code                :string(255)
-#
-
 class Employee < ActiveRecord::Base
 
   has_attached_file :employee_image, :styles => { :medium => "300x300>", :thumb => "115x115>" }
@@ -54,3 +27,30 @@ class Employee < ActiveRecord::Base
     return (!employee_image_file_name.nil? and !employee_image_file_name.blank?)
   end
 end
+
+# == Schema Information
+#
+# Table name: employees
+#
+#  id                          :integer(4)      not null, primary key
+#  staff_id                    :string(255)
+#  name                        :string(255)
+#  nickname                    :string(255)
+#  passcode                    :string(255)
+#  address                     :string(255)
+#  telephone                   :string(255)
+#  hourly_rate                 :float
+#  overtime_rate               :float
+#  last_login                  :datetime        default(2011-05-01 13:22:42 UTC)
+#  last_active                 :datetime        default(2011-05-01 13:22:42 UTC)
+#  last_logout                 :datetime        default(2011-05-01 13:22:42 UTC)
+#  created_at                  :datetime
+#  updated_at                  :datetime
+#  role_id                     :integer(4)      default(1)
+#  employee_image_file_name    :string(255)
+#  employee_image_content_type :string(255)
+#  employee_image_file_size    :integer(4)
+#  employee_image_updated_at   :datetime
+#  clockin_code                :string(255)
+#
+

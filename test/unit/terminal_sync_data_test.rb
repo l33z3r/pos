@@ -6,3 +6,16 @@ class TerminalSyncDataTest < ActiveSupport::TestCase
     assert true
   end
 end
+
+# == Schema Information
+#
+# Table name: terminal_sync_data
+#
+#  id         :integer(4)      not null, primary key
+#  sync_type  :integer(4)
+#  time       :string(255)
+#  data       :text
+#  created_at :datetime
+#  updated_at :datetime
+#
+

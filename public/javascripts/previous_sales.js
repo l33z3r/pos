@@ -63,7 +63,13 @@ function forceDateSubmit(date) {
     $('#order_search').submit();
 }
 
+var reOpenOrderItemHandler;
+
 function doReopenOrderItem() {
+    reOpenOrderItemHandler();
+}
+
+function reOpenOrderItem() {
     //this id signifies a previous order
     var tableID = -1;
     
@@ -90,7 +96,11 @@ function loadFirstTab() {
     $('#order_list_tabs .tab').first().click();
 }
 
-function orderSelected(orderId) {
+function orderSelected(orderId, is_void) {
+    $('#admin_order_list_till_roll').html("Loading...");
+    
+    initReopenOrderButton(is_void);
+    
     $.ajax({
         type: 'GET',
         url: '/admin/orders/previous_order.js',
@@ -102,5 +112,26 @@ function orderSelected(orderId) {
 
 function parsePreviousOrder(previousOrderJSON) {
     totalOrder = previousOrderJSON;
-    $('#admin_order_list_till_roll').html(fetchFinalReceiptHTML());
+    
+    var voidOrderInfoHTML = "";
+    
+    if(previousOrderJSON.void_order_id) {
+        voidOrderInfoHTML += "<div class='replacement_for_link'>Replacement For Order " + previousOrderJSON.void_order_id + "</div>";
+    } else if(previousOrderJSON.replacement_order_id) {
+        voidOrderInfoHTML += "<div class='replaced_by_link'>Replaced By Order " + previousOrderJSON.replacement_order_id + "</div>";
+    }
+    
+    voidOrderInfoHTML += clearHTML;
+    
+    $('#admin_order_list_till_roll').html(voidOrderInfoHTML + fetchFinalReceiptHTML());
+}
+
+function initReopenOrderButton(is_void) {
+    if(is_void) {
+        reOpenOrderItemHandler = function() {alert("Cannot re-open a void order!");};
+    } else {
+        reOpenOrderItemHandler = reOpenOrderItem;
+    }
+    
+    return false;
 }

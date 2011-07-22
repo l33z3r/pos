@@ -724,3 +724,7 @@ function inAdminContext() {
 function inMenuContext() {
     return $('body div.menu').length > 0;
 }
+
+function inMobileContext() {
+    return $('body.mobile').length > 0;
+}

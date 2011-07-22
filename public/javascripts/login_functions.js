@@ -215,8 +215,6 @@ function loginSuccess(id, nickname, is_admin, passcode) {
     hideStatusMessage();
     
     showMenuScreen();
-
-    setStatusMessage("Welcome " + nickname + "!");
     
     //show the red x 
     $('#nav_save_button').show();

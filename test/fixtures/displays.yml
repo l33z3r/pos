@@ -1,15 +1,3 @@
-# == Schema Information
-# Schema version: 20110429080107
-#
-# Table name: displays
-#
-#  id         :integer(4)      not null, primary key
-#  name       :string(255)
-#  created_at :datetime
-#  updated_at :datetime
-#  is_default :boolean(1)
-#
-
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
@@ -17,3 +5,15 @@ one:
 
 two:
   string: 
+
+# == Schema Information
+#
+# Table name: displays
+#
+#  id         :integer(4)      not null, primary key
+#  name       :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#  is_default :boolean(1)      default(FALSE)
+#
+

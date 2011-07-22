@@ -28,16 +28,10 @@ function initMenu() {
     //check if we have loaded a previous order
     //this will also load it into tableOrders[-1]
     initPreviousOrder();
-    
-    //start the clock in the nav bar
-    $("div#clock").clock({
-        "calendar":"false",
-        "format": clockFormat
-    });
 }
 
 function initPreviousOrder() {
-    if(havePreviousOrder(current_user_id) && inMenuContext()) {
+    if(havePreviousOrder(current_user_id)) {
         selectedTable = -1;
         $('#previous_order_select_item').show();
         $('#table_select').val(-1);
