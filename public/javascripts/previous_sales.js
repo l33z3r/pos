@@ -115,10 +115,10 @@ function parsePreviousOrder(previousOrderJSON) {
     
     var voidOrderInfoHTML = "";
     
-    if(previousOrderJSON.void_order_id) {
-        voidOrderInfoHTML += "<div class='replacement_for_link'>Replacement For Order " + previousOrderJSON.void_order_id + "</div>";
-    } else if(previousOrderJSON.replacement_order_id) {
-        voidOrderInfoHTML += "<div class='replaced_by_link'>Replaced By Order " + previousOrderJSON.replacement_order_id + "</div>";
+    if(previousOrderJSON.replacement_for_order_id) {
+        voidOrderInfoHTML += "<div class='replacement_for_link'>Replacement For Order " + previousOrderJSON.replacement_for_order_id + "</div>";
+    } else if(previousOrderJSON.replacement_by_order_id) {
+        voidOrderInfoHTML += "<div class='replaced_by_link'>Replaced By Order " + previousOrderJSON.replacement_by_order_id + "</div>";
     }
     
     voidOrderInfoHTML += clearHTML;
