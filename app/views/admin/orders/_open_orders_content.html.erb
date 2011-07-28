@@ -1,1 +1,49 @@
-Open Orders
+<div class="clear_top_margin_20">&nbsp;</div>
+
+<div class="clear_top_margin_20">&nbsp;</div>
+
+<table id="open_order_list" class="order_list admin_table">
+  <thead>
+    <tr>
+      <th class="first" width="110">Date & Time</th>
+      <th width="65">Order No.</th>
+
+      <th width="80">
+  <div class="label">Table</div>
+  <div class="dropdown_container">
+    <select onchange="addTableFilter($(this).val())" id="table_dropdown">
+      <option value="">All</option>
+      <% Room.all.each do |room|%>
+        <optgroup label="<%=room.name%>">
+          <% room.table_infos.each do |table_info| %>
+            <option value="<%= table_info.perm_id %>" <%=params[:search] and params[:search][:table_info_perm_id_equals] == table_info.perm_id ? 'selected' : ''%>><%= table_info.perm_id %></option>
+          <% end %>
+        </optgroup>
+      <% end %>
+    </select>
+  </div>
+</th>
+
+<th width="90">
+<div class="label">Server</div>
+<div class="dropdown_container">
+  <select onchange="addServerFilter($(this).val())" id="server_dropdown">
+    <option value="">All</option>
+    <% @all_servers.each do |server_nickname|%>
+      <option value="<%= server_nickname %>" <%=params[:search] and params[:search][:employee_nickname_equals] == server_nickname ? 'selected' : ''%>><%= server_nickname %></option>
+    <% end %>
+  </select>
+</div>
+</th>
+
+<th width="60">Amount</th>
+
+</tr>
+</thead>
+
+<tbody>
+
+  <!-- orders are loaded in here dynamically -->
+
+</tbody>
+</table>

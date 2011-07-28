@@ -1,6 +1,7 @@
 $(function() {
     setDatePickers();
     loadFirstTab();
+    loadOpenOrders();
 });
 
 var selectedFromDate;
@@ -63,13 +64,13 @@ function forceDateSubmit(date) {
     $('#order_search').submit();
 }
 
-var reOpenOrderItemHandler;
+var reOpenOrderHandler;
 
-function doReopenOrderItem() {
-    reOpenOrderItemHandler();
+function doReopenOrder() {
+    reOpenOrderHandler();
 }
 
-function reOpenOrderItem() {
+function reOpenOrder() {
     //this id signifies a previous order
     var tableID = -1;
     
@@ -124,14 +125,84 @@ function parsePreviousOrder(previousOrderJSON) {
     voidOrderInfoHTML += clearHTML;
     
     $('#admin_order_list_till_roll').html(voidOrderInfoHTML + fetchFinalReceiptHTML());
+    
+    //enable the "re-open order" button
+    $('#continue_order_button').hide();
+    $('#reopen_order_button').show();
 }
 
 function initReopenOrderButton(is_void) {
     if(is_void) {
-        reOpenOrderItemHandler = function() {alert("Cannot re-open a void order!");};
+        reOpenOrderHandler = function() {
+            alert("Cannot re-open a void order!");
+        };
     } else {
-        reOpenOrderItemHandler = reOpenOrderItem;
+        reOpenOrderHandler = reOpenOrder;
     }
     
     return false;
+}
+
+function loadOpenOrders() {
+    var table = $('table#open_order_list > tbody:last');
+    
+    var date;
+    var orderNum;
+    var tableLabel;
+    var server;
+    var amount;
+    
+    var oddRow = true;
+    
+    for(var table_id in tables) {
+        getTableOrderFromStorage(current_user_id, table_id);
+        
+        var order = tableOrders[table_id];
+        
+        if(!orderEmpty(order)) {
+            date = orderStartTime(order);
+            orderNum = order.order_num;
+            tableLabel = tables[table_id].label;
+            server = employees[firstServerID(order)].nickname;
+            amount = order.total;
+            
+            rowData = "<tr " + (oddRow ? "class='odd'" : "") + ">";
+            rowData += "<td class='first'><a href='#' onclick='loadClosedTableOrder(" + table_id + ")'>" + date + "</a></td>";
+            rowData += '<td>' + orderNum + '</td>';
+            rowData += '<td>' + tableLabel + '</td>';
+            rowData += '<td>' + server + '</td>';
+            rowData += "<td class='last'>" + currency(amount) + "</td><tr>";
+            rowData += '<tr>';
+    
+            table.append(rowData);
+        }
+        
+        oddRow = !oddRow;
+    }
+}
+
+var currentSelectedClosedTableID;
+var currentSelectedClosedTableOrder;
+
+function loadClosedTableOrder(table_id) {
+    currentSelectedClosedTableID = table_id;
+    currentSelectedClosedTableOrder = tableOrders[table_id];
+    
+    var orderHTML = getAllOrderItemsReceiptHTML(currentSelectedClosedTableOrder, false, false);
+    $('#admin_order_list_till_roll').html(orderHTML);
+    
+    $('#total_container div#label').html("Sub-Total:");
+    $('#admin_order_list_total_value').html(currency(currentSelectedClosedTableOrder.total));
+    
+    //enable the "continue order" button
+    $('#continue_order_button').show();
+    $('#reopen_order_button').hide();
+}
+
+function continueOrder() {
+    alert("continue: " + current_user_id + " d" + currentSelectedClosedTableID);
+    storeLastReceipt(current_user_id, currentSelectedClosedTableID);
+    
+    //now go to the menu screen
+    goTo('/home#screen=menu');
 }

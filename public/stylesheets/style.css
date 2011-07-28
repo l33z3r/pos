@@ -14,7 +14,7 @@ body {
     padding: 0px;
     color: #333333;
     font-family: verdana;
-    font-size: 12px;
+    font-size: 11px;
     height: 768px;
     overflow: hidden;
     line-height: 15px;
@@ -1134,23 +1134,23 @@ div#admin_order_list section#orders div#receipt_buttons_section div#total_contai
     font-weight: bold;
 }
 
-div#admin_order_list section#orders table#order_list {
+div#admin_order_list section#orders table.order_list {
     min-width: 720px;
 }
 
-div#admin_order_list section#orders table#order_list a.sort_link {
+div#admin_order_list section#orders table.order_list a.sort_link {
     color: #000;
 }
 
-div#admin_order_list section#orders table#order_list div.label {
+div#admin_order_list section#orders table.order_list div.label {
     text-align: left;
 }
 
-div#admin_order_list section#orders table#order_list div.dropdown_container {
+div#admin_order_list section#orders table.order_list div.dropdown_container {
     text-align: left;
 }
 
-div#admin_order_list section#orders table#order_list tr.void td {
+div#admin_order_list section#orders table.order_list tr.void td {
     text-decoration: line-through;
 }
 
@@ -1805,6 +1805,10 @@ div#menu_screen div#receipt_keypad_container div#total_container div#total_value
     width: 92px;
     text-align: right;
     font-weight: bold;
+}
+
+div.receipt {
+    line-height: 19px;
 }
 
 div.receipt div.till_roll div.data_table {

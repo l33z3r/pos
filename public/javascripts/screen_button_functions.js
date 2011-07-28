@@ -26,7 +26,7 @@ function checkAllOrdersClosedForCashTotal() {
 }
 
 function doSyncTableOrder() {
-    if(selectedTable == 0) {
+    if(selectedTable == 0 || selectedTable == -1) {
         alert("Only valid for table orders!");
         return;
     } else {

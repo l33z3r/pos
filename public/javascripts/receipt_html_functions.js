@@ -151,7 +151,7 @@ function fetchFinalReceiptHeaderHTML() {
     headerHTML = "<div class='data_table'>";
     headerHTML += "<div class='label'>Server:</div><div class='data'>" + current_user_nickname + "</div>" + clearHTML;
     
-    //lazy init the order time
+    //lazy init the order time of totalling
     if(typeof(totalOrder.time) == 'undefined') {
         totalOrder.time = new Date();
     }
@@ -270,6 +270,12 @@ function displayLastReceipt() {
     //set the select item
     $('#table_select').val(lastReceiptID);
     doSelectTable(lastReceiptID);
+}
+
+function storeLastReceipt(user_id, table_num) {
+    storeKeyJSONValue("user_" + user_id + "_last_receipt", {
+        'table_num':table_num
+    });
 }
 
 function getCurrentRecptHTML() {

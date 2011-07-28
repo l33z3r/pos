@@ -43,6 +43,10 @@ function doGlobalInit() {
     
     initTouchRecpts();
     
+    //check if we have loaded a previous order
+    //this will also load it into tableOrders[-1]
+    initPreviousOrder();
+    
     if(inMenuContext()) {
         initMenu();
     }

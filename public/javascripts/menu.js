@@ -24,10 +24,6 @@ function initMenu() {
     loadCurrentOrder();
     displayLastReceipt();
     initOptionButtons();
-
-    //check if we have loaded a previous order
-    //this will also load it into tableOrders[-1]
-    initPreviousOrder();
 }
 
 function initPreviousOrder() {
@@ -54,8 +50,6 @@ function initPreviousOrder() {
             id : '-1', 
             label : previousTableOrder.table_info_label
         };
-    } else {
-        $('#previous_order_select_item').hide();
     }
 }
 
@@ -223,7 +217,8 @@ function finishDoSelectMenuItem() {
 
     //either way we want to store the user id
     orderItem['serving_employee_id'] = current_user_id;
-
+    orderItem['time_added'] = utilFormatDate(new Date());
+    
     //if this is a tables order deal with it in another function
     if(selectedTable != 0) {
         tableSelectMenuItem(orderItem);
@@ -605,9 +600,7 @@ function doSelectTable(tableNum) {
     currentSelectedRoom = $('#table_select :selected').data("room_id");
     
     //write to storage that this user was last looking at this receipt
-    storeKeyJSONValue("user_" + current_user_id + "_last_receipt", {
-        'table_num':tableNum
-    });
+    storeLastReceipt(current_user_id, tableNum);
 
     if(tableNum == 0) {
         loadCurrentOrder();
@@ -889,7 +882,9 @@ function doTotalFinal() {
     }
 
     //do we need to clear the previous order from the receipt dropdown selection?
-    initPreviousOrder();
+    if(selectedTable == -1) {
+        $('#previous_order_select_item').hide();
+    }
 }
 
 function loadAfterSaleScreen() {
@@ -1222,7 +1217,27 @@ function getCurrentOrder() {
 
 function currentOrderEmpty(){
     fetchedCurrentOrder = getCurrentOrder();
-    return !fetchedCurrentOrder || fetchedCurrentOrder.items.length == 0
+    return orderEmpty(fetchedCurrentOrder);
+}
+
+function orderEmpty(order) {
+    return !order || order.items.length == 0;
+}
+
+function orderStartTime(order) {
+    if(orderEmpty(order)) {
+        return "";
+    }
+    
+    return order.items[0].time_added;
+}
+
+function firstServerID(order) {
+    if(orderEmpty(order)) {
+        return "";
+    }
+    
+    return order.items[0].serving_employee_id;
 }
 
 function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee, tableOrderDataJSON) {

@@ -1,5 +1,5 @@
 <% content_for :head do %>
-  <%= javascript_include_tag "previous_sales" %>
+  <%= javascript_include_tag "previous_sales", "tables" %>
 <% end %>
 
 <script type="text/javascript">
@@ -39,11 +39,18 @@
 
       <div id="action_buttons_container">
         <div id="void_button_container">
-          <div class="button" onclick="doReopenOrderItem();">
+          <div class="button" id="reopen_order_button" onclick="doReopenOrder();">
             <div class="icon">
               <%= image_tag "/images/button_logos/reopen_order.png" %>
             </div>
             <div class="button_name">Re-Open</div>
+          </div>
+          
+          <div class="button" id="continue_order_button" style="display: none;" onclick="continueOrder();">
+            <div class="icon">
+              <%= image_tag "/images/button_logos/continue_order.png" %>
+            </div>
+            <div class="button_name">Continue</div>
           </div>
         </div>
 

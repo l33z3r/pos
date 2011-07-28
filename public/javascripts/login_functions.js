@@ -241,6 +241,13 @@ function loginSuccess(id, nickname, is_admin, passcode) {
     }
     
     clearCode();
+    
+    //dont show the previous order dropdown if there is none in memory
+    if(havePreviousOrder(current_user_id)) {
+        $('#previous_order_select_item').show();
+    } else {
+        $('#previous_order_select_item').hide();
+    }
 }
 
 function clockinFailure() {
