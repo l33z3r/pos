@@ -255,6 +255,8 @@ function initFloatScreen() {
     
     setUtilCoinCounter(coinCounterPosition, totalFunction);
     
+    doCoinCounterTotal();
+    
     $('#float_till_roll').html("Loading...");
     
     showFloatScreen();

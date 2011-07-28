@@ -605,12 +605,12 @@ function doCoinCounterTotal() {
         }
         
         //set the amount for this row on the widget
-        $('#coin_amount_' + valArray[i]).html(currency((parseFloat(amount) * parseFloat(valArray[i]))/100));
+        utilCounterParent.find('#coin_amount_' + valArray[i]).html(currency((parseFloat(amount) * parseFloat(valArray[i]))/100));
         
         sum += ((parseFloat(amount) * parseFloat(valArray[i]))/100);
     }
     
-    $('#coin_counter_total_amount').html(currency(sum));
+    utilCounterParent.find('#coin_counter_total_amount').html(currency(sum));
     utilCounterTotalCalculated(sum);
 }
 

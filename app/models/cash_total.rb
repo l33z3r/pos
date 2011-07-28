@@ -92,7 +92,7 @@ class CashTotal < ActiveRecord::Base
     if @last_performed_non_zero_z_total
       #now load the next order after the end order from the previous z total
       @first_order = Order.find(:first, 
-        :conditions => "created_at > '#{@last_performed_non_zero_z_total.end_order.created_at}' and terminal_id = '#{terminal_id}'", 
+        :conditions => "created_at > '#{@last_performed_non_zero_z_total.end_order.created_at.to_utc}' and terminal_id = '#{terminal_id}'", 
         :order => "created_at")
     else
       #no z totals yet, so just grab orders
@@ -110,7 +110,7 @@ class CashTotal < ActiveRecord::Base
         
       #here are all the orders for this terminal since the last z total
       @orders = Order.find(:all, 
-        :conditions => "created_at >= '#{@first_order.created_at}' and created_at <= '#{@last_order.created_at}' and terminal_id = '#{terminal_id}'")
+        :conditions => "created_at >= '#{@first_order.created_at.to_utc}' and created_at <= '#{@last_order.created_at.to_utc}' and terminal_id = '#{terminal_id}'")
         
       @orders.each do |order|
         order.order_items.each do |order_item|
@@ -202,7 +202,7 @@ class CashTotal < ActiveRecord::Base
     
       #total of all cash sales
       @cash_sale_orders = Order.find(:all,
-        :conditions => "created_at >= '#{@first_order.created_at}' and created_at <= '#{@last_order.created_at}' and terminal_id = '#{terminal_id}' and payment_type = 'cash'")
+        :conditions => "created_at >= '#{@first_order.created_at.to_utc}' and created_at <= '#{@last_order.created_at.to_utc}' and terminal_id = '#{terminal_id}' and payment_type = 'cash'")
           
       @cash_sale_orders.each do |cso|
         @cash_sales_total += cso.total  
@@ -210,7 +210,7 @@ class CashTotal < ActiveRecord::Base
         
       #total of all cash back
       @all_orders_for_report = Order.find(:all,
-        :conditions => "created_at >= '#{@first_order.created_at}' and created_at <= '#{@last_order.created_at}' and terminal_id = '#{terminal_id}' and payment_type = 'cash'")
+        :conditions => "created_at >= '#{@first_order.created_at.to_utc}' and created_at <= '#{@last_order.created_at.to_utc}' and terminal_id = '#{terminal_id}' and payment_type = 'cash'")
           
       @all_orders_for_report.each do |order|
         @cash_back_total += order.cashback
@@ -280,7 +280,7 @@ class CashTotal < ActiveRecord::Base
     
     #select all previous floats since last z total
     if @last_z_total
-      @time_condition = "created_at >= '#{@last_z_total.created_at}' and "
+      @time_condition = "created_at >= '#{@last_z_total.created_at.to_utc}' and "
     else
       @time_condition = ""
     end

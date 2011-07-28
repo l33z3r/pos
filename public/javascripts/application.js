@@ -77,7 +77,15 @@ function doGlobalInit() {
     
     //any input that gains focus will call this function
     $("input").live("focus", function(event) {
+        //unhighlight last active
+        if(typeof lastActiveElement != "undefined") {
+            lastActiveElement.removeClass("focus");
+        }
+        
         lastActiveElement = $(this);
+        
+        //unhighlight last active
+        lastActiveElement.addClass("focus");
         
         event = event || window.event
  

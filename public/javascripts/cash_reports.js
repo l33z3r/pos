@@ -99,6 +99,8 @@ function doCashTotalReport(total_type, commit) {
     
     showCashReportsScreen();
     
+    doCoinCounterTotal();
+    
     $.ajax({
         type: 'POST',
         url: '/cash_total.js',
