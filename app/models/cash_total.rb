@@ -97,7 +97,7 @@ class CashTotal < ActiveRecord::Base
 #        :conditions => "created_at > '#{@last_performed_non_zero_z_total.end_order.created_at}' and terminal_id = '#{terminal_id}'", 
 #        :order => "created_at")
       
-      @first_order = Order.where("created_at > ?", @last_performed_non_zero_z_total.end_order.created_at).where("terminal_id = !", terminal_id).order("created_at").first
+      @first_order = Order.where("created_at > ?", @last_performed_non_zero_z_total.end_order.created_at).where("terminal_id = ?", terminal_id).order("created_at").first
     else
       #no z totals yet, so just grab orders
 #      @first_order = Order.find(:first, :conditions => "terminal_id = '#{terminal_id}'", :order => "created_at")

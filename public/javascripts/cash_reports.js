@@ -99,7 +99,10 @@ function doCashTotalReport(total_type, commit) {
     
     showCashReportsScreen();
     
-    doCoinCounterTotal();
+    //initialize the zeros in the cash counter?
+    if(reportsCashCount == 0) {
+        doCoinCounterTotal();
+    }
     
     $.ajax({
         type: 'POST',
