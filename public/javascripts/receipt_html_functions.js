@@ -28,7 +28,7 @@ function fetchOrderReceiptHTML() {
 }
 
 function fetchCashScreenReceiptTotalsDataTable() {
-   cashScreenReceiptTotalsDataTableHTML = "<div class='data_table'>";
+    cashScreenReceiptTotalsDataTableHTML = "<div class='data_table'>";
     
     if(totalOrder.discount_percent) {
         subTotal = totalOrder.pre_discount_price;
@@ -43,7 +43,7 @@ function fetchCashScreenReceiptTotalsDataTable() {
         discountAmount = 0;
     } 
     
-    cashScreenReceiptTotalsDataTableHTML += taxChargable ? fetchTotalsHTMLWithTaxChargable() : fetchTotalsWithoutTaxChargableHTML();
+    cashScreenReceiptTotalsDataTableHTML += taxChargable ? fetchTotalsHTMLWithTaxChargable("Balance Due") : fetchTotalsWithoutTaxChargableHTML("Balance Due");
     cashScreenReceiptTotalsDataTableHTML += clearHTML;
     
     cashScreenReceiptTotalsDataTableHTML += "</div>" + clearHTML; 
@@ -54,7 +54,7 @@ function fetchCashScreenReceiptTotalsDataTable() {
 function fetchCashScreenReceiptHTML() {
     cashScreenReceiptHTML = fetchCashScreenReceiptHeaderHTML() + clearHTML;
     cashScreenReceiptHTML += getAllOrderItemsReceiptHTML(totalOrder, false, false) + clearHTML;
-    cashScreenReceiptHTML += fetchCashScreenReceiptTotalsDataTable();
+    //cashScreenReceiptHTML += fetchCashScreenReceiptTotalsDataTable();
     
     return cashScreenReceiptHTML;
 }
@@ -106,7 +106,11 @@ function fetchFinalReceiptHTML() {
 }
 
 // you must set dicountAmount and subTotal before this funciton is called
-function fetchTotalsHTMLWithTaxChargable() {
+function fetchTotalsHTMLWithTaxChargable(totalLabelText) {
+    if(typeof(totalLabelText) == 'undefined') {
+        totalLabelText = "Total";
+    }
+    
     //write the tax total
     taxAmount = ((subTotal - discountAmount) * globalTaxRate)/100;
     totalsHTML = "<div class='label'>" + taxLabel + " " + globalTaxRate + "%:</div><div class='data'>" + currency(taxAmount) + "</div>" + clearHTML;
@@ -117,13 +121,17 @@ function fetchTotalsHTMLWithTaxChargable() {
     total = (subTotal - discountAmount) + serviceCharge + taxAmount;
     currentTotalFinal = total;
     
-    totalsHTML += "<div class='label bold'>Total:</div><div class='data bold'>" + currency(total) + "</div>" + clearHTML;
+    totalsHTML += "<div class='label bold'>" + totalLabelText + ":</div><div class='data bold total_container'>" + currency(total) + "</div>" + clearHTML;
     
     return totalsHTML;
 }
 
 // you must set dicountAmount and subTotal before this funciton is called
-function fetchTotalsWithoutTaxChargableHTML() {
+function fetchTotalsWithoutTaxChargableHTML(totalLabelText) {
+    if(typeof(totalLabelText) == 'undefined') {
+        totalLabelText = "Total";
+    }
+    
     totalsHTML = fetchServiceChargeHTML();
     
     //finally add up the total from the generated values above to avoid rounding errors
@@ -131,7 +139,7 @@ function fetchTotalsWithoutTaxChargableHTML() {
     
     currentTotalFinal = total;
     
-    totalsHTML += "<div class='label bold'>Total:</div><div class='data bold'>" + currency(total) + "</div>" + clearHTML;
+    totalsHTML += "<div class='label bold'>" + totalLabelText + ":</div><div class='data bold total_container'>" + currency(total) + "</div>" + clearHTML;
     
     return totalsHTML;
 }
@@ -175,12 +183,16 @@ function fetchCashScreenReceiptHeaderHTML() {
     headerHTML += "<div class='label'>Server:</div><div class='data'>" + current_user_nickname + "</div>" + clearHTML;
     
     timestamp = $('#clock').html();
-    headerHTML += "<div class='label'>Time:</div><div class='data'>" + timestamp + "</div>" + clearHTML;
+    headerHTML += "<div class='label'>Time Started:</div><div class='data'>" + timestamp + "</div>" + clearHTML;
     
     if(selectedTable!=0) {
         selectedTableLabel = tables[selectedTable].label;
         headerHTML += "<div class='label'>Table:</div><div class='data'>" + selectedTableLabel + "</div>" + clearHTML;
     }
+    
+    orderNum = "XXX";
+    
+    headerHTML += "<div class='label'>Order Number:</div><div class='data'>" + orderNum + "</div>" + clearHTML;
     
     headerHTML += "</div>";
     
@@ -193,8 +205,12 @@ function getTillRollDiscountHTML(order) {
         
         preDiscountFormatted = currency(preDiscountPrice);
         
-        tillRollDiscountHTML = clearHTML + "<div class='whole_order_discount'>";
-        tillRollDiscountHTML += "Discounted " + order.discount_percent + "% from " + preDiscountFormatted + "</div>";
+        discountAmountFormatted = currency(order.pre_discount_price - order.total);
+        
+        tillRollDiscountHTML = clearHTML + "<div class='data_table'><div class='label'>Sub-Total</div>";
+        tillRollDiscountHTML += "<div class='data'>" + preDiscountFormatted + "</div>";
+        tillRollDiscountHTML += "<div class='label'>Discount - " + order.discount_percent + "%</div>";
+        tillRollDiscountHTML += "<div class='data'>" + discountAmountFormatted + "</div>" + clearHTML + "</div>";
     } else {
         tillRollDiscountHTML = "";
     }

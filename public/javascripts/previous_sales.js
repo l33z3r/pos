@@ -200,7 +200,6 @@ function loadClosedTableOrder(table_id) {
 }
 
 function continueOrder() {
-    alert("continue: " + current_user_id + " d" + currentSelectedClosedTableID);
     storeLastReceipt(current_user_id, currentSelectedClosedTableID);
     
     //now go to the menu screen

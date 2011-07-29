@@ -6,9 +6,20 @@
 
     <div id="totals_receipt" class="receipt">
       <div id="totals_till_roll" class="till_roll"></div>
+      <div class="clear">&nbsp;</div>
+      <div id="totals_till_roll_discount" class="till_roll_discount"></div>
     </div>
 
     <div class="clear">&nbsp;</div>
+
+    <div id="total_container">
+
+      <div id="label">Sub-Total:</div>
+      <div id="cash_screen_sub_total_value"></div>
+
+      <div class="clear">&nbsp;</div>
+
+    </div>
 
     <div id="totals_keypad" class="keypad">
       <div id="keys" class="keys">
@@ -71,8 +82,8 @@
               <div class="bold label">Amount Tendered:</div>
               <div class="data">
                 <div id="totals_tendered_box">
-                  <div class="left"><%= @currency_symbol %></div>
                   <div id="totals_tendered_value"></div>
+                  <div class="right"><%= @currency_symbol %></div>
                   <div class="clear">&nbsp;</div>
                 </div>
               </div>
@@ -83,8 +94,8 @@
             <div class="data_table">
               <div class="bold label">Change Due:</div>
               <div class="bold data">
-                <div class="left"><%= @currency_symbol %></div>
                 <div id="totals_change_value">0</div>
+                <div class="right"><%= @currency_symbol %></div>
                 <div class="clear">&nbsp;</div>
               </div>
               <div class="clear">&nbsp;</div>
@@ -92,21 +103,14 @@
           </div>
 
           <div class="action_buttons">
-            <div class="button" onclick="takeTenderedCancel()">
+            <div class="button" onclick="cashOutCancel()">
               <div class="icon">
                 <%= image_tag "button_logos/cancel_tendered.png" %>
               </div>
               <div class="button_name">Cancel</div>
             </div>
 
-            <div id="tendered_button" class="button" onclick="takeTendered()">
-              <div class="icon">
-                <%= image_tag "button_logos/tender_cash.png" %>
-              </div>
-              <div class="button_name">Tender Cash</div>
-            </div>
-
-            <div id="finish_sale_button" class="button" style="display: none;" onclick="doTotalFinal()">
+            <div id="finish_sale_button" class="button" onclick="finishSale()">
               <div class="icon">
                 <%= image_tag "button_logos/final_sale.png" %>
               </div>
@@ -160,6 +164,13 @@
 
     <div id="totals_screen_misc_buttons_container">
       <div id="totals_screen_misc_buttons_left">
+        <div class="button" onclick="doLogout()">
+          <div class="icon">
+            <%= image_tag "button_logos/save_button.png" %>
+          </div>
+          <div class="button_name">Wait</div>
+        </div>
+        
         <div class="button" onclick="promptForServiceCharge()">
           <div class="icon">
             <%= image_tag "button_logos/service_charge.png" %>

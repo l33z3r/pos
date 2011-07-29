@@ -739,6 +739,15 @@ function doTotal() {
     //set the data in the cash popout
     $('#totals_data_table').html(fetchCashScreenReceiptTotalsDataTable());
     
+    cashTendered = 0;
+    cashTenderedKeypadString = "";
+    
+    //set the discount in the cash out till roll
+    cashScreenReceiptDiscountHTML = getTillRollDiscountHTML(totalOrder);
+    $('#totals_till_roll_discount').html(cashScreenReceiptDiscountHTML);
+    
+    $('#cash_screen_sub_total_value').html(currency(totalOrder.total));
+    
     if(!paymentMethod) {
         paymentMethod = defaultPaymentMethod;
     }
@@ -750,6 +759,9 @@ function doTotal() {
     totalsRecptScroll();
     
     $('#cashback_amount_holder').html(currency(cashback));
+    
+    $('#totals_tendered_value').html(currency(0, false));
+    takeTendered();
 }
 
 function doTotalFinal() {
@@ -861,8 +873,6 @@ function doTotalFinal() {
     loadAfterSaleScreen();
 
     //reset for next sale
-    $('#tendered_button').show();
-    $('#finish_sale_button').hide();
     resetTendered();
     $('#totals_change_value').html("");
     serviceCharge = 0;

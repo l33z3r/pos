@@ -58,6 +58,11 @@ function number_with_delimiter(number, delimiter, separator) {
     }
 }
 
+function roundNumber(num, dec) {
+    var result = Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
+    return result;
+}
+
 function roundNumberUp(num, dec) {
     var result = Math.ceil(num*Math.pow(10,dec))/Math.pow(10,dec);
     return result;
@@ -258,6 +263,7 @@ function renderActiveTables() {
                 $(element).html(newLabelHTML);
                     
                 //mark the tables screen also
+                $('#table_label_' + nextTableID).addClass("active");
                 $('#table_label_' + nextTableID).html(newLabelHTML);
             }
         } else {
@@ -266,6 +272,7 @@ function renderActiveTables() {
                 $(element).html(newLabelHTML);
                     
                 //mark the tables screen also
+                $('#table_label_' + nextTableID).removeClass("active");
                 $('#table_label_' + nextTableID).html(newLabelHTML);
             }
         }

@@ -3,43 +3,57 @@ function takeTendered() {
 
     totalAmountInclCashback = currentTotalFinal + cashback;
 
-    if(cashTendered < totalAmountInclCashback) {
-        alert("Must enter a higher value than current total: " + currency(totalAmountInclCashback));
-        resetTendered();
-        return;
-    }
-
     //calculate change and show the finish sale button
     change = cashTendered - totalAmountInclCashback;
+    
+    //as we calculate change dynamically, it could be negative while
+    //it is being entered, so we must stop that
+    if(change < 0) {
+        change = 0;
+    }
+    
     $('#totals_change_value').html(currency(change, false));
-
-    $('#tendered_button').hide();
-    $('#finish_sale_button').show();
 }
 
+var cashTendered;
+
 function getTendered() {
-    var val = $('#totals_tendered_value').html();
+    var val = cashTendered;
     
-    if(val.length > 0) {
+    if(val > 0) {
         if(isNaN(parseFloat(val))) {
             val = 0;
         }
         
         val = currency(val, false);
-        $('#totals_tendered_value').html(val);
+        $('#totals_tendered_value').html(currency(val, false));
     }
     
     return val;
 }
 
+function finishSale() {
+    cashTendered = getTendered();
+
+    totalAmountInclCashback = roundNumber(currentTotalFinal + cashback, 2);
+
+    if(cashTendered < totalAmountInclCashback) {
+        alert("Must enter a higher value than current total: " + currency(totalAmountInclCashback));
+        resetTendered();
+        return;
+    }
+    
+    doTotalFinal();
+}
+
 function resetTendered() {
+    cashTendered = 0;
+    cashTenderedKeypadString = "";
     $('#totals_tendered_value').html("")
-    $('#finish_sale_button').hide();
-    $('#tendered_button').show();
     $('#totals_change_value').html("");
 }
 
-function takeTenderedCancel() {
+function cashOutCancel() {
     resetTendered();
     showMenuScreen();
 }
@@ -49,37 +63,51 @@ function paymentMethodSelected(method) {
     $('#selected_payment_method_holder').html(paymentMethod);
     
     //highlight the button
-    $('.payment_method_button').each(function() {$(this).removeClass('selected');});
+    $('.payment_method_button').each(function() {
+        $(this).removeClass('selected');
+    });
     
     $('#' + method.replace(/ /g,"_") + '_payment_method_button').addClass('selected');
 }
 
+var cashTenderedKeypadString = "";
+
 function totalsScreenKeypadClick(val) {
-    $('#totals_tendered_value').html($('#totals_tendered_value').html() + val);
+    //make sure you cannot enter a 3rd decimal place number
+    if(cashTenderedKeypadString.indexOf(".") != -1) {
+        if(cashTenderedKeypadString.length - cashTenderedKeypadString.indexOf(".") > 3) {
+            return;
+        }
+    }
+    
+    cashTenderedKeypadString += val;
+    cashTendered = parseFloat(cashTenderedKeypadString);
+    takeTendered();
 }
 
 function totalsScreenKeypadClickDecimal() {
-    $('#totals_tendered_value').html($('#totals_tendered_value').html() + ".");
+    if(cashTenderedKeypadString.indexOf(".") == -1) {
+        cashTenderedKeypadString += ".";
+    }
 }
 
 function totalsScreenKeypadClickCancel() {
     oldVal = $('#totals_tendered_value').html();
     newVal = oldVal.substring(0, oldVal.length - 1);
     
+    cashTenderedKeypadString = newVal;
     $('#totals_tendered_value').html(newVal);
 }
 
 function moneySelected(amount) {
-    $('#finish_sale_button').hide();
-    $('#tendered_button').show();
-    $('#totals_change_value').html(0);
+    $('#totals_change_value').html(currency(0, false));
     
     if(amount == -1) {
         totalAmountInclCashback = currentTotalFinal + cashback;
         newAmount = totalAmountInclCashback;
     } else {
         //add to amount tendered
-        currentAmount = $('#totals_tendered_value').html();
+        currentAmount = cashTendered;
     
         if(currentAmount.length == 0) {
             currentAmount = 0;
@@ -90,9 +118,11 @@ function moneySelected(amount) {
         newAmount = parseInt(amount) + currentAmount;
     }
     
-    newAmount = roundNumberUp(newAmount, 2);
+    newAmount = roundNumber(newAmount, 2);
     
-    $('#totals_tendered_value').html(newAmount);
+    cashTenderedKeypadString = "" + newAmount;
+    cashTendered = newAmount;
+    takeTendered();
 }
 
 function togglePrintReceipt() {
