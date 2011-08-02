@@ -90,6 +90,7 @@ function orderListTabSelected(tab, selectedTabName) {
     $('#order_list_container').html($('#' + selectedTabName + "_content").html());
     
     setDatePickers();
+    loadOpenOrders();
 }
 
 function loadFirstTab() {
@@ -143,8 +144,14 @@ function initReopenOrderButton(is_void) {
     return false;
 }
 
+var openOrdersTableFilter = "";
+var openOrdersServerFilter = "";
+
 function loadOpenOrders() {
-    var table = $('table#open_order_list > tbody:last');
+    //clear the table rows
+    $('#order_list_container').find('table.open_order_list > tbody:last').empty();
+    
+    var table = $('#order_list_container').find('table.open_order_list > tbody:last');
     
     var date;
     var orderNum;
@@ -152,7 +159,7 @@ function loadOpenOrders() {
     var server;
     var amount;
     
-    var oddRow = true;
+    var oddRow = false;
     
     for(var table_id in tables) {
         getTableOrderFromStorage(current_user_id, table_id);
@@ -163,7 +170,29 @@ function loadOpenOrders() {
             date = orderStartTime(order);
             orderNum = order.order_num;
             tableLabel = tables[table_id].label;
-            server = employees[firstServerID(order)].nickname;
+            
+            user_id = firstServerID(order);
+            
+            for (var i = 0; i < employees.length; i++){
+                id = employees[i].id;
+                if(id == user_id) {
+                    server = employees[i].nickname;
+                    break;
+                }
+            }
+            
+            if(openOrdersTableFilter.length > 0) {
+                if(openOrdersTableFilter != tableLabel) {
+                    continue;
+                }
+            }
+            
+            if(openOrdersServerFilter.length > 0) {
+                if(openOrdersServerFilter != server) {
+                    continue;
+                }
+            }
+            
             amount = order.total;
             
             rowData = "<tr " + (oddRow ? "class='odd'" : "") + ">";
@@ -171,14 +200,23 @@ function loadOpenOrders() {
             rowData += '<td>' + orderNum + '</td>';
             rowData += '<td>' + tableLabel + '</td>';
             rowData += '<td>' + server + '</td>';
-            rowData += "<td class='last'>" + currency(amount) + "</td><tr>";
-            rowData += '<tr>';
-    
+            rowData += "<td class='last'>" + currency(amount) + "</td></tr>";
+            
             table.append(rowData);
+            
+            oddRow = !oddRow;
         }
-        
-        oddRow = !oddRow;
     }
+}
+
+function setOpenOrdersTableFilter(filterTableLabel) {
+    openOrdersTableFilter = filterTableLabel;
+    loadOpenOrders();
+}
+
+function setOpenOrdersServerFilter(filterServer) {
+    openOrdersServerFilter = filterServer;
+    loadOpenOrders();
 }
 
 var currentSelectedClosedTableID;

@@ -2,7 +2,7 @@
 
 <div class="clear_top_margin_20">&nbsp;</div>
 
-<table id="open_order_list" class="order_list admin_table">
+<table id="open_order_list" class="open_order_list order_list admin_table">
   <thead>
     <tr>
       <th class="first" width="110">Date & Time</th>
@@ -11,7 +11,7 @@
       <th width="80">
   <div class="label">Table</div>
   <div class="dropdown_container">
-    <select onchange="addTableFilter($(this).val())" id="table_dropdown">
+    <select onchange="setOpenOrdersTableFilter($(this).val())" id="table_dropdown">
       <option value="">All</option>
       <% Room.all.each do |room|%>
         <optgroup label="<%=room.name%>">
@@ -27,7 +27,7 @@
 <th width="90">
 <div class="label">Server</div>
 <div class="dropdown_container">
-  <select onchange="addServerFilter($(this).val())" id="server_dropdown">
+  <select onchange="setOpenOrdersServerFilter($(this).val())" id="server_dropdown">
     <option value="">All</option>
     <% @all_servers.each do |server_nickname|%>
       <option value="<%= server_nickname %>" <%=params[:search] and params[:search][:employee_nickname_equals] == server_nickname ? 'selected' : ''%>><%= server_nickname %></option>
