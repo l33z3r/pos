@@ -64,6 +64,13 @@ function menuScreenKeypadClick(val) {
             if(currentMenuItemQuantity.length > 0)
                 currentMenuItemQuantity += val
         } else {
+            //make sure you cannot enter a 2nd decimal place number
+            if(currentMenuItemQuantity.indexOf(".") != -1) {
+                if(currentMenuItemQuantity.length - currentMenuItemQuantity.indexOf(".") > 1) {
+                    return;
+                }
+            }
+    
             currentMenuItemQuantity += val;
         }
     }
@@ -74,8 +81,9 @@ function menuScreenKeypadClickCancel() {
 }
 
 function menuScreenKeypadClickDecimal() {
-    alert("Decimal Clicked");
-    currentMenuItemQuantity = "";
+    if(currentMenuItemQuantity.indexOf(".") == -1) {
+        currentMenuItemQuantity += ".";
+    }
 }
 
 function loadFirstMenuPage() {
@@ -113,6 +121,12 @@ function doSelectMenuItem(productId, element) {
     if(currentMenuItemQuantity == "")
         currentMenuItemQuantity = "1";
 
+    if(currentMenuItemQuantity.indexOf(".") != -1) {
+        if(currentMenuItemQuantity.length - currentMenuItemQuantity.indexOf(".") == 1) {
+            currentMenuItemQuantity = "1";
+        }
+    }
+            
     closePreviousModifierDialog();
     
     currentSelectedMenuItemElement = element;
@@ -180,6 +194,13 @@ function showModifierDialog(modifierCategoryId) {
     }, false);
     
     boxEl.FreezeBubblePopup();
+    
+    popupId = boxEl.GetBubblePopupID();
+    
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), function(){
+        boxEl.HideBubblePopup()
+    });
 }
 
 function closePreviousModifierDialog() {
@@ -394,13 +415,11 @@ function doSelectReceiptItem(orderItemEl) {
     popupHTML = $("#edit_receipt_item_popup_markup").html();
     
     orderItemEl.ShowBubblePopup({
-        align: 'center',
         innerHtml: popupHTML,
 														   
         innerHtmlStyle:{ 
             'text-align':'left'
         },
-												   
         themeName: 	'all-grey',
         themePath: 	'/images/jquerybubblepopup-theme'
 
@@ -436,6 +455,9 @@ function doSelectReceiptItem(orderItemEl) {
     };
     
     setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
+
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closeEditOrderItem);
 }
 
 function editOrderItemIncreaseQuantity() {
@@ -443,7 +465,7 @@ function editOrderItemIncreaseQuantity() {
     
     targetInputEl = $('#' + popupId).find('.quantity');
     
-    currentVal = parseInt(targetInputEl.val());
+    currentVal = parseFloat(targetInputEl.val());
     targetInputEl.val(currentVal + 1);
 }
 
@@ -452,7 +474,7 @@ function editOrderItemDecreaseQuantity() {
     
     targetInputEl = $('#' + popupId).find('.quantity');
     
-    currentVal = parseInt(targetInputEl.val());
+    currentVal = parseFloat(targetInputEl.val());
     
     if(currentVal != 1) {
         targetInputEl.val(currentVal - 1);
@@ -480,7 +502,7 @@ function saveEditOrderItem() {
     //fetch the order from the order array and modify it
     //then modify the html in the receipt
     targetInputQuantityEl = $('#' + popupId).find('.quantity');
-    newQuantity = parseInt(targetInputQuantityEl.val());
+    newQuantity = parseFloat(targetInputQuantityEl.val());
     
     targetInputPricePerUnitEl = $('#' + popupId).find('.price');
     newPricePerUnit = parseFloat(targetInputPricePerUnitEl.val());
@@ -1089,6 +1111,9 @@ function showDiscountPopup(el) {
     };
     
     setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
+    
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
 }
 
 function closeDiscountPopup() {

@@ -252,32 +252,24 @@ function renderActiveTables() {
     
     //got this code from http://stackoverflow.com/questions/1227684/how-to-iterate-through-multiple-select-options-with-jquery
     $("#table_select").children('optgroup').children('option').each( 
-    function(id, element) {
-        //alert("ID: " + $(element).val().toString() + " El " + $(element).html() + " in:" + $.inArray($(element).val().toString(), activeTableIDS));
+        function(id, element) {
+            //alert("ID: " + $(element).val().toString() + " El " + $(element).html() + " in:" + $.inArray($(element).val().toString(), activeTableIDS));
             
-        nextTableID = $(element).val().toString();
+            nextTableID = $(element).val().toString();
             
-        if($.inArray(nextTableID, activeTableIDS) != -1) {
-            if(!$(element).html().toString().startsWith("*")) {
-                newLabelHTML = "*" + $(element).html();
-                $(element).html(newLabelHTML);
-                    
+            if($.inArray(nextTableID, activeTableIDS) != -1) {
+            
+                $(element).show();
+            
                 //mark the tables screen also
                 $('#table_label_' + nextTableID).addClass("active");
-                $('#table_label_' + nextTableID).html(newLabelHTML);
-            }
-        } else {
-            if($(element).html().toString().startsWith("*")) {
-                newLabelHTML = $(element).html().toString().substring(1);
-                $(element).html(newLabelHTML);
-                    
-                //mark the tables screen also
+            } else {
+            
+                $(element).hide();
                 $('#table_label_' + nextTableID).removeClass("active");
-                $('#table_label_' + nextTableID).html(newLabelHTML);
             }
         }
-    }
-);
+        );
 }
 
 function setRawCookie(c_name, value, exdays) {
@@ -319,7 +311,7 @@ function showScreenFromHashParams() {
             } else if(hashParams.screen == 'menu') {
                 showMenuScreen();
             } else if(hashParams.screen == 'totals') {
-                //cannot go to this screen
+            //cannot go to this screen
             } else if(hashParams.screen == 'tables') {
                 showTablesScreen();
             } else if(hashParams.screen == 'more_options') {
@@ -734,4 +726,21 @@ function inMenuContext() {
 
 function inMobileContext() {
     return $('body.mobile').length > 0;
+}
+
+var mouseIsInsidePopup = false;
+
+function registerPopupClickHandler(popupEl, outsideClickHandler) {
+    $(popupEl).hover(function(){ 
+        mouseIsInsidePopup = true; 
+    }, function(){ 
+        mouseIsInsidePopup = false; 
+    });
+
+    $("body").mouseup(function(){ 
+        if(!mouseIsInsidePopup) {
+            $("body").mouseup(function(){});
+            outsideClickHandler();
+        } 
+    });
 }

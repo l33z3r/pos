@@ -7,8 +7,9 @@
   <div id="receipt_keypad_container">
 
     <div id="top_buttons">
+      <div id="table_screen_button" onclick="showTablesScreen(); return false;">Tables</div>
+
       <div id="table_select_container">
-        Table:
         <select onchange="doSelectTable($(this).val())" id="table_select">
           <option id="previous_order_select_item" style="display: none;" data-room_id="-1" value="-1">Previous Order</option>
           <option data-room_id="0" value="0">None</option>
@@ -22,8 +23,6 @@
           <% end %>
         </select>
       </div>
-
-      <div id="table_screen_button" onclick="showTablesScreen(); return false;">Tables</div>
 
       <div class="clear">&nbsp;</div>
 

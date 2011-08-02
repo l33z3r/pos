@@ -19,7 +19,7 @@ $(function(){
    
 function doGlobalInit() {
     //allow scroll for dev
-    $('body').css("overflow", "scroll");
+    //$('body').css("overflow", "scroll");
     
     
     
@@ -224,6 +224,11 @@ function showDisplayButtonPasscodePromptPopup() {
     }, false);//save_options = false; it will use new options only on click event, it does not overwrite old options.
     
     $('#menu_buttons_popup_anchor').FreezeBubblePopup();
+    
+    popupId = $('#menu_buttons_popup_anchor').GetBubblePopupID();
+    
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), cancelDisplayButtonPasscodePromptPopup);
 }
 
 function cancelDisplayButtonPasscodePromptPopup() {

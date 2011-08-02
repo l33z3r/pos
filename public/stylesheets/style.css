@@ -344,11 +344,6 @@ div#landing div#login_receipt_keypad_container div#entered_code_container div#cl
 
 /* Admin Global */
 
-div#admin div#content_container section {
-    max-height: 640px;
-    overflow: scroll;
-}
-
 div#admin_subnav_left {
     margin-top: 3px;
     margin-left: 5px;
@@ -371,6 +366,15 @@ table.admin_table {
     background: #FFF;
     margin: auto;
     min-width: 805px;
+}
+
+div.admin div.vtabs-content-panel {
+    overflow: hidden;
+    height: 800px;
+}
+
+.vtabs-content-panel table.admin_table {
+    min-width: 780px;
 }
 
 table.admin_table thead {
@@ -1297,18 +1301,19 @@ div#receipt_keypad_container div#table_select_container select {
     color: #000;
     height: 32px;
     width: 113px;
-    margin-right: 10px;
+    margin-left: 30px;
     font-size: 20px;
 }
 
 div#receipt_keypad_container div#table_screen_button {
+    margin-left: 20px;
     width: 73px;
     max-width: 73px;
-    height: 32px;
+    height: 22px;
+    padding-top: 8px;
     max-height: 32px;
     overflow: hidden;
     vertical-align: middle;
-    display: table-cell;
     text-align: center;
     cursor: pointer;
     border: 1px solid #777;
@@ -1317,7 +1322,8 @@ div#receipt_keypad_container div#table_screen_button {
     box-shadow: 0px 1px 0px #777;
     background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
-    font-size: 14px;
+    font-size: 15px;
+    float: left;
 }
 
 div#menu_screen div#menu_pages_container div#pages {
