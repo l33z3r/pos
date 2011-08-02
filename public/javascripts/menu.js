@@ -861,7 +861,10 @@ function doTotalFinal() {
     //make sure 2 decimal places
     orderTotal = parseFloat(orderTotal).toFixed(2);
     
+    order_num = totalOrder.order_num
+    
     orderData = {
+        'order_num': order_num,
         'employee_id':current_user_id,
         'total':orderTotal,
         'tax_chargable':taxChargable,
@@ -1360,6 +1363,10 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     for(i=0;i<tableOrders[tableID].items.length;i++) {
         tableOrders[tableID].items[i].itemNumber = i + 1;
     }
+    
+    //copy over the order number
+    tableOrders[tableID].order_num = tableOrderDataJSON.order_num;
+    //alert("OrderNum: " + tableOrders[tableID].order_num);
     
     //copy over the discount
     tableOrders[tableID].discount_percent = tableOrderDataJSON.discount_percent;

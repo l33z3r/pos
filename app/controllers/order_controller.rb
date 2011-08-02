@@ -81,6 +81,10 @@ class OrderController < ApplicationController
     @order_details = @order_params.delete(:order_details)
     @order = Order.new(@order_params)
     
+    if !@order.order_num or @order.order_num.to_s.length == 0
+      @order.order_num = Order.next_order_num
+    end
+    
     #is this a re initiailised previous order?
     if @order.void_order_id
       @order_to_void = Order.find(@order.void_order_id)

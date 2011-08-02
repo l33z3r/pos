@@ -49,6 +49,7 @@ class GlobalSetting < ActiveRecord::Base
   CASH_TOTAL_OPTION = 20
   TAX_LABEL = 21
   DO_BEEP = 22
+  LAST_ORDER_ID = 23
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -72,7 +73,8 @@ class GlobalSetting < ActiveRecord::Base
     SERVICE_CHARGE_LABEL => "Service Charge Label", 
     CASH_TOTAL_OPTION => "Cash Total Option",
     TAX_LABEL => "Tax Label",
-    DO_BEEP => "Do Beep"
+    DO_BEEP => "Do Beep",
+    LAST_ORDER_ID => "Last Order ID"
   }
   
   def self.setting_for property, args={}
@@ -200,6 +202,18 @@ class GlobalSetting < ActiveRecord::Base
   
   def self.all_terminals
     find(:all, :conditions => "global_settings.key like '#{TERMINAL_ID}%'").collect(&:value)
+  end
+  
+  def self.next_order_number
+    @gs = find_or_create_by_key(:key => LAST_ORDER_ID.to_s, :value => 0, :label_text => LABEL_MAP[LAST_ORDER_ID])
+    @gs.save!
+    
+    @gs.reload
+    
+    @gs.value = @gs.value.to_i + 1
+    @gs.save!
+    
+    @gs.value
   end
   
   #these properties are for particular properties in the db

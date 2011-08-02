@@ -173,6 +173,10 @@ function fetchFinalReceiptHeaderHTML() {
     
     headerHTML += "<div class='label'>Payment Method:</div><div class='data'>" + totalOrder.payment_method + "</div>" + clearHTML;
     
+    orderNum = totalOrder.order_num;
+    
+    headerHTML += "<div class='label'>Order Number:</div><div class='data'>" + orderNum + "</div>" + clearHTML;
+    
     headerHTML += "</div>";
     
     return headerHTML;
@@ -190,7 +194,7 @@ function fetchCashScreenReceiptHeaderHTML() {
         headerHTML += "<div class='label'>Table:</div><div class='data'>" + selectedTableLabel + "</div>" + clearHTML;
     }
     
-    orderNum = "XXX";
+    orderNum = totalOrder.order_num;
     
     headerHTML += "<div class='label'>Order Number:</div><div class='data'>" + orderNum + "</div>" + clearHTML;
     

@@ -14,7 +14,7 @@
 
 class Room < ActiveRecord::Base
   has_many :room_objects, :dependent => :destroy
-  has_many :table_infos, :through => :room_objects
+  has_many :table_infos, :through => :room_objects, :order => :perm_id
   
   validates :name, :presence => true, :uniqueness => true
   validates :grid_x_size, :presence => true, :numericality => true

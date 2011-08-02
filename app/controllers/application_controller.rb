@@ -101,6 +101,11 @@ class ApplicationController < ActionController::Base
     TerminalSyncData.transaction do
       remove_previous_sync_for_table table_id
     
+      #does this order have an order id? if not generate one
+      if !table_order_data[:orderData][:order_num]
+        table_order_data[:orderData][:order_num] = Order.next_order_num
+      end
+      
       table_order_data = table_order_data.to_json
       
       @sync_data = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => employee_id}.to_yaml

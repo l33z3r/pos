@@ -33,6 +33,10 @@ class Order < ActiveRecord::Base
   def total_including_cashback_and_service_charge
     total + cashback + service_charge
   end
+  
+  def self.next_order_num
+    GlobalSetting.next_order_number
+  end
 end
 
 # == Schema Information

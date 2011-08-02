@@ -147,6 +147,7 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
             tableOrders[tableNum].items.push(tableOrderItem);
         }
 
+        tableOrders[tableNum].order_num = currentTableOrderJSON.order_num;
         tableOrders[tableNum].total = currentTableOrderJSON.total;
         
         if(currentTableOrderJSON.discount_percent) {
@@ -163,6 +164,9 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
             serviceCharge = tableOrders[tableNum].service_charge = currentTableOrderJSON.service_charge;
             cashback = tableOrders[tableNum].cashback = currentTableOrderJSON.cashback;
             tableOrders[tableNum].void_order_id = currentTableOrderJSON.void_order_id;
+            
+            //clear the previous order number
+            tableOrders[tableNum].order_num = "";
         }
     }
         
