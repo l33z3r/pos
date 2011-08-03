@@ -810,7 +810,7 @@ function doTotalFinal() {
             //pick up the previous table
             tableInfoLabel = tables[-1].label;
             isTableOrder = (tableInfoLabel != 'None');
-            tableInfoId = null;
+            tableInfoId = totalOrder.tableInfoId;
         } else {
             isTableOrder = true;
             tableInfoId = selectedTable;
@@ -818,9 +818,7 @@ function doTotalFinal() {
         }
 
         //TODO: pick up num persons
-        numPersons = 4
-        
-        totalOrder.table = tables[selectedTable].label;
+        numPersons = 4;
     }
 
     cashTendered = getTendered();
@@ -1276,6 +1274,22 @@ function firstServerID(order) {
     }
     
     return order.items[0].serving_employee_id;
+}
+
+function firstServerNickname(order) {
+    var server = null;
+    
+    user_id = firstServerID(order);
+            
+    for (var i = 0; i < employees.length; i++){
+        id = employees[i].id;
+        if(id == user_id) {
+            server = employees[i].nickname;
+            break;
+        }
+    }
+    
+    return server;
 }
 
 function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee, tableOrderDataJSON) {

@@ -56,4 +56,7 @@
   var using_mobile = <%= mobile_device? ? "true" : "false" %>;
   
   var doBeep = <%=  GlobalSetting.parsed_setting_for GlobalSetting::DO_BEEP %>;
+  
+  var railsEnvironment = "<%= ENV['RAILS_ENV'] %>";
+  
 </script>

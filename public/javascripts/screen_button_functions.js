@@ -41,6 +41,8 @@ function doSyncTableOrder() {
     
     //alert("Syncing order for table " + selectedTable);
     
+    order.table = tables[selectedTable].label;
+    
     tableOrderData = {
         tableID : selectedTable,
         orderData : order
@@ -66,15 +68,25 @@ function doSyncTableOrder() {
     
     setStatusMessage("Order Sent");
 
-    orderReceiptHTML = fetchOrderReceiptHTML();
-    setLoginReceipt("Last Order", orderReceiptHTML);
-    
+    clearLoginReceipt();
+
     //redraw the receipt if we dont leave this screen
     //so that the highlighted items are no longer highlighted
     doSelectTable(selectedTable);
     
     //pick up the default home screen and load it
     loadAfterSaleScreen();
+
+    if(!order.order_num) {
+        setTimeout(finishDoSyncTableOrder, 2000);
+    } else {
+        finishDoSyncTableOrder();
+    }
+}
+
+function finishDoSyncTableOrder() {
+    orderReceiptHTML = fetchOrderReceiptHTML();
+    setLoginReceipt("Last Order", orderReceiptHTML);
 }
 
 function printCurrentReceipt() {

@@ -33,12 +33,6 @@
 <!-- must set some vars from the system settings -->
 <%= render :partial => "/partials/js_global_settings" %>
 
-<!-- are we using the mobile version? -->
-<% if mobile_device? %>
-  <%= javascript_include_tag "/jqtouch/jqtouch", "mobile/mobile" %>
-  <%= stylesheet_link_tag "/jqtouch/jqtouch", "/jqtouch/themes/apple/theme", "mobile/mobile" %>
-<% end %>
-
 <%= yield :head %>
 
 <!-- disable the double tap to zoom -->

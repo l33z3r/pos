@@ -121,6 +121,9 @@ function fetchTotalsHTMLWithTaxChargable(totalLabelText) {
     total = (subTotal - discountAmount) + serviceCharge + taxAmount;
     currentTotalFinal = total;
     
+    //temporarily set the totalFinal
+    totalOrder.totalFinal = total;
+    
     totalsHTML += "<div class='label bold'>" + totalLabelText + ":</div><div class='data bold total_container'>" + currency(total) + "</div>" + clearHTML;
     
     return totalsHTML;
@@ -138,6 +141,9 @@ function fetchTotalsWithoutTaxChargableHTML(totalLabelText) {
     total = (subTotal - discountAmount) + serviceCharge;
     
     currentTotalFinal = total;
+    
+    //temporarily set the totalFinal
+    totalOrder.totalFinal = total;
     
     totalsHTML += "<div class='label bold'>" + totalLabelText + ":</div><div class='data bold total_container'>" + currency(total) + "</div>" + clearHTML;
     
@@ -157,7 +163,12 @@ function fetchServiceChargeHTML() {
 
 function fetchFinalReceiptHeaderHTML() {
     headerHTML = "<div class='data_table'>";
-    headerHTML += "<div class='label'>Server:</div><div class='data'>" + current_user_nickname + "</div>" + clearHTML;
+    
+    server = firstServerNickname(totalOrder);
+    
+    if(server) {
+        headerHTML += "<div class='label'>Server:</div><div class='data'>" + server + "</div>" + clearHTML;
+    }
     
     //lazy init the order time of totalling
     if(typeof(totalOrder.time) == 'undefined') {
@@ -171,11 +182,15 @@ function fetchFinalReceiptHeaderHTML() {
         headerHTML += "<div class='label'>Table:</div><div class='data'>" + totalOrder.table + "</div>" + clearHTML;
     }
     
-    headerHTML += "<div class='label'>Payment Method:</div><div class='data'>" + totalOrder.payment_method + "</div>" + clearHTML;
+    if(typeof(totalOrder.payment_method) != 'undefined') {
+        headerHTML += "<div class='label'>Payment Method:</div><div class='data'>" + totalOrder.payment_method + "</div>" + clearHTML;
+    }
     
     orderNum = totalOrder.order_num;
-    
-    headerHTML += "<div class='label'>Order Number:</div><div class='data'>" + orderNum + "</div>" + clearHTML;
+        
+    if(typeof(orderNum) != 'undefined') {
+        headerHTML += "<div class='label'>Order Number:</div><div class='data'>" + orderNum + "</div>" + clearHTML;
+    }
     
     headerHTML += "</div>";
     
@@ -257,6 +272,11 @@ function setLoginReceipt(title, contentHTML) {
     });
     
     storeKeyValue("last_sale", receiptData);
+}
+
+function clearLoginReceipt() {
+    $('#login_receipt_header').html("Receipt");
+    $('#login_till_roll').html("");
 }
 
 function getLastSaleInfo() {

@@ -114,7 +114,7 @@ class CashTotal < ActiveRecord::Base
       @overall_total = 0
         
       #here are all the orders for this terminal since the last z total
-      @orders = Order.where("created_at >= ?", @first_order.created_at).where("created_at <= ?", @last_order.created_at).where("terminal_id = ?", terminal_id)
+      @orders = Order.where("created_at >= ?", @first_order.created_at).where("created_at <= ?", @last_order.created_at).where("terminal_id = ?", terminal_id).where("is_void is false")
        
       @orders.each do |order|
         order.order_items.each do |order_item|
@@ -211,11 +211,13 @@ class CashTotal < ActiveRecord::Base
       @cash_sales_total += Order.where("created_at >= ?", @first_order.created_at)
       .where("created_at <= ?", @last_order.created_at)
       .where("terminal_id = ?", terminal_id)
+      .where("is_void is false")
       .where("payment_type = ?", "cash").sum("total")
       
       #total of all cash back
       @cash_back_total += Order.where("created_at >= ?", @first_order.created_at)
       .where("created_at <= ?", @last_order.created_at)
+      .where("is_void is false")
       .where("terminal_id = ?", terminal_id).sum("cashback")
     end
         

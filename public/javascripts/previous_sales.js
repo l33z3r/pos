@@ -90,6 +90,10 @@ function orderListTabSelected(tab, selectedTabName) {
     $('#order_list_container').html($('#' + selectedTabName + "_content").html());
     
     setDatePickers();
+    
+    $('#admin_order_list_till_roll').html("");
+    $('#admin_order_list_total_value').html(currency(0));
+    
     loadOpenOrders();
 }
 
@@ -130,12 +134,15 @@ function parsePreviousOrder(previousOrderJSON) {
     //enable the "re-open order" button
     $('#continue_order_button').hide();
     $('#reopen_order_button').show();
+    
+    $('#total_container div#label').html("Total:");
+    $('#admin_order_list_total_value').html(currency(totalOrder.totalFinal));
 }
 
-function initReopenOrderButton(is_void) {
-    if(is_void) {
+function initReopenOrderButton(is_void_or_replacement) {
+    if(is_void_or_replacement) {
         reOpenOrderHandler = function() {
-            alert("Cannot re-open a void order!");
+            alert("Cannot re-open a void or replacement order!");
         };
     } else {
         reOpenOrderHandler = reOpenOrder;
@@ -171,15 +178,7 @@ function loadOpenOrders() {
             orderNum = order.order_num;
             tableLabel = tables[table_id].label;
             
-            user_id = firstServerID(order);
-            
-            for (var i = 0; i < employees.length; i++){
-                id = employees[i].id;
-                if(id == user_id) {
-                    server = employees[i].nickname;
-                    break;
-                }
-            }
+            server = firstServerNickname(order);
             
             if(openOrdersTableFilter.length > 0) {
                 if(openOrdersTableFilter != tableLabel) {
@@ -196,7 +195,7 @@ function loadOpenOrders() {
             amount = order.total;
             
             rowData = "<tr " + (oddRow ? "class='odd'" : "") + ">";
-            rowData += "<td class='first'><a href='#' onclick='loadClosedTableOrder(" + table_id + ")'>" + date + "</a></td>";
+            rowData += "<td class='first'><a href='#' onclick='loadOpenTableOrder(" + table_id + ")'>" + date + "</a></td>";
             rowData += '<td>' + orderNum + '</td>';
             rowData += '<td>' + tableLabel + '</td>';
             rowData += '<td>' + server + '</td>';
@@ -206,6 +205,12 @@ function loadOpenOrders() {
             
             oddRow = !oddRow;
         }
+    }
+    
+    //add a "no open orders message if needed"
+    if($('#order_list_container').find('table.open_order_list > tbody:last tr').length == 0) {
+        rowData = "<tr><td colspan='5' align='center'>No Open Orders!</td></tr>";
+        table.append(rowData);
     }
 }
 
@@ -219,18 +224,21 @@ function setOpenOrdersServerFilter(filterServer) {
     loadOpenOrders();
 }
 
-var currentSelectedClosedTableID;
-var currentSelectedClosedTableOrder;
+var currentSelectedOpenTableID;
+var currentSelectedOpenTableOrder;
 
-function loadClosedTableOrder(table_id) {
-    currentSelectedClosedTableID = table_id;
-    currentSelectedClosedTableOrder = tableOrders[table_id];
+function loadOpenTableOrder(table_id) {
+    currentSelectedOpenTableID = table_id;
+    currentSelectedOpenTableOrder = totalOrder = tableOrders[table_id];
     
-    var orderHTML = getAllOrderItemsReceiptHTML(currentSelectedClosedTableOrder, false, false);
+    var orderHTML = fetchFinalReceiptHeaderHTML();
+    
+    orderHTML += getAllOrderItemsReceiptHTML(currentSelectedOpenTableOrder, false, false);
+    
     $('#admin_order_list_till_roll').html(orderHTML);
     
     $('#total_container div#label').html("Sub-Total:");
-    $('#admin_order_list_total_value').html(currency(currentSelectedClosedTableOrder.total));
+    $('#admin_order_list_total_value').html(currency(currentSelectedOpenTableOrder.total));
     
     //enable the "continue order" button
     $('#continue_order_button').show();
@@ -238,7 +246,7 @@ function loadClosedTableOrder(table_id) {
 }
 
 function continueOrder() {
-    storeLastReceipt(current_user_id, currentSelectedClosedTableID);
+    storeLastReceipt(current_user_id, currentSelectedOpenTableID);
     
     //now go to the menu screen
     goTo('/home#screen=menu');

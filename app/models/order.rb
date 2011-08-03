@@ -37,6 +37,10 @@ class Order < ActiveRecord::Base
   def self.next_order_num
     GlobalSetting.next_order_number
   end
+  
+  def is_replacement?
+    void_order != nil
+  end
 end
 
 # == Schema Information

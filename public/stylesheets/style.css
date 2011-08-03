@@ -1045,6 +1045,23 @@ div#admin_order_list section#orders div#order_list_section div#order_list_contai
     background-color: #E0E0E0;
 }
 
+div#admin_order_list section#orders div#order_list_section div#order_list_container div#only_void_orders_selector {
+    margin: 6px 10px;
+    font-weight: bold;
+    float: left;
+}
+
+div#admin_order_list section#orders div#order_list_section div#order_list_container div#only_void_orders_selector input {
+    margin-top: 7px;
+    float: left;
+}
+
+div#admin_order_list section#orders div#order_list_section div#order_list_container div#only_void_orders_selector div {
+    margin-top: 6px;
+    margin-left: 2px;
+    float: left;
+}
+
 div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container {
     margin: 6px 10px;
     float: right;
@@ -1122,26 +1139,27 @@ div#admin_order_list section#orders div#receipt_buttons_section div#admin_order_
 }
 
 div#admin_order_list section#orders div#receipt_buttons_section div#total_container {
-    font-size: 14px;
-    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
-    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
-    border: 1px solid #CCC;
+    background-color: #333333;
+    border: 1px solid #333333;
     padding: 3px 2px;
-    color: #000;
 }
 
 div#admin_order_list section#orders div#receipt_buttons_section div#total_container div#label {
+    font-size: 16px;
     font-weight: bold;
     width: 145px;
     text-align: left;
     float: left;
+    color: #FFF;
 }
 
-div#admin_order_list section#orders div#receipt_buttons_section div#total_container div#total_value {
+div#admin_order_list section#orders div#receipt_buttons_section div#total_container div#admin_order_list_total_value {
+    font-size: 16px;
     float: left;
     width: 92px;
     text-align: right;
     font-weight: bold;
+    color: #FFF;
 }
 
 div#admin_order_list section#orders table.order_list {
@@ -2826,6 +2844,7 @@ div#display_button_passcode_popup div#header {
 }
 
 div#display_button_passcode_popup div#display_button_passcode_show {
+    background-color: #FFF;
     width: 100%;
     border: 1px solid #DDD;
     height: 20px;

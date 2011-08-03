@@ -19,14 +19,13 @@ $(function(){
    
 function doGlobalInit() {
     //allow scroll for dev
-    //$('body').css("overflow", "scroll");
-    
-    
-    
+    if(inDevMode) {
+        $('body').css("overflow", "scroll");
+    }
     
     //initialize the tabs and the checkboxes
     $(".vtabs").jVertTabs();
-    $(':checkbox').iphoneStyle({
+    $(':checkbox:not(.no_iphone_style)').iphoneStyle({
         resizeContainer: false, 
         resizeHandle : false, 
         checkedLabel: 'Yes', 
@@ -127,8 +126,11 @@ function showInitialScreen() {
 }
 
 var callHomePollInitSequenceComplete = false;
+var callHome = true;
 
 function callHomePoll() {
+    if(!callHome) return;
+    
     callHomeURL = "/call_home.js"
     
     currentTerminalRecptHTML = "";
@@ -211,8 +213,8 @@ function showDisplayButtonPasscodePromptPopup() {
         align: 'center',
         innerHtml: "<div id='display_button_passcode_popup'><div id='header'>Enter Pass Code:</div>" + 
         "<div id='display_button_passcode_show'></div>" + 
-        "<div id='display_button_submit_passcode' onclick='displayButtonPasscodeEntered()'>Submit</div>" + 
-        "<div id='cancel_display_button_passcode_prompt' onclick='cancelDisplayButtonPasscodePromptPopup();return false;'>Cancel</div></div>",
+        "<div id='display_button_submit_passcode' class='button' onclick='displayButtonPasscodeEntered()'>Submit</div>" + 
+        "<div id='cancel_display_button_passcode_prompt' class='button' onclick='cancelDisplayButtonPasscodePromptPopup();return false;'>Cancel</div></div>",
 														   
         innerHtmlStyle:{ 
             'text-align':'left'

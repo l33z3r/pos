@@ -2,13 +2,17 @@
 
 previousOrderJSON = <%= raw(@order.to_json) %>.order;
 
-var orderItems = [];
+var orderItems = new Array();
 
 <% @order_items.each do |order_item| %>
   var orderItem = <%= raw(order_item.to_json) %>.order_item;
   orderItem.product = <%= raw(order_item.product.to_json) %>.product;
 
   orderItem.modifier = {'name' : '<%= raw(order_item.modifier_name) %>', 'price' : '<%= raw(order_item.modifier_price) %>'};
+
+  //attach the item number to the order item 
+  //which is its number in the receipt
+  orderItem.itemNumber = orderItems.length + 1;
 
   //alias some vars for compatibility
   orderItem.amount = orderItem.quantity;
@@ -34,7 +38,8 @@ x = orderDateString.match(/(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}):(\d{2})/);
 previousOrderJSON.time = new Date(x[1],x[2]-1,x[3],x[4],x[5]);
 
 <% if @order.is_table_order %>
-previousOrderJSON.table = "<%= @order.table_info_label %>";
+  previousOrderJSON.table = "<%= @order.table_info_label %>";
+  previousOrderJSON.tableInfoId = <%= @order.table_info_id %>;
 <% end %>
 
 previousOrderJSON.items = orderItems;

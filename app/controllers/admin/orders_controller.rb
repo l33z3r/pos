@@ -26,10 +26,13 @@ class Admin::OrdersController < Admin::AdminController
     #inject a default sort order
     params[:search] = params[:search] ? {:meta_sort => 'created_at.desc'}.merge(params[:search]) : {:meta_sort => 'created_at.desc'}
     
-    @search = Order.search(params[:search])
+    if params[:only_void_orders]
+      @search = Order.where("void_order_id is not ? or is_void is true", nil).search(params[:search])
+    else
+      @search = Order.search(params[:search])
+    end
     
     #for lazy loading use: @search.relation
-    
     
     @orders = @search.paginate :page => params[:page], :per_page => Order.per_page
   end

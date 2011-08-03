@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   
   helper_method :e, :current_employee, :print_money, :mobile_device?, :all_terminals, :all_servers
   
-  before_filter :load_global_vars, :prepare_for_mobile
+  before_filter :load_global_vars#, :prepare_for_mobile
   
   include ActionView::Helpers::NumberHelper
   
@@ -208,16 +208,16 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  def prepare_for_mobile
-    session[:mobile_param] = params[:m] if params[:m]
-    #request.format = :mobile if mobile_device?
-    
-    #load some vars if mobile devise
-    if mobile_device?
-      @all_terminals = all_terminals
-      @all_servers = all_servers
-    end
-  end
+#  def prepare_for_mobile
+#    session[:mobile_param] = params[:m] if params[:m]
+#    #request.format = :mobile if mobile_device?
+#    
+#    #load some vars if mobile devise
+#    if mobile_device?
+#      @all_terminals = all_terminals
+#      @all_servers = all_servers
+#    end
+#  end
   
   def all_terminals
     GlobalSetting.all_terminals
@@ -228,6 +228,11 @@ class ApplicationController < ActionController::Base
   end
   
   def http_basic_authenticate
+    #skip if on mobile device
+    if mobile_device?
+      return
+    end
+    
     if DO_HTTP_BASIC_AUTH
       authenticate_or_request_with_http_basic do |username, password|
         username == HTTP_BASIC_AUTH_USERNAME && password == HTTP_BASIC_AUTH_PASSWORD

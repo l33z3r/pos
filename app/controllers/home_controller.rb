@@ -7,16 +7,19 @@ class HomeController < ApplicationController
     
     @rooms = Room.all
     
-    if mobile_device?
-      redirect_to mobile_path and return 
-    end
+    #    if mobile_device?
+    #      redirect_to mobile_path and return 
+    #    end
   end
   
   def mobile_index
-    if !mobile_device?
-      redirect_to :action => :index and return 
-    end
+    #    if !mobile_device?
+    #      redirect_to :action => :index and return 
+    #    end
     
+    @all_terminals = all_terminals
+    @all_servers = all_servers
+      
     render :layout => "mobile"
   end
 

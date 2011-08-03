@@ -137,6 +137,7 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
     //fill in the table order array
     if(currentTableOrderJSON != null) {
         for(i=0; i<currentTableOrderJSON.items.length; i++) {
+            //alert("in: " + currentTableOrderJSON.items[i].itemNumber);
             tableOrderItem = currentTableOrderJSON.items[i];
             
             //we want to mark the item as synced if we are loading in a previous order
@@ -148,6 +149,7 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
         }
 
         tableOrders[tableNum].order_num = currentTableOrderJSON.order_num;
+        tableOrders[tableNum].table = currentTableOrderJSON.table;
         tableOrders[tableNum].total = currentTableOrderJSON.total;
         
         if(currentTableOrderJSON.discount_percent) {
@@ -160,6 +162,7 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
         if(tableNum == -1) {
             //we have a previous table order and must copy over the table number and payment method and service charge and cashback
             tableOrders[tableNum].table_info_label = currentTableOrderJSON.table_info_label;
+            tableOrders[tableNum].tableInfoId = currentTableOrderJSON.tableInfoId;
             tableOrders[tableNum].payment_method = currentTableOrderJSON.payment_method;
             serviceCharge = tableOrders[tableNum].service_charge = currentTableOrderJSON.service_charge;
             cashback = tableOrders[tableNum].cashback = currentTableOrderJSON.cashback;
@@ -748,3 +751,16 @@ function registerPopupClickHandler(popupEl, outsideClickHandler) {
         } 
     });
 }
+
+function inDevMode() {
+    return railsEnvironment == 'development';
+}
+
+function inProdMode() {
+    return railsEnvironment == 'production';
+}
+
+function pauseScript(ms) {
+    ms += new Date().getTime();
+    while (new Date() < ms){}
+} 
