@@ -206,8 +206,7 @@ function showModifierDialog(modifierCategoryId) {
 function closePreviousModifierDialog() {
     //close the dialog of the popup for previous modifier if it not closed
     if(currentSelectedMenuItemElement) {
-        $(currentSelectedMenuItemElement).HideBubblePopup();
-        $(currentSelectedMenuItemElement).FreezeBubblePopup();
+        hideBubblePopup($(currentSelectedMenuItemElement));
     }
 }
 
@@ -395,6 +394,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
 }
 
 var currentSelectedReceiptItemEl;
+var editItemPopupAnchor;
 
 function doSelectReceiptItem(orderItemEl) {
     orderItemEl = $(orderItemEl);
@@ -408,27 +408,37 @@ function doSelectReceiptItem(orderItemEl) {
     //keep the border
     orderItemEl.addClass("selected");
     
-    if(!orderItemEl.HasBubblePopup()) {
-        orderItemEl.CreateBubblePopup();
+    editItemPopupAnchor = $('#receipt');
+    
+    if(editItemPopupAnchor.HasBubblePopup()) {
+        editItemPopupAnchor.RemoveBubblePopup();
     }
+    
+    editItemPopupAnchor.CreateBubblePopup();
     
     popupHTML = $("#edit_receipt_item_popup_markup").html();
     
-    orderItemEl.ShowBubblePopup({
+    editItemPopupAnchor.ShowBubblePopup({
+        position: 'right',  
+        align: 'top',
+        tail	 : {
+            align: 'middle'
+        },
         innerHtml: popupHTML,
 														   
         innerHtmlStyle:{ 
             'text-align':'left'
         },
+        
         themeName: 	'all-grey',
-        themePath: 	'/images/jquerybubblepopup-theme'
-
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false        
     }, false);
     
-    orderItemEl.FreezeBubblePopup();
+    editItemPopupAnchor.FreezeBubblePopup();
          
     //set the current price and quantity
-    popupId = orderItemEl.GetBubblePopupID();
+    popupId = editItemPopupAnchor.GetBubblePopupID();
     
     currentPrice = orderItemEl.children('.total').data("per_unit_price");
     currentPrice = currency(currentPrice, false);
@@ -461,7 +471,7 @@ function doSelectReceiptItem(orderItemEl) {
 }
 
 function editOrderItemIncreaseQuantity() {
-    popupId = currentSelectedReceiptItemEl.GetBubblePopupID();
+    popupId = editItemPopupAnchor.GetBubblePopupID();
     
     targetInputEl = $('#' + popupId).find('.quantity');
     
@@ -470,7 +480,7 @@ function editOrderItemIncreaseQuantity() {
 }
 
 function editOrderItemDecreaseQuantity() {
-    popupId = currentSelectedReceiptItemEl.GetBubblePopupID();
+    popupId = editItemPopupAnchor.GetBubblePopupID();
     
     targetInputEl = $('#' + popupId).find('.quantity');
     
@@ -483,8 +493,7 @@ function editOrderItemDecreaseQuantity() {
 
 function closeEditOrderItem() {
     if(currentSelectedReceiptItemEl) {
-        currentSelectedReceiptItemEl.HideBubblePopup();
-        currentSelectedReceiptItemEl.FreezeBubblePopup();
+        hideBubblePopup(editItemPopupAnchor);
         currentSelectedReceiptItemEl.removeClass("selected");
     
         currentSelectedReceiptItemEl = null;
@@ -495,7 +504,7 @@ function saveEditOrderItem() {
     //fetch the item number
     itemNumber = currentSelectedReceiptItemEl.data("item_number");
     
-    popupId = currentSelectedReceiptItemEl.GetBubblePopupID();
+    popupId = editItemPopupAnchor.GetBubblePopupID();
     
     closeEditOrderItem();
     
@@ -1031,7 +1040,9 @@ function initOptionButtons() {
 var currentTargetPopupAnchor = null;
 var individualItemDiscount = false;
 
-function showDiscountPopup(el) {
+function showDiscountPopup(receiptItem) {
+    currentSelectedReceiptItemEl = receiptItem;
+    
     if(currentOrderEmpty()) {
         setStatusMessage("No order present to discount!");
         return;
@@ -1041,12 +1052,10 @@ function showDiscountPopup(el) {
     closeDiscountPopup();
     
     //was the discount button hit on the menu panel, or via the edit item popup?
-    if(el) {
-        currentTargetPopupAnchor = currentSelectedReceiptItemEl;
+    if(receiptItem) {
         $("#apply_discount_to").hide();
         individualItemDiscount = true;
     } else {
-        currentTargetPopupAnchor = $('#receipt_item_discount_popup_anchor');
         $("#apply_discount_to").show();
         
         //need to set the height to be a bit bigger
@@ -1055,22 +1064,31 @@ function showDiscountPopup(el) {
         individualItemDiscount = false;
     }
     
-    if(!currentTargetPopupAnchor.HasBubblePopup()) {
-        currentTargetPopupAnchor.CreateBubblePopup();
+    currentTargetPopupAnchor = $('#receipt');
+    
+    if(currentTargetPopupAnchor.HasBubblePopup()) {
+        currentTargetPopupAnchor.RemoveBubblePopup();
     }
+    
+    currentTargetPopupAnchor.CreateBubblePopup();
     
     discountsPopupHTML = $("#discounts_popup_markup").html();
     
     currentTargetPopupAnchor.ShowBubblePopup({
-        align: 'center',
+        position: 'right',  
+        align: 'top',
+        tail	 : {
+            align: 'middle'
+        },
         innerHtml: discountsPopupHTML,
 														   
         innerHtmlStyle:{ 
             'text-align':'left'
         },
-												   
+        
         themeName: 	'all-grey',
-        themePath: 	'/images/jquerybubblepopup-theme'
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false
 
     }, false);
     
@@ -1079,8 +1097,8 @@ function showDiscountPopup(el) {
     popupId = currentTargetPopupAnchor.GetBubblePopupID();
     
     //fill in the input with either existing or default discount percent
-    if(el) {
-        itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    if(receiptItem) {
+        itemNumber = receiptItem.data("item_number");
         existingDiscountPercent = getExistingDiscountPercentForCurrentOrderItem(itemNumber);
         
         if(existingDiscountPercent) {
@@ -1117,10 +1135,15 @@ function showDiscountPopup(el) {
     registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
 }
 
+function showDiscountPopupFromEditDialog() {
+    receiptItem = currentSelectedReceiptItemEl;
+    closeEditOrderItem();
+    showDiscountPopup(receiptItem);
+}
+
 function closeDiscountPopup() {
     if(currentTargetPopupAnchor) {
-        currentTargetPopupAnchor.HideBubblePopup();
-        currentTargetPopupAnchor.FreezeBubblePopup();
+        hideBubblePopup(currentTargetPopupAnchor);
     }
 }
 

@@ -135,10 +135,10 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  def print_money value
-    @dynamic_currency_symbol = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL
-    number_to_currency value, :precision => 0, :unit => "x"
-  end
+#  def print_money value
+#    @dynamic_currency_symbol = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL
+#    number_to_currency value, :precision => 0, :unit => "x"
+#  end
   
   def print_money value
     @dynamic_currency_symbol = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL

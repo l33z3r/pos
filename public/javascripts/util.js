@@ -735,21 +735,26 @@ function inMobileContext() {
     return $('body.mobile').length > 0;
 }
 
-var mouseIsInsidePopup = false;
+var activePopupElSet = null;
 
 function registerPopupClickHandler(popupEl, outsideClickHandler) {
-    $(popupEl).hover(function(){ 
-        mouseIsInsidePopup = true; 
-    }, function(){ 
-        mouseIsInsidePopup = false; 
-    });
+    activePopupElSet = $(popupEl);
+    
+    //must have a slight delay so that the click that showed the popup doesn't close it
+    setTimeout(function(){
+        $("body").click(function(eventObj) {
+            if(activePopupElSet && (activePopupElSet.has(eventObj.target).length == 0)) {
+                outsideClickHandler();
+            }
+        });
+    }, 500);
+}
 
-    $("body").mouseup(function(){ 
-        if(!mouseIsInsidePopup) {
-            $("body").mouseup(function(){});
-            outsideClickHandler();
-        } 
-    });
+function hideBubblePopup(popupEl) {
+    popupEl.HideBubblePopup();
+    popupEl.FreezeBubblePopup();
+    $("body").unbind('click');
+    activePopupElSet = null;
 }
 
 function inDevMode() {
@@ -763,4 +768,4 @@ function inProdMode() {
 function pauseScript(ms) {
     ms += new Date().getTime();
     while (new Date() < ms){}
-} 
+}

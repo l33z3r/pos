@@ -20,7 +20,7 @@ $(function(){
 function doGlobalInit() {
     //allow scroll for dev
     if(inDevMode) {
-        $('body').css("overflow", "scroll");
+    //$('body').css("overflow", "scroll");
     }
     
     //initialize the tabs and the checkboxes
@@ -106,23 +106,25 @@ function doGlobalInit() {
 }
 
 function showInitialScreen() {
-    if(using_mobile) {
-        initMobile();
-    } else {
-        if(current_user_id == null) {
-            showLoginScreen();
+    //    if(using_mobile) {
+    //        initMobile();
+    //        return;
+    //    } 
 
-            $('#clockincode_show').html("");
-            $('#num').val("");
-        } else {
-            showMenuScreen();
+    if(current_user_id == null) {
+        showLoginScreen();
+
+        $('#clockincode_show').html("");
+        $('#num').val("");
+    } else {
+        showMenuScreen();
         
-            //show the red x 
-            $('#nav_save_button').show();
+        //show the red x 
+        $('#nav_save_button').show();
         
-            if(current_user_nickname != null) $('#e_name').html(current_user_nickname);
-        }
+        if(current_user_nickname != null) $('#e_name').html(current_user_nickname);
     }
+    
 }
 
 var callHomePollInitSequenceComplete = false;
@@ -190,8 +192,7 @@ function displayButtonPasscodeEntered() {
         $('#display_button_passcode').val('');
         $('#display_button_passcode_show').html('');
     
-        $('#menu_buttons_popup_anchor').HideBubblePopup();
-        $('#menu_buttons_popup_anchor').FreezeBubblePopup();
+        hideBubblePopup($('#menu_buttons_popup_anchor'));
     
         displayButtonForwardFunction.call();
         displayButtonForwardFunction = null;
@@ -230,13 +231,12 @@ function showDisplayButtonPasscodePromptPopup() {
     popupId = $('#menu_buttons_popup_anchor').GetBubblePopupID();
     
     //register the click handler to hide the popup when outside clicked
-    registerPopupClickHandler($('#' + popupId), cancelDisplayButtonPasscodePromptPopup);
+    registerPopupClickHandler($('#' + popupId).add('#till_keypad'), cancelDisplayButtonPasscodePromptPopup);
 }
 
 function cancelDisplayButtonPasscodePromptPopup() {
     showingDisplayButtonPasscodePromptPopup = false;
-    $('#menu_buttons_popup_anchor').HideBubblePopup();
-    $('#menu_buttons_popup_anchor').FreezeBubblePopup();
+    hideBubblePopup($('#menu_buttons_popup_anchor'));
 }
 
 var roomScaleX;

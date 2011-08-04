@@ -1889,6 +1889,7 @@ div.receipt div.till_roll div.order_line.selected {
     border: 2px solid #4297D7;
     -moz-border-radius: 5px;
     border-radius: 5px;
+    background-color: #4297D7;
 }
 
 div.receipt div.till_roll div.amount {
