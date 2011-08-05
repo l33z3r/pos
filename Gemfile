@@ -8,7 +8,6 @@ gem 'rails', '3.0.5'
 #had an issue with arel auto updating and breaking code, so sticking to 2.0.9
 gem 'arel', '2.0.9'
 
-gem 'mysql2', '0.2.6'
 gem 'populator'
 gem 'faker'
   
@@ -39,5 +38,10 @@ group :development, :test do
   gem "rspec-rails", "2.6.1"
   gem 'ruby-debug19'
   gem "mongrel", '1.2.0.pre2'
+  
+  gem 'mysql2', '0.2.6'
 end
 
+group :production do
+  gem 'pg'
+end
