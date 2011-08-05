@@ -15,8 +15,16 @@
 [40, "Payment Methods"], [41, "Gift Voucher"], [42, "Order Types"], [43, "Set Up Discounts"],
 [44, "Print Receipt"], [45, "Order"], [46, "Service Charge"], [47, "Previous Sales"]]
 
+#now create the buttons and also init a button role for admin user
 @display_buttons_map.each do |perm_id, button_text|
-  DisplayButton.find_or_create_by_perm_id({:perm_id => perm_id, :button_text => button_text})
+  @display_button = DisplayButton.find_or_create_by_perm_id({:perm_id => perm_id, :button_text => button_text})
+  DisplayButtonRole.find_or_create_by_display_button_id_and_role_id(@display_button.id, @super_user_role.id)
+end
+
+#set the functions button to be visible on the menu screen
+DisplayButton.find(17).display_button_roles.each do |dbr|
+  dbr.show_on_sales_screen = true
+  dbr.save!
 end
 
 @default_payment_method = PaymentMethod.find_or_create_by_name(:name => "cash", :is_default => true)
@@ -25,8 +33,4 @@ end
 
 @default_discount_rate = Discount.find_or_create_by_name(:name => "Default", :percent => "10", :is_default => true)
 
-#set the functions button to be visible on the menu screen
-DisplayButton.find(17).display_button_roles.each do |dbr|
-  dbr.show_on_sales_screen = true
-  dbr.save!
-end
+
