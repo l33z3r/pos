@@ -150,9 +150,14 @@ class ApplicationController < ActionController::Base
   def check_reset_session
     if params[:reset_session]
       reset_session
+      clear_caches
       flash[:notice] = "Session reset!"
       redirect_to home_path
     end
+  end
+  
+  def clear_caches
+    DisplayButton.clear_caches
   end
   
   def reload_interface_times

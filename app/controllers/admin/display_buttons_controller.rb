@@ -86,6 +86,6 @@ class Admin::DisplayButtonsController < Admin::AdminController
   private
   
   def invalidate_display_button_caches
-    Rails.cache.delete_matched(/employee_display_buttons_/)
+    DisplayButton.clear_caches
   end
 end

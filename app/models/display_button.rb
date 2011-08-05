@@ -17,4 +17,8 @@ class DisplayButton < ActiveRecord::Base
   
   validates :button_text, :presence => true, :length => { :minimum => 1 }
   validates :perm_id, :presence => true
+  
+  def self.clear_caches
+    Rails.cache.delete_matched(/employee_display_buttons_/)
+  end
 end
