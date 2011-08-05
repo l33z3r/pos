@@ -184,7 +184,7 @@ class GlobalSetting < ActiveRecord::Base
   private
   
   def self.load_setting property
-    @setting = find_or_create_by_key(:key => property, :value => "Not Set", :label_text => LABEL_MAP[property])
+    @setting = find_or_create_by_key(:key => property.to_s, :value => "Not Set", :label_text => LABEL_MAP[property])
     @setting
   end
   
