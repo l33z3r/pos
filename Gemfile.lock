@@ -58,6 +58,7 @@ GEM
       daemons (~> 1.0.10)
       gem_plugin (~> 0.2.3)
     mysql2 (0.2.6)
+    pg (0.11.0)
     polyglot (0.3.1)
     populator (1.0.0)
     rack (1.2.2)
@@ -118,6 +119,7 @@ DEPENDENCIES
   meta_search (= 1.0.5)
   mongrel (= 1.2.0.pre2)
   mysql2 (= 0.2.6)
+  pg
   populator
   rails (= 3.0.5)
   rspec-rails (= 2.6.1)
