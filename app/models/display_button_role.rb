@@ -4,7 +4,7 @@ class DisplayButtonRole < ActiveRecord::Base
 
   def self.admin_screen_buttons_for_role role_id
     find(:all, :include => "display_button", :conditions => "role_id = #{role_id} and show_on_admin_screen = 1 
-      and display_buttons.perm_id != #{ButtonMapper::MORE_OPTIONS_BUTTON}")
+      and display_buttons.perm_id != #{ButtonMapper::MORE_OPTIONS_BUTTON.to_s}")
   end
 
   def show_on_admin_screen
