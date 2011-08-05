@@ -26,10 +26,6 @@ class PaymentMethod < ActiveRecord::Base
     if !payment_method
       payment_method = find(:first)
       
-      if !payment_method
-        payment_method = PaymentMethod.new(:name => "cash")
-      end
-      
       payment_method.is_default = true
       payment_method.save
     end

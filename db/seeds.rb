@@ -18,3 +18,9 @@
 @display_buttons_map.each do |perm_id, button_text|
   DisplayButton.find_or_create_by_perm_id({:perm_id => perm_id, :button_text => button_text})
 end
+
+@default_payment_method = PaymentMethod.find_or_create_by_name(:name => "cash", :is_default => true)
+
+@default_tax_rate = TaxRate.find_or_create_by_name(:name => "default", :rate => 12, :is_default => true)
+
+@default_discount_rate = Discount.find_or_create_by_name(:name => "Default", :percent => "10", :is_default => true)

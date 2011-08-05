@@ -28,10 +28,6 @@ class Discount < ActiveRecord::Base
     if !discount
       discount = find(:first)
       
-      if !discount
-        discount = Discount.create({:name => "Default", :percent => "10"})
-      end
-      
       discount.is_default = true
       discount.save
     end
