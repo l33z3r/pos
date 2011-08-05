@@ -3,8 +3,9 @@ class DisplayButtonRole < ActiveRecord::Base
   belongs_to :display_button
 
   def self.admin_screen_buttons_for_role role_id
-    find(:all, :include => "display_button", :conditions => "role_id = #{role_id} and show_on_admin_screen = 1 
-      and display_buttons.perm_id != #{ButtonMapper::MORE_OPTIONS_BUTTON.to_s}")
+##    find(:all, :include => "display_button", :conditions => "role_id = #{role_id} and show_on_admin_screen = 1 
+#      and display_buttons.perm_id != #{ButtonMapper::MORE_OPTIONS_BUTTON.to_s}#")
+    where("role_id = ?", role_id).where("show_on_admin_screen = ?", true).includes(:display_button)
   end
 
   def show_on_admin_screen
