@@ -17,8 +17,8 @@
 
 #now create the buttons and also init a button role for admin user
 @display_buttons_map.each do |perm_id, button_text|
-  @display_button = DisplayButton.find_or_create_by_perm_id({:perm_id => perm_id, :button_text => button_text})
-  DisplayButtonRole.find_or_create_by_display_button_id_and_role_id(@display_button.id, @super_user_role.id)
+  @display_button = DisplayButton.find_or_create_by_perm_id(:perm_id => perm_id, :button_text => button_text)
+  DisplayButtonRole.find_or_create_by_display_button_id_and_role_id(:display_button_id => @display_button.id, :role_id => @super_user_role.id, :show_on_admin_screen => true)
 end
 
 #set the functions button to be visible on the menu screen
