@@ -24,3 +24,9 @@ end
 @default_tax_rate = TaxRate.find_or_create_by_name(:name => "default", :rate => 12, :is_default => true)
 
 @default_discount_rate = Discount.find_or_create_by_name(:name => "Default", :percent => "10", :is_default => true)
+
+#set the functions button to be visible on the menu screen
+DisplayButton.find(17).display_button_roles.each do |dbr|
+  dbr.show_on_sales_screen = true
+  dbr.save!
+end
