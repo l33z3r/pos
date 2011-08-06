@@ -102,7 +102,12 @@ function storeOrderInStorage(current_user_id, order_to_store) {
 function getOrderFromStorage(current_user_id) {
     key = "user_" + current_user_id + "_current_order";
     storageData = retrieveStorageValue(key);
-    return JSON.parse(storageData);
+    alert("SD: " + storageData);
+    if(storageData != null) {
+        return JSON.parse(storageData);
+    } else {
+        return null;
+    }
 }
 
 function clearOrderInStorage(current_user_id) {
@@ -118,9 +123,12 @@ function storeTableOrderInStorage(current_user_id, table_num, order_to_store) {
 function getTableOrderFromStorage(current_user_id, selectedTable) {
     key = "user_" + current_user_id + "_table_" + selectedTable + "_current_order";
     storageData = retrieveStorageValue(key);
-    tableOrderDataJSON = JSON.parse(storageData);
-    tableNum = selectedTable;
-    parseAndFillTableOrderJSON(tableOrderDataJSON);
+    
+    if(storageData != null) {
+        tableOrderDataJSON = JSON.parse(storageData);
+        tableNum = selectedTable;
+        parseAndFillTableOrderJSON(tableOrderDataJSON);
+    }
 }
 
 function clearTableOrderInStorage(current_user_id, selectedTable) {
@@ -198,7 +206,11 @@ function storeKeyJSONValue(key, value) {
 
 function retrieveStorageJSONValue(key) {
     storageData = retrieveStorageValue(key);
-    return JSON.parse(storageData);
+    if(storageData != null) {
+        return JSON.parse(storageData);
+    } else {
+        return null;
+    }
 }
 
 function deleteStorageValue(key) {

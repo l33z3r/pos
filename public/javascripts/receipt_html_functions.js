@@ -282,7 +282,7 @@ function clearLoginReceipt() {
 function getLastSaleInfo() {
     saleData = retrieveStorageValue("last_sale");
     
-    if(saleData) {
+    if(saleData != null) {
         return JSON.parse(saleData);
     } else {
         return null;

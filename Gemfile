@@ -43,5 +43,6 @@ group :development, :test do
 end
 
 group :production do
-  gem 'pg'
+#  gem 'pg'
+  gem 'mysql2', '0.2.6'
 end
