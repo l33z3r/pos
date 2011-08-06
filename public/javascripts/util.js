@@ -102,7 +102,7 @@ function storeOrderInStorage(current_user_id, order_to_store) {
 function getOrderFromStorage(current_user_id) {
     key = "user_" + current_user_id + "_current_order";
     storageData = retrieveStorageValue(key);
-    alert("SD: " + storageData);
+    
     if(storageData != null) {
         return JSON.parse(storageData);
     } else {

@@ -94,9 +94,9 @@ function loadFirstMenuPage() {
 }
 
 //load the current bar receipt order into memory
-function loadCurrentOrder() {alert("hi1");
+function loadCurrentOrder() {
     //retrieve the users current order from cookie
-    currentOrder = getOrderFromStorage(current_user_id);alert("hi2");
+    currentOrder = getOrderFromStorage(current_user_id);
 }
 
 function doMenuPageSelect(pageNum, pageId) {
