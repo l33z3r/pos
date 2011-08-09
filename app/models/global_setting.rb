@@ -201,7 +201,8 @@ class GlobalSetting < ActiveRecord::Base
   end
   
   def self.all_terminals
-    find(:all, :conditions => "global_settings.key like '#{TERMINAL_ID}%'").collect(&:value)
+    where("global_settings.key like ?", "#{TERMINAL_ID}%").where("global_settings.value not like ?", "New Terminal%").collect(&:value)
+#    find(:all, :conditions => "global_settings.key like '#{TERMINAL_ID}%'").collect(&:value)
   end
   
   def self.next_order_number

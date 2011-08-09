@@ -1,0 +1,18 @@
+<div id="server_list">
+  <div class="toolbar">
+
+    <a href="#menu" class="back">Menu</a>
+    
+    <h1>Servers</h1>
+
+  </div>
+
+  <ul>
+    <% @all_servers.each do |server_id|%>
+      <li class="arrow">
+        <a href="#server_info_screen" data-page_name="server_recpt_info" data-params="server_id=<%=server_id%>"><%=server_id%></a>
+      </li>
+    <% end %>
+  </ul>
+
+</div>

@@ -124,11 +124,14 @@ function getTableOrderFromStorage(current_user_id, selectedTable) {
     key = "user_" + current_user_id + "_table_" + selectedTable + "_current_order";
     storageData = retrieveStorageValue(key);
     
+    tableOrderDataJSON = null;
+    
     if(storageData != null) {
         tableOrderDataJSON = JSON.parse(storageData);
-        tableNum = selectedTable;
-        parseAndFillTableOrderJSON(tableOrderDataJSON);
     }
+    
+    tableNum = selectedTable;
+    parseAndFillTableOrderJSON(tableOrderDataJSON);
 }
 
 function clearTableOrderInStorage(current_user_id, selectedTable) {

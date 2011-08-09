@@ -1,0 +1,80 @@
+<div id="menu">
+  <div class="toolbar">
+
+    <h1>Cluey</h1>
+
+    <div id="welcome_message">
+      Welcome
+      <div id="e_name"></div>
+    </div>
+
+    <a class="button" href="#" onclick="doMobileLogout()">Logout</a>
+  </div>
+
+  <!--div class="clear_spacer">
+    <div id="menu_screen_status_message_container" class="global_status_message_container">
+      <div id="menu_screen_status_message" class="global_status_message"></div>
+    </div>
+  </div-->
+
+  <div class="clear_top_margin_20">&nbsp;</div>
+  
+  <div id="menu_buttons">
+    <div class="mobile_button" onclick="jQT.goTo('#terminal_list', 'slideup')">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/mobile/view_by_terminal.png" %>
+      </div>
+      <div class="button_name">View By Terminal</div>
+    </div>
+    
+    <div class="mobile_button" onclick="jQT.goTo('#table_list', 'slideup')">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/mobile/view_by_table.png" %>
+      </div>
+      <div class="button_name">View By Table</div>
+    </div>
+    
+    <div class="mobile_button" onclick="jQT.goTo('#server_list', 'slideup')">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/mobile/view_by_server.png" %>
+      </div>
+      <div class="button_name">View By Server</div>
+    </div>
+    
+    <div class="mobile_button" onclick="jQT.goTo('#cash_count_screen', 'slideup')">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/mobile/cash_count.png" %>
+      </div>
+      <div class="button_name">Cash Count</div>
+    </div>
+    
+    <div class="mobile_button" onclick="jQT.goTo('#transaction_list_screen', 'slideup')">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/mobile/transaction_list.png" %>
+      </div>
+      <div class="button_name">Transaction List</div>
+    </div>
+    
+    <div class="mobile_button" onclick="jQT.goTo('#timesheet_screen', 'slideup')">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/mobile/timesheet.png" %>
+      </div>
+      <div class="button_name">Timesheet</div>
+    </div>
+    
+    <div class="mobile_button" onclick="jQT.goTo('#facebook_screen', 'slideup')">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/mobile/facebook.png" %>
+      </div>
+      <div class="button_name">Facebook Status</div>
+    </div>
+    
+    <div class="mobile_button" onclick="jQT.goTo('#delivery_screen', 'slideup')">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/mobile/delivery.png" %>
+      </div>
+      <div class="button_name">Receive Delivery</div>
+    </div>
+  </div>
+
+</div>

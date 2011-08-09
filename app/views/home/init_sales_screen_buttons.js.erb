@@ -1,4 +1,4 @@
-<% cache("employee_display_buttons_#{@current_employee_id}") do %>
+ <% cache("employee_display_buttons_#{@current_employee_id}") do %>
 
   <% 
   @menu_screen_dbrs = DisplayButtonRole.find(:all, :include => "display_button",

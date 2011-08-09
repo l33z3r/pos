@@ -26,4 +26,12 @@ class StoredReceiptHtml < ActiveRecord::Base
     find(:first, :conditions => "receipt_type = '#{TERMINAL}' and receipt_key = '#{terminal_id}'", :order => "created_at DESC")
   end
   
+  def self.latest_for_server employee_id
+    find(:first, :conditions => "receipt_type = '#{EMPLOYEE}' and receipt_key = '#{employee_id}'", :order => "created_at DESC")
+  end
+  
+  def self.latest_for_table table_label
+    find(:first, :conditions => "receipt_type = '#{TABLE}' and receipt_key = '#{table_label}'", :order => "created_at DESC")
+  end
+  
 end

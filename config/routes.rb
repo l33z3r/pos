@@ -17,6 +17,8 @@ Pos::Application.routes.draw do
   #routes for mobile app
   match 'mbl' => "home#mobile_index"
   match 'last_receipt_for_terminal' => "home#last_receipt_for_terminal"
+  match 'last_receipt_for_server' => "home#last_receipt_for_server"
+  match 'last_receipt_for_table' => "home#last_receipt_for_table"
   
   #this route is to call home with js polling
   match 'call_home' => "home#call_home", :via => :post

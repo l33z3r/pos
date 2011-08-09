@@ -24,6 +24,12 @@ div#print_receipt_wrapper div#print_receipt {
     
 }
 
+div#print_receipt_wrapper div.receipt div.till_roll div.business_info {
+    text-align: center;
+    font-weight: bold;
+    margin: 20px 0px;
+}
+
 div#print_receipt_wrapper div.receipt div.till_roll div.data_table {
     margin: 10px 0px;
 }

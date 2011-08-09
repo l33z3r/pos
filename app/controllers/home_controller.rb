@@ -6,17 +6,9 @@ class HomeController < ApplicationController
     @display = Display.load_default
     
     @rooms = Room.all
-    
-    #    if mobile_device?
-    #      redirect_to mobile_path and return 
-    #    end
   end
   
   def mobile_index
-    #    if !mobile_device?
-    #      redirect_to :action => :index and return 
-    #    end
-    
     @all_terminals = all_terminals
     @all_servers = all_servers
       
@@ -73,12 +65,8 @@ class HomeController < ApplicationController
       end
     end
     
-    #store the last receipt html
-    if params[:currentTerminalRecptHTML] and !params[:currentTerminalRecptHTML].blank?
-      StoredReceiptHtml.find_all_by_receipt_type_and_receipt_key(StoredReceiptHtml::TERMINAL, @terminal_id).each(&:destroy)
-      @srh = StoredReceiptHtml.new({:receipt_type => StoredReceiptHtml::TERMINAL, :receipt_key => @terminal_id, :stored_html => params[:currentTerminalRecptHTML]})
-      @srh.save!
-    end
+    store_receipt_html
+    
   end
   
   def request_terminal_reload
@@ -161,6 +149,16 @@ class HomeController < ApplicationController
     @terminal_id = params[:terminal_id]
     @receipt_html_object = StoredReceiptHtml.latest_for_terminal @terminal_id
   end
+  
+  def last_receipt_for_server
+    @server_id = params[:server_id]
+    @receipt_html_object = StoredReceiptHtml.latest_for_server @server_id
+  end
+  
+  def last_receipt_for_table
+    @table_label = params[:table_label]
+    @receipt_html_object = StoredReceiptHtml.latest_for_table @table_label
+  end
 
   private
 
@@ -183,6 +181,27 @@ class HomeController < ApplicationController
     @ids = session[:active_employee_ids]
     @active_employees ||= []
     @active_employees = Employee.find(@ids) if @ids
+  end
+  
+  def store_receipt_html
+    #store the last receipt html for the terminal, server and table
+    if params[:currentTerminalRecptHTML] and !params[:currentTerminalRecptHTML].blank?
+      StoredReceiptHtml.find_all_by_receipt_type_and_receipt_key(StoredReceiptHtml::TERMINAL, @terminal_id).each(&:destroy)
+      @srh = StoredReceiptHtml.new({:receipt_type => StoredReceiptHtml::TERMINAL, :receipt_key => @terminal_id, :stored_html => params[:currentTerminalRecptHTML]})
+      @srh.save!
+      
+      StoredReceiptHtml.find_all_by_receipt_type_and_receipt_key(StoredReceiptHtml::EMPLOYEE, current_employee.nickname).each(&:destroy)
+      @serh = StoredReceiptHtml.new({:receipt_type => StoredReceiptHtml::EMPLOYEE, :receipt_key => current_employee.nickname, :stored_html => params[:currentTerminalRecptHTML]})
+      @serh.save!
+      
+      @current_table_label = params[:currentTerminalRecptTableLabel]
+      
+      if @current_table_label and !@current_table_label.blank?
+        StoredReceiptHtml.find_all_by_receipt_type_and_receipt_key(StoredReceiptHtml::TABLE, @current_table_label).each(&:destroy)
+        @strh = StoredReceiptHtml.new({:receipt_type => StoredReceiptHtml::TABLE, :receipt_key => @current_table_label, :stored_html => params[:currentTerminalRecptHTML]})
+        @strh.save!
+      end
+    end
   end
 
 end

@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   
   helper_method :e, :current_employee, :print_money, :mobile_device?, :all_terminals, :all_servers
   
-  before_filter :load_global_vars#, :prepare_for_mobile
+  before_filter :load_global_vars
   
   include ActionView::Helpers::NumberHelper
   
@@ -135,11 +135,6 @@ class ApplicationController < ActionController::Base
     end
   end
   
-#  def print_money value
-#    @dynamic_currency_symbol = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL
-#    number_to_currency value, :precision => 0, :unit => "x"
-#  end
-  
   def print_money value
     @dynamic_currency_symbol = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL
     number_to_currency value, :precision => 2, :unit => @dynamic_currency_symbol
@@ -206,23 +201,8 @@ class ApplicationController < ActionController::Base
   end
   
   def mobile_device?
-    if session[:mobile_param]
-      session[:mobile_param] == "1"
-    else
-      request.user_agent =~ /Mobile|webOS/
-    end
+    request.user_agent =~ /Mobile|webOS/
   end
-  
-#  def prepare_for_mobile
-#    session[:mobile_param] = params[:m] if params[:m]
-#    #request.format = :mobile if mobile_device?
-#    
-#    #load some vars if mobile devise
-#    if mobile_device?
-#      @all_terminals = all_terminals
-#      @all_servers = all_servers
-#    end
-#  end
   
   def all_terminals
     GlobalSetting.all_terminals

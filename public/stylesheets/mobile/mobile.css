@@ -1,4 +1,31 @@
-div#mobile_receipt {
+/* Misc */
+
+div.mobile_button {
+    float: left;
+    width: 100px;
+    max-width: 100px;
+    height: 85px;
+    max-height: 85px;
+    overflow: hidden;
+    vertical-align: middle;
+    margin: 5px 27px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+
+div.mobile_button div.icon {
+    padding-top: 4px;
+}
+
+/* End Misc */
+
+div.mobile_receipt {
     height: 370px;
     width: 280px;
     margin: auto;
@@ -12,13 +39,94 @@ div#mobile_receipt {
     font-size: 15px;
 }
 
-div#mobile_till_roll {
+div.mobile_till_roll {
     height: 360px;
     display: block;
     background-color: #FFF;
     margin-left: 10px;
 }
 
-div#mobile_till_roll div.data_table div.data {
+div.mobile_till_roll div.data_table div.data {
   font-size: 15px;
 }
+
+/* Login Screen */
+
+div#login div#login_top {
+    height: 30px;
+    text-align: center;
+    padding-top: 10px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+div#login div#status_message {
+    background-color: #E0E0E0;
+    height: 30px;
+    text-align: center;
+    padding-top: 10px;
+    font-size: 15px;
+}
+
+div#login div#entered_code_container {
+    height: 40px;
+    clear: both;
+    width: 100%;
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+}
+
+div#login div#entered_code_container div#clockincode_show {
+    border: 1px solid #DDD;
+    width: 220px;
+    height: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 5px;
+    float: left;
+    border: 1px solid #CCC;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 0px 1px 1px 0px #777;
+    margin-left: 40px;
+    margin-top: 6px;
+    margin-right: 20px;
+    background-color: #FFF;
+}
+
+/* End Login Screen */
+
+/* Menu Screen */
+
+div#menu div#welcome_message,
+div#menu div#welcome_message * {
+    font-size: 13px;
+    color: #FFF;
+    font-weight: bold;
+}
+
+/* End Menu Screen */
+
+/* Terminal Info Screen */
+
+div#terminal_info_screen span.terminal_id {
+    color: #FFF;
+}
+
+/* End Terminal Info Screen */
+
+/* Server Info Screen */
+
+div#server_info_screen span.server_id {
+    color: #FFF;
+}
+
+/* End Server Info Screen */
+
+/* Table Info Screen */
+
+div#table_info_screen span.table_label {
+    color: #FFF;
+}
+
+/* End Table Info Screen */

@@ -686,7 +686,9 @@ function initTouchRecpts() {
     $('#reports_left_till_roll').touchScroll();
     $('#float_till_roll').touchScroll();
     $('#admin_order_list_till_roll').touchScroll();
-    $('#mobile_till_roll').touchScroll();
+    $('#mobile_terminal_till_roll').touchScroll();
+    $('#mobile_server_till_roll').touchScroll();
+    $('#mobile_table_till_roll').touchScroll();
 }
 
 function loginRecptScroll() {
@@ -717,8 +719,16 @@ function adminOrderListRecptScroll() {
     recptScroll("admin_order_list_");
 }
 
-function mobileRecptScroll() {
-    recptScroll("mobile_");
+function mobileTerminalRecptScroll() {
+    recptScroll("mobile_terminal_");
+}
+
+function mobileServerRecptScroll() {
+    recptScroll("mobile_server_");
+}
+
+function mobileTableRecptScroll() {
+    recptScroll("mobile_table_");
 }
 
 function recptScroll(targetPrefix) {
@@ -850,8 +860,9 @@ function doTotalFinal() {
     discountPercent = totalOrder.discount_percent;
     preDiscountPrice = totalOrder.pre_discount_price;
 
-    //do up the subtotal and total and retrieve the receipt html
-    receiptHTML = fetchFinalReceiptHTML();
+    //do up the subtotal and total and retrieve the receipt html for both the login screen and for print
+    receiptHTML = fetchFinalReceiptHTML(false);
+    printReceiptHTML = fetchFinalReceiptHTML(true);
     
     setLoginReceipt("Last Sale", receiptHTML);
     
@@ -920,7 +931,7 @@ function doTotalFinal() {
 
     //now print the receipt
     if(autoPrintReceipt) {
-        printReceipt(receiptHTML, true);
+        printReceipt(printReceiptHTML, true);
     }
 
     //do we need to clear the previous order from the receipt dropdown selection?

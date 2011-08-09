@@ -1,0 +1,3 @@
+<% if @receipt_html_object %>
+  $('#mobile_table_till_roll').html("<%= raw @receipt_html_object.stored_html%>");
+<% end %>

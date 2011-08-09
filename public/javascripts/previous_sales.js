@@ -129,7 +129,7 @@ function parsePreviousOrder(previousOrderJSON) {
     
     voidOrderInfoHTML += clearHTML;
     
-    $('#admin_order_list_till_roll').html(voidOrderInfoHTML + fetchFinalReceiptHTML());
+    $('#admin_order_list_till_roll').html(voidOrderInfoHTML + fetchFinalReceiptHTML(false));
     
     //enable the "re-open order" button
     $('#continue_order_button').hide();

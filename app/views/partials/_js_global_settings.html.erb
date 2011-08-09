@@ -55,8 +55,14 @@
   
   var using_mobile = <%= mobile_device? ? "true" : "false" %>;
   
-  var doBeep = <%=  GlobalSetting.parsed_setting_for GlobalSetting::DO_BEEP %>;
+  var doBeep = <%= GlobalSetting.parsed_setting_for GlobalSetting::DO_BEEP %>;
   
   var railsEnvironment = "<%= ENV['RAILS_ENV'] %>";
+  
+  //business info
+  var business_name = "<%= @business_name %>";
+  var business_address = "<%= @business_address %>";
+  var business_telephone = "<%= @business_telephone %>";
+  var business_email_address = "<%= @business_email_address %>";
   
 </script>

@@ -59,8 +59,18 @@ function fetchCashScreenReceiptHTML() {
     return cashScreenReceiptHTML;
 }
 
-function fetchFinalReceiptHTML() {
-    finalReceiptHTML = fetchFinalReceiptHeaderHTML();
+function fetchFinalReceiptHTML(includeBusinessInfo) {
+    if(typeof(includeBusinessInfo) == 'undefined') {
+        includeBusinessInfo = false;
+    }
+    
+    finalReceiptHTML = "";
+    
+    if(includeBusinessInfo) {
+        finalReceiptHTML += fetchBusinessInfoHeaderHTML();
+    }
+    
+    finalReceiptHTML += fetchFinalReceiptHeaderHTML();
     
     allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(totalOrder, false, false);
     
@@ -161,6 +171,17 @@ function fetchServiceChargeHTML() {
     return serviceChargeHTML;
 }
 
+function fetchBusinessInfoHeaderHTML() {
+    businessInfoHeaderHTML = "<div class='business_info'>";
+    businessInfoHeaderHTML += "<div class='business_name'>" + business_name + "</div>";
+    businessInfoHeaderHTML += "<div class='business_address'>" + business_address + "</div>";
+    businessInfoHeaderHTML += "<div class='business_telephone'>" + business_telephone + "</div>";
+    businessInfoHeaderHTML += "<div class='business_email_address'>" + business_email_address + "</div>";
+    businessInfoHeaderHTML += "</div>";
+  
+    return businessInfoHeaderHTML;
+}
+
 function fetchFinalReceiptHeaderHTML() {
     headerHTML = "<div class='data_table'>";
     
@@ -169,6 +190,8 @@ function fetchFinalReceiptHeaderHTML() {
     if(server) {
         headerHTML += "<div class='label'>Server:</div><div class='data'>" + server + "</div>" + clearHTML;
     }
+    
+    //alert("Time: " + totalOrder.time);
     
     //lazy init the order time of totalling
     if(typeof(totalOrder.time) == 'undefined') {
@@ -293,7 +316,7 @@ function getLastSaleInfo() {
 function displayLastReceipt() {
     //retrieve the users last receipt from storage
     lastReceiptIDOBJ = retrieveStorageJSONValue("user_" + current_user_id + "_last_receipt");
-
+ 
     if(lastReceiptIDOBJ == null) {
         lastReceiptID = 0;
     } else {
@@ -309,7 +332,7 @@ function displayLastReceipt() {
 
     //set the select item
     $('#table_select').val(lastReceiptID);
-    doSelectTable(lastReceiptID);
+    doSelectTable(lastReceiptID); 
 }
 
 function storeLastReceipt(user_id, table_num) {
