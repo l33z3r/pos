@@ -14,6 +14,8 @@ gem 'faker'
 gem "will_paginate", "~> 3.0.pre2"
 gem "meta_search", "1.0.5"
 
+gem 'aws-s3', '0.6.2'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
@@ -27,7 +29,6 @@ gem "meta_search", "1.0.5"
 # gem 'bj'
 # gem 'nokogiri'
 # gem 'sqlite3-ruby', :require => 'sqlite3'
-# gem 'aws-s3', :require => 'aws/s3'
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
@@ -43,6 +44,6 @@ group :development, :test do
 end
 
 group :production do
-#  gem 'pg'
-  gem 'mysql2', '0.2.6'
+  gem 'pg'
+#  gem 'mysql2', '0.2.6'
 end

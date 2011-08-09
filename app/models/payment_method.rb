@@ -18,8 +18,14 @@ class PaymentMethod < ActiveRecord::Base
   validates :name, :presence => true
   validates :name, :uniqueness => true
   
-  has_attached_file :logo, :styles => { :medium => "300x300>", :thumb => "115x115>" }
-
+  has_attached_file :logo, :styles => { :medium => "300x300>", :thumb => "115x115>" },
+    :storage => :s3,
+    :bucket => S3_BUCKET_NAME,
+    :s3_credentials => {
+    :access_key_id => S3_ACCESS_KEY_ID,
+    :secret_access_key => S3_SECRET_ACCESS_KEY
+  }
+  
   def self.load_default
     payment_method = find_by_is_default(true)
     

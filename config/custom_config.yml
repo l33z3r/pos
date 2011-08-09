@@ -2,13 +2,22 @@ development:
   do_http_basic_auth: false
   http_basic_auth_username: cluey
   http_basic_auth_password: clueless
+  s3_bucket_name: clueypos_development
+  s3_access_key_id: AKIAIY5ORKJHOQ7C5ZHA
+  s3_secret_access_key: 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
 
 test:
   do_http_basic_auth: false
   http_basic_auth_username: cluey
   http_basic_auth_password: clueless
+  s3_bucket_name: clueypos_test
+  s3_access_key_id: AKIAIY5ORKJHOQ7C5ZHA
+  s3_secret_access_key: 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
 
 production:
   do_http_basic_auth: true
   http_basic_auth_username: cluey
   http_basic_auth_password: clueless
+  s3_bucket_name: clueypos_production
+  s3_access_key_id: AKIAIY5ORKJHOQ7C5ZHA
+  s3_secret_access_key: 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
