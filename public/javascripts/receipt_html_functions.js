@@ -195,10 +195,11 @@ function fetchFinalReceiptHeaderHTML() {
     
     //lazy init the order time of totalling
     if(typeof(totalOrder.time) == 'undefined') {
-        totalOrder.time = new Date();
+        totalOrder.time = new Date().getTime();
     }
     
-    timestamp = utilFormatDate(totalOrder.time);
+    timestamp = utilFormatDate(new Date(totalOrder.time));
+    
     headerHTML += "<div class='label'>Time:</div><div class='data'>" + timestamp + "</div>" + clearHTML;
     
     if(totalOrder.table) {
@@ -224,7 +225,7 @@ function fetchCashScreenReceiptHeaderHTML() {
     headerHTML = "<div class='data_table'>";
     headerHTML += "<div class='label'>Server:</div><div class='data'>" + current_user_nickname + "</div>" + clearHTML;
     
-    timestamp = $('#clock').html();
+    timestamp = utilFormatDate(new Date(orderStartTime(totalOrder)));
     headerHTML += "<div class='label'>Time Started:</div><div class='data'>" + timestamp + "</div>" + clearHTML;
     
     if(selectedTable!=0) {

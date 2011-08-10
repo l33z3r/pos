@@ -25,13 +25,7 @@
 
 class Product < ActiveRecord::Base
 
-  has_attached_file :product_image, :styles => { :medium => "300x300>", :thumb => "115x115>" },
-    :storage => :s3,
-    :bucket => S3_BUCKET_NAME,
-    :s3_credentials => {
-    :access_key_id => S3_ACCESS_KEY_ID,
-    :secret_access_key => S3_SECRET_ACCESS_KEY
-  }
+  has_attached_file :product_image, PAPERCLIP_STORAGE_OPTIONS.merge(:styles => { :medium => "300x300>", :thumb => "115x115>" })
   
   belongs_to :category
   belongs_to :tax_rate

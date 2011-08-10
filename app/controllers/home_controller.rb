@@ -184,6 +184,8 @@ class HomeController < ApplicationController
   end
   
   def store_receipt_html
+    return unless current_employee
+    
     #store the last receipt html for the terminal, server and table
     if params[:currentTerminalRecptHTML] and !params[:currentTerminalRecptHTML].blank?
       StoredReceiptHtml.find_all_by_receipt_type_and_receipt_key(StoredReceiptHtml::TERMINAL, @terminal_id).each(&:destroy)

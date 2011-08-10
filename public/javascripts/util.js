@@ -116,7 +116,9 @@ function clearOrderInStorage(current_user_id) {
 
 function storeTableOrderInStorage(current_user_id, table_num, order_to_store) {
     key = "user_" + current_user_id + "_table_" + table_num + "_current_order";
+    alert(order_to_store.time);
     value = JSON.stringify(order_to_store);
+    alert(value);
     return storeKeyValue(key, value);
 }
 
@@ -777,7 +779,7 @@ function inDevMode() {
 }
 
 function inProdMode() {
-    return railsEnvironment == 'production';
+    return railsEnvironment == 'production' || railsEnvironment == 'production_heroku';
 }
 
 function pauseScript(ms) {

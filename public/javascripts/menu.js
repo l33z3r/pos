@@ -155,9 +155,6 @@ function doSelectMenuItem(productId, element) {
     //store the terminal id 
     orderItem['terminal_id'] = terminalID;
 
-    //and the time that it was added
-    orderItem['time_added'] = Date.now();
-
     currentOrderItem = orderItem;
 
     //does this product have a modifier
@@ -237,7 +234,7 @@ function finishDoSelectMenuItem() {
 
     //either way we want to store the user id
     orderItem['serving_employee_id'] = current_user_id;
-    orderItem['time_added'] = utilFormatDate(new Date());
+    orderItem['time_added'] = new Date().getTime();
     
     //if this is a tables order deal with it in another function
     if(selectedTable != 0) {
@@ -649,6 +646,7 @@ function doSelectTable(tableNum) {
 
     //display the receipt for this table
     loadReceipt(tableOrders[tableNum]);
+    alert("Table " + tableNum + " Order Time: " + tableOrders[tableNum].time);
 }
 
 function tableScreenSelectTable(tableId) {
@@ -849,7 +847,7 @@ function doTotalFinal() {
         paymentMethod = defaultPaymentMethod;
     }
     
-    totalOrder.time = new Date();
+    totalOrder.time = new Date().getTime();
     totalOrder.payment_method = paymentMethod;
     
     //set the service charge again in case it was changed on the totals screen

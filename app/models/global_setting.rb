@@ -19,13 +19,7 @@ class GlobalSetting < ActiveRecord::Base
   
   before_save :prepare_value_for_save
   
-  has_attached_file :logo, :styles => {:large => "400x400", :medium => "300x300>", :thumb => "115x115>" },
-    :storage => :s3,
-    :bucket => S3_BUCKET_NAME,
-    :s3_credentials => {
-    :access_key_id => S3_ACCESS_KEY_ID,
-    :secret_access_key => S3_SECRET_ACCESS_KEY
-  }
+  has_attached_file :logo, PAPERCLIP_STORAGE_OPTIONS.merge(:styles => {:large => "400x400", :medium => "300x300>", :thumb => "115x115>" })
   
   validates :key, :presence => true, :uniqueness => true
   validates :label_text, :presence => true
