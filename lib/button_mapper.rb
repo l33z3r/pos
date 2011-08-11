@@ -103,7 +103,7 @@ class ButtonMapper
     when WASTE_BUTTON
       @retval = wrap_with_menu_screen_function_check "alert('waste button clicked');"
     when COMPLIMENTARY_BUTTON
-      @retval = wrap_with_menu_screen_function_check "alert('complimentary button clicked');"
+      @retval = wrap_with_menu_screen_function_check "markFreeLastOrderItem();"
     when CHANGE_PRICE_BUTTON
       @retval = wrap_with_menu_screen_function_check "alert('change price button clicked');"
     when FLOAT_BUTTON
@@ -113,7 +113,7 @@ class ButtonMapper
     when REFUND_BUTTON
       @retval = "alert('refund button clicked');"
     when REMOVE_ITEM_BUTTON
-      @retval = wrap_with_menu_screen_function_check "alert('remove item button clicked');"
+      @retval = wrap_with_menu_screen_function_check "removeLastOrderItem();"
     when ADD_NOTE_BUTTON
       @retval = wrap_with_menu_screen_function_check "alert('add note button clicked');"
     when CHANGE_WAITER_BUTTON

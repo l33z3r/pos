@@ -3,7 +3,8 @@ var tables = new Array();
 <% TableInfo.all.each do |ti|-%>
   table_info = {
   id : '<%= ti.id %>',
-  label : '<%= ti.perm_id %>'
+  label : '<%= ti.perm_id %>',
+  room_id : '<%=ti.room_object.room_id%>'
   }
 
   tables['<%=ti.id%>'] = table_info;

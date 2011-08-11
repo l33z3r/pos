@@ -116,7 +116,7 @@ function clearOrderInStorage(current_user_id) {
 
 function storeTableOrderInStorage(current_user_id, table_num, order_to_store) {
     key = "user_" + current_user_id + "_table_" + table_num + "_current_order";
-    alertvalue = JSON.stringify(order_to_store);
+    value = JSON.stringify(order_to_store);
     return storeKeyValue(key, value);
 }
 
@@ -273,25 +273,49 @@ function renderActiveTables() {
     //alert("render active tables " + activeTableIDS);
     
     //got this code from http://stackoverflow.com/questions/1227684/how-to-iterate-through-multiple-select-options-with-jquery
-    $("#table_select").children('optgroup').children('option').each( 
+    //    $("#table_select").children('optgroup').children('option').each( 
+    //        function(id, element) {
+    //            //alert("ID: " + $(element).val().toString() + " El " + $(element).html() + " in:" + $.inArray($(element).val().toString(), activeTableIDS));
+    //            
+    //            nextTableID = $(element).val().toString();
+    //            
+    //            if($.inArray(nextTableID, activeTableIDS) != -1) {
+    //            
+    //                $(element).show();
+    //            
+    //                //mark the tables screen also
+    //                $('#table_label_' + nextTableID).addClass("active");
+    //            } else {
+    //            
+    //                $(element).hide();
+    //                $('#table_label_' + nextTableID).removeClass("active");
+    //            }
+    //        }
+    //        );
+            
+    $("#table_select").children('li').children('ul').children('li').each( 
         function(id, element) {
             //alert("ID: " + $(element).val().toString() + " El " + $(element).html() + " in:" + $.inArray($(element).val().toString(), activeTableIDS));
             
-            nextTableID = $(element).val().toString();
+            if(typeof($(element).attr('rel')) != 'undefined') {
+                nextTableID = $(element).attr('rel').toString();
+                
+                //alert(nextTableID);
+                
+                if($.inArray(nextTableID, activeTableIDS) != -1) {
             
-            if($.inArray(nextTableID, activeTableIDS) != -1) {
+                    $(element).addClass("active");
             
-                $(element).show();
+                    //mark the tables screen also
+                    $('#table_label_' + nextTableID).addClass("active");
+                } else {
             
-                //mark the tables screen also
-                $('#table_label_' + nextTableID).addClass("active");
-            } else {
-            
-                $(element).hide();
-                $('#table_label_' + nextTableID).removeClass("active");
+                    $(element).removeClass("active");
+                    $('#table_label_' + nextTableID).removeClass("active");
+                }
             }
         }
-        );
+        );  
 }
 
 function setRawCookie(c_name, value, exdays) {
@@ -460,8 +484,6 @@ function setStatusMessage(message, hide, shake) {
     if (typeof hide == "undefined") {
         hide = true;
     }
-    
-    hide = false;
   
     if (typeof shake == "undefined") {
         shake = false;
@@ -662,6 +684,10 @@ function utilFormatDate(date) {
     return formatDate(date, defaultJSDateFormat);
 }
 
+function utilFormatTime(date) {
+    return formatDate(date, defaultJSTimeFormat);
+}
+
 $.fn.focusNextInputField = function() {
     return this.each(function() {
         var fields = $(this).parents('form:eq(0),body').find('button,input,textarea,select');
@@ -766,10 +792,12 @@ function registerPopupClickHandler(popupEl, outsideClickHandler) {
 }
 
 function hideBubblePopup(popupEl) {
-    popupEl.HideBubblePopup();
-    popupEl.FreezeBubblePopup();
-    $("body").unbind('click');
-    activePopupElSet = null;
+    if(typeof(popupEl) != 'undefined') {
+        popupEl.HideBubblePopup();
+        popupEl.FreezeBubblePopup();
+        $("body").unbind('click');
+        activePopupElSet = null;
+    }
 }
 
 function inDevMode() {
@@ -783,4 +811,59 @@ function inProdMode() {
 function pauseScript(ms) {
     ms += new Date().getTime();
     while (new Date() < ms){}
+}
+
+function firstServerID(order) {
+    if(orderEmpty(order)) {
+        return "";
+    }
+    
+    return order.items[0].serving_employee_id;
+}
+
+function firstServerNickname(order) {
+    user_id = firstServerID(order);
+    return serverNickname(user_id);
+}
+
+function serverNickname(user_id) {
+    var server = null;
+    
+    for (var i = 0; i < employees.length; i++){
+        id = employees[i].id;
+        if(id == user_id) {
+            server = employees[i].nickname;
+            break;
+        }
+    }
+    
+    return server;
+}
+
+function initUIElements() {
+    //initialize the tabs
+    $(".vtabs").jVertTabs({
+        select: function(index){
+            initScrollPanes();
+        }
+    });
+    
+    //initialize scroll panes
+    initScrollPanes();
+        
+    //initialize checkboxes
+    $(':checkbox:not(.no_iphone_style)').iphoneStyle({
+        resizeContainer: false, 
+        resizeHandle : false, 
+        checkedLabel: 'Yes', 
+        uncheckedLabel: 'No'
+    });
+    
+    //initialize drop downs
+    
+    //table select dropdown, first init then get reference
+    $("#table_select_input").mcDropdown("#table_select", {
+        maxRows: 6
+    });
+    tableSelectMenu = $("#table_select_input").mcDropdown();
 }

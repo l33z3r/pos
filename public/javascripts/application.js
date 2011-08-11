@@ -23,14 +23,7 @@ function doGlobalInit() {
         $('body').css("overflow", "scroll");
     }
     
-    //initialize the tabs and the checkboxes
-    $(".vtabs").jVertTabs();
-    $(':checkbox:not(.no_iphone_style)').iphoneStyle({
-        resizeContainer: false, 
-        resizeHandle : false, 
-        checkedLabel: 'Yes', 
-        uncheckedLabel: 'No'
-    });
+    initUIElements();
     
     initAdminTables();
     
@@ -215,9 +208,9 @@ function showDisplayButtonPasscodePromptPopup() {
     $('#menu_buttons_popup_anchor').ShowBubblePopup({
         align: 'center',
         innerHtml: "<div id='display_button_passcode_popup'><div id='header'>Enter Pass Code:</div>" + 
-            "<div id='display_button_passcode_show'></div>" + 
-            "<div id='display_button_submit_passcode' class='button' onclick='displayButtonPasscodeEntered()'>Submit</div>" + 
-            "<div id='cancel_display_button_passcode_prompt' class='button' onclick='cancelDisplayButtonPasscodePromptPopup();return false;'>Cancel</div></div>",
+        "<div id='display_button_passcode_show'></div>" + 
+        "<div id='display_button_submit_passcode' class='button' onclick='displayButtonPasscodeEntered()'>Submit</div>" + 
+        "<div id='cancel_display_button_passcode_prompt' class='button' onclick='cancelDisplayButtonPasscodePromptPopup();return false;'>Cancel</div></div>",
 														   
         innerHtmlStyle:{ 
             'text-align':'left'
@@ -247,6 +240,8 @@ var roomScaleY;
 var currentSelectedRoom = -1;
 
 function initTableSelectScreen() {
+    //alert(currentSelectedRoom);
+    
     if(currentSelectedRoom == 0) {
         currentSelectedRoom = $('.room_graphic').first().data('room_id');
     }
@@ -302,7 +297,7 @@ function setScale(room_grid_resolution, room_grid_x_size, room_grid_y_size) {
     roomScaleX = container_div_width / room_grid_x_size;
     roomScaleY = container_div_height / room_grid_y_size;
     
-    //alert("X: " + roomScaleX + " Y: " + roomScaleY);
+//alert("X: " + roomScaleX + " Y: " + roomScaleY);
 }
 
 function setRoomObjectGridPositions() {

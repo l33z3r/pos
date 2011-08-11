@@ -29,4 +29,12 @@ class TerminalSyncData < ActiveRecord::Base
   def self.fetch_terminal_reload_request_times
     find_all_by_sync_type(TERMINAL_RELOAD_REQUEST, :order => "terminal_sync_data.time", :lock => true)
   end
+  
+  def self.remove_sync_data_for_table table_id
+    all.each do |sync_data|
+      if sync_data.data[:table_id] ==  table_id.to_s
+        sync_data.destroy
+      end
+    end
+  end
 end

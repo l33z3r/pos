@@ -100,7 +100,17 @@ class Admin::RoomsController < Admin::AdminController
   end
   
   def remove_table
-    RoomObject.find(params[:room_object_id]).destroy
+    @room_object_id = params[:room_object_id]
+    
+    @room_object = RoomObject.find(@room_object_id)
+    
+    @table_id = @room_object.table_info.id
+    
+    @room_object.destroy
+    
+    #remove the sync info for that table
+    TerminalSyncData.remove_sync_data_for_table @table_id
+    
     render :json => {:success => true}.to_json
   end
   

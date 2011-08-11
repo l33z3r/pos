@@ -13,24 +13,24 @@ div#display_builder {
     margin: auto;
 }
 
-div#display_builder section#header {
+div#display_builder div#header {
   margin: 20px auto;
   width: -moz-fit-content;
 }
 
-div#display_builder section#header div#display_name {
+div#display_builder div#header div#display_name {
     font-weight: bold;
     font-size: 14px;
     float: left;
 }
 
-div#display_builder section#header a#rename_link {
+div#display_builder div#header a#rename_link {
     float: left;
     margin-left: 8px;
     text-decoration: none;
 }
 
-div#display_builder section#header a#delete_link {
+div#display_builder div#header a#delete_link {
     float: left;
     margin-left: 8px;
     text-decoration: none;

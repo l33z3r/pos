@@ -25,7 +25,6 @@ body {
     -moz-user-select: -moz-none;
     -o-user-select: none;
     user-select: none;
-
 }
 
 input[type=radio], input[type=checkbox], select {
@@ -120,9 +119,32 @@ div.wrapper div td {
     text-align: left;
 }
 
-div#content_container {
+/* Admin */
 
+div.admin{
+    font-size: 13px;
 }
+
+div.admin div#content_container section {
+    height: 640px;
+}
+
+div.admin input[type=submit] {
+    height: 35px;
+    max-height: 35px;
+    overflow: hidden;
+    vertical-align: middle;
+    display: table-cell;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+/* End Admin */
 
 header {
     width: 100%;
@@ -440,7 +462,6 @@ div#admin_employee_list section#employees div#actions {
 }
 
 div#new_employee section#form_container {
-    width: 470px;
     margin: auto;
     text-align: center;
 }
@@ -495,7 +516,6 @@ div#show_employee section#employee_info div#actions input {
 }
 
 div#edit_employee section#form_container {
-    width: 470px;
     margin: auto;
     text-align: center;
 }
@@ -559,7 +579,6 @@ div#admin_product_list section#products div#actions {
 }
 
 div#new_product section#form_container {
-    width: 470px;
     margin: auto;
     text-align: center;
 }
@@ -614,7 +633,6 @@ div#show_product section#product_info div#actions input {
 }
 
 div#edit_product section#form_container {
-    width: 470px;
     margin: auto;
     text-align: center;
 }
@@ -668,7 +686,6 @@ div#admin_modifier_categories_list section#modifier_categories div#actions {
 }
 
 div#new_modifier_category section#form_container {
-    width: 470px;
     margin: auto;
     text-align: center;
 }
@@ -719,7 +736,6 @@ div#show_modifier_category section#modifier_category_info div#actions input {
 }
 
 div#edit_modifier_category section#form_container {
-    width: 470px;
     margin: auto;
     text-align: center;
 }
@@ -765,7 +781,6 @@ div#admin_category_list section#categories div#actions {
 }
 
 div#new_category section#form_container {
-    width: 470px;
     margin: auto;
     text-align: center;
 }
@@ -812,7 +827,6 @@ div#show_category section#category_info div#actions input {
 }
 
 div#edit_category section#form_container {
-    width: 470px;
     margin: auto;
     text-align: center;
 }
@@ -858,7 +872,6 @@ div#admin_display_list section#displays div#actions {
 }
 
 div#new_display section#form_container {
-    width: 470px;
     margin: auto;
     text-align: center;
 }
@@ -905,7 +918,6 @@ div#show_display section#display_info div#actions input {
 }
 
 div#edit_display section#form_container {
-    width: 470px;
     margin: auto;
     text-align: center;
 }
@@ -951,7 +963,6 @@ div#admin_room_list section#rooms div#actions {
 }
 
 div#new_room section#form_container {
-    width: 470px;
     margin: auto;
     text-align: center;
 }
@@ -1191,6 +1202,7 @@ div#admin_order_list section#orders select {
 /* Main Menu Screen */
 
 nav#main_nav {
+    font-size: 11px;
     font-weight: bold;
     background-color: black;
     background: -moz-linear-gradient(#737373, #000000) repeat scroll 0 0 transparent;
@@ -1324,7 +1336,8 @@ div#receipt_keypad_container div#table_select_container select {
 }
 
 div#receipt_keypad_container div#table_screen_button {
-    margin-left: 20px;
+    margin-left: 5px;
+    margin-right: 20px;
     width: 73px;
     max-width: 73px;
     height: 22px;
@@ -1890,6 +1903,13 @@ div.receipt div.till_roll div.order_line.selected {
     -moz-border-radius: 5px;
     border-radius: 5px;
     background-color: #4297D7;
+}
+
+div.receipt div.till_roll div.server {
+    font-style: italic;
+    margin-top: 2px;
+    text-align: left;
+    margin-left: 5px;
 }
 
 div.receipt div.till_roll div.amount {
@@ -2599,7 +2619,6 @@ div#admin_role_list section#roles div#actions {
 }
 
 div#new_role section#form_container {
-    width: 470px;
     margin: auto;
     text-align: center;
 }
@@ -2646,7 +2665,6 @@ div#show_role section#role_info div#actions input {
 }
 
 div#edit_role section#form_container {
-    width: 470px;
     margin: auto;
     text-align: center;
 }
@@ -2736,8 +2754,14 @@ div#edit_global_settings section#global_settings div#actions {
     float: right;
 }
 
-div#edit_global_settings section#global_settings div.container {
+div#edit_global_settings section#global_settings div.container div.jspContainer {
+    width: 820px;
+    max-width: 820px;
+}
 
+div#edit_global_settings section#global_settings div.container div.jspContainer div.jspPane {
+    width: 790px;
+    max-width: 790px;
 }
 
 div#edit_global_settings section#global_settings div.container h4 {
@@ -2845,6 +2869,7 @@ div#display_button_passcode_popup div#header {
 }
 
 div#display_button_passcode_popup div#display_button_passcode_show {
+    color: #333;
     background-color: #FFF;
     width: 100%;
     border: 1px solid #DDD;
@@ -2853,6 +2878,10 @@ div#display_button_passcode_popup div#display_button_passcode_show {
     margin-bottom: 8px;
     font-weight: bold;
     font-size: 14px;
+}
+
+div#display_button_passcode_popup div.button {
+    color: #333;
 }
 
 div#display_button_passcode_popup div#display_button_submit_passcode {
@@ -2900,6 +2929,7 @@ div.modifier_category_popup div.modifier_choices {
 }
 
 div.modifier_category_popup div.modifier_choices div.modifier {
+    color: #333;
     margin: 3px 0px;
     padding: 8px 4px;
     cursor: pointer;
@@ -3228,6 +3258,10 @@ div#coin_counter_table div.row div.amount {
 
 /* Misc Styles */
 
+div.iPhoneCheckContainer label.iPhoneCheckLabelOn span {
+    color: #FFF;
+}
+
 div#util_keypad_container {
     display: none;
 }
@@ -3248,7 +3282,13 @@ div#js_player {
 
 div.vtabs-content-panel {
     max-height: 570px;
-    overflow: scroll;
+}
+
+div.vtabs-content-panel>div.jscrollpane {
+    width: 800px;
+    max-width: 800px;
+    height: 580px;
+    max-height: 580px;
 }
 
 /* End Misc Styles */

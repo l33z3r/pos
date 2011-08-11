@@ -224,7 +224,8 @@ function loginSuccess(id, nickname, is_admin, passcode) {
     loadCurrentOrder();
     
     //load the users personal receipt on login
-    $('#table_select').val(0);
+    //$('#table_select').val(0);
+    tableSelectMenu.setValue(0);
     doSelectTable(0);
     
     loadFirstMenuPage();

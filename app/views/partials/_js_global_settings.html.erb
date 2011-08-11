@@ -6,11 +6,14 @@
   var clockFormat = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CLOCK_FORMAT %>";
     
   var defaultJSDateFormat = "";
+  var defaultJSTimeFormat = "";
     
   if(clockFormat == "12") {
     defaultJSDateFormat = "hh:mm dd/MM/yyyy";
+    defaultJSTimeFormat = "hh:mm";
   } else {
     defaultJSDateFormat = "HH:mm dd/MM/yyyy";
+    defaultJSTimeFormat = "HH:mm";
   }
   
   //is tax chargable
@@ -51,7 +54,7 @@
   
   var terminalID = "<%=@terminal_id%>";
   
-  var pollingAmount = <%= (ENV['RAILS_ENV'] == 'development') ? "1000" : "1000" %>;
+  var pollingAmount = <%= (ENV['RAILS_ENV'] == 'development') ? "5000" : "1000" %>;
   
   var using_mobile = <%= mobile_device? ? "true" : "false" %>;
   

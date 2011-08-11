@@ -197,3 +197,17 @@ function floatScreenKeypadClickCancel() {
 function floatScreenKeypadClickTab() {
     lastActiveElement.focusNextInputField();
 }
+
+function getOpenOrdersTotal() {
+    var tableIDS = getActiveTableIDS();
+    var total = 0;
+    
+    for(i = 0; i < tableIDS.length; i++) {
+        //getTableOrderFromStorage(current_user_id, tableIDS[i]);
+        var orderTotal = tableOrders[tableIDS[i]].total;
+        //console.log("Open order in table " + tableIDS[i] + " Total: " + orderTotal);
+        total += orderTotal;
+    }
+    
+    return total;
+}

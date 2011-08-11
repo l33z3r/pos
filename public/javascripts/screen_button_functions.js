@@ -1,5 +1,5 @@
 function prepareXTotal() {
-    var doIt = checkAllOrdersClosedForCashTotal();
+    var doIt = true;//checkAllOrdersClosedForCashTotal();
     
     if(doIt) {
         doCashTotalReport("X");
@@ -7,7 +7,7 @@ function prepareXTotal() {
 }
 
 function prepareZTotal() {
-    var doIt = checkAllOrdersClosedForCashTotal();
+    var doIt = true;//checkAllOrdersClosedForCashTotal();
     
     if(doIt) {
         doCashTotalReport("Z");
@@ -48,8 +48,17 @@ function doSyncTableOrder() {
         orderData : order
     }
     
+    var checkForShowServerAddedText = true;
+    
     //mark all items in this order as synced
     for(i=0; i<order.items.length; i++) {
+        //console.log(order.items[i].itemNumber + " " + order.items[i].synced);
+        
+        if(checkForShowServerAddedText && !order.items[i].synced) {
+            order.items[i].showServerAddedText = true;
+            checkForShowServerAddedText = false;
+        }
+        
         //alert("item " + order.items[i].itemNumber + " synced?: " + order.items[i]['synced'])
         order.items[i]['synced'] = true;
     }
@@ -78,6 +87,7 @@ function doSyncTableOrder() {
     loadAfterSaleScreen();
 
     if(!order.order_num) {
+        setLoginReceipt("Last Order", "Loading...");
         setTimeout(finishDoSyncTableOrder, 2000);
     } else {
         finishDoSyncTableOrder();
@@ -278,4 +288,39 @@ function initFloatScreen() {
         type: 'GET',
         url: '/float_history.js'
     }); 
+}
+
+function removeLastOrderItem() {
+    currentSelectedReceiptItemEl = $('#till_roll > div.order_line:last');
+    
+    if(currentSelectedReceiptItemEl.length == 0) {
+        setStatusMessage("There are no items to Remove!");
+        return;
+    }
+    
+    removeSelectedOrderItem();
+}
+
+function markFreeLastOrderItem() {
+    order = getCurrentOrder();
+    
+    currentSelectedReceiptItemEl = $('#till_roll > div.order_line:last');
+    
+    if(currentSelectedReceiptItemEl.length == 0) {
+        setStatusMessage("There are no items to Discount!");
+        return;
+    }
+    
+    itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    applyDiscountToOrderItem(order, itemNumber, 100);
+    
+    //store the modified order
+    if(selectedTable != 0) {
+        storeTableOrderInStorage(current_user_id, selectedTable, order);
+    }else {
+        storeOrderInStorage(current_user_id, order);
+    }
+    
+    //redraw the receipt
+    loadReceipt(order);
 }

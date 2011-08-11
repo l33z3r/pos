@@ -11,39 +11,38 @@ div#room_builder {
     margin: auto;
 }
 
-div#room_builder section#header {
+div#room_builder div#header {
     width: -moz-fit-content;
     margin: 10px auto 20px auto;
 }
 
-div#room_builder section#header div#room_name {
+div#room_builder div#header div#room_name {
     font-weight: bold;
     font-size: 14px;
     float: left;
 }
 
-div#room_builder section#header a#rename_link {
+div#room_builder div#header a#rename_link {
     float: left;
     margin-left: 8px;
     text-decoration: none;
 }
 
-div#room_builder section#header a#delete_link {
+div#room_builder div#header a#delete_link {
     float: left;
     margin-left: 8px;
     text-decoration: none;
 }
 
 div#room_builder div#options {
-    width: 800px;
+    width: 810px;
     margin: auto;
     padding-top: 5px;
 }
 
 div#room_builder div#main_builder_section {
     width: 1000px;
-    overflow: scroll;
-    height: 700px;
+    height: 590px;
 }
 
 div#room_builder div#main_builder_section div#loading_message {
@@ -73,7 +72,7 @@ div#room_builder div#options div#resolution_slider_label {
 div#room_builder div#options div#resolution_slider {
     width: 300px;
     float: left;
-    margin-top: 4px;
+    margin-top: 1px;
 }
 
 div#room_builder div#options div#resolution_slider a.ui-slider-handle {
@@ -96,7 +95,7 @@ div#room_builder div#options div#dimensions div.label {
 
 div#room_builder div#options div#dimensions div input {
     width: 30px;
-    margin-top: -3px;
+    margin-top: -4px;
     margin-right: 5px;
 }
 

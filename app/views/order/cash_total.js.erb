@@ -72,9 +72,14 @@ cash_totals_data_html = "<div id='cash_totals_data_table'>";
   <% if @gs.parsed_value %>
     //construct the cash summary data table
     cash_summary_data = new Array();
+
+    //open order totals
+    cash_summary_data.push(new Array('Open Orders Total', getOpenOrdersTotal()));
+
     <% @cash_total_data[:cash_summary].each do |label, amount| %>
       cash_summary_data.push(new Array('<%=label%>', '<%=amount%>'));
     <% end %>
+
     cash_totals_data_html += "<div class='data_table_header'>Cash Summary</div>";
     cash_totals_data_html += getCashTotalDataTable(cash_summary_data) + clearHTML;
   <% end %>

@@ -6,6 +6,8 @@ var currentOrderItem;
 var currentTotalFinal = 0;
 var currentOrderJSON;
 var currentMenuItemQuantity = "";
+
+var tableSelectMenu = null;
 var selectedTable = 0;
 var tableOrders = new Array();
 
@@ -30,7 +32,8 @@ function initPreviousOrder() {
     if(havePreviousOrder(current_user_id)) {
         selectedTable = -1;
         $('#previous_order_select_item').show();
-        $('#table_select').val(-1);
+        //$('#table_select').val(-1);
+        tableSelectMenu.setValue(-1);
         doSelectTable(-1);
         
         getTableOrderFromStorage(current_user_id, -1)
@@ -337,6 +340,13 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     onclickMarkup = includeOnClick ? "onclick='doSelectReceiptItem(this)'" : "";
     
     orderHTML = "<div class='order_line " + notSyncedClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
+    
+    if(orderItem.showServerAddedText) {
+        var nickname = serverNickname(orderItem.serving_employee_id);
+        var timeAdded = utilFormatTime(new Date(parseInt(orderItem.time_added)));
+        orderHTML += "<div class='server'>" + timeAdded + ": " + nickname + " added the following:</div>";
+    }
+    
     orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
     orderHTML += "<div class='name'>" + notSyncedMarker + " " + orderItem.product.name + "</div>";
     orderItemTotalPriceText = number_to_currency(itemPriceWithoutModifier, {
@@ -547,7 +557,7 @@ function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit) {
     return order;
 }
 
-function removeOrderItem(el) {
+function removeSelectedOrderItem() {
     //fetch the item number
     itemNumber = currentSelectedReceiptItemEl.data("item_number");
     
@@ -625,12 +635,15 @@ function doSelectTable(tableNum) {
     }
     
     selectedTable = tableNum;
-    currentSelectedRoom = $('#table_select :selected').data("room_id");
+    
+    //alert("Selected table:  " + tableNum);
     
     //write to storage that this user was last looking at this receipt
     storeLastReceipt(current_user_id, tableNum);
 
     if(tableNum == 0) {
+        currentSelectedRoom = 0;
+        
         loadCurrentOrder();
         
         //total the order first
@@ -639,6 +652,12 @@ function doSelectTable(tableNum) {
         loadReceipt(currentOrder);
         return;
     }
+    
+    if(tableNum == -1) {
+        currentSelectedRoom = -1;
+    } else {
+        currentSelectedRoom = tables[tableNum].room_id;
+    }
 
     //fetch this tables order from storage
     //this will fill the tableOrders[tableNum] variable
@@ -646,13 +665,13 @@ function doSelectTable(tableNum) {
 
     //display the receipt for this table
     loadReceipt(tableOrders[tableNum]);
-    alert("Table " + tableNum + " Order Time: " + tableOrders[tableNum].time);
 }
 
 function tableScreenSelectTable(tableId) {
     //back to menu screen
     showMenuScreen();
-    $('#table_select').val(tableId);
+    //$('#table_select').val(tableId);
+    tableSelectMenu.setValue(tableId);
     doSelectTable(tableId);
 }
 
@@ -687,6 +706,15 @@ function initTouchRecpts() {
     $('#mobile_terminal_till_roll').touchScroll();
     $('#mobile_server_till_roll').touchScroll();
     $('#mobile_table_till_roll').touchScroll();
+}
+
+function initScrollPanes() {
+    //init all the scroll panes
+    setTimeout(function() {
+        $('.jscrollpane, .admin #content_container section:not(.no_scroll_pane)').jScrollPane({
+            showArrows: true
+        });
+    }, 500);
 }
 
 function loginRecptScroll() {
@@ -921,7 +949,8 @@ function doTotalFinal() {
     paymentMethod = null;
     
     //set the select item to the personal receipt
-    $('#table_select').val(0);
+    //$('#table_select').val(0);
+    tableSelectMenu.setValue(0);
     doSelectTable(0);
     
     totalOrder = null;
@@ -1298,30 +1327,6 @@ function orderStartTime(order) {
     }
     
     return order.items[0].time_added;
-}
-
-function firstServerID(order) {
-    if(orderEmpty(order)) {
-        return "";
-    }
-    
-    return order.items[0].serving_employee_id;
-}
-
-function firstServerNickname(order) {
-    var server = null;
-    
-    user_id = firstServerID(order);
-            
-    for (var i = 0; i < employees.length; i++){
-        id = employees[i].id;
-        if(id == user_id) {
-            server = employees[i].nickname;
-            break;
-        }
-    }
-    
-    return server;
 }
 
 function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee, tableOrderDataJSON) {

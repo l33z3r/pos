@@ -205,6 +205,10 @@ class GlobalSetting < ActiveRecord::Base
 #    find(:all, :conditions => "global_settings.key like '#{TERMINAL_ID}%'").collect(&:value)
   end
   
+  def self.remove_all_terminal_ids
+    where("global_settings.key like ?", "#{TERMINAL_ID}%").each(&:destroy)
+  end
+  
   def self.next_order_number
     @gs = find_or_create_by_key(:key => LAST_ORDER_ID.to_s, :value => 0, :label_text => LABEL_MAP[LAST_ORDER_ID])
     @gs.save!

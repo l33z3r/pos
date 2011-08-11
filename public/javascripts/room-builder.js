@@ -143,6 +143,7 @@ function resolutionSliderChanged(event, ui) {
     setGridSize(ui.value);
     setGridGraphicDimensions();
     initGridDragDrop();
+    initScrollPanes();
 }
 
 function setGridSize(size) {

@@ -25,8 +25,8 @@ function getTendered() {
             val = 0;
         }
         
-        val = currency(val, false);
-        $('#totals_tendered_value').html(currency(val, false));
+        var formattedVal = currency(val, false);
+        $('#totals_tendered_value').html(formattedVal);
     }
     
     return val;

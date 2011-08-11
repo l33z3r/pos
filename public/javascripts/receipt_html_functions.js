@@ -332,7 +332,8 @@ function displayLastReceipt() {
     }
 
     //set the select item
-    $('#table_select').val(lastReceiptID);
+    //$('#table_select').val(lastReceiptID);
+    tableSelectMenu.setValue(lastReceiptID);
     doSelectTable(lastReceiptID); 
 }
 
