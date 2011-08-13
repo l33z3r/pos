@@ -31,6 +31,6 @@ end
 
 @default_tax_rate = TaxRate.find_or_create_by_name(:name => "default", :rate => 12, :is_default => true)
 
-@default_discount_rate = Discount.find_or_create_by_name(:name => "Default", :percent => "10", :is_default => true)
+@default_discount_rate = Discount.find_or_create_by_name(:name => "default", :percent => "10", :is_default => true)
 
 

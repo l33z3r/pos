@@ -302,19 +302,19 @@ function writeOrderItemToReceipt(orderItem) {
     $('#till_roll').html($('#till_roll').html() + getOrderItemReceiptHTML(orderItem));
 }
 
-function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick) {
+function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
     allOrderItemsReceiptHTML = "";
 
     for(i=0; i<order.items.length; i++) {
         item = order.items[i];
-        allOrderItemsReceiptHTML += getOrderItemReceiptHTML(order.items[i], includeNonSyncedStyling, includeOnClick);
+        allOrderItemsReceiptHTML += getOrderItemReceiptHTML(order.items[i], includeNonSyncedStyling, includeOnClick, includeServerAddedText);
     }
     
     return allOrderItemsReceiptHTML;
 }
     
 //TODO: replace with jquery template => http://api.jquery.com/jQuery.template/
-function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnClick) {
+function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
     //default the args to true
     if (typeof includeNonSyncedStyling == "undefined") {
         includeNonSyncedStyling = true;
@@ -322,6 +322,10 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     
     if (typeof includeOnClick == "undefined") {
         includeOnClick = true;
+    }
+    
+    if (typeof includeServerAddedText == "undefined") {
+        includeServerAddedText = true;
     }
     
     haveDiscount = orderItem.discount_percent && orderItem.discount_percent > 0;
@@ -341,10 +345,10 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     
     orderHTML = "<div class='order_line " + notSyncedClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
     
-    if(orderItem.showServerAddedText) {
+    if(includeServerAddedText && orderItem.showServerAddedText) {
         var nickname = serverNickname(orderItem.serving_employee_id);
         var timeAdded = utilFormatTime(new Date(parseInt(orderItem.time_added)));
-        orderHTML += "<div class='server'>" + timeAdded + ": " + nickname + " added the following:</div>";
+        orderHTML += "<div class='server'>At " + timeAdded + " " + nickname + " added:</div>";
     }
     
     orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
@@ -385,14 +389,19 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     }
     
     if(haveDiscount) {
-        newPrice = number_to_currency(preDiscountPrice, {
+        formattedPreDiscountedPrice = number_to_currency(preDiscountPrice, {
             precision : 2
         });
             
         orderHTML += clearHTML;
-        orderHTML += "<div class='discount'><div class='header'>Discounted</div>";
-        orderHTML += "<div class='discount_amount'>" + orderItem.discount_percent + "% from </div>";
-        orderHTML += "<div class='new_price'>" + newPrice + "</div></div>";
+        
+        if(orderItem.discount_percent == 100) {
+            orderHTML += "<div class='discount_complimentary'>Complimentary (was " + formattedPreDiscountedPrice + ")</div>";
+        } else {
+            orderHTML += "<div class='discount'><div class='header'>Discounted</div>";
+            orderHTML += "<div class='discount_amount'>" + orderItem.discount_percent + "% from </div>";
+            orderHTML += "<div class='new_price'>" + formattedPreDiscountedPrice + "</div></div>";
+        }
     }
     
     orderHTML += clearHTML + "</div>" + clearHTML;
@@ -887,8 +896,8 @@ function doTotalFinal() {
     preDiscountPrice = totalOrder.pre_discount_price;
 
     //do up the subtotal and total and retrieve the receipt html for both the login screen and for print
-    receiptHTML = fetchFinalReceiptHTML(false);
-    printReceiptHTML = fetchFinalReceiptHTML(true);
+    receiptHTML = fetchFinalReceiptHTML(false, true);
+    printReceiptHTML = fetchFinalReceiptHTML(true, false);
     
     setLoginReceipt("Last Sale", receiptHTML);
     

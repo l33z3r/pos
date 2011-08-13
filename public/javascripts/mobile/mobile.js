@@ -30,7 +30,9 @@ function initMobile() {
     $('#table_list').bind('pageAnimationEnd', function(event, info){
         if (info.direction == 'in') {
             stopTableRecptPoll = true;
-        }
+        } 
+        //update the list of tables
+        renderMobileActiveTableList();
     });
     
     $('#terminal_info_screen').bind('pageAnimationEnd', function(event, info){
@@ -65,6 +67,9 @@ function initMobile() {
             initTableRecptInfoPage(table_label);
         }
     });
+    
+    //limit the list of tables to ones that only contain open orders
+    renderMobileActiveTableList();
 }
 
 function initTerminalRecptInfoPage(terminal_id) {

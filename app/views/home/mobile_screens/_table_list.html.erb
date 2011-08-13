@@ -10,9 +10,9 @@
   <% Room.all.each do |room|%>
     <ul>
       <h2><%=room.name%></h2>
-      
+
       <% room.table_infos.each do |table_info| %>
-        <li class="arrow">
+        <li class="arrow table_list_item" id="table_<%=table_info.id%>_list_item">
           <a href="#table_info_screen" class="cube" data-page_name="table_recpt_info" data-params="table_label=<%=table_info.perm_id%>"><%=table_info.perm_id%></a>
         </li>
       <% end %>

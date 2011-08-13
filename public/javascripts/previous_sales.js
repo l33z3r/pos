@@ -129,7 +129,7 @@ function parsePreviousOrder(previousOrderJSON) {
     
     voidOrderInfoHTML += clearHTML;
     
-    $('#admin_order_list_till_roll').html(voidOrderInfoHTML + fetchFinalReceiptHTML(false));
+    $('#admin_order_list_till_roll').html(voidOrderInfoHTML + fetchFinalReceiptHTML(false, true));
     
     //enable the "re-open order" button
     $('#continue_order_button').hide();
@@ -174,7 +174,7 @@ function loadOpenOrders() {
         var order = tableOrders[table_id];
         
         if(!orderEmpty(order)) {
-            date = orderStartTime(order);
+            date = utilFormatDate(new Date(parseInt(orderStartTime(order))));
             orderNum = order.order_num;
             tableLabel = tables[table_id].label;
             
@@ -233,7 +233,7 @@ function loadOpenTableOrder(table_id) {
     
     var orderHTML = fetchFinalReceiptHeaderHTML();
     
-    orderHTML += getAllOrderItemsReceiptHTML(currentSelectedOpenTableOrder, false, false);
+    orderHTML += getAllOrderItemsReceiptHTML(currentSelectedOpenTableOrder, false, false, true);
     
     $('#admin_order_list_till_roll').html(orderHTML);
     

@@ -17,7 +17,9 @@ var orderItems = new Array();
   //alias some vars for compatibility
   orderItem.amount = orderItem.quantity;
   orderItem.product_price = orderItem.product.price;
-
+  orderItem.showServerAddedText = orderItem.show_server_added_text;
+  orderItem.serving_employee_id = orderItem.employee_id
+  
   orderItems.push(orderItem);
 <% end %>
 

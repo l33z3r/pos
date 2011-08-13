@@ -7,7 +7,7 @@ function prepareXTotal() {
 }
 
 function prepareZTotal() {
-    var doIt = true;//checkAllOrdersClosedForCashTotal();
+    var doIt = checkAllOrdersClosedForCashTotal();
     
     if(doIt) {
         doCashTotalReport("Z");

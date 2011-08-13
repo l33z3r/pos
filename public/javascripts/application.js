@@ -19,7 +19,7 @@ $(function(){
    
 function doGlobalInit() {
     //allow scroll for dev
-    if(inDevMode) {
+    if(inDevMode()) {
         $('body').css("overflow", "scroll");
     }
     

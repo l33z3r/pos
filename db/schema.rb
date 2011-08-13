@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110802140320) do
+ActiveRecord::Schema.define(:version => 20110813103842) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -152,6 +152,7 @@ ActiveRecord::Schema.define(:version => 20110802140320) do
     t.float    "tax_rate"
     t.string   "terminal_id"
     t.string   "time_added"
+    t.boolean  "show_server_added_text", :default => false
   end
 
   create_table "orders", :force => true do |t|

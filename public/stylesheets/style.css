@@ -102,6 +102,10 @@ input[type="submit"] {
     cursor: pointer;
 }
 
+div.mcdropdown {
+    cursor: pointer;
+}
+
 div#wrapper {
     width: 1020px;
     margin: auto;

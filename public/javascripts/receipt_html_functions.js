@@ -3,7 +3,7 @@ function fetchOrderReceiptHTML() {
     
     orderReceiptHTML = fetchFinalReceiptHeaderHTML();
     
-    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(currentOrder, false, false);
+    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(currentOrder, false, false, true);
     
     orderReceiptHTML += clearHTML + allOrderItemsRecptHTML;
     
@@ -53,15 +53,19 @@ function fetchCashScreenReceiptTotalsDataTable() {
 
 function fetchCashScreenReceiptHTML() {
     cashScreenReceiptHTML = fetchCashScreenReceiptHeaderHTML() + clearHTML;
-    cashScreenReceiptHTML += getAllOrderItemsReceiptHTML(totalOrder, false, false) + clearHTML;
+    cashScreenReceiptHTML += getAllOrderItemsReceiptHTML(totalOrder, false, false, true) + clearHTML;
     //cashScreenReceiptHTML += fetchCashScreenReceiptTotalsDataTable();
     
     return cashScreenReceiptHTML;
 }
 
-function fetchFinalReceiptHTML(includeBusinessInfo) {
+function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText) {
     if(typeof(includeBusinessInfo) == 'undefined') {
         includeBusinessInfo = false;
+    }
+    
+    if(typeof(includeServerAddedText) == 'undefined') {
+        includeServerAddedText = true;
     }
     
     finalReceiptHTML = "";
@@ -72,7 +76,7 @@ function fetchFinalReceiptHTML(includeBusinessInfo) {
     
     finalReceiptHTML += fetchFinalReceiptHeaderHTML();
     
-    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(totalOrder, false, false);
+    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(totalOrder, false, false, includeServerAddedText);
     
     finalReceiptHTML += clearHTML + allOrderItemsRecptHTML;
     
@@ -225,7 +229,7 @@ function fetchCashScreenReceiptHeaderHTML() {
     headerHTML = "<div class='data_table'>";
     headerHTML += "<div class='label'>Server:</div><div class='data'>" + current_user_nickname + "</div>" + clearHTML;
     
-    timestamp = utilFormatDate(new Date(orderStartTime(totalOrder)));
+    timestamp = utilFormatDate(new Date(parseInt(orderStartTime(totalOrder))));
     headerHTML += "<div class='label'>Time Started:</div><div class='data'>" + timestamp + "</div>" + clearHTML;
     
     if(selectedTable!=0) {

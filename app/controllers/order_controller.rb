@@ -126,6 +126,9 @@ class OrderController < ApplicationController
       #the time it was added to the order
       @order_item.time_added = item[:time_added]
 
+      #do we want to show the serveraddeditem text
+      @order_item.show_server_added_text = item[:showServerAddedText]
+      
       @order_item_saved = @order_item_saved and @order_item.save
     end
     
