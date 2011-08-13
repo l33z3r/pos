@@ -60,14 +60,17 @@
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::LOGIN_SCREEN %>" 
                              <%= @gs.parsed_value == GlobalSetting::LOGIN_SCREEN ? "checked" : "" %>/>Login Screen
+                      <div class="clear">&nbsp;</div>
 
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::MENU_SCREEN %>" 
                              <%= @gs.parsed_value == GlobalSetting::MENU_SCREEN ? "checked" : "" %>/>Menu Screen
+                      <div class="clear">&nbsp;</div>
 
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::TABLES_SCREEN %>" 
                              <%= @gs.parsed_value == GlobalSetting::TABLES_SCREEN ? "checked" : "" %>/>Tables Screen
+                      <div class="clear">&nbsp;</div>
                     </td>
                   </tr>
                   <tr>
@@ -78,10 +81,12 @@
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::MENU_SCREEN %>" 
                              <%= @gs.parsed_value == GlobalSetting::MENU_SCREEN ? "checked" : "" %>/>Menu Screen
+                      <div class="clear">&nbsp;</div>
 
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::TABLES_SCREEN %>" 
                              <%= @gs.parsed_value == GlobalSetting::TABLES_SCREEN ? "checked" : "" %>/>Tables Screen
+                      <div class="clear">&nbsp;</div>
                     </td>
                   </tr>
                   <tr>
@@ -90,8 +95,11 @@
                       <% @gs = GlobalSetting.setting_for GlobalSetting::BYPASS_PIN %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Per Role
+                      <div class="clear">&nbsp;</div>
+                      
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
+                      <div class="clear">&nbsp;</div>
                     </td>
                   </tr>
                   <tr>
@@ -102,10 +110,12 @@
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::CLOCK_FORMAT_12 %>" 
                              <%= @gs.parsed_value == GlobalSetting::CLOCK_FORMAT_12 ? "checked" : "" %>/>12 Hour
+                      <div class="clear">&nbsp;</div>
 
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::CLOCK_FORMAT_24 %>" 
                              <%= @gs.parsed_value == GlobalSetting::CLOCK_FORMAT_24 ? "checked" : "" %>/>24 Hour
+                      <div class="clear">&nbsp;</div>
                     </td>
                   </tr>
                 </tbody>
@@ -320,8 +330,11 @@
                       <% @gs = GlobalSetting.setting_for GlobalSetting::TAX_CHARGABLE %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
+                      <div class="clear">&nbsp;</div>
+                      
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
+                      <div class="clear">&nbsp;</div>
                     </td>
                   </tr>
 
@@ -564,8 +577,11 @@
                       <% @gs = GlobalSetting.setting_for GlobalSetting::AUTO_PRINT_RECEIPT %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
+                      <div class="clear">&nbsp;</div>
+                      
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
+                      <div class="clear">&nbsp;</div>
                     </td>
                   </tr>
                   <tr>
@@ -596,8 +612,11 @@
                       <% @gs = GlobalSetting.setting_for GlobalSetting::DO_BEEP %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
+                      <div class="clear">&nbsp;</div>
+                      
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
+                      <div class="clear">&nbsp;</div>
                     </td>
                   </tr>
                 </tbody>

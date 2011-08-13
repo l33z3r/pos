@@ -845,6 +845,7 @@ function initUIElements() {
     $(".vtabs").jVertTabs({
         select: function(index){
             initScrollPanes();
+            initCheckboxes();
         }
     });
     
@@ -852,12 +853,10 @@ function initUIElements() {
     initScrollPanes();
         
     //initialize checkboxes
-    $(':checkbox:not(.no_iphone_style)').iphoneStyle({
-        resizeContainer: false, 
-        resizeHandle : false, 
-        checkedLabel: 'Yes', 
-        uncheckedLabel: 'No'
-    });
+    initCheckboxes();
+    
+    //init radio buttons
+    initRadioButtons();
     
     //initialize drop downs
     
@@ -866,4 +865,26 @@ function initUIElements() {
         maxRows: 6
     });
     tableSelectMenu = $("#table_select_input").mcDropdown();
+}
+
+function initScrollPanes() {
+    //init all the scroll panes
+    setTimeout(function() {
+        $('.jscrollpane, .admin #content_container section:not(.no_scroll_pane)').jScrollPane({
+            showArrows: true
+        });
+    }, 500);
+}
+
+function initCheckboxes() {
+    $(':checkbox:not(.no_iphone_style)').iphoneStyle({
+        resizeContainer: false, 
+        resizeHandle : false, 
+        checkedLabel: 'Yes', 
+        uncheckedLabel: 'No'
+    });
+}
+
+function initRadioButtons() {
+    $(':radio:not(.no_iphone_style)').iButton({labelOn: "On", labelOff: "Off"});
 }

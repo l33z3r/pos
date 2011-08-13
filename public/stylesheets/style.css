@@ -134,8 +134,9 @@ div.admin div#content_container section {
 }
 
 div.admin input[type=submit] {
-    height: 35px;
-    max-height: 35px;
+    padding: 0px 15px;
+    height: 40px;
+    max-height: 40px;
     overflow: hidden;
     vertical-align: middle;
     display: table-cell;
@@ -2112,7 +2113,7 @@ div#discounts_popup_markup_container {
 }
 
 div#discounts_popup_markup_container.higher {
-    height: 610px;
+    height: 625px;
 }
 
 div#discounts_popup_markup_container div.header {
@@ -2155,7 +2156,11 @@ div#discounts_popup_markup_container div#manual_discount div.fields div.label {
 
 div#discounts_popup_markup_container div#apply_discount_to {
     margin-top: 10px;
-    text-align: center;
+    text-align: left;
+}
+
+div#discounts_popup_markup_container div#apply_discount_to div.ibutton-container {
+    margin-left: 25px;
 }
 
 div#discounts_popup_markup_container div#apply_discount_to div.label {

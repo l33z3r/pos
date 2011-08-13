@@ -717,15 +717,6 @@ function initTouchRecpts() {
     $('#mobile_table_till_roll').touchScroll();
 }
 
-function initScrollPanes() {
-    //init all the scroll panes
-    setTimeout(function() {
-        $('.jscrollpane, .admin #content_container section:not(.no_scroll_pane)').jScrollPane({
-            showArrows: true
-        });
-    }, 500);
-}
-
 function loginRecptScroll() {
     recptScroll("login_");
 }
