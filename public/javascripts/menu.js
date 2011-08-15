@@ -793,7 +793,7 @@ function clearOrder(selectedTable) {
 
 function doTotal() {
     if(currentOrderEmpty()) {
-        alert("No order present to sub-total!");
+        setStatusMessage("No order present to sub-total!", true, true);
         return;
     }
     
@@ -833,7 +833,7 @@ function doTotal() {
 
 function doTotalFinal() {
     if(currentOrderEmpty()) {
-        alert("No order present to total!");
+        setStatusMessage("No order present to total!", true, true);
         return;
     }
     
@@ -1197,7 +1197,7 @@ function saveDiscount() {
     selectedValue = parseFloat(selectedValue);
     
     if(selectedValue<0 || selectedValue>100) {
-        alert("You must enter a number between 0 and 100");
+        setStatusMessage("You must enter a number between 0 and 100", true, true);
         return;
     }
     

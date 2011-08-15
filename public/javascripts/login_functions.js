@@ -104,7 +104,7 @@ function doClockin() {
     entered_code = $('#num').val();
     
     if(employees.length==0) {
-        alert("Please try again... system initializing...");
+        setStatusMessage("Please try again... system initializing...");
         return;
     }
 

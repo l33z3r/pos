@@ -20,6 +20,10 @@
   "jquery.jscrollpane", "jquery.mousewheel", "jquery.bgiframe", 
   "jquery.mcdropdown", "jquery.ibutton", :cache => "libs" %>
 
+<!-- Modal Popups (http://www.modalpopups.com) -->
+<%= javascript_include_tag 'modal-popups/shCore', 'modal-popups/ModalPopups',
+  'modal-popups/shBrushJScript', :cache => "modal_popups_libs" %>
+
 <!-- only load the fingerprint libraries if the fingerprint has not yet been set -->
 <% if !request.cookies["terminal_fingerprint"] %>
   <%= javascript_include_tag "md5", "detector", :cache => "fingerprint_libs" %>

@@ -142,7 +142,7 @@ function parsePreviousOrder(previousOrderJSON) {
 function initReopenOrderButton(is_void_or_replacement) {
     if(is_void_or_replacement) {
         reOpenOrderHandler = function() {
-            alert("Cannot re-open a void or replacement order!");
+            setStatusMessage("Cannot re-open a void or replacement order!");
         };
     } else {
         reOpenOrderHandler = reOpenOrder;

@@ -489,12 +489,14 @@ function setStatusMessage(message, hide, shake) {
         shake = false;
     }
     
+    statusEl = null;
+    
     if(currentScreenIsLogin()) {
         statusEl = $('#login_screen_status_message')
     } else if(currentScreenIsMenu()) {
         statusEl = $('#menu_screen_status_message');
     } else {
-        statusEl = $('#menu_screen_status_message')
+        niceAlert(message);
     }
     
     afterFunction = null;
@@ -502,12 +504,10 @@ function setStatusMessage(message, hide, shake) {
     if(hide) {
         afterFunction = function() {
             setTimeout(function(){
-                statusEl.fadeOut();
-            }, 5000);
+                hideStatusMessage();
+            }, 3000);
         };
     }
-    
-    statusEl.fadeIn('fast', afterFunction);
     
     if(shake) {
         shakeFunction = function() {
@@ -520,7 +520,12 @@ function setStatusMessage(message, hide, shake) {
         setTimeout(shakeFunction, 500);
     }
     
-    statusEl.html(message);
+    if(statusEl) {
+        statusEl.fadeIn('fast', afterFunction);
+        statusEl.html(message);
+    } else {
+        afterFunction();
+    }
 }
 
 function hideStatusMessage() {
@@ -529,10 +534,29 @@ function hideStatusMessage() {
     } else if(currentScreenIsMenu()) {
         statusEl = $('#menu_screen_status_message');
     } else {
-        statusEl = $('#menu_screen_status_message')
+        hideNiceAlert();
+        return;
     }
     
-    statusEl.fadeOut();
+    if(statusEl) {
+        statusEl.fadeOut();
+    }
+}
+
+function niceAlert(message, title) {
+    if (typeof title == "undefined") {
+        title = "Alert!";
+    }
+    
+    ModalPopups.Alert('niceAlertContainer',
+        title, "<div id='nice_alert'>" + message + "</div>",
+        {
+            okButtonText: 'OK'
+        });
+}
+
+function hideNiceAlert() {
+    ModalPopups.Close('niceAlertContainer');
 }
 
 function showLoginScreen() {
@@ -886,5 +910,8 @@ function initCheckboxes() {
 }
 
 function initRadioButtons() {
-    $(':radio:not(.no_iphone_style)').iButton({labelOn: "On", labelOff: "Off"});
+    $(':radio:not(.no_iphone_style)').iButton({
+        labelOn: "On", 
+        labelOff: "Off"
+    });
 }

@@ -38,7 +38,7 @@ function finishSale() {
     totalAmountInclCashback = roundNumber(currentTotalFinal + cashback, 2);
 
     if(cashTendered < totalAmountInclCashback) {
-        alert("Must enter a higher value than current total: " + currency(totalAmountInclCashback));
+        setStatusMessage("Must enter a higher value than current total: " + currency(totalAmountInclCashback), true, true);
         resetTendered();
         return;
     }

@@ -3300,4 +3300,40 @@ div.vtabs-content-panel>div.jscrollpane {
     max-height: 580px;
 }
 
+div[id$="_popup"] {
+    border: 2px solid #000000;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+div[id$="_popup"] * {
+    font-size: 13px;
+    color: #333;
+}    
+
+div[id$="_popup"] input {
+    width: 80px;
+    max-width: 80px;
+    height: 40px;
+    max-height: 40px;
+    overflow: hidden;
+    vertical-align: middle;
+    display: table-cell;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+
+div#nice_alert {
+    width: 280px;
+    height: 60px;
+    text-align: center;
+    margin-top: 30px;
+}
+
 /* End Misc Styles */
