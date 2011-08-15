@@ -509,7 +509,7 @@ function setStatusMessage(message, hide, shake) {
         };
     }
     
-    if(shake) {
+    if(statusEl && shake) {
         shakeFunction = function() {
             statusEl.effect("shake", {
                 times:3,
@@ -551,7 +551,8 @@ function niceAlert(message, title) {
     ModalPopups.Alert('niceAlertContainer',
         title, "<div id='nice_alert'>" + message + "</div>",
         {
-            okButtonText: 'OK'
+            okButtonText: 'OK',
+            onOk: "hideNiceAlert()"
         });
 }
 
