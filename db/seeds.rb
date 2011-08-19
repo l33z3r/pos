@@ -67,8 +67,8 @@ end
 
 Display.find_by_name("Default")
 
-if true#!@default_display
-  @default_display = Display.create({:name => "Default 3"})
+if !@default_display
+  @default_display = Display.create({:name => "Default"})
         
   @default_display.save!
         
