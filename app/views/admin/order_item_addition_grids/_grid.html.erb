@@ -1,0 +1,11 @@
+<% (1..oiag.grid_y_size).each do |y| %>
+  <div class="grid_row">
+    <% (1..oiag.grid_x_size).each do |x| %>
+      <% @oia = oiag.item_for_position(x, y) %>
+      <%= render "grid_item_with_wrapper_div", :oia => @oia, :x => x, :y => y %>
+    <% end %>
+  </div>
+  <div class="clear">&nbsp;</div>
+<% end %>
+
+<div class="clear">&nbsp;</div>

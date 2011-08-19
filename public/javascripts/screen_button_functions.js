@@ -27,14 +27,14 @@ function checkAllOrdersClosedForCashTotal() {
 
 function doSyncTableOrder() {
     if(selectedTable == 0 || selectedTable == -1) {
-        alert("Only valid for table orders!");
+        setStatusMessage("Only valid for table orders!");
         return;
     } else {
         lastOrderSaleText = "Last Order";
         
         order = tableOrders[selectedTable];
         if(order.items.length == 0) {
-            alert("No items present in current table order!");
+            setStatusMessage("No items present in current table order!");
             return;
         }
     }
@@ -101,7 +101,7 @@ function finishDoSyncTableOrder() {
 
 function printCurrentReceipt() {
     if(currentOrderEmpty()) {
-        alert("No order present to print!");
+        setStatusMessage("No order present to print!");
         return;
     }
     
@@ -291,36 +291,56 @@ function initFloatScreen() {
 }
 
 function removeLastOrderItem() {
-    currentSelectedReceiptItemEl = $('#till_roll > div.order_line:last');
+    currentSelectedReceiptItemEl = getSelectedOrLastReceiptItem();
     
-    if(currentSelectedReceiptItemEl.length == 0) {
-        setStatusMessage("There are no items to Remove!");
-        return;
+    if(currentSelectedReceiptItemEl) {
+        removeSelectedOrderItem();
     }
     
-    removeSelectedOrderItem();
+    currentSelectedReceiptItemEl = null;
 }
 
 function markFreeLastOrderItem() {
     order = getCurrentOrder();
     
-    currentSelectedReceiptItemEl = $('#till_roll > div.order_line:last');
+    currentSelectedReceiptItemEl = getSelectedOrLastReceiptItem();
     
-    if(currentSelectedReceiptItemEl.length == 0) {
-        setStatusMessage("There are no items to Discount!");
-        return;
+    if(currentSelectedReceiptItemEl) {
+        itemNumber = currentSelectedReceiptItemEl.data("item_number");
+        applyDiscountToOrderItem(order, itemNumber, 100);
+    
+        //store the modified order
+        if(selectedTable != 0) {
+            storeTableOrderInStorage(current_user_id, selectedTable, order);
+        }else {
+            storeOrderInStorage(current_user_id, order);
+        }
+    
+        //redraw the receipt
+        loadReceipt(order);
     }
     
-    itemNumber = currentSelectedReceiptItemEl.data("item_number");
-    applyDiscountToOrderItem(order, itemNumber, 100);
-    
-    //store the modified order
-    if(selectedTable != 0) {
-        storeTableOrderInStorage(current_user_id, selectedTable, order);
-    }else {
-        storeOrderInStorage(current_user_id, order);
+    currentSelectedReceiptItemEl = null;
+}
+
+function toggleModifyOrderItemScreen() {
+    if(currentMenuSubscreenIsMenu()) {
+        showModifyOrderItemScreen();
+    } else {
+        switchToMenuItemsSubscreen();
     }
+}
+
+function showModifyOrderItemScreen() {
+    switchToModifyOrderItemSubscreen();
+}
+
+function showAddNoteToOrderItemScreen() {
+    order = getCurrentOrder();
     
-    //redraw the receipt
-    loadReceipt(order);
+    currentSelectedReceiptItemEl = getSelectedOrLastReceiptItem();
+    
+    if(currentSelectedReceiptItemEl) {
+        
+}
 }

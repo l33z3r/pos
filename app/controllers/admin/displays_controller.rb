@@ -23,10 +23,25 @@ class Admin::DisplaysController < Admin::AdminController
         @page_1.menu_items.build({:order_num => num}).save!
         @page_2.menu_items.build({:order_num => num}).save!
       end
-    
+      
+      #grab the default modifier grid
+      @display.order_item_addition_grid
+      
       redirect_to(builder_admin_display_path(@display), :notice => 'Display was successfully created.')
     else
       render :action => "new"
+    end
+  end
+  
+  def update
+    @display = Display.find(params[:id])
+
+    if @display.update_attributes(params[:display])
+      flash[:notice] = 'Display was successfully updated.'
+      redirect_to :action => "index"
+    else
+      flash[:error] = 'Error updating display'
+      render :action => "index"
     end
   end
   

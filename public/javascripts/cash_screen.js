@@ -18,7 +18,7 @@ function takeTendered() {
 var cashTendered;
 
 function getTendered() {
-    var val = cashTendered;
+    var val = cashTendered;    
     
     if(val > 0) {
         if(isNaN(parseFloat(val))) {
@@ -95,7 +95,14 @@ function totalsScreenKeypadClickCancel() {
     oldVal = $('#totals_tendered_value').html();
     newVal = oldVal.substring(0, oldVal.length - 1);
     
+    if(newVal.length == 0) {
+        newVal = "0";
+    }
+    
     cashTenderedKeypadString = newVal;
+    cashTendered = parseFloat(cashTenderedKeypadString);
+    takeTendered();
+    
     $('#totals_tendered_value').html(newVal);
 }
 

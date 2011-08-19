@@ -1,0 +1,2 @@
+$('#cell_' + <%=@x%> + "_" + <%=@y%>).html("<%= escape_javascript(render "grid_item", :oia => @item, :x => @x, :y => @y) %>");
+//alert("item updated");

@@ -16,5 +16,5 @@ $('#loading_message').slideUp();
     renameTable(<%=@room_object.id%>);
   <% end %>
 <% else %>
-  alert("Error, Intersection with another room object!");
+  setStatusMessage("Error, Intersection with another room object!");
 <% end %>

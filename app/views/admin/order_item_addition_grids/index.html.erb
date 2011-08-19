@@ -1,0 +1,44 @@
+<% content_for :admin_subnav_links_right do %>
+  <%= render :partial => "/partials/ok_cancel_buttons" %>
+  <%= render :partial => "/partials/terminal_reload_request" %>
+<% end %>
+
+<div id="admin_display_list">
+
+  <section id="displays">
+
+    <h3>Order Item Addition Grids</h3>
+
+    <table id="order_item_addition_grids_list" class="admin_table">
+      <thead>
+        <tr>
+          <th width="180">Name</th>
+          <th width="70">Display</th>
+          <th width="70">Default?</th>
+          <th width="80">Delete</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @oiags.each do |oiag| %>
+          <tr>
+            <td><%= link_to oiag.name, builder_admin_order_item_addition_grid_path(oiag) %></td>
+            <td><%= oiag.display ? (link_to oiag.display.name, builder_admin_display_path(oiag.display)) : "None" %></td>
+            <td>
+              <%= radio_button_tag "set_default_order_item_addition_grid", "#{oiag.id}", oiag.is_default, 
+                :onchange => "doSetDefaultOrderItemAdditionGrid(this.value);" %>
+            </td>
+            <td><%= link_to "Delete", admin_order_item_addition_grid_path(oiag), :method => :delete, :confirm => "Are You Sure?" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <br />
+
+    <div id="actions">
+      <%= button_to 'New Grid', new_admin_order_item_addition_grid_path, :method => :get %>
+    </div>
+
+  </section>
+</div>

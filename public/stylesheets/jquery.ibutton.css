@@ -1,10 +1,9 @@
 .ibutton-container {
     float: left;
-    margin-top: -5px;
     padding-top: 9px;
-    margin-right: 5px;
+    margin-left: 5px;
     position: relative;
-    height: 27px;
+    height: 19px;
     cursor: pointer;
     overflow: hidden;
     /* set max width to that of sprite */
@@ -17,7 +16,6 @@
     -moz-user-input: disabled;
     /* set default width based on ON/OFF labels */
     width: 100px;
-    
 }
 
 .wrapper div.ibutton-container div.ibutton-label-on {

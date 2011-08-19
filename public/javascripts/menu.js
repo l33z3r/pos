@@ -27,6 +27,8 @@ function initMenu() {
     displayLastReceipt();
     initOptionButtons();
     
+    initModifierGrid();
+    
     //hack to scroll the recpt a little after page has loaded as there 
     //were problems on touch interface with recpt getting stuck
     setTimeout("menuRecptScroll()", 1000);
@@ -383,6 +385,21 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         }
         
         orderHTML += clearHTML;
+    }
+    //alert(orderItem.oia_items);
+    if(orderItem.oia_items) {
+        for(j=0; j<orderItem.oia_items.length; j++) {
+            oia_is_add = orderItem.oia_items[j].is_add;
+            
+            orderHTML += "<div class='modifier_price'>" + (oia_is_add ? "Add" : "No") + "</div>";
+            orderHTML += "<div class='modifier_price'>" + orderItem.oia_items[j].description + "</div>";
+            
+            if(orderItem.oia_items[j].abs_charge != 0) {
+                orderHTML += "<div class='modifier_price'>" + (!oia_is_add ? "-" : "") + currency(orderItem.oia_items[j].abs_charge) + "</div>";
+            }
+            
+            orderHTML += clearHTML;
+        }
     }
 
     var preDiscountPrice = (orderItem.product_price * orderItem.amount);
@@ -1509,4 +1526,81 @@ function doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmploye
             setStatusMessage("<b>" + terminalEmployee + "</b> totaled the order for table <b>" + tableLabel + "</b> from terminal <b>" + recvdTerminalID + "</b>");
         }
     }
+}
+
+var oiaIsAdd = true;
+
+function orderItemAdditionClicked(el) {
+    currentSelectedReceiptItemEl = getLastReceiptItem();
+    
+    if(!currentSelectedReceiptItemEl) {
+        setStatusMessage("There are no receipt items!");
+        return;
+    }
+    
+    //alert(oiaIsAdd);
+    var order = getCurrentOrder();
+    
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    
+    var orderItem = order.items[itemNumber-1];
+    
+    el = $(el);
+    
+    //get the oia data
+    var desc = el.data("description");
+    //alert(desc);
+    
+    var absCharge = 0;
+    
+    if(oiaIsAdd) {
+        absCharge = el.data("add_charge");
+    } else {
+        absCharge = el.data("minus_charge");
+    }
+    
+    oia_item = {
+        'description' : desc,
+        'abs_charge' : absCharge,
+        'is_add' : oiaIsAdd
+    }
+    
+    if(typeof(orderItem.oia_items) == 'undefined') {
+        orderItem.oia_items = new Array();
+    }
+    
+    orderItem.oia_items.push(oia_item);
+    
+    //store the modified order
+    if(selectedTable != 0) {
+        storeTableOrderInStorage(current_user_id, selectedTable, order);
+    }else {
+        storeOrderInStorage(current_user_id, order);
+    }
+        
+    //redraw the receipt
+    loadReceipt(order);
+    
+    currentSelectedReceiptItemEl = null;
+}
+
+function orderItemAdditionAddSelected() {
+    clearSelectedOIATabs();
+    $('#oia_tab_add').addClass("selected");
+    oiaIsAdd = true;
+}
+
+function orderItemAdditionNoSelected() {
+    clearSelectedOIATabs();
+    $('#oia_tab_no').addClass("selected");
+    oiaIsAdd = false;
+}
+
+function clearSelectedOIATabs() {
+    $('#oia_tabs .tab').removeClass("selected");
+}
+
+function doOpenOIANoteScreen() {
+    clearSelectedOIATabs();
+    $('#oia_tab_note').addClass("selected");
 }

@@ -571,6 +571,10 @@ function showMenuScreen() {
     clearNavTitle();
     hideNavBackLinkMenuScreen();
     hideAllScreens();
+    
+    //show the menu screen as default subscreen
+    showMenuItemsSubscreen();
+    
     $('#menu_screen').show();
 }
 
@@ -915,4 +919,81 @@ function initRadioButtons() {
         labelOn: "On", 
         labelOff: "Off"
     });
+}
+
+function getSelectedOrLastReceiptItem() {
+    if(!currentSelectedReceiptItemEl) {
+        currentSelectedReceiptItemEl = $('#till_roll > div.order_line:last');
+    
+        if(currentSelectedReceiptItemEl.length == 0) {
+            setStatusMessage("There are no receipt items!");
+            return null;
+        }
+    }
+    
+    return currentSelectedReceiptItemEl;
+}
+
+function getLastReceiptItem() {
+    currentSelectedReceiptItemEl = $('#till_roll > div.order_line:last');
+    
+    if(currentSelectedReceiptItemEl.length == 0) {
+        setStatusMessage("There are no receipt items!");
+        return null;
+    }
+    
+    return currentSelectedReceiptItemEl;
+}
+
+function hideAllMenuSubScreens() {
+    $('#menu_container').hide();
+    
+    $('#sales_button_' + modifyOrderItemButtonID).removeClass("selected");
+    $('#order_item_additions').hide();
+}
+
+function currentMenuSubscreenIsMenu() {
+    return $('#menu_container').is(":visible");
+}
+
+function currentMenuSubscreenIsModifyOrderItem() {
+    return $('#order_item_additions').is(":visible");
+}
+
+function switchToMenuItemsSubscreen() {
+    if(currentScreenIsMenu()) {
+        showMenuItemsSubscreen();
+    }
+}
+
+function showMenuItemsSubscreen() {
+    hideAllMenuSubScreens();
+    $('#menu_container').show();
+}
+
+function switchToModifyOrderItemSubscreen() {
+    if(currentScreenIsMenu()) {
+        hideAllMenuSubScreens();
+        $('#sales_button_' + modifyOrderItemButtonID).addClass("selected");
+        $('#oia_tab_add').click();
+        $('#order_item_additions').show();
+    }
+}
+
+function initModifierGrid() {
+    //set the width of each grid item
+    var rowWidth = $('div#order_item_additions .grid_row:first').css("width");
+    
+    var newWidth = roundNumberDown(parseFloat(rowWidth)/modifierGridXSize, 0) - 4;
+    
+    $('div#order_item_additions .grid_row .grid_item').css("width", newWidth + "px");
+    
+    var panelHeight = $('div#order_item_additions').css("height");
+    
+    //take away the height of the tabs
+    panelHeight = parseFloat(panelHeight) - parseFloat($('#oia_tabs .tab').css("height"));
+    
+    var newHeight = roundNumberDown(panelHeight/modifierGridYSize, 0) - 4;
+    
+    $('div#order_item_additions .grid_row .grid_item').css("height", newHeight + "px");
 }

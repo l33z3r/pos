@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110813103842) do
+ActiveRecord::Schema.define(:version => 20110817104234) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -70,7 +70,8 @@ ActiveRecord::Schema.define(:version => 20110813103842) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_default", :default => false
+    t.boolean  "is_default",                  :default => false
+    t.integer  "order_item_addition_grid_id"
   end
 
   create_table "employees", :force => true do |t|
@@ -133,6 +134,30 @@ ActiveRecord::Schema.define(:version => 20110813103842) do
     t.integer  "modifier_category_id"
     t.string   "name"
     t.float    "price"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "order_item_addition_grids", :force => true do |t|
+    t.string   "name"
+    t.integer  "grid_x_size"
+    t.integer  "grid_y_size"
+    t.boolean  "is_default",  :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "order_item_additions", :force => true do |t|
+    t.integer  "order_item_addition_grid_id"
+    t.string   "description"
+    t.float    "add_charge"
+    t.float    "minus_charge"
+    t.boolean  "available",                   :default => true
+    t.string   "background_color"
+    t.string   "text_color"
+    t.integer  "text_size"
+    t.integer  "pos_x"
+    t.integer  "pos_y"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

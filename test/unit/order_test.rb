@@ -7,6 +7,7 @@ class OrderTest < ActiveSupport::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: orders
@@ -31,5 +32,6 @@ end
 #  cashback              :float
 #  void_order_id         :integer(4)
 #  is_void               :boolean(1)      default(FALSE)
+#  order_num             :integer(8)
 #
 

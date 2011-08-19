@@ -190,6 +190,7 @@ ul.mcdropdown_menu ul {
     padding-bottom: 10px;
     /* IE 6/7 will bleed through the background color if we don't set the visibility to hidden */
     visibility: hidden;
+    margin-left: 20px;
 }
 
 ul.mcdropdown_menu ul li {

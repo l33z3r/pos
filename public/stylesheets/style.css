@@ -444,6 +444,21 @@ table.admin_table .odd {
 
 /* Admin Global */
 
+div.admin section#form_container div#form_wrapper {
+    text-align: center;
+    width: -moz-fit-content;
+    margin: auto;
+}
+
+div.admin section#form_container div#form_wrapper div#fields div {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+div.admin section#form_container div#form_wrapper div#actions input {
+    float: right;
+}
+
 /* Admin Users Page */
 
 div#admin_employee_list section#employees {
@@ -607,6 +622,7 @@ div#new_product section#form_container div.product_image img {
 
 div#new_product section#form_container form div {
     text-align: left;
+    margin-bottom: 10px;
 }
 
 div#new_product section#form_container form div#actions a {
@@ -1368,7 +1384,7 @@ div#menu_screen div#menu_pages_container div#pages {
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container {
-    height: 481px;
+    height: 485px;
     padding-left: 2px;
     padding-top: 4px;
     background-color: #E0E0E0;
@@ -1509,6 +1525,63 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
     width: -moz-fit-content;
     margin-left: auto;
     margin-right: auto;
+}
+
+div#menu_screen div#order_item_additions {
+    display: none;
+    height: 545px;
+    background-color: #B4B4B4;
+}
+
+div#menu_screen div#order_item_additions div.tabs {
+    background-color: #B4B4B4;
+    border-spacing: 2px;
+    margin-bottom: -4px;
+}
+
+div#menu_screen div#order_item_additions div.tabs div.tab {
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    border: 1px solid #AAAAAA;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    cursor: pointer;
+    display: table-cell;
+    height: 55px;
+    margin: 1px;
+    text-align: center;
+    vertical-align: middle;
+    width: 88px;
+}
+
+div#menu_screen div#order_item_additions div.tabs div.tab.selected {
+    background: -moz-linear-gradient(#F8F8F8, #E0E0E0) repeat scroll 0 0 transparent;
+    border-bottom-width: 0;
+}
+
+div#menu_screen div#order_item_additions div.tabs div.tab img {
+    float: left;
+    margin-left: 6px;
+}
+
+div#menu_screen div#order_item_additions div.tabs div.tab div.label {
+    float: left;
+    margin-left: 9px;
+    margin-top: 9px;
+}
+
+div#menu_screen div#order_item_additions div.grid_row {
+    width: 740px;
+}
+
+div#menu_screen div#order_item_additions div.grid_row div.grid_item {
+    float: left;
+    background-color: #FFF;
+    border: 1px solid #555;
+    cursor: pointer;
+}
+
+div#menu_screen div#order_item_additions div.grid_row div.grid_item.empty {
+    cursor: auto;
 }
 
 /* Main Menu Screen */
@@ -3337,3 +3410,38 @@ div#nice_alert {
 }
 
 /* End Misc Styles */
+
+/* styles carried over from scaffold css */
+
+.field_with_errors {
+    padding: 2px;
+    background-color: red;
+    display: table;
+}
+
+#error_explanation {
+    width: 450px;
+    border: 2px solid red;
+    padding: 7px;
+    padding-bottom: 0;
+    margin: auto auto 20px auto;
+    background-color: #f0f0f0;
+}
+
+#error_explanation h2 {
+    text-align: left;
+    font-weight: bold;
+    padding: 5px 5px 5px 15px;
+    font-size: 12px;
+    margin: -7px;
+    margin-bottom: 0px;
+    background-color: #c00;
+    color: #fff;
+}
+
+#error_explanation ul li {
+    font-size: 12px;
+    list-style: square;
+}
+
+/* end styles carried over from scaffold css */

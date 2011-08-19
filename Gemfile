@@ -36,6 +36,8 @@ gem 'aws-s3', '0.6.2'
 group :development, :test do
   gem 'annotate'
   
+  gem 'rails-footnotes', :git => 'https://github.com/josevalim/rails-footnotes.git'
+  
   gem "rspec-rails", "2.6.1"
   gem 'ruby-debug19'
   gem "mongrel", '1.2.0.pre2'

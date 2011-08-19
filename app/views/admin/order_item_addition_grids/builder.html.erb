@@ -1,0 +1,140 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "modifier-grid-builder" %>
+  <%= stylesheet_link_tag "modifier_grid_builder"  %>
+
+  <script type="text/javascript">
+    grid_x = <%=@oiag.grid_x_size%>;
+    grid_y = <%=@oiag.grid_y_size%>;
+    grid_id = <%=@oiag.id%>;
+  </script>
+
+<% end %>
+
+<div id="modifier_grid_builder">
+
+  <div id="builder_action_buttons">
+    <div class="button" onclick="goTo('<%=home_path%>#screen=menu');">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/manage_sales_screen_button.png" %>
+      </div>
+      <div class="button_name">Menu Screen</div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div class="button" onclick="goTo('<%=home_path%>#screen=more_options');">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/more_options_button.png" %>
+      </div>
+      <div class="button_name">More Options</div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div class="button" onclick="adminCancelClicked()">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/cancel_button.png" %>
+      </div>
+      <div class="button_name">Cancel</div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div class="button" onclick="adminOkClicked()">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/ok_button.png" %>
+      </div>
+      <div class="button_name">Ok</div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div id="grid_resizer">
+      <div class="top_label">Grid Size</div>
+
+      <div id="width">
+        <input type="text" id="grid_width_input" value="<%=@oiag.grid_x_size%>" size="1" onchange="updateGridSize();"/>
+        <div class="label">Wide</div>
+        <div class="clear">&nbsp;</div>
+      </div>
+
+      <div class="clear">&nbsp;</div>
+
+      <div id="height">
+        <input type="text" id="grid_height_input" value="<%=@oiag.grid_y_size%>" size="1" onchange="updateGridSize();"/>
+        <div class="label">High</div>
+        <div class="clear">&nbsp;</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div id="builder">
+
+    <div id="grid_scroller" class="jscrollpane">
+      <div id="grid">
+        <%= render "grid", :oiag => @oiag %>
+      </div>
+    </div>
+
+    <div id="grid_item_inputs">
+
+      <div id="description">
+        <div class="top_label">Description</div>
+        <div class="input_box">
+          <input type="text" id="description_input" value="" onchange="updateSelectedGridItem()"/>
+        </div>
+      </div>
+
+      <div id="charge">
+        <div class="top_label">Add Charge</div>
+        <div class="input_box">
+          <input type="text" id="add_charge_input" value="" onchange="updateSelectedGridItem()"/>
+        </div>
+      </div>
+
+      <div id="charge">
+        <div class="top_label">Minus Charge</div>
+        <div class="input_box">
+          <input type="text" id="minus_charge_input" value="" onchange="updateSelectedGridItem()"/>
+        </div>
+      </div>
+
+      <div id="available">
+        <div class="top_label">Available</div>
+        <div class="input_box">
+          <input type="checkbox" id="available_input"/>
+        </div>
+      </div>
+
+      <div id="bg_color">
+        <div class="top_label">BG Color</div>
+        <div class="input_box">
+          <input type="text" id="bg_color_input" value="" onchange="updateSelectedGridItem()"/>
+        </div>
+      </div>
+
+      <div id="text_color">
+        <div class="top_label">Text Color</div>
+        <div class="input_box">
+          <input type="text" id="text_color_input" value="" onchange="updateSelectedGridItem()"/>
+        </div>
+      </div>
+
+      <div id="text_size">
+        <div class="top_label">Text Size</div>
+        <div class="input_box">
+          <input type="text" id="text_size_input" value="" onchange="updateSelectedGridItem()"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
+  </div>
+
+  <div id="keyboard"></div>
+
+</div>
+</div>

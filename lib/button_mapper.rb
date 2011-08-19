@@ -48,6 +48,8 @@ class ButtonMapper
   ORDER_BUTTON = 45
   SERVICE_CHARGE_BUTTON = 46
   PREVIOUS_ORDERS_BUTTON = 47
+  MODIFY_ORDER_ITEM_BUTTON = 48
+  MANAGE_ORDER_ITEM_ADDITION_GRIDS_BUTTON = 49
   
   def action_for_button button
 
@@ -115,7 +117,7 @@ class ButtonMapper
     when REMOVE_ITEM_BUTTON
       @retval = wrap_with_menu_screen_function_check "removeLastOrderItem();"
     when ADD_NOTE_BUTTON
-      @retval = wrap_with_menu_screen_function_check "alert('add note button clicked');"
+      @retval = wrap_with_menu_screen_function_check "showAddNoteToOrderItemScreen(); return false;"
     when CHANGE_WAITER_BUTTON
       @retval = "alert('change waiter button clicked');"
     when PRINTERS_BUTTON
@@ -148,6 +150,10 @@ class ButtonMapper
       @retval = wrap_with_menu_screen_function_check "promptForServiceCharge()"
     when PREVIOUS_ORDERS_BUTTON
       @retval = "window.location = '#{admin_orders_path}'; return false;"
+    when MODIFY_ORDER_ITEM_BUTTON
+      @retval = wrap_with_menu_screen_function_check "toggleModifyOrderItemScreen(); return false;"
+    when MANAGE_ORDER_ITEM_ADDITION_GRIDS_BUTTON
+      @retval = "window.location = '#{admin_order_item_addition_grids_path}'; return false;"
     end
 
     @retval

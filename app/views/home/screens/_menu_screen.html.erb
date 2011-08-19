@@ -10,19 +10,6 @@
       <div id="table_screen_button" onclick="showTablesScreen(); return false;">Tables</div>
 
       <div id="table_select_container">
-        <!--select onchange="doSelectTable($(this).val())" id="table_select">
-          <option id="previous_order_select_item" style="display: none;" data-room_id="-1" value="-1">Previous Order</option>
-          <option data-room_id="0" value="0">None</option>
-        <% Room.all.each do |room|%>
-                <optgroup label="<%=room.name%>">
-          <% room.table_infos.each do |table_info| %>
-                        <option data-room_id="<%=table_info.room_object.room.id%>"
-                                value="<%= table_info.id %>"><%= table_info.perm_id %></option>
-          <% end %>
-                </optgroup>
-        <% end %>
-        </select-->
-
         <div id="table_select_input" onclick="tableSelectMenu.openMenu()">Select Table</div>
 
         <ul id="table_select" class="mcdropdown_menu">
@@ -81,40 +68,9 @@
   </div>
 
   <div id="menu_pages_container">
-    <div id="pages">
-      <% @display.menu_pages.each do |page| %>
-        <div class="page"  id="menu_page_<%=page.id%>"
-             onclick="doMenuPageSelect(<%= page.page_num %>, <%= page.id %>);">
-          <div class="name">
-            <%= page.name %>
-          </div>
-        </div>
+    <%= render "/home/screens/menu_subscreens/menu_items_screen" %>
 
-        <div style="display: none;" id="menu_items_<%= page.page_num %>">
-          <div id="items">
-            <% page.menu_items.each do |item| %>
-              <% if item.product %>
-                <div class="item" onclick="doSelectMenuItem(<%= item.product_id %>, this)">
-                  <div class="item_pic">
-                    <%= product_image_thumb item.product %>
-                  </div>
-                  <div class="item_name">
-                    <%= item.name %>
-                  </div>
-                </div>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-
-      <% end %>
-    </div>
-
-    <div class="clear">&nbsp;</div>
-
-    <div id="menu_items_container">
-      Loading...
-    </div>
+    <%= render "/home/screens/menu_subscreens/order_item_additions_screen" %>
 
     <div class="clear_spacer">
       <div id="menu_screen_status_message_container" class="global_status_message_container">

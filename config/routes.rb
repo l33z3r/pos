@@ -135,6 +135,18 @@ Pos::Application.routes.draw do
       end
     end
     
+    resources :order_item_addition_grids, :only => [:index, :new, :create, :destroy] do
+      member do
+        get 'builder'
+        post 'resize'
+        post 'update_item'
+        post 'default'
+        
+        #ajax functions
+        post 'save_item'
+      end
+    end
+    
     #system settings interface
     get 'global_settings' => "global_settings#index"
     post 'update_global_settings' => "global_settings#update_multiple"

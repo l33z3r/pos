@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/josevalim/rails-footnotes.git
+  revision: d863a010a4682457336c6eebc38736effa1d6bd6
+  specs:
+    rails-footnotes (3.7.5.rc1)
+      rails (>= 3.0.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -128,6 +135,7 @@ DEPENDENCIES
   pg
   populator
   rails (= 3.0.5)
+  rails-footnotes!
   rspec-rails (= 2.6.1)
   ruby-debug19
   will_paginate (~> 3.0.pre2)

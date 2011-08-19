@@ -55,6 +55,14 @@ function doSetDefaultDiscount(discountId) {
     });
 }
 
+function doSetDefaultOrderItemAdditionGrid(gridId) {
+    //send an update to display controller
+    $.ajax({
+        type: 'POST',
+        url: '/admin/order_item_addition_grids/' + gridId + '/default'
+    });
+}
+
 function updateProductPrice(product_id, currentPrice) {
     newPrice = prompt("Enter a new price:", currentPrice);
     

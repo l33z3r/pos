@@ -1,0 +1,119 @@
+div#modifier_grid_builder {
+
+}
+
+div#modifier_grid_builder div#builder_action_buttons {
+    border-spacing: 7px;
+    padding-left: 12px;
+    width: 100px;
+    float: left;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_resizer {
+    width: 85px;
+    height: 90px;
+    background-color: #555;
+    padding: 3px;
+    text-align: center;
+    margin-top: 15px;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_resizer * {
+    color: #FFF;
+    font-weight: bold;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_resizer input {
+    float: left;
+    color: #333;
+    font-weight: normal;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_resizer div.top_label {
+    padding: 4px;
+    margin-bottom: 5px;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_resizer div#width {
+    margin-bottom: 5px;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_resizer div.label {
+    margin-top: 5px;
+    margin-left: 3px;
+    float: left;
+}
+
+div#modifier_grid_builder div#builder {
+    text-align: center;
+    width: 905px;
+    height: 731px;
+    margin-top: 6px;
+    float: left;
+    background-color: #555;
+}
+
+div#modifier_grid_builder div#builder div#grid_scroller {
+    height: 350px;
+    overflow: scroll;
+    border: 1px solid #222;
+} 
+
+div#modifier_grid_builder div#builder div#grid_scroller div#grid {
+
+}
+
+div#modifier_grid_builder div#builder div#grid div.oia {
+    float: left;
+    width: 120px;
+    height: 80px;
+    border: 2px solid #222;
+    cursor: pointer;
+    background: #FFF;
+}
+
+div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container {
+    height: 70px;
+    padding: 5px;
+}
+
+div#modifier_grid_builder div#builder div#grid div.oia.selected {
+    border: 2px solid #E36C0A;
+}
+
+div#modifier_grid_builder div#builder div#grid_item_inputs {
+    border: 1px solid #222;
+    height: 96px;
+    width: 864px;
+    margin: auto;
+    margin-top: 10px;
+}
+
+div#modifier_grid_builder div#builder div#grid_item_inputs>div {
+    width: 113px;
+    float: left;
+    padding: 5px;
+}
+
+div#modifier_grid_builder div#builder div#grid_item_inputs div.top_label {
+    color: #FFF;
+    font-weight: bold;
+    padding: 3px;
+}
+
+div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box {
+    background-color: #FFF;
+    border: 1px solid #222; 
+    width: 100px;
+    height: 50px;
+    padding: 5px;
+}
+
+div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box input {
+    width: 90px;
+    margin-top: 12px;
+}
+
+div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box div.iPhoneCheckContainer {
+    margin-top: 10px;
+}

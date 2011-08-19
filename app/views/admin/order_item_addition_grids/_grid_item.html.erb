@@ -1,0 +1,25 @@
+<% if oia %>
+  <div id="grid_<%=x%>_<%=y%>_data" class="grid_item_container"
+       data-description="<%=oia.description%>" data-add_charge="<%=oia.add_charge%>"
+       data-minus_charge="<%=oia.minus_charge%>"
+       data-available="<%=oia.available%>" data-bg_color="<%=oia.background_color%>"
+       data-text_color="<%=oia.text_color%>" data-text_size="<%=oia.text_size%>"
+       style="background-color: <%=oia.background_color%>;">
+
+
+    <div style="color: <%=oia.text_color%>;font-size: <%=oia.text_size%>px" class="name">
+      <%= oia.description %>
+    </div>
+    <div style="color: <%=oia.text_color%>;font-size: <%=oia.text_size%>px" class="charge">
+      <%= print_money oia.add_charge unless oia.add_charge == 0 %>
+    </div>
+    <div style="color: <%=oia.text_color%>;font-size: <%=oia.text_size%>px" class="charge">
+      <%= print_money oia.minus_charge unless oia.minus_charge == 0 %>
+    </div>
+
+  </div>
+<% else %>
+  <div id="grid_<%=x%>_<%=y%>">
+    
+  </div>
+<% end %>
