@@ -1564,7 +1564,6 @@ function orderItemAdditionClicked(el) {
         return;
     }
     
-    //alert(oiaIsAdd);
     var order = getCurrentOrder();
     
     var itemNumber = currentSelectedReceiptItemEl.data("item_number");
@@ -1573,9 +1572,15 @@ function orderItemAdditionClicked(el) {
     
     el = $(el);
     
+    //is this available
+    var available = el.data("available");
+    
+    if(!available) {
+        return;
+    }
+    
     //get the oia data
     var desc = el.data("description");
-    //alert(desc);
     
     var absCharge = 0;
     

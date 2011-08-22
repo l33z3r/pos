@@ -65,7 +65,7 @@ end
 #
 #Default Display and Modifier Grid
 
-Display.find_by_name("Default")
+@default_display = Display.find_by_name("Default")
 
 if !@default_display
   @default_display = Display.create({:name => "Default"})

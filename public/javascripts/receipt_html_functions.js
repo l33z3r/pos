@@ -239,7 +239,9 @@ function fetchCashScreenReceiptHeaderHTML() {
     
     orderNum = totalOrder.order_num;
     
-    headerHTML += "<div class='label'>Order Number:</div><div class='data'>" + orderNum + "</div>" + clearHTML;
+    if(typeof(orderNum) != 'undefined') {
+        headerHTML += "<div class='label'>Order Number:</div><div class='data'>" + orderNum + "</div>" + clearHTML;
+    }
     
     headerHTML += "</div>";
     

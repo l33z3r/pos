@@ -2,6 +2,8 @@
   <%= javascript_include_tag "modifier-grid-builder" %>
   <%= stylesheet_link_tag "modifier_grid_builder"  %>
 
+  <%= javascript_include_tag  "Colour.compressed", "ColourPicker.compressed" %>
+
   <script type="text/javascript">
     grid_x = <%=@oiag.grid_x_size%>;
     grid_y = <%=@oiag.grid_y_size%>;
@@ -104,28 +106,38 @@
       <div id="available">
         <div class="top_label">Available</div>
         <div class="input_box">
-          <input type="checkbox" id="available_input"/>
+          
         </div>
       </div>
 
       <div id="bg_color">
         <div class="top_label">BG Color</div>
         <div class="input_box">
-          <input type="text" id="bg_color_input" value="" onchange="updateSelectedGridItem()"/>
+          <input type="text" id="bg_color_input" value="" 
+                 onfocus="showBGColorPicker();" onblur="doCloseBGColorPickerPopup(); updateSelectedGridItem();" 
+                 onchange="updateSelectedGridItem()"/>
         </div>
       </div>
 
       <div id="text_color">
         <div class="top_label">Text Color</div>
         <div class="input_box">
-          <input type="text" id="text_color_input" value="" onchange="updateSelectedGridItem()"/>
+          <input type="text" id="text_color_input" value="" 
+                 onfocus="showFontColorPicker();" onblur="doCloseFontColorPickerPopup(); updateSelectedGridItem();"
+                 onchange="updateSelectedGridItem()"/>
         </div>
       </div>
 
       <div id="text_size">
         <div class="top_label">Text Size</div>
         <div class="input_box">
-          <input type="text" id="text_size_input" value="" onchange="updateSelectedGridItem()"/>
+          <select id="text_size_input" onchange="updateSelectedGridItem()">
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+          </select>
         </div>
       </div>
     </div>

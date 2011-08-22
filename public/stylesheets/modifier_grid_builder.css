@@ -77,6 +77,14 @@ div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container {
     padding: 5px;
 }
 
+div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container div.name {
+    margin-top: 3px;
+}
+
+div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container div.charge {
+    margin-top: 3px;
+}
+
 div#modifier_grid_builder div#builder div#grid div.oia.selected {
     border: 2px solid #E36C0A;
 }
@@ -109,7 +117,8 @@ div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box {
     padding: 5px;
 }
 
-div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box input {
+div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box input,
+div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box select {
     width: 90px;
     margin-top: 12px;
 }

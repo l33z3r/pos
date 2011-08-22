@@ -325,6 +325,10 @@ div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_
     background-color: #FFF;
 }
 
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.order_line {
+    cursor: auto;
+}
+
 div#landing div#login_receipt_keypad_container div#login_receipt div#receipt_message {
     margin-top: 50px;
     font-weight: bold;
@@ -1580,6 +1584,10 @@ div#menu_screen div#order_item_additions div.grid_row div.grid_item {
     cursor: pointer;
 }
 
+div#menu_screen div#order_item_additions div.grid_row div.grid_item.not_available>div {
+    text-decoration: line-through;
+}
+
 div#menu_screen div#order_item_additions div.grid_row div.grid_item div.name {
     margin: 5px 0px;
 }
@@ -2516,6 +2524,10 @@ div#total_screen div#totals_receipt div#totals_till_roll {
     height: 322px;
     display: block;
     background-color: #FFF;
+}
+
+div#total_screen div#totals_receipt div#totals_till_roll div.order_line {
+    cursor: auto;
 }
 
 div#total_screen div#receipt_keypad_container div#total_container {

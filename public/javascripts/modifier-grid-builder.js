@@ -7,10 +7,13 @@ var current_grid_y = null;
 
 $(function() {
     setGridScrollerWidth(grid_x);
+    cellSelected(1, 1);
 //toggleUtilKeyboard();
 });
 
 function cellSelected(x, y) {
+    updateSelectedGridItem();
+    
     current_grid_x = x;
     current_grid_y = y;
     
@@ -32,7 +35,7 @@ function initCellInputs(gridEL) {
     var description = gridEL.data("description");
     var addCharge = parseInt(gridEL.data("add_charge"));
     var minusCharge = parseInt(gridEL.data("minus_charge"));
-    var available = gridEL.data("available") == "true";
+    var available = gridEL.data("available");
     var bgColor = gridEL.data("bg_color");
     var textColor = gridEL.data("text_color");
     var textSize = gridEL.data("text_size");
@@ -42,7 +45,16 @@ function initCellInputs(gridEL) {
     $('#add_charge_input').val(addCharge);
     $('#minus_charge_input').val(minusCharge);
     
-    $('div#available div.iPhoneCheckContainer').click();
+    resetAvailableInput();
+   
+    $('#available_input').attr('checked', available);
+    
+    $('#available_input').iphoneStyle({
+        resizeContainer: false, 
+        resizeHandle : false, 
+        checkedLabel: 'Yes', 
+        uncheckedLabel: 'No'
+    });
     
     $('#bg_color_input').val(bgColor);
     $('#text_color_input').val(textColor);
@@ -56,7 +68,16 @@ function clearCellInputs() {
     $('#add_charge_input').val(0);
     $('#minus_charge_input').val(0);
     
-    $('div#available div.iPhoneCheckContainer').click();
+    resetAvailableInput();
+    
+    $('#available_input').attr('checked', false);
+    
+    $('#available_input').iphoneStyle({
+        resizeContainer: false, 
+        resizeHandle : false, 
+        checkedLabel: 'Yes', 
+        uncheckedLabel: 'No'
+    });
     
     $('#bg_color_input').val("");
     $('#text_color_input').val("");
@@ -114,7 +135,7 @@ function updateSelectedGridItem() {
         return;
     }
     
-    var available = true;
+    var available = $('#available_input').attr("checked");
     
     var bgColor = $('#bg_color_input').val();
     var textColor = $('#text_color_input').val();
@@ -135,4 +156,116 @@ function updateSelectedGridItem() {
             textSize : textSize
         }
     });
+}
+
+var bgColorPickerAnchor = null;
+
+function showBGColorPicker() {
+    bgColorPickerAnchor = $('#bg_color_input');
+    
+    if(bgColorPickerAnchor.HasBubblePopup()) {
+        bgColorPickerAnchor.RemoveBubblePopup();
+    }
+    
+    bgColorPickerAnchor.CreateBubblePopup();
+    
+    popupHTML = "<div style='width: 500px; height: 280px; padding: 10px;' id='bg_color_picker'></div>";
+    
+    bgColorPickerAnchor.ShowBubblePopup({
+        position: 'top',  
+        align: 'right',
+        tail	 : {
+            align: 'right'
+        },
+        innerHtml: popupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+        
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false        
+    }, false);
+    
+    bgColorPickerAnchor.FreezeBubblePopup();
+    
+    //init color picker for font color property
+    var bgColorPicker = new ColourPicker(
+        document.getElementById('bg_color_picker'),
+        '/images/jquery_colour_picker/');
+        
+    bgColorPicker.addChangeListener(bgColorPickerChanged);
+}
+
+function bgColorPickerChanged(newColour, colourPickerObj) {
+    newColorCSSVal = newColour.getCSSHexadecimalRGB();
+    $('#bg_color_input').val(newColorCSSVal);
+    
+    //doCloseBGColorPickerPopup();
+}
+
+function doCloseBGColorPickerPopup() {
+    if(bgColorPickerAnchor.HasBubblePopup()) {
+        bgColorPickerAnchor.HideBubblePopup();
+        bgColorPickerAnchor.FreezeBubblePopup();
+    }
+}
+
+var fontColorPickerAnchor = null;
+
+function showFontColorPicker() {
+    fontColorPickerAnchor = $('#text_color_input');
+    
+    if(fontColorPickerAnchor.HasBubblePopup()) {
+        fontColorPickerAnchor.RemoveBubblePopup();
+    }
+    
+    fontColorPickerAnchor.CreateBubblePopup();
+    
+    popupHTML = "<div style='width: 500px; height: 280px;' id='font_color_picker'></div>";
+    
+    fontColorPickerAnchor.ShowBubblePopup({
+        position: 'top',  
+        align: 'right',
+        tail	 : {
+            align: 'right'
+        },
+        innerHtml: popupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+        
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false        
+    }, false);
+    
+    fontColorPickerAnchor.FreezeBubblePopup();
+    
+    //init color picker for font color property
+    var bgColorPicker = new ColourPicker(
+        document.getElementById('font_color_picker'),
+        '/images/jquery_colour_picker/');
+        
+    bgColorPicker.addChangeListener(fontColorPickerChanged);
+}
+
+function fontColorPickerChanged(newColour, colourPickerObj) {
+    newColorCSSVal = newColour.getCSSHexadecimalRGB();
+    $('#text_color_input').val(newColorCSSVal);
+    
+    //doCloseFontColorPickerPopup();
+}
+
+function doCloseFontColorPickerPopup() {
+    if(fontColorPickerAnchor.HasBubblePopup()) {
+        fontColorPickerAnchor.HideBubblePopup();
+        fontColorPickerAnchor.FreezeBubblePopup();
+    }
+}
+
+function resetAvailableInput() {
+    $('div#available .input_box').html("<input id='available_input' type='checkbox' onchange='updateSelectedGridItem()'>");
 }
