@@ -391,11 +391,20 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         for(j=0; j<orderItem.oia_items.length; j++) {
             oia_is_add = orderItem.oia_items[j].is_add;
             
-            orderHTML += "<div class='modifier_price'>" + (oia_is_add ? "Add" : "No") + "</div>";
-            orderHTML += "<div class='modifier_price'>" + orderItem.oia_items[j].description + "</div>";
+            orderHTML += "<div class='oia_add'>" + (oia_is_add ? "Add" : "No") + "</div>";
+            orderHTML += "<div class='oia_name'>" + orderItem.oia_items[j].description + "</div>";
             
             if(orderItem.oia_items[j].abs_charge != 0) {
-                orderHTML += "<div class='modifier_price'>" + (!oia_is_add ? "-" : "") + currency(orderItem.oia_items[j].abs_charge) + "</div>";
+                
+                oiaPriceWithoutDiscount = orderItem.oia_items[j].abs_charge * orderItem.amount;
+        
+                if(haveDiscount && oia_is_add) {
+                    oiaPrice = oiaPriceWithoutDiscount - ((oiaPriceWithoutDiscount * orderItem.discount_percent)/100);
+                } else {
+                    oiaPrice = oiaPriceWithoutDiscount;
+                }
+        
+                orderHTML += "<div class='oia_price'>" + (!oia_is_add ? "-" : "") + currency(oiaPrice, false) + "</div>";
             }
             
             orderHTML += clearHTML;
@@ -407,6 +416,23 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     //add the modifiers price to the preDiscountPrice
     if(orderItem.modifier) {
         preDiscountPrice += orderItem.modifier.price * orderItem.amount;
+    }
+    
+    //add the oias price to the preDiscountPrice
+    if(orderItem.oia_items) {
+        var oiaPriceTotal = 0;
+        
+        for(j=0; j<orderItem.oia_items.length; j++) {
+            var nextOia = orderItem.oia_items[j];
+            
+            if(nextOia.is_add) {
+                oiaPriceTotal += orderItem.oia_items[j].abs_charge;
+            } else {
+                oiaPriceTotal -= orderItem.oia_items[j].abs_charge;
+            }
+        }
+        
+        preDiscountPrice += oiaPriceTotal * orderItem.amount;
     }
     
     if(haveDiscount) {
@@ -1569,8 +1595,15 @@ function orderItemAdditionClicked(el) {
         orderItem.oia_items = new Array();
     }
     
-    orderItem.oia_items.push(oia_item);
+    //update the total
+    if(oiaIsAdd) {
+        orderItem.total_price = orderItem.total_price + (orderItem.amount * absCharge);
+    } else {
+        orderItem.total_price = orderItem.total_price - (orderItem.amount * absCharge);
+    }
     
+    orderItem.oia_items.push(oia_item);
+   
     //store the modified order
     if(selectedTable != 0) {
         storeTableOrderInStorage(current_user_id, selectedTable, order);
@@ -1579,6 +1612,7 @@ function orderItemAdditionClicked(el) {
     }
         
     //redraw the receipt
+    calculateOrderTotal(order);
     loadReceipt(order);
     
     currentSelectedReceiptItemEl = null;
@@ -1588,12 +1622,30 @@ function orderItemAdditionAddSelected() {
     clearSelectedOIATabs();
     $('#oia_tab_add').addClass("selected");
     oiaIsAdd = true;
+    
+    $('#order_item_additions .grid_item:not(.empty)').each(function() {
+        addCharge = $(this).data("add_charge");
+        if(addCharge != 0) {
+            $(this).find(".charge").html(currency(addCharge));
+        }else {
+            $(this).find(".charge").html("");
+        }
+    });
 }
 
 function orderItemAdditionNoSelected() {
     clearSelectedOIATabs();
     $('#oia_tab_no').addClass("selected");
     oiaIsAdd = false;
+    
+    $('#order_item_additions .grid_item:not(.empty)').each(function() {
+        noCharge = $(this).data("minus_charge");
+        if(noCharge != 0) {
+            $(this).find(".charge").html(currency(noCharge));
+        } else {
+            $(this).find(".charge").html("");
+        }
+    });
 }
 
 function clearSelectedOIATabs() {

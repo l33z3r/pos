@@ -1580,6 +1580,10 @@ div#menu_screen div#order_item_additions div.grid_row div.grid_item {
     cursor: pointer;
 }
 
+div#menu_screen div#order_item_additions div.grid_row div.grid_item div.name {
+    margin: 5px 0px;
+}
+
 div#menu_screen div#order_item_additions div.grid_row div.grid_item.empty {
     cursor: auto;
 }
@@ -2011,6 +2015,25 @@ div.receipt div.till_roll div.modifier_name {
 }
 
 div.receipt div.till_roll div.modifier_price {
+    float: left;
+    width: 40px;
+    text-align: right;
+}
+
+div.receipt div.till_roll div.oia_add {
+    float: left;
+    width: 40px;
+    text-align: right;
+}
+
+div.receipt div.till_roll div.oia_name {
+    float: left;
+    width: 150px;
+    margin-left: 10px;
+    text-align: left;
+}
+
+div.receipt div.till_roll div.oia_price {
     float: left;
     width: 40px;
     text-align: right;
