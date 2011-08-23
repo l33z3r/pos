@@ -327,6 +327,8 @@ function toggleModifyOrderItemScreen() {
     if(currentMenuSubscreenIsMenu()) {
         showModifyOrderItemScreen();
     } else {
+        resetKeyboard();
+        $('#sales_button_' + addNoteButtonID).removeClass("selected");
         switchToMenuItemsSubscreen();
     }
 }
@@ -341,6 +343,19 @@ function showAddNoteToOrderItemScreen() {
     currentSelectedReceiptItemEl = getSelectedOrLastReceiptItem();
     
     if(currentSelectedReceiptItemEl) {
+        if(currentScreenIsMenu()) {
+            if(currentMenuSubscreenIsModifyOrderItem()) {
+                doSaveNote();
+                $('#sales_button_' + addNoteButtonID).removeClass("selected");
+                resetKeyboard();
+                
+                switchToMenuItemsSubscreen();
+            } else {
+                hideAllMenuSubScreens();
+                $('#order_item_additions').show();
+                doOpenOIANoteScreen();
+            }
+        }
         
-}
+    }
 }

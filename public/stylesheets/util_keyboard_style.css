@@ -1,7 +1,7 @@
 #util_keyboard_container {
     display: none;
     width: 100%;
-    height: 260px;
+    height: 276px;
     background: transparent;
     position: fixed;
     bottom: 0px;
@@ -10,7 +10,7 @@
 
 #util_keyboard_inner_container {
     width: 688px;
-    height: 240px;
+    height: 260px;
     padding: 10px;
     background: #fff;
     margin: 0px auto;

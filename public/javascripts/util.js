@@ -686,7 +686,15 @@ function doCoinCounterTotal() {
     utilCounterTotalCalculated(sum);
 }
 
+var toggleKeyboardEnable= true;
+
 function toggleUtilKeyboard() {
+    
+    if(!toggleKeyboardEnable) {
+        setStatusMessage("Toggling Keyboard disabled for this screen!");
+        return;
+    }
+    
     if($('#util_keyboard_container').is(":visible")) {
         $('#util_keyboard_container').slideUp(200);
     } else {
@@ -967,16 +975,21 @@ function switchToMenuItemsSubscreen() {
 }
 
 function showMenuItemsSubscreen() {
+    toggleKeyboardEnable = true;
     hideAllMenuSubScreens();
     $('#menu_container').show();
 }
 
 function switchToModifyOrderItemSubscreen() {
     if(currentScreenIsMenu()) {
+        $('#add_note').hide();
+        resetKeyboard();
         hideAllMenuSubScreens();
         $('#sales_button_' + modifyOrderItemButtonID).addClass("selected");
         $('#oia_tab_add').click();
         $('#order_item_additions').show();
+        $('#order_item_additions #add_note').hide();
+        $('#order_item_additions #oia_container').show();
     }
 }
 
@@ -996,4 +1009,39 @@ function initModifierGrid() {
     var newHeight = roundNumberDown(panelHeight/modifierGridYSize, 0) - 4;
     
     $('div#order_item_additions .grid_row .grid_item').css("height", newHeight + "px");
+}
+
+function initNoteScreenKeyboard() {
+    toggleKeyboardEnable = false;
+    
+    var keyboardPlaceHolderEl = $('#add_note #keyboard')
+    
+    var pos = keyboardPlaceHolderEl.offset();
+    
+    //show the menu directly over the placeholder
+    $("#util_keyboard_container").css( {
+        "position" : "absolute",
+        "width" : "688px",
+        "left": (pos.left) + "px", 
+        "top":pos.top + "px"
+    } );
+    
+    $('#close_keyboard_link').hide();
+
+    $("#util_keyboard_container").show();
+}
+
+function resetKeyboard() {
+    toggleKeyboardEnable = true;
+    
+    $("#util_keyboard_container").css( {
+        "position" : "fixed",
+        "width" : "100%",
+        "top" : "inherit",
+        "bottom" : "0px",
+        "left" : "0px"
+    } );
+    
+    $('#close_keyboard_link').show();
+    $("#util_keyboard_container").hide();
 }

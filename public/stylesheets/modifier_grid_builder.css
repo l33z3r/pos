@@ -54,7 +54,7 @@ div#modifier_grid_builder div#builder {
 }
 
 div#modifier_grid_builder div#builder div#grid_scroller {
-    height: 350px;
+    height: 310px;
     overflow: scroll;
     border: 1px solid #222;
 } 
@@ -125,4 +125,11 @@ div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box select 
 
 div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box div.iPhoneCheckContainer {
     margin-top: 10px;
+}
+
+div#modifier_grid_builder div#keyboard {
+    height: 270px;
+    width: 688px;
+    margin-left: 100px;
+    margin-top: 20px;
 }

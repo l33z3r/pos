@@ -3,7 +3,7 @@ var lastTap = null;
 function initTouch() {
     //replace all click events with touch events
     if(!inMobileContext()) {
-        new NoClickDelay(document.getElementById('wrapper'));
+        new NoClickDelay(document.body);
     }
     
     //jquery touch ui plugin init

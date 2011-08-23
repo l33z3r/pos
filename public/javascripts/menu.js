@@ -391,8 +391,11 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         for(j=0; j<orderItem.oia_items.length; j++) {
             oia_is_add = orderItem.oia_items[j].is_add;
             
-            orderHTML += "<div class='oia_add'>" + (oia_is_add ? "Add" : "No") + "</div>";
-            orderHTML += "<div class='oia_name'>" + orderItem.oia_items[j].description + "</div>";
+            if(!orderItem.oia_items[j].is_note) {
+                orderHTML += "<div class='oia_add'>" + (oia_is_add ? "Add" : "No") + "</div>";
+            }
+            
+            orderHTML += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>" + orderItem.oia_items[j].description + "</div>";
             
             if(orderItem.oia_items[j].abs_charge != 0) {
                 
@@ -1218,6 +1221,12 @@ function showDiscountPopup(receiptItem) {
     
     //register the click handler to hide the popup when outside clicked
     registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
+    
+    //TODO: manually init the radio button iphone style
+    
+    
+    
+    
 }
 
 function showDiscountPopupFromEditDialog() {
@@ -1590,10 +1599,15 @@ function orderItemAdditionClicked(el) {
         absCharge = el.data("minus_charge");
     }
     
+    addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, false);
+}
+
+function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) {
     oia_item = {
         'description' : desc,
         'abs_charge' : absCharge,
-        'is_add' : oiaIsAdd
+        'is_add' : oiaIsAdd, 
+        'is_note' : isNote
     }
     
     if(typeof(orderItem.oia_items) == 'undefined') {
@@ -1624,6 +1638,10 @@ function orderItemAdditionClicked(el) {
 }
 
 function orderItemAdditionAddSelected() {
+    $('#add_note').hide();
+    resetKeyboard();
+    $('#oia_container').show();
+    
     clearSelectedOIATabs();
     $('#oia_tab_add').addClass("selected");
     oiaIsAdd = true;
@@ -1639,6 +1657,10 @@ function orderItemAdditionAddSelected() {
 }
 
 function orderItemAdditionNoSelected() {
+    $('#add_note').hide();
+    resetKeyboard();
+    $('#oia_container').show();
+    
     clearSelectedOIATabs();
     $('#oia_tab_no').addClass("selected");
     oiaIsAdd = false;
@@ -1660,4 +1682,69 @@ function clearSelectedOIATabs() {
 function doOpenOIANoteScreen() {
     clearSelectedOIATabs();
     $('#oia_tab_note').addClass("selected");
+    
+    $('#sales_button_' + addNoteButtonID).addClass("selected");
+    
+    $('#oia_container').hide();
+    $('#add_note').show();
+    $('#note_input').focus();
+    noteChargeIsPlus = true;
+    
+    initNoteScreenKeyboard();
+}
+
+function doSaveNote() {
+    var charge = $('#charge_input').val();
+    
+    if(isNaN(charge)) {
+        setStatusMessage("Please enter a number for charge!");
+        return;
+    }
+    
+    var noteInput = $('#note_input').val();
+    
+    if(noteInput.length == 0) {
+        setStatusMessage("Please enter some text for this note!");
+        return;
+    }
+    
+    currentSelectedReceiptItemEl = getLastReceiptItem();
+    
+    if(!currentSelectedReceiptItemEl) {
+        setStatusMessage("There are no receipt items!");
+        return;
+    }
+    
+    var order = getCurrentOrder();
+    
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    
+    var orderItem = order.items[itemNumber-1];
+    
+    //get the oia data
+    var desc = noteInput;
+    var absCharge = charge;
+    
+    addOIAToOrderItem(order, orderItem, desc, absCharge, noteChargeIsPlus, true);
+    
+    clearNoteInputs();
+    showAddNoteToOrderItemScreen();
+}
+
+function doCancelNote() {
+    clearNoteInputs();
+    toggleModifyOrderItemScreen();
+}
+
+function clearNoteInputs() {
+    $('#charge_input').val("0");
+    $('#note_input').val("");
+}
+
+var noteChargeIsPlus = true;
+
+function toggelNoteChargePlusMins() {
+    noteChargeIsPlus = !noteChargeIsPlus;
+    $('#plus_minus_text_container').html((noteChargeIsPlus ? "+" : "-"));
+    
 }

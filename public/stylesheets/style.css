@@ -1388,7 +1388,7 @@ div#menu_screen div#menu_pages_container div#pages {
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container {
-    height: 485px;
+    height: 480px;
     padding-left: 2px;
     padding-top: 4px;
     background-color: #E0E0E0;
@@ -1533,8 +1533,16 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 
 div#menu_screen div#order_item_additions {
     display: none;
-    height: 545px;
+    height: 547px;
     background-color: #B4B4B4;
+}
+
+div#menu_screen div#order_item_additions div#oia_container {
+    background-color: #E0E0E0;
+}
+
+div#menu_screen div#order_item_additions div#add_note {
+    background-color: #E0E0E0;
 }
 
 div#menu_screen div#order_item_additions div.tabs {
@@ -1545,6 +1553,7 @@ div#menu_screen div#order_item_additions div.tabs {
 
 div#menu_screen div#order_item_additions div.tabs div.tab {
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
     border: 1px solid #AAAAAA;
     border-top-left-radius: 7px;
     border-top-right-radius: 7px;
@@ -1559,6 +1568,7 @@ div#menu_screen div#order_item_additions div.tabs div.tab {
 
 div#menu_screen div#order_item_additions div.tabs div.tab.selected {
     background: -moz-linear-gradient(#F8F8F8, #E0E0E0) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F8F8F8), to(#E0E0E0));
     border-bottom-width: 0;
 }
 
@@ -1594,6 +1604,108 @@ div#menu_screen div#order_item_additions div.grid_row div.grid_item div.name {
 
 div#menu_screen div#order_item_additions div.grid_row div.grid_item.empty {
     cursor: auto;
+}
+
+div#menu_screen div#add_note div#keyboard {
+    height: 300px;
+    width: 700px;
+    margin-left: 15px;
+    margin-top: 10px;
+}
+
+div#menu_screen div#add_note div#controls {
+    height: 150px;
+    margin-left: 80px;
+    margin-top: 30px;
+    width: 240px;
+}
+
+div#menu_screen div#add_note div#controls div.action_buttons {
+    border-spacing: 12px;
+    margin-left: 25px;
+    margin-top: 15px;
+}
+
+div#menu_screen div#add_note div#controls div.action_buttons div.button {
+    width: 60px;
+    height: 60px;
+    margin: 10px;
+}
+
+div#menu_screen div#add_note div#controls div#plus_minus {
+    padding-top: 4px;
+    margin-right: 20px;
+    width: 40px;
+    height: 36px;
+    text-align: center;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+    cursor: pointer;
+    float: left;
+}
+
+div#menu_screen div#add_note div#controls div#charge_input_container {
+    margin-top: 6px;
+    width: 80px;
+    float: left;
+}
+
+div#menu_screen div#add_note div#controls div#charge_input_container div#plus_minus_text_container { 
+    font-weight: bold;
+    font-size: 15px;
+    padding-top: 7px;
+    padding-right: 13px;
+    float: left;
+    width: 10px;
+}
+
+div#menu_screen div#add_note div#controls div#charge_input_container input {
+    width: 38px;
+    height: 24px;
+    float: left;
+}
+
+div#menu_screen div#add_note div#controls div#cancel_button {
+    margin-left: 20px;
+    padding-top: 12px;
+    font-weight: bold;
+    font-size: 16px;
+    width: 40px;
+    height: 28px;
+    text-align: center;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+    cursor: pointer;
+    float: left;
+}
+
+div#menu_screen div#note_input_container {
+    width: 370px;
+    height: 120px;
+    float: left;
+}
+
+div#menu_screen div#note_input_container textarea {
+    margin: 5px;
+    margin-left: 10px;
+    width: 370px;
+    height: 180px;
+    float: left;
+}
+
+div#menu_screen div#controls {
+    float: left;
+    width: 350px;
+    padding: 5px;
+    height: 100px;
 }
 
 /* Main Menu Screen */
@@ -2039,6 +2151,11 @@ div.receipt div.till_roll div.oia_name {
     width: 150px;
     margin-left: 10px;
     text-align: left;
+}
+
+div.receipt div.till_roll div.oia_name.note {
+    font-style: italic;
+    width: 190px;
 }
 
 div.receipt div.till_roll div.oia_price {
