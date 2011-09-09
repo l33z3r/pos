@@ -53,7 +53,7 @@ div#display_builder div#menu_pages_container div#pages {
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container {
-    height: 360px;
+    height: 420px;
     padding-left: 2px;
 }
 
@@ -127,12 +127,12 @@ div#display_builder div#menu_pages_container div#builder_menu_items_container di
     float: left;
     margin: 1px;
     border: 1px solid #CCC;
-    height: 123px;
-    width: 112px;
+    height: 80px;
+    width: 80px;
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_pic {
-    height: 45px;
+    height: 30px;
     margin-top: -1px;
 }
 
@@ -181,7 +181,7 @@ div#display_builder div#menu_pages_container div#builder_menu_items_container di
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_name {
-    font-size: 13px;
+    font-size: 12px;
     text-decoration: none;
     background-color: #FFF;
     padding: 4px;
@@ -195,14 +195,14 @@ div#display_builder div#menu_pages_container div#builder_menu_items_container di
     margin: 1px;
     border: 1px solid #CCC;
     cursor: pointer;
-    width: 112px;
-    height: 123px;
+    width: 80px;
+    height: 80px;
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.new_item div.item_name {
     font-size: 13px;
     font-weight: bold;
-    margin-top: 42px;
+    margin-top: 20px;
     background-color: #FFF;
     padding: 4px;
     width: -moz-fit-content;

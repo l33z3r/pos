@@ -88,10 +88,14 @@ module ApplicationHelper
         return item.name
       end
     else
-      #show all 3 lines of text
-      item_name_html = content_tag :div, :class => "line1" do item.product.button_text_line_1 end
-      item_name_html += content_tag :div, :class => "line2" do item.product.button_text_line_2 end
-      item_name_html += content_tag :div, :class => "line3" do item.product.button_text_line_3 end
+      if item.product.button_text_line_1.blank?
+        return item.name
+      else
+        #show all 3 lines of text
+        item_name_html = content_tag :div, :class => "line1" do item.product.button_text_line_1 end
+        item_name_html += content_tag :div, :class => "line2" do item.product.button_text_line_2 end
+        item_name_html += content_tag :div, :class => "line3" do item.product.button_text_line_3 end
+      end
     end
   end
   
