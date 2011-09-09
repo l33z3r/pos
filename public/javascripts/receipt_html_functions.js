@@ -285,6 +285,10 @@ function print(content) {
     printFrame.print();
 }
 
+function printItemsFromOrder(items) {
+    
+}
+
 function clearReceipt() {
     $('#till_roll').html('');
     $('#total_value').html(currency(0));

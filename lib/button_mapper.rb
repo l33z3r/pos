@@ -111,7 +111,7 @@ class ButtonMapper
     when FLOAT_BUTTON
       @retval = "initFloatScreen();"
     when NO_SALE_BUTTON
-      @retval = wrap_with_menu_screen_function_check "alert('no sale button clicked');"
+      @retval = wrap_with_menu_screen_function_check "openCashDrawer();"
     when REFUND_BUTTON
       @retval = "alert('refund button clicked');"
     when REMOVE_ITEM_BUTTON

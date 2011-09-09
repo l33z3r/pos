@@ -8,17 +8,25 @@ class Admin::ProductsController < Admin::AdminController
   end
 
   def new
+    @hide_admin_header = true
     @product = Product.new
   end
 
   def edit
+    @hide_admin_header = true
     @product = Product.find(params[:id])
   end
 
   def create
     @product = Product.new(params[:product])
 
+    @new_menu_1_id = params[:product][:menu_page_1_id]
+    @old_menu_1_id = @product.menu_page_1 ? @product.menu_page_1.id : nil
+    @new_menu_2_id = params[:product][:menu_page_2_id]
+    @old_menu_2_id = @product.menu_page_2 ? @product.menu_page_2.id : nil
+    
     if @product.save
+      update_menus_for_product @product, @new_menu_1_id, @old_menu_1_id, @new_menu_2_id, @old_menu_2_id
       redirect_to(admin_products_url, :notice => 'Product was successfully created.')
     else
       render :action => "new"
@@ -33,7 +41,15 @@ class Admin::ProductsController < Admin::AdminController
       @product.product_image.clear #Will queue the attachment to be deleted
     end
     
+    @new_menu_1_id = params[:product][:menu_page_1_id]
+    @old_menu_1_id = @product.menu_page_1 ? @product.menu_page_1.id : nil
+    @new_menu_2_id = params[:product][:menu_page_2_id]
+    @old_menu_2_id = @product.menu_page_2 ? @product.menu_page_2.id : nil
+    
     if @product.update_attributes(params[:product])
+      
+      update_menus_for_product @product, @new_menu_1_id, @old_menu_1_id, @new_menu_2_id, @old_menu_2_id
+      
       #we may have came to this page directly from the menu builder screen
       #we want to store the fact, so that when we update the product, we go back to that screen 
       if !params[:back_builder_screen_id].blank?
@@ -43,6 +59,7 @@ class Admin::ProductsController < Admin::AdminController
         redirect_to(admin_products_url, :notice => 'Product was successfully updated.')
       end
     else
+      @hide_admin_header = true
       render :action => "edit"
     end
   end
@@ -60,5 +77,54 @@ class Admin::ProductsController < Admin::AdminController
     @product.destroy
 
     redirect_to(admin_products_url, :notice => 'Product was successfully deleted.')
+  end
+  
+  private 
+  
+  def update_menus_for_product product, new_menu_1_id, old_menu_1_id, new_menu_2_id, old_menu_2_id
+    update_menu_for_product product, new_menu_1_id, old_menu_1_id
+    update_menu_for_product product, new_menu_2_id, old_menu_2_id
+  end
+  
+  def update_menu_for_product product, new_menu_id, old_menu_id
+    
+    return if new_menu_id == old_menu_id
+    
+    #remove it from old_menu_id
+    if !old_menu_id.blank?
+      @old_menu_page = MenuPage.find(old_menu_id)
+      
+      @old_menu_page.menu_items.each do |mi|
+        next if !mi.product
+        
+        if mi.product.id == product.id
+          MenuItem.delete_menu_item mi
+          break
+        end
+      end
+    end
+    
+    #add it to new_menu_id if it's not already there
+    if !new_menu_id.blank?    
+      @new_menu_page = MenuPage.find(new_menu_id)
+      
+      @new_menu_page.menu_items.each do |mi|
+        next if !mi.product
+        
+        if mi.product.id == product.id
+          return
+        end
+      end
+    
+      if(!@new_menu_page.menu_items.last) 
+        @next_order_num = 1
+      else
+        @next_order_num = @new_menu_page.menu_items.last.order_num + 1
+      end
+      
+      @menu_item = MenuItem.create({:product_id => product.id, 
+          :menu_page_id => new_menu_id, :order_num => @next_order_num})
+    end
+    
   end
 end

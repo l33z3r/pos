@@ -1,6 +1,13 @@
-<% 
-@nav_title = "Products" 
-%>
+<% @nav_title = "Products" %>
+
+<% content_for :admin_subnav_links_left do %>
+  <div class="button" onclick="goTo('<%= new_admin_product_path %>');">
+    <div class="icon">
+      <%= image_tag "/images/button_logos/create_product_button.png" %>
+    </div>
+    <div class="button_name">Create Product</div>
+  </div>
+<% end %>
 
 <div id="admin_product_list">
 
@@ -10,10 +17,12 @@
       <div class="links">
         <%= will_paginate @products %>
       </div>
-      <div class="info">
+      <!--div class="info">
         <%= page_entries_info @posts %>
-      </div>
+      </div-->
     </div>
+
+    <div class="clear_top_margin_20">&nbsp;</div>
 
     <table id="product_list" class="admin_table">
       <thead>
@@ -23,10 +32,6 @@
           <th width="180">Brand</th>
           <th width="130">Category</th>
           <th width="60">Price</th>
-          <th width="40">Size</th>
-          <th width="40">Unit</th>
-          <th width="70">Items per unit</th>
-          <th width="80"><%=@tax_label%> Rate</th>
           <th width="50">Delete</th>
         </tr>
       </thead>
@@ -35,20 +40,18 @@
         <% @products.each do |product| %>
           <tr>
             <td class="product_image">
-              <%= link_to product_image_thumb(product, true), edit_admin_product_path(product) %>
+              <div class="product_image_container">
+                <%= link_to product_image_thumb(product, true), edit_admin_product_path(product) %>
+              </div>
             </td>
             <td><%= link_to product.name, edit_admin_product_path(product) %></td>
             <td><%= product.brand %></td>
             <td><%= link_to product.category.name, admin_category_path(product.category) if product.category %></td>
             <td>
-              <div id="product_price_<%=product.id%>" ondblclick="updateProductPrice(<%=product.id%>, '<%=number_with_precision product.price, :precision => 2 %>')">
+              <div class="product_price" id="product_price_<%=product.id%>" ondblclick="updateProductPrice(<%=product.id%>, '<%=number_with_precision product.price, :precision => 2 %>')">
                 <%= print_money product.price %>
               </div>
             </td>
-            <td><%= product.size %></td>
-            <td><%= product.unit %></td>
-            <td><%= product.items_per_unit %></td>
-            <td><%= number_to_percentage(product.sales_tax_rate, :precision => 1) %></td>
             <td><%= link_to "Delete", admin_product_path(product), :method => :delete, :confirm => "Are You Sure?" %></td>
           </tr>
         <% end %>
@@ -61,13 +64,9 @@
       <div class="links">
         <%= will_paginate @products %>
       </div>
-      <div class="info">
+      <!--div class="info">
         <%= page_entries_info @posts %>
-      </div>
-    </div>
-
-    <div id="actions">
-      <%= button_to 'New Product', new_admin_product_path, :method => :get %>
+      </div-->
     </div>
 
   </section>

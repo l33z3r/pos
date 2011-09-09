@@ -8,9 +8,7 @@
   <% end %>
 <% end %>
 
-<% 
-@nav_title = "System Settings" 
-%>
+<% @nav_title = "System Settings" %>
 
 <% content_for :admin_subnav_links_right do %>
   <%= render :partial => "/partials/ok_cancel_buttons" %>
@@ -64,7 +62,7 @@
 
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::MENU_SCREEN %>" 
-                             <%= @gs.parsed_value == GlobalSetting::MENU_SCREEN ? "checked" : "" %>/>Menu Screen
+                             <%= @gs.parsed_value == GlobalSetting::MENU_SCREEN ? "checked" : "" %>/>Sales Screen
                       <div class="clear">&nbsp;</div>
 
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 

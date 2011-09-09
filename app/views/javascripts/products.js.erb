@@ -1,7 +1,11 @@
 var products = new Array();
 
 <% Product.all.each do |p|%>
-  products[<%= p.id %>] = {'id':'<%= p.id %>', 'name':'<%= p.name %>', 'price':<%= p.price %>, 'tax_rate':<%=p.sales_tax_rate%>};
+  products[<%= p.id %>] = {
+  'id':'<%= p.id %>', 'name':'<%= p.name %>', 
+  'price':<%= p.price %>, 'tax_rate':<%=p.sales_tax_rate%>,
+  'printers' : "<%= p.printers %>"
+  };
   <% if p.modifier_category_id %>
     products[<%= p.id %>]['modifier_category_id'] = <%=p.modifier_category_id%>;
   <% end %>

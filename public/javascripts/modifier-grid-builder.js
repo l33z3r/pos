@@ -9,7 +9,9 @@ $(function() {
     setGridScrollerWidth(grid_x);
     cellSelected(1, 1);
 
-    initKeyboard();
+    var keyboardPlaceHolderEl = $('#modifier_grid_builder #keyboard')
+    
+    placeUtilKeyboard(keyboardPlaceHolderEl);
 });
 
 function cellSelected(x, y) {
@@ -256,8 +258,6 @@ function showFontColorPicker() {
 function fontColorPickerChanged(newColour, colourPickerObj) {
     newColorCSSVal = newColour.getCSSHexadecimalRGB();
     $('#text_color_input').val(newColorCSSVal);
-    
-//doCloseFontColorPickerPopup();
 }
 
 function doCloseFontColorPickerPopup() {
@@ -269,24 +269,4 @@ function doCloseFontColorPickerPopup() {
 
 function resetAvailableInput() {
     $('div#available .input_box').html("<input id='available_input' type='checkbox' onchange='updateSelectedGridItem()'>");
-}
-
-function initKeyboard() {
-    toggleKeyboardEnable = false;
-    
-    var keyboardPlaceHolderEl = $('#modifier_grid_builder #keyboard')
-    
-    var pos = keyboardPlaceHolderEl.offset();
-    
-    //show the menu directly over the placeholder
-    $("#util_keyboard_container").css( {
-        "position" : "absolute",
-        "width" : "688px",
-        "left": (pos.left) + "px", 
-        "top":pos.top + "px"
-    } );
-    
-    $('#close_keyboard_link').hide();
-
-    $("#util_keyboard_container").show();
 }

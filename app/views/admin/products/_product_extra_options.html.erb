@@ -1,0 +1,172 @@
+
+<div class="extra_options">
+  <div id="extra_options_tabs" class="text_only_tabs">
+    <div class="text_only_tab" id="extra_options_tab_options" onclick="extraOptionsOptionsSelected();">
+      <div class="label">Options</div>
+    </div>
+    <div class="text_only_tab" id="extra_options_tab_appearance" onclick="extraOptionsAppearanceSelected();">
+      <div class="label">Appearance</div>
+    </div>
+    <div class="text_only_tab" id="extra_options_tab_stock" onclick="extraOptionsStockSelected();">
+      <div class="label">Stock</div>
+    </div>
+    <div class="clear">&nbsp;</div>
+  </div>
+
+  <div id="options_tab_content" class="tab_content" style="display: none;">
+    <div class="field">
+      <div class="label">Service</div>
+      <%= f.check_box :is_service %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Price Prompt</div>
+      <%= f.check_box :show_price_prompt %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Qty Prompt</div>
+      <%= f.check_box :show_quantity_prompt %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Serial No. Prompt</div>
+      <%= f.check_box :show_serial_num_prompt %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Add Note Prompt</div>
+      <%= f.check_box :show_add_note_prompt %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Sell If Out Of Stock</div>
+      <%= f.check_box :sell_if_out_of_stock %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Show On Web</div>
+      <%= f.check_box :show_on_web %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Notify Stock Manager</div>
+      <%= f.check_box :notify_stock_manager %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Use Weigh Scales</div>
+      <%= f.check_box :use_weigh_scales %>
+      <div class="clear">&nbsp;</div>
+    </div>
+  </div>
+
+  <div id="appearance_tab_content" class="tab_content" style="display: none;">
+    <div class="label">Preview</div>
+    <div class="product_image_preview">
+      <%= product_image_thumb(@product, true) %>
+    </div>
+    <div class="field">
+      <div class="label">Line 1</div>
+      <%= f.text_field :button_text_line_1 %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Line 2</div>
+      <%= f.text_field :button_text_line_2 %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Line 3</div>
+      <%= f.text_field :button_text_line_3 %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Background Color</div>
+      <%= f.text_field :button_bg_color, {
+        :id => "button_bg_color_input", 
+        :onfocus => "productBuidlerShowBgColorPicker()", 
+        :onblur => "productBuidlerHideBgColorPicker()"} %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Text Color</div>
+      <%= f.text_field :button_text_color, {
+        :id => "button_text_color_input", 
+        :onfocus => "productBuidlerShowTextColorPicker()", 
+        :onblur => "productBuidlerHideTextColorPicker()"} %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Vertical Align</div>
+      <%= f.select :button_vertical_align, %w[Top Middle Bottom] %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Image</div>
+      <div id="product_image_input_container">
+        <%= f.file_field :product_image %>
+        <div class="fakefile">
+          <input/>
+        </div>
+        <!-- 
+        <% if @product.has_product_image? %>
+              <p class="label">Select to Delete Image:</p>
+          <%= check_box_tag :delete_product_image, false %>
+        <% end %>
+        -->
+      </div>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Show Image</div>
+      <%= f.check_box :show_button_image %>
+      <div class="clear">&nbsp;</div>
+    </div>
+  </div>
+
+  <div id="stock_tab_content" class="tab_content" style="display: none;">
+    <div class="field">
+      <div class="label">Minimum Qty</div>
+      <%= f.text_field :minimum_quantity %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Order Qty</div>
+      <%= f.text_field :order_quantity %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Supplier 1</div>
+      <%= f.collection_select :supplier_1_id, Category.find(:all), :id, :name, 
+        :prompt => "Select a Category", :include_blank => "None" %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Supplier 1 Cost</div>
+      <%= f.text_field :supplier_1_cost %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Supplier 1 Code No.</div>
+      <%= f.text_field :supplier_1_code_num %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Supplier 2</div>
+      <%= f.collection_select :supplier_2_id, Category.find(:all), :id, :name, 
+        :prompt => "Select a Category", :include_blank => "None" %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Supplier 2 Cost</div>
+      <%= f.text_field :supplier_2_cost %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Supplier 2 Code No.</div>
+      <%= f.text_field :supplier_2_code_num %>
+      <div class="clear">&nbsp;</div>
+    </div>
+  </div>
+</div>

@@ -13,9 +13,13 @@ div#display_builder {
     margin: auto;
 }
 
+div#display_builder div#builder {
+    height: 600px;
+}
+
 div#display_builder div#header {
-  margin: 20px auto;
-  width: -moz-fit-content;
+    margin: 0px auto 10px auto;
+    width: -moz-fit-content;
 }
 
 div#display_builder div#header div#display_name {
@@ -37,7 +41,8 @@ div#display_builder div#header a#delete_link {
 }
 
 div#display_builder div#menu_pages_container {
-    width: 728px;
+    position: relative;
+    width: 680px;
     float: right;
     border: 1px solid #CCC;
 }
@@ -59,7 +64,6 @@ div#display_builder div#menu_pages_container div#pages div.page {
     cursor: pointer;
     height: 100px;
     display: table-cell;
-    height: 85px;
     width: 112px;
     vertical-align: middle;
 }
@@ -128,7 +132,7 @@ div#display_builder div#menu_pages_container div#builder_menu_items_container di
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_pic {
-    height: 78px;
+    height: 45px;
     margin-top: -1px;
 }
 
@@ -212,7 +216,7 @@ div#display_builder {
 }
 
 div#display_builder div#tree_container {
-    width: 265px;
+    width: 250px;
     float: left;
 }
 

@@ -1,7 +1,7 @@
 <div id="menu_container">
   <div id="pages">
     <% @display.menu_pages.each do |page| %>
-      <div class="page"  id="menu_page_<%=page.id%>"
+      <div class="page" id="menu_page_<%=page.id%>"
            onclick="doMenuPageSelect(<%= page.page_num %>, <%= page.id %>);">
         <div class="name">
           <%= page.name %>
@@ -11,13 +11,15 @@
       <div style="display: none;" id="menu_items_<%= page.page_num %>">
         <div id="items">
           <% page.menu_items.each do |item| %>
-            <% if item.product %>
-              <div class="item" onclick="doSelectMenuItem(<%= item.product_id %>, this)">
+            <% if item.product and item.product.is_active %>
+              <div class="item" data-button_width="<%= item.product.menu_button_width %>" 
+                   onclick="doSelectMenuItem(<%= item.product_id %>, this)"
+                   style="<%= item.product.button_bg_color.blank? ? "" : "background-color: #{item.product.button_bg_color}" %>">
                 <div class="item_pic">
-                  <%= product_image_thumb item.product %>
+                  <%= product_image_thumb item.product if item.product.show_button_image %>
                 </div>
-                <div class="item_name">
-                  <%= item.name %>
+                <div class="item_name" style="<%= item.product.button_text_color.blank? ? "" : "color: #{item.product.button_text_color}" %>">
+                  <%= menu_item_name item %>
                 </div>
               </div>
             <% end %>

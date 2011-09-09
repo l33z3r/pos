@@ -116,15 +116,7 @@ class Admin::DisplaysController < Admin::AdminController
   def delete_menu_item
     @menu_item = MenuItem.find(params[:menu_item_id])
 
-    #shift the order number down on all following menu items
-    @menu_items_to_shift = @menu_item.menu_page.menu_items.where("order_num > #{@menu_item.order_num}")
-    
-    @menu_items_to_shift.each do |mi|
-      mi.order_num -=1
-      mi.save
-    end
-
-    @menu_item.destroy
+    MenuItem.delete_menu_item @menu_item
 
     render :json => {:success => true}.to_json
   end

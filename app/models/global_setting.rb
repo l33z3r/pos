@@ -90,7 +90,7 @@ class GlobalSetting < ActiveRecord::Base
         @gs = nil
       else
         #the key will be the key for terminal id followed by the terminal fingerprint
-        @gs = find_or_create_by_key(:key => "#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :value => "New Terminal ##{Time.now.to_i.to_s[-4,4]}", :label_text => LABEL_MAP[TERMINAL_ID])
+        @gs = find_or_create_by_key(:key => "#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :value => "NT##{Time.now.to_i.to_s[-4,4]}", :label_text => LABEL_MAP[TERMINAL_ID])
         @gs.parsed_value = @gs.value
       end
     when CURRENCY_SYMBOL
@@ -201,8 +201,7 @@ class GlobalSetting < ActiveRecord::Base
   end
   
   def self.all_terminals
-    where("global_settings.key like ?", "#{TERMINAL_ID}%").where("global_settings.value not like ?", "New Terminal%").collect(&:value)
-#    find(:all, :conditions => "global_settings.key like '#{TERMINAL_ID}%'").collect(&:value)
+    where("global_settings.key like ?", "#{TERMINAL_ID}%").where("global_settings.value not like ?", "NT%").collect(&:value).uniq
   end
   
   def self.remove_all_terminal_ids

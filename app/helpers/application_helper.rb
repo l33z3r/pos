@@ -78,5 +78,26 @@ module ApplicationHelper
     
     return val
   end
+  
+  def menu_item_name item
+    if item.product.has_product_image? and item.product.show_button_image
+      #show 1 line of text
+      if !item.product.button_text_line_1.blank?
+        return item.product.button_text_line_1
+      else
+        return item.name
+      end
+    else
+      #show all 3 lines of text
+      item_name_html = content_tag :div, :class => "line1" do item.product.button_text_line_1 end
+      item_name_html += content_tag :div, :class => "line2" do item.product.button_text_line_2 end
+      item_name_html += content_tag :div, :class => "line3" do item.product.button_text_line_3 end
+    end
+  end
+  
+  #this removes spaces from a string and downcases it for use as an id
+  def id_safe string
+    string.strip.gsub(" ", "_").downcase
+  end
 
 end

@@ -703,11 +703,15 @@ function toggleUtilKeyboard() {
 }
 
 function doWriteToLastActiveInput(val) {
-    lastActiveElement.val(lastActiveElement.val() + val);
+    if(lastActiveElement) {
+        lastActiveElement.val(lastActiveElement.val() + val);
+    }
 }
 
 function doTabLastActiveInput() {
-    lastActiveElement.focusNextInputField();
+    if(lastActiveElement) {
+        lastActiveElement.focusNextInputField();
+    }
 }
 
 function doDeleteCharLastActiveInput() {
@@ -1044,4 +1048,22 @@ function resetKeyboard() {
     
     $('#close_keyboard_link').show();
     $("#util_keyboard_container").hide();
+}
+
+function placeUtilKeyboard(keyboardPlaceHolderEl) {
+    toggleKeyboardEnable = false;
+    
+    var pos = keyboardPlaceHolderEl.offset();
+    
+    //show the menu directly over the placeholder
+    $("#util_keyboard_container").css( {
+        "position" : "absolute",
+        "width" : "688px",
+        "left": (pos.left) + "px", 
+        "top":pos.top + "px"
+    } );
+    
+    $('#close_keyboard_link').hide();
+
+    $("#util_keyboard_container").show();
 }

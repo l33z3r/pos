@@ -4,7 +4,8 @@ $(function() {
     $('#products_tree').menuTree({
         animation: true,
         handler: 'slideToggle',
-        anchor: 'a[href="#"]'
+        anchor: 'a[href="#"]',
+        callback: initBuilderScrollPane
     });
 
     $('.select_product').draggable({
@@ -16,7 +17,28 @@ $(function() {
     doInitTouchUIDragDrop();
 
     setTimeout("refreshDragDrop()", 300);
+    
+    initBuilderScrollPane();
 });
+
+function initBuilderScrollPane() {
+    var bindFunction = function(event, scrollPositionY, isAtTop, isAtBottom)
+    {
+        //                console.log('Handle jsp-scroll-y', this,
+        //                    'scrollPositionY=', scrollPositionY,
+        //                    'isAtTop=', isAtTop,
+        //                    'isAtBottom=', isAtBottom);
+                    
+        //make the menu_pages_container follow the scroll so it's always visible
+        $('#menu_pages_container').css("top", scrollPositionY);
+    };
+            
+    setTimeout(function() {
+        $('#builder').bind('jsp-scroll-y',bindFunction).jScrollPane({
+            showArrows: true
+        });
+    }, 500);
+}
 
 function doBuilderMenuPageSelect(pageNum, pageId) {
     //set this pages class to make it look selected
@@ -28,11 +50,16 @@ function doBuilderMenuPageSelect(pageNum, pageId) {
         webkit_drop.remove(item_droppable_ids[i]);
     }
 
+    //reinit the array
     item_droppable_ids = new Array();
 
     //copy back the new html to its container
     $('#builder_menu_items_' + currentBuilderMenuPage).html($('#builder_menu_items_container').html());
     
+    setBuilderContentFromPage(pageNum);
+}
+
+function setBuilderContentFromPage(pageNum) {
     newHTML = $('#builder_menu_items_' + pageNum).html();
     $('#builder_menu_items_container').html(newHTML);
 

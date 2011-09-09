@@ -39,6 +39,9 @@ function doGlobalInit() {
     //this will also load it into tableOrders[-1]
     initPreviousOrder();
     
+    //custom button widths
+    renderMenuItemButtonDimensions();
+    
     if(inMenuContext()) {
         initMenu();
     }

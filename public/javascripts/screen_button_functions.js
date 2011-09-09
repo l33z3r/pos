@@ -39,33 +39,32 @@ function doSyncTableOrder() {
         }
     }
     
-    //alert("Syncing order for table " + selectedTable);
-    
     order.table = tables[selectedTable].label;
     
+    var copiedOrder = {};
+    
+    var copiedOrderForSend = $.extend(true, copiedOrder, order);
+
     tableOrderData = {
         tableID : selectedTable,
-        orderData : order
+        orderData : copiedOrderForSend
     }
     
     var checkForShowServerAddedText = true;
     
     //mark all items in this order as synced
     for(i=0; i<order.items.length; i++) {
-        //console.log(order.items[i].itemNumber + " " + order.items[i].synced);
-        
         if(checkForShowServerAddedText && !order.items[i].synced) {
             order.items[i].showServerAddedText = true;
             checkForShowServerAddedText = false;
         }
         
-        //alert("item " + order.items[i].itemNumber + " synced?: " + order.items[i]['synced'])
         order.items[i]['synced'] = true;
     }
     
     //store the order in the cookie
     storeTableOrderInStorage(current_user_id, selectedTable, order);
-
+    
     $.ajax({
         type: 'POST',
         url: '/sync_table_order',
@@ -345,11 +344,11 @@ function showAddNoteToOrderItemScreen() {
     if(currentSelectedReceiptItemEl) {
         if(currentScreenIsMenu()) {
             if(currentMenuSubscreenIsModifyOrderItem()) {
-                doSaveNote();
-                $('#sales_button_' + addNoteButtonID).removeClass("selected");
-                resetKeyboard();
-                
-                switchToMenuItemsSubscreen();
+                if(doSaveNote()) {
+                    $('#sales_button_' + addNoteButtonID).removeClass("selected");
+                    resetKeyboard();
+                    switchToMenuItemsSubscreen();
+                }
             } else {
                 hideAllMenuSubScreens();
                 $('#order_item_additions').show();
@@ -358,4 +357,28 @@ function showAddNoteToOrderItemScreen() {
         }
         
     }
+}
+
+function openCashDrawer() {
+    //search for "signed.applets.codebase_principal_support" 
+    //in this list and toggle its value to "true"
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+    // create an nsILocalFile for the executable
+    var file = Components.classes["@mozilla.org/file/local;1"]
+    .createInstance(Components.interfaces.nsILocalFile);
+    file.initWithPath("c:\\open_cash_drawer.bat");
+
+    // create an nsIProcess
+    var process = Components.classes["@mozilla.org/process/util;1"]
+    .createInstance(Components.interfaces.nsIProcess);
+    process.init(file);
+
+    // Run the process.
+    // If first param is true, calling thread will be blocked until
+    // called process terminates.
+    // Second and third params are used to pass command-line arguments
+    // to the process.
+    var args = [];
+    process.run(false, args, args.length);
 }

@@ -1222,7 +1222,7 @@ function showDiscountPopup(receiptItem) {
     //register the click handler to hide the popup when outside clicked
     registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
     
-    //TODO: manually init the radio button iphone style
+//TODO: manually init the radio button iphone style
     
     
     
@@ -1393,13 +1393,15 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         nextUserIDToSyncWith = employees[i].id;
         
         //skip if terminal and user same
-        //        alert("Skip? user id: " + terminalEmployeeID + " - " + nextUserIDToSyncWith + " : terminal id: " + recvdTerminalID + " - " + terminalID);
-        //        if(recvdTerminalID == terminalID && terminalEmployeeID == nextUserIDToSyncWith) {
-        //            alert("Skipping for user id: " + nextUserIDToSyncWith);
-        //            continue;
-        //        }
+        if(recvdTerminalID == terminalID && terminalEmployeeID == nextUserIDToSyncWith) {
+            continue;
+        }
         
         doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith);
+    }
+    
+    if(callHomePollInitSequenceComplete && recvdTerminalID != terminalID) {
+        checkForItemsToPrint(tableOrderDataJSON.items, recvdTerminalID);
     }
     
     newlyAdded = addActiveTable(tableID);
@@ -1422,7 +1424,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         //        alert(tableOrderDataJSON.items[itemKey].product.name);
         syncOrderItems.push(tableOrderDataJSON.items[itemKey]);
     }
-   
+    
     //    alert("Order for sync has " + syncOrderItems.length + " items. About to sync with existing " + tableOrders[tableID].items.length + " items");
     
     getTableOrderFromStorage(nextUserIDToSyncWith, tableID);
@@ -1490,6 +1492,43 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     //we don't want to show the initial messages as there may be a few of them
     if(callHomePollInitSequenceComplete && recvdTerminalID != terminalID) {
         setStatusMessage("<b>" + terminalEmployee + "</b> modified the order for table <b>" + tableLabel + "</b> from terminal <b>" + recvdTerminalID + "</b>");
+    }
+}
+
+function checkForItemsToPrint(items, recvdTerminalID) {
+    //alert("TID:" + terminalID);
+    
+    var itemsToPrint = new Array();
+    
+    var icount = 0;
+    var pushcount = 0;
+    
+    for(var itemKey in items) {
+        icount++;
+        
+        //we only want to print items from the order that are new i.e. not synced on the other terminal yet
+        var isItemSynced = (items[itemKey].synced === 'true');
+        
+        console.log(items[itemKey].synced + " "  + isItemSynced);
+        if(!isItemSynced) {
+            var itemPrinters = items[itemKey].product.printers;
+            //alert(items[itemKey].product.printers + " " + terminalID);
+            if((typeof itemPrinters != "undefined") && itemPrinters.length > 0) {
+                var printersArray = itemPrinters.split(",");
+            
+                if($.inArray(terminalID, printersArray)) {
+                    pushcount++;
+                    itemsToPrint.push(items[itemKey]);
+                }
+            } 
+        }
+    }
+    
+    console.log("Got" + icount + " items, pushed " + pushcount);
+    
+    if(itemsToPrint.length > 0) {
+        console.log("printing " + itemsToPrint.length + " items");
+        printItemsFromOrder(itemsToPrint);
     }
 }
 
@@ -1690,6 +1729,7 @@ function doOpenOIANoteScreen() {
     $('#note_input').focus();
     noteChargeIsPlus = true;
     
+    clearNoteInputs();
     initNoteScreenKeyboard();
 }
 
@@ -1698,21 +1738,23 @@ function doSaveNote() {
     
     if(isNaN(charge)) {
         setStatusMessage("Please enter a number for charge!");
-        return;
+        return false;
     }
     
     var noteInput = $('#note_input').val();
     
+    noteInput = noteInput.replace(/ /g,'')
+    
     if(noteInput.length == 0) {
         setStatusMessage("Please enter some text for this note!");
-        return;
+        return false;
     }
     
     currentSelectedReceiptItemEl = getLastReceiptItem();
     
     if(!currentSelectedReceiptItemEl) {
         setStatusMessage("There are no receipt items!");
-        return;
+        return false;
     }
     
     var order = getCurrentOrder();
@@ -1728,7 +1770,8 @@ function doSaveNote() {
     addOIAToOrderItem(order, orderItem, desc, absCharge, noteChargeIsPlus, true);
     
     clearNoteInputs();
-    showAddNoteToOrderItemScreen();
+    
+    return true;
 }
 
 function doCancelNote() {
@@ -1747,4 +1790,19 @@ function toggelNoteChargePlusMins() {
     noteChargeIsPlus = !noteChargeIsPlus;
     $('#plus_minus_text_container').html((noteChargeIsPlus ? "+" : "-"));
     
+}
+
+function renderMenuItemButtonDimensions() {
+    var button_border = 1;
+    var button_margin = 1;
+    var original_width = 88;
+    
+    $('#items .item').each(function() {
+        var item = $(this);
+        var width_factor = item.data("button_width");
+        
+        item.width((original_width * width_factor) 
+            + (button_margin * 2 * (width_factor - 1)) 
+            + (button_border * 2 * (width_factor - 1)));
+    });
 }
