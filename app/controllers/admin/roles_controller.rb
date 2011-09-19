@@ -1,4 +1,7 @@
 class Admin::RolesController < Admin::AdminController
+  
+  before_filter :disallow_edit_super_user_role, :only => [:edit, :update]
+  
   def index
     @roles = Role.all
   end
@@ -12,7 +15,7 @@ class Admin::RolesController < Admin::AdminController
   end
 
   def edit
-    @role = Role.find(params[:id])
+    
   end
 
   def create
@@ -26,8 +29,6 @@ class Admin::RolesController < Admin::AdminController
   end
 
   def update
-    @role = Role.find(params[:id])
-
     if @role.update_attributes(params[:role])
       redirect_to([:admin, @role], :notice => 'Role was successfully updated.')
     else
@@ -49,4 +50,17 @@ class Admin::RolesController < Admin::AdminController
 
     redirect_to(admin_roles_url)
   end
+  
+  private
+  
+  def disallow_edit_super_user_role
+    @role = Role.find(params[:id])
+    
+    @editing_super_user = (Role::SUPER_USER_ROLE_ID == @role.id)
+    
+    if @editing_super_user
+      redirect_to([:admin, @role], :flash => {:error => "You cannot edit the Super User Role!"}) and return
+    end
+  end
+  
 end
