@@ -145,6 +145,8 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
         'total':0
     };
     
+    console.log("filling table order " + tableNum);
+    
     //fill in the table order array
     if(currentTableOrderJSON != null) {
         for(i=0; i<currentTableOrderJSON.items.length; i++) {

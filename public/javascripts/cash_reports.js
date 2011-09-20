@@ -199,14 +199,24 @@ function floatScreenKeypadClickTab() {
 }
 
 function getOpenOrdersTotal() {
+    //save the current users table order to reload it after sync
+    var savedTableID = selectedTable;
+    
     var tableIDS = getActiveTableIDS();
     var total = 0;
     
     for(i = 0; i < tableIDS.length; i++) {
-        //getTableOrderFromStorage(current_user_id, tableIDS[i]);
-        var orderTotal = tableOrders[tableIDS[i]].total;
-        //console.log("Open order in table " + tableIDS[i] + " Total: " + orderTotal);
+        getTableOrderFromStorage(current_user_id, tableIDS[i]);
+    }
+    
+    for(i = 0; i < tableIDS.length; i++) {
+        var orderTotal = tableOrders[parseInt(tableIDS[i])].total;
         total += orderTotal;
+    }
+    
+    //now load back up the current users order it its not his personal receipt
+    if(savedTableID != -1) {
+        getTableOrderFromStorage(current_user_id, savedTableID);
     }
     
     return total;
