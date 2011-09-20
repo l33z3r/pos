@@ -147,17 +147,19 @@ function cashReportsScreenKeypadClickTab() {
 }
 
 function finishCashTotal() {
+    $('#cash_totals_header_section').show();
+    
+    content = $('#reports_center_receipt').html();
+    
     doCashTotalReport(currentTotalType, true);
     
-    //print receipt
-    content = $('#report').html();
+    showMenuScreen();
     
     printReceipt(content, false);
     
+    cash_totals_data_html_header_info = null;
     reportsCashCount = 0;
-    currentTotalType = null;
-    
-    showMenuScreen();
+    currentTotalType = null;    
 }
 
 function saveFloatCoinCount() {

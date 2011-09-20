@@ -58,10 +58,10 @@ class CashTotal < ActiveRecord::Base
     @next_report_num = CashTotal.get_next_report_number terminal_id, total_type
       
     @cash_total_data[:business_info_data] = {}
-    @cash_total_data[:business_info_data]["Terminal:"] = terminal_id
     @cash_total_data[:business_info_data]["#{total_type} Report Number:"] = @next_report_num
+    @cash_total_data[:business_info_data]["Terminal:"] = terminal_id
     @cash_total_data[:business_info_data]["Date:"] = Time.now.strftime(GlobalSetting.default_date_format)
-    @cash_total_data[:business_info_data]["User"] = employee.nickname
+    @cash_total_data[:business_info_data]["Performed By"] = employee.nickname
     
     #insert a row if commit is true
     if commit

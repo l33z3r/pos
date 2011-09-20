@@ -122,3 +122,132 @@ div#print_receipt_wrapper div.receipt div.till_roll div.discount div.header {
     text-align: right;
     font-style: italic;
 }
+
+div#print_receipt_wrapper div.receipt div.till_roll div#receipt_message {
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll {
+    background-color: #FFF;
+    text-align: center;    
+    display: block;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section {
+    margin: 20px 0px;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_name {
+    font-weight: bold;
+    font-size: 13px;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_address {
+    font-size: 13px;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_telephone {
+    font-size: 13px;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_email_address {
+    font-size: 13px;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.data_table_header {
+    font-weight: bold;
+    font-size: 14px;
+    margin: 3px;
+    margin-top: 15px;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.data_table div.label {
+    float: left;
+    text-align: left;
+    width: 130px;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.data_table div.data {
+    float: left;
+    text-align: right;
+    width: 140px;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table {
+    margin-top: 5px;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table div.totals_label {
+    float: left;
+    text-align: left;
+    width: 130px;
+    font-weight: bold;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table div.totals_data {
+    float: left;
+    text-align: right;
+    width: 140px;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table {
+    margin-top: 10px;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_header {
+    width: 65px;
+    float: left;
+    text-align: right;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_label_header {
+    width: 70px;
+    float: left;
+    text-align: left;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_label {
+    float: left;
+    text-align: left;
+    width: 70px;
+    font-weight: bold;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data {
+    float: left;
+    text-align: right;
+    width: 65px;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table {
+    margin-top: 5px;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_label {
+    float: left;
+    text-align: left;
+    width: 70px;
+    font-weight: bold;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_data {
+    float: left;
+    text-align: right;
+    width: 65px;
+}
