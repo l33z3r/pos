@@ -1400,7 +1400,7 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith);
     }
     
-    if(callHomePollInitSequenceComplete && recvdTerminalID != terminalID) {
+    if(callHomePollInitSequenceComplete) {
         checkForItemsToPrint(tableOrderDataJSON.items, recvdTerminalID);
     }
     
@@ -1422,7 +1422,13 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     for(var itemKey in tableOrderDataJSON.items) {
         //        alert(tableOrderDataJSON.items[itemKey].product.name);
-        syncOrderItems.push(tableOrderDataJSON.items[itemKey]);
+        
+        var copiedOrderItem = {};
+    
+        var copiedOrderItemForStore = $.extend(true, copiedOrderItem, tableOrderDataJSON.items[itemKey]);
+        
+        copiedOrderItemForStore.synced = "true";
+        syncOrderItems.push(copiedOrderItemForStore);
     }
     
     //    alert("Order for sync has " + syncOrderItems.length + " items. About to sync with existing " + tableOrders[tableID].items.length + " items");
@@ -1512,11 +1518,11 @@ function checkForItemsToPrint(items, recvdTerminalID) {
         console.log(items[itemKey].synced + " "  + isItemSynced);
         if(!isItemSynced) {
             var itemPrinters = items[itemKey].product.printers;
-            //alert(items[itemKey].product.printers + " " + terminalID);
+            console.log(items[itemKey].product.printers + " " + terminalID);
             if((typeof itemPrinters != "undefined") && itemPrinters.length > 0) {
                 var printersArray = itemPrinters.split(",");
-            
-                if($.inArray(terminalID, printersArray)) {
+                console.log(printersArray + " " + $.inArray(terminalID, printersArray));
+                if($.inArray(terminalID, printersArray) != -1) {
                     pushcount++;
                     itemsToPrint.push(items[itemKey]);
                 }

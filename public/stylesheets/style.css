@@ -2147,6 +2147,14 @@ div.till_roll_discount div.data_table div.data {
     font-weight: bold;
 }
 
+div.receipt div.till_roll div.data_table div.label.time {
+    width: 102px;
+}
+
+div.receipt div.till_roll div.data_table div.data.time {
+    width: 140px;
+}
+
 div.till_roll_discount {
     margin-left: 5px;
     margin-top: 10px;

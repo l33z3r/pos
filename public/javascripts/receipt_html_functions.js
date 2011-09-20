@@ -204,7 +204,7 @@ function fetchFinalReceiptHeaderHTML() {
     
     timestamp = utilFormatDate(new Date(totalOrder.time));
     
-    headerHTML += "<div class='label'>Time:</div><div class='data'>" + timestamp + "</div>" + clearHTML;
+    headerHTML += "<div class='time label'>Time:</div><div class='time data'>" + timestamp + "</div>" + clearHTML;
     
     if(totalOrder.table) {
         headerHTML += "<div class='label'>Table:</div><div class='data'>" + totalOrder.table + "</div>" + clearHTML;
@@ -230,7 +230,7 @@ function fetchCashScreenReceiptHeaderHTML() {
     headerHTML += "<div class='label'>Server:</div><div class='data'>" + current_user_nickname + "</div>" + clearHTML;
     
     timestamp = utilFormatDate(new Date(parseInt(orderStartTime(totalOrder))));
-    headerHTML += "<div class='label'>Time Started:</div><div class='data'>" + timestamp + "</div>" + clearHTML;
+    headerHTML += "<div class='time label'>Time Started:</div><div class='time data'>" + timestamp + "</div>" + clearHTML;
     
     if(selectedTable!=0) {
         selectedTableLabel = tables[selectedTable].label;
@@ -275,6 +275,8 @@ function printReceipt(content, printRecptMessage) {
         content += clearHTML + receiptMessageHTML;
     }
     
+    content += clear10HTML;
+    
     print(content);
 }
 
@@ -286,7 +288,14 @@ function print(content) {
 }
 
 function printItemsFromOrder(items) {
+    var allOrderItemsReceiptHTML = "";
+
+    for(i=0; i<items.length; i++) {
+        var item = items[i];
+        allOrderItemsReceiptHTML += getOrderItemReceiptHTML(item, false, false, false);
+    }
     
+    printReceipt(allOrderItemsReceiptHTML, false);
 }
 
 function clearReceipt() {

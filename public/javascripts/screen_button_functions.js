@@ -113,7 +113,7 @@ function printLastReceipt() {
     lastSaleInfo = getLastSaleInfo();
     content = lastSaleInfo.contentHTML;
     
-    printReceipt(content, false);
+    printReceipt(content, true);
 }
 
 function promptForServiceCharge() {

@@ -12,6 +12,7 @@ var showingDisplayButtonPasscodePromptPopup;
 var display_button_passcode_permissions;
 
 var clearHTML = "<div class='clear'>&nbsp;</div>";
+var clear10HTML = "<div class='clear_top_margin_10'>&nbsp;</div>";
 
 $(function(){
     doGlobalInit();

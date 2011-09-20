@@ -20,6 +20,11 @@ div#print_receipt_wrapper div.clear {
     clear: both;
 }
 
+div#print_receipt_wrapper div.clear_top_margin_10 {
+    height: 10px;
+    clear: both;
+}
+
 div#print_receipt_wrapper div#print_receipt {
     
 }
@@ -45,6 +50,14 @@ div#print_receipt_wrapper div.receipt div.till_roll div.data_table div.data {
     text-align: right;
     width: 112px;
     font-weight: bold;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div.data_table div.label.time {
+    width: 102px;
+}
+
+div#print_receipt_wrapper div.receipt div.till_roll div.data_table div.data.time {
+    width: 140px;
 }
 
 div#print_receipt_wrapper div.receipt div.till_roll div.order_line {
@@ -127,22 +140,6 @@ div#print_receipt_wrapper div.receipt div.till_roll div#receipt_message {
     text-align: center;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll {
     background-color: #FFF;
     text-align: center;    
@@ -180,13 +177,14 @@ div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll
 div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.data_table div.label {
     float: left;
     text-align: left;
-    width: 130px;
+    width: 120px;
 }
 
 div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.data_table div.data {
     float: left;
     text-align: right;
-    width: 140px;
+    width: 135px;
+    font-weight: normal;
 }
 
 div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table {
@@ -196,14 +194,15 @@ div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll
 div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table div.totals_label {
     float: left;
     text-align: left;
-    width: 130px;
+    width: 125px;
     font-weight: bold;
 }
 
 div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table div.totals_data {
     float: left;
     text-align: right;
-    width: 140px;
+    width: 130px;
+    font-weight: bold;
 }
 
 div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table {
@@ -211,7 +210,7 @@ div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll
 }
 
 div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_header {
-    width: 65px;
+    width: 60px;
     float: left;
     text-align: right;
 }
@@ -232,7 +231,7 @@ div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll
 div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data {
     float: left;
     text-align: right;
-    width: 65px;
+    width: 60px;
 }
 
 div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table {
@@ -249,5 +248,5 @@ div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll
 div#print_receipt_wrapper div.receipt div.till_roll div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_data {
     float: left;
     text-align: right;
-    width: 65px;
+    width: 60px;
 }

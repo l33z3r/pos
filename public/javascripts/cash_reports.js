@@ -149,7 +149,7 @@ function cashReportsScreenKeypadClickTab() {
 function finishCashTotal() {
     $('#cash_totals_header_section').show();
     
-    content = $('#reports_center_receipt').html();
+    content = $('#reports_center_receipt').html() + clear10HTML;
     
     doCashTotalReport(currentTotalType, true);
     

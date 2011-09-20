@@ -61,7 +61,7 @@ class CashTotal < ActiveRecord::Base
     @cash_total_data[:business_info_data]["#{total_type} Report Number:"] = @next_report_num
     @cash_total_data[:business_info_data]["Terminal:"] = terminal_id
     @cash_total_data[:business_info_data]["Date:"] = Time.now.strftime(GlobalSetting.default_date_format)
-    @cash_total_data[:business_info_data]["Performed By"] = employee.nickname
+    @cash_total_data[:business_info_data]["Performed By:"] = employee.nickname
     
     #insert a row if commit is true
     if commit
@@ -232,9 +232,9 @@ class CashTotal < ActiveRecord::Base
     #TODO: cash paid out
     @cash_summary["Opening Float"] = @opening_float
     @cash_summary["Cash Sales"] = @cash_sales_total
-    @cash_summary["Cash Paid Out"] = @cash_paid_out
+    #@cash_summary["Cash Paid Out"] = @cash_paid_out
     @cash_summary["Cashback"] = @cash_back_total
-    @cash_summary["Over-runs"] = @over_runs
+    #@cash_summary["Over-runs"] = @over_runs
     @cash_summary["Total Cash"] = @total_cash
     @cash_summary["Cash In Drawer"] = cash_count
     @cash_summary["Shortfall"] = @shortfall

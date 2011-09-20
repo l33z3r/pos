@@ -62,7 +62,19 @@ class Product < ActiveRecord::Base
   end
   
   def selected_printers=(selected_printers_array)
-    write_attribute("printers", selected_printers_array.join(","))
+    
+    #remove any empty strings from the selected_printers_array
+    selected_printers_array.delete("")
+    
+    if selected_printers_array.size == 0
+      printers_val = ""
+    elsif selected_printers_array.size == 1
+      printers_val = selected_printers_array[0].to_s
+    else
+      printers_val = selected_printers_array.join(",")
+    end
+    
+    write_attribute("printers", printers_val)
   end
   
 end
