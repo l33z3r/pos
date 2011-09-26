@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%= render :partial => "/partials/interfaces/medium_screen/common_head" %>
+  </head>
+  <body>
+
+    <div id="wrapper" class="wrapper menu medium_interface">
+      <div id="body">
+        <div id="content_container">
+          <%= yield %>
+        </div>
+      </div>
+
+    </div>
+    
+    <%= render :partial => "/partials/interfaces/medium_screen/common_footer" %>
+
+  </body>
+</html>

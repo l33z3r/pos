@@ -1,5 +1,5 @@
 <% content_for :head do %>
-  <%= javascript_include_tag "Colour.compressed", "ColourPicker.compressed", "product_builder" %>
+  <%= javascript_include_tag "plugins/Colour.compressed", "plugins/ColourPicker.compressed", "admin_js/product_builder" %>
 <% end %>
 
 <%= form_for([:admin, @product], :html => { :multipart => true, :id => "product_builder_form" }) do |f| %>

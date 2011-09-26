@@ -1,0 +1,14 @@
+<%= show_flash.html_safe %>
+
+<div id="admin_subnav_left">
+  <%= render :partial => "/partials/interfaces/large_screen/menu_screen_options_screen_buttons" %>
+
+  <%= yield :admin_subnav_links_left %>
+
+</div>
+
+<div id="admin_subnav_right">
+  <%= yield :admin_subnav_links_right %>
+</div>
+
+<div class="clear">&nbsp;</div>

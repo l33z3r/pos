@@ -2,10 +2,10 @@ class HomeController < ApplicationController
 
   #main screen including the login overlay
   def index
-    load_active_employees
-    @display = Display.load_default
+    perform_interface_specific_actions
     
-    @rooms = Room.all
+    #now the actions common to all interfaces
+    do_common_interface_actions
   end
   
   def mobile_index
@@ -162,6 +162,38 @@ class HomeController < ApplicationController
 
   private
 
+  def do_common_interface_actions
+    load_active_employees
+    @display = Display.load_default
+    
+    @rooms = Room.all
+  end
+  
+  def perform_interface_specific_actions
+    if current_interface_large?
+      do_large_interface_actions
+    elsif current_interface_medium?
+      do_medium_interface_actions
+    else
+      do_large_interface_actions
+    end
+  end
+  
+  def do_large_interface_actions
+    
+  end
+  
+  def do_medium_interface_actions
+    @tables_button = DisplayButton.find_by_perm_id(ButtonMapper::TABLES_BUTTON) 
+    @order_button = DisplayButton.find_by_perm_id(ButtonMapper::ORDER_BUTTON) 
+    @modify_button = DisplayButton.find_by_perm_id(ButtonMapper::MODIFY_ORDER_ITEM_BUTTON) 
+    @more_options_button = DisplayButton.find_by_perm_id(ButtonMapper::MORE_OPTIONS_BUTTON) 
+    
+    @display_buttons = []
+    
+    @display_buttons << @tables_button << @order_button << @modify_button << @more_options_button
+  end
+  
   def clear_session
     session[:current_employee_id] = nil
     session[:current_employee_nickname] = nil

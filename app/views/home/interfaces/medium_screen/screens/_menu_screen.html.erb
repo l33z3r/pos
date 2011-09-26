@@ -1,0 +1,67 @@
+<div id="menu_screen">
+  <div id="receipt_buttons_container">
+    <div id="receipt_container">
+      <div id="menu_screen_receipt" class="receipt">
+        <div id="menu_screen_till_roll" class="till_roll"></div>
+      </div>
+    </div>
+
+    <div id="buttons_container">
+
+      <% @display_buttons.each_with_index do |db, index| %>
+        <div id="sales_button_<%=db.id%>" 
+             class="button" onclick="<%= button_action db %>">
+          <div class="icon">
+            <%= button_icon db %>
+          </div>
+          <div class="button_name"><%=db.button_text%></div>
+        </div>
+
+        <% if index == 1 %> <div class="clear">&nbsp;</div> <% end %>
+      <% end %>
+
+    </div>
+
+    <div class="clear">&nbsp;</div>
+  </div>
+
+  <div id="menu_container">
+    <div id="menu_pages_container">
+      <% @display.menu_pages.each do |page| %>
+        <div class="page" id="menu_page_<%=page.id%>"
+             onclick="doMenuPageSelect(<%= page.page_num %>, <%= page.id %>);">
+          <div class="name">
+            <%= page.name %>
+          </div>
+        </div>
+
+        <div class="clear">&nbsp;</div>
+      <% end %>
+    </div>
+
+    <div id="menu_items_container">
+      <% @display.menu_pages.each do |page| %>
+        <div style="display: none;" id="menu_items_<%= page.page_num %>" class="items">
+          <% page.menu_items.each do |item| %>
+            <% if item.product and item.product.is_active %>
+              <div class="item" data-button_width="<%= item.product.menu_button_width %>" 
+                   onclick="doSelectMenuItem(<%= item.product_id %>, this)"
+                   style="<%= item.product.button_bg_color.blank? ? "" : "background-color: #{item.product.button_bg_color}" %>">
+                     <% if item.product.show_button_image %>
+                  <div class="item_pic">
+                    <%= product_image_thumb item.product %>
+                  </div>
+                <% end %>
+                <div class="item_name" style="<%= item.product.button_text_color.blank? ? "" : "color: #{item.product.button_text_color}" %>">
+                  <%= menu_item_name item %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+  </div>
+</div>

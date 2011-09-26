@@ -1,7 +1,7 @@
 <% content_for :head do %>
-  <%= javascript_include_tag "menu-builder" %>
+  <%= javascript_include_tag "admin_js/menu-builder" %>
   <script type="text/javascript" src="/javascripts/init_touch_draggable.js?id=<%=@display.id%>"></script>
-  <%= stylesheet_link_tag "menu_builder"  %>
+  <%= stylesheet_link_tag "admin/menu_builder"  %>
 <% end %>
 
 <% content_for :admin_subnav_links_left do %>
@@ -14,7 +14,7 @@
 <% end %>
 
 <% content_for :admin_subnav_links_right do %>
-  <%= render :partial => "/partials/terminal_reload_request" %>
+  <%= render :partial => "/partials/interfaces/large_screen/terminal_reload_request" %>
 <% end %>
 
 <div id="display_builder">

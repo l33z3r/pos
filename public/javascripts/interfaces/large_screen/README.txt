@@ -1,0 +1,2 @@
+This folder contains code for the main interface (large touchpc screen/ipad and large touch devices) 
+which has the keyboard and receipt on the left and the menu items on the right, generally a screen resolution of 1024x768

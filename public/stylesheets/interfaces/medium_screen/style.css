@@ -1,0 +1,455 @@
+/*
+Document : medium screen style
+Created on : 28-Mar-2011, 22:19:16
+Author : Lee
+Description:
+Main stylesheet.
+*/
+
+/* Global Styles */
+
+body {
+    height: 798px;
+    margin: 0px;
+    padding: 0px;
+    color: #333333;
+    font-family: verdana;
+    font-size: 17px;
+    overflow: hidden;
+    line-height: 12px;
+
+    /* disable text selection */
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+input[type=radio], input[type=checkbox], input[type=button], select {
+    cursor: pointer;
+}
+
+a:hover {
+    background-color: transparent;
+    color: #333;
+}
+
+input[type=checkbox],
+input[type=radio],
+input[type=submit] {
+    cursor: pointer;
+}
+
+input.focus {
+    border: 2px solid #E36C0A;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+div.clear {
+    height: 1px;
+    clear: both;
+}
+
+div.clear_spacer {
+    height: 23px;
+    clear: both;
+    width: 100%;
+    background-color: #CCC;
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+    border-top: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
+}
+
+div.clear_top_margin_5 {
+    height: 5px;
+    clear: both;
+}
+
+div.clear_top_margin_10 {
+    height: 10px;
+    clear: both;
+}
+
+div.clear_top_margin_20 {
+    height: 20px;
+    clear: both;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+input[type="submit"] {
+    cursor: pointer;
+}
+
+div#wrapper {
+    width: 480px;
+    height: 798px;
+    margin: auto;
+    text-align: center;
+    background-color: #FFF;
+    overflow: hidden;
+}
+
+div.wrapper div {
+    text-align: center;
+}
+
+div.wrapper div td {
+    text-align: left;
+}
+
+/* Menu Screen */
+
+div#menu_screen div#receipt_buttons_container div#receipt_container {
+    float: left;
+    width: 260px;
+}
+
+div#menu_screen div#receipt_buttons_container div#receipt_container div#menu_screen_receipt {
+    height: 192px;
+    background-color: #FFF;
+    border: 1px solid #000;
+    overflow-y: auto;
+    display: block;
+    padding-left: px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+div#menu_screen div#receipt_buttons_container div#receipt_container div#menu_screen_receipt div#menu_screen_till_roll {
+    padding-top: 4px;
+    height: 182px;
+    display: block;
+    background-color: #FFF;
+}
+
+div#menu_screen div#receipt_buttons_container div#buttons_container {
+    width: 220px;
+    float: left;
+    border-spacing: 3px 1px;
+}
+
+div#menu_screen div#menu_container div#menu_pages_container {
+    float: left;
+    width: 120px;
+    border-spacing: 3px 1px;
+}
+
+div#menu_screen div#menu_container div#menu_pages_container div.page {
+    width: 110px;
+    height: 64px;
+    display: table-cell;
+    overflow: hidden;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+    line-height: 17px;
+}
+
+div#menu_screen div#menu_container div#menu_pages_container div.page div.name {
+    font-size: 20px;
+}
+
+div#menu_screen div#menu_container div#menu_pages_container div.page.selected {
+    background: -moz-linear-gradient(#C1C1C1, #101010) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#C1C1C1), to(#101010));
+}
+
+div#menu_screen div#menu_container div#menu_pages_container div.page.selected div.name {
+    color: #FFF;
+}
+
+div#menu_screen div#menu_container div#menu_items_container {
+    float: left;
+    width: 360px;
+    border-spacing: 3px 1px;
+}
+
+div#menu_screen div#menu_container div#menu_items_container div.item {
+    float: left;
+    width: 116px;
+    margin: 1px;
+    height: 96px;
+    border: 1px solid #777;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+div#menu_screen div#menu_container div#menu_items_container div.item_name {
+    padding: 4px;
+    line-height: 19px;
+}
+
+div#menu_screen div#menu_container div#menu_items_container div.item_pic {
+    height: 50px;
+    margin-top: 5px;
+}
+
+div#menu_screen div#menu_container div#menu_items_container div.item_pic img {
+    height: 50px;
+}
+
+/* End Menu Screen */
+
+/* Menu Screen Receipt */
+
+div.receipt {
+    line-height: 19px;
+    font-size: 23px;
+}
+
+div.receipt div.till_roll div.order_line {
+    margin: 0px 2px;
+    cursor: pointer;
+}
+
+div.receipt div.till_roll div.order_line.not_synced div.name {
+    font-style: italic;
+    font-weight: bold;
+}
+
+div.receipt div.till_roll div.order_line.selected {
+    border: 2px solid #4297D7;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #4297D7;
+}
+
+div.receipt div.till_roll div.server {
+    font-size: 16px;
+    font-style: italic;
+    margin-top: 4px;
+    text-align: left;
+    margin-left: 5px;
+}
+
+div.receipt div.till_roll div.amount {
+    float: left;
+    text-align: left;
+    width: 29px;
+    margin-left: 3px;
+}
+
+div.receipt div.till_roll div.name {
+    float: left;
+    width: 190px;
+    text-align: left;
+}
+
+div.receipt div.till_roll div.modifier_name {
+    float: left;
+    width: 150px;
+    margin-left: 50px;
+    text-align: left;
+}
+
+div.receipt div.till_roll div.modifier_price {
+    float: left;
+    width: 30px;
+    text-align: right;
+}
+
+div.receipt div.till_roll div.oia_add {
+    float: left;
+    width: 40px;
+    text-align: right;
+}
+
+div.receipt div.till_roll div.oia_name {
+    float: left;
+    width: 150px;
+    margin-left: 10px;
+    text-align: left;
+}
+
+div.receipt div.till_roll div.oia_name.note {
+    font-style: italic;
+    width: 190px;
+}
+
+div.receipt div.till_roll div.oia_price {
+    float: left;
+    width: 40px;
+    text-align: right;
+}
+
+div.receipt div.till_roll div.total {
+    float: left;
+    width: 0px;
+    text-align: right;
+}
+
+div.receipt div.till_roll div.discount div.header {
+    float: left;
+    width: 120px;
+    text-align: right;
+    font-style: italic;
+}
+
+div.receipt div.till_roll div.discount div.discount_amount {
+    float: left;
+    width: 66px;
+    text-align: center;
+    font-style: italic;
+}
+
+div.receipt div.till_roll div.discount div.new_price {
+    float: left;
+    width: 40px;
+    text-align: left;
+    font-style: italic;
+}
+
+div.receipt div.till_roll div.discount div.header {
+    float: left;
+    width: 120px;
+    text-align: right;
+    font-style: italic;
+}
+
+/* End Menu Screen Receipt */
+
+/* Generic Styles */
+
+div.button {
+    width: 103px;
+    max-width: 103px;
+    height: 92px;
+    max-height: 92px;
+    overflow: hidden;
+    vertical-align: middle;
+    display: table-cell;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #777;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+
+div.button.selected {
+    background: -moz-linear-gradient(#C1C1C1, #101010) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#C1C1C1), to(#101010));
+    color: #FFF;
+}
+
+div.button div.icon {
+    min-height: 50px;
+}
+
+div.button div.icon img {
+    max-height: 50px;
+    max-width: 50px;
+}
+
+div.button div.button_name {
+    padding: 0px 3px;
+    font-size: 16px;
+}
+
+div.button div.button_name {
+    padding-top: 7px;
+    font-size: 22px;
+    text-decoration: none;
+    color: #333333;
+}
+
+div.button.selected div.button_name {
+    color: #FFFFFF;
+}
+
+div.button div.button_name a:hover {
+    background-color: transparent;
+}
+
+div.tabs {
+    background-color: #B4B4B4;
+    border-spacing: 2px;
+    margin-bottom: -4px;
+}
+
+div.tabs div.tab {
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+    border: 1px solid #AAAAAA;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    cursor: pointer;
+    display: table-cell;
+    height: 55px;
+    margin: 1px;
+    text-align: center;
+    vertical-align: middle;
+    width: 88px;
+}
+
+div.tabs div.tab.selected {
+    background: -moz-linear-gradient(#F8F8F8, #E0E0E0) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F8F8F8), to(#E0E0E0));
+    border-bottom-width: 0;
+}
+
+div.tabs div.tab img {
+    float: left;
+    margin-left: 6px;
+}
+
+div.tabs div.tab div.label {
+    float: left;
+    margin-left: 9px;
+    margin-top: 9px;
+}
+
+div.text_only_tabs {
+    background-color: #B4B4B4;
+    border-spacing: 2px;
+    margin-bottom: -4px;
+}
+
+div.text_only_tabs div.text_only_tab {
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+    border: 1px solid #AAAAAA;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    cursor: pointer;
+    display: table-cell;
+    height: 55px;
+    margin: 1px;
+    text-align: center;
+    vertical-align: middle;
+    width: 88px;
+}
+
+div.text_only_tabs div.text_only_tab.selected {
+    background: -moz-linear-gradient(#F8F8F8, #E0E0E0) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F8F8F8), to(#E0E0E0));
+    border-bottom-width: 0;
+}
+
+div.text_only_tabs div.text_only_tab div.label {
+    color: black;
+    font-size: 13px;
+    padding: 4px;
+    text-decoration: none;
+}
+
+/* End Generic Styles */

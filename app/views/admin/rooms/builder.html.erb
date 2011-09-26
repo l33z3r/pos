@@ -1,8 +1,8 @@
 <% content_for :head do %>
-  <%= javascript_include_tag "room-builder" %>
+  <%= javascript_include_tag "admin_js/room-builder" %>
   <!-- TODO: WILL NEED TO IMPLEMENT DRAG FOR TOUCH UI -->
   <!--script type="text/javascript" src="/javascripts/init_touch_draggable.js?id=ROOMID"></script-->
-  <%= stylesheet_link_tag "room_builder"  %>
+  <%= stylesheet_link_tag "admin/room_builder"  %>
 <% end %>
 
 <% content_for :admin_subnav_links_left do %>
@@ -15,7 +15,7 @@
 <% end %>
 
 <% content_for :admin_subnav_links_right do %>
-  <%= render :partial => "/partials/terminal_reload_request" %>
+  <%= render :partial => "/partials/interfaces/large_screen/terminal_reload_request" %>
 <% end %>
 
 <div id="room_builder">

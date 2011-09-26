@@ -1,25 +1,23 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%= render :partial => "/partials/common_head" %>
-    <%= javascript_include_tag "admin" %>
+    <%= render :partial => "/partials/interfaces/large_screen/common_head" %>
+    <%= javascript_include_tag "admin_js/admin" %>
   </head>
   <body>
-
-    <div id="wrapper" class="wrapper admin">
+    <div id="wrapper" class="wrapper admin large_interface">
       <div id="body">
-        <%= render :partial => "/partials/nav" %>
+        <%= render :partial => "/partials/interfaces/large_screen/nav" %>
 
         <div id="content_container">
-          <%= render :partial => "/partials/admin_nav" unless @hide_admin_header %>
+          <%= render :partial => "/partials/interfaces/large_screen/admin_nav" unless @hide_admin_header %>
 
           <%= yield %>
         </div>
       </div>
-
     </div>
     
-    <%= render :partial => "/partials/common_footer" %>
+    <%= render :partial => "/partials/interfaces/large_screen/common_footer" %>
 
   </body>
 </html>

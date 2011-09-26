@@ -1,22 +1,2 @@
-<%= render "/home/screens/cash_screen" %>
-
-<%= render "/home/screens/login_screen" %>
-
-<%= render "/home/screens/tables_screen" %>
-
-<%= render "/home/screens/more_options_screen" %>
-
-<%= render "/home/screens/cash_reports_screen" %>
-
-<%= render "/home/screens/float_screen" %>
-
-<!-- menu screen should stay last in this list as it has 
-some padding at end which makes a gap appear above the other screens -->
-<%= render "/home/screens/menu_screen" %>
-
-<!-- iframe to print in -->
-<iframe name="printFrame" id="printFrame" width="0" height="0" frameborder="0" src="<%= blank_receipt_for_print_path %>"></iframe>
-<div class="clear">&nbsp;</div>
-
-<!-- render the re-usable utilities -->
-<%= render "/partials/utilities" %>
+<!-- render the large screen as default -->
+<%= render "/home/interfaces/#{current_interface}_screen/main" %>

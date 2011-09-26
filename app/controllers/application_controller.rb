@@ -4,9 +4,13 @@ class ApplicationController < ActionController::Base
   
   before_filter :check_reset_session
   
-  helper_method :e, :current_employee, :print_money, :mobile_device?, :all_terminals, :all_servers
+  helper_method :e, :current_employee, :print_money, :mobile_device?, :all_terminals, :all_servers, :current_interface
   
   before_filter :load_global_vars
+  
+  LARGE_INTERFACE = "large"
+  MEDIUM_INTERFACE = "medium"
+  SMALL_INTERFACE = "small"
   
   include ActionView::Helpers::NumberHelper
   
@@ -210,6 +214,38 @@ class ApplicationController < ActionController::Base
   
   def all_servers
     Employee.all.collect(&:nickname)
+  end
+  
+  def current_interface
+    
+    return @current_interface if @current_interface
+    
+    #set it from param i=X
+    if params[:i]
+      if params[:i] == SMALL_INTERFACE
+        session[:current_interface] = SMALL_INTERFACE
+      elsif params[:i] == MEDIUM_INTERFACE
+        session[:current_interface] = MEDIUM_INTERFACE
+      else
+        session[:current_interface] = LARGE_INTERFACE
+      end
+    end
+    
+    if session[:current_interface]
+      @current_interface = session[:current_interface]
+    else
+      @current_interface = LARGE_INTERFACE
+    end
+    
+    return @current_interface
+  end
+  
+  def current_interface_large?
+    current_interface == LARGE_INTERFACE
+  end
+  
+  def current_interface_medium?
+    current_interface == MEDIUM_INTERFACE
   end
   
   def http_basic_authenticate

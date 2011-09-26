@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%= render :partial => "/partials/common_head" %>
-
+    <!-- include the head form the large interface -->
+    <%= render :partial => "/partials/interfaces/large_screen/common_head" %>
+    
     <%= javascript_include_tag "/jqtouch/jqtouch", "mobile/mobile", "mobile/mobile_login_functions", "mobile/mobile_util" %>
-    <%= stylesheet_link_tag "/jqtouch/jqtouch", "/jqtouch/themes/apple/theme", "mobile/mobile" %>
-
+    <%= stylesheet_links "/jqtouch/jqtouch", "/jqtouch/themes/apple/theme", "mobile/", :cache => true, :recursive => true %>
   </head>
+  
   <body class="mobile">
-
     <%= yield %>
-
   </body>
 </html>

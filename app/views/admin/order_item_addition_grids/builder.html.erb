@@ -1,8 +1,8 @@
 <% content_for :head do %>
-  <%= javascript_include_tag "modifier-grid-builder" %>
-  <%= stylesheet_link_tag "modifier_grid_builder"  %>
+  <%= javascript_include_tag "admin_js/modifier-grid-builder" %>
+  <%= stylesheet_link_tag "admin/modifier_grid_builder"  %>
 
-  <%= javascript_include_tag  "Colour.compressed", "ColourPicker.compressed" %>
+  <%= javascript_include_tag  "plugins/Colour.compressed", "plugins/ColourPicker.compressed" %>
 
   <script type="text/javascript">
     grid_x = <%=@oiag.grid_x_size%>;

@@ -75,22 +75,8 @@ function doSyncTableOrder() {
     });
     
     setStatusMessage("Order Sent");
-
-    clearLoginReceipt();
-
-    //redraw the receipt if we dont leave this screen
-    //so that the highlighted items are no longer highlighted
-    doSelectTable(selectedTable);
     
-    //pick up the default home screen and load it
-    loadAfterSaleScreen();
-
-    if(!order.order_num) {
-        setLoginReceipt("Last Order", "Loading...");
-        setTimeout(finishDoSyncTableOrder, 2000);
-    } else {
-        finishDoSyncTableOrder();
-    }
+    postDoSyncTableOrder();
 }
 
 function finishDoSyncTableOrder() {

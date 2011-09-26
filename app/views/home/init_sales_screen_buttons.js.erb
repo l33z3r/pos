@@ -18,7 +18,7 @@
   //show the button panel
   $('#menu_buttons_panel').show();
   
-  $('#menu_buttons_panel').html("<%= escape_javascript(render :partial => 'screen_buttons', :locals => {:dbrs => @menu_screen_dbrs}) %>");
+  $('#menu_buttons_panel').html("<%= escape_javascript(render :partial => '/home/interfaces/large_screen/screen_buttons', :locals => {:dbrs => @menu_screen_dbrs}) %>");
 
   //stash the button permissions into an array
   display_button_passcode_permissions = new Array();
@@ -36,5 +36,5 @@
   <% end %>
 
   //replace the screen buttons div
-  $('#options_screen_menu_buttons').html("<%= escape_javascript(render :partial => 'more_options_screen_buttons', :locals => {:dbrs => @more_options_screen_dbrs}) %>");
+  $('#options_screen_menu_buttons').html("<%= escape_javascript(render :partial => '/home/interfaces/large_screen/more_options_screen_buttons', :locals => {:dbrs => @more_options_screen_dbrs}) %>");
 <% end %>

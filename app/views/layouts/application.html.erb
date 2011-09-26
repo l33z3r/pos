@@ -1,22 +1,2 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <%= render :partial => "/partials/common_head" %>
-  </head>
-  <body>
-
-    <div id="wrapper" class="wrapper menu">
-      <div id="body">
-        <div id="content_container">
-          <%= render :partial => "/partials/nav" %>
-
-          <%= yield %>
-        </div>
-      </div>
-
-    </div>
-    
-    <%= render :partial => "/partials/common_footer" %>
-
-  </body>
-</html>
+<!--Render the large screen by default -->
+<%= render "/layouts/interfaces/#{current_interface}_screen" %>

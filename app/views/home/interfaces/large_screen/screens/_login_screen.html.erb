@@ -1,0 +1,70 @@
+<div id="landing" style="display: none;">
+
+  <div id="login_receipt_keypad_container">
+
+    <div id="login_receipt_header"></div>
+
+    <div id="login_receipt" class="receipt">
+      <div id="login_till_roll" class="till_roll"></div>
+    </div>
+
+    <div id="entered_code_container">
+      <div id="clockincode_show"></div>
+      <%= hidden_field_tag :num, nil, :id => :num, :size => "18" %>
+    </div>
+
+    <div id="keypad" class="keypad">
+      <div id="keys" class="keys">
+        <% [[7,9],[4,6],[1,3]].each do |x,y| %>
+          <% (x..y).each do |num| %>
+            <div id="num_<%= num %>" class="key" onclick="loginScreenKeypadClick(<%=num%>)"><%= num %></div>
+          <% end %>
+        <% end %>
+
+        <div class="cancel_key" class="key" onclick="doCancelLoginKeypad()">C</div>
+        <div id="num_0" class="key" onclick="loginScreenKeypadClick(0)">0</div>
+        <div class="go_key" class="key" onclick="doLogin($('#num').val());return false;">OK</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="active_users_buttons_container">
+    <div id="active_users">
+      <%= render :partial => "/home/interfaces/large_screen/active_employees" %>
+    </div>
+
+    <div class="clear_spacer">
+      <div id="login_screen_status_message_container" class="global_status_message_container">
+        <div id="login_screen_status_message" class="global_status_message"></div>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <div id="login_screen_button_clock_in" class="button" onclick="doClockin()">
+        <div class="icon">
+          <%= image_tag "button_logos/clock_in.png", :alt => nil %>
+        </div>
+        <div class="button_name">Clock In</div>
+      </div>
+
+      <div id="login_screen_button_clock_out" class="button" onclick="doClockout()">
+        <div class="icon">
+          <%= image_tag "button_logos/clock_out.png", :alt => nil %>
+        </div>
+        <div class="button_name">Clock Out</div>
+      </div>
+      <% display_button = DisplayButton.find_by_perm_id ButtonMapper::PRINT_RECEIPT_BUTTON %>
+
+      <div id="login_screen_button_<%=display_button.id%>" class="button" onclick="printLastReceipt()">
+        <div class="icon">
+          <%= button_icon display_button %>
+        </div>
+        <div class="button_name"><%=display_button.button_text%></div>
+      </div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+  </div>
+
+  <div class="clear">&nbsp;</div>
+</div>

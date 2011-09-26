@@ -1,0 +1,280 @@
+function initMenu() {
+    //click the 1st menu page
+    $('#menu_pages_container .page').first().click();
+    
+    renderActiveTables();
+    
+    currentMenuPage = 1;
+    currentOrder = new Array();
+
+    loadCurrentOrder();
+    
+    //temporarily store that we were looking at table 38
+    current_user_id = 5;    
+    storeLastReceipt(current_user_id, 38);
+    
+    displayLastReceipt();
+}
+
+//we don't use this function in the medium interface but it needs to be coded
+function doDisplayButtonPasscodePrompt(button_id, forwardFunction) {
+    forwardFunction.call();
+}
+
+function renderActiveTables() {
+    activeTableIDS = getActiveTableIDS();
+    
+    //TODO: something with the active table ids
+}
+
+function doMenuPageSelect(pageNum, pageId) {
+    //set this pages class to make it look selected
+    $('#menu_pages_container .page').removeClass('selected');
+    $('#menu_page_' + pageId).addClass('selected');
+
+    $('#menu_items_container .items').hide();
+    $('#menu_items_' + pageNum).show();
+    
+    currentMenuPage = pageNum;
+}
+
+function doSelectMenuItem(productId, element) {
+//    if(currentMenuItemQuantity == "")
+//        currentMenuItemQuantity = "1";
+//
+//    if(currentMenuItemQuantity.indexOf(".") != -1) {
+//        if(currentMenuItemQuantity.length - currentMenuItemQuantity.indexOf(".") == 1) {
+//            currentMenuItemQuantity = "1";
+//        }
+//    }
+            
+    currentSelectedMenuItemElement = element;
+
+    //fetch this product from the products js array
+    product = products[productId]
+    
+    //todo: pick this up dynamically
+    amount = 1;
+    
+    //reset the quantity
+    //currentMenuItemQuantity = "";
+
+    buildOrderItem(product, amount);
+
+    finishDoSelectMenuItem();
+}
+
+function finishDoSelectMenuItem() {
+    var orderItem = currentOrderItem;
+    
+    //if this is a tables order deal with it in another function
+    if(selectedTable != 0) {
+        tableSelectMenuItem(orderItem);
+        return;
+    }
+    
+    addItemToOrderAndSave(orderItem);
+
+    //add a line to the receipt
+    writeOrderItemToReceipt(orderItem);
+    //writeTotalToReceipt(currentOrder, currentOrder['total']);
+
+    menuRecptScroll();
+}
+
+function tableSelectMenuItem(orderItem) {
+    addItemToTableOrderAndSave(orderItem);
+    menuRecptScroll();
+}
+
+function writeOrderItemToReceipt(orderItem) {
+    $('#menu_screen_till_roll').html($('#menu_screen_till_roll').html() + getOrderItemReceiptHTML(orderItem));
+}
+
+function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
+    allOrderItemsReceiptHTML = "";
+
+    for(i=0; i<order.items.length; i++) {
+        item = order.items[i];
+        allOrderItemsReceiptHTML += getOrderItemReceiptHTML(order.items[i], includeNonSyncedStyling, includeOnClick, includeServerAddedText);
+    }
+    
+    return allOrderItemsReceiptHTML;
+}
+
+function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
+    //default the args to true
+    if (typeof includeNonSyncedStyling == "undefined") {
+        includeNonSyncedStyling = true;
+    }
+    
+    if (typeof includeOnClick == "undefined") {
+        includeOnClick = true;
+    }
+    
+    if (typeof includeServerAddedText == "undefined") {
+        includeServerAddedText = true;
+    }
+    
+    haveDiscount = orderItem.discount_percent && orderItem.discount_percent > 0;
+    
+    itemPriceWithoutDiscountOrModifier = orderItem.amount * orderItem.product_price;
+    
+    if(haveDiscount) {
+        itemPriceWithoutModifier = itemPriceWithoutDiscountOrModifier - ((itemPriceWithoutDiscountOrModifier * orderItem.discount_percent)/100);
+    } else {
+        itemPriceWithoutModifier = itemPriceWithoutDiscountOrModifier;
+    }
+    
+    notSyncedClass = (includeNonSyncedStyling && !orderItem.synced) ? "not_synced" : "";
+    notSyncedMarker = (includeNonSyncedStyling && !orderItem.synced) ? "*" : "";
+    
+    onclickMarkup = includeOnClick ? "onclick='doSelectReceiptItem(this)'" : "";
+    
+    orderHTML = "<div class='order_line " + notSyncedClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
+    
+    if(includeServerAddedText && orderItem.showServerAddedText) {
+        var nickname = serverNickname(orderItem.serving_employee_id);
+        var timeAdded = utilFormatTime(new Date(parseInt(orderItem.time_added)));
+        orderHTML += "<div class='server'>At " + timeAdded + " " + nickname + " added:</div>";
+    }
+    
+    orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
+    orderHTML += "<div class='name'>" + notSyncedMarker + " " + orderItem.product.name + "</div>";
+    
+    orderItemTotalPriceText = number_to_currency(itemPriceWithoutModifier, {
+        precision : 2
+    });
+    orderHTML += "<div class='total' data-per_unit_price='" + orderItem.product_price + "'>&nbsp;</div>";
+    
+    if(orderItem.modifier) {
+        orderHTML += "<div class='clear'>&nbsp;</div>";
+        orderHTML += "<div class='modifier_name'>" + orderItem.modifier.name + "</div>";
+        
+        modifierPriceWithoutDiscount = orderItem.modifier.price * orderItem.amount;
+        
+        if(haveDiscount) {
+            modifierPrice = modifierPriceWithoutDiscount - ((modifierPriceWithoutDiscount * orderItem.discount_percent)/100);
+        } else {
+            modifierPrice = modifierPriceWithoutDiscount;
+        }
+    
+        //only show modifier price if not zero
+        if(orderItem.modifier.price > 0) {
+            modifierPriceText = number_to_currency(modifierPrice, {
+                precision : 2
+            });
+            orderHTML += "<div class='modifier_price'>&nbsp;</div>";
+        }
+        
+        orderHTML += clearHTML;
+    }
+    //alert(orderItem.oia_items);
+    if(orderItem.oia_items) {
+        for(j=0; j<orderItem.oia_items.length; j++) {
+            oia_is_add = orderItem.oia_items[j].is_add;
+            
+            if(!orderItem.oia_items[j].is_note) {
+                orderHTML += "<div class='oia_add'>" + (oia_is_add ? "Add" : "No") + "</div>";
+            }
+            
+            orderHTML += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>" + orderItem.oia_items[j].description + "</div>";
+            
+            if(orderItem.oia_items[j].abs_charge != 0) {
+                
+                oiaPriceWithoutDiscount = orderItem.oia_items[j].abs_charge * orderItem.amount;
+        
+                if(haveDiscount && oia_is_add) {
+                    oiaPrice = oiaPriceWithoutDiscount - ((oiaPriceWithoutDiscount * orderItem.discount_percent)/100);
+                } else {
+                    oiaPrice = oiaPriceWithoutDiscount;
+                }
+        
+                //orderHTML += "<div class='oia_price'>" + (!oia_is_add ? "-" : "") + currency(oiaPrice, false) + "</div>";
+                orderHTML += "<div class='oia_price'>&nbsp;</div>";
+            }
+            
+            orderHTML += clearHTML;
+        }
+    }
+
+    var preDiscountPrice = (orderItem.product_price * orderItem.amount);
+
+    //add the modifiers price to the preDiscountPrice
+    if(orderItem.modifier) {
+        preDiscountPrice += orderItem.modifier.price * orderItem.amount;
+    }
+    
+    //add the oias price to the preDiscountPrice
+    if(orderItem.oia_items) {
+        var oiaPriceTotal = 0;
+        
+        for(j=0; j<orderItem.oia_items.length; j++) {
+            var nextOia = orderItem.oia_items[j];
+            
+            if(nextOia.is_add) {
+                oiaPriceTotal += orderItem.oia_items[j].abs_charge;
+            } else {
+                oiaPriceTotal -= orderItem.oia_items[j].abs_charge;
+            }
+        }
+        
+        preDiscountPrice += oiaPriceTotal * orderItem.amount;
+    }
+    
+    if(haveDiscount) {
+        formattedPreDiscountedPrice = number_to_currency(preDiscountPrice, {
+            precision : 2
+        });
+            
+        orderHTML += clearHTML;
+        
+        if(orderItem.discount_percent == 100) {
+            orderHTML += "<div class='discount_complimentary'>Complimentary (was " + formattedPreDiscountedPrice + ")</div>";
+        } else {
+            orderHTML += "<div class='discount'><div class='header'>Discounted</div>";
+            orderHTML += "<div class='discount_amount'>" + orderItem.discount_percent + "% from </div>";
+            orderHTML += "<div class='new_price'>" + formattedPreDiscountedPrice + "</div></div>";
+        }
+    }
+    
+    orderHTML += clearHTML + "</div>" + clearHTML;
+    
+    return orderHTML;
+}
+
+function menuRecptScroll() {
+    recptScroll("menu_screen_");
+}
+
+function loadReceipt(order) {
+    clearReceipt();
+    
+    if(order == null){
+        return;
+    }
+
+    orderTotal = order.total;
+    orderItems = order.items;
+
+    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(order);
+    $('#menu_screen_till_roll').html($('#menu_screen_till_roll').html() + allOrderItemsRecptHTML);
+
+//    if(orderTotal != null) {
+//        writeTotalToReceipt(order, orderTotal);
+//    }
+    
+    menuRecptScroll();
+}
+
+function clearReceipt() {
+    $('#menu_screen_till_roll').html('');
+//    $('#total_value').html(currency(0));
+//    $('#till_roll_discount').html('');
+}
+
+function postDoSyncTableOrder() {
+    //redraw the receipt if we dont leave this screen
+    //so that the highlighted items are no longer highlighted
+    doSelectTable(selectedTable);
+}
