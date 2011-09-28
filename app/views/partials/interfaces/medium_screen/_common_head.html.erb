@@ -1,43 +1,19 @@
 <title>Pos</title>
 
-<%= stylesheet_links "shared/", "interfaces/medium_screen/", :recursive => true %>
+<%= stylesheet_links "shared/", "interfaces/medium_screen/", :recursive => true, :cache => "cache/medium_screen_styles" %>
 
 <!-- load the dynamic theme -->
 <link type="text/css" href="<%= admin_custom_theme_path(:format => :css) %> " media="screen" rel="stylesheet" />
 
-<%= javascript_include_tag "jquery/jquery.min", "jquery/jquery-ui.min" %>
-
-<!--cant cache the following scripts as they are erb templates -->
-<%= javascript_include_tag "init", "employees", "products", "tables" %>
-
-<!-- js shared between interfaces -->
-<%= javascript_includes "interfaces/shared/" %>
-
-<!-- plugins js -->
-<%= javascript_include_tag "plugins/iphone-style-checkboxes", "plugins/keyboard", 
-  "plugins/touch-scroll", "plugins/jquery.cookie", "plugins/jquery.clock",
-  "plugins/jquery.plugin.menuTree", "plugins/dateFormat", "plugins/webkitdragdrop",
-  "plugins/jquery.bubblepopup", "plugins/jquery-jvert-tabs-1.1.4", 
-  "plugins/jquery.jplayer.min", "plugins/jquery.jscrollpane", "plugins/jquery.mousewheel", 
-  "plugins/jquery.bgiframe", "plugins/jquery.mcdropdown", "plugins/jquery.ibutton" %>
+<%= render "/partials/shared_js_includes" %>
 
 <!-- application specific js -->
 <%= javascript_include_tag "rails", "interfaces/medium_screen/application", 
   "interfaces/medium_screen/menu", "interfaces/medium_screen/util",
   "touch/touch_util", "touch/on_touch_click_replace", "screen_button_functions",
-  "interfaces/medium_screen/receipt_html_functions" %>
-
-<!-- only load the fingerprint libraries if the fingerprint has not yet been set -->
-<% if !request.cookies["terminal_fingerprint"] %>
-  <%= javascript_include_tag "plugins/md5", "plugins/detector" %>
-<% end %>
+  "interfaces/medium_screen/receipt_html_functions", :cache => "cache/medium_screen" %>
 
 <%= csrf_meta_tag %>
-
-<% if params[:showfirebuglite] == "true" %>
-  <!-- include firebug lite -->
-  <script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
-<% end %>
 
 <!-- must set some vars from the system settings -->
 <%= render :partial => "/partials/js_global_settings" %>
