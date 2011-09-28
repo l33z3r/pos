@@ -156,7 +156,7 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
             if((typeof itemPrinters != "undefined") && itemPrinters.length > 0) {
                 var printersArray = itemPrinters.split(",");
                 console.log(printersArray + " " + $.inArray(terminalID, printersArray));
-                if($.inArray(terminalID, printersArray) != -1) {
+                if($.inArray(terminalID.toLowerCase(), printersArray) != -1) {
                     pushcount++;
                     itemsToPrint.push(items[itemKey]);
                 }
