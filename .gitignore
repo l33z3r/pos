@@ -1,8 +1,7 @@
 log/*
 tmp/*
-public/stylesheets/all.css
-public/javascripts/jq.js
-public/javascripts/libs.js
-public/javascripts/fingerprint_libs.js
+public/javascripts/cache/*
+public/stylesheets/cache/*
 nbproject/private/
 public/system/
+
