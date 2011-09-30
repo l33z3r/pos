@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
-        <file>file:/home/lee/work/pos/pos/app/views/partials/interfaces/large_screen/_common_head.html.erb</file>
-        <file>file:/home/lee/work/pos/pos/app/views/partials/interfaces/medium_screen/_common_head.html.erb</file>
-        <file>file:/home/lee/work/pos/pos/config/environments/development.rb</file>
-        <file>file:/home/lee/work/pos/pos/app/views/partials/_shared_js_includes.html.erb</file>
-        <file>file:/home/lee/work/pos/pos/config/environments/production.rb</file>
-        <file>file:/home/lee/work/pos/pos/config/database.yml</file>
-    </open-files>
 </project-private>

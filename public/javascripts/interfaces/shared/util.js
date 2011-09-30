@@ -156,7 +156,7 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
     
     //fill in the table order array
     if(currentTableOrderJSON != null) {
-        for(i=0; i<currentTableOrderJSON.items.length; i++) {
+        for(var i=0; i<currentTableOrderJSON.items.length; i++) {
             //alert("in: " + currentTableOrderJSON.items[i].itemNumber);
             tableOrderItem = currentTableOrderJSON.items[i];
             

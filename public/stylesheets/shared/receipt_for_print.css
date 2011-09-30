@@ -8,7 +8,7 @@
 
 div#print_receipt_wrapper {
     color: #333333;
-    font-family: verdana;
+    font-family: verdana, sans-serif;
     font-size: 12px;
     line-height: 15px;
     background-color: #FFF;

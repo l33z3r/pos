@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110905162647) do
+ActiveRecord::Schema.define(:version => 20110930151525) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -343,7 +343,7 @@ ActiveRecord::Schema.define(:version => 20110905162647) do
   create_table "terminal_sync_data", :force => true do |t|
     t.integer  "sync_type"
     t.string   "time"
-    t.text     "data"
+    t.text     "data",       :limit => 2147483647
     t.datetime "created_at"
     t.datetime "updated_at"
   end

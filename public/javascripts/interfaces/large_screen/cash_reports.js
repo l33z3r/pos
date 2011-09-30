@@ -207,12 +207,12 @@ function getOpenOrdersTotal() {
     var tableIDS = getActiveTableIDS();
     var total = 0;
     
-    for(i = 0; i < tableIDS.length; i++) {
+    for(var i = 0; i < tableIDS.length; i++) {
         getTableOrderFromStorage(current_user_id, tableIDS[i]);
     }
     
-    for(i = 0; i < tableIDS.length; i++) {
-        var orderTotal = tableOrders[parseInt(tableIDS[i])].total;
+    for(var u = 0; u < tableIDS.length; u++) {
+        var orderTotal = tableOrders[parseInt(tableIDS[u])].total;
         total += orderTotal;
     }
     

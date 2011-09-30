@@ -13,7 +13,7 @@ body {
     margin: 0px;
     padding: 0px;
     color: #333333;
-    font-family: verdana;
+    font-family: verdana, sans-serif;
     font-size: 17px;
     overflow: hidden;
     line-height: 12px;
