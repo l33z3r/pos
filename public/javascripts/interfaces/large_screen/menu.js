@@ -934,26 +934,16 @@ function saveOrdersForLaterSend(ordersForLaterSend) {
 }
 
 function initOptionButtons() {
-    $('#menu_buttons_panel').hide();
-    $('#menu_buttons_loading_message').show();
-
-    //show admin button?
-    if(current_user_is_admin) {
-        $('#admin_button').show();
-    } else {
-        $('#admin_button').hide();
-    }
-
-    if(current_user_id != null) {
-        //user is logged in so set the sales screen buttons visibility
-        $.ajax({
-            type: 'GET',
-            url: '/init_sales_screen_buttons.js',
-            data: {
-                current_user_id : current_user_id
-            }
-        });
-    }
+    //hide all
+    $('#menu_buttons_panel .buttons').hide();
+    $('#options_screen_menu_buttons .buttons').hide();
+    
+    var role_id = serverRoleID(current_user_id);
+    $('#menu_screen_buttons_html_for_role_' + role_id).show();
+    $('#options_screen_buttons_html_for_role_' + role_id).show();
+    
+    //assign the permissions array
+    display_button_passcode_permissions = all_display_button_permissions[role_id];
 }
 
 var currentTargetPopupAnchor = null;

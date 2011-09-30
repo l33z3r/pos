@@ -342,3 +342,17 @@ function serverNickname(user_id) {
     
     return server;
 }
+
+function serverRoleID(user_id) {
+    var role_id = null;
+    
+    for (var i = 0; i < employees.length; i++){
+        id = employees[i].id;
+        if(id == user_id) {
+            role_id = employees[i].role_id;
+            break;
+        }
+    }
+    
+    return role_id;
+}

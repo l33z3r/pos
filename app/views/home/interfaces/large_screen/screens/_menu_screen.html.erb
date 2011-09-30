@@ -80,11 +80,12 @@
     <input type="text" id="display_button_passcode" style="display: none;"/>
 
     <div id="menu_buttons">
-
-      <div id="menu_buttons_loading_message">Loading Permissions...</div>
-
-      <div style="display: none;" id="menu_buttons_panel">
-
+      <div id="menu_buttons_panel">
+        <% @menu_screen_buttons_map.each do |role_id, dbrs| %>
+          <div style="display: none;" class="buttons" id="menu_screen_buttons_html_for_role_<%=role_id%>">
+            <%= render :partial => '/home/interfaces/large_screen/screen_buttons', :locals => {:dbrs => dbrs} %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

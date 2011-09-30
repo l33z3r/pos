@@ -15,13 +15,6 @@ class HomeController < ApplicationController
     render :layout => "mobile"
   end
 
-  def init_sales_screen_buttons
-    #we get passed the user id as it may not have been set in the session yet,
-    #as the ajax login call may not yet have happened
-    @current_employee_id = params[:current_user_id]
-    @employee = Employee.find(@current_employee_id)
-  end
-  
   def call_home
     #check if we need to reload the interface due to room builder or menu screen being accessed
     @last_interface_reload_time = params[:lastInterfaceReloadTime]
@@ -180,7 +173,14 @@ class HomeController < ApplicationController
   end
   
   def do_large_interface_actions
+    #load the buttons for roles
+    @menu_screen_buttons_map = {}
+    @options_screen_buttons_map = {}
     
+    Role.all.each do |role|
+      @menu_screen_buttons_map[role.id] = DisplayButtonRole.menu_screen_buttons_for_role(role.id)
+      @options_screen_buttons_map[role.id] = DisplayButtonRole.admin_screen_buttons_for_role(role.id)
+    end
   end
   
   def do_medium_interface_actions

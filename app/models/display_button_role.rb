@@ -5,6 +5,13 @@ class DisplayButtonRole < ActiveRecord::Base
   def self.admin_screen_buttons_for_role role_id
     where("role_id = ?", role_id).where("show_on_admin_screen = ?", true).includes(:display_button)
   end
+  
+  def self.menu_screen_buttons_for_role role_id
+    find(:all, :include => "display_button",
+      :conditions => "role_id = #{role_id} and (show_on_sales_screen is true 
+          and (show_on_admin_screen is true or role_id = #{Role::SUPER_USER_ROLE_ID}) 
+          or (display_buttons.perm_id = #{ButtonMapper::MORE_OPTIONS_BUTTON} and role_id = #{Role::SUPER_USER_ROLE_ID}))")
+  end
 
   def show_on_admin_screen
     return true if role.id == Role::SUPER_USER_ROLE_ID

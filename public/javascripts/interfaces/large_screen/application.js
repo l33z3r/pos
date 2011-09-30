@@ -1,5 +1,8 @@
 var showingDisplayButtonPasscodePromptPopup;
 
+//global button permissions map that contains permissions hashed on role id
+var all_display_button_permissions;
+
 //this array stores wether or not to call for a 
 //passcode prompt when a screen button is pressed
 var display_button_passcode_permissions;
