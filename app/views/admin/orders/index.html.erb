@@ -2,6 +2,16 @@
   <%= javascript_include_tag "admin_js/previous_sales" %>
 <% end %>
 
+<% if params[:section] %>
+  <% content_for :head do %>
+    <script type="text/javascript">
+      $(function() {
+        $('#<%=params[:section]%>_section_link').click();
+      });
+    </script>
+  <% end %>
+<% end %>
+
 <script type="text/javascript">
   selectedFromDate = "<%= !@selected_from_date.blank? ? @selected_from_date : @todaysDateFormatted %>";
   selectedToDate = "<%= !@selected_to_date.blank? ? @selected_to_date : @todaysDateFormatted %>";
@@ -45,7 +55,7 @@
             </div>
             <div class="button_name">Re-Open</div>
           </div>
-          
+
           <div class="button" id="continue_order_button" style="display: none;" onclick="continueOrder();">
             <div class="icon">
               <%= image_tag "/images/button_logos/continue_order.png" %>
@@ -69,9 +79,9 @@
     <div id="order_list_section">
       <div id="order_list_tabs">
         <div class="tabs">
-          <div class="tab" onclick="orderListTabSelected(this, 'closed_orders')">Closed Orders</div>
-          <div class="tab" onclick="orderListTabSelected(this, 'open_orders')">Open Orders</div>
-          <div class="tab" onclick="orderListTabSelected(this, 'search_orders')">Search</div>
+          <div class="tab" id="closed_orders_section_link" onclick="orderListTabSelected(this, 'closed_orders')">Closed Orders</div>
+          <div class="tab" id="open_orders_section_link" onclick="orderListTabSelected(this, 'open_orders')">Open Orders</div>
+          <div class="tab" id="search_order_section_link" onclick="orderListTabSelected(this, 'search_orders')">Search</div>
         </div>
       </div>
 

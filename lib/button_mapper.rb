@@ -50,6 +50,7 @@ class ButtonMapper
   PREVIOUS_ORDERS_BUTTON = 47
   MODIFY_ORDER_ITEM_BUTTON = 48
   MANAGE_ORDER_ITEM_ADDITION_GRIDS_BUTTON = 49
+  CURRENT_ORDERS_BUTTON = 50
   
   def action_for_button button
 
@@ -154,6 +155,8 @@ class ButtonMapper
       @retval = wrap_with_menu_screen_function_check "toggleModifyOrderItemScreen(); return false;"
     when MANAGE_ORDER_ITEM_ADDITION_GRIDS_BUTTON
       @retval = "window.location = '#{admin_order_item_addition_grids_path}'; return false;"
+    when CURRENT_ORDERS_BUTTON
+      @retval = "window.location = '#{admin_orders_path}?section=open_orders'; return false;"
     end
 
     @retval

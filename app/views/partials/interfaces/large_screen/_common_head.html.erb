@@ -28,4 +28,6 @@
 <!-- disable the double tap to zoom -->
 <meta name="viewport" content="user-scalable=0;" />
 
-<meta http-equiv="pragma" content="no-cache"/>
+<% if Rails.env.development  %>
+  <meta http-equiv="pragma" content="no-cache"/>
+<% end %>
