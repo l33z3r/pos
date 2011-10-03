@@ -54,8 +54,12 @@ class Product < ActiveRecord::Base
   end
   
   def printing_to_terminal? id_safe_terminal_name
-    read_attribute("printers").split(",").each do |terminal_name|
-      return true if id_safe_terminal_name == terminal_name
+    @printers_string = read_attribute("printers")
+    
+    if @printers_string
+      @printers_string.split(",").each do |terminal_name|
+        return true if id_safe_terminal_name == terminal_name
+      end
     end
     
     return false
