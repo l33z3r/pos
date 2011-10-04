@@ -1,7 +1,5 @@
 class HomeController < ApplicationController
 
-  caches_page :index
-  
   #main screen including the login overlay
   def index
     perform_interface_specific_actions
