@@ -215,13 +215,13 @@ function finishDoSelectMenuItem() {
         return;
     }
     
-    addItemToOrderAndSave(orderItem);
-
     //add a line to the receipt
     writeOrderItemToReceipt(orderItem);
     writeTotalToReceipt(currentOrder, currentOrder['total']);
 
     menuRecptScroll();
+    
+    addItemToOrderAndSave(orderItem);   
 }
 
 function tableSelectMenuItem(orderItem) {
