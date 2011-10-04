@@ -357,6 +357,9 @@ function printReceipt(content, printRecptMessage) {
 }
 
 function print(content) {
+    //document.applets[0].printReceipt("hi");
+    
+    
     $('#printFrame').contents().find('#till_roll').html(content);
     
     printFrame.focus();

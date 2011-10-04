@@ -38,11 +38,11 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
     if(callHomePollInitSequenceComplete) {
         checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);
         
-        //we don't want to show the initial messages as there may be a few of them
-        if(recvdTerminalID != terminalID) {
-            setStatusMessage("<b>" + terminalEmployee + "</b> modified the order for table <b>" 
-                + tableLabel + "</b> from terminal <b>" + recvdTerminalID + "</b>");
-        }
+    //we don't want to show the initial messages as there may be a few of them
+    //        if(recvdTerminalID != terminalID) {
+    //            setStatusMessage("<b>" + terminalEmployee + "</b> modified the order for table <b>" 
+    //                + tableLabel + "</b> from terminal <b>" + recvdTerminalID + "</b>");
+    //        }
     }
     
     newlyAdded = addActiveTable(tableID);
@@ -363,22 +363,20 @@ function loadCurrentOrder() {
 }
 
 function recptScroll(targetPrefix) {
-    $('#' + targetPrefix + 'till_roll').touchScroll('update');
-
-    currentHeight = $('#' + targetPrefix + 'till_roll').height();
-    scrollHeight = $('#' + targetPrefix + 'till_roll').attr('scrollHeight');
-    newHeight = scrollHeight - currentHeight;
-
-    //need an offset
-    if(newHeight != 0) {
-        newHeight -= 20;
-    }
-
-    if(!isTouchDevice()) {
-        //this code is for pc based browsers
-        $('#' + targetPrefix + 'receipt').scrollTop(currentHeight);
-    } else {
+    console.log("Updating receipt: " + '#' + targetPrefix + 'till_roll');
+    
+    if(isTouchDevice()) {
+        $('#' + targetPrefix + 'till_roll').touchScroll('update');
+        
+        currentHeight = $('#' + targetPrefix + 'till_roll').height();
+        scrollHeight = $('#' + targetPrefix + 'till_roll').attr('scrollHeight');
+        newHeight = scrollHeight - currentHeight;
+    
         $('#' + targetPrefix + 'till_roll').touchScroll('setPosition', newHeight);
+    
+    } else {
+        newHeight = $('#' + targetPrefix + 'receipt').attr('scrollHeight');
+        $('#' + targetPrefix + 'receipt').scrollTop(newHeight);
     }
 }
 
