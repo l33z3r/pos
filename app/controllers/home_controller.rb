@@ -1,5 +1,7 @@
 class HomeController < ApplicationController
 
+  caches_page :index
+  
   #main screen including the login overlay
   def index
     perform_interface_specific_actions
@@ -14,7 +16,7 @@ class HomeController < ApplicationController
       
     render :layout => "mobile"
   end
-
+  
   def call_home
     #check if we need to reload the interface due to room builder or menu screen being accessed
     @last_interface_reload_time = params[:lastInterfaceReloadTime]
