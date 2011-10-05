@@ -65,7 +65,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         //        alert(tableOrderDataJSON.items[itemKey].product.name);
         
         var copiedOrderItem = {};
-        console.log("OIAITEMS: " + tableOrderDataJSON.items[itemKey].oia_items + " " + (tableOrderDataJSON.items[itemKey].oia_items.length>0));
+        //console.log("OIAITEMS: " + tableOrderDataJSON.items[itemKey].oia_items + " " + (tableOrderDataJSON.items[itemKey].oia_items.length>0));
         
         if(typeof(tableOrderDataJSON.items[itemKey].oia_items) != "undefined") {
             //we must convert the oia_items hash to an array (the server turned our array into some indexed hash
@@ -210,9 +210,9 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, tableLabel, terminal
     }
     
     //we don't want to show the initial messages as there may be a few of them
-    if(callHomePollInitSequenceComplete && recvdTerminalID != terminalID) {
-        setStatusMessage("<b>" + terminalEmployee + "</b> totalled the order for table <b>" + tableLabel + "</b> from terminal <b>" + recvdTerminalID + "</b>");
-    }
+//    if(callHomePollInitSequenceComplete && recvdTerminalID != terminalID) {
+//        setStatusMessage("<b>" + terminalEmployee + "</b> totalled the order for table <b>" + tableLabel + "</b> from terminal <b>" + recvdTerminalID + "</b>");
+//    }
     
     //remove the table from the active table ids array
     newlyRemoved = removeActiveTable(tableID);
