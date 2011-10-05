@@ -65,23 +65,26 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         //        alert(tableOrderDataJSON.items[itemKey].product.name);
         
         var copiedOrderItem = {};
-        console.log(tableOrderDataJSON.items[itemKey].oia_items);
-        //we must convert the oia_items hash to an array (the server turned our array into some indexed hash
-        var newOIAItems = new Array();
+        console.log("OIAITEMS: " + tableOrderDataJSON.items[itemKey].oia_items + " " + (tableOrderDataJSON.items[itemKey].oia_items.length>0));
         
-        for(var oiaItemKey in tableOrderDataJSON.items[itemKey].oia_items) {
-            var nextOIA = tableOrderDataJSON.items[itemKey].oia_items[oiaItemKey];
-            console.log("copying oia " + oiaItemKey + " " + nextOIA);
+        if(typeof(tableOrderDataJSON.items[itemKey].oia_items) != "undefined") {
+            //we must convert the oia_items hash to an array (the server turned our array into some indexed hash
+            var newOIAItems = new Array();
+        
+            for(var oiaItemKey in tableOrderDataJSON.items[itemKey].oia_items) {
+                var nextOIA = tableOrderDataJSON.items[itemKey].oia_items[oiaItemKey];
+                console.log("copying oia " + oiaItemKey + " " + nextOIA);
             
-            //make sure the data types are converted correctly
-            nextOIA.is_add = (nextOIA.is_add === "true" ? true : false);
-            nextOIA.is_note = (nextOIA.is_note === "true" ? true : false);
-            nextOIA.abs_charge = parseFloat(nextOIA.abs_charge);
+                //make sure the data types are converted correctly
+                nextOIA.is_add = (nextOIA.is_add === "true" ? true : false);
+                nextOIA.is_note = (nextOIA.is_note === "true" ? true : false);
+                nextOIA.abs_charge = parseFloat(nextOIA.abs_charge);
             
-            newOIAItems.push(nextOIA);
+                newOIAItems.push(nextOIA);
+            }
+        
+            tableOrderDataJSON.items[itemKey].oia_items = newOIAItems;
         }
-        
-        tableOrderDataJSON.items[itemKey].oia_items = newOIAItems;
     
         var copiedOrderItemForStore = $.extend(true, copiedOrderItem, tableOrderDataJSON.items[itemKey]);
         
