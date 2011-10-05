@@ -1,3 +1,5 @@
+var current_table_label = null;
+
 function initMenu() {
     //click the 1st menu page
     $('#menu_pages_container .page').first().click();
@@ -9,16 +11,19 @@ function initMenu() {
 
     loadCurrentOrder();
     
-    //temporarily store that we were looking at table 38
-    current_user_id = 5;    
-    storeLastReceipt(current_user_id, 38);
-    
     displayLastReceipt();
+    
+    initModifierGrid();
 }
 
 //we don't use this function in the medium interface but it needs to be coded
 function doDisplayButtonPasscodePrompt(button_id, forwardFunction) {
     forwardFunction.call();
+}
+
+function checkMenuScreenForFunction() {
+    //return true for now...
+    return true;
 }
 
 function renderActiveTables() {
@@ -277,4 +282,76 @@ function postDoSyncTableOrder() {
     //redraw the receipt if we dont leave this screen
     //so that the highlighted items are no longer highlighted
     doSelectTable(selectedTable);
+}
+
+function showModifyOrderItemScreen() {
+    switchToModifyOrderItemSubscreen();
+}
+
+function switchToMenuItemsSubscreen() {
+    if(currentScreenIsMenu()) {
+        showMenuItemsSubscreen();
+    }
+}
+
+function showMenuItemsSubscreen() {
+    hideAllMenuSubScreens();
+    $('#menu_container').show();
+}
+
+function switchToModifyOrderItemSubscreen() {
+    if(currentScreenIsMenu()) {
+        hideAllMenuSubScreens();
+        $('#sales_button_' + modifyOrderItemButtonID).addClass("selected");
+        $('#order_item_additions').show();
+    }
+}
+
+function showTablesSubscreen() {
+    hideAllMenuSubScreens();
+    $('#sales_button_' + tablesButtonID).addClass("selected");
+    $('#table_screen').show();
+}
+
+function tableNumberSelectKeypadClick(val) {
+    newVal = $('#table_num').val().toString() + val;
+    $('#table_number_show').html(newVal);
+    $('#table_num').val(newVal);
+}
+
+function doCanceltableNumberSelectKeypad() {
+    oldVal = $('#table_num').val().toString();
+    newVal = oldVal.substring(0, oldVal.length - 1);
+    $('#table_number_show').html(newVal);
+    $('#table_num').val(newVal);
+}
+
+function doSubmitTableNumber() {
+    table_label = $('#table_num').val().toString();
+    
+    //check table exists
+    table_info = getTableForLabel(table_label);
+    
+    clearTableNumberEntered();
+    
+    if(!table_info) {
+        $('#table_number_show').html("No Such Table!");
+        return;
+    }
+    
+    current_table_label = table_label;
+    
+    doSelectTable(table_info.id);
+    
+    clearTableNumberEntered();
+    showMenuItemsSubscreen();
+}
+
+function clearTableNumberEntered() {
+    $('#table_num').val("");
+    $('#table_number_show').html("");
+}
+
+function postDoSelectTable() {
+    $('#table_num_holder').html("Table #" + current_table_label);
 }

@@ -198,3 +198,16 @@ function adminCancelClicked() {
         goTo('/home#screen=more_options');
     }
 }
+
+function linkTerminalDisplay(terminal_id, display_id) {
+    //alert("link " + terminal_id + " to " + display_id);
+    
+    $.ajax({
+        type: 'POST',
+        url: '/admin/terminals/link_display',
+        data: {
+            terminal_id : terminal_id,
+            display_id : display_id
+        }
+    });
+}

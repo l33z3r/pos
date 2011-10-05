@@ -82,16 +82,15 @@ div#login div#entered_code_container div#clockincode_show {
     height: 20px;
     font-size: 14px;
     font-weight: bold;
-    padding-top: 5px;
-    float: left;
+    padding: 7px 0px;
     border: 1px solid #CCC;
     -moz-border-radius: 4px;
     border-radius: 4px;
     box-shadow: 0px 1px 1px 0px #777;
     margin-left: 40px;
-    margin-top: 6px;
-    margin-right: 20px;
+    margin: auto;
     background-color: #FFF;
+    text-align: center;
 }
 
 /* End Login Screen */

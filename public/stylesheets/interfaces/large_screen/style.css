@@ -1458,7 +1458,6 @@ div#receipt_keypad_container div#top_buttons {
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
     border: 1px solid #AAA;
-    padding: 2px;
     font-weight: bold;
 }
 
@@ -1475,27 +1474,26 @@ div#receipt_keypad_container div#table_select_container select {
     border-radius: 4px;
     background-color: #FFF;
     color: #000;
-    height: 32px;
+    height: 36px;
     width: 113px;
     margin-left: 30px;
     font-size: 20px;
 }
 
 div#receipt_keypad_container div#table_screen_button {
-    margin-left: 5px;
-    margin-right: 20px;
-    width: 73px;
-    max-width: 73px;
-    height: 22px;
-    padding-top: 8px;
+    margin: 0px 6px 0px 4px;
+    width: 92px;
+    max-width: 92px;
+    height: 23px;
+    padding-top: 11px;
     max-height: 32px;
     overflow: hidden;
     vertical-align: middle;
     text-align: center;
     cursor: pointer;
     border: 1px solid #777;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     box-shadow: 0px 1px 0px #777;
     background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
@@ -1509,7 +1507,7 @@ div#menu_screen div#menu_pages_container div#pages {
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container {
-    height: 480px;
+    height: 486px;
     padding-left: 2px;
     padding-top: 4px;
     background-color: #E0E0E0;
@@ -1610,8 +1608,8 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 
 div#menu_screen div#order_item_additions {
     display: none;
-    height: 547px;
-    background-color: #B4B4B4;
+    height: 548px;
+    background-color: #E0E0E0;
 }
 
 div#menu_screen div#order_item_additions div#oia_container {
@@ -1665,6 +1663,7 @@ div#menu_screen div#order_item_additions div.grid_row {
 }
 
 div#menu_screen div#order_item_additions div.grid_row div.grid_item {
+    margin: 0px 1px;
     float: left;
     background-color: #FFF;
     border: 1px solid #555;

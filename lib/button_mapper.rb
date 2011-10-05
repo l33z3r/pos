@@ -51,6 +51,7 @@ class ButtonMapper
   MODIFY_ORDER_ITEM_BUTTON = 48
   MANAGE_ORDER_ITEM_ADDITION_GRIDS_BUTTON = 49
   CURRENT_ORDERS_BUTTON = 50
+  MODIFY_TERMINALS_BUTTON = 51
   
   def action_for_button button
 
@@ -157,6 +158,8 @@ class ButtonMapper
       @retval = "window.location = '#{admin_order_item_addition_grids_path}'; return false;"
     when CURRENT_ORDERS_BUTTON
       @retval = "window.location = '#{admin_orders_path}?section=open_orders'; return false;"
+    when MODIFY_TERMINALS_BUTTON
+      @retval = "window.location = '#{admin_terminals_path}'; return false;"
     end
 
     @retval

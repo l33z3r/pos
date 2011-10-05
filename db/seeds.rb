@@ -24,7 +24,7 @@
   [35, "Split Order"], [36, "Stock Take"], [37, "Delivery"], [38, "Cash Out"], [39, "Receipt Setup"],
   [40, "Payment Methods"], [41, "Gift Voucher"], [42, "Order Types"], [43, "Set Up Discounts"],
   [44, "Print Receipt"], [45, "Order"], [46, "Service Charge"], [47, "Previous Sales"], [48, "Modify"],
-  [49, "Modifier Grids"], [50, "Current Orders"]]
+  [49, "Modifier Grids"], [50, "Current Orders"], [51, "Manage Terminals"]]
 
 #now create the buttons and also init a button role for admin user
 @display_buttons_map.each do |perm_id, button_text|

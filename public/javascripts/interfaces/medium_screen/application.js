@@ -10,9 +10,10 @@ function doGlobalInit() {
     
     if(isTouchDevice()) {
         initTouch();
+        initTouchRecpts();
     }
     
-    initTouchRecpts();
+    initUIElements();
     
     initMenu();
     

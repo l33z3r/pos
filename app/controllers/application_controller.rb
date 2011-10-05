@@ -156,7 +156,7 @@ class ApplicationController < ActionController::Base
   end
   
   def clear_caches
-    DisplayButton.clear_caches
+    #no caches yet, but will use fragment caching in future
   end
   
   def reload_interface_times

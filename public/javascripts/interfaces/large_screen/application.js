@@ -28,8 +28,6 @@ function doGlobalInit() {
         initTouchRecpts();
     }
     
-    
-    
     //check if we have loaded a previous order from the admin interface
     //this will also load it into tableOrders[-1]
     initPreviousOrder();

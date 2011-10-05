@@ -5,7 +5,15 @@ function getCurrentRecptHTML() {
 //this loads up the last receipt that a user was looking at before logging out
 function displayLastReceipt() {
     var lastReceiptID = fetchLastReceiptID();
-    console.log("Last recpt " + lastReceiptID);
+    
+    if(lastReceiptID == 0) {
+        $('#table_num_holder').html("Select Table");
+        showTablesSubscreen();
+        return;
+    }
+    
+    current_table_label = tables[lastReceiptID].label;
+    
     //set the select item
     doSelectTable(lastReceiptID); 
 }

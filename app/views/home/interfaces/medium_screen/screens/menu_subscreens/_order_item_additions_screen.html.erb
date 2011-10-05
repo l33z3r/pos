@@ -1,0 +1,30 @@
+<div id="order_item_additions">
+  <div id="oia_container">
+    <% (1..@display.order_item_addition_grid.grid_y_size).each do |y| %>
+      <div class="grid_row">
+        <% (1..@display.order_item_addition_grid.grid_x_size).each do |x| %>
+          <% @oia = @display.order_item_addition_grid.item_for_position(x, y) %>
+
+          <% if @oia %>
+            <div class="grid_item <%=@oia.available ? "" : "not_available" %>" style="background-color: <%=@oia.background_color%>;" 
+                 onclick="orderItemAdditionClicked(this)"
+                 data-description="<%=@oia.description%>" data-add_charge="<%=@oia.add_charge%>"
+                 data-minus_charge="<%=@oia.minus_charge%>" data-available="<%=@oia.available%>">
+              <div style="color: <%=@oia.text_color%>;font-size: <%=@oia.text_size%>px;" class="name">
+                <%= @oia.description %>
+              </div>
+              <div style="color: <%=@oia.text_color%>;font-size: <%=@oia.text_size%>px;" class="charge">
+                <%= print_money @oia.add_charge unless @oia.add_charge == 0 %>
+              </div>
+            </div>
+          <% else %>
+            <div class="grid_item empty">&nbsp;</div>
+          <% end %>
+
+        <% end %>
+      </div>
+
+      <div class="clear">&nbsp;</div>
+    <% end %>
+  </div>
+</div>

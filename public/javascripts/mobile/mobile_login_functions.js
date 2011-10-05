@@ -27,11 +27,7 @@ function doMobileLogin() {
             nickname = employees[i].nickname;
             id = employees[i].id
             is_admin = employees[i].is_admin;
-            if(!is_admin) {
-                clearMobileLoginCode();
-                setMobileStatusMessage("You must be a super user to access this application!");
-                return;
-            }
+            
             mobileLoginSuccess(id, nickname, is_admin, passcode);
             return;
         }

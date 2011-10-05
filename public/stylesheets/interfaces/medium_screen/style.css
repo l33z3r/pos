@@ -14,7 +14,7 @@ body {
     padding: 0px;
     color: #333333;
     font-family: verdana, sans-serif;
-    font-size: 17px;
+    font-size: 18px;
     overflow: hidden;
     line-height: 12px;
 
@@ -110,14 +110,20 @@ div.wrapper div td {
 /* Menu Screen */
 
 div#menu_screen div#receipt_buttons_container div#receipt_container {
+    border: 1px solid #000;
     float: left;
-    width: 260px;
+    width: 258px;
+}
+
+div#menu_screen div#receipt_buttons_container div#receipt_container div#table_num_holder {
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+    padding: 6px;
 }
 
 div#menu_screen div#receipt_buttons_container div#receipt_container div#menu_screen_receipt {
-    height: 192px;
+    height: 167px;
     background-color: #FFF;
-    border: 1px solid #000;
     overflow-y: auto;
     display: block;
     padding-left: px;
@@ -127,7 +133,7 @@ div#menu_screen div#receipt_buttons_container div#receipt_container div#menu_scr
 
 div#menu_screen div#receipt_buttons_container div#receipt_container div#menu_screen_receipt div#menu_screen_till_roll {
     padding-top: 4px;
-    height: 182px;
+    height: 157px;
     display: block;
     background-color: #FFF;
 }
@@ -205,6 +211,84 @@ div#menu_screen div#menu_container div#menu_items_container div.item_pic img {
     height: 50px;
 }
 
+div#menu_screen div#order_item_additions {
+    display: none;
+    height: 603px;
+}
+
+div#menu_screen div#order_item_additions div.grid_row {
+    width: 480px;
+}
+
+div#menu_screen div#order_item_additions div.grid_row div.grid_item {
+    margin: 0px 1px;
+    float: left;
+    background-color: #FFF;
+    border: 1px solid #555;
+    cursor: pointer;
+}
+
+div#menu_screen div#order_item_additions div.grid_row div.grid_item.not_available>div {
+    text-decoration: line-through;
+}
+
+div#menu_screen div#order_item_additions div.grid_row div.grid_item div.name {
+    margin: 5px 0px;
+}
+
+div#menu_screen div#order_item_additions div.grid_row div.grid_item.empty {
+    cursor: auto;
+}
+
+div#menu_screen div#table_screen {
+    display: none;
+    height: 603px;
+}
+
+div#menu_screen div#table_screen div#header {
+    text-align: center;
+    padding: 8px;
+    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
+}
+
+div#menu_screen div#table_screen div#header div#back_button {
+    float: left;
+}
+
+div#menu_screen div#table_screen div#header div.title {
+    float: left;
+    margin-left: 40px;
+    margin-top: 10px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+div#menu_screen div#table_screen div#table_number_show {
+    margin: 10px auto;
+    border: 1px solid #DDD;
+    width: 280px;
+    height: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 0px 7px 0px;
+    border: 1px solid #CCC;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 0px 1px 1px 0px #777;
+    background-color: #FFF;
+    text-align: center;
+}
+
+div#menu_screen div#table_screen div#keypad_container {
+    height: 554px;
+    background-color: #E0E0E0;
+}
+
+div#menu_screen div#table_screen div#keypad_container div.keypad {
+
+}
+
 /* End Menu Screen */
 
 /* Menu Screen Receipt */
@@ -267,7 +351,7 @@ div.receipt div.till_roll div.modifier_price {
 
 div.receipt div.till_roll div.oia_add {
     float: left;
-    width: 40px;
+    width: 70px;
     text-align: right;
 }
 
@@ -285,7 +369,7 @@ div.receipt div.till_roll div.oia_name.note {
 
 div.receipt div.till_roll div.oia_price {
     float: left;
-    width: 40px;
+    width: 0px;
     text-align: right;
 }
 
@@ -380,6 +464,22 @@ div.button div.button_name a:hover {
     background-color: transparent;
 }
 
+div.small_button {
+    width: 83px;
+    max-width: 83px;
+    padding-top: 10px;
+    height: 22px;
+    max-height: 22px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+
 div.tabs {
     background-color: #B4B4B4;
     border-spacing: 2px;
@@ -450,6 +550,35 @@ div.text_only_tabs div.text_only_tab div.label {
     font-size: 13px;
     padding: 4px;
     text-decoration: none;
+}
+
+div.keypad {
+    height: 420px;
+    padding-top: 6px;
+}
+
+div.keypad div.keys {
+    width: 270px;
+    margin: auto;
+}
+
+div.keypad div.keys div {
+    color: #333333;
+    vertical-align: middle;
+    text-align: center;
+    float: left;
+    margin: 2px;
+    width: 83px;
+    padding-top: 30px;
+    height: 48px;
+    font-size: 22px;
+    border: 1px solid #777;
+    cursor: pointer;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    box-shadow: 0px 1px 1px 0px #777;
+    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
 }
 
 /* End Generic Styles */

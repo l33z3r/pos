@@ -488,56 +488,12 @@ function hideBubblePopup(popupEl) {
     }
 }
 
-function initUIElements() {
-    //initialize the tabs
-    $(".vtabs").jVertTabs({
-        select: function(index){
-            initScrollPanes();
-            initCheckboxes();
-        }
-    });
-    
-    //initialize scroll panes
-    initScrollPanes();
-        
-    //initialize checkboxes
-    initCheckboxes();
-    
-    //init radio buttons
-    initRadioButtons();
-    
-    //initialize drop downs
-    
+function initMcDropDowns() {
     //table select dropdown, first init then get reference
     $("#table_select_input").mcDropdown("#table_select", {
         maxRows: 6
     });
     tableSelectMenu = $("#table_select_input").mcDropdown();
-}
-
-function initScrollPanes() {
-    //init all the scroll panes
-    setTimeout(function() {
-        $('.jscrollpane, .admin #content_container section:not(.no_scroll_pane)').jScrollPane({
-            showArrows: true
-        });
-    }, 500);
-}
-
-function initCheckboxes() {
-    $(':checkbox:not(.no_iphone_style)').iphoneStyle({
-        resizeContainer: false, 
-        resizeHandle : false, 
-        checkedLabel: 'Yes', 
-        uncheckedLabel: 'No'
-    });
-}
-
-function initRadioButtons() {
-    $(':radio:not(.no_iphone_style)').iButton({
-        labelOn: "On", 
-        labelOff: "Off"
-    });
 }
 
 function getSelectedOrLastReceiptItem() {
@@ -577,49 +533,6 @@ function currentMenuSubscreenIsMenu() {
 
 function currentMenuSubscreenIsModifyOrderItem() {
     return $('#order_item_additions').is(":visible");
-}
-
-function switchToMenuItemsSubscreen() {
-    if(currentScreenIsMenu()) {
-        showMenuItemsSubscreen();
-    }
-}
-
-function showMenuItemsSubscreen() {
-    toggleKeyboardEnable = true;
-    hideAllMenuSubScreens();
-    $('#menu_container').show();
-}
-
-function switchToModifyOrderItemSubscreen() {
-    if(currentScreenIsMenu()) {
-        $('#add_note').hide();
-        resetKeyboard();
-        hideAllMenuSubScreens();
-        $('#sales_button_' + modifyOrderItemButtonID).addClass("selected");
-        $('#oia_tab_add').click();
-        $('#order_item_additions').show();
-        $('#order_item_additions #add_note').hide();
-        $('#order_item_additions #oia_container').show();
-    }
-}
-
-function initModifierGrid() {
-    //set the width of each grid item
-    var rowWidth = $('div#order_item_additions .grid_row:first').css("width");
-    
-    var newWidth = roundNumberDown(parseFloat(rowWidth)/modifierGridXSize, 0) - 4;
-    
-    $('div#order_item_additions .grid_row .grid_item').css("width", newWidth + "px");
-    
-    var panelHeight = $('div#order_item_additions').css("height");
-    
-    //take away the height of the tabs
-    panelHeight = parseFloat(panelHeight) - parseFloat($('#oia_tabs .tab').css("height"));
-    
-    var newHeight = roundNumberDown(panelHeight/modifierGridYSize, 0) - 4;
-    
-    $('div#order_item_additions .grid_row .grid_item').css("height", newHeight + "px");
 }
 
 function initNoteScreenKeyboard() {

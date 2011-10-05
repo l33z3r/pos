@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110930151525) do
+ActiveRecord::Schema.define(:version => 20111005102328) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -336,6 +336,13 @@ ActiveRecord::Schema.define(:version => 20110930151525) do
     t.string   "name"
     t.float    "rate"
     t.boolean  "is_default"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "terminal_display_links", :force => true do |t|
+    t.string   "terminal_id"
+    t.integer  "display_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -356,3 +356,83 @@ function serverRoleID(user_id) {
     
     return role_id;
 }
+
+function getTableForLabel(table_label) {
+    var table_info = null;
+    
+    for(var i in tables){
+        label = tables[i].label;
+        if(label == table_label) {
+            table_info = tables[i];
+            break;
+        }
+    }
+    
+    return table_info;
+}
+
+function initModifierGrid() {
+    //set the width of each grid item
+    var rowWidth = $('div#order_item_additions .grid_row:first').css("width");
+    
+    var newWidth = roundNumberDown(parseFloat(rowWidth)/modifierGridXSize, 0) - 5;
+    
+    $('div#order_item_additions .grid_row .grid_item').css("width", newWidth + "px");
+    
+    var panelHeight = $('div#order_item_additions').css("height");
+    
+    //take away the height of the tabs if they exist
+    if($('#oia_tabs .tab').length>0) {
+        panelHeight = parseFloat(panelHeight) - parseFloat($('#oia_tabs .tab').css("height"));
+    }
+    
+    var newHeight = roundNumberDown(parseFloat(panelHeight)/modifierGridYSize, 0) - 4;
+    
+    $('div#order_item_additions .grid_row .grid_item').css("height", newHeight + "px");
+}
+
+function initUIElements() {
+    //initialize the tabs
+    $(".vtabs").jVertTabs({
+        select: function(index){
+            initScrollPanes();
+            initCheckboxes();
+        }
+    });
+    
+    //initialize scroll panes
+    initScrollPanes();
+        
+    //initialize checkboxes
+    initCheckboxes();
+    
+    //init radio buttons
+    initRadioButtons();
+    
+    initMcDropDowns();
+}
+
+function initScrollPanes() {
+    //init all the scroll panes
+    setTimeout(function() {
+        $('.jscrollpane, .admin #content_container section:not(.no_scroll_pane)').jScrollPane({
+            showArrows: true
+        });
+    }, 500);
+}
+
+function initCheckboxes() {
+    $(':checkbox:not(.no_iphone_style)').iphoneStyle({
+        resizeContainer: false, 
+        resizeHandle : false, 
+        checkedLabel: 'Yes', 
+        uncheckedLabel: 'No'
+    });
+}
+
+function initRadioButtons() {
+    $(':radio:not(.no_iphone_style)').iButton({
+        labelOn: "On", 
+        labelOff: "Off"
+    });
+}

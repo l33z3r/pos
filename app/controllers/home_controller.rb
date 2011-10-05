@@ -157,8 +157,8 @@ class HomeController < ApplicationController
 
   def do_common_interface_actions
     load_active_employees
-    @display = Display.load_default
     
+    @display = TerminalDisplayLink.load_display_for_terminal @terminal_id
     @rooms = Room.all
   end
   
@@ -184,6 +184,12 @@ class HomeController < ApplicationController
   end
   
   def do_medium_interface_actions
+    
+    #make sure we have an active session, otherwise, redirect to the mobile interface and force login
+    if !current_employee
+      redirect_to mbl_path and return
+    end
+    
     @tables_button = DisplayButton.find_by_perm_id(ButtonMapper::TABLES_BUTTON) 
     @order_button = DisplayButton.find_by_perm_id(ButtonMapper::ORDER_BUTTON) 
     @modify_button = DisplayButton.find_by_perm_id(ButtonMapper::MODIFY_ORDER_ITEM_BUTTON) 

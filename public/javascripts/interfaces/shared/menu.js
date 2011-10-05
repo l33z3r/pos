@@ -65,6 +65,23 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         //        alert(tableOrderDataJSON.items[itemKey].product.name);
         
         var copiedOrderItem = {};
+        console.log(tableOrderDataJSON.items[itemKey].oia_items);
+        //we must convert the oia_items hash to an array (the server turned our array into some indexed hash
+        var newOIAItems = new Array();
+        
+        for(var oiaItemKey in tableOrderDataJSON.items[itemKey].oia_items) {
+            var nextOIA = tableOrderDataJSON.items[itemKey].oia_items[oiaItemKey];
+            console.log("copying oia " + oiaItemKey + " " + nextOIA);
+            
+            //make sure the data types are converted correctly
+            nextOIA.is_add = (nextOIA.is_add === "true" ? true : false);
+            nextOIA.is_note = (nextOIA.is_note === "true" ? true : false);
+            nextOIA.abs_charge = parseFloat(nextOIA.abs_charge);
+            
+            newOIAItems.push(nextOIA);
+        }
+        
+        tableOrderDataJSON.items[itemKey].oia_items = newOIAItems;
     
         var copiedOrderItemForStore = $.extend(true, copiedOrderItem, tableOrderDataJSON.items[itemKey]);
         
@@ -410,4 +427,80 @@ function doSelectTable(tableNum) {
 
     //display the receipt for this table
     loadReceipt(tableOrders[tableNum]);
+    
+    postDoSelectTable();
+}
+
+var oiaIsAdd = true;
+
+function orderItemAdditionClicked(el) {
+    currentSelectedReceiptItemEl = getLastReceiptItem();
+    
+    if(!currentSelectedReceiptItemEl) {
+        setStatusMessage("There are no receipt items!");
+        return;
+    }
+    
+    var order = getCurrentOrder();
+    
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    
+    var orderItem = order.items[itemNumber-1];
+    
+    el = $(el);
+    
+    //is this available
+    var available = el.data("available");
+    
+    if(!available) {
+        return;
+    }
+    
+    //get the oia data
+    var desc = el.data("description");
+    
+    var absCharge = 0;
+    
+    if(oiaIsAdd) {
+        absCharge = el.data("add_charge");
+    } else {
+        absCharge = el.data("minus_charge");
+    }
+    
+    addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, false);
+}
+
+function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) {
+    oia_item = {
+        'description' : desc,
+        'abs_charge' : absCharge,
+        'is_add' : oiaIsAdd, 
+        'is_note' : isNote
+    }
+    
+    if(typeof(orderItem.oia_items) == 'undefined') {
+        orderItem.oia_items = new Array();
+    }
+    
+    //update the total
+    if(oiaIsAdd) {
+        orderItem.total_price = orderItem.total_price + (orderItem.amount * absCharge);
+    } else {
+        orderItem.total_price = orderItem.total_price - (orderItem.amount * absCharge);
+    }
+    
+    orderItem.oia_items.push(oia_item);
+   
+    //store the modified order
+    if(selectedTable != 0) {
+        storeTableOrderInStorage(current_user_id, selectedTable, order);
+    }else {
+        storeOrderInStorage(current_user_id, order);
+    }
+        
+    //redraw the receipt
+    calculateOrderTotal(order);
+    loadReceipt(order);
+    
+    currentSelectedReceiptItemEl = null;
 }

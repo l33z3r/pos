@@ -65,6 +65,12 @@ Pos::Application.routes.draw do
       end
     end
     
+    resources :terminals, :only => [:index] do
+      collection do
+        post 'link_display'
+      end
+    end
+    
     resources :roles do 
       collection do
         post 'pin_required_for_role'
