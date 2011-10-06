@@ -37,7 +37,12 @@ function finishSale() {
 
     totalAmountInclCashback = roundNumber(currentTotalFinal + cashback, 2);
 
-    if(cashTendered < totalAmountInclCashback) {
+    if(cashTendered == 0) {
+        //auto fill to exact amount 
+        moneySelected(-1);
+        finishSale();
+        return;
+    } else if(cashTendered < totalAmountInclCashback) {
         setStatusMessage("Must enter a higher value than current total: " + currency(totalAmountInclCashback), true, true);
         resetTendered();
         return;
@@ -49,8 +54,7 @@ function finishSale() {
 function resetTendered() {
     cashTendered = 0;
     cashTenderedKeypadString = "";
-    $('#totals_tendered_value').html("")
-    $('#totals_change_value').html("");
+    takeTendered();
 }
 
 function cashOutCancel() {
@@ -92,18 +96,7 @@ function totalsScreenKeypadClickDecimal() {
 }
 
 function totalsScreenKeypadClickCancel() {
-    oldVal = $('#totals_tendered_value').html();
-    newVal = oldVal.substring(0, oldVal.length - 1);
-    
-    if(newVal.length == 0) {
-        newVal = "0";
-    }
-    
-    cashTenderedKeypadString = newVal;
-    cashTendered = parseFloat(cashTenderedKeypadString);
-    takeTendered();
-    
-    $('#totals_tendered_value').html(newVal);
+    resetTendered();
 }
 
 function moneySelected(amount) {
