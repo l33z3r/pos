@@ -233,7 +233,7 @@ div#menu_screen div#order_item_additions div.grid_row div.grid_item.not_availabl
 }
 
 div#menu_screen div#order_item_additions div.grid_row div.grid_item div.name {
-    margin: 5px 0px;
+    margin: 30px 0px 5px 0px;
 }
 
 div#menu_screen div#order_item_additions div.grid_row div.grid_item.empty {
