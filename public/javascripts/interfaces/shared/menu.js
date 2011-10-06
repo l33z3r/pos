@@ -82,8 +82,10 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         
             for(var oiaItemKey in tableOrderDataJSON.items[itemKey].oia_items) {
                 var nextOIA = tableOrderDataJSON.items[itemKey].oia_items[oiaItemKey];
+                
                 //console.log("copying oia " + oiaItemKey + " " + nextOIA);
-            console.log(nextUserIDToSyncWith + " Is add " + nextOIA.description + " " + nextOIA.is_add.toString() + " " + (nextOIA.is_add.toString() == "true"));
+                //console.log(nextUserIDToSyncWith + " Is add " + nextOIA.description + " " + nextOIA.is_add.toString() + " " + (nextOIA.is_add.toString() == "true"));
+                
                 //make sure the data types are converted correctly
                 nextOIA.is_add = (nextOIA.is_add.toString() == "true" ? true : false);
                 nextOIA.is_note = (nextOIA.is_note.toString() == "true" ? true : false);

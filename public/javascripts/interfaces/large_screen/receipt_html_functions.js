@@ -180,7 +180,7 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText) {
     cashTendered = totalOrder.cash_tendered;
     
     if(cashTendered > 0) {
-        finalReceiptHTML += "<div class='label'>Cash:</div><div class='data'>" + currency(cashTendered) + "</div>" + clearHTML;
+        finalReceiptHTML += "<div class='label'>Paid:</div><div class='data'>" + currency(cashTendered) + "</div>" + clearHTML;
     }
     
     change = totalOrder.change;

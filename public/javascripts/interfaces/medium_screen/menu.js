@@ -29,7 +29,7 @@ function checkMenuScreenForFunction() {
 function renderActiveTables() {
     activeTableIDS = getActiveTableIDS();
     
-    //TODO: something with the active table ids
+//TODO: something with the active table ids
 }
 
 function doMenuPageSelect(pageNum, pageId) {
@@ -44,14 +44,14 @@ function doMenuPageSelect(pageNum, pageId) {
 }
 
 function doSelectMenuItem(productId, element) {
-//    if(currentMenuItemQuantity == "")
-//        currentMenuItemQuantity = "1";
-//
-//    if(currentMenuItemQuantity.indexOf(".") != -1) {
-//        if(currentMenuItemQuantity.length - currentMenuItemQuantity.indexOf(".") == 1) {
-//            currentMenuItemQuantity = "1";
-//        }
-//    }
+    //    if(currentMenuItemQuantity == "")
+    //        currentMenuItemQuantity = "1";
+    //
+    //    if(currentMenuItemQuantity.indexOf(".") != -1) {
+    //        if(currentMenuItemQuantity.length - currentMenuItemQuantity.indexOf(".") == 1) {
+    //            currentMenuItemQuantity = "1";
+    //        }
+    //    }
             
     currentSelectedMenuItemElement = element;
 
@@ -265,9 +265,9 @@ function loadReceipt(order) {
     allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(order);
     $('#menu_screen_till_roll').html($('#menu_screen_till_roll').html() + allOrderItemsRecptHTML);
 
-//    if(orderTotal != null) {
-//        writeTotalToReceipt(order, orderTotal);
-//    }
+    //    if(orderTotal != null) {
+    //        writeTotalToReceipt(order, orderTotal);
+    //    }
     
     menuRecptScroll();
 }
@@ -353,7 +353,7 @@ function clearTableNumberEntered() {
 }
 
 function postDoSelectTable() {
-    $('#table_num_holder').html("Table #" + current_table_label);
+    $('#table_num_holder').html("Table " + current_table_label);
 }
 
 function orderItemAdditionClicked(el) {
@@ -394,26 +394,46 @@ function orderItemAdditionClicked(el) {
 }
 
 function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) {
-    oia_item = {
-        'description' : desc,
-        'abs_charge' : absCharge,
-        'is_add' : oiaIsAdd, 
-        'is_note' : isNote
-    }
-    
     if(typeof(orderItem.oia_items) == 'undefined') {
         orderItem.oia_items = new Array();
     }
     
-    //update the total
-    if(oiaIsAdd) {
-        orderItem.total_price = orderItem.total_price + (orderItem.amount * absCharge);
-    } else {
-        orderItem.total_price = orderItem.total_price - (orderItem.amount * absCharge);
-    }
+    var oiaEdited = false;
     
-    orderItem.oia_items.push(oia_item);
-   
+    //check if the last item is the same as this one
+    if(orderItem.oia_items.length>0) {
+        var lastOIA = orderItem.oia_items[orderItem.oia_items.length-1];
+        var lastOIADesc = lastOIA.description;
+        
+        if(lastOIADesc == desc) {
+            oiaEdited = true;
+            
+            if(lastOIA.is_add) {
+                lastOIA.is_add = false;
+            } else {
+                orderItem.oia_items.splice(orderItem.oia_items.length-1, orderItem.oia_items.length);
+            }
+        }
+    }
+
+    if(!oiaEdited) {
+        oia_item = {
+            'description' : desc,
+            'abs_charge' : absCharge,
+            'is_add' : oiaIsAdd, 
+            'is_note' : isNote
+        }
+    
+        //update the total
+        if(oiaIsAdd) {
+            orderItem.total_price = orderItem.total_price + (orderItem.amount * absCharge);
+        } else {
+            orderItem.total_price = orderItem.total_price - (orderItem.amount * absCharge);
+        }
+    
+        orderItem.oia_items.push(oia_item);
+    }
+
     //store the modified order
     if(selectedTable != 0) {
         storeTableOrderInStorage(current_user_id, selectedTable, order);
