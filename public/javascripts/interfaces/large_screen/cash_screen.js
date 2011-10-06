@@ -96,6 +96,7 @@ function totalsScreenKeypadClickDecimal() {
 }
 
 function totalsScreenKeypadClickCancel() {
+    $('#totals_tendered_value').html(currency(0, false));
     resetTendered();
 }
 
