@@ -355,3 +355,75 @@ function clearTableNumberEntered() {
 function postDoSelectTable() {
     $('#table_num_holder').html("Table #" + current_table_label);
 }
+
+function orderItemAdditionClicked(el) {
+    currentSelectedReceiptItemEl = getLastReceiptItem();
+    
+    if(!currentSelectedReceiptItemEl) {
+        setStatusMessage("There are no receipt items!");
+        return;
+    }
+    
+    var order = getCurrentOrder();
+    
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    
+    var orderItem = order.items[itemNumber-1];
+    
+    el = $(el);
+    
+    //is this available
+    var available = el.data("available");
+    
+    if(!available) {
+        return;
+    }
+    
+    //get the oia data
+    var desc = el.data("description");
+    
+    var absCharge = 0;
+    
+    if(oiaIsAdd) {
+        absCharge = el.data("add_charge");
+    } else {
+        absCharge = el.data("minus_charge");
+    }
+    
+    addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, false);
+}
+
+function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) {
+    oia_item = {
+        'description' : desc,
+        'abs_charge' : absCharge,
+        'is_add' : oiaIsAdd, 
+        'is_note' : isNote
+    }
+    
+    if(typeof(orderItem.oia_items) == 'undefined') {
+        orderItem.oia_items = new Array();
+    }
+    
+    //update the total
+    if(oiaIsAdd) {
+        orderItem.total_price = orderItem.total_price + (orderItem.amount * absCharge);
+    } else {
+        orderItem.total_price = orderItem.total_price - (orderItem.amount * absCharge);
+    }
+    
+    orderItem.oia_items.push(oia_item);
+   
+    //store the modified order
+    if(selectedTable != 0) {
+        storeTableOrderInStorage(current_user_id, selectedTable, order);
+    }else {
+        storeOrderInStorage(current_user_id, order);
+    }
+        
+    //redraw the receipt
+    calculateOrderTotal(order);
+    loadReceipt(order);
+    
+    currentSelectedReceiptItemEl = null;
+}
