@@ -312,7 +312,7 @@ function inProdMode() {
 }
 
 function inKioskMode() {
-    return kioskMode;
+    return kioskMode && !overrideKiosk;
 }
 
 function pauseScript(ms) {
