@@ -62,13 +62,15 @@
   
   var railsEnvironment = "<%= ENV['RAILS_ENV'] %>";
   
+  var kioskMode = <%= CUSTOM_CONFIG["in_kiosk_mode"] %>;
+  
   //business info
   var business_name = "<%= @business_name %>";
   var business_address = "<%= @business_address %>";
   var business_telephone = "<%= @business_telephone %>";
   var business_email_address = "<%= @business_email_address %>";
 
-  <% @display = Display.load_default unless @display %>
+<% @display = Display.load_default unless @display %>
     
   var modifierGridXSize = <%=@display.order_item_addition_grid.grid_x_size%>;
   var modifierGridYSize = <%=@display.order_item_addition_grid.grid_y_size%>;

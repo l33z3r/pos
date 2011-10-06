@@ -6,6 +6,7 @@ development:
   s3_bucket_name: clueypos_development
   s3_access_key_id: AKIAIY5ORKJHOQ7C5ZHA
   s3_secret_access_key: 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
+  in_kiosk_mode: false
 
 test:
   do_http_basic_auth: false
@@ -15,6 +16,7 @@ test:
   s3_bucket_name: clueypos_test
   s3_access_key_id: AKIAIY5ORKJHOQ7C5ZHA
   s3_secret_access_key: 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
+  in_kiosk_mode: false
 
 production:
   do_http_basic_auth: true
@@ -24,6 +26,7 @@ production:
   s3_bucket_name: clueypos_production
   s3_access_key_id: AKIAIY5ORKJHOQ7C5ZHA
   s3_secret_access_key: 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
+  in_kiosk_mode: false
   
 production_heroku:
   do_http_basic_auth: true
@@ -33,3 +36,4 @@ production_heroku:
   s3_bucket_name: clueypos_production_heroku
   s3_access_key_id: AKIAIY5ORKJHOQ7C5ZHA
   s3_secret_access_key: 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
+  in_kiosk_mode: false

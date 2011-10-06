@@ -1,3 +1,5 @@
+var lastSyncedOrder = null;
+
 function doSyncTableOrder() {
     if(selectedTable == 0 || selectedTable == -1) {
         setStatusMessage("Only valid for table orders!");
@@ -11,6 +13,8 @@ function doSyncTableOrder() {
             return;
         }
     }
+    
+    lastSyncedOrder = order;
     
     order.table = tables[selectedTable].label;
     

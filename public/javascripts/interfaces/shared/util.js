@@ -311,6 +311,10 @@ function inProdMode() {
     return railsEnvironment == 'production' || railsEnvironment == 'production_heroku';
 }
 
+function inKioskMode() {
+    return kioskMode;
+}
+
 function pauseScript(ms) {
     ms += new Date().getTime();
     while (new Date() < ms){}

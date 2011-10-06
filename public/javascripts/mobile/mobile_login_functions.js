@@ -12,6 +12,12 @@ function doCancelMobileLoginKeypad() {
 }
 
 function doMobileLogin() {
+    
+    if(typeof(employees) == "undefined") {
+        setMobileStatusMessage("Please wait while employee list loads");
+        return;
+    }
+    
     entered_code = $('#num').val();
     
     if(current_user_id != null) {

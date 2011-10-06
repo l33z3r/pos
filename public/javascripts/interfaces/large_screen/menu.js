@@ -1359,7 +1359,6 @@ function renderActiveTables() {
 }
 
 function postDoSyncTableOrder() {
-
     clearLoginReceipt();
 
     //redraw the receipt if we dont leave this screen
@@ -1371,10 +1370,16 @@ function postDoSyncTableOrder() {
 
     if(!order.order_num) {
         setLoginReceipt("Last Order", "Loading...");
-        setTimeout(finishDoSyncTableOrder, 2000);
+        //call the finish function 1 second after the next call home
+        setTimeout(finishDoSyncTableOrder, pollingAmount + 1000);
     } else {
         finishDoSyncTableOrder();
     }
+}
+
+function finishDoSyncTableOrder() {
+    orderReceiptHTML = fetchOrderReceiptHTML(lastSyncedOrder);
+    setLoginReceipt("Last Order", orderReceiptHTML);
 }
 
 function toggleModifyOrderItemScreen() {

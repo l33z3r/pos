@@ -12,8 +12,10 @@ $(function(){
 });
    
 function doGlobalInit() {
-    //allow scroll for dev
-    if(inDevMode()) {
+    if(inKioskMode()) {
+        //to run chrome in kiosk mode, use this command in linux (google-chrome --kiosk http://localhost:3000)
+        registerDisallowRightClick();
+    } else {
         $('body').css("overflow", "scroll");
     }
     
@@ -155,9 +157,9 @@ function showDisplayButtonPasscodePromptPopup() {
     $('#menu_buttons_popup_anchor').ShowBubblePopup({
         align: 'center',
         innerHtml: "<div id='display_button_passcode_popup'><div id='header'>Enter Pass Code:</div>" + 
-        "<div id='display_button_passcode_show'></div>" + 
-        "<div id='display_button_submit_passcode' class='button' onclick='displayButtonPasscodeEntered()'>Submit</div>" + 
-        "<div id='cancel_display_button_passcode_prompt' class='button' onclick='cancelDisplayButtonPasscodePromptPopup();return false;'>Cancel</div></div>",
+            "<div id='display_button_passcode_show'></div>" + 
+            "<div id='display_button_submit_passcode' class='button' onclick='displayButtonPasscodeEntered()'>Submit</div>" + 
+            "<div id='cancel_display_button_passcode_prompt' class='button' onclick='cancelDisplayButtonPasscodePromptPopup();return false;'>Cancel</div></div>",
 														   
         innerHtmlStyle:{ 
             'text-align':'left'
@@ -244,7 +246,7 @@ function setScale(room_grid_resolution, room_grid_x_size, room_grid_y_size) {
     roomScaleX = container_div_width / room_grid_x_size;
     roomScaleY = container_div_height / room_grid_y_size;
     
-//alert("X: " + roomScaleX + " Y: " + roomScaleY);
+    //alert("X: " + roomScaleX + " Y: " + roomScaleY);
 }
 
 function setRoomObjectGridPositions() {

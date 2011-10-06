@@ -1,6 +1,6 @@
 //this is used to fetch the login screen receipt, not the printed one
-function fetchOrderReceiptHTML() {
-    totalOrder = currentOrder = getCurrentOrder();
+function fetchOrderReceiptHTML(order) {
+    totalOrder = currentOrder = order;
     
     orderReceiptHTML = fetchFinalReceiptHeaderHTML();
     
@@ -410,5 +410,5 @@ function displayLastReceipt() {
 }
 
 function getCurrentRecptHTML() {
-    return fetchOrderReceiptHTML();
+    return fetchOrderReceiptHTML(getCurrentOrder());
 }

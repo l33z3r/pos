@@ -21,10 +21,17 @@ function getCurrentOrder() {
 }
 
 function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee, tableOrderDataJSON) {
+    console.log("order num " + tableOrderDataJSON.order_num);
+    
+    if(lastSyncedOrder) {
+        //set the order id on the lastSyncedOrder variable so that it prints on the login receipt
+        lastSyncedOrder.order_num = tableOrderDataJSON.order_num;
+    }
+    
     //save the current users table order to reload it after sync
     savedTableID = selectedTable;
     
-    for (var i = 0; i < employees.length; i++) {
+    for(var i = 0; i < employees.length; i++) {
         nextUserIDToSyncWith = employees[i].id;
         
         //skip if terminal and user same
@@ -73,7 +80,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         
             for(var oiaItemKey in tableOrderDataJSON.items[itemKey].oia_items) {
                 var nextOIA = tableOrderDataJSON.items[itemKey].oia_items[oiaItemKey];
-                console.log("copying oia " + oiaItemKey + " " + nextOIA);
+                //console.log("copying oia " + oiaItemKey + " " + nextOIA);
             
                 //make sure the data types are converted correctly
                 nextOIA.is_add = (nextOIA.is_add === "true" ? true : false);
@@ -169,13 +176,13 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
         //we only want to print items from the order that are new i.e. not synced on the other terminal yet
         var isItemSynced = (items[itemKey].synced === 'true');
         
-        console.log(items[itemKey].synced + " "  + isItemSynced);
+        //console.log(items[itemKey].synced + " "  + isItemSynced);
         if(!isItemSynced) {
             var itemPrinters = items[itemKey].product.printers;
-            console.log(items[itemKey].product.printers + " " + terminalID);
+            //console.log(items[itemKey].product.printers + " " + terminalID);
             if((typeof itemPrinters != "undefined") && itemPrinters.length > 0) {
                 var printersArray = itemPrinters.split(",");
-                console.log(printersArray + " " + $.inArray(terminalID, printersArray));
+                //console.log(printersArray + " " + $.inArray(terminalID, printersArray));
                 if($.inArray(terminalID.toLowerCase(), printersArray) != -1) {
                     pushcount++;
                     itemsToPrint.push(items[itemKey]);
@@ -184,10 +191,10 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
         }
     }
     
-    console.log("Got" + icount + " items, pushed " + pushcount);
+    //console.log("Got" + icount + " items, pushed " + pushcount);
     
     if(itemsToPrint.length > 0) {
-        console.log("printing " + itemsToPrint.length + " items");
+        //console.log("printing " + itemsToPrint.length + " items");
         printItemsFromOrder(serverNickname, recvdTerminalID, orderJSON, itemsToPrint);
     }
 }
@@ -210,9 +217,9 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, tableLabel, terminal
     }
     
     //we don't want to show the initial messages as there may be a few of them
-//    if(callHomePollInitSequenceComplete && recvdTerminalID != terminalID) {
-//        setStatusMessage("<b>" + terminalEmployee + "</b> totalled the order for table <b>" + tableLabel + "</b> from terminal <b>" + recvdTerminalID + "</b>");
-//    }
+    //    if(callHomePollInitSequenceComplete && recvdTerminalID != terminalID) {
+    //        setStatusMessage("<b>" + terminalEmployee + "</b> totalled the order for table <b>" + tableLabel + "</b> from terminal <b>" + recvdTerminalID + "</b>");
+    //    }
     
     //remove the table from the active table ids array
     newlyRemoved = removeActiveTable(tableID);
@@ -383,7 +390,7 @@ function loadCurrentOrder() {
 }
 
 function recptScroll(targetPrefix) {
-    console.log("Updating receipt: " + '#' + targetPrefix + 'till_roll');
+    //console.log("Updating receipt: " + '#' + targetPrefix + 'till_roll');
     
     if(isTouchDevice()) {
         $('#' + targetPrefix + 'till_roll').touchScroll('update');

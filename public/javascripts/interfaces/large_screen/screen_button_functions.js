@@ -25,18 +25,13 @@ function checkAllOrdersClosedForCashTotal() {
     return true;
 }
 
-function finishDoSyncTableOrder() {
-    orderReceiptHTML = fetchOrderReceiptHTML();
-    setLoginReceipt("Last Order", orderReceiptHTML);
-}
-
 function printCurrentReceipt() {
     if(currentOrderEmpty()) {
         setStatusMessage("No order present to print!");
         return;
     }
     
-    content = fetchOrderReceiptHTML();
+    content = fetchOrderReceiptHTML(getCurrentOrder());
     
     printReceipt(content, false);
 }

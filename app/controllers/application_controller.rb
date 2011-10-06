@@ -250,9 +250,9 @@ class ApplicationController < ActionController::Base
   
   def http_basic_authenticate
     #skip if on mobile device
-    if mobile_device?
-      return
-    end
+#    if mobile_device?
+#      return
+#    end
     
     if DO_HTTP_BASIC_AUTH
       authenticate_or_request_with_http_basic do |username, password|
