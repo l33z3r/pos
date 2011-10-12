@@ -3,6 +3,7 @@ class Admin::AdminController < ApplicationController
   #before_filter :check_admin
   
   before_filter :check_logged_in
+  before_filter :load_more_options_buttons_for_role
   
   layout 'admin'
 
@@ -13,6 +14,10 @@ class Admin::AdminController < ApplicationController
 #      redirect_to :home, :flash => {:error => "You must be an administrator to use that section."}
 #    end
 #  end
+  
+  def load_more_options_buttons_for_role
+    @more_options_buttons_dbrs = DisplayButtonRole.admin_screen_buttons_for_role(current_employee.role.id)
+  end
   
   def check_logged_in
     if current_employee == nil

@@ -1,7 +1,5 @@
 class Admin::DisplayButtonsController < Admin::AdminController
   
-  before_filter :invalidate_display_button_caches, :except => [:access, :screen, :edit_multiple]
-  
   def access
     
   end
@@ -85,7 +83,4 @@ class Admin::DisplayButtonsController < Admin::AdminController
   
   private
   
-  def invalidate_display_button_caches
-    DisplayButton.clear_caches
-  end
 end

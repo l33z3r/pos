@@ -92,15 +92,15 @@ div#modifier_grid_builder div#builder div#grid div.oia.selected {
 div#modifier_grid_builder div#builder div#grid_item_inputs {
     border: 1px solid #222;
     height: 96px;
-    width: 864px;
+    width: 874px;
     margin: auto;
     margin-top: 10px;
 }
 
 div#modifier_grid_builder div#builder div#grid_item_inputs>div {
-    width: 113px;
+    width: 107px;
     float: left;
-    padding: 5px;
+    padding: 1px;
 }
 
 div#modifier_grid_builder div#builder div#grid_item_inputs div.top_label {
@@ -112,14 +112,14 @@ div#modifier_grid_builder div#builder div#grid_item_inputs div.top_label {
 div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box {
     background-color: #FFF;
     border: 1px solid #222; 
-    width: 100px;
+    width: 95px;
     height: 50px;
     padding: 5px;
 }
 
 div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box input,
 div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box select {
-    width: 90px;
+    width: 77px;
     margin-top: 12px;
 }
 

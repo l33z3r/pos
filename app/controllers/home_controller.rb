@@ -180,7 +180,7 @@ class HomeController < ApplicationController
     Role.all.each do |role|
       @menu_screen_buttons_map[role.id] = DisplayButtonRole.menu_screen_buttons_for_role(role.id)
       @options_screen_buttons_map[role.id] = DisplayButtonRole.admin_screen_buttons_for_role(role.id)
-    end
+    end  
   end
   
   def do_medium_interface_actions

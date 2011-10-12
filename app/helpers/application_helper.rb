@@ -99,6 +99,42 @@ module ApplicationHelper
     end
   end
   
+  def menu_item_background_css item
+    @thecss = ""
+    
+    @bgcolor1 = item.product.button_bg_color
+    @bgcolor2 = item.product.button_bg_color_2
+    
+    @has_gradient = (!@bgcolor1.blank? and !@bgcolor2.blank?)
+    
+    if @has_gradient
+      @thecss = "background: -moz-linear-gradient(#{@bgcolor1}, #{@bgcolor2}) repeat scroll 0 0 transparent;"
+      @thecss += "background: -webkit-gradient(linear, left top, left bottom, from(#{@bgcolor1}), to(#{@bgcolor2}));"
+    else
+      @thecss = (@bgcolor1.blank? ? "" : "background-color: #{@bgcolor1};")
+    end
+    
+    return @thecss
+  end
+  
+  def oia_background_css oia
+    @thecss = ""
+    
+    @bgcolor1 = oia.background_color
+    @bgcolor2 = oia.background_color_2
+    
+    @has_gradient = (!@bgcolor1.blank? and !@bgcolor2.blank?)
+    
+    if @has_gradient
+      @thecss = "background: -moz-linear-gradient(#{@bgcolor1}, #{@bgcolor2}) repeat scroll 0 0 transparent;"
+      @thecss += "background: -webkit-gradient(linear, left top, left bottom, from(#{@bgcolor1}), to(#{@bgcolor2}));"
+    else
+      @thecss = (@bgcolor1.blank? ? "" : "background-color: #{@bgcolor1};")
+    end
+    
+    return @thecss
+  end
+  
   #this removes spaces from a string and downcases it for use as an id
   def id_safe string
     string.strip.gsub(" ", "_").downcase

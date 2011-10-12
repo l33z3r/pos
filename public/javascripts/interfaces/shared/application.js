@@ -2,6 +2,7 @@ var current_user_id;
 var current_user_nickname;
 var current_user_is_admin;
 var current_user_passcode;
+var current_user_role_id;
 
 var lastActiveElement;
 

@@ -1,0 +1,29 @@
+<div id="shortcut_more_options" style="display: none;">
+  <div id="admin_subnav_left">
+    <div class="button" onclick="goTo('<%=home_path%>#screen=menu')">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/manage_sales_screen_button.png" %>
+      </div>
+      <div class="button_name">Sales Screen</div>
+    </div>
+  </div>
+
+  <!-- the following markup is used for the display button passcode popup -->
+  <div id="menu_buttons_popup_anchor">&nbsp;</div>
+  
+  <div class="clear">&nbsp;</div><div id="options_screen">
+    <div id="options_screen_menu_buttons">
+      <% @more_options_buttons_dbrs.each_with_index do |dbr, index| %>
+        <% if index != 0 and index % 12 == 0 %><div class="clear">&nbsp;</div><% end %>
+        <div id="admin_screen_button_<%=dbr.display_button.id%>" class="button" onclick="<%= button_action dbr.display_button %>">
+          <div class="icon">
+            <%= button_icon dbr.display_button %>
+          </div>
+          <div class="button_name"><%=dbr.display_button.button_text%></div>
+        </div>
+      <% end %>
+      <div class="clear">&nbsp;</div>
+    </div>
+  </div>
+</div>
+

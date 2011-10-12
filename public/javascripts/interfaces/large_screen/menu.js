@@ -3,6 +3,7 @@ var currentOrderJSON;
 var currentMenuItemQuantity = "";
 
 var tableSelectMenu = null;
+var menuScreenShortcutSelectMenu = null;
 
 var paymentMethod = null;
 var serviceCharge = 0;
@@ -1495,4 +1496,14 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) 
     loadReceipt(order);
     
     currentSelectedReceiptItemEl = null;
+}
+
+function menuScreenDropdownItemSelected(index, name) {
+    if(index == 1) {
+        alert("Change Price");
+    } else if(index == 2) {
+        alert("Add Stock");
+    }
+    
+    $('#menu_screen_shortcut_dropdown_container .mcdropdown>div:first').html("I Want To...");
 }

@@ -2,10 +2,15 @@ function initAdminScreen() {
     //hide the red x 
     $('#nav_save_button').hide();
     
+    //hide the shortcut dropdown
+    $('#menu_screen_shortcut_dropdown_container').hide();
+    
     $('#admin_nav_back_link').show();
     
     //allow the page to scroll in the admin pages
     $('body').css("overflow", "scroll");
+    
+    display_button_passcode_permissions = all_display_button_permissions[current_user_role_id];
 }
 
 $(function(){
@@ -210,4 +215,15 @@ function linkTerminalDisplay(terminal_id, display_id) {
             display_id : display_id
         }
     });
+}
+
+//following is for the more options screen shortcut
+
+function adminShowMoreOptions() {
+    //try to load the div first
+    $('#admin_content_screen').hide();
+    $('#shortcut_more_options').show();
+    
+    
+    //goTo('<%=home_path%>#screen=more_options');
 }

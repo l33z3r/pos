@@ -494,6 +494,12 @@ function initMcDropDowns() {
         maxRows: 6
     });
     tableSelectMenu = $("#table_select_input").mcDropdown();
+    
+    //menu screen shortcut dropdown, first init then get reference
+    $("#menu_screen_shortcut_dropdown_input").mcDropdown("#menu_screen_shortcut_dropdown", {
+        maxRows: 6, select: menuScreenDropdownItemSelected
+    });
+    menuScreenShortcutSelectMenu = $("#menu_screen_shortcut_dropdown_input").mcDropdown();
 }
 
 function getSelectedOrLastReceiptItem() {

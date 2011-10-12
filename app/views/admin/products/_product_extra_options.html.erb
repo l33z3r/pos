@@ -82,11 +82,19 @@
       <div class="clear">&nbsp;</div>
     </div>
     <div class="field">
-      <div class="label">Background Color</div>
+      <div class="label">Background Color 1</div>
       <%= f.text_field :button_bg_color, {
         :id => "button_bg_color_input", 
         :onfocus => "productBuidlerShowBgColorPicker()", 
         :onblur => "productBuidlerHideBgColorPicker()"} %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Background Color 2</div>
+      <%= f.text_field :button_bg_color_2, {
+        :id => "button_bg_color_2_input", 
+        :onfocus => "productBuidlerShowBgColor2Picker()", 
+        :onblur => "productBuidlerHideBgColor2Picker()"} %>
       <div class="clear">&nbsp;</div>
     </div>
     <div class="field">

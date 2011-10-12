@@ -40,6 +40,7 @@ function initCellInputs(gridEL) {
     var minusCharge = parseInt(gridEL.data("minus_charge"));
     var available = gridEL.data("available");
     var bgColor = gridEL.data("bg_color");
+    var bgColor2 = gridEL.data("bg_color_2");
     var textColor = gridEL.data("text_color");
     var textSize = gridEL.data("text_size");
     
@@ -60,6 +61,7 @@ function initCellInputs(gridEL) {
     });
     
     $('#bg_color_input').val(bgColor);
+    $('#bg_color_2_input').val(bgColor2);
     $('#text_color_input').val(textColor);
     $('#text_size_input').val(textSize);
     
@@ -83,6 +85,7 @@ function clearCellInputs() {
     });
     
     $('#bg_color_input').val("");
+    $('#bg_color_2_input').val("");
     $('#text_color_input').val("");
     $('#text_size_input').val("");
     
@@ -141,6 +144,7 @@ function updateSelectedGridItem() {
     var available = $('#available_input').attr("checked");
     
     var bgColor = $('#bg_color_input').val();
+    var bgColor2 = $('#bg_color_2_input').val();
     var textColor = $('#text_color_input').val();
     var textSize = $('#text_size_input').val();
     
@@ -155,6 +159,7 @@ function updateSelectedGridItem() {
             minusCharge : minusCharge, 
             available : available,
             bgColor : bgColor,
+            bgColor2 : bgColor2,
             textColor : textColor,
             textSize : textSize
         }
@@ -212,6 +217,60 @@ function doCloseBGColorPickerPopup() {
     if(bgColorPickerAnchor.HasBubblePopup()) {
         bgColorPickerAnchor.HideBubblePopup();
         bgColorPickerAnchor.FreezeBubblePopup();
+    }
+}
+
+var bgColor2PickerAnchor = null;
+
+function showBGColor2Picker() {
+    bgColor2PickerAnchor = $('#bg_color_2_input');
+    
+    if(bgColor2PickerAnchor.HasBubblePopup()) {
+        bgColor2PickerAnchor.RemoveBubblePopup();
+    }
+    
+    bgColor2PickerAnchor.CreateBubblePopup();
+    
+    popupHTML = "<div style='width: 500px; height: 280px; padding: 10px;' id='bg_color_2_picker'></div>";
+    
+    bgColor2PickerAnchor.ShowBubblePopup({
+        position: 'top',  
+        align: 'right',
+        tail	 : {
+            align: 'right'
+        },
+        innerHtml: popupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+        
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false        
+    }, false);
+    
+    bgColor2PickerAnchor.FreezeBubblePopup();
+    
+    //init color picker for font color property
+    var bgColor2Picker = new ColourPicker(
+        document.getElementById('bg_color_2_picker'),
+        '/images/jquery_colour_picker/');
+        
+    bgColor2Picker.addChangeListener(bgColor2PickerChanged);
+}
+
+function bgColor2PickerChanged(newColour, colourPickerObj) {
+    newColorCSSVal = newColour.getCSSHexadecimalRGB();
+    $('#bg_color_2_input').val(newColorCSSVal);
+    
+//doCloseBGColorPickerPopup();
+}
+
+function doCloseBGColor2PickerPopup() {
+    if(bgColor2PickerAnchor.HasBubblePopup()) {
+        bgColor2PickerAnchor.HideBubblePopup();
+        bgColor2PickerAnchor.FreezeBubblePopup();
     }
 }
 

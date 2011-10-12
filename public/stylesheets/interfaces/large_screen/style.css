@@ -1415,6 +1415,37 @@ nav#main_nav div#misc_notice input {
     height: 10px;
 }
 
+nav#main_nav div#menu_screen_shortcut_dropdown_container {
+    cursor: pointer;
+    margin-right: 15px;
+    margin-top: -3px;
+    width: 113px;
+    float: right;
+    font-weight: normal;
+    height: 20px;
+}
+
+nav#main_nav div#menu_screen_shortcut_dropdown_container div.mcdropdown {
+    height: 22px;
+    width: 113px;
+    padding: 0px;
+}
+
+nav#main_nav div#menu_screen_shortcut_dropdown_container div.mcdropdown div {
+    border: 1px solid #666;
+    -moz-border-radius: 2px;
+    background-color: transparent;
+    color: #FFF;
+    font-size: 13px;
+    height: 19px;
+    padding: 3px 0px 0px 0px;
+}
+
+nav#main_nav div#menu_screen_shortcut_dropdown_container div.mcdropdown a {
+    height: 0px;
+    width: 0px;
+}
+
 /* this is used on the cash screen also */
 div#receipt_keypad_container {
     width: 265px;
@@ -1465,19 +1496,6 @@ div#receipt_keypad_container div#table_select_container {
     float: left;
     font-size: 15px;
     font-weight: normal;
-}
-
-div#receipt_keypad_container div#table_select_container select {
-    cursor: pointer;
-    border: 2px outset #AAA;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    background-color: #FFF;
-    color: #000;
-    height: 36px;
-    width: 113px;
-    margin-left: 30px;
-    font-size: 20px;
 }
 
 div#receipt_keypad_container div#table_screen_button {
@@ -3186,10 +3204,14 @@ div#display_button_passcode_popup div#header {
     font-size: 14px;
 }
 
-div#display_button_passcode_popup div#display_button_passcode_show {
+div#display_button_passcode_popup div#display_button_passcode_show,
+div#display_button_passcode_popup input#display_button_passcode {
+    background: none;
     color: #333;
     background-color: #FFF;
-    width: 100%;
+    width: 200px;
+    max-width: 200px;
+    border-radius: 0;
     border: 1px solid #DDD;
     height: 20px;
     margin-top: 4px;

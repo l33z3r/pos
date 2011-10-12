@@ -71,6 +71,7 @@ class Admin::OrderItemAdditionGridsController < Admin::AdminController
     
     @item.available = params[:available]
     @item.background_color = params[:bgColor]
+    @item.background_color_2 = params[:bgColor2]
     @item.text_color = params[:textColor]
     @item.text_size = params[:textSize]
     

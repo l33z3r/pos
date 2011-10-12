@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111005102328) do
+ActiveRecord::Schema.define(:version => 20111012132735) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -160,6 +160,7 @@ ActiveRecord::Schema.define(:version => 20111005102328) do
     t.integer  "pos_y"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "background_color_2"
   end
 
   create_table "order_items", :force => true do |t|
@@ -276,6 +277,7 @@ ActiveRecord::Schema.define(:version => 20111005102328) do
     t.integer  "menu_button_height",         :default => 1
     t.string   "menu_page_1_id"
     t.string   "menu_page_2_id"
+    t.string   "button_bg_color_2"
   end
 
   create_table "roles", :force => true do |t|

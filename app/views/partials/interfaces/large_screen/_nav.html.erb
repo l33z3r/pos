@@ -10,7 +10,7 @@
   <script type="text/javascript">
     $(function(){initNavTitle("<%=@nav_title%>");});
   </script>
-  
+
   <div id="nav_title"></div>
 
   <div style="display: none;" id="nav_save_button" onclick="doLogout();">
@@ -28,10 +28,20 @@
   <div id="nav_util_button" onclick="toggleUtilKeyboard();">
     <%= image_tag "button_logos/keyboard.png" %>
   </div>
-  
-  <!--div id="nav_util_button" onclick="goTo('<%= root_url %>?m=1')">
-    <%= image_tag "button_logos/mobile_version.png" %>
-  </div-->
+
+<!--div id="nav_util_button" onclick="goTo('<%= root_url %>?m=1')">
+  <%= image_tag "button_logos/mobile_version.png" %>
+</div-->
+
+  <!--dropdown menu -->
+  <div id="menu_screen_shortcut_dropdown_container">
+    <div id="menu_screen_shortcut_dropdown_input" onclick="menuScreenShortcutSelectMenu.openMenu()">I Want To...</div>
+
+    <ul id="menu_screen_shortcut_dropdown" class="mcdropdown_menu">
+      <li rel="1">Change Price</li>
+      <li rel="2">Take Stock</li>
+    </ul>
+  </div>
 
   <div class="clear">&nbsp;</div>
 </nav>

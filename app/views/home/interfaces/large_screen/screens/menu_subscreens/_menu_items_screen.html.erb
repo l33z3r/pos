@@ -14,11 +14,11 @@
             <% if item.product and item.product.is_active %>
               <div class="item" data-button_width="<%= item.product.menu_button_width %>" 
                    onclick="doSelectMenuItem(<%= item.product_id %>, this)"
-                   style="<%= item.product.button_bg_color.blank? ? "" : "background-color: #{item.product.button_bg_color}" %>">
+                   style="<%= menu_item_background_css item %>">
                 <div class="item_pic">
                   <%= product_image_thumb item.product if item.product.show_button_image %>
                 </div>
-                <div class="item_name" style="<%= item.product.button_text_color.blank? ? "" : "color: #{item.product.button_text_color}" %>">
+                <div class="item_name" style="<%= item.product.button_text_color.blank? ? "" : "color: #{item.product.button_text_color};" %>">
                   <%= menu_item_name item %>
                 </div>
               </div>

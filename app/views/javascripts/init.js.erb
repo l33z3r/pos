@@ -2,3 +2,5 @@ current_user_id = <%= session[:current_employee_id] ? session[:current_employee_
 current_user_nickname = '<%= session[:current_employee_nickname] ? session[:current_employee_nickname] : 'null' %>';
 current_user_is_admin = <%= session[:current_employee_admin] ? session[:current_employee_admin] : 'false' %>;
 current_user_passcode = <%= session[:current_employee_passcode] ? session[:current_employee_passcode] : 'null' %>;
+
+current_user_role_id = <%= session[:current_employee_role_id] ? session[:current_employee_role_id] : 'null' %>;

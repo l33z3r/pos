@@ -10,13 +10,16 @@
         <%= render :partial => "/partials/interfaces/large_screen/nav" %>
 
         <div id="content_container">
-          <%= render :partial => "/partials/interfaces/large_screen/admin_nav" unless @hide_admin_header %>
+          <div id="admin_content_screen">
+            <%= render :partial => "/partials/interfaces/large_screen/admin_nav" unless @hide_admin_header %>
+            <%= yield %>
+          </div>
 
-          <%= yield %>
+          <%= render "/home/interfaces/large_screen/screens/admin_shortcut_more_options_screen" %>
         </div>
       </div>
     </div>
-    
+
     <%= render :partial => "/partials/interfaces/large_screen/common_footer" %>
 
   </body>

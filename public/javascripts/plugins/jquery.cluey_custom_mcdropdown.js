@@ -281,12 +281,14 @@
             $hidden.val(value);
             // get the display name
             var name = displayString(value);
-			
+		
+            var theObj = $self[bInput ? "val" : "text"](name);
+            
             // run the select callback (some keyboard entry methods will manage this callback manually)
             if( settings.select != null && skipCallback != true ) settings.select.apply(thismenu, [value, name]);
 			
             // update the display value and return the jQuery object
-            return $self[bInput ? "val" : "text"](name);
+            return theObj;
         };
 		
         // set the default value (but don't run callback)

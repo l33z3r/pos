@@ -91,6 +91,58 @@ function productBuidlerHideBgColorPicker() {
     }
 }
 
+var bgColor2PickerAnchor = null;
+
+function productBuidlerShowBgColor2Picker() {
+    bgColor2PickerAnchor = $('#button_bg_color_2_input');
+    
+    if(bgColor2PickerAnchor.HasBubblePopup()) {
+        bgColor2PickerAnchor.RemoveBubblePopup();
+    }
+    
+    bgColor2PickerAnchor.CreateBubblePopup();
+    
+    popupHTML = "<div style='width: 500px; height: 280px;' id='bg_color_2_picker'></div>";
+    
+    bgColor2PickerAnchor.ShowBubblePopup({
+        position: 'bottom',  
+        align: 'right',
+        tail	 : {
+            align: 'right'
+        },
+        innerHtml: popupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+        
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false        
+    }, false);
+    
+    bgColor2PickerAnchor.FreezeBubblePopup();
+    
+    //init color picker for font color property
+    var bgColor2Picker = new ColourPicker(
+        document.getElementById('bg_color_2_picker'),
+        '/images/jquery_colour_picker/');
+        
+    bgColor2Picker.addChangeListener(bgColor2PickerChanged);
+}
+
+function bgColor2PickerChanged(newColour, colourPickerObj) {
+    newColorCSSVal = newColour.getCSSHexadecimalRGB();
+    $('#button_bg_color_2_input').val(newColorCSSVal);
+}
+
+function productBuidlerHideBgColor2Picker() {
+    if(bgColor2PickerAnchor.HasBubblePopup()) {
+        bgColor2PickerAnchor.HideBubblePopup();
+        bgColor2PickerAnchor.FreezeBubblePopup();
+    }
+}
+
 var textColorPickerAnchor = null;
 
 function productBuidlerShowTextColorPicker() {

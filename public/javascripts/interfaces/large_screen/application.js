@@ -119,13 +119,52 @@ function doDisplayButtonPasscodePrompt(button_id, forwardFunction) {
     closePreviousModifierDialog();
         
     if(display_button_passcode_permissions[button_id]) {
-        checkMenuScreenForFunction();
         displayButtonForwardFunction = forwardFunction;
         
-        showDisplayButtonPasscodePromptPopup();
+        if(inAdminContext()) {
+            if(!currentScreenIsMenu()) {
+                setStatusMessage("Must be on menu screen for this function!");
+                return;
+            }
+            showAdminDisplayButtonPasscodePromptPopup(button_id, forwardFunction);
+        } else {
+            checkMenuScreenForFunction();
+            showDisplayButtonPasscodePromptPopup();
+        }
     } else {
         forwardFunction.call();
     }
+}
+
+function showAdminDisplayButtonPasscodePromptPopup(button_id, forwardFunction) {
+    $('#display_button_passcode').val('');
+    
+    toggleUtilKeyboard();
+    
+    showingDisplayButtonPasscodePromptPopup = true;
+    
+    //show the popup
+    $('#menu_buttons_popup_anchor').ShowBubblePopup({
+        align: 'center',
+        innerHtml: "<div id='display_button_passcode_popup'><div id='header'>Enter Pass Code:</div>" + 
+        "<input type='text' id='display_button_passcode'/>" + clearHTML +
+        "<div id='display_button_submit_passcode' class='button' onclick='displayButtonPasscodeEntered()'>Submit</div>" + 
+        "<div id='cancel_display_button_passcode_prompt' class='button' onclick='cancelDisplayButtonPasscodePromptPopup();return false;'>Cancel</div></div>",
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+												   
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme'
+
+    }, false);
+    
+    $('#menu_buttons_popup_anchor').FreezeBubblePopup();
+    
+    popupId = $('#menu_buttons_popup_anchor').GetBubblePopupID();
+    
+    $('#' + popupId).find('#display_button_passcode').focus();
 }
 
 function displayButtonPasscodeEntered() {
@@ -150,16 +189,16 @@ function displayButtonPasscodeEntered() {
 function showDisplayButtonPasscodePromptPopup() {
     $('#display_button_passcode').val('');
     $('#display_button_passcode_show').html('');
-            
+    
     showingDisplayButtonPasscodePromptPopup = true;
     
     //show the popup
     $('#menu_buttons_popup_anchor').ShowBubblePopup({
         align: 'center',
         innerHtml: "<div id='display_button_passcode_popup'><div id='header'>Enter Pass Code:</div>" + 
-            "<div id='display_button_passcode_show'></div>" + 
-            "<div id='display_button_submit_passcode' class='button' onclick='displayButtonPasscodeEntered()'>Submit</div>" + 
-            "<div id='cancel_display_button_passcode_prompt' class='button' onclick='cancelDisplayButtonPasscodePromptPopup();return false;'>Cancel</div></div>",
+        "<div id='display_button_passcode_show'></div>" + 
+        "<div id='display_button_submit_passcode' class='button' onclick='displayButtonPasscodeEntered()'>Submit</div>" + 
+        "<div id='cancel_display_button_passcode_prompt' class='button' onclick='cancelDisplayButtonPasscodePromptPopup();return false;'>Cancel</div></div>",
 														   
         innerHtmlStyle:{ 
             'text-align':'left'
@@ -246,7 +285,7 @@ function setScale(room_grid_resolution, room_grid_x_size, room_grid_y_size) {
     roomScaleX = container_div_width / room_grid_x_size;
     roomScaleY = container_div_height / room_grid_y_size;
     
-    //alert("X: " + roomScaleX + " Y: " + roomScaleY);
+//alert("X: " + roomScaleX + " Y: " + roomScaleY);
 }
 
 function setRoomObjectGridPositions() {
