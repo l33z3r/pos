@@ -34,11 +34,13 @@ class ApplicationController < ActionController::Base
     
     @reload_interface_times.each do |reload_request_time, reload_request_data|
       reload_request_terminal_id = reload_request_data[:terminal_id]
+      reload_request_hard_reset = reload_request_data[:hard_reset] ? true : false
       
       if reload_request_time.to_i > time.to_i
         @reload_app = {}
         @reload_app['reload_request_time'] = reload_request_time
         @reload_app['reload_request_terminal_id'] = reload_request_terminal_id
+        @reload_app['reload_request_hard_reset'] = reload_request_hard_reset
         
         return @reload_app
       end
@@ -48,14 +50,7 @@ class ApplicationController < ActionController::Base
   end
   
   def request_reload_app terminal_id
-    TerminalSyncData.transaction do
-      TerminalSyncData.fetch_terminal_reload_request_times.each do |tsd|
-        tsd.destroy
-      end
-    
-      TerminalSyncData.create!({:sync_type => TerminalSyncData::TERMINAL_RELOAD_REQUEST, 
-          :time => Time.now.to_i.to_s, :data => {:terminal_id => terminal_id}})
-    end
+    TerminalSyncData.request_reload_app terminal_id
   end
   
   def fetch_sync_table_order time

@@ -37,4 +37,27 @@ class TerminalSyncData < ActiveRecord::Base
       end
     end
   end
+  
+  def self.request_reload_app terminal_id
+    TerminalSyncData.transaction do
+      TerminalSyncData.fetch_terminal_reload_request_times.each do |tsd|
+        tsd.destroy
+      end
+    
+      TerminalSyncData.create!({:sync_type => TerminalSyncData::TERMINAL_RELOAD_REQUEST, 
+          :time => Time.now.to_i.to_s, :data => {:terminal_id => terminal_id}})
+    end
+  end
+  
+  def self.request_hard_reload_app terminal_id
+    TerminalSyncData.transaction do
+      TerminalSyncData.fetch_terminal_reload_request_times.each do |tsd|
+        tsd.destroy
+      end
+    
+      TerminalSyncData.create!({:sync_type => TerminalSyncData::TERMINAL_RELOAD_REQUEST, 
+          :time => Time.now.to_i.to_s, :data => {:terminal_id => terminal_id, :hard_reset => true}})
+    end
+  end
+  
 end

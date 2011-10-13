@@ -28,3 +28,15 @@ task :delete_historical_data => :environment do
   
   puts "Done!"
 end
+
+desc "Deletes all terminal_sync_data, and issues a hard reset of each terminal"
+task :delete_sync_data => :environment do
+  @terminal_sync_datas = TerminalSyncData.all
+  puts "Deleting #{@terminal_sync_datas.length} terminal_sync_datas"
+  @terminal_sync_datas.each(&:destroy)
+  
+  puts "Issuing a reset of all terminals"
+  TerminalSyncData.request_hard_reload_app "Master Terminal"
+  
+  puts "Done!"
+end

@@ -42,8 +42,15 @@ module ApplicationHelper
   
   def button_icon button
     @icon_path = ButtonMapper.new.icon_path_for button
+    
     if @icon_path
-      image_tag "button_logos/#{@icon_path}", :alt => nil
+      @rel_image_path = "button_logos/#{@icon_path}"
+      
+      if FileTest.exists?(RAILS_ROOT + "/public/images/#{@rel_image_path}")
+        return image_tag @rel_image_path, :alt => nil
+      else 
+        return nil
+      end
     else
       return nil
     end

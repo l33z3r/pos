@@ -24,6 +24,7 @@ class HomeController < ApplicationController
     if @reload_app
       @reload_request_time = @reload_app['reload_request_time']
       @reload_request_terminal_id = @reload_app['reload_request_terminal_id']
+      @reload_request_hard_reset = @reload_app['reload_request_hard_reset']
       @new_reload_app_update_time = @reload_request_time.to_i + 1
     end
     
