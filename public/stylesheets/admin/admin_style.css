@@ -1165,6 +1165,12 @@ div#edit_global_settings section#global_settings div.container.payment_methods_s
     height: 30px;
 }
 
+div#edit_global_settings div#terminal_name_field_unique_error {
+    border: #f00 2px solid;
+    margin-bottom: 5px;
+    background-color: #FFF;
+}
+
 /* End Global Settings Page */
 
 /* Theme Settings Page */

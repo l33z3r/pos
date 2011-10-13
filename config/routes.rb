@@ -68,6 +68,7 @@ Pos::Application.routes.draw do
     resources :terminals, :only => [:index] do
       collection do
         post 'link_display'
+        get 'check_for_unique'
       end
     end
     

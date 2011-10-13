@@ -17,6 +17,10 @@ class Admin::GlobalSettingsController < Admin::AdminController
     
     if @global_settings.empty?
       flash[:notice] = "Settings Updated!"
+      
+      #send a reload request to other terminals
+      request_reload_app @terminal_id
+      
       redirect_to :action => "index"
     else
       render :action => "index"

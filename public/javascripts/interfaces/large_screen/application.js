@@ -61,9 +61,9 @@ function doGlobalInit() {
     
     showScreenFromHashParams();
     
-    $('#flash_container').delay(500).fadeIn(500, function() {
-        $(this).delay(3000).fadeOut(500);
-    });
+//    $('#flash_container').delay(500).fadeIn(500, function() {
+//        $(this).delay(3000).fadeOut(500);
+//    });
     
     //any input that gains focus will call this function
     $("input,textarea").live("focus", function(event) {

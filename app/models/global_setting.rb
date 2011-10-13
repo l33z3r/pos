@@ -170,6 +170,14 @@ class GlobalSetting < ActiveRecord::Base
     when DO_BEEP
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
+    when TERMINAL_ID
+      if value_changed?
+        @res = GlobalSetting.where("global_settings.key != ?", key).where("global_settings.value = ?", value)
+        if @res.size > 0
+          #conflict, delete the old one
+          @res.first.destroy
+        end
+      end
     else
     end
   end
