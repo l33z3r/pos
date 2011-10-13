@@ -59,6 +59,7 @@ class HomeController < ApplicationController
     end
     
     store_receipt_html
+    update_terminal_timestamp
     
   end
   
@@ -242,6 +243,14 @@ class HomeController < ApplicationController
         @strh.save!
       end
     end
+  end
+  
+  #this function updates the timestamp of the gs used to represent the terminal,
+  #it allows us to see what terminals are currently active
+  def update_terminal_timestamp
+    #@@terminal_id_gs is set in a before filter in application controller
+    @terminal_id_gs.updated_at = Time.now
+    @terminal_id_gs.save!
   end
 
 end

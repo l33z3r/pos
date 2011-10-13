@@ -81,6 +81,10 @@ class Product < ActiveRecord::Base
     write_attribute("printers", printers_val)
   end
   
+  def decrement_stock quantity
+    decrement!(:quantity_in_stock, quantity)
+  end
+  
 end
 # == Schema Information
 #

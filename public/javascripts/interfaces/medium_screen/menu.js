@@ -99,7 +99,7 @@ function writeOrderItemToReceipt(orderItem) {
 function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
     allOrderItemsReceiptHTML = "";
 
-    for(i=0; i<order.items.length; i++) {
+    for(var i=0; i<order.items.length; i++) {
         item = order.items[i];
         allOrderItemsReceiptHTML += getOrderItemReceiptHTML(order.items[i], includeNonSyncedStyling, includeOnClick, includeServerAddedText);
     }
@@ -176,7 +176,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     }
     //alert(orderItem.oia_items);
     if(orderItem.oia_items) {
-        for(j=0; j<orderItem.oia_items.length; j++) {
+        for(var j=0; j<orderItem.oia_items.length; j++) {
             oia_is_add = orderItem.oia_items[j].is_add;
             
             if(!orderItem.oia_items[j].is_note) {
@@ -214,7 +214,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     if(orderItem.oia_items) {
         var oiaPriceTotal = 0;
         
-        for(j=0; j<orderItem.oia_items.length; j++) {
+        for(var j=0; j<orderItem.oia_items.length; j++) {
             var nextOia = orderItem.oia_items[j];
             
             if(nextOia.is_add) {
@@ -282,6 +282,8 @@ function postDoSyncTableOrder() {
     //redraw the receipt if we dont leave this screen
     //so that the highlighted items are no longer highlighted
     doSelectTable(selectedTable);
+    
+    setStatusMessage("Order Sent");
 }
 
 function showModifyOrderItemScreen() {

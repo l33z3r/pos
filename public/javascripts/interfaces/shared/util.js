@@ -440,3 +440,20 @@ function initRadioButtons() {
         labelOff: "Off"
     });
 }
+
+function niceAlert(message, title) {
+    if (typeof title == "undefined") {
+        title = "Hey!";
+    }
+    
+    ModalPopups.Alert('niceAlertContainer',
+        title, "<div id='nice_alert'>" + message + "</div>",
+        {
+            okButtonText: 'OK',
+            onOk: "hideNiceAlert()"
+        });
+}
+
+function hideNiceAlert() {
+    ModalPopups.Close('niceAlertContainer');
+}

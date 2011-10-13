@@ -82,7 +82,7 @@ function renderMobileActiveTableList() {
     //hide all 
     $('ul li.table_list_item').each(function() {$(this).hide();});
     
-    for(i = 0; i < tableIDS.length; i++) {
+    for(var i = 0; i < tableIDS.length; i++) {
         console.log("Open order in table " + tableIDS[i]);
         $('#table_' + tableIDS[i] + '_list_item').show();
     }

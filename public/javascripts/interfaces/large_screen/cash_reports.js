@@ -5,7 +5,7 @@ function getCashTotalDataTable(cash_total_data, show_currency) {
     
     cash_total_data_html = "<div class='data_table'>";
     
-    for(i=0; i<cash_total_data.length; i++) {
+    for(var i=0; i<cash_total_data.length; i++) {
         cash_total_data_html += "<div class='label'>" + cash_total_data[i][0] + "</div>";
         cash_total_data_html += "<div class='data'>" + (show_currency && (!isNaN( parseFloat(cash_total_data[i][1]))) ? currency(cash_total_data[i][1]) : cash_total_data[i][1]) + "</div>" + clearHTML;
     }
@@ -23,7 +23,7 @@ function getCashTotalTaxesDataTable(taxes_data) {
     cash_total_data_html += "<div class='taxes_data_table_header'>" + taxLabel + "</div>";
     cash_total_data_html += "<div class='taxes_data_table_header'>Gross</div>" + clear10HTML;
         
-    for(i=0; i<taxes_data.length; i++) {
+    for(var i=0; i<taxes_data.length; i++) {
         cash_total_data_html += "<div class='taxes_label'>" + taxes_data[i][0] + "%</div>";
         cash_total_data_html += "<div class='taxes_data'>" + currency(taxes_data[i][1]) + "</div>";
         cash_total_data_html += "<div class='taxes_data'>" + currency(taxes_data[i][2]) + "</div>";
@@ -41,7 +41,7 @@ function getCashTotalDataTableTotals(label, data) {
     
     total = 0;
     
-    for(i=0; i<data.length; i++) {
+    for(var i=0; i<data.length; i++) {
         total += parseFloat(data[i][1]);
     }
     
@@ -58,7 +58,7 @@ function getCashTotalTaxesDataTableTotals(label, data) {
     taxTotal = 0;
     grossTotal = 0;
     
-    for(i=0; i<data.length; i++) {
+    for(var i=0; i<data.length; i++) {
         netTotal += parseFloat(data[i][1]);
         taxTotal += parseFloat(data[i][2]);
         grossTotal += parseFloat(data[i][3]);

@@ -1,4 +1,4 @@
-@super_user_role = Role.find_or_create_by_name({:name => "Super User"})
+@super_user_role = Role.find_or_create_by_name({:name => "Administrator"})
 
 @admin_employee = Employee.find_or_create_by_nickname({:nickname => "admin", :staff_id => "1111", :name => "admin", 
     :passcode => "1111", :clockin_code => "1111", :address => "admin address", :telephone => "admin telephone",

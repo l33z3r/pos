@@ -77,6 +77,8 @@ class GlobalSetting < ActiveRecord::Base
     LAST_ORDER_ID => "Last Order ID"
   }
   
+  LATEST_TERMINAL_HOURS = 24
+  
   def self.setting_for property, args={}
     @gs = nil
     
@@ -202,6 +204,20 @@ class GlobalSetting < ActiveRecord::Base
   
   def self.all_terminals
     where("global_settings.key like ?", "#{TERMINAL_ID}%").where("global_settings.value not like ?", "NT%").collect(&:value).uniq
+  end
+  
+  def self.latest_terminals
+    where("global_settings.key like ?", "#{TERMINAL_ID}%")
+    .where("global_settings.value not like ?", "NT%")
+    .where("updated_at > ?", LATEST_TERMINAL_HOURS.hours.ago)
+    .collect(&:value).uniq
+  end
+  
+  def self.older_terminals
+    where("global_settings.key like ?", "#{TERMINAL_ID}%")
+    .where("global_settings.value not like ?", "NT%")
+    .where("updated_at <= ?", LATEST_TERMINAL_HOURS.hours.ago)
+    .collect(&:value).uniq
   end
   
   def self.remove_all_terminal_ids

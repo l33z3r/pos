@@ -7,14 +7,14 @@ class Role < ActiveRecord::Base
   before_save :prevent_rename_super_user_role
 
   #TODO: load from config file
-  SUPER_USER_ROLE_ID = find_by_name("Super User").try(:id)
+  SUPER_USER_ROLE_ID = find_by_name("Administrator").try(:id)
   
   def prevent_rename_super_user_role
     @editing_super_user = (SUPER_USER_ROLE_ID == id)
     
     if @editing_super_user
-      #make sure we are not changing the name "Super User"
-      write_attribute("name", "Super User")
+      #make sure we are not changing the name "Administrator"
+      write_attribute("name", "Administrator")
     end
   end
   

@@ -110,7 +110,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     //delete all items that have been synced already
     existingOrderItems = tableOrders[tableID].items;
     
-    for(i=0;i<existingOrderItems.length;i++) {
+    for(var i=0;i<existingOrderItems.length;i++) {
         if(existingOrderItems[i].synced) {
             //            alert("deleting already synced item " + i + " " + existingOrderItems[i].synced);
             existingOrderItems.splice(i, 1);
@@ -125,7 +125,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     loopLength = syncOrderItems.length + existingOrderItems.length;
     
-    for(i=0;i<loopLength;i++) {
+    for(var i=0;i<loopLength;i++) {
         if(syncOrderItemsIndex == syncOrderItems.length) {
             //there are no more items left in syncOrderItems
             newOrderItems.push(existingOrderItems[existingOrderItemsIndex]);
@@ -147,7 +147,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     //alert("new order items length: " + tableOrders[tableID].items.length);
     //re number the items
-    for(i=0;i<tableOrders[tableID].items.length;i++) {
+    for(var i=0;i<tableOrders[tableID].items.length;i++) {
         tableOrders[tableID].items[i].itemNumber = i + 1;
     }
     
@@ -252,7 +252,7 @@ function doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmploye
     //delete all items that have been synced already
     existingOrderItems = tableOrders[tableID].items;
     
-    for(i=0;i<existingOrderItems.length;i++) {
+    for(var i=0;i<existingOrderItems.length;i++) {
         if(!existingOrderItems[i].synced) {
             doClear = false;
             break;
@@ -278,7 +278,7 @@ function calculateOrderTotal(order) {
     
     orderTotal = 0;
 
-    for(i=0; i<order.items.length; i++) {
+    for(var i=0; i<order.items.length; i++) {
         item = order.items[i];
         orderTotal += parseFloat(item['total_price']);
     }

@@ -46,7 +46,7 @@ function doBuilderMenuPageSelect(pageNum, pageId) {
     $('#menu_page_' + pageId).addClass('selected');
 
     //destroy the droppable objects for the old page of menu items
-    for(i=0; i<item_droppable_ids.length; i++) {
+    for(var i=0; i<item_droppable_ids.length; i++) {
         webkit_drop.remove(item_droppable_ids[i]);
     }
 

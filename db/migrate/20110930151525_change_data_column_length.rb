@@ -8,6 +8,6 @@ class ChangeDataColumnLength < ActiveRecord::Migration
   end
 
   def self.down
-    change_column :terminal_sync_data, :data, :text
+    #doesn't matter
   end
 end

@@ -1,7 +1,8 @@
 class Admin::TerminalsController < Admin::AdminController
 
   def index
-    @terminals = GlobalSetting.all_terminals
+    @latest_terminals = GlobalSetting.latest_terminals
+    @older_terminals = GlobalSetting.older_terminals
     @displays = Display.all
   end
   
