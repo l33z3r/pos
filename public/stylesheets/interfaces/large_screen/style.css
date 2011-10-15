@@ -444,10 +444,11 @@ nav#main_nav div#menu_screen_shortcut_dropdown_container div.mcdropdown {
 nav#main_nav div#menu_screen_shortcut_dropdown_container div.mcdropdown div {
     border: 1px solid #666;
     -moz-border-radius: 2px;
-    background-color: transparent;
-    color: #FFF;
+    background-color: #FFF;
+    color: #000;
     font-size: 13px;
-    height: 19px;
+    height: 22px;
+    margin-top: -1px;
     padding: 3px 0px 0px 0px;
 }
 
@@ -495,11 +496,98 @@ div#receipt_keypad_container div#receipt {
     padding-top: 2px;
 }
 
+div#receipt_keypad_container div#stock_take_receipt {
+    height: 379px;
+    display: none;
+    background-color: #FFF;
+    padding-top: 2px;
+}
+
+div#receipt_keypad_container div#stock_take_receipt div#receipt_area {
+    height: 258px;
+}
+
+div#receipt_keypad_container div#stock_take_receipt div#receipt_area div#last_transaction_info {
+    padding: 2px;
+}
+
+div#receipt_keypad_container div#stock_take_receipt div#receipt_area div#last_transaction_info div.header {
+    padding: 5px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+div#receipt_keypad_container div#stock_take_receipt div#receipt_area div#last_transaction_info div.label {
+    float: left;
+    font-weight: bold;
+    width: 105px;
+    text-align: right;
+}
+
+div#receipt_keypad_container div#stock_take_receipt div#receipt_area div#last_transaction_info div.value {
+    float: left;
+    margin-left: 10px;
+    width: 130px;
+    text-align: left;
+}
+
+div#receipt_keypad_container div#stock_take_receipt div#stock_take_new_amount_input_container {
+    background: #E0E0E0;
+    text-align: center;
+    border-top: 1px solid #CCC;
+    padding-top: 5px;
+}
+
+div#receipt_keypad_container div#stock_take_receipt div#stock_take_new_amount_input_container div.label {
+    float: left;
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+div#receipt_keypad_container div#stock_take_receipt div#stock_take_new_amount_input_container input {
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    width: 100px;
+    padding: 3px;
+}
+
+div#receipt_keypad_container div#stock_take_receipt div#stock_take_actions {
+    background: #E0E0E0;
+    text-align: center;
+}
+
+div#receipt_keypad_container div#stock_take_receipt div#stock_take_actions div#buttons_container {
+    width: 180px;
+    margin: auto;
+    border-spacing: 10px;
+}
+
 div#receipt_keypad_container div#top_buttons {
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
     border: 1px solid #AAA;
     font-weight: bold;
+}
+
+div#receipt_keypad_container div#top_buttons div#stock_take_header {
+    display: none;
+    background: #E36C0A;
+    height: 27px;
+    padding-top: 10px;
+    font-size: 18px;
+}
+
+div#receipt_keypad_container div#top_buttons div#stock_take_header div.label {
+    float: left;
+    margin-left: 40px;
+}
+
+div#receipt_keypad_container div#top_buttons div#stock_take_header div#finish_stock_take_button {
+    float: right;
+    cursor: pointer;
+    margin: -7px 5px 0px 0px;
 }
 
 div#receipt_keypad_container div#table_select_container {
@@ -601,6 +689,7 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items {
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item {
+    position: relative;
     float: left;
     margin: 1px;
     height: 92px;
@@ -628,6 +717,22 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
     width: -moz-fit-content;
     margin-left: auto;
     margin-right: auto;
+}
+
+div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.stock_count {
+    border: 1px solid #E36C0A;
+    background-color: #fbec88;
+    width: 50px;
+    padding: 8px 5px;
+    position: absolute;
+    z-index: 100;
+    left: 16px;
+    top: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    -moz-opacity: 75;
+    filter:alpha(opacity: .75);
+    opacity: .75;
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_name div.line1 {
@@ -1889,7 +1994,7 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
     border: 1px solid #CCC;
     -moz-border-radius: 7px;
     border-radius: 7px;
-    margin-top: 55px;
+    margin-top: 16px;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#money_helper_section div.money {

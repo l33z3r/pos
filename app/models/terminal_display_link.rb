@@ -17,3 +17,15 @@ class TerminalDisplayLink < ActiveRecord::Base
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: terminal_display_links
+#
+#  id          :integer(4)      not null, primary key
+#  terminal_id :string(255)
+#  display_id  :integer(4)
+#  created_at  :datetime
+#  updated_at  :datetime
+#
+

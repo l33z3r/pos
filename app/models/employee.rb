@@ -4,6 +4,8 @@ class Employee < ActiveRecord::Base
 
   has_many :orders
 
+  has_many :stock_transactions
+  
   belongs_to :role
   
   validates :staff_id, :presence => true, :uniqueness => true

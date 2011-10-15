@@ -14,6 +14,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: order_item_additions
@@ -31,5 +32,6 @@ end
 #  pos_y                       :integer(4)
 #  created_at                  :datetime
 #  updated_at                  :datetime
+#  background_color_2          :string(255)
 #
 

@@ -9,6 +9,8 @@ var paymentMethod = null;
 var serviceCharge = 0;
 var cashback = 0;
 
+var defaultShortcutDropdownText = "I want to...";
+
 //this function is called from application.js on page load
 function initMenu() {
     loadFirstMenuPage();
@@ -110,9 +112,29 @@ function doMenuPageSelect(pageNum, pageId) {
     newHTML = $('#menu_items_' + pageNum).html();
     $('#menu_items_container').html(newHTML);
     currentMenuPage = pageNum;
+
+    if(inStockTakeMode) {
+        loadStockDivs(pageNum);
+    }
 }
 
-function doSelectMenuItem(productId, element) {
+function loadStockDivs(pageNum) {
+    //load the stock divs
+    //send ajax request with page number
+    $.ajax({
+        url: '/load_stock_for_menu_page',
+        data: {
+            page_num : pageNum
+        }
+    });
+}
+
+function doSelectMenuItem(productId, menuItemId, element) {
+    if(inStockTakeMode) {
+        loadStockTakeReceiptArea(productId, menuItemId);
+        return;
+    }
+    
     if(currentMenuItemQuantity == "")
         currentMenuItemQuantity = "1";
 
@@ -1425,7 +1447,7 @@ function switchToModifyOrderItemSubscreen() {
 }
 
 function postDoSelectTable() {
-    //does nothing for now, but the medium interface needed this callback
+//does nothing for now, but the medium interface needed this callback
 }
 
 function orderItemAdditionClicked(el) {
@@ -1500,12 +1522,105 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) 
     currentSelectedReceiptItemEl = null;
 }
 
+var inStockTakeMode = false;
+
 function menuScreenDropdownItemSelected(index, name) {
     if(index == 1) {
-        alert("Change Price");
+        alert("Change Price (in menu.js)");
     } else if(index == 2) {
-        alert("Add Stock");
+        startStockTakeMode();
+        return;
     }
     
-    $('#menu_screen_shortcut_dropdown_container .mcdropdown>div:first').html("I Want To...");
+    setShortcutDropdownDefaultText();
+}
+
+function setShortcutDropdownDefaultText() {
+    $('#menu_screen_shortcut_dropdown_container .mcdropdown>div:first').html(defaultShortcutDropdownText);
+}
+
+function startStockTakeMode() {
+    //change the screen to stocktake mode
+    inStockTakeMode = true;
+        
+    $('#table_screen_button').add('#table_select_container').hide();
+    $('#stock_take_header').show();
+    
+    $('#receipt').hide();
+    $('#stock_take_receipt').show();
+        
+    loadStockDivs(currentMenuPage);   
+    
+    if(currentStockTakeProductId) {
+        loadStockTakeReceiptArea(currentStockTakeProductId, currentStockMenuItemId);
+    }
+}
+
+function finishStockTakeMode() {
+    //change the screen to stocktake mode
+    inStockTakeMode = false;
+        
+    $('#table_screen_button').add('#table_select_container').show();
+    $('#stock_take_header').hide();
+    
+    $('#receipt').show();
+    $('#stock_take_receipt').hide();
+        
+    //hide stock take divs
+    $('#menu_items_container .stock_count').hide();
+    
+    setShortcutDropdownDefaultText();
+}
+
+var currentStockTakeProductId = null;
+var currentStockMenuItemId = null;
+var oldStockValue = null;
+
+function loadStockTakeReceiptArea(productId, menuItemId) {
+    currentStockMenuItemId = menuItemId;
+    
+    $('#stock_take_new_amount_input').attr("disabled", false);
+    
+    currentStockTakeProductId = productId;
+    
+    $('#stock_take_receipt #receipt_area').html("Loading...");
+    
+    $.ajax({
+        url: '/load_stock_receipt_for_product',
+        data: {
+            product_id : productId
+        }
+    });
+}
+
+function updateStock(type) {
+    if(currentStockTakeProductId == null) {
+        setStatusMessage("Please select a product!", true, true);
+        return;
+    }
+    
+    new_amount_string = $('#stock_take_new_amount_input').val();
+    
+    if(isNaN(new_amount_string)) {
+        setStatusMessage("Please enter a number!", true, true);
+        return;
+    }
+
+    new_amount = parseFloat(new_amount_string);
+    
+    if(oldStockValue == new_amount) {
+        setStatusMessage("Please enter a new amount!", true, true);
+        return;
+    } else {
+        $.ajax({
+            url: '/update_stock',
+            type: "POST",
+            data: {
+                menu_item_id : currentStockMenuItemId,
+                product_id : currentStockTakeProductId,
+                t_type : type,
+                new_amount : new_amount
+            }
+        });
+    }
 }

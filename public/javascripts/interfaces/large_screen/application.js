@@ -108,6 +108,9 @@ function showInitialScreen() {
         //show the red x 
         $('#nav_save_button').show();
         
+        //show the shortcut dropdown
+        $('#menu_screen_shortcut_dropdown_container').show();
+        
         if(current_user_nickname != null) $('#e_name').html(current_user_nickname);
     }
     

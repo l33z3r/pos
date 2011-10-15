@@ -9,6 +9,8 @@ class Product < ActiveRecord::Base
   has_many :order_items
   has_many :menu_items, :dependent => :destroy
   
+  has_many :stock_transactions, :order => "CREATED_AT"
+  
   belongs_to :menu_page_1, :class_name => "MenuPage"
   belongs_to :menu_page_2, :class_name => "MenuPage"
   
@@ -85,7 +87,13 @@ class Product < ActiveRecord::Base
     decrement!(:quantity_in_stock, quantity)
   end
   
+  def last_stock_transaction
+    stock_transactions
+  end
+  
 end
+
+
 # == Schema Information
 #
 # Table name: products
@@ -111,7 +119,7 @@ end
 #  parent_product_id          :integer(4)
 #  printers                   :string(255)     default("")
 #  kitchen_note               :text
-#  quantity_in_stock          :float
+#  quantity_in_stock          :float           default(0.0)
 #  code_num                   :integer(4)
 #  upc                        :integer(4)
 #  price_2                    :float
@@ -152,5 +160,6 @@ end
 #  menu_button_height         :integer(4)      default(1)
 #  menu_page_1_id             :string(255)
 #  menu_page_2_id             :string(255)
+#  button_bg_color_2          :string(255)
 #
 

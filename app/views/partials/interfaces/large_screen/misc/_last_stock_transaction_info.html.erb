@@ -1,0 +1,42 @@
+<div id="last_transaction_info">
+
+  <div class="header">Product Info</div>
+    <div class="clear">&nbsp;</div>
+    
+  <div class="label">Product Name:</div>
+  <div class="value"><%=@product.name%></div>
+  <div class="clear">&nbsp;</div>
+
+  <div class="label">Current Stock:</div>
+  <div class="value"><%=@product.quantity_in_stock%></div>
+  <div class="clear_top_margin_10">&nbsp;</div>
+
+  <div class="header">Last Transaction</div>
+  <div class="clear">&nbsp;</div>
+  
+  <% if st %>
+    <div class="label">Employee:</div>
+    <div class="value"><%=st.employee.name%></div>
+    <div class="clear_top_margin_5">&nbsp;</div>
+
+    <div class="label">Date:</div>
+    <div class="value"><%=st.created_at.strftime(GlobalSetting.default_date_format)%></div>
+    <div class="clear_top_margin_5">&nbsp;</div>
+
+    <div class="label">Transaction Type:</div>
+    <div class="value"><%=st.type_text%></div>
+    <div class="clear_top_margin_5">&nbsp;</div>
+
+    <div class="label">Old Amount:</div>
+    <div class="value"><%=st.old_amount%></div>
+    <div class="clear_top_margin_5">&nbsp;</div>
+
+    <div class="label">Change Amount:</div>
+    <div class="value"><%=st.change_amount%></div>
+    <div class="clear_top_margin_5">&nbsp;</div>
+
+  <% else %>
+    No Previous Transaction Found
+  <% end %>
+
+</div>

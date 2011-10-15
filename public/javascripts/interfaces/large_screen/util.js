@@ -483,6 +483,9 @@ function initMcDropDowns() {
         maxRows: 6, select: menuScreenDropdownItemSelected
     });
     menuScreenShortcutSelectMenu = $("#menu_screen_shortcut_dropdown_input").mcDropdown();
+    
+    //make sure the text in the dropdown is set to default
+    setShortcutDropdownDefaultText();
 }
 
 function getSelectedOrLastReceiptItem() {

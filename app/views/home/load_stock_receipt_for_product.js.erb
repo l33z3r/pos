@@ -1,0 +1,6 @@
+$('#stock_take_receipt #receipt_area').html("<%= escape_javascript(render('/partials/interfaces/large_screen/misc/last_stock_transaction_info', :st => @stock_transaction)) %>");
+
+$('#stock_take_new_amount_input').val("<%= number_to_human @product.quantity_in_stock %>");
+$('#stock_take_new_amount_input').focus();
+
+oldStockValue = <%= @product.quantity_in_stock %>;

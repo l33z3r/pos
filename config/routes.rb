@@ -23,7 +23,12 @@ Pos::Application.routes.draw do
   #this route is to call home with js polling
   match 'call_home' => "home#call_home", :via => :post
   match 'request_terminal_reload' => "home#request_terminal_reload", :via => :post
-        
+  
+  #this route loads stock for a menu page and a stock receipt for a product
+  match 'load_stock_for_menu_page' => "home#load_stock_for_menu_page", :via => :get
+  match 'load_stock_receipt_for_product' => "home#load_stock_receipt_for_product", :via => :get
+  match 'update_stock' => "home#update_stock", :via => :post
+  
   #init the sales screen buttons based on role permissions
   match 'init_sales_screen_buttons' => "home#init_sales_screen_buttons"
 

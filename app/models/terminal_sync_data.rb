@@ -1,16 +1,3 @@
-# == Schema Information
-# Schema version: 20110705150431
-#
-# Table name: terminal_sync_data
-#
-#  id         :integer(4)      not null, primary key
-#  sync_type  :integer(4)
-#  time       :string(255)
-#  data       :text
-#  created_at :datetime
-#  updated_at :datetime
-#
-
 class TerminalSyncData < ActiveRecord::Base
   TERMINAL_RELOAD_REQUEST = 1
   SYNC_TABLE_ORDER_REQUEST = 2
@@ -61,3 +48,16 @@ class TerminalSyncData < ActiveRecord::Base
   end
   
 end
+
+# == Schema Information
+#
+# Table name: terminal_sync_data
+#
+#  id         :integer(4)      not null, primary key
+#  sync_type  :integer(4)
+#  time       :string(255)
+#  data       :text(2147483647
+#  created_at :datetime
+#  updated_at :datetime
+#
+

@@ -64,6 +64,41 @@ class HomeController < ApplicationController
     
   end
   
+  def load_stock_for_menu_page
+    @page_num = params[:page_num].to_i
+    @display = TerminalDisplayLink.load_display_for_terminal @terminal_id
+    
+    @stock_map = {}
+    
+    @display.menu_pages[@page_num-1].menu_items.each do |mi|
+      next if !mi.product
+      @stock = mi.product.quantity_in_stock
+      @stock_map[mi.id] = @stock ? number_to_human(@stock) : 0
+    end
+  end
+  
+  def load_stock_receipt_for_product
+    @product = Product.find(params[:product_id])
+    
+    @stock_transaction = @product.last_stock_transaction.last
+  end
+  
+  def update_stock
+    @product = Product.find(params[:product_id])
+    @new_amount = params[:new_amount].to_f
+    @type = params[:t_type]
+    
+    @menu_item_id = params[:menu_item_id]
+    
+    @change_amount = @new_amount - @product.quantity_in_stock
+    
+    @st = StockTransaction.create(:product_id => @product.id, :employee_id => current_employee.id, 
+      :old_amount => @product.quantity_in_stock, :change_amount => @change_amount, :transaction_type => @type)
+    
+    @product.quantity_in_stock = @new_amount
+    @product.save!
+  end
+  
   def request_terminal_reload
     request_reload_app @terminal_id
     redirect_to(:back, :notice => 'Reload request sent.')

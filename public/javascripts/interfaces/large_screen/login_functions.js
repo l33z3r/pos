@@ -91,6 +91,9 @@ function doLogout() {
     //hide the red x 
     $('#nav_save_button').hide();
 
+    //hide the shortcut dropdown
+    $('#menu_screen_shortcut_dropdown_container').hide();
+
     $('#e_name').hide();
 
     //send ajax logout
@@ -218,6 +221,9 @@ function loginSuccess(id, nickname, is_admin, passcode) {
     
     //show the red x 
     $('#nav_save_button').show();
+    
+    //show the shortcut dropdown
+    $('#menu_screen_shortcut_dropdown_container').show();
     
     $('#e_name').show();
 

@@ -17,7 +17,7 @@ gem "meta_search", "1.0.5"
 gem 'aws-s3', '0.6.2'
 
 #smurf for minifying js and css
-#gem 'smurf', '1.0.8'
+gem 'smurf', '1.0.8'
 
 # Use unicorn as the web server
 # gem 'unicorn'

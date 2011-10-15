@@ -15,8 +15,11 @@
             <% page.menu_items.each do |item| %>
               <% if item.product and item.product.is_active %>
                 <div class="item" data-button_width="<%= item.product.menu_button_width %>" 
-                     onclick="doSelectMenuItem(<%= item.product_id %>, this)"
+                     data-menu_item_id="<%= item.id %>" onclick="doSelectMenuItem(<%= item.product_id %>, <%= item.id %>, this)"
                      style="<%= menu_item_background_css item %>">
+                  
+                  <div class="stock_count" style="display: none;" id="stock_count_<%= item.id %>"></div>
+                  
                   <div class="item_pic">
                     <%= product_image_thumb item.product if item.product.show_button_image %>
                   </div>

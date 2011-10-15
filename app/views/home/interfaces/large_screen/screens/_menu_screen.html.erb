@@ -3,6 +3,13 @@
   <div id="receipt_keypad_container">
 
     <div id="top_buttons">
+      <div id="stock_take_header">
+        <div class="label">Stock Take</div>
+        <div id="finish_stock_take_button" onclick="finishStockTakeMode()">
+          <%= image_tag "red_x.gif" %>
+        </div>
+      </div>
+
       <div id="table_screen_button" onclick="showTablesScreen(); return false;">Tables</div>
 
       <div id="table_select_container">
@@ -34,6 +41,24 @@
       <div id="till_roll" class="till_roll"></div>
       <div class="clear">&nbsp;</div>
       <div id="till_roll_discount" class="till_roll_discount"></div>
+    </div>
+
+    <div id="stock_take_receipt">
+      <div id="receipt_area"></div>
+      <div id="stock_take_new_amount_input_container">
+        <div class="label">New Amount:</div>
+        <input type="text" id="stock_take_new_amount_input" disabled="true"/>
+      </div>
+      <div id="stock_take_actions">
+        <div id="buttons_container">
+          <div id="transfer_stock_button" class="button" onclick="updateStock(transferStockType);">
+            Transfer Stock
+          </div>
+          <div id="update_stock_button" class="button" onclick="updateStock(updateStockType);">
+            Update Stock
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="clear">&nbsp;</div>
