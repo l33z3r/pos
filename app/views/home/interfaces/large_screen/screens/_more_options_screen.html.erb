@@ -1,20 +1,24 @@
-<div id="more_options" style="display: none;">
-  <div id="admin_subnav_left">
-    <div class="button" onclick="showMenuScreen();">
-      <div class="icon">
-        <%= image_tag "/images/button_logos/manage_sales_screen_button.png" %>
-      </div>
-      <div class="button_name">Sales Screen</div>
-    </div>
-  </div>
+<% cache("more_options_screen") do %>
 
-  <div class="clear">&nbsp;</div><div id="options_screen">
-    <div id="options_screen_menu_buttons">
-      <% @options_screen_buttons_map.each do |role_id, dbrs| %>
+  <div id="more_options" style="display: none;">
+    <div id="admin_subnav_left">
+      <div class="button" onclick="showMenuScreen();">
+        <div class="icon">
+          <%= image_tag "/images/button_logos/manage_sales_screen_button.png" %>
+        </div>
+        <div class="button_name">Sales Screen</div>
+      </div>
+    </div>
+
+    <div class="clear">&nbsp;</div><div id="options_screen">
+      <div id="options_screen_menu_buttons">
+        <% @options_screen_buttons_map.each do |role_id, dbrs| %>
           <div style="display: none;" class="buttons" id="options_screen_buttons_html_for_role_<%=role_id%>">
             <%= render :partial => '/home/interfaces/large_screen/more_options_screen_buttons', :locals => {:dbrs => dbrs} %>
           </div>
         <% end %>
+      </div>
     </div>
   </div>
-</div>
+
+<% end %>

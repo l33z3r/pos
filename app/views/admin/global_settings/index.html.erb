@@ -94,7 +94,7 @@
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Per Role
                       <div class="clear">&nbsp;</div>
-                      
+
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
                       <div class="clear">&nbsp;</div>
@@ -329,7 +329,7 @@
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
                       <div class="clear">&nbsp;</div>
-                      
+
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
                       <div class="clear">&nbsp;</div>
@@ -576,7 +576,7 @@
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
                       <div class="clear">&nbsp;</div>
-                      
+
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
                       <div class="clear">&nbsp;</div>
@@ -593,12 +593,17 @@
                   </tr> 
                   <tr>
                     <td>
-                      Terminal ID
+                      Terminal Name
                     </td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::TERMINAL_ID, {:fingerprint => request.cookies["terminal_fingerprint"]} %>
+                      
+                      <div id="terminal_name_field_unique_error" style="display: none;">
+                        This terminal name has already been taken, if you submit this, the old terminal name will be overwritten
+                      </div>
+                      
                       <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.text_field :value %>
+                        <%= f.text_field :value, :id => "terminal_name_field", :onkeyup => "checkForUniqueTerminalName();" %>
                       <% end %>
                     </td>
                   </tr>
@@ -611,7 +616,7 @@
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>Yes
                       <div class="clear">&nbsp;</div>
-                      
+
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>No
                       <div class="clear">&nbsp;</div>

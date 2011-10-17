@@ -1,38 +1,45 @@
-<div id="menu_container">
-  <div id="pages">
-    <% @display.menu_pages.each do |page| %>
-      <div class="page" id="menu_page_<%=page.id%>"
-           onclick="doMenuPageSelect(<%= page.page_num %>, <%= page.id %>);">
-        <div class="name">
-          <%= page.name %>
-        </div>
-      </div>
+<% cache("menu_items_screen") do %>
 
-      <div style="display: none;" id="menu_items_<%= page.page_num %>">
-        <div id="items">
-          <% page.menu_items.each do |item| %>
-            <% if item.product and item.product.is_active %>
-              <div class="item" data-button_width="<%= item.product.menu_button_width %>" 
-                   onclick="doSelectMenuItem(<%= item.product_id %>, this)"
-                   style="<%= menu_item_background_css item %>">
-                <div class="item_pic">
-                  <%= product_image_thumb item.product if item.product.show_button_image %>
+  <div id="menu_container">
+    <div id="pages">
+      <% @display.menu_pages.each do |page| %>
+        <div class="page" id="menu_page_<%=page.id%>"
+             onclick="doMenuPageSelect(<%= page.page_num %>, <%= page.id %>);">
+          <div class="name">
+            <%= page.name %>
+          </div>
+        </div>
+
+        <div style="display: none;" id="menu_items_<%= page.page_num %>">
+          <div id="items">
+            <% page.menu_items.each do |item| %>
+              <% if item.product and item.product.is_active %>
+                <div class="item" data-button_width="<%= item.product.menu_button_width %>" 
+                     data-menu_item_id="<%= item.id %>" onclick="doSelectMenuItem(<%= item.product_id %>, <%= item.id %>, this)"
+                     style="<%= menu_item_background_css item %>">
+                  
+                  <div class="stock_count" style="display: none;" id="stock_count_<%= item.id %>"></div>
+                  
+                  <div class="item_pic">
+                    <%= product_image_thumb item.product if item.product.show_button_image %>
+                  </div>
+                  <div class="item_name" style="<%= item.product.button_text_color.blank? ? "" : "color: #{item.product.button_text_color};" %>">
+                    <%= menu_item_name item %>
+                  </div>
                 </div>
-                <div class="item_name" style="<%= item.product.button_text_color.blank? ? "" : "color: #{item.product.button_text_color};" %>">
-                  <%= menu_item_name item %>
-                </div>
-              </div>
+              <% end %>
             <% end %>
-          <% end %>
+          </div>
         </div>
-      </div>
 
-    <% end %>
+      <% end %>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div id="menu_items_container">
+      Loading...
+    </div>
   </div>
 
-  <div class="clear">&nbsp;</div>
-
-  <div id="menu_items_container">
-    Loading...
-  </div>
-</div>
+<% end %>

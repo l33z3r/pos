@@ -59,7 +59,7 @@ class Admin::RolesController < Admin::AdminController
     @editing_super_user = (Role::SUPER_USER_ROLE_ID == @role.id)
     
     if @editing_super_user
-      redirect_to([:admin, @role], :flash => {:error => "You cannot edit the Super User Role!"}) and return
+      redirect_to([:admin, @role], :flash => {:error => "You cannot edit the Administrator Role!"}) and return
     end
   end
   

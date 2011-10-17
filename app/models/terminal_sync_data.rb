@@ -1,16 +1,3 @@
-# == Schema Information
-# Schema version: 20110705150431
-#
-# Table name: terminal_sync_data
-#
-#  id         :integer(4)      not null, primary key
-#  sync_type  :integer(4)
-#  time       :string(255)
-#  data       :text
-#  created_at :datetime
-#  updated_at :datetime
-#
-
 class TerminalSyncData < ActiveRecord::Base
   TERMINAL_RELOAD_REQUEST = 1
   SYNC_TABLE_ORDER_REQUEST = 2
@@ -37,4 +24,40 @@ class TerminalSyncData < ActiveRecord::Base
       end
     end
   end
+  
+  def self.request_reload_app terminal_id
+    TerminalSyncData.transaction do
+      TerminalSyncData.fetch_terminal_reload_request_times.each do |tsd|
+        tsd.destroy
+      end
+    
+      TerminalSyncData.create!({:sync_type => TerminalSyncData::TERMINAL_RELOAD_REQUEST, 
+          :time => Time.now.to_i.to_s, :data => {:terminal_id => terminal_id}})
+    end
+  end
+  
+  def self.request_hard_reload_app terminal_id
+    TerminalSyncData.transaction do
+      TerminalSyncData.fetch_terminal_reload_request_times.each do |tsd|
+        tsd.destroy
+      end
+    
+      TerminalSyncData.create!({:sync_type => TerminalSyncData::TERMINAL_RELOAD_REQUEST, 
+          :time => Time.now.to_i.to_s, :data => {:terminal_id => terminal_id, :hard_reset => true}})
+    end
+  end
+  
 end
+
+# == Schema Information
+#
+# Table name: terminal_sync_data
+#
+#  id         :integer(4)      not null, primary key
+#  sync_type  :integer(4)
+#  time       :string(255)
+#  data       :text(2147483647
+#  created_at :datetime
+#  updated_at :datetime
+#
+

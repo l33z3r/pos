@@ -61,9 +61,9 @@ function doGlobalInit() {
     
     showScreenFromHashParams();
     
-    $('#flash_container').delay(500).fadeIn(500, function() {
-        $(this).delay(3000).fadeOut(500);
-    });
+//    $('#flash_container').delay(500).fadeIn(500, function() {
+//        $(this).delay(3000).fadeOut(500);
+//    });
     
     //any input that gains focus will call this function
     $("input,textarea").live("focus", function(event) {
@@ -107,6 +107,9 @@ function showInitialScreen() {
         
         //show the red x 
         $('#nav_save_button').show();
+        
+        //show the shortcut dropdown
+        $('#menu_screen_shortcut_dropdown_container').show();
         
         if(current_user_nickname != null) $('#e_name').html(current_user_nickname);
     }

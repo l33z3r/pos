@@ -24,6 +24,7 @@ class HomeController < ApplicationController
     if @reload_app
       @reload_request_time = @reload_app['reload_request_time']
       @reload_request_terminal_id = @reload_app['reload_request_terminal_id']
+      @reload_request_hard_reset = @reload_app['reload_request_hard_reset']
       @new_reload_app_update_time = @reload_request_time.to_i + 1
     end
     
@@ -59,7 +60,43 @@ class HomeController < ApplicationController
     end
     
     store_receipt_html
+    update_terminal_timestamp
     
+  end
+  
+  def load_stock_for_menu_page
+    @page_num = params[:page_num].to_i
+    @display = TerminalDisplayLink.load_display_for_terminal @terminal_id
+    
+    @stock_map = {}
+    
+    @display.menu_pages[@page_num-1].menu_items.each do |mi|
+      next if !mi.product
+      @stock = mi.product.quantity_in_stock
+      @stock_map[mi.id] = @stock ? number_to_human(@stock) : 0
+    end
+  end
+  
+  def load_stock_receipt_for_product
+    @product = Product.find(params[:product_id])
+    
+    @stock_transaction = @product.last_stock_transaction.last
+  end
+  
+  def update_stock
+    @product = Product.find(params[:product_id])
+    @new_amount = params[:new_amount].to_f
+    @type = params[:t_type]
+    
+    @menu_item_id = params[:menu_item_id]
+    
+    @change_amount = @new_amount - @product.quantity_in_stock
+    
+    @st = StockTransaction.create(:product_id => @product.id, :employee_id => current_employee.id, 
+      :old_amount => @product.quantity_in_stock, :change_amount => @change_amount, :transaction_type => @type)
+    
+    @product.quantity_in_stock = @new_amount
+    @product.save!
   end
   
   def request_terminal_reload
@@ -242,6 +279,14 @@ class HomeController < ApplicationController
         @strh.save!
       end
     end
+  end
+  
+  #this function updates the timestamp of the gs used to represent the terminal,
+  #it allows us to see what terminals are currently active
+  def update_terminal_timestamp
+    #@@terminal_id_gs is set in a before filter in application controller
+    @terminal_id_gs.updated_at = Time.now
+    @terminal_id_gs.save!
   end
 
 end

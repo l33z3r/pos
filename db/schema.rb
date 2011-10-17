@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111012132735) do
+ActiveRecord::Schema.define(:version => 20111014170835) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -167,7 +167,7 @@ ActiveRecord::Schema.define(:version => 20111012132735) do
     t.integer  "order_id"
     t.integer  "employee_id"
     t.integer  "product_id"
-    t.integer  "quantity"
+    t.float    "quantity"
     t.float    "total_price"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -236,7 +236,7 @@ ActiveRecord::Schema.define(:version => 20111012132735) do
     t.integer  "parent_product_id"
     t.string   "printers",                   :default => ""
     t.text     "kitchen_note"
-    t.float    "quantity_in_stock"
+    t.float    "quantity_in_stock",          :default => 0.0
     t.integer  "code_num"
     t.integer  "upc"
     t.float    "price_2"
@@ -318,6 +318,17 @@ ActiveRecord::Schema.define(:version => 20111012132735) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "stock_transactions", :force => true do |t|
+    t.integer  "product_id"
+    t.integer  "employee_id"
+    t.float    "old_amount"
+    t.float    "change_amount"
+    t.integer  "transaction_type"
+    t.string   "note"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "stored_receipt_htmls", :force => true do |t|
     t.string   "receipt_type"

@@ -77,6 +77,8 @@ class GlobalSetting < ActiveRecord::Base
     LAST_ORDER_ID => "Last Order ID"
   }
   
+  LATEST_TERMINAL_HOURS = 24
+  
   def self.setting_for property, args={}
     @gs = nil
     
@@ -168,6 +170,14 @@ class GlobalSetting < ActiveRecord::Base
     when DO_BEEP
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
+    when TERMINAL_ID
+      if value_changed?
+        @res = GlobalSetting.where("global_settings.key != ?", key).where("global_settings.value = ?", value)
+        if @res.size > 0
+          #conflict, delete the old one
+          @res.first.destroy
+        end
+      end
     else
     end
   end
@@ -202,6 +212,20 @@ class GlobalSetting < ActiveRecord::Base
   
   def self.all_terminals
     where("global_settings.key like ?", "#{TERMINAL_ID}%").where("global_settings.value not like ?", "NT%").collect(&:value).uniq
+  end
+  
+  def self.latest_terminals
+    where("global_settings.key like ?", "#{TERMINAL_ID}%")
+    .where("global_settings.value not like ?", "NT%")
+    .where("updated_at > ?", LATEST_TERMINAL_HOURS.hours.ago)
+    .collect(&:value).uniq
+  end
+  
+  def self.older_terminals
+    where("global_settings.key like ?", "#{TERMINAL_ID}%")
+    .where("global_settings.value not like ?", "NT%")
+    .where("updated_at <= ?", LATEST_TERMINAL_HOURS.hours.ago)
+    .collect(&:value).uniq
   end
   
   def self.remove_all_terminal_ids

@@ -30,7 +30,7 @@ function doSyncTableOrder() {
     var checkForShowServerAddedText = true;
     
     //mark all items in this order as synced
-    for(i=0; i<order.items.length; i++) {
+    for(var i=0; i<order.items.length; i++) {
         if(checkForShowServerAddedText && !order.items[i].synced) {
             order.items[i].showServerAddedText = true;
             checkForShowServerAddedText = false;
@@ -50,8 +50,6 @@ function doSyncTableOrder() {
             employee_id : current_user_id
         }
     });
-    
-    setStatusMessage("Order Sent");
     
     postDoSyncTableOrder();
 }

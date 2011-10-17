@@ -1,0 +1,5 @@
+<% @stock_map.each do |id, stock| %>
+  stockFloatingDiv = $('#menu_items_container').find("#stock_count_<%=id%>");
+  stockFloatingDiv.html("<%=stock%>");
+  stockFloatingDiv.show();
+<% end %>

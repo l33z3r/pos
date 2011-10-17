@@ -129,7 +129,11 @@ class OrderController < ApplicationController
       #do we want to show the serveraddeditem text
       @order_item.show_server_added_text = item[:showServerAddedText]
       
+      #this happens for every item
       @order_item_saved = @order_item_saved and @order_item.save
+      
+      #decrement the stock for this item
+      @order_item.product.decrement_stock @order_item.quantity.to_f
     end
     
     #must tell all terminals that this order is cleared

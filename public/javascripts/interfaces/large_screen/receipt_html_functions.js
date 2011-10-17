@@ -32,7 +32,7 @@ function fetchOrderReceiptHTML(order) {
 function printItemsFromOrder(serverNickname, terminalID, orderJSON, items) {
     var allOrderItemsReceiptHTML = getPrintedOrderReceiptHeader(serverNickname, terminalID, orderJSON);
 
-    for(i=0; i<items.length; i++) {
+    for(var i=0; i<items.length; i++) {
         var item = items[i];
         allOrderItemsReceiptHTML += getLineItemHTMLForPrintedOrderReceipt(item);
     }
@@ -57,7 +57,7 @@ function getLineItemHTMLForPrintedOrderReceipt(orderItem) {
     }
     
     if(orderItem.oia_items) {
-        for(j=0; j<orderItem.oia_items.length; j++) {
+        for(var j=0; j<orderItem.oia_items.length; j++) {
             oia_is_add = orderItem.oia_items[j].is_add;
             
             if(!orderItem.oia_items[j].is_note) {

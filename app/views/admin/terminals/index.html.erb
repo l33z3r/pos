@@ -1,3 +1,5 @@
+<% @nav_title = "Terminals" %>
+
 <% content_for :admin_subnav_links_right do %>
   <%= render :partial => "/partials/interfaces/large_screen/ok_cancel_buttons" %>
   <%= render :partial => "/partials/interfaces/large_screen/terminal_reload_request" %>
@@ -7,28 +9,67 @@
 
   <section id="displays">
 
-    <h3>Terminals</h3>
+    <div id="terminal_list_tabs" class="vtabs report_option_tabs">
 
-    <table id="terminal_list" class="admin_table">
-      <thead>
-        <tr>
-          <th width="400">Terminal Name</th>
-          <th width="400">Display</th>
-        </tr>
-      </thead>
+      <div>
+        <ul>
+          <li><a id="active_terminal_list_link" href="#active_terminal_list">Active Terminals (Last 24 Hours)</a></li>
+          <li><a id="older_terminal_list_link" href="#older_terminal_list">Older Terminals</a></li>
+        </ul>
+      </div>
 
-      <tbody>
-        <% @terminals.each do |terminal| %>
-          <tr>
-            <td><%= terminal %></td>
-            <td>
-              <%= select_tag "Display", options_from_collection_for_select(@displays, "id", "name", TerminalDisplayLink.for_terminal(terminal).try(:display_id)), :onchange => "linkTerminalDisplay('#{terminal}', this.value)" %>
-            </td>
-            <td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+      <div>
+        <div class="container" id="active_terminal_list">
+          <h3>Active Terminals (Last 24 Hours)</h3>
 
+          <table class="admin_table">
+            <thead>
+              <tr>
+                <th width="400">Terminal Name</th>
+                <th width="400">Display</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% @latest_terminals.each do |terminal| %>
+                <tr>
+                  <td><%= terminal %></td>
+                  <td>
+                    <%= select_tag "Display", options_from_collection_for_select(@displays, "id", "name", TerminalDisplayLink.for_terminal(terminal).try(:display_id)), :onchange => "linkTerminalDisplay('#{terminal}', this.value)" %>
+                  </td>
+                  <td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="container" id="older_terminal_list">
+          <h3>Older Terminals</h3>
+
+          <table class="admin_table">
+            <thead>
+              <tr>
+                <th width="400">Terminal Name</th>
+                <th width="400">Display</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% @older_terminals.each do |terminal| %>
+                <tr>
+                  <td><%= terminal %></td>
+                  <td>
+                    <%= select_tag "Display", options_from_collection_for_select(@displays, "id", "name", TerminalDisplayLink.for_terminal(terminal).try(:display_id)), :onchange => "linkTerminalDisplay('#{terminal}', this.value)" %>
+                  </td>
+                  <td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
   </section>
 </div>

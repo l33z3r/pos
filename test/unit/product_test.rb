@@ -10,6 +10,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: products
@@ -35,7 +37,7 @@ end
 #  parent_product_id          :integer(4)
 #  printers                   :string(255)     default("")
 #  kitchen_note               :text
-#  quantity_in_stock          :float
+#  quantity_in_stock          :float           default(0.0)
 #  code_num                   :integer(4)
 #  upc                        :integer(4)
 #  price_2                    :float
@@ -76,5 +78,6 @@ end
 #  menu_button_height         :integer(4)      default(1)
 #  menu_page_1_id             :string(255)
 #  menu_page_2_id             :string(255)
+#  button_bg_color_2          :string(255)
 #
 

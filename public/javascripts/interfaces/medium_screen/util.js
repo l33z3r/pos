@@ -1,4 +1,5 @@
 function setStatusMessage(message, hide, shake) {
+    niceAlert(message);
     console.log("Status message set " + message);
 }
 

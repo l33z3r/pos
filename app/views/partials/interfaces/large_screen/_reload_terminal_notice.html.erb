@@ -1,3 +1,9 @@
-<span id="reload_message" onclick="location.reload();">
-  Settings have been changed by <%= @reload_request_terminal_id %>. Tap Here To Reload.
-</span>
+<% if @reload_request_hard_reset %>
+  <span id="reload_message" onclick="doClearAndReload();">
+    A hard reset has been requested by <%= @reload_request_terminal_id %>. Tap Here To Do So.
+  </span>
+<% else %>
+  <span id="reload_message" onclick="location.reload();">
+    Settings have been changed by <%= @reload_request_terminal_id %>. Tap Here To Reload.
+  </span>
+<% end %>

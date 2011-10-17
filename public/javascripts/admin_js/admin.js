@@ -227,3 +227,16 @@ function adminShowMoreOptions() {
     
     //goTo('<%=home_path%>#screen=more_options');
 }
+
+function checkForUniqueTerminalName() {
+    var enteredVal = $('#terminal_name_field').val();
+    
+    console.log("Checking val: " + enteredVal);
+    
+    $.ajax({
+        url: '/admin/terminals/check_for_unique',
+        data: {
+            entered_terminal_id : enteredVal
+        }
+    });
+}

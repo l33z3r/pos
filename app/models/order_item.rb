@@ -4,6 +4,7 @@ class OrderItem < ActiveRecord::Base
   belongs_to :product
 end
 
+
 # == Schema Information
 #
 # Table name: order_items
@@ -12,7 +13,7 @@ end
 #  order_id               :integer(4)
 #  employee_id            :integer(4)
 #  product_id             :integer(4)
-#  quantity               :integer(4)
+#  quantity               :float
 #  total_price            :float
 #  created_at             :datetime
 #  updated_at             :datetime

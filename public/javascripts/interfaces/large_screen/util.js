@@ -202,23 +202,6 @@ function hideStatusMessage() {
     }
 }
 
-function niceAlert(message, title) {
-    if (typeof title == "undefined") {
-        title = "Alert!";
-    }
-    
-    ModalPopups.Alert('niceAlertContainer',
-        title, "<div id='nice_alert'>" + message + "</div>",
-        {
-            okButtonText: 'OK',
-            onOk: "hideNiceAlert()"
-        });
-}
-
-function hideNiceAlert() {
-    ModalPopups.Close('niceAlertContainer');
-}
-
 function showLoginScreen() {
     clearNavTitle();
     hideAllScreens();
@@ -328,7 +311,7 @@ function doCoinCounterTotal() {
     
     var sum = 0;
     
-    for(i=0; i<valArray.length; i++) {
+    for(var i=0; i<valArray.length; i++) {
         amount = utilCounterParent.find('.coin_quantity_' + valArray[i]).val();
         
         if(amount == "" || isNaN(amount)) {
@@ -500,6 +483,9 @@ function initMcDropDowns() {
         maxRows: 6, select: menuScreenDropdownItemSelected
     });
     menuScreenShortcutSelectMenu = $("#menu_screen_shortcut_dropdown_input").mcDropdown();
+    
+    //make sure the text in the dropdown is set to default
+    setShortcutDropdownDefaultText();
 }
 
 function getSelectedOrLastReceiptItem() {
