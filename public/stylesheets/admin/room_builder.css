@@ -128,7 +128,7 @@ div#room_builder div#tree_container div#objects_tree div.room_object a {
 
 div#room_builder div#grid {
     margin: auto;
-    width: -moz-fit-content;
+    display: inline-block;
     border-top: 1px solid #CCC;
     border-left: 1px solid #CCC;
 }

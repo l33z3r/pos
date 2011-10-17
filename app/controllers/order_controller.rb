@@ -69,8 +69,15 @@ class OrderController < ApplicationController
     
     @table_id = @table_order_data['tableID']
     
-    do_request_sync_table_order @terminal_id, Time.now.to_i, @table_order_data, @table_id, @employee_id
-    render :json => {:success => true}.to_json
+    #make sure the table still exists in the system as it will cause a weird error if not
+    @table = TableInfo.find_by_id(@table_id)
+    
+    if @table
+      do_request_sync_table_order @terminal_id, Time.now.to_i, @table_order_data, @table_id, @employee_id
+      render :json => {:success => true}.to_json
+    else
+      render :json => {:success => false}.to_json
+    end
   end
 
   private
