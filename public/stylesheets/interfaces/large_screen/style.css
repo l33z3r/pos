@@ -504,7 +504,7 @@ div#receipt_keypad_container div#stock_take_receipt {
 }
 
 div#receipt_keypad_container div#stock_take_receipt div#receipt_area {
-    height: 258px;
+    height: 250px;
 }
 
 div#receipt_keypad_container div#stock_take_receipt div#receipt_area div#last_transaction_info {
@@ -520,7 +520,7 @@ div#receipt_keypad_container div#stock_take_receipt div#receipt_area div#last_tr
 div#receipt_keypad_container div#stock_take_receipt div#receipt_area div#last_transaction_info div.label {
     float: left;
     font-weight: bold;
-    width: 105px;
+    width: 120px;
     text-align: right;
 }
 
@@ -564,6 +564,10 @@ div#receipt_keypad_container div#stock_take_receipt div#stock_take_actions div#b
     border-spacing: 10px;
 }
 
+div#receipt_keypad_container div#stock_take_receipt div#stock_take_actions div#buttons_container div.button {
+    font-weight: bold;
+}
+
 div#receipt_keypad_container div#top_buttons {
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
@@ -581,7 +585,8 @@ div#receipt_keypad_container div#top_buttons div#stock_take_header {
 
 div#receipt_keypad_container div#top_buttons div#stock_take_header div.label {
     float: left;
-    margin-left: 40px;
+    margin-left: 75px;
+    margin-top: 2px;
 }
 
 div#receipt_keypad_container div#top_buttons div#stock_take_header div#finish_stock_take_button {
