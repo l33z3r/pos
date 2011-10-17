@@ -2,6 +2,6 @@ log/*
 tmp/*
 public/javascripts/cache/*
 public/stylesheets/cache/*
-nbproject/private/
+nbproject/*
 public/system/
 
