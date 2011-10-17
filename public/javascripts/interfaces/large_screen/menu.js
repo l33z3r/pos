@@ -62,6 +62,8 @@ function menuScreenKeypadClick(val) {
     if(showingDisplayButtonPasscodePromptPopup) {
         $('#display_button_passcode').val($('#display_button_passcode').val() + val);
         $('#display_button_passcode_show').html($('#display_button_passcode_show').html() + val);
+    } else if(inStockTakeMode) {
+        $('#stock_take_new_amount_input').val($('#stock_take_new_amount_input').val() + val);
     } else {
         closePreviousModifierDialog();
         
@@ -82,12 +84,20 @@ function menuScreenKeypadClick(val) {
 }
 
 function menuScreenKeypadClickCancel() {
-    currentMenuItemQuantity = "";
+    if(inStockTakeMode) {
+        $('#stock_take_new_amount_input').val("");
+    } else {
+        currentMenuItemQuantity = "";
+    }
 }
 
 function menuScreenKeypadClickDecimal() {
-    if(currentMenuItemQuantity.indexOf(".") == -1) {
-        currentMenuItemQuantity += ".";
+    if(inStockTakeMode) {
+        $('#stock_take_new_amount_input').val($('#stock_take_new_amount_input').val() + ".");
+    } else {
+        if(currentMenuItemQuantity.indexOf(".") == -1) {
+            currentMenuItemQuantity += ".";
+        }
     }
 }
 
@@ -1526,7 +1536,8 @@ var inStockTakeMode = false;
 
 function menuScreenDropdownItemSelected(index, name) {
     if(index == 1) {
-        alert("Change Price (in menu.js)");
+        goTo("/admin/products");
+        return;
     } else if(index == 2) {
         startStockTakeMode();
         return;
