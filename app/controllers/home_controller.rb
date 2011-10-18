@@ -1,12 +1,55 @@
 class HomeController < ApplicationController
 
+  # Rails controller action for an HTML5 cache manifest file.
+  # Generates a plain text list of files that changes
+  # when one of the listed files change...
+  # So the client knows when to refresh its cache.
+  def cache_manifest
+    @files = ["CACHE MANIFEST\n"]
+
+    @files << '/images/button_logos/clock_in.png'
+    @files << '/javascripts/cache/large_screen.js'
+    @files << '/javascripts/cache/large_screen.js'
+    
+    @all_images = Dir.glob("#{Rails.root}/public/images/**/*")
+    
+    @all_images.each do |rb_file|
+      next if !rb_file.match /.png$/ and !rb_file.match /.jpg$/
+      
+      if rb_file.include?("facebook-logo")
+        1+1
+      end
+      
+      next if rb_file.match /\s+/ 
+      
+      @files << "#{rb_file[rb_file.rindex("/public/")+7..rb_file.length-1]}"
+      
+    end
+    #    add_from('./public/javascripts/','*.js')
+    #    add_from('./public/stylesheets/','*.css')
+    #    add_from('./client/images/','*.png')
+
+    @files << "\nNETWORK:"
+    @files << '/'
+    
+    digest = Digest::SHA1.new
+    @files.each do |f|
+      actual_file = File.join(Rails.root,'public',f)
+      digest << "##{File.mtime(actual_file)}" if File.exist?(actual_file)
+    end
+    
+    @files << "\n# Modification Digest: 3"##{digest.hexdigest}
+    
+    render :text => @files.join("\n"), :content_type => 'text/cache-manifest', :layout => nil
+  end
+  
   #main screen including the login overlay
   def index
     perform_interface_specific_actions
     
     #now the actions common to all interfaces
     do_common_interface_actions
-  end
+  end 
   
   def mobile_index
     @all_terminals = all_terminals

@@ -25,6 +25,9 @@ Pos::Application.routes.draw do
   match 'request_terminal_reload' => "home#request_terminal_reload", :via => :post
   match 'clear_all_fragment_caches' => "home#clear_all_fragment_caches", :via => :post
   
+  #appcache
+  match 'cache_manifest' => "home#cache_manifest"
+  
   #this route loads stock for a menu page and a stock receipt for a product
   match 'load_stock_for_menu_page' => "home#load_stock_for_menu_page", :via => :get
   match 'load_stock_receipt_for_product' => "home#load_stock_receipt_for_product", :via => :get

@@ -874,6 +874,9 @@ function doTotalFinal() {
     if(autoPrintReceipt) {
         printReceipt(printReceiptHTML, true);
     }
+    
+    //open the cash drawer always
+    openCashDrawer();
 
     //do we need to clear the previous order from the receipt dropdown selection?
     if(selectedTable == -1) {
