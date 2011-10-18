@@ -23,6 +23,7 @@ Pos::Application.routes.draw do
   #this route is to call home with js polling
   match 'call_home' => "home#call_home", :via => :post
   match 'request_terminal_reload' => "home#request_terminal_reload", :via => :post
+  match 'clear_all_fragment_caches' => "home#clear_all_fragment_caches", :via => :post
   
   #this route loads stock for a menu page and a stock receipt for a product
   match 'load_stock_for_menu_page' => "home#load_stock_for_menu_page", :via => :get

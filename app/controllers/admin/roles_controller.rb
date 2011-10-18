@@ -1,5 +1,5 @@
 class Admin::RolesController < Admin::AdminController
-  
+  cache_sweeper :display_button_sweeper
   before_filter :disallow_edit_super_user_role, :only => [:edit, :update]
   
   def index

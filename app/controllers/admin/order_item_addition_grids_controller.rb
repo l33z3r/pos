@@ -1,4 +1,5 @@
 class Admin::OrderItemAdditionGridsController < Admin::AdminController
+  cache_sweeper :oia_sweeper
   
   def index
     @oiags = OrderItemAdditionGrid.all

@@ -1,4 +1,6 @@
 class Admin::ProductsController < Admin::AdminController
+  cache_sweeper :product_sweeper
+  
   def index
     @products = Product.paginate :page => params[:page], :order => 'name'
   end

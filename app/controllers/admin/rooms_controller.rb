@@ -1,5 +1,5 @@
 class Admin::RoomsController < Admin::AdminController
-  
+  cache_sweeper :room_sweeper
   before_filter :load_room, :except => [:index, :new, :create, :tables]
   
   def index

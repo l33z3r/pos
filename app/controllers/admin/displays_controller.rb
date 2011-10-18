@@ -1,5 +1,6 @@
 class Admin::DisplaysController < Admin::AdminController
-
+  cache_sweeper :display_sweeper
+  
   def index
     @displays = Display.all
   end

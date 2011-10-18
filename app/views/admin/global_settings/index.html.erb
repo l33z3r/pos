@@ -13,6 +13,7 @@
 <% content_for :admin_subnav_links_right do %>
   <%= render :partial => "/partials/interfaces/large_screen/ok_cancel_buttons" %>
   <%= render :partial => "/partials/interfaces/large_screen/terminal_reload_request" %>
+  <%= render :partial => "/partials/interfaces/large_screen/clear_fragment_caches_request" %>
 <% end %>
 
 <div id="edit_global_settings">
@@ -597,11 +598,11 @@
                     </td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::TERMINAL_ID, {:fingerprint => request.cookies["terminal_fingerprint"]} %>
-                      
+
                       <div id="terminal_name_field_unique_error" style="display: none;">
                         This terminal name has already been taken, if you submit this, the old terminal name will be overwritten
                       </div>
-                      
+
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value, :id => "terminal_name_field", :onkeyup => "checkForUniqueTerminalName();" %>
                       <% end %>

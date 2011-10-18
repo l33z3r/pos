@@ -1,4 +1,5 @@
 class Admin::DisplayButtonsController < Admin::AdminController
+  cache_sweeper :display_button_sweeper
   
   def access
     

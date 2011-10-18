@@ -104,6 +104,11 @@ class HomeController < ApplicationController
     redirect_to(:back, :notice => 'Reload request sent.')
   end
   
+  def clear_all_fragment_caches
+    expire_fragment(%r{\.*})
+    redirect_to home_path
+  end
+  
   def active_employees
     load_active_employees
   end
