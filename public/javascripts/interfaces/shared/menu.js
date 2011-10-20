@@ -315,6 +315,7 @@ function initTouchRecpts() {
     
     //medium screen interface receipts
     $('.medium_interface #menu_screen_till_roll').touchScroll();
+    $('.medium_interface #large_menu_screen_till_roll').touchScroll();
 }
 
 function buildOrderItem(product, amount) {

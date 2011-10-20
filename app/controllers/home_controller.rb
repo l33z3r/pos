@@ -7,20 +7,20 @@ class HomeController < ApplicationController
   def cache_manifest
     @files = ["CACHE MANIFEST\n"]
 
-    @files << '/images/button_logos/clock_in.png'
-    @files << '/javascripts/cache/large_screen.js'
-    @files << '/javascripts/cache/large_screen.js'
+#    @files << '/images/button_logos/clock_in.png'
+#    @files << '/javascripts/cache/large_screen.js'
+#    @files << '/javascripts/cache/large_screen.js'
     
-    @all_images = Dir.glob("#{Rails.root}/public/images/**/*")
+    @all_images = Dir.glob("#{Rails.root}/public/images/**/*") | Dir.glob("#{Rails.root}/public/system/**/*")
     
     @all_images.each do |rb_file|
-      next if !rb_file.match /.png$/ and !rb_file.match /.jpg$/
+      next if !rb_file.match /.png$/ and !rb_file.match /.jpg$/ and !rb_file.match /.gif$/
       
-      if rb_file.include?("facebook-logo")
-        1+1
+      #escape whitespace
+      if rb_file.match /\s+/ 
+        rb_file.gsub!(" ", "%20")
+        rb_file
       end
-      
-      next if rb_file.match /\s+/ 
       
       @files << "#{rb_file[rb_file.rindex("/public/")+7..rb_file.length-1]}"
       
@@ -30,7 +30,7 @@ class HomeController < ApplicationController
     #    add_from('./client/images/','*.png')
 
     @files << "\nNETWORK:"
-    @files << '/'
+    @files << '*'
     
     digest = Digest::SHA1.new
     @files.each do |f|
@@ -38,7 +38,7 @@ class HomeController < ApplicationController
       digest << "##{File.mtime(actual_file)}" if File.exist?(actual_file)
     end
     
-    @files << "\n# Modification Digest: 3"##{digest.hexdigest}
+    @files << "\n# Modification Digest: #{digest.hexdigest}"
     
     render :text => @files.join("\n"), :content_type => 'text/cache-manifest', :layout => nil
   end
@@ -283,6 +283,12 @@ class HomeController < ApplicationController
     @display_buttons = []
     
     @display_buttons << @tables_button << @order_button << @modify_button << @more_options_button
+    
+    @functions_display_buttons = []
+    @functions_display_buttons << @tables_button << @order_button << @modify_button << @more_options_button
+    @functions_display_buttons << @tables_button << @order_button << @modify_button << @more_options_button
+    @functions_display_buttons << @tables_button << @order_button << @modify_button << @more_options_button
+    @functions_display_buttons << @tables_button << @order_button << @modify_button << @more_options_button
   end
   
   def clear_session

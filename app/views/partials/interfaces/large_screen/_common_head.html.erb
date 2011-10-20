@@ -12,7 +12,8 @@
   "interfaces/large_screen/menu", "interfaces/large_screen/util", 
   "interfaces/large_screen/receipt_html_functions", "interfaces/large_screen/login_functions", 
   "interfaces/large_screen/cash_reports", "interfaces/large_screen/cash_screen", 
-  "touch/touch_util", "touch/on_touch_click_replace", "interfaces/large_screen/screen_button_functions", :cache => "cache/large_screen" %>
+  "touch/touch_util", "touch/on_touch_click_replace", "interfaces/large_screen/screen_button_functions", 
+  "interfaces/large_screen/touch", :cache => "cache/large_screen" %>
 
 <%= csrf_meta_tag %>
 
@@ -21,9 +22,4 @@
 
 <%= yield :head %>
 
-<!-- disable the double tap to zoom -->
-<meta name="viewport" content="user-scalable=0;" />
-
-<% if Rails.env.development?  %>
-  <meta http-equiv="pragma" content="no-cache"/>
-<% end %>
+<%= render "/partials/shared_head_meta_tags" %>

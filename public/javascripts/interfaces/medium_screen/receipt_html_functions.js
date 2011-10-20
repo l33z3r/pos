@@ -17,3 +17,12 @@ function displayLastReceipt() {
     //set the select item
     doSelectTable(lastReceiptID); 
 }
+
+function setReceiptsHTML(thehtml) {
+    $('#menu_screen_till_roll').html(thehtml);
+    $('#large_menu_screen_till_roll').html(thehtml);
+}
+
+function getCurrentReceiptHTML() {
+    return $('#menu_screen_till_roll').html();
+}

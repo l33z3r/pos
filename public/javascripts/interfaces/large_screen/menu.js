@@ -1404,7 +1404,7 @@ function postDoSyncTableOrder() {
     //pick up the default home screen and load it
     loadAfterSaleScreen();
     
-    setStatusMessage("Order Sent");
+    setStatusMessage("Order Sent!");
 
     if(!order.order_num) {
         setLoginReceipt("Last Order", "Loading...");

@@ -115,14 +115,8 @@ div#menu_screen div#receipt_buttons_container div#receipt_container {
     width: 258px;
 }
 
-div#menu_screen div#receipt_buttons_container div#receipt_container div#table_num_holder {
-    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
-    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
-    padding: 6px;
-}
-
 div#menu_screen div#receipt_buttons_container div#receipt_container div#menu_screen_receipt {
-    height: 167px;
+    height: 191px;
     background-color: #FFF;
     overflow-y: auto;
     display: block;
@@ -412,6 +406,73 @@ div.receipt div.till_roll div.discount div.header {
 
 /* End Menu Screen Receipt */
 
+/* Receipt Screen */
+
+div#receipt_screen {
+    height: 790px;
+    display: none;
+}
+
+div#receipt_screen div#header {
+    width: 100%;
+    height: 30px;
+    font-weight: bold;
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+    text-align: center;
+    padding-top: 10px;
+}
+
+div#receipt_screen div#large_receipt_container {
+    border: 1px solid #000;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    width: 410px;
+    margin: auto;
+    margin-top: 10px;
+    height: 740px;
+}
+
+div#receipt_screen div#large_receipt_container div#large_menu_screen_receipt {
+    height: 191px;
+    background-color: #FFF;
+    overflow-y: auto;
+    height: 710px;
+    display: block;
+    padding-left: px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+div#receipt_screen div#large_receipt_container div#large_menu_screen_receipt div#large_menu_screen_till_roll {
+    padding-top: 4px;
+    height: 680px;
+    display: block;
+    background-color: #FFF;
+}
+
+/* End Receipt Screen */
+
+/* Functions Screen */
+
+div#functions_screen {
+    display: none;
+}
+
+div#functions_screen div#header {
+    text-align: center;
+    padding: 8px;
+    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
+}
+
+div#functions_screen div#functions_buttons_container {
+    border-spacing: 6px;
+    padding: 15px;
+}
+
+/* End Functions Screen */
+
 /* Generic Styles */
 
 div.button {
@@ -585,10 +646,21 @@ div.keypad div.keys div {
 }
 
 div#nice_alert {
+    font-size: 20px;
+    font-weight: bold;
     width: 280px;
     height: 60px;
     text-align: center;
     margin-top: 30px;
+}
+
+input#niceAlertContainer_okButton {
+    width: 300px;
+    height: 40px;
+    background: #CCC;
+    border: 1px solid #000;
+    border-radius: 5px;
+    box-shadow: 0px 1px 1px 0px #777;
 }
 
 /* End Generic Styles */

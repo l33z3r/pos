@@ -93,7 +93,7 @@ function tableSelectMenuItem(orderItem) {
 }
 
 function writeOrderItemToReceipt(orderItem) {
-    $('#menu_screen_till_roll').html($('#menu_screen_till_roll').html() + getOrderItemReceiptHTML(orderItem));
+    setReceiptsHTML(getCurrentReceiptHTML() + getOrderItemReceiptHTML(orderItem));
 }
 
 function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
@@ -250,6 +250,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
 
 function menuRecptScroll() {
     recptScroll("menu_screen_");
+    recptScroll("large_menu_screen_");
 }
 
 function loadReceipt(order) {
@@ -263,7 +264,8 @@ function loadReceipt(order) {
     orderItems = order.items;
 
     allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(order);
-    $('#menu_screen_till_roll').html($('#menu_screen_till_roll').html() + allOrderItemsRecptHTML);
+    
+    setReceiptsHTML(getCurrentReceiptHTML() + allOrderItemsRecptHTML)
 
     //    if(orderTotal != null) {
     //        writeTotalToReceipt(order, orderTotal);
@@ -273,9 +275,7 @@ function loadReceipt(order) {
 }
 
 function clearReceipt() {
-    $('#menu_screen_till_roll').html('');
-//    $('#total_value').html(currency(0));
-//    $('#till_roll_discount').html('');
+    setReceiptsHTML("");
 }
 
 function postDoSyncTableOrder() {
@@ -283,7 +283,7 @@ function postDoSyncTableOrder() {
     //so that the highlighted items are no longer highlighted
     doSelectTable(selectedTable);
     
-    setStatusMessage("Order Sent");
+    setStatusMessage("Order Sent!");
 }
 
 function showModifyOrderItemScreen() {
@@ -355,7 +355,9 @@ function clearTableNumberEntered() {
 }
 
 function postDoSelectTable() {
-    $('#table_num_holder').html("Table " + current_table_label);
+    var theLabel = "Table " + current_table_label;
+    $('#sales_button_' + tablesButtonID + ' .button_name').html(theLabel);
+    $('#receipt_screen #header').html(theLabel);
 }
 
 function orderItemAdditionClicked(el) {

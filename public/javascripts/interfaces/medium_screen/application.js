@@ -1,7 +1,7 @@
 $(function(){
     doGlobalInit();
 });
-   
+    
 function doGlobalInit() {
     //allow scroll for dev
     if(inDevMode()) {

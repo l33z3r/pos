@@ -2,6 +2,8 @@ class Product < ActiveRecord::Base
 
   has_attached_file :product_image, PAPERCLIP_STORAGE_OPTIONS.merge(:styles => { :medium => "300x300>", :thumb => "115x115>" })
   
+  before_post_process :transliterate_file_name
+  
   belongs_to :category
   belongs_to :tax_rate
   
@@ -89,6 +91,36 @@ class Product < ActiveRecord::Base
   
   def last_stock_transaction
     stock_transactions
+  end
+  
+  def transliterate_file_name
+    extension = File.extname(product_image_file_name).gsub(/^\.+/, '')
+    filename = product_image_file_name.gsub(/\.#{extension}$/, '')
+    self.product_image.instance_write(:file_name, "#{transliterate(filename)}.#{transliterate(extension)}")
+  end
+  
+  def transliterate(str)
+    # Based on permalink_fu by Rick Olsen
+
+    # Escape str by transliterating to UTF-8 with Iconv
+    s = Iconv.iconv('ascii//ignore//translit', 'utf-8', str).to_s
+
+    # Downcase string
+    s.downcase!
+
+    # Remove apostrophes so isn't changes to isnt
+    s.gsub!(/'/, '')
+
+    # Replace any non-letter or non-number character with a space
+    s.gsub!(/[^A-Za-z0-9]+/, ' ')
+
+    # Remove spaces from beginning and end of string
+    s.strip!
+
+    # Replace groups of spaces with single hyphen
+    s.gsub!(/\ +/, '-')
+
+    return s
   end
   
 end

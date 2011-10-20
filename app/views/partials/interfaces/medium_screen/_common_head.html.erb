@@ -11,7 +11,7 @@
 <%= javascript_include_tag "rails", "interfaces/medium_screen/application", 
   "interfaces/medium_screen/menu", "interfaces/medium_screen/util",
   "touch/touch_util", "touch/on_touch_click_replace", "interfaces/medium_screen/screen_button_functions",
-  "interfaces/medium_screen/receipt_html_functions", :cache => "cache/medium_screen" %>
+  "interfaces/medium_screen/receipt_html_functions", "interfaces/medium_screen/touch", :cache => "cache/medium_screen" %>
 
 <%= csrf_meta_tag %>
 
@@ -20,7 +20,4 @@
 
 <%= yield :head %>
 
-<!-- disable the double tap to zoom -->
-<meta name="viewport" content="user-scalable=0;" />
-
-<meta http-equiv="pragma" content="no-cache"/>
+<%= render "/partials/shared_head_meta_tags" %>

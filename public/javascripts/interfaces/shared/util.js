@@ -443,7 +443,7 @@ function initRadioButtons() {
 
 function niceAlert(message, title) {
     if (typeof title == "undefined") {
-        title = "Hey!";
+        title = "Notice";
     }
     
     ModalPopups.Alert('niceAlertContainer',
@@ -457,3 +457,27 @@ function niceAlert(message, title) {
 function hideNiceAlert() {
     ModalPopups.Close('niceAlertContainer');
 }
+
+//extend jquery to slide divs
+jQuery.fn.extend({
+  slideRightShow: function() {
+    return this.each(function() {
+        $(this).show('slide', {direction: 'right'}, screenSlideSpeed);
+    });
+  },
+  slideLeftHide: function() {
+    return this.each(function() {
+      $(this).hide('slide', {direction: 'left'}, screenSlideSpeed);
+    });
+  },
+  slideRightHide: function() {
+    return this.each(function() {
+      $(this).hide('slide', {direction: 'right'}, screenSlideSpeed);
+    });
+  },
+  slideLeftShow: function() {
+    return this.each(function() {
+      $(this).show('slide', {direction: 'left'}, screenSlideSpeed);
+    });
+  }
+});
