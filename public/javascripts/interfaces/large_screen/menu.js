@@ -591,9 +591,8 @@ function removeSelectedOrderItem() {
         storeOrderInStorage(current_user_id, order);
     }
     
-    currentSelectedReceiptItemEl.slideUp('slow', function() {
-        loadReceipt(order);
-    });
+    currentSelectedReceiptItemEl.hide();
+    loadReceipt(order);
     
     closeEditOrderItem();
 }

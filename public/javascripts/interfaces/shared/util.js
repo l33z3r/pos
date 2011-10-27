@@ -426,7 +426,7 @@ function initScrollPanes() {
 }
 
 function initCheckboxes() {
-    $(':checkbox:not(.no_iphone_style)').iphoneStyle({
+    $(':checkbox.iphone_style').iphoneStyle({
         resizeContainer: false, 
         resizeHandle : false, 
         checkedLabel: 'Yes', 
@@ -435,7 +435,7 @@ function initCheckboxes() {
 }
 
 function initRadioButtons() {
-    $(':radio:not(.no_iphone_style)').iButton({
+    $(':radio.iphone_style').iButton({
         labelOn: "On", 
         labelOff: "Off"
     });

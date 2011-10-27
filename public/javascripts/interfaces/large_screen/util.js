@@ -217,6 +217,9 @@ function showMenuScreen() {
     //show the menu screen as default subscreen
     showMenuItemsSubscreen();
     
+    //show the shortcut dropdown
+    $('#menu_screen_shortcut_dropdown_container').show();
+    
     $('#menu_screen').show();
 }
 
@@ -238,6 +241,9 @@ function showMoreOptionsScreen() {
     hideAllScreens();
     $('#more_options').show();
     
+    //hide the shortcut dropdown
+    $('#menu_screen_shortcut_dropdown_container').hide();
+        
     //add a hash so that the history buttons work in admin
     window.location.hash = "#screen=more_options";
 }
@@ -480,7 +486,8 @@ function initMcDropDowns() {
     
     //menu screen shortcut dropdown, first init then get reference
     $("#menu_screen_shortcut_dropdown_input").mcDropdown("#menu_screen_shortcut_dropdown", {
-        maxRows: 6, select: menuScreenDropdownItemSelected
+        maxRows: 6, 
+        select: menuScreenDropdownItemSelected
     });
     menuScreenShortcutSelectMenu = $("#menu_screen_shortcut_dropdown_input").mcDropdown();
     
