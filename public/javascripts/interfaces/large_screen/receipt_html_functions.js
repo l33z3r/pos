@@ -360,13 +360,24 @@ function print(content) {
     
     $('#printFrame').contents().find('#till_roll').html(content);
     
-    var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>" + $('#printFrame').contents().find('html').html() + "</html>";
+    var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>" 
+    + $('#printFrame').contents().find('html').html() + "</html>";
         
     console.log("Websocket support? " + ("WebSocket" in window));
     
-    if ("WebSocket" in window)
-    {
-        console.log("Sending content over websocket: " + content_with_css);
+    //TODO: display an error if the service is not running...
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    if ("WebSocket" in window) {
+        console.log("Sending receipt content over websocket: " + content_with_css);
         
         // Let us open a web socket
         var ws = new WebSocket("ws://localhost:8080/ClueyWebSocketServices/receipt_printer");
@@ -376,6 +387,7 @@ function print(content) {
             // Web Socket is connected, send data using send()
             ws.send(content_with_css);
             console.log("Message sent: " + content_with_css);
+            ws.close();
         };
         
         ws.onmessage = function (evt) 
@@ -388,9 +400,7 @@ function print(content) {
             // websocket is closed.
             console.log("Connection closed!"); 
         };
-    }
-    else
-    {
+    } else {
         // The browser doesn't support WebSocket
         alert("WebSocket NOT supported by your Browser!");
     
@@ -401,7 +411,6 @@ function print(content) {
     //    printFrame.print();
     }
     
-
 }
 
 function clearReceipt() {

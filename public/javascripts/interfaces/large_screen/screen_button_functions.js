@@ -273,25 +273,66 @@ function showAddNoteToOrderItemScreen() {
 }
 
 function openCashDrawer() {
-//    //search for "signed.applets.codebase_principal_support" 
-//    //in this list and toggle its value to "true"
-//    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-//
-//    // create an nsILocalFile for the executable
-//    var file = Components.classes["@mozilla.org/file/local;1"]
-//    .createInstance(Components.interfaces.nsILocalFile);
-//    file.initWithPath("c:\\open_cash_drawer.bat");
-//
-//    // create an nsIProcess
-//    var process = Components.classes["@mozilla.org/process/util;1"]
-//    .createInstance(Components.interfaces.nsIProcess);
-//    process.init(file);
-//
-//    // Run the process.
-//    // If first param is true, calling thread will be blocked until
-//    // called process terminates.
-//    // Second and third params are used to pass command-line arguments
-//    // to the process.
-//    var args = [];
-//    process.run(false, args, args.length);
+    //TODO: display an error if the service is not running...
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    if ("WebSocket" in window) {
+        console.log("Sending cash drawer message");
+        
+        // Let us open a web socket
+        var ws = new WebSocket("ws://localhost:8080/ClueyWebSocketServices/cash_drawer_controller");
+        
+        ws.onopen = function()
+        {
+            // Web Socket is connected, send data using send()
+            ws.send("open cash drawer!");
+            console.log("Cash Drawer message sent");
+            ws.close();
+        };
+        
+        ws.onmessage = function (evt) 
+        { 
+            var received_msg = evt.data;
+            console.log("Message received: " + received_msg);
+        };
+        ws.onclose = function()
+        { 
+            // websocket is closed.
+            console.log("Connection closed!"); 
+        };
+    } else {
+        // The browser doesn't support WebSocket
+        alert("WebSocket NOT supported by your Browser!");
+    
+    //DO IT THE OLD FASHIONED WAY
+    
+    //    //search for "signed.applets.codebase_principal_support" 
+    //    //in this list and toggle its value to "true"
+    //    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    //
+    //    // create an nsILocalFile for the executable
+    //    var file = Components.classes["@mozilla.org/file/local;1"]
+    //    .createInstance(Components.interfaces.nsILocalFile);
+    //    file.initWithPath("c:\\open_cash_drawer.bat");
+    //
+    //    // create an nsIProcess
+    //    var process = Components.classes["@mozilla.org/process/util;1"]
+    //    .createInstance(Components.interfaces.nsIProcess);
+    //    process.init(file);
+    //
+    //    // Run the process.
+    //    // If first param is true, calling thread will be blocked until
+    //    // called process terminates.
+    //    // Second and third params are used to pass command-line arguments
+    //    // to the process.
+    //    var args = [];
+    //    process.run(false, args, args.length);
+    }
 }
