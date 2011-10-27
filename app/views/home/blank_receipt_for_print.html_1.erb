@@ -2,18 +2,10 @@
 <html>
   <head>
     <style type="text/css" media="all">
-      @page {
-        margin: 0px;
-      }
-      
       body {
         font-size: 9px;
-        width: 200px;
+        width: 300px;
         margin: 0px;
-      }
-      
-      body * {
-        overflow: hidden;
       }
 
       div.clear {
@@ -22,18 +14,17 @@
       }
 
       div.clear_top_margin_10 {
-        height: 5px;
+        height: 10px;
         clear: both;
       }
 
       div.clear_top_margin_10_bottom_border {
-        height: 5px;
+        height: 10px;
         clear: both;
       }
 
       div.the_dots {
         text-align: center;
-        margin-bottom: 5px;
       }
 
       div#order_receipt_header div.order_num {
@@ -60,7 +51,7 @@
       div.data_table div.label {
         float: left;
         text-align: left;
-        width: 98px;
+        width: 130px;
       }
 
       div#order_receipt_header div.data_table div.label {
@@ -74,17 +65,21 @@
       div.data_table div.data {
         float: left;
         text-align: right;
-        width: 101px;
+        width: 112px;
         font-weight: bold;
       }
 
       div.data_table div.label.time {
-        width: 90px;
+        width: 102px;
       }
 
       div.data_table div.data.time {
-        float: right;
-        width: 108px;
+        width: 140px;
+      }
+
+      div.time {
+        float: left;
+        width: 130px;
       }
 
       div.terminal {
@@ -106,26 +101,20 @@
       div.amount {
         float: left;
         text-align: left;
-        width: 35px;
+        width: 37px;
         margin-left: 3px;
       }
 
       div.name {
         float: left;
-        width: 120px;
+        width: 160px;
         text-align: left;
-      }
-      
-      div.total {
-        float: left;
-        width: 35px;
-        text-align: right;
       }
 
       div.modifier_name {
         float: left;
-        width: 130px;
-        margin-left: 30px;
+        width: 150px;
+        margin-left: 50px;
         text-align: left;
       }
 
@@ -135,30 +124,42 @@
         text-align: right;
       }
 
+      div.total {
+        float: left;
+        width: 40px;
+        text-align: right;
+      }
+
       div.discount div.header {
         float: left;
-        width: 110px;
+        width: 120px;
         text-align: right;
         font-style: italic;
       }
 
       div.discount div.discount_amount {
         float: left;
-        width: 55px;
+        width: 66px;
         text-align: right;
         font-style: italic;
       }
 
       div.discount div.new_price {
         float: left;
-        width: 35px;
+        width: 40px;
         text-align: left;
+        font-style: italic;
+      }
+
+      div.discount div.header {
+        float: left;
+        width: 120px;
+        text-align: right;
         font-style: italic;
       }
 
       div#receipt_message {
         text-align: center;
-        margin-bottom: 5px;
       }
     </style>    
   </head>

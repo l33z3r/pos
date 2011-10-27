@@ -85,8 +85,8 @@ function doCashTotalReport(total_type, commit) {
     
     currentTotalType = total_type;
     
-    if(typeof(commit) == "undefined") {
-        show_currency = false
+    if(!commit) {
+        show_currency = false;
     }
     
     coinCounterPosition = $('#reports_coin_counter_widget_container');
@@ -146,7 +146,16 @@ function cashReportsScreenKeypadClickTab() {
     lastActiveElement.focusNextInputField();
 }
 
+var cashTotalInOperation = false;
+
 function finishCashTotal() {
+    if(cashTotalInOperation) {
+        niceAlert("Cash Total is in operation, please wait!");
+        return;
+    }
+    
+    cashTotalInOperation = true;
+        
     $('#cash_totals_header_section').show();
     
     content = $('#reports_center_receipt').html() + clear10HTML;

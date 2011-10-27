@@ -108,6 +108,7 @@ class HomeController < ApplicationController
   end
   
   def load_stock_for_menu_page
+    number_to_human(0.2)
     @page_num = params[:page_num].to_i
     @display = TerminalDisplayLink.load_display_for_terminal @terminal_id
     

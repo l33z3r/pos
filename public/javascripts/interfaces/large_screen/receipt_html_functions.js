@@ -357,13 +357,51 @@ function printReceipt(content, printRecptMessage) {
 }
 
 function print(content) {
-    //document.applets[0].printReceipt("hi");
-    
     
     $('#printFrame').contents().find('#till_roll').html(content);
     
-    printFrame.focus();
-    printFrame.print();
+    var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>" + $('#printFrame').contents().find('html').html() + "</html>";
+        
+    console.log("Websocket support? " + ("WebSocket" in window));
+    
+    if ("WebSocket" in window)
+    {
+        console.log("Sending content over websocket: " + content_with_css);
+        
+        // Let us open a web socket
+        var ws = new WebSocket("ws://localhost:8080/ClueyWebSocketServices/receipt_printer");
+        
+        ws.onopen = function()
+        {
+            // Web Socket is connected, send data using send()
+            ws.send(content_with_css);
+            console.log("Message sent: " + content_with_css);
+        };
+        
+        ws.onmessage = function (evt) 
+        { 
+            var received_msg = evt.data;
+            console.log("Message received: " + received_msg);
+        };
+        ws.onclose = function()
+        { 
+            // websocket is closed.
+            console.log("Connection closed!"); 
+        };
+    }
+    else
+    {
+        // The browser doesn't support WebSocket
+        alert("WebSocket NOT supported by your Browser!");
+    
+    //DO IT THE OLD FASHIONED WAY
+    //    $('#printFrame').contents().find('#till_roll').html(content);
+    //    
+    //    printFrame.focus();
+    //    printFrame.print();
+    }
+    
+
 }
 
 function clearReceipt() {

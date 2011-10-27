@@ -2,7 +2,7 @@ function prepareXTotal() {
     var doIt = true;//checkAllOrdersClosedForCashTotal();
     
     if(doIt) {
-        doCashTotalReport("X");
+        doCashTotalReport("X", false);
     }
 }
 
@@ -10,7 +10,7 @@ function prepareZTotal() {
     var doIt = checkAllOrdersClosedForCashTotal();
     
     if(doIt) {
-        doCashTotalReport("Z");
+        doCashTotalReport("Z", false);
     }
 }
 
@@ -273,25 +273,25 @@ function showAddNoteToOrderItemScreen() {
 }
 
 function openCashDrawer() {
-    //search for "signed.applets.codebase_principal_support" 
-    //in this list and toggle its value to "true"
-    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-
-    // create an nsILocalFile for the executable
-    var file = Components.classes["@mozilla.org/file/local;1"]
-    .createInstance(Components.interfaces.nsILocalFile);
-    file.initWithPath("c:\\open_cash_drawer.bat");
-
-    // create an nsIProcess
-    var process = Components.classes["@mozilla.org/process/util;1"]
-    .createInstance(Components.interfaces.nsIProcess);
-    process.init(file);
-
-    // Run the process.
-    // If first param is true, calling thread will be blocked until
-    // called process terminates.
-    // Second and third params are used to pass command-line arguments
-    // to the process.
-    var args = [];
-    process.run(false, args, args.length);
+//    //search for "signed.applets.codebase_principal_support" 
+//    //in this list and toggle its value to "true"
+//    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+//
+//    // create an nsILocalFile for the executable
+//    var file = Components.classes["@mozilla.org/file/local;1"]
+//    .createInstance(Components.interfaces.nsILocalFile);
+//    file.initWithPath("c:\\open_cash_drawer.bat");
+//
+//    // create an nsIProcess
+//    var process = Components.classes["@mozilla.org/process/util;1"]
+//    .createInstance(Components.interfaces.nsIProcess);
+//    process.init(file);
+//
+//    // Run the process.
+//    // If first param is true, calling thread will be blocked until
+//    // called process terminates.
+//    // Second and third params are used to pass command-line arguments
+//    // to the process.
+//    var args = [];
+//    process.run(false, args, args.length);
 }

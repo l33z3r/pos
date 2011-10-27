@@ -13,6 +13,7 @@ previous_cash_totals_data_html = "";
 
 <% if @last_z_total %>
   previous_z_total_data = new Array();
+  previous_z_total_data.push(new Array('Amount', '<%=print_money @last_z_total.total%>'));
   previous_z_total_data.push(new Array('Entered By', '<%=@last_z_total.employee.nickname%>'));
   previous_z_total_data.push(new Array('Date', '<%=@last_z_total.created_at.strftime(@defaultDateFormat)%>'));
 
@@ -28,6 +29,10 @@ previous_cash_totals_data_html = "";
 
   previous_cash_totals_data_html += "<div class='data_table_header'><%=ct.total_type%> Total</div>";
   previous_cash_totals_data_html += getCashTotalDataTable(previous_cash_totals_data, true) + clear10HTML;
+<% end %>
+
+<% if @previous_floats.empty? and !@last_z_total and @previous_x_totals.empty? %>
+  previous_cash_totals_data_html += "<div>No Data!</div>";
 <% end %>
 
 $('#reports_left_till_roll').html(previous_cash_totals_data_html);

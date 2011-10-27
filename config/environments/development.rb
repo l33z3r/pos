@@ -27,6 +27,6 @@ Pos::Application.configure do
 
   config.stylesheets_dir = "stylesheets/shared"
   
-  ENV["RAILS_ASSET_ID"] = "" # disable timestamps at end of asset files for offline browsing
+  #ENV["RAILS_ASSET_ID"] = "" # disable timestamps at end of asset files for offline browsing
 end
 

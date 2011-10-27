@@ -455,29 +455,41 @@ function niceAlert(message, title) {
 }
 
 function hideNiceAlert() {
-    ModalPopups.Close('niceAlertContainer');
+    try {
+        ModalPopups.Close('niceAlertContainer');
+    } catch (e) {
+        
+    }
 }
 
 //extend jquery to slide divs
 jQuery.fn.extend({
-  slideRightShow: function() {
-    return this.each(function() {
-        $(this).show('slide', {direction: 'right'}, screenSlideSpeed);
-    });
-  },
-  slideLeftHide: function() {
-    return this.each(function() {
-      $(this).hide('slide', {direction: 'left'}, screenSlideSpeed);
-    });
-  },
-  slideRightHide: function() {
-    return this.each(function() {
-      $(this).hide('slide', {direction: 'right'}, screenSlideSpeed);
-    });
-  },
-  slideLeftShow: function() {
-    return this.each(function() {
-      $(this).show('slide', {direction: 'left'}, screenSlideSpeed);
-    });
-  }
+    slideRightShow: function() {
+        return this.each(function() {
+            $(this).show('slide', {
+                direction: 'right'
+            }, screenSlideSpeed);
+        });
+    },
+    slideLeftHide: function() {
+        return this.each(function() {
+            $(this).hide('slide', {
+                direction: 'left'
+            }, screenSlideSpeed);
+        });
+    },
+    slideRightHide: function() {
+        return this.each(function() {
+            $(this).hide('slide', {
+                direction: 'right'
+            }, screenSlideSpeed);
+        });
+    },
+    slideLeftShow: function() {
+        return this.each(function() {
+            $(this).show('slide', {
+                direction: 'left'
+            }, screenSlideSpeed);
+        });
+    }
 });
