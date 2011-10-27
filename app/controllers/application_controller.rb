@@ -4,7 +4,8 @@ class ApplicationController < ActionController::Base
   
   before_filter :check_reset_session
   
-  helper_method :e, :current_employee, :print_money, :mobile_device?, :all_terminals, :all_servers, :current_interface
+  helper_method :e, :current_employee, :print_money, :mobile_device?
+  helper_method :all_terminals, :all_servers, :current_interface, :production_mode?
   
   before_filter :load_global_vars
   
@@ -139,6 +140,10 @@ class ApplicationController < ActionController::Base
     number_to_currency value, :precision => 2, :unit => @dynamic_currency_symbol
   end
   
+  def production_mode?
+    Rails.env == "production" or Rails.env == "production_heroku"
+  end
+  
   private
   
   def check_reset_session
@@ -254,11 +259,11 @@ class ApplicationController < ActionController::Base
     ##      return
     ##    end
     #    
-        if DO_HTTP_BASIC_AUTH
-          authenticate_or_request_with_http_basic do |username, password|
-            username == HTTP_BASIC_AUTH_USERNAME && password == HTTP_BASIC_AUTH_PASSWORD
-          end
-        end
+    if DO_HTTP_BASIC_AUTH
+      authenticate_or_request_with_http_basic do |username, password|
+        username == HTTP_BASIC_AUTH_USERNAME && password == HTTP_BASIC_AUTH_PASSWORD
+      end
+    end
   end
   
 end

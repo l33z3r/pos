@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
-<!-- dont use manifest for now, still needs work -->
-<!--html manifest="cache_manifest.manifest"-->
+<!-- only use cache manifest in production mode -->
+<html <%= production_mode? ? "manifest=\"cache_manifest.manifest\"" : "" %>>
 
 <html>
   <head>
