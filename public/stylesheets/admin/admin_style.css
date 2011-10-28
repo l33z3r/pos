@@ -77,6 +77,7 @@ table.admin_table tbody tr td {
 table.admin_table tbody tr td div.product_price {
     font-weight: bold;
     text-decoration: underline;
+    cursor: pointer;
 }
 
 table.admin_table tbody tr td.text_align_left {
@@ -849,7 +850,7 @@ div#admin_order_list section#orders div#order_list_section div#order_list_contai
 }
 
 div#admin_order_list section#orders div#order_list_section div#order_list_container div#only_void_orders_selector input {
-    margin-top: 7px;
+    height: 21px;
     float: left;
 }
 

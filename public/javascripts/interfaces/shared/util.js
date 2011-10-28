@@ -422,6 +422,8 @@ function initScrollPanes() {
         $('.jscrollpane, .admin #content_container section:not(.no_scroll_pane)').jScrollPane({
             showArrows: true
         });
+        
+        
     }, 500);
 }
 

@@ -633,7 +633,7 @@ div#menu_screen div#menu_pages_container div#pages {
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container {
-    height: 486px;
+    height: 482px;
     padding-left: 2px;
     padding-top: 4px;
     background-color: #E0E0E0;
@@ -642,7 +642,6 @@ div#menu_screen div#menu_pages_container div#menu_items_container {
 div#menu_screen div#menu_pages_container div#menu_buttons {
     border-spacing: 3px;
     height: 159px;
-    padding: 1px;
 }
 
 div#menu_screen div#menu_pages_container div#menu_buttons div#menu_buttons_loading_message {
@@ -1607,15 +1606,22 @@ div#discounts_popup_markup_container div#apply_discount_to {
     text-align: left;
 }
 
-div#discounts_popup_markup_container div#apply_discount_to div.ibutton-container {
-    margin-left: 25px;
+div#discounts_popup_markup_container div#apply_discount_to input[type=radio] {
+    height: 20px;
+    margin-left: 40px;
+    float: left;
 }
 
-div#discounts_popup_markup_container div#apply_discount_to div.label {
+div#discounts_popup_markup_container div#apply_discount_to div.header_label {
     text-align: left;
     font-weight: bold;
     margin: 6px;
     font-size: 12px;
+}
+
+div#discounts_popup_markup_container div#apply_discount_to div.label {
+    float: left;
+    margin-top: 6px;
 }
 
 div#discounts_popup_markup_container div.actions div#save_button {
@@ -2644,8 +2650,8 @@ div.text_only_tabs div.text_only_tab div.label {
 div.button {
     width: 73px;
     max-width: 73px;
-    height: 73px;
-    max-height: 73px;
+    height: 71px;
+    max-height: 71px;
     overflow: hidden;
     vertical-align: middle;
     display: table-cell;

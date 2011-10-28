@@ -335,7 +335,7 @@ function getTillRollDiscountHTML(order) {
         tillRollDiscountHTML += "<div class='data'>" + preDiscountFormatted + "</div>";
         tillRollDiscountHTML += "<div class='label'>Discount - " + order.discount_percent + "%</div>";
         tillRollDiscountHTML += "<div class='data'>" + discountAmountFormatted + "</div>" + clearHTML + "</div>";
-    } else {
+    } else {    
         tillRollDiscountHTML = "";
     }
     

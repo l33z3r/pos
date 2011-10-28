@@ -802,6 +802,10 @@ function doTotalFinal() {
     //do up the subtotal and total and retrieve the receipt html for both the login screen and for print
     receiptHTML = fetchFinalReceiptHTML(false, true);
     printReceiptHTML = fetchFinalReceiptHTML(true, false);
+        
+    //open cash drawer explicitly 
+    //as the printer will not trigger it here
+    openCashDrawer();
     
     setLoginReceipt("Last Sale", receiptHTML);
     
@@ -872,10 +876,6 @@ function doTotalFinal() {
     //now print the receipt
     if(autoPrintReceipt) {
         printReceipt(printReceiptHTML, true);
-    } else {
-        //open cash drawer explicitly 
-        //as the printer will not trigger it here
-        openCashDrawer();
     }
 
     //do we need to clear the previous order from the receipt dropdown selection?

@@ -11,6 +11,9 @@ function initAdminScreen() {
     $('body').css("overflow", "scroll");
     
     display_button_passcode_permissions = all_display_button_permissions[current_user_role_id];
+    
+    //make links in the table bigger
+    makeBiggerAdminTableLinks();
 }
 
 $(function(){
@@ -71,22 +74,24 @@ function doSetDefaultOrderItemAdditionGrid(gridId) {
 function updateProductPrice(product_id, currentPrice) {
     newPrice = prompt("Enter a new price:", currentPrice);
     
-    //send an update to display controller
-    $.ajax({
-        type: 'POST',
-        url: '/admin/products/' + product_id + '/update_price',
-        success : function() {
-            $('#product_price_' + product_id).html(number_to_currency(newPrice, {
-                precision : 2, 
-                showunit : true
-            }));
-            $('#product_price_' + product_id).parent().effect("highlight", {}, 3000);
-        },
-        data: {
-            id : product_id,
-            price : newPrice
-        }
-    });
+    if(newPrice) {
+        //send an update to display controller
+        $.ajax({
+            type: 'POST',
+            url: '/admin/products/' + product_id + '/update_price',
+            success : function() {
+                $('#product_price_' + product_id).html(number_to_currency(newPrice, {
+                    precision : 2, 
+                    showunit : true
+                }));
+                $('#product_price_' + product_id).parent().effect("highlight", {}, 3000);
+            },
+            data: {
+                id : product_id,
+                price : newPrice
+            }
+        });
+    }
 }
 
 function newButtonGroup() {
@@ -223,9 +228,6 @@ function adminShowMoreOptions() {
     //try to load the div first
     $('#admin_content_screen').hide();
     $('#shortcut_more_options').show();
-    
-    
-    //goTo('<%=home_path%>#screen=more_options');
 }
 
 function checkForUniqueTerminalName() {
@@ -238,5 +240,63 @@ function checkForUniqueTerminalName() {
         data: {
             entered_terminal_id : enteredVal
         }
+    });
+}
+
+function makeBiggerAdminTableLinks() {
+    $('table.admin_table td a').each(function() {
+        var aEl = $(this);
+        var tdEl = aEl.parent();
+        
+        tdEl.css("cursor", "pointer");
+        
+        if(aEl.data("method")) {
+            tdEl.click(function(){
+                var doIt = confirm("Are You Sure?");
+                
+                if(doIt) {
+                    $.post($(this).find(":first-child").attr("href"), "_method=delete", function(data) {});
+                    location.reload();
+                } else {
+                    event.stopPropagation();
+                    return false;
+                }
+            });
+        } else {
+            tdEl.click(function(){
+                location = $(this).find(":first-child").attr("href");
+            });
+        }
+    });
+    
+    //copy the clicks and double clicks up to the td level
+    $('table.admin_table td div').each(function() {
+        var divEl = $(this);
+        var tdEl = divEl.parent();
+        
+        //copy up the click event
+        var clickH = divEl.attr("onclick");
+        
+        if(clickH) {
+            tdEl.css("cursor", "pointer");
+            tdEl.click(clickH);
+        }
+        
+        //kill the event on the child
+        divEl.attr("onclick", "");
+        divEl.click(function(){});
+    
+        //copy up the dblclick event
+        var dblClickH = divEl.attr("ondblclick");
+
+        if(dblClickH) {
+            tdEl.css("cursor", "pointer");
+            tdEl.dblclick(dblClickH);
+        }
+        
+        //kill the event on the child
+        divEl.attr("ondblclick", "");
+        divEl.dblclick(function(){});
+    
     });
 }

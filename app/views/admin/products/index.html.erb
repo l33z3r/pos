@@ -50,7 +50,9 @@
               <td><%= product.brand %></td>
               <td><%= link_to product.category.name, admin_category_path(product.category) if product.category %></td>
               <td>
-                <div class="product_price" id="product_price_<%=product.id%>" ondblclick="updateProductPrice(<%=product.id%>, '<%=number_with_precision product.price, :precision => 2 %>')">
+                <div class="product_price" id="product_price_<%=product.id%>" 
+                     ondblclick="updateProductPrice(<%=product.id%>, '<%=number_with_precision product.price, :precision => 2 %>')"
+                     onclick="updateProductPrice(<%=product.id%>, '<%=number_with_precision product.price, :precision => 2 %>')">
                   <%= print_money product.price %>
                 </div>
               </td>

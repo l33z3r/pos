@@ -259,3 +259,9 @@ function printerSwitchToggle(switchEl) {
    
     $('#choose_printer_checkbox_' + terminalName).attr("checked", is_selected);
 }
+
+function productBuilderShowMoreOptionsShortcut() {
+    toggleKeyboardEnable = true;
+    toggleUtilKeyboard();
+    adminShowMoreOptions();
+}

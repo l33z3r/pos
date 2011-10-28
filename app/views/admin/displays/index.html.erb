@@ -31,8 +31,11 @@
               <% end %>
             </td>
             <td>
-              <%= radio_button_tag "set_default_display", "#{display.id}", display.is_default, 
-                :onchange => "doSetDefaultDisplay(this.value);" %>
+              <!-- jscrollpane requires all radio buttons go in a form as any that are not get unchecked! -->
+              <form>
+                <%= radio_button_tag "set_default_display", "#{display.id}", display.is_default, 
+                  :onchange => "doSetDefaultDisplay(this.value);" %>
+              </form>
             </td>
             <td><%= link_to "Delete", admin_display_path(display), :method => :delete, :confirm => "Are You Sure?" %></td>
             <td><%= link_to "Duplicate", duplicate_admin_display_path(display), :method => :post, :confirm => "Are You Sure?" %></td>
