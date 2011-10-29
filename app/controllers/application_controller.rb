@@ -250,7 +250,7 @@ class ApplicationController < ActionController::Base
   
   def http_basic_authenticate
     #turn of for now
-    
+    return
     
     
     #    

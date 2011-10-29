@@ -284,6 +284,9 @@ function postDoSyncTableOrder() {
     doSelectTable(selectedTable);
     
     setStatusMessage("Order Sent!");
+    
+    //vibrate!
+    demoJSInterface.vibrate();
 }
 
 function showModifyOrderItemScreen() {
