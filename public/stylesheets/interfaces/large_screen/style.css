@@ -730,18 +730,15 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.stock_count {
     border: 1px solid #E36C0A;
-    background-color: #fbec88;
-    width: 50px;
-    padding: 8px 5px;
+    background-color: #FFF;
+    width: 40px;
+    padding: 3px 10px;
     position: absolute;
     z-index: 100;
-    left: 16px;
-    top: 10px;
-    font-size: 15px;
-    font-weight: bold;
-    -moz-opacity: 75;
-    filter:alpha(opacity: .75);
-    opacity: .75;
+    font-size: 13px;
+    -moz-opacity: 90;
+    filter:alpha(opacity: .90);
+    opacity: .90;
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_name div.line1 {

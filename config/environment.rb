@@ -3,5 +3,3 @@ require File.expand_path('../application', __FILE__)
 
 # Initialize the rails application
 Pos::Application.initialize!
-
-require "number_helper_overrides"

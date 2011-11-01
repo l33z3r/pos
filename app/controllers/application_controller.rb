@@ -144,6 +144,16 @@ class ApplicationController < ActionController::Base
     Rails.env == "production" or Rails.env == "production_heroku"
   end
   
+  rescue_from StandardError do |exception|
+    
+    EXCEPTION_LOGGER.error('ERROR!')
+    EXCEPTION_LOGGER.error(exception.message)
+    EXCEPTION_LOGGER.error(exception.backtrace.join("\n") + "\n\n\n\n")
+    
+    # Raise it anyway because you just want to put it in the log
+    raise exception
+  end
+  
   private
   
   def check_reset_session

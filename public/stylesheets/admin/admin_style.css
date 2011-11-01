@@ -1159,10 +1159,11 @@ div#edit_global_settings section#global_settings div.container div.business_logo
 
 div#edit_global_settings section#global_settings div.container.payment_methods_section div.payment_method_logo {
     float: left;
+    margin: 10px 10px 0px 0px;
 }
 
 div#edit_global_settings section#global_settings div.container.payment_methods_section div.payment_method_logo img {
-    width: 30px;
+    width: 50px;
     height: 30px;
 }
 
