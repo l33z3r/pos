@@ -259,16 +259,6 @@ class ApplicationController < ActionController::Base
   end
   
   def http_basic_authenticate
-    #turn of for now
-    return
-    
-    
-    #    
-    #    #skip if on mobile device
-    ##    if mobile_device?
-    ##      return
-    ##    end
-    #    
     if DO_HTTP_BASIC_AUTH
       authenticate_or_request_with_http_basic do |username, password|
         username == HTTP_BASIC_AUTH_USERNAME && password == HTTP_BASIC_AUTH_PASSWORD
