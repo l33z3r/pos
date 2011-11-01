@@ -40,6 +40,7 @@ class NoisyLogger < Rails::Rack::Logger
   end
 end
 
+#swap out the default logger for our custom one
 Pos::Application.config.middleware.swap(
   Rails::Rack::Logger, NoisyLogger, :noisy => "/call_home.js"
 )
