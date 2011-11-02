@@ -28,10 +28,15 @@ Pos::Application.routes.draw do
   #appcache
   match 'cache_manifest' => "home#cache_manifest"
   
-  #this route loads stock for a menu page and a stock receipt for a product
+  #these routes load stock for a menu page and a stock receipt for a product
   match 'load_stock_for_menu_page' => "home#load_stock_for_menu_page", :via => :get
   match 'load_stock_receipt_for_product' => "home#load_stock_receipt_for_product", :via => :get
   match 'update_stock' => "home#update_stock", :via => :post
+  
+  #these routes load prices for a menu page and a price receipt for a product
+  match 'load_price_for_menu_page' => "home#load_price_for_menu_page", :via => :get
+  match 'load_price_receipt_for_product' => "home#load_price_receipt_for_product", :via => :get
+  match 'update_price' => "home#update_price", :via => :post
   
   #init the sales screen buttons based on role permissions
   match 'init_sales_screen_buttons' => "home#init_sales_screen_buttons"

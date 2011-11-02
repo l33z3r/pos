@@ -1,0 +1,5 @@
+$('#price_change_receipt #receipt_area').html("<%= escape_javascript(render('/partials/interfaces/large_screen/misc/price_change_receipt', :product => @product)) %>");
+
+$('#change_price_new_amount_input').focus();
+
+oldPriceValue = <%= @product.price %>;

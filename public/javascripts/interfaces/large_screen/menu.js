@@ -125,23 +125,17 @@ function doMenuPageSelect(pageNum, pageId) {
 
     if(inStockTakeMode) {
         loadStockDivs(pageNum);
+    } else if(inPriceChangeMode) {
+        loadPriceDivs(pageNum);
     }
-}
-
-function loadStockDivs(pageNum) {
-    //load the stock divs
-    //send ajax request with page number
-    $.ajax({
-        url: '/load_stock_for_menu_page',
-        data: {
-            page_num : pageNum
-        }
-    });
 }
 
 function doSelectMenuItem(productId, menuItemId, element) {
     if(inStockTakeMode) {
         loadStockTakeReceiptArea(productId, menuItemId);
+        return;
+    } else if(inPriceChangeMode) {
+        loadPriceChangeReceiptArea(productId, menuItemId);
         return;
     }
     
@@ -1533,108 +1527,4 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) 
     loadReceipt(order);
     
     currentSelectedReceiptItemEl = null;
-}
-
-var inStockTakeMode = false;
-
-function menuScreenDropdownItemSelected(index, name) {
-    if(index == 1) {
-        goTo("/admin/products");
-        return;
-    } else if(index == 2) {
-        startStockTakeMode();
-        return;
-    }
-    
-    setShortcutDropdownDefaultText();
-}
-
-function setShortcutDropdownDefaultText() {
-    $('#menu_screen_shortcut_dropdown_container .mcdropdown>div:first').html(defaultShortcutDropdownText);
-}
-
-function startStockTakeMode() {
-    //change the screen to stocktake mode
-    inStockTakeMode = true;
-        
-    $('#table_screen_button').add('#table_select_container').hide();
-    $('#stock_take_header').show();
-    
-    $('#receipt').hide();
-    $('#stock_take_receipt').show();
-        
-    loadStockDivs(currentMenuPage);   
-    
-    if(currentStockTakeProductId) {
-        loadStockTakeReceiptArea(currentStockTakeProductId, currentStockMenuItemId);
-    }
-}
-
-function finishStockTakeMode() {
-    //change the screen to stocktake mode
-    inStockTakeMode = false;
-        
-    $('#table_screen_button').add('#table_select_container').show();
-    $('#stock_take_header').hide();
-    
-    $('#receipt').show();
-    $('#stock_take_receipt').hide();
-        
-    //hide stock take divs
-    $('#menu_items_container .stock_count').hide();
-    
-    setShortcutDropdownDefaultText();
-}
-
-var currentStockTakeProductId = null;
-var currentStockMenuItemId = null;
-var oldStockValue = null;
-
-function loadStockTakeReceiptArea(productId, menuItemId) {
-    currentStockMenuItemId = menuItemId;
-    
-    $('#stock_take_new_amount_input').attr("disabled", false);
-    
-    currentStockTakeProductId = productId;
-    
-    $('#stock_take_receipt #receipt_area').html("Loading...");
-    
-    $.ajax({
-        url: '/load_stock_receipt_for_product',
-        data: {
-            product_id : productId
-        }
-    });
-}
-
-function updateStock(type) {
-    if(currentStockTakeProductId == null) {
-        setStatusMessage("Please select a product!", true, true);
-        return;
-    }
-    
-    new_amount_string = $('#stock_take_new_amount_input').val();
-    
-    if(isNaN(new_amount_string)) {
-        setStatusMessage("Please enter a number!", true, true);
-        return;
-    }
-
-    new_amount = parseFloat(new_amount_string);
-    
-    if(oldStockValue == new_amount) {
-        setStatusMessage("Please enter a new amount!", true, true);
-        return;
-    } else {
-        $.ajax({
-            url: '/update_stock',
-            type: "POST",
-            data: {
-                menu_item_id : currentStockMenuItemId,
-                product_id : currentStockTakeProductId,
-                t_type : type,
-                new_amount : new_amount
-            }
-        });
-    }
 }

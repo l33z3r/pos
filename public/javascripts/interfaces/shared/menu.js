@@ -77,7 +77,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         //console.log("OIAITEMS: " + tableOrderDataJSON.items[itemKey].oia_items + " " + (tableOrderDataJSON.items[itemKey].oia_items.length>0));
         
         if(typeof(tableOrderDataJSON.items[itemKey].oia_items) != "undefined") {
-            //we must convert the oia_items hash to an array (the server turned our array into some indexed hash
+            //we must convert the oia_items hash to an array (the server turned our array into some indexed hash)
             var newOIAItems = new Array();
         
             for(var oiaItemKey in tableOrderDataJSON.items[itemKey].oia_items) {

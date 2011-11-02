@@ -2,4 +2,6 @@
 loadStockTakeReceiptArea(<%=@product.id%>, <%= @menu_item_id %>);
 loadStockDivs(currentMenuPage);
 
+$('#stock_take_new_amount_input').val("");
+
 setStatusMessage("Stock updated!");

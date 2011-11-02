@@ -19,6 +19,7 @@
                      style="<%= menu_item_background_css item %>">
                   
                   <div class="stock_count" style="display: none;" id="stock_count_<%= item.id %>"></div>
+                  <div class="price_change" style="display: none;" id="price_change_<%= item.id %>"></div>
                   
                   <div class="item_pic">
                     <%= product_image_thumb item.product if item.product.show_button_image %>

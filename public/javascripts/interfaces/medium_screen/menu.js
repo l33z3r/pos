@@ -419,6 +419,11 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) 
                 lastOIA.is_add = false;
             } else {
                 orderItem.oia_items.splice(orderItem.oia_items.length-1, orderItem.oia_items.length);
+                
+                //nullify the oia_items if it is empty
+                if(orderItem.oia_items.length == 0) {
+                    delete orderItem['oia_items'];
+                }
             }
         }
     }

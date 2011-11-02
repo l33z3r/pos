@@ -1,0 +1,5 @@
+<% @price_map.each do |id, price| %>
+  priceFloatingDiv = $('#menu_items_container').find("#price_change_<%=id%>");
+  priceFloatingDiv.html("<%=price%>");
+  priceFloatingDiv.show();
+<% end %>

@@ -3,9 +3,16 @@
   <div id="receipt_keypad_container">
 
     <div id="top_buttons">
+      <div id="price_change_header">
+        <div class="label">Change Price</div>
+        <div id="finish_price_change_button" onclick="finishPriceChangeMode();">
+          <%= image_tag "red_x.gif" %>
+        </div>
+      </div>
+
       <div id="stock_take_header">
         <div class="label">Check Stock</div>
-        <div id="finish_stock_take_button" onclick="finishStockTakeMode()">
+        <div id="finish_stock_take_button" onclick="finishStockTakeMode();">
           <%= image_tag "red_x.gif" %>
         </div>
       </div>
@@ -13,18 +20,18 @@
       <div id="table_screen_button" onclick="showTablesScreen(); return false;">Tables</div>
 
       <div id="table_select_container">
-        <div id="table_select_input" onclick="tableSelectMenu.openMenu()">Select Table</div>
+        <div id="table_select_input" onclick="tableSelectMenu.openMenu();">Select Table</div>
 
         <% cache("room_select_dropdown") do %>
           <ul id="table_select" class="mcdropdown_menu">
-            <li id="previous_order_select_item" rel="-1" style="display: none;" onclick="doSelectTable(-1)">Previous Order</li>
+            <li id="previous_order_select_item" rel="-1" style="display: none;" onclick="doSelectTable(-1);">Previous Order</li>
             <li rel="0" onclick="doSelectTable(0)">No Table</li>
             <% Room.all.each do |room|%>
               <li>
                 <%=room.name%>
                 <ul>
                   <% room.table_infos.each do |table_info| %>
-                    <li rel="<%= table_info.id %>" onclick="doSelectTable(<%= table_info.id %>)"><%= table_info.perm_id %></li>
+                    <li rel="<%= table_info.id %>" onclick="doSelectTable(<%= table_info.id %>);"><%= table_info.perm_id %></li>
                   <% end %>
                 </ul>
               </li>
@@ -41,6 +48,21 @@
       <div id="till_roll" class="till_roll"></div>
       <div class="clear">&nbsp;</div>
       <div id="till_roll_discount" class="till_roll_discount"></div>
+    </div>
+    
+    <div id="price_change_receipt">
+      <div id="receipt_area"></div>
+      <div id="price_change_new_price_input_container">
+        <div class="label">New Price:</div>
+        <input type="text" id="price_change_new_price_input" disabled="true"/>
+      </div>
+      <div id="price_change_actions">
+        <div id="buttons_container">
+          <div id="update_price_button" class="button" onclick="updatePrice();">
+            Change Price
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="stock_take_receipt">

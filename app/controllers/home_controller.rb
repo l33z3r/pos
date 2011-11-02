@@ -107,8 +107,36 @@ class HomeController < ApplicationController
     
   end
   
-  def load_stock_for_menu_page
-    number_to_human(0.2)
+  def load_price_for_menu_page
+    @page_num = params[:page_num].to_i
+    @display = TerminalDisplayLink.load_display_for_terminal @terminal_id
+    
+    @price_map = {}
+    
+    @display.menu_pages[@page_num-1].menu_items.each do |mi|
+      next if !mi.product
+      @price = mi.product.price
+      @price_map[mi.id] = @price ? print_money(@price) : 0
+    end
+  end
+  
+  def load_price_receipt_for_product
+    @product = Product.find(params[:product_id])
+  end
+  
+  def update_price
+    @product = Product.find(params[:product_id])
+    @new_price = params[:new_price].to_f
+    
+    @menu_item_id = params[:menu_item_id]
+    
+    @change_amount = @new_price - @product.price
+    
+    @product.price = @new_price
+    @product.save!
+  end
+  
+  def load_stock_for_menu_page    
     @page_num = params[:page_num].to_i
     @display = TerminalDisplayLink.load_display_for_terminal @terminal_id
     
@@ -175,7 +203,6 @@ class HomeController < ApplicationController
   
   def clockin
     @employee = Employee.find(params[:id])
-    
     
     if !active_employee_ids.include? @employee.id
       #add this employee to the active users list
@@ -307,7 +334,7 @@ class HomeController < ApplicationController
   def load_active_employees
     @ids = active_employee_ids
     @active_employees ||= []
-    @active_employees = Employee.find(@ids) if @ids
+    @active_employees = Employee.find(@ids, :order => :last_active) if @ids
   end
   
   def store_receipt_html

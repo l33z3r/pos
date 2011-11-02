@@ -512,6 +512,78 @@ div#receipt_keypad_container div#stock_take_receipt div#receipt_area {
     height: 250px;
 }
 
+div#receipt_keypad_container div#price_change_receipt {
+    height: 379px;
+    display: none;
+    background-color: #FFF;
+    padding-top: 2px;
+}
+
+div#receipt_keypad_container div#price_change_receipt div#receipt_area {
+    height: 250px;
+}
+
+div#receipt_keypad_container div#price_change_receipt div#price_change_new_price_input_container {
+    background: #E0E0E0;
+    text-align: center;
+    border-top: 1px solid #CCC;
+    padding-top: 5px;
+}
+
+div#receipt_keypad_container div#price_change_receipt div#price_change_new_price_input_container div.label {
+    float: left;
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+div#receipt_keypad_container div#price_change_receipt div#price_change_new_price_input_container input {
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    width: 100px;
+    padding: 3px;
+}
+
+div#receipt_keypad_container div#price_change_receipt div#price_change_actions {
+    background: #E0E0E0;
+    text-align: center;
+}
+
+div#receipt_keypad_container div#price_change_receipt div#price_change_actions div#buttons_container {
+    width: 100px;
+    margin: auto;
+    border-spacing: 10px;
+}
+
+div#receipt_keypad_container div#price_change_receipt div#price_change_actions div#buttons_container div.button {
+    font-weight: bold;
+}
+
+div#receipt_keypad_container div#price_change_receipt div#receipt_area div#price_info {
+    padding: 2px;
+}
+
+div#receipt_keypad_container div#price_change_receipt div#receipt_area div#price_info div.header {
+    padding: 5px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+div#receipt_keypad_container div#price_change_receipt div#receipt_area div#price_info div.label {
+    float: left;
+    font-weight: bold;
+    width: 120px;
+    text-align: right;
+}
+
+div#receipt_keypad_container div#price_change_receipt div#receipt_area div#price_info div.value {
+    float: left;
+    margin-left: 10px;
+    width: 130px;
+    text-align: left;
+}
+
 div#receipt_keypad_container div#stock_take_receipt div#receipt_area div#last_transaction_info {
     padding: 2px;
 }
@@ -578,6 +650,26 @@ div#receipt_keypad_container div#top_buttons {
     background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
     border: 1px solid #AAA;
     font-weight: bold;
+}
+
+div#receipt_keypad_container div#top_buttons div#price_change_header {
+    display: none;
+    background: #E36C0A;
+    height: 27px;
+    padding-top: 10px;
+    font-size: 18px;
+}
+
+div#receipt_keypad_container div#top_buttons div#price_change_header div.label {
+    float: left;
+    margin-left: 75px;
+    margin-top: 2px;
+}
+
+div#receipt_keypad_container div#top_buttons div#price_change_header div#finish_price_change_button {
+    float: right;
+    cursor: pointer;
+    margin: -7px 5px 0px 0px;
 }
 
 div#receipt_keypad_container div#top_buttons div#stock_take_header {
@@ -729,6 +821,19 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.stock_count {
+    border: 1px solid #E36C0A;
+    background-color: #FFF;
+    width: 40px;
+    padding: 3px 10px;
+    position: absolute;
+    z-index: 100;
+    font-size: 13px;
+    -moz-opacity: 90;
+    filter:alpha(opacity: .90);
+    opacity: .90;
+}
+
+div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.price_change {
     border: 1px solid #E36C0A;
     background-color: #FFF;
     width: 40px;
