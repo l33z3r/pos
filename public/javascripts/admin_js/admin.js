@@ -300,3 +300,65 @@ function makeBiggerAdminTableLinks() {
     
     });
 }
+
+
+function loadProductsForLetter(character){
+    document.getElementById("current_letter").value = character;
+    $.ajax({
+        type: 'GET',
+        url: '/load_by_letter',
+        data: {
+            letter : character
+        }
+    });
+}
+
+function loadProductsForNextLetter(){
+    if(document.getElementById("current_letter").value=="Z")
+        loadProductsForNumber();
+    else{
+        var nextLetter = nextOnAlphabet(document.getElementById("current_letter").value);
+        document.getElementById("current_letter").value = nextLetter;
+        $.ajax({
+            type: 'GET',
+            url: '/load_by_letter',
+            data: {
+                letter : nextLetter
+            }
+        });
+    }
+}
+
+function loadProductsForPreviousLetter(){
+    if(document.getElementById("current_letter").value!="A"){
+        var previousLetter = previousOnAlphabet(document.getElementById("current_letter").value);
+        document.getElementById("current_letter").value = previousLetter;
+        $.ajax({
+            type: 'GET',
+            url: '/load_by_letter',
+            data: {
+                letter : previousLetter
+            }
+        });
+    }
+}
+
+function loadProductsForNumber(){
+    document.getElementById("current_letter").value = "#";
+    $.ajax({
+        type: 'GET',
+        url: '/load_by_letter'
+    });
+}
+
+function nextOnAlphabet(letter){
+   var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#";
+   var i = str.indexOf(letter);
+   return str.charAt(i+1);
+}
+
+function previousOnAlphabet(letter){
+   var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#";
+   var i = str.indexOf(letter);
+   return str.charAt(i-1);
+}

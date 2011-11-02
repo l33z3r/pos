@@ -46,6 +46,9 @@ Pos::Application.routes.draw do
   match 'clockin' => "home#clockin", :via => :post
   match 'clockout' => "home#clockout", :via => :post
 
+  #products
+  match 'load_by_letter' => "admin/products#load_by_letter", :via => :get
+
   #sync info page
   get 'sync_info' => "admin/home#sync_info"
   
@@ -123,7 +126,11 @@ Pos::Application.routes.draw do
       member do
         post 'update_price'
       end
+      collection do
+        get 'load_by_letter'
+      end
     end
+
     
     resources :rooms, :only => [:index, :new, :create, :destroy] do
       member do
