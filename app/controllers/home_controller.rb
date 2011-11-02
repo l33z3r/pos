@@ -176,11 +176,10 @@ class HomeController < ApplicationController
   def clockin
     @employee = Employee.find(params[:id])
     
-    session[:active_employee_ids] ||= []
-
-    if !session[:active_employee_ids].include? @employee.id
+    
+    if !active_employee_ids.include? @employee.id
       #add this employee to the active users list
-      session[:active_employee_ids] << @employee.id
+      active_employee_ids << @employee.id
     end
 
     update_last_active @employee
@@ -196,7 +195,7 @@ class HomeController < ApplicationController
     redirect_to :back, :flash => {:error => "Employee not found."} and return if @employee.nil?
 
     #remove the user from active employee list and refetch the list
-    @active_employee_ids = session[:active_employee_ids]
+    @active_employee_ids = active_employee_ids
     @active_employee_ids.delete @employee.id
 
     clear_session
@@ -306,9 +305,7 @@ class HomeController < ApplicationController
   end
 
   def load_active_employees
-    session[:active_employee_ids] ||= []
-    
-    @ids = session[:active_employee_ids]
+    @ids = active_employee_ids
     @active_employees ||= []
     @active_employees = Employee.find(@ids) if @ids
   end

@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   
   helper_method :e, :current_employee, :print_money, :mobile_device?
   helper_method :all_terminals, :all_servers, :current_interface, :production_mode?
+  helper_method :active_employee_ids
   
   before_filter :load_global_vars
   
@@ -224,6 +225,12 @@ class ApplicationController < ActionController::Base
   
   def all_servers
     Employee.all.collect(&:nickname)
+  end
+  
+  def active_employee_ids
+    session[:active_employee_ids] ||= []
+    
+    session[:active_employee_ids]
   end
   
   def current_interface
