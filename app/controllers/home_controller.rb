@@ -1,4 +1,5 @@
 class HomeController < ApplicationController
+  cache_sweeper :product_sweeper
 
   # Rails controller action for an HTML5 cache manifest file.
   # Generates a plain text list of files that changes
@@ -7,9 +8,9 @@ class HomeController < ApplicationController
   def cache_manifest
     @files = ["CACHE MANIFEST\n"]
 
-#    @files << '/images/button_logos/clock_in.png'
-#    @files << '/javascripts/cache/large_screen.js'
-#    @files << '/javascripts/cache/large_screen.js'
+    #    @files << '/images/button_logos/clock_in.png'
+    #    @files << '/javascripts/cache/large_screen.js'
+    #    @files << '/javascripts/cache/large_screen.js'
     
     @all_images = Dir.glob("#{Rails.root}/public/images/**/*") | Dir.glob("#{Rails.root}/public/system/**/*")
     
@@ -38,7 +39,13 @@ class HomeController < ApplicationController
       digest << "##{File.mtime(actual_file)}" if File.exist?(actual_file)
     end
     
+    #a digest of all the files
     @files << "\n# Modification Digest: #{digest.hexdigest}"
+    
+    #a timestamp that we can update from the app to force a reload
+    @modification_timestamp = GlobalSetting.parsed_setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP
+    @files << "\n# Modification Timestamp: #{@modification_timestamp}"
+    
     
     render :text => @files.join("\n"), :content_type => 'text/cache-manifest', :layout => nil
   end
@@ -173,11 +180,17 @@ class HomeController < ApplicationController
   
   def request_terminal_reload
     request_reload_app @terminal_id
+    
+    update_html5_cache_timestamp
+    
     redirect_to(:back, :notice => 'Reload request sent.')
   end
   
   def clear_all_fragment_caches
     expire_fragment(%r{\.*})
+    
+    update_html5_cache_timestamp
+    
     redirect_to home_path
   end
   

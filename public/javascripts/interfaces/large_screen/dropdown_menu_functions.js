@@ -42,6 +42,9 @@ function startPriceChangeMode() {
 }
 
 function finishPriceChangeMode() {
+    //reload the products
+    $.getScript('/javascripts/products.js');
+    
     //change the screen to stocktake mode
     inPriceChangeMode = false;
         

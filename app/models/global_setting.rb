@@ -50,6 +50,7 @@ class GlobalSetting < ActiveRecord::Base
   TAX_LABEL = 21
   DO_BEEP = 22
   LAST_ORDER_ID = 23
+  RELOAD_HTML5_CACHE_TIMESTAMP = 24
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -74,7 +75,8 @@ class GlobalSetting < ActiveRecord::Base
     CASH_TOTAL_OPTION => "Cash Total Option",
     TAX_LABEL => "Tax Label",
     DO_BEEP => "Do Beep",
-    LAST_ORDER_ID => "Last Order ID"
+    LAST_ORDER_ID => "Last Order ID", 
+    RELOAD_HTML5_CACHE_TIMESTAMP => "HTML5 Cache Reload Timestamp"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -135,6 +137,9 @@ class GlobalSetting < ActiveRecord::Base
     when DO_BEEP
       @gs = find_or_create_by_key(:key => DO_BEEP.to_s, :value => "false", :label_text => LABEL_MAP[DO_BEEP])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when RELOAD_HTML5_CACHE_TIMESTAMP
+      @gs = find_or_create_by_key(:key => RELOAD_HTML5_CACHE_TIMESTAMP.to_s, :value => 0, :label_text => LABEL_MAP[RELOAD_HTML5_CACHE_TIMESTAMP])
+      @gs.parsed_value = @gs.value.to_f
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -178,6 +183,9 @@ class GlobalSetting < ActiveRecord::Base
           @res.first.destroy
         end
       end
+    when RELOAD_HTML5_CACHE_TIMESTAMP
+      new_value = value.to_i
+      write_attribute("value", new_value)
     else
     end
   end

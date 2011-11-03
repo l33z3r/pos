@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :http_basic_authenticate
   
-  before_filter :check_reset_session
+  before_filter :check_reset_session, :check_reset_cache_timestamp
   
   helper_method :e, :current_employee, :print_money, :mobile_device?
   helper_method :all_terminals, :all_servers, :current_interface, :production_mode?
@@ -155,6 +155,12 @@ class ApplicationController < ActionController::Base
     raise exception
   end
   
+  def update_html5_cache_timestamp 
+    @timestamp_setting = GlobalSetting.setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP
+    @timestamp_setting.value = Time.now.to_i
+    @timestamp_setting.save
+  end
+  
   private
   
   def check_reset_session
@@ -163,6 +169,12 @@ class ApplicationController < ActionController::Base
       clear_caches
       flash[:notice] = "Session reset!"
       redirect_to home_path
+    end
+  end
+  
+  def check_reset_cache_timestamp
+    if params[:reset_cache]
+      update_html5_cache_timestamp
     end
   end
   

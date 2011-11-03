@@ -26,6 +26,8 @@ class ProductSweeper < ActionController::Caching::Sweeper
     
     #the menu items screen, in case this product appears there
     expire_fragment("menu_items_screen")
+    
+    update_html5_cache_timestamp
   end
   
 end

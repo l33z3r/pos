@@ -3,7 +3,8 @@ immediateCallHome = false;
 
 <% if @reload_app %>
   lastInterfaceReloadTime = <%=@new_reload_app_update_time%>;
-  setStatusMessage("<%= escape_javascript(render :partial => '/partials/interfaces/large_screen/reload_terminal_notice') %>", false);
+  setTimeout(function() {
+  setStatusMessage("<%= escape_javascript(render :partial => '/partials/interfaces/large_screen/reload_terminal_notice') %>", false);}, 10000);
 <% end %>
 
 <% if @sync_table_order %>

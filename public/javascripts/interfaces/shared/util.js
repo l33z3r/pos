@@ -79,6 +79,17 @@ function roundNumberDown(num, dec) {
     return result;
 }
 
+function doReload(resetSession) {
+    //we must do a delayed reload so that the appcache has a chance to re-download before the refresh
+    var reload_location = "/";
+    
+    if(resetSession) {
+        reload_location += "?reset_session=true";
+    }
+    
+    window.location = reload_location;
+}
+
 function doClearAndReload() {
     doIt = confirm("Are you sure you want to clear your cookies and local web storage?");
     
@@ -95,7 +106,7 @@ function doClearAndReload() {
             document.cookie = n + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
         }
         
-        location = location + "?reset_session=true";
+        doReload(true);
     }
 }
 
