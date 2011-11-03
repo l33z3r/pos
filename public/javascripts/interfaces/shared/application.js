@@ -10,6 +10,7 @@ var callHomePollInitSequenceComplete = false;
 var callHome = true;
 
 function callHomePoll() {
+    
     if(!callHome) return;
     
     callHomeURL = "/call_home.js"
@@ -53,4 +54,14 @@ function callHomePollComplete() {
         callHomePollInitSequenceComplete = true;
         setTimeout(callHomePoll, pollingAmount);
     }
+}
+
+function cacheUpdateCheckPoll() {
+    console.log("Checking for cache update");
+    
+    try{
+        window.applicationCache.update();
+    } catch(e){}
+    
+    setTimeout(cacheUpdateCheckPoll, 5000);
 }
