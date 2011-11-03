@@ -14,7 +14,7 @@ Pos::Application.configure do
   config.action_view.debug_rjs             = true
   
   #turn this on for some fragment caching testing in development mode
-  config.action_controller.perform_caching = false
+  config.action_controller.perform_caching = true
   
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
@@ -26,7 +26,5 @@ Pos::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
 
   config.stylesheets_dir = "stylesheets/shared"
-  
-  #ENV["RAILS_ASSET_ID"] = "" # disable timestamps at end of asset files for offline browsing
 end
 
