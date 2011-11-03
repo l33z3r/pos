@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!-- only use cache manifest in production mode -->
-<html <%= production_mode? ? "manifest='cache_manifest.manifest'" : "" %>>
+<html <%= true ? "manifest='cache_manifest.manifest?time=#{Time.now.to_i}'" : "" %>>
 
 <html>
   <head>
