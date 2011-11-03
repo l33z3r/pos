@@ -24,7 +24,9 @@
                 <td><%= product.category.name if product.category %></td>
                 <td><%= product.menu_page_1.name if product.menu_page_1 %></td>
                 <td>
-                  <div class="product_price" id="product_price_<%=product.id%>" ondblclick="updateProductPrice(<%=product.id%>, '<%=number_with_precision product.price, :precision => 2 %>')">
+                  <div class="product_price" id="product_price_<%=product.id%>" 
+                       onclick="updateProductPrice(<%=product.id%>, '<%=number_with_precision product.price, :precision => 2 %>')"
+                       ondblclick="updateProductPrice(<%=product.id%>, '<%=number_with_precision product.price, :precision => 2 %>')">
                     <%= print_money product.price %>
                   </div>
                 </td>

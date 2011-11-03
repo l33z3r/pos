@@ -306,7 +306,7 @@ function loadProductsForLetter(character){
     document.getElementById("current_letter").value = character;
     $.ajax({
         type: 'GET',
-        url: '/load_by_letter',
+        url: '/admin/products/load_by_letter',
         data: {
             letter : character
         }
@@ -321,7 +321,7 @@ function loadProductsForNextLetter(){
         document.getElementById("current_letter").value = nextLetter;
         $.ajax({
             type: 'GET',
-            url: '/load_by_letter',
+            url: '/admin/products/load_by_letter',
             data: {
                 letter : nextLetter
             }
@@ -335,7 +335,7 @@ function loadProductsForPreviousLetter(){
         document.getElementById("current_letter").value = previousLetter;
         $.ajax({
             type: 'GET',
-            url: '/load_by_letter',
+            url: '/admin/products/load_by_letter',
             data: {
                 letter : previousLetter
             }
@@ -347,7 +347,7 @@ function loadProductsForNumber(){
     document.getElementById("current_letter").value = "#";
     $.ajax({
         type: 'GET',
-        url: '/load_by_letter'
+        url: '/admin/products/load_by_letter'
     });
 }
 
