@@ -96,7 +96,6 @@ function doGlobalInit() {
     callHomePoll();
     
     if(inProdMode()) {
-        alert("starting cache checking");
         //start checking for cache updates
         cacheUpdateCheckPoll();
     }
