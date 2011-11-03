@@ -10,6 +10,8 @@ var callHomePollInitSequenceComplete = false;
 var callHome = true;
 
 function callHomePoll() {
+    forceHTML5CacheUpdateCheck();
+    
     if(!callHome) return;
     
     callHomeURL = "/call_home.js"
