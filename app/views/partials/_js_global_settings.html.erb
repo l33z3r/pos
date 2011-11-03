@@ -83,4 +83,6 @@
   
   var updateStockType = <%= StockTransaction::STOCK_UPDATE %>;
   var transferStockType = <%= StockTransaction::STOCK_TRANSFER %>;
+  
+  var webSocketServiceIP = "<%= GlobalSetting.parsed_setting_for GlobalSetting::WEBSOCKET_IP, {:terminal_fingerprint => @terminal_fingerprint} %>";
 </script>

@@ -287,7 +287,7 @@ function openCashDrawer() {
         console.log("Sending cash drawer message");
         
         // Let us open a web socket
-        var ws = new WebSocket("ws://localhost:8080/ClueyWebSocketServices/cash_drawer_controller");
+        var ws = new WebSocket("ws://" + webSocketServiceIP + ":8080/ClueyWebSocketServices/cash_drawer_controller");
         
         ws.onopen = function()
         {

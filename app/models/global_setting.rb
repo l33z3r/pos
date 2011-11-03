@@ -51,6 +51,7 @@ class GlobalSetting < ActiveRecord::Base
   DO_BEEP = 22
   LAST_ORDER_ID = 23
   RELOAD_HTML5_CACHE_TIMESTAMP = 24
+  WEBSOCKET_IP = 25
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -76,7 +77,8 @@ class GlobalSetting < ActiveRecord::Base
     TAX_LABEL => "Tax Label",
     DO_BEEP => "Do Beep",
     LAST_ORDER_ID => "Last Order ID", 
-    RELOAD_HTML5_CACHE_TIMESTAMP => "HTML5 Cache Reload Timestamp"
+    RELOAD_HTML5_CACHE_TIMESTAMP => "HTML5 Cache Reload Timestamp",
+    WEBSOCKET_IP => "Web Socket Ip Adress"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -140,6 +142,9 @@ class GlobalSetting < ActiveRecord::Base
     when RELOAD_HTML5_CACHE_TIMESTAMP
       @gs = find_or_create_by_key(:key => RELOAD_HTML5_CACHE_TIMESTAMP.to_s, :value => 0, :label_text => LABEL_MAP[RELOAD_HTML5_CACHE_TIMESTAMP])
       @gs.parsed_value = @gs.value.to_f
+    when WEBSOCKET_IP
+      @gs = find_or_create_by_key(:key => "#{WEBSOCKET_IP.to_s}_#{args[:terminal_fingerprint]}", :value => "127.0.0.1", :label_text => LABEL_MAP[WEBSOCKET_IP])
+      @gs.parsed_value = @gs.value
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value

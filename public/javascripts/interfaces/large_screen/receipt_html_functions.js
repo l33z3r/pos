@@ -380,7 +380,7 @@ function print(content) {
         console.log("Sending receipt content over websocket: " + content_with_css);
         
         // Let us open a web socket
-        var ws = new WebSocket("ws://localhost:8080/ClueyWebSocketServices/receipt_printer");
+        var ws = new WebSocket("ws://" + webSocketServiceIP + ":8080/ClueyWebSocketServices/receipt_printer");
         
         ws.onopen = function()
         {

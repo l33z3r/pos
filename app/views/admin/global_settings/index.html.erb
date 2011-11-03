@@ -623,6 +623,17 @@
                   </tr>
                   <tr>
                     <td>
+                      Web Socket IP Address
+                    </td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, {:terminal_fingerprint => @terminal_fingerprint} %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
                       Enable On Screen Beep?
                     </td>
                     <td class="text_align_left">
