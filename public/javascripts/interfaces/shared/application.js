@@ -58,6 +58,10 @@ function callHomePollComplete() {
 
 function cacheUpdateCheckPoll() {
     console.log("Checking for cache update");
-    window.applicationCache.update();
+    
+    try{
+        window.applicationCache.update();
+    } catch(e){}
+    
     setTimeout(cacheUpdateCheckPoll, 5000);
 }
