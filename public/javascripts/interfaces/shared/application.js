@@ -10,7 +10,6 @@ var callHomePollInitSequenceComplete = false;
 var callHome = true;
 
 function callHomePoll() {
-    forceHTML5CacheUpdateCheck();
     
     if(!callHome) return;
     
@@ -55,4 +54,10 @@ function callHomePollComplete() {
         callHomePollInitSequenceComplete = true;
         setTimeout(callHomePoll, pollingAmount);
     }
+}
+
+function cacheUpdateCheckPoll() {
+    console.log("Checking for cache update");
+    window.applicationCache.update();
+    setTimeout(cacheUpdateCheckPoll, 5000);
 }

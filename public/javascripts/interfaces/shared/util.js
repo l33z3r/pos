@@ -495,7 +495,3 @@ jQuery.fn.extend({
         });
     }
 });
-
-function forceHTML5CacheUpdateCheck() {
-    window.applicationCache.update();
-}
