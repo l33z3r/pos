@@ -57,6 +57,7 @@ function callHomePollComplete() {
 }
 
 function cacheUpdateCheckPoll() {
+    return;
     console.log("Checking for cache update");
     
     try{
