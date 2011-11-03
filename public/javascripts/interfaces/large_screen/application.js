@@ -94,11 +94,6 @@ function doGlobalInit() {
     
     //start calling home
     callHomePoll();
-    
-    if(inProdMode()) {
-        //start checking for cache updates
-        cacheUpdateCheckPoll();
-    }
 }
 
 function showInitialScreen() {

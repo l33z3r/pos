@@ -6,11 +6,13 @@
       </div>
       <div class="button_name">Sales Screen</div>
     </div>
+
+    <%= render :partial => "/partials/interfaces/large_screen/terminal_reload_request" %>
   </div>
 
   <!-- the following markup is used for the display button passcode popup -->
   <div id="menu_buttons_popup_anchor">&nbsp;</div>
-  
+
   <div class="clear">&nbsp;</div><div id="options_screen">
     <div id="options_screen_menu_buttons">
       <% @more_options_buttons_dbrs.each_with_index do |dbr, index| %>

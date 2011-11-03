@@ -55,14 +55,3 @@ function callHomePollComplete() {
         setTimeout(callHomePoll, pollingAmount);
     }
 }
-
-function cacheUpdateCheckPoll() {
-    return;
-    console.log("Checking for cache update");
-    
-    try{
-        window.applicationCache.update();
-    } catch(e){}
-    
-    setTimeout(cacheUpdateCheckPoll, 5000);
-}
