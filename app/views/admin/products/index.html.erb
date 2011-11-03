@@ -1,6 +1,4 @@
-<% cache("admin_product_list_page_#{params[:page]}") do %>
-
-  <% @nav_title = "Products" %>
+<% @nav_title = "Products" %>
 
   <% content_for :admin_subnav_links_left do %>
     <div class="button" onclick="goTo('<%= new_admin_product_path %>');">
@@ -17,63 +15,26 @@
 
       <div class="pagination_links">
         <div class="links">
-          <%= will_paginate @products %>
+          <div class="pagination">
+          <a href="#" onclick="loadProductsForPreviousLetter();"><%= image_tag("prev.gif", :border=>0) %></a>
+          <% ('A'..'Z').each do |letter|%>
+              <a href="#" onclick="loadProductsForLetter('<%= letter %>');">
+                <%= letter %>
+              </a>
+          <% end %>
+          <a href="#" onclick="loadProductsForNumber();">#</a>
+          <a href="#" onclick="loadProductsForNextLetter();"><%= image_tag("next.gif", :border=>0) %></a>
+          </div>
         </div>
-        <!--div class="info">
-        <%= page_entries_info @posts %>
-        </div-->
       </div>
 
       <div class="clear_top_margin_20">&nbsp;</div>
 
-      <table id="product_list" class="admin_table">
-        <thead>
-          <tr>
-            <th width="60">Image</th>
-            <th width="160">Name</th>
-            <th width="180">Brand</th>
-            <th width="130">Category</th>
-            <th width="60">Price</th>
-            <th width="50">Delete</th>
-          </tr>
-        </thead>
+      <%= hidden_field_tag 'current_letter', @selected_letter %>
 
-        <tbody>
-          <% @products.each do |product| %>
-            <tr>
-              <td class="product_image">
-                <div class="product_image_container">
-                  <%= link_to product_image_thumb(product, true), edit_admin_product_path(product) %>
-                </div>
-              </td>
-              <td><%= link_to product.name, edit_admin_product_path(product) %></td>
-              <td><%= product.brand %></td>
-              <td><%= link_to product.category.name, admin_category_path(product.category) if product.category %></td>
-              <td>
-                <div class="product_price" id="product_price_<%=product.id%>" 
-                     ondblclick="updateProductPrice(<%=product.id%>, '<%=number_with_precision product.price, :precision => 2 %>')"
-                     onclick="updateProductPrice(<%=product.id%>, '<%=number_with_precision product.price, :precision => 2 %>')">
-                  <%= print_money product.price %>
-                </div>
-              </td>
-              <td><%= link_to "Delete", admin_product_path(product), :method => :delete, :confirm => "Are You Sure?" %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+      <div id="products_ajax"><%= render 'products' %></div>
 
       <div class="clear_top_margin_20">&nbsp;</div>
 
-      <!--div class="pagination_links">
-        <div class="links">
-          <%= will_paginate @products %>
-        </div>
-        <!--div class="info">
-        <%= page_entries_info @posts %>
-        </div-->
-      </div-->
-
     </section>
   </div>
-
-<% end %>

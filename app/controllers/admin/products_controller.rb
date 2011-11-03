@@ -2,7 +2,9 @@ class Admin::ProductsController < Admin::AdminController
   cache_sweeper :product_sweeper
   
   def index
-    @products = Product.paginate :page => params[:page], :order => 'name'
+  #  @products = Product.paginate :page => params[:page], :order => 'name'
+    @cache_letter = "A"
+    @products = Product.where("name LIKE ?", "A%")
   end
 
   def show
@@ -80,7 +82,18 @@ class Admin::ProductsController < Admin::AdminController
 
     redirect_to(admin_products_url, :notice => 'Product was successfully deleted.')
   end
-  
+
+  def load_by_letter
+    if !params[:letter].blank?
+      @selected_letter = "#{params[:letter]}"
+      @products = Product.where("name LIKE ?", "#{params[:letter]}%")
+    else
+      @selected_letter = "#"
+      @products = Product.where("name NOT REGEXP ?", "^[A-Z]")
+    end
+  end
+
+
   private 
   
   def update_menus_for_product product, new_menu_1_id, old_menu_1_id, new_menu_2_id, old_menu_2_id
@@ -129,4 +142,5 @@ class Admin::ProductsController < Admin::AdminController
     end
     
   end
+
 end

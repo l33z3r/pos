@@ -2460,6 +2460,8 @@ div.pagination_links div.links div.pagination a {
     padding: 7px;
     text-decoration: none;
     font-weight: bold;
+    margin-left: 1px;
+    margin-right: 1px;
 }
 
 /* pagination */
