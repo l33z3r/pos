@@ -63,7 +63,7 @@ class Admin::RoomsController < Admin::AdminController
       
         #is this a new table?
         if @room_object.object_type == RoomObject::TABLE
-          @table_info = TableInfo.new({:room_object_id => @room_object.id, :perm_id => "Table #{@room_object.id}"})
+          @table_info = TableInfo.new({:room_object_id => @room_object.id, :perm_id => "#{@room_object.id}"})
           @table_info.save!
         end
       else

@@ -809,6 +809,7 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_pic img {
     position: relative;
     height: 58px;
+    margin-top: 1px;
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_name {
@@ -2802,6 +2803,11 @@ div.button div.button_name a:hover {
     float: left;
 }
 
+div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item.pressed,
+#wrapper div.button.pressed,
+#wrapper div.key.pressed {
+    border: 1px solid #E36C0A; 
+}
 /* Generic Styles */
 
 /* styles carried over from scaffold css */

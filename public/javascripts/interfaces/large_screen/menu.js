@@ -401,9 +401,11 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         if(orderItem.discount_percent == 100) {
             orderHTML += "<div class='discount_complimentary'>Complimentary (was " + formattedPreDiscountedPrice + ")</div>";
         } else {
-            orderHTML += "<div class='discount'><div class='header'>Discounted</div>";
+            orderHTML += "<div class='discount'>" + clearHTML;
+            orderHTML += "<div class='header'>Discounted</div>";
             orderHTML += "<div class='discount_amount'>" + orderItem.discount_percent + "% from </div>";
-            orderHTML += "<div class='new_price'>" + formattedPreDiscountedPrice + "</div></div>";
+            orderHTML += "<div class='new_price'>" + formattedPreDiscountedPrice + "</div>" + clearHTML;
+            orderHTML += "</div>";
         }
     }
     

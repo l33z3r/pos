@@ -38,8 +38,7 @@ function printCurrentReceipt() {
 
 function printLastReceipt() {
     lastSaleInfo = getLastSaleInfo();
-    content = lastSaleInfo.contentHTML;
-    
+    content = fetchBusinessInfoHeaderHTML() + lastSaleInfo.contentHTML;
     printReceipt(content, true);
 }
 

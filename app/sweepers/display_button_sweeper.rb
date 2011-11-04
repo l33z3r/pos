@@ -26,8 +26,6 @@ class DisplayButtonSweeper < ActionController::Caching::Sweeper
     
     #the admin menu buttons
     expire_fragment("more_options_screen")
-    
-    update_html5_cache_timestamp
   end
   
 end

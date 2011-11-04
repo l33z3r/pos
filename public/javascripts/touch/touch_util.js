@@ -30,7 +30,7 @@ function initTouch() {
 
 //var lastTap = null;
 //
-//function initTouch() {
+//function initTouch2() {
 //        
 //    //jquery touch ui plugin init
 //
