@@ -62,7 +62,7 @@
           <div class="pagination">
           <a href="#" onclick="loadProductsForPreviousLetter();"><%= image_tag("prev.gif", :border=>0) %></a>
           <% @letters.each do |letter|%>
-              <a href="#" onclick="loadProductsForLetter('<%= letter %>');">
+              <a href="#" onclick="loadProductsForLetter('<%= letter %>');" id="button_<%= letter %>">
                 <%= letter %>
               </a>
               <script>if(barLetters.indexOf('<%= letter %>')==-1){barLetters.push('<%= letter %>')};</script>

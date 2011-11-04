@@ -299,6 +299,10 @@ div#product_builder div#builder_fields_container div.extra_options {
     width: 345px;
 }
 
+div#product_builder div#builder_fields_container div.extra_options div.tab_content {
+    height: 350px;
+}
+
 div#product_builder div#keyboard {
     height: 270px;
     margin-left: 100px;
@@ -471,20 +475,20 @@ div#show_product section#product_info div#actions input {
     float: right;
 }
 
+      /*  search fields */
+
 div#admin_product_list div#search_fields_container {
     height: 80px;
+    width: 820px;
 }
 
-div#admin_product_list div#search_fields_container div.left_col{
-    float: left;
-}
-
+div#admin_product_list div#search_fields_container div.left_col,
 div#admin_product_list div#search_fields_container div.center_col{
     float: left;
 }
 
 div#admin_product_list div#search_fields_container div.right_col{
-    float: left;
+    float: right;
 }
 
 div#admin_product_list div#search_fields_container div.left_col div.field div.label {
@@ -500,10 +504,41 @@ div#admin_product_list div#search_fields_container div.center_col div.field div.
     text-align: right;
     margin-top: 5px;
     margin-right: 5px;
-    width: 110px;
+    width: 100px;
+}
+
+div#admin_product_list div#search_fields_container div.center_col div.field select {
+    float: left;
+    width: 130px;
 }
 
 div#admin_product_list div#search_fields_container div.right_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 120px;
+}
+
+
+
+div#admin_product_list div.left_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 110px;
+}
+
+div#admin_product_list div.center_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 110px;
+}
+
+div#admin_product_list div.right_col div.field div.label {
     float: left;
     text-align: right;
     margin-top: 5px;
