@@ -1,6 +1,6 @@
 function NoClickDelay(el) {
     this.element = typeof el == 'object' ? el : document.getElementById(el);
-    if( window.Touch ) this.element.addEventListener('touchstart', this, false);
+    this.element.addEventListener('touchstart', this, false);
 }
 
 NoClickDelay.prototype = {
@@ -17,35 +17,46 @@ NoClickDelay.prototype = {
                 break;
         }
     },
-
     onTouchStart: function(e) {
-        e.preventDefault();
-        this.moved = false;
-
+        
+        //e.stopPropagation();
+        //this.moved = false;
         this.theTarget = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
-        if(this.theTarget.nodeType == 3) this.theTarget = theTarget.parentNode;
-        this.theTarget.className+= ' pressed';
-
-        this.element.addEventListener('touchmove', this, false);
-        this.element.addEventListener('touchend', this, false);
+        
+        targetIsSelectElement = this.theTarget.tagName == "SELECT";
+        
+        if(!targetIsSelectElement) {
+            e.preventDefault();
+            
+            addPressedCSSClass($(this.theTarget));
+            
+            if(this.theTarget.nodeType == 3) {
+                this.theTarget = theTarget.parentNode;
+            }
+            this.checkTarget = this.theTarget;
+            
+            this.element.addEventListener('touchmove', this, false);
+            this.element.addEventListener('touchend', this, false);
+        }
     },
-
     onTouchMove: function(e) {
-        this.moved = true;
-        this.theTarget.className = this.theTarget.className.replace(/ ?pressed/gi, '');
+        //this.moved = true;
+        this.checkTarget = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
+        if(this.checkTarget.nodeType == 3) this.checkTarget = this.checkTarget.parentNode;
     },
-
     onTouchEnd: function(e) {
         this.element.removeEventListener('touchmove', this, false);
         this.element.removeEventListener('touchend', this, false);
-
-        if( !this.moved && this.theTarget ) {
-            this.theTarget.className = this.theTarget.className.replace(/ ?pressed/gi, '');
+        if(this.checkTarget == this.theTarget ) {
+            //if( !this.moved && this.theTarget ) {
+            
+            removePressedCSSClass($(this.theTarget));
+            
             var theEvent = document.createEvent('MouseEvents');
             theEvent.initEvent('click', true, true);
             this.theTarget.dispatchEvent(theEvent);
         }
-
         this.theTarget = undefined;
     }
 };
+

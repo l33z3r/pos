@@ -4,15 +4,17 @@
     <style type="text/css" media="all">
       @page {
         margin: 0px;
+        padding: 0px;
       }
-      
+
       body {
         font-family: verdana, sans-serif;
         font-size: 9px;
-        width: 200px;
+        width: 210px;
         margin: 0px;
+        overflow: hidden;
       }
-      
+
       body * {
         overflow: hidden;
       }
@@ -37,6 +39,10 @@
         margin-bottom: 5px;
       }
 
+      div.business_info {
+        width: 160px;
+      }
+
       div#order_receipt_header div.order_num {
         font-weight: bold;
         padding: 10px 0px;
@@ -47,7 +53,7 @@
       div.business_info {
         text-align: center;
         font-weight: bold;
-        margin: 20px 0px;
+        margin: auto;
       }
 
       div.data_table {
@@ -61,7 +67,7 @@
       div.data_table div.label {
         float: left;
         text-align: left;
-        width: 98px;
+        width: 92px;
       }
 
       div#order_receipt_header div.data_table div.label {
@@ -75,7 +81,8 @@
       div.data_table div.data {
         float: left;
         text-align: right;
-        width: 101px;
+        padding-right: 3px;
+        width: 108px;
         font-weight: bold;
       }
 
@@ -84,8 +91,7 @@
       }
 
       div.data_table div.data.time {
-        float: right;
-        width: 108px;
+        width: 109px;
       }
 
       div.terminal {
@@ -96,27 +102,33 @@
       }
 
       div.order_line {
-        margin: 0px 2px;
+        margin: 3px 2px;
       }
 
-      div.order_line.not_synced div.name {
-        font-style: italic;
-        font-weight: bold;
+      div.order_line div.discount {
+        clear: both;
+        margin-top: 10px;
+      }
+
+      div.order_line div.discount_complimentary {
+        clear: both;
+        margin-left: 60px;
+        margin-top: 10px;
       }
 
       div.amount {
         float: left;
         text-align: left;
-        width: 35px;
+        width: 26px;
         margin-left: 3px;
       }
 
       div.name {
         float: left;
-        width: 120px;
+        width: 130px;
         text-align: left;
       }
-      
+
       div.total {
         float: left;
         width: 35px;
@@ -136,6 +148,31 @@
         text-align: right;
       }
 
+      div.oia_add {
+        float: left;
+        width: 40px;
+        text-align: right;
+      }
+
+      div.oia_name {
+        float: left;
+        width: 150px;
+        margin-left: 10px;
+        text-align: left;
+      }
+
+      div.oia_name.note {
+        font-style: italic;
+        width: 134px;
+        margin-left: 20px
+      }
+
+      div.oia_price {
+        float: left;
+        width: 40px;
+        text-align: right;
+      }
+
       div.discount div.header {
         float: left;
         width: 110px;
@@ -145,7 +182,8 @@
 
       div.discount div.discount_amount {
         float: left;
-        width: 55px;
+        width: 47px;
+        margin-right: 3px;
         text-align: right;
         font-style: italic;
       }

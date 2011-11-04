@@ -14,7 +14,7 @@ Pos::Application.configure do
   config.action_view.debug_rjs             = true
   
   #turn this on for some fragment caching testing in development mode
-  config.action_controller.perform_caching = true
+  config.action_controller.perform_caching = false
   
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false

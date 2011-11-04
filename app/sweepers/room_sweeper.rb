@@ -26,8 +26,6 @@ class RoomSweeper < ActionController::Caching::Sweeper
     
     #the select dropdown for tables
     expire_fragment("room_select_dropdown")
-    
-    update_html5_cache_timestamp
   end
   
 end

@@ -284,7 +284,13 @@ function deleteTable(table_id, room_object_id) {
 function renameTable(room_object_id, table_id) {
     currentName = $('#table_name_' + room_object_id).html();
     
-    var newName = prompt("Enter a new table Name:", currentName);
+    //TODO: a non native popup
+    
+    var newName;
+        do {
+            newName = prompt("Enter a new table Number (Numbers Only):", currentName);
+        } while(isNaN(newName));
+    
     
     $('#table_name_' + room_object_id).html(newName);
     

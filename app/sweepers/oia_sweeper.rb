@@ -23,8 +23,6 @@ class OiaSweeper < ActionController::Caching::Sweeper
     
     #the menu items screen, in case this record appears there
     expire_fragment("order_item_additions_screen")
-    
-    update_html5_cache_timestamp
   end
   
 end

@@ -286,17 +286,17 @@ div#product_builder div#builder_fields_container {
 
 div#product_builder div#builder_fields_container div.left_col {
     float: left;
-    width: 312px;    
+    width: 320px;    
 }
 
 div#product_builder div#builder_fields_container div.right_col {
     float: left;
-    width: 225px;
+    width: 230px;
 }
 
 div#product_builder div#builder_fields_container div.extra_options {
     float: left;
-    width: 350px;
+    width: 345px;
 }
 
 div#product_builder div#keyboard {

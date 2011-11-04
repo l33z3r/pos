@@ -55,13 +55,13 @@
         , 
         openFx: "slideDown"          // the fx to use for showing the root menu
         , 
-        openSpeed: 250               // the speed of the openFx
+        openSpeed: 0               // the speed of the openFx
         , 
         closeFx: "slideUp"           // the fx to use for hiding the root menu
         , 
-        closeSpeed: 250              // the speed of the closeFx
+        closeSpeed: 0              // the speed of the closeFx
         , 
-        hoverOverDelay: 200          // the delay before opening a submenu
+        hoverOverDelay: 0          // the delay before opening a submenu
         , 
         hoverOutDelay: 0             // the delay before closing a submenu
         , 
@@ -73,7 +73,7 @@
         , 
         hideSpeed: 0                 // the speed of the hideFx
         , 
-        dropShadow: true             // determine whether drop shadows should be shown on the submenus
+        dropShadow: false             // determine whether drop shadows should be shown on the submenus
         , 
         autoHeight: true             // always uses the lineHeight options (much faster than calculating height)
         , 
@@ -219,7 +219,7 @@
         var di = {
             width: $divInputClone.width() - $("a", $divInputClone).width(), 
             height: $divInputClone.outerHeight()
-            }
+        }
         $divInputClone.remove();
 		
         // store a reference to this link select
@@ -445,9 +445,11 @@
             return s;
         };
 		
+        //need to bind the click to the hoverOver for the ipad as it does not do hover
         function addBindings(el){
             removeBindings(el);
             $("> li", el)
+            .bind("click", hoverOver)
             .bind("mouseover", hoverOver)
             .bind("mouseout", hoverOut);
         };
@@ -930,9 +932,9 @@
                 $items.hover(function (){
                     $keylist.find("> li").removeClass("mc_hover_parent mc_hover");
                     $(this).addClass("mc_hover")
-                    }, function (){
+                }, function (){
                     $(this).removeClass("mc_hover")
-                    });
+                });
 
                 // make sure the the ul's are hidden (so the li's are sized correctly)				
                 $items.find("> ul").css("display", "none");
@@ -949,7 +951,7 @@
                     if( !!$.fn.bgIframe ) anchorTo($divInput.parent(), $keylistiframe.css({
                         height: $keylist.outerHeight(), 
                         width: $keylist.width()
-                        }, true).show())
+                    }, true).show())
                 }
 	
                 // scroll the list into view
@@ -1222,7 +1224,7 @@
                 pBottom: parseInt($keylist.css("paddingBottom"), 10)||0, 
                 bTop: parseInt($keylist.css("borderTopWidth"), 10)||0, 
                 bBottom: parseInt($keylist.css("borderBottomWidth"), 10)||0
-                };
+            };
 	
             // scrolling down
             if( (el.offsetTop + el.offsetHeight) > (scrollable.scrollTop + scrollable.clientHeight) ){

@@ -506,3 +506,29 @@ jQuery.fn.extend({
         });
     }
 });
+
+function addPressedCSSClass(target) {
+    var cssTarget = getPressedCSSTarget(target);
+    cssTarget.addClass("pressed");
+}
+
+function removePressedCSSClass(target) {
+    var cssTarget = getPressedCSSTarget(target);
+    cssTarget.removeClass("pressed");
+}
+
+function getPressedCSSTarget(target) {
+    //menu item?
+    var cssTarget = target.parent().parent(".item");
+    
+    //button?
+    if(cssTarget.length == 0) {
+        cssTarget = target.parent().parent(".button");
+    }
+    
+    if(cssTarget.length == 0) {
+        cssTarget = target;
+    }
+    
+    return cssTarget;
+}
