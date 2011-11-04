@@ -314,7 +314,7 @@ function loadProductsForLetter(character){
 }
 
 function loadProductsForNextLetter(){
-    if(document.getElementById("current_letter").value=="Z")
+    if(document.getElementById("current_letter").value == barLetters[barLetters.length-1])
         loadProductsForNumber();
     else{
         var nextLetter = nextOnAlphabet(document.getElementById("current_letter").value);
@@ -330,7 +330,7 @@ function loadProductsForNextLetter(){
 }
 
 function loadProductsForPreviousLetter(){
-    if(document.getElementById("current_letter").value!="A"){
+    if(document.getElementById("current_letter").value !=  barLetters[0]){
         var previousLetter = previousOnAlphabet(document.getElementById("current_letter").value);
         document.getElementById("current_letter").value = previousLetter;
         $.ajax({
@@ -351,14 +351,20 @@ function loadProductsForNumber(){
     });
 }
 
+//array of letters to show in the bar
+var barLetters = new Array();
+
 function nextOnAlphabet(letter){
-   var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#";
-   var i = str.indexOf(letter);
-   return str.charAt(i+1);
+   var i = barLetters.indexOf(letter);
+   return barLetters[i+1]
 }
 
 function previousOnAlphabet(letter){
-   var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#";
-   var i = str.indexOf(letter);
-   return str.charAt(i-1);
+   if(letter!="#"){
+       var i = barLetters.indexOf(letter);
+       return barLetters[i-1];
+   }
+   else{
+       return barLetters[barLetters.length-1];
+   }
 }

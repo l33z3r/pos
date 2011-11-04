@@ -11,16 +11,61 @@
 
   <div id="admin_product_list">
 
+        <div id="search_fields_container">
+
+          <div class="left_col">
+            <div class="field">
+              <div class="label">Code No./UPC</div>
+              <%= text_field_tag(:code_upc) %>
+              <div class="clear">&nbsp;</div>
+            </div>
+            <div class="field">
+              <div class="label">Description</div>
+              <%= text_field_tag(:description) %>
+              <div class="clear">&nbsp;</div>
+            </div>
+          </div>
+
+          <div class="center_col">
+            <div class="field">
+              <div class="label">Category</div>
+              <%= collection_select(:category, :id, Category.find(:all), :id, :name, options = {:include_blank => "Any"}) %>
+              <div class="clear">&nbsp;</div>
+            </div>
+            <div class="field">
+              <div class="label">Menu</div>
+              <%= collection_select(:menu, :id, MenuPage.find(:all), :id, :name, options = {:include_blank => "Any"}) %>
+              <div class="clear">&nbsp;</div>
+            </div>
+          </div>
+
+          <div class="right_col">
+            <div class="field">
+              <div class="label">Search All Fields</div>
+              <%= text_field_tag(:all_fields) %>
+              <div class="clear">&nbsp;</div>
+            </div>
+            <div class="field">
+              <div class="label">List Specials Only</div>
+              <%= check_box_tag(:special) %>
+              <div class="clear">&nbsp;</div>
+            </div>
+          </div>
+
+      </div>
+
+
     <section id="products">
 
       <div class="pagination_links">
         <div class="links">
           <div class="pagination">
           <a href="#" onclick="loadProductsForPreviousLetter();"><%= image_tag("prev.gif", :border=>0) %></a>
-          <% ('A'..'Z').each do |letter|%>
+          <% @letters.each do |letter|%>
               <a href="#" onclick="loadProductsForLetter('<%= letter %>');">
                 <%= letter %>
               </a>
+              <script>if(barLetters.indexOf('<%= letter %>')==-1){barLetters.push('<%= letter %>')};</script>
           <% end %>
           <a href="#" onclick="loadProductsForNumber();">#</a>
           <a href="#" onclick="loadProductsForNextLetter();"><%= image_tag("next.gif", :border=>0) %></a>
@@ -32,9 +77,14 @@
 
       <%= hidden_field_tag 'current_letter', @selected_letter %>
 
-      <div id="products_ajax"><%= render 'products' %></div>
+      <div id="products_ajax">
+        
+        <%= render 'products' %> 
+        
+      </div>
 
       <div class="clear_top_margin_20">&nbsp;</div>
 
-    </section>
-  </div>
+    </div>
+    
+  </section>

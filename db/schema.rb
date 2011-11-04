@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111014170835) do
+ActiveRecord::Schema.define(:version => 20111103155722) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -278,6 +278,7 @@ ActiveRecord::Schema.define(:version => 20111014170835) do
     t.string   "menu_page_1_id"
     t.string   "menu_page_2_id"
     t.string   "button_bg_color_2"
+    t.boolean  "is_special",                 :default => false
   end
 
   create_table "roles", :force => true do |t|

@@ -2,9 +2,13 @@ class Admin::ProductsController < Admin::AdminController
   cache_sweeper :product_sweeper
   
   def index
-  #  @products = Product.paginate :page => params[:page], :order => 'name'
-    @cache_letter = "A"
-    @products = Product.where("name LIKE ?", "A%")
+    @selected_letter = "A"
+    @products = Product.where("name LIKE ?", "A%").order("name")
+    query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from products group by substr(name,1,1)")
+    @letters = []
+    for element in query
+      @letters += element
+    end
   end
 
   def show
@@ -86,10 +90,10 @@ class Admin::ProductsController < Admin::AdminController
   def load_by_letter
     if !params[:letter].blank?
       @selected_letter = "#{params[:letter]}"
-      @products = Product.where("name LIKE ?", "#{params[:letter]}%")
+      @products = Product.where("name LIKE ?", "#{params[:letter]}%").order("name")
     else
       @selected_letter = "#"
-      @products = Product.where("name NOT REGEXP ?", "^[A-Z]")
+      @products = Product.where("name NOT REGEXP ?", "^[A-Z]").order("name")
     end
   end
 

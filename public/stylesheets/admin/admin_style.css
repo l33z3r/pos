@@ -364,6 +364,11 @@ div#product_builder div#builder_fields_container div.extra_options div.field div
 div#product_builder div#builder_fields_container div.extra_options div.tab_content {
     background-color: #E0E0E0;
     padding: 10px 0px;
+    height: 350px;
+}
+
+div#product_builder div#builder_fields_container div.extra_options div#options_tab_content div.field {
+    height: 30px;
 }
 
 div#product_builder div#builder_fields_container div.extra_options div#appearance_tab_content div#product_image_input_container {
@@ -426,6 +431,14 @@ div#admin_product_list section#products {
     margin-right: auto;
 }
 
+div#admin_product_list section#products {
+    height: 560px;
+}
+
+div#admin_product_list section#products div#jspContainer{
+    height: 560px;
+}
+
 div#admin_product_list section#products table#product_list td.product_image div.product_image_container {
     height: 40px;
     width: 40px;
@@ -457,6 +470,48 @@ div#show_product section#product_info div#actions a {
 div#show_product section#product_info div#actions input {
     float: right;
 }
+
+div#admin_product_list div#search_fields_container {
+    height: 80px;
+}
+
+div#admin_product_list div#search_fields_container div.left_col{
+    float: left;
+}
+
+div#admin_product_list div#search_fields_container div.center_col{
+    float: left;
+}
+
+div#admin_product_list div#search_fields_container div.right_col{
+    float: left;
+}
+
+div#admin_product_list div#search_fields_container div.left_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 110px;
+}
+
+div#admin_product_list div#search_fields_container div.center_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 110px;
+}
+
+div#admin_product_list div#search_fields_container div.right_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 120px;
+}
+
+
 
 /* End Admin Products Page */
 
