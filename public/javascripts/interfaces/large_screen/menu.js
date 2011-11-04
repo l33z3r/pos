@@ -789,7 +789,6 @@ function doTotalFinal() {
     
     //set the service charge again in case it was changed on the totals screen
     totalOrder.service_charge = serviceCharge;
-    
     totalOrder.cashback = cashback;
     
     discountPercent = totalOrder.discount_percent;
@@ -1296,6 +1295,12 @@ function doSaveNote() {
     var noteInput = $('#note_input').val();
     
     noteInput = noteInput.replace(/ /g,'')
+    
+    //exit if no charge and no note entered
+    if(noteInput.length == 0 && charge ==0) {
+        doCancelNote();
+        return true;
+    }
     
     if(noteInput.length == 0) {
         setStatusMessage("Please enter some text for this note!");

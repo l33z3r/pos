@@ -185,8 +185,11 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText) {
     
     change = totalOrder.change;
 
-    if(change > 0) {
-        finalReceiptHTML += "<div class='label'>Change:</div><div class='data'>" + currency(change) + "</div>" + clearHTML;
+    //is there any change? we include cashback in the change here
+    var changeWithCashback = change + totalOrder.cashback;
+
+    if(changeWithCashback > 0) {
+        finalReceiptHTML += "<div class='label'>Change:</div><div class='data'>" + currency(changeWithCashback) + "</div>" + clearHTML;
     }
     
     finalReceiptHTML += "</div>" + clearHTML;
@@ -285,6 +288,8 @@ function fetchFinalReceiptHeaderHTML() {
         headerHTML += "<div class='label'>Table:</div><div class='data'>" + totalOrder.table + "</div>" + clearHTML;
     }
     
+    headerHTML += "<div class='label'>Terminal:</div><div class='data'>" + terminalID + "</div>" + clearHTML;
+    
     if(typeof(totalOrder.payment_method) != 'undefined') {
         headerHTML += "<div class='label'>Payment Method:</div><div class='data'>" + totalOrder.payment_method + "</div>" + clearHTML;
     }
@@ -357,12 +362,11 @@ function printReceipt(content, printRecptMessage) {
 }
 
 function print(content) {
-    
     $('#printFrame').contents().find('#till_roll').html(content);
     
     var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>" 
     + $('#printFrame').contents().find('html').html() + "</html>";
-        
+      
     console.log("Websocket support? " + ("WebSocket" in window));
     
     //TODO: display an error if the service is not running...

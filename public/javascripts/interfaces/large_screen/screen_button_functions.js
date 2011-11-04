@@ -85,6 +85,17 @@ function saveServiceCharge() {
         serviceCharge = 0;
     }
     
+    //save the cashback in the order
+    order = getCurrentOrder();
+    order.service_charge = serviceCharge;
+    
+    //store the modified order
+    if(selectedTable != 0) {
+        storeTableOrderInStorage(current_user_id, selectedTable, order);
+    }else {
+        storeOrderInStorage(current_user_id, order);
+    }
+    
     hideServiceChargePopup();
     
     if (currentScreenIsTotals()) {
@@ -93,7 +104,6 @@ function saveServiceCharge() {
 }
 
 function cancelServiceCharge() {
-    serviceCharge = 0;
     hideServiceChargePopup();
 }
 
@@ -162,6 +172,17 @@ function saveCashback() {
         cashback = 0;
     }
     
+    //save the cashback in the order
+    order = getCurrentOrder();
+    order.cashback = cashback;
+    
+    //store the modified order
+    if(selectedTable != 0) {
+        storeTableOrderInStorage(current_user_id, selectedTable, order);
+    }else {
+        storeOrderInStorage(current_user_id, order);
+    }
+    
     hideCashbackPopup();
     
     if (currentScreenIsTotals()) {
@@ -170,7 +191,6 @@ function saveCashback() {
 }
 
 function cancelCashback() {
-    cashback = 0;
     hideServiceChargePopup();
 }
 
@@ -334,4 +354,8 @@ function openCashDrawer() {
     //    var args = [];
     //    process.run(false, args, args.length);
     }
+}
+
+function printBill() {
+    printReceipt(fetchFinalReceiptHTML(true, false), true);
 }
