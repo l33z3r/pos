@@ -28,7 +28,9 @@ function doGlobalInit() {
     if(isTouchDevice()) {
         initTouch();
         initTouchRecpts();
-    }
+    } 
+    
+    initPressedCSS();
     
     //check if we have loaded a previous order from the admin interface
     //this will also load it into tableOrders[-1]

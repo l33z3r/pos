@@ -507,28 +507,14 @@ jQuery.fn.extend({
     }
 });
 
-function addPressedCSSClass(target) {
-    var cssTarget = getPressedCSSTarget(target);
-    cssTarget.addClass("pressed");
-}
+var lastClickedEl = null;
 
-function removePressedCSSClass(target) {
-    var cssTarget = getPressedCSSTarget(target);
-    cssTarget.removeClass("pressed");
-}
-
-function getPressedCSSTarget(target) {
-    //menu item?
-    var cssTarget = target.parent().parent(".item");
-    
-    //button?
-    if(cssTarget.length == 0) {
-        cssTarget = target.parent().parent(".button");
-    }
-    
-    if(cssTarget.length == 0) {
-        cssTarget = target;
-    }
-    
-    return cssTarget;
+function initPressedCSS() {
+    $('div.button, div.item, div.key').live("click",function() {
+        $(this).addClass("pressed");
+        lastClickedEl = $(this);
+        setTimeout(function(){
+            lastClickedEl.removeClass("pressed");
+        }, 2000);
+    });
 }
