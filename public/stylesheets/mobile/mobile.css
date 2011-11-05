@@ -1,14 +1,26 @@
+body {
+    height: 798px;
+    width: 480px;
+    overflow: hidden;
+    text-align: center;
+    font-size: 22px;
+}
+
+body ul {
+    text-align: left;
+}
+
 /* Misc */
 
 div.mobile_button {
     float: left;
-    width: 100px;
-    max-width: 100px;
-    height: 85px;
-    max-height: 85px;
+    width: 144px;
+    max-width: 144px;
+    height: 145px;
+    max-height: 145px;
     overflow: hidden;
     vertical-align: middle;
-    margin: 5px 27px;
+    margin: 6px;
     text-align: center;
     cursor: pointer;
     border: 1px solid #777;
@@ -20,14 +32,34 @@ div.mobile_button {
 }
 
 div.mobile_button div.icon {
-    padding-top: 4px;
+    padding-top: 16px;
+}
+
+div.mobile_button div.button_name {
+    margin-top: 10px;
+    line-height: 23px;
+    padding: 0px 4px;
 }
 
 /* End Misc */
 
+div#sub_title {
+    width: 100%;
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+    height: 18px;
+    text-align: center;
+    padding: 10px;
+}
+
+div#sub_title * {
+    font-size: 18px;
+    font-weight: bold;
+}
+
 div.mobile_receipt {
-    height: 370px;
-    width: 280px;
+    height: 610px;
+    width: 440px;
     margin: auto;
     margin-top: 10px;
     overflow-y: auto;
@@ -39,26 +71,22 @@ div.mobile_receipt {
     font-size: 15px;
 }
 
+div.mobile_receipt * {
+    zoom: 118%;
+}
+
 div.mobile_till_roll {
-    height: 360px;
+    height: 490px;
     display: block;
     background-color: #FFF;
     margin-left: 10px;
 }
 
 div.mobile_till_roll div.data_table div.data {
-  font-size: 15px;
+    font-size: 15px;
 }
 
 /* Login Screen */
-
-div#login div#login_top {
-    height: 30px;
-    text-align: center;
-    padding-top: 10px;
-    font-size: 15px;
-    font-weight: bold;
-}
 
 div#login div#status_message {
     background-color: #E0E0E0;
@@ -69,7 +97,7 @@ div#login div#status_message {
 }
 
 div#login div#entered_code_container {
-    height: 40px;
+    height: 95px;
     clear: both;
     width: 100%;
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
@@ -78,16 +106,15 @@ div#login div#entered_code_container {
 
 div#login div#entered_code_container div#clockincode_show {
     border: 1px solid #DDD;
-    width: 220px;
-    height: 20px;
-    font-size: 14px;
+    width: 400px;
+    height: 40px;
+    font-size: 21px;
     font-weight: bold;
-    padding: 7px 0px;
+    padding-top: 21px;
     border: 1px solid #CCC;
     -moz-border-radius: 4px;
     border-radius: 4px;
     box-shadow: 0px 1px 1px 0px #777;
-    margin-left: 40px;
     margin: auto;
     background-color: #FFF;
     text-align: center;
@@ -97,11 +124,9 @@ div#login div#entered_code_container div#clockincode_show {
 
 /* Menu Screen */
 
-div#menu div#welcome_message,
-div#menu div#welcome_message * {
-    font-size: 13px;
-    color: #FFF;
-    font-weight: bold;
+div#menu div#welcome_message > * {
+    float: left;
+    margin-right: 5px;
 }
 
 /* End Menu Screen */
@@ -129,3 +154,50 @@ div#table_info_screen span.table_label {
 }
 
 /* End Table Info Screen */
+
+/* Generic Styles */
+
+#jqt div.mobile_button.pressed,
+#jqt div.key.pressed,
+#jqt div.go_key.pressed,
+#jqt div.cancel_key.pressed{
+    border: 1px solid red; 
+    background: #E36C0A;
+    -moz-opacity: 50;
+    filter:alpha(opacity: .50);
+    opacity: .50;    
+}
+
+#jqt div.keypad {
+    height: 580px;
+    padding-top: 22px;
+    width: 410px;
+    margin-top: 6px;
+    margin: auto;
+}
+
+#jqt div.keypad div.keys {
+    width: 410px;
+    margin: auto;
+}
+
+#jqt div.keypad div.keys div {
+    color: #333333;
+    vertical-align: middle;
+    text-align: center;
+    float: left;
+    margin: 2px;
+    width: 130px;
+    padding-top: 53px;
+    height: 70px;
+    font-size: 22px;
+    border: 1px solid #777;
+    cursor: pointer;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    box-shadow: 0px 1px 1px 0px #777;
+    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
+}
+
+/* End Generic Styles */

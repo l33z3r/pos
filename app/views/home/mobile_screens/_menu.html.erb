@@ -3,11 +3,6 @@
 
     <h1>Cluey</h1>
 
-    <div id="welcome_message">
-      Welcome
-      <div id="e_name"></div>
-    </div>
-
     <a class="button" href="#" onclick="doMobileLogout()">Logout</a>
   </div>
 
@@ -17,71 +12,78 @@
     </div>
   </div-->
 
+  <div id="sub_title">
+    <div id="welcome_message">
+      <div id="label">Welcome</div>
+      <div id="e_name"></div>
+    </div>
+  </div>
+
   <div class="clear_top_margin_20">&nbsp;</div>
-  
+
+  <div class="mobile_button" onclick="goTo('<%=root_url(:i => 'medium')%>')">
+    <div class="icon">
+      <%= image_tag "/images/button_logos/mobile/orders.png" %>
+    </div>
+    <div class="button_name">Orders</div>
+  </div>
+
   <div id="menu_buttons">
-    <div class="mobile_button" onclick="jQT.goTo('#terminal_list', 'slideup')">
+    <div class="mobile_button" onclick="jQT.goTo('#terminal_list')">
       <div class="icon">
         <%= image_tag "/images/button_logos/mobile/view_by_terminal.png" %>
       </div>
       <div class="button_name">View By Terminal</div>
     </div>
-    
-    <div class="mobile_button" onclick="jQT.goTo('#table_list', 'slideup')">
+
+    <div class="mobile_button" onclick="jQT.goTo('#table_list')">
       <div class="icon">
         <%= image_tag "/images/button_logos/mobile/view_by_table.png" %>
       </div>
       <div class="button_name">View By Table</div>
     </div>
-    
-    <div class="mobile_button" onclick="jQT.goTo('#server_list', 'slideup')">
+
+    <div class="mobile_button" onclick="jQT.goTo('#server_list')">
       <div class="icon">
         <%= image_tag "/images/button_logos/mobile/view_by_server.png" %>
       </div>
       <div class="button_name">View By Server</div>
     </div>
-    
-    <div class="mobile_button" onclick="jQT.goTo('#cash_count_screen', 'slideup')">
+
+    <!--div class="mobile_button" onclick="jQT.goTo('#cash_count_screen')">
       <div class="icon">
-        <%= image_tag "/images/button_logos/mobile/cash_count.png" %>
+    <%= image_tag "/images/button_logos/mobile/cash_count.png" %>
       </div>
       <div class="button_name">Cash Count</div>
-    </div>
-    
-    <div class="mobile_button" onclick="jQT.goTo('#transaction_list_screen', 'slideup')">
+    </div-->
+
+    <!--div class="mobile_button" onclick="jQT.goTo('#transaction_list_screen')">
       <div class="icon">
-        <%= image_tag "/images/button_logos/mobile/transaction_list.png" %>
+    <%= image_tag "/images/button_logos/mobile/transaction_list.png" %>
       </div>
       <div class="button_name">Transaction List</div>
-    </div>
-    
-    <div class="mobile_button" onclick="jQT.goTo('#timesheet_screen', 'slideup')">
+    </div-->
+
+    <!--div class="mobile_button" onclick="jQT.goTo('#timesheet_screen')">
       <div class="icon">
-        <%= image_tag "/images/button_logos/mobile/timesheet.png" %>
+    <%= image_tag "/images/button_logos/mobile/timesheet.png" %>
       </div>
       <div class="button_name">Timesheet</div>
-    </div>
-    
-    <div class="mobile_button" onclick="jQT.goTo('#facebook_screen', 'slideup')">
+    </div-->
+
+    <!--div class="mobile_button" onclick="jQT.goTo('#facebook_screen')">
       <div class="icon">
-        <%= image_tag "/images/button_logos/mobile/facebook.png" %>
+    <%= image_tag "/images/button_logos/mobile/facebook.png" %>
       </div>
       <div class="button_name">Facebook Status</div>
-    </div>
-    
-    <div class="mobile_button" onclick="jQT.goTo('#delivery_screen', 'slideup')">
+    </div-->
+
+    <!--div class="mobile_button" onclick="jQT.goTo('#delivery_screen')">
       <div class="icon">
-        <%= image_tag "/images/button_logos/mobile/delivery.png" %>
+    <%= image_tag "/images/button_logos/mobile/delivery.png" %>
       </div>
       <div class="button_name">Receive Delivery</div>
-    </div>
-    
-    <div class="mobile_button" onclick="goTo('<%=root_url(:i => 'medium')%>')">
-      <div class="icon">
-        <%= image_tag "/images/button_logos/mobile/orders.png" %>
-      </div>
-      <div class="button_name">Orders</div>
-    </div>
+    </div-->
   </div>
 
 </div>

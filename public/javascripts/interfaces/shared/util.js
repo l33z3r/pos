@@ -526,7 +526,7 @@ jQuery.fn.extend({
 });
 
 function initPressedCSS() {
-    $('div.button, div.item, div.key, div.go_key').live("click",function() {
+    $('div.button, div.item, div.key, div.go_key, div.cancel_key, div.employee_box, div.mobile_button').live("click",function() {
         $(this).addClass("pressed");
         
         setTimeout(function(){

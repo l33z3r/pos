@@ -2806,10 +2806,17 @@ div.button div.button_name a:hover {
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item.pressed,
 #wrapper div.button.pressed,
 #wrapper div.key.pressed,
-#wrapper div.go_key.pressed {
-    border: 1px solid #E36C0A; 
+#wrapper div.go_key.pressed,
+#wrapper div.employee_box.pressed,
+#wrapper div.cancel_key.pressed {
+    border: 1px solid red; 
+    background: #E36C0A;
+    -moz-opacity: 50;
+    filter:alpha(opacity: .50);
+    opacity: .50;    
 }
-/* Generic Styles */
+
+/* End Generic Styles */
 
 /* styles carried over from scaffold css */
 

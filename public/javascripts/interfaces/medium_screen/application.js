@@ -15,6 +15,8 @@ function doGlobalInit() {
     
     initUIElements();
     
+    initPressedCSS();
+    
     initMenu();
     
     //start calling home

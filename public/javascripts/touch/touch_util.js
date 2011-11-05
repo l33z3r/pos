@@ -6,7 +6,7 @@ function initTouch() {
     //hook up swipe
     $('#wrapper').swipe({
         threshold: {
-            x: 100,
+            x: 300,
             y: 200
         },
         swipeLeft: function() {
@@ -16,6 +16,10 @@ function initTouch() {
             swipeRightHandler();
         }
     });
+    
+    //set the first page in the swipes to be the menu
+    var menuPageNum = 1;
+    $('#content-scroll').attr('scrollLeft', menuPageNum * pageWidth);
 }
 
 
