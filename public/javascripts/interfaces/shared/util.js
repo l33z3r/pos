@@ -526,11 +526,17 @@ jQuery.fn.extend({
 });
 
 function initPressedCSS() {
-    $('div.button, div.item, div.key, div.go_key, div.cancel_key, div.employee_box, div.mobile_button').live("click",function() {
+    var eventName = "mousedown";
+    
+    if(isTouchDevice()) {
+        eventName = "touchstart";
+    }
+    
+    $('div.button, div.item, div.key, div.go_key, div.cancel_key, div.employee_box, div.mobile_button').live(eventName,function() {
         $(this).addClass("pressed");
         
         setTimeout(function(){
             $('*').removeClass("pressed");
-        }, 50);
+        }, 100);
     });
 }

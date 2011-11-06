@@ -161,11 +161,21 @@ div#table_info_screen span.table_label {
 #jqt div.key.pressed,
 #jqt div.go_key.pressed,
 #jqt div.cancel_key.pressed{
-    border: 1px solid red; 
-    background: #E36C0A;
-    -moz-opacity: 50;
-    filter:alpha(opacity: .50);
-    opacity: .50;    
+    border: 1px solid #E36C0A; 
+    background: #eee;
+    -moz-opacity: 90;
+    filter:alpha(opacity: .90);
+    opacity: .90;    
+}
+
+#jqt div.mobile_button.pressed *,
+#jqt div.key.pressed *,
+#jqt div.go_key.pressed *,
+#jqt div.cancel_key.pressed *{
+    background: #eee;
+    -moz-opacity: 90;
+    filter:alpha(opacity: .90);
+    opacity: .90;     
 }
 
 #jqt div.keypad {
