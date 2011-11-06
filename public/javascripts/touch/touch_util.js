@@ -3,7 +3,7 @@ function initTouch() {
     //replace all click events with touch events
     new NoClickDelay(document.body);  
     
-    //hook up swipe
+    //hook up swipe     
     $('#wrapper').swipe({
         threshold: {
             x: 300,
