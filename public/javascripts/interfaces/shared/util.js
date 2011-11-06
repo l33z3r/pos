@@ -537,6 +537,6 @@ function initPressedCSS() {
         
         setTimeout(function(){
             $('*').removeClass("pressed");
-        }, 100);
+        }, 180);
     });
 }
