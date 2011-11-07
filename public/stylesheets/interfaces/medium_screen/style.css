@@ -473,6 +473,7 @@ div#receipt_screen div#header div#back_button {
 div#receipt_screen div#header div#table_name {
     margin: 4px 0px 0px 85px;
     font-weight: bold;
+    color: #FFF;
 }
 
 div#receipt_screen div#function_buttons {
