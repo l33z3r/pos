@@ -282,6 +282,24 @@ function showAddNoteToOrderItemScreen() {
 }
 
 function openCashDrawer() {
+    
+    
+    var cash_drawer_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/cash_drawer_controller';
+    
+    $.ajax({
+        type: 'POST',
+        url: '/forward_cash_drawer_request',
+        error: function() {
+            alert("Error Sending Data To Cash Drawer Service!");
+        },
+        data: {
+            cash_drawer_service_url : cash_drawer_service_url,
+            message : "open cash drawer"
+        }
+    });
+    
+    return;
+    
     //TODO: display an error if the service is not running...
     
     

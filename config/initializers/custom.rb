@@ -20,3 +20,6 @@ if USE_S3
 else
   PAPERCLIP_STORAGE_OPTIONS = {}
 end
+
+require "net/http"
+require "uri"

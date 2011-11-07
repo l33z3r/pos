@@ -367,7 +367,22 @@ function print(content) {
     var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>" 
     + $('#printFrame').contents().find('html').html() + "</html>";
       
-    console.log("Websocket support? " + ("WebSocket" in window));
+    var print_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/receipt_printer';
+    
+    $.ajax({
+        type: 'POST',
+        url: '/forward_print_service_request',
+        error: function() {
+            alert("Error Sending Data To Print Service!");
+        },
+        data: {
+            print_service_url : print_service_url,
+            html_data : content_with_css
+        }
+    });
+    
+    return;
+     
     
     //TODO: display an error if the service is not running...
     
@@ -379,6 +394,8 @@ function print(content) {
     
     
     
+    
+    console.log("Websocket support? " + ("WebSocket" in window));
     
     if ("WebSocket" in window) {
         //console.log("Sending receipt content over websocket: " + content_with_css);
