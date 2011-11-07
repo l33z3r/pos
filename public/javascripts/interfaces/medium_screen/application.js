@@ -30,7 +30,7 @@ function doGlobalInit() {
     initMenu();
     
     //set the first page in the swipes to be the menu
-    swipeToMenu();
+    setFirstPage();
     
     //start calling home
     callHomePoll();

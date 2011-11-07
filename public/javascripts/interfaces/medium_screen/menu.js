@@ -487,3 +487,11 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) 
     
     currentSelectedReceiptItemEl = null;
 }
+
+function tableScreenBack() {
+    if(selectedTable == 0) {
+        $('#table_number_show').html("Enter a Table!");
+        return;
+    }
+    showMenuItemsSubscreen();
+}

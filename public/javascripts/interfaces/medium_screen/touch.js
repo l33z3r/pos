@@ -87,3 +87,8 @@ function swipeToReceipt() {
 function clearAllPageFlags() {
     currentScreenIsFunctions = currentScreenIsMenu = currentScreenIsReceipt = false;
 }
+
+function setFirstPage() {
+    pageNum = menuPageNum;
+    $("#content-scroll").scrollLeft((pageNum - 1) * pageWidth);
+}

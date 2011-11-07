@@ -108,12 +108,13 @@ span#reload_message {
 
 div.screen_header {
     height: 30px;
-    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
-    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+    background: -moz-linear-gradient(#558ED5, #17365D) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#558ED5), to(#17365D));
     text-align: center;
     padding: 15px 5px 5px 5px;
     font-weight: bold;
     font-size: 22px;
+    color: #FFF;
 }
 
 /* For page swiping */
@@ -275,8 +276,8 @@ div#menu_screen div#table_screen div#header {
     text-align: center;
     padding: 8px;
     height: 60px;
-    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
-    background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
+    background: -moz-linear-gradient(#558ED5, #17365D) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#558ED5), to(#17365D));
 }
 
 div#menu_screen div#table_screen div#header div#back_button {
@@ -289,6 +290,7 @@ div#menu_screen div#table_screen div#header div.title {
     margin-left: 32px;
     margin-top: 22px;
     font-size: 24px;
+    color: #FFF;
     font-weight: bold;
 }
 
@@ -689,7 +691,7 @@ div.keypad div.keys div {
     width: 150px;
     padding-top: 47px;
     height: 57px;
-    font-size: 22px;
+    font-size: 30px;
     border: 1px solid #777;
     cursor: pointer;
     -moz-border-radius: 5px;
