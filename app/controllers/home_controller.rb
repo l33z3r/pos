@@ -266,17 +266,17 @@ class HomeController < ApplicationController
     @tables_button = DisplayButton.find_by_perm_id(ButtonMapper::TABLES_BUTTON) 
     @order_button = DisplayButton.find_by_perm_id(ButtonMapper::ORDER_BUTTON) 
     @modify_button = DisplayButton.find_by_perm_id(ButtonMapper::MODIFY_ORDER_ITEM_BUTTON) 
-    @more_options_button = DisplayButton.find_by_perm_id(ButtonMapper::MORE_OPTIONS_BUTTON) 
+    @more_options_button = DisplayButton.find_by_perm_id(ButtonMapper::MORE_OPTIONS_BUTTON)
+    @course_button = DisplayButton.find_by_perm_id(ButtonMapper::COURSE_BUTTON)
+    @remove_item_button = DisplayButton.find_by_perm_id(ButtonMapper::REMOVE_ITEM_BUTTON);
     
     @display_buttons = []
     
-    @display_buttons << @tables_button << @order_button << @modify_button << @more_options_button
+    @display_buttons << @tables_button << @order_button << @modify_button
     
     @functions_display_buttons = []
-    @functions_display_buttons << @tables_button << @order_button << @modify_button << @more_options_button
-    @functions_display_buttons << @tables_button << @order_button << @modify_button << @more_options_button
-    @functions_display_buttons << @tables_button << @order_button << @modify_button << @more_options_button
-    @functions_display_buttons << @tables_button << @order_button << @modify_button << @more_options_button
+    @functions_display_buttons << @course_button << @remove_item_button << @more_options_button
+    
   end
   
   def clear_session

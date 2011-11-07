@@ -15,6 +15,7 @@ body {
     font-family: verdana, sans-serif;
     font-size: 18px;
     line-height: 12px;
+    background-color: #E0E0E0;
 
     /* disable text selection */
     -webkit-user-select: none;
@@ -91,7 +92,6 @@ input[type="submit"] {
 div#wrapper {
     margin: auto;
     text-align: center;
-    background-color: #FFF;
 }
 
 div.wrapper div {
@@ -102,23 +102,36 @@ div.wrapper div td {
     text-align: left;
 }
 
+span#reload_message {
+    cursor: pointer;
+}
+
+div.screen_header {
+    height: 30px;
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+    text-align: center;
+    padding: 15px 5px 5px 5px;
+    font-weight: bold;
+    font-size: 22px;
+}
+
 /* For page swiping */
 
 #content-scroll {
-  width: 480px;
-  height: 798px;
-  overflow: hidden;
+    width: 480px;
+    height: 798px;
+    overflow: hidden;
 }
 
 #content-holder {
-  width: 1500px;
-  height: 270px;
+    height: 480px;
 }
 
 .content-item {
-  width: 480px;
-  height: 798px;
-  float: left;
+    width: 480px;
+    height: 798px;
+    float: left;
 }
 
 /* For page swiping */
@@ -194,6 +207,8 @@ div#menu_screen div#menu_container div#menu_pages_container div.page.selected di
 div#menu_screen div#menu_container div#menu_items_container {
     float: left;
     width: 360px;
+    height: 600px;
+    background-color: #FFF;
     border-spacing: 3px 1px;
 }
 
@@ -316,9 +331,20 @@ div.receipt div.till_roll div.order_line {
     cursor: pointer;
 }
 
+div.receipt div.till_roll div.order_line.course {
+    border-bottom: 1px solid #000;
+}
+
 div.receipt div.till_roll div.order_line.not_synced div.name {
     font-style: italic;
     font-weight: bold;
+}
+
+div.receipt div.till_roll div.order_line.selected {
+    border: 2px solid #4297D7;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #4297D7;
 }
 
 div.receipt div.till_roll div.order_line.selected {
@@ -366,6 +392,7 @@ div.receipt div.till_roll div.oia_add {
     float: left;
     width: 70px;
     text-align: right;
+    font-size: 19px;
 }
 
 div.receipt div.till_roll div.oia_name {
@@ -379,6 +406,7 @@ div.receipt div.till_roll div.oia_name {
 div.receipt div.till_roll div.oia_name.note {
     font-style: italic;
     width: 190px;
+    font-size: 19px;
     font-size: 19px;
 }
 
@@ -432,26 +460,40 @@ div#receipt_screen {
 }
 
 div#receipt_screen div#header {
-    width: 100%;
-    height: 30px;
+
+}
+
+div#receipt_screen div#header div#back_button {
+    float: right;
+    margin-top: -5px;
+}
+
+div#receipt_screen div#header div#table_name {
+    margin: 4px 0px 0px 85px;
     font-weight: bold;
-    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
-    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
-    text-align: center;
-    padding-top: 10px;
+}
+
+div#receipt_screen div#function_buttons {
+    border-spacing: 14px 3px;
+}
+
+div#receipt_screen div#function_buttons div.button {
+    height: 60px;
+    max-height: 60px;
+    width: 100px;
+    max-width: 100px;
 }
 
 div#receipt_screen div#large_receipt_container {
-    border: 1px solid #000;
+    width: 470px;
+    border: 1px solid #777;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    float: left;
-    width: 470px;
     margin: auto;
 }
 
-div#receipt_screen div#large_receipt_container div#large_menu_screen_receipt {
-    height: 728px;
+div#receipt_screen div#large_receipt_container div#large_menu_screen_receipt {    
+    height: 628px;
     background-color: #FFF;
     overflow-y: auto;
     display: block;
@@ -461,7 +503,7 @@ div#receipt_screen div#large_receipt_container div#large_menu_screen_receipt {
 
 div#receipt_screen div#large_receipt_container div#large_menu_screen_receipt div#large_menu_screen_till_roll {
     padding-top: 4px;
-    height: 710px;
+    height: 610px;
     display: block;
     background-color: #FFF;
 }
@@ -471,14 +513,11 @@ div#receipt_screen div#large_receipt_container div#large_menu_screen_receipt div
 /* Functions Screen */
 
 div#functions_screen {
-    
+
 }
 
 div#functions_screen div#header {
-    text-align: center;
-    padding: 8px;
-    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
-    background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
+
 }
 
 div#functions_screen div#functions_buttons_container {
@@ -544,6 +583,7 @@ div.button div.button_name a:hover {
 }
 
 div.small_button {
+    font-size: 19px;
     width: 83px;
     max-width: 83px;
     padding-top: 10px;

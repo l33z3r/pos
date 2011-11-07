@@ -11,6 +11,8 @@ var cashback = 0;
 
 var defaultShortcutDropdownText = "I want to...";
 
+var editItemPopupAnchor;
+
 //this function is called from application.js on page load
 function initMenu() {
     loadFirstMenuPage();
@@ -302,7 +304,9 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     
     onclickMarkup = includeOnClick ? "onclick='doSelectReceiptItem(this)'" : "";
     
-    orderHTML = "<div class='order_line " + notSyncedClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
+    var courseLineClass = orderItem.is_course ? "course" : "";
+    
+    orderHTML = "<div class='order_line " + notSyncedClass + " " + courseLineClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
     
     if(includeServerAddedText && orderItem.showServerAddedText) {
         var nickname = serverNickname(orderItem.serving_employee_id);
@@ -413,9 +417,6 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     
     return orderHTML;
 }
-
-var currentSelectedReceiptItemEl;
-var editItemPopupAnchor;
 
 function doSelectReceiptItem(orderItemEl) {
     orderItemEl = $(orderItemEl);
@@ -571,42 +572,6 @@ function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit) {
     return order;
 }
 
-function removeSelectedOrderItem() {
-    //fetch the item number
-    itemNumber = currentSelectedReceiptItemEl.data("item_number");
-    
-    if(selectedTable != 0) {
-        order = tableOrders[selectedTable];
-        order = doRemoveOrderItem(order, itemNumber);
-    
-        storeTableOrderInStorage(current_user_id, selectedTable, order);
-    }else {
-        order = currentOrder;
-        order = doRemoveOrderItem(order, itemNumber);
-        
-        storeOrderInStorage(current_user_id, order);
-    }
-    
-    currentSelectedReceiptItemEl.hide();
-    loadReceipt(order);
-    
-    closeEditOrderItem();
-}
-
-function doRemoveOrderItem(order, itemNumber) {
-    order.items.splice(itemNumber-1, 1);
-    
-    //update the order items of following items
-    for(var i=itemNumber-1; i<order.items.length; i++) {
-        order.items[i].itemNumber--;
-    }
-    
-    //have to retotal the order
-    calculateOrderTotal(order);
-        
-    return order;
-}
-
 function writeTotalToReceipt(order, orderTotal) {
     if(!order) return;
     
@@ -694,7 +659,7 @@ function clearOrder(selectedTable) {
         currentOrder = null;
     } else {
         clearTableOrderInStorage(current_user_id, selectedTable);
-    //dont need to worry about clearing memory as it is read in from cookie which now no longer exists
+        //dont need to worry about clearing memory as it is read in from cookie which now no longer exists
     }
     
     clearReceipt();
@@ -1074,7 +1039,7 @@ function showDiscountPopup(receiptItem) {
     //register the click handler to hide the popup when outside clicked
     registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
     
-//TODO: manually init the radio button iphone style
+    //TODO: manually init the radio button iphone style
     
     
     
@@ -1371,28 +1336,28 @@ function renderActiveTables() {
     //alert("render active tables " + activeTableIDS);
     
     $("#table_select").children('li').children('ul').children('li').each( 
-        function(id, element) {
-            //alert("ID: " + $(element).val().toString() + " El " + $(element).html() + " in:" + $.inArray($(element).val().toString(), activeTableIDS));
+    function(id, element) {
+        //alert("ID: " + $(element).val().toString() + " El " + $(element).html() + " in:" + $.inArray($(element).val().toString(), activeTableIDS));
             
-            if(typeof($(element).attr('rel')) != 'undefined') {
-                nextTableID = $(element).attr('rel').toString();
+        if(typeof($(element).attr('rel')) != 'undefined') {
+            nextTableID = $(element).attr('rel').toString();
                 
-                //alert(nextTableID);
+            //alert(nextTableID);
                 
-                if($.inArray(nextTableID, activeTableIDS) != -1) {
+            if($.inArray(nextTableID, activeTableIDS) != -1) {
             
-                    $(element).addClass("active");
+                $(element).addClass("active");
             
-                    //mark the tables screen also
-                    $('#table_label_' + nextTableID).addClass("active");
-                } else {
+                //mark the tables screen also
+                $('#table_label_' + nextTableID).addClass("active");
+            } else {
             
-                    $(element).removeClass("active");
-                    $('#table_label_' + nextTableID).removeClass("active");
-                }
+                $(element).removeClass("active");
+                $('#table_label_' + nextTableID).removeClass("active");
             }
         }
-        );  
+    }
+);  
 }
 
 function postDoSyncTableOrder() {
@@ -1461,7 +1426,7 @@ function switchToModifyOrderItemSubscreen() {
 }
 
 function postDoSelectTable() {
-//does nothing for now, but the medium interface needed this callback
+    //does nothing for now, but the medium interface needed this callback
 }
 
 function orderItemAdditionClicked(el) {

@@ -53,6 +53,7 @@ class ButtonMapper
   CURRENT_ORDERS_BUTTON = 50
   MODIFY_TERMINALS_BUTTON = 51
   PRINT_BILL_BUTTON = 52
+  COURSE_BUTTON = 53
   
   def action_for_button button
 
@@ -161,6 +162,8 @@ class ButtonMapper
       @retval = "window.location = '#{admin_orders_path}?section=open_orders'; return false;"
     when MODIFY_TERMINALS_BUTTON
       @retval = "window.location = '#{admin_terminals_path}'; return false;"
+    when COURSE_BUTTON
+      @retval = wrap_with_menu_screen_function_check "addCourseEndToOrder(); return false;";
     when PRINT_BILL_BUTTON
       @retval = "printBill();"
     end

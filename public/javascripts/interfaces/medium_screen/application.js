@@ -1,3 +1,10 @@
+//this is used for paging
+var numPages = 3;
+
+var receiptPageNum = 1;
+var menuPageNum = 2;
+var functionsPageNum = 3;
+
 $(function(){
     doGlobalInit();
 });
@@ -7,6 +14,9 @@ function doGlobalInit() {
     if(inDevMode()) {
         $('body').css("overflow", "scroll");
     }
+    
+    //need to set the scroll content holder width
+    $('#content-holder').width(pageWidth * numPages);
     
     if(isTouchDevice()) {
         initTouch();
@@ -20,8 +30,7 @@ function doGlobalInit() {
     initMenu();
     
     //set the first page in the swipes to be the menu
-    var menuPageNum = 1;
-    $('#content-scroll').attr('scrollLeft', menuPageNum * pageWidth);
+    swipeToMenu();
     
     //start calling home
     callHomePoll();

@@ -235,16 +235,6 @@ function initFloatScreen() {
     }); 
 }
 
-function removeLastOrderItem() {
-    currentSelectedReceiptItemEl = getSelectedOrLastReceiptItem();
-    
-    if(currentSelectedReceiptItemEl) {
-        removeSelectedOrderItem();
-    }
-    
-    currentSelectedReceiptItemEl = null;
-}
-
 function markFreeLastOrderItem() {
     order = getCurrentOrder();
     

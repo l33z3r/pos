@@ -160,6 +160,7 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
     //init an in memory version of this order
     tableOrders[tableNum] = {
         'items': new Array(),
+        'courses' : new Array(),
         'total':0
     };
     
@@ -185,7 +186,7 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
         
         //load the cashback
         tableOrders[tableNum].cashback = currentTableOrderJSON.cashback;
-        
+                
         if(typeof tableOrders[tableNum].cashback == "undefined") {
             tableOrders[tableNum].cashback = 0;
         }
@@ -204,6 +205,11 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
         if(currentTableOrderJSON.discount_percent) {
             tableOrders[tableNum].discount_percent = currentTableOrderJSON.discount_percent;
             tableOrders[tableNum].pre_discount_price = currentTableOrderJSON.pre_discount_price;
+        }
+        
+        //load the courses
+        if(typeof currentTableOrderJSON.courses != "undefined") {
+            tableOrders[tableNum].courses = currentTableOrderJSON.courses;
         }
         
         tableOrders[tableNum].order_taxes = currentTableOrderJSON.order_taxes;
@@ -480,7 +486,7 @@ function niceAlert(message, title) {
     ModalPopups.Alert('niceAlertContainer',
         title, "<div id='nice_alert'>" + message + "</div>",
         {
-            okButtonText: 'OK',
+            okButtonText: 'Dismiss',
             onOk: "hideNiceAlert()"
         });
 }

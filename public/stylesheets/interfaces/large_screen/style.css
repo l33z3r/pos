@@ -1424,6 +1424,10 @@ div.receipt div.till_roll div.order_line {
     cursor: pointer;
 }
 
+div.receipt div.till_roll div.order_line.course {
+    border-bottom: 1px solid #000;
+}
+
 div.receipt div.till_roll div.order_line.not_synced div.name {
     font-style: italic;
     font-weight: bold;

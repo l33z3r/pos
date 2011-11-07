@@ -12,6 +12,8 @@ var currentSelectedMenuItemElement;
 
 var oiaIsAdd = true;
 
+var currentSelectedReceiptItemEl;
+
 function getCurrentOrder() {
     if(selectedTable == 0) {
         return currentOrder;
@@ -157,6 +159,14 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     //copy over the discount
     tableOrders[tableID].discount_percent = tableOrderDataJSON.discount_percent;
+    
+    //copy over the courses array
+    tableOrders[tableID].courses = tableOrderDataJSON.courses;
+    console.log(tableOrderDataJSON.courses);
+    //turn courses back into integers
+    for(var j = 0; j < tableOrders[tableID].courses.length; j++) {
+        tableOrders[tableID].courses[j] = parseInt(tableOrders[tableID].courses[j]);
+    }
     
     calculateOrderTotal(tableOrders[tableID]);
     storeTableOrderInStorage(nextUserIDToSyncWith, tableID, tableOrders[tableID]);
@@ -351,6 +361,7 @@ function addItemToOrderAndSave(orderItem) {
     if(currentOrder == null) {
         currentOrder = {
             'items': new Array(),
+            'courses' : new Array(),
             'total':0
         };
     }
@@ -444,4 +455,77 @@ function doSelectTable(tableNum) {
     loadReceipt(tableOrders[tableNum]);
     
     postDoSelectTable();
+}
+
+function removeSelectedOrderItem() {
+    //fetch the item number
+    itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    
+    if(selectedTable != 0) {
+        order = tableOrders[selectedTable];
+        order = doRemoveOrderItem(order, itemNumber);
+    
+        storeTableOrderInStorage(current_user_id, selectedTable, order);
+    }else {
+        order = currentOrder;
+        
+        order = doRemoveOrderItem(order, itemNumber);
+        
+        storeOrderInStorage(current_user_id, order);
+    }
+    
+    currentSelectedReceiptItemEl.hide();
+    loadReceipt(order);
+    
+    closeEditOrderItem();
+}
+
+function doRemoveOrderItem(order, itemNumber) {
+    //WE HAVE A LOT OF LOGIC HERE TO DEAL WITH COURSES
+    
+    
+    //if this item marks the end of a course, 
+    //we must pass the line back to the previous menu item
+    //if the item number is only one, then this is the first 
+    //item in the receipt and we don't worry about it
+    var courseIndex = $.inArray(itemNumber, order.courses);
+    
+    if(courseIndex >= 0) {
+        //3 cases here, 
+        //1. this is a first item on the list (so delete the first entry which will be 1)
+        //2. the previous item is already a course
+        //3. we can pass back the course
+        if(itemNumber == 1) {
+            //remove this so it doesn't get decremented to 0
+            order.courses.splice(0, 1);
+        } else if(order.items[itemNumber-2].is_course) {
+            //remove this from the courses array as the previous item is a course
+            order.courses.splice(courseIndex, 1);
+        } else {
+            //pass back the course line
+            order.courses[courseIndex]--;
+            order.items[itemNumber-2].is_course = true;
+        }
+    }
+    
+    order.items.splice(itemNumber-1, 1);
+    
+    //update the order items of following items
+    for(var i=itemNumber-1; i<order.items.length; i++) {
+        order.items[i].itemNumber--;
+        
+        var courseIndex2 = $.inArray((i+1), order.courses);
+        
+        if(courseIndex2 >= 0) {
+            //make sure that this course index is not already in the array
+            if($.inArray(order.courses[courseIndex2] - 1, order.courses) == -1) {
+                order.courses[courseIndex2]--;
+            }
+        }
+    }
+    
+    //have to retotal the order
+    calculateOrderTotal(order);
+        
+    return order;
 }

@@ -22,7 +22,7 @@ function doDisplayButtonPasscodePrompt(button_id, forwardFunction) {
 }
 
 function checkMenuScreenForFunction() {
-    //return true for now...
+    swipeToMenu();
     return true;
 }
 
@@ -92,6 +92,29 @@ function tableSelectMenuItem(orderItem) {
     menuRecptScroll();
 }
 
+function closeEditOrderItem() {
+    console.log("CloseEditOrderItem in medium interface called!");
+    
+    if(currentSelectedReceiptItemEl) {
+        currentSelectedReceiptItemEl.removeClass("selected");
+    
+        currentSelectedReceiptItemEl = null;
+    }
+}
+
+function doSelectReceiptItem(orderItemEl) {
+    orderItemEl = $(orderItemEl);
+    
+    //close any open popup
+    closeEditOrderItem();
+    
+    //save the currently opened dialog
+    currentSelectedReceiptItemEl = orderItemEl;
+    
+    //keep the border
+    orderItemEl.addClass("selected");
+}
+
 function writeOrderItemToReceipt(orderItem) {
     setReceiptsHTML(getCurrentReceiptHTML() + getOrderItemReceiptHTML(orderItem));
 }
@@ -136,7 +159,10 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     
     onclickMarkup = includeOnClick ? "onclick='doSelectReceiptItem(this)'" : "";
     
-    orderHTML = "<div class='order_line " + notSyncedClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
+    //console.log(orderItem.itemNumber + " " + orderItem.is_course + " " + (orderItem.is_course == "true") + " " + (orderItem.is_course == true));
+    var courseLineClass = orderItem.is_course ? "course" : "";
+    
+    orderHTML = "<div class='order_line " + notSyncedClass + " " + courseLineClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
     
     if(includeServerAddedText && orderItem.showServerAddedText) {
         var nickname = serverNickname(orderItem.serving_employee_id);
@@ -286,7 +312,9 @@ function postDoSyncTableOrder() {
     setStatusMessage("Order Sent!");
     
     //vibrate!
-    demoJSInterface.vibrate();
+    if(inAndroidWrapper()) {
+        demoJSInterface.vibrate();
+    }
 }
 
 function showModifyOrderItemScreen() {
@@ -360,7 +388,7 @@ function clearTableNumberEntered() {
 function postDoSelectTable() {
     var theLabel = "Table " + current_table_label;
     $('#sales_button_' + tablesButtonID + ' .button_name').html(theLabel);
-    $('#receipt_screen #header').html(theLabel);
+    $('#receipt_screen #header #table_name').html(theLabel);
 }
 
 function orderItemAdditionClicked(el) {

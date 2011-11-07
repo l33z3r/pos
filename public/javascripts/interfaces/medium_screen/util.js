@@ -33,6 +33,19 @@ function currentMenuSubscreenIsTableScreen() {
     return $('#table_screen').is(":visible");
 }
 
+function getSelectedOrLastReceiptItem() {
+    if(!currentSelectedReceiptItemEl) {
+        currentSelectedReceiptItemEl = $('#menu_screen_till_roll > div.order_line:last');
+    
+        if(currentSelectedReceiptItemEl.length == 0) {
+            setStatusMessage("There are no receipt items!");
+            return null;
+        }
+    }
+    
+    return currentSelectedReceiptItemEl;
+}
+
 function getLastReceiptItem() {
     currentSelectedReceiptItemEl = $('#menu_screen_till_roll > div.order_line:last');
     
@@ -42,4 +55,8 @@ function getLastReceiptItem() {
     }
     
     return currentSelectedReceiptItemEl;
+}
+
+function inAndroidWrapper() {
+    return (typeof demoJSInterface != "undefined");
 }
