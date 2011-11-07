@@ -185,8 +185,11 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText) {
     
     change = totalOrder.change;
 
-    if(change > 0) {
-        finalReceiptHTML += "<div class='label'>Change:</div><div class='data'>" + currency(change) + "</div>" + clearHTML;
+    //is there any change? we include cashback in the change here
+    var changeWithCashback = change + totalOrder.cashback;
+
+    if(changeWithCashback > 0) {
+        finalReceiptHTML += "<div class='label'>Change:</div><div class='data'>" + currency(changeWithCashback) + "</div>" + clearHTML;
     }
     
     finalReceiptHTML += "</div>" + clearHTML;
@@ -285,6 +288,8 @@ function fetchFinalReceiptHeaderHTML() {
         headerHTML += "<div class='label'>Table:</div><div class='data'>" + totalOrder.table + "</div>" + clearHTML;
     }
     
+    headerHTML += "<div class='label'>Terminal:</div><div class='data'>" + terminalID + "</div>" + clearHTML;
+    
     if(typeof(totalOrder.payment_method) != 'undefined') {
         headerHTML += "<div class='label'>Payment Method:</div><div class='data'>" + totalOrder.payment_method + "</div>" + clearHTML;
     }
@@ -357,12 +362,11 @@ function printReceipt(content, printRecptMessage) {
 }
 
 function print(content) {
-    
     $('#printFrame').contents().find('#till_roll').html(content);
     
     var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>" 
     + $('#printFrame').contents().find('html').html() + "</html>";
-        
+      
     console.log("Websocket support? " + ("WebSocket" in window));
     
     //TODO: display an error if the service is not running...
@@ -377,16 +381,26 @@ function print(content) {
     
     
     if ("WebSocket" in window) {
-        console.log("Sending receipt content over websocket: " + content_with_css);
+        //console.log("Sending receipt content over websocket: " + content_with_css);
         
         // Let us open a web socket
         var ws = new WebSocket("ws://" + webSocketServiceIP + ":8080/ClueyWebSocketServices/receipt_printer");
         
         ws.onopen = function()
         {
-            // Web Socket is connected, send data using send()
-            ws.send(content_with_css);
-            console.log("Message sent: " + content_with_css);
+            //there is a maximum limit on the size of the message we can send, 
+            //so we split it into groups of 3072 chars (3kb of data)
+            var charsPerGroup = 3072;
+            
+            console.log("Breaking data up into " + Math.ceil(content_with_css.length/charsPerGroup) + " groups to send to print service");
+            for(var i = 0; i < content_with_css.length; i+=charsPerGroup) {
+                var nextGroup = content_with_css.substring(i, i + charsPerGroup);
+                console.log("Sending group " + ((i/charsPerGroup) + 1));
+                ws.send(nextGroup);
+            }
+            
+            //ws.send(content_with_css);
+            
             ws.close();
         };
         

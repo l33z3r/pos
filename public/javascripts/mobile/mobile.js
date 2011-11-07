@@ -68,6 +68,8 @@ function initMobile() {
         }
     });
     
+    initPressedCSS();
+    
     //limit the list of tables to ones that only contain open orders
     renderMobileActiveTableList();
 }

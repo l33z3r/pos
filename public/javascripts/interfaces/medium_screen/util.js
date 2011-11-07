@@ -33,18 +33,6 @@ function currentMenuSubscreenIsTableScreen() {
     return $('#table_screen').is(":visible");
 }
 
-function currentScreenIsMenu() {
-    return $('#menu_screen').is(":visible");
-}
-
-function currentScreenIsReceipt() {
-    return $('#receipt_screen').is(":visible");
-}
-
-function currentScreenIsFunctions() {
-    return $('#functions_screen').is(":visible");
-}
-
 function getLastReceiptItem() {
     currentSelectedReceiptItemEl = $('#menu_screen_till_roll > div.order_line:last');
     

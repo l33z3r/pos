@@ -28,8 +28,6 @@ NoClickDelay.prototype = {
         if(!targetIsSelectElement) {
             e.preventDefault();
             
-            addPressedCSSClass($(this.theTarget));
-            
             if(this.theTarget.nodeType == 3) {
                 this.theTarget = theTarget.parentNode;
             }
@@ -48,10 +46,6 @@ NoClickDelay.prototype = {
         this.element.removeEventListener('touchmove', this, false);
         this.element.removeEventListener('touchend', this, false);
         if(this.checkTarget == this.theTarget ) {
-            //if( !this.moved && this.theTarget ) {
-            
-            removePressedCSSClass($(this.theTarget));
-            
             var theEvent = document.createEvent('MouseEvents');
             theEvent.initEvent('click', true, true);
             this.theTarget.dispatchEvent(theEvent);

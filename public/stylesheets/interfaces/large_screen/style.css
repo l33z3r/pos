@@ -853,7 +853,7 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 
 div#menu_screen div#order_item_additions {
     display: none;
-    height: 548px;
+    height: 547px;
     background-color: #E0E0E0;
 }
 
@@ -2150,7 +2150,7 @@ div#total_screen div#payment_options_money_info_container div#totals_screen_misc
 div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons_container div#totals_screen_misc_buttons_left {
     border-spacing: 7px;
     float: left;
-    padding-left: 127px;
+    padding-left: 85px;
 }
 
 div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons_container div#totals_screen_misc_buttons_left div.button {
@@ -2805,10 +2805,30 @@ div.button div.button_name a:hover {
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item.pressed,
 #wrapper div.button.pressed,
-#wrapper div.key.pressed {
+#wrapper div.key.pressed,
+#wrapper div.go_key.pressed,
+#wrapper div.employee_box.pressed,
+#wrapper div.cancel_key.pressed {
     border: 1px solid #E36C0A; 
+    background: #eee;
+    -moz-opacity: 90;
+    filter:alpha(opacity: .90);
+    opacity: .90;    
 }
-/* Generic Styles */
+
+div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item.pressed *,
+#wrapper div.button.pressed *,
+#wrapper div.key.pressed *,
+#wrapper div.go_key.pressed *,
+#wrapper div.employee_box.pressed *,
+#wrapper div.cancel_key.pressed * {
+    background: #eee;
+    -moz-opacity: 90;
+    filter:alpha(opacity: .90);
+    opacity: .90;    
+}
+
+/* End Generic Styles */
 
 /* styles carried over from scaffold css */
 

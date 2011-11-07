@@ -26,9 +26,15 @@ function doGlobalInit() {
     setFingerPrintCookie();
     
     if(isTouchDevice()) {
-        initTouch();
+        //init touch if were not in mobile as that uses jqt
+        if(!inMobileContext()) {
+            initTouch();
+        }
+        
         initTouchRecpts();
-    }
+    } 
+    
+    initPressedCSS();
     
     //check if we have loaded a previous order from the admin interface
     //this will also load it into tableOrders[-1]

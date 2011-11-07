@@ -294,7 +294,7 @@ function showModifyOrderItemScreen() {
 }
 
 function switchToMenuItemsSubscreen() {
-    if(currentScreenIsMenu()) {
+    if(currentScreenIsMenu) {
         showMenuItemsSubscreen();
     }
 }
@@ -305,7 +305,7 @@ function showMenuItemsSubscreen() {
 }
 
 function switchToModifyOrderItemSubscreen() {
-    if(currentScreenIsMenu()) {
+    if(currentScreenIsMenu) {
         hideAllMenuSubScreens();
         $('#sales_button_' + modifyOrderItemButtonID).addClass("selected");
         $('#order_item_additions').show();

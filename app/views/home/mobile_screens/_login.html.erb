@@ -1,7 +1,7 @@
 <div id="login" class="current">
   <div class="toolbar">
 
-    <h1>Cluey Login</h1>
+    <h1>Enter Pin</h1>
 
   </div>
 
@@ -12,11 +12,12 @@
   </div>
 
   <div id="entered_code_container">
+    
+    <div class="clear_top_margin_10">&nbsp;</div>
+    
     <div id="clockincode_show"></div>
     <%= hidden_field_tag :num, nil, :id => :num, :size => "18" %>
   </div>
-
-  <div id="login_top">Enter Pin</div>
 
   <div id="keypad" class="keypad">
     <div id="keys" class="keys">

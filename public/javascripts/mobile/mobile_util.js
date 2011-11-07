@@ -49,11 +49,11 @@ function displayMobileNotice(message) {
 }
 
 function showMobileLoginScreen() {
-    jQT.goTo('#login', 'slideup');
+    jQT.goTo('#login');
 }
 
 function showMobileMenuScreen() {
-    jQT.goTo('#menu', 'slideup');
+    jQT.goTo('#menu');
 }
 
 function currentScreenIsMobileMenu() {

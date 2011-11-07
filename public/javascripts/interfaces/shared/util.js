@@ -183,6 +183,24 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
         tableOrders[tableNum].table = currentTableOrderJSON.table;
         tableOrders[tableNum].total = currentTableOrderJSON.total;
         
+        //load the cashback
+        tableOrders[tableNum].cashback = currentTableOrderJSON.cashback;
+        
+        if(typeof tableOrders[tableNum].cashback == "undefined") {
+            tableOrders[tableNum].cashback = 0;
+        }
+    
+        cashback = tableOrders[tableNum].cashback;
+    
+        //load the service charge
+        tableOrders[tableNum].service_charge = currentTableOrderJSON.service_charge;
+        
+        if(typeof tableOrders[tableNum].service_charge == "undefined") {
+            tableOrders[tableNum].service_charge = 0;
+        }
+    
+        serviceCharge = tableOrders[tableNum].service_charge;
+    
         if(currentTableOrderJSON.discount_percent) {
             tableOrders[tableNum].discount_percent = currentTableOrderJSON.discount_percent;
             tableOrders[tableNum].pre_discount_price = currentTableOrderJSON.pre_discount_price;
@@ -507,28 +525,18 @@ jQuery.fn.extend({
     }
 });
 
-function addPressedCSSClass(target) {
-    var cssTarget = getPressedCSSTarget(target);
-    cssTarget.addClass("pressed");
-}
-
-function removePressedCSSClass(target) {
-    var cssTarget = getPressedCSSTarget(target);
-    cssTarget.removeClass("pressed");
-}
-
-function getPressedCSSTarget(target) {
-    //menu item?
-    var cssTarget = target.parent().parent(".item");
+function initPressedCSS() {
+    var eventName = "mousedown";
     
-    //button?
-    if(cssTarget.length == 0) {
-        cssTarget = target.parent().parent(".button");
+    if(isTouchDevice()) {
+        eventName = "touchstart";
     }
     
-    if(cssTarget.length == 0) {
-        cssTarget = target;
-    }
-    
-    return cssTarget;
+    $('div.button, div.item, div.key, div.go_key, div.cancel_key, div.employee_box, div.mobile_button').live(eventName,function() {
+        $(this).addClass("pressed");
+        
+        setTimeout(function(){
+            $('*').removeClass("pressed");
+        }, 180);
+    });
 }
