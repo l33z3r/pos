@@ -447,14 +447,18 @@
 		
         //need to bind the click to the hoverOver for the ipad as it does not do hover
         function addBindings(el){
+            var eventName = isTouchDevice() ? "touchstart" : "mousedown";
+            
             removeBindings(el);
             $("> li", el)
-            .bind("mousedown", hoverOver);
+            .bind(eventName, hoverOver);
         };
 		
         function removeBindings(el){
+            var eventName = isTouchDevice() ? "touchstart" : "mousedown";
+            
             $("> li", el)
-            .unbind("mousedown", hoverOver);
+            .unbind(eventName, hoverOver);
         };
 		
         // scroll the current element into view
