@@ -5,7 +5,7 @@
 <!-- load the dynamic theme -->
 <link type="text/css" href="<%= admin_custom_theme_path(:format => :css) %> " media="screen" rel="stylesheet" />
 
-<%= render "/partials/shared_js_includes" %>
+<%= render "/partials/interfaces/shared/shared_js_includes" %>
 
 <!-- application specific js -->
 <%= javascript_include_tag "rails", "interfaces/medium_screen/application", 
@@ -16,8 +16,8 @@
 <%= csrf_meta_tag %>
 
 <!-- must set some vars from the system settings -->
-<%= render :partial => "/partials/js_global_settings" %>
+<%= render :partial => "/partials/interfaces/shared/js_global_settings" %>
 
 <%= yield :head %>
 
-<%= render "/partials/shared_head_meta_tags" %>
+<%= render "/partials/interfaces/shared/shared_head_meta_tags" %>

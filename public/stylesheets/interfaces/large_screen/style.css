@@ -2674,10 +2674,24 @@ div[id$="_popup"] input {
 }
 
 div#nice_alert {
-    width: 280px;
-    height: 60px;
+    font-size: 30px;
+    font-weight: bold;
     text-align: center;
-    margin-top: 30px;
+    margin-top: 20px;
+}
+
+input#niceAlertContainer_okButton {
+    font-size: 28px;
+    font-weight: bold;
+    width: 260px;
+    max-width: 260px;
+    height: 40px;
+    max-height: 40px;
+    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
+    border: 1px solid #000;
+    border-radius: 5px;
+    box-shadow: 0px 1px 1px 0px #777;
 }
 
 /* End Misc Styles */

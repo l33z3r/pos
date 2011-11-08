@@ -449,15 +449,12 @@
         function addBindings(el){
             removeBindings(el);
             $("> li", el)
-            .bind("click", hoverOver)
-            .bind("mouseover", hoverOver)
-            .bind("mouseout", hoverOut);
+            .bind("mousedown", hoverOver);
         };
 		
         function removeBindings(el){
             $("> li", el)
-            .unbind("mouseover", hoverOver)
-            .unbind("mouseout", hoverOut);
+            .unbind("mousedown", hoverOver);
         };
 		
         // scroll the current element into view

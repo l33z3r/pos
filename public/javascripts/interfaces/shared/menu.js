@@ -147,10 +147,9 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     tableOrders[tableID].items = newOrderItems;
     
-    //alert("new order items length: " + tableOrders[tableID].items.length);
     //re number the items
-    for(var i=0;i<tableOrders[tableID].items.length;i++) {
-        tableOrders[tableID].items[i].itemNumber = i + 1;
+    for(var z=0;i<tableOrders[tableID].items.length;z++) {
+        tableOrders[tableID].items[z].itemNumber = z + 1;
     }
     
     //copy over the order number
@@ -162,7 +161,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     //copy over the courses array
     tableOrders[tableID].courses = tableOrderDataJSON.courses;
-    console.log(tableOrderDataJSON.courses);
+    
     //turn courses back into integers
     for(var j = 0; j < tableOrders[tableID].courses.length; j++) {
         tableOrders[tableID].courses[j] = parseInt(tableOrders[tableID].courses[j]);

@@ -486,6 +486,8 @@ function niceAlert(message, title) {
     ModalPopups.Alert('niceAlertContainer',
         title, "<div id='nice_alert'>" + message + "</div>",
         {
+            width: 360,
+            height: 250,
             okButtonText: 'Dismiss',
             onOk: "hideNiceAlert()"
         });
