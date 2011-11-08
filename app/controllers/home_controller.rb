@@ -232,9 +232,9 @@ class HomeController < ApplicationController
     
     logger.info "Forwarding a print service request to #{@url}"
     
-    @response = Net::HTTP.post_form(URI.parse(@url), {"content_to_print" => @html_data})
+    @forward_response = Net::HTTP.post_form(URI.parse(@url), {"content_to_print" => @html_data})
 
-    logger.info "Got response from print service: #{@response}"
+    logger.info "Got response from print service: #{@forward_response}"
     
     render :json => {:success => true}.to_json
   end
@@ -245,9 +245,9 @@ class HomeController < ApplicationController
     
     logger.info "Forwarding a cash drawer request to #{@url}"
     
-    @response = Net::HTTP.post_form(URI.parse(@url), {"message" => @message})
+    @forward_response = Net::HTTP.post_form(URI.parse(@url), {"message" => @message})
 
-    logger.info "Got response from cash drawer service: #{@response}"
+    logger.info "Got response from cash drawer service: #{@forward_response}"
     
     render :json => {:success => true}.to_json
   end
@@ -295,13 +295,14 @@ class HomeController < ApplicationController
     @more_options_button = DisplayButton.find_by_perm_id(ButtonMapper::MORE_OPTIONS_BUTTON)
     @course_button = DisplayButton.find_by_perm_id(ButtonMapper::COURSE_BUTTON)
     @remove_item_button = DisplayButton.find_by_perm_id(ButtonMapper::REMOVE_ITEM_BUTTON);
+    @print_bill_button = DisplayButton.find_by_perm_id(ButtonMapper::PRINT_BILL_BUTTON);
     
     @display_buttons = []
     
     @display_buttons << @tables_button << @order_button << @modify_button
     
     @functions_display_buttons = []
-    @functions_display_buttons << @course_button << @remove_item_button << @more_options_button
+    @functions_display_buttons << @course_button << @remove_item_button << @more_options_button << @print_bill_button
     
   end
   

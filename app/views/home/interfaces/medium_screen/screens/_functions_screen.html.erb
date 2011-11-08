@@ -1,16 +1,9 @@
 <div id="functions_screen" class="content-item">
   <div id="header" class="screen_header">
-    Functions
+    <div id="back_button" class="small_button" onclick="swipeToMenu();">Menu</div>
+    <div class="header_label">Functions</div>
   </div>
   <div id="functions_buttons_container">
-
-    <div id="sales_button_os" 
-         class="button" onclick="swipeToMenu();">
-      <div class="icon">
-        <%= image_tag "/images/button_logos/sales_screen_list_button.png" %>
-      </div>
-      <div class="button_name">Menu</div>
-    </div>
 
     <% @functions_display_buttons.each_with_index do |db, index| %>
       <% if index != 0 and index % 4 == 0 %><div class="clear">&nbsp;</div><% end %>

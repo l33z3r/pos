@@ -79,3 +79,8 @@ function addCourseEndToOrder() {
         }
     }
 }
+
+function printBill() {
+    totalOrder = getCurrentOrder();
+    printReceipt(fetchFinalReceiptHTML(true, false), true);
+}

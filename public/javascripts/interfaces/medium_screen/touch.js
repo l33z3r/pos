@@ -91,4 +91,5 @@ function clearAllPageFlags() {
 function setFirstPage() {
     pageNum = menuPageNum;
     $("#content-scroll").scrollLeft((pageNum - 1) * pageWidth);
+    currentScreenIsMenu = true;
 }

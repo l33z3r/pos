@@ -164,12 +164,9 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
         'total':0
     };
     
-    //console.log("filling table order " + tableNum);
-    
     //fill in the table order array
     if(currentTableOrderJSON != null) {
         for(var i=0; i<currentTableOrderJSON.items.length; i++) {
-            //alert("in: " + currentTableOrderJSON.items[i].itemNumber);
             tableOrderItem = currentTableOrderJSON.items[i];
             
             //we want to mark the item as synced if we are loading in a previous order
@@ -226,6 +223,8 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
             //clear the previous order number
             tableOrders[tableNum].order_num = "";
         }
+    } else {
+        cashback = serviceCharge = 0;
     }
         
     //total the order first
@@ -479,6 +478,9 @@ function initRadioButtons() {
 }
 
 function niceAlert(message, title) {
+    //hide previous ones
+    hideNiceAlert();
+    
     if (typeof title == "undefined") {
         title = "Notice";
     }

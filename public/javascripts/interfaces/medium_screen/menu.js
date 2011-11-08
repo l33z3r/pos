@@ -176,7 +176,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     orderItemTotalPriceText = number_to_currency(itemPriceWithoutModifier, {
         precision : 2
     });
-    orderHTML += "<div class='total' data-per_unit_price='" + orderItem.product_price + "'>&nbsp;</div>";
+    orderHTML += "<div class='total' data-per_unit_price='" + orderItem.product_price + "'>" + orderItemTotalPriceText + "</div>";
     
     if(orderItem.modifier) {
         orderHTML += "<div class='clear'>&nbsp;</div>";
@@ -195,12 +195,12 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
             modifierPriceText = number_to_currency(modifierPrice, {
                 precision : 2
             });
-            orderHTML += "<div class='modifier_price'>&nbsp;</div>";
+            orderHTML += "<div class='modifier_price'>" + modifierPriceText + "</div>";
         }
         
         orderHTML += clearHTML;
     }
-    //alert(orderItem.oia_items);
+    
     if(orderItem.oia_items) {
         for(var j=0; j<orderItem.oia_items.length; j++) {
             oia_is_add = orderItem.oia_items[j].is_add;
@@ -221,8 +221,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
                     oiaPrice = oiaPriceWithoutDiscount;
                 }
         
-                //orderHTML += "<div class='oia_price'>" + (!oia_is_add ? "-" : "") + currency(oiaPrice, false) + "</div>";
-                orderHTML += "<div class='oia_price'>&nbsp;</div>";
+                orderHTML += "<div class='oia_price'>" + (!oia_is_add ? "-" : "") + currency(oiaPrice, false) + "</div>";
             }
             
             orderHTML += clearHTML;
@@ -309,7 +308,7 @@ function postDoSyncTableOrder() {
     //so that the highlighted items are no longer highlighted
     doSelectTable(selectedTable);
     
-    setStatusMessage("Order Sent!");
+    setStatusMessage("Order Sent");
     
     //vibrate!
     if(inAndroidWrapper()) {
@@ -395,7 +394,6 @@ function orderItemAdditionClicked(el) {
     currentSelectedReceiptItemEl = getLastReceiptItem();
     
     if(!currentSelectedReceiptItemEl) {
-        setStatusMessage("There are no receipt items!");
         return;
     }
     

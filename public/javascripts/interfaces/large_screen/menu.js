@@ -343,7 +343,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         
         orderHTML += clearHTML;
     }
-    //alert(orderItem.oia_items);
+    
     if(orderItem.oia_items) {
         for(var j=0; j<orderItem.oia_items.length; j++) {
             oia_is_add = orderItem.oia_items[j].is_add;
@@ -1175,23 +1175,6 @@ function getExistingDiscountPercentForCurrentOrderItem(itemNumber) {
     return existingDiscount;
 }
 
-function currentOrderEmpty(){
-    fetchedCurrentOrder = getCurrentOrder();
-    return orderEmpty(fetchedCurrentOrder);
-}
-
-function orderEmpty(order) {
-    return !order || order.items.length == 0;
-}
-
-function orderStartTime(order) {
-    if(orderEmpty(order)) {
-        return "";
-    }
-    
-    return order.items[0].time_added;
-}
-
 function orderItemAdditionAddSelected() {
     $('#add_note').hide();
     resetKeyboard();
@@ -1370,7 +1353,7 @@ function postDoSyncTableOrder() {
     //pick up the default home screen and load it
     loadAfterSaleScreen();
     
-    setStatusMessage("Order Sent!");
+    setStatusMessage("Order Sent");
 
     if(!order.order_num) {
         setLoginReceipt("Last Order", "Loading...");

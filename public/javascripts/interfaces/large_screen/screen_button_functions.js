@@ -73,6 +73,7 @@ function promptForServiceCharge() {
         serviceCharge = parseFloat(newVal);
     };
     
+    console.log("Setting sc: " + serviceCharge);
     $('#' + popupId).find('.service_charge_popup_amount').html(serviceCharge);
     
     setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
@@ -104,6 +105,13 @@ function saveServiceCharge() {
 }
 
 function cancelServiceCharge() {
+    //reset the sercice charge
+    if(typeof tableOrders[tableNum].service_charge == "undefined") {
+        serviceCharge = 0;
+    } else {
+        serviceCharge = tableOrders[tableNum].service_charge;
+    }
+    
     hideServiceChargePopup();
 }
 
@@ -191,6 +199,13 @@ function saveCashback() {
 }
 
 function cancelCashback() {
+    //reset the cashback
+    if(typeof tableOrders[tableNum].cashback == "undefined") {
+        cashback = 0;
+    } else {
+        cashback = tableOrders[tableNum].cashback;
+    }
+    
     hideServiceChargePopup();
 }
 
@@ -362,8 +377,4 @@ function openCashDrawer() {
     //    var args = [];
     //    process.run(false, args, args.length);
     }
-}
-
-function printBill() {
-    printReceipt(fetchFinalReceiptHTML(true, false), true);
 }

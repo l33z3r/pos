@@ -104,6 +104,14 @@ div.wrapper div td {
 
 span#reload_message {
     cursor: pointer;
+    background: -moz-linear-gradient(#558ED5, #17365D) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#558ED5), to(#17365D));
+    border: 1px solid black;
+    -moz-border-radius: 3px;
+    border-radius: 19px;
+    display: block;
+    color: white;
+    padding: 15px;
 }
 
 div.screen_header {
@@ -117,12 +125,23 @@ div.screen_header {
     color: #FFF;
 }
 
+div.screen_header div.small_button {
+    margin-top: -5px;
+    font-weight: normal;
+}
+
+div.screen_header div.header_label {
+    color: #FFF;
+    margin-top: 5px;
+}
+
 /* For page swiping */
 
 #content-scroll {
     width: 480px;
     height: 798px;
     overflow: hidden;
+    margin: auto;
 }
 
 #content-holder {
@@ -423,6 +442,7 @@ div.receipt div.till_roll div.total {
     float: left;
     width: 0px;
     text-align: right;
+    overflow: hidden;
 }
 
 div.receipt div.till_roll div.discount div.header {
@@ -467,7 +487,6 @@ div#receipt_screen div#header {
 
 div#receipt_screen div#header div#back_button {
     float: right;
-    margin-top: -5px;
 }
 
 div#receipt_screen div#header div#table_name {
@@ -523,6 +542,15 @@ div#functions_screen div#header {
 
 }
 
+div#functions_screen div#header div#back_button {
+    float: left;
+}
+
+div#functions_screen div#header div.header_label {
+    float: left;
+    margin-left: 85px;
+}
+
 div#functions_screen div#functions_buttons_container {
     border-spacing: 6px;
     padding: 15px;
@@ -535,8 +563,8 @@ div#functions_screen div#functions_buttons_container {
 div.button {
     width: 103px;
     max-width: 103px;
-    height: 92px;
-    max-height: 92px;
+    height: 87px;
+    max-height: 87px;
     overflow: hidden;
     vertical-align: middle;
     display: table-cell;
@@ -558,6 +586,7 @@ div.button.selected {
 
 div.button div.icon {
     min-height: 50px;
+    padding-top: 5px;
 }
 
 div.button div.icon img {
@@ -571,8 +600,9 @@ div.button div.button_name {
 }
 
 div.button div.button_name {
-    padding-top: 7px;
-    font-size: 22px;
+    padding: 7px 0px;
+    font-size: 21px;
+    line-height: 23px;
     text-decoration: none;
     color: #333333;
 }
@@ -703,17 +733,17 @@ div.keypad div.keys div {
 }
 
 div#nice_alert {
-    font-size: 30px;
-    font-weight: bold;
+    font-size: 28px;
     text-align: center;
     margin-top: 20px;
+    line-height: 32px;
 }
 
 input#niceAlertContainer_okButton {
     font-size: 28px;
     font-weight: bold;
     width: 260px;
-    height: 40px;
+    height: 70px;
     background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
     border: 1px solid #000;

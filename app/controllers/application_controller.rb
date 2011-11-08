@@ -5,7 +5,9 @@ class ApplicationController < ActionController::Base
   before_filter :check_reset_session
   
   helper_method :e, :current_employee, :print_money, :mobile_device?
-  helper_method :all_terminals, :all_servers, :current_interface, :production_mode?
+  helper_method :all_terminals, :all_servers, :current_interface
+  helper_method :development_mode?, :production_mode?
+  
   helper_method :active_employee_ids
   
   before_filter :load_global_vars
@@ -139,6 +141,10 @@ class ApplicationController < ActionController::Base
   def print_money value
     @dynamic_currency_symbol = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL
     number_to_currency value, :precision => 2, :unit => @dynamic_currency_symbol
+  end
+  
+  def development_mode?
+    Rails.env == "development"
   end
   
   def production_mode?

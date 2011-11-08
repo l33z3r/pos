@@ -159,6 +159,12 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     //copy over the discount
     tableOrders[tableID].discount_percent = tableOrderDataJSON.discount_percent;
     
+    //copy over the discount
+    tableOrders[tableID].service_charge = tableOrderDataJSON.service_charge;
+    
+    //copy over the discount
+    tableOrders[tableID].cashback = tableOrderDataJSON.cashback;
+    
     //copy over the courses array
     tableOrders[tableID].courses = tableOrderDataJSON.courses;
     
@@ -527,4 +533,21 @@ function doRemoveOrderItem(order, itemNumber) {
     calculateOrderTotal(order);
         
     return order;
+}
+
+function currentOrderEmpty(){
+    fetchedCurrentOrder = getCurrentOrder();
+    return orderEmpty(fetchedCurrentOrder);
+}
+
+function orderEmpty(order) {
+    return !order || order.items.length == 0;
+}
+
+function orderStartTime(order) {
+    if(orderEmpty(order)) {
+        return "";
+    }
+    
+    return order.items[0].time_added;
 }
