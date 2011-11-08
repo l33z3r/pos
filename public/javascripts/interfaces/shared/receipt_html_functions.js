@@ -52,7 +52,7 @@ function print(content) {
         type: 'POST',
         url: '/forward_print_service_request',
         error: function() {
-            alert("Error Sending Data To Print Service! (" + print_service_url + ")");
+            setStatusMessage("Error Sending Data To Print Service. URL: " + print_service_url, false, false);
         },
         data: {
             print_service_url : print_service_url,

@@ -328,6 +328,8 @@ function switchToMenuItemsSubscreen() {
 
 function showMenuItemsSubscreen() {
     hideAllMenuSubScreens();
+    $('#menu_screen #buttons_container').show();
+    $('#menu_screen #cluey_logo').hide();
     $('#menu_container').show();
 }
 
@@ -341,6 +343,11 @@ function switchToModifyOrderItemSubscreen() {
 
 function showTablesSubscreen() {
     hideAllMenuSubScreens();
+    
+    //blank the function buttons
+    $('#menu_screen #buttons_container').hide();
+    $('#menu_screen #cluey_logo').show();
+    
     $('#sales_button_' + tablesButtonID).addClass("selected");
     $('#table_screen').show();
 }

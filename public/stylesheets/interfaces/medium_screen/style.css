@@ -139,7 +139,7 @@ div.screen_header div.header_label {
 
 #content-scroll {
     width: 480px;
-    height: 790px;
+    height: 793px;
     overflow: hidden;
     margin: auto;
 }
@@ -186,6 +186,18 @@ div#menu_screen div#receipt_buttons_container div#buttons_container {
     width: 220px;
     float: left;
     border-spacing: 3px 1px;
+}
+
+div#menu_screen div#receipt_buttons_container div#cluey_logo {
+    width: 64px;
+    float: left;
+    margin-top: 55px;
+    margin-left: 80px;
+    display: none;
+}
+
+div#menu_screen div#receipt_buttons_container div#cluey_logo img {
+    width: 64px;
 }
 
 div#menu_screen div#menu_container div#menu_pages_container {
@@ -244,7 +256,8 @@ div#menu_screen div#menu_container div#menu_items_container div.item {
 }
 
 div#menu_screen div#menu_container div#menu_items_container div.item_name {
-    padding: 4px;
+    padding: 1px;
+    overflow: hidden;
     line-height: 19px;
 }
 

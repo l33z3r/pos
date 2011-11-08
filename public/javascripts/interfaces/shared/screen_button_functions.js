@@ -82,5 +82,11 @@ function addCourseEndToOrder() {
 
 function printBill() {
     totalOrder = getCurrentOrder();
+    
+    if(orderEmpty(totalOrder)) {
+        setStatusMessage("No order present");
+        return;
+    }
+    
     printReceipt(fetchFinalReceiptHTML(true, false), true);
 }

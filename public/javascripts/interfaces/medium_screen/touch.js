@@ -10,6 +10,11 @@ var scrollSpeed = 600;
     
 function swipeLeftHandler() {
     
+    //don't do anything if we are on the tables screen
+    if(currentMenuSubscreenIsTableScreen()) {
+        return;
+    }
+    
     var currentLeftScroll = $('#content-scroll').attr('scrollLeft');
     
     var nextPageScroll = currentLeftScroll + pageWidth;
@@ -30,6 +35,11 @@ function swipeLeftHandler() {
 }
 
 function swipeRightHandler() {
+    
+    //don't do anything if we are on the tables screen
+    if(currentMenuSubscreenIsTableScreen()) {
+        return;
+    }
     
     var currentLeftScroll = $('#content-scroll').attr('scrollLeft');
     
