@@ -22,7 +22,7 @@ function doDisplayButtonPasscodePrompt(button_id, forwardFunction) {
 }
 
 function checkMenuScreenForFunction() {
-    //return true for now...
+    swipeToMenu();
     return true;
 }
 
@@ -92,6 +92,29 @@ function tableSelectMenuItem(orderItem) {
     menuRecptScroll();
 }
 
+function closeEditOrderItem() {
+    console.log("CloseEditOrderItem in medium interface called!");
+    
+    if(currentSelectedReceiptItemEl) {
+        currentSelectedReceiptItemEl.removeClass("selected");
+    
+        currentSelectedReceiptItemEl = null;
+    }
+}
+
+function doSelectReceiptItem(orderItemEl) {
+    orderItemEl = $(orderItemEl);
+    
+    //close any open popup
+    closeEditOrderItem();
+    
+    //save the currently opened dialog
+    currentSelectedReceiptItemEl = orderItemEl;
+    
+    //keep the border
+    orderItemEl.addClass("selected");
+}
+
 function writeOrderItemToReceipt(orderItem) {
     setReceiptsHTML(getCurrentReceiptHTML() + getOrderItemReceiptHTML(orderItem));
 }
@@ -136,7 +159,10 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     
     onclickMarkup = includeOnClick ? "onclick='doSelectReceiptItem(this)'" : "";
     
-    orderHTML = "<div class='order_line " + notSyncedClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
+    //console.log(orderItem.itemNumber + " " + orderItem.is_course + " " + (orderItem.is_course == "true") + " " + (orderItem.is_course == true));
+    var courseLineClass = orderItem.is_course ? "course" : "";
+    
+    orderHTML = "<div class='order_line " + notSyncedClass + " " + courseLineClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
     
     if(includeServerAddedText && orderItem.showServerAddedText) {
         var nickname = serverNickname(orderItem.serving_employee_id);
@@ -150,7 +176,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     orderItemTotalPriceText = number_to_currency(itemPriceWithoutModifier, {
         precision : 2
     });
-    orderHTML += "<div class='total' data-per_unit_price='" + orderItem.product_price + "'>&nbsp;</div>";
+    orderHTML += "<div class='total' data-per_unit_price='" + orderItem.product_price + "'>" + orderItemTotalPriceText + "</div>";
     
     if(orderItem.modifier) {
         orderHTML += "<div class='clear'>&nbsp;</div>";
@@ -169,12 +195,12 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
             modifierPriceText = number_to_currency(modifierPrice, {
                 precision : 2
             });
-            orderHTML += "<div class='modifier_price'>&nbsp;</div>";
+            orderHTML += "<div class='modifier_price'>" + modifierPriceText + "</div>";
         }
         
         orderHTML += clearHTML;
     }
-    //alert(orderItem.oia_items);
+    
     if(orderItem.oia_items) {
         for(var j=0; j<orderItem.oia_items.length; j++) {
             oia_is_add = orderItem.oia_items[j].is_add;
@@ -195,8 +221,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
                     oiaPrice = oiaPriceWithoutDiscount;
                 }
         
-                //orderHTML += "<div class='oia_price'>" + (!oia_is_add ? "-" : "") + currency(oiaPrice, false) + "</div>";
-                orderHTML += "<div class='oia_price'>&nbsp;</div>";
+                orderHTML += "<div class='oia_price'>" + (!oia_is_add ? "-" : "") + currency(oiaPrice, false) + "</div>";
             }
             
             orderHTML += clearHTML;
@@ -283,10 +308,12 @@ function postDoSyncTableOrder() {
     //so that the highlighted items are no longer highlighted
     doSelectTable(selectedTable);
     
-    setStatusMessage("Order Sent!");
+    setStatusMessage("Order Sent");
     
     //vibrate!
-    demoJSInterface.vibrate();
+    if(inAndroidWrapper()) {
+        demoJSInterface.vibrate();
+    }
 }
 
 function showModifyOrderItemScreen() {
@@ -301,6 +328,8 @@ function switchToMenuItemsSubscreen() {
 
 function showMenuItemsSubscreen() {
     hideAllMenuSubScreens();
+    $('#menu_screen #buttons_container').show();
+    $('#menu_screen #cluey_logo').hide();
     $('#menu_container').show();
 }
 
@@ -314,14 +343,29 @@ function switchToModifyOrderItemSubscreen() {
 
 function showTablesSubscreen() {
     hideAllMenuSubScreens();
+    
+    //blank the function buttons
+    $('#menu_screen #buttons_container').hide();
+    $('#menu_screen #cluey_logo').show();
+    
     $('#sales_button_' + tablesButtonID).addClass("selected");
     $('#table_screen').show();
 }
 
+var waitForClickFinish = false;
 function tableNumberSelectKeypadClick(val) {
+    while(waitForClickFinish) {
+        //wait for the previous click handler to finish
+    }
+    
+    waitForClickFinish = true;
+    
+    
     newVal = $('#table_num').val().toString() + val;
     $('#table_number_show').html(newVal);
     $('#table_num').val(newVal);
+    
+    waitForClickFinish = false;
 }
 
 function doCanceltableNumberSelectKeypad() {
@@ -360,14 +404,13 @@ function clearTableNumberEntered() {
 function postDoSelectTable() {
     var theLabel = "Table " + current_table_label;
     $('#sales_button_' + tablesButtonID + ' .button_name').html(theLabel);
-    $('#receipt_screen #header').html(theLabel);
+    $('#receipt_screen #header #table_name').html(theLabel);
 }
 
 function orderItemAdditionClicked(el) {
     currentSelectedReceiptItemEl = getLastReceiptItem();
     
     if(!currentSelectedReceiptItemEl) {
-        setStatusMessage("There are no receipt items!");
         return;
     }
     
@@ -458,4 +501,12 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) 
     loadReceipt(order);
     
     currentSelectedReceiptItemEl = null;
+}
+
+function tableScreenBack() {
+    if(selectedTable == 0) {
+        $('#table_number_show').html("Enter a Table!");
+        return;
+    }
+    showMenuItemsSubscreen();
 }

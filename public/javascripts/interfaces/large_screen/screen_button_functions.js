@@ -73,6 +73,7 @@ function promptForServiceCharge() {
         serviceCharge = parseFloat(newVal);
     };
     
+    console.log("Setting sc: " + serviceCharge);
     $('#' + popupId).find('.service_charge_popup_amount').html(serviceCharge);
     
     setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
@@ -104,6 +105,13 @@ function saveServiceCharge() {
 }
 
 function cancelServiceCharge() {
+    //reset the sercice charge
+    if(typeof tableOrders[tableNum].service_charge == "undefined") {
+        serviceCharge = 0;
+    } else {
+        serviceCharge = tableOrders[tableNum].service_charge;
+    }
+    
     hideServiceChargePopup();
 }
 
@@ -191,6 +199,13 @@ function saveCashback() {
 }
 
 function cancelCashback() {
+    //reset the cashback
+    if(typeof tableOrders[tableNum].cashback == "undefined") {
+        cashback = 0;
+    } else {
+        cashback = tableOrders[tableNum].cashback;
+    }
+    
     hideServiceChargePopup();
 }
 
@@ -233,16 +248,6 @@ function initFloatScreen() {
         type: 'GET',
         url: '/float_history.js'
     }); 
-}
-
-function removeLastOrderItem() {
-    currentSelectedReceiptItemEl = getSelectedOrLastReceiptItem();
-    
-    if(currentSelectedReceiptItemEl) {
-        removeSelectedOrderItem();
-    }
-    
-    currentSelectedReceiptItemEl = null;
 }
 
 function markFreeLastOrderItem() {
@@ -292,6 +297,24 @@ function showAddNoteToOrderItemScreen() {
 }
 
 function openCashDrawer() {
+    
+    
+    var cash_drawer_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/cash_drawer_controller';
+    
+    $.ajax({
+        type: 'POST',
+        url: '/forward_cash_drawer_request',
+        error: function() {
+            setStatusMessage("Error Sending Data To Cash Drawer Service. URL: " + cash_drawer_service_url, false, false);
+        },
+        data: {
+            cash_drawer_service_url : cash_drawer_service_url,
+            message : "open cash drawer"
+        }
+    });
+    
+    return;
+    
     //TODO: display an error if the service is not running...
     
     
@@ -354,8 +377,4 @@ function openCashDrawer() {
     //    var args = [];
     //    process.run(false, args, args.length);
     }
-}
-
-function printBill() {
-    printReceipt(fetchFinalReceiptHTML(true, false), true);
 }

@@ -1,5 +1,9 @@
 Pos::Application.routes.draw do
 
+  #temporary routes to forward print service requests as we cannot code for web sockets yet
+  match 'forward_print_service_request' => "home#forward_print_service_request", :via => :post
+  match 'forward_cash_drawer_request' => "home#forward_cash_drawer_request", :via => :post
+  
   #orders
   match 'order' => "order#create", :via => :post
   match 'sync_table_order' => "order#sync_table_order", :via => :post

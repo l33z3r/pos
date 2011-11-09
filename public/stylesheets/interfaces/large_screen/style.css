@@ -157,6 +157,18 @@ span#reload_message {
     cursor: pointer;
 }
 
+div#nice_alert span#reload_message {
+    cursor: pointer;
+    background: -moz-linear-gradient(#558ED5, #17365D) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#558ED5), to(#17365D));
+    border: 1px solid black;
+    -moz-border-radius: 3px;
+    border-radius: 19px;
+    display: block;
+    color: white;
+    padding: 15px;
+}
+
 /* End Global Styles */
 
 /* Flash Messages */
@@ -1424,6 +1436,10 @@ div.receipt div.till_roll div.order_line {
     cursor: pointer;
 }
 
+div.receipt div.till_roll div.order_line.course {
+    border-bottom: 1px solid #000;
+}
+
 div.receipt div.till_roll div.order_line.not_synced div.name {
     font-style: italic;
     font-weight: bold;
@@ -2670,10 +2686,24 @@ div[id$="_popup"] input {
 }
 
 div#nice_alert {
-    width: 280px;
-    height: 60px;
+    font-size: 28px;
     text-align: center;
-    margin-top: 30px;
+    margin-top: 20px;
+    line-height: 32px;
+}
+
+input#niceAlertContainer_okButton {
+    font-size: 28px;
+    font-weight: bold;
+    width: 260px;
+    max-width: 260px;
+    height: 70px;
+    max-height: 40px;
+    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
+    border: 1px solid #000;
+    border-radius: 5px;
+    box-shadow: 0px 1px 1px 0px #777;
 }
 
 /* End Misc Styles */

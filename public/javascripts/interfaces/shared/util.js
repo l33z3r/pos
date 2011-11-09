@@ -160,15 +160,13 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
     //init an in memory version of this order
     tableOrders[tableNum] = {
         'items': new Array(),
+        'courses' : new Array(),
         'total':0
     };
-    
-    //console.log("filling table order " + tableNum);
     
     //fill in the table order array
     if(currentTableOrderJSON != null) {
         for(var i=0; i<currentTableOrderJSON.items.length; i++) {
-            //alert("in: " + currentTableOrderJSON.items[i].itemNumber);
             tableOrderItem = currentTableOrderJSON.items[i];
             
             //we want to mark the item as synced if we are loading in a previous order
@@ -185,7 +183,7 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
         
         //load the cashback
         tableOrders[tableNum].cashback = currentTableOrderJSON.cashback;
-        
+                
         if(typeof tableOrders[tableNum].cashback == "undefined") {
             tableOrders[tableNum].cashback = 0;
         }
@@ -206,6 +204,11 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
             tableOrders[tableNum].pre_discount_price = currentTableOrderJSON.pre_discount_price;
         }
         
+        //load the courses
+        if(typeof currentTableOrderJSON.courses != "undefined") {
+            tableOrders[tableNum].courses = currentTableOrderJSON.courses;
+        }
+        
         tableOrders[tableNum].order_taxes = currentTableOrderJSON.order_taxes;
     
         if(tableNum == -1) {
@@ -220,6 +223,8 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
             //clear the previous order number
             tableOrders[tableNum].order_num = "";
         }
+    } else {
+        cashback = serviceCharge = 0;
     }
         
     //total the order first
@@ -473,6 +478,9 @@ function initRadioButtons() {
 }
 
 function niceAlert(message, title) {
+    //hide previous ones
+    hideNiceAlert();
+    
     if (typeof title == "undefined") {
         title = "Notice";
     }
@@ -480,7 +488,9 @@ function niceAlert(message, title) {
     ModalPopups.Alert('niceAlertContainer',
         title, "<div id='nice_alert'>" + message + "</div>",
         {
-            okButtonText: 'OK',
+            width: 360,
+            height: 250,
+            okButtonText: 'Dismiss',
             onOk: "hideNiceAlert()"
         });
 }
@@ -526,17 +536,25 @@ jQuery.fn.extend({
 });
 
 function initPressedCSS() {
-    var eventName = "mousedown";
+    var startEventName = "mousedown";
+    var stopEventName = "mouseup";
     
     if(isTouchDevice()) {
-        eventName = "touchstart";
+        startEventName = "touchstart";
+        stopEventName = "touchend";
     }
     
-    $('div.button, div.item, div.key, div.go_key, div.cancel_key, div.employee_box, div.mobile_button').live(eventName,function() {
+    $('div.button, div.item, div.key, div.go_key, div.cancel_key, div.employee_box, div.mobile_button').live(startEventName,function() {
         $(this).addClass("pressed");
         
-        setTimeout(function(){
-            $('*').removeClass("pressed");
-        }, 180);
+        $(this).bind(stopEventName, function() {
+           $(this).removeClass("pressed"); 
+           $(this).unbind(startEventName);
+           $(this).unbind(stopEventName);
+        });
     });
+}
+
+function inAndroidWrapper() {
+    return (typeof demoJSInterface != "undefined");
 }

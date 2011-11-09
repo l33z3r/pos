@@ -1,7 +1,16 @@
 <div id="receipt_screen" class="content-item">
-  <div id="header">
-    Table
+  <div id="header" class="screen_header">
+    <div id="back_button" class="small_button" onclick="swipeToMenu();">Menu</div>
+    <div id="table_name">Table</div>
   </div>
+
+  <div id="function_buttons">
+    <div class="button" onclick="addCourseEndToOrder();">Course</div>
+    <div class="button" onclick="<%= button_action @modify_button %>">Modify</div>
+    <div class="button" onclick="swipeToFunctions();">Functions</div>
+    <div class="button" onclick="<%= button_action @order_button %>">Order</div>
+  </div>
+
   <div id="large_receipt_container">
     <div id="large_menu_screen_receipt" class="receipt">
       <div id="large_menu_screen_till_roll" class="till_roll"></div>

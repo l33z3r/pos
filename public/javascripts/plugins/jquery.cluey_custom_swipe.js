@@ -48,13 +48,6 @@
                 y: 0
             }
 			
-            // Screen touched, store the original coordinate
-//            function touchStart(event) {
-//                console.log('Starting swipe gesture...')
-//                originalCoord.x = event.targetTouches[0].pageX
-//                originalCoord.y = event.targetTouches[0].pageY
-//            }
-			
             // Store coordinates as finger is swiping
             function touchMove(event) {
                 event.preventDefault();

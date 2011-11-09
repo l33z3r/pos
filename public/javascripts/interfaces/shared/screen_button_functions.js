@@ -53,3 +53,40 @@ function doSyncTableOrder() {
     
     postDoSyncTableOrder();
 }
+
+function removeLastOrderItem() {
+    currentSelectedReceiptItemEl = getSelectedOrLastReceiptItem();
+    
+    if(currentSelectedReceiptItemEl) {
+        removeSelectedOrderItem();
+    }
+    
+    currentSelectedReceiptItemEl = null;
+}
+
+function addCourseEndToOrder() {
+    var lastReceiptItem = getLastReceiptItem();
+ 
+    if(lastReceiptItem) {
+        var itemNumber = lastReceiptItem.data("item_number");
+        
+        var currentOrder = getCurrentOrder();
+        
+        if(!currentOrder.items[itemNumber-1].is_course) {
+            currentOrder.items[itemNumber-1].is_course = true;
+            currentOrder.courses.push(itemNumber);
+            loadReceipt(currentOrder);
+        }
+    }
+}
+
+function printBill() {
+    totalOrder = getCurrentOrder();
+    
+    if(orderEmpty(totalOrder)) {
+        setStatusMessage("No order present");
+        return;
+    }
+    
+    printReceipt(fetchFinalReceiptHTML(true, false), true);
+}

@@ -225,6 +225,32 @@ class HomeController < ApplicationController
     @table_label = params[:table_label]
     @receipt_html_object = StoredReceiptHtml.latest_for_table @table_label
   end
+  
+  def forward_print_service_request
+    @url = params[:print_service_url]
+    @html_data = params[:html_data]
+    
+    logger.info "Forwarding a print service request to #{@url}"
+    
+    @forward_response = Net::HTTP.post_form(URI.parse(@url), {"content_to_print" => @html_data})
+
+    logger.info "Got response from print service: #{@forward_response}"
+    
+    render :json => {:success => true}.to_json
+  end
+  
+  def forward_cash_drawer_request
+    @url = params[:cash_drawer_service_url]
+    @message = params[:message]
+    
+    logger.info "Forwarding a cash drawer request to #{@url}"
+    
+    @forward_response = Net::HTTP.post_form(URI.parse(@url), {"message" => @message})
+
+    logger.info "Got response from cash drawer service: #{@forward_response}"
+    
+    render :json => {:success => true}.to_json
+  end
 
   private
 
@@ -266,17 +292,18 @@ class HomeController < ApplicationController
     @tables_button = DisplayButton.find_by_perm_id(ButtonMapper::TABLES_BUTTON) 
     @order_button = DisplayButton.find_by_perm_id(ButtonMapper::ORDER_BUTTON) 
     @modify_button = DisplayButton.find_by_perm_id(ButtonMapper::MODIFY_ORDER_ITEM_BUTTON) 
-    @more_options_button = DisplayButton.find_by_perm_id(ButtonMapper::MORE_OPTIONS_BUTTON) 
+    @more_options_button = DisplayButton.find_by_perm_id(ButtonMapper::MORE_OPTIONS_BUTTON)
+    @course_button = DisplayButton.find_by_perm_id(ButtonMapper::COURSE_BUTTON)
+    @remove_item_button = DisplayButton.find_by_perm_id(ButtonMapper::REMOVE_ITEM_BUTTON);
+    @print_bill_button = DisplayButton.find_by_perm_id(ButtonMapper::PRINT_BILL_BUTTON);
     
     @display_buttons = []
     
-    @display_buttons << @tables_button << @order_button << @modify_button << @more_options_button
+    @display_buttons << @tables_button << @order_button << @modify_button
     
     @functions_display_buttons = []
-    @functions_display_buttons << @tables_button << @order_button << @modify_button << @more_options_button
-    @functions_display_buttons << @tables_button << @order_button << @modify_button << @more_options_button
-    @functions_display_buttons << @tables_button << @order_button << @modify_button << @more_options_button
-    @functions_display_buttons << @tables_button << @order_button << @modify_button << @more_options_button
+    @functions_display_buttons << @course_button << @remove_item_button << @more_options_button << @print_bill_button
+    
   end
   
   def clear_session

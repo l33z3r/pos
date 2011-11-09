@@ -3,7 +3,7 @@ body {
 }
 
 #jqt > * {
-    background: rgb(197,204,211) url(img/pinstripes.png);
+    background: rgb(197,204,211) url(/jqtouch/themes/apple/img/pinstripes.png);
 }
 
 #jqt h1, #jqt h2 {
@@ -22,7 +22,7 @@ body {
     border-bottom: 1px solid #2d3642;
     padding: 10px;
     height: 80px;
-    background: url(img/toolbar.png) #6d84a2 repeat-x;
+    background: url(/jqtouch/themes/apple/img/toolbar.png) #6d84a2 repeat-x;
     position: relative;
 }
 
@@ -73,15 +73,15 @@ body {
     text-decoration: none;
     white-space: nowrap;
     background: none;
-    -webkit-border-image: url(img/toolButton.png) 0 5 0 5;
+    -webkit-border-image: url(/jqtouch/themes/apple/img/toolButton.png) 0 5 0 5;
 }
 
 #jqt .button.active, #jqt .cancel.active, #jqt .add.active {
-    -webkit-border-image: url(img/toolButton.png) 0 5 0 5;	
+    -webkit-border-image: url(/jqtouch/themes/apple/img/toolButton.png) 0 5 0 5;	
 }
 
 #jqt .blueButton {
-    -webkit-border-image: url(img/activeButton.png) 0 5 0 5;
+    -webkit-border-image: url(/jqtouch/themes/apple/img/activeButton.png) 0 5 0 5;
     border-width: 0 5px;
 }
 
@@ -91,11 +91,11 @@ body {
     padding: 0;
     max-width: 55px;
     border-width: 0 8px 0 14px;
-    -webkit-border-image: url(img/backButton.png) 0 8 0 14;
+    -webkit-border-image: url(/jqtouch/themes/apple/img/backButton.png) 0 8 0 14;
 }
 
 #jqt .back.active {
-    -webkit-border-image: url(img/backButton.png) 0 8 0 14;
+    -webkit-border-image: url(/jqtouch/themes/apple/img/backButton.png) 0 8 0 14;
 }
 
 #jqt .leftButton, #jqt .cancel {
@@ -123,26 +123,26 @@ body {
 
 #jqt .whiteButton.active, #jqt .grayButton.active, #jqt .redButton.active, #jqt .blueButton.active, #jqt .greenButton.active,
 #jqt .whiteButton:active, #jqt .grayButton:active, #jqt .redButton:active, #jqt .blueButton:active, #jqt .greenButton:active {
-    -webkit-border-image: url(img/activeButton.png) 0 12 0 12;
+    -webkit-border-image: url(/jqtouch/themes/apple/img/activeButton.png) 0 12 0 12;
 }
 
 #jqt .whiteButton {
-    -webkit-border-image: url(img/whiteButton.png) 0 12 0 12;
+    -webkit-border-image: url(/jqtouch/themes/apple/img/whiteButton.png) 0 12 0 12;
     text-shadow: rgba(255, 255, 255, 0.7) 0 1px 0;
 }
 
 #jqt .grayButton {
-    -webkit-border-image: url(img/grayButton.png) 0 12 0 12;
+    -webkit-border-image: url(/jqtouch/themes/apple/img/grayButton.png) 0 12 0 12;
     color: #FFFFFF;
 }
 
 #jqt .redButton {
-    -webkit-border-image: url(img/redButton.png) 0 12 0 12;
+    -webkit-border-image: url(/jqtouch/themes/apple/img/redButton.png) 0 12 0 12;
     color: #FFFFFF;
 }
 
 #jqt .greenButton {
-    -webkit-border-image: url(img/greenButton.png) 0 12 0 12;
+    -webkit-border-image: url(/jqtouch/themes/apple/img/greenButton.png) 0 12 0 12;
     color: #FFFFFF;
 }
 
@@ -187,7 +187,7 @@ body {
 /* universal arrows */
 
 #jqt ul li.arrow {
-    background-image: url(img/chevron.png);
+    background-image: url(/jqtouch/themes/apple/img/chevron.png);
     background-position: right center;
     background-repeat: no-repeat;
 }
@@ -197,14 +197,14 @@ body {
 }
 
 #jqt ul.plastic li.arrow, #jqt ul.metal li.arrow {
-    background-image: url(img/chevron.png);
+    background-image: url(/jqtouch/themes/apple/img/chevron.png);
     background-position: right center;
     background-repeat: no-repeat;
 }
 
 /* universal links on list */
 
-#jqt ul li a, #jqt li.img a + a {
+#jqt ul li a, #jqt li./jqtouch/themes/apple/img a + a {
     color: #000;
     text-decoration: none;
     text-overflow: ellipsis;
@@ -221,7 +221,7 @@ body {
     color: #fff;
 }
 #jqt ul li.arrow a.active {
-    background-image: url(img/listArrowSel.png);
+    background-image: url(/jqtouch/themes/apple/img/listArrowSel.png);
     background-position: right center;
     background-repeat: no-repeat;
 }
@@ -231,13 +231,13 @@ body {
     color: #fff;
 }
 
-#jqt ul li.img a + a {
+#jqt ul li./jqtouch/themes/apple/img a + a {
     margin: -10px 10px -20px -5px;
     font-size: 17px;
     font-weight: bold;
 }
 
-#jqt ul li.img a + a + a {
+#jqt ul li./jqtouch/themes/apple/img a + a + a {
     font-size: 14px;
     font-weight: normal;
     margin-left: -10px;
@@ -245,11 +245,11 @@ body {
     margin-top: 0;
 }
 
-#jqt ul li.img a + small + a {
+#jqt ul li./jqtouch/themes/apple/img a + small + a {
     margin-left: -5px;
 }
 
-#jqt ul li.img a + small + a + a {
+#jqt ul li./jqtouch/themes/apple/img a + small + a + a {
     margin-left: -10px;
     margin-top: -20px;
     margin-bottom: -10px;
@@ -257,7 +257,7 @@ body {
     font-weight: normal;
 }
 
-#jqt ul li.img a + small + a + a + a {
+#jqt ul li./jqtouch/themes/apple/img a + small + a + a + a {
     margin-left: 0px !important;
     margin-bottom: 0;
 }
@@ -273,7 +273,7 @@ body {
     padding: 0;
 }
 
-#jqt ul li a + a + a, #jqt ul li.img a + a + a + a, #jqt ul li.img a + small + a + a + a {
+#jqt ul li a + a + a, #jqt ul li./jqtouch/themes/apple/img a + a + a + a, #jqt ul li./jqtouch/themes/apple/img a + small + a + a + a {
     color: #666;
     font: 13px "Helvetica Neue", Helvetica;
     margin: 0;
@@ -333,7 +333,7 @@ body {
 
 #jqt ul li select {
     text-indent: 0px;
-    background: transparent url(img/chevron.png) no-repeat 103% 3px;
+    background: transparent url(/jqtouch/themes/apple/img/chevron.png) no-repeat 103% 3px;
     -webkit-appearance: textfield;
     margin-left: -6px;
     width: 104%;
@@ -373,7 +373,7 @@ body {
 
 #jqt ul.edgetoedge h4 {
     color: #fff;
-    background: rgb(154,159,170) url(img/listGroup.png) top left repeat-x;
+    background: rgb(154,159,170) url(/jqtouch/themes/apple/img/listGroup.png) top left repeat-x;
     border-top: 1px solid rgb(165,177,186);
     text-shadow: #666 0 1px 0;
     margin: 0;
@@ -471,7 +471,7 @@ body {
 /* @group Plastic */
 
 #jqt #plastic ul li.arrow, #jqt #metal ul li.arrow {
-    background-image: url(img/chevron.png);
+    background-image: url(/jqtouch/themes/apple/img/chevron.png);
     background-position: right center;
     background-repeat: no-repeat;
 }
@@ -527,7 +527,7 @@ body {
 }
 
 #jqt ul.metal li.arrow {
-    background:  url(img/chevron.png) right center no-repeat;
+    background:  url(/jqtouch/themes/apple/img/chevron.png) right center no-repeat;
 }
 
 #jqt .plastic {
@@ -703,7 +703,7 @@ body {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     margin: 0;
     -webkit-border-radius: 5px;
-    background: #fff url(img/on_off.png) 0 0 no-repeat;
+    background: #fff url(/jqtouch/themes/apple/img/on_off.png) 0 0 no-repeat;
     height: 27px;
     overflow: hidden;
     width: 149px;

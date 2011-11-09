@@ -1,9 +1,13 @@
 <div id="menu_screen"  class="content-item">
   <div id="receipt_buttons_container">
-    <div id="receipt_container">
+    <div id="receipt_container" ondblclick="swipeToReceipt();">
       <div id="menu_screen_receipt" class="receipt">
         <div id="menu_screen_till_roll" class="till_roll"></div>
       </div>
+    </div>
+    
+    <div id="cluey_logo">
+      <%= image_tag "/images/cluey_icon.png" %>
     </div>
 
     <div id="buttons_container">
@@ -19,6 +23,14 @@
 
         <% if index == 1 %> <div class="clear">&nbsp;</div> <% end %>
       <% end %>
+
+      <div id="sales_button_os" 
+           class="button" onclick="swipeToFunctions();">
+        <div class="icon">
+          <%= image_tag "/images/button_logos/more_options_button.png" %>
+        </div>
+        <div class="button_name">Functions</div>
+      </div>
 
     </div>
 
