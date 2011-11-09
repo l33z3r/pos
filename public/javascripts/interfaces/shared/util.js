@@ -21,6 +21,10 @@ function inMobileContext() {
     return $('body.mobile').length > 0;
 }
 
+function inKitchenContext() {
+    return $('body div.kitchen').length > 0;
+}
+
 function currency(number, showUnit) {
     if(typeof showUnit == "undefined") {
         showUnit = true;
