@@ -1437,7 +1437,7 @@ div.receipt div.till_roll div.order_line {
 }
 
 div.receipt div.till_roll div.order_line.course {
-    border-bottom: 1px solid #000;
+    border-bottom: 2px solid #4F81BD;
 }
 
 div.receipt div.till_roll div.order_line.not_synced div.name {

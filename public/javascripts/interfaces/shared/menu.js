@@ -168,6 +168,11 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     //copy over the courses array
     tableOrders[tableID].courses = tableOrderDataJSON.courses;
     
+    //if courses was empty on remote device, then courses will be turned into an empty string by json, so we need to reinit the courses to an empty array 
+    if(tableOrders[tableID].courses == "") {
+        tableOrders[tableID].courses = new Array();
+    }
+    
     //turn courses back into integers
     for(var j = 0; j < tableOrders[tableID].courses.length; j++) {
         tableOrders[tableID].courses[j] = parseInt(tableOrders[tableID].courses[j]);

@@ -354,8 +354,6 @@ function showTablesSubscreen() {
 
 var waitForClickFinish = false;
 function tableNumberSelectKeypadClick(val) {
-    console.log("click " + val);
-    
     while(waitForClickFinish) {
         //wait for the previous click handler to finish
     }
@@ -367,8 +365,6 @@ function tableNumberSelectKeypadClick(val) {
     $('#table_num').val(newVal);
     
     waitForClickFinish = false;
-    
-    console.log("fin click " + val);
 }
 
 function doCanceltableNumberSelectKeypad() {
