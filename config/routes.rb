@@ -1,5 +1,7 @@
 Pos::Application.routes.draw do
 
+  get "kitchen/index"
+
   #temporary routes to forward print service requests as we cannot code for web sockets yet
   match 'forward_print_service_request' => "home#forward_print_service_request", :via => :post
   match 'forward_cash_drawer_request' => "home#forward_cash_drawer_request", :via => :post
@@ -17,6 +19,9 @@ Pos::Application.routes.draw do
   match 'home' => "home#index"
   get "home/active_employees"
   get 'blank_receipt_for_print' => "home#blank_receipt_for_print"
+  
+  #kitchen screen
+  match 'kitchen' => "kitchen#index"
   
   #routes for mobile app
   match 'mbl' => "home#mobile_index"

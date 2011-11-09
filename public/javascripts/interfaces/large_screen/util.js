@@ -453,6 +453,10 @@ function inMenuContext() {
     return $('body div.menu').length > 0;
 }
 
+function inKitchenContext() {
+    return $('body div.kitchen').length > 0;
+}
+
 var activePopupElSet = null;
 
 function registerPopupClickHandler(popupEl, outsideClickHandler) {

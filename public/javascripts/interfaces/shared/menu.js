@@ -46,6 +46,10 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith);
     }
     
+    if(inKitchenContext()) {
+        renderReceipt(tableID);
+    }
+    
     if(callHomePollInitSequenceComplete) {
         checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);
         
@@ -336,6 +340,11 @@ function initTouchRecpts() {
     //medium screen interface receipts
     $('.medium_interface #menu_screen_till_roll').touchScroll();
     $('.medium_interface #large_menu_screen_till_roll').touchScroll();
+    
+    //kitchen screen receipts
+    if(inKitchenContext()) {
+        $('#kitchen_screen .till_roll').touchScroll();
+    }
 }
 
 function buildOrderItem(product, amount) {

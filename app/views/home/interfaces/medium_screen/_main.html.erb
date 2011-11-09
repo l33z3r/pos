@@ -1,10 +1,14 @@
-<div id="content-scroll">
-  <div id="content-holder">
-    <%= render "/home/interfaces/medium_screen/screens/receipt_screen" %>
-    <%= render "/home/interfaces/medium_screen/screens/menu_screen" %>
-    <%= render "/home/interfaces/medium_screen/screens/functions_screen" %>
-  </div>
-</div>
+<div class="menu">
 
-<!-- iframe to print in -->
-<%= render "/partials/interfaces/shared/print_frame" %>
+  <div id="content-scroll">
+    <div id="content-holder">
+      <%= render "/home/interfaces/medium_screen/screens/receipt_screen" %>
+      <%= render "/home/interfaces/medium_screen/screens/menu_screen" %>
+      <%= render "/home/interfaces/medium_screen/screens/functions_screen" %>
+    </div>
+  </div>
+
+  <!-- iframe to print in -->
+  <%= render "/partials/interfaces/shared/print_frame" %>
+
+</div>

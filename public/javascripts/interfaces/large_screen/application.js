@@ -45,6 +45,8 @@ function doGlobalInit() {
     
     if(inMenuContext()) {
         initMenu();
+    } else if(inKitchenContext()) {
+        initKitchen();
     }
     
     //start the clock in the nav bar

@@ -1,0 +1,75 @@
+div#kitchen_screen {
+
+}
+
+div#kitchen_screen div#header {
+    height: 90px;
+}
+
+div#kitchen_screen div#header div#tabs {
+    float: left;
+}
+
+div#kitchen_screen div#loading_message {
+    font-size: 32px;
+    border: 3px solid #000;
+    -moz-border-radius: 11px;
+    border-radius: 11px;
+    background-color: white;
+    width: 490px;
+    height: 75px;
+    padding-top: 50px;
+    margin: 200px auto 0px auto;
+}
+
+div#kitchen_screen div#loading_message img {
+    margin-top: -30px;
+    margin-right: 30px;
+}
+
+div#kitchen_screen div#header div#function_buttons {
+    float: right;
+    border-spacing: 7px 0px;
+    padding: 7px;
+}
+
+div#kitchen_screen div#receipts_container {
+    height: 650px;
+    display: none;
+}
+
+div#kitchen_screen div#receipts_container div.kitchen_receipt_container {
+    height: 209px;
+    width: 231px;
+    margin: 3px 5px;
+    float: left;
+    border: 1px solid #000;
+    -moz-border-radius: 11px;
+    border-radius: 11px;
+    background-color: white;
+    display: none;
+}
+
+div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.table_number {
+    font-weight: bold;
+}
+
+div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.receipt {
+    -moz-border-radius: 11px;
+    border-radius: 11px;
+    height: 174px;
+    overflow-y: auto;
+    display: block;
+    background-color: white;
+    padding: 5px;
+}
+
+div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.receipt div.till_roll {
+    height: 170px;
+    display: block;
+    background-color: white;
+}
+
+div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.receipt div.till_roll div.total {
+    display: none;
+}

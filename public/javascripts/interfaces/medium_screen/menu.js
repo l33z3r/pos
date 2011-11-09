@@ -375,6 +375,14 @@ function doCanceltableNumberSelectKeypad() {
 }
 
 function doSubmitTableNumber() {
+    //TODO: make sure table labels are unique numbers!!!!
+    
+    
+    
+    
+    
+    
+    
     table_label = $('#table_num').val().toString();
     
     //check table exists
