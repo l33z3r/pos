@@ -352,10 +352,19 @@ function showTablesSubscreen() {
     $('#table_screen').show();
 }
 
+var waitForClickFinish = false;
 function tableNumberSelectKeypadClick(val) {
+    while(waitForClickFinish) {
+        //wait for the previous click handler to finish
+    }
+    
+    waitForClickFinish = true;
+    
     newVal = $('#table_num').val().toString() + val;
     $('#table_number_show').html(newVal);
     $('#table_num').val(newVal);
+    
+    waitForClickFinish = false;
 }
 
 function doCanceltableNumberSelectKeypad() {
