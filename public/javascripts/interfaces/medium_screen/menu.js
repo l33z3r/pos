@@ -359,6 +359,7 @@ function tableNumberSelectKeypadClick(val) {
     }
     
     waitForClickFinish = true;
+    alert();
     
     newVal = $('#table_num').val().toString() + val;
     $('#table_number_show').html(newVal);
