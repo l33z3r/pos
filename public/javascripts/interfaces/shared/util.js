@@ -536,17 +536,25 @@ jQuery.fn.extend({
 });
 
 function initPressedCSS() {
-    var eventName = "mousedown";
+    var startEventName = "mousedown";
+    var stopEventName = "mouseup";
     
     if(isTouchDevice()) {
-        eventName = "touchstart";
+        startEventName = "touchstart";
+        stopEventName = "touchend";
     }
     
-    $('div.button, div.item, div.key, div.go_key, div.cancel_key, div.employee_box, div.mobile_button').live(eventName,function() {
+    $('div.button, div.item, div.key, div.go_key, div.cancel_key, div.employee_box, div.mobile_button').live(startEventName,function() {
         $(this).addClass("pressed");
         
-        setTimeout(function(){
-            $('*').removeClass("pressed");
-        }, 180);
+        $(this).bind(stopEventName, function() {
+           $(this).removeClass("pressed"); 
+           $(this).unbind(startEventName);
+           $(this).unbind(stopEventName);
+        });
     });
+}
+
+function inAndroidWrapper() {
+    return (typeof demoJSInterface != "undefined");
 }

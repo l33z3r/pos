@@ -56,7 +56,3 @@ function getLastReceiptItem() {
     
     return currentSelectedReceiptItemEl;
 }
-
-function inAndroidWrapper() {
-    return (typeof demoJSInterface != "undefined");
-}

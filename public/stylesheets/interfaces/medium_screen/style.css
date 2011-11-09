@@ -366,7 +366,7 @@ div.receipt div.till_roll div.order_line {
 }
 
 div.receipt div.till_roll div.order_line.course {
-    border-bottom: 1px solid #000;
+    border-bottom: 2px solid #4F81BD;
 }
 
 div.receipt div.till_roll div.order_line.not_synced div.name {
@@ -375,10 +375,10 @@ div.receipt div.till_roll div.order_line.not_synced div.name {
 }
 
 div.receipt div.till_roll div.order_line.selected {
-    border: 2px solid #4297D7;
+    border: 2px solid #4F81BD;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    background-color: #4297D7;
+    background-color: #4F81BD;
 }
 
 div.receipt div.till_roll div.order_line.selected {
