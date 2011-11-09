@@ -354,18 +354,21 @@ function showTablesSubscreen() {
 
 var waitForClickFinish = false;
 function tableNumberSelectKeypadClick(val) {
+    console.log("click " + val);
+    
     while(waitForClickFinish) {
         //wait for the previous click handler to finish
     }
     
     waitForClickFinish = true;
     
-    
-    newVal = $('#table_num').val().toString() + val;
+    var newVal = $('#table_num').val().toString() + val;
     $('#table_number_show').html(newVal);
     $('#table_num').val(newVal);
     
     waitForClickFinish = false;
+    
+    console.log("fin click " + val);
 }
 
 function doCanceltableNumberSelectKeypad() {

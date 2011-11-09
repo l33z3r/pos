@@ -538,10 +538,12 @@ jQuery.fn.extend({
 function initPressedCSS() {
     var startEventName = "mousedown";
     var stopEventName = "mouseup";
+    var cancelEventName = "mouseout"
     
     if(isTouchDevice()) {
         startEventName = "touchstart";
         stopEventName = "touchend";
+        cancelEventName = "touchcancel";
     }
     
     $('div.button, div.item, div.key, div.go_key, div.cancel_key, div.employee_box, div.mobile_button').live(startEventName,function() {
@@ -551,6 +553,12 @@ function initPressedCSS() {
            $(this).removeClass("pressed"); 
            $(this).unbind(startEventName);
            $(this).unbind(stopEventName);
+        });
+        
+        $(this).bind(cancelEventName, function() {
+           $(this).removeClass("pressed"); 
+           $(this).unbind(cancelEventName);
+           $(this).unbind(cancelEventName);
         });
     });
 }
