@@ -12,29 +12,27 @@
   <div id="admin_product_list">
 
         <div id="search_fields_container">
-
-          <div class="left_col">
+           <div class="left_col">
             <div class="field">
               <div class="label">Code No./UPC</div>
-              <%= text_field_tag(:code_upc) %>
+              <%= text_field_tag :code_num_equals %>
               <div class="clear">&nbsp;</div>
             </div>
             <div class="field">
               <div class="label">Description</div>
-              <%= text_field_tag(:description) %>
+              <%= text_field_tag :description_contains %>
               <div class="clear">&nbsp;</div>
             </div>
           </div>
-
           <div class="center_col">
             <div class="field">
               <div class="label">Category</div>
-              <%= collection_select(:category, :id, Category.find(:all), :id, :name, options = {:include_blank => "Any"}) %>
+              <%= collection_select :category_id, :equals, Category.find(:all), :id, :name, options = {:include_blank => "Any"} %>
               <div class="clear">&nbsp;</div>
             </div>
             <div class="field">
               <div class="label">Menu</div>
-              <%= collection_select(:menu, :id, MenuPage.find(:all), :id, :name, options = {:include_blank => "Any"}) %>
+                <%= collection_select :menu_page_1_id, :equals, MenuPage.find(:all), :id, :name, options = {:include_blank => "Any"} %>
               <div class="clear">&nbsp;</div>
             </div>
           </div>
@@ -42,18 +40,25 @@
           <div class="right_col">
             <div class="field">
               <div class="label">Search All Fields</div>
-              <%= text_field_tag(:all_fields) %>
+                <%= text_field_tag :all_fields_contains %>
               <div class="clear">&nbsp;</div>
             </div>
             <div class="field">
               <div class="label">List Specials Only</div>
-              <%= check_box_tag(:special) %>
+                <%= check_box_tag :is_special_equals %>
               <div class="clear">&nbsp;</div>
             </div>
           </div>
 
+          <div class="button_col">
+            <div class="button" onclick="runSearch();">
+              <div class="icon">
+                <%= image_tag "/images/button_logos/unused/search_48.png" %>
+              </div>
+              <div class="button_name">Search</div>
+            </div>
+          </div>
       </div>
-
 
     <section id="products">
 
@@ -67,7 +72,7 @@
               </a>
               <script>if(barLetters.indexOf('<%= letter %>')==-1){barLetters.push('<%= letter %>')};</script>
           <% end %>
-          <a href="#" onclick="loadProductsForNumber();">#</a>
+          <a href="#" onclick="loadProductsForNumber();" id="button_hash">#</a>
           <a href="#" onclick="loadProductsForNextLetter();"><%= image_tag("next.gif", :border=>0) %></a>
           </div>
         </div>

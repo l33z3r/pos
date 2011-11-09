@@ -97,6 +97,10 @@ class Admin::ProductsController < Admin::AdminController
     end
   end
 
+  def search
+    @search = Product.search(params[:search])
+    @products = @search.all
+  end
 
   private 
   

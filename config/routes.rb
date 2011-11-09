@@ -129,6 +129,7 @@ Pos::Application.routes.draw do
       end
       collection do
         get 'load_by_letter'
+        get 'search'
       end
     end
 

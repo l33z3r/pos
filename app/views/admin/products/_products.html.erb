@@ -1,5 +1,5 @@
 <% cache("admin_product_list_page_#{@selected_letter}") do %>
-  <% if !@products.empty? %>
+  <%# if !@products.empty? %>
         <table id="product_list" class="admin_table">
           <thead>
             <tr>
@@ -36,7 +36,7 @@
             <% end %>
           </tbody>
         </table>
-  <% else %>
-    <div class="drag_message">No products found.</div>
-  <% end %>
+  <%# else %>
+    <%#*<div class="drag_message">No products found.</div>%>
+  <%# end %>
 <% end %>

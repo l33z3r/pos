@@ -479,16 +479,25 @@ div#show_product section#product_info div#actions input {
 
 div#admin_product_list div#search_fields_container {
     height: 80px;
-    width: 820px;
+    width: 870px;
 }
 
 div#admin_product_list div#search_fields_container div.left_col,
-div#admin_product_list div#search_fields_container div.center_col{
+div#admin_product_list div#search_fields_container div.center_col,
+div#admin_product_list div#search_fields_container div.right_col{
     float: left;
 }
 
-div#admin_product_list div#search_fields_container div.right_col{
+div#admin_product_list div#search_fields_container div.button_col{
     float: right;
+    width: 65px;
+}
+
+div#admin_product_list div#search_fields_container div.button_col div.button{
+    float: right;
+    padding-top: 2px;
+    height: 50px;
+    width: 150px;
 }
 
 div#admin_product_list div#search_fields_container div.left_col div.field div.label {

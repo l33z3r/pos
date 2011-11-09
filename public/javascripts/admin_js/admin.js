@@ -303,6 +303,7 @@ function makeBiggerAdminTableLinks() {
 
 
 function loadProductsForLetter(character){
+    changeStyleButton(character);
     document.getElementById("current_letter").value = character;
     $.ajax({
         type: 'GET',
@@ -314,10 +315,13 @@ function loadProductsForLetter(character){
 }
 
 function loadProductsForNextLetter(){
-    if(document.getElementById("current_letter").value == barLetters[barLetters.length-1])
+    if(document.getElementById("current_letter").value == barLetters[barLetters.length-1]){
+        changeStyleButton("hash");
         loadProductsForNumber();
+    }
     else{
         var nextLetter = nextOnAlphabet(document.getElementById("current_letter").value);
+        changeStyleButton(nextLetter);
         document.getElementById("current_letter").value = nextLetter;
         $.ajax({
             type: 'GET',
@@ -332,6 +336,7 @@ function loadProductsForNextLetter(){
 function loadProductsForPreviousLetter(){
     if(document.getElementById("current_letter").value !=  barLetters[0]){
         var previousLetter = previousOnAlphabet(document.getElementById("current_letter").value);
+        changeStyleButton(previousLetter);
         document.getElementById("current_letter").value = previousLetter;
         $.ajax({
             type: 'GET',
@@ -344,7 +349,8 @@ function loadProductsForPreviousLetter(){
 }
 
 function loadProductsForNumber(){
-    document.getElementById("current_letter").value = "#";
+    changeStyleButton("hash");
+    document.getElementById("current_letter").value = "hash";
     $.ajax({
         type: 'GET',
         url: '/admin/products/load_by_letter'
@@ -360,11 +366,36 @@ function nextOnAlphabet(letter){
 }
 
 function previousOnAlphabet(letter){
-   if(letter!="#"){
+   if(letter!="hash"){
        var i = barLetters.indexOf(letter);
        return barLetters[i-1];
    }
    else{
        return barLetters[barLetters.length-1];
    }
+}
+
+function changeStyleButton(letter){
+    $('#button_'+$('#current_letter').val()).removeClass('letter_link_clicked');
+    $('#button_'+letter).addClass('letter_link_clicked');
+}
+
+function runSearch(){
+    $('#button_'+$('#current_letter').val()).removeClass('letter_link_clicked');
+    $.ajax({
+        type: 'GET',
+        url: '/admin/products/search',
+        data: {
+                "search[code_num_equals]" : $("#code_num_equals").val(),
+                "search[description_contains]" : $("#description_contains").val(),
+                "search[is_special_equals]" : $("#is_special_equals").is(":checked"),
+                "search[category_id_equals]" : $("#category_id_equals").val(),
+                "search[menu_page_1_id_equals]" : $("#menu_page_1_id_equals").val()
+            }
+    });
+}
+
+
+window.onload=function(){
+    $('#button_A').addClass('letter_link_clicked');
 }
