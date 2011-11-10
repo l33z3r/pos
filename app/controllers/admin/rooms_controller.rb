@@ -90,13 +90,55 @@ class Admin::RoomsController < Admin::AdminController
   end
   
   def label_table
-    @room_object = RoomObject.find(params[:room_object_id])
+    @room_object_id = params[:room_object_id]
+    
+    @room_object = RoomObject.find(@room_object_id)
+      
     @table_info = @room_object.table_info
+    @table_id = @table_info.id
+      
+    #TODO: make sure there are no open orders on this table and also that its number is unique
+    @rename = true
     
-    @table_info.perm_id = params[:new_name]
-    @table_info.save!
+    #make sure this table is closed before we remove it.
+    #if there is no sync data, then it is safe,
+    #or if the only sync data is a clear table order, then it is safe also
+    TerminalSyncData.fetch_sync_table_order_times.each do |tsd|
+      if tsd.data[:table_id].to_s == @table_id.to_s
+        #there is sync data for this table,
+        #if it is not data related to clearing the table, 
+        #then this table is still open, so throw a wobller!
+        if !tsd.data[:clear_table_order]
+          @rename = false
+          @message = "Table #{@table_info.perm_id} has an open order at it, please clear it before renaming the table"
+        end
+      end
+    end
     
-    render :json => {:success => true}.to_json
+    if @rename
+      #now make sure the name is a unique number
+      @new_label = params[:new_name]
+    
+      #test for a number with a regex
+      if !(@new_label =~ /^\d+$/) or @new_label.to_i < 1
+        @rename = false
+        @message = "New table number must be a positive number"
+      end
+    end
+    
+    if @rename
+      @existing_table = TableInfo.find_by_perm_id(@new_label)
+      
+      if @existing_table and (@existing_table.id != @table_id)
+        @rename = false
+        @message = "A table with that number already exists, please choose a unique number"
+      end
+    end
+    
+    if @rename
+      @table_info.perm_id = @new_label
+      @table_info.save!
+    end
   end
   
   def remove_table
@@ -104,14 +146,31 @@ class Admin::RoomsController < Admin::AdminController
     
     @room_object = RoomObject.find(@room_object_id)
     
-    @table_id = @room_object.table_info.id
+    @table_info = @room_object.table_info
+    @table_id = @table_info.id
     
-    @room_object.destroy
+    @delete = true
     
-    #remove the sync info for that table
-    TerminalSyncData.remove_sync_data_for_table @table_id
+    #make sure this table is closed before we remove it.
+    #if there is no sync data, then it is safe,
+    #or if the only sync data is a clear table order, then it is safe also
+    TerminalSyncData.fetch_sync_table_order_times.each do |tsd|
+      if tsd.data[:table_id].to_s == @table_id.to_s
+        #there is sync data for this table,
+        #if it is not data related to clearing the table, 
+        #then this table is still open, so throw a wobller!
+        if !tsd.data[:clear_table_order]
+          @delete = false
+        end
+      end
+    end
     
-    render :json => {:success => true}.to_json
+    if @delete
+      @room_object.destroy
+    
+      #remove the sync info for that table
+      TerminalSyncData.remove_sync_data_for_table @table_id
+    end
   end
   
   def remove_wall

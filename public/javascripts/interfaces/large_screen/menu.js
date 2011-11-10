@@ -348,6 +348,8 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         for(var j=0; j<orderItem.oia_items.length; j++) {
             oia_is_add = orderItem.oia_items[j].is_add;
             
+            orderHTML += clearHTML;
+            
             if(!orderItem.oia_items[j].is_note) {
                 orderHTML += "<div class='oia_add'>" + (oia_is_add ? "Add" : "No") + "</div>";
             }

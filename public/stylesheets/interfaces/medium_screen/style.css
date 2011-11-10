@@ -449,6 +449,7 @@ div.receipt div.till_roll div.oia_price {
     width: 0px;
     text-align: right;
     font-size: 19px;
+    overflow: hidden;
 }
 
 div.receipt div.till_roll div.total {

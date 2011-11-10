@@ -205,6 +205,8 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         for(var j=0; j<orderItem.oia_items.length; j++) {
             oia_is_add = orderItem.oia_items[j].is_add;
             
+            orderHTML += clearHTML;
+            
             if(!orderItem.oia_items[j].is_note) {
                 orderHTML += "<div class='oia_add'>" + (oia_is_add ? "Add" : "No") + "</div>";
             }
@@ -352,19 +354,10 @@ function showTablesSubscreen() {
     $('#table_screen').show();
 }
 
-var waitForClickFinish = false;
 function tableNumberSelectKeypadClick(val) {
-    while(waitForClickFinish) {
-        //wait for the previous click handler to finish
-    }
-    
-    waitForClickFinish = true;
-    
     var newVal = $('#table_num').val().toString() + val;
     $('#table_number_show').html(newVal);
     $('#table_num').val(newVal);
-    
-    waitForClickFinish = false;
 }
 
 function doCanceltableNumberSelectKeypad() {

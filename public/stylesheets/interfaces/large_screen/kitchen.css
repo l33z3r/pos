@@ -39,7 +39,7 @@ div#kitchen_screen div#receipts_container {
 }
 
 div#kitchen_screen div#receipts_container div.kitchen_receipt_container {
-    height: 209px;
+    height: 204px;
     width: 231px;
     margin: 3px 5px;
     float: left;
@@ -57,7 +57,7 @@ div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.tabl
 div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.receipt {
     -moz-border-radius: 11px;
     border-radius: 11px;
-    height: 174px;
+    height: 175px;
     overflow-y: auto;
     display: block;
     background-color: white;

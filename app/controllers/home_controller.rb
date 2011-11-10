@@ -132,8 +132,6 @@ class HomeController < ApplicationController
   def request_terminal_reload
     request_reload_app @terminal_id
     
-    update_html5_cache_timestamp
-    
     redirect_to(:back, :notice => 'Reload request sent.')
   end
   

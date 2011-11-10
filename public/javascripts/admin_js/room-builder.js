@@ -268,9 +268,6 @@ function deleteTable(table_id, room_object_id) {
     var doDelete = confirm("Are you sure you want to delete this table?");
     
     if(doDelete) {
-        $('#table_grid_div_' + table_id).HideBubblePopup();
-        $('#room_object_' + room_object_id).remove();
-    
         $.ajax({
             type: 'POST',
             url: 'remove_table',
@@ -287,23 +284,20 @@ function renameTable(room_object_id, table_id) {
     //TODO: a non native popup
     
     var newName;
-        do {
-            newName = prompt("Enter a new table Number (Numbers Only):", currentName);
-        } while(isNaN(newName));
+    do {
+        newName = prompt("Enter a new table Number (Positive Numbers Only):", currentName);
+    } while(isNaN(newName) || parseInt(newName) < 1);
     
-    
-    $('#table_name_' + room_object_id).html(newName);
-    
-    $('#table_grid_div_' + table_id).data("perm_id", newName);
-    
-    $.ajax({
-        type: 'POST',
-        url: 'label_table',
-        data: {
-            room_object_id : room_object_id,
-            new_name : newName
-        }
-    });
+    if(newName) {
+        $.ajax({
+            type: 'POST',
+            url: 'label_table',
+            data: {
+                room_object_id : room_object_id,
+                new_name : newName
+            }
+        });
+    }
 }
 
 function deleteWall(wall_id) {

@@ -1,0 +1,8 @@
+$("#table_grid_div_" + <%=@table_id%>).HideBubblePopup();
+
+<% if @delete %>
+  $("#room_object_" + <%=@room_object_id%>).remove();
+  setStatusMessage("Table removed");
+<% else %>
+  setStatusMessage("Table <%=@table_info.perm_id%> has an open order at it, please clear it before removing the table", false, false);
+<% end %>

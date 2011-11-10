@@ -23,6 +23,8 @@ function renderReceipt(tableID) {
      
     $('#kitchen_table_' + tableID + '_till_roll').html($('#kitchen_table_' + tableID + '_till_roll').html() + allOrderItemsRecptHTML);
 
+    initScrollPanes();
+
     kitchenTableRecptScroll(tableID);
 }
 
