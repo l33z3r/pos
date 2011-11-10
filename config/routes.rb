@@ -1,6 +1,7 @@
 Pos::Application.routes.draw do
 
   get "kitchen/index"
+  post "kitchen/order_ready"
 
   #temporary routes to forward print service requests as we cannot code for web sockets yet
   match 'forward_print_service_request' => "home#forward_print_service_request", :via => :post

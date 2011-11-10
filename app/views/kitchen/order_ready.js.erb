@@ -1,0 +1,5 @@
+<% if @notification_sent %>
+  niceAlert("Employee <%= @employee.nickname %>  has been notified of order for table <%= @table_info.perm_id %>", true, false);
+<% else %>
+  niceAlert("Error sending notification to <%= @employee.nickname %>", true, false);
+<% end %>

@@ -42,7 +42,8 @@ function callHomePoll() {
             lastSyncTableOrderTime : lastSyncTableOrderTime,
             currentTerminalUser : current_user_id,
             currentTerminalRecptHTML : currentTerminalRecptHTML,
-            currentTerminalRecptTableLabel : currentTableLabel
+            currentTerminalRecptTableLabel : currentTableLabel,
+            lastOrderReadyNotificationTime : lastOrderReadyNotificationTime
         }
     });
 }

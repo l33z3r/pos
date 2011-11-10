@@ -1485,3 +1485,7 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) 
     
     currentSelectedReceiptItemEl = null;
 }
+
+function doReceiveOrderReady(employee_id, table_id) {
+    console.log("got order ready notification for " + employee_id + " for table " + table_id);    
+}

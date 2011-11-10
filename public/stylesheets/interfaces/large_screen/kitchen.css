@@ -27,6 +27,18 @@ div#kitchen_screen div#loading_message img {
     margin-right: 30px;
 }
 
+div#kitchen_screen div#no_orders_message {
+    font-size: 32px;
+    border: 3px solid #000;
+    -moz-border-radius: 11px;
+    border-radius: 11px;
+    background-color: white;
+    width: 490px;
+    height: 75px;
+    padding-top: 50px;
+    margin: 200px auto 0px auto;
+}
+
 div#kitchen_screen div#header div#function_buttons {
     float: right;
     border-spacing: 7px 0px;
@@ -35,6 +47,11 @@ div#kitchen_screen div#header div#function_buttons {
 
 div#kitchen_screen div#receipts_container {
     height: 650px;
+    display: none;
+}
+
+div#kitchen_screen div#receipts_container div#empty_orders,
+div#kitchen_screen div#receipts_container div#filled_orders {
     display: none;
 }
 
@@ -50,14 +67,30 @@ div#kitchen_screen div#receipts_container div.kitchen_receipt_container {
     display: none;
 }
 
-div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.table_number {
+div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.header {
+    padding: 2px 5px;
+    border-top-left-radius: 11px;
+    border-top-right-radius: 11px;
+}
+
+div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.header.being_removed {
+    background-color: red;
+}
+
+div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.header div.table_number {
     font-weight: bold;
+    float: left;
+}
+
+div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.header div.order_num {
+    font-weight: bold;
+    float: right;
 }
 
 div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.receipt {
     -moz-border-radius: 11px;
     border-radius: 11px;
-    height: 175px;
+    height: 173px;
     overflow-y: auto;
     display: block;
     background-color: white;
@@ -72,4 +105,9 @@ div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.rece
 
 div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.receipt div.till_roll div.total {
     display: none;
+}
+
+div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.receipt div.till_roll div.order_line.course_checked {
+    background-color: #D6E3BC;
+    margin: -1px 0px 0px 0px;
 }

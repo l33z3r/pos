@@ -32,17 +32,34 @@
   </div>
 
   <div id="receipts_container" class="jscrollpane">
-    <% Room.all.each do |room|%>
-      <% room.table_infos.each do |table_info| %>
-        <div id="kitchen_receipt_container_<%= table_info.id %>" class="kitchen_receipt_container" data-table_id="<%= table_info.id %>">
-          <div class="table_number">Table <%= table_info.perm_id %></div>
-          <div id="kitchen_table_<%= table_info.id %>_receipt" class="receipt">
-            <div id="kitchen_table_<%= table_info.id %>_till_roll" class="till_roll"></div>
+
+    <div id="no_orders_message">No Orders Yet</div>
+
+    <div id="empty_orders">
+      <% Room.all.each do |room|%>
+        <% room.table_infos.each do |table_info| %>
+          <div id="kitchen_receipt_container_<%= table_info.id %>" class="kitchen_receipt_container" data-table_id="<%= table_info.id %>">
+
+            <div class="header">
+              <div class="table_number">
+                Table <%= table_info.perm_id %>
+              </div>
+              <div id="kitchen_table_<%= table_info.id %>_receipt_order_num" class="order_num"></div>
+              <div class="clear">&nbsp;</div>
+            </div>
+
+            <div id="kitchen_table_<%= table_info.id %>_receipt" class="receipt">
+              <div id="kitchen_table_<%= table_info.id %>_till_roll" class="till_roll"></div>
+            </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
-    <% end %>
+    </div>
     
+    <div id="active_orders"><div></div></div>
+    
+    <div id="filled_orders"><div></div></div>
+
     <div class="clear">&nbsp;</div>
-    
+
   </div>

@@ -510,3 +510,15 @@ function tableScreenBack() {
     }
     showMenuItemsSubscreen();
 }
+
+function doReceiveOrderReady(employee_id, table_id) {
+    console.log("got order ready notification for " + employee_id + " " + current_user_id + " for table " + table_id);
+    
+    if(employee_id == current_user_id) {
+        if(inAndroidWrapper()) {
+            demoJSInterface.vibrate();
+        }
+    
+        niceAlert("Order for table id " + table_id + " is ready", "Order Ready!");    
+    }
+}

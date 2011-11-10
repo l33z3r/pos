@@ -53,11 +53,6 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
     if(callHomePollInitSequenceComplete) {
         checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);
         
-    //we don't want to show the initial messages as there may be a few of them
-    //        if(recvdTerminalID != terminalID) {
-    //            setStatusMessage("<b>" + terminalEmployee + "</b> modified the order for table <b>" 
-    //                + tableLabel + "</b> from terminal <b>" + recvdTerminalID + "</b>");
-    //        }
     }
     
     newlyAdded = addActiveTable(tableID);
@@ -234,20 +229,12 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, tableLabel, terminal
     for (var i = 0; i < employees.length; i++){
         nextUserIDToSyncWith = employees[i].id;
         
-        //skip if terminal and user same
-        //        alert("Skip? user id: " + terminalEmployeeID + " - " + nextUserIDToSyncWith + " : terminal id: " + recvdTerminalID + " - " + terminalID);
-        //        if(recvdTerminalID == terminalID && terminalEmployeeID == nextUserIDToSyncWith) {
-        //            alert("Skipping for user id: " + nextUserIDToSyncWith);
-        //            continue;
-        //        }
-        
         doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployee, nextUserIDToSyncWith);
     }
     
-    //we don't want to show the initial messages as there may be a few of them
-    //    if(callHomePollInitSequenceComplete && recvdTerminalID != terminalID) {
-    //        setStatusMessage("<b>" + terminalEmployee + "</b> totalled the order for table <b>" + tableLabel + "</b> from terminal <b>" + recvdTerminalID + "</b>");
-    //    }
+    if(inKitchenContext()) {
+        tableCleared(tableID);
+    }
     
     //remove the table from the active table ids array
     newlyRemoved = removeActiveTable(tableID);
