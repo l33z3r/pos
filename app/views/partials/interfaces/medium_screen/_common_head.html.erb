@@ -13,6 +13,9 @@
   "touch/touch_util", "touch/on_touch_click_replace", "interfaces/medium_screen/screen_button_functions",
   "interfaces/medium_screen/receipt_html_functions", "interfaces/medium_screen/touch", :cache => "cache/medium_screen" %>
 
+<!-- load the js shared between medium and mobile for use on android devices -->
+<%= javascript_include_tag "interfaces/shared/mobile_device" %>
+
 <%= csrf_meta_tag %>
 
 <!-- must set some vars from the system settings -->

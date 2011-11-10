@@ -253,6 +253,7 @@ div#menu_screen div#menu_container div#menu_items_container div.item {
     -moz-border-radius: 3px;
     border-radius: 3px;
     cursor: pointer;
+    background: #FFF;
 }
 
 div#menu_screen div#menu_container div#menu_items_container div.item_name {
