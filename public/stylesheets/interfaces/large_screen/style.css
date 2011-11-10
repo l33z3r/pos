@@ -2834,10 +2834,11 @@ div.button div.button_name a:hover {
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item.pressed,
+div#menu_screen div#menu_pages_container div#menu_container div#pages div.page.pressed,
 #wrapper div.button.pressed,
 #wrapper div.key.pressed,
 #wrapper div.go_key.pressed,
-#wrapper div.employee_box.pressed,
+#wrapper div#landing div#active_users_buttons_container div#active_users div.employee_box.pressed,
 #wrapper div.cancel_key.pressed {
     border: 1px solid #E36C0A; 
     background: #eee;
@@ -2847,15 +2848,22 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item.pressed *,
+div#menu_screen div#menu_pages_container div#menu_container div#pages div.page.pressed *,
 #wrapper div.button.pressed *,
 #wrapper div.key.pressed *,
 #wrapper div.go_key.pressed *,
-#wrapper div.employee_box.pressed *,
+#wrapper div#landing div#active_users_buttons_container div#active_users div.employee_box.pressed *,
 #wrapper div.cancel_key.pressed * {
     background: #eee;
     -moz-opacity: 90;
     filter:alpha(opacity: .90);
     opacity: .90;    
+}
+
+div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item.pressed img {
+    -moz-opacity: 30;
+    filter:alpha(opacity: .30);
+    opacity: .30;
 }
 
 /* End Generic Styles */

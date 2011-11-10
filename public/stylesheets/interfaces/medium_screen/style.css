@@ -766,6 +766,7 @@ input#niceAlertContainer_okButton {
 }
 
 div#menu_screen div#menu_container div#menu_items_container div.items div.item.pressed,
+div#menu_screen div#menu_container div#menu_pages_container div.page.pressed,
 #wrapper div.button.pressed,
 #wrapper div.key.pressed,
 #wrapper div.go_key.pressed,
@@ -778,6 +779,7 @@ div#menu_screen div#menu_container div#menu_items_container div.items div.item.p
 }
 
 div#menu_screen div#menu_container div#menu_items_container div.items div.item.pressed *,
+div#menu_screen div#menu_container div#menu_pages_container div.page.pressed *,
 #wrapper div.button.pressed *,
 #wrapper div.key.pressed *,
 #wrapper div.go_key.pressed *,
@@ -786,6 +788,12 @@ div#menu_screen div#menu_container div#menu_items_container div.items div.item.p
     -moz-opacity: 90;
     filter:alpha(opacity: .90);
     opacity: .90;     
+}
+
+div#menu_screen div#menu_container div#menu_items_container div.items div.item.pressed img {
+    -moz-opacity: 30;
+    filter:alpha(opacity: .30);
+    opacity: .30;
 }
 
 /* End Generic Styles */

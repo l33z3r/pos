@@ -18,5 +18,6 @@ function showTablesScreen() {
 }
 
 function showMoreOptionsScreen() {
+    demoJSInterface.showSpinner();
     goTo('/mbl#menu');
 }
