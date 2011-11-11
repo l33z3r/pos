@@ -456,13 +456,21 @@ function initUIElements() {
 
 function initScrollPanes() {
     //init all the scroll panes
-    setTimeout(function() {
-        $('.jscrollpane, .admin #content_container section:not(.no_scroll_pane)').jScrollPane({
-            showArrows: true
+    $('.jscrollpane, .admin #content_container section:not(.no_scroll_pane)').jScrollPane({
+        showArrows: true,
+        animateTo: false,
+        stickToBottom : true,
+        autoReinitialise : true
+    });
+    
+    if(!isTouchDevice()) {
+        $('.receipt_jscrollpane').jScrollPane({
+            showArrows: true,
+            animateTo: false,
+            stickToBottom : true,
+            autoReinitialise : true
         });
-        
-        
-    }, 500);
+    }
 }
 
 function initCheckboxes() {
@@ -554,15 +562,15 @@ function initPressedCSS() {
         $(this).addClass("pressed");
         
         $(this).bind(stopEventName, function() {
-           $(this).removeClass("pressed"); 
-           $(this).unbind(startEventName);
-           $(this).unbind(stopEventName);
+            $(this).removeClass("pressed"); 
+            $(this).unbind(startEventName);
+            $(this).unbind(stopEventName);
         });
         
         $(this).bind(cancelEventName, function() {
-           $(this).removeClass("pressed"); 
-           $(this).unbind(cancelEventName);
-           $(this).unbind(cancelEventName);
+            $(this).removeClass("pressed"); 
+            $(this).unbind(cancelEventName);
+            $(this).unbind(cancelEventName);
         });
     });
 }

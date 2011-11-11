@@ -88,7 +88,7 @@ function renderReceipt(tableID) {
         $('#kitchen_receipt_container_' + tableID).appendTo('#active_orders');
     }
 
-    initScrollPanes();
+    //initScrollPanes();
 
     kitchenTableRecptScroll(tableID);
     
@@ -99,7 +99,7 @@ function finishedLoadingKitchenScreen() {
     $('#kitchen_screen #loading_message').hide();
     $('#kitchen_screen #receipts_container').show();
     
-    initScrollPanes();
+    //initScrollPanes();
     
     setTimeout(kitchenTableRecptScrollAll, 20);
 }

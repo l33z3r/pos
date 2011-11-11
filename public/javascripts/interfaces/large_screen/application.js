@@ -62,7 +62,7 @@ function doGlobalInit() {
     lastSaleInfo = getLastSaleInfo();
 
     if(lastSaleInfo) {
-        setLoginReceipt(lastSaleInfo.title, lastSaleInfo.contentHTML)
+        //setLoginReceipt(lastSaleInfo.title, lastSaleInfo.contentHTML)
     }
     
     showInitialScreen();
