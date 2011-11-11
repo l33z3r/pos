@@ -2,9 +2,16 @@ class Admin::ProductsController < Admin::AdminController
   cache_sweeper :product_sweeper
   
   def index
-  #  @products = Product.paginate :page => params[:page], :order => 'name'
-    @cache_letter = "A"
-    @products = Product.where("name LIKE ?", "A%")
+    @selected_letter = "all"
+    @products = Product.order("name")
+    query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from products group by substr(name,1,1)")
+    @letters = []
+    for element in query
+      if(!"0123456789".include?(element[0]))
+        @letters += element
+      end
+    end
+   # query.free
   end
 
   def show
@@ -83,16 +90,22 @@ class Admin::ProductsController < Admin::AdminController
     redirect_to(admin_products_url, :notice => 'Product was successfully deleted.')
   end
 
-  def load_by_letter
-    if !params[:letter].blank?
-      @selected_letter = "#{params[:letter]}"
-      @products = Product.where("name LIKE ?", "#{params[:letter]}%")
+  def search
+    @search1 = Product.search(params[:search1]).order('name')
+    @products1 = @search1.all
+    if(!params[:search2].nil? && !params[:search3].nil?)
+        @search2 = Product.search(params[:search2]).order('name')
+        @search3 = Product.search(params[:search3]).order('name')
+        @products2 = @search2.all
+        @products3 = @search3.all
+        @merge1 = @products2 | @products3
+        @intersection = @merge1 & @products1  
+        @products = @intersection.sort! { |a, b|  a.name <=> b.name }
     else
-      @selected_letter = "#"
-      @products = Product.where("name NOT REGEXP ?", "^[A-Z]")
+        @products = @products1.sort! { |a, b|  a.name <=> b.name }
     end
+    
   end
-
 
   private 
   

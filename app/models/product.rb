@@ -32,7 +32,7 @@ class Product < ActiveRecord::Base
   #for will_paginate
   cattr_reader :per_page
   @@per_page = 10
-  
+
   def has_product_image?
     return (!product_image_file_name.nil? and !product_image_file_name.blank?)
   end
