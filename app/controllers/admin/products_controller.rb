@@ -91,9 +91,9 @@ class Admin::ProductsController < Admin::AdminController
   end
 
   def search
-    @search1 = Product.search(params[:search1])
-    @search2 = Product.search(params[:search2])
-    @search3 = Product.search(params[:search3])
+    @search1 = Product.search(params[:search1]).order('name')
+    @search2 = Product.search(params[:search2]).order('name')
+    @search3 = Product.search(params[:search3]).order('name')
     @products1 = @search1.all
     @products2 = @search2.all
     @products3 = @search3.all
