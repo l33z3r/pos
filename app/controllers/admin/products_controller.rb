@@ -2,13 +2,16 @@ class Admin::ProductsController < Admin::AdminController
   cache_sweeper :product_sweeper
   
   def index
-    @selected_letter = "A"
-    @products = Product.where("name LIKE ?", "A%").order("name")
+    @selected_letter = "all"
+    @products = Product.order("name")
     query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from products group by substr(name,1,1)")
     @letters = []
     for element in query
-      @letters += element
+      if(!"0123456789".include?(element[0]))
+        @letters += element
+      end
     end
+   # query.free
   end
 
   def show
@@ -87,19 +90,16 @@ class Admin::ProductsController < Admin::AdminController
     redirect_to(admin_products_url, :notice => 'Product was successfully deleted.')
   end
 
-  def load_by_letter
-    if !params[:letter].blank?
-      @selected_letter = "#{params[:letter]}"
-      @products = Product.where("name LIKE ?", "#{params[:letter]}%").order("name")
-    else
-      @selected_letter = "#"
-      @products = Product.where("name NOT REGEXP ?", "^[A-Z]").order("name")
-    end
-  end
-
   def search
-    @search = Product.search(params[:search])
-    @products = @search.all
+    @search1 = Product.search(params[:search1])
+    @search2 = Product.search(params[:search2])
+    @search3 = Product.search(params[:search3])
+    @products1 = @search1.all
+    @products2 = @search2.all
+    @products3 = @search3.all
+    @merge1 = @products2 | @products3
+    @intersection = @merge1 & @products1
+    @products = @intersection.sort! { |a, b|  a.name <=> b.name }
   end
 
   private 

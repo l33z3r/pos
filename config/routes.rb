@@ -134,7 +134,6 @@ Pos::Application.routes.draw do
         post 'update_price'
       end
       collection do
-        get 'load_by_letter'
         get 'search'
       end
     end

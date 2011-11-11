@@ -304,57 +304,48 @@ function makeBiggerAdminTableLinks() {
 
 function loadProductsForLetter(character){
     changeStyleButton(character);
-    document.getElementById("current_letter").value = character;
-    $.ajax({
-        type: 'GET',
-        url: '/admin/products/load_by_letter',
-        data: {
-            letter : character
-        }
-    });
+    $("#current_letter").val(character);
+    runSearch();
 }
 
 function loadProductsForNextLetter(){
-    if(document.getElementById("current_letter").value == barLetters[barLetters.length-1]){
+    if($("#current_letter").val() === barLetters[barLetters.length-1]){
         changeStyleButton("hash");
         loadProductsForNumber();
     }
     else{
-        var nextLetter = nextOnAlphabet(document.getElementById("current_letter").value);
+        var nextLetter = nextOnAlphabet($("#current_letter").val());
         changeStyleButton(nextLetter);
-        document.getElementById("current_letter").value = nextLetter;
-        $.ajax({
-            type: 'GET',
-            url: '/admin/products/load_by_letter',
-            data: {
-                letter : nextLetter
-            }
-        });
+        $("#current_letter").val(nextLetter);
+        runSearch();
     }
 }
 
 function loadProductsForPreviousLetter(){
-    if(document.getElementById("current_letter").value !=  barLetters[0]){
-        var previousLetter = previousOnAlphabet(document.getElementById("current_letter").value);
+  if($("#current_letter").val()!=="all"){
+    if($("#current_letter").val() !== barLetters[0]){
+        var previousLetter = previousOnAlphabet($("#current_letter").val());
         changeStyleButton(previousLetter);
-        document.getElementById("current_letter").value = previousLetter;
-        $.ajax({
-            type: 'GET',
-            url: '/admin/products/load_by_letter',
-            data: {
-                letter : previousLetter
-            }
-        });
+        $("#current_letter").val(previousLetter);
     }
+    else{
+        changeStyleButton("all");
+        $("#current_letter").val("all");
+    }
+    runSearch();
+  }
 }
 
 function loadProductsForNumber(){
     changeStyleButton("hash");
-    document.getElementById("current_letter").value = "hash";
-    $.ajax({
-        type: 'GET',
-        url: '/admin/products/load_by_letter'
-    });
+    $("#current_letter").val("hash");
+    runSearch();
+}
+
+function loadProductsForAllLetters(){
+    changeStyleButton("all");
+    $("#current_letter").val("all");
+    runSearch();
 }
 
 //array of letters to show in the bar
@@ -381,21 +372,44 @@ function changeStyleButton(letter){
 }
 
 function runSearch(){
-    $('#button_'+$('#current_letter').val()).removeClass('letter_link_clicked');
-    $.ajax({
-        type: 'GET',
-        url: '/admin/products/search',
-        data: {
-                "search[code_num_equals]" : $("#code_num_equals").val(),
-                "search[description_contains]" : $("#description_contains").val(),
-                "search[is_special_equals]" : $("#is_special_equals").is(":checked"),
-                "search[category_id_equals]" : $("#category_id_equals").val(),
-                "search[menu_page_1_id_equals]" : $("#menu_page_1_id_equals").val()
-            }
-    });
+    var numbers = ($("#current_letter").val()==="hash") ? ['0','1','2','3','4','5','6','7','8','9'] : "";
+    var letter = ($("#current_letter").val()!=="all" && $("#current_letter").val()!=="hash") ? $('#current_letter').val() : "";
+    var is_special = ($("#is_special_equals").is(":checked")) ? "true" : "";
+    if($("#all_fields").val().length>0){
+        $.ajax({
+            type: 'GET',
+            url: '/admin/products/search',
+            data: {
+                    "search1[code_num_or_upc_equals]" : $("#code_num_equals").val(),
+                    "search1[description_contains]" : $("#description_contains").val(),
+                    "search1[is_special_equals]" : is_special,
+                    "search1[category_id_equals]" : $("#category_id_equals").val(),
+                    "search1[menu_page_1_id_equals]" : $("#menu_page_1_id_equals").val(),
+                    "search1[name_starts_with]" : letter,
+                    "search1[name_starts_with_any]" : numbers,
+                    "search2[code_num_or_upc_or_price_or_price_2_or_price_3_or_price_4_equals]" : $("#all_fields").val(),
+                    "search3[description_or_name_or_brand_or_kitchen_note_or_button_text_line_1_or_button_text_line_2_or_button_text_line_3_contains]" : $("#all_fields").val()
+                }
+        });
+    }
+    else{
+        $.ajax({
+            type: 'GET',
+            url: '/admin/products/search',
+            data: {
+                    "search[code_num_or_upc_equals]" : $("#code_num_equals").val(),
+                    "search[description_contains]" : $("#description_contains").val(),
+                    "search[is_special_equals]" : is_special,
+                    "search[category_id_equals]" : $("#category_id_equals").val(),
+                    "search[menu_page_1_id_equals]" : $("#menu_page_1_id_equals").val(),
+                    "search[name_starts_with]" : letter,
+                    "search[name_starts_with_any]" : numbers
+                }
+        });
+    }
 }
 
 
 window.onload=function(){
-    $('#button_A').addClass('letter_link_clicked');
+    $('#button_all').addClass('letter_link_clicked');
 }

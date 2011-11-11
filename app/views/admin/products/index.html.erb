@@ -40,7 +40,7 @@
           <div class="right_col">
             <div class="field">
               <div class="label">Search All Fields</div>
-                <%= text_field_tag :all_fields_contains %>
+                <%= text_field_tag :all_fields %>
               <div class="clear">&nbsp;</div>
             </div>
             <div class="field">
@@ -66,6 +66,7 @@
         <div class="links">
           <div class="pagination">
           <a href="#" onclick="loadProductsForPreviousLetter();"><%= image_tag("prev.gif", :border=>0) %></a>
+          <a href="#" onclick="loadProductsForAllLetters();" id="button_all">All</a>
           <% @letters.each do |letter|%>
               <a href="#" onclick="loadProductsForLetter('<%= letter %>');" id="button_<%= letter %>">
                 <%= letter %>
