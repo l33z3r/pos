@@ -94,7 +94,7 @@ class Admin::ProductsController < Admin::AdminController
     @search1 = Product.search(params[:search1]).order('name')
     @products1 = @search1.all
     if(!params[:search2].nil? && !params[:search3].nil?)
-        @search2 = Product.search(params[:search2]).order('name')
+        @search2 = Product.where("code_num = ? OR upc = ? OR price = ? OR price_2 = ? OR price_3 = ? OR price_4", params[:search2], params[:search2], params[:search2], params[:search2], params[:search2]).order('name')
         @search3 = Product.search(params[:search3]).order('name')
         @products2 = @search2.all
         @products3 = @search3.all

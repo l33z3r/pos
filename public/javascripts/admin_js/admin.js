@@ -387,7 +387,7 @@ function runSearch(){
                     "search1[menu_page_1_id_equals]" : $("#menu_page_1_id_equals").val(),
                     "search1[name_starts_with]" : letter,
                     "search1[name_starts_with_any]" : numbers,
-                    "search2[code_num_or_upc_or_price_or_price_2_or_price_3_or_price_4_equals4numbers]" : $("#all_fields").val(),
+                    "search2" : $("#all_fields").val(),
                     "search3[description_or_name_or_brand_or_kitchen_note_or_button_text_line_1_or_button_text_line_2_or_button_text_line_3_contains]" : $("#all_fields").val()
                 }
         });
