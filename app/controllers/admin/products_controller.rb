@@ -92,14 +92,19 @@ class Admin::ProductsController < Admin::AdminController
 
   def search
     @search1 = Product.search(params[:search1]).order('name')
-    @search2 = Product.search(params[:search2]).order('name')
-    @search3 = Product.search(params[:search3]).order('name')
     @products1 = @search1.all
-    @products2 = @search2.all
-    @products3 = @search3.all
-    @merge1 = @products2 | @products3
-    @intersection = @merge1 & @products1
-    @products = @intersection.sort! { |a, b|  a.name <=> b.name }
+    if(!params[:search2].nil? && !params[:search3].nil?)
+        @search2 = Product.search(params[:search2]).order('name')
+        @search3 = Product.search(params[:search3]).order('name')
+        @products2 = @search2.all
+        @products3 = @search3.all
+        @merge1 = @products2 | @products3
+        @intersection = @merge1 & @products1  
+        @products = @intersection.sort! { |a, b|  a.name <=> b.name }
+    else
+        @products = @products1.sort! { |a, b|  a.name <=> b.name }
+    end
+    
   end
 
   private 
