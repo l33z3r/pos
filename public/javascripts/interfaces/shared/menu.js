@@ -412,21 +412,34 @@ function loadCurrentOrder() {
 }
 
 function recptScroll(targetPrefix) {
-    //console.log("Updating receipt: " + '#' + targetPrefix + 'till_roll');
+    console.log("Updating receipt: " + '#' + targetPrefix + 'till_roll');
     
     if(isTouchDevice()) {
         $('#' + targetPrefix + 'till_roll').touchScroll('update');
-        
+            
         currentHeight = $('#' + targetPrefix + 'till_roll').height();
         scrollHeight = $('#' + targetPrefix + 'till_roll').attr('scrollHeight');
         newHeight = scrollHeight - currentHeight;
-    
+        
         $('#' + targetPrefix + 'till_roll').touchScroll('setPosition', newHeight);
-    
+        
     } else {
-        newHeight = $('#' + targetPrefix + 'receipt').attr('scrollHeight');
-        $('#' + targetPrefix + 'receipt').scrollTop(newHeight);
+//        newHeight = $('#' + targetPrefix + 'receipt').attr('scrollHeight');
+//        $('#' + targetPrefix + 'receipt').scrollTop(newHeight);
+            
+        currentHeight = $('#' + targetPrefix + 'till_roll').height();
+        scrollHeight = $('#' + targetPrefix + 'till_roll').attr('scrollHeight');
+        newHeight = scrollHeight - currentHeight;
+        
+        //jscrollpane force scroll to end
+        var jscroll_api = $('#' + targetPrefix + 'receipt').data('jsp');
+        
+        if(jscroll_api) {
+            jscroll_api.scrollToY(newHeight + 20);
+        }
     }
+    
+    
 }
 
 function doSelectTable(tableNum) {

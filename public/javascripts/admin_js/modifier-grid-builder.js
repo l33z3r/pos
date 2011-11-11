@@ -97,8 +97,6 @@ function setGridScrollerWidth(grid_x) {
     var newWidth = (parseInt(itemWidth) * grid_x) + 50;
     
     $('.grid_row').css("width", newWidth + "px");
-    
-    initScrollPanes();
 }
 
 function updateGridSize() {

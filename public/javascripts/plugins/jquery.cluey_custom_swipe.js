@@ -77,6 +77,14 @@
                         defaults.swipeRight()
                     }
                 }
+                
+                var x1 = originalCoord.x;
+                var y1 = originalCoord.y;
+                
+                var x2 = finalCoord.x;
+                var y2 = finalCoord.y;
+                
+                getSwipeDirection(x1, y1, x2, y2);
             }
 			
             // Swipe was started
@@ -103,3 +111,7 @@
         });
     };
 })(jQuery);
+
+function getSwipeDirection(x1, y1, x2, y2) {
+    //translate (x1, y1) to (0, 0)
+}
