@@ -12,8 +12,8 @@ div#room_builder {
 }
 
 div#room_builder div#header {
-    width: -moz-fit-content;
-    margin: 10px auto 20px auto;
+    display: inline-block;
+    margin-top: 10px;
 }
 
 div#room_builder div#header div#room_name {

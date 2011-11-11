@@ -138,6 +138,26 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def fetch_order_ready_notification time
+    @order_ready_notification_times = order_ready_notification_times
+    
+    @order_ready_notification_times.each do |order_ready_request_time, order_ready_data|
+      order_ready_request_employee_id = order_ready_data[:employee_id]
+      order_ready_request_table_id = order_ready_data[:table_id]
+      
+      if order_ready_request_time.to_i > time.to_i
+        @order_ready = {}
+        @order_ready['order_ready_request_time'] = order_ready_request_time
+        @order_ready['order_ready_request_employee_id'] = order_ready_request_employee_id
+        @order_ready['order_ready_request_table_id'] = order_ready_request_table_id
+        
+        return @order_ready
+      end
+    end
+    
+    return nil
+  end
+  
   def print_money value
     @dynamic_currency_symbol = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL
     number_to_currency value, :precision => 2, :unit => @dynamic_currency_symbol
@@ -154,6 +174,8 @@ class ApplicationController < ActionController::Base
   rescue_from StandardError do |exception|
     
     EXCEPTION_LOGGER.error('ERROR!')
+    EXCEPTION_LOGGER.error("Time: #{Time.now.to_s(:long)}")
+    EXCEPTION_LOGGER.error(params.inspect)
     EXCEPTION_LOGGER.error(exception.message)
     EXCEPTION_LOGGER.error(exception.backtrace.join("\n") + "\n\n\n\n")
     
@@ -194,6 +216,16 @@ class ApplicationController < ActionController::Base
     end
     
     @sync_table_order_times
+  end
+  
+  def order_ready_notification_times
+    @order_ready_notification_times = {}
+    
+    TerminalSyncData.fetch_order_ready_request_times.each do |order_ready|
+      @order_ready_notification_times[order_ready.time.to_i.to_s] = order_ready.data
+    end
+    
+    @order_ready_notification_times
   end
   
   def load_global_vars

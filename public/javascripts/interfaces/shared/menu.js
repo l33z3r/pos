@@ -46,14 +46,13 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith);
     }
     
+    if(inKitchenContext()) {
+        renderReceipt(tableID);
+    }
+    
     if(callHomePollInitSequenceComplete) {
         checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);
         
-    //we don't want to show the initial messages as there may be a few of them
-    //        if(recvdTerminalID != terminalID) {
-    //            setStatusMessage("<b>" + terminalEmployee + "</b> modified the order for table <b>" 
-    //                + tableLabel + "</b> from terminal <b>" + recvdTerminalID + "</b>");
-    //        }
     }
     
     newlyAdded = addActiveTable(tableID);
@@ -168,6 +167,11 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     //copy over the courses array
     tableOrders[tableID].courses = tableOrderDataJSON.courses;
     
+    //if courses was empty on remote device, then courses will be turned into an empty string by json, so we need to reinit the courses to an empty array 
+    if(tableOrders[tableID].courses == "") {
+        tableOrders[tableID].courses = new Array();
+    }
+    
     //turn courses back into integers
     for(var j = 0; j < tableOrders[tableID].courses.length; j++) {
         tableOrders[tableID].courses[j] = parseInt(tableOrders[tableID].courses[j]);
@@ -225,20 +229,12 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, tableLabel, terminal
     for (var i = 0; i < employees.length; i++){
         nextUserIDToSyncWith = employees[i].id;
         
-        //skip if terminal and user same
-        //        alert("Skip? user id: " + terminalEmployeeID + " - " + nextUserIDToSyncWith + " : terminal id: " + recvdTerminalID + " - " + terminalID);
-        //        if(recvdTerminalID == terminalID && terminalEmployeeID == nextUserIDToSyncWith) {
-        //            alert("Skipping for user id: " + nextUserIDToSyncWith);
-        //            continue;
-        //        }
-        
         doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployee, nextUserIDToSyncWith);
     }
     
-    //we don't want to show the initial messages as there may be a few of them
-    //    if(callHomePollInitSequenceComplete && recvdTerminalID != terminalID) {
-    //        setStatusMessage("<b>" + terminalEmployee + "</b> totalled the order for table <b>" + tableLabel + "</b> from terminal <b>" + recvdTerminalID + "</b>");
-    //    }
+    if(inKitchenContext()) {
+        tableCleared(tableID);
+    }
     
     //remove the table from the active table ids array
     newlyRemoved = removeActiveTable(tableID);
@@ -331,6 +327,11 @@ function initTouchRecpts() {
     //medium screen interface receipts
     $('.medium_interface #menu_screen_till_roll').touchScroll();
     $('.medium_interface #large_menu_screen_till_roll').touchScroll();
+    
+    //kitchen screen receipts
+    if(inKitchenContext()) {
+        $('#kitchen_screen .till_roll').touchScroll();
+    }
 }
 
 function buildOrderItem(product, amount) {

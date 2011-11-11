@@ -21,6 +21,10 @@ function inMobileContext() {
     return $('body.mobile').length > 0;
 }
 
+function inKitchenContext() {
+    return $('body div.kitchen').length > 0;
+}
+
 function currency(number, showUnit) {
     if(typeof showUnit == "undefined") {
         showUnit = true;
@@ -538,19 +542,27 @@ jQuery.fn.extend({
 function initPressedCSS() {
     var startEventName = "mousedown";
     var stopEventName = "mouseup";
+    var cancelEventName = "mouseout"
     
     if(isTouchDevice()) {
         startEventName = "touchstart";
         stopEventName = "touchend";
+        cancelEventName = "touchcancel";
     }
     
-    $('div.button, div.item, div.key, div.go_key, div.cancel_key, div.employee_box, div.mobile_button').live(startEventName,function() {
+    $('div.button, div.item, div.key, div.go_key, div.cancel_key, div.employee_box, div.mobile_button, div.page').live(startEventName,function() {
         $(this).addClass("pressed");
         
         $(this).bind(stopEventName, function() {
            $(this).removeClass("pressed"); 
            $(this).unbind(startEventName);
            $(this).unbind(stopEventName);
+        });
+        
+        $(this).bind(cancelEventName, function() {
+           $(this).removeClass("pressed"); 
+           $(this).unbind(cancelEventName);
+           $(this).unbind(cancelEventName);
         });
     });
 }

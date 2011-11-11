@@ -119,17 +119,21 @@ class CashTotal < ActiveRecord::Base
       @orders.each do |order|
         order.order_items.each do |order_item|
             
-          @category_name = order_item.product.category.name
-          
-          if order_item.product.category.parent_category
-            @department_name = order_item.product.category.parent_category.name
+          if order_item.product.category
+            @category_name = order_item.product.category.name
           else 
-            @department_name = "None"
+            @category_name = "None"
           end
             
           #sales by category
           if !@sales_by_category[@category_name]
             @sales_by_category[@category_name] = 0
+          end
+            
+          if order_item.product.category and order_item.product.category.parent_category
+            @department_name = order_item.product.category.parent_category.name
+          else 
+            @department_name = "None"
           end
             
           #sales by department

@@ -60,6 +60,18 @@ class HomeController < ApplicationController
       end
     end
     
+    #check the last timestamp for the table order sync
+    @last_order_ready_notification_time = params[:lastOrderReadyNotificationTime]
+    
+    @order_ready_notification = fetch_order_ready_notification @last_order_ready_notification_time
+    
+    if @order_ready_notification
+      @order_ready_request_time = @order_ready['order_ready_request_time']
+      @order_ready_request_employee_id = @order_ready['order_ready_request_employee_id']
+      @order_ready_request_table_id = @order_ready['order_ready_request_table_id']
+      @new_reload_app_update_time = @order_ready_request_time.to_i + 1  
+    end
+    
     store_receipt_html
     update_terminal_timestamp
     
@@ -131,8 +143,6 @@ class HomeController < ApplicationController
   
   def request_terminal_reload
     request_reload_app @terminal_id
-    
-    update_html5_cache_timestamp
     
     redirect_to(:back, :notice => 'Reload request sent.')
   end

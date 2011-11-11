@@ -1,0 +1,9 @@
+$("#table_grid_div_" + <%=@table_id%>).HideBubblePopup();
+
+<% if @rename %>
+  $('#table_name_' + <%=@room_object_id%>).html("<%=@new_label%>");
+  $('#table_grid_div_' + <%=@table_id%>).data("perm_id", "<%=@new_label%>");
+  setStatusMessage("Table renamed");
+<% else %>
+  setStatusMessage("<%=@message%>", false, false);
+<% end %>

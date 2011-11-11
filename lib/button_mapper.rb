@@ -54,6 +54,7 @@ class ButtonMapper
   MODIFY_TERMINALS_BUTTON = 51
   PRINT_BILL_BUTTON = 52
   COURSE_BUTTON = 53
+  KITCHEN_SCREEN_BUTTON = 54
   
   def action_for_button button
 
@@ -166,6 +167,8 @@ class ButtonMapper
       @retval = wrap_with_menu_screen_function_check "addCourseEndToOrder(); return false;";
     when PRINT_BILL_BUTTON
       @retval = "printBill();"
+    when KITCHEN_SCREEN_BUTTON
+      @retval = "window.location = '#{kitchen_path}'; return false;"
     end
 
     @retval

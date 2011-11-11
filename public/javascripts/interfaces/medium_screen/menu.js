@@ -205,6 +205,8 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         for(var j=0; j<orderItem.oia_items.length; j++) {
             oia_is_add = orderItem.oia_items[j].is_add;
             
+            orderHTML += clearHTML;
+            
             if(!orderItem.oia_items[j].is_note) {
                 orderHTML += "<div class='oia_add'>" + (oia_is_add ? "Add" : "No") + "</div>";
             }
@@ -352,20 +354,10 @@ function showTablesSubscreen() {
     $('#table_screen').show();
 }
 
-var waitForClickFinish = false;
 function tableNumberSelectKeypadClick(val) {
-    while(waitForClickFinish) {
-        //wait for the previous click handler to finish
-    }
-    
-    waitForClickFinish = true;
-    
-    
-    newVal = $('#table_num').val().toString() + val;
+    var newVal = $('#table_num').val().toString() + val;
     $('#table_number_show').html(newVal);
     $('#table_num').val(newVal);
-    
-    waitForClickFinish = false;
 }
 
 function doCanceltableNumberSelectKeypad() {
@@ -376,6 +368,14 @@ function doCanceltableNumberSelectKeypad() {
 }
 
 function doSubmitTableNumber() {
+    //TODO: make sure table labels are unique numbers!!!!
+    
+    
+    
+    
+    
+    
+    
     table_label = $('#table_num').val().toString();
     
     //check table exists
@@ -509,4 +509,16 @@ function tableScreenBack() {
         return;
     }
     showMenuItemsSubscreen();
+}
+
+function doReceiveOrderReady(employee_id, table_id) {
+    console.log("got order ready notification for " + employee_id + " " + current_user_id + " for table " + table_id);
+    
+    if(employee_id == current_user_id) {
+        if(inAndroidWrapper()) {
+            demoJSInterface.vibrate();
+        }
+    
+        niceAlert("Order for table id " + table_id + " is ready", "Order Ready!");    
+    }
 }

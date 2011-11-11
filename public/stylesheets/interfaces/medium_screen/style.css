@@ -253,6 +253,7 @@ div#menu_screen div#menu_container div#menu_items_container div.item {
     -moz-border-radius: 3px;
     border-radius: 3px;
     cursor: pointer;
+    background: #FFF;
 }
 
 div#menu_screen div#menu_container div#menu_items_container div.item_name {
@@ -449,6 +450,7 @@ div.receipt div.till_roll div.oia_price {
     width: 0px;
     text-align: right;
     font-size: 19px;
+    overflow: hidden;
 }
 
 div.receipt div.till_roll div.total {
@@ -561,7 +563,7 @@ div#functions_screen div#header div#back_button {
 
 div#functions_screen div#header div.header_label {
     float: left;
-    margin-left: 85px;
+    margin-left: 95px;
 }
 
 div#functions_screen div#functions_buttons_container {
@@ -765,6 +767,7 @@ input#niceAlertContainer_okButton {
 }
 
 div#menu_screen div#menu_container div#menu_items_container div.items div.item.pressed,
+div#menu_screen div#menu_container div#menu_pages_container div.page.pressed,
 #wrapper div.button.pressed,
 #wrapper div.key.pressed,
 #wrapper div.go_key.pressed,
@@ -777,6 +780,7 @@ div#menu_screen div#menu_container div#menu_items_container div.items div.item.p
 }
 
 div#menu_screen div#menu_container div#menu_items_container div.items div.item.pressed *,
+div#menu_screen div#menu_container div#menu_pages_container div.page.pressed *,
 #wrapper div.button.pressed *,
 #wrapper div.key.pressed *,
 #wrapper div.go_key.pressed *,
@@ -785,6 +789,12 @@ div#menu_screen div#menu_container div#menu_items_container div.items div.item.p
     -moz-opacity: 90;
     filter:alpha(opacity: .90);
     opacity: .90;     
+}
+
+div#menu_screen div#menu_container div#menu_items_container div.items div.item.pressed img {
+    -moz-opacity: 30;
+    filter:alpha(opacity: .30);
+    opacity: .30;
 }
 
 /* End Generic Styles */

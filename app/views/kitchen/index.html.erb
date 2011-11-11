@@ -1,0 +1,65 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "interfaces/large_screen/kitchen" %>
+<% end %>
+
+<div id="kitchen_screen" class="kitchen">
+  <div id="header">
+    <div id="tabs">
+
+    </div>
+
+    <div id="function_buttons">
+      <div class="button" onclick="goTo('<%=home_path%>#screen=menu');">
+        <div class="icon">
+          <%= image_tag "/images/button_logos/manage_sales_screen_button.png" %>
+        </div>
+        <div class="button_name">Sales Screen</div>
+      </div>
+
+      <div class="button" onclick="adminShowMoreOptions();">
+        <div class="icon">
+          <%= image_tag "/images/button_logos/more_options_button.png" %>
+        </div>
+        <div class="button_name">More Options</div>
+      </div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+  </div>
+
+  <div id="loading_message">
+    <%= image_tag "spinner.gif" %> Loading Table <span id="loading_table"></span>...
+  </div>
+
+  <div id="receipts_container" class="jscrollpane">
+
+    <div id="no_orders_message">No Orders Yet</div>
+
+    <div id="empty_orders">
+      <% Room.all.each do |room|%>
+        <% room.table_infos.each do |table_info| %>
+          <div id="kitchen_receipt_container_<%= table_info.id %>" class="kitchen_receipt_container" data-table_id="<%= table_info.id %>">
+
+            <div class="header">
+              <div class="table_number">
+                Table <%= table_info.perm_id %>
+              </div>
+              <div id="kitchen_table_<%= table_info.id %>_receipt_order_num" class="order_num"></div>
+              <div class="clear">&nbsp;</div>
+            </div>
+
+            <div id="kitchen_table_<%= table_info.id %>_receipt" class="receipt">
+              <div id="kitchen_table_<%= table_info.id %>_till_roll" class="till_roll"></div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+    
+    <div id="active_orders"><div></div></div>
+    
+    <div id="filled_orders"><div></div></div>
+
+    <div class="clear">&nbsp;</div>
+
+  </div>

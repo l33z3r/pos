@@ -69,9 +69,9 @@ function addCourseEndToOrder() {
  
     if(lastReceiptItem) {
         var itemNumber = lastReceiptItem.data("item_number");
-        
+        console.log("adding to " + itemNumber);
         var currentOrder = getCurrentOrder();
-        
+        console.log("item " + itemNumber + " is course? " + (currentOrder.items[itemNumber-1].is_course) + " " + (currentOrder.items[itemNumber-1].is_course == true));
         if(!currentOrder.items[itemNumber-1].is_course) {
             currentOrder.items[itemNumber-1].is_course = true;
             currentOrder.courses.push(itemNumber);

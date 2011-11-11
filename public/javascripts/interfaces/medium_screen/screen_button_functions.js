@@ -18,5 +18,6 @@ function showTablesScreen() {
 }
 
 function showMoreOptionsScreen() {
+    showSpinner();
     goTo('/mbl#menu');
 }

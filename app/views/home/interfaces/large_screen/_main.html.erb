@@ -1,21 +1,25 @@
-<%= render "/home/interfaces/large_screen/screens/cash_screen" %>
+<div class="menu">
 
-<%= render "/home/interfaces/large_screen/screens/login_screen" %>
+  <%= render "/home/interfaces/large_screen/screens/cash_screen" %>
 
-<%= render "/home/interfaces/large_screen/screens/tables_screen" %>
+  <%= render "/home/interfaces/large_screen/screens/login_screen" %>
 
-<%= render "/home/interfaces/large_screen/screens/more_options_screen" %>
+  <%= render "/home/interfaces/large_screen/screens/tables_screen" %>
 
-<%= render "/home/interfaces/large_screen/screens/cash_reports_screen" %>
+  <%= render "/home/interfaces/large_screen/screens/more_options_screen" %>
 
-<%= render "/home/interfaces/large_screen/screens/float_screen" %>
+  <%= render "/home/interfaces/large_screen/screens/cash_reports_screen" %>
 
-<!-- menu screen should stay last in this list as it has 
-some padding at end which makes a gap appear above the other screens -->
-<%= render "/home/interfaces/large_screen/screens/menu_screen" %>
+  <%= render "/home/interfaces/large_screen/screens/float_screen" %>
 
-<!-- iframe to print in -->
-<%= render "/partials/interfaces/shared/print_frame" %>
+  <!-- menu screen should stay last in this list as it has 
+  some padding at end which makes a gap appear above the other screens -->
+  <%= render "/home/interfaces/large_screen/screens/menu_screen" %>
 
-<!-- render the re-usable utilities -->
-<%= render "/partials/interfaces/large_screen/utilities" %>
+  <!-- iframe to print in -->
+  <%= render "/partials/interfaces/shared/print_frame" %>
+
+  <!-- render the re-usable utilities -->
+  <%= render "/partials/interfaces/large_screen/utilities" %>
+
+</div>

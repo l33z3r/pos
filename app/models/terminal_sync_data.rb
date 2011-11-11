@@ -1,11 +1,12 @@
 class TerminalSyncData < ActiveRecord::Base
   TERMINAL_RELOAD_REQUEST = 1
   SYNC_TABLE_ORDER_REQUEST = 2
+  ORDER_READY_REQUEST = 3
   
   serialize :data, Hash
   
   validates :sync_type, :presence => true
-  validates :sync_type, :inclusion => { :in => [TERMINAL_RELOAD_REQUEST, SYNC_TABLE_ORDER_REQUEST] }
+  validates :sync_type, :inclusion => { :in => [TERMINAL_RELOAD_REQUEST, SYNC_TABLE_ORDER_REQUEST, ORDER_READY_REQUEST] }
   validates :time, :presence => true
   validates :data, :presence => true
   
@@ -15,6 +16,10 @@ class TerminalSyncData < ActiveRecord::Base
   
   def self.fetch_terminal_reload_request_times
     find_all_by_sync_type(TERMINAL_RELOAD_REQUEST, :order => "terminal_sync_data.time", :lock => true)
+  end
+  
+  def self.fetch_order_ready_request_times
+    find_all_by_sync_type(ORDER_READY_REQUEST, :order => "terminal_sync_data.time", :lock => true)
   end
   
   def self.remove_sync_data_for_table table_id
@@ -44,6 +49,17 @@ class TerminalSyncData < ActiveRecord::Base
     
       TerminalSyncData.create!({:sync_type => TerminalSyncData::TERMINAL_RELOAD_REQUEST, 
           :time => Time.now.to_i.to_s, :data => {:terminal_id => terminal_id, :hard_reset => true}})
+    end
+  end
+  
+  def self.request_notify_order_ready employee_id, table_id
+    TerminalSyncData.transaction do
+#      TerminalSyncData.fetch_order_ready_request_times.each do |tsd|
+#        tsd.destroy
+#      end
+    
+      TerminalSyncData.create!({:sync_type => TerminalSyncData::ORDER_READY_REQUEST, 
+          :time => Time.now.to_i.to_s, :data => {:employee_id => employee_id, :table_id => table_id}})
     end
   end
   
