@@ -24,6 +24,16 @@ class DisplayButtonRole < ActiveRecord::Base
       dbr.save
     end
   end
+  
+  def self.ensure_hidden_buttons_restricted
+    DisplayButton.find(ButtonMapper::RESTRICTED_BUTTON_IDS).each do |button|
+      button.display_button_roles.each do |dbr|
+        dbr.show_on_sales_screen = false
+        dbr.show_on_admin_screen = false
+        dbr.save
+      end
+    end
+  end
 end
 
 # == Schema Information

@@ -301,7 +301,6 @@ function makeBiggerAdminTableLinks() {
     });
 }
 
-
 function loadProductsForLetter(character){
     changeStyleButton(character);
     $("#current_letter").val(character);

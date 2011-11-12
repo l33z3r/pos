@@ -1,4 +1,7 @@
-<% DisplayButtonRole.ensure_super_user_access %>
+<% 
+DisplayButtonRole.ensure_super_user_access 
+DisplayButtonRole.ensure_hidden_buttons_restricted
+%>
 
 <% content_for :admin_subnav_links_right do %>
   <%= render :partial => "/partials/interfaces/large_screen/ok_cancel_buttons" %>
@@ -60,6 +63,9 @@
                     </tr>
 
                     <% dbg.display_buttons.each do |db| %>
+
+                      <% next if ButtonMapper::RESTRICTED_BUTTON_IDS.include?(db.id) %>
+
                       <tr>
                         <td><%= db.button_text %></td>
                         <% Role.find(:all, :order => :id).each do |role| %>

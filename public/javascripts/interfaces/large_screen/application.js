@@ -45,6 +45,20 @@ function doGlobalInit() {
     
     if(inMenuContext()) {
         initMenu();
+        
+        //init the display button passcode request popup
+        $('#menu_buttons_popup_anchor').CreateBubblePopup();
+        $('#menu_buttons_popup_anchor').FreezeBubblePopup();
+    
+        lastSaleInfo = getLastSaleInfo();
+
+        if(lastSaleInfo) {
+            setLoginReceipt(lastSaleInfo.title, lastSaleInfo.contentHTML)
+        }
+    
+        showInitialScreen();
+    
+        showScreenFromHashParams();
     } else if(inKitchenContext()) {
         initKitchen();
     }
@@ -54,24 +68,6 @@ function doGlobalInit() {
         "calendar":"false",
         "format": clockFormat
     });
-    
-    //init the display button passcode request popup
-    $('#menu_buttons_popup_anchor').CreateBubblePopup();
-    $('#menu_buttons_popup_anchor').FreezeBubblePopup();
-    
-    lastSaleInfo = getLastSaleInfo();
-
-    if(lastSaleInfo) {
-        //setLoginReceipt(lastSaleInfo.title, lastSaleInfo.contentHTML)
-    }
-    
-    showInitialScreen();
-    
-    showScreenFromHashParams();
-    
-    //    $('#flash_container').delay(500).fadeIn(500, function() {
-    //        $(this).delay(3000).fadeOut(500);
-    //    });
     
     //any input that gains focus will call this function
     $("input,textarea").live("focus", function(event) {

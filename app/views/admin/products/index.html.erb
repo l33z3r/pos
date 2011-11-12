@@ -1,96 +1,108 @@
 <% @nav_title = "Products" %>
 
-  <% content_for :admin_subnav_links_left do %>
-    <div class="button" onclick="goTo('<%= new_admin_product_path %>');">
-      <div class="icon">
-        <%= image_tag "/images/button_logos/create_product_button.png" %>
-      </div>
-      <div class="button_name">Create Product</div>
+<% content_for :admin_subnav_links_left do %>
+  <div class="button" onclick="goTo('<%= new_admin_product_path %>');">
+    <div class="icon">
+      <%= image_tag "/images/button_logos/create_product_button.png" %>
     </div>
-  <% end %>
+    <div class="button_name">Create Product</div>
+  </div>
+<% end %>
 
-  <div id="admin_product_list">
+<% if params[:show_specials_only] %>
+  <script type="text/javascript">
+    $(function() {
+      $('#is_special_equals').attr("checked", true);
+      $('#submit_search_button').click();
+    });
+  </script>
+<% end %>
 
-        <div id="search_fields_container">
-           <div class="left_col">
-            <div class="field">
-              <div class="label">Code No./UPC</div>
-              <%= text_field_tag :code_num_equals %>
-              <div class="clear">&nbsp;</div>
-            </div>
-            <div class="field">
-              <div class="label">Description</div>
-              <%= text_field_tag :description_contains %>
-              <div class="clear">&nbsp;</div>
-            </div>
-          </div>
-          <div class="center_col">
-            <div class="field">
-              <div class="label">Category</div>
-              <%= collection_select :category_id, :equals, Category.find(:all), :id, :name, options = {:include_blank => "Any"} %>
-              <div class="clear">&nbsp;</div>
-            </div>
-            <div class="field">
-              <div class="label">Menu</div>
-                <%= collection_select :menu_page_1_id, :equals, MenuPage.find(:all), :id, :name, options = {:include_blank => "Any"} %>
-              <div class="clear">&nbsp;</div>
-            </div>
-          </div>
+<div id="admin_product_list">
 
-          <div class="right_col">
-            <div class="field">
-              <div class="label">Search All Fields</div>
-                <%= text_field_tag :all_fields %>
-              <div class="clear">&nbsp;</div>
-            </div>
-            <div class="field">
-              <div class="label">List Specials Only</div>
-                <%= check_box_tag :is_special_equals %>
-              <div class="clear">&nbsp;</div>
-            </div>
-          </div>
-
-          <div class="button_col">
-            <div class="button" onclick="runSearch();">
-              <div class="icon">
-                <%= image_tag "/images/button_logos/unused/search_48.png" %>
-              </div>
-              <div class="button_name">Search</div>
-            </div>
-          </div>
+  <div id="search_fields_container">
+    <div class="left_col">
+      <div class="field">
+        <div class="label">Code No./UPC</div>
+        <%= text_field_tag :code_num_equals %>
+        <div class="clear">&nbsp;</div>
       </div>
+      <div class="field">
+        <div class="label">Description</div>
+        <%= text_field_tag :description_contains %>
+        <div class="clear">&nbsp;</div>
+      </div>
+    </div>
+    <div class="center_col">
+      <div class="field">
+        <div class="label">Category</div>
+        <%= collection_select :category_id, :equals, Category.find(:all), :id, :name, options = {:include_blank => "Any"} %>
+        <div class="clear">&nbsp;</div>
+      </div>
+      <div class="field">
+        <div class="label">Menu</div>
+        <%= collection_select :menu_page_1_id, :equals, MenuPage.find(:all), :id, :name, options = {:include_blank => "Any"} %>
+        <div class="clear">&nbsp;</div>
+      </div>
+    </div>
 
-    <section id="products">
+    <div class="right_col">
+      <div class="field">
+        <div class="label">Search All Fields</div>
+        <%= text_field_tag :all_fields %>
+        <div class="clear">&nbsp;</div>
+      </div>
+      <div class="field">
+        <div class="label">Specials Only</div>
+        <%= check_box_tag :is_special_equals %>
+        <div class="clear">&nbsp;</div>
+      </div>
+    </div>
 
-      <div class="pagination_links">
-        <div class="links">
-          <div class="pagination">
+    <div class="button_col">
+      <div class="button" id="submit_search_button" onclick="runSearch();">
+        <div class="icon">
+          <%= image_tag "/images/button_logos/unused/search_48.png" %>
+        </div>
+        <div class="button_name">Search</div>
+      </div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+  </div>
+
+  <section id="products" class="no_scroll_pane">
+
+    <div class="pagination_links">
+      <div class="links">
+        <div class="pagination">
           <a href="#" onclick="loadProductsForPreviousLetter();"><%= image_tag("prev.gif", :border=>0) %></a>
           <a href="#" onclick="loadProductsForAllLetters();" id="button_all">All</a>
           <% @letters.each do |letter|%>
-              <a href="#" onclick="loadProductsForLetter('<%= letter %>');" id="button_<%= letter %>">
-                <%= letter %>
-              </a>
-              <script>if(barLetters.indexOf('<%= letter %>')==-1){barLetters.push('<%= letter %>')};</script>
+            <a href="#" onclick="loadProductsForLetter('<%= letter %>');" id="button_<%= letter %>">
+              <%= letter %>
+            </a>
+            <script>if(barLetters.indexOf('<%= letter %>')==-1){barLetters.push('<%= letter %>')};</script>
           <% end %>
           <a href="#" onclick="loadProductsForNumber();" id="button_hash">#</a>
           <a href="#" onclick="loadProductsForNextLetter();"><%= image_tag("next.gif", :border=>0) %></a>
-          </div>
         </div>
       </div>
-
-      <div class="clear_top_margin_20">&nbsp;</div>
-
-      <%= hidden_field_tag 'current_letter', @selected_letter %>
-
-      <div id="products_ajax">
-        
-        <%= render 'products' %> 
-        
-      </div>
-
-      <div class="clear_top_margin_20">&nbsp;</div>
-
     </div>
-    
-  </section>
+
+    <div class="clear_top_margin_20">&nbsp;</div>
+
+    <%= hidden_field_tag 'current_letter', @selected_letter %>
+
+
+    <div id="products_container" class="jscrollpane">
+      <div id="products_ajax">
+        <%= render 'products' %>
+      </div>
+    </div>
+
+    <div class="clear_top_margin_20">&nbsp;</div>
+
+</div>
+
+</section>

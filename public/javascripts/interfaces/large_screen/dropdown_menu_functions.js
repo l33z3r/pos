@@ -15,6 +15,9 @@ function menuScreenDropdownItemSelected(index, name) {
     } else if(index == 2) {
         startStockTakeMode();
         return;
+    } else if(index == 3) {
+        goToSpecials();
+        return;
     }
     
     setShortcutDropdownDefaultText();
@@ -218,4 +221,8 @@ function updateStock(type) {
             }
         });
     }
+}
+
+function goToSpecials() {
+    goTo("/admin/products?show_specials_only=true");
 }
