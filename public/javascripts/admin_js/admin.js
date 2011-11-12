@@ -370,7 +370,9 @@ function changeStyleButton(letter){
     $('#button_'+letter).addClass('letter_link_clicked');
 }
 
-function runSearch(){
+function runSearch() {
+    $("#products_ajax").html("Loading...");
+    
     var numbers = ($("#current_letter").val()==="hash") ? ['0','1','2','3','4','5','6','7','8','9'] : "";
     var letter = ($("#current_letter").val()!=="all" && $("#current_letter").val()!=="hash") ? $('#current_letter').val() : "";
     var is_special = ($("#is_special_equals").is(":checked")) ? "true" : "";

@@ -82,7 +82,7 @@
             <a href="#" onclick="loadProductsForLetter('<%= letter %>');" id="button_<%= letter %>">
               <%= letter %>
             </a>
-            <script>if(barLetters.indexOf('<%= letter %>')==-1){barLetters.push('<%= letter %>')};</script>
+            <script type="text/javascript">if(barLetters.indexOf('<%= letter %>')==-1){barLetters.push('<%= letter %>')};</script>
           <% end %>
           <a href="#" onclick="loadProductsForNumber();" id="button_hash">#</a>
           <a href="#" onclick="loadProductsForNextLetter();"><%= image_tag("next.gif", :border=>0) %></a>
