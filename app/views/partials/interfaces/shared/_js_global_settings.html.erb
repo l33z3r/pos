@@ -1,4 +1,10 @@
 <script type="text/javascript">
+  
+  //if we pass this param, we clear our local data, this is mainly used in the mobile app
+  <% if params[:reset_local_storage] %>
+      clearLocalStorageAndCookies();
+  <% end %>
+  
   //load the setting for bypass pin
   var bypassPin = <%= GlobalSetting.parsed_setting_for GlobalSetting::BYPASS_PIN %>;
     
@@ -57,7 +63,7 @@
   
   var terminalID = "<%=@terminal_id%>";
   
-  var pollingAmount = <%= (ENV['RAILS_ENV'] == 'development') ? "5000" : "1000" %>;
+  var pollingAmount = <%= (ENV['RAILS_ENV'] == 'development') ? "1000" : "1000" %>;
   
   var using_mobile = <%= mobile_device? ? "true" : "false" %>;
   
@@ -88,4 +94,5 @@
   var transferStockType = <%= StockTransaction::STOCK_TRANSFER %>;
   
   var webSocketServiceIP = "<%= GlobalSetting.parsed_setting_for GlobalSetting::WEBSOCKET_IP, {:terminal_fingerprint => @terminal_fingerprint} %>";
+
 </script>

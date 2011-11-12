@@ -754,7 +754,9 @@ div#nice_alert {
     line-height: 32px;
 }
 
-input#niceAlertContainer_okButton {
+input#niceAlertContainer_okButton,
+input#niceAlertContainer_yesButton,
+input#niceAlertContainer_noButton {
     font-size: 28px;
     font-weight: bold;
     width: 260px;
@@ -764,6 +766,13 @@ input#niceAlertContainer_okButton {
     border: 1px solid #000;
     border-radius: 5px;
     box-shadow: 0px 1px 1px 0px #777;
+}
+
+input#niceAlertContainer_yesButton,
+input#niceAlertContainer_noButton {
+    float: left;
+    width: 185px;
+    max-width: 185px;
 }
 
 div#menu_screen div#menu_container div#menu_items_container div.items div.item.pressed,

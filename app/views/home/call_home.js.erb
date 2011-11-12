@@ -29,5 +29,5 @@ immediateCallHome = false;
 
 <% if @order_ready_notification %>
   lastOrderReadyNotificationTime = <%= @new_reload_app_update_time %>;
-  doReceiveOrderReady(<%= @order_ready_request_employee_id %>, <%= @order_ready_request_table_id %>);
+  doReceiveOrderReady(<%= @order_ready_request_employee_id %>, <%= @order_ready_request_table_id %>, "<%= @order_ready_reqeust_table_label %>");
 <% end %>

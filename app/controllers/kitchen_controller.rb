@@ -12,7 +12,7 @@ class KitchenController < ApplicationController
     @notification_sent = false
     
     if @table_info and @employee
-      TerminalSyncData.request_notify_order_ready @employee_id, @table_id
+      TerminalSyncData.request_notify_order_ready @employee_id, @table_info
       @notification_sent = true
     end
   end

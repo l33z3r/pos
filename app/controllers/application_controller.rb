@@ -144,13 +144,13 @@ class ApplicationController < ActionController::Base
     @order_ready_notification_times.each do |order_ready_request_time, order_ready_data|
       order_ready_request_employee_id = order_ready_data[:employee_id]
       order_ready_request_table_id = order_ready_data[:table_id]
-      
+      order_ready_request_table_label = order_ready_data[:table_label]
       if order_ready_request_time.to_i > time.to_i
         @order_ready = {}
         @order_ready['order_ready_request_time'] = order_ready_request_time
         @order_ready['order_ready_request_employee_id'] = order_ready_request_employee_id
         @order_ready['order_ready_request_table_id'] = order_ready_request_table_id
-        
+        @order_ready['order_ready_request_table_label'] = order_ready_request_table_label
         return @order_ready
       end
     end
@@ -187,9 +187,13 @@ class ApplicationController < ActionController::Base
   
   def check_reset_session
     if params[:reset_session]
+      #save the interface we are on
+      @current_interface = current_interface
       reset_session
       clear_caches
       flash[:notice] = "Session reset!"
+      logger.info "saved interface: #{@current_interface}x"
+      session[:current_interface] = @current_interface
       redirect_to home_path
     end
   end

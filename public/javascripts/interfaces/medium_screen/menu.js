@@ -9,9 +9,8 @@ function initMenu() {
     currentMenuPage = 1;
     currentOrder = new Array();
 
-    loadCurrentOrder();
-    
-    displayLastReceipt();
+    $('#table_num_holder').html("Select Table");
+    showTablesSubscreen();
     
     initModifierGrid();
 }
@@ -313,9 +312,7 @@ function postDoSyncTableOrder() {
     setStatusMessage("Order Sent");
     
     //vibrate!
-    if(inAndroidWrapper()) {
-        demoJSInterface.vibrate();
-    }
+    vibrate();
 }
 
 function showModifyOrderItemScreen() {
@@ -511,14 +508,51 @@ function tableScreenBack() {
     showMenuItemsSubscreen();
 }
 
-function doReceiveOrderReady(employee_id, table_id) {
-    console.log("got order ready notification for " + employee_id + " " + current_user_id + " for table " + table_id);
+function doReceiveOrderReady(employee_id, table_id, table_label) {
+    hidePreviousOrderReadyPopup();
+    
+    console.log("got order ready notification for employee id: " + employee_id + " for table: " + table_label);
     
     if(employee_id == current_user_id) {
-        if(inAndroidWrapper()) {
-            demoJSInterface.vibrate();
-        }
+        vibrateConstant();        
+     
+        ModalPopups.Confirm('niceAlertContainer',
+            'Order Ready!', "<div id='nice_alert'>Order for table <b>" + table_label + "</b> is ready</div>",
+            {
+                yesButtonText: 'OK',
+                noButtonText: 'Cancel',
+                onYes: 'orderReadyOKClicked()',
+                onNo: 'orderReadyCancelClicked()',
+                width: 400,
+                height: 250
+            } );
+    }
+}
+
+function orderReadyOKClicked() {
+    hideOrderReadyPopup();
+    stopVibrate();
     
-        niceAlert("Order for table id " + table_id + " is ready", "Order Ready!");    
+    //ajax to say accepted
+    console.log("Order accepted!!");
+}
+
+function orderReadyCancelClicked() {
+    hideOrderReadyPopup();
+    stopVibrate();
+    
+    //ajax to say rejected
+    console.log("Order rejected!!");
+}
+
+function hidePreviousOrderReadyPopup() {
+    hideOrderReadyPopup();
+}
+
+function hideOrderReadyPopup() {
+    try {
+        ModalPopups.Close('niceAlertContainer');
+    } catch (e) {
+        
     }
 }

@@ -1,5 +1,14 @@
 <% if @notification_sent %>
-  niceAlert("Employee <%= @employee.nickname %>  has been notified of order for table <%= @table_info.perm_id %>", true, false);
+  ModalPopups.Confirm('niceAlertContainer',
+  'Order Ready!', "<div id='nice_alert'><%= @employee.nickname %>  has been notified of order for table <%= @table_info.perm_id %></div>",
+  {
+  yesButtonText: 'OK',
+  noButtonText: 'Cancel',
+  onYes: 'orderReadyNotificationSentConfirm()',
+  onNo: 'orderReadyNotificationSentCancel()',
+  width: 400,
+  height: 250
+  } );
 <% else %>
-  niceAlert("Error sending notification to <%= @employee.nickname %>", true, false);
+  niceAlert("Error sending notification to <%= @employee.nickname %>", "Notification");
 <% end %>

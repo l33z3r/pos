@@ -39,9 +39,9 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         nextUserIDToSyncWith = employees[i].id;
         
         //skip if terminal and user same
-        if(recvdTerminalID == terminalID && terminalEmployeeID == nextUserIDToSyncWith) {
-            continue;
-        }
+//        if(recvdTerminalID == terminalID && terminalEmployeeID == nextUserIDToSyncWith) {
+//            continue;
+//        }
         
         doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith);
     }
@@ -176,6 +176,9 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     for(var j = 0; j < tableOrders[tableID].courses.length; j++) {
         tableOrders[tableID].courses[j] = parseInt(tableOrders[tableID].courses[j]);
     }
+    
+    //when we hit order we send the table if embedded in the json, so we must copy it here so that it is save in the web db
+    tableOrders[tableID].table = tableOrderDataJSON.table;
     
     calculateOrderTotal(tableOrders[tableID]);
     storeTableOrderInStorage(nextUserIDToSyncWith, tableID, tableOrders[tableID]);

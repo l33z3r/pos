@@ -77,6 +77,10 @@ div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.head
     background-color: red;
 }
 
+div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.header.returned {
+    background-color: orange;
+}
+
 div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.header div.table_number {
     font-weight: bold;
     float: left;
@@ -94,7 +98,6 @@ div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.rece
     overflow-y: auto;
     display: block;
     background-color: white;
-    padding: 5px;
 }
 
 div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.receipt div.till_roll {

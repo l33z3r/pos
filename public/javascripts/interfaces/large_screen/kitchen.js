@@ -30,6 +30,14 @@ function renderReceipt(tableID) {
     //if there are no courses, then treat the whole order as one course
     if(numCourses == 0) {
         numCourses = 1;
+    } else {
+        //check if there are items after the last course line
+        lastCourseLineIndex = nextKitchenOrder.courses[nextKitchenOrder.courses.length-1];
+        
+        if(lastCourseLineIndex != nextKitchenOrder.items.length) {
+            //add a course for the last few items
+            numCourses++;
+        }
     }
         
     var numNewCourses = numCourses - courseChecks[tableID].length;
@@ -69,7 +77,18 @@ function renderReceipt(tableID) {
     var movedToFilled = false;
     
     if(orderComplete(tableID)) {
-        $('#kitchen_receipt_container_' + tableID).appendTo('#filled_orders');
+        if(orderInFilledSection(tableID)) {
+            //something must have changed in the order so put it back into the active orders
+            console.log("something changed in order for tableID: " + tableID + " moving it back to the active orders");
+            
+            $('#kitchen_receipt_container_' + tableID + ' .header').removeClass("being_removed");
+            $('#kitchen_receipt_container_' + tableID + ' .header').addClass("returned");
+            
+            $('#kitchen_receipt_container_' + tableID).appendTo('#active_orders');
+        } else {
+            console.log("moving completed order for tableID: " + tableID + " into filled orders");
+            $('#kitchen_receipt_container_' + tableID).appendTo('#filled_orders');
+        }
         movedToFilled = true;
     }
     
@@ -88,20 +107,20 @@ function renderReceipt(tableID) {
         $('#kitchen_receipt_container_' + tableID).appendTo('#active_orders');
     }
 
-    //initScrollPanes();
-
     kitchenTableRecptScroll(tableID);
     
-    $('#no_orders_message').hide();
+    if(noActiveOrders()) {
+        $('#no_orders_message').show();
+    } else {
+        $('#no_orders_message').hide();
+    }
 }
 
 function finishedLoadingKitchenScreen() {
     $('#kitchen_screen #loading_message').hide();
     $('#kitchen_screen #receipts_container').show();
     
-    //initScrollPanes();
-    
-    setTimeout(kitchenTableRecptScrollAll, 20);
+    setTimeout(kitchenTableRecptScrollAll, 200);
 }
 
 function clearKitchenTableReceipt(tableID) {
@@ -155,6 +174,10 @@ function orderInFilledSection(tableID) {
     return isFilled;
 }
 
+function noActiveOrders() {
+    return $('#active_orders>div').length == 0;
+}
+
 function orderComplete(tableID) {
     console.log("checking order complete " + tableID);
     //have we checked off all courses in this order
@@ -166,12 +189,13 @@ function orderComplete(tableID) {
         console.log("course " + i + " checked? " + (tableCourseChecks[i]==true));
         orderComplete = orderComplete && tableCourseChecks[i];
     }
+    
     console.log("Order complete for table " + tableID + "? " + orderComplete);
     return orderComplete;
 }
 
 function sendCourseCheck(orderLine) {
-    var tableID = orderLine.parent().parent().parent().data("table_id");
+    var tableID = orderLine.parents(".kitchen_receipt_container").data("table_id");
     
     console.log("sending course check for table " + tableID);
      
@@ -180,19 +204,21 @@ function sendCourseCheck(orderLine) {
     var orderFilled = false;
     
     //mark the next course as checked
-    for(var i=0; i<tableCourseChecks.length; i++) {
+    var i;
+        
+    for(i=0; i<tableCourseChecks.length; i++) {
         console.log("course check " + i + " " + tableCourseChecks[i]);
         if(!tableCourseChecks[i]) {
             tableCourseChecks[i] = true;
-            
-            //check if the order is complete, and if it is
-            //move it to the filled_orders section
-            if(i == tableCourseChecks.length - 1) {
-                orderFilled = true;
-            }
-            
             break;
         }
+    }
+    
+    //check if the order is complete, and if it is
+    //move it to the filled_orders section
+    //also, deal with case for one course
+    if((i >= tableCourseChecks.length - 1) || tableCourseChecks.length == 1) {
+        orderFilled = true;
     }
     
     applyCourseChecks(tableID);
@@ -214,11 +240,16 @@ function sendCourseCheck(orderLine) {
     });
     
     if(orderFilled) {
+        console.log("Order is now filled, so sending it to filled orders!");
+        $('#kitchen_receipt_container_' + tableID + ' .header').removeClass("returned");
         $('#kitchen_receipt_container_' + tableID + ' .header').addClass("being_removed");
         
         //move it to the filled section
         setTimeout(function(){
             $('#kitchen_receipt_container_' + tableID).appendTo('#filled_orders');
+            if(noActiveOrders()) {
+                $('#no_orders_message').show();
+            }
         }, 3000);
     }
     
@@ -300,4 +331,22 @@ function tableCleared(tableID) {
     $('#kitchen_receipt_container_' + tableID + ' .header').removeClass("being_removed");
     
     renderReceipt(tableID);
+}
+
+function orderReadyNotificationSentConfirm() {
+    hideOrderReadyNotificationPopup();
+//do nothing
+}
+
+function orderReadyNotificationSentCancel() {
+    hideOrderReadyNotificationPopup();
+//send a cancel
+}
+
+function hideOrderReadyNotificationPopup() {
+    try {
+        ModalPopups.Close('niceAlertContainer');
+    } catch (e) {
+        
+    }
 }

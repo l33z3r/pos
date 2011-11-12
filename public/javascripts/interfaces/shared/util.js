@@ -98,19 +98,23 @@ function doClearAndReload() {
     doIt = confirm("Are you sure you want to clear your cookies and local web storage?");
     
     if(doIt) {
-        //clear the local and session web storage
-        localStorage.clear();
-        
-        //now clear cookies
-        var c = document.cookie.split(";");
-        
-        for(var i=0;i<c.length;i++){
-            var e = c[i].indexOf("=");
-            var n= e>-1 ? c[i].substr(0,e) : c[i];
-            document.cookie = n + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-        }
+        clearLocalStorageAndCookies();
         
         doReload(true);
+    }
+}
+
+function clearLocalStorageAndCookies() {
+    //clear the local and session web storage
+    localStorage.clear();
+        
+    //now clear cookies
+    var c = document.cookie.split(";");
+        
+    for(var i=0;i<c.length;i++){
+        var e = c[i].indexOf("=");
+        var n= e>-1 ? c[i].substr(0,e) : c[i];
+        document.cookie = n + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
     }
 }
 

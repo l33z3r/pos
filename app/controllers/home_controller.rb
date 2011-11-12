@@ -69,6 +69,8 @@ class HomeController < ApplicationController
       @order_ready_request_time = @order_ready['order_ready_request_time']
       @order_ready_request_employee_id = @order_ready['order_ready_request_employee_id']
       @order_ready_request_table_id = @order_ready['order_ready_request_table_id']
+      @order_ready_reqeust_table_label = @order_ready['order_ready_request_table_label']
+      
       @new_reload_app_update_time = @order_ready_request_time.to_i + 1  
     end
     

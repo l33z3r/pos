@@ -33,7 +33,7 @@
 
   <div id="receipts_container" class="jscrollpane">
 
-    <div id="no_orders_message">No Orders Yet</div>
+    <div id="no_orders_message">No Orders...</div>
 
     <div id="empty_orders">
       <% Room.all.each do |room|%>
@@ -48,7 +48,7 @@
               <div class="clear">&nbsp;</div>
             </div>
 
-            <div id="kitchen_table_<%= table_info.id %>_receipt" class="receipt">
+            <div id="kitchen_table_<%= table_info.id %>_receipt" class="receipt receipt_jscrollpane">
               <div id="kitchen_table_<%= table_info.id %>_till_roll" class="till_roll"></div>
             </div>
           </div>
@@ -56,9 +56,9 @@
       <% end %>
     </div>
     
-    <div id="active_orders"><div></div></div>
+    <div id="active_orders"></div>
     
-    <div id="filled_orders"><div></div></div>
+    <div id="filled_orders"></div>
 
     <div class="clear">&nbsp;</div>
 

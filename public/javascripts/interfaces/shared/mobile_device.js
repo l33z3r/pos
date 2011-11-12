@@ -9,3 +9,21 @@ function hideSpinner() {
         demoJSInterface.hideSpinner();
     }
 }
+
+function stopVibrate() {
+    if(inAndroidWrapper()) {
+        demoJSInterface.cancelVibrate();
+    }
+}
+
+function vibrate() {
+    if(inAndroidWrapper()) {
+        demoJSInterface.vibrate();
+    }
+}
+
+function vibrateConstant() {
+    if(inAndroidWrapper()) {
+        demoJSInterface.vibrateConstant();
+    }
+}
