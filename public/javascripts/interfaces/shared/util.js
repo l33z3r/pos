@@ -462,16 +462,12 @@ function initScrollPanes() {
     //init all the scroll panes
     $('.jscrollpane, .admin #content_container section:not(.no_scroll_pane)').jScrollPane({
         showArrows: true,
-        animateTo: false,
-        stickToBottom : true,
         autoReinitialise : true
     });
     
     if(!isTouchDevice()) {
         $('.receipt_jscrollpane').jScrollPane({
             showArrows: true,
-            animateTo: false,
-            stickToBottom : true,
             autoReinitialise : true
         });
     }
