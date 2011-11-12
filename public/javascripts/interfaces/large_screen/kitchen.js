@@ -322,6 +322,7 @@ function loadCourseChecks() {
     }
 }
 
+//this is called by the do clear order from call home
 function tableCleared(tableID) {
     courseChecks[tableID] = new Array();
     

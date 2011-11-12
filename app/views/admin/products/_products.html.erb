@@ -1,42 +1,40 @@
-<% cache("admin_product_list_page_#{@selected_letter}") do %>
-  <% if !@products.empty? %>
-        <table id="product_list" class="admin_table">
-          <thead>
-            <tr>
-              <th width="60">Image</th>
-              <th width="160">Name</th>
-              <th width="130">Category</th>
-              <th width="130">Menu</th>
-              <th width="60">Price</th>
-              <th width="60">Stock</th>
-              <th width="50">Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @products.each do |product| %>
-              <tr>
-                <td class="product_image">
-                  <div class="product_image_container">
-                    <%= link_to product_image_thumb(product, true), edit_admin_product_path(product) %>
-                  </div>
-                </td>
-                <td><%= link_to product.name, edit_admin_product_path(product) %></td>
-                <td><%= product.category.name if product.category %></td>
-                <td><%= product.menu_page_1.name if product.menu_page_1 %></td>
-                <td>
-                  <div class="product_price" id="product_price_<%=product.id%>" 
-                       onclick="updateProductPrice(<%=product.id%>, '<%=number_with_precision product.price, :precision => 2 %>')"
-                       ondblclick="updateProductPrice(<%=product.id%>, '<%=number_with_precision product.price, :precision => 2 %>')">
-                    <%= print_money product.price %>
-                  </div>
-                </td>
-                <td><%= product.quantity_in_stock if product.quantity_in_stock %></td>
-                <td><%= link_to image_tag("exit.gif", :border=>0), admin_product_path(product), :method => :delete, :confirm => "Are You Sure?" %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-  <% else %>
-    <div class="drag_message">No products found.</div>
-  <% end %>
+<% if !@products.empty? %>
+  <table id="product_list" class="admin_table">
+    <thead>
+      <tr>
+        <th width="60">Image</th>
+        <th width="160">Name</th>
+        <th width="130">Category</th>
+        <th width="130">Menu</th>
+        <th width="60">Price</th>
+        <th width="60">Stock</th>
+        <th width="50">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @products.each do |product| %>
+        <tr>
+          <td class="product_image">
+            <div class="product_image_container">
+              <%= link_to product_image_thumb(product, true), edit_admin_product_path(product) %>
+            </div>
+          </td>
+          <td><%= link_to product.name, edit_admin_product_path(product) %></td>
+          <td><%= product.category.name if product.category %></td>
+          <td><%= product.menu_page_1.name if product.menu_page_1 %></td>
+          <td>
+            <div class="product_price" id="product_price_<%=product.id%>" 
+                 onclick="updateProductPrice(<%=product.id%>, '<%=number_with_precision product.price, :precision => 2 %>')"
+                 ondblclick="updateProductPrice(<%=product.id%>, '<%=number_with_precision product.price, :precision => 2 %>')">
+                   <%= print_money product.price %>
+            </div>
+          </td>
+          <td><%= product.quantity_in_stock if product.quantity_in_stock %></td>
+          <td><%= link_to image_tag("exit.gif", :border=>0), admin_product_path(product), :method => :delete, :confirm => "Are You Sure?" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="drag_message">No products found.</div>
 <% end %>
