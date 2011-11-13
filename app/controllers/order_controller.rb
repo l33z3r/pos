@@ -73,7 +73,7 @@ class OrderController < ApplicationController
     @table = TableInfo.find_by_id(@table_id)
     
     if @table
-      do_request_sync_table_order @terminal_id, Time.now.to_i, @table_order_data, @table_id, @employee_id
+      do_request_sync_table_order @terminal_id, @table_order_data, @table_id, @employee_id
       render :json => {:success => true}.to_json
     else
       render :json => {:success => false}.to_json

@@ -250,7 +250,7 @@ function finishDoSelectMenuItem() {
     writeOrderItemToReceipt(orderItem);
     writeTotalToReceipt(currentOrder, currentOrder['total']);
 
-    menuRecptScroll();           
+    setTimeout(menuRecptScroll, 20);
 }
 
 function tableSelectMenuItem(orderItem) {
@@ -661,7 +661,7 @@ function clearOrder(selectedTable) {
         currentOrder = null;
     } else {
         clearTableOrderInStorage(current_user_id, selectedTable);
-        //dont need to worry about clearing memory as it is read in from cookie which now no longer exists
+    //dont need to worry about clearing memory as it is read in from cookie which now no longer exists
     }
     
     clearReceipt();
@@ -1041,7 +1041,7 @@ function showDiscountPopup(receiptItem) {
     //register the click handler to hide the popup when outside clicked
     registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
     
-    //TODO: manually init the radio button iphone style
+//TODO: manually init the radio button iphone style
     
     
     
@@ -1321,28 +1321,28 @@ function renderActiveTables() {
     //alert("render active tables " + activeTableIDS);
     
     $("#table_select").children('li').children('ul').children('li').each( 
-    function(id, element) {
-        //alert("ID: " + $(element).val().toString() + " El " + $(element).html() + " in:" + $.inArray($(element).val().toString(), activeTableIDS));
+        function(id, element) {
+            //alert("ID: " + $(element).val().toString() + " El " + $(element).html() + " in:" + $.inArray($(element).val().toString(), activeTableIDS));
             
-        if(typeof($(element).attr('rel')) != 'undefined') {
-            nextTableID = $(element).attr('rel').toString();
+            if(typeof($(element).attr('rel')) != 'undefined') {
+                nextTableID = $(element).attr('rel').toString();
                 
-            //alert(nextTableID);
+                //alert(nextTableID);
                 
-            if($.inArray(nextTableID, activeTableIDS) != -1) {
+                if($.inArray(nextTableID, activeTableIDS) != -1) {
             
-                $(element).addClass("active");
+                    $(element).addClass("active");
             
-                //mark the tables screen also
-                $('#table_label_' + nextTableID).addClass("active");
-            } else {
+                    //mark the tables screen also
+                    $('#table_label_' + nextTableID).addClass("active");
+                } else {
             
-                $(element).removeClass("active");
-                $('#table_label_' + nextTableID).removeClass("active");
+                    $(element).removeClass("active");
+                    $('#table_label_' + nextTableID).removeClass("active");
+                }
             }
         }
-    }
-);  
+        );  
 }
 
 function postDoSyncTableOrder() {
@@ -1411,7 +1411,7 @@ function switchToModifyOrderItemSubscreen() {
 }
 
 function postDoSelectTable() {
-    //does nothing for now, but the medium interface needed this callback
+//does nothing for now, but the medium interface needed this callback
 }
 
 function orderItemAdditionClicked(el) {

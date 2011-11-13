@@ -135,7 +135,9 @@ function kitchenTableRecptScrollAll() {
 }
 
 function kitchenTableRecptScroll(tableID) {
-    recptScroll("kitchen_table_" + tableID + "_");
+    setTimeout(function() {
+        recptScroll("kitchen_table_" + tableID + "_");
+    }, 20);
 }
 
 function orderInEmptySection(tableID) {

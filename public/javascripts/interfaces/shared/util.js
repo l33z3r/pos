@@ -468,7 +468,8 @@ function initScrollPanes() {
     if(!isTouchDevice()) {
         $('.receipt_jscrollpane').jScrollPane({
             showArrows: true,
-            autoReinitialise : true
+            autoReinitialise : true,
+            autoReinitialiseDelay : 1
         });
     }
 }

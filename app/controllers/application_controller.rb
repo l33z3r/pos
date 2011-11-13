@@ -100,7 +100,7 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  def do_request_sync_table_order terminal_id, time, table_order_data, table_id, employee_id
+  def do_request_sync_table_order terminal_id, table_order_data, table_id, employee_id
     TerminalSyncData.transaction do
       remove_previous_sync_for_table table_id
     
@@ -113,8 +113,21 @@ class ApplicationController < ActionController::Base
       
       @sync_data = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => employee_id}.to_yaml
       
+      @time = Time.now.to_i
+      
+      #make sure the time is at least 2 milliseconds afte the last sync so that it gets picked up ok
+      @last_table_order_sync = TerminalSyncData.fetch_sync_table_order_times.last
+      
+      if @last_table_order_sync
+        @last_sync_time = @last_table_order_sync.time.to_i
+      
+        if (@last_sync_time + 2) > @time
+          @time = @last_sync_time + 2
+        end
+      end
+      
       TerminalSyncData.create!({:sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 
-          :time => time, :data => @sync_data})
+          :time => @time, :data => @sync_data})
     end
   end
   
