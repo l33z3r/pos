@@ -110,6 +110,7 @@ class Admin::ProductsController < Admin::AdminController
     @product = Product.find(params[:id])
     @product.is_deleted = true
     @product.save!
+    #aca tengo que actualizar todos los menus y sacarle este producto!
   end
 
   private 

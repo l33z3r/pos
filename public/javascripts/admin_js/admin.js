@@ -414,10 +414,19 @@ function runSearch() {
     }
 }
 
-
-window.onload=function(){
+$(document).ready(function(){
     $('#button_all').addClass('letter_link_clicked');
-}
+    $('#is_deleted_equals').change(function(){
+        if($("#is_deleted_equals").is(":checked"))
+           disableSearchFields();
+        else
+            enableSearchFields();
+    });
+    $('input.filterCheck').click(function(){
+        runSearch();
+    });
+});
+
 
 function markProductAsDeleted(product_id) {
 	var answer = confirm("Are you sure?")
@@ -434,3 +443,20 @@ function markProductAsDeleted(product_id) {
 	}
 }
 
+function disableSearchFields(){
+     $("#code_num_equals").attr('disabled', 'disabled');
+     $("#description_contains").attr('disabled', 'disabled');
+     $("#category_id_equals").attr('disabled', 'disabled');
+     $("#menu_page_1_id_equals").attr('disabled', 'disabled');
+     $("#all_fields").attr('disabled', 'disabled');
+     $("#is_special_equals").attr('disabled', 'disabled');
+}
+
+function enableSearchFields(){
+     $("#code_num_equals").removeAttr('disabled');
+     $("#description_contains").removeAttr('disabled');
+     $("#category_id_equals").removeAttr('disabled');
+     $("#menu_page_1_id_equals").removeAttr('disabled');
+     $("#all_fields").removeAttr('disabled');
+     $("#is_special_equals").removeAttr('disabled');
+}
