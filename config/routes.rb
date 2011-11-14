@@ -132,6 +132,7 @@ Pos::Application.routes.draw do
     resources :products do
       member do
         post 'update_price'
+        post 'mark_as_deleted'
       end
       collection do
         get 'search'

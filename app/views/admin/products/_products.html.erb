@@ -13,7 +13,7 @@
     </thead>
     <tbody>
       <% @products.each do |product| %>
-        <tr>
+        <tr id="product_id_<%=product.id%>">
           <td class="product_image">
             <div class="product_image_container">
               <%= link_to product_image_thumb(product, true), edit_admin_product_path(product) %>
@@ -30,7 +30,7 @@
             </div>
           </td>
           <td><%= product.quantity_in_stock if product.quantity_in_stock %></td>
-          <td><%= link_to image_tag("exit.gif", :border=>0), admin_product_path(product), :method => :delete, :confirm => "Are You Sure?" %></td>
+          <td><%= link_to_function image_tag("exit.gif", :border=>0), "markProductAsDeleted(#{product.id})" %></td>
         </tr>
       <% end %>
     </tbody>
