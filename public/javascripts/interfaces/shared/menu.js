@@ -415,7 +415,7 @@ function loadCurrentOrder() {
 }
 
 function recptScroll(targetPrefix) {
-    console.log("Updating receipt: " + '#' + targetPrefix + 'till_roll');
+    //console.log("Updating receipt: " + '#' + targetPrefix + 'till_roll');
     
     if(isTouchDevice()) {
         $('#' + targetPrefix + 'till_roll').touchScroll('update');

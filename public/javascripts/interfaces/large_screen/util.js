@@ -616,3 +616,14 @@ function registerDisallowRightClick() {
 
     document.oncontextmenu=new Function("return false");
 }
+
+function setConnectionStatus(connected) {
+    var color = "#00FF33";
+    
+    if(!connected) {
+        color = "#FF0000";
+    }
+    
+    //we must be offline, so set the connection status light
+    $('#connection_status').css("background-color", color);
+}
