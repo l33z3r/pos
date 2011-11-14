@@ -376,6 +376,7 @@ function runSearch() {
     var numbers = ($("#current_letter").val()==="hash") ? ['0','1','2','3','4','5','6','7','8','9'] : "";
     var letter = ($("#current_letter").val()!=="all" && $("#current_letter").val()!=="hash") ? $('#current_letter').val() : "";
     var is_special = ($("#is_special_equals").is(":checked")) ? "true" : "";
+    var is_deleted = ($("#is_deleted_equals").is(":checked")) ? "true" : "false";
     if($("#all_fields").val().length>0){
         $.ajax({
             type: 'GET',
@@ -388,8 +389,10 @@ function runSearch() {
                     "search1[menu_page_1_id_equals]" : $("#menu_page_1_id_equals").val(),
                     "search1[name_starts_with]" : letter,
                     "search1[name_starts_with_any]" : numbers,
+                    "search1[is_deleted_equals]" : is_deleted,
                     "search2" : $("#all_fields").val(),
-                    "search3[description_or_name_or_brand_or_kitchen_note_or_button_text_line_1_or_button_text_line_2_or_button_text_line_3_contains]" : $("#all_fields").val()
+                    "search3[description_or_name_or_brand_or_kitchen_note_or_button_text_line_1_or_button_text_line_2_or_button_text_line_3_contains]" : $("#all_fields").val(),
+                    "search3[is_deleted_equals]" : is_deleted
                 }
         });
     }
@@ -404,7 +407,8 @@ function runSearch() {
                     "search1[category_id_equals]" : $("#category_id_equals").val(),
                     "search1[menu_page_1_id_equals]" : $("#menu_page_1_id_equals").val(),
                     "search1[name_starts_with]" : letter,
-                    "search1[name_starts_with_any]" : numbers
+                    "search1[name_starts_with_any]" : numbers,
+                    "search1[is_deleted_equals]" : is_deleted
                 }
         });
     }
@@ -414,3 +418,19 @@ function runSearch() {
 window.onload=function(){
     $('#button_all').addClass('letter_link_clicked');
 }
+
+function markProductAsDeleted(product_id) {
+	var answer = confirm("Are you sure?")
+	if (answer){
+            $.ajax({
+                type: 'POST',
+                url: '/admin/products/'+ product_id +'/mark_as_deleted',
+                data: {
+                    id : product_id
+                }
+            });
+
+            $("#product_id_"+product_id).hide(1000);
+	}
+}
+

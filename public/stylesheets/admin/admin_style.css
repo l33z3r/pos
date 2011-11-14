@@ -495,6 +495,10 @@ div#admin_product_list div#search_fields_container div.right_col div.field {
     height: 30px;
 }
 
+div#admin_product_list div#search_fields_container div.right_col div.field input {
+    float: left;
+}
+
 div#admin_product_list div#search_fields_container div.right_col div.field input[type="checkbox"] {
     margin-top: -2px;
 }
@@ -537,10 +541,12 @@ div#admin_product_list div#search_fields_container div.right_col div.field div.l
     text-align: right;
     margin-top: 5px;
     margin-right: 5px;
-    width: 120px;
+    margin-right: 10px;
+    width: auto;
 }
-
-
+div#admin_product_list div#search_fields_container div.right_col div.field div#deleted {
+    float: right;
+}
 
 div#admin_product_list div.left_col div.field div.label {
     float: left;

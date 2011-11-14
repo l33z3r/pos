@@ -3,7 +3,7 @@ class Admin::ProductsController < Admin::AdminController
   
   def index
     @selected_letter = "all"
-    @products = Product.order("name")
+    @products = Product.where("is_deleted = ?", false).order("name")
     query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from products group by substr(name,1,1)")
     @letters = []
     for element in query
@@ -11,7 +11,6 @@ class Admin::ProductsController < Admin::AdminController
         @letters += element
       end
     end
-   # query.free
   end
 
   def show
@@ -94,7 +93,7 @@ class Admin::ProductsController < Admin::AdminController
     @search1 = Product.search(params[:search1]).order('name')
     @products1 = @search1.all
     if(!params[:search2].nil? && !params[:search3].nil?)
-        @search2 = Product.where("code_num = ? OR upc = ? OR price = ? OR price_2 = ? OR price_3 = ? OR price_4", params[:search2], params[:search2], params[:search2], params[:search2], params[:search2]).order('name')
+        @search2 = Product.where("(code_num = ? OR upc = ? OR price = ? OR price_2 = ? OR price_3 = ? OR price_4) AND is_deleted = false", params[:search2], params[:search2], params[:search2], params[:search2], params[:search2]).order('name')
         @search3 = Product.search(params[:search3]).order('name')
         @products2 = @search2.all
         @products3 = @search3.all
@@ -105,6 +104,12 @@ class Admin::ProductsController < Admin::AdminController
         @products = @products1.sort! { |a, b|  a.name <=> b.name }
     end
     
+  end
+
+  def mark_as_deleted
+    @product = Product.find(params[:id])
+    @product.is_deleted = true
+    @product.save!
   end
 
   private 
