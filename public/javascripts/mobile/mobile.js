@@ -12,6 +12,9 @@ function initMobile() {
         clearMobileLoginCode();
         showMobileLoginScreen();
     } else {
+        $('#e_name').html(current_user_nickname);
+        $('#e_name').show();
+    
         showMobileMenuScreen();
     }
     
