@@ -200,6 +200,10 @@ div#menu_screen div#receipt_buttons_container div#cluey_logo img {
     width: 64px;
 }
 
+div#menu_screen div#menu_container {
+    position: relative;
+}
+
 div#menu_screen div#menu_container div#menu_pages_container {
     float: left;
     width: 120px;
@@ -269,6 +273,18 @@ div#menu_screen div#menu_container div#menu_items_container div.item_pic {
 
 div#menu_screen div#menu_container div#menu_items_container div.item_pic img {
     height: 50px;
+}
+
+div#menu_screen div#menu_container div#menu_keypad {
+    display: none;
+    height: 454px;
+    width: 480px;
+    background-color: #E0E0E0;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    text-align: center;
+    z-index: 50;
 }
 
 div#menu_screen div#order_item_additions {

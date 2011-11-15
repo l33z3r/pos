@@ -8,7 +8,41 @@ var currentScreenIsFunctions = false;
     
 var scrollSpeed = 600;
     
+function swipeRightHandler() {
+    hideMenuKeypad();
+    
+    //don't do anything if we are on the tables screen
+    if(currentMenuSubscreenIsTableScreen()) {
+        return;
+    }
+    
+    var currentLeftScroll = $('#content-scroll').attr('scrollLeft');
+    
+    var previousPageScroll = currentLeftScroll - pageWidth;
+    
+    if(doScroll(previousPageScroll)) {    
+        //are we on the menu screen, if so, go to the receipt screen
+        if(currentScreenIsMenu) {
+            currentScreenIsMenu = false;
+            currentScreenIsReceipt = true;
+        } else if(currentScreenIsFunctions) {
+            currentScreenIsFunctions = false;
+            currentScreenIsMenu = true;
+        }
+    
+        //some bug makes the receipt get stuck, so this call prevents it
+        setTimeout(menuRecptScroll, scrollSpeed + 100);
+    }
+}
+
+function swipeUpHandler() {
+    if(currentMenuSubscreenIsMenu() && !menuKeypadShowing) {
+        showMenuKeypad();
+    }
+}
+
 function swipeLeftHandler() {
+    hideMenuKeypad();
     
     //don't do anything if we are on the tables screen
     if(currentMenuSubscreenIsTableScreen()) {
@@ -34,30 +68,20 @@ function swipeLeftHandler() {
     }
 }
 
-function swipeRightHandler() {
-    
-    //don't do anything if we are on the tables screen
-    if(currentMenuSubscreenIsTableScreen()) {
-        return;
+function swipeDownHandler() {
+    if(currentMenuSubscreenIsMenu() && menuKeypadShowing) {
+        hideMenuKeypad();
     }
-    
-    var currentLeftScroll = $('#content-scroll').attr('scrollLeft');
-    
-    var previousPageScroll = currentLeftScroll - pageWidth;
-    
-    if(doScroll(previousPageScroll)) {    
-        //are we on the menu screen, if so, go to the receipt screen
-        if(currentScreenIsMenu) {
-            currentScreenIsMenu = false;
-            currentScreenIsReceipt = true;
-        } else if(currentScreenIsFunctions) {
-            currentScreenIsFunctions = false;
-            currentScreenIsMenu = true;
-        }
-    
-        //some bug makes the receipt get stuck, so this call prevents it
-        setTimeout(menuRecptScroll, scrollSpeed + 100);
-    }
+}
+
+function showMenuKeypad() {
+    menuKeypadShowing = true;
+    $('#menu_keypad').slideDown(300);
+}
+
+function hideMenuKeypad() {
+    menuKeypadShowing = false;
+    $('#menu_keypad').slideUp(300);
 }
 
 function doScroll(scrollLeftValue) {

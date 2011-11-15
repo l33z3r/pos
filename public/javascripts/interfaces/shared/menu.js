@@ -1,5 +1,7 @@
 var currentMenuPage;
 
+var currentMenuItemQuantity = "";
+
 var selectedTable = 0;
 var currentOrder = null;
 var tableOrders = new Array();

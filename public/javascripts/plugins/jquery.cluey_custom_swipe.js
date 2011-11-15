@@ -1,32 +1,20 @@
-/*
- * jSwipe - jQuery Plugin
- * http://plugins.jquery.com/project/swipe
- * http://www.ryanscherf.com/demos/swipe/
- *
- * Copyright (c) 2009 Ryan Scherf (www.ryanscherf.com)
- * Licensed under the MIT license
- *
- * $Date: 2009-07-14 (Tue, 14 Jul 2009) $
- * $version: 0.1.2
- * 
- * This jQuery plugin will only run on devices running Mobile Safari
- * on iPhone or iPod Touch devices running iPhone OS 2.0 or later. 
- * http://developer.apple.com/iphone/library/documentation/AppleApplications/Reference/SafariWebContent/HandlingEvents/HandlingEvents.html#//apple_ref/doc/uid/TP40006511-SW5
- */
 (function($) {
     $.fn.swipe = function(options) {
 		
         // Default thresholds & swipe functions
         var defaults = {
-            threshold: {
-                x: 100,
-                y: 200
+            minSwipeLength: 100,
+            swipeRight: function() {
+                alert('swiped rightt')
+            },
+            swipeUp: function() {
+                alert('swiped up')
             },
             swipeLeft: function() {
                 alert('swiped left')
             },
-            swipeRight: function() {
-                alert('swiped right')
+            swipeDown: function() {
+                alert('swiped down')
             }
         };
 		
@@ -47,6 +35,16 @@
                 x: 0, 
                 y: 0
             }
+            
+            // Swipe was started
+            function touchStart(event) {
+                //console.log('Starting swipe gesture...')
+                originalCoord.x = event.targetTouches[0].pageX
+                originalCoord.y = event.targetTouches[0].pageY
+
+                finalCoord.x = originalCoord.x
+                finalCoord.y = originalCoord.y
+            }
 			
             // Store coordinates as finger is swiping
             function touchMove(event) {
@@ -60,23 +58,6 @@
             // Calculate if the swipe was left or right
             function touchEnd(event) {
                 //console.log('Ending swipe gesture...')
-                var changeY = originalCoord.y - finalCoord.y;
-                
-                //alert("change: (" + (originalCoord.x - finalCoord.x) + ", " + changeY + ")");
-                
-                if(changeY < defaults.threshold.y && changeY > (defaults.threshold.y*-1)) {
-                    //alert("ypass");
-                    changeX = originalCoord.x - finalCoord.x
-					
-                    if(changeX > defaults.threshold.x) {
-                        //alert("xpassleft");
-                        defaults.swipeLeft()
-                    }
-                    if(changeX < (defaults.threshold.x*-1)) {
-                        //alert("xpassright");
-                        defaults.swipeRight()
-                    }
-                }
                 
                 var x1 = originalCoord.x;
                 var y1 = originalCoord.y;
@@ -84,17 +65,33 @@
                 var x2 = finalCoord.x;
                 var y2 = finalCoord.y;
                 
-                getSwipeDirection(x1, y1, x2, y2);
-            }
-			
-            // Swipe was started
-            function touchStart(event) {
-                //console.log('Starting swipe gesture...')
-                originalCoord.x = event.targetTouches[0].pageX
-                originalCoord.y = event.targetTouches[0].pageY
-
-                finalCoord.x = originalCoord.x
-                finalCoord.y = originalCoord.y
+                var dir = getSwipeDirection(x1, y1, x2, y2, defaults.minSwipeLength);
+                
+                switch(dir) {
+                    case 0: {
+                        //alert("swipe too short");
+                        break;
+                    }
+                    case 1: {
+                        defaults.swipeRight();
+                        break;
+                    }
+                    case 2: {
+                        defaults.swipeUp();
+                        break;
+                    }
+                    case 3: {
+                        defaults.swipeLeft();
+                        break;
+                    }
+                    case 4: {
+                        defaults.swipeDown();
+                        break;
+                    }
+                    default: {
+                        console.log("Weird!!!");
+                    }
+                }
             }
 			
             // Swipe was canceled
@@ -112,6 +109,71 @@
     };
 })(jQuery);
 
-function getSwipeDirection(x1, y1, x2, y2) {
+//returns a number 1-4 indicating swipe direction, or zero if the threshold was not passed
+//0 = no swipe
+//1 = right swipe
+//2 = up swipe
+//3 = left swipe
+//4 = down swipe
+function getSwipeDirection(x1, y1, x2, y2, thresholdSwipeLength) {
     //translate (x1, y1) to (0, 0)
+    
+    var x2t = x2 - x1;
+    var y2t = y2 - y1;
+    
+    //alias vars for comprehension
+    var x = x2t;
+    var y = y2t;
+    
+    var thisSwipeLength = Math.sqrt((x*x) + (y*y));
+    //console.log("SL: " + thisSwipeLength + " TSL: " + thresholdSwipeLength);
+    
+    //is the swipe long enough?
+    if(thisSwipeLength < thresholdSwipeLength) {
+        return 0;
+    } else {
+        if(x>=0) {
+            //right hand side of plane
+            if(y<0) {
+                //top right of plane
+                if(Math.abs(x)>=Math.abs(y)) {
+                    //right swipe
+                    return 1;
+                } else {
+                    //up swipe
+                    return 2;
+                }
+            } else {
+                //bottom right of plane
+                if(Math.abs(x)>=Math.abs(y)) {
+                    //right swipe
+                    return 1;
+                } else {
+                    //down swipe
+                    return 4;
+                }
+            }
+        } else {
+            //left hand side of plane
+            if(y<0) {
+                //top left of plane
+                if(Math.abs(x)>=Math.abs(y)) {
+                    //left swipe
+                    return 3;
+                } else {
+                    //up swipe
+                    return 2;
+                }
+            } else {
+                //bottom left of plane
+                if(Math.abs(x)>=Math.abs(y)) {
+                    //left swipe
+                    return 3;
+                } else {
+                    //down swipe
+                    return 4;
+                }
+            }
+        }
+    }
 }
