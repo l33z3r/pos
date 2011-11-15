@@ -398,14 +398,6 @@ function doCanceltableNumberSelectKeypad() {
 }
 
 function doSubmitTableNumber() {
-    //TODO: make sure table labels are unique numbers!!!!
-    
-    
-    
-    
-    
-    
-    
     table_label = $('#table_num').val().toString();
     
     //check table exists
@@ -588,4 +580,22 @@ function hideOrderReadyPopup() {
     } catch (e) {
         
     }
+}
+
+function displayDropdownSelected() {
+    var selectedDisplayId = $('#menu_select').val();
+    
+    //do ajax request and then reload   
+    $.ajax({
+        type: 'POST',
+        url: '/admin/terminals/link_display',
+        success: function() {
+            location.reload();
+        },
+        data: {
+            terminal_id : terminalID,
+            display_id : selectedDisplayId
+        }
+    });
+
 }

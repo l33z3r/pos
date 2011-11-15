@@ -3,13 +3,19 @@
     <div id="back_button" class="small_button" onclick="swipeToMenu();">Menu</div>
     <div class="header_label">Functions</div>
   </div>
-  
-  <!--div id="top_section">
+
+  <div id="top_section">
     <div id="menu_switcher_container">
-      Menu Switcher
+      <div class="label">Select Menu:</div>
+      <select id="menu_select" onchange="displayDropdownSelected();">
+        <% Display.all.each do |display| %>
+          <option value="<%= display.id %>"><%= display.name %></div>
+        <% end %>
+      </select>
     </div>
-  </div-->
-  
+  <div class="clear">&nbsp;</div>
+  </div>
+
   <div id="functions_buttons_container">
 
     <% @functions_display_buttons.each_with_index do |db, index| %>
