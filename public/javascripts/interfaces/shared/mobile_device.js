@@ -27,3 +27,11 @@ function vibrateConstant() {
         demoJSInterface.vibrateConstant();
     }
 }
+
+function exitAndroidApp() {
+    var doIt = confirm("Are you sure you want to exit?");
+    
+    if(doIt && inAndroidWrapper()) {
+        demoJSInterface.exitApp();
+    }
+}

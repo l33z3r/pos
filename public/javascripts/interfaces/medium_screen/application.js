@@ -32,6 +32,11 @@ function doGlobalInit() {
     //set the first page in the swipes to be the menu
     setFirstPage();
     
+    //hide the exit app button if we are not in the android wrapper
+    if(!inAndroidWrapper()) {
+        $('#exit_app_button').hide();
+    }
+    
     //start calling home
     callHomePoll();
 }
