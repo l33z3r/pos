@@ -583,6 +583,8 @@ function hideOrderReadyPopup() {
 }
 
 function displayDropdownSelected() {
+    showSpinner();
+    
     var selectedDisplayId = $('#menu_select').val();
     
     //do ajax request and then reload   
