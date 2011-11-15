@@ -170,7 +170,6 @@ function fingerprint_device()
     
     if(inAndroidWrapper()) {
         t = getAndroidFingerPrint();
-        alert("Got android id: " + t);
     }
     
     return t;
