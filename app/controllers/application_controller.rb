@@ -205,9 +205,24 @@ class ApplicationController < ActionController::Base
       reset_session
       clear_caches
       flash[:notice] = "Session reset!"
-      logger.info "saved interface: #{@current_interface}x"
       session[:current_interface] = @current_interface
-      redirect_to home_path
+      
+      #clear_storage_after_page_load?
+      @clear_storage_after_page_load = params[:clear_storage_after_page_load] ? "true" : "false"
+      
+      @forward_params = {:reset_local_storage => @clear_storage_after_page_load}
+      
+      #what is the entry point for each interface?
+      if current_interface_large?
+        @path = home_path @forward_params
+      elsif current_interface_medium?
+        #if we are on the medium interface, we want the mbl to be the entry point
+        @path = mbl_path @forward_params
+      else
+        @path = home_path @forward_params
+      end
+      
+      redirect_to @path 
     end
   end
   

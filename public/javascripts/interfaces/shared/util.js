@@ -104,17 +104,39 @@ function doClearAndReload() {
     }
 }
 
+var terminalFingerPrintCookieName = "terminal_fingerprint";
+
+//deletes everything but the fingerprint cookie
 function clearLocalStorageAndCookies() {
     //clear the local and session web storage
     localStorage.clear();
-        
+    
     //now clear cookies
     var c = document.cookie.split(";");
         
     for(var i=0;i<c.length;i++){
         var e = c[i].indexOf("=");
-        var n= e>-1 ? c[i].substr(0,e) : c[i];
+        var cname = c[i].substr(0,e);
+        
+        if($.trim(cname) == terminalFingerPrintCookieName) {
+            continue;
+        }
+        
+        var n= e>-1 ? cname : c[i];
         document.cookie = n + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+}
+
+//used for setting the terminal id using the browsers fingerprint and save it in a cookie
+//uses the fingerprint library with md5 hash
+function setFingerPrintCookie() {
+    if(getRawCookie(terminalFingerPrintCookieName) == null) {
+        c_value = pstfgrpnt(true).toString();
+        
+        //1000 year expiry
+        exdays = 365 * 1000;
+    
+        setRawCookie(terminalFingerPrintCookieName, c_value, exdays);
     }
 }
 
@@ -577,5 +599,5 @@ function initPressedCSS() {
 }
 
 function inAndroidWrapper() {
-    return (typeof demoJSInterface != "undefined");
+    return (typeof clueyAndroidJSInterface != "undefined");
 }

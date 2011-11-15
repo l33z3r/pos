@@ -1,30 +1,30 @@
 function showSpinner() {
     if(inAndroidWrapper()) {
-        demoJSInterface.showSpinner();
+        clueyAndroidJSInterface.showSpinner();
     }
 }
 
 function hideSpinner() {
     if(inAndroidWrapper()) {
-        demoJSInterface.hideSpinner();
+        clueyAndroidJSInterface.hideSpinner();
     }
 }
 
 function stopVibrate() {
     if(inAndroidWrapper()) {
-        demoJSInterface.cancelVibrate();
+        clueyAndroidJSInterface.cancelVibrate();
     }
 }
 
 function vibrate() {
     if(inAndroidWrapper()) {
-        demoJSInterface.vibrate();
+        clueyAndroidJSInterface.vibrate();
     }
 }
 
 function vibrateConstant() {
     if(inAndroidWrapper()) {
-        demoJSInterface.vibrateConstant();
+        clueyAndroidJSInterface.vibrateConstant();
     }
 }
 
@@ -32,6 +32,14 @@ function exitAndroidApp() {
     var doIt = confirm("Are you sure you want to exit?");
     
     if(doIt && inAndroidWrapper()) {
-        demoJSInterface.exitApp();
+        clueyAndroidJSInterface.exitApp();
     }
+}
+
+function getAndroidFingerPrint() {
+    if(inAndroidWrapper()) {
+        return clueyAndroidJSInterface.getAndroidDeviceId();
+    }
+    
+    return "noid";
 }

@@ -7,18 +7,14 @@
 
 <%= javascript_include_tag "plugins/jquery.bubblepopup", "plugins/jquery.jplayer.min", 
   "plugins/jquery.jscrollpane", "plugins/jquery.mousewheel", "plugins/jquery.bgiframe", 
-  "plugins/jquery.cluey_custom_mcdropdown", "plugins/jquery.ibutton", "plugins/jquery.cluey_custom_swipe", :cache => "cache/plugin_libs_2" %>
+  "plugins/jquery.cluey_custom_mcdropdown", "plugins/jquery.ibutton", "plugins/jquery.cluey_custom_swipe",
+  "plugins/md5", "plugins/detector", :cache => "cache/plugin_libs_2" %>
 
 <!--cant cache the following scripts as they are erb templates -->
 <%= javascript_include_tag "init", "employees", "products", "tables" %>
 
 <!-- js shared between interfaces -->
 <%= javascript_includes "interfaces/shared/", :recursive => true, :cache => "cache/shared" %>
-
-<!-- only load the fingerprint libraries if the fingerprint has not yet been set -->
-<% if !request.cookies["terminal_fingerprint"] %>
-  <%= javascript_include_tag "plugins/md5", "plugins/detector" %>
-<% end %>
 
 <% if params[:showfirebuglite] == "true" %>
   <!-- include firebug lite -->

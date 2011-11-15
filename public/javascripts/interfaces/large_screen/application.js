@@ -326,19 +326,6 @@ function checkMenuScreenForFunction() {
     }
 }
 
-//used for setting the terminal id using the browsers fingerprint and save it in a cookie
-//uses the fingerprint library with md5 hash
-function setFingerPrintCookie() {
-    c_name = "terminal_fingerprint";
-    
-    if(getRawCookie(c_name) == null) {
-        c_value = pstfgrpnt(true).toString();
-        exdays = 365;
-    
-        setRawCookie(c_name, c_value, exdays);
-    }
-}
-
 function initAdminTables() {
     $('.admin_table thead tr th:first').addClass('first');
     $('.admin_table thead tr th:last').addClass('last');

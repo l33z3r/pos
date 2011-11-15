@@ -18,6 +18,8 @@ function doGlobalInit() {
     //need to set the scroll content holder width
     $('#content-holder').width(pageWidth * numPages);
     
+    setFingerPrintCookie();
+    
     if(isTouchDevice()) {
         initTouch();
         initTouchRecpts();
