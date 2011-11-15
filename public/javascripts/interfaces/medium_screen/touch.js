@@ -1,13 +1,3 @@
-var screenSlideSpeed = 300;
-var screenSlideDelayAmount = screenSlideSpeed + 80;
-var pageWidth = 480;
-
-var currentScreenIsMenu = false;
-var currentScreenIsReceipt = false;
-var currentScreenIsFunctions = false;
-    
-var scrollSpeed = 600;
-    
 function swipeRightHandler() {
     hideMenuKeypad();
     
@@ -28,6 +18,9 @@ function swipeRightHandler() {
         } else if(currentScreenIsFunctions) {
             currentScreenIsFunctions = false;
             currentScreenIsMenu = true;
+        } else if(currentScreenIsSettings) {
+            currentScreenIsSettings = false;
+            currentScreenIsFunctions = true;
         }
     
         //some bug makes the receipt get stuck, so this call prevents it
@@ -61,6 +54,9 @@ function swipeLeftHandler() {
         } else if(currentScreenIsReceipt) {
             currentScreenIsReceipt = false;
             currentScreenIsMenu = true;
+        } else if(currentScreenIsFunctions) {
+            currentScreenIsFunctions = false;
+            currentScreenIsSettings = true;
         }
         
         //some bug makes the receipt get stuck, so this call prevents it
@@ -97,11 +93,11 @@ function doScroll(scrollLeftValue) {
     return true;
 }
 
-function swipeToFunctions() {
-    if(currentScreenIsFunctions) return;
+function swipeToReceipt() {
+    if(currentScreenIsReceipt) return;
     clearAllPageFlags();
-    doScroll((functionsPageNum - 1) * pageWidth);
-    currentScreenIsFunctions = true;
+    doScroll((receiptPageNum - 1) * pageWidth);
+    currentScreenIsReceipt = true;
 }
 
 function swipeToMenu() {
@@ -111,11 +107,18 @@ function swipeToMenu() {
     currentScreenIsMenu = true;
 }
 
-function swipeToReceipt() {
-    if(currentScreenIsReceipt) return;
+function swipeToFunctions() {
+    if(currentScreenIsFunctions) return;
     clearAllPageFlags();
-    doScroll((receiptPageNum - 1) * pageWidth);
-    currentScreenIsReceipt = true;
+    doScroll((functionsPageNum - 1) * pageWidth);
+    currentScreenIsFunctions = true;
+}
+
+function swipeToSettings() {
+    if(currentScreenIsSettings) return;
+    clearAllPageFlags();
+    doScroll((settingsPageNum - 1) * pageWidth);
+    currentScreenIsSettings = true;
 }
 
 function clearAllPageFlags() {
@@ -123,7 +126,7 @@ function clearAllPageFlags() {
 }
 
 function setFirstPage() {
-    pageNum = menuPageNum;
+    pageNum = functionsPageNum;
     $("#content-scroll").scrollLeft((pageNum - 1) * pageWidth);
-    currentScreenIsMenu = true;
+    currentScreenIsFunctions = true;
 }

@@ -222,7 +222,7 @@ class ApplicationController < ActionController::Base
         @path = home_path @forward_params
       end
       
-      redirect_to @path 
+      redirect_to @path
     end
   end
   

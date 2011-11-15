@@ -296,6 +296,11 @@ function showAddNoteToOrderItemScreen() {
     }
 }
 
+function showGlobalSettingsPage() {
+    window.location = '#{admin_global_settings_path}'; 
+    return false;
+}
+
 function openCashDrawer() {
     
     

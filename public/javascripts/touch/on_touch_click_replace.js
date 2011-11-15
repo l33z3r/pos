@@ -65,8 +65,9 @@ NoClickDelay.prototype = {
         this.theTarget = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
         
         targetIsSelectElement = this.theTarget.tagName == "SELECT";
+        targetIsInputElement = this.theTarget.tagName == "INPUT";
         
-        if(!targetIsSelectElement) {
+        if(!targetIsSelectElement && !targetIsInputElement) {
             e.preventDefault();
             
             if(this.theTarget.nodeType == 3) {

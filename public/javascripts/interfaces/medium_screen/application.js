@@ -1,9 +1,21 @@
 //this is used for paging
-var numPages = 3;
+var numPages = 4;
 
 var receiptPageNum = 1;
 var menuPageNum = 2;
 var functionsPageNum = 3;
+var settingsPageNum = 4;
+
+var currentScreenIsMenu = false;
+var currentScreenIsReceipt = false;
+var currentScreenIsFunctions = false;
+var currentScreenIsSettings = false;
+    
+var screenSlideSpeed = 300;
+var screenSlideDelayAmount = screenSlideSpeed + 80;
+var pageWidth = 480;
+
+var scrollSpeed = 600;
 
 $(function(){
     doGlobalInit();
@@ -41,4 +53,9 @@ function doGlobalInit() {
     
     //start calling home
     callHomePoll();
+}
+
+function doSubmitSettings() {
+    showSpinner();
+    $('#settings_form').submit();
 }

@@ -611,6 +611,43 @@ div#functions_screen div#functions_buttons_container {
 
 /* End Functions Screen */
 
+/* Settings Screen */
+
+div#settings_screen {
+
+}
+
+div#settings_screen div#header {
+
+}
+
+div#settings_screen div#header div#back_button {
+    float: left;
+    width: 100px;
+    max-width: 100px;
+}
+
+div#settings_screen div#header div.header_label {
+    float: left;
+    margin-left: 95px;
+}
+
+div#settings_screen div#submit_button {
+    float: right;
+    margin-right: 10px;
+    width: 100px;
+    max-width: 100px;
+    height: 35px;
+    max-height: 35px;
+    padding-top: 17px;
+}
+
+div#settings_screen div#settings_container form table td.data input {
+    width: 205px;
+}
+
+/* End Settings Screen */
+
 /* Generic Styles */
 
 div.button {
@@ -842,6 +879,10 @@ div#menu_screen div#menu_container div#menu_items_container div.items div.item.p
     -moz-opacity: 30;
     filter:alpha(opacity: .30);
     opacity: .30;
+}
+
+.text_align_left {
+    text-align: left;
 }
 
 /* End Generic Styles */

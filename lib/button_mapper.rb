@@ -106,7 +106,7 @@ class ButtonMapper
     when TABLES_BUTTON
       @retval = "showTablesScreen(); return false;"
     when SYSTEM_BUTTON
-      @retval = "window.location = '#{admin_global_settings_path}'; return false;"
+      @retval = "showGlobalSettingsPage();"
     when THEMES_BUTTON
       @retval = "window.location = '#{admin_custom_themes_path}'; return false;"
     when DISCOUNT_BUTTON
