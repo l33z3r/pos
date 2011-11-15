@@ -590,16 +590,18 @@ div#functions_screen div#top_section {
 div#functions_screen div#top_section div#menu_switcher_container {
     padding: 7px 0px 30px 0px;
     margin: auto;
-    width: 220px;
+    width: 280px;
 }
 
 div#functions_screen div#top_section div#menu_switcher_container div.label {
-    margin: 6px 5px 0px 0px;
+    margin: 6px 10px 0px 0px;
     float: left;
 }
 
 div#functions_screen div#top_section div#menu_switcher_container select#menu_select {
     float: left;
+    height: 25px;
+    width: 150px;
 }
 
 div#functions_screen div#functions_buttons_container {

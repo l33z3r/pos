@@ -9,7 +9,7 @@
       <div class="label">Select Menu:</div>
       <select id="menu_select" onchange="displayDropdownSelected();">
         <% Display.all.each do |display| %>
-          <option value="<%= display.id %>"><%= display.name %></div>
+          <option value="<%= display.id %>" <%=TerminalDisplayLink.for_terminal(@terminal_id).try(:display_id) == display.id ? "selected" : ""%>><%= display.name %></div>
         <% end %>
       </select>
     </div>
