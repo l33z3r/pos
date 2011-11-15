@@ -200,6 +200,10 @@ div#menu_screen div#receipt_buttons_container div#cluey_logo img {
     width: 64px;
 }
 
+div#menu_screen div#menu_container {
+    position: relative;
+}
+
 div#menu_screen div#menu_container div#menu_pages_container {
     float: left;
     width: 120px;
@@ -269,6 +273,18 @@ div#menu_screen div#menu_container div#menu_items_container div.item_pic {
 
 div#menu_screen div#menu_container div#menu_items_container div.item_pic img {
     height: 50px;
+}
+
+div#menu_screen div#menu_container div#menu_keypad {
+    display: none;
+    height: 454px;
+    width: 480px;
+    background-color: #E0E0E0;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    text-align: center;
+    z-index: 50;
 }
 
 div#menu_screen div#order_item_additions {
@@ -566,12 +582,71 @@ div#functions_screen div#header div.header_label {
     margin-left: 95px;
 }
 
+div#functions_screen div#top_section {
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+
+div#functions_screen div#top_section div#menu_switcher_container {
+    padding: 7px 0px 30px 0px;
+    margin: auto;
+    width: 280px;
+}
+
+div#functions_screen div#top_section div#menu_switcher_container div.label {
+    margin: 6px 10px 0px 0px;
+    float: left;
+}
+
+div#functions_screen div#top_section div#menu_switcher_container select#menu_select {
+    float: left;
+    height: 25px;
+    width: 150px;
+}
+
 div#functions_screen div#functions_buttons_container {
     border-spacing: 6px;
-    padding: 15px;
+    padding: 5px 15px;
 }
 
 /* End Functions Screen */
+
+/* Settings Screen */
+
+div#settings_screen {
+
+}
+
+div#settings_screen div#header {
+
+}
+
+div#settings_screen div#header div#back_button {
+    float: left;
+    width: 100px;
+    max-width: 100px;
+}
+
+div#settings_screen div#header div.header_label {
+    float: left;
+    margin-left: 95px;
+}
+
+div#settings_screen div#submit_button {
+    float: right;
+    margin-right: 10px;
+    width: 100px;
+    max-width: 100px;
+    height: 35px;
+    max-height: 35px;
+    padding-top: 17px;
+}
+
+div#settings_screen div#settings_container form table td.data input {
+    width: 205px;
+}
+
+/* End Settings Screen */
 
 /* Generic Styles */
 
@@ -804,6 +879,10 @@ div#menu_screen div#menu_container div#menu_items_container div.items div.item.p
     -moz-opacity: 30;
     filter:alpha(opacity: .30);
     opacity: .30;
+}
+
+.text_align_left {
+    text-align: left;
 }
 
 /* End Generic Styles */

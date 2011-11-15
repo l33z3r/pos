@@ -1,5 +1,7 @@
 var current_table_label = null;
 
+var menuKeypadShowing = false;
+
 function initMenu() {
     //click the 1st menu page
     $('#menu_pages_container .page').first().click();
@@ -31,6 +33,39 @@ function renderActiveTables() {
 //TODO: something with the active table ids
 }
 
+function menuScreenKeypadClick(val) {
+    if(this.innerHTML == '0') {
+        if(currentMenuItemQuantity.length > 0)
+            currentMenuItemQuantity += val
+    } else {
+        //make sure you cannot enter a 2nd decimal place number
+        if(currentMenuItemQuantity.indexOf(".") != -1) {
+            if(currentMenuItemQuantity.length - currentMenuItemQuantity.indexOf(".") > 1) {
+                return false;
+            }
+        }
+    
+        currentMenuItemQuantity += val;
+    }
+    
+    return false;
+}
+
+function menuScreenKeypadClickDecimal() {
+    if(currentMenuItemQuantity.indexOf(".") == -1) {
+        currentMenuItemQuantity += ".";
+    }
+    
+    return false;
+}
+
+function menuScreenKeypadClickCancel() {
+    currentMenuItemQuantity = "";
+    hideMenuKeypad();
+    
+    return false;
+}
+
 function doMenuPageSelect(pageNum, pageId) {
     //set this pages class to make it look selected
     $('#menu_pages_container .page').removeClass('selected');
@@ -43,25 +78,23 @@ function doMenuPageSelect(pageNum, pageId) {
 }
 
 function doSelectMenuItem(productId, element) {
-    //    if(currentMenuItemQuantity == "")
-    //        currentMenuItemQuantity = "1";
-    //
-    //    if(currentMenuItemQuantity.indexOf(".") != -1) {
-    //        if(currentMenuItemQuantity.length - currentMenuItemQuantity.indexOf(".") == 1) {
-    //            currentMenuItemQuantity = "1";
-    //        }
-    //    }
+    if(currentMenuItemQuantity == "")
+        currentMenuItemQuantity = "1";
+    
+    if(currentMenuItemQuantity.indexOf(".") != -1) {
+        if(currentMenuItemQuantity.length - currentMenuItemQuantity.indexOf(".") == 1) {
+            currentMenuItemQuantity = "1";
+        }
+    }
             
     currentSelectedMenuItemElement = element;
 
     //fetch this product from the products js array
-    product = products[productId]
-    
-    //todo: pick this up dynamically
-    amount = 1;
+    product = products[productId];
+    amount = currentMenuItemQuantity;
     
     //reset the quantity
-    //currentMenuItemQuantity = "";
+    currentMenuItemQuantity = "";
 
     buildOrderItem(product, amount);
 
@@ -365,14 +398,6 @@ function doCanceltableNumberSelectKeypad() {
 }
 
 function doSubmitTableNumber() {
-    //TODO: make sure table labels are unique numbers!!!!
-    
-    
-    
-    
-    
-    
-    
     table_label = $('#table_num').val().toString();
     
     //check table exists
@@ -555,4 +580,24 @@ function hideOrderReadyPopup() {
     } catch (e) {
         
     }
+}
+
+function displayDropdownSelected() {
+    showSpinner();
+    
+    var selectedDisplayId = $('#menu_select').val();
+    
+    //do ajax request and then reload   
+    $.ajax({
+        type: 'POST',
+        url: '/admin/terminals/link_display',
+        success: function() {
+            location.reload();
+        },
+        data: {
+            terminal_id : terminalID,
+            display_id : selectedDisplayId
+        }
+    });
+
 }

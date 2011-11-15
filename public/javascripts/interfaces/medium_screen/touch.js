@@ -1,40 +1,5 @@
-var screenSlideSpeed = 300;
-var screenSlideDelayAmount = screenSlideSpeed + 80;
-var pageWidth = 480;
-
-var currentScreenIsMenu = false;
-var currentScreenIsReceipt = false;
-var currentScreenIsFunctions = false;
-    
-var scrollSpeed = 600;
-    
-function swipeLeftHandler() {
-    
-    //don't do anything if we are on the tables screen
-    if(currentMenuSubscreenIsTableScreen()) {
-        return;
-    }
-    
-    var currentLeftScroll = $('#content-scroll').attr('scrollLeft');
-    
-    var nextPageScroll = currentLeftScroll + pageWidth;
-    
-    if(doScroll(nextPageScroll)) {
-        //are we on the menu screen, if so, go to the receipt screen
-        if(currentScreenIsMenu) {
-            currentScreenIsMenu = false;
-            currentScreenIsFunctions = true;
-        } else if(currentScreenIsReceipt) {
-            currentScreenIsReceipt = false;
-            currentScreenIsMenu = true;
-        }
-        
-        //some bug makes the receipt get stuck, so this call prevents it
-        setTimeout(menuRecptScroll, scrollSpeed + 100);
-    }
-}
-
 function swipeRightHandler() {
+    hideMenuKeypad();
     
     //don't do anything if we are on the tables screen
     if(currentMenuSubscreenIsTableScreen()) {
@@ -53,11 +18,66 @@ function swipeRightHandler() {
         } else if(currentScreenIsFunctions) {
             currentScreenIsFunctions = false;
             currentScreenIsMenu = true;
+        } else if(currentScreenIsSettings) {
+            currentScreenIsSettings = false;
+            currentScreenIsFunctions = true;
         }
     
         //some bug makes the receipt get stuck, so this call prevents it
         setTimeout(menuRecptScroll, scrollSpeed + 100);
     }
+}
+
+function swipeUpHandler() {
+    if(currentMenuSubscreenIsMenu() && !menuKeypadShowing) {
+        showMenuKeypad();
+    }
+}
+
+function swipeLeftHandler() {
+    hideMenuKeypad();
+    
+    //don't do anything if we are on the tables screen
+    if(currentMenuSubscreenIsTableScreen()) {
+        return;
+    }
+    
+    var currentLeftScroll = $('#content-scroll').attr('scrollLeft');
+    
+    var nextPageScroll = currentLeftScroll + pageWidth;
+    
+    if(doScroll(nextPageScroll)) {
+        //are we on the menu screen, if so, go to the receipt screen
+        if(currentScreenIsMenu) {
+            currentScreenIsMenu = false;
+            currentScreenIsFunctions = true;
+        } else if(currentScreenIsReceipt) {
+            currentScreenIsReceipt = false;
+            currentScreenIsMenu = true;
+        } else if(currentScreenIsFunctions) {
+            currentScreenIsFunctions = false;
+            currentScreenIsSettings = true;
+        }
+        
+        //some bug makes the receipt get stuck, so this call prevents it
+        setTimeout(menuRecptScroll, scrollSpeed + 100);
+    }
+}
+
+function swipeDownHandler() {
+    if(currentMenuSubscreenIsMenu() && menuKeypadShowing) {
+        hideMenuKeypad();
+    }
+}
+
+function showMenuKeypad() {
+    menuKeypadShowing = true;
+    $('#menu_keypad').slideDown(300);
+}
+
+function hideMenuKeypad() {
+    menuKeypadShowing = false;
+    $('#menu_keypad').slideUp(300);
 }
 
 function doScroll(scrollLeftValue) {
@@ -73,11 +93,11 @@ function doScroll(scrollLeftValue) {
     return true;
 }
 
-function swipeToFunctions() {
-    if(currentScreenIsFunctions) return;
+function swipeToReceipt() {
+    if(currentScreenIsReceipt) return;
     clearAllPageFlags();
-    doScroll((functionsPageNum - 1) * pageWidth);
-    currentScreenIsFunctions = true;
+    doScroll((receiptPageNum - 1) * pageWidth);
+    currentScreenIsReceipt = true;
 }
 
 function swipeToMenu() {
@@ -87,11 +107,18 @@ function swipeToMenu() {
     currentScreenIsMenu = true;
 }
 
-function swipeToReceipt() {
-    if(currentScreenIsReceipt) return;
+function swipeToFunctions() {
+    if(currentScreenIsFunctions) return;
     clearAllPageFlags();
-    doScroll((receiptPageNum - 1) * pageWidth);
-    currentScreenIsReceipt = true;
+    doScroll((functionsPageNum - 1) * pageWidth);
+    currentScreenIsFunctions = true;
+}
+
+function swipeToSettings() {
+    if(currentScreenIsSettings) return;
+    clearAllPageFlags();
+    doScroll((settingsPageNum - 1) * pageWidth);
+    currentScreenIsSettings = true;
 }
 
 function clearAllPageFlags() {
@@ -99,7 +126,7 @@ function clearAllPageFlags() {
 }
 
 function setFirstPage() {
-    pageNum = menuPageNum;
+    pageNum = functionsPageNum;
     $("#content-scroll").scrollLeft((pageNum - 1) * pageWidth);
-    currentScreenIsMenu = true;
+    currentScreenIsFunctions = true;
 }

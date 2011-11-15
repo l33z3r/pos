@@ -443,6 +443,7 @@ nav#main_nav div#misc_notice input {
 }
 
 nav#main_nav div#connection_status {
+    background-color: #FFF;
     border: 1px solid #666;
     border-radius: 2px;
     -moz-border-radius: 2px;

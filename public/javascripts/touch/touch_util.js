@@ -5,15 +5,18 @@ function initTouch() {
     
     //hook up swipe     
     $('#wrapper').swipe({
-        threshold: {
-            x: 300,
-            y: 200
+        minSwipeLength: 150,
+        swipeRight: function() {
+            swipeRightHandler();
+        },
+        swipeUp: function() {
+            swipeUpHandler();
         },
         swipeLeft: function() {
             swipeLeftHandler();
         },
-        swipeRight: function() {
-            swipeRightHandler();
+        swipeDown: function() {
+            swipeDownHandler();
         }
     });
 }

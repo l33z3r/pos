@@ -1,6 +1,5 @@
 var currentTotalFinal = 0;
 var currentOrderJSON;
-var currentMenuItemQuantity = "";
 
 var tableSelectMenu = null;
 var menuScreenShortcutSelectMenu = null;

@@ -33,6 +33,7 @@ div.mobile_button {
 
 div.mobile_button div.icon {
     padding-top: 16px;
+    min-height: 63px;
 }
 
 div.mobile_button div.button_name {

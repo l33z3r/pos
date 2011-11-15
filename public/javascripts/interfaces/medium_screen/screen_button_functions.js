@@ -21,3 +21,7 @@ function showMoreOptionsScreen() {
     showSpinner();
     goTo('/mbl#menu');
 }
+
+function showGlobalSettingsPage() {
+    swipeToSettings();
+}

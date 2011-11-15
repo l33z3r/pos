@@ -344,9 +344,9 @@ function toggleUtilKeyboard() {
     }
     
     if($('#util_keyboard_container').is(":visible")) {
-        $('#util_keyboard_container').slideUp(200);
+        $('#util_keyboard_container').slideUp(300);
     } else {
-        $('#util_keyboard_container').slideDown(200);
+        $('#util_keyboard_container').slideDown(300);
     }
 }
 

@@ -21,7 +21,16 @@ class Admin::GlobalSettingsController < Admin::AdminController
       #send a reload request to other terminals
       request_reload_app @terminal_id
       
-      redirect_to :action => "index"
+      #this action is also used in the medium interface, so we have to conditionally redirect
+      #what is the entry point for each interface?
+      if current_interface_large?
+        redirect_to :action => "index"
+      elsif current_interface_medium?
+        #if we are on the medium interface, we want the mbl to be the entry point
+        redirect_to home_path
+      else
+        redirect_to :action => "index"
+      end
     else
       render :action => "index"
     end

@@ -308,13 +308,15 @@ class HomeController < ApplicationController
     @course_button = DisplayButton.find_by_perm_id(ButtonMapper::COURSE_BUTTON)
     @remove_item_button = DisplayButton.find_by_perm_id(ButtonMapper::REMOVE_ITEM_BUTTON);
     @print_bill_button = DisplayButton.find_by_perm_id(ButtonMapper::PRINT_BILL_BUTTON);
+    @global_settings_button = DisplayButton.find_by_perm_id(ButtonMapper::SYSTEM_BUTTON);
     
     @display_buttons = []
     
     @display_buttons << @tables_button << @order_button << @modify_button
     
     @functions_display_buttons = []
-    @functions_display_buttons << @course_button << @remove_item_button << @more_options_button << @print_bill_button
+    @functions_display_buttons << @course_button << @remove_item_button << @more_options_button 
+    @functions_display_buttons << @print_bill_button << @global_settings_button
     
   end
   
