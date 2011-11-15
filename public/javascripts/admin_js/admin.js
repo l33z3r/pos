@@ -449,7 +449,7 @@ function disableSearchFields(){
      $("#category_id_equals").attr('disabled', 'disabled');
      $("#menu_page_1_id_equals").attr('disabled', 'disabled');
      $("#all_fields").attr('disabled', 'disabled');
-     $("#is_special_equals").attr('disabled', 'disabled');
+     $("#is_special_equals").attr('disabled', 'disabled');     
 }
 
 function enableSearchFields(){
