@@ -110,6 +110,10 @@ class Admin::ProductsController < Admin::AdminController
     @product = Product.find(params[:id])
     @product.is_deleted = true
     @product.save!
+    #remove the product from all menu_pages deleting menu_items
+    @product.menu_items.each do |menu_item|
+      MenuItem.delete_menu_item(menu_item)
+    end
   end
 
   private 

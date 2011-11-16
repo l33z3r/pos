@@ -16,16 +16,16 @@
     <% @display.menu_pages.each do |page| %>
       <div style="display: none;" id="menu_items_<%= page.page_num %>" class="items">
         <% page.menu_items.each do |item| %>
-          <% if item.product and item.product.is_active %>
+          <% if item.product and !item.product.is_deleted %>
             <div class="item" data-button_width="<%= item.product.menu_button_width %>" 
-                 onclick="doSelectMenuItem(<%= item.product_id %>, this)"
-                 style="<%= item.product.button_bg_color.blank? ? "" : "background-color: #{item.product.button_bg_color}" %>">
+                 onclick="<%= item.product.is_active ? "doSelectMenuItem(#{item.product_id}, this);" : "" %>"
+                 style="<%= item.product.button_bg_color.blank? ? "" : "background-color: #{item.product.button_bg_color}" %><%= item.product.is_active ? "" : "cursor: default;" %>">
                    <% if item.product.show_button_image %>
                 <div class="item_pic">
                   <%= product_image_thumb item.product %>
                 </div>
               <% end %>
-              <div class="item_name" style="<%= item.product.button_text_color.blank? ? "" : "color: #{item.product.button_text_color}" %>">
+              <div class="item_name" style="<%= item.product.is_active ? "" : "text-decoration: line-through;" %><%= item.product.button_text_color.blank? ? "" : "color: #{item.product.button_text_color}" %>">
                 <%= menu_item_name item %>
               </div>
             </div>

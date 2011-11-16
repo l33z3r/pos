@@ -54,10 +54,10 @@
       </div>
       <div class="field">
         <div class="label">Specials Only</div>
-        <%= check_box_tag :is_special_equals %>
+        <%= check_box_tag :is_special_equals, 'no', false, :class => 'filterCheck' %>
         <div id="deleted">
          <div class="label">Deleted</div>
-         <%= check_box_tag :is_deleted_equals %>
+         <%= check_box_tag :is_deleted_equals, 'no', false, :class => 'filterCheck' %>
         </div>
       </div>
     </div>

@@ -30,7 +30,7 @@
             </div>
           </td>
           <td><%= product.quantity_in_stock if product.quantity_in_stock %></td>
-          <td><%= link_to_function image_tag("exit.gif", :border=>0), "markProductAsDeleted(#{product.id})" %></td>
+          <td><%= link_to_function image_tag("exit.gif", :border=>0), "markProductAsDeleted(#{product.id})" if !product.is_deleted%></td>
         </tr>
       <% end %>
     </tbody>
