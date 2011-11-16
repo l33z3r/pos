@@ -1,9 +1,13 @@
 class Admin::ProductsController < Admin::AdminController
   cache_sweeper :product_sweeper
   
-  def index
-    @selected_letter = "all"
-    @products = Product.where("is_deleted = ?", false).order("name")
+  def index 
+    if(session[:search1].nil? && session[:search2].nil? && session[:search3].nil?)
+      @selected_letter = "all"
+      @products = Product.where("is_deleted = ?", false).order("name")
+    else
+      search
+    end
     query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from products group by substr(name,1,1)")
     @letters = []
     for element in query
@@ -90,11 +94,24 @@ class Admin::ProductsController < Admin::AdminController
   end
 
   def search
-    @search1 = Product.search(params[:search1]).order('name')
+    #get parameters from request or session
+    if(!params[:search1].nil? || !params[:search2].nil? || !params[:search3].nil?)
+      @param1 = params[:search1]
+      @param2 = params[:search2]
+      @param3 = params[:search3]
+      save_params(@param1, @param2, @param3)
+    else
+      @param1 = session[:search1]
+      @param2 = session[:search2]
+      @param3 = session[:search3]
+      get_session_parameters_to_fields
+    end
+    #search
+    @search1 = Product.search(@param1).order('name')
     @products1 = @search1.all
-    if(!params[:search2].nil? && !params[:search3].nil?)
-        @search2 = Product.where("(code_num = ? OR upc = ? OR price = ? OR price_2 = ? OR price_3 = ? OR price_4) AND is_deleted = false", params[:search2], params[:search2], params[:search2], params[:search2], params[:search2]).order('name')
-        @search3 = Product.search(params[:search3]).order('name')
+    if(!@param2.nil? && !@param3.nil?)
+        @search2 = Product.where("(code_num = ? OR upc = ? OR price = ? OR price_2 = ? OR price_3 = ? OR price_4) AND is_deleted = false", @param2, @param2, @param2, @param2, @param2).order('name')
+        @search3 = Product.search(@param3).order('name')
         @products2 = @search2.all
         @products3 = @search3.all
         @merge1 = @products2 | @products3
@@ -102,8 +119,24 @@ class Admin::ProductsController < Admin::AdminController
         @products = @intersection.sort! { |a, b|  a.name <=> b.name }
     else
         @products = @products1.sort! { |a, b|  a.name <=> b.name }
-    end
-    
+    end    
+  end
+
+  def get_session_parameters_to_fields
+      @selected_letter = (!session[:search1][:name_starts_with].eql?("")) ? session[:search1][:name_starts_with] : ((!session[:search1][:name_starts_with_any].eql?("")) ? "hash" : "all")
+      @session_code_num_upc = session[:search1][:code_num_or_upc_equals]
+      @session_description = session[:search1][:description_contains]
+      @session_category =  session[:search1][:category_id_equals]
+      @session_menu = session[:search1][:menu_page_1_id_equals]
+      @session_all_fields = session[:search2]
+      @session_is_specials = (session[:search1][:is_special_equals] == "true") ? true : false;
+      @session_is_deleted = (session[:search1][:is_deleted_equals] == "true") ? true : false;
+  end
+
+  def save_params param1, param2, param3
+      session[:search1] = param1
+      session[:search2] = param2
+      session[:search3] = param3
   end
 
   def mark_as_deleted
