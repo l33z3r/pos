@@ -255,7 +255,7 @@ function finishDoSelectMenuItem() {
 function tableSelectMenuItem(orderItem) {
     addItemToTableOrderAndSave(orderItem);
     writeTotalToReceipt(currentTableOrder, currentTableOrder['total']);
-    menuRecptScroll();
+    setTimeout(menuRecptScroll, 20);
 }
     
 function writeOrderItemToReceipt(orderItem) {
