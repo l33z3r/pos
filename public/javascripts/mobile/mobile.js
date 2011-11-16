@@ -1,5 +1,8 @@
 //this needs to be called before pageload
-var jQT = $.jQTouch({});
+var jQT = $.jQTouch({
+    icon: "/images/cluey_icon.png",
+    useAnimations: false
+});
 
 var terminalRecptInfoPage = "terminal_recpt_info";
 

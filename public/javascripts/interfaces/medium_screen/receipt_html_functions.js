@@ -1,5 +1,5 @@
 function getCurrentRecptHTML() {
-    return "NYI";
+    return $('#menu_screen_till_roll').html();
 }
 
 //this loads up the last receipt that a user was looking at before logging out
@@ -21,8 +21,4 @@ function displayLastReceipt() {
 function setReceiptsHTML(thehtml) {
     $('#menu_screen_till_roll').html(thehtml);
     $('#large_menu_screen_till_roll').html(thehtml);
-}
-
-function getCurrentReceiptHTML() {
-    return $('#menu_screen_till_roll').html();
 }

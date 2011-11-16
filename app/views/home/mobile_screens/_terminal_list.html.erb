@@ -10,7 +10,7 @@
   <ul>
     <% @all_terminals.each do |terminal_id|%>
       <li class="arrow">
-        <a href="#terminal_info_screen" class="cube" data-page_name="terminal_recpt_info" data-params="terminal_id=<%=terminal_id%>"><%=terminal_id%></a>
+        <a href="#terminal_info_screen" data-page_name="terminal_recpt_info" data-params="terminal_id=<%=terminal_id%>"><%=terminal_id%></a>
       </li>
     <% end %>
   </ul>

@@ -148,7 +148,7 @@ function doSelectReceiptItem(orderItemEl) {
 }
 
 function writeOrderItemToReceipt(orderItem) {
-    setReceiptsHTML(getCurrentReceiptHTML() + getOrderItemReceiptHTML(orderItem));
+    setReceiptsHTML(getCurrentRecptHTML() + getOrderItemReceiptHTML(orderItem));
 }
 
 function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
@@ -324,7 +324,7 @@ function loadReceipt(order) {
 
     allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(order);
     
-    setReceiptsHTML(getCurrentReceiptHTML() + allOrderItemsRecptHTML)
+    setReceiptsHTML(getCurrentRecptHTML() + allOrderItemsRecptHTML)
 
     //    if(orderTotal != null) {
     //        writeTotalToReceipt(order, orderTotal);

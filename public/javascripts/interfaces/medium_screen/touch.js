@@ -122,7 +122,7 @@ function swipeToSettings() {
 }
 
 function clearAllPageFlags() {
-    currentScreenIsFunctions = currentScreenIsMenu = currentScreenIsReceipt = false;
+    currentScreenIsFunctions = currentScreenIsMenu = currentScreenIsReceipt = currentScreenIsSettings = false;
 }
 
 function setFirstPage() {

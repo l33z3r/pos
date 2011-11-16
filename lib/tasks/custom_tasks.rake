@@ -40,3 +40,12 @@ task :delete_sync_data => :environment do
   
   puts "Done!"
 end
+
+desc "Deletes all stored receipt data"
+task :delete_recpt_data => :environment do
+  @recpt_htmls = StoredReceiptHtml.all
+  puts "Deleting #{@recpt_htmls.length} receipt_htmls"
+  @recpt_htmls.each(&:destroy) 
+  
+  puts "Done!"
+end

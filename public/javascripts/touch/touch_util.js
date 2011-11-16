@@ -1,4 +1,3 @@
-
 function initTouch() {
     //replace all click events with touch events
     new NoClickDelay(document.body);  
