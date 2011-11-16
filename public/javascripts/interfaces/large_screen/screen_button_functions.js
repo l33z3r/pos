@@ -297,13 +297,10 @@ function showAddNoteToOrderItemScreen() {
 }
 
 function showGlobalSettingsPage() {
-    window.location = '#{admin_global_settings_path}'; 
-    return false;
+    goTo('/admin/global_settings');
 }
 
 function openCashDrawer() {
-    
-    
     var cash_drawer_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/cash_drawer_controller';
     
     $.ajax({

@@ -32,6 +32,13 @@ function deleteModifier(link) {
 }
 
 function doSetDefaultDisplay(displayId) {
+    //clear all the other default radio buttons
+    $('input[name=set_default_display]').each(function() {
+        if($(this).attr("id") != "set_default_display_" + displayId) {
+            $(this).attr("checked", false);
+        } 
+    });
+    
     //send an update to display controller
     $.ajax({
         type: 'POST',
@@ -64,6 +71,13 @@ function doSetDefaultDiscount(discountId) {
 }
 
 function doSetDefaultOrderItemAdditionGrid(gridId) {
+    //clear all the other default radio buttons
+    $('input[name=set_default_order_item_addition_grid]').each(function() {
+        if($(this).attr("id") != "set_default_order_item_addition_grid_" + gridId) {
+            $(this).attr("checked", false);
+        } 
+    });
+    
     //send an update to display controller
     $.ajax({
         type: 'POST',
@@ -321,18 +335,18 @@ function loadProductsForNextLetter(){
 }
 
 function loadProductsForPreviousLetter(){
-  if($("#current_letter").val()!=="all"){
-    if($("#current_letter").val() !== barLetters[0]){
-        var previousLetter = previousOnAlphabet($("#current_letter").val());
-        changeStyleButton(previousLetter);
-        $("#current_letter").val(previousLetter);
+    if($("#current_letter").val()!=="all"){
+        if($("#current_letter").val() !== barLetters[0]){
+            var previousLetter = previousOnAlphabet($("#current_letter").val());
+            changeStyleButton(previousLetter);
+            $("#current_letter").val(previousLetter);
+        }
+        else{
+            changeStyleButton("all");
+            $("#current_letter").val("all");
+        }
+        runSearch();
     }
-    else{
-        changeStyleButton("all");
-        $("#current_letter").val("all");
-    }
-    runSearch();
-  }
 }
 
 function loadProductsForNumber(){
@@ -351,18 +365,18 @@ function loadProductsForAllLetters(){
 var barLetters = new Array();
 
 function nextOnAlphabet(letter){
-   var i = barLetters.indexOf(letter);
-   return barLetters[i+1]
+    var i = barLetters.indexOf(letter);
+    return barLetters[i+1]
 }
 
 function previousOnAlphabet(letter){
-   if(letter!="hash"){
-       var i = barLetters.indexOf(letter);
-       return barLetters[i-1];
-   }
-   else{
-       return barLetters[barLetters.length-1];
-   }
+    if(letter!="hash"){
+        var i = barLetters.indexOf(letter);
+        return barLetters[i-1];
+    }
+    else{
+        return barLetters[barLetters.length-1];
+    }
 }
 
 function changeStyleButton(letter){
@@ -382,18 +396,18 @@ function runSearch() {
             type: 'GET',
             url: '/admin/products/search',
             data: {
-                    "search1[code_num_or_upc_equals]" : $("#code_num_equals").val(),
-                    "search1[description_contains]" : $("#description_contains").val(),
-                    "search1[is_special_equals]" : is_special,
-                    "search1[category_id_equals]" : $("#category_id_equals").val(),
-                    "search1[menu_page_1_id_equals]" : $("#menu_page_1_id_equals").val(),
-                    "search1[name_starts_with]" : letter,
-                    "search1[name_starts_with_any]" : numbers,
-                    "search1[is_deleted_equals]" : is_deleted,
-                    "search2" : $("#all_fields").val(),
-                    "search3[description_or_name_or_brand_or_kitchen_note_or_button_text_line_1_or_button_text_line_2_or_button_text_line_3_contains]" : $("#all_fields").val(),
-                    "search3[is_deleted_equals]" : is_deleted
-                }
+                "search1[code_num_or_upc_equals]" : $("#code_num_equals").val(),
+                "search1[description_contains]" : $("#description_contains").val(),
+                "search1[is_special_equals]" : is_special,
+                "search1[category_id_equals]" : $("#category_id_equals").val(),
+                "search1[menu_page_1_id_equals]" : $("#menu_page_1_id_equals").val(),
+                "search1[name_starts_with]" : letter,
+                "search1[name_starts_with_any]" : numbers,
+                "search1[is_deleted_equals]" : is_deleted,
+                "search2" : $("#all_fields").val(),
+                "search3[description_or_name_or_brand_or_kitchen_note_or_button_text_line_1_or_button_text_line_2_or_button_text_line_3_contains]" : $("#all_fields").val(),
+                "search3[is_deleted_equals]" : is_deleted
+            }
         });
     }
     else{
@@ -401,15 +415,15 @@ function runSearch() {
             type: 'GET',
             url: '/admin/products/search',
             data: {
-                    "search1[code_num_or_upc_equals]" : $("#code_num_equals").val(),
-                    "search1[description_contains]" : $("#description_contains").val(),
-                    "search1[is_special_equals]" : is_special,
-                    "search1[category_id_equals]" : $("#category_id_equals").val(),
-                    "search1[menu_page_1_id_equals]" : $("#menu_page_1_id_equals").val(),
-                    "search1[name_starts_with]" : letter,
-                    "search1[name_starts_with_any]" : numbers,
-                    "search1[is_deleted_equals]" : is_deleted
-                }
+                "search1[code_num_or_upc_equals]" : $("#code_num_equals").val(),
+                "search1[description_contains]" : $("#description_contains").val(),
+                "search1[is_special_equals]" : is_special,
+                "search1[category_id_equals]" : $("#category_id_equals").val(),
+                "search1[menu_page_1_id_equals]" : $("#menu_page_1_id_equals").val(),
+                "search1[name_starts_with]" : letter,
+                "search1[name_starts_with_any]" : numbers,
+                "search1[is_deleted_equals]" : is_deleted
+            }
         });
     }
 }
@@ -418,7 +432,7 @@ $(document).ready(function(){
     $('#button_all').addClass('letter_link_clicked');
     $('#is_deleted_equals').change(function(){
         if($("#is_deleted_equals").is(":checked"))
-           disableSearchFields();
+            disableSearchFields();
         else
             enableSearchFields();
     });
@@ -429,34 +443,34 @@ $(document).ready(function(){
 
 
 function markProductAsDeleted(product_id) {
-	var answer = confirm("Are you sure?")
-	if (answer){
-            $.ajax({
-                type: 'POST',
-                url: '/admin/products/'+ product_id +'/mark_as_deleted',
-                data: {
-                    id : product_id
-                }
-            });
+    var answer = confirm("Are you sure?")
+    if (answer){
+        $.ajax({
+            type: 'POST',
+            url: '/admin/products/'+ product_id +'/mark_as_deleted',
+            data: {
+                id : product_id
+            }
+        });
 
-            $("#product_id_"+product_id).hide(1000);
-	}
+        $("#product_id_"+product_id).hide(1000);
+    }
 }
 
 function disableSearchFields(){
-     $("#code_num_equals").attr('disabled', 'disabled');
-     $("#description_contains").attr('disabled', 'disabled');
-     $("#category_id_equals").attr('disabled', 'disabled');
-     $("#menu_page_1_id_equals").attr('disabled', 'disabled');
-     $("#all_fields").attr('disabled', 'disabled');
-     $("#is_special_equals").attr('disabled', 'disabled');     
+    $("#code_num_equals").attr('disabled', 'disabled');
+    $("#description_contains").attr('disabled', 'disabled');
+    $("#category_id_equals").attr('disabled', 'disabled');
+    $("#menu_page_1_id_equals").attr('disabled', 'disabled');
+    $("#all_fields").attr('disabled', 'disabled');
+    $("#is_special_equals").attr('disabled', 'disabled');     
 }
 
 function enableSearchFields(){
-     $("#code_num_equals").removeAttr('disabled');
-     $("#description_contains").removeAttr('disabled');
-     $("#category_id_equals").removeAttr('disabled');
-     $("#menu_page_1_id_equals").removeAttr('disabled');
-     $("#all_fields").removeAttr('disabled');
-     $("#is_special_equals").removeAttr('disabled');
+    $("#code_num_equals").removeAttr('disabled');
+    $("#description_contains").removeAttr('disabled');
+    $("#category_id_equals").removeAttr('disabled');
+    $("#menu_page_1_id_equals").removeAttr('disabled');
+    $("#all_fields").removeAttr('disabled');
+    $("#is_special_equals").removeAttr('disabled');
 }
