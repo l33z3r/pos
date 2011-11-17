@@ -30,18 +30,23 @@ function fetchOrderReceiptHTML(order) {
 
 //this fetches the html for the order receipt that gets printed
 function printItemsFromOrder(serverNickname, terminalID, orderJSON, items) {
-    var allOrderItemsReceiptHTML = getPrintedOrderReceiptHeader(serverNickname, terminalID, orderJSON);
+    var allOrderItemsReceiptHTML = "<div class='order_receipt'>";
+    allOrderItemsReceiptHTML += getPrintedOrderReceiptHeader(serverNickname, terminalID, orderJSON);
 
     for(var i=0; i<items.length; i++) {
         var item = items[i];
         allOrderItemsReceiptHTML += getLineItemHTMLForPrintedOrderReceipt(item);
     }
     
+    allOrderItemsReceiptHTML += "</div>";
+    
     printReceipt(allOrderItemsReceiptHTML, false);
 }
 
 function getLineItemHTMLForPrintedOrderReceipt(orderItem) {
-    var lineItemHTMLForOrder = "<div class='order_line'>";
+    var courseLineClass = orderItem.is_course ? "course" : "";
+    
+    var lineItemHTMLForOrder = "<div class='order_line " + courseLineClass + "'>";
     
     //we don't show the amount for the order receipt
     lineItemHTMLForOrder += "<div class='amount'>" + orderItem.amount + "</div>";
@@ -60,7 +65,7 @@ function getLineItemHTMLForPrintedOrderReceipt(orderItem) {
         for(var j=0; j<orderItem.oia_items.length; j++) {
             oia_is_add = orderItem.oia_items[j].is_add;
             
-            orderHTML += clearHTML;
+            lineItemHTMLForOrder += clearHTML;
             
             if(!orderItem.oia_items[j].is_note) {
                 lineItemHTMLForOrder += "<div class='oia_add'>" + (oia_is_add ? "Add" : "No") + "</div>";

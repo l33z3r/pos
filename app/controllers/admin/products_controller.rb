@@ -110,46 +110,43 @@ class Admin::ProductsController < Admin::AdminController
     @search1 = Product.search(@param1).order('name')
     @products1 = @search1.all
     if(!@param2.nil? && !@param3.nil?)
-        @search2 = Product.where("(code_num = ? OR upc = ? OR price = ? OR price_2 = ? OR price_3 = ? OR price_4) AND is_deleted = false", @param2, @param2, @param2, @param2, @param2).order('name')
-        @search3 = Product.search(@param3).order('name')
-        @products2 = @search2.all
-        @products3 = @search3.all
-        @merge1 = @products2 | @products3
-        @intersection = @merge1 & @products1  
-        @products = @intersection.sort! { |a, b|  a.name <=> b.name }
+      @search2 = Product.where("(code_num = ? OR upc = ? OR price = ? OR price_2 = ? OR price_3 = ? OR price_4) AND is_deleted = false", @param2, @param2, @param2, @param2, @param2).order('name')
+      @search3 = Product.search(@param3).order('name')
+      @products2 = @search2.all
+      @products3 = @search3.all
+      @merge1 = @products2 | @products3
+      @intersection = @merge1 & @products1  
+      @products = @intersection.sort! { |a, b|  a.name <=> b.name }
     else
-        @products = @products1.sort! { |a, b|  a.name <=> b.name }
+      @products = @products1.sort! { |a, b|  a.name <=> b.name }
     end    
   end
+  
+  def mark_as_deleted
+    @product = Product.find(params[:id])
+    @product.mark_as_deleted
+    
+    render :json => {:success => true}.to_json
+  end 
+  
+  private
 
   def get_session_parameters_to_fields
-      @selected_letter = (!session[:search1][:name_starts_with].eql?("")) ? session[:search1][:name_starts_with] : ((!session[:search1][:name_starts_with_any].eql?("")) ? "hash" : "all")
-      @session_code_num_upc = session[:search1][:code_num_or_upc_equals]
-      @session_description = session[:search1][:description_contains]
-      @session_category =  session[:search1][:category_id_equals]
-      @session_menu = session[:search1][:menu_page_1_id_equals]
-      @session_all_fields = session[:search2]
-      @session_is_specials = (session[:search1][:is_special_equals] == "true") ? true : false;
-      @session_is_deleted = (session[:search1][:is_deleted_equals] == "true") ? true : false;
+    @selected_letter = (!session[:search1][:name_starts_with].eql?("")) ? session[:search1][:name_starts_with] : ((!session[:search1][:name_starts_with_any].eql?("")) ? "hash" : "all")
+    @session_code_num_upc = session[:search1][:code_num_or_upc_equals]
+    @session_description = session[:search1][:description_contains]
+    @session_category =  session[:search1][:category_id_equals]
+    @session_menu = session[:search1][:menu_page_1_id_equals]
+    @session_all_fields = session[:search2]
+    @session_is_specials = (session[:search1][:is_special_equals] == "true") ? true : false;
+    @session_is_deleted = (session[:search1][:is_deleted_equals] == "true") ? true : false;
   end
 
   def save_params param1, param2, param3
-      session[:search1] = param1
-      session[:search2] = param2
-      session[:search3] = param3
+    session[:search1] = param1
+    session[:search2] = param2
+    session[:search3] = param3
   end
-
-  def mark_as_deleted
-    @product = Product.find(params[:id])
-    @product.is_deleted = true
-    @product.save!
-    #remove the product from all menu_pages deleting menu_items
-    @product.menu_items.each do |menu_item|
-      MenuItem.delete_menu_item(menu_item)
-    end
-  end
-
-  private 
   
   def update_menus_for_product product, new_menu_1_id, old_menu_1_id, new_menu_2_id, old_menu_2_id
     update_menu_for_product product, new_menu_1_id, old_menu_1_id

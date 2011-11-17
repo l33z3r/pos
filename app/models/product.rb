@@ -57,6 +57,16 @@ class Product < ActiveRecord::Base
     end
   end
   
+  def mark_as_deleted
+    self.is_deleted = true
+    save!
+    
+    #remove the product from all menu_pages deleting menu_items
+    self.menu_items.each do |menu_item|
+      MenuItem.delete_menu_item(menu_item)
+    end
+  end
+  
   def printing_to_terminal? id_safe_terminal_name
     @printers_string = read_attribute("printers")
     
@@ -126,6 +136,7 @@ class Product < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: products
@@ -193,5 +204,7 @@ end
 #  menu_page_1_id             :string(255)
 #  menu_page_2_id             :string(255)
 #  button_bg_color_2          :string(255)
+#  is_special                 :boolean(1)      default(FALSE)
+#  is_deleted                 :boolean(1)      default(FALSE)
 #
 

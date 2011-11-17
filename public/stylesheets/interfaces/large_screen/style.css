@@ -831,6 +831,10 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
     background-color: #FFF;
 }
 
+div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item.inactive {
+    text-decoration: line-through;
+}
+
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_pic {
     height: 58px;
 }
@@ -1528,14 +1532,14 @@ div.receipt div.till_roll div.oia_add {
 
 div.receipt div.till_roll div.oia_name {
     float: left;
-    width: 150px;
+    width: 148px;
     margin-left: 10px;
     text-align: left;
 }
 
 div.receipt div.till_roll div.oia_name.note {
     font-style: italic;
-    width: 190px;
+    width: 188px;
 }
 
 div.receipt div.till_roll div.oia_price {
@@ -2894,6 +2898,8 @@ div.button div.button_name a:hover {
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item.pressed,
 div#menu_screen div#menu_pages_container div#menu_container div#pages div.page.pressed,
 div#receipt_keypad_container div#table_screen_button.pressed,
+div.button.pressed,
+#wrapper input[type="submit"].pressed,
 #wrapper div.button.pressed,
 #wrapper div.key.pressed,
 #wrapper div.go_key.pressed,
@@ -2915,7 +2921,9 @@ nav#main_nav div#nav_util_button.pressed {
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item.pressed *,
 div#menu_screen div#menu_pages_container div#menu_container div#pages div.page.pressed *,
+div.button.pressed *,
 #wrapper div.button.pressed *,
+#wrapper input[type="submit"].pressed *,
 #wrapper div.key.pressed *,
 #wrapper div.go_key.pressed *,
 #wrapper div#landing div#active_users_buttons_container div#active_users div.employee_box.pressed *,

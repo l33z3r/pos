@@ -43,16 +43,14 @@
                 <a href="#" class="select_category" id="select_category_<%=category.id%>"><%= category.name %></a>
                 <ul>
                   <% category.products.each do |product| %>
-                    <% if(!product.is_deleted) %>
-                        <li>
-                          <div class="select_product" id="select_product_<%=product.id%>">
-                            <%= product_image_thumb product, true %>
-                          </div>
-                          <div class="name" id="left_nav_product_name_<%=product.id%>"><%= product.name %></div>
-                          <div class="edit_link"><%= link_to "(edit)", edit_admin_product_path(product, :back_builder_screen_id => @display.id) %></div>
-                          <div class="clear">&nbsp;</div>
-                        </li>
-                     <% end %>
+                    <li>
+                      <div class="select_product" id="select_product_<%=product.id%>">
+                        <%= product_image_thumb product, true %>
+                      </div>
+                      <div class="name" id="left_nav_product_name_<%=product.id%>"><%= product.name %></div>
+                      <div class="edit_link"><%= link_to "(edit)", edit_admin_product_path(product, :back_builder_screen_id => @display.id) %></div>
+                      <div class="clear">&nbsp;</div>
+                    </li>
                   <% end %>
                 </ul>
               </li>
@@ -125,7 +123,7 @@
         <div class="clear">&nbsp;</div>
       </div>
     </div>
-    
+
     <div class="clear">&nbsp;</div>
 
   </div>

@@ -41,9 +41,9 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         nextUserIDToSyncWith = employees[i].id;
         
         //skip if terminal and user same
-//        if(recvdTerminalID == terminalID && terminalEmployeeID == nextUserIDToSyncWith) {
-//            continue;
-//        }
+        //        if(recvdTerminalID == terminalID && terminalEmployeeID == nextUserIDToSyncWith) {
+        //            continue;
+        //        }
         
         doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith);
     }
@@ -54,7 +54,6 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
     
     if(callHomePollInitSequenceComplete) {
         checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);
-        
     }
     
     newlyAdded = addActiveTable(tableID);
@@ -191,12 +190,23 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
 }
 
 function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID) {
-    //alert("TID:" + terminalID);
-    
     var itemsToPrint = new Array();
     
     var icount = 0;
     var pushcount = 0;
+    
+    
+    //TODO: the course line gets lost when it is not on the item that is going to be printed here...
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     for(var itemKey in items) {
         icount++;
@@ -204,13 +214,12 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
         //we only want to print items from the order that are new i.e. not synced on the other terminal yet
         var isItemSynced = (items[itemKey].synced === 'true');
         
-        //console.log(items[itemKey].synced + " "  + isItemSynced);
         if(!isItemSynced) {
             var itemPrinters = items[itemKey].product.printers;
-            //console.log(items[itemKey].product.printers + " " + terminalID);
+            
             if((typeof itemPrinters != "undefined") && itemPrinters.length > 0) {
                 var printersArray = itemPrinters.split(",");
-                //console.log(printersArray + " " + $.inArray(terminalID, printersArray));
+                
                 if($.inArray(terminalID.toLowerCase(), printersArray) != -1) {
                     pushcount++;
                     itemsToPrint.push(items[itemKey]);
@@ -219,10 +228,7 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
         }
     }
     
-    //console.log("Got" + icount + " items, pushed " + pushcount);
-    
     if(itemsToPrint.length > 0) {
-        //console.log("printing " + itemsToPrint.length + " items");
         printItemsFromOrder(serverNickname, recvdTerminalID, orderJSON, itemsToPrint);
     }
 }
@@ -429,22 +435,20 @@ function recptScroll(targetPrefix) {
         $('#' + targetPrefix + 'till_roll').touchScroll('setPosition', newHeight);
         
     } else {
-//        newHeight = $('#' + targetPrefix + 'receipt').attr('scrollHeight');
-//        $('#' + targetPrefix + 'receipt').scrollTop(newHeight);
-            
-        currentHeight = $('#' + targetPrefix + 'till_roll').height();
-        scrollHeight = $('#' + targetPrefix + 'till_roll').attr('scrollHeight');
-        newHeight = scrollHeight - currentHeight;
-        
         //jscrollpane force scroll to end
         var jscroll_api = $('#' + targetPrefix + 'receipt').data('jsp');
         
         if(jscroll_api) {
+            currentHeight = $('#' + targetPrefix + 'till_roll').height();
+            scrollHeight = $('#' + targetPrefix + 'till_roll').attr('scrollHeight');
+            newHeight = scrollHeight - currentHeight;
+        
             jscroll_api.scrollToY(newHeight + 20);
+        } else {
+            newHeight = $('#' + targetPrefix + 'receipt').attr('scrollHeight');
+            $('#' + targetPrefix + 'receipt').scrollTop(newHeight);
         }
     }
-    
-    
 }
 
 function doSelectTable(tableNum) {

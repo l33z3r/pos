@@ -146,5 +146,19 @@ module ApplicationHelper
   def id_safe string
     string.strip.gsub(" ", "_").downcase
   end
+  
+  def money_image_button amount
+    @html = ""
+    
+    @image_path = "#{amount}#{@currency_note_image_setting}.jpg"
+    
+    if FileTest.exists?(RAILS_ROOT + "/public/images/#{@image_path}")
+      @html = content_tag :div, :class => "money", :onclick => "moneySelected(#{amount});" do
+        image_tag @image_path
+      end
+    end
+    
+    @html
+  end
 
 end

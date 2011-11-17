@@ -172,8 +172,7 @@ class ApplicationController < ActionController::Base
   end
   
   def print_money value
-    @dynamic_currency_symbol = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL
-    number_to_currency value, :precision => 2, :unit => @dynamic_currency_symbol
+    number_to_currency value, :precision => 2, :unit => @currency_symbol
   end
   
   def development_mode?
@@ -271,11 +270,13 @@ class ApplicationController < ActionController::Base
     end
 
     @currency_symbol = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL
-    
-    #TODO: make setting for
     @currency_symbol_small = GlobalSetting.parsed_setting_for GlobalSetting::SMALL_CURRENCY_SYMBOL
     
+    @currency_note_image_setting = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_NOTES_IMAGES
+    
     @auto_print_receipt = GlobalSetting.parsed_setting_for GlobalSetting::AUTO_PRINT_RECEIPT
+    @order_receipt_width_setting = GlobalSetting.parsed_setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, {:fingerprint => @terminal_fingerprint}
+    
     @service_charge_label = GlobalSetting.parsed_setting_for GlobalSetting::SERVICE_CHARGE_LABEL
     @business_name = GlobalSetting.parsed_setting_for GlobalSetting::BUSINESS_NAME
     @business_address = GlobalSetting.parsed_setting_for GlobalSetting::ADDRESS

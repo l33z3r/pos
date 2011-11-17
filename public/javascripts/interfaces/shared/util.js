@@ -581,7 +581,8 @@ function initPressedCSS() {
         cancelEventName = "touchcancel";
     }
     
-    $('div.button, div.item, div.key, div.go_key, div.cancel_key, div.employee_box, div.mobile_button, div.page, #table_screen_button, div#nav_util_button').live(startEventName,function() {
+    $('div.button, div.item, div.key, div.go_key, div.cancel_key, div.employee_box, \n\
+        div.mobile_button, div.page, #table_screen_button, div#nav_util_button, input[type="submit"]').live(startEventName,function() {
         $(this).addClass("pressed");
         
         $(this).bind(stopEventName, function() {

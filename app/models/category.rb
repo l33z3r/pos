@@ -13,7 +13,8 @@
 #
 
 class Category < ActiveRecord::Base
-  has_many :products
+  has_many :products, :conditions => "products.is_deleted = false"
+  
   belongs_to :tax_rate
   
   belongs_to :parent_category, :class_name => "Category"

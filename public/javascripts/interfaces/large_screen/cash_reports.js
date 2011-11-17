@@ -158,7 +158,7 @@ function finishCashTotal() {
         
     $('#cash_totals_header_section').show();
     
-    content = $('#reports_center_receipt').html() + clear10HTML;
+    content = $('#reports_center_till_roll').html() + clear10HTML;
     
     doCashTotalReport(currentTotalType, true);
     

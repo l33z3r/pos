@@ -121,29 +121,16 @@
       </div>
 
       <div id="money_helper_section">
-        <div class="money" onclick="moneySelected(5)">
-          <%= image_tag "5euro.jpg" %>
-        </div>
-        <div class="clear">&nbsp;</div>
-
-        <div class="money" onclick="moneySelected(10)">
-          <%= image_tag "10euro.jpg" %>
-        </div>
-        <div class="clear">&nbsp;</div>
-
-        <div class="money" onclick="moneySelected(20)">
-          <%= image_tag "20euro.jpg" %>
-        </div>
-        <div class="clear">&nbsp;</div>
-
-        <div class="money" onclick="moneySelected(50)">
-          <%= image_tag "50euro.jpg" %>
-        </div>
-        <div class="clear">&nbsp;</div>
-
-        <div class="money" onclick="moneySelected(100)">
-          <%= image_tag "100euro.jpg" %>
-        </div>
+        <%= money_image_button "5" %>
+        
+        <%= money_image_button "10" %>
+        
+        <%= money_image_button "20" %>
+        
+        <%= money_image_button "50" %>
+        
+        <%= money_image_button "100" %>
+        
         <div class="clear">&nbsp;</div>
 
         <div id="exact_amount_button_holder">

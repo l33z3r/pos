@@ -52,6 +52,8 @@ class GlobalSetting < ActiveRecord::Base
   LAST_ORDER_ID = 23
   RELOAD_HTML5_CACHE_TIMESTAMP = 24
   WEBSOCKET_IP = 25
+  CURRENCY_NOTES_IMAGES = 26
+  ORDER_RECEIPT_WIDTH = 27
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -78,7 +80,9 @@ class GlobalSetting < ActiveRecord::Base
     DO_BEEP => "Do Beep",
     LAST_ORDER_ID => "Last Order ID", 
     RELOAD_HTML5_CACHE_TIMESTAMP => "HTML5 Cache Reload Timestamp",
-    WEBSOCKET_IP => "Web Socket Ip Adress"
+    WEBSOCKET_IP => "Web Socket Ip Adress",
+    CURRENCY_NOTES_IMAGES => "Currency Notes Images", 
+    ORDER_RECEIPT_WIDTH => "Order Receipt Width"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -143,7 +147,13 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_key(:key => RELOAD_HTML5_CACHE_TIMESTAMP.to_s, :value => 0, :label_text => LABEL_MAP[RELOAD_HTML5_CACHE_TIMESTAMP])
       @gs.parsed_value = @gs.value.to_f
     when WEBSOCKET_IP
-      @gs = find_or_create_by_key(:key => "#{WEBSOCKET_IP.to_s}_#{args[:terminal_fingerprint]}", :value => "127.0.0.1", :label_text => LABEL_MAP[WEBSOCKET_IP])
+      @gs = find_or_create_by_key(:key => "#{WEBSOCKET_IP.to_s}_#{args[:fingerprint]}", :value => "127.0.0.1", :label_text => LABEL_MAP[WEBSOCKET_IP])
+      @gs.parsed_value = @gs.value
+    when CURRENCY_NOTES_IMAGES
+      @gs = find_or_create_by_key(:key => CURRENCY_NOTES_IMAGES.to_s, :value => CURRENCY_NOTES_IMAGES_EURO, :label_text => LABEL_MAP[CURRENCY_NOTES_IMAGES])
+      @gs.parsed_value = @gs.value
+    when ORDER_RECEIPT_WIDTH
+      @gs = find_or_create_by_key(:key => "#{ORDER_RECEIPT_WIDTH.to_s}_#{args[:fingerprint]}", :value => ORDER_RECEIPT_WIDTH_80MM, :label_text => LABEL_MAP[ORDER_RECEIPT_WIDTH])
       @gs.parsed_value = @gs.value
     else
       @gs = load_setting property
@@ -166,7 +176,7 @@ class GlobalSetting < ActiveRecord::Base
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     when CLOCK_FORMAT
-      new_value = ((value == "12") ? "12" : "24")
+      new_value = ((value == CLOCK_FORMAT_12) ? CLOCK_FORMAT_12 : CLOCK_FORMAT_24)
       write_attribute("value", new_value)
     when TAX_CHARGABLE
       new_value = (value == "true" ? "yes" : "no")
@@ -190,6 +200,12 @@ class GlobalSetting < ActiveRecord::Base
       end
     when RELOAD_HTML5_CACHE_TIMESTAMP
       new_value = value.to_i
+      write_attribute("value", new_value)
+    when CURRENCY_NOTES_IMAGES
+      new_value = ((value == CURRENCY_NOTES_IMAGES_EURO) ? CURRENCY_NOTES_IMAGES_EURO : CURRENCY_NOTES_IMAGES_STERLING)
+      write_attribute("value", new_value)
+    when ORDER_RECEIPT_WIDTH
+      new_value = ((value == ORDER_RECEIPT_WIDTH_80MM) ? ORDER_RECEIPT_WIDTH_80MM : ORDER_RECEIPT_WIDTH_76MM)
       write_attribute("value", new_value)
     else
     end
@@ -268,4 +284,11 @@ class GlobalSetting < ActiveRecord::Base
   CLOCK_FORMAT_12 = "12"
   CLOCK_FORMAT_24 = "24"
   
+  #properties for currency notes images
+  CURRENCY_NOTES_IMAGES_EURO = "euro"
+  CURRENCY_NOTES_IMAGES_STERLING = "sterling"
+  
+  #settings for order receipt width
+  ORDER_RECEIPT_WIDTH_80MM = "80mm"
+  ORDER_RECEIPT_WIDTH_76MM = "76mm"
 end

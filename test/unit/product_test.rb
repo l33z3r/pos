@@ -12,6 +12,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: products
@@ -79,5 +80,7 @@ end
 #  menu_page_1_id             :string(255)
 #  menu_page_2_id             :string(255)
 #  button_bg_color_2          :string(255)
+#  is_special                 :boolean(1)      default(FALSE)
+#  is_deleted                 :boolean(1)      default(FALSE)
 #
 

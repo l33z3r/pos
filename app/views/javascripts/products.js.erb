@@ -1,10 +1,11 @@
 var products = new Array();
 
-<% Product.where("is_deleted = false").each do |p|%>    
+<% Product.all.each do |p|%>    
   products[<%= p.id %>] = {
   'id':'<%= p.id %>', 'name':'<%= p.name %>', 
   'price':<%= p.price %>, 'tax_rate':<%=p.sales_tax_rate%>,
-  'printers' : "<%= p.printers %>"
+  'printers' : "<%= p.printers %>",
+  'deleted' : <%= p.is_deleted %>
   };
   <% if p.modifier_category_id %>
     products[<%= p.id %>]['modifier_category_id'] = <%=p.modifier_category_id%>;

@@ -260,6 +260,10 @@ div#menu_screen div#menu_container div#menu_items_container div.item {
     background: #FFF;
 }
 
+div#menu_screen div#menu_container div#menu_items_container div.item.inactive {
+    text-decoration: line-through;
+}
+
 div#menu_screen div#menu_container div#menu_items_container div.item_name {
     padding: 1px;
     overflow: hidden;
@@ -854,7 +858,9 @@ input#niceAlertContainer_noButton {
 
 div#menu_screen div#menu_container div#menu_items_container div.items div.item.pressed,
 div#menu_screen div#menu_container div#menu_pages_container div.page.pressed,
+div.button.pressed,
 #wrapper div.button.pressed,
+#wrapper input[type="submit"].pressed,
 #wrapper div.key.pressed,
 #wrapper div.go_key.pressed,
 #wrapper div.cancel_key.pressed {
@@ -867,7 +873,9 @@ div#menu_screen div#menu_container div#menu_pages_container div.page.pressed,
 
 div#menu_screen div#menu_container div#menu_items_container div.items div.item.pressed *,
 div#menu_screen div#menu_container div#menu_pages_container div.page.pressed *,
+div.button.pressed *,
 #wrapper div.button.pressed *,
+#wrapper input[type="submit"].pressed,
 #wrapper div.key.pressed *,
 #wrapper div.go_key.pressed *,
 #wrapper div.cancel_key.pressed * {

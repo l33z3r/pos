@@ -43,13 +43,6 @@
         width: 160px;
       }
 
-      div#order_receipt_header div.order_num {
-        font-weight: bold;
-        padding: 10px 0px;
-        margin: auto;
-        text-align: center;
-      }
-
       div.business_info {
         text-align: center;
         font-weight: bold;
@@ -60,16 +53,12 @@
         margin: 10px 0px;
       }
 
-      div#order_receipt_header div.data_table {
-        margin-bottom: 0px;
-      }
-
       div.data_table div.label {
         float: left;
         text-align: left;
         width: 92px;
       }
-      
+
       div.data_table div.data {
         float: left;
         text-align: right;
@@ -86,27 +75,6 @@
         width: 109px;
       }
 
-      div#order_receipt_header div.data_table div.label {
-        width: 92px;
-      }
-
-      div#order_receipt_header div.data_table div.data {
-        text-align: right;
-      }
-
-      div#order_receipt_header div.data.time {
-        float: left;
-        text-align: left;
-        width: 95px;
-      }
-
-      div#order_receipt_header div.terminal {
-        float: left;
-        text-align: right;
-        padding-right: 3px;
-        width: 106px;
-      }
-
       div.terminal {
         float: left;
         font-weight: bold;
@@ -116,6 +84,10 @@
 
       div.order_line {
         margin: 0px 2px;
+      }
+
+      div.order_line.course {
+        border-bottom: 1px solid #000;
       }
 
       div.order_line div.discount {
@@ -218,9 +190,10 @@
       div#reports_center_till_roll {
         text-align: center;
       }
-      
+
       div#cash_totals_data_table div#cash_totals_data_table_header_section {
         margin: 20px 0px;
+        text-align: center;
       }
 
       div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_name {
@@ -245,6 +218,7 @@
         font-size: 14px;
         margin: 3px;
         margin-top: 15px;
+        text-align: center;
       }
 
       div#cash_totals_data_table div.data_table {
@@ -325,6 +299,8 @@
         text-align: right;
         width: 50px;
       }
+      
+      <%= render "/partials/interfaces/shared/order_receipt_css_#{@order_receipt_width_setting}" %>
     </style>    
   </head>
   <body id="print_receipt_content">

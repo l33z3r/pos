@@ -14,6 +14,9 @@ function initAdminScreen() {
     
     //make links in the table bigger
     makeBiggerAdminTableLinks();
+    
+    //run deleted projects hook
+    runDeletedProjectsHook();
 }
 
 $(function(){
@@ -393,6 +396,7 @@ function runSearch() {
     var letter = ($("#current_letter").val()!=="all" && $("#current_letter").val()!=="hash") ? $('#current_letter').val() : "";
     var is_special = ($("#is_special_equals").is(":checked")) ? "true" : "";
     var is_deleted = ($("#is_deleted_equals").is(":checked")) ? "true" : "false";
+    
     if($("#all_fields").val().length>0){
         $.ajax({
             type: 'GET',
@@ -430,8 +434,7 @@ function runSearch() {
     }
 }
 
-$(document).ready(function(){
-    //$('#button_all').addClass('letter_link_clicked');
+function runDeletedProjectsHook() {
     $('#is_deleted_equals').change(function(){
         if($("#is_deleted_equals").is(":checked"))
             disableSearchFields();
@@ -441,21 +444,25 @@ $(document).ready(function(){
     $('input.filterCheck').click(function(){
         runSearch();
     });
-});
-
+}
 
 function markProductAsDeleted(product_id) {
-    var answer = confirm("Are you sure?")
+    var answer = confirm("Are you sure?");
+    
     if (answer){
         $.ajax({
             type: 'POST',
             url: '/admin/products/'+ product_id +'/mark_as_deleted',
+            success: function() {
+                $("#product_id_"+product_id).hide(1000);
+            },
+            error: function() {
+                niceAlert("Error deleting product");
+            },
             data: {
                 id : product_id
             }
         });
-
-        $("#product_id_"+product_id).hide(1000);
     }
 }
 

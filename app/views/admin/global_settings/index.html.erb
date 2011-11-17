@@ -581,6 +581,24 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>All Note images:</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::CURRENCY_NOTES_IMAGES %>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="<%= GlobalSetting::CURRENCY_NOTES_IMAGES_EURO %>" 
+                             <%= @gs.parsed_value == GlobalSetting::CURRENCY_NOTES_IMAGES_EURO ? "checked" : "" %>/>
+                      <div class="label">Euro</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="<%= GlobalSetting::CURRENCY_NOTES_IMAGES_STERLING %>" 
+                             <%= @gs.parsed_value == GlobalSetting::CURRENCY_NOTES_IMAGES_STERLING ? "checked" : "" %>/>
+                      <div class="label">Sterling</div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
                     <td>Automatically Print Receipt?</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::AUTO_PRINT_RECEIPT %>
@@ -592,6 +610,24 @@
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">No</div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Order Receipt Width?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, {:fingerprint => @terminal_fingerprint} %>
+                      
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="<%= GlobalSetting::ORDER_RECEIPT_WIDTH_80MM %>" 
+                             <%= @gs.parsed_value == GlobalSetting::ORDER_RECEIPT_WIDTH_80MM ? "checked" : "" %>/>
+                      <div class="label">80mm</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="<%= GlobalSetting::ORDER_RECEIPT_WIDTH_76MM %>" 
+                             <%= @gs.parsed_value == GlobalSetting::ORDER_RECEIPT_WIDTH_76MM ? "checked" : "" %>/>
+                      <div class="label">76mm</div>
                       <div class="clear">&nbsp;</div>
                     </td>
                   </tr>
@@ -609,7 +645,7 @@
                       Terminal Name
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::TERMINAL_ID, {:fingerprint => request.cookies["terminal_fingerprint"]} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::TERMINAL_ID, {:fingerprint => @terminal_fingerprint} %>
 
                       <div id="terminal_name_field_unique_error" style="display: none;">
                         This terminal name has already been taken, if you submit this, the old terminal name will be overwritten
@@ -625,7 +661,7 @@
                       Web Socket IP Address
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, {:terminal_fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, {:fingerprint => @terminal_fingerprint} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>

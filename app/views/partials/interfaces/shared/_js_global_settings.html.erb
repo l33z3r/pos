@@ -95,6 +95,7 @@
   var updateStockType = <%= StockTransaction::STOCK_UPDATE %>;
   var transferStockType = <%= StockTransaction::STOCK_TRANSFER %>;
   
-  var webSocketServiceIP = "<%= GlobalSetting.parsed_setting_for GlobalSetting::WEBSOCKET_IP, {:terminal_fingerprint => @terminal_fingerprint} %>";
+  var webSocketServiceIP = "<%= GlobalSetting.parsed_setting_for GlobalSetting::WEBSOCKET_IP, {:fingerprint => @terminal_fingerprint} %>";
 
+  var orderReceiptWidthSetting = "<%= @order_receipt_width_setting %>";
 </script>
