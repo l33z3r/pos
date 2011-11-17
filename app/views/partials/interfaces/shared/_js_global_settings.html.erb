@@ -1,9 +1,9 @@
 <script type="text/javascript">
   
   //if we pass this param, we clear our local data, this is mainly used in the mobile app
-  <% if params[:reset_local_storage] == "true" %>
-      clearLocalStorageAndCookies();
-  <% end %>
+<% if params[:reset_local_storage] == "true" %>
+    clearLocalStorageAndCookies();
+<% end %>
   
   //load the setting for bypass pin
   var bypassPin = <%= GlobalSetting.parsed_setting_for GlobalSetting::BYPASS_PIN %>;
@@ -81,6 +81,8 @@
   var business_email_address = "<%= @business_email_address %>";
 
 <% @display = Display.load_default unless @display %>
+    
+  var selectedDisplayId = <%= @display.id %>;
     
   var modifierGridXSize = <%=@display.order_item_addition_grid.grid_x_size%>;
   var modifierGridYSize = <%=@display.order_item_addition_grid.grid_y_size%>;

@@ -9,6 +9,10 @@ function initMcDropDowns() {
         maxRows: 6
     });
     roomSelectMenu = $("#room_select_input").mcDropdown();
+    
+    //menu select dropdown, first init then get reference
+    $("#menu_select_input").mcDropdown("#menu_select");
+    menuSelectMenu = $("#menu_select_input").mcDropdown();
 }
 
 function hideAllMenuSubScreens() {

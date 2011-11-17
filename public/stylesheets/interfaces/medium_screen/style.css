@@ -588,25 +588,23 @@ div#functions_screen div#top_section {
 }
 
 div#functions_screen div#top_section div#menu_switcher_container {
-    padding: 7px 0px 30px 0px;
+    padding: 7px 0px 10px 0px;
     margin: auto;
     width: 280px;
 }
 
 div#functions_screen div#top_section div#menu_switcher_container div.label {
-    margin: 6px 10px 0px 0px;
+    margin: 13px 10px 0px 0px;
     float: left;
 }
 
-div#functions_screen div#top_section div#menu_switcher_container select#menu_select {
+div#functions_screen div#top_section div#menu_switcher_container div#menu_select_container {
     float: left;
-    height: 25px;
-    width: 150px;
 }
 
 div#functions_screen div#functions_buttons_container {
     border-spacing: 6px;
-    padding: 5px 15px;
+    padding: 5px;
 }
 
 /* End Functions Screen */
@@ -642,6 +640,10 @@ div#settings_screen div#submit_button {
     padding-top: 17px;
 }
 
+div#settings_screen div#settings_container {
+    padding: 0px 10px;
+}
+
 div#settings_screen div#settings_container form table td.data input {
     width: 205px;
 }
@@ -651,8 +653,8 @@ div#settings_screen div#settings_container form table td.data input {
 /* Generic Styles */
 
 div.button {
-    width: 103px;
-    max-width: 103px;
+    width: 108px;
+    max-width: 108px;
     height: 87px;
     max-height: 87px;
     overflow: hidden;

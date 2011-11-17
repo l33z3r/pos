@@ -6,14 +6,17 @@
 
   <div id="top_section">
     <div id="menu_switcher_container">
-      <div class="label">Select Menu:</div>
-      <select id="menu_select" onchange="displayDropdownSelected();">
-        <% Display.all.each do |display| %>
-          <option value="<%= display.id %>" <%=TerminalDisplayLink.for_terminal(@terminal_id).try(:display_id) == display.id ? "selected" : ""%>><%= display.name %></div>
-        <% end %>
-      </select>
+      <div class="label">Switch Menu:</div>
+      <div id="menu_select_container">
+        <div id="menu_select_input" onclick="menuSelectMenu.openMenu();">Select Menu</div>
+        <ul id="menu_select" class="mcdropdown_menu">
+          <% Display.all.each do |display| %>
+            <li rel="<%= display.id %>" onclick="displayDropdownSelected(<%= display.id %>);"><%=display.name%></li>
+          <% end %>
+        </ul>
+      </div>
+      <div class="clear">&nbsp;</div>
     </div>
-  <div class="clear">&nbsp;</div>
   </div>
 
   <div id="functions_buttons_container">

@@ -36,6 +36,18 @@ function exitAndroidApp() {
     }
 }
 
+function showAndroidKeyboard() {
+    if(inAndroidWrapper()) {
+        clueyAndroidJSInterface.showKeyboard();
+    }
+}
+
+function hideAndroidKeyboard() {
+    if(inAndroidWrapper()) {
+        clueyAndroidJSInterface.hideKeyboard();
+    }
+}
+
 function getAndroidFingerPrint() {
     if(inAndroidWrapper()) {
         return clueyAndroidJSInterface.getAndroidDeviceId();
