@@ -51,6 +51,9 @@ function doGlobalInit() {
         $('#exit_app_button').hide();
     }
     
+    //set the menu select dropdown initial value
+    menuSelectMenu.setValue(selectedDisplayId);
+    
     //start calling home
     callHomePoll();
 }

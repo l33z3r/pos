@@ -2,6 +2,9 @@ var current_table_label = null;
 
 var menuKeypadShowing = false;
 
+var roomSelectMenu = null;
+var menuSelectMenu = null;
+
 function initMenu() {
     //click the 1st menu page
     $('#menu_pages_container .page').first().click();
@@ -582,10 +585,8 @@ function hideOrderReadyPopup() {
     }
 }
 
-function displayDropdownSelected() {
+function displayDropdownSelected(selectedDisplayId) {
     showSpinner();
-    
-    var selectedDisplayId = $('#menu_select').val();
     
     //do ajax request and then reload   
     $.ajax({

@@ -1,16 +1,13 @@
 function swipeRightHandler() {
     hideMenuKeypad();
     
-    //don't do anything if we are on the tables screen
-    if(currentMenuSubscreenIsTableScreen()) {
-        return;
-    }
-    
     var currentLeftScroll = $('#content-scroll').attr('scrollLeft');
     
     var previousPageScroll = currentLeftScroll - pageWidth;
     
     if(doScroll(previousPageScroll)) {    
+        hideAndroidKeyboard();
+        
         //are we on the menu screen, if so, go to the receipt screen
         if(currentScreenIsMenu) {
             currentScreenIsMenu = false;
@@ -37,16 +34,13 @@ function swipeUpHandler() {
 function swipeLeftHandler() {
     hideMenuKeypad();
     
-    //don't do anything if we are on the tables screen
-    if(currentMenuSubscreenIsTableScreen()) {
-        return;
-    }
-    
     var currentLeftScroll = $('#content-scroll').attr('scrollLeft');
     
     var nextPageScroll = currentLeftScroll + pageWidth;
     
     if(doScroll(nextPageScroll)) {
+        hideAndroidKeyboard();
+        
         //are we on the menu screen, if so, go to the receipt screen
         if(currentScreenIsMenu) {
             currentScreenIsMenu = false;
@@ -81,7 +75,6 @@ function hideMenuKeypad() {
 }
 
 function doScroll(scrollLeftValue) {
-    
     if(scrollLeftValue < 0 || scrollLeftValue > (pageWidth * numPages - 1)) {
         return false;
     }
@@ -89,7 +82,7 @@ function doScroll(scrollLeftValue) {
     $("#content-scroll").animate({
         scrollLeft: scrollLeftValue
     }, scrollSpeed);
-    
+
     return true;
 }
 
