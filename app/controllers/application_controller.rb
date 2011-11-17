@@ -340,15 +340,15 @@ class ApplicationController < ActionController::Base
   
   def http_basic_authenticate
     
+    @authentication_required = GlobalSetting.parsed_setting_for GlobalSetting::AUTHENTICATION_REQUIRED
+    
     #skip if on mobile device
-    if mobile_device?
+    if !@authentication_required or mobile_device?
       return
     end
-   
-    if DO_HTTP_BASIC_AUTH
-      authenticate_or_request_with_http_basic do |username, password|
-        username == HTTP_BASIC_AUTH_USERNAME && password == HTTP_BASIC_AUTH_PASSWORD
-      end
+    
+    authenticate_or_request_with_http_basic do |username, password|
+      username == HTTP_BASIC_AUTH_USERNAME && password == HTTP_BASIC_AUTH_PASSWORD
     end
   end
   

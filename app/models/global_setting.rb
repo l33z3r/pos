@@ -54,6 +54,7 @@ class GlobalSetting < ActiveRecord::Base
   WEBSOCKET_IP = 25
   CURRENCY_NOTES_IMAGES = 26
   ORDER_RECEIPT_WIDTH = 27
+  AUTHENTICATION_REQUIRED = 28
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -82,7 +83,8 @@ class GlobalSetting < ActiveRecord::Base
     RELOAD_HTML5_CACHE_TIMESTAMP => "HTML5 Cache Reload Timestamp",
     WEBSOCKET_IP => "Web Socket Ip Adress",
     CURRENCY_NOTES_IMAGES => "Currency Notes Images", 
-    ORDER_RECEIPT_WIDTH => "Order Receipt Width"
+    ORDER_RECEIPT_WIDTH => "Order Receipt Width",
+    AUTHENTICATION_REQUIRED => "Authentication Required"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -155,6 +157,9 @@ class GlobalSetting < ActiveRecord::Base
     when ORDER_RECEIPT_WIDTH
       @gs = find_or_create_by_key(:key => "#{ORDER_RECEIPT_WIDTH.to_s}_#{args[:fingerprint]}", :value => ORDER_RECEIPT_WIDTH_80MM, :label_text => LABEL_MAP[ORDER_RECEIPT_WIDTH])
       @gs.parsed_value = @gs.value
+    when AUTHENTICATION_REQUIRED
+      @gs = find_or_create_by_key(:key => AUTHENTICATION_REQUIRED.to_s, :value => "false", :label_text => LABEL_MAP[AUTHENTICATION_REQUIRED])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -206,6 +211,9 @@ class GlobalSetting < ActiveRecord::Base
       write_attribute("value", new_value)
     when ORDER_RECEIPT_WIDTH
       new_value = ((value == ORDER_RECEIPT_WIDTH_80MM) ? ORDER_RECEIPT_WIDTH_80MM : ORDER_RECEIPT_WIDTH_76MM)
+      write_attribute("value", new_value)
+    when AUTHENTICATION_REQUIRED
+      new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     else
     end

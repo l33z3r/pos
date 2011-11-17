@@ -126,6 +126,9 @@ class Admin::ProductsController < Admin::AdminController
     @product = Product.find(params[:id])
     @product.mark_as_deleted
     
+    #send a reload request to other terminals
+    request_reload_app @terminal_id
+    
     render :json => {:success => true}.to_json
   end 
   

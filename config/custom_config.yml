@@ -1,5 +1,4 @@
 development:
-  do_http_basic_auth: false
   http_basic_auth_username: cluey
   http_basic_auth_password: cluey100
   use_s3: false
@@ -9,7 +8,6 @@ development:
   in_kiosk_mode: false
 
 test:
-  do_http_basic_auth: false
   http_basic_auth_username: cluey
   http_basic_auth_password: cluey100
   use_s3: false
@@ -19,7 +17,6 @@ test:
   in_kiosk_mode: false
 
 production:
-  do_http_basic_auth: true
   http_basic_auth_username: cluey
   http_basic_auth_password: cluey100
   use_s3: false
@@ -29,7 +26,6 @@ production:
   in_kiosk_mode: true
   
 production_heroku:
-  do_http_basic_auth: true
   http_basic_auth_username: cluey
   http_basic_auth_password: cluey100
   use_s3: true
