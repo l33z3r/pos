@@ -109,6 +109,7 @@ class OrderController < ApplicationController
       @order_item.employee_id = item[:serving_employee_id]
 
       @order_item.product_id = item[:product][:id]
+      @order_item.product_name = item[:product][:name]
 
       @order_item.quantity = item[:amount]
       @order_item.total_price = item[:total_price]
