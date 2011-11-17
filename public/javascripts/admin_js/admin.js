@@ -379,9 +379,11 @@ function previousOnAlphabet(letter){
     }
 }
 
-function changeStyleButton(letter){
-    $('#button_'+$('#current_letter').val()).removeClass('letter_link_clicked');
-    $('#button_'+letter).addClass('letter_link_clicked');
+function changeStyleButton(newLetter){
+    currentLetter = ($('#current_letter').val()=="") ? "all" : $('#current_letter').val() ;
+    $('#button_'+currentLetter).removeClass('letter_link_clicked');
+    newLetter = (newLetter=="") ? "all" : newLetter;
+    $('#button_'+newLetter).addClass('letter_link_clicked');
 }
 
 function runSearch() {
@@ -429,7 +431,7 @@ function runSearch() {
 }
 
 $(document).ready(function(){
-    $('#button_all').addClass('letter_link_clicked');
+    //$('#button_all').addClass('letter_link_clicked');
     $('#is_deleted_equals').change(function(){
         if($("#is_deleted_equals").is(":checked"))
             disableSearchFields();
@@ -473,4 +475,11 @@ function enableSearchFields(){
     $("#menu_page_1_id_equals").removeAttr('disabled');
     $("#all_fields").removeAttr('disabled');
     $("#is_special_equals").removeAttr('disabled');
+}
+
+function settingStateFields(){
+    if($("#is_deleted_equals").is(":checked")){
+        disableSearchFields();
+    }
+    changeStyleButton($("#current_letter").val());
 }

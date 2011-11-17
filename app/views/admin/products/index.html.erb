@@ -20,28 +20,30 @@
 
 <div id="admin_product_list">
 
+  <%= hidden_field_tag 'current_letter', @selected_letter %>
+  
   <div id="search_fields_container">
     <div class="left_col">
       <div class="field">
         <div class="label">Code No./UPC</div>
-        <%= text_field_tag :code_num_equals %>
+        <%= text_field_tag :code_num_equals, @session_code_num_upc %>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
         <div class="label">Description</div>
-        <%= text_field_tag :description_contains %>
+        <%= text_field_tag :description_contains, @session_description %>
         <div class="clear">&nbsp;</div>
       </div>
     </div>
     <div class="center_col">
       <div class="field">
         <div class="label">Category</div>
-        <%= collection_select :category_id, :equals, Category.find(:all), :id, :name, options = {:include_blank => "Any"} %>
+        <%= collection_select :category_id, :equals, Category.find(:all), :id, :name, options = {:include_blank => "Any", :selected => @session_category} %>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
         <div class="label">Menu</div>
-        <%= collection_select :menu_page_1_id, :equals, MenuPage.find(:all), :id, :name, options = {:include_blank => "Any"} %>
+        <%= collection_select :menu_page_1_id, :equals, MenuPage.find(:all), :id, :name, options = {:include_blank => "Any", :selected => @session_menu} %>
         <div class="clear">&nbsp;</div>
       </div>
     </div>
@@ -49,15 +51,15 @@
     <div class="right_col">
       <div class="field">
         <div class="label">Search All Fields</div>
-        <%= text_field_tag :all_fields %>
+        <%= text_field_tag :all_fields, @session_all_fields %>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
         <div class="label">Specials Only</div>
-        <%= check_box_tag :is_special_equals, 'no', false, :class => 'filterCheck' %>
+        <%= check_box_tag :is_special_equals, @session_is_specials, @session_is_specials, :class => 'filterCheck' %>
         <div id="deleted">
          <div class="label">Deleted</div>
-         <%= check_box_tag :is_deleted_equals, 'no', false, :class => 'filterCheck' %>
+         <%= check_box_tag :is_deleted_equals, @session_is_deleted, @session_is_deleted, :class => 'filterCheck' %>
         </div>
       </div>
     </div>
@@ -73,6 +75,12 @@
 
     <div class="clear">&nbsp;</div>
   </div>
+
+  <script type="text/javascript">
+    $(function() {
+      settingStateFields();
+    });
+  </script>
 
   <section id="products" class="no_scroll_pane">
 
@@ -93,9 +101,7 @@
       </div>
     </div>
 
-    <div class="clear_top_margin_20">&nbsp;</div>
-
-    <%= hidden_field_tag 'current_letter', @selected_letter %>
+    <div class="clear_top_margin_20">&nbsp;</div>    
 
     <div id="products_container" class="jscrollpane">
       <div id="products_ajax">
