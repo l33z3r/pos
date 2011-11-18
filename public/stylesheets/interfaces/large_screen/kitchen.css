@@ -91,6 +91,14 @@ div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.head
     float: right;
 }
 
+div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.header div.hide_order_button {
+    float: right;
+}
+
+div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.header div.hide_order_button img {
+    width: 20px;
+}
+
 div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.receipt {
     -moz-border-radius: 11px;
     border-radius: 11px;

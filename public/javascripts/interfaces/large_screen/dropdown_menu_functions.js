@@ -18,6 +18,22 @@ function menuScreenDropdownItemSelected(index, name) {
     } else if(index == 3) {
         goToSpecials();
         return;
+    } else if(index.startsWith("4")) {
+        var displayID = index.substring(2);
+        
+        //do ajax request and then reload   
+        $.ajax({
+            type: 'POST',
+            url: '/admin/terminals/link_display',
+            success: function() {
+                location.reload();
+            },
+            data: {
+                terminal_id : terminalID,
+                display_id : displayID
+            }
+        });
+        return;
     }
     
     setShortcutDropdownDefaultText();

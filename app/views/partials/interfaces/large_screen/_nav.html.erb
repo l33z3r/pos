@@ -18,7 +18,7 @@
   </div>
 
   <div id="connection_status">&nbsp;</div>
-  
+
   <div id="nav_util_button" onclick="doClearAndReload();">
     <%= image_tag "button_logos/clear_refresh.png" %>
   </div>
@@ -42,7 +42,15 @@
     <ul id="menu_screen_shortcut_dropdown" class="mcdropdown_menu">
       <li rel="1">Change Price</li>
       <li rel="2">Check Stock</li>
-      <li rel="3">Specials</li>
+      <li rel="3">Edit Specials</li>
+      <li>
+        Change Menu
+        <ul>
+          <% Display.all.each do |display| %>
+            <li rel="4-<%= display.id %>"><%= display.name %></li>
+          <% end %>
+        </ul>
+      </li>
     </ul>
   </div>
 

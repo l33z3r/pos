@@ -461,7 +461,7 @@ nav#main_nav div#menu_screen_shortcut_dropdown_container {
     cursor: pointer;
     margin-right: 15px;
     margin-top: -3px;
-    width: 113px;
+    width: 150px;
     float: right;
     font-weight: normal;
     height: 20px;
@@ -469,7 +469,7 @@ nav#main_nav div#menu_screen_shortcut_dropdown_container {
 
 nav#main_nav div#menu_screen_shortcut_dropdown_container div.mcdropdown {
     height: 22px;
-    width: 113px;
+    width: 150px;
     padding: 0px;
 }
 

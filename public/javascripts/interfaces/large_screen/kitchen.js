@@ -242,21 +242,26 @@ function sendCourseCheck(orderLine) {
     });
     
     if(orderFilled) {
-        console.log("Order is now filled, so sending it to filled orders!");
-        $('#kitchen_receipt_container_' + tableID + ' .header').removeClass("returned");
-        $('#kitchen_receipt_container_' + tableID + ' .header').addClass("being_removed");
-        
-        //move it to the filled section
-        setTimeout(function(){
-            $('#kitchen_receipt_container_' + tableID).appendTo('#filled_orders');
-            if(noActiveOrders()) {
-                $('#no_orders_message').show();
-            }
-        }, 3000);
+        //show the x button
+        $('#hide_order_button_' + tableID).show();
     }
     
     //save course checks in storage
     saveCourseChecks();
+}
+
+function sendOrderToCompleted(tableID) {
+    console.log("Sending order for table: " + tableID + " to filled orders!");
+    $('#kitchen_receipt_container_' + tableID + ' .header').removeClass("returned");
+    $('#kitchen_receipt_container_' + tableID + ' .header').addClass("being_removed");
+        
+    //move it to the filled section
+    setTimeout(function(){
+        $('#kitchen_receipt_container_' + tableID).appendTo('#filled_orders');
+        if(noActiveOrders()) {
+            $('#no_orders_message').show();
+        }
+    }, 3000);
 }
 
 //this applies the course checks css to the receipt

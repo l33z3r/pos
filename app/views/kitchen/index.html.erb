@@ -44,8 +44,15 @@
               <div class="table_number">
                 Table <%= table_info.perm_id %>
               </div>
+
+              <div class="hide_order_button" id="hide_order_button_<%= table_info.id %>" onclick="sendOrderToCompleted(<%= table_info.id %>)">
+                <%= image_tag "red_x.gif" %>
+              </div>
+
               <div id="kitchen_table_<%= table_info.id %>_receipt_order_num" class="order_num"></div>
+
               <div class="clear">&nbsp;</div>
+
             </div>
 
             <div id="kitchen_table_<%= table_info.id %>_receipt" class="receipt receipt_jscrollpane">
@@ -55,9 +62,9 @@
         <% end %>
       <% end %>
     </div>
-    
+
     <div id="active_orders"></div>
-    
+
     <div id="filled_orders"></div>
 
     <div class="clear">&nbsp;</div>
