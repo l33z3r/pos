@@ -18,6 +18,10 @@ function showTablesScreen() {
 }
 
 function showMoreOptionsScreen() {
+    alert("more options button pressed!");
+}
+
+function goToMainMenu() {
     showSpinner();
     goTo('/mbl#menu');
 }

@@ -1,10 +1,11 @@
 <div id="functions_screen" class="content-item">
   <div id="header" class="screen_header">
     <div id="back_button" class="small_button" onclick="swipeToMenu();">Menu</div>
-    <div class="header_label">Functions</div>
+    <div class="header_label">Options</div>
   </div>
 
   <div id="top_section">
+
     <div id="menu_switcher_container">
       <div class="label">Switch Menu:</div>
       <div id="menu_select_container">
@@ -17,12 +18,25 @@
       </div>
       <div class="clear">&nbsp;</div>
     </div>
+
+  </div>
+
+  <div id="welcome_message">
+    Welcome <%= session[:current_employee_nickname] %>
   </div>
 
   <div id="functions_buttons_container">
 
+    <div id="main_menu_button" 
+         class="button" onclick="goToMainMenu()">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/main_menu.png" %>
+      </div>
+      <div class="button_name">Main Menu</div>
+    </div>
+
     <% @functions_display_buttons.each_with_index do |db, index| %>
-      <% if index != 0 and index % 4 == 0 %><div class="clear">&nbsp;</div><% end %>
+      <% if (index+1) != 0 and (index+1) % 4 == 0 %><div class="clear">&nbsp;</div><% end %>
       <div id="sales_button_<%=db.id%>" 
            class="button" onclick="<%= button_action db %>">
         <div class="icon">
@@ -31,5 +45,6 @@
         <div class="button_name"><%=db.button_text%></div>
       </div>
     <% end %>
+
   </div>
 </div>

@@ -13,7 +13,7 @@ body {
     padding: 0px;
     color: #333333;
     font-family: verdana, sans-serif;
-    font-size: 18px;
+    font-size: 19px;
     line-height: 12px;
     background-color: #E0E0E0;
 
@@ -115,14 +115,18 @@ span#reload_message {
 }
 
 div.screen_header {
-    height: 30px;
+    height: 50px;
     background: -moz-linear-gradient(#558ED5, #17365D) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#558ED5), to(#17365D));
     text-align: center;
-    padding: 15px 5px 5px 5px;
+    padding: 15px 10px;
     font-weight: bold;
-    font-size: 22px;
+    font-size: 28px;
     color: #FFF;
+}
+
+div.screen_header div.header_label {
+    margin-top: 18px
 }
 
 div.screen_header div.small_button {
@@ -132,7 +136,7 @@ div.screen_header div.small_button {
 
 div.screen_header div.header_label {
     color: #FFF;
-    margin-top: 5px;
+    margin-top: 17px;
 }
 
 /* For page swiping */
@@ -301,6 +305,7 @@ div#menu_screen div#order_item_additions div.grid_row {
 }
 
 div#menu_screen div#order_item_additions div.grid_row div.grid_item {
+    font-size: 22px;
     margin: 0px 1px;
     float: left;
     background-color: #FFF;
@@ -334,7 +339,6 @@ div#menu_screen div#table_screen div#header {
 }
 
 div#menu_screen div#table_screen div#header div#back_button {
-    margin-top: 12px;
     float: left;
 }
 
@@ -525,7 +529,7 @@ div#receipt_screen div#header div#back_button {
 }
 
 div#receipt_screen div#header div#table_name {
-    margin: 4px 0px 0px 85px;
+    margin-left: 115px;
     font-weight: bold;
     color: #FFF;
 }
@@ -583,12 +587,17 @@ div#functions_screen div#header div#back_button {
 
 div#functions_screen div#header div.header_label {
     float: left;
-    margin-left: 95px;
+    margin-left: 60px;
 }
 
 div#functions_screen div#top_section {
     background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+
+div#functions_screen div#welcome_message {
+    padding: 15px 0px 0px 15px;
+    text-align: left;
 }
 
 div#functions_screen div#top_section div#menu_switcher_container {
@@ -604,6 +613,7 @@ div#functions_screen div#top_section div#menu_switcher_container div.label {
 
 div#functions_screen div#top_section div#menu_switcher_container div#menu_select_container {
     float: left;
+    font-size: 30px;
 }
 
 div#functions_screen div#functions_buttons_container {
@@ -625,23 +635,23 @@ div#settings_screen div#header {
 
 div#settings_screen div#header div#back_button {
     float: left;
-    width: 100px;
-    max-width: 100px;
+    width: 125px;
+    max-width: 125px;
 }
 
 div#settings_screen div#header div.header_label {
     float: left;
-    margin-left: 95px;
+    margin-left: 50px;
 }
 
 div#settings_screen div#submit_button {
     float: right;
     margin-right: 10px;
-    width: 100px;
-    max-width: 100px;
+    width: 112px;
+    max-width: 112px;
     height: 35px;
     max-height: 35px;
-    padding-top: 17px;
+    padding-top: 21px;
 }
 
 div#settings_screen div#settings_container {
@@ -667,8 +677,8 @@ div.button {
     text-align: center;
     cursor: pointer;
     border: 1px solid #777;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
     box-shadow: 0px 1px 0px #777;
     background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
@@ -696,7 +706,7 @@ div.button div.button_name {
 }
 
 div.button div.button_name {
-    padding: 7px 0px;
+    padding: 7px 3px;
     font-size: 21px;
     line-height: 23px;
     text-decoration: none;
@@ -712,12 +722,12 @@ div.button div.button_name a:hover {
 }
 
 div.small_button {
-    font-size: 19px;
-    width: 83px;
-    max-width: 83px;
-    padding-top: 10px;
-    height: 22px;
-    max-height: 22px;
+    font-size: 23px;
+    width: 115px;
+    max-width: 115px;
+    padding-top: 22px;
+    height: 35px;
+    max-height: 35px;
     text-align: center;
     cursor: pointer;
     border: 1px solid #777;
@@ -860,6 +870,8 @@ div#menu_screen div#menu_container div#menu_items_container div.items div.item.p
 div#menu_screen div#menu_container div#menu_pages_container div.page.pressed,
 div.button.pressed,
 #wrapper div.button.pressed,
+div.button_small.pressed,
+#wrapper div.button_small.pressed,
 #wrapper input[type="submit"].pressed,
 #wrapper div.key.pressed,
 #wrapper div.go_key.pressed,
@@ -875,6 +887,8 @@ div#menu_screen div#menu_container div#menu_items_container div.items div.item.p
 div#menu_screen div#menu_container div#menu_pages_container div.page.pressed *,
 div.button.pressed *,
 #wrapper div.button.pressed *,
+div.button_small.pressed *,
+#wrapper div.button_small.pressed *,
 #wrapper input[type="submit"].pressed,
 #wrapper div.key.pressed *,
 #wrapper div.go_key.pressed *,
@@ -893,6 +907,14 @@ div#menu_screen div#menu_container div#menu_items_container div.items div.item.p
 
 .text_align_left {
     text-align: left;
+}
+
+ul.mcdropdown_menu {
+    font-size: 23px;
+}
+
+div.mcdropdown div {
+    font-size: 20px;
 }
 
 /* End Generic Styles */

@@ -1,6 +1,6 @@
 <div id="settings_screen" class="content-item">
   <div id="header" class="screen_header">
-    <div id="back_button" class="small_button" onclick="swipeToFunctions();">Functions</div>
+    <div id="back_button" class="small_button" onclick="swipeToFunctions();">Options</div>
     <div class="header_label">Settings</div>
   </div>
 
@@ -33,13 +33,21 @@
           </tr>
           <tr>
             <td class="label">
-              Web Socket IP Address
+              Printer IP Address
             </td>
             <td class="data text_align_left">
               <% @gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, {:fingerprint => @terminal_fingerprint} %>
               <%= fields_for "global_settings[]", @gs do |f| %>
                 <%= f.text_field :value %>
               <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">
+              Your IP Address
+            </td>
+            <td class="data text_align_left">
+              <input type="text" value="<%= request.remote_ip %>" disabled="true"/>
             </td>
           </tr>
         </tbody>
