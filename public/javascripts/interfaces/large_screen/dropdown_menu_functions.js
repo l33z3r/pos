@@ -9,16 +9,7 @@ function menuScreenDropdownItemSelected(index, name) {
         finishStockTakeMode();
     }
     
-    if(index == 1) {
-        startPriceChangeMode();
-        return;
-    } else if(index == 2) {
-        startStockTakeMode();
-        return;
-    } else if(index == 3) {
-        goToSpecials();
-        return;
-    } else if(index.startsWith("4")) {
+    if(index.startsWith("1")) {
         var displayID = index.substring(2);
         
         //do ajax request and then reload   
@@ -34,7 +25,16 @@ function menuScreenDropdownItemSelected(index, name) {
             }
         });
         return;
-    }
+    } else if(index == 2) {
+        startPriceChangeMode();
+        return;
+    } else if(index == 3) {
+        startStockTakeMode();
+        return;
+    } else if(index == 4) {
+        goToSpecials();
+        return;
+    } 
     
     setShortcutDropdownDefaultText();
 }
