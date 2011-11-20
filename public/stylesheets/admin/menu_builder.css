@@ -18,8 +18,8 @@ div#display_builder div#builder {
 }
 
 div#display_builder div#header {
-    margin: 0px auto 10px auto;
-    width: -moz-fit-content;
+    display: inline-block;
+    margin: 10px 0px;
 }
 
 div#display_builder div#header div#display_name {

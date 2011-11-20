@@ -6,7 +6,7 @@ class Admin::DisplaysController < Admin::AdminController
   end
 
   def new
-    @display = Display.new
+    @disp = Display.new
   end
 
   def create
