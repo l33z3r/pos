@@ -398,7 +398,7 @@ nav#main_nav div#clock,
 nav#main_nav div#date,
 nav#main_nav div#nav_title {
     float: left;
-    padding: 2px 1px;
+    padding: 2px 4px;
     border-right: 1px solid #DDD;
     color: #FFF;
     min-width: 80px;
@@ -459,10 +459,9 @@ nav#main_nav div#connection_status {
 
 nav#main_nav div#menu_screen_shortcut_dropdown_container {
     cursor: pointer;
-    margin-right: 15px;
     margin-top: -3px;
     width: 150px;
-    float: right;
+    float: left;
     font-weight: normal;
     height: 20px;
 }
