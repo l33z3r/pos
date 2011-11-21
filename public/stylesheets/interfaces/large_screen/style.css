@@ -458,18 +458,18 @@ nav#main_nav div#connection_status {
 }
 
 nav#main_nav div#menu_screen_shortcut_dropdown_container {
+    display: block;
+    margin-right: 140px;
     cursor: pointer;
     margin-top: -3px;
-    width: 150px;
     float: right;
-    margin-right: 10px;
     font-weight: normal;
     height: 20px;
 }
 
 nav#main_nav div#menu_screen_shortcut_dropdown_container div.mcdropdown {
     height: 22px;
-    width: 150px;
+    
     padding: 0px;
 }
 
@@ -486,9 +486,7 @@ nav#main_nav div#menu_screen_shortcut_dropdown_container div.mcdropdown div {
 }
 
 nav#main_nav div#menu_screen_shortcut_dropdown_container div.mcdropdown a {
-    display: block;
-    width: 0px;
-    height: 0px;
+    display: none;   
 }
 
 /* this is used on the cash screen also */
