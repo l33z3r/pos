@@ -34,7 +34,7 @@
       <%= f.collection_select :tax_rate_id, TaxRate.find(:all), :id, :name_for_select, 
         :prompt => "Select a #{@tax_label} Rate", :include_blank => "Default" %>
     </div>
-    <div class="field">
+    <!--div class="field">
       <label for="category[selected_printers][]">Printers</label>
       
       <div class="clear">&nbsp;</div>
@@ -72,7 +72,7 @@
         </div>
       </div>
       <div class="clear">&nbsp;</div>
-    </div>
+    </div-->
     <div id="actions">
       <%= f.submit %>
       <%= link_to "Back", admin_categories_path %>
