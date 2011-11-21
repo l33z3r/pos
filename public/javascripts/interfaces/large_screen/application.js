@@ -114,7 +114,7 @@ function showInitialScreen() {
         
         //show the shortcut dropdown
         $('#menu_screen_shortcut_dropdown_container').show();
-        initMcDropDowns();
+        
         if(current_user_nickname != null) $('#e_name').html(current_user_nickname);
     }
     

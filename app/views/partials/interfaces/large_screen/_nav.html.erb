@@ -1,26 +1,8 @@
 <nav id="main_nav">
+
   <div id="nav_back_link" style="display: none;">< Back</div>
   <div id="admin_nav_back_link" style="display: none;" onclick="history.go(-1);">< Back</div>
-  
-  <!--dropdown menu -->
-  <div style="display: none;" id="menu_screen_shortcut_dropdown_container">
-    <div id="menu_screen_shortcut_dropdown_input" onclick="menuScreenShortcutSelectMenu.openMenu()"></div>
 
-    <ul id="menu_screen_shortcut_dropdown" class="mcdropdown_menu">
-      <li>
-        Change Menu
-        <ul>
-          <% Display.all.each do |display| %>
-            <li rel="1-<%= display.id %>"><%= display.name %></li>
-          <% end %>
-        </ul>
-      </li>
-      <li rel="2">Change Price</li>
-      <li rel="3">Check Stock</li>
-      <li rel="4">Edit Specials</li>
-    </ul>
-  </div>
-  
   <div id="business_name"><%=@business_name%></div>
   <div id="e_name" <%= session[:current_employee_nickname] ? "" : "style='display: none;'" %>><%= session[:current_employee_nickname] %></div>
   <div id="terminal_id"><%= @terminal_id %></div>
@@ -54,6 +36,25 @@
 <!--div id="nav_util_button" onclick="goTo('<%= root_url %>?m=1')">
   <%= image_tag "button_logos/mobile_version.png" %>
 </div-->
+
+  <!--dropdown menu -->
+  <div id="menu_screen_shortcut_dropdown_container">
+    <div id="menu_screen_shortcut_dropdown_input" onclick="menuScreenShortcutSelectMenu.openMenu()"></div>
+
+    <ul id="menu_screen_shortcut_dropdown" class="mcdropdown_menu">
+      <li>
+        Change Menu
+        <ul>
+          <% Display.all.each do |display| %>
+            <li rel="1-<%= display.id %>"><%= display.name %></li>
+          <% end %>
+        </ul>
+      </li>
+      <li rel="2">Change Price</li>
+      <li rel="3">Check Stock</li>
+      <li rel="4">Edit Specials</li>
+    </ul>
+  </div>
 
   <div class="clear">&nbsp;</div>
 </nav>
