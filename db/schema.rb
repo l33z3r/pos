@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111117111357) do
+ActiveRecord::Schema.define(:version => 20111121081720) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20111117111357) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "tax_rate_id"
+    t.string   "printers",           :default => ""
   end
 
   create_table "discounts", :force => true do |t|

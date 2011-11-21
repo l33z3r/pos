@@ -1,17 +1,3 @@
-# == Schema Information
-# Schema version: 20110526094125
-#
-# Table name: categories
-#
-#  id                 :integer(4)      not null, primary key
-#  name               :string(255)
-#  parent_category_id :integer(4)
-#  description        :string(255)
-#  created_at         :datetime
-#  updated_at         :datetime
-#  tax_rate_id        :integer(4)
-#
-
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
@@ -23,3 +9,18 @@ two:
   name: MyString
   parent_category_id: 1
   description: MyString
+
+# == Schema Information
+#
+# Table name: categories
+#
+#  id                 :integer(4)      not null, primary key
+#  name               :string(255)
+#  parent_category_id :integer(4)
+#  description        :string(255)
+#  created_at         :datetime
+#  updated_at         :datetime
+#  tax_rate_id        :integer(4)
+#  printers           :string(255)
+#
+

@@ -5,7 +5,8 @@ var products = new Array();
   'id':'<%= p.id %>', 'name':'<%= p.name %>', 
   'price':<%= p.price %>, 'tax_rate':<%=p.sales_tax_rate%>,
   'printers' : "<%= p.printers %>",
-  'deleted' : <%= p.is_deleted %>
+  'deleted' : <%= p.is_deleted %>,
+  'category_id' : <%= p.category ? p.category.id : "null" %>
   };
   <% if p.modifier_category_id %>
     products[<%= p.id %>]['modifier_category_id'] = <%=p.modifier_category_id%>;
@@ -20,4 +21,13 @@ var modifier_categories = new Array();
   <% mc.modifiers.all.each do |m| %>
     modifier_categories[<%=mc.id%>]['modifiers'][<%=m.id%>] = {'id':<%=m.id%>, 'name':'<%=m.name%>', 'price':<%=m.price%>}
   <% end %>
+<% end %>
+
+var categories = new Array();
+
+<% Category.all.each do |c|%>    
+  categories[<%= c.id %>] = {
+  'id':'<%= c.id %>', 'name':'<%= c.name %>', 
+  'printers': "<%= c.printers %>"
+  };
 <% end %>

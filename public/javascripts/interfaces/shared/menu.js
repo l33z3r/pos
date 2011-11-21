@@ -192,10 +192,6 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
 function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID) {
     var itemsToPrint = new Array();
     
-    var icount = 0;
-    var pushcount = 0;
-    
-    
     //TODO: the course line gets lost when it is not on the item that is going to be printed here...
     
     
@@ -208,20 +204,35 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
     
     
     
+    var foundPrinter = false;
+    
     for(var itemKey in items) {
-        icount++;
-        
         //we only want to print items from the order that are new i.e. not synced on the other terminal yet
         var isItemSynced = (items[itemKey].synced === 'true');
         
         if(!isItemSynced) {
+            foundPrinter = false;
+            
             var itemPrinters = items[itemKey].product.printers;
             
             if((typeof itemPrinters != "undefined") && itemPrinters.length > 0) {
                 var printersArray = itemPrinters.split(",");
                 
                 if($.inArray(terminalID.toLowerCase(), printersArray) != -1) {
-                    pushcount++;
+                    foundPrinter = true;
+                    itemsToPrint.push(items[itemKey]);
+                }
+            } 
+            
+            var categoryId = items[itemKey].product.category_id;
+            var categoryPrinters = categories[categoryId].printers;
+            
+            if(!foundPrinter && (typeof categoryPrinters != "undefined") && categoryPrinters.length > 0) {
+                var categoryPrintersArray = categoryPrinters.split(",");
+                
+                if($.inArray(terminalID.toLowerCase(), categoryPrintersArray) != -1) {
+                    foundPrinter = true;
+                    //pushcount++;
                     itemsToPrint.push(items[itemKey]);
                 }
             } 

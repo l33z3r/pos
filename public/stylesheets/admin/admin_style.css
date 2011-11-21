@@ -770,6 +770,10 @@ div#edit_category section#form_container form div#actions input {
     float: right;
 }
 
+div#edit_category section#form_container input#select_printers_button {
+    width: 220px;
+}
+
 /* End Admin Categories Page */
 
 /* Admin Displays Page */

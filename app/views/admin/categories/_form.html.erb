@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "admin_js/product_builder" %>
+<% end %>
+
 <%= form_for([:admin, @category]) do |f| %>
   <% if @category.errors.any? %>
     <div id="error_explanation">
@@ -29,6 +33,45 @@
       <%= f.label :tax_rate_id %><br />
       <%= f.collection_select :tax_rate_id, TaxRate.find(:all), :id, :name_for_select, 
         :prompt => "Select a #{@tax_label} Rate", :include_blank => "Default" %>
+    </div>
+    <div class="field">
+      <label for="category[selected_printers][]">Printers</label>
+      
+      <div class="clear">&nbsp;</div>
+
+      <input id="select_printers_button" type="button" value="Select" onclick="showSelectPrintersDialog()"/>
+
+      <% all_terminals.each do |terminal_name| %>
+        <input type="checkbox" id="choose_printer_checkbox_<%= id_safe terminal_name %>"
+               name="category[selected_printers][]" value="<%= id_safe terminal_name %>" 
+               style="display: none;" <%= @category.printing_to_terminal?(id_safe(terminal_name)) ? "checked" : "" %>/>
+             <% end %>
+
+      <!-- the following input is to make sure that we send the product[selected_printers] param when no printers are selected -->
+      <input type="checkbox" id="choose_printer_checkbox_blank"
+             name="category[selected_printers][]" value="" 
+             style="display: none;" checked/>
+
+      <div id="select_printers_markup" style="display: none;">
+        <div class="select_printers_dialog">
+
+          <div class="header">Select Printers</div>
+
+          <div class="terminal_switches">
+            <% all_terminals.each do |terminal_name| %>
+              <div class="terminal_switch">
+                <input type="checkbox" data-terminal_name="<%= id_safe terminal_name%>"
+                       onchange="printerSwitchToggle(this)"/>
+                <div class="label"><%=terminal_name%></div>
+              </div>
+              <div class="clear_top_margin_5">&nbsp;</div>
+            <% end %>
+          </div>
+
+          <div class="button ok_button" onclick="hideSelectPrintersDialog()">Done</div>
+        </div>
+      </div>
+      <div class="clear">&nbsp;</div>
     </div>
     <div id="actions">
       <%= f.submit %>
