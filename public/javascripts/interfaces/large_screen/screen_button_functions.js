@@ -1,5 +1,5 @@
 function prepareXTotal() {
-    var doIt = true;//checkAllOrdersClosedForCashTotal();
+    var doIt = true;
     
     if(doIt) {
         doCashTotalReport("X", false);

@@ -696,6 +696,9 @@ function doTotal() {
     
     paymentMethodSelected(paymentMethod);
     
+    //hide the dropdown menu
+    $('#menu_screen_shortcut_dropdown_container').hide();
+    
     showNavBackLinkMenuScreen();
     showTotalsScreen();
     totalsRecptScroll();
