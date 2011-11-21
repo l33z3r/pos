@@ -8,7 +8,7 @@ var paymentMethod = null;
 var serviceCharge = 0;
 var cashback = 0;
 
-var defaultShortcutDropdownText = "I want to...";
+var defaultShortcutDropdownText = "Menu";
 
 var editItemPopupAnchor;
 

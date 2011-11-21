@@ -203,6 +203,10 @@ class GlobalSetting < ActiveRecord::Base
           @res.first.destroy
         end
       end
+      if value
+        new_value = (value ? value.gsub(" ", "").gsub("'", "").gsub("\"", "") : nil)
+        write_attribute("value", new_value)
+      end
     when RELOAD_HTML5_CACHE_TIMESTAMP
       new_value = value.to_i
       write_attribute("value", new_value)

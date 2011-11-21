@@ -250,8 +250,6 @@ function adminShowMoreOptions() {
 function checkForUniqueTerminalName() {
     var enteredVal = $('#terminal_name_field').val();
     
-    console.log("Checking val: " + enteredVal);
-    
     $.ajax({
         url: '/admin/terminals/check_for_unique',
         data: {
