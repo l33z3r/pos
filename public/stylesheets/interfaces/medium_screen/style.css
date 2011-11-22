@@ -253,6 +253,7 @@ div#menu_screen div#menu_container div#menu_items_container {
 }
 
 div#menu_screen div#menu_container div#menu_items_container div.item {
+    position: relative;
     float: left;
     width: 116px;
     margin: 1px;
@@ -272,6 +273,9 @@ div#menu_screen div#menu_container div#menu_items_container div.item_name {
     padding: 1px;
     overflow: hidden;
     line-height: 19px;
+    position: absolute;
+    bottom: 1px;
+    width: 114px;
 }
 
 div#menu_screen div#menu_container div#menu_items_container div.item_pic {

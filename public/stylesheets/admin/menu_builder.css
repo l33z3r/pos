@@ -132,6 +132,7 @@ div#display_builder div#menu_pages_container div#builder_menu_items_container di
     border-radius: 3px;
     background-color: #FFF;
     margin: 1px;
+    box-shadow: 0 1px 0 #777777;
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item {
@@ -176,10 +177,13 @@ div#display_builder div#menu_pages_container div#builder_menu_items_container di
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_name {
+    position: absolute;
     font-size: 11px;
     text-decoration: none;
     background-color: #FFF;
-    padding: 0px 2px;
+    padding: 1px;
+    bottom: 0px;
+    width: 82px;
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.new_item {
