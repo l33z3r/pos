@@ -398,7 +398,7 @@ nav#main_nav div#clock,
 nav#main_nav div#date,
 nav#main_nav div#nav_title {
     float: left;
-    padding: 2px 1px;
+    padding: 2px 4px;
     border-right: 1px solid #DDD;
     color: #FFF;
     min-width: 80px;
@@ -458,10 +458,10 @@ nav#main_nav div#connection_status {
 }
 
 nav#main_nav div#menu_screen_shortcut_dropdown_container {
+    display: block;
+    margin-right: 140px;
     cursor: pointer;
-    margin-right: 15px;
     margin-top: -3px;
-    width: 150px;
     float: right;
     font-weight: normal;
     height: 20px;
@@ -469,7 +469,7 @@ nav#main_nav div#menu_screen_shortcut_dropdown_container {
 
 nav#main_nav div#menu_screen_shortcut_dropdown_container div.mcdropdown {
     height: 22px;
-    width: 150px;
+    
     padding: 0px;
 }
 
@@ -486,8 +486,7 @@ nav#main_nav div#menu_screen_shortcut_dropdown_container div.mcdropdown div {
 }
 
 nav#main_nav div#menu_screen_shortcut_dropdown_container div.mcdropdown a {
-    height: 0px;
-    width: 0px;
+    display: none;   
 }
 
 /* this is used on the cash screen also */
@@ -2472,10 +2471,11 @@ div#table_select_screen div#room_layout div.room_object div.label {
     background-color: #FFF;
     font-size: 11px;
     z-index: 3;
-    width: -moz-fit-content;
-    min-width: 20px;
-    margin: auto;
-    padding: 0px 5px;
+    display: inline-block;
+    width: 20px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
 }
 
 div#table_select_screen div#room_layout div.room_object div.label.active {

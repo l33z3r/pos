@@ -97,6 +97,9 @@ function doCashTotalReport(total_type, commit) {
     
     setUtilCoinCounter(coinCounterPosition, totalFunction);
     
+    //hide the dropdown menu
+    $('#menu_screen_shortcut_dropdown_container').hide();
+    
     showCashReportsScreen();
     
     //initialize the zeros in the cash counter?

@@ -227,6 +227,10 @@ function showTablesScreen() {
     setNavTitle("Table Selection");
     showNavBackLinkMenuScreen();
     hideAllScreens();
+    
+    //hide the dropdown menu
+    $('#menu_screen_shortcut_dropdown_container').hide();
+        
     $('#table_select_screen').show();
     initTableSelectScreen();
 }
