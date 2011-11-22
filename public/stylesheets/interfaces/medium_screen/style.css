@@ -261,6 +261,7 @@ div#menu_screen div#menu_container div#menu_items_container div.item {
     border: 1px solid #777;
     -moz-border-radius: 3px;
     border-radius: 3px;
+    box-shadow: 0 1px 0 #777777;
     cursor: pointer;
     background: #FFF;
 }
@@ -275,6 +276,7 @@ div#menu_screen div#menu_container div#menu_items_container div.item_name {
     line-height: 19px;
     position: absolute;
     bottom: 1px;
+    background-color: #FFF;
     width: 114px;
 }
 
