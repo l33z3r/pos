@@ -12,24 +12,13 @@ $(function() {
         revert: true
     });
     
-    $('#builder_menu_items_container').html($('#builder_menu_items_1').html());
-
-    doInitTouchUIDragDrop();
-
-    setTimeout("refreshDragDrop()", 300);
+    initDisplayBuilderDragDrop();
     
     initBuilderScrollPane();
 });
 
 function initBuilderScrollPane() {
-    var bindFunction = function(event, scrollPositionY, isAtTop, isAtBottom)
-    {
-        //                console.log('Handle jsp-scroll-y', this,
-        //                    'scrollPositionY=', scrollPositionY,
-        //                    'isAtTop=', isAtTop,
-        //                    'isAtBottom=', isAtBottom);
-                    
-        //make the menu_pages_container follow the scroll so it's always visible
+    var bindFunction = function(event, scrollPositionY, isAtTop, isAtBottom) {
         $('#menu_pages_container').css("top", scrollPositionY);
     };
             
@@ -45,76 +34,35 @@ function doBuilderMenuPageSelect(pageNum, pageId) {
     $('#pages .page').removeClass('selected');
     $('#menu_page_' + pageId).addClass('selected');
 
-    //destroy the droppable objects for the old page of menu items
-    for(var i=0; i<item_droppable_ids.length; i++) {
-        webkit_drop.remove(item_droppable_ids[i]);
-    }
-
-    //reinit the array
-    item_droppable_ids = new Array();
-
-    //copy back the new html to its container
-    $('#builder_menu_items_' + currentBuilderMenuPage).html($('#builder_menu_items_container').html());
-    
-    setBuilderContentFromPage(pageNum);
-}
-
-function setBuilderContentFromPage(pageNum) {
-    newHTML = $('#builder_menu_items_' + pageNum).html();
-    $('#builder_menu_items_container').html(newHTML);
+    $('.builder_menu_items').hide();
+    $('#builder_menu_items_' + pageNum).show();
 
     currentBuilderMenuPage = pageNum;
-
-    setTimeout("refreshDragDrop()", 300);
 }
 
-function refreshDragDrop() {
-    //wipe the previous ids
-    $('.item').each(function(index) {
-        $(this).attr("id", "");
-    });
-
-    $('#builder_menu_items_container .item').each(function(index) {
-        //TODO: replace with $(this).data("theid") and test it
-        theid = $(this).attr("data-theid");
-        $(this).attr("id", theid);
-
-        item_droppable_ids.push(theid);
-        
-        webkit_drop.add(theid, {
-            onDrop : function(draggable, event, droppable) {
-                //alert("Product " + $(draggable).attr("id") + " dropped on menu item " + $(droppable.r).attr("id"));
-                
-                product_id_string = $(draggable).attr("id");
-                menu_item_id_string = $(droppable.r).attr("id");
-                doAjaxProductGridPlacement(product_id_string, menu_item_id_string);
-            }
-        });
-    });
-
-    $('.item').droppable({
+function initDisplayBuilderDragDrop() {
+    $('#builder_menu_items_container .item').droppable({
         drop: function( event, ui ) {
-            //alert("Product " + ui.draggable.attr("id") + " dropped on menu item " + $(this).attr("id"));
-
             product_id_string = ui.draggable.attr("id");
             menu_item_id_string = $(this).attr("id");
             doAjaxProductGridPlacement(product_id_string, menu_item_id_string);
-        }
+        },
+        tolerance: 'touch'
     });
 }
 
 function doAjaxProductGridPlacement(product_id_string, menu_item_id_string) {
-    product_id = product_id_string.split("_")[2];
+    var product_id = product_id_string.split("_")[2];
+
+    var loadingMessageHTML = "<div class='loading_message'>Loading...</div>";
 
     if(menu_item_id_string == "new_menu_item") {
         menu_item_id = -1;
+        $('.new_item').html(loadingMessageHTML);
     } else {
         menu_item_id = menu_item_id_string.split("_")[2];
+        $('#menu_item_' + menu_item_id).html(loadingMessageHTML);
     }
-
-    //alert("doAjax for product: " + product_id + " menu_item: " + menu_item_id);
-
-    $('#menu_item_' + menu_item_id).html("<div class='loading_message'>Loading...</div>");
     
     //send ajax menu update
     $.ajax({
@@ -129,7 +77,7 @@ function doAjaxProductGridPlacement(product_id_string, menu_item_id_string) {
 }
 
 function doDeleteMenuItem(itemId) {
-    doIt = confirm("Are You Sure?");
+    doIt = confirm("Are you sure you want to delete this item?");
 
     if(!doIt) return;
     

@@ -1,9 +1,7 @@
 <% if @menu_item_id == "-1" %>
   //add a new square to the end of the menu items
-  $("<%= escape_javascript(render :partial => "builder_menu_item_with_wrapper_div", :locals => {:item => @menu_item}) %>").insertBefore('#builder_menu_items_<%= @menu_page_num %> .new_item');
-
-  //manually set the content of the builder so that the new html is properly picked up
-  setBuilderContentFromPage(<%= @menu_page_num %>);
+  $("<%= escape_javascript(render :partial => "builder_menu_item_with_wrapper_div", :locals => {:item => @menu_item}) %>").insertBefore('#builder_menu_items_<%= @menu_page_num %> .new_item_container');
+  $('.new_item').html("<div class='item_name'>Drag New Item Here</div>");
 <% else %>
   //replace the menu item square
   $('#menu_item_<%=@menu_item.id%>').html("<%= escape_javascript(render :partial => "builder_menu_item", :locals => {:item => @menu_item}) %>");

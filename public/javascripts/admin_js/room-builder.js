@@ -4,7 +4,7 @@ var minGridSize = 30;
 var currentGridSize;
 
 //init drag drop
-function initDragDrop() {
+function initRoomBuilderDragDrop() {
     //init drag drop
     $('.select_room_object').draggable({
         revert:true
@@ -210,7 +210,7 @@ function doYDimensionChange(newY) {
 
 function dimensionChangeComplete() {
     setGridSize(currentGridSize);
-    initDragDrop();
+    initRoomBuilderDragDrop();
     setGridGraphicDimensions()
 }
 

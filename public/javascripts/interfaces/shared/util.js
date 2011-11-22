@@ -524,7 +524,7 @@ function niceAlert(message, title) {
         title, "<div id='nice_alert'>" + message + "</div>",
         {
             width: 360,
-            height: 250,
+            height: 280,
             okButtonText: 'Dismiss',
             onOk: "hideNiceAlert()"
         });

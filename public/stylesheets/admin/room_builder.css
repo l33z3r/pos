@@ -35,8 +35,7 @@ div#room_builder div#header a#delete_link {
 }
 
 div#room_builder div#options {
-    width: 810px;
-    margin: auto;
+    display: inline-block;
     padding-top: 5px;
 }
 
@@ -104,8 +103,7 @@ div#room_builder div#main_builder_section h4 {
 }
 
 div#room_builder div#tree_container div#objects_tree {
-    margin: auto;
-    width: -moz-fit-content;
+    display: inline-block;
 }
 
 div#room_builder div#tree_container div#objects_tree div.room_object {

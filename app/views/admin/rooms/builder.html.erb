@@ -1,8 +1,14 @@
 <% content_for :head do %>
   <%= javascript_include_tag "admin_js/room-builder" %>
-  <!-- TODO: WILL NEED TO IMPLEMENT DRAG FOR TOUCH UI -->
-  <!--script type="text/javascript" src="/javascripts/init_touch_draggable.js?id=ROOMID"></script-->
   <%= stylesheet_link_tag "admin/room_builder"  %>
+
+  <script type="text/javascript">
+    $(function() {
+      if(isTouchDevice()) {
+        niceAlert("Drag/Drop is not supported on touch interfaces yet, please use a desktop PC to build your rooms.");
+      }
+    });
+  </script>
 <% end %>
 
 <% content_for :admin_subnav_links_left do %>
@@ -22,7 +28,6 @@
       //must set the room_id js var
       room_id = <%=@room.id%>;
       
-      
       //init slider
       $("#resolution_slider").slider({
         max : maxGridSize,
@@ -36,7 +41,7 @@
       currentGridSize = <%=@room.grid_resolution%>;
       setGridSize(currentGridSize);
       
-      initDragDrop();
+      initRoomBuilderDragDrop();
       setGridGraphicDimensions();
     });
   </script>

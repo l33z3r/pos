@@ -1,7 +1,14 @@
 <% content_for :head do %>
   <%= javascript_include_tag "admin_js/menu-builder" %>
-  <script type="text/javascript" src="/javascripts/init_touch_draggable.js?id=<%=@display.id%>"></script>
-  <%= stylesheet_link_tag "admin/menu_builder"  %>
+  <%= stylesheet_link_tag "admin/menu_builder" %>
+
+  <script type="text/javascript">
+    $(function() {
+      if(isTouchDevice()) {
+        niceAlert("Drag/Drop is not supported on touch interfaces yet, please use a desktop PC to build your menus.");
+      }
+    });
+  </script>
 <% end %>
 
 <% content_for :admin_subnav_links_left do %>
@@ -82,7 +89,7 @@
             <div class="page <%=index==0 ? "selected" : "" %>" id="menu_page_<%=page.id%>"
                  onclick="doBuilderMenuPageSelect(<%= page.page_num %>, <%= page.id %>);">
               <div class="delete_link">
-                <%= link_to "X", delete_menu_page_admin_display_path(@display, :menu_page_id => page.id), :method => :post, :confirm => "Are You Sure?" %>
+                <%= link_to "X", delete_menu_page_admin_display_path(@display, :menu_page_id => page.id), :method => :post, :confirm => "Are you sure you want to delete this page?" %>
               </div>
               <div class="name" id="page_name_<%=page.id%>" ondblclick="openEditNameTextBox(<%=page.id%>)">
                 <%= page.name %>
@@ -90,24 +97,9 @@
               <input style="display: none;" type="text" name="page_name_<%=page.id%>"
                      id="edit_page_name_<%=page.id%>" size="6" value="<%=page.name%>"/>
             </div>
-
-            <div style="display: none;" id="builder_menu_items_<%= page.page_num %>">
-              <div id="items">
-                <% page.menu_items.each do |item| %>
-                  <%= render :partial => "builder_menu_item_with_wrapper_div", :locals => {:item => item} %>
-                <% end %>
-
-                <div class="item new_item" data-theid="new_menu_item">
-                  <div class="item_name">
-                    Drag New Item Here
-                  </div>
-                </div>
-              </div>
-            </div>
-
           <% end %>
 
-          <div class="new_page" id="new_menu_page">
+          <div class="page new_page" id="new_menu_page">
             <div class="name">
               <%= link_to "New Page", create_menu_page_admin_display_path(@display), :method => :post %>
             </div>
@@ -117,7 +109,22 @@
         <div class="clear">&nbsp;</div>
 
         <div id="builder_menu_items_container">
-          Loading...
+
+          <% @display.menu_pages.each_with_index do |page, index| %>
+            <div style="<%=index==0 ? "" : "display: none;" %>" id="builder_menu_items_<%= page.page_num %>" class="builder_menu_items">
+              <div id="items">
+                <!-- make sure no white space here, as it interferes with the inline-block display -->
+                <% page.menu_items.each do |item| %><%= render :partial => "builder_menu_item_with_wrapper_div", :locals => {:item => item} %><% end %><div class="new_item_container item_container">
+                  <div class="item new_item" id="new_menu_item">
+                    <div class="item_name">
+                      Drag New Item Here
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          <% end %>
         </div>
 
         <div class="clear">&nbsp;</div>

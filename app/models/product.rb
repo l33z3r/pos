@@ -38,7 +38,11 @@ class Product < ActiveRecord::Base
   end
   
   def self.categoryless
-    find_all_by_category_id(nil)
+    where(:category_id => nil).where(:is_deleted => false)
+  end
+  
+  def self.non_deleted 
+    where(:is_deleted => false)
   end
   
   def sales_tax_rate

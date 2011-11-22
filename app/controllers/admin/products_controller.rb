@@ -12,6 +12,7 @@ class Admin::ProductsController < Admin::AdminController
     @letters = []
     for element in query
       if(!"0123456789".include?(element[0]))
+        element[0].upcase!
         @letters += element
       end
     end

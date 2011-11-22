@@ -34,6 +34,10 @@ div#display_builder div#header a#rename_link {
     text-decoration: none;
 }
 
+div#display_builder div#header input#display_name_input {
+    float: left;
+}
+
 div#display_builder div#header a#delete_link {
     float: left;
     margin-left: 8px;
@@ -42,9 +46,8 @@ div#display_builder div#header a#delete_link {
 
 div#display_builder div#menu_pages_container {
     position: relative;
-    width: 680px;
+    width: 740px;
     float: right;
-    border: 1px solid #CCC;
 }
 
 div#display_builder div#menu_pages_container div#pages {
@@ -54,65 +57,62 @@ div#display_builder div#menu_pages_container div#pages {
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container {
     height: 420px;
-    padding-left: 2px;
+    padding-top: 4px;
+    background-color: #E0E0E0;
+}
+
+div#display_builder div#menu_pages_container div#pages  {
+    border-spacing: 2px;
+    margin-bottom: -4px;
+    background-color: #B4B4B4;
 }
 
 div#display_builder div#menu_pages_container div#pages div.page {
-    border: 1px solid #CCC;
-    width: 100px;
-    background-color: #fad42e;
-    cursor: pointer;
-    height: 100px;
+    position: relative;
+    margin: 1px;
     display: table-cell;
-    width: 112px;
+    text-align: center;
     vertical-align: middle;
+    height: 55px;
+    width: 88px;
+    cursor: pointer;
+    border: 1px solid #AAA;
+    top-lcursor: pointer;
+    -moz-border-top-left-radius: 7px;
+    -moz-border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    background-color: #F8F8F8;
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
 }
 
 div#display_builder div#menu_pages_container div#pages div.delete_link {
+    position: absolute;
+    top: 2px;
+    right: 2px;
     padding: 1px 3px;
-    float: right;
-    background-color: #FFF;
-    border: 1px solid #CCC;
     cursor: pointer;
-    margin-top: -37px;
-    margin-right: 4px;
 }
 
 div#display_builder div#menu_pages_container div#pages div.delete_link a {
-    font-weight: bold;
     color: red;
     text-decoration: none;
 }
 
+
 div#display_builder div#menu_pages_container div#pages div.selected {
-    background-color: #fbec88;
-}
-
-div#display_builder div#menu_pages_container div#pages div.new_page {
-    margin: 1px;
-    cursor: pointer;
-    background-color: #FFF;
-    border: 1px solid #CCC;
-    display: table-cell;
-    height: 115px;
-    width: 117px;
-    vertical-align: middle;
-}
-
-div#display_builder div#menu_pages_container div#pages div.new_page div.name {
-    font-size: 14px;
-    font-weight: bold;
-    color: black;
-    padding: 4px;
-    text-decoration: underline;
+    border-bottom-width: 0px;
+    background-color: #E0E0E0;
+    background: -moz-linear-gradient(#F8F8F8, #E0E0E0) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F8F8F8), to(#E0E0E0));
 }
 
 div#display_builder div#menu_pages_container div#pages div.page div.name {
-    font-weight: bold;
-    font-size: 14px;
+    font-size: 13px;
     color: black;
     text-decoration: none;
-    cursor: text;
+    padding: 4px;
 }
 
 div#display_builder div#menu_pages_container div#pages div.page div.name a:hover {
@@ -120,94 +120,80 @@ div#display_builder div#menu_pages_container div#pages div.page div.name a:hover
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items {
+    text-align: left;
+}
 
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item_container {
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+    border: 1px solid #CCC;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background-color: #FFF;
+    margin: 1px;
+    box-shadow: 0 1px 0 #777777;
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item {
-    float: left;
-    margin: 1px;
-    border: 1px solid #CCC;
-    height: 80px;
-    width: 80px;
-}
-
-div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_pic {
-    height: 30px;
-    margin-top: -1px;
+    position: relative;
+    height: 92px;
+    width: 88px;
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.delete_link {
-    font-weight: bold;
-    color: red;
-    margin-right: 4px;
-    margin-top: 4px;
+    position: absolute;
+    top: 2px;
+    right: 2px;
     padding: 1px 3px;
-    float: right;
-    background-color: #FFF;
-    border: 1px solid #CCC;
     cursor: pointer;
+    color: red;
+    text-decoration: none;
+    background-color: #FFF;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_pic {
+    padding-top: 2px;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_pic img {
+    height: 56px;
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.drag_message {
     font-size: 14px;
-    font-weight: bold;
     text-decoration: none;
     text-align: center;
     background-color: #FFF;
-    padding: 4px;
-    width: 70px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 25px;
+    padding: 15px 2px;
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.loading_message {
     font-size: 14px;
-    font-weight: bold;
     text-decoration: none;
     text-align: center;
     background-color: #FFF;
-    padding: 4px;
-    width: 70px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 25px;
-}
-
-div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_pic img {
-    position: relative;
-    z-index: -1;
-    height: 78px;
+    padding: 15px 2px;
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_name {
-    font-size: 12px;
+    position: absolute;
+    font-size: 11px;
     text-decoration: none;
     background-color: #FFF;
-    padding: 4px;
-    width: -moz-fit-content;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 1px;
+    bottom: 0px;
+    width: 82px;
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.new_item {
-    float: left;
-    margin: 1px;
-    border: 1px solid #CCC;
-    cursor: pointer;
-    width: 80px;
-    height: 80px;
+    
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.new_item div.item_name {
-    font-size: 13px;
-    font-weight: bold;
-    margin-top: 20px;
+    font-size: 12px;
     background-color: #FFF;
-    padding: 4px;
-    width: -moz-fit-content;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 15px 2px;
 }
 
 div#display_builder {
@@ -216,7 +202,7 @@ div#display_builder {
 }
 
 div#display_builder div#tree_container {
-    width: 250px;
+    width: 210px;
     float: left;
 }
 
@@ -254,6 +240,7 @@ div#display_builder ul#products_tree div.select_product {
     cursor: pointer;
     font-weight: bold;
     width: -moz-max-content;
+    z-index: 100;
 }
 
 div#display_builder ul#products_tree div.select_product img {
