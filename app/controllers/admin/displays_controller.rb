@@ -93,9 +93,11 @@ class Admin::DisplaysController < Admin::AdminController
 
     @menu_item_id = params[:menu_item_id]
 
+    @display = Display.find(params[:id])
+    
     if @menu_item_id == "-1"
       @menu_page_num = params[:menu_page_num]
-      @menu_page = Display.load_default.menu_pages.find_by_page_num @menu_page_num
+      @menu_page = @display.menu_pages.find_by_page_num @menu_page_num
       
       if(!@menu_page.menu_items.last) 
         @next_order_num = 1

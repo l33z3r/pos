@@ -1,3 +1,5 @@
-<div class="item" data-theid="menu_item_<%=item.id%>">
-  <%= render :partial => "builder_menu_item", :locals => {:item => item} %>
+<div class="item_container">
+  <div class="item" id="menu_item_<%=item.id%>">
+    <%= render :partial => "builder_menu_item", :locals => {:item => item} %>
+  </div>
 </div>

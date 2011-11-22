@@ -509,13 +509,14 @@ var webkit_draggable = function(r, ip)
 		var r = this.root;
 		var p = this.p;
 		var dropped = webkit_drop.finalize(this.lastCurX, this.lastCurY, r, event);
-		
+		alert(p.revert + " " + (p.revert === 'always'));
 		if(((p.revert) && (!dropped)) || (p.revert === 'always'))
-		{
+		{alert("reverting");
 			//revert root
 			var rs = r.style;
 			rs.top = (p.ry + 'px');
 			rs.left = (p.rx + 'px');
+                        alert("reverted " + (p.ry + 'px') + " " + (p.rx + 'px') + " " + $(r).css("top"));
 		}
 		
 		r.style.zIndex = this.p.z;
