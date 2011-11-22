@@ -281,6 +281,9 @@ div#menu_screen div#menu_container div#menu_items_container div.item_pic {
 
 div#menu_screen div#menu_container div#menu_items_container div.item_pic img {
     height: 50px;
+    max-height: 50px;
+    max-width: 110px;
+    margin-top: 1px;
 }
 
 div#menu_screen div#menu_container div#menu_keypad {

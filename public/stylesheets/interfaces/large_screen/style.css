@@ -841,16 +841,19 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_pic img {
     position: relative;
     height: 58px;
+    max-height: 58px;
+    max-width: 86px;
     margin-top: 1px;
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_name {
     font-size: 11px;
     text-decoration: none;
-    padding: 4px;
-    width: -moz-fit-content;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 1px;
+    position: absolute;
+    bottom: 1px;
+    background-color: #FFF;
+    width: 86px;
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.stock_count {
