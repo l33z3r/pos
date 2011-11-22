@@ -1,6 +1,14 @@
 <% content_for :head do %>
   <%= javascript_include_tag "admin_js/menu-builder" %>
   <%= stylesheet_link_tag "admin/menu_builder" %>
+
+  <script type="text/javascript">
+    $(function() {
+      if(isTouchDevice()) {
+        niceAlert("Drag/Drop is not supported on touch interfaces yet, please use a desktop PC to build your menus.");
+      }
+    });
+  </script>
 <% end %>
 
 <% content_for :admin_subnav_links_left do %>
