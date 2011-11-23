@@ -1,4 +1,9 @@
 function swipeRightHandler() {
+    //disable screen swipe on menu page
+    if(currentScreenIsMenu) {
+        return;
+    }
+    
     hideMenuKeypad();
     
     var currentLeftScroll = $('#content-scroll').attr('scrollLeft');
@@ -9,10 +14,7 @@ function swipeRightHandler() {
         hideAndroidKeyboard();
         
         //are we on the menu screen, if so, go to the receipt screen
-        if(currentScreenIsMenu) {
-            currentScreenIsMenu = false;
-            currentScreenIsReceipt = true;
-        } else if(currentScreenIsFunctions) {
+        if(currentScreenIsFunctions) {
             currentScreenIsFunctions = false;
             currentScreenIsMenu = true;
         } else if(currentScreenIsSettings) {
@@ -26,12 +28,17 @@ function swipeRightHandler() {
 }
 
 function swipeUpHandler() {
-    if(currentMenuSubscreenIsMenu() && !menuKeypadShowing) {
-        showMenuKeypad();
-    }
+//    if(currentMenuSubscreenIsMenu() && !menuKeypadShowing) {
+//        showMenuKeypad();
+//    }
 }
 
 function swipeLeftHandler() {
+    //disable screen swipe on menu page
+    if(currentScreenIsMenu) {
+        return;
+    }
+    
     hideMenuKeypad();
     
     var currentLeftScroll = $('#content-scroll').attr('scrollLeft');
@@ -42,10 +49,7 @@ function swipeLeftHandler() {
         hideAndroidKeyboard();
         
         //are we on the menu screen, if so, go to the receipt screen
-        if(currentScreenIsMenu) {
-            currentScreenIsMenu = false;
-            currentScreenIsFunctions = true;
-        } else if(currentScreenIsReceipt) {
+        if(currentScreenIsReceipt) {
             currentScreenIsReceipt = false;
             currentScreenIsMenu = true;
         } else if(currentScreenIsFunctions) {
@@ -59,9 +63,9 @@ function swipeLeftHandler() {
 }
 
 function swipeDownHandler() {
-    if(currentMenuSubscreenIsMenu() && menuKeypadShowing) {
-        hideMenuKeypad();
-    }
+//    if(currentMenuSubscreenIsMenu() && menuKeypadShowing) {
+//        hideMenuKeypad();
+//    }
 }
 
 function showMenuKeypad() {
@@ -98,6 +102,11 @@ function swipeToMenu() {
     clearAllPageFlags();
     doScroll((menuPageNum - 1) * pageWidth);
     currentScreenIsMenu = true;
+    
+    //reselect the current menu page as there is a bug in the scrollers
+    setTimeout(function(){
+        doMenuPageSelect(currentMenuPage, currentMenuPageId);
+    }, 500);
 }
 
 function swipeToFunctions() {

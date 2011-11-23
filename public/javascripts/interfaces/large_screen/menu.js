@@ -122,7 +122,9 @@ function doMenuPageSelect(pageNum, pageId) {
 
     newHTML = $('#menu_items_' + pageNum).html();
     $('#menu_items_container').html(newHTML);
+
     currentMenuPage = pageNum;
+    currentMenuPageId = pageId;
 
     if(inStockTakeMode) {
         loadStockDivs(pageNum);

@@ -72,7 +72,7 @@
   var railsEnvironment = "<%= ENV['RAILS_ENV'] %>";
   
   var kioskMode = <%= CUSTOM_CONFIG["in_kiosk_mode"] %>;
-  var overrideKiosk = <%= params["override_kiosk"] ? true : false %>;
+  var overrideKiosk = <%= params["override_kiosk"] or params["ok"] ? true : false %>;
   
   //business info
   var business_name = "<%= @business_name %>";

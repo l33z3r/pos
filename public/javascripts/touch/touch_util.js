@@ -4,7 +4,7 @@ function initTouch() {
     
     //hook up swipe     
     $('#wrapper').swipe({
-        minSwipeLength: 150,
+        minSwipeLength: 250,
         swipeRight: function() {
             swipeRightHandler();
         },
