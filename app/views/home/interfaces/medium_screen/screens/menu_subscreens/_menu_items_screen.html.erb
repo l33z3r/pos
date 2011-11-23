@@ -19,13 +19,13 @@
           <% if item.product %>
             <div class="item <%= !item.product.is_active ? "inactive" : "" %>" data-button_width="<%= item.product.menu_button_width %>" 
                  onclick="<%= item.product.is_active ? "doSelectMenuItem(#{item.product_id}, this);" : "" %>"
-                 style="<%= item.product.button_bg_color.blank? ? "" : "background-color: #{item.product.button_bg_color}" %><%= item.product.is_active ? "" : "cursor: default;" %>">
+                 style="<%= menu_item_background_css item %>">
                    <% if item.product.show_button_image %>
                 <div class="item_pic">
                   <%= product_image_thumb item.product %>
                 </div>
               <% end %>
-              <div class="item_name" style="<%= item.product.button_text_color.blank? ? "" : "color: #{item.product.button_text_color}" %>">
+              <div class="item_name" style="<%= menu_item_background_css item %><%= item.product.button_text_color.blank? ? "" : "color: #{item.product.button_text_color}" %>">
                 <%= menu_item_name item %>
               </div>
             </div>

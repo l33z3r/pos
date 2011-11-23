@@ -358,8 +358,8 @@ class ApplicationController < ActionController::Base
         
         @local_access = false
         
-        if @requested_domain.include? "myvnc"
-          logger.info "External url access myvnc, so no local access, Requesting auth!"
+        if @requested_domain
+          logger.info "This request was to a domain, not an ip, Requesting auth!"
           @local_access = false
         else 
           @local_access = true
