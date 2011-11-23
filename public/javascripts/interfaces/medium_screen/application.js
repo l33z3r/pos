@@ -37,8 +37,8 @@ function doGlobalInit() {
         initTouchRecpts();
         
         var menuScrollerOpts = {
-            elastic: true,
-            momentum: true
+            elastic: false,
+            momentum: false
         };
         
         //init touch menu pages and items
