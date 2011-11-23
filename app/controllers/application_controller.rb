@@ -338,7 +338,7 @@ class ApplicationController < ActionController::Base
   end
   
   def http_basic_authenticate
-    logger.info "Checking auth for remote ip: #{request.remote_ip} for domain #{request.domain}"
+    logger.info "Checking auth for remote ip: #{request.remote_ip}"
     
     @need_auth = false
     
@@ -362,7 +362,7 @@ class ApplicationController < ActionController::Base
         
         @server_ip_base = "#{@server_ip_parts[0]}.#{@server_ip_parts[1]}.#{@server_ip_parts[2]}."
           
-        logger.info "testing remote ip #{@remote_ip} again server base #{@server_ip_base}"
+        logger.info "Testing remote ip #{@remote_ip} again server base #{@server_ip_base}"
         
         if @remote_ip.starts_with? @server_ip_base or @remote_ip == "127.0.0.1"
           @local_access = true
@@ -375,14 +375,14 @@ class ApplicationController < ActionController::Base
           @need_auth = false
         end
       end
-    
-      if !@need_auth
-        return
-      end
     else
       logger.info "Auth is not required by setting"
     end
     
+    if !@need_auth
+      return
+    end
+      
     authenticate_or_request_with_http_basic do |username, password|
       username == HTTP_BASIC_AUTH_USERNAME && password == HTTP_BASIC_AUTH_PASSWORD
     end
