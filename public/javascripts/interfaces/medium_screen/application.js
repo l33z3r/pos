@@ -24,7 +24,7 @@ $(function(){
 function doGlobalInit() {
     //allow scroll for dev
     if(inDevMode()) {
-        $('body').css("overflow", "scroll");
+        //$('body').css("overflow", "scroll");
     }
     
     //need to set the scroll content holder width
@@ -35,6 +35,17 @@ function doGlobalInit() {
     if(isTouchDevice()) {
         initTouch();
         initTouchRecpts();
+        
+        var menuScrollerOpts = {
+            elastic: true,
+            momentum: true
+        };
+        
+        //init touch menu pages and items
+        $('#menu_items_scroller').touchScroll(menuScrollerOpts);
+        $('#menu_pages_scroller').touchScroll(menuScrollerOpts);
+        
+        setTimeout(kickMenuScrollers, 2000);
     }
     
     initUIElements();

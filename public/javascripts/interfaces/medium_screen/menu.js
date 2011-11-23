@@ -77,7 +77,13 @@ function doMenuPageSelect(pageNum, pageId) {
     $('#menu_items_container .items').hide();
     $('#menu_items_' + pageNum).show();
     
+    //wake up the scrollers
+    if(isTouchDevice()) {
+        kickMenuScrollers();
+    }
+    
     currentMenuPage = pageNum;
+    currentMenuPageId = pageId;
 }
 
 function doSelectMenuItem(productId, element) {
@@ -366,6 +372,11 @@ function showMenuItemsSubscreen() {
     $('#menu_screen #buttons_container').show();
     $('#menu_screen #cluey_logo').hide();
     $('#menu_container').show();
+    
+    //reselect the current menu page as there is a bug in the scrollers
+    setTimeout(function(){
+        doMenuPageSelect(currentMenuPage, currentMenuPageId);
+    }, 500);
 }
 
 function switchToModifyOrderItemSubscreen() {

@@ -62,12 +62,32 @@ function getLastReceiptItem() {
 }
 
 function setConnectionStatus(connected) {
-    var color = "#00FF33";
+    var color = "#E0E0E0";
     
     if(!connected) {
         color = "#FF0000";
     }
     
     //we must be offline, so set the connection status light
-    //$('#connection_status').css("background-color", color);
+    $('body').css("background-color", color);
+}
+
+function kickMenuScrollers() {
+    //menu items
+    $('#menu_items_scroller').touchScroll('update');
+            
+    currentHeight = $('#menu_items_scroller').height();
+    scrollHeight = $('#menu_items_scroller').attr('scrollHeight');
+    newHeight = scrollHeight - currentHeight;
+        
+    $('#menu_items_scroller').touchScroll('setPosition', 0);
+    
+    //menu pages
+    $('#menu_pages_scroller').touchScroll('update');
+            
+    currentHeight = $('#menu_pages_scroller').height();
+    scrollHeight = $('#menu_pages_scroller').attr('scrollHeight');
+    newHeight = scrollHeight - currentHeight;
+        
+    $('#menu_pages_scroller').touchScroll('setPosition', 0);
 }

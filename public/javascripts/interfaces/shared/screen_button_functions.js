@@ -27,6 +27,21 @@ function doSyncTableOrder() {
         orderData : copiedOrderForSend
     }
     
+    $.ajax({
+        type: 'POST',
+        url: '/sync_table_order',
+        error: syncTableOrderFail,
+        success: finishSyncTableOrder,
+        data: {
+            tableOrderData : tableOrderData,
+            employee_id : current_user_id
+        }
+    });
+}
+
+function finishSyncTableOrder() {
+    var order = lastSyncedOrder;
+    
     var checkForShowServerAddedText = true;
     
     //mark all items in this order as synced
@@ -42,16 +57,11 @@ function doSyncTableOrder() {
     //store the order in the cookie
     storeTableOrderInStorage(current_user_id, selectedTable, order);
     
-    $.ajax({
-        type: 'POST',
-        url: '/sync_table_order',
-        data: {
-            tableOrderData : tableOrderData,
-            employee_id : current_user_id
-        }
-    });
-    
     postDoSyncTableOrder();
+}
+
+function syncTableOrderFail() {
+    niceAlert("Order not sent, no connection, please try again");
 }
 
 function removeLastOrderItem() {

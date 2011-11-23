@@ -211,12 +211,18 @@ div#menu_screen div#menu_container {
 div#menu_screen div#menu_container div#menu_pages_container {
     float: left;
     width: 120px;
-    border-spacing: 3px 1px;
+    border-spacing: 1px;
+    height: 500px;
+    overflow: hidden;
+}
+
+div#menu_screen div#menu_container div#menu_pages_scroller {
+    
 }
 
 div#menu_screen div#menu_container div#menu_pages_container div.page {
     width: 110px;
-    height: 64px;
+    height: 57px;
     display: table-cell;
     overflow: hidden;
     vertical-align: middle;
@@ -247,9 +253,13 @@ div#menu_screen div#menu_container div#menu_pages_container div.page.selected di
 div#menu_screen div#menu_container div#menu_items_container {
     float: left;
     width: 360px;
-    height: 600px;
-    background-color: #FFF;
+    height: 500px;
+    overflow: hidden;
     border-spacing: 3px 1px;
+}
+
+div#menu_screen div#menu_container div#menu_items_scroller {
+    
 }
 
 div#menu_screen div#menu_container div#menu_items_container div.item {
@@ -292,9 +302,19 @@ div#menu_screen div#menu_container div#menu_items_container div.item_pic img {
     margin-top: 1px;
 }
 
+div#menu_screen div#menu_container div#bottom_functions {
+    display: inline-block;
+    padding: 1px;
+    border-spacing: 30px 1px;
+}
+
+div#menu_screen div#menu_container div#bottom_functions div.button {
+    margin: 1px 5px;
+}
+
 div#menu_screen div#menu_container div#menu_keypad {
     display: none;
-    height: 454px;
+    height: 505px;
     width: 480px;
     background-color: #E0E0E0;
     position: absolute;
@@ -302,6 +322,22 @@ div#menu_screen div#menu_container div#menu_keypad {
     bottom: 0px;
     text-align: center;
     z-index: 50;
+}
+
+div#menu_screen div#menu_container div#menu_keypad div#menu_keypad_header {
+    height: 70px;
+    background: -moz-linear-gradient(#558ED5, #17365D) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#558ED5), to(#17365D));
+}
+
+div#menu_screen div#menu_container div#menu_keypad div#menu_keypad_header div#close_button {
+    cursor: pointer;
+    float: right;
+    padding: 5px;
+}
+
+div#menu_screen div#menu_container div#menu_keypad div#menu_keypad_header div#close_button img {
+    height: 60px;
 }
 
 div#menu_screen div#order_item_additions {

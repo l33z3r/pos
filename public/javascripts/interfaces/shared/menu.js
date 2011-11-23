@@ -1,4 +1,5 @@
 var currentMenuPage;
+var currentMenuPageId;
 
 var currentMenuItemQuantity = "";
 
