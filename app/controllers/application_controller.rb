@@ -353,17 +353,7 @@ class ApplicationController < ActionController::Base
       if !@local_auth_required
         logger.info "Local Auth not required, testing for local"
         
-        #check ip address and requested domain
-        @requested_domain = request.domain
-        
         @local_access = false
-        
-        if @requested_domain
-          logger.info "This request was to a domain, not an ip, Requesting auth!"
-          @local_access = false
-        else 
-          @local_access = true
-        end
         
         @remote_ip = request.remote_ip
         
