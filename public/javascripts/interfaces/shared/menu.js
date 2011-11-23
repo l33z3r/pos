@@ -333,27 +333,32 @@ function calculateOrderTotal(order) {
 
 //a full list of receipts in the system across all interfaces
 function initTouchRecpts() {
+    var receiptScrollerOpts = {
+        elastic: false,
+        momentum: false
+    };
+        
     //mobile receipts
-    $('#mobile_terminal_till_roll').touchScroll();
-    $('#mobile_server_till_roll').touchScroll();
-    $('#mobile_table_till_roll').touchScroll();
+    $('#mobile_terminal_till_roll').touchScroll(receiptScrollerOpts);
+    $('#mobile_server_till_roll').touchScroll(receiptScrollerOpts);
+    $('#mobile_table_till_roll').touchScroll(receiptScrollerOpts);
     
     //large screen interface receipts
-    $('.large_interface #till_roll').touchScroll();
-    $('.large_interface #login_till_roll').touchScroll();
-    $('.large_interface #totals_till_roll').touchScroll();
-    $('.large_interface #reports_center_till_roll').touchScroll();
-    $('.large_interface #reports_left_till_roll').touchScroll();
-    $('.large_interface #float_till_roll').touchScroll();
-    $('.large_interface #admin_order_list_till_roll').touchScroll();
+    $('.large_interface #till_roll').touchScroll(receiptScrollerOpts);
+    $('.large_interface #login_till_roll').touchScroll(receiptScrollerOpts);
+    $('.large_interface #totals_till_roll').touchScroll(receiptScrollerOpts);
+    $('.large_interface #reports_center_till_roll').touchScroll(receiptScrollerOpts);
+    $('.large_interface #reports_left_till_roll').touchScroll(receiptScrollerOpts);
+    $('.large_interface #float_till_roll').touchScroll(receiptScrollerOpts);
+    $('.large_interface #admin_order_list_till_roll').touchScroll(receiptScrollerOpts);
     
     //medium screen interface receipts
-    $('.medium_interface #menu_screen_till_roll').touchScroll();
-    $('.medium_interface #large_menu_screen_till_roll').touchScroll();
+    $('.medium_interface #menu_screen_till_roll').touchScroll(receiptScrollerOpts);
+    $('.medium_interface #large_menu_screen_till_roll').touchScroll(receiptScrollerOpts);
     
     //kitchen screen receipts
     if(inKitchenContext()) {
-        $('#kitchen_screen .till_roll').touchScroll();
+        $('#kitchen_screen .till_roll').touchScroll(receiptScrollerOpts);
     }
 }
 
