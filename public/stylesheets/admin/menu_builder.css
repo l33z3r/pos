@@ -63,7 +63,7 @@ div#display_builder div#menu_pages_container div#builder_menu_items_container {
 
 div#display_builder div#menu_pages_container div#pages  {
     border-spacing: 2px;
-    margin-bottom: -4px;
+    margin-bottom: -3px;
     background-color: #B4B4B4;
 }
 
@@ -75,6 +75,7 @@ div#display_builder div#menu_pages_container div#pages div.page {
     vertical-align: middle;
     height: 55px;
     width: 88px;
+    min-width: 88px;
     cursor: pointer;
     border: 1px solid #AAA;
     top-lcursor: pointer;
@@ -90,7 +91,7 @@ div#display_builder div#menu_pages_container div#pages div.page {
 div#display_builder div#menu_pages_container div#pages div.delete_link {
     position: absolute;
     top: 2px;
-    right: 2px;
+    margin-left: 71px;
     padding: 1px 3px;
     cursor: pointer;
 }

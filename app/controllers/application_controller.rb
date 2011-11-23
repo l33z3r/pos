@@ -7,8 +7,7 @@ class ApplicationController < ActionController::Base
   helper_method :e, :current_employee, :print_money, :mobile_device?
   helper_method :all_terminals, :all_servers, :current_interface
   helper_method :development_mode?, :production_mode?
-  
-  helper_method :active_employee_ids
+  helper_method :server_ip, :active_employee_ids
   
   before_filter :load_global_vars
   
@@ -339,12 +338,59 @@ class ApplicationController < ActionController::Base
   end
   
   def http_basic_authenticate
+    logger.debug "Checking auth for remote ip: #{request.remote_ip} for domain #{request.domain}"
+    
+    @need_auth = false
     
     @authentication_required = GlobalSetting.parsed_setting_for GlobalSetting::AUTHENTICATION_REQUIRED
+    @local_auth_required = GlobalSetting.parsed_setting_for GlobalSetting::LOCAL_AUTHENTICATION_REQUIRED
     
-    #skip if on mobile device
-    if !@authentication_required or mobile_device?
-      return
+    if @authentication_required 
+      logger.debug "Auth is required by setting"
+      
+      @need_auth = true
+      
+      if !@local_auth_required
+        logger.debug "Local Auth not required, testing for local"
+        
+        #check ip address and requested domain
+        @requested_domain = request.domain
+        
+        @local_access = false
+        
+        if @requested_domain.include? "myvnc"
+          logger.debug "External url access myvnc, so no local access, Requesting auth!"
+          @local_access = false
+        else 
+          @local_access = true
+        end
+        
+        @remote_ip = request.remote_ip
+        
+        #check ip on same lan
+        @server_ip_parts = server_ip.split(".")
+        
+        @server_ip_base = "#{@server_ip_parts[0]}.#{@server_ip_parts[1]}.#{@server_ip_parts[2]}."
+          
+        logger.debug "testing remote ip #{@remote_ip} again server base #{@server_ip_base}"
+        
+        if @remote_ip.starts_with? @server_ip_base or @remote_ip == "127.0.0.1"
+          @local_access = true
+        else 
+          logger.debug "Request not on same LAN. Requesting auth!"
+          @local_access = false
+        end
+        
+        if @local_access
+          @need_auth = false
+        end
+      end
+    
+      if !@need_auth
+        return
+      end
+    else
+      logger.debug "Auth is not required by setting"
     end
     
     authenticate_or_request_with_http_basic do |username, password|
@@ -352,4 +398,20 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  ###
+  ### CODE TO GET SERVER IP
+  ###
+  require 'socket'
+
+  def server_ip
+    orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true  # turn off reverse DNS resolution temporarily
+
+    UDPSocket.open do |s|
+      s.connect '64.233.187.99', 1
+      s.addr.last
+    end
+  ensure
+    Socket.do_not_reverse_lookup = orig
+  end
+
 end
