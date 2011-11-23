@@ -338,7 +338,7 @@ class ApplicationController < ActionController::Base
   end
   
   def http_basic_authenticate
-    logger.debug "Checking auth for remote ip: #{request.remote_ip} for domain #{request.domain}"
+    logger.info "Checking auth for remote ip: #{request.remote_ip} for domain #{request.domain}"
     
     @need_auth = false
     
@@ -346,12 +346,12 @@ class ApplicationController < ActionController::Base
     @local_auth_required = GlobalSetting.parsed_setting_for GlobalSetting::LOCAL_AUTHENTICATION_REQUIRED
     
     if @authentication_required 
-      logger.debug "Auth is required by setting"
+      logger.info "Auth is required by setting"
       
       @need_auth = true
       
       if !@local_auth_required
-        logger.debug "Local Auth not required, testing for local"
+        logger.info "Local Auth not required, testing for local"
         
         #check ip address and requested domain
         @requested_domain = request.domain
@@ -359,7 +359,7 @@ class ApplicationController < ActionController::Base
         @local_access = false
         
         if @requested_domain.include? "myvnc"
-          logger.debug "External url access myvnc, so no local access, Requesting auth!"
+          logger.info "External url access myvnc, so no local access, Requesting auth!"
           @local_access = false
         else 
           @local_access = true
@@ -372,12 +372,12 @@ class ApplicationController < ActionController::Base
         
         @server_ip_base = "#{@server_ip_parts[0]}.#{@server_ip_parts[1]}.#{@server_ip_parts[2]}."
           
-        logger.debug "testing remote ip #{@remote_ip} again server base #{@server_ip_base}"
+        logger.info "testing remote ip #{@remote_ip} again server base #{@server_ip_base}"
         
         if @remote_ip.starts_with? @server_ip_base or @remote_ip == "127.0.0.1"
           @local_access = true
         else 
-          logger.debug "Request not on same LAN. Requesting auth!"
+          logger.info "Request not on same LAN. Requesting auth!"
           @local_access = false
         end
         
@@ -390,7 +390,7 @@ class ApplicationController < ActionController::Base
         return
       end
     else
-      logger.debug "Auth is not required by setting"
+      logger.info "Auth is not required by setting"
     end
     
     authenticate_or_request_with_http_basic do |username, password|
