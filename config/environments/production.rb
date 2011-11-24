@@ -21,8 +21,8 @@ Pos::Application.configure do
   # See everything in the log (default is :info)
   # config.log_level = :debug
 
-  # Use a different logger for distributed setups
-  # config.logger = SyslogLogger.new
+  #rotate every 20 megabytes
+  config.logger = Logger.new(Rails.root.join("log", Rails.env + ".log"), 10, 20 * 1024 * 1024)
 
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
