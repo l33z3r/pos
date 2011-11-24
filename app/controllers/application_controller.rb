@@ -383,6 +383,8 @@ class ApplicationController < ActionController::Base
       return
     end
 
+    logger.info "previous succeed? #{session[:manual_auth_succeeded]} - #{!session[:manual_auth_succeeded]}"
+    
     if !session[:manual_auth_succeeded]
       logger.info "Checking manual auth with params u=#{params[:u]} and p=#{params[:u]}"
       #check is the name and password sent in the url and authenticate off that first if it is present
