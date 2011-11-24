@@ -20,11 +20,11 @@ var cashTendered;
 function getTendered() {
     var val = cashTendered;    
     
-    if(val > 0) {
-        if(isNaN(parseFloat(val))) {
-            val = 0;
-        }
+    if(isNaN(parseFloat(val))) {
+        val = 0;
+    }
         
+    if(val > 0) {
         var formattedVal = currency(val, false);
         $('#totals_tendered_value').html(formattedVal);
     }
@@ -37,7 +37,7 @@ function finishSale() {
 
     totalAmountInclCashback = roundNumber(currentTotalFinal + cashback, 2);
 
-    if(cashTendered == 0) {
+    if(cashTendered == 0 && (totalAmountInclCashback > 0)) {
         //auto fill to exact amount 
         moneySelected(-1);
         finishSale();

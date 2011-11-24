@@ -65,6 +65,8 @@ function menuScreenKeypadClick(val) {
         $('#display_button_passcode_show').html($('#display_button_passcode_show').html() + val);
     } else if(inStockTakeMode) {
         $('#stock_take_new_amount_input').val($('#stock_take_new_amount_input').val() + val);
+    } else if(inPriceChangeMode) {
+        $('#price_change_new_price_input').val($('#price_change_new_price_input').val() + val);
     } else {
         closePreviousModifierDialog();
         
@@ -87,6 +89,8 @@ function menuScreenKeypadClick(val) {
 function menuScreenKeypadClickCancel() {
     if(inStockTakeMode) {
         $('#stock_take_new_amount_input').val("");
+    } else if(inPriceChangeMode) {
+        $('#price_change_new_price_input').val("");
     } else {
         currentMenuItemQuantity = "";
     }
@@ -95,6 +99,8 @@ function menuScreenKeypadClickCancel() {
 function menuScreenKeypadClickDecimal() {
     if(inStockTakeMode) {
         $('#stock_take_new_amount_input').val($('#stock_take_new_amount_input').val() + ".");
+    } else if(inPriceChangeMode) {
+        $('#price_change_new_price_input').val($('#price_change_new_price_input').val() + ".");
     } else {
         if(currentMenuItemQuantity.indexOf(".") == -1) {
             currentMenuItemQuantity += ".";
@@ -227,8 +233,14 @@ function modifierSelected(modifierId, modifierName, modifierPrice) {
         'name':modifierName,
         'price':modifierPrice
     }
-    currentOrderItem['total_price'] = currentOrderItem['total_price'] + (currentOrderItem['amount'] * modifierPrice);
-
+    
+    //if we have a discount for this order item, then add the modifier total to the pre_discount_total
+    if(currentOrderItem.pre_discount_price) {
+        currentOrderItem.pre_discount_price = currentOrderItem.pre_discount_price + (currentOrderItem['amount'] * modifierPrice);
+    } else {
+        currentOrderItem['total_price'] = currentOrderItem['total_price'] + (currentOrderItem['amount'] * modifierPrice);
+    }
+    
     //close the dialog
     $(currentSelectedMenuItemElement).HideBubblePopup();
     $(currentSelectedMenuItemElement).FreezeBubblePopup();
@@ -478,7 +490,6 @@ function doSelectReceiptItem(orderItemEl) {
     
     clickFunction = function(val) {
         currentVal = lastActiveElement.val();
-        if(currentVal == 0) currentVal = "";
         newVal = currentVal.toString() + val;
         lastActiveElement.val(newVal);
     };
@@ -562,11 +573,41 @@ function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit) {
     
     targetOrderItem.amount = newQuantity;
     targetOrderItem.product_price = newPricePerUnit;
-    targetOrderItem.total_price = newPricePerUnit * newQuantity;
-        
-    //add the new modifier price to the total
+    
+    if(targetOrderItem.pre_discount_price) {
+        targetOrderItem.pre_discount_price = newPricePerUnit * newQuantity;
+    } else {
+        targetOrderItem.total_price = newPricePerUnit * newQuantity;
+    }
+    
+    //add the new total modifier price
     if(targetOrderItem.modifier) {
-        targetOrderItem.total_price += targetOrderItem.modifier.price * newQuantity;
+        if(targetOrderItem.pre_discount_price) {
+            targetOrderItem.pre_discount_price += targetOrderItem.modifier.price * newQuantity;
+        } else {
+            targetOrderItem.total_price += targetOrderItem.modifier.price * newQuantity;
+        }
+    }
+    
+    //add the new total oia prices
+    if(targetOrderItem.oia_items) {
+        for(i=0; i<targetOrderItem.oia_items.length; i++) {
+            if(targetOrderItem.pre_discount_price) {
+                if(targetOrderItem.oia_items[i].is_add) {
+                    targetOrderItem.pre_discount_price += targetOrderItem.oia_items[i].abs_charge * newQuantity;
+                    console.log("pdp: " + (targetOrderItem.oia_items[i].abs_charge));
+                } else {
+                    targetOrderItem.pre_discount_price -= targetOrderItem.oia_items[i].abs_charge * newQuantity;
+                }
+            } else {
+                if(targetOrderItem.oia_items[i].is_add) {
+                    targetOrderItem.total_price += targetOrderItem.oia_items[i].abs_charge * newQuantity;
+                    console.log("pdp: " + (targetOrderItem.oia_items[i].abs_charge));
+                } else {
+                    targetOrderItem.total_price -= targetOrderItem.oia_items[i].abs_charge * newQuantity;
+                }
+            }
+        }
     }
     
     applyExistingDiscountToOrderItem(order, itemNumber);
@@ -1117,10 +1158,10 @@ function addDiscountToOrder(order, amount) {
 
 function applyExistingDiscountToOrderItem(order, itemNumber) {
     // -1 itemNumber signifies to apply the existing discount
-    if(itemNumber != -1) {
-        //we must first clear the last pre_discount_price
-        order.items[itemNumber-1]['pre_discount_price'] = null;
-    }
+    //    if(itemNumber != -1) {
+    //        //we must first clear the last pre_discount_price
+    //        order.items[itemNumber-1]['pre_discount_price'] = null;
+    //    }
     
     applyDiscountToOrderItem(order, itemNumber, -1);
 }
@@ -1134,7 +1175,7 @@ function applyDiscountToOrderItem(order, itemNumber, amount) {
     } else {
         orderItem = order.items[itemNumber-1];
     }
-    
+    console.log("applying discount of " + amount + "%");
     //overwrite the discount amount, or just apply the existing one?
     if(amount == -1) {
         //return if no existing discount
@@ -1146,16 +1187,19 @@ function applyDiscountToOrderItem(order, itemNumber, amount) {
     } else {
         orderItem['discount_percent'] = amount;
     }
-    
-    oldPrice = orderItem['total_price'];
-    
-    if(!orderItem['pre_discount_price']) {
+    console.log("PDP: " + orderItem['pre_discount_price']);
+    if(orderItem['pre_discount_price']) {
+        oldPrice = orderItem['pre_discount_price'];
+    } else {
+        oldPrice = orderItem['total_price'];
         orderItem['pre_discount_price'] = oldPrice;
     }
     
+    console.log("Old Price: " + oldPrice + " PDP: " + orderItem['pre_discount_price']);
+    
     preDiscountPrice = orderItem['pre_discount_price'];
 
-    //alert("PreDiscountPrice: " + preDiscountPrice + " NewDiscount: " + ((preDiscountPrice * amount)/100));
+    console.log("PreDiscountPrice: " + preDiscountPrice + " NewDiscount: " + ((preDiscountPrice * amount)/100));
     
     newPrice = preDiscountPrice - ((preDiscountPrice * amount) / 100);
     orderItem['total_price'] = newPrice;
@@ -1469,12 +1513,22 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) 
     
     //update the total
     if(oiaIsAdd) {
-        orderItem.total_price = orderItem.total_price + (orderItem.amount * absCharge);
+        if(orderItem.pre_discount_price) {
+            orderItem.pre_discount_price = orderItem.pre_discount_price + (orderItem.amount * absCharge);
+        } else {
+            orderItem.total_price = orderItem.total_price + (orderItem.amount * absCharge);
+        }
     } else {
-        orderItem.total_price = orderItem.total_price - (orderItem.amount * absCharge);
+        if(orderItem.pre_discount_price) {
+            orderItem.pre_discount_price = orderItem.pre_discount_price - (orderItem.amount * absCharge);
+        } else {
+            orderItem.total_price = orderItem.total_price - (orderItem.amount * absCharge);
+        }
     }
     
     orderItem.oia_items.push(oia_item);
+   
+    applyExistingDiscountToOrderItem(order, orderItem.itemNumber);
    
     //store the modified order
     if(selectedTable != 0) {

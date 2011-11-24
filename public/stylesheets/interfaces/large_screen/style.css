@@ -764,6 +764,11 @@ div#menu_screen div#menu_pages_container div#menu_buttons {
     height: 159px;
 }
 
+div#menu_screen div#menu_pages_container div#menu_buttons div.buttons div.button {
+    width: 87px;
+    max-width: 87px;
+}
+
 div#menu_screen div#menu_pages_container div#menu_buttons div#menu_buttons_loading_message {
     text-align: center;
     margin-top: 60px;
@@ -1487,7 +1492,6 @@ div.receipt div.till_roll div.order_line.not_synced div.name {
 }
 
 div.receipt div.till_roll div.order_line.selected {
-    border: 2px solid #4297D7;
     -moz-border-radius: 5px;
     border-radius: 5px;
     background-color: #4297D7;
@@ -1516,7 +1520,7 @@ div.receipt div.till_roll div.name {
 div.receipt div.till_roll div.modifier_name {
     float: left;
     width: 150px;
-    margin-left: 50px;
+    margin-left: 47px;
     text-align: left;
 }
 

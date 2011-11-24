@@ -335,17 +335,6 @@ function calculateOrderTotal(order) {
 function initTouchRecpts() {
     var receiptScrollerOpts = null;
     
-    //TODO check if exist first
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
     //mobile receipts
     $('#mobile_terminal_till_roll').touchScroll(receiptScrollerOpts);
     $('#mobile_server_till_roll').touchScroll(receiptScrollerOpts);
