@@ -18,12 +18,10 @@ Pos::Application.configure do
   # If you have no front-end server that supports something like X-Sendfile,
   # just comment this out and Rails will serve the files
 
-  # See everything in the log (default is :info)
-  config.log_level = :info
-
   #rotate every 20 megabytes
   config.logger = Logger.new(Rails.root.join("log", Rails.env + ".log"), 10, 20 * 1024 * 1024)
-
+  config.logger.level = Logger::INFO
+  
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
 

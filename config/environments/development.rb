@@ -11,6 +11,7 @@ Pos::Application.configure do
 
   #rotate every 20 megabytes
   config.logger = Logger.new(Rails.root.join("log", Rails.env + ".log"), 10, 20 * 1024 * 1024)
+  config.logger.level = Logger::INFO
   
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
