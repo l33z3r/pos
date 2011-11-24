@@ -387,9 +387,9 @@ class ApplicationController < ActionController::Base
       return
     end
 
-    logger.info "previous succeed? #{session[:manual_auth_succeeded]} - #{!session[:manual_auth_succeeded]}"
+    logger.info "previous succeed? #{session[:auth_succeeded] == true}"
     
-    if !session[:manual_auth_succeeded]
+    if !session[:auth_succeeded]
       logger.info "Checking manual auth with params u=#{params[:u]} and p=#{params[:p]}"
       #check is the name and password sent in the url and authenticate off that first if it is present
       @username_param = params[:u]
@@ -400,15 +400,23 @@ class ApplicationController < ActionController::Base
     
       if @username_ok and @password_ok
         logger.info "Manual Auth succeeded"
-        session[:manual_auth_succeeded] = true
+        session[:auth_succeeded] = true
         return
       end
     else
       return
     end
     
+    logger.info "Doing http basic auth"
+    
     authenticate_or_request_with_http_basic do |username, password|
-      username == HTTP_BASIC_AUTH_USERNAME && password == HTTP_BASIC_AUTH_PASSWORD
+      @auth_ok = username == HTTP_BASIC_AUTH_USERNAME && password == HTTP_BASIC_AUTH_PASSWORD
+      
+      if @auth_ok
+        session[:auth_succeeded] = true
+      end
+      
+      @auth_ok
     end
   end
   

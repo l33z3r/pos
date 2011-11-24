@@ -9,6 +9,11 @@ Main stylesheet.
 /* Global Styles */
 
 body {
+    
+    width: 480px;
+    height: 798px;
+    overflow: hidden;
+    
     margin: 0px;
     padding: 0px;
     color: #333333;
