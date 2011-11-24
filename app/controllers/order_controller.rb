@@ -72,7 +72,9 @@ class OrderController < ApplicationController
     #make sure the table still exists in the system as it will cause a weird error if not
     @table = TableInfo.find_by_id(@table_id)
     
-    if @table
+    @employee = Employee.find_by_id(@employee_id)
+    
+    if @table and @employee
       do_request_sync_table_order @terminal_id, @table_order_data, @table_id, @employee_id
       render :json => {:success => true}.to_json
     else

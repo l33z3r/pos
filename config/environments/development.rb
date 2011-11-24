@@ -9,6 +9,10 @@ Pos::Application.configure do
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
 
+  #rotate every 20 megabytes
+  config.logger = Logger.new(Rails.root.join("log", Rails.env + ".log"), 10, 20 * 1024 * 1024)
+  config.logger.level = Logger::INFO
+  
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
   config.action_view.debug_rjs             = true

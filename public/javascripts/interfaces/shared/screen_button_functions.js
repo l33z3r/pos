@@ -1,6 +1,12 @@
 var lastSyncedOrder = null;
 
 function doSyncTableOrder() {
+    //make sure logged in
+    if(!current_user_id) {
+        niceAlert("You are not logged in, you may have been logged out elsewhere. Please log in again, and re-order.");
+        return;
+    }
+    
     if(selectedTable == 0 || selectedTable == -1) {
         setStatusMessage("Only valid for table orders!");
         return;

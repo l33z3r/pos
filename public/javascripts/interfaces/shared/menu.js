@@ -333,11 +333,19 @@ function calculateOrderTotal(order) {
 
 //a full list of receipts in the system across all interfaces
 function initTouchRecpts() {
-    var receiptScrollerOpts = {
-        elastic: false,
-        momentum: false
-    };
-        
+    var receiptScrollerOpts = null;
+    
+    //TODO check if exist first
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
     //mobile receipts
     $('#mobile_terminal_till_roll').touchScroll(receiptScrollerOpts);
     $('#mobile_server_till_roll').touchScroll(receiptScrollerOpts);

@@ -1,5 +1,5 @@
 #an exception logger
-EXCEPTION_LOGGER = Logger.new('log/errors.log')
+EXCEPTION_LOGGER = Logger.new(Rails.root.join('log', 'errors.log'), 10, 20.megabytes)
 
 #this will be the default logger that will do conditional logging,
 #we use it to seperate the call_home action
@@ -8,7 +8,7 @@ class NoisyLogger < Rails::Rack::Logger
     @default_log = Rails.logger
 
     # Put the noisy log in the same directory as the default log.
-    @noisy_log = Logger.new Rails.root.join('log', 'noisy.log')
+    @noisy_log = Logger.new(Rails.root.join('log', 'noisy.log'), 20, 20.megabytes)
 
     @app = app
     @opts = opts
