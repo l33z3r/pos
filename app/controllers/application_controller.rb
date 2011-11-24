@@ -208,7 +208,11 @@ class ApplicationController < ActionController::Base
       #clear_storage_after_page_load?
       @clear_storage_after_page_load = params[:clear_storage_after_page_load] ? "true" : "false"
       
-      @forward_params = {:reset_local_storage => @clear_storage_after_page_load}
+      @forward_params = {
+        :reset_local_storage => @clear_storage_after_page_load,
+        :u => params[:u],
+        :p => params[:p]
+      }
       
       #what is the entry point for each interface?
       if current_interface_large?
@@ -386,7 +390,7 @@ class ApplicationController < ActionController::Base
     logger.info "previous succeed? #{session[:manual_auth_succeeded]} - #{!session[:manual_auth_succeeded]}"
     
     if !session[:manual_auth_succeeded]
-      logger.info "Checking manual auth with params u=#{params[:u]} and p=#{params[:u]}"
+      logger.info "Checking manual auth with params u=#{params[:u]} and p=#{params[:p]}"
       #check is the name and password sent in the url and authenticate off that first if it is present
       @username_param = params[:u]
       @password_param = params[:p]
