@@ -235,3 +235,78 @@ function getOpenOrdersTotal() {
     
     return total;
 }
+
+/**
+ *  Functions to Previous Cash Totals Page
+ *
+ ***/
+
+function doPreviousCashTotalReport() {
+    setNavTitle("Previous Cash Total");
+    showNavBackLinkMenuScreen();
+
+//    $('#reports_left_till_roll').html("Loading...");
+//    $('#cash_total_data_table_container').html("Loading...");
+
+    //hide the dropdown menu
+    $('#menu_screen_shortcut_dropdown_container').hide();
+//
+   showPreviousCashReportsScreen();
+
+//    $.ajax({
+//        type: 'POST',
+//        url: '/previous_cash_total.js',
+//        data: {
+//            total_type : "X",
+//            cash_count : "100",
+//            commit : true
+//        }
+//    });
+
+}
+
+$(function() {
+    setDatePickers();
+});
+
+var selectedFromDate;
+var selectedToDate;
+
+function setDatePickers() {
+    $('#search_previous_cash_totals_container').find('#date_from').datepicker({
+        dateFormat: 'dd-mm-yy',
+        defaultDate: selectedFromDate,
+        onSelect: function(dateText, inst) {
+            $('#search_previous_cash_totals_container').find('#date_to').datepicker("option", "minDate", dateText);
+            $('#search_created_at_gte').val(dateText);
+        }
+    });
+
+    $('#search_previous_cash_totals_container').find('#date_to').datepicker({
+        dateFormat: 'dd-mm-yy',
+        defaultDate: selectedToDate,
+        onSelect: function(dateText, inst) {
+            $('#order_list_container').find('#date_from').datepicker("option", "maxDate", dateText);
+            $('#search_created_at_lte').val(dateText);
+        }
+    });
+}
+
+function todayButtonClicked() {
+    var todayDate = formatDate(new Date(), "dd-MM-yyyy");
+    forceDateSubmit(todayDate);
+}
+
+function last7daysButtonClicked() {
+    constructedDate = new Date();
+    constructedDate.setDate(new Date().getDate() - 7);
+    var fromDate = constructedDate;
+
+    var fromDateFormatted = formatDate(fromDate, "dd-MM-yyyy");
+    forceDateSubmit(fromDateFormatted);
+}
+
+function runCashTotalSearch(){
+
+}
+

@@ -15,6 +15,7 @@ Pos::Application.routes.draw do
   match 'float_history' => "order#float_history", :via => :get
   match 'cash_total_history' => "order#cash_total_history", :via => :get
   match 'outstanding_orders' => "order#create_outstanding", :via => :post
+  match 'previous_cash_total' => "order#previous_cash_total", :via => :post
 
   #routes for screens to login etc
   match 'home' => "home#index"

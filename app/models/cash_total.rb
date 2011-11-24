@@ -325,5 +325,8 @@ class CashTotal < ActiveRecord::Base
     
     return ""
   end
-  
+
+  def self.get_totals
+        where("total_type = ?", "X").order("created_at desc")
+  end
 end

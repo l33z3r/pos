@@ -1,0 +1,28 @@
+<%# if !@products.empty? %>
+  <table id="cash_total_list" class="admin_table">
+    <thead>
+      <tr>
+        <th width="130">Date & Time</th>
+        <th width="70">Report No.</th>
+        <th width="80">Report Type</th>
+        <th width="120">Terminal</th>
+        <th width="100">Report By</th>
+        <th width="60">Total Sales</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%# @products.each do |product| %>
+        <tr>
+          <td>aaa </td>
+          <td>bbb</td>
+          <td>cccc</td>
+          <td>dddd</td>
+          <td>eee</td>
+          <td>ffff</td>
+        </tr>
+      <%# end %>
+    </tbody>
+  </table>
+<%# else %>
+  <div class="drag_message">No results found.</div>
+<%# end %>

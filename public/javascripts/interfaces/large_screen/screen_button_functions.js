@@ -380,3 +380,10 @@ function openCashDrawer() {
     //    process.run(false, args, args.length);
     }
 }
+
+
+function preparePreviousCashSales(){
+    doPreviousCashTotalReport();
+}
+
+

@@ -1,13 +1,8 @@
 class AddIsSpecialToProducts < ActiveRecord::Migration
   def self.up
-    change_table :products do |t|
-      t.boolean :is_special, :default => false
-    end
+    add_column :products, :is_special, :boolean, :default => false
   end
-
   def self.down
-    change_table :products do |t|
-      t.remove :is_special
-    end
+    remove_column :products, :is_special
   end
 end

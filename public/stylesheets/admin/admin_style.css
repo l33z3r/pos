@@ -1368,4 +1368,79 @@ div#edit_theme_settings section#theme_settings div#global_font_color_container i
     display: none;
 }
 
+  /* previous cash totals */
+div#previous_cash_reports_screen div#search_previous_cash_totals_container{
+    width: 60%;
+}
+
+div#previous_cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog{
+    width: auto;
+}
+
+div#previous_cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog div#date_select_container {
+    margin: 6px 10px;
+    width: auto;
+}
+
+div#previous_cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog div#date_select_container div.date_box {
+    float: left;
+}
+
+div#previous_cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog div#date_select_container div.date_box div.label {
+    float: left;
+    padding-top: 6px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+div#previous_cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog div#date_select_container div.date_box div.date_select {
+    float: left;
+}
+
+div#previous_cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog div#date_select_container div.date_box div.date_select input {
+    margin-right: 20px;
+}
+
+div#previous_cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog div#date_select_container div.last7days_button {
+    float: left;
+    margin-left: 10px;
+}
+
+div#previous_cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog div#date_select_container div.last7days_button div.button {
+    padding-top: 2px;
+    height: 25px;
+    width: 150px;
+}
+
+div#previous_cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog div#date_select_container div.yesterday_button {
+    float: left;
+    margin-left: 10px;
+}
+
+div#previous_cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog div#date_select_container div.yesterday_button div.button {
+    padding-top: 2px;
+    height: 25px;
+    width: 150px;
+}
+
+div#previous_cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog div#date_select_container div.go_button {
+    float: left;
+    margin-right: 10px;
+}
+
+div#previous_cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog div#date_select_container div.go_button div.button {
+    padding-top: 2px;
+    height: 25px;
+    font-weight: bold;
+    width: 30px;
+}
+
+div#previous_cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog div.clear_top_margin_10{
+    height: 5px;
+    clear: both;
+}
+
+div#previous_cash_reports_screen div#search_previous_cash_totals_container div#results_table{
+    height: 600px;
+}
 /* End Theme Settings Page */
