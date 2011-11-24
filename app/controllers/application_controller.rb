@@ -382,7 +382,25 @@ class ApplicationController < ActionController::Base
     if !@need_auth
       return
     end
-      
+
+    if !session[:manual_auth_succeeded]
+      logger.info "Checking manual auth with params u=#{params[:u]} and p=#{params[:u]}"
+      #check is the name and password sent in the url and authenticate off that first if it is present
+      @username_param = params[:u]
+      @password_param = params[:p]
+    
+      @username_ok = (@username_param and @username_param == HTTP_BASIC_AUTH_USERNAME)
+      @password_ok = (@password_param and @password_param == HTTP_BASIC_AUTH_PASSWORD)
+    
+      if @username_ok and @password_ok
+        logger.info "Manual Auth succeeded"
+        session[:manual_auth_succeeded] = true
+        return
+      end
+    else
+      return
+    end
+    
     authenticate_or_request_with_http_basic do |username, password|
       username == HTTP_BASIC_AUTH_USERNAME && password == HTTP_BASIC_AUTH_PASSWORD
     end

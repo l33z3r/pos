@@ -8,7 +8,7 @@ class NoisyLogger < Rails::Rack::Logger
     @default_log = Rails.logger
 
     # Put the noisy log in the same directory as the default log.
-    @noisy_log = Logger.new(Rails.root.join('log', 'noisy.log'), 20, 20.megabytes)
+    @noisy_log = Logger.new(Rails.root.join('log', 'noisy.log'), 10, 20.megabytes)
 
     @app = app
     @opts = opts
