@@ -56,6 +56,7 @@ class GlobalSetting < ActiveRecord::Base
   ORDER_RECEIPT_WIDTH = 27
   AUTHENTICATION_REQUIRED = 28
   LOCAL_AUTHENTICATION_REQUIRED = 29
+  All_DEVICES_ORDER_NOTIFICATION = 30
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -86,7 +87,8 @@ class GlobalSetting < ActiveRecord::Base
     CURRENCY_NOTES_IMAGES => "Currency Notes Images", 
     ORDER_RECEIPT_WIDTH => "Order Receipt Width",
     AUTHENTICATION_REQUIRED => "Authentication Required",
-    LOCAL_AUTHENTICATION_REQUIRED => "Local Authentication Required"
+    LOCAL_AUTHENTICATION_REQUIRED => "Local Authentication Required",
+    All_DEVICES_ORDER_NOTIFICATION => "All Device Receive Order Notification"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -165,6 +167,9 @@ class GlobalSetting < ActiveRecord::Base
     when LOCAL_AUTHENTICATION_REQUIRED
       @gs = find_or_create_by_key(:key => LOCAL_AUTHENTICATION_REQUIRED.to_s, :value => "false", :label_text => LABEL_MAP[LOCAL_AUTHENTICATION_REQUIRED])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when All_DEVICES_ORDER_NOTIFICATION
+    @gs = find_or_create_by_key(:key => All_DEVICES_ORDER_NOTIFICATION.to_s, :value => "false", :label_text => LABEL_MAP[All_DEVICES_ORDER_NOTIFICATION])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -225,6 +230,9 @@ class GlobalSetting < ActiveRecord::Base
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     when LOCAL_AUTHENTICATION_REQUIRED
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when All_DEVICES_ORDER_NOTIFICATION
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     else

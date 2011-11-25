@@ -100,7 +100,8 @@ class Product < ActiveRecord::Base
   end
   
   def decrement_stock quantity
-    decrement!(:quantity_in_stock, quantity)
+    @decrement_val = quantity/quantity_per_container
+    decrement!(:quantity_in_stock, @decrement_val)
   end
   
   def last_stock_transaction

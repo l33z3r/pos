@@ -24,7 +24,7 @@ $(function(){
 });
 
 function addModifierFields(link, content) {
-    var new_id = new Date().getTime();
+    var new_id = clueyTimestamp();
     var regexp = new RegExp("new_modifier", "g")
     $(link).parent().before(content.replace(regexp, new_id));
 }

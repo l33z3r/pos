@@ -210,7 +210,7 @@ function fetchFinalReceiptHeaderHTML() {
     
     //lazy init the order time of totalling
     if(typeof(totalOrder.time) == 'undefined') {
-        totalOrder.time = new Date().getTime();
+        totalOrder.time = clueyTimestamp();
     }
     
     timestamp = utilFormatDate(new Date(totalOrder.time));

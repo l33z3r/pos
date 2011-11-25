@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111121081720) do
+ActiveRecord::Schema.define(:version => 20111125162942) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -249,7 +249,7 @@ ActiveRecord::Schema.define(:version => 20111121081720) do
     t.float    "shipping_cost"
     t.float    "commission_percent"
     t.integer  "container_type_id"
-    t.float    "quantity_per_container"
+    t.float    "quantity_per_container",     :default => 1.0
     t.boolean  "is_active",                  :default => true
     t.boolean  "is_service",                 :default => false
     t.boolean  "show_price_prompt",          :default => false

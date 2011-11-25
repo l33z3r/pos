@@ -1643,21 +1643,23 @@ div#edit_receipt_item_popup_markup_container div#quantity_editor input.quantity 
 
 div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_container {
     float: right;
-    width: 120px;
+    width: 130px;
+    margin-top: -5px;
 }
 
 div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_container div#plus_button,
 div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_container div#minus_button {
     cursor: pointer;
+    padding: 10px 10px 0px 10px;
+    margin: -0px 5px;
     height: 10px;
     width: 25px;
     height: 25px;
-    font-size: 14px;
+    font-size: 24px;
     font-weight: bold;
     color: #666;
     display: block;
     float: left;
-    margin: 0px 5px;
 }
 
 div#edit_receipt_item_popup_markup_container div#price_editor {
@@ -2857,9 +2859,14 @@ div.button.selected {
     color: #FFF;
 }
 
+div.button div.icon {
+    height: 28px;
+    margin-bottom: 5px;
+}
+
 div.button div.icon img {
-    max-height: 30px;
-    max-width: 30px;
+    max-height: 28px;
+    max-width: 28px;
 }
 
 div.button div.button_name {

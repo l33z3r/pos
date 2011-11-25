@@ -603,3 +603,7 @@ function initPressedCSS() {
 function inAndroidWrapper() {
     return (typeof clueyAndroidJSInterface != "undefined");
 }
+
+function clueyTimestamp() {
+    return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
+}

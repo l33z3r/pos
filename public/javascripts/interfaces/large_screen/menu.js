@@ -549,8 +549,16 @@ function saveEditOrderItem() {
     targetInputQuantityEl = $('#' + popupId).find('.quantity');
     newQuantity = parseFloat(targetInputQuantityEl.val());
     
+    if(isNaN(newQuantity) || newQuantity == 0) {
+        newQuantity = 1;
+    }
+    
     targetInputPricePerUnitEl = $('#' + popupId).find('.price');
     newPricePerUnit = parseFloat(targetInputPricePerUnitEl.val());
+    
+    if(isNaN(newPricePerUnit)) {
+        newPricePerUnit = 0;
+    }
     
     if(selectedTable != 0) {
         order = tableOrders[selectedTable];
@@ -796,7 +804,7 @@ function doTotalFinal() {
         paymentMethod = defaultPaymentMethod;
     }
     
-    totalOrder.time = new Date().getTime();
+    totalOrder.time = clueyTimestamp();
     totalOrder.payment_method = paymentMethod;
     
     //set the service charge again in case it was changed on the totals screen
@@ -1498,6 +1506,51 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusC
     currentSelectedReceiptItemEl = null;
 }
 
-function doReceiveOrderReady(employee_id, table_id) {
-    console.log("got order ready notification for " + employee_id + " for table " + table_id);    
+function doReceiveOrderReady(employee_id, terminal_id, table_id, table_label) {
+    if(inKitchenContext()) {
+        return;
+    }
+    
+    hidePreviousOrderReadyPopup();
+    
+    console.log("got order ready notification for " + employee_id + " for table " + table_label + " for terminal " + terminal_id);
+    
+    if(terminal_id == terminalID) {
+        ModalPopups.Confirm('niceAlertContainer',
+            'Order Ready!', "<div id='nice_alert'>Order for table " + table_label + " is ready</div>",
+            {
+                yesButtonText: 'OK',
+                noButtonText: 'Cancel',
+                onYes: 'orderReadyOKClicked()',
+                onNo: 'orderReadyCancelClicked()',
+                width: 400,
+                height: 250
+            } );
+    }
+}
+
+function orderReadyOKClicked() {
+    hideOrderReadyPopup();
+    
+    //ajax to say accepted
+    console.log("Order accepted!!");
+}
+
+function orderReadyCancelClicked() {
+    hideOrderReadyPopup();
+    
+    //ajax to say rejected
+    console.log("Order rejected!!");
+}
+
+function hidePreviousOrderReadyPopup() {
+    hideOrderReadyPopup();
+}
+
+function hideOrderReadyPopup() {
+    try {
+        ModalPopups.Close('niceAlertContainer');
+    } catch (e) {
+        
+    }
 }

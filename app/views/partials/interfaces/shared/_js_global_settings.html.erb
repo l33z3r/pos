@@ -98,4 +98,11 @@
   var webSocketServiceIP = "<%= GlobalSetting.parsed_setting_for GlobalSetting::WEBSOCKET_IP, {:fingerprint => @terminal_fingerprint} %>";
 
   var orderReceiptWidthSetting = "<%= @order_receipt_width_setting %>";
+  
+  var allDevicesOrderNotification = <%= GlobalSetting.parsed_setting_for GlobalSetting::All_DEVICES_ORDER_NOTIFICATION %>;
+  
+  //these variables are used to get a syncronised time on each device
+  var serverCounterStartTimeMillis = <%= Time.now.to_f * 1000 %>;
+  var counterStartTimeMillis = new Date().getTime();
+  
 </script>

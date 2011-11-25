@@ -93,7 +93,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
                 nextOIA.is_add = (nextOIA.is_add.toString() == "true" ? true : false);
                 nextOIA.is_note = (nextOIA.is_note.toString() == "true" ? true : false);
                 nextOIA.abs_charge = parseFloat(nextOIA.abs_charge);
-            console.log("converted abs_charge: " + nextOIA.abs_charge);
+                //console.log("converted abs_charge: " + nextOIA.abs_charge);
                 newOIAItems.push(nextOIA);
             }
         
@@ -313,12 +313,6 @@ function doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmploye
 }
 
 function applyExistingDiscountToOrderItem(order, itemNumber) {
-    // -1 itemNumber signifies to apply the existing discount
-    //    if(itemNumber != -1) {
-    //        //we must first clear the last pre_discount_price
-    //        order.items[itemNumber-1]['pre_discount_price'] = null;
-    //    }
-    
     applyDiscountToOrderItem(order, itemNumber, -1);
 }
 
@@ -331,7 +325,7 @@ function applyDiscountToOrderItem(order, itemNumber, amount) {
     } else {
         orderItem = order.items[itemNumber-1];
     }
-    console.log("applying discount of " + amount + "%");
+    
     //overwrite the discount amount, or just apply the existing one?
     if(amount == -1) {
         //return if no existing discount
@@ -343,7 +337,7 @@ function applyDiscountToOrderItem(order, itemNumber, amount) {
     } else {
         orderItem['discount_percent'] = amount;
     }
-    console.log("PDP: " + orderItem['pre_discount_price']);
+   
     if(orderItem['pre_discount_price']) {
         oldPrice = orderItem['pre_discount_price'];
     } else {
@@ -351,12 +345,8 @@ function applyDiscountToOrderItem(order, itemNumber, amount) {
         orderItem['pre_discount_price'] = oldPrice;
     }
     
-    console.log("Old Price: " + oldPrice + " PDP: " + orderItem['pre_discount_price']);
-    
     preDiscountPrice = orderItem['pre_discount_price'];
 
-    console.log("PreDiscountPrice: " + preDiscountPrice + " NewDiscount: " + ((preDiscountPrice * amount)/100));
-    
     newPrice = preDiscountPrice - ((preDiscountPrice * amount) / 100);
     orderItem['total_price'] = newPrice;
 
@@ -443,7 +433,7 @@ function buildOrderItem(product, amount) {
     
     //either way we want to store the user id
     orderItem['serving_employee_id'] = current_user_id;
-    orderItem['time_added'] = new Date().getTime();
+    orderItem['time_added'] = clueyTimestamp();
 
     currentOrderItem = orderItem;
 }

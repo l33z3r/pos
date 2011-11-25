@@ -355,6 +355,8 @@ function postDoSyncTableOrder() {
     
     //vibrate!
     vibrate();
+    
+    showTablesSubscreen();
 }
 
 function showModifyOrderItemScreen() {
@@ -606,12 +608,12 @@ function tableScreenBack() {
     showMenuItemsSubscreen();
 }
 
-function doReceiveOrderReady(employee_id, table_id, table_label) {
+function doReceiveOrderReady(employee_id, terminal_id, table_id, table_label) {
     hidePreviousOrderReadyPopup();
     
     console.log("got order ready notification for employee id: " + employee_id + " for table: " + table_label);
     
-    if(employee_id == current_user_id) {
+    if(employee_id == current_user_id || allDevicesOrderNotification) {
         vibrateConstant();        
      
         ModalPopups.Confirm('niceAlertContainer',

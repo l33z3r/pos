@@ -68,6 +68,7 @@ class HomeController < ApplicationController
     if @order_ready_notification
       @order_ready_request_time = @order_ready['order_ready_request_time']
       @order_ready_request_employee_id = @order_ready['order_ready_request_employee_id']
+      @order_ready_request_terminal_id = @order_ready['order_ready_request_terminal_id']
       @order_ready_request_table_id = @order_ready['order_ready_request_table_id']
       @order_ready_reqeust_table_label = @order_ready['order_ready_request_table_label']
       
