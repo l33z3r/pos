@@ -45,7 +45,7 @@
                       <td><%=display_button.perm_id%></td>
                       <td>
                         <%= fields_for "display_buttons[]", display_button do |f| %>
-                          <%= f.text_field :button_text, :size => 20, :disabled => (display_button.perm_id == ButtonMapper::SERVICE_CHARGE_BUTTON) %>
+                          <%= f.text_field :button_text, :size => 20 %>
                         <% end %>
                       </td>
                       <td>

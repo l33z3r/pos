@@ -470,18 +470,32 @@ function orderItemAdditionClicked(el) {
     
     var absCharge = 0;
     
+    var plusCharge = el.data("add_charge");
+    var minusCharge = el.data("minus_charge");
+    
+    //oia here is always true
+    //for now assume it is being added, we wont know until we iterate through the modifiers
     if(oiaIsAdd) {
-        absCharge = el.data("add_charge");
+        absCharge = plusCharge;
     } else {
-        absCharge = el.data("minus_charge");
+        absCharge = minusCharge;
     }
     
-    addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, false);
+    addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, false);
 }
 
-function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) {
+function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, isNote) {
     if(typeof(orderItem.oia_items) == 'undefined') {
         orderItem.oia_items = new Array();
+    }
+    
+    //make sure all values in calc are floats
+    absCharge = parseFloat(absCharge);
+    
+    if(orderItem.pre_discount_price) {
+        orderItem.pre_discount_price = parseFloat(orderItem.pre_discount_price);
+    } else {
+        orderItem.total_price = parseFloat(orderItem.total_price);
     }
     
     var oiaEdited = false;
@@ -496,7 +510,38 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) 
             
             if(lastOIA.is_add) {
                 lastOIA.is_add = false;
+                
+                //save the new abs_charge to be the minus charge
+                lastOIA.abs_charge = minusCharge;
+            
+                //take away the charge that was added before
+                if(plusCharge > 0) {
+                    if(orderItem.pre_discount_price) {
+                        orderItem.pre_discount_price -= (orderItem.amount * plusCharge);
+                    } else {
+                        orderItem.total_price -= (orderItem.amount * plusCharge);
+                    }
+                }
+                
+                console.log("taking away minus charge: " + minusCharge);
+                //take away the minus charge now
+                if(minusCharge > 0) {
+                    if(orderItem.pre_discount_price) {
+                        orderItem.pre_discount_price -= (orderItem.amount * minusCharge);
+                    } else {
+                        orderItem.total_price -= (orderItem.amount * minusCharge);
+                    }
+                }
             } else {
+                //add back on any minus charge that was present
+                if(minusCharge > 0) {
+                    if(orderItem.pre_discount_price) {
+                        orderItem.pre_discount_price += (orderItem.amount * minusCharge);
+                    } else {
+                        orderItem.total_price += (orderItem.amount * minusCharge);
+                    }
+                }
+                
                 orderItem.oia_items.splice(orderItem.oia_items.length-1, orderItem.oia_items.length);
                 
                 //nullify the oia_items if it is empty
@@ -507,6 +552,7 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) 
         }
     }
 
+    //it is a new one
     if(!oiaEdited) {
         oia_item = {
             'description' : desc,
@@ -514,16 +560,29 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) 
             'is_add' : oiaIsAdd, 
             'is_note' : isNote
         }
-    
-        //update the total
-        if(oiaIsAdd) {
-            orderItem.total_price = orderItem.total_price + (orderItem.amount * absCharge);
-        } else {
-            orderItem.total_price = orderItem.total_price - (orderItem.amount * absCharge);
+        console.log("updating total with absCharge: " + absCharge);
+        //update the total with new oia total
+        if(absCharge > 0) {
+            if(oiaIsAdd) {
+                if(orderItem.pre_discount_price) {
+                    orderItem.pre_discount_price += (orderItem.amount * absCharge);
+                } else {
+                    orderItem.total_price += (orderItem.amount * absCharge);
+                }
+                console.log("PDPAfter add: " + orderItem.total_price);
+            } else {
+                if(orderItem.pre_discount_price) {
+                    orderItem.pre_discount_price -= (orderItem.amount * absCharge);
+                } else {
+                    orderItem.total_price -= (orderItem.amount * absCharge);
+                }
+            }
         }
     
         orderItem.oia_items.push(oia_item);
     }
+
+    applyExistingDiscountToOrderItem(order, orderItem.itemNumber);
 
     //store the modified order
     if(selectedTable != 0) {

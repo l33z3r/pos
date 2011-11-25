@@ -1156,65 +1156,6 @@ function addDiscountToOrder(order, amount) {
     calculateOrderTotal(order);
 }
 
-function applyExistingDiscountToOrderItem(order, itemNumber) {
-    // -1 itemNumber signifies to apply the existing discount
-    //    if(itemNumber != -1) {
-    //        //we must first clear the last pre_discount_price
-    //        order.items[itemNumber-1]['pre_discount_price'] = null;
-    //    }
-    
-    applyDiscountToOrderItem(order, itemNumber, -1);
-}
-
-function applyDiscountToOrderItem(order, itemNumber, amount) {
-    //should already be a float, but just to be sure
-    amount = parseFloat(amount);
-    
-    if(itemNumber == -1) {
-        orderItem = order.items[order.items.length-1];
-    } else {
-        orderItem = order.items[itemNumber-1];
-    }
-    console.log("applying discount of " + amount + "%");
-    //overwrite the discount amount, or just apply the existing one?
-    if(amount == -1) {
-        //return if no existing discount
-        if(!orderItem['discount_percent']) {
-            return;
-        }
-        
-        amount = orderItem['discount_percent']
-    } else {
-        orderItem['discount_percent'] = amount;
-    }
-    console.log("PDP: " + orderItem['pre_discount_price']);
-    if(orderItem['pre_discount_price']) {
-        oldPrice = orderItem['pre_discount_price'];
-    } else {
-        oldPrice = orderItem['total_price'];
-        orderItem['pre_discount_price'] = oldPrice;
-    }
-    
-    console.log("Old Price: " + oldPrice + " PDP: " + orderItem['pre_discount_price']);
-    
-    preDiscountPrice = orderItem['pre_discount_price'];
-
-    console.log("PreDiscountPrice: " + preDiscountPrice + " NewDiscount: " + ((preDiscountPrice * amount)/100));
-    
-    newPrice = preDiscountPrice - ((preDiscountPrice * amount) / 100);
-    orderItem['total_price'] = newPrice;
-
-    if(selectedTable == 0) {
-        //mark the item as synced as we are not on a table receipt
-        orderItem.synced = true;
-    } else {
-        //mark this item as unsynced
-        orderItem['synced'] = false;
-    }
-    
-    calculateOrderTotal(order);
-}
-
 function getExistingDiscountPercentForCurrentOrderItem(itemNumber) {
     order = getCurrentOrder();
     
@@ -1322,7 +1263,7 @@ function doSaveNote() {
     var desc = noteInput;
     var absCharge = charge;
     
-    addOIAToOrderItem(order, orderItem, desc, absCharge, noteChargeIsPlus, true);
+    addOIAToOrderItem(order, orderItem, desc, absCharge, 0, 0, noteChargeIsPlus, true);
     
     clearNoteInputs();
     
@@ -1490,16 +1431,28 @@ function orderItemAdditionClicked(el) {
     
     var absCharge = 0;
     
+    var plusCharge = el.data("add_charge");
+    var minusCharge = el.data("minus_charge");
+    
     if(oiaIsAdd) {
-        absCharge = el.data("add_charge");
+        absCharge = plusCharge;
     } else {
-        absCharge = el.data("minus_charge");
+        absCharge = minusCharge;
     }
     
-    addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, false);
+    addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, false);
 }
 
-function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) {
+function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, isNote) {
+    //make sure all values in calc are floats
+    absCharge = parseFloat(absCharge);
+    
+    if(orderItem.pre_discount_price) {
+        orderItem.pre_discount_price = parseFloat(orderItem.pre_discount_price);
+    } else {
+        orderItem.total_price = parseFloat(orderItem.total_price);
+    }
+    
     oia_item = {
         'description' : desc,
         'abs_charge' : absCharge,
@@ -1514,15 +1467,16 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, oiaIsAdd, isNote) 
     //update the total
     if(oiaIsAdd) {
         if(orderItem.pre_discount_price) {
-            orderItem.pre_discount_price = orderItem.pre_discount_price + (orderItem.amount * absCharge);
+            orderItem.pre_discount_price += (orderItem.amount * absCharge);
         } else {
-            orderItem.total_price = orderItem.total_price + (orderItem.amount * absCharge);
+            orderItem.total_price += (orderItem.amount * absCharge);
+            console.log("TP after add: " + orderItem.total_price);
         }
     } else {
         if(orderItem.pre_discount_price) {
-            orderItem.pre_discount_price = orderItem.pre_discount_price - (orderItem.amount * absCharge);
+            orderItem.pre_discount_price -= (orderItem.amount * absCharge);
         } else {
-            orderItem.total_price = orderItem.total_price - (orderItem.amount * absCharge);
+            orderItem.total_price -= (orderItem.amount * absCharge);
         }
     }
     

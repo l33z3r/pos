@@ -2258,7 +2258,7 @@ div#edit_cash_total_options section#cash_total_options table {
 
 div#display_button_passcode_popup {
     width: 200px;
-    height: 80px;
+    height: 90px;
     padding: 10px;
 }
 
@@ -2278,38 +2278,19 @@ div#display_button_passcode_popup input#display_button_passcode {
     border-radius: 0;
     border: 1px solid #DDD;
     height: 20px;
-    margin-top: 4px;
+    margin-top: 8px;
     margin-bottom: 8px;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 div#display_button_passcode_popup div.button {
     color: #333;
-}
-
-div#display_button_passcode_popup div#display_button_submit_passcode {
-    text-align: center;
     float: right;
     width: 70px;
-    padding: 3px;
-    border: 1px solid #DDD;
-    height: 20px;
-    font-weight: bold;
-    font-size: 14px;
+    height: 30px;
+    padding-top: 10px;
     margin-left: 10px;
-    cursor: pointer;
-}
-
-div#display_button_passcode_popup div#cancel_display_button_passcode_prompt {
-    text-align: center;
-    float: right;
-    width: 70px;
-    padding: 3px;
-    border: 1px solid #DDD;
-    height: 20px;
-    font-weight: bold;
-    font-size: 14px;
     cursor: pointer;
 }
 

@@ -1,6 +1,13 @@
 var lastSyncedOrder = null;
+var orderInProcess = false;
 
 function doSyncTableOrder() {
+    
+    if(orderInProcess) {
+        niceAlert("There is an order being processed, please wait.");
+        return;
+    }
+    
     //make sure logged in
     if(!current_user_id) {
         niceAlert("You are not logged in, you may have been logged out elsewhere. Please log in again, and re-order.");
@@ -19,6 +26,8 @@ function doSyncTableOrder() {
             return;
         }
     }
+    
+    orderInProcess = true;
     
     lastSyncedOrder = order;
     
@@ -63,10 +72,14 @@ function finishSyncTableOrder() {
     //store the order in the cookie
     storeTableOrderInStorage(current_user_id, selectedTable, order);
     
+    orderInProcess = false;
+    
     postDoSyncTableOrder();
 }
 
 function syncTableOrderFail() {
+    orderInProcess = false;
+    
     niceAlert("Order not sent, no connection, please try again");
 }
 
