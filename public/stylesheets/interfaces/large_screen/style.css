@@ -2449,6 +2449,10 @@ div#table_select_screen div#room_layout {
     max-height: 600px;
 }
 
+div#table_select_screen div#room_layout div.room_graphic {
+    display: none;
+}
+
 div#table_select_screen div#room_layout div.room_object {
     position: absolute;
 }

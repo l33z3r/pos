@@ -1315,16 +1315,10 @@ function renderMenuItemButtonDimensions() {
 function renderActiveTables() {
     activeTableIDS = getActiveTableIDS();
     
-    //alert("render active tables " + activeTableIDS);
-    
     $("#table_select").children('li').children('ul').children('li').each( 
         function(id, element) {
-            //alert("ID: " + $(element).val().toString() + " El " + $(element).html() + " in:" + $.inArray($(element).val().toString(), activeTableIDS));
-            
             if(typeof($(element).attr('rel')) != 'undefined') {
                 nextTableID = $(element).attr('rel').toString();
-                
-                //alert(nextTableID);
                 
                 if($.inArray(nextTableID, activeTableIDS) != -1) {
             
@@ -1338,8 +1332,7 @@ function renderActiveTables() {
                     $('#table_label_' + nextTableID).removeClass("active");
                 }
             }
-        }
-        );  
+        });  
 }
 
 function postDoSyncTableOrder() {

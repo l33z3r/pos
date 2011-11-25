@@ -101,7 +101,7 @@ class ApplicationController < ActionController::Base
   
   def do_request_sync_table_order terminal_id, table_order_data, table_id, employee_id
     TerminalSyncData.transaction do
-      remove_previous_sync_for_table table_id
+      remove_previous_sync_for_table table_id, false
     
       #does this order have an order id? if not generate one
       if !table_order_data[:orderData][:order_num]
@@ -132,7 +132,7 @@ class ApplicationController < ActionController::Base
   
   def do_request_clear_table_order terminal_id, time, table_id, employee_id
     TerminalSyncData.transaction do
-      remove_previous_sync_for_table table_id
+      remove_previous_sync_for_table table_id, true
     
       @sync_data = {:terminal_id => terminal_id, :clear_table_order => true, :table_id => table_id, :serving_employee_id => employee_id}
       
@@ -141,11 +141,16 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  def remove_previous_sync_for_table table_id
+  def remove_previous_sync_for_table table_id, delete_clear_table_order_syncs
     TerminalSyncData.fetch_sync_table_order_times.each do |tsd|
       if tsd.data[:table_id].to_s == table_id.to_s
+        
+        #don't delete the clear table order syncs as we need at least one there at all times
+        if tsd.data[:clear_table_order] and !delete_clear_table_order_syncs
+          next
+        end
+        
         tsd.destroy
-        return;
       end
     end
   end

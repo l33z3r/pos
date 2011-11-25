@@ -235,8 +235,6 @@ var roomScaleY;
 var currentSelectedRoom = -1;
 
 function initTableSelectScreen() {
-    //alert(currentSelectedRoom);
-    
     if(currentSelectedRoom == 0) {
         currentSelectedRoom = $('.room_graphic').first().data('room_id');
     }
@@ -259,7 +257,8 @@ function loadRoomGraphic(room_id) {
     
     currentSelectedRoom = room_id;
     
-    $('#room_layout').html($('#room_graphic_' + room_id).html());
+    $('#room_layout .room_graphic').hide();
+    $('#room_graphic_' + room_id).show();
     
     room_grid_x_size = $('#room_graphic_' + room_id).data("grid_x_size");
     room_grid_y_size = $('#room_graphic_' + room_id).data("grid_y_size");
