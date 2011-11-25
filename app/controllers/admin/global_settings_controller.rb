@@ -1,4 +1,6 @@
 class Admin::GlobalSettingsController < Admin::AdminController
+  cache_sweeper :display_button_sweeper
+  
   def index
     
   end
@@ -18,6 +20,11 @@ class Admin::GlobalSettingsController < Admin::AdminController
     if @global_settings.empty?
       flash[:notice] = "Settings Updated!"
       
+      #have to manually set the service charge button label to the global value
+      @service_charge_button = DisplayButton.find_by_perm_id(ButtonMapper::SERVICE_CHARGE_BUTTON)
+      @service_charge_button.button_text = GlobalSetting.parsed_setting_for GlobalSetting::SERVICE_CHARGE_LABEL
+      @service_charge_button.save
+    
       #send a reload request to other terminals
       request_reload_app @terminal_id
       

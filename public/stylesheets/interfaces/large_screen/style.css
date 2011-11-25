@@ -2282,7 +2282,6 @@ div#display_button_passcode_popup input#display_button_passcode {
     margin-bottom: 8px;
     font-weight: bold;
     font-size: 16px;
-    font-weight: bold;
 }
 
 div#display_button_passcode_popup div.button {
@@ -2293,6 +2292,7 @@ div#display_button_passcode_popup div.button {
     padding-top: 10px;
     margin-left: 10px;
     cursor: pointer;
+    font-weight: bold;
 }
 
 /* End Display Button Passcode Popup */
