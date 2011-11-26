@@ -43,6 +43,7 @@ class HomeController < ApplicationController
         
         @serving_employee_id = @clear_table_order[:serving_employee_id];
         @terminal_employee = Employee.find(@serving_employee_id).nickname;
+        @order_num = @clear_table_order[:order_num]
         
         @clear_table_order_request_time = @clear_table_order[:sync_table_order_request_time]
         @new_clear_table_order_time = @clear_table_order_request_time.to_i + 1
@@ -261,6 +262,15 @@ class HomeController < ApplicationController
     @forward_response = Net::HTTP.post_form(URI.parse(@url), {"message" => @message})
 
     logger.info "Got response from cash drawer service: #{@forward_response}"
+    
+    render :json => {:success => true}.to_json
+  end
+  
+  def js_error_log
+    #spit out the params
+    params.each do |key, value|
+      logger.info "#{key}=#{CGI.unescape value}"
+    end
     
     render :json => {:success => true}.to_json
   end

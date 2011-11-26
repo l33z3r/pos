@@ -17,7 +17,7 @@ immediateCallHome = false;
 <% if @clear_table_order %>
   lastSyncTableOrderTime = <%= @new_clear_table_order_time %>;
   doReceiveClearTableOrder("<%=@clear_table_order[:terminal_id]%>", <%=@clear_table_order[:table_id]%>, 
-  "<%=@table_label%>", "<%=@serving_employee_id%>", "<%=@terminal_employee%>");
+  <%= @order_num ? @order_num : -1 %>, "<%=@table_label%>", "<%=@serving_employee_id%>", "<%=@terminal_employee%>");
   immediateCallHome = true;
 <% end %>
 

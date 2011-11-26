@@ -15,7 +15,6 @@ var editItemPopupAnchor;
 //this function is called from application.js on page load
 function initMenu() {
     loadFirstMenuPage();
-    renderActiveTables();
     
     currentMenuPage = 1;
     currentOrder = new Array();
@@ -1311,7 +1310,7 @@ function renderMenuItemButtonDimensions() {
     });
 }
 
-//mark tables in the list as active with some asterisk etc
+//mark tables in the list as active
 function renderActiveTables() {
     activeTableIDS = getActiveTableIDS();
     

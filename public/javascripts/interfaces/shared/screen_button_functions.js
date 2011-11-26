@@ -33,6 +33,17 @@ function doSyncTableOrder() {
     
     order.table = tables[selectedTable].label;
     
+    //add the serverAddedText to the first non synced item
+    var checkForShowServerAddedText = true;
+    
+    //mark all items in this order as synced
+    for(var i=0; i<order.items.length; i++) {
+        if(checkForShowServerAddedText && !order.items[i].synced) {
+            order.items[i].showServerAddedText = true;
+            checkForShowServerAddedText = false;
+        }
+    }
+    
     var copiedOrder = {};
     
     var copiedOrderForSend = $.extend(true, copiedOrder, order);
@@ -57,15 +68,8 @@ function doSyncTableOrder() {
 function finishSyncTableOrder() {
     var order = lastSyncedOrder;
     
-    var checkForShowServerAddedText = true;
-    
     //mark all items in this order as synced
     for(var i=0; i<order.items.length; i++) {
-        if(checkForShowServerAddedText && !order.items[i].synced) {
-            order.items[i].showServerAddedText = true;
-            checkForShowServerAddedText = false;
-        }
-        
         order.items[i]['synced'] = true;
     }
     

@@ -76,7 +76,8 @@ class ApplicationController < ActionController::Base
               :clear_table_order => true,
               :serving_employee_id => sync_table_order_request_data[:serving_employee_id],
               :sync_table_order_request_time => sync_table_order_request_time,
-              :table_id => sync_table_order_request_data[:table_id], 
+              :table_id => sync_table_order_request_data[:table_id],
+              :order_num => sync_table_order_request_data[:order_num],
               :terminal_id => @sync_table_order_terminal_id
             }
           
@@ -130,11 +131,11 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  def do_request_clear_table_order terminal_id, time, table_id, employee_id
+  def do_request_clear_table_order terminal_id, time, table_id, order_num, employee_id
     TerminalSyncData.transaction do
       remove_previous_sync_for_table table_id, true
     
-      @sync_data = {:terminal_id => terminal_id, :clear_table_order => true, :table_id => table_id, :serving_employee_id => employee_id}
+      @sync_data = {:terminal_id => terminal_id, :clear_table_order => true, :table_id => table_id, :order_num => order_num, :serving_employee_id => employee_id}
       
       TerminalSyncData.create!({:sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 
           :time => time, :data => @sync_data})

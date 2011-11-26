@@ -52,6 +52,8 @@ function doGlobalInit() {
     
     initPressedCSS();
     
+    renderActiveTables();
+    
     initMenu();
     
     //set the first page in the swipes to be the menu

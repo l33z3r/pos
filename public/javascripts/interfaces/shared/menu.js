@@ -58,10 +58,7 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
     }
     
     newlyAdded = addActiveTable(tableID);
-        
-    if(newlyAdded) {
-        renderActiveTables();
-    }
+    renderActiveTables();
     
     if(current_user_id) {
         //now load back up the current users order
@@ -250,7 +247,7 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
     }
 }
 
-function doReceiveClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee) {
+function doReceiveClearTableOrder(recvdTerminalID, tableID, orderNum, tableLabel, terminalEmployeeID, terminalEmployee) {
     //save the current users table order to reload it after sync
     savedTableID = selectedTable;
     
@@ -261,17 +258,12 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, tableLabel, terminal
     }
     
     if(inKitchenContext()) {
-        tableCleared(tableID);
+        tableCleared(tableID, orderNum);
     }
     
     //remove the table from the active table ids array
-    newlyRemoved = removeActiveTable(tableID);
-    
-    //alert("Newly Removed " + selectedTable + " " + newlyRemoved);
-    
-    if(newlyRemoved) {
-        renderActiveTables();
-    }
+    removeActiveTable(tableID);
+    renderActiveTables();
     
     if(current_user_id) {
         //now load back up the current users order

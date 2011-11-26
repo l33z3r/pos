@@ -3,6 +3,9 @@ Pos::Application.routes.draw do
   get "kitchen/index"
   post "kitchen/order_ready"
 
+  #js error logging
+  match 'js_error_log' => "home#js_error_log", :via => :post
+  
   #temporary routes to forward print service requests as we cannot code for web sockets yet
   match 'forward_print_service_request' => "home#forward_print_service_request", :via => :post
   match 'forward_cash_drawer_request' => "home#forward_cash_drawer_request", :via => :post

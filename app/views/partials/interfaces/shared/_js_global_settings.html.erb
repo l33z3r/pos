@@ -5,6 +5,9 @@
     clearLocalStorageAndCookies();
 <% end %>
   
+  //interface
+  var currentInterface = "<%= current_interface %>";
+  
   //load the setting for bypass pin
   var bypassPin = <%= GlobalSetting.parsed_setting_for GlobalSetting::BYPASS_PIN %>;
     

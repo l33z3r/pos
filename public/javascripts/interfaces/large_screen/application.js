@@ -43,6 +43,8 @@ function doGlobalInit() {
     //custom button widths
     renderMenuItemButtonDimensions();
     
+    renderActiveTables();
+    
     if(inMenuContext()) {
         initMenu();
         

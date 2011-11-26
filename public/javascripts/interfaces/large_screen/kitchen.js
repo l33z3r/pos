@@ -1,4 +1,6 @@
 var courseChecks = {};
+var orderXClicked = {};
+var orderNums = {};
 
 function initKitchen() {
     //hide the red x 
@@ -16,6 +18,14 @@ function renderReceipt(tableID) {
     if(!courseChecks[tableID]) {
         courseChecks[tableID] = new Array();
     } 
+    
+    if(!orderXClicked[tableID]) {
+        orderXClicked[tableID] = false;
+    }
+    
+    if(!orderNums[tableID]) {
+        orderNums[tableID] = nextKitchenOrder.order_num;
+    }
         
     //Add courses to our existing data
     var numCourses;
@@ -88,8 +98,11 @@ function renderReceipt(tableID) {
             
             $('#kitchen_receipt_container_' + tableID).appendTo('#active_orders');
         } else {
+            
+            $('#hide_order_button_' + tableID).show();
+            
             //only move it if the red x is not showing, so that the chef can hit the red x to hide it
-            if(!$('#hide_order_button_' + tableID).is(":visible")) {
+            if(orderXClicked[tableID]) {
                 console.log("moving completed order for tableID: " + tableID + " into filled orders");
                 $('#kitchen_receipt_container_' + tableID).appendTo('#filled_orders');
             }
@@ -259,6 +272,12 @@ function sendCourseCheck(orderLine) {
     saveCourseChecks();
 }
 
+function hideTableOrder(tableID) {
+    orderXClicked[tableID] = true;
+    saveCourseChecks();
+    sendOrderToCompleted(tableID);
+}
+
 function sendOrderToCompleted(tableID) {
     console.log("Sending order for table: " + tableID + " to filled orders!");
     $('#kitchen_receipt_container_' + tableID + ' .header').removeClass("returned");
@@ -327,20 +346,48 @@ function applyCourseChecks(tableID) {
 function saveCourseChecks() {
     //store the array into memory for reload on page reload
     storeKeyJSONValue("kitchen_course_checks", courseChecks);
+    storeKeyJSONValue("kitchen_order_x_clicked", orderXClicked);
+    storeKeyJSONValue("order_nums", orderNums);
 }
 
 function loadCourseChecks() {
     //load course checks from the web db
     courseChecks = retrieveStorageJSONValue("kitchen_course_checks");
+    orderXClicked = retrieveStorageJSONValue("kitchen_order_x_clicked");
+    orderNumbs = retrieveStorageJSONValue("order_nums");
     
     if(!courseChecks) {
         courseChecks = {};
     }
+    
+    if(!orderXClicked) {
+        orderXClicked = {};
+    }
+    
+    if(!orderNums) {
+        orderXNums = {};
+    }
 }
 
 //this is called by the do clear order from call home
-function tableCleared(tableID) {
+function tableCleared(tableID, orderNum) {
+    console.log("table clear request!!! " + tableID + " ORDER NUM: " + orderNum);
+    
+    //it order_num is null, then we clear as the order has been cashed out
+    //if order num exists then there is a new order on that table so leave it alone
+    if(orderNums[tableID] != orderNum) {
+        console.log("Not current order");
+        return;
+    }
+    
+    orderNums[tableID] = null;
+    
+    console.log("clearing table order " + tableID);
+    
     courseChecks[tableID] = new Array();
+    orderXClicked[tableID] = false;
+    
+    saveCourseChecks();
     
     //move it to the empty section
     $('#kitchen_receipt_container_' + tableID).appendTo('#empty_orders');

@@ -206,8 +206,6 @@ function fetchFinalReceiptHeaderHTML() {
         headerHTML += "<div class='label'>Server:</div><div class='data'>" + server + "</div>" + clearHTML;
     }
     
-    //alert("Time: " + totalOrder.time);
-    
     //lazy init the order time of totalling
     if(typeof(totalOrder.time) == 'undefined') {
         totalOrder.time = clueyTimestamp();

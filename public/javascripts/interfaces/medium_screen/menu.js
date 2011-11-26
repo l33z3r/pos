@@ -9,8 +9,6 @@ function initMenu() {
     //click the 1st menu page
     $('#menu_pages_container .page').first().click();
     
-    renderActiveTables();
-    
     currentMenuPage = 1;
     currentOrder = new Array();
 
@@ -70,6 +68,7 @@ function menuScreenKeypadClickCancel() {
 }
 
 function doMenuPageSelect(pageNum, pageId) {
+    a.u
     //set this pages class to make it look selected
     $('#menu_pages_container .page').removeClass('selected');
     $('#menu_page_' + pageId).addClass('selected');
