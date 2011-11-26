@@ -212,8 +212,8 @@ function loadOpenOrders() {
            
             //order the rows by order start time
             tableRows.each(function(){
-                if(parseInt(order.order_num) <= parseInt($(this).data("order_num"))) {
-                    $(rowData).insertAfter($(this));
+                if(parseInt(order.order_num) < parseInt($(this).data("order_num"))) {
+                    $(rowData).insertBefore($(this));
                     insertAtEnd = false;
                 }
             });
