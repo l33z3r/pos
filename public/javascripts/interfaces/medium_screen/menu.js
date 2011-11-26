@@ -68,7 +68,6 @@ function menuScreenKeypadClickCancel() {
 }
 
 function doMenuPageSelect(pageNum, pageId) {
-    a.u
     //set this pages class to make it look selected
     $('#menu_pages_container .page').removeClass('selected');
     $('#menu_page_' + pageId).addClass('selected');
