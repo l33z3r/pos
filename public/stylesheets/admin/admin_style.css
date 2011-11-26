@@ -960,7 +960,7 @@ div#admin_order_list section#orders div#order_list_section div#order_list_tabs d
     margin: 1px;
     text-align: center;
     vertical-align: middle;
-    width: 88px;
+    width: 140px;
     font-weight: bold;
 }
 
@@ -1096,6 +1096,7 @@ div#admin_order_list section#orders div#receipt_buttons_section div#total_contai
 
 div#admin_order_list section#orders table.order_list {
     min-width: 720px;
+    margin: 20px auto 20px auto;
 }
 
 div#admin_order_list section#orders table.order_list a.sort_link {
