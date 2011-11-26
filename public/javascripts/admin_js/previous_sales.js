@@ -210,16 +210,22 @@ function loadOpenOrders() {
             
             var insertAtEnd = true;
            
+            alert("finding spot for " + order.order_num);
+               
             //order the rows by order start time
-            tableRows.each(function(){
-                if(parseInt(order.order_num) < parseInt($(this).data("order_num"))) {
-                    $(rowData).insertBefore($(this));
-                    insertAtEnd = false;
+            tableRows.each(function() {
+                if(insertAtEnd) {
+                    if(parseInt(order.order_num) > parseInt($(this).data("order_num"))) {
+                        alert("bigger than " + parseInt($(this).data("order_num")));
+                        $(rowData).insertBefore($(this));
+                        insertAtEnd = false;
+                    }
                 }
             });
                 
             if(insertAtEnd) {
-                table.append(rowData);
+                alert("inserting " + order.order_num + " at end")
+                $('#order_list_container').find('table.open_order_list > tbody:last').append(rowData);
             }
         }
     }
