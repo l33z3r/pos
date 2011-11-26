@@ -973,6 +973,10 @@ div#admin_order_list section#orders div#order_list_section div#order_list_contai
     background-color: #E0E0E0;
 }
 
+div#admin_order_list section#orders div#order_list_section div#order_list_container div.order_list {
+    display: none;
+}
+
 div#admin_order_list section#orders div#order_list_section div#order_list_container div#only_void_orders_selector {
     margin: 6px 10px;
     font-weight: bold;

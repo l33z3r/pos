@@ -93,20 +93,16 @@
         <div class="tabs">
           <div class="tab" id="closed_orders_section_link" onclick="orderListTabSelected(this, 'closed_orders')">Closed Orders</div>
           <div class="tab" id="open_orders_section_link" onclick="orderListTabSelected(this, 'open_orders')">Open Orders</div>
-          <div class="tab" id="search_order_section_link" onclick="orderListTabSelected(this, 'search_orders')">Search</div>
         </div>
       </div>
 
       <div class="clear">&nbsp;</div>
 
       <div id="order_list_container">
-
+        <div class="order_content" id="closed_orders_content"><%= render :partial => "closed_orders_content" %></div>
+        <div class="order_content" id="open_orders_content"><%= render :partial => "open_orders_content" %></div>
       </div>
     </div>
-
-    <div style="display: none;" id="closed_orders_content"><%= render :partial => "closed_orders_content" %></div>
-    <div style="display: none;" id="open_orders_content"><%= render :partial => "open_orders_content" %></div>
-    <div style="display: none;" id="search_orders_content"><%= render :partial => "search_orders_content" %></div>
 
     <div class="clear_top_margin_20">&nbsp;</div>
 

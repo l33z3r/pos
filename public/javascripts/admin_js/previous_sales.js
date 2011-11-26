@@ -87,7 +87,14 @@ function orderListTabSelected(tab, selectedTabName) {
     
     $(tab).addClass("selected");
     
-    $('#order_list_container').html($('#' + selectedTabName + "_content").html());
+    $('#order_list_container .order_content').hide();
+    $('#' + selectedTabName + "_content").show();
+    
+    if(selectedTabName == "open_orders") {
+        $('#admin_order_list_receipt_header').html("Open Order");
+    } else if(selectedTabName == "closed_orders") {
+        $('#admin_order_list_receipt_header').html("Closed Sale");
+    }
     
     setDatePickers();
     
