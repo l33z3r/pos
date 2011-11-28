@@ -511,7 +511,16 @@ function editOrderItemIncreaseQuantity() {
     targetInputEl = $('#' + popupId).find('.quantity');
     
     currentVal = parseFloat(targetInputEl.val());
-    targetInputEl.val(currentVal + 1);
+    
+    var newQuantity = currentVal;
+    
+    if(isNaN(currentVal)) {
+        newQuantity = 1;
+    } else {
+        newQuantity = currentVal + 1;
+    }
+    
+    targetInputEl.val(newQuantity);
 }
 
 function editOrderItemDecreaseQuantity() {
@@ -521,9 +530,15 @@ function editOrderItemDecreaseQuantity() {
     
     currentVal = parseFloat(targetInputEl.val());
     
-    if(currentVal != 1) {
-        targetInputEl.val(currentVal - 1);
+    var newQuantity = currentVal;
+    
+    if(isNaN(currentVal)) {
+        newQuantity = 1;
+    } else if(currentVal >= 1) {
+        newQuantity = currentVal - 1;
     }
+    
+    targetInputEl.val(newQuantity);
 }
 
 function closeEditOrderItem() {
