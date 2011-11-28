@@ -9,6 +9,11 @@ Main stylesheet.
 /* Global Styles */
 
 body {
+    
+    width: 480px;
+    height: 798px;
+    overflow: hidden;
+    
     margin: 0px;
     padding: 0px;
     color: #333333;
@@ -445,14 +450,6 @@ div.receipt div.till_roll div.order_line.not_synced div.name {
 }
 
 div.receipt div.till_roll div.order_line.selected {
-    border: 2px solid #4F81BD;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    background-color: #4F81BD;
-}
-
-div.receipt div.till_roll div.order_line.selected {
-    border: 2px solid #4297D7;
     -moz-border-radius: 5px;
     border-radius: 5px;
     background-color: #4297D7;
@@ -517,6 +514,7 @@ div.receipt div.till_roll div.oia_name.note {
 div.receipt div.till_roll div.oia_price {
     float: left;
     width: 0px;
+    height: 0px;
     text-align: right;
     font-size: 19px;
     overflow: hidden;
@@ -538,7 +536,7 @@ div.receipt div.till_roll div.discount div.header {
 
 div.receipt div.till_roll div.discount div.discount_amount {
     float: left;
-    width: 66px;
+    width: 170px;
     text-align: center;
     font-style: italic;
 }
@@ -551,7 +549,7 @@ div.receipt div.till_roll div.discount div.new_price {
 }
 
 div.receipt div.till_roll div.discount div.header {
-    float: left;
+    float: none;
     width: 120px;
     text-align: right;
     font-style: italic;

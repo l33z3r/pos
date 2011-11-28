@@ -8,8 +8,11 @@ class NoisyLogger < Rails::Rack::Logger
     @default_log = Rails.logger
 
     # Put the noisy log in the same directory as the default log.
-    @noisy_log = Logger.new(Rails.root.join('log', 'noisy.log'), 20, 20.megabytes)
+    @noisy_log = Logger.new(Rails.root.join('log', 'noisy.log'), 10, 20.megabytes)
 
+    #log all js errors
+    @js_error_log = Logger.new(Rails.root.join('log', 'js_error.log'), 10, 20.megabytes)
+    
     @app = app
     @opts = opts
     @opts[:noisy] = Array @opts[:noisy]
@@ -20,6 +23,8 @@ class NoisyLogger < Rails::Rack::Logger
   def call env
     if @opts[:noisy].include? env['PATH_INFO']
       logfile = @noisy_log
+    elsif ["/js_error_log.js"].include? env['PATH_INFO']
+      logfile = @js_error_log
     else
       logfile = @default_log
     end

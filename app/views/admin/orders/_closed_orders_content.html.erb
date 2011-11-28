@@ -55,7 +55,7 @@
   <table id="closed_order_list" class="order_list admin_table">
     <thead>
       <tr>
-        <th width="180"><%= sort_link @search, :created_at, "Date & Time" %></th>
+        <th width="180"><%= sort_link @search, :created_at, "Sale Time" %></th>
         <th width="65">Order No.</th>
 
         <th width="80">
@@ -116,7 +116,7 @@
 
     <% @orders.each do |order| %>
       <tr class="<%= order.is_void ? "void" : "" %>">
-        <td><%= link_to_function order.created_at.strftime(@defaultDateFormat), "orderSelected(#{order.id}, #{order.is_void or order.is_replacement?})" %></td>
+        <td><%= link_to_function order.created_at.strftime(@defaultDateFormat), "orderSelected(#{order.id}, #{order.is_void or order.is_replacement?}); return false;" %></td>
         <td><%= link_to_function order.order_num, "orderSelected(#{order.id}, #{order.is_void or order.is_replacement?})" %></td>
         <td><%= order.table_info_label %></td>
         <td><%= order.terminal_id %></td>
@@ -132,7 +132,7 @@
             <%= will_paginate @orders %>
           </div>
           <div class="info">
-            <%= page_entries_info @orders %>
+            <%= page_entries_info @orders, :entry_name => 'sale' %>
           </div>
         </div>
       </td>

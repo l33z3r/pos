@@ -87,7 +87,14 @@ function orderListTabSelected(tab, selectedTabName) {
     
     $(tab).addClass("selected");
     
-    $('#order_list_container').html($('#' + selectedTabName + "_content").html());
+    $('#order_list_container .order_content').hide();
+    $('#' + selectedTabName + "_content").show();
+    
+    if(selectedTabName == "open_orders") {
+        $('#admin_order_list_receipt_header').html("Open Order");
+    } else if(selectedTabName == "closed_orders") {
+        $('#admin_order_list_receipt_header').html("Closed Sale");
+    }
     
     setDatePickers();
     
@@ -136,7 +143,7 @@ function parsePreviousOrder(previousOrderJSON) {
     $('#reopen_order_button').show();
     
     $('#total_container div#label').html("Total:");
-    $('#admin_order_list_total_value').html(currency(totalOrder.totalFinal));
+    $('#admin_order_list_total_value').html(currency(totalOrder.totalFinal + totalOrder.cashback));
 }
 
 function initReopenOrderButton(is_void_or_replacement) {
@@ -166,8 +173,6 @@ function loadOpenOrders() {
     var server;
     var amount;
     
-    var oddRow = false;
-    
     for(var table_id in tables) {
         getTableOrderFromStorage(current_user_id, table_id);
         
@@ -194,22 +199,49 @@ function loadOpenOrders() {
             
             amount = order.total;
             
-            rowData = "<tr " + (oddRow ? "class='odd'" : "") + ">";
+            rowData = "<tr data-order_num='" + order.order_num + "'>";
             rowData += "<td class='first'><a href='#' onclick='loadOpenTableOrder(" + table_id + ")'>" + date + "</a></td>";
             rowData += '<td>' + orderNum + '</td>';
             rowData += '<td>' + tableLabel + '</td>';
             rowData += '<td>' + server + '</td>';
             rowData += "<td class='last'>" + currency(amount) + "</td></tr>";
             
-            table.append(rowData);
+            var tableRows = $('#order_list_container').find('table.open_order_list > tbody tr');
             
-            oddRow = !oddRow;
+            var insertAtEnd = true;
+           
+            //order the rows by order start time
+            tableRows.each(function() {
+                if(insertAtEnd) {
+                    if(parseInt(order.order_num) > parseInt($(this).data("order_num"))) {
+                        $(rowData).insertBefore($(this));
+                        insertAtEnd = false;
+                    }
+                }
+            });
+                
+            if(insertAtEnd) {
+                $('#order_list_container').find('table.open_order_list > tbody:last').append(rowData);
+            }
         }
     }
     
+    tableRows = $('#order_list_container').find('table.open_order_list > tbody tr');
+    
+    var oddRow = false;
+    
+    //set the odd rows
+    tableRows.each(function(){
+        if(oddRow) {
+            $(this).addClass("odd");
+        }
+        
+        oddRow = !oddRow;
+    });
+    
     //add a "no open orders message if needed"
     if($('#order_list_container').find('table.open_order_list > tbody:last tr').length == 0) {
-        rowData = "<tr><td colspan='5' align='center'>No Open Orders!</td></tr>";
+        rowData = "<tr><td colspan='5' id='no_orders_message'>No Open Orders!</td></tr>";
         table.append(rowData);
     }
 }
@@ -231,7 +263,7 @@ function loadOpenTableOrder(table_id) {
     currentSelectedOpenTableID = table_id;
     currentSelectedOpenTableOrder = totalOrder = tableOrders[table_id];
     
-    var orderHTML = fetchFinalReceiptHeaderHTML();
+    var orderHTML = fetchPreviousSalesReceiptHeaderHTML(totalOrder);
     
     orderHTML += getAllOrderItemsReceiptHTML(currentSelectedOpenTableOrder, false, false, true);
     
@@ -250,4 +282,30 @@ function continueOrder() {
     
     //now go to the menu screen
     goTo('/home#screen=menu');
+}
+
+function fetchPreviousSalesReceiptHeaderHTML(order) {
+    headerHTML = "<div class='data_table'>";
+    
+    server = firstServerNickname(order);
+    
+    if(server) {
+        headerHTML += "<div class='label'>Server:</div><div class='data'>" + server + "</div>" + clearHTML;
+    }
+    
+    timestamp = utilFormatDate(new Date(parseInt(orderStartTime(order))));
+    
+    headerHTML += "<div class='time label'>Start Time:</div><div class='time data'>" + timestamp + "</div>" + clearHTML;
+    
+    if(totalOrder.table) {
+        headerHTML += "<div class='label'>Table:</div><div class='data'>" + totalOrder.table + "</div>" + clearHTML;
+    }
+    
+    orderNum = totalOrder.order_num;
+        
+    headerHTML += "<div class='label'>Order Number:</div><div class='data'>" + orderNum + "</div>" + clearHTML;
+    
+    headerHTML += "</div>";
+    
+    return headerHTML;
 }

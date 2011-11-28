@@ -220,7 +220,7 @@ div#display_builder ul#products_tree li ul li{
 
 div#display_builder ul#products_tree li ul ul li {
     text-align: left;
-    margin: 18px 1px;
+    margin: 5px 1px;
 }
 
 div#display_builder ul#products_tree li ul li a,
@@ -248,15 +248,17 @@ div#display_builder ul#products_tree div.select_product img {
     width: 34px;
     height: 34px;
     float: left;
-    margin: -12px 10px 0px 0px;
+    margin: 0px 10px 0px 0px;
 }
 
 div#display_builder ul#products_tree div.name {
     float: left;
+    margin-top: 10px;
 }
 
 div#display_builder ul#products_tree div.edit_link {
     float: right;
+    margin-top: 10px;
 }
 
 div#display_builder ul#products_tree div.edit_link a {

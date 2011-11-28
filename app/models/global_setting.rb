@@ -56,6 +56,7 @@ class GlobalSetting < ActiveRecord::Base
   ORDER_RECEIPT_WIDTH = 27
   AUTHENTICATION_REQUIRED = 28
   LOCAL_AUTHENTICATION_REQUIRED = 29
+  All_DEVICES_ORDER_NOTIFICATION = 30
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -86,7 +87,8 @@ class GlobalSetting < ActiveRecord::Base
     CURRENCY_NOTES_IMAGES => "Currency Notes Images", 
     ORDER_RECEIPT_WIDTH => "Order Receipt Width",
     AUTHENTICATION_REQUIRED => "Authentication Required",
-    LOCAL_AUTHENTICATION_REQUIRED => "Local Authentication Required"
+    LOCAL_AUTHENTICATION_REQUIRED => "Local Authentication Required",
+    All_DEVICES_ORDER_NOTIFICATION => "All Device Receive Order Notification"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -165,6 +167,9 @@ class GlobalSetting < ActiveRecord::Base
     when LOCAL_AUTHENTICATION_REQUIRED
       @gs = find_or_create_by_key(:key => LOCAL_AUTHENTICATION_REQUIRED.to_s, :value => "false", :label_text => LABEL_MAP[LOCAL_AUTHENTICATION_REQUIRED])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when All_DEVICES_ORDER_NOTIFICATION
+      @gs = find_or_create_by_key(:key => All_DEVICES_ORDER_NOTIFICATION.to_s, :value => "false", :label_text => LABEL_MAP[All_DEVICES_ORDER_NOTIFICATION])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -200,18 +205,6 @@ class GlobalSetting < ActiveRecord::Base
     when DO_BEEP
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
-    when TERMINAL_ID
-      if value_changed?
-        @res = GlobalSetting.where("global_settings.key != ?", key).where("global_settings.value = ?", value)
-        if @res.size > 0
-          #conflict, delete the old one
-          @res.first.destroy
-        end
-      end
-      if value
-        new_value = (value ? value.gsub(" ", "").gsub("'", "").gsub("\"", "") : nil)
-        write_attribute("value", new_value)
-      end
     when RELOAD_HTML5_CACHE_TIMESTAMP
       new_value = value.to_i
       write_attribute("value", new_value)
@@ -227,8 +220,45 @@ class GlobalSetting < ActiveRecord::Base
     when LOCAL_AUTHENTICATION_REQUIRED
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
+    when All_DEVICES_ORDER_NOTIFICATION
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
     else
+      #catch the keys that are not only integers and wont get caught in the switch statement
+      if key.starts_with? TERMINAL_ID.to_s
+        if value_changed?
+          @res = GlobalSetting.where("global_settings.key != ?", key).where("global_settings.value = ?", value)
+          if @res.size > 0
+            #conflict, delete the old one
+            @res.first.destroy
+            
+            #now copy the settings over to the new fingerprint
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          end
+        end
+        if value
+          new_value = (value ? value.gsub(" ", "").gsub("'", "").gsub("\"", "") : nil)
+          write_attribute("value", new_value)
+        end
+      end
     end
+    
   end
   
   #this is just a shortcut method

@@ -24,7 +24,7 @@ $(function(){
 function doGlobalInit() {
     //allow scroll for dev
     if(inDevMode()) {
-        //$('body').css("overflow", "scroll");
+        $('body').css("overflow", "scroll");
     }
     
     //need to set the scroll content holder width
@@ -51,6 +51,8 @@ function doGlobalInit() {
     initUIElements();
     
     initPressedCSS();
+    
+    renderActiveTables();
     
     initMenu();
     

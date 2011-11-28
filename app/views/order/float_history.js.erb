@@ -11,6 +11,10 @@ previous_cash_totals_data_html = "";
   previous_cash_totals_data_html += getCashTotalDataTable(previous_float_data, true) + clear10HTML;
 <% end %>
 
+<% if @previous_floats.length == 0 %>
+  previous_cash_totals_data_html = "<div class='data_table_header'>No Previous Float Data Found!</div>" + clearHTML;
+<% end %>
+
 <% if @last_z_total %>
   previous_z_total_data = new Array();
   previous_z_total_data.push(new Array('Entered By', '<%=@last_z_total.employee.nickname%>'));
@@ -20,6 +24,8 @@ previous_cash_totals_data_html = "";
   previous_cash_totals_data_html += getCashTotalDataTable(previous_z_total_data, false) + clear10HTML;
 <% end %>
 
-$('#float_till_roll').html(previous_cash_totals_data_html);
+<% if !@last_z_total %>
+  previous_cash_totals_data_html = "<div class='data_table_header'>No Previous Z Total Found!</div>" + clearHTML;
+<% end %>
 
-//floatRecptScroll();
+$('#float_till_roll').html(previous_cash_totals_data_html);

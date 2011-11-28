@@ -106,10 +106,10 @@ function saveServiceCharge() {
 
 function cancelServiceCharge() {
     //reset the sercice charge
-    if(typeof tableOrders[tableNum].service_charge == "undefined") {
+    if(selectedTable == 0 || typeof tableOrders[selectedTable].service_charge == "undefined") {
         serviceCharge = 0;
     } else {
-        serviceCharge = tableOrders[tableNum].service_charge;
+        serviceCharge = tableOrders[selectedTable].service_charge;
     }
     
     hideServiceChargePopup();
@@ -200,10 +200,10 @@ function saveCashback() {
 
 function cancelCashback() {
     //reset the cashback
-    if(typeof tableOrders[tableNum].cashback == "undefined") {
+    if(selectedTable == 0 || typeof tableOrders[selectedTable].cashback == "undefined") {
         cashback = 0;
     } else {
-        cashback = tableOrders[tableNum].cashback;
+        cashback = tableOrders[selectedTable].cashback;
     }
     
     hideServiceChargePopup();

@@ -58,10 +58,7 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
     }
     
     newlyAdded = addActiveTable(tableID);
-        
-    if(newlyAdded) {
-        renderActiveTables();
-    }
+    renderActiveTables();
     
     if(current_user_id) {
         //now load back up the current users order
@@ -93,7 +90,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
                 nextOIA.is_add = (nextOIA.is_add.toString() == "true" ? true : false);
                 nextOIA.is_note = (nextOIA.is_note.toString() == "true" ? true : false);
                 nextOIA.abs_charge = parseFloat(nextOIA.abs_charge);
-            
+                //console.log("converted abs_charge: " + nextOIA.abs_charge);
                 newOIAItems.push(nextOIA);
             }
         
@@ -151,6 +148,11 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     //re number the items
     for(var z=0;i<tableOrders[tableID].items.length;z++) {
         tableOrders[tableID].items[z].itemNumber = z + 1;
+    }
+    
+    //re-apply the discounts
+    for(var z=0;i<tableOrders[tableID].items.length;z++) {
+        applyExistingDiscountToOrderItem(tableOrders[tableID], tableOrders[tableID].items[z].itemNumber);
     }
     
     //copy over the order number
@@ -245,7 +247,7 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
     }
 }
 
-function doReceiveClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee) {
+function doReceiveClearTableOrder(recvdTerminalID, tableID, orderNum, tableLabel, terminalEmployeeID, terminalEmployee) {
     //save the current users table order to reload it after sync
     savedTableID = selectedTable;
     
@@ -256,17 +258,12 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, tableLabel, terminal
     }
     
     if(inKitchenContext()) {
-        tableCleared(tableID);
+        tableCleared(tableID, orderNum);
     }
     
     //remove the table from the active table ids array
-    newlyRemoved = removeActiveTable(tableID);
-    
-    //alert("Newly Removed " + selectedTable + " " + newlyRemoved);
-    
-    if(newlyRemoved) {
-        renderActiveTables();
-    }
+    removeActiveTable(tableID);
+    renderActiveTables();
     
     if(current_user_id) {
         //now load back up the current users order
@@ -307,6 +304,55 @@ function doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmploye
     }
 }
 
+function applyExistingDiscountToOrderItem(order, itemNumber) {
+    applyDiscountToOrderItem(order, itemNumber, -1);
+}
+
+function applyDiscountToOrderItem(order, itemNumber, amount) {
+    //should already be a float, but just to be sure
+    amount = parseFloat(amount);
+    
+    if(itemNumber == -1) {
+        orderItem = order.items[order.items.length-1];
+    } else {
+        orderItem = order.items[itemNumber-1];
+    }
+    
+    //overwrite the discount amount, or just apply the existing one?
+    if(amount == -1) {
+        //return if no existing discount
+        if(!orderItem['discount_percent']) {
+            return;
+        }
+        
+        amount = orderItem['discount_percent']
+    } else {
+        orderItem['discount_percent'] = amount;
+    }
+   
+    if(orderItem['pre_discount_price']) {
+        oldPrice = orderItem['pre_discount_price'];
+    } else {
+        oldPrice = orderItem['total_price'];
+        orderItem['pre_discount_price'] = oldPrice;
+    }
+    
+    preDiscountPrice = orderItem['pre_discount_price'];
+
+    newPrice = preDiscountPrice - ((preDiscountPrice * amount) / 100);
+    orderItem['total_price'] = newPrice;
+
+    if(selectedTable == 0) {
+        //mark the item as synced as we are not on a table receipt
+        orderItem.synced = true;
+    } else {
+        //mark this item as unsynced
+        orderItem['synced'] = false;
+    }
+    
+    calculateOrderTotal(order);
+}
+
 function calculateOrderTotal(order) {
     if(!order) return;
     
@@ -335,17 +381,6 @@ function calculateOrderTotal(order) {
 function initTouchRecpts() {
     var receiptScrollerOpts = null;
     
-    //TODO check if exist first
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
     //mobile receipts
     $('#mobile_terminal_till_roll').touchScroll(receiptScrollerOpts);
     $('#mobile_server_till_roll').touchScroll(receiptScrollerOpts);
@@ -390,7 +425,7 @@ function buildOrderItem(product, amount) {
     
     //either way we want to store the user id
     orderItem['serving_employee_id'] = current_user_id;
-    orderItem['time_added'] = new Date().getTime();
+    orderItem['time_added'] = clueyTimestamp();
 
     currentOrderItem = orderItem;
 }
@@ -481,7 +516,7 @@ function doSelectTable(tableNum) {
     
     //write to storage that this user was last looking at this receipt
     storeLastReceipt(current_user_id, tableNum);
-
+    
     if(tableNum == 0) {
         currentSelectedRoom = 0;
         
@@ -499,6 +534,8 @@ function doSelectTable(tableNum) {
     } else {
         currentSelectedRoom = tables[tableNum].room_id;
     }
+    
+    storeLastRoom(current_user_id, currentSelectedRoom);
 
     //fetch this tables order from storage
     //this will fill the tableOrders[tableNum] variable

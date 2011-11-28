@@ -53,4 +53,7 @@ previousOrderJSON.void_order_id = <%= @order.id %>;
 previousOrderJSON.replacement_for_order_id = <%= @order.void_order ? @order.void_order.order_num : 0 %>;
 previousOrderJSON.replacement_by_order_id = <%= @order.replacement_order ? @order.replacement_order.order_num : 0 %>;
 
+cashback = parseFloat(previousOrderJSON.cashback);
+serviceCharge = parseFloat(previousOrderJSON.service_charge);
+
 parsePreviousOrder(previousOrderJSON);

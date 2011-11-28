@@ -22,7 +22,7 @@
       <div id="table_select_container">
         <div id="table_select_input" onclick="tableSelectMenu.openMenu();">Select Table</div>
 
-        <% cache("room_select_dropdown") do %>
+        <%# cache("room_select_dropdown") do %>
           <ul id="table_select" class="mcdropdown_menu">
             <li id="previous_order_select_item" rel="-1" style="display: none;" onclick="doSelectTable(-1);">Previous Order</li>
             <li rel="0" onclick="doSelectTable(0)">No Table</li>
@@ -37,7 +37,7 @@
               </li>
             <% end %>
           </ul>
-        <% end %>
+        <%# end %>
       </div>
 
       <div class="clear">&nbsp;</div>
@@ -130,13 +130,13 @@
 
     <div id="menu_buttons">
       <div id="menu_buttons_panel">
-        <% cache("menu_screen_buttons") do %>
+        <%# cache("menu_screen_buttons") do %>
           <% @menu_screen_buttons_map.each do |role_id, dbrs| %>
             <div style="display: none;" class="buttons" id="menu_screen_buttons_html_for_role_<%=role_id%>">
               <%= render :partial => '/home/interfaces/large_screen/screen_buttons', :locals => {:dbrs => dbrs} %>
             </div>
           <% end %>
-        <% end %>
+        <%# end %>
       </div>
     </div>
   </div>

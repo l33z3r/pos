@@ -105,6 +105,7 @@ function doClearAndReload() {
 }
 
 var terminalFingerPrintCookieName = "terminal_fingerprint";
+var sessionIdCookieName = "_session_id";
 
 //deletes everything but the fingerprint cookie
 function clearLocalStorageAndCookies() {
@@ -118,7 +119,7 @@ function clearLocalStorageAndCookies() {
         var e = c[i].indexOf("=");
         var cname = c[i].substr(0,e);
         
-        if($.trim(cname) == terminalFingerPrintCookieName) {
+        if($.trim(cname) == terminalFingerPrintCookieName || $.trim(cname) == sessionIdCookieName) {
             continue;
         }
         
@@ -131,10 +132,19 @@ function clearLocalStorageAndCookies() {
 //uses the fingerprint library with md5 hash
 function setFingerPrintCookie() {
     if(getRawCookie(terminalFingerPrintCookieName) == null) {
-        c_value = pstfgrpnt(true).toString();
         
-        //1000 year expiry
-        exdays = 365 * 1000;
+        var uuid;
+        
+        if(inAndroidWrapper()) {
+        uuid = "android_device_" + getAndroidFingerPrint();
+    } else {
+        uuid = Math.uuid();
+    }
+        
+        c_value = uuid;
+        
+        //100 year expiry, but will really end up in year 2038 due to limitations in browser
+        exdays = 365 * 100;
     
         setRawCookie(terminalFingerPrintCookieName, c_value, exdays);
     }
@@ -218,7 +228,7 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
             tableOrders[tableNum].cashback = 0;
         }
     
-        cashback = tableOrders[tableNum].cashback;
+        cashback = parseFloat(tableOrders[tableNum].cashback);
     
         //load the service charge
         tableOrders[tableNum].service_charge = currentTableOrderJSON.service_charge;
@@ -227,7 +237,7 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
             tableOrders[tableNum].service_charge = 0;
         }
     
-        serviceCharge = tableOrders[tableNum].service_charge;
+        serviceCharge = parseFloat(tableOrders[tableNum].service_charge);
     
         if(currentTableOrderJSON.discount_percent) {
             tableOrders[tableNum].discount_percent = currentTableOrderJSON.discount_percent;
@@ -332,11 +342,19 @@ function removeActiveTable(tableID) {
     return newlyRemoved;
 }
 
-function setRawCookie(c_name, value, exdays) {
-    var exdate=new Date();
-    exdate.setDate(exdate.getDate() + exdays);
-    var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
-    document.cookie=c_name + "=" + c_value;
+function setRawCookie(c_name, value, expires) {
+    
+    var today = new Date();
+    today.setTime( today.getTime() );
+    
+    if (expires) {
+        expires = expires * 1000 * 60 * 60 * 24;
+    }
+    
+    var expires_date = new Date(today.getTime() + (expires));
+    
+    var c_value= escape(value) + ((expires==null) ? "" : ";expires=" + expires_date.toUTCString());
+    document.cookie= c_name + "=" + c_value;
 }
 
 function getRawCookie(c_name) {
@@ -601,4 +619,8 @@ function initPressedCSS() {
 
 function inAndroidWrapper() {
     return (typeof clueyAndroidJSInterface != "undefined");
+}
+
+function clueyTimestamp() {
+    return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
 }

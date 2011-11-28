@@ -180,9 +180,41 @@ class Admin::RoomsController < Admin::AdminController
   
   def destroy
     @room = Room.find(params[:id])
-    @room.destroy
+    
+    @delete = true
+    
+    #make sure all tables are closed before we remove the room.
+    #if there is no sync data, then it is safe,
+    #or if the only sync data is a clear table order, then it is safe also
+    @room.table_infos.each do |table_info|
+      TerminalSyncData.fetch_sync_table_order_times.each do |tsd|
+        if tsd.data[:table_id].to_s == table_info.id.to_s
+          #there is sync data for this table,
+          #if it is not data related to clearing the table, 
+          #then this table is still open, so throw a wobller!
+          if !tsd.data[:clear_table_order]
+            @delete = false
+          end
+        end
+      end
+    end
+    
+    if @delete
+      #remove the sync info for all tables in that room
+      @room.table_infos.each do |table_info|
+        logger.info("checking delete for table info #{table_info.id}")
+        TerminalSyncData.remove_sync_data_for_table table_info.id
+      end
+    
+      @room.destroy
+    
+      @notice = "Room was deleted."
+    else
+      @notice = "Please close all tables for this room before you delete it"
+    end
 
-    redirect_to(admin_rooms_url, :notice => 'Room was deleted.')
+    flash[:notice] = @notice
+    redirect_to admin_rooms_url
   end
   
   private

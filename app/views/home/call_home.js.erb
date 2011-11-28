@@ -17,7 +17,7 @@ immediateCallHome = false;
 <% if @clear_table_order %>
   lastSyncTableOrderTime = <%= @new_clear_table_order_time %>;
   doReceiveClearTableOrder("<%=@clear_table_order[:terminal_id]%>", <%=@clear_table_order[:table_id]%>, 
-  "<%=@table_label%>", "<%=@serving_employee_id%>", "<%=@terminal_employee%>");
+  <%= @order_num ? @order_num : -1 %>, "<%=@table_label%>", "<%=@serving_employee_id%>", "<%=@terminal_employee%>");
   immediateCallHome = true;
 <% end %>
 
@@ -29,5 +29,5 @@ immediateCallHome = false;
 
 <% if @order_ready_notification %>
   lastOrderReadyNotificationTime = <%= @new_reload_app_update_time %>;
-  doReceiveOrderReady(<%= @order_ready_request_employee_id %>, <%= @order_ready_request_table_id %>, "<%= @order_ready_reqeust_table_label %>");
+  doReceiveOrderReady(<%= @order_ready_request_employee_id %>, "<%= @order_ready_request_terminal_id %>", <%= @order_ready_request_table_id %>, "<%= @order_ready_reqeust_table_label %>");
 <% end %>

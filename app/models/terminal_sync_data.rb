@@ -24,7 +24,7 @@ class TerminalSyncData < ActiveRecord::Base
   
   def self.remove_sync_data_for_table table_id
     all.each do |sync_data|
-      if sync_data.data[:table_id] ==  table_id.to_s
+      if sync_data.data[:table_id].to_s ==  table_id.to_s
         sync_data.destroy
       end
     end
@@ -52,10 +52,10 @@ class TerminalSyncData < ActiveRecord::Base
     end
   end
   
-  def self.request_notify_order_ready employee_id, table_info
+  def self.request_notify_order_ready employee_id, terminal_id, table_info
     TerminalSyncData.transaction do
       TerminalSyncData.create!({:sync_type => TerminalSyncData::ORDER_READY_REQUEST, 
-          :time => Time.now.to_i.to_s, :data => {:employee_id => employee_id, :table_id => table_info.id, :table_label => table_info.perm_id}})
+          :time => Time.now.to_i.to_s, :data => {:employee_id => employee_id, :terminal_id => terminal_id, :table_id => table_info.id, :table_label => table_info.perm_id}})
     end
   end
   

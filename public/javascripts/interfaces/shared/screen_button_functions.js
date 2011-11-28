@@ -1,6 +1,13 @@
 var lastSyncedOrder = null;
+var orderInProcess = false;
 
 function doSyncTableOrder() {
+    
+    if(orderInProcess) {
+        niceAlert("There is an order being processed, please wait.");
+        return;
+    }
+    
     //make sure logged in
     if(!current_user_id) {
         niceAlert("You are not logged in, you may have been logged out elsewhere. Please log in again, and re-order.");
@@ -20,9 +27,22 @@ function doSyncTableOrder() {
         }
     }
     
+    orderInProcess = true;
+    
     lastSyncedOrder = order;
     
     order.table = tables[selectedTable].label;
+    
+    //add the serverAddedText to the first non synced item
+    var checkForShowServerAddedText = true;
+    
+    //mark all items in this order as synced
+    for(var i=0; i<order.items.length; i++) {
+        if(checkForShowServerAddedText && !order.items[i].synced) {
+            order.items[i].showServerAddedText = true;
+            checkForShowServerAddedText = false;
+        }
+    }
     
     var copiedOrder = {};
     
@@ -48,25 +68,22 @@ function doSyncTableOrder() {
 function finishSyncTableOrder() {
     var order = lastSyncedOrder;
     
-    var checkForShowServerAddedText = true;
-    
     //mark all items in this order as synced
     for(var i=0; i<order.items.length; i++) {
-        if(checkForShowServerAddedText && !order.items[i].synced) {
-            order.items[i].showServerAddedText = true;
-            checkForShowServerAddedText = false;
-        }
-        
         order.items[i]['synced'] = true;
     }
     
     //store the order in the cookie
     storeTableOrderInStorage(current_user_id, selectedTable, order);
     
+    orderInProcess = false;
+    
     postDoSyncTableOrder();
 }
 
 function syncTableOrderFail() {
+    orderInProcess = false;
+    
     niceAlert("Order not sent, no connection, please try again");
 }
 

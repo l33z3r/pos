@@ -76,7 +76,8 @@ class ApplicationController < ActionController::Base
               :clear_table_order => true,
               :serving_employee_id => sync_table_order_request_data[:serving_employee_id],
               :sync_table_order_request_time => sync_table_order_request_time,
-              :table_id => sync_table_order_request_data[:table_id], 
+              :table_id => sync_table_order_request_data[:table_id],
+              :order_num => sync_table_order_request_data[:order_num],
               :terminal_id => @sync_table_order_terminal_id
             }
           
@@ -101,7 +102,7 @@ class ApplicationController < ActionController::Base
   
   def do_request_sync_table_order terminal_id, table_order_data, table_id, employee_id
     TerminalSyncData.transaction do
-      remove_previous_sync_for_table table_id
+      remove_previous_sync_for_table table_id, false
     
       #does this order have an order id? if not generate one
       if !table_order_data[:orderData][:order_num]
@@ -130,22 +131,27 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  def do_request_clear_table_order terminal_id, time, table_id, employee_id
+  def do_request_clear_table_order terminal_id, time, table_id, order_num, employee_id
     TerminalSyncData.transaction do
-      remove_previous_sync_for_table table_id
+      remove_previous_sync_for_table table_id, true
     
-      @sync_data = {:terminal_id => terminal_id, :clear_table_order => true, :table_id => table_id, :serving_employee_id => employee_id}
+      @sync_data = {:terminal_id => terminal_id, :clear_table_order => true, :table_id => table_id, :order_num => order_num, :serving_employee_id => employee_id}
       
       TerminalSyncData.create!({:sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 
           :time => time, :data => @sync_data})
     end
   end
   
-  def remove_previous_sync_for_table table_id
+  def remove_previous_sync_for_table table_id, delete_clear_table_order_syncs
     TerminalSyncData.fetch_sync_table_order_times.each do |tsd|
       if tsd.data[:table_id].to_s == table_id.to_s
+        
+        #don't delete the clear table order syncs as we need at least one there at all times
+        if tsd.data[:clear_table_order] and !delete_clear_table_order_syncs
+          next
+        end
+        
         tsd.destroy
-        return;
       end
     end
   end
@@ -155,12 +161,14 @@ class ApplicationController < ActionController::Base
     
     @order_ready_notification_times.each do |order_ready_request_time, order_ready_data|
       order_ready_request_employee_id = order_ready_data[:employee_id]
+      order_ready_request_terminal_id = order_ready_data[:terminal_id]
       order_ready_request_table_id = order_ready_data[:table_id]
       order_ready_request_table_label = order_ready_data[:table_label]
       if order_ready_request_time.to_i > time.to_i
         @order_ready = {}
         @order_ready['order_ready_request_time'] = order_ready_request_time
         @order_ready['order_ready_request_employee_id'] = order_ready_request_employee_id
+        @order_ready['order_ready_request_terminal_id'] = order_ready_request_terminal_id
         @order_ready['order_ready_request_table_id'] = order_ready_request_table_id
         @order_ready['order_ready_request_table_label'] = order_ready_request_table_label
         return @order_ready
@@ -208,7 +216,11 @@ class ApplicationController < ActionController::Base
       #clear_storage_after_page_load?
       @clear_storage_after_page_load = params[:clear_storage_after_page_load] ? "true" : "false"
       
-      @forward_params = {:reset_local_storage => @clear_storage_after_page_load}
+      @forward_params = {
+        :reset_local_storage => @clear_storage_after_page_load,
+        :u => params[:u],
+        :p => params[:p]
+      }
       
       #what is the entry point for each interface?
       if current_interface_large?
@@ -382,9 +394,37 @@ class ApplicationController < ActionController::Base
     if !@need_auth
       return
     end
-      
+
+    logger.info "previous succeed? #{session[:auth_succeeded] == true}"
+    
+    if !session[:auth_succeeded]
+      logger.info "Checking manual auth with params u=#{params[:u]} and p=#{params[:p]}"
+      #check is the name and password sent in the url and authenticate off that first if it is present
+      @username_param = params[:u]
+      @password_param = params[:p]
+    
+      @username_ok = (@username_param and @username_param == HTTP_BASIC_AUTH_USERNAME)
+      @password_ok = (@password_param and @password_param == HTTP_BASIC_AUTH_PASSWORD)
+    
+      if @username_ok and @password_ok
+        logger.info "Manual Auth succeeded"
+        session[:auth_succeeded] = true
+        return
+      end
+    else
+      return
+    end
+    
+    logger.info "Doing http basic auth"
+    
     authenticate_or_request_with_http_basic do |username, password|
-      username == HTTP_BASIC_AUTH_USERNAME && password == HTTP_BASIC_AUTH_PASSWORD
+      @auth_ok = username == HTTP_BASIC_AUTH_USERNAME && password == HTTP_BASIC_AUTH_PASSWORD
+      
+      if @auth_ok
+        session[:auth_succeeded] = true
+      end
+      
+      @auth_ok
     end
   end
   

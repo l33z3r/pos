@@ -1,12 +1,16 @@
 function storeLastReceipt(user_id, table_num) {
+    if(user_id == null) {
+        return;
+    }
+    
     storeKeyJSONValue("user_" + user_id + "_last_receipt", {
-        'table_num':table_num
+        'table_num' : table_num
     });
 }
 
-function fetchLastReceiptID() {
+function fetchLastReceiptID(user_id) {
     //retrieve the users last receipt from storage
-    var lastReceiptIDOBJ = retrieveStorageJSONValue("user_" + current_user_id + "_last_receipt");
+    var lastReceiptIDOBJ = retrieveStorageJSONValue("user_" + user_id + "_last_receipt");
  
     var lastReceiptID = null;
  
@@ -15,15 +19,34 @@ function fetchLastReceiptID() {
     } else {
         lastReceiptID = lastReceiptIDOBJ.table_num;
     }
-
-    //last receipt is a number of a table or 0 for the current order
-//    if(lastReceiptID == 0) {
-//        order = currentOrder;
-//    } else {
-//        order = tableOrders[lastReceiptID];
-//    }
     
     return lastReceiptID;
+}
+
+function storeLastRoom(user_id, room_id) {
+    if(user_id == null) {
+        return;
+    }
+    
+    storeKeyJSONValue("user_" + user_id + "_last_room", {
+        'room_id' : room_id
+    });
+}
+
+function fetchLastRoomID(user_id) {
+    //retrieve the users last room from storage
+    var lastRoomIDOBJ = retrieveStorageJSONValue("user_" + user_id + "_last_room");
+ 
+    var lastRoomID = null;
+ 
+    if(lastRoomIDOBJ == null) {
+        lastRoomID = $('.room_graphic').first().data('room_id');
+        storeLastRoom(lastRoomID)
+    } else {
+        lastRoomID = lastRoomIDOBJ.room_id;
+    }
+    
+    return lastRoomID;
 }
 
 function printReceipt(content, printRecptMessage) {
@@ -172,10 +195,10 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText) {
         finalReceiptHTML += "<div class='label'>Paid:</div><div class='data'>" + currency(cashTendered) + "</div>" + clearHTML;
     }
     
-    change = totalOrder.change;
+    change = parseFloat(totalOrder.change);
 
     //is there any change? we include cashback in the change here
-    var changeWithCashback = change + totalOrder.cashback;
+    var changeWithCashback = parseFloat(change) + parseFloat(totalOrder.cashback);
 
     if(changeWithCashback > 0) {
         finalReceiptHTML += "<div class='label'>Change:</div><div class='data'>" + currency(changeWithCashback) + "</div>" + clearHTML;
@@ -206,11 +229,9 @@ function fetchFinalReceiptHeaderHTML() {
         headerHTML += "<div class='label'>Server:</div><div class='data'>" + server + "</div>" + clearHTML;
     }
     
-    //alert("Time: " + totalOrder.time);
-    
     //lazy init the order time of totalling
     if(typeof(totalOrder.time) == 'undefined') {
-        totalOrder.time = new Date().getTime();
+        totalOrder.time = clueyTimestamp();
     }
     
     timestamp = utilFormatDate(new Date(totalOrder.time));
@@ -251,7 +272,7 @@ function fetchTotalsHTMLWithTaxChargable(totalLabelText) {
     totalsHTML += fetchServiceChargeHTML();
     
     //finally add up the total from the generated values above to avoid rounding errors
-    total = (subTotal - discountAmount) + serviceCharge + taxAmount;
+    total = (parseFloat(subTotal) - parseFloat(discountAmount)) + parseFloat(serviceCharge) + parseFloat(taxAmount);
     currentTotalFinal = total;
     
     //temporarily set the totalFinal
@@ -269,9 +290,10 @@ function fetchTotalsWithoutTaxChargableHTML(totalLabelText) {
     }
     
     totalsHTML = fetchServiceChargeHTML();
+    console.log(subTotal + " " + discountAmount + " " + serviceCharge);
     
     //finally add up the total from the generated values above to avoid rounding errors
-    total = (subTotal - discountAmount) + serviceCharge;
+    total = (parseFloat(subTotal) - parseFloat(discountAmount)) + parseFloat(serviceCharge);
     
     currentTotalFinal = total;
     
