@@ -24,7 +24,7 @@ class TerminalSyncData < ActiveRecord::Base
   
   def self.remove_sync_data_for_table table_id
     all.each do |sync_data|
-      if sync_data.data[:table_id] ==  table_id.to_s
+      if sync_data.data[:table_id].to_s ==  table_id.to_s
         sync_data.destroy
       end
     end

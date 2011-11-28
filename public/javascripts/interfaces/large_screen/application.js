@@ -237,7 +237,9 @@ var roomScaleY;
 var currentSelectedRoom = -1;
 
 function initTableSelectScreen() {
-    if(currentSelectedRoom == 0) {
+    currentSelectedRoom = fetchLastRoomID(current_user_id);
+    
+    if($('#select_room_button_' + currentSelectedRoom).length == 0) {
         currentSelectedRoom = $('.room_graphic').first().data('room_id');
     }
     
@@ -247,7 +249,7 @@ function initTableSelectScreen() {
 
 function setSelectedTable() {
     //set selected table for this room
-    $('.room_graphic').children('div.label').removeClass("selected_table");
+    $('.room_graphic .label').removeClass("selected_table");
     
     //set a class on the div to make it look selected
     $('#table_' + selectedTable).children('div.label').addClass("selected_table");
@@ -268,12 +270,6 @@ function loadRoomGraphic(room_id) {
     
     setScale(room_grid_resolution, room_grid_x_size, room_grid_y_size);
     setRoomObjectGridPositions();
-    
-    //copy the dynamic ids over
-    $('#room_layout .room_object').each(function(index) {
-        theid = $(this).attr("data-theid");
-        $(this).attr("id", theid);
-    });
     
     setSelectedTable();
 }

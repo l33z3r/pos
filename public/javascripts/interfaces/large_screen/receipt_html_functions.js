@@ -113,13 +113,13 @@ function fetchCashScreenReceiptTotalsDataTable() {
     cashScreenReceiptTotalsDataTableHTML = "<div class='data_table'>";
     
     if(totalOrder.discount_percent) {
-        subTotal = totalOrder.pre_discount_price;
+        subTotal = parseFloat(totalOrder.pre_discount_price);
         cashScreenReceiptTotalsDataTableHTML += "<div class='label'>Sub-Total:</div><div class='data'>" + currency(subTotal) + "</div>" + clearHTML;
         
         discountAmount = (totalOrder.pre_discount_price * totalOrder.discount_percent)/100;
         cashScreenReceiptTotalsDataTableHTML += "<div class='label'>Discount " + totalOrder.discount_percent + "%:</div><div class='data'>" + currency(discountAmount) + "</div>" + clearHTML;
     } else {
-        subTotal = totalOrder.total;
+        subTotal = parseFloat(totalOrder.total);
         cashScreenReceiptTotalsDataTableHTML += "<div class='label'>Sub-Total:</div><div class='data'>" + currency(subTotal) + "</div>" + clearHTML;
         
         discountAmount = 0;
@@ -136,7 +136,6 @@ function fetchCashScreenReceiptTotalsDataTable() {
 function fetchCashScreenReceiptHTML() {
     cashScreenReceiptHTML = fetchCashScreenReceiptHeaderHTML() + clearHTML;
     cashScreenReceiptHTML += getAllOrderItemsReceiptHTML(totalOrder, false, false, true) + clearHTML;
-    //cashScreenReceiptHTML += fetchCashScreenReceiptTotalsDataTable();
     
     return cashScreenReceiptHTML;
 }
@@ -219,7 +218,12 @@ function getLastSaleInfo() {
 
 //this loads up the last receipt that a user was looking at before logging out
 function displayLastReceipt() {
-    var lastReceiptID = fetchLastReceiptID();
+    var lastReceiptID = fetchLastReceiptID(current_user_id);
+
+    //make sure this table exists
+    if(!tables[lastReceiptID]) {
+        lastReceiptID = 0;
+    }
 
     //set the select item
     tableSelectMenu.setValue(lastReceiptID);

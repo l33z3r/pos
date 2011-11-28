@@ -34,7 +34,7 @@ function initPreviousOrder() {
     if(havePreviousOrder(current_user_id)) {
         selectedTable = -1;
         $('#previous_order_select_item').show();
-        //$('#table_select').val(-1);
+        
         tableSelectMenu.setValue(-1);
         doSelectTable(-1);
         
@@ -43,12 +43,12 @@ function initPreviousOrder() {
         previousTableOrder = tableOrders[-1];
         
         //carry over service charge
-        serviceCharge = previousTableOrder.service_charge;
+        serviceCharge = parseFloat(previousTableOrder.service_charge);
         
         //carry over payment method
         paymentMethod = previousTableOrder.payment_method;
         
-        cashback = previousTableOrder.cashback;
+        cashback = parseFloat(previousTableOrder.cashback);
         
         //carry over the table number
         tables[-1] = {
@@ -652,7 +652,7 @@ function writeTotalToReceipt(order, orderTotal) {
 function tableScreenSelectTable(tableId) {
     //back to menu screen
     showMenuScreen();
-    //$('#table_select').val(tableId);
+    
     tableSelectMenu.setValue(tableId);
     doSelectTable(tableId);
 }

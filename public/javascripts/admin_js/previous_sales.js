@@ -143,7 +143,7 @@ function parsePreviousOrder(previousOrderJSON) {
     $('#reopen_order_button').show();
     
     $('#total_container div#label').html("Total:");
-    $('#admin_order_list_total_value').html(currency(totalOrder.totalFinal));
+    $('#admin_order_list_total_value').html(currency(totalOrder.totalFinal + totalOrder.cashback));
 }
 
 function initReopenOrderButton(is_void_or_replacement) {
@@ -241,7 +241,7 @@ function loadOpenOrders() {
     
     //add a "no open orders message if needed"
     if($('#order_list_container').find('table.open_order_list > tbody:last tr').length == 0) {
-        rowData = "<tr><td colspan='5' align='center'>No Open Orders!</td></tr>";
+        rowData = "<tr><td colspan='5' id='no_orders_message'>No Open Orders!</td></tr>";
         table.append(rowData);
     }
 }

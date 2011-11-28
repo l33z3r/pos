@@ -228,7 +228,7 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
             tableOrders[tableNum].cashback = 0;
         }
     
-        cashback = tableOrders[tableNum].cashback;
+        cashback = parseFloat(tableOrders[tableNum].cashback);
     
         //load the service charge
         tableOrders[tableNum].service_charge = currentTableOrderJSON.service_charge;
@@ -237,7 +237,7 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
             tableOrders[tableNum].service_charge = 0;
         }
     
-        serviceCharge = tableOrders[tableNum].service_charge;
+        serviceCharge = parseFloat(tableOrders[tableNum].service_charge);
     
         if(currentTableOrderJSON.discount_percent) {
             tableOrders[tableNum].discount_percent = currentTableOrderJSON.discount_percent;

@@ -65,9 +65,7 @@ module ApplicationHelper
   end
   
   def show_flash
-    [:notice, :warning, :error].collect do |key|
-      content_tag(:div, flash[key], :id => "flash_container", :class => "flash flash_#{key}", :style => "display: none;") unless flash[key].blank?
-    end.join
+    
   end
 
   def is_admin?

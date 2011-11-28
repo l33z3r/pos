@@ -4,7 +4,7 @@ function getCurrentRecptHTML() {
 
 //this loads up the last receipt that a user was looking at before logging out
 function displayLastReceipt() {
-    var lastReceiptID = fetchLastReceiptID();
+    var lastReceiptID = fetchLastReceiptID(current_user_id);
     
     if(lastReceiptID == 0) {
         $('#table_num_holder').html("Select Table");

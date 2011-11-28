@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111125162942) do
+ActiveRecord::Schema.define(:version => 20111128164056) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -187,7 +187,7 @@ ActiveRecord::Schema.define(:version => 20111125162942) do
     t.integer  "employee_id"
     t.float    "total"
     t.string   "payment_type"
-    t.integer  "amount_tendered"
+    t.float    "amount_tendered"
     t.boolean  "is_table_order",                     :default => false
     t.integer  "num_persons"
     t.datetime "created_at"

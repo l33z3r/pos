@@ -272,6 +272,8 @@ function makeBiggerAdminTableLinks() {
                 if(doIt) {
                     $.post($(this).find(":first-child").attr("href"), "_method=delete", function(data) {});
                     location.reload();
+                    event.stopPropagation();
+                    return false;
                 } else {
                     event.stopPropagation();
                     return false;

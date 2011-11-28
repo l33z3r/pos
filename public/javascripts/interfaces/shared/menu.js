@@ -516,7 +516,7 @@ function doSelectTable(tableNum) {
     
     //write to storage that this user was last looking at this receipt
     storeLastReceipt(current_user_id, tableNum);
-
+    
     if(tableNum == 0) {
         currentSelectedRoom = 0;
         
@@ -534,6 +534,8 @@ function doSelectTable(tableNum) {
     } else {
         currentSelectedRoom = tables[tableNum].room_id;
     }
+    
+    storeLastRoom(current_user_id, currentSelectedRoom);
 
     //fetch this tables order from storage
     //this will fill the tableOrders[tableNum] variable

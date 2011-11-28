@@ -26,9 +26,8 @@ div.admin input[type=submit] {
 }
 
 div#admin_subnav_left {
-    margin-top: 3px;
-    margin-left: 5px;
-    border-spacing: 7px;
+    padding: 2px;
+    border-spacing: 3px;
     float: left;
 }
 
@@ -1073,7 +1072,7 @@ div#admin_order_list section#orders div#receipt_buttons_section div#admin_order_
 div#admin_order_list section#orders div#receipt_buttons_section div#total_container {
     background-color: #333333;
     border: 1px solid #333333;
-    padding: 3px 2px;
+    padding: 3px;
 }
 
 div#admin_order_list section#orders div#receipt_buttons_section div#total_container div#label {
@@ -1087,7 +1086,7 @@ div#admin_order_list section#orders div#receipt_buttons_section div#total_contai
 
 div#admin_order_list section#orders div#receipt_buttons_section div#total_container div#admin_order_list_total_value {
     font-size: 16px;
-    float: left;
+    float: right;
     width: 92px;
     text-align: right;
     font-weight: bold;
@@ -1097,6 +1096,12 @@ div#admin_order_list section#orders div#receipt_buttons_section div#total_contai
 div#admin_order_list section#orders table.order_list {
     min-width: 720px;
     margin: 20px auto 20px auto;
+}
+
+div#admin_order_list section#orders td#no_orders_message {
+    text-align: center;
+    font-weight: bold;
+    padding: 20px;
 }
 
 div#admin_order_list section#orders table.order_list a.sort_link {

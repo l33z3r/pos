@@ -63,8 +63,10 @@ class RoomObject < ActiveRecord::Base
     @table_2_2_r6 = RoomObject.new({:object_type => TABLE, :grid_x_size => 2, :grid_y_size => 2, :permid => "table_2_2_r6", :label => "2x1 Table R6"})
     @table_2_2_r8 = RoomObject.new({:object_type => TABLE, :grid_x_size => 2, :grid_y_size => 2, :permid => "table_2_2_r8", :label => "2x1 Table R8"})
     
+    @tab1 = RoomObject.new({:object_type => TABLE, :grid_x_size => 1, :grid_y_size => 1, :permid => "table_1_1", :label => "Tab"})
+    
     @available_tables = [@table_2_2_s, @table_2_2_d, @table_2_2_h, @table_2_2_v, 
-      @table_2_1, @table_1_2, @table_2_2_r6, @table_2_2_r8]
+      @table_2_1, @table_1_2, @table_2_2_r6, @table_2_2_r8, @tab1]
     
     @available_objects = @available_tables | @available_walls
     
