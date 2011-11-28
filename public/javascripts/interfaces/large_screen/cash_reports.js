@@ -245,23 +245,10 @@ function doPreviousCashTotalReport() {
     setNavTitle("Previous Cash Total");
     showNavBackLinkMenuScreen();
 
-//    $('#reports_left_till_roll').html("Loading...");
-//    $('#cash_total_data_table_container').html("Loading...");
-
     //hide the dropdown menu
     $('#menu_screen_shortcut_dropdown_container').hide();
 //
    showPreviousCashReportsScreen();
-
-//    $.ajax({
-//        type: 'POST',
-//        url: '/previous_cash_total.js',
-//        data: {
-//            total_type : "X",
-//            cash_count : "100",
-//            commit : true
-//        }
-//    });
 
 }
 
@@ -271,6 +258,9 @@ $(function() {
 
 var selectedFromDate;
 var selectedToDate;
+var reportType;
+var terminalId;
+var reportBy;
 
 function setDatePickers() {
     $('#search_previous_cash_totals_container').find('#date_from').datepicker({
@@ -292,21 +282,99 @@ function setDatePickers() {
     });
 }
 
-function todayButtonClicked() {
-    var todayDate = formatDate(new Date(), "dd-MM-yyyy");
-    forceDateSubmit(todayDate);
+function goButtonClicked() {
+    selectedFromDate = $('#date_from').val();
+    selectedToDate = $('#date_to').val();
+    runCashTotalSearch();
+}
+
+function yesterdayButtonClicked() {
+    var constructedDate = new Date();
+    constructedDate.setDate(new Date().getDate() - 1);
+    var yesterdayDate = constructedDate;
+    selectedFromDate = formatDate(yesterdayDate, "dd-MM-yyyy");
+    selectedToDate = formatDate(yesterdayDate, "dd-MM-yyyy");
+    runCashTotalSearch();
 }
 
 function last7daysButtonClicked() {
-    constructedDate = new Date();
-    constructedDate.setDate(new Date().getDate() - 7);
-    var fromDate = constructedDate;
-
-    var fromDateFormatted = formatDate(fromDate, "dd-MM-yyyy");
-    forceDateSubmit(fromDateFormatted);
+    var fromDate = new Date();
+    fromDate.setDate(new Date().getDate() - 7);
+    selectedFromDate = formatDate(fromDate, "dd-MM-yyyy");
+    var toDate = new Date();
+    toDate.setDate(new Date().getDate());
+    selectedToDate = formatDate(toDate, "dd-MM-yyyy");
+    runCashTotalSearch();
 }
 
 function runCashTotalSearch(){
-
+    $("#results_table").html("Loading...");
+    $("#previous_cash_total_data_table_container").html("");
+    $.ajax({
+        type: 'POST',
+        url: '/cash_total_search.js',
+        data: {
+             "search[created_at_gte]" : selectedFromDate,
+             "search[created_at_lte]" : selectedToDate,
+             "search[total_type_equals]" : reportType,
+             "search[terminal_id_equals]" : terminalId,
+             "search[employee_id_equals]" : reportBy
+        }
+    });
 }
 
+function showCashTotal(cash_id){
+    $("#previous_cash_total_data_table_container").html("Loading...");
+
+    $.ajax({
+        type: 'POST',
+        url: '/previous_cash_total.js',
+        data: {
+             "search[id_equals]" : cash_id
+        }
+    });
+}
+
+function addReportTypeFilter(type) {
+    reportType = type;
+    runCashTotalSearch();
+}
+
+function addTerminalFilter(terminal_id) {
+    terminalId = terminal_id;
+    runCashTotalSearch();
+}
+
+function addReportByFilter(employee_id) {
+    reportBy = employee_id;
+    runCashTotalSearch();
+}
+
+function printCashTotal(){
+//    cashTotal = getCurrentOrder();
+//
+//    if(orderEmpty(totalOrder)) {
+//        setStatusMessage("No order present");
+//        return;
+//    }
+
+    printCash(getCashTotalHTML(),true);
+}
+
+function getCashTotalHTML(){
+    return $('#cash_totals_data_table').html();
+}
+
+function printCash(content, printRecptMessage) {
+    setStatusMessage("Printing Cash Total");
+
+//    if(printRecptMessage) {
+//        receiptMessageHTML = "<div id='receipt_message'>" + receiptMessage + "</div>";
+//        content += clearHTML + receiptMessageHTML;
+//    }
+
+    //add space and a dot so we print a bottom margin
+    content += clear30HTML + "<div class='the_dots'>.  .  .</div>";
+
+    print(content);
+}

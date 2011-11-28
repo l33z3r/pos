@@ -20,7 +20,7 @@
                 </div>
               </div>
 
-              <div class="go_button" onclick="runCashTotalSearch();">
+              <div class="go_button" onclick="goButtonClicked()">
                 <div class="button">Go</div>
               </div>
 
@@ -28,7 +28,7 @@
                 <div class="button">Yesterday</div>
               </div>
 
-              <div class="last7days_button" onclick="todayButtonClicked()">
+              <div class="last7days_button" onclick="last7daysButtonClicked()">
                 <div class="button">Last 7 days</div>
               </div>
 
@@ -48,25 +48,42 @@
             <div class="clear">&nbsp;</div>
 
               <div class="action_buttons">
-                <div class="button" onclick="cancelCashReportCoinCount()">
+
+                <div class="button" onclick="doReopenOrder();">
+                  <div class="icon">
+                    <%= image_tag "/images/button_logos/reopen_order.png" %>
+                  </div>
+                  <div class="button_name">Re-Open</div>
+                </div>
+
+               <div class="button" onclick="printCashTotal()">
+                  <div class="icon">
+                    <%= image_tag "button_logos/print_bill_button.png" %>
+                  </div>
+                  <div class="button_name">Print</div>
+               </div>
+
+
+              <div class="button" onclick="showMoreOptionsScreen();">
+                <div class="icon">
+                  <%= image_tag "/images/button_logos/more_options_button.png" %>
+                </div>
+                <div class="button_name">Functions</div>
+              </div>
+
+                <div class="button" onclick="showMenuScreen();">
+                  <div class="icon">
+                    <%= image_tag "/images/button_logos/manage_sales_screen_button.png" %>
+                  </div>
+                  <div class="button_name">Sales Screen</div>
+                </div>
+
+
+               <div class="button" onclick="cancelCashReportCoinCount()">
                   <div class="icon">
                     <%= image_tag "button_logos/cancel_button.png" %>
                   </div>
                   <div class="button_name">Cancel</div>
-                </div>
-
-                <div id="tendered_button" class="button" onclick="saveCashReportCoinCount()">
-                  <div class="icon">
-                    <%= image_tag "button_logos/ok_button.png" %>
-                  </div>
-                  <div class="button_name">Ok</div>
-                </div>
-
-                <div class="button" id="commit_cash_total_button" onclick="finishCashTotal()">
-                  <div class="icon">
-                    <%= image_tag "button_logos/finish_cash_total.png" %>
-                  </div>
-                  <div class="button_name">Finish</div>
                 </div>
 
                 <div class="clear">&nbsp;</div>
@@ -75,15 +92,13 @@
 
             <div class="clear">&nbsp;</div>
        </div>
-
-       <div id="reports_center_receipt" class="receipt_jscrollpane">
-          <div id="reports_center_till_roll">
-            <div id="cash_total_data_table_container">
-              asjbdjashdjahsdjhajsdhjashdaj
-            </div>
-          </div>
-       </div>
-
-  </div>
+    </div>
+  
+    <div id="previous_reports_center_receipt" >
+      <div id="previous_reports_center_till_roll">
+        <div id="previous_cash_total_data_table_container"></div>
+      </div>
+    </div>
+  
 
 </div>
