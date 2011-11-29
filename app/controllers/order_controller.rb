@@ -47,22 +47,6 @@ class OrderController < ApplicationController
     
     @cash_total_obj, @cash_total, @cash_total_data = CashTotal.do_total @total_type, @commit, @cash_count, current_employee, @terminal_id
   end
-  
-  def cash_total_search
-    #must push the "to" date forward a day to match today
-    if params[:search] and params[:search][:created_at_lte] and !params[:search][:created_at_lte].empty?
-       @selected_to_date = params[:search][:created_at_lte]
-       params[:search][:created_at_lte] = @selected_to_date.to_date.tomorrow.midnight
-    end
-    @cash_total = CashTotal.search(params[:search])
-    @all_terminals = all_terminals
-  end
-
-  def previous_cash_total
-    @cash_total_db = CashTotal.search(params[:search])
-    @cash_total_data = @cash_total_db.first.report_data
-    return @cash_total_data
-  end
 
   def add_float
     @float_amount = params[:float_total]

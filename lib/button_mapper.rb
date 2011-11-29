@@ -177,7 +177,7 @@ class ButtonMapper
     when KITCHEN_SCREEN_BUTTON
       @retval = "window.location = '#{kitchen_path}'; return false;"
     when PREVIOUS_CASH_SALES_BUTTON
-      @retval = wrap_with_menu_screen_function_check "preparePreviousCashSales();"
+      @retval = "window.location = '#{admin_previous_cash_totals_path}'; return false;"
     end
 
     @retval

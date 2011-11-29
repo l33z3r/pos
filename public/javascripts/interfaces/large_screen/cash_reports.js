@@ -241,16 +241,16 @@ function getOpenOrdersTotal() {
  *
  ***/
 
-function doPreviousCashTotalReport() {
-    setNavTitle("Previous Cash Total");
-    showNavBackLinkMenuScreen();
-
-    //hide the dropdown menu
-    $('#menu_screen_shortcut_dropdown_container').hide();
+//function doPreviousCashTotalReport() {
+//    setNavTitle("Previous Cash Total");
+//    showNavBackLinkMenuScreen();
 //
-   showPreviousCashReportsScreen();
-
-}
+//    //hide the dropdown menu
+//    $('#menu_screen_shortcut_dropdown_container').hide();
+////
+//   showPreviousCashReportsScreen();
+//
+//}
 
 $(function() {
     setDatePickers();
@@ -309,26 +309,28 @@ function last7daysButtonClicked() {
 
 function runCashTotalSearch(){
     $("#results_table").html("Loading...");
-    $("#previous_cash_total_data_table_container").html("");
+    $("#cash_total_data_table_container").html("");
     $.ajax({
-        type: 'POST',
-        url: '/cash_total_search.js',
+        type: 'GET',
+        url: '/admin/previous_cash_totals/cash_total_search',
         data: {
              "search[created_at_gte]" : selectedFromDate,
              "search[created_at_lte]" : selectedToDate,
              "search[total_type_equals]" : reportType,
              "search[terminal_id_equals]" : terminalId,
-             "search[employee_id_equals]" : reportBy
+             "search[employee_id_equals]" : reportBy,
+             "order" : order
         }
     });
 }
 
 function showCashTotal(cash_id){
-    $("#previous_cash_total_data_table_container").html("Loading...");
+    switchColorRow(cash_id);
+    $("#cash_total_data_table_container").html("Loading...");
 
     $.ajax({
-        type: 'POST',
-        url: '/previous_cash_total.js',
+        type: 'GET',
+        url: '/admin/previous_cash_totals/previous_cash_total',
         data: {
              "search[id_equals]" : cash_id
         }
@@ -350,31 +352,38 @@ function addReportByFilter(employee_id) {
     runCashTotalSearch();
 }
 
-function printCashTotal(){
-//    cashTotal = getCurrentOrder();
-//
-//    if(orderEmpty(totalOrder)) {
-//        setStatusMessage("No order present");
-//        return;
-//    }
+var order;
 
-    printCash(getCashTotalHTML(),true);
+function orderResults(){
+    order = (order == "DESC") ? "ASC" : "DESC";
+    runCashTotalSearch();
 }
 
-function getCashTotalHTML(){
-    return $('#cash_totals_data_table').html();
+function printCashTotal(){
+    if ($('#cash_totals_data_table').length == 0){
+        setStatusMessage("No cash total present");
+        return;
+    }
+    else{
+        printCash($('#cash_totals_data_table').html(),true);
+    }
 }
 
 function printCash(content, printRecptMessage) {
     setStatusMessage("Printing Cash Total");
 
-//    if(printRecptMessage) {
-//        receiptMessageHTML = "<div id='receipt_message'>" + receiptMessage + "</div>";
-//        content += clearHTML + receiptMessageHTML;
-//    }
+    if(printRecptMessage) {
+        receiptMessageHTML = "<div id='receipt_message'>" + receiptMessage + "</div>";
+        content += clearHTML + receiptMessageHTML;
+    }
 
     //add space and a dot so we print a bottom margin
     content += clear30HTML + "<div class='the_dots'>.  .  .</div>";
 
     print(content);
+}
+
+function switchColorRow(id) {
+            $('.table_row').css('background-color', '#FFFFFF');
+            $('#row_'+id).css('background-color', '#659EC7');
 }

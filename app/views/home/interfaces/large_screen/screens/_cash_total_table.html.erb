@@ -2,7 +2,7 @@
   <table id="cash_total_list" class="admin_table">
     <thead>
       <tr>
-        <th width="130"><%= sort_link @cash_total, :created_at, "Date & Time" %></th>     
+        <th width="130"><%= link_to_function "Date & Time", "orderResults()" %>&nbsp;<%= image_tag("uup.png", :border=>0) if !params[:order].eql?("DESC")%><%= image_tag("ddn.png", :border=>0) if params[:order].eql?("DESC")%></th>
         <th width="70">Report No.</th>
         <th width="80">
           <div class="label">Report Type</div>
@@ -42,13 +42,13 @@
     </thead>
     <tbody>
       <% @cash_total.each do |cash_total| %>
-          <tr>
+          <tr id="row_<%=cash_total.id%>" class="table_row">
             <td onclick="showCashTotal(<%=cash_total.id%>)"><%= cash_total.created_at.strftime(@defaultDateFormat) %></td>
-            <td onclick="showCashTotal(<%=cash_total.id%>)"><%= cash_total.report_num %></td>
-            <td onclick="showCashTotal(<%=cash_total.id%>)"><%= cash_total.total_type %></td>
+            <td onclick="showCashTotal(<%=cash_total.id%>)" class="center"><%= cash_total.report_num %></td>
+            <td onclick="showCashTotal(<%=cash_total.id%>)" class="center"><%= cash_total.total_type %></td>
             <td onclick="showCashTotal(<%=cash_total.id%>)"><%= cash_total.terminal_id %></td>
             <td onclick="showCashTotal(<%=cash_total.id%>)"><%= cash_total.employee.name %></td>
-            <td onclick="showCashTotal(<%=cash_total.id%>)"><%= cash_total.total %></td>
+            <td onclick="showCashTotal(<%=cash_total.id%>)" class="right"><%= cash_total.total %></td>
           </tr>     
       <% end %>
     </tbody>

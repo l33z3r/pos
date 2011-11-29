@@ -395,8 +395,4 @@ function openCashDrawer() {
 }
 
 
-function preparePreviousCashSales(){
-    doPreviousCashTotalReport();
-}
-
 

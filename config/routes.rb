@@ -18,8 +18,10 @@ Pos::Application.routes.draw do
   match 'float_history' => "order#float_history", :via => :get
   match 'cash_total_history' => "order#cash_total_history", :via => :get
   match 'outstanding_orders' => "order#create_outstanding", :via => :post
-  match 'previous_cash_total' => "order#previous_cash_total", :via => :post
-  match 'cash_total_search' => "order#cash_total_search", :via => :post
+
+  #previous cash
+ # match 'previous_cash' => "admin/previous_cash", :via => :get
+#  match 'cash_total_search' => "previous_cash#cash_total_search", :via => :post
 
   #routes for screens to login etc
   match 'home' => "home#index"
@@ -144,6 +146,12 @@ Pos::Application.routes.draw do
       end
     end
 
+    resources :previous_cash_totals, :only => [:index] do
+      collection do
+        get 'previous_cash_total'
+        get 'cash_total_search'
+      end
+    end
     
     resources :rooms, :only => [:index, :new, :create, :destroy] do
       member do
