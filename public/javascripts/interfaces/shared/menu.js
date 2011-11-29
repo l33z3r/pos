@@ -89,6 +89,9 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
                 //make sure the data types are converted correctly
                 nextOIA.is_add = (nextOIA.is_add.toString() == "true" ? true : false);
                 nextOIA.is_note = (nextOIA.is_note.toString() == "true" ? true : false);
+                
+                nextOIA.hide_on_receipt = (nextOIA.hide_on_receipt.toString() == "true" ? true : false);
+                
                 nextOIA.abs_charge = parseFloat(nextOIA.abs_charge);
                 //console.log("converted abs_charge: " + nextOIA.abs_charge);
                 newOIAItems.push(nextOIA);

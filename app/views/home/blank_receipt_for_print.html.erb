@@ -134,7 +134,8 @@
       }
       
       div.oia.hide_on_receipt {
-        display: none;
+        visibility: hidden;
+        height: 0px;
       }
 
       div.oia_add {
@@ -302,6 +303,12 @@
         float: left;
         text-align: right;
         width: 50px;
+      }
+      
+      /* Settings for order receipt */
+      
+      div.order_receipt div.oia.hide_on_receipt {
+        visibility: visible;
       }
       
       <%= render "/partials/interfaces/shared/order_receipt_css_#{@order_receipt_width_setting}" %>
