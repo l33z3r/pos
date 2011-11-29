@@ -59,7 +59,7 @@ class ButtonMapper
   RESTRICTED_BUTTON_IDS = [
     ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, 
     CASH_OUT_BUTTON, DELIVERY_BUTTON, STOCK_TAKE_BUTTON, SPLIT_ORDER_BUTTON, TRANSFER_ORDER_BUTTON,
-    PRINTERS_BUTTON, CHANGE_WAITER_BUTTON, REFUND_BUTTON, CHANGE_PRICE_BUTTON, WASTE_BUTTON, CLIENT_BUTTON
+    PRINTERS_BUTTON, CHANGE_WAITER_BUTTON, REFUND_BUTTON, WASTE_BUTTON, CLIENT_BUTTON
   ]
   
   def action_for_button button
@@ -118,7 +118,7 @@ class ButtonMapper
     when COMPLIMENTARY_BUTTON
       @retval = wrap_with_menu_screen_function_check "markFreeLastOrderItem();"
     when CHANGE_PRICE_BUTTON
-      @retval = wrap_with_menu_screen_function_check "alert('change price button clicked');"
+      @retval = wrap_with_menu_screen_function_check "changePriceLastOrderItem();"
     when FLOAT_BUTTON
       @retval = "initFloatScreen();"
     when NO_SALE_BUTTON
@@ -192,8 +192,13 @@ class ButtonMapper
     return ""
   end
   
+  #if we switch to the menu screen, we hold off calling the function
+  #so that all the widths etc have time to render on the menu screen
   def wrap_with_menu_screen_function_check the_script
-    return "checkMenuScreenForFunction(); #{the_script}"
+    @js = "var switchHappened = checkMenuScreenForFunction();" 
+    @js += "if(switchHappened) {timeout = 100;} else {timeout = 0;}"
+    @js += "setTimeout(function() {#{the_script}}, timeout);"
+    return @js
   end
   
 end

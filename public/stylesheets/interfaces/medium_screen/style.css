@@ -450,8 +450,8 @@ div.receipt div.till_roll div.order_line.not_synced div.name {
 }
 
 div.receipt div.till_roll div.order_line.selected {
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     background-color: #4297D7;
 }
 

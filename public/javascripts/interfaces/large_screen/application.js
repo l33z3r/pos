@@ -320,7 +320,10 @@ function setRoomObjectGridPositions() {
 function checkMenuScreenForFunction() {
     if(!currentScreenIsMenu()) {
         showMenuScreen();
+        return true;
     }
+    
+    return false;
 }
 
 function initAdminTables() {

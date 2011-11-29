@@ -1504,8 +1504,8 @@ div.receipt div.till_roll div.order_line.not_synced div.name {
 }
 
 div.receipt div.till_roll div.order_line.selected {
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     background-color: #4297D7;
 }
 
@@ -1642,7 +1642,7 @@ div#edit_receipt_item_popup_markup_container div#quantity_editor {
 div#edit_receipt_item_popup_markup_container div#quantity_editor div#quantity_label {
     font-weight: bold;
     float: left;
-    margin: 4px 35px 1px 1px;
+    margin: 4px 35px 1px 6px;
     font-size: 12px;
 }
 
@@ -1681,7 +1681,7 @@ div#edit_receipt_item_popup_markup_container div#price_editor {
 div#edit_receipt_item_popup_markup_container div#price_editor div.price_label {
     font-weight: bold;
     float: left;
-    margin: 4px 4px 1px 1px;
+    margin: 4px 4px 1px 6px;
     font-size: 12px;
 }
 
@@ -1733,7 +1733,7 @@ div#receipt_item_discount_popup_anchor {
 }
 
 div#discounts_popup_markup_container {
-    width: 240px;
+    width: 280px;
     height: 610px;
 }
 
@@ -1746,15 +1746,16 @@ div#discounts_popup_markup_container div.header {
     margin-top: 8px;
     font-size: 14px;
     font-weight: bold;
+    text-align: left;
 }
 
 div#discounts_popup_markup_container div.discount_buttons {
-    margin: 3px 0px;
+    margin: 3px auto;
 }
 
 div#discounts_popup_markup_container div.discount_buttons div.button {
     border-radius: 5px 5px 5px 5px;
-    color: #666666;
+    color: #333;
     cursor: pointer;
     float: left;
     font-size: 12px;
@@ -1762,8 +1763,14 @@ div#discounts_popup_markup_container div.discount_buttons div.button {
     height: 35px;
     margin: 3px;
     padding: 4px;
-    width: 60px;
+    width: 77px;
+    max-width: 77px;
     text-align: center;
+}
+
+div#discounts_popup_markup_container div.discount_buttons div.button div.percent {
+    margin-top: 2px;
+    font-size: 13px;
 }
 
 div#discounts_popup_markup_container div#manual_discount div.fields {
@@ -1775,18 +1782,20 @@ div#discounts_popup_markup_container div#manual_discount div.fields div.label {
     float: left;
     font-weight: bold;
     margin-right: 4px;
-    margin-top: 3px;
+    margin-top: 6px;
     font-size: 12px;
 }
 
 div#discounts_popup_markup_container div#apply_discount_to {
     margin-top: 10px;
     text-align: left;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 div#discounts_popup_markup_container div#apply_discount_to input[type=radio] {
     height: 20px;
-    margin-left: 40px;
+    margin-left: 65px;
     float: left;
 }
 
@@ -1799,7 +1808,8 @@ div#discounts_popup_markup_container div#apply_discount_to div.header_label {
 
 div#discounts_popup_markup_container div#apply_discount_to div.label {
     float: left;
-    margin-top: 6px;
+    margin-top: 2px;
+    font-size: 12px;
 }
 
 div#discounts_popup_markup_container div.actions div#save_button {
