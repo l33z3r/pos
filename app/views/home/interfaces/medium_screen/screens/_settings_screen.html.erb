@@ -50,10 +50,18 @@
               <input type="text" value="<%= request.remote_ip %>" disabled="true"/>
             </td>
           </tr>
+          <tr>
+            <td class="label">
+              Update App
+            </td>
+            <td class="data text_align_left">
+              <div id="update_app_link" class="button" onclick="updateApp();">Update</div>
+            </td>
+          </tr>
         </tbody>
       </table>
 
-      <div class="clear_top_margin_10">&nbsp;</div>
+      <div class="clear_top_margin_20">&nbsp;</div>
       
       <div id="submit_button" class="small_button" onclick="doSubmitSettings();">Save</div>
 

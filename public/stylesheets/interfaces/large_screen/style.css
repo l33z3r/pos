@@ -1407,7 +1407,7 @@ div#menu_screen div#receipt_keypad_container div#menu_buttons_popup_anchor {
 /* Till Roll */
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll {
-    height: 355px;
+    height: 305px;
     display: block;
     background-color: #FFF;
 }
@@ -1464,7 +1464,7 @@ div.receipt div.till_roll div.data_table div.label,
 div.till_roll_discount div.data_table div.label {
     float: left;
     text-align: left;
-    width: 112px;
+    width: 110px;
     padding-left: 5px;
 }
 
@@ -1472,7 +1472,7 @@ div.receipt div.till_roll div.data_table div.data,
 div.till_roll_discount div.data_table div.data {
     float: left;
     text-align: right;
-    width: 125px;
+    width: 117px;
     font-weight: bold;
 }
 
