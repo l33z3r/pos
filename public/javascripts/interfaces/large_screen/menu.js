@@ -446,6 +446,22 @@ function doSelectReceiptItem(orderItemEl) {
         $('#discount_button').hide();
     }
     
+    //are we allowed to view the change price controls
+    //we are if the button id is present in this array
+    if(typeof(display_button_passcode_permissions[parseInt(changePriceButtonID)]) != 'undefined') {
+        $('#price_editor').show();
+    } else {
+        $('#price_editor').hide();
+    }
+    
+    //are we allowed to delete an item
+    //we are if the button id is present in this array
+    if(typeof(display_button_passcode_permissions[parseInt(removeItemButtonID)]) != 'undefined') {
+        $('#delete_button').show();
+    } else {
+        $('#delete_button').hide();
+    }
+    
     //save the currently opened dialog
     currentSelectedReceiptItemEl = orderItemEl;
     
@@ -511,6 +527,8 @@ function doSelectReceiptItem(orderItemEl) {
 
     //register the click handler to hide the popup when outside clicked
     registerPopupClickHandler($('#' + popupId), closeEditOrderItem);
+    
+    return $('#' + popupId);
 }
 
 function editOrderItemIncreaseQuantity() {
@@ -1034,6 +1052,7 @@ function showDiscountPopup(receiptItem) {
     
     //was the discount button hit on the menu panel, or via the edit item popup?
     if(receiptItem) {
+        $(receiptItem).addClass("selected");
         $("#apply_discount_to").hide();
         individualItemDiscount = true;
     } else {

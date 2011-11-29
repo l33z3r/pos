@@ -273,6 +273,19 @@ function markFreeLastOrderItem() {
     currentSelectedReceiptItemEl = null;
 }
 
+function changePriceLastOrderItem() {
+    order = getCurrentOrder();
+    
+    currentSelectedReceiptItemEl = getSelectedOrLastReceiptItem();
+    
+    if(currentSelectedReceiptItemEl) {
+        //must set a timeout here so that if we are on the more 
+        //options screen, the widths have time to calculate correctly
+        var popup = doSelectReceiptItem(currentSelectedReceiptItemEl);
+        popup.find('.price').focus();
+    }
+}
+
 function showAddNoteToOrderItemScreen() {
     order = getCurrentOrder();
     
