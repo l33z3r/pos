@@ -240,7 +240,6 @@ function linkTerminalDisplay(terminal_id, display_id) {
 }
 
 //following is for the more options screen shortcut
-
 function adminShowMoreOptions() {
     //try to load the div first
     $('#admin_content_screen').hide();

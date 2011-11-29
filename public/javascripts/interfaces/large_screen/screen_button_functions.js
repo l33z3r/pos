@@ -282,7 +282,7 @@ function showAddNoteToOrderItemScreen() {
         if(currentScreenIsMenu()) {
             if(currentMenuSubscreenIsModifyOrderItem()) {
                 if(doSaveNote()) {
-                    $('#sales_button_' + addNoteButtonID).removeClass("selected");
+                    $('.button[id=sales_button_' + addNoteButtonID + ']').removeClass("selected");
                     resetKeyboard();
                     switchToMenuItemsSubscreen();
                 }
