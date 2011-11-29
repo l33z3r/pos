@@ -260,14 +260,17 @@ function finishDoSelectMenuItem() {
     
     //add a line to the receipt
     writeOrderItemToReceipt(orderItem);
-    writeTotalToReceipt(currentOrder, currentOrder['total']);
+    writeTotalToReceipt(currentOrder, currentOrder.total);
 
     setTimeout(menuRecptScroll, 20);
 }
 
 function tableSelectMenuItem(orderItem) {
     addItemToTableOrderAndSave(orderItem);
-    writeTotalToReceipt(currentTableOrder, currentTableOrder['total']);
+    
+    var total = currentTableOrder.total;
+    
+    writeTotalToReceipt(currentTableOrder, total);
     setTimeout(menuRecptScroll, 20);
 }
     
@@ -331,7 +334,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     orderItemTotalPriceText = number_to_currency(itemPriceWithoutModifier, {
         precision : 2
     });
-    orderHTML += "<div class='total' data-per_unit_price='" + orderItem.product_price + "'>" + orderItemTotalPriceText + "</div>";
+    orderHTML += "<div class='total' data-per_unit_price='" + orderItem.product_price + "'>" + (orderItem.product.show_price_on_receipt ? orderItemTotalPriceText : "") + "</div>";
     
     if(orderItem.modifier) {
         orderHTML += "<div class='clear'>&nbsp;</div>";
@@ -358,12 +361,21 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     
     if(orderItem.oia_items) {
         for(var j=0; j<orderItem.oia_items.length; j++) {
+            
             oia_is_add = orderItem.oia_items[j].is_add;
             
-            orderHTML += clearHTML;
+            orderHTML += clearHTML + "<div class='oia " + (orderItem.oia_items[j].hide_on_receipt ? "hide_on_receipt" : "") + "'>";
             
             if(!orderItem.oia_items[j].is_note) {
-                orderHTML += "<div class='oia_add'>" + (oia_is_add ? "Add" : "No") + "</div>";
+                orderHTML += "<div class='oia_add'>";
+                
+                if(orderItem.oia_items[j].is_addable) {
+                    orderHTML += oia_is_add ? "Add" : "No";
+                } else {
+                    orderHTML += "&nbsp;";
+                }
+                
+                orderHTML += "</div>";
             }
             
             orderHTML += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>" + orderItem.oia_items[j].description + "</div>";
@@ -381,7 +393,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
                 orderHTML += "<div class='oia_price'>" + (!oia_is_add ? "-" : "") + currency(oiaPrice, false) + "</div>";
             }
             
-            orderHTML += clearHTML;
+            orderHTML += "</div>" + clearHTML;
         }
     }
 
@@ -668,9 +680,21 @@ function writeTotalToReceipt(order, orderTotal) {
     if(!order) return;
     
     //write the total order discount to the end of the order items
+    tillRollServiceChargeHTML = getTillRollServiceChargeHTML(order);
+    
+    $('#till_roll_service_charge').html(tillRollServiceChargeHTML);
+    
+    //write the total order discount to the end of the order items
     tillRollDiscountHTML = getTillRollDiscountHTML(order);
     
     $('#till_roll_discount').html(tillRollDiscountHTML);
+    
+    if(order.service_charge) {
+        orderTotal += parseFloat(order.service_charge);
+    } else if(serviceCharge) {
+        //this would be for "no table" selected as we dont store the service charge with it
+        orderTotal += parseFloat(serviceCharge);
+    }
     
     $('#total_value').html(currency(orderTotal));
 }
@@ -775,11 +799,46 @@ function doTotal() {
     cashTendered = 0;
     cashTenderedKeypadString = "";
     
+    
+    
+    
+    
+    
+    //write the total order discount to the end of the order items
+    cashScreenServiceChargeHTML = getTillRollServiceChargeHTML(totalOrder);
+    
+    $('#totals_till_roll_service_charge').html(cashScreenServiceChargeHTML);
+    
     //set the discount in the cash out till roll
     cashScreenReceiptDiscountHTML = getTillRollDiscountHTML(totalOrder);
     $('#totals_till_roll_discount').html(cashScreenReceiptDiscountHTML);
     
-    $('#cash_screen_sub_total_value').html(currency(totalOrder.total));
+    var orderTotal = totalOrder.total;
+    
+    if(totalOrder.service_charge) {
+        orderTotal += parseFloat(totalOrder.service_charge);
+    } else if(serviceCharge) {
+        //this would be for "no table" selected as we dont store the service charge with it
+        orderTotal += parseFloat(serviceCharge);
+    }
+    
+    $('#cash_screen_sub_total_value').html(currency(orderTotal));
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     if(!paymentMethod) {
         paymentMethod = defaultPaymentMethod;
@@ -1111,8 +1170,8 @@ function showDiscountPopup(receiptItem) {
         $('#' + popupId).find('#discount_percent_input').val(defaultDiscountPercent);
     }
     
-    //highlight the input box
-    $('#' + popupId).find('#discount_percent_input').select();
+    //focus on the input box
+    $('#' + popupId).find('#discount_percent_input').focus();
     
     keypadPosition = $('#' + popupId).find('.discount_popup_keypad_container');
     
@@ -1158,6 +1217,10 @@ function saveDiscount() {
     
     selectedValue = parseFloat(selectedValue);
     
+    if(isNaN(selectedValue)) {
+        selectedValue = 0;
+    }
+    
     if(selectedValue<0 || selectedValue>100) {
         setStatusMessage("You must enter a number between 0 and 100", true, true);
         return;
@@ -1190,6 +1253,7 @@ function saveDiscount() {
     
     //redraw the receipt
     loadReceipt(order);
+    setTimeout(menuRecptScroll, 20);
 }
 
 function addDiscountToOrder(order, amount) {
@@ -1305,7 +1369,7 @@ function doSaveNote() {
     var desc = noteInput;
     var absCharge = charge;
     
-    addOIAToOrderItem(order, orderItem, desc, absCharge, 0, 0, noteChargeIsPlus, true);
+    addOIAToOrderItem(order, orderItem, desc, absCharge, 0, 0, noteChargeIsPlus, true, false, false);
     
     clearNoteInputs();
     
@@ -1477,10 +1541,13 @@ function orderItemAdditionClicked(el) {
         absCharge = minusCharge;
     }
     
-    addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, false);
+    var hideOnReceipt = el.data("hide_on_receipt");
+    var isAddable = el.data("is_addable");
+    
+    addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, false, hideOnReceipt, isAddable);
 }
 
-function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, isNote) {
+function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, isNote, hideOnReceipt, isAddable) {
     //make sure all values in calc are floats
     absCharge = parseFloat(absCharge);
     
@@ -1494,7 +1561,9 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusC
         'description' : desc,
         'abs_charge' : absCharge,
         'is_add' : oiaIsAdd, 
-        'is_note' : isNote
+        'is_note' : isNote,
+        'hide_on_receipt' : hideOnReceipt,
+        'is_addable' : isAddable
     }
     
     if(typeof(orderItem.oia_items) == 'undefined') {
@@ -1507,7 +1576,6 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusC
             orderItem.pre_discount_price += (orderItem.amount * absCharge);
         } else {
             orderItem.total_price += (orderItem.amount * absCharge);
-            console.log("TP after add: " + orderItem.total_price);
         }
     } else {
         if(orderItem.pre_discount_price) {
@@ -1531,6 +1599,7 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusC
     //redraw the receipt
     calculateOrderTotal(order);
     loadReceipt(order);
+    setTimeout(menuRecptScroll, 20);
     
     currentSelectedReceiptItemEl = null;
 }

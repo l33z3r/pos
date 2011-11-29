@@ -22,22 +22,22 @@
       <div id="table_select_container">
         <div id="table_select_input" onclick="tableSelectMenu.openMenu();">Select Table</div>
 
-        <%# cache("room_select_dropdown") do %>
-          <ul id="table_select" class="mcdropdown_menu">
-            <li id="previous_order_select_item" rel="-1" style="display: none;" onclick="doSelectTable(-1);">Previous Order</li>
-            <li rel="0" onclick="doSelectTable(0)">No Table</li>
-            <% Room.all.each do |room|%>
-              <li>
-                <%=room.name%>
-                <ul>
-                  <% room.table_infos.each do |table_info| %>
-                    <li rel="<%= table_info.id %>" onclick="doSelectTable(<%= table_info.id %>);"><%= table_info.perm_id %></li>
-                  <% end %>
-                </ul>
-              </li>
-            <% end %>
-          </ul>
-        <%# end %>
+<%# cache("room_select_dropdown") do %>
+        <ul id="table_select" class="mcdropdown_menu">
+          <li id="previous_order_select_item" rel="-1" style="display: none;" onclick="doSelectTable(-1);">Previous Order</li>
+          <li rel="0" onclick="doSelectTable(0)">No Table</li>
+          <% Room.all.each do |room|%>
+            <li>
+              <%=room.name%>
+              <ul>
+                <% room.table_infos.each do |table_info| %>
+                  <li rel="<%= table_info.id %>" onclick="doSelectTable(<%= table_info.id %>);"><%= table_info.perm_id %></li>
+                <% end %>
+              </ul>
+            </li>
+          <% end %>
+        </ul>
+<%# end %>
       </div>
 
       <div class="clear">&nbsp;</div>
@@ -47,9 +47,12 @@
     <div id="receipt" class="receipt receipt_jscrollpane">
       <div id="till_roll" class="till_roll"></div>
       <div class="clear">&nbsp;</div>
-      <div id="till_roll_discount" class="till_roll_discount"></div>
+      <div id="till_roll_discount" class="till_roll_discount">
+        &nbsp;
+      </div>
+      <div id="till_roll_service_charge" class="till_roll_service_charge"></div>
     </div>
-    
+
     <div id="price_change_receipt">
       <div id="receipt_area"></div>
       <div id="price_change_new_price_input_container">
@@ -130,13 +133,13 @@
 
     <div id="menu_buttons">
       <div id="menu_buttons_panel">
-        <%# cache("menu_screen_buttons") do %>
-          <% @menu_screen_buttons_map.each do |role_id, dbrs| %>
-            <div style="display: none;" class="buttons" id="menu_screen_buttons_html_for_role_<%=role_id%>">
-              <%= render :partial => '/home/interfaces/large_screen/screen_buttons', :locals => {:dbrs => dbrs} %>
-            </div>
-          <% end %>
-        <%# end %>
+<%# cache("menu_screen_buttons") do %>
+        <% @menu_screen_buttons_map.each do |role_id, dbrs| %>
+          <div style="display: none;" class="buttons" id="menu_screen_buttons_html_for_role_<%=role_id%>">
+            <%= render :partial => '/home/interfaces/large_screen/screen_buttons', :locals => {:dbrs => dbrs} %>
+          </div>
+        <% end %>
+<%# end %>
       </div>
     </div>
   </div>

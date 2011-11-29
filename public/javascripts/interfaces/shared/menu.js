@@ -522,6 +522,10 @@ function doSelectTable(tableNum) {
         
         loadCurrentOrder();
         
+        if(currentOrder && currentOrder.service_charge) {
+            serviceCharge = parseFloat(currentOrder.service_charge);
+        }
+        
         //total the order first
         calculateOrderTotal(currentOrder);
         

@@ -1407,7 +1407,7 @@ div#menu_screen div#receipt_keypad_container div#menu_buttons_popup_anchor {
 /* Till Roll */
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll {
-    height: 305px;
+    height: 280px;
     display: block;
     background-color: #FFF;
 }
@@ -1461,7 +1461,8 @@ div.receipt div.till_roll div.data_table {
 }
 
 div.receipt div.till_roll div.data_table div.label,
-div.till_roll_discount div.data_table div.label {
+div.till_roll_discount div.data_table div.label,
+div.till_roll_service_charge div.data_table div.label{
     float: left;
     text-align: left;
     width: 110px;
@@ -1469,10 +1470,11 @@ div.till_roll_discount div.data_table div.label {
 }
 
 div.receipt div.till_roll div.data_table div.data,
-div.till_roll_discount div.data_table div.data {
+div.till_roll_discount div.data_table div.data,
+div.till_roll_service_charge div.data_table div.data{
     float: left;
     text-align: right;
-    width: 117px;
+    width: 120px;
     font-weight: bold;
 }
 
@@ -1484,9 +1486,14 @@ div.receipt div.till_roll div.data_table div.data.time {
     width: 135px;
 }
 
+div.till_roll_service_charge {
+    margin-left: 5px;
+}
+
 div.till_roll_discount {
     margin-left: 5px;
     margin-top: 10px;
+    height: 30px;
 }
 
 div.receipt div.till_roll div.order_line {
@@ -1572,16 +1579,9 @@ div.receipt div.till_roll div.total {
     text-align: right;
 }
 
-div.receipt div.till_roll div.discount div.header {
-    float: left;
-    width: 120px;
-    text-align: right;
-    font-style: italic;
-}
-
 div.receipt div.till_roll div.discount div.discount_amount {
     float: left;
-    width: 66px;
+    width: 90px;
     text-align: center;
     font-style: italic;
 }
@@ -1595,7 +1595,7 @@ div.receipt div.till_roll div.discount div.new_price {
 
 div.receipt div.till_roll div.discount div.header {
     float: left;
-    width: 120px;
+    width: 109px;
     text-align: right;
     font-style: italic;
 }

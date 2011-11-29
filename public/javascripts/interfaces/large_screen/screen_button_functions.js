@@ -102,6 +102,11 @@ function saveServiceCharge() {
     if (currentScreenIsTotals()) {
         doTotal();
     }
+    
+    if(inMenuContext()) {
+        writeTotalToReceipt(order, order.total);
+        setTimeout(menuRecptScroll, 20);
+    }
 }
 
 function cancelServiceCharge() {

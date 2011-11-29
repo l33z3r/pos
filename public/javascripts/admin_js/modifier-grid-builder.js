@@ -43,6 +43,8 @@ function initCellInputs(gridEL) {
     var bgColor2 = gridEL.data("bg_color_2");
     var textColor = gridEL.data("text_color");
     var textSize = gridEL.data("text_size");
+    var hideOnReceipt = gridEL.data("hide_on_receipt");
+    var isAddable = gridEL.data("is_addable");
     
     $('#description_input').val(description);
     
@@ -65,6 +67,27 @@ function initCellInputs(gridEL) {
     $('#text_color_input').val(textColor);
     $('#text_size_input').val(textSize);
     
+    resetHideOnReceiptInput();
+    
+    $('#hide_on_receipt_input').attr('checked', hideOnReceipt);
+    
+    $('#hide_on_receipt_input').iphoneStyle({
+        resizeContainer: false, 
+        resizeHandle : false, 
+        checkedLabel: 'Yes', 
+        uncheckedLabel: 'No'
+    });
+    
+    resetIsAddableInput();
+    
+    $('#is_addable_input').attr('checked', isAddable);
+    
+    $('#is_addable_input').iphoneStyle({
+        resizeContainer: false, 
+        resizeHandle : false, 
+        checkedLabel: 'Yes', 
+        uncheckedLabel: 'No'
+    });
 }
 
 function clearCellInputs() {
@@ -89,6 +112,23 @@ function clearCellInputs() {
     $('#text_color_input').val("");
     $('#text_size_input').val("");
     
+    $('#hide_on_receipt_input').attr('checked', false);
+    
+    $('#hide_on_receipt_input').iphoneStyle({
+        resizeContainer: false, 
+        resizeHandle : false, 
+        checkedLabel: 'Yes', 
+        uncheckedLabel: 'No'
+    });
+    
+    $('#is_addable_input').attr('checked', false);
+    
+    $('#is_addable_input').iphoneStyle({
+        resizeContainer: false, 
+        resizeHandle : false, 
+        checkedLabel: 'Yes', 
+        uncheckedLabel: 'No'
+    });
 }
 
 function setGridScrollerWidth(grid_x) {
@@ -146,6 +186,9 @@ function updateSelectedGridItem() {
     var textColor = $('#text_color_input').val();
     var textSize = $('#text_size_input').val();
     
+    var hideOnReceipt = $('#hide_on_receipt_input').attr("checked");
+    var isAddable = $('#is_addable_input').attr("checked");
+    
     $.ajax({
         type: 'POST',
         url: '/admin/order_item_addition_grids/' + grid_id + '/update_item' ,
@@ -159,7 +202,9 @@ function updateSelectedGridItem() {
             bgColor : bgColor,
             bgColor2 : bgColor2,
             textColor : textColor,
-            textSize : textSize
+            textSize : textSize,
+            hideOnReceipt : hideOnReceipt,
+            isAddable : isAddable
         }
     });
 }
@@ -326,4 +371,12 @@ function doCloseFontColorPickerPopup() {
 
 function resetAvailableInput() {
     $('div#available .input_box').html("<input id='available_input' type='checkbox' onchange='updateSelectedGridItem()'>");
+}
+
+function resetHideOnReceiptInput() {
+    $('div#hide_on_receipt .input_box').html("<input id='hide_on_receipt_input' type='checkbox' onchange='updateSelectedGridItem()'>");
+}
+
+function resetIsAddableInput() {
+    $('div#is_addable .input_box').html("<input id='is_addable_input' type='checkbox' onchange='updateSelectedGridItem()'>");
 }

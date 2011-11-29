@@ -8,6 +8,7 @@ class OrderTest < ActiveSupport::TestCase
 end
 
 
+
 # == Schema Information
 #
 # Table name: orders
@@ -16,7 +17,7 @@ end
 #  employee_id           :integer(4)
 #  total                 :float
 #  payment_type          :string(255)
-#  amount_tendered       :integer(4)
+#  amount_tendered       :float
 #  is_table_order        :boolean(1)      default(FALSE)
 #  num_persons           :integer(4)
 #  created_at            :datetime

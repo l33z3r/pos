@@ -67,9 +67,11 @@
   </div>
 
   <div id="appearance_tab_content" class="tab_content" style="display: none;">
-    <div class="label">Preview</div>
-    <div class="product_image_preview">
-      <%= product_image_thumb(@product, true) %>
+    <div class="field">
+      <div class="label">Preview</div>
+      <div class="product_image_preview">
+        <%= product_image_thumb(@product, true) %>
+      </div>
     </div>
     <div class="field">
       <div class="label">Line 1</div>
@@ -124,7 +126,7 @@
         </div>
         <!-- 
         <% if @product.has_product_image? %>
-              <p class="label">Select to Delete Image:</p>
+                <p class="label">Select to Delete Image:</p>
           <%= check_box_tag :delete_product_image, false %>
         <% end %>
         -->
@@ -134,6 +136,11 @@
     <div class="field">
       <div class="label">Show Image</div>
       <%= f.check_box :show_button_image %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <div class="label">Show Price On Receipt?</div>
+      <%= f.check_box :show_price_on_receipt %>
       <div class="clear">&nbsp;</div>
     </div>
   </div>
