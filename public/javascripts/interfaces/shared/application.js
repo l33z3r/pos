@@ -12,7 +12,10 @@ var callHomePollInitSequenceComplete = false;
 var callHome = true;
 
 function callHomePoll() {
-    if(!callHome) return;
+    if(!callHome) {
+        setTimeout(callHomePoll, 5000);
+        return;
+    }
     
     callHomeURL = "/call_home.js"
     

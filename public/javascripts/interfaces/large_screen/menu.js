@@ -438,6 +438,14 @@ function doSelectReceiptItem(orderItemEl) {
     //close any open popup
     closeEditOrderItem();
     
+    //are we allowed to view the discount button
+    //we are if the button id is present in this array
+    if(typeof(display_button_passcode_permissions[parseInt(discountButtonID)]) != 'undefined') {
+        $('#discount_button').show();
+    } else {
+        $('#discount_button').hide();
+    }
+    
     //save the currently opened dialog
     currentSelectedReceiptItemEl = orderItemEl;
     
@@ -534,7 +542,7 @@ function editOrderItemDecreaseQuantity() {
     
     if(isNaN(currentVal)) {
         newQuantity = 1;
-    } else if(currentVal >= 1) {
+    } else if(currentVal > 1) {
         newQuantity = currentVal - 1;
     }
     
@@ -895,7 +903,6 @@ function doTotalFinal() {
     paymentMethod = null;
     
     //set the select item to the personal receipt
-    //$('#table_select').val(0);
     tableSelectMenu.setValue(0);
     doSelectTable(0);
     
@@ -1107,12 +1114,6 @@ function showDiscountPopup(receiptItem) {
     
     //register the click handler to hide the popup when outside clicked
     registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
-    
-//TODO: manually init the radio button iphone style
-    
-    
-    
-    
 }
 
 function showDiscountPopupFromEditDialog() {
@@ -1234,7 +1235,7 @@ function doOpenOIANoteScreen() {
     clearSelectedOIATabs();
     $('#oia_tab_note').addClass("selected");
     
-    $('#sales_button_' + addNoteButtonID).addClass("selected");
+    $('.button[id=sales_button_' + addNoteButtonID + ']').addClass("selected");
     
     $('#oia_container').hide();
     $('#add_note').show();
@@ -1377,10 +1378,12 @@ function finishDoSyncTableOrder() {
 
 function toggleModifyOrderItemScreen() {
     if(currentMenuSubscreenIsMenu()) {
+        $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').addClass("selected");
         showModifyOrderItemScreen();
     } else {
         resetKeyboard();
-        $('#sales_button_' + addNoteButtonID).removeClass("selected");
+        $('.button[id=sales_button_' + addNoteButtonID + ']').removeClass("selected");
+        $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').removeClass("selected");
         switchToMenuItemsSubscreen();
     }
 }
@@ -1406,7 +1409,7 @@ function switchToModifyOrderItemSubscreen() {
         $('#add_note').hide();
         resetKeyboard();
         hideAllMenuSubScreens();
-        $('#sales_button_' + modifyOrderItemButtonID).addClass("selected");
+        $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').addClass("selected");
         $('#oia_tab_add').click();
         $('#order_item_additions').show();
         $('#order_item_additions #add_note').hide();

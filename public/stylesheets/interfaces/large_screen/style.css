@@ -898,13 +898,13 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 
 div#menu_screen div#order_item_additions {
     display: none;
-    height: 547px;
+    height: 546px;
     background-color: #E0E0E0;
 }
 
 div#menu_screen div#order_item_additions div#oia_container {
     background-color: #E0E0E0;
-    padding: 4px;
+    padding: 3px 4px 4px 4px;
 }
 
 div#menu_screen div#order_item_additions div#add_note {
@@ -1629,14 +1629,14 @@ div#edit_receipt_item_popup_markup_container {
 
 div#edit_receipt_item_popup_markup_container div#header {
     float: left;
-    margin: 3px;
-    margin-top: 8px;
-    font-size: 14px;
+    margin: 5px;
+    margin-top: 16px;
+    font-size: 17px;
     font-weight: bold;
 }
 
 div#edit_receipt_item_popup_markup_container div#quantity_editor {
-    padding-top: 20px;
+    padding-top: 10px;
 }
 
 div#edit_receipt_item_popup_markup_container div#quantity_editor div#quantity_label {
@@ -1665,7 +1665,7 @@ div#edit_receipt_item_popup_markup_container div#quantity_editor div#buttons_con
     padding: 10px 10px 0px 10px;
     margin: -0px 5px;
     height: 10px;
-    width: 25px;
+    width: 31px;
     height: 25px;
     font-size: 24px;
     font-weight: bold;
@@ -1693,13 +1693,13 @@ div#edit_receipt_item_popup_markup_container div#price_editor input.price {
 }
 
 div#edit_receipt_item_popup_markup_container div#discount_button {
-    padding: 4px;
+    padding: 10px;
     float: right;
     cursor: pointer;
     -moz-border-radius: 5px;
     border-radius: 5px;
     height: 18px;
-    width: 64px;
+    width: 60px;
     font-size: 14px;
     font-weight: bold;
     color: #666;
@@ -1707,17 +1707,17 @@ div#edit_receipt_item_popup_markup_container div#discount_button {
 }
 
 div#edit_receipt_item_popup_markup_container div#delete_button {
-    padding: 4px;
+    padding: 10px;
     float: right;
     cursor: pointer;
     -moz-border-radius: 5px;
     border-radius: 5px;
     height: 18px;
-    width: 43px;
+    width: 60px;
     font-size: 14px;
     font-weight: bold;
     color: #666;
-    margin: 3px;
+    margin: 3px 10px 3px 10px;
 }
 
 /* End Edit Order Item Popup */

@@ -382,7 +382,7 @@ function showMenuItemsSubscreen() {
 function switchToModifyOrderItemSubscreen() {
     if(currentScreenIsMenu) {
         hideAllMenuSubScreens();
-        $('#sales_button_' + modifyOrderItemButtonID).addClass("selected");
+        $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').addClass("selected");
         $('#order_item_additions').show();
     }
 }
@@ -394,7 +394,7 @@ function showTablesSubscreen() {
     $('#menu_screen #buttons_container').hide();
     $('#menu_screen #cluey_logo').show();
     
-    $('#sales_button_' + tablesButtonID).addClass("selected");
+    $('.button[id=sales_button_' + tablesButtonID + ']').addClass("selected");
     $('#table_screen').show();
 }
 
@@ -439,7 +439,7 @@ function clearTableNumberEntered() {
 
 function postDoSelectTable() {
     var theLabel = "Table " + current_table_label;
-    $('#sales_button_' + tablesButtonID + ' .button_name').html(theLabel);
+    $('.button[id=sales_button_' + tablesButtonID + '] .button_name').html(theLabel);
     $('#receipt_screen #header #table_name').html(theLabel);
 }
 

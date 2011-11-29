@@ -66,7 +66,7 @@
   
   var terminalID = "<%=@terminal_id%>";
   
-  var pollingAmount = <%= (ENV['RAILS_ENV'] == 'development') ? "5000" : "2000" %>;
+  var pollingAmount = <%= (ENV['RAILS_ENV'] == 'development') ? "1000" : "2000" %>;
   
   var using_mobile = <%= mobile_device? ? "true" : "false" %>;
   
@@ -94,6 +94,7 @@
   var modifyOrderItemButtonID = "<%= ButtonMapper::MODIFY_ORDER_ITEM_BUTTON %>";
   var addNoteButtonID = "<%= ButtonMapper::ADD_NOTE_BUTTON %>";
   var tablesButtonID = "<%= ButtonMapper::TABLES_BUTTON %>";
+  var discountButtonID = "<%= ButtonMapper::DISCOUNT_BUTTON %>";
   
   var updateStockType = <%= StockTransaction::STOCK_UPDATE %>;
   var transferStockType = <%= StockTransaction::STOCK_TRANSFER %>;
