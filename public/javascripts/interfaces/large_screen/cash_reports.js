@@ -241,17 +241,6 @@ function getOpenOrdersTotal() {
  *
  ***/
 
-//function doPreviousCashTotalReport() {
-//    setNavTitle("Previous Cash Total");
-//    showNavBackLinkMenuScreen();
-//
-//    //hide the dropdown menu
-//    $('#menu_screen_shortcut_dropdown_container').hide();
-////
-//   showPreviousCashReportsScreen();
-//
-//}
-
 $(function() {
     setDatePickers();
 });
@@ -365,7 +354,7 @@ function printCashTotal(){
         return;
     }
     else{
-        printCash($('#cash_totals_data_table').html(),true);
+        printCash($('#reports_center_receipt').html(),true);
     }
 }
 

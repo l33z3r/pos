@@ -53,4 +53,12 @@
       <% end %>
     </tbody>
   </table>
+  <div class="pagination_links">
+    <div class="links">
+      <%= will_paginate @cash_total, :renderer => 'RemoteLinkRenderer' %>
+    </div>
+    <div class="info">
+      <%= page_entries_info @cash_total %>
+    </div>
+  </div>
 <% end %>

@@ -103,7 +103,9 @@ cash_totals_data_html = "<div id='cash_totals_data_table'>";
 
 $('#cash_total_data_table_container').html(cash_totals_data_html);
 
-$('#cash_totals_header_section').hide();
+<% if @show_header_section.nil? %>
+    $('#cash_totals_header_section').hide();
+<% end %>
 
 total = number_to_currency(<%=@cash_total%>, {precision : 2, showunit : true});
 
