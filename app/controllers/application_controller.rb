@@ -297,6 +297,7 @@ class ApplicationController < ActionController::Base
     @defaultDateFormat = GlobalSetting.default_date_format
     
     @tax_label = GlobalSetting.parsed_setting_for GlobalSetting::TAX_LABEL
+    @tax_chargable = GlobalSetting.parsed_setting_for GlobalSetting::TAX_CHARGABLE
   end
   
   def mobile_device?

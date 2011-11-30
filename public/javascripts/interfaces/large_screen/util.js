@@ -156,6 +156,7 @@ function setStatusMessage(message, hide, shake) {
         statusEl = $('#menu_screen_status_message');
     } else {
         niceAlert(message);
+        return;
     }
     
     afterFunction = null;

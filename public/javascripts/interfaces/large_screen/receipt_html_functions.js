@@ -197,6 +197,7 @@ function getTillRollDiscountHTML(order) {
 function clearReceipt() {
     $('#till_roll').html('');
     $('#total_value').html(currency(0));
+    $('#till_roll_service_charge').html('');
     $('#till_roll_discount').html('');
 }
 

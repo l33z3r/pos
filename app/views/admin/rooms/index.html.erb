@@ -9,6 +9,7 @@
         <tr>
           <th width="180">Name</th>
           <th width="180">Dimension</th>
+          <th width="200">Service Charge &#37;</th>
           <th width="80">Delete</th>
         </tr>
       </thead>
@@ -18,6 +19,16 @@
           <tr>
             <td><%= link_to room.name, builder_admin_room_path(room) %></td>
             <td><%= room.dimension %></td>
+            <td>
+              <%= form_for([:admin, room]) do |f| %>
+                <select name="room[default_service_charge_percent]" onchange="$(this).parent('form').submit();">
+                  <option <%= room.default_service_charge_percent == 0 ? "selected" : ""%> value="0">0%</option>
+                  <option <%= room.default_service_charge_percent == 10 ? "selected" : ""%> value="10">10%</option>
+                  <option <%= room.default_service_charge_percent == 12.5 ? "selected" : ""%> value="12.5">12.5%</option>
+                  <option <%= room.default_service_charge_percent == 15 ? "selected" : ""%> value="15">15%</option>
+                </select>
+              <% end %>
+            </td>
             <td><%= link_to "Delete", admin_room_path(room), :method => :delete, :confirm => "Are You Sure?" %></td>
           </tr>
         <% end %>

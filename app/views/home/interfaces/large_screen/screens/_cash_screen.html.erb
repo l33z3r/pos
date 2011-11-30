@@ -4,18 +4,20 @@
 
     <div id="totals_receipt_header">Current Sale</div>
 
-    <div id="totals_receipt" class="receipt receipt_jscrollpane">
-      <div id="totals_till_roll" class="till_roll"></div>
-      <div class="clear">&nbsp;</div>
+    <div id="totals_receipt_container">
+      <div id="totals_receipt" class="receipt">
+        <div id="totals_till_roll" class="till_roll"></div>
+        <div class="clear">&nbsp;</div>
+      </div>
+
       <div id="totals_till_roll_discount" class="till_roll_discount"></div>
-      <div id="totals_till_roll_service_charge" class="till_roll_service_charge"></div>
     </div>
 
     <div class="clear">&nbsp;</div>
 
     <div id="total_container">
 
-      <div id="label">Sub-Total:</div>
+      <div id="label"><%= @tax_chargable ? "Sub-Total:" : "Total:" %></div>
       <div id="cash_screen_sub_total_value"></div>
 
       <div class="clear">&nbsp;</div>
@@ -123,15 +125,15 @@
 
       <div id="money_helper_section">
         <%= money_image_button "5" %>
-        
+
         <%= money_image_button "10" %>
-        
+
         <%= money_image_button "20" %>
-        
+
         <%= money_image_button "50" %>
-        
+
         <%= money_image_button "100" %>
-        
+
         <div class="clear">&nbsp;</div>
 
         <div id="exact_amount_button_holder">
@@ -158,7 +160,7 @@
           </div>
           <div class="button_name">Wait</div>
         </div>
-        
+
         <div class="button" onclick="promptForServiceCharge()">
           <div class="icon">
             <%= image_tag "button_logos/service_charge.png" %>
@@ -172,7 +174,7 @@
           </div>
           <div class="button_name">Cash Back</div>
         </div>
-        
+
         <div class="button" onclick="printBill()">
           <div class="icon">
             <%= image_tag "button_logos/print_bill_button.png" %>
