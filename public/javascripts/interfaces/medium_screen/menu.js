@@ -198,7 +198,6 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     
     onclickMarkup = includeOnClick ? "onclick='doSelectReceiptItem(this)'" : "";
     
-    //console.log(orderItem.itemNumber + " " + orderItem.is_course + " " + (orderItem.is_course == "true") + " " + (orderItem.is_course == true));
     var courseLineClass = orderItem.is_course ? "course" : "";
     
     orderHTML = "<div class='order_line " + notSyncedClass + " " + courseLineClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
@@ -215,7 +214,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     orderItemTotalPriceText = number_to_currency(itemPriceWithoutModifier, {
         precision : 2
     });
-    orderHTML += "<div class='total' data-per_unit_price='" + orderItem.product_price + "'>" + orderItemTotalPriceText + "</div>";
+    orderHTML += "<div class='total' data-per_unit_price='" + orderItem.product_price + "'>" + (orderItem.product.show_price_on_receipt ? orderItemTotalPriceText : "") + "</div>";
     
     if(orderItem.modifier) {
         orderHTML += "<div class='clear'>&nbsp;</div>";
@@ -244,10 +243,18 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         for(var j=0; j<orderItem.oia_items.length; j++) {
             oia_is_add = orderItem.oia_items[j].is_add;
             
-            orderHTML += clearHTML;
+            orderHTML += clearHTML + "<div class='oia " + (orderItem.oia_items[j].hide_on_receipt ? "hide_on_receipt" : "") + "'>";
             
             if(!orderItem.oia_items[j].is_note) {
-                orderHTML += "<div class='oia_add'>" + (oia_is_add ? "Add" : "No") + "</div>";
+                orderHTML += "<div class='oia_add'>";
+                
+                if(orderItem.oia_items[j].is_addable) {
+                    orderHTML += oia_is_add ? "Add" : "No";
+                } else {
+                    orderHTML += "&nbsp;";
+                }
+                
+                orderHTML += "</div>";
             }
             
             orderHTML += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>" + orderItem.oia_items[j].description + "</div>";
@@ -265,7 +272,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
                 orderHTML += "<div class='oia_price'>" + (!oia_is_add ? "-" : "") + currency(oiaPrice, false) + "</div>";
             }
             
-            orderHTML += clearHTML;
+            orderHTML += "</div>" + clearHTML;
         }
     }
 
@@ -481,10 +488,13 @@ function orderItemAdditionClicked(el) {
         absCharge = minusCharge;
     }
     
-    addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, false);
+    var hideOnReceipt = el.data("hide_on_receipt");
+    var isAddable = el.data("is_addable");
+    
+    addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, false, hideOnReceipt, isAddable);
 }
 
-function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, isNote) {
+function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, isNote, hideOnReceipt, isAddable) {
     if(typeof(orderItem.oia_items) == 'undefined') {
         orderItem.oia_items = new Array();
     }
@@ -558,9 +568,11 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusC
             'description' : desc,
             'abs_charge' : absCharge,
             'is_add' : oiaIsAdd, 
-            'is_note' : isNote
+            'is_note' : isNote,
+            'hide_on_receipt' : hideOnReceipt,
+            'is_addable' : isAddable
         }
-        console.log("updating total with absCharge: " + absCharge);
+        
         //update the total with new oia total
         if(absCharge > 0) {
             if(oiaIsAdd) {
@@ -569,7 +581,6 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusC
                 } else {
                     orderItem.total_price += (orderItem.amount * absCharge);
                 }
-                console.log("PDPAfter add: " + orderItem.total_price);
             } else {
                 if(orderItem.pre_discount_price) {
                     orderItem.pre_discount_price -= (orderItem.amount * absCharge);
@@ -594,6 +605,7 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusC
     //redraw the receipt
     calculateOrderTotal(order);
     loadReceipt(order);
+    setTimeout(menuRecptScroll, 20);
     
     currentSelectedReceiptItemEl = null;
 }
@@ -608,8 +620,6 @@ function tableScreenBack() {
 
 function doReceiveOrderReady(employee_id, terminal_id, table_id, table_label) {
     hidePreviousOrderReadyPopup();
-    
-    console.log("got order ready notification for employee id: " + employee_id + " for table: " + table_label);
     
     if(employee_id == current_user_id || allDevicesOrderNotification) {
         vibrateConstant();        

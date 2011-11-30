@@ -705,6 +705,13 @@ div#settings_screen div#settings_container form table td.data input {
     width: 205px;
 }
 
+div#settings_screen div#settings_container div#update_app_link {
+    width: 200px;
+    max-width: 200px;
+    height: 45px;
+    max-height: 45px;
+}
+
 /* End Settings Screen */
 
 /* Generic Styles */

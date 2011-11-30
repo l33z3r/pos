@@ -13,8 +13,6 @@ class OrderItemAddition < ActiveRecord::Base
 end
 
 
-
-
 # == Schema Information
 #
 # Table name: order_item_additions
@@ -33,5 +31,7 @@ end
 #  created_at                  :datetime
 #  updated_at                  :datetime
 #  background_color_2          :string(255)
+#  hide_on_receipt             :boolean(1)      default(FALSE)
+#  is_addable                  :boolean(1)      default(TRUE)
 #
 

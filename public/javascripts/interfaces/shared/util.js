@@ -98,6 +98,8 @@ function doClearAndReload() {
     doIt = confirm("Are you sure you want to clear your cookies and local web storage?");
     
     if(doIt) {
+        showSpinner();
+        
         clearLocalStorageAndCookies();
         
         doReload(true);

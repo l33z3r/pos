@@ -75,6 +75,8 @@ class Admin::OrderItemAdditionGridsController < Admin::AdminController
     @item.background_color_2 = params[:bgColor2]
     @item.text_color = params[:textColor]
     @item.text_size = params[:textSize]
+    @item.hide_on_receipt = params[:hideOnReceipt]
+    @item.is_addable = params[:isAddable]
     
     @item.save!
   end

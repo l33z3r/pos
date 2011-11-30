@@ -73,6 +73,11 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     for(var itemKey in tableOrderDataJSON.items) {
         //        alert(tableOrderDataJSON.items[itemKey].product.name);
         
+        //make sure the data types are converted correctly
+        if(tableOrderDataJSON.items[itemKey].product.show_price_on_receipt) {
+            tableOrderDataJSON.items[itemKey].product.show_price_on_receipt = (tableOrderDataJSON.items[itemKey].product.show_price_on_receipt.toString() == "true" ? true : false);
+        }
+        
         var copiedOrderItem = {};
         //console.log("OIAITEMS: " + tableOrderDataJSON.items[itemKey].oia_items + " " + (tableOrderDataJSON.items[itemKey].oia_items.length>0));
         
@@ -89,6 +94,10 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
                 //make sure the data types are converted correctly
                 nextOIA.is_add = (nextOIA.is_add.toString() == "true" ? true : false);
                 nextOIA.is_note = (nextOIA.is_note.toString() == "true" ? true : false);
+                
+                nextOIA.hide_on_receipt = (nextOIA.hide_on_receipt.toString() == "true" ? true : false);
+                nextOIA.is_addable = (nextOIA.is_addable.toString() == "true" ? true : false);
+                
                 nextOIA.abs_charge = parseFloat(nextOIA.abs_charge);
                 //console.log("converted abs_charge: " + nextOIA.abs_charge);
                 newOIAItems.push(nextOIA);
@@ -521,6 +530,10 @@ function doSelectTable(tableNum) {
         currentSelectedRoom = 0;
         
         loadCurrentOrder();
+        
+        if(currentOrder && currentOrder.service_charge) {
+            serviceCharge = parseFloat(currentOrder.service_charge);
+        }
         
         //total the order first
         calculateOrderTotal(currentOrder);

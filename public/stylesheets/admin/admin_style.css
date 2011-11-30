@@ -378,9 +378,13 @@ div#product_builder div#builder_fields_container div.extra_options div#appearanc
     position: relative;
 }
 
+div#product_builder div#builder_fields_container div.extra_options div#appearance_tab_content div.product_image_preview {
+    float: left;
+}
+
 div#product_builder div#builder_fields_container div.extra_options div#appearance_tab_content div.product_image_preview img {
     max-width: 70px;
-    max-height: 70px;
+    max-height: 50px;
 }
 
 div#product_builder div#builder_fields_container div.extra_options div#appearance_tab_content div#product_image_input_container div.fakefile {

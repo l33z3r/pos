@@ -27,24 +27,15 @@
 
   <div id="functions_buttons_container">
 
-    <div id="main_menu_button" 
-         class="button" onclick="swipeToMenu()">
+    <div class="button" onclick="swipeToMenu();">
       <div class="icon">
         <%= image_tag "/images/button_logos/mobile/orders.png" %>
       </div>
       <div class="button_name">Orders</div>
     </div>
-    
-    <div id="main_menu_button" 
-         class="button" onclick="goToMainMenu()">
-      <div class="icon">
-        <%= image_tag "/images/button_logos/main_menu.png" %>
-      </div>
-      <div class="button_name">Main Menu</div>
-    </div>
 
     <% @functions_display_buttons.each_with_index do |db, index| %>
-      <% if (index+2) != 0 and (index+2) % 4 == 0 %><div class="clear">&nbsp;</div><% end %>
+      <% if (index+1) != 0 and (index+1) % 4 == 0 %><div class="clear">&nbsp;</div><% end %>
       <div id="sales_button_<%=db.id%>" 
            class="button" onclick="<%= button_action db %>">
         <div class="icon">
@@ -53,6 +44,30 @@
         <div class="button_name"><%=db.button_text%></div>
       </div>
     <% end %>
+
+    <div id="main_menu_button" 
+         class="button" onclick="goToMainMenu();">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/main_menu.png" %>
+      </div>
+      <div class="button_name">Main Menu</div>
+    </div>
+
+    <div class="button" onclick="doClearAndReload();">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/clear_refresh.png" %>
+      </div>
+      <div class="button_name">Clear</div>
+    </div>
+
+    <div class="button" onclick="exitAndroidApp();">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/exit.png" %>
+      </div>
+      <div class="button_name">Exit</div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
 
   </div>
 </div>

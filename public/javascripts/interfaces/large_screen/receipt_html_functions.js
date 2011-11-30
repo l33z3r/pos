@@ -163,6 +163,18 @@ function fetchCashScreenReceiptHeaderHTML() {
     return headerHTML;
 }
 
+function getTillRollServiceChargeHTML(order) {
+    if(order.service_charge && parseFloat(order.service_charge) > 0) {
+        serviceChargeAmountFormatted = currency(parseFloat(order.service_charge));
+        tillRollServiceChargeHTML = clearHTML + "<div class='data_table'><div class='label'>Service Charge</div>";
+        tillRollServiceChargeHTML += "<div class='data'>" + serviceChargeAmountFormatted + "</div>" + clearHTML + "</div>";
+    } else {    
+        tillRollServiceChargeHTML = "";
+    }
+    
+    return tillRollServiceChargeHTML;
+}
+
 function getTillRollDiscountHTML(order) {
     if(order.discount_percent && parseFloat(order.discount_percent) > 0) {
         preDiscountPrice = order.pre_discount_price;

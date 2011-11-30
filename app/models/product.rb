@@ -142,6 +142,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: products
@@ -178,7 +180,7 @@ end
 #  shipping_cost              :float
 #  commission_percent         :float
 #  container_type_id          :integer(4)
-#  quantity_per_container     :float
+#  quantity_per_container     :float           default(1.0)
 #  is_active                  :boolean(1)      default(TRUE)
 #  is_service                 :boolean(1)      default(FALSE)
 #  show_price_prompt          :boolean(1)      default(FALSE)
@@ -211,5 +213,6 @@ end
 #  button_bg_color_2          :string(255)
 #  is_special                 :boolean(1)      default(FALSE)
 #  is_deleted                 :boolean(1)      default(FALSE)
+#  show_price_on_receipt      :boolean(1)      default(TRUE)
 #
 

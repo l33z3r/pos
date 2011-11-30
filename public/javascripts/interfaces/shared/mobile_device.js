@@ -55,3 +55,9 @@ function getAndroidFingerPrint() {
     
     return "noid";
 }
+
+function updateApp() {
+    if(inAndroidWrapper()) {        
+        clueyAndroidJSInterface.updateApp()
+    }
+}

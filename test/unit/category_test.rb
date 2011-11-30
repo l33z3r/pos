@@ -8,6 +8,7 @@ class CategoryTest < ActiveSupport::TestCase
 end
 
 
+
 # == Schema Information
 #
 # Table name: categories
@@ -19,6 +20,6 @@ end
 #  created_at         :datetime
 #  updated_at         :datetime
 #  tax_rate_id        :integer(4)
-#  printers           :string(255)
+#  printers           :string(255)     default("")
 #
 
