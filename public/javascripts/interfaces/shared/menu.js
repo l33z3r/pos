@@ -11,6 +11,12 @@ var currentTableOrder = null;
 var totalOrder = null;
 var currentOrderItem;
 
+var paymentMethod = null;
+var serviceCharge = 0;
+var cashback = 0;
+
+var defaultServiceChargePercent = 0;
+
 var currentSelectedMenuItemElement;
 
 var oiaIsAdd = true;
@@ -36,7 +42,9 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
     }
     
     //save the current users table order to reload it after sync
-    savedTableID = selectedTable;
+    var savedTableID = selectedTable;
+    var savedServiceCharge = serviceCharge;
+    var savedCashback = cashback;
     
     for(var i = 0; i < employees.length; i++) {
         nextUserIDToSyncWith = employees[i].id;
@@ -64,6 +72,12 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         //now load back up the current users order
         getTableOrderFromStorage(current_user_id, savedTableID);
     }
+    
+    //restore vars
+    serviceCharge = savedServiceCharge;
+    cashback = savedCashback;
+    
+    //if we are looking at the open 
 }
 
 function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith) {
@@ -258,7 +272,9 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
 
 function doReceiveClearTableOrder(recvdTerminalID, tableID, orderNum, tableLabel, terminalEmployeeID, terminalEmployee) {
     //save the current users table order to reload it after sync
-    savedTableID = selectedTable;
+    var savedTableID = selectedTable;
+    var savedServiceCharge = serviceCharge;
+    var savedCashback = cashback;
     
     for (var i = 0; i < employees.length; i++){
         nextUserIDToSyncWith = employees[i].id;
@@ -278,6 +294,10 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, orderNum, tableLabel
         //now load back up the current users order
         getTableOrderFromStorage(current_user_id, savedTableID);
     }
+    
+    //restore vars
+    serviceCharge = savedServiceCharge;
+    cashback = savedCashback;
 }
 
 function doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployee, nextUserIDToSyncWith) {
@@ -489,6 +509,23 @@ function addItemToTableOrderAndSave(orderItem) {
 function loadCurrentOrder() {
     //retrieve the users current order from cookie
     currentOrder = getOrderFromStorage(current_user_id);
+    
+    if(currentOrder) {
+        
+        //load the cashback
+        if(typeof currentOrder.cashback == "undefined") {
+            currentOrder.cashback = 0;
+        }
+    
+        cashback = parseFloat(currentOrder.cashback);
+    
+        //load the service charge
+        if(typeof currentOrder.service_charge == "undefined") {
+            currentOrder.service_charge = 0;
+        }
+   
+        serviceCharge = parseFloat(currentOrder.service_charge);
+    }
 }
 
 function recptScroll(targetPrefix) {
@@ -511,7 +548,7 @@ function recptScroll(targetPrefix) {
             currentHeight = $('#' + targetPrefix + 'till_roll').height();
             scrollHeight = $('#' + targetPrefix + 'till_roll').attr('scrollHeight');
             newHeight = scrollHeight - currentHeight;
-        
+       
             jscroll_api.scrollToY(newHeight + 20);
         } else {
             newHeight = $('#' + targetPrefix + 'receipt').attr('scrollHeight');
@@ -547,6 +584,9 @@ function doSelectTable(tableNum) {
     } else {
         currentSelectedRoom = tables[tableNum].room_id;
     }
+    
+    //set the defautl service charge for this room
+    defaultServiceChargePercent = rooms[currentSelectedRoom].defaultServiceChargePercent;
     
     storeLastRoom(current_user_id, currentSelectedRoom);
 

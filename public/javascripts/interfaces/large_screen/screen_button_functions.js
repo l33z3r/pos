@@ -43,6 +43,11 @@ function printLastReceipt() {
 }
 
 function promptForServiceCharge() {
+    if(currentOrderEmpty()) {
+        setStatusMessage("No order present!", true, true);
+        return;
+    }
+    
     popupHTML = $("#service_charge_popup_markup").html();
         
     if(currentScreenIsMenu()) {
@@ -73,13 +78,21 @@ function promptForServiceCharge() {
         serviceCharge = parseFloat(newVal);
     };
     
-    console.log("Setting sc: " + serviceCharge);
-    $('#' + popupId).find('.service_charge_popup_amount').html(serviceCharge);
+    var popupEl = $('#' + popupId);
+    
+    setDefaultServiceChargeButtonSelected(popupEl, defaultServiceChargePercent);
+    
+    popupEl.find('.service_charge_popup_amount').html(serviceCharge);
     
     setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
 }
 
-function saveServiceCharge() {
+function applyDefaultServiceChargePercent() {
+    serviceCharge = (defaultServiceChargePercent * parseFloat(getCurrentOrder().total))/100;
+    saveServiceCharge(false);
+}
+
+function saveServiceCharge(performTotal) {    
     serviceCharge = parseFloat(serviceCharge);
     
     if(isNaN(serviceCharge)) {
@@ -99,13 +112,8 @@ function saveServiceCharge() {
     
     hideServiceChargePopup();
     
-    if (currentScreenIsTotals()) {
+    if(performTotal) {
         doTotal();
-    }
-    
-    if(inMenuContext()) {
-        writeTotalToReceipt(order, order.total);
-        setTimeout(menuRecptScroll, 20);
     }
 }
 
@@ -129,6 +137,8 @@ function hideServiceChargePopup() {
 }
 
 function presetServiceChargePercentageClicked(percentage) {
+    defaultServiceChargePercent = percentage;
+    
     if(currentOrderEmpty()) {
         serviceCharge = 0;
     } else {
@@ -143,10 +153,26 @@ function presetServiceChargePercentageClicked(percentage) {
         
     popupId = popupEl.GetBubblePopupID();
     
-    $('#' + popupId).find('.service_charge_popup_amount').html(serviceCharge);
+    var popupEl = $('#' + popupId);
+    
+    popupEl.find('.service_charge_popup_amount').html(serviceCharge);
+    
+    setDefaultServiceChargeButtonSelected(popupEl, percentage);
+}
+
+function setDefaultServiceChargeButtonSelected(popupEl, percentage) {
+    popupEl.find('.service_charge_button_percent').removeClass("selected");
+    
+    var percentage_without_decimal = percentage.toString().replace(".", "");
+    popupEl.find('#service_charge_button_percent_' + percentage_without_decimal).addClass("selected");
 }
 
 function promptForCashback() {
+    if(currentOrderEmpty()) {
+        setStatusMessage("No order present!", true, true);
+        return;
+    }
+    
     popupHTML = $("#cashback_popup_markup").html();
         
     popupEl = showTotalsScreenDefaultPopup(popupHTML);
@@ -178,7 +204,7 @@ function promptForCashback() {
     setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
 }
 
-function saveCashback() {
+function saveCashback() {    
     cashback = parseFloat(cashback);
     
     if(isNaN(cashback)) {

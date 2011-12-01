@@ -153,7 +153,7 @@ Pos::Application.routes.draw do
       end
     end
     
-    resources :rooms, :only => [:index, :new, :create, :destroy] do
+    resources :rooms, :only => [:index, :new, :create, :update, :destroy] do
       member do
         get 'builder'
         

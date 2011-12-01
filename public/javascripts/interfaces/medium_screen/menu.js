@@ -121,7 +121,7 @@ function finishDoSelectMenuItem() {
 
     //add a line to the receipt
     writeOrderItemToReceipt(orderItem);
-    //writeTotalToReceipt(currentOrder, currentOrder['total']);
+    writeTotalToReceipt(currentOrder, currentOrder['total']);
 
     menuRecptScroll();
 }
@@ -340,9 +340,9 @@ function loadReceipt(order) {
     
     setReceiptsHTML(getCurrentRecptHTML() + allOrderItemsRecptHTML)
 
-    //    if(orderTotal != null) {
-    //        writeTotalToReceipt(order, orderTotal);
-    //    }
+        if(orderTotal != null) {
+            writeTotalToReceipt(order, orderTotal);
+        }
     
     menuRecptScroll();
 }
@@ -608,6 +608,12 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusC
     setTimeout(menuRecptScroll, 20);
     
     currentSelectedReceiptItemEl = null;
+}
+
+function writeTotalToReceipt(order, orderTotal) {
+    if(!order) return;
+    
+    console.log("Write total to receipt NYI!");
 }
 
 function tableScreenBack() {

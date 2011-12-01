@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111129154952) do
+ActiveRecord::Schema.define(:version => 20111130180200) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -313,7 +313,8 @@ ActiveRecord::Schema.define(:version => 20111129154952) do
     t.integer  "grid_y_size"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "grid_resolution", :default => 5
+    t.integer  "grid_resolution",                :default => 5
+    t.float    "default_service_charge_percent"
   end
 
   create_table "sessions", :force => true do |t|

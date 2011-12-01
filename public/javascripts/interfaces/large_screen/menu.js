@@ -4,10 +4,6 @@ var currentOrderJSON;
 var tableSelectMenu = null;
 var menuScreenShortcutSelectMenu = null;
 
-var paymentMethod = null;
-var serviceCharge = 0;
-var cashback = 0;
-
 var defaultShortcutDropdownText = "Menu";
 
 var editItemPopupAnchor;
@@ -680,21 +676,20 @@ function writeTotalToReceipt(order, orderTotal) {
     if(!order) return;
     
     //write the total order discount to the end of the order items
-    tillRollServiceChargeHTML = getTillRollServiceChargeHTML(order);
-    
-    $('#till_roll_service_charge').html(tillRollServiceChargeHTML);
+//    tillRollServiceChargeHTML = getTillRollServiceChargeHTML(order);
+//    
+//    $('#till_roll_service_charge').html(tillRollServiceChargeHTML);
     
     //write the total order discount to the end of the order items
     tillRollDiscountHTML = getTillRollDiscountHTML(order);
     
     $('#till_roll_discount').html(tillRollDiscountHTML);
     
-    if(order.service_charge) {
-        orderTotal += parseFloat(order.service_charge);
-    } else if(serviceCharge) {
-        //this would be for "no table" selected as we dont store the service charge with it
-        orderTotal += parseFloat(serviceCharge);
-    }
+//    if(order.service_charge) {
+//        orderTotal += parseFloat(order.service_charge);
+//    } else if(serviceCharge) {
+//        orderTotal += parseFloat(serviceCharge);
+//    }
     
     $('#total_value').html(currency(orderTotal));
 }
@@ -787,6 +782,8 @@ function doTotal() {
         return;
     }
     
+    applyDefaultServiceChargePercent();
+    
     totalOrder = getCurrentOrder();
     
     //get the receipt items and the taxes/discounts
@@ -799,46 +796,13 @@ function doTotal() {
     cashTendered = 0;
     cashTenderedKeypadString = "";
     
-    
-    
-    
-    
-    
-    //write the total order discount to the end of the order items
-    cashScreenServiceChargeHTML = getTillRollServiceChargeHTML(totalOrder);
-    
-    $('#totals_till_roll_service_charge').html(cashScreenServiceChargeHTML);
-    
     //set the discount in the cash out till roll
     cashScreenReceiptDiscountHTML = getTillRollDiscountHTML(totalOrder);
     $('#totals_till_roll_discount').html(cashScreenReceiptDiscountHTML);
     
     var orderTotal = totalOrder.total;
     
-    if(totalOrder.service_charge) {
-        orderTotal += parseFloat(totalOrder.service_charge);
-    } else if(serviceCharge) {
-        //this would be for "no table" selected as we dont store the service charge with it
-        orderTotal += parseFloat(serviceCharge);
-    }
-    
     $('#cash_screen_sub_total_value').html(currency(orderTotal));
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     if(!paymentMethod) {
         paymentMethod = defaultPaymentMethod;
@@ -894,11 +858,6 @@ function doTotalFinal() {
         numPersons = 4;
     }
 
-    cashTendered = getTendered();
-
-    totalOrder.cash_tendered = cashTendered;
-    totalOrder.change = $('#totals_change_value').html();
-    
     if(!paymentMethod) {
         paymentMethod = defaultPaymentMethod;
     }
@@ -932,6 +891,17 @@ function doTotalFinal() {
         orderSalesTaxRate = -1;
         orderTotal = totalOrder.total;
     }
+    
+    cashTendered = getTendered();
+
+    if(parseFloat(cashTendered) == 0.0) {
+        cashTendered = orderTotal;
+        totalOrder.cash_tendered = orderTotal;
+    } else {
+        totalOrder.cash_tendered = cashTendered;
+    }
+    
+    totalOrder.change = $('#totals_change_value').html();
     
     //make sure 2 decimal places
     orderTotal = parseFloat(orderTotal).toFixed(2);

@@ -474,7 +474,7 @@ nav#main_nav div#menu_screen_shortcut_dropdown_container {
 
 nav#main_nav div#menu_screen_shortcut_dropdown_container div.mcdropdown {
     height: 22px;
-    
+
     padding: 0px;
 }
 
@@ -525,8 +525,13 @@ div.global_status_message {
     display: none;
 }
 
-div#receipt_keypad_container div#receipt {
+div#receipt_keypad_container div#receipt_container {
     height: 379px;
+    background-color: #FFF;
+}
+
+div#receipt_keypad_container div#receipt {
+    height: 315px;
     overflow-y: auto;
     display: block;
     background-color: #FFF;
@@ -1115,7 +1120,6 @@ div#reports_left_receipt_container {
     float: left;
     width: 300px;
     margin-left: 8px;
-
 }
 
 div#cash_reports_screen div#reports_left_receipt {
@@ -1429,7 +1433,7 @@ div#menu_screen div#receipt_keypad_container div#menu_buttons_popup_anchor {
 /* Till Roll */
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll {
-    height: 280px;
+    height: 260px;
     display: block;
     background-color: #FFF;
 }
@@ -1459,23 +1463,7 @@ div#menu_screen div#receipt_keypad_container div#total_container div#total_value
 
 div.receipt {
     line-height: 19px;
-}
 
-div.receipt div.jspVerticalBar,
-div.receipt_jscrollpane div.jspVerticalBar{
-    width: 18px;
-}
-
-div.receipt .jspArrowUp,
-div.receipt_jscrollpane .jspArrowUp,
-div.receipt .jspArrowUp:hover,
-div.receipt_jscrollpane .jspArrowUp:hover,
-div.receipt .jspArrowDown,
-div.receipt_jscrollpane .jspArrowDown,
-div.receipt .jspArrowDown:hover,
-div.receipt_jscrollpane .jspArrowDown:hover {
-    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
-    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
 }
 
 div.receipt div.till_roll div.data_table {
@@ -1496,16 +1484,16 @@ div.till_roll_discount div.data_table div.data,
 div.till_roll_service_charge div.data_table div.data{
     float: left;
     text-align: right;
-    width: 120px;
+    width: 128px;
     font-weight: bold;
 }
 
 div.receipt div.till_roll div.data_table div.label.time {
-    width: 102px;
+    width: 97px;
 }
 
 div.receipt div.till_roll div.data_table div.data.time {
-    width: 135px;
+    width: 140px;
 }
 
 div.till_roll_service_charge {
@@ -1921,6 +1909,10 @@ div#service_charge_popup_markup_container div#percentage_buttons div.button {
     text-align: center;
 }
 
+div#service_charge_popup_markup_container div#percentage_buttons div.button.selected {
+    color: #FFF;
+}
+
 /* End Service Charge Popup Markup */
 
 /* Cashback Popup Markup */
@@ -2063,7 +2055,7 @@ div#total_screen div#payment_options_money_info_container {
 }
 
 div#total_screen div#totals_receipt {
-    height: 398px;
+    height: 336px;
     background-color: white;
     overflow-y: auto;
     display: block;
@@ -2079,8 +2071,13 @@ div#total_screen div#receipt_keypad_container div#totals_receipt_header {
     height: 15px;
 }
 
+div#total_screen div#totals_receipt_container {
+    height: 398px;
+    background-color: #FFF;
+}
+
 div#total_screen div#totals_receipt div#totals_till_roll {
-    height: 322px;
+    height: 260px;
     display: block;
     background-color: #FFF;
 }
@@ -2135,7 +2132,7 @@ div#total_screen div#payment_options_money_info_container div#payment_options_se
 
 div#total_screen div#payment_options_money_info_container div#tender_section {
     margin-bottom: 10px;
-    height: 535px;
+    height: 531px;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container {
@@ -2994,6 +2991,30 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
     -moz-opacity: 30;
     filter:alpha(opacity: .30);
     opacity: .30;
+}
+
+/* custom scrollbars in webkit */
+::-webkit-scrollbar {
+    width: 20px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1)); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1)); 
 }
 
 /* End Generic Styles */

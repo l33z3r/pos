@@ -506,14 +506,6 @@ function initScrollPanes() {
         showArrows: true,
         autoReinitialise : true
     });
-    
-    if(!isTouchDevice()) {
-        $('.receipt_jscrollpane').jScrollPane({
-            showArrows: true,
-            autoReinitialise : true,
-            autoReinitialiseDelay : 1
-        });
-    }
 }
 
 function initCheckboxes() {

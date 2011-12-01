@@ -44,13 +44,13 @@
 
     </div>
 
-    <div id="receipt" class="receipt receipt_jscrollpane">
-      <div id="till_roll" class="till_roll"></div>
-      <div class="clear">&nbsp;</div>
-      <div id="till_roll_discount" class="till_roll_discount">
-        &nbsp;
+    <div id="receipt_container">
+      <div id="receipt" class="receipt">
+        <div id="till_roll" class="till_roll"></div>
+        <div class="clear">&nbsp;</div>
       </div>
-      <div id="till_roll_service_charge" class="till_roll_service_charge"></div>
+
+      <div id="till_roll_discount" class="till_roll_discount"></div>
     </div>
 
     <div id="price_change_receipt">
@@ -90,7 +90,7 @@
 
     <div id="total_container">
 
-      <div id="label">Sub-Total:</div>
+      <div id="label"><%= @tax_chargable ? "Sub-Total:" : "Total:" %></div>
       <div id="total_value"></div>
 
       <div class="clear">&nbsp;</div>

@@ -10,3 +10,15 @@ var tables = new Array();
   tables['<%=ti.id%>'] = table_info;
 
 <% end -%>
+
+var rooms = new Array();
+
+<% Room.all.each do |room|-%>
+  room_info = {
+  id : '<%= room.id %>',
+  defaultServiceChargePercent : '<%= room.default_service_charge_percent %>'
+  }
+
+  rooms['<%=room.id%>'] = room_info;
+
+<% end -%>

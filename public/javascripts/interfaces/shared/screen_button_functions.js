@@ -114,6 +114,8 @@ function addCourseEndToOrder() {
 }
 
 function printBill() {
+    applyDefaultServiceChargePercent();
+    
     totalOrder = getCurrentOrder();
     
     if(orderEmpty(totalOrder)) {

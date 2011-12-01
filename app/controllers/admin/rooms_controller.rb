@@ -178,6 +178,14 @@ class Admin::RoomsController < Admin::AdminController
     render :json => {:success => true}.to_json
   end
   
+  def update
+    @room = Room.find(params[:id])
+    
+    @room.update_attributes(params[:room])
+    
+    redirect_to admin_rooms_url
+  end
+  
   def destroy
     @room = Room.find(params[:id])
     

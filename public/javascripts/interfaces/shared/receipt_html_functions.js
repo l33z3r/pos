@@ -50,7 +50,9 @@ function fetchLastRoomID(user_id) {
 }
 
 function printReceipt(content, printRecptMessage) {
-    setStatusMessage("Printing Receipt");
+    if(!inKitchenContext()) {
+        setStatusMessage("Printing Receipt");
+    }
     
     if(printRecptMessage) {
         receiptMessageHTML = "<div id='receipt_message'>" + receiptMessage + "</div>";
@@ -290,7 +292,6 @@ function fetchTotalsWithoutTaxChargableHTML(totalLabelText) {
     }
     
     totalsHTML = fetchServiceChargeHTML();
-    console.log(subTotal + " " + discountAmount + " " + serviceCharge);
     
     //finally add up the total from the generated values above to avoid rounding errors
     total = (parseFloat(subTotal) - parseFloat(discountAmount)) + parseFloat(serviceCharge);
