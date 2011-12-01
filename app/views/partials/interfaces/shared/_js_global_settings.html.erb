@@ -1,6 +1,6 @@
 <script type="text/javascript">
   
-  //if we pass this param, we clear our local data, this is mainly used in the mobile app
+//if we pass this param, we clear our local data, this is mainly used in the mobile app
 <% if params[:reset_local_storage] == "true" %>
     clearLocalStorageAndCookies();
 <% end %>
@@ -36,6 +36,8 @@
   //service charge label
   var serviceChargeLabel = "<%= @service_charge_label %>";
   
+  var globalDefaultServiceChargePercent = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_SERVICE_CHARGE_PERCENT %>;
+  
   //default payment method
   var defaultPaymentMethod = "<%= PaymentMethod.load_default.name %>";
    
@@ -66,7 +68,7 @@
   
   var terminalID = "<%=@terminal_id%>";
   
-  var pollingAmount = <%= (ENV['RAILS_ENV'] == 'development') ? "2000" : "2000" %>;
+  var pollingAmount = <%= (ENV['RAILS_ENV'] == 'development') ? "1000" : "2000" %>;
   
   var using_mobile = <%= mobile_device? ? "true" : "false" %>;
   
@@ -76,6 +78,8 @@
   
   var kioskMode = <%= CUSTOM_CONFIG["in_kiosk_mode"] %>;
   var overrideKiosk = <%= params["override_kiosk"] or params["ok"] ? true : false %>;
+  
+  var showPrintFrame = <%= params["show_print_frame"] or params["spf"] ? true : false %>;
   
   //business info
   var business_name = "<%= @business_name %>";

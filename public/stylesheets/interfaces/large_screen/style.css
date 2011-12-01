@@ -531,7 +531,7 @@ div#receipt_keypad_container div#receipt_container {
 }
 
 div#receipt_keypad_container div#receipt {
-    height: 315px;
+    height: 330px;
     overflow-y: auto;
     display: block;
     background-color: #FFF;
@@ -1503,7 +1503,7 @@ div.till_roll_service_charge {
 div.till_roll_discount {
     margin-left: 5px;
     margin-top: 10px;
-    height: 30px;
+    height: 10px;
 }
 
 div.receipt div.till_roll div.order_line {
@@ -2055,7 +2055,7 @@ div#total_screen div#payment_options_money_info_container {
 }
 
 div#total_screen div#totals_receipt {
-    height: 336px;
+    height: 351px;
     background-color: white;
     overflow-y: auto;
     display: block;

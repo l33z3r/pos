@@ -568,6 +568,8 @@ function doSelectTable(tableNum) {
         
         loadCurrentOrder();
         
+        defaultServiceChargePercent = globalDefaultServiceChargePercent;
+        
         if(currentOrder && currentOrder.service_charge) {
             serviceCharge = parseFloat(currentOrder.service_charge);
         }

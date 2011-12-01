@@ -405,6 +405,16 @@
                       <% end %>
                     </td>
                   </tr>
+                  
+                  <tr>
+                    <td>Default Service Charge Percent (0 - 100)</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_SERVICE_CHARGE_PERCENT %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
 

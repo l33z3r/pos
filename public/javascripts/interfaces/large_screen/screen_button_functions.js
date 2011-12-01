@@ -163,7 +163,9 @@ function presetServiceChargePercentageClicked(percentage) {
 function setDefaultServiceChargeButtonSelected(popupEl, percentage) {
     popupEl.find('.service_charge_button_percent').removeClass("selected");
     
+    percentage = parseFloat(percentage);
     var percentage_without_decimal = percentage.toString().replace(".", "");
+    
     popupEl.find('#service_charge_button_percent_' + percentage_without_decimal).addClass("selected");
 }
 

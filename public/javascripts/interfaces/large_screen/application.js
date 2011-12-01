@@ -16,6 +16,12 @@ function doGlobalInit() {
         //to run chrome in kiosk mode, use this command in linux (google-chrome --kiosk http://localhost:3000)
         registerDisallowRightClick();
     } else {
+        if(showPrintFrame) {
+            $('#wrapper').height(1270);
+            $('#body').height(1270);
+            $('#printFrame').width(300).height(300);
+        }
+        
         $('body').css("overflow", "scroll");
     }
     

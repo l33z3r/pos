@@ -57,6 +57,7 @@ class GlobalSetting < ActiveRecord::Base
   AUTHENTICATION_REQUIRED = 28
   LOCAL_AUTHENTICATION_REQUIRED = 29
   All_DEVICES_ORDER_NOTIFICATION = 30
+  DEFAULT_SERVICE_CHARGE_PERCENT = 31
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -88,7 +89,8 @@ class GlobalSetting < ActiveRecord::Base
     ORDER_RECEIPT_WIDTH => "Order Receipt Width",
     AUTHENTICATION_REQUIRED => "Authentication Required",
     LOCAL_AUTHENTICATION_REQUIRED => "Local Authentication Required",
-    All_DEVICES_ORDER_NOTIFICATION => "All Device Receive Order Notification"
+    All_DEVICES_ORDER_NOTIFICATION => "All Device Receive Order Notification",
+    DEFAULT_SERVICE_CHARGE_PERCENT => "Default Service Charge Percent"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -170,6 +172,9 @@ class GlobalSetting < ActiveRecord::Base
     when All_DEVICES_ORDER_NOTIFICATION
       @gs = find_or_create_by_key(:key => All_DEVICES_ORDER_NOTIFICATION.to_s, :value => "false", :label_text => LABEL_MAP[All_DEVICES_ORDER_NOTIFICATION])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when DEFAULT_SERVICE_CHARGE_PERCENT
+      @gs = find_or_create_by_key(:key => DEFAULT_SERVICE_CHARGE_PERCENT.to_s, :value => 0, :label_text => LABEL_MAP[DEFAULT_SERVICE_CHARGE_PERCENT])
+      @gs.parsed_value = @gs.value.to_f
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -222,6 +227,19 @@ class GlobalSetting < ActiveRecord::Base
       write_attribute("value", new_value)
     when All_DEVICES_ORDER_NOTIFICATION
       new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when DEFAULT_SERVICE_CHARGE_PERCENT
+      #make sure it is a number between 0 and 100
+      value_as_num = value.to_f
+      
+      if value_as_num > 100
+        new_value = 100
+      elsif value_as_num < 0
+        new_value = 0
+      else
+        new_value = value_as_num
+      end
+      
       write_attribute("value", new_value)
     else
       #catch the keys that are not only integers and wont get caught in the switch statement
