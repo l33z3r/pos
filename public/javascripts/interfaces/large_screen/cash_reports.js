@@ -376,3 +376,4 @@ function switchColorRow(id) {
             $('.table_row').css('background-color', '#FFFFFF');
             $('#row_'+id).css('background-color', '#659EC7');
 }
+

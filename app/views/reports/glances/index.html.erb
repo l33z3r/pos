@@ -1,0 +1,162 @@
+<% @nav_title = "Reports" %>
+
+<%= javascript_include_tag "rails", "interfaces/large_screen/reports", :cache => "cache/large_screen" %>
+<%= javascript_include_tag :high_charts %>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        <%= yield :javascript %>
+    });
+</script>
+
+<div id="reports_container">
+
+    <div id="report_option_tabs" class="vtabs report_option_tabs">
+
+      <div>
+        <ul>
+          <li><a id="at_a_glance_section_link" href="#at_a_glance_section">At a Glance</a></li>
+          <li><a id="sales_section_link" href="#sales_info_section">Sales</a></li>
+          <li><a id="cash_section_link" href="#cash_section">Cash</a></li>
+          <li><a id="payments_section_link" href="#payments_section">Payments</a></li>
+          <li><a id="customers_section_link" href="#customers_section">Customers</a></li>
+          <li><a id="suppliers_section_link" href="#suppliers_section">Suppliers</a></li>
+          <li><a id="stock_control_section_link" href="#stock_control_section">Stock Control</a></li>
+          <li><a id="staff_section_link" href="#staff_section">Staff</a></li>
+        </ul>
+      </div>
+
+      <div>
+        
+        <div class="container" id="#at_a_glance_section">
+            
+            <div id="at_a_glance_filters" class="popout_dialog">
+               <div id="date_select_container">
+                  <div class="dropdown_container">
+                    <select onchange="addTerminalFilter($(this).val())">
+                      <option value="">All Terminals</option>
+                      <% @all_terminals.each do |terminal_id|%>
+                          <option value="<%= terminal_id %>"><%= terminal_id %></option>
+                      <% end %>
+                    </select>
+                  </div>
+
+                  <div class="dropdown_container">
+                    <select onchange="addDateFilter($(this).val())">
+                      <option value="1">Today</option>
+                      <option value="2">Yesterday</option>
+                      <option value="3">Last Week</option>
+                      <option value="4">Last Month</option>
+                      <option value="5">All Time</option>
+                    </select>
+                  </div>
+
+                  <div class="date_box">
+                    <div class="label">From:</div>
+                    <div class="date_select">
+                      <input type="text" size="8" id="date_from" name="date_from"
+                             value="<%=@selected_from_date%>"/>
+                    </div>
+                  </div>
+                  <div class="date_box">
+                    <div class="label">To:</div>
+                    <div class="date_select">
+                      <input type="text" size="8" id="date_to" name="date_to"
+                             value="<%=@selected_to_date%>"/>
+                    </div>
+                  </div>
+                  <div class="clear">&nbsp;</div>
+                </div>
+            </div>
+
+            <div id="at_a_glance_results">
+                  <%= high_chart("graph_container", @graph) %>
+            </div>
+
+            <div id="at_a_glance_right_buttons">
+              <div class="summary_button" onclick="">
+                <div class="button">Sales Summary Today</div>
+              </div>
+              <div class="summary_button" onclick="">
+                <div class="button">Cash Summary Today</div>
+              </div>
+              <div class="summary_button" onclick="">
+                <div class="button">Payments Summary Today</div>
+              </div>
+              <div class="summary_button" onclick="">
+                <div class="button">Stock Control Summary Today</div>
+              </div>
+              <div class="summary_button" onclick="">
+                <div class="button">Staff Summary Today</div>
+              </div>
+
+          </div>
+        </div>
+
+        <div class="container" id="#sales_info_section">
+          <div class="jscrollpane">
+
+            <h3>Sales</h3>
+
+            <div class="clear">&nbsp;</div>
+          </div>
+        </div>
+
+        <div class="container" id="#cash_section">
+          <div class="jscrollpane">
+
+            <h3>Sales</h3>
+
+            <div class="clear">&nbsp;</div>
+          </div>
+        </div>
+
+        <div class="container" id="#payments_section">
+          <div class="jscrollpane">
+
+            <h3>Sales</h3>
+
+            <div class="clear">&nbsp;</div>
+          </div>
+        </div>
+
+        <div class="container" id="#customers_section">
+          <div class="jscrollpane">
+
+            <h3>Sales</h3>
+
+            <div class="clear">&nbsp;</div>
+          </div>
+        </div>
+
+        <div class="container" id="#suppliers_section">
+          <div class="jscrollpane">
+
+            <h3>Sales</h3>
+
+            <div class="clear">&nbsp;</div>
+          </div>
+        </div>
+
+        <div class="container" id="#stock_control_section">
+          <div class="jscrollpane">
+
+            <h3>Sales</h3>
+
+            <div class="clear">&nbsp;</div>
+          </div>
+        </div>
+
+        <div class="container" id="#staff_section">
+          <div class="jscrollpane">
+
+            <h3>Sales</h3>
+
+            <div class="clear">&nbsp;</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+</div>

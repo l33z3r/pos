@@ -14,6 +14,7 @@ gem 'faker'
 gem "will_paginate", "~> 3.0.pre2"
 gem "meta_search", "1.0.5"
 
+gem 'lazy_high_charts', '~> 1.1.5'
 
 gem 'aws-s3', '0.6.2'
 
