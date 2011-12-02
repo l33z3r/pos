@@ -3,6 +3,11 @@ var orderInProcess = false;
 
 function doSyncTableOrder() {
     
+    if(!callHomePollInitSequenceComplete) {
+        niceAlert("Downloading data from server, please wait.");
+        return;
+    }
+    
     if(orderInProcess) {
         niceAlert("There is an order being processed, please wait.");
         return;
@@ -111,6 +116,11 @@ function addCourseEndToOrder() {
             loadReceipt(currentOrder);
         }
     }
+}
+
+function quickSale() {
+    applyDefaultServiceChargePercent();
+    doTotalFinal();
 }
 
 function printBill() {

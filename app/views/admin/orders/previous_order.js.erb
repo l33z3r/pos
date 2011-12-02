@@ -16,7 +16,12 @@ var orderItems = new Array();
 
   //alias some vars for compatibility
   orderItem.amount = orderItem.quantity;
-  orderItem.product_price = orderItem.product.price;
+  
+  //calculate the product price by dividing the total price by quantity, rather than
+  //by the prodcut price now, as it may not be the same, as the price may have been 
+  //different at sale time
+  orderItem.product_price = parseFloat(orderItem.total_price)/parseFloat(orderItem.amount);
+  
   orderItem.showServerAddedText = orderItem.show_server_added_text;
   orderItem.serving_employee_id = orderItem.employee_id
   

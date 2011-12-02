@@ -95,7 +95,7 @@ class ButtonMapper
     when ROOM_BUILDER_BUTTON
       @retval = "window.location = '#{admin_rooms_path}'; return false;"
     when TOTAL_BUTTON
-      @retval = "doTotalFinal();"
+      @retval = "quickSale();"
     when SUBTOTAL_BUTTON
       @retval = "doTotal();"
     when SAVE_BUTTON

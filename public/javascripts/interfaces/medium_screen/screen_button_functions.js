@@ -47,8 +47,4 @@ function saveServiceCharge(performTotal) {
     }else {
         storeOrderInStorage(current_user_id, order);
     }
-    
-//    if(performTotal) {
-//        doTotal();
-//    }
 }

@@ -118,7 +118,7 @@ function newButtonGroup() {
         type: 'POST',
         url: 'create_button_group',
         success : function() {
-            location.reload();
+            window.location.reload();
         },
         data: {
             name : name
@@ -270,7 +270,7 @@ function makeBiggerAdminTableLinks() {
                 
                 if(doIt) {
                     $.post($(this).find(":first-child").attr("href"), "_method=delete", function(data) {});
-                    location.reload();
+                    window.location.reload();
                     event.stopPropagation();
                     return false;
                 } else {

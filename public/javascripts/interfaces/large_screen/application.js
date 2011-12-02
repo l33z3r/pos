@@ -42,10 +42,6 @@ function doGlobalInit() {
     
     initPressedCSS();
     
-    //check if we have loaded a previous order from the admin interface
-    //this will also load it into tableOrders[-1]
-    initPreviousOrder();
-    
     //custom button widths
     renderMenuItemButtonDimensions();
     
@@ -54,6 +50,10 @@ function doGlobalInit() {
     if(inMenuContext()) {
         initMenu();
         
+        //check if we have loaded a previous order from the admin interface
+        //this will also load it into tableOrders[-1]
+        initPreviousOrder();
+    
         //init the display button passcode request popup
         $('#menu_buttons_popup_anchor').CreateBubblePopup();
         $('#menu_buttons_popup_anchor').FreezeBubblePopup();

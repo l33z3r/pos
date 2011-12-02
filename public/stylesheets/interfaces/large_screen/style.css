@@ -385,12 +385,27 @@ nav#main_nav div#e_name,
 nav#main_nav div#terminal_id,
 nav#main_nav div#clock,
 nav#main_nav div#date,
-nav#main_nav div#nav_title {
+nav#main_nav div#nav_title,
+nav#main_nav div#loading_orders_spinner {
     float: left;
     padding: 2px 4px;
     border-right: 1px solid #DDD;
     color: #FFF;
     min-width: 80px;
+}
+
+nav#main_nav div#loading_orders_spinner {
+    background-color: #FFF;
+    margin-left: 10px;
+    width: 20px;
+    min-width: 20px;
+    padding: 1px 1px 0px 1px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+nav#main_nav div#loading_orders_spinner img {
+    height: 14px;
 }
 
 nav#main_nav div#nav_title {

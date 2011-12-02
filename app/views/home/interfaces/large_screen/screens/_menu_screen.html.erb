@@ -24,7 +24,7 @@
 
 <%# cache("room_select_dropdown") do %>
         <ul id="table_select" class="mcdropdown_menu">
-          <li id="previous_order_select_item" rel="-1" style="display: none;" onclick="doSelectTable(-1);">Previous Order</li>
+          <li id="previous_order_select_item" rel="-1" style="display: none;" onclick="doSelectTable(-1);">Reopened</li>
           <li rel="0" onclick="doSelectTable(0)">No Table</li>
           <% Room.all.each do |room|%>
             <li>

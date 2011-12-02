@@ -132,6 +132,25 @@ div.screen_header div.header_label {
     margin-top: 17px;
 }
 
+div#loading_orders_spinner {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: #FFF;
+    margin-left: 10px;
+    width: 20px;
+    min-width: 20px;
+    padding: 6px;
+    -moz-border-bottom-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    -moz-border-bottom-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+div#loading_orders_spinner img {
+    height: 16px;
+}
+
 /* For page swiping */
 
 #content-scroll {
@@ -382,6 +401,10 @@ div#menu_screen div#table_screen div#header {
 
 div#menu_screen div#table_screen div#header div#back_button {
     float: left;
+}
+
+div#menu_screen div#table_screen div#header div#options_button {
+    float: right;
 }
 
 div#menu_screen div#table_screen div#header div.title {
@@ -654,6 +677,12 @@ div#functions_screen div#top_section div#menu_switcher_container div#menu_select
 div#functions_screen div#functions_buttons_container {
     border-spacing: 6px;
     padding: 5px;
+}
+
+div#functions_screen div#functions_buttons_container div.button {
+    min-height: 115px;
+    height: 115px;
+    max-height: 115px;
 }
 
 /* End Functions Screen */

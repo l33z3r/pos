@@ -584,12 +584,12 @@ function doSelectTable(tableNum) {
     
     if(tableNum == -1) {
         currentSelectedRoom = -1;
+        defaultServiceChargePercent = globalDefaultServiceChargePercent;
     } else {
         currentSelectedRoom = tables[tableNum].room_id;
+        //set the defautl service charge for this room
+        defaultServiceChargePercent = rooms[currentSelectedRoom].defaultServiceChargePercent;
     }
-    
-    //set the defautl service charge for this room
-    defaultServiceChargePercent = rooms[currentSelectedRoom].defaultServiceChargePercent;
     
     storeLastRoom(current_user_id, currentSelectedRoom);
 

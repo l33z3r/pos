@@ -86,6 +86,8 @@ function roundNumberDown(num, dec) {
 function doReload(resetSession) {
     var reload_location;
     
+    showSpinner();
+    
     if(resetSession) {
         reload_location = "/";
         reload_location += "?reset_session=true";
@@ -539,7 +541,7 @@ function niceAlert(message, title) {
         {
             width: 360,
             height: 280,
-            okButtonText: 'Dismiss',
+            okButtonText: 'Ok',
             onOk: "hideNiceAlert()"
         });
 }

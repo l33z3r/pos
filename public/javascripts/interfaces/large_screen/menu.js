@@ -823,7 +823,7 @@ function doTotal() {
     takeTendered();
 }
 
-function doTotalFinal() {
+function doTotalFinal() {    
     if(currentOrderEmpty()) {
         setStatusMessage("No order present to total!", true, true);
         return;
