@@ -59,7 +59,10 @@ function callHomePollComplete() {
     if(immediateCallHome) {
         callHomePoll();
     } else {
-        callHomePollInitSequenceComplete = true;
+        if(!callHomePollInitSequenceComplete) {
+            callHomePollInitSequenceComplete = true;
+            callHomePollInitSequenceCompleteHook();
+        }
         
         //show the receipts now that they are all rendered
         if(inKitchenContext() && !kitchenScreenInitialized) {
@@ -71,3 +74,11 @@ function callHomePollComplete() {
     }
 }
 
+//this is called when the first load of orders are loaded
+function callHomePollInitSequenceCompleteHook() {
+    //are we on the previous sales screen?
+    checkUpdateOpenOrdersScreen();
+    
+    //hide the spinner at the top nav
+    $('#loading_orders_spinner').hide();
+}

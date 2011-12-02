@@ -77,7 +77,8 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
     serviceCharge = savedServiceCharge;
     cashback = savedCashback;
     
-    //if we are looking at the open 
+    //if we are looking at the open orders page, then update them
+    checkUpdateOpenOrdersScreen();
 }
 
 function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith) {

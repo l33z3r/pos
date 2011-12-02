@@ -162,6 +162,11 @@ var openOrdersTableFilter = "";
 var openOrdersServerFilter = "";
 
 function loadOpenOrders() {
+    //only do so if the first few orders have been loaded
+    if(!callHomePollInitSequenceComplete) {
+        return;
+    }
+    
     //clear the table rows
     $('#order_list_container').find('table.open_order_list > tbody:last').empty();
     

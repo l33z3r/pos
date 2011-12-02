@@ -638,7 +638,7 @@ function alertReloadRequest(terminalId, hardReload) {
         {
             width: 360,
             height: 280,
-            okButtonText: 'Reload',
+            okButtonText: 'Ok',
             onOk: okFuncCall
         });
 }
@@ -673,4 +673,14 @@ jQuery.parseQuery = function(qs,options) {
         params[p[0]] = params[p[0]]?((params[p[0]] instanceof Array)?(params[p[0]].push(p[1]),params[p[0]]):[params[p[0]],p[1]]):p[1];
     });
     return params;
+}
+
+function checkUpdateOpenOrdersScreen() {
+    var onPreviousSalesScreen = $('#admin_order_list').length > 0;
+    
+    if(onPreviousSalesScreen) {
+        if(typeof loadOpenOrders != 'undefined') {
+            loadOpenOrders();
+        }
+    }
 }
