@@ -681,7 +681,7 @@ function currentOrderEmpty(){
 }
 
 function orderEmpty(order) {
-    return !order || order.items.length == 0;
+    return !order || !order.items || order.items.length == 0;
 }
 
 function orderStartTime(order) {

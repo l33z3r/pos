@@ -50,7 +50,7 @@ function startPriceChangeMode() {
     $('#table_screen_button').add('#table_select_container').hide();
     $('#price_change_header').show();
     
-    $('#receipt').hide();
+    $('#receipt_container').hide();
     $('#price_change_receipt').show();
         
     loadPriceDivs(currentMenuPage);   
@@ -70,7 +70,7 @@ function finishPriceChangeMode() {
     $('#table_screen_button').add('#table_select_container').show();
     $('#price_change_header').hide();
     
-    $('#receipt').show();
+    $('#receipt_container').show();
     $('#price_change_receipt').hide();
         
     //hide stock take divs
@@ -107,7 +107,7 @@ function startStockTakeMode() {
     $('#table_screen_button').add('#table_select_container').hide();
     $('#stock_take_header').show();
     
-    $('#receipt').hide();
+    $('#receipt_container').hide();
     $('#stock_take_receipt').show();
         
     loadStockDivs(currentMenuPage);   
@@ -124,7 +124,7 @@ function finishStockTakeMode() {
     $('#table_screen_button').add('#table_select_container').show();
     $('#stock_take_header').hide();
     
-    $('#receipt').show();
+    $('#receipt_container').show();
     $('#stock_take_receipt').hide();
         
     //hide stock take divs

@@ -87,11 +87,6 @@ function promptForServiceCharge() {
     setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
 }
 
-function applyDefaultServiceChargePercent() {
-    serviceCharge = (defaultServiceChargePercent * parseFloat(getCurrentOrder().total))/100;
-    saveServiceCharge(false);
-}
-
 function saveServiceCharge(performTotal) {    
     serviceCharge = parseFloat(serviceCharge);
     

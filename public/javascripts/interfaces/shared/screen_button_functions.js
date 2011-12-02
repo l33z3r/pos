@@ -125,3 +125,8 @@ function printBill() {
     
     printReceipt(fetchFinalReceiptHTML(true, false), true);
 }
+
+function applyDefaultServiceChargePercent() {
+    serviceCharge = (defaultServiceChargePercent * parseFloat(getCurrentOrder().total))/100;
+    saveServiceCharge(false);
+}

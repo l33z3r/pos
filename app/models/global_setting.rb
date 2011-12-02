@@ -155,7 +155,7 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_key(:key => RELOAD_HTML5_CACHE_TIMESTAMP.to_s, :value => 0, :label_text => LABEL_MAP[RELOAD_HTML5_CACHE_TIMESTAMP])
       @gs.parsed_value = @gs.value.to_f
     when WEBSOCKET_IP
-      @gs = find_or_create_by_key(:key => "#{WEBSOCKET_IP.to_s}_#{args[:fingerprint]}", :value => "127.0.0.1", :label_text => LABEL_MAP[WEBSOCKET_IP])
+      @gs = find_or_create_by_key(:key => "#{WEBSOCKET_IP.to_s}_#{args[:fingerprint]}", :value => "192.168.1.X", :label_text => LABEL_MAP[WEBSOCKET_IP])
       @gs.parsed_value = @gs.value
     when CURRENCY_NOTES_IMAGES
       @gs = find_or_create_by_key(:key => CURRENCY_NOTES_IMAGES.to_s, :value => CURRENCY_NOTES_IMAGES_EURO, :label_text => LABEL_MAP[CURRENCY_NOTES_IMAGES])

@@ -27,6 +27,12 @@ function doGlobalInit() {
         $('body').css("overflow", "scroll");
     }
     
+    if(showPrintFrame) {
+        $('#wrapper').height(1270);
+        $('#body').height(1270);
+        $('#printFrame').width(300).height(300);
+    }
+    
     //need to set the scroll content holder width
     $('#content-holder').width(pageWidth * numPages);
     

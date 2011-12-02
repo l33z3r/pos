@@ -9,11 +9,11 @@ Main stylesheet.
 /* Global Styles */
 
 body {
-    
+
     width: 480px;
     height: 798px;
     overflow: hidden;
-    
+
     margin: 0px;
     padding: 0px;
     color: #333333;
@@ -197,6 +197,10 @@ div#menu_screen div#receipt_buttons_container div#buttons_container {
     border-spacing: 3px 1px;
 }
 
+div#menu_screen div#receipt_buttons_container div#buttons_container div.button {
+    white-space: nowrap;
+}
+
 div#menu_screen div#receipt_buttons_container div#cluey_logo {
     width: 64px;
     float: left;
@@ -222,7 +226,7 @@ div#menu_screen div#menu_container div#menu_pages_container {
 }
 
 div#menu_screen div#menu_container div#menu_pages_scroller {
-    
+
 }
 
 div#menu_screen div#menu_container div#menu_pages_container div.page {
@@ -264,7 +268,7 @@ div#menu_screen div#menu_container div#menu_items_container {
 }
 
 div#menu_screen div#menu_container div#menu_items_scroller {
-    
+
 }
 
 div#menu_screen div#menu_container div#menu_items_container div.item {
@@ -756,11 +760,13 @@ div.button div.button_name {
 }
 
 div.button div.button_name {
-    padding: 7px 3px;
+    padding: 7px 1px;
     font-size: 21px;
     line-height: 23px;
     text-decoration: none;
-    color: #333333;
+    color: #333;
+    width: 102px;
+    overflow: hidden;
 }
 
 div.button.selected div.button_name {
