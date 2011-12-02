@@ -29,24 +29,6 @@ function showScreenFromHashParams() {
     
 }
 
-function getURLHashParams() {
-    var hashParams = {};
-    
-    var e,
-    a = /\+/g,  // Regex for replacing addition symbol with a space
-    r = /([^&;=]+)=?([^&;]*)/g,
-    d = function (s) {
-        return decodeURIComponent(s.replace(a, " "));
-    },
-    q = window.location.hash.substring(1);
-
-    while (e = r.exec(q)) {
-        hashParams[d(e[1])] = d(e[2]);
-    }
-
-    return hashParams;
-}
-
 var utliKeypadClickFunction;
 var utilKeypadCancelFunction;
     
@@ -441,20 +423,6 @@ function initBeep() {
 
 function playButtonClickSound() { 
     $("#js_player").jPlayer("play");
-}
-
-jQuery.parseQuery = function(qs,options) {
-    var q = (typeof qs === 'string'?qs:window.location.search), o = {
-        'f':function(v){
-            return unescape(v).replace(/\+/g,' ');
-        }
-    }, options = (typeof qs === 'object' && typeof options === 'undefined')?qs:options, o = jQuery.extend({}, o, options), params = {};
-    jQuery.each(q.match(/^\??(.*)$/)[1].split('&'),function(i,p){
-        p = p.split('=');
-        p[1] = o.f(p[1]);
-        params[p[0]] = params[p[0]]?((params[p[0]] instanceof Array)?(params[p[0]].push(p[1]),params[p[0]]):[params[p[0]],p[1]]):p[1];
-    });
-    return params;
 }
 
 function inAdminContext() {

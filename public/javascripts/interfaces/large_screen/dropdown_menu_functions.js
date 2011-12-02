@@ -17,7 +17,7 @@ function menuScreenDropdownItemSelected(index, name) {
             type: 'POST',
             url: '/admin/terminals/link_display',
             success: function() {
-                location.reload();
+                window.location.reload();
             },
             data: {
                 terminal_id : terminalID,

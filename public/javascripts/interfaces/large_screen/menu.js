@@ -676,20 +676,20 @@ function writeTotalToReceipt(order, orderTotal) {
     if(!order) return;
     
     //write the total order discount to the end of the order items
-//    tillRollServiceChargeHTML = getTillRollServiceChargeHTML(order);
-//    
-//    $('#till_roll_service_charge').html(tillRollServiceChargeHTML);
+    //    tillRollServiceChargeHTML = getTillRollServiceChargeHTML(order);
+    //    
+    //    $('#till_roll_service_charge').html(tillRollServiceChargeHTML);
     
     //write the total order discount to the end of the order items
     tillRollDiscountHTML = getTillRollDiscountHTML(order);
     
     $('#till_roll_discount').html(tillRollDiscountHTML);
     
-//    if(order.service_charge) {
-//        orderTotal += parseFloat(order.service_charge);
-//    } else if(serviceCharge) {
-//        orderTotal += parseFloat(serviceCharge);
-//    }
+    //    if(order.service_charge) {
+    //        orderTotal += parseFloat(order.service_charge);
+    //    } else if(serviceCharge) {
+    //        orderTotal += parseFloat(serviceCharge);
+    //    }
     
     $('#total_value').html(currency(orderTotal));
 }
@@ -1584,13 +1584,22 @@ function doReceiveOrderReady(employee_id, terminal_id, table_id, table_label) {
     console.log("got order ready notification for " + employee_id + " for table " + table_label + " for terminal " + terminal_id);
     
     if(terminal_id == terminalID) {
-        ModalPopups.Confirm('niceAlertContainer',
+        //        ModalPopups.Confirm('niceAlertContainer',
+        //            'Order Ready!', "<div id='nice_alert'>Order for table " + table_label + " is ready</div>",
+        //            {
+        //                yesButtonText: 'OK',
+        //                noButtonText: 'Cancel',
+        //                onYes: 'orderReadyOKClicked()',
+        //                onNo: 'orderReadyCancelClicked()',
+        //                width: 400,
+        //                height: 250
+        //            } );
+
+        ModalPopups.Alert('niceAlertContainer',
             'Order Ready!', "<div id='nice_alert'>Order for table " + table_label + " is ready</div>",
             {
-                yesButtonText: 'OK',
-                noButtonText: 'Cancel',
-                onYes: 'orderReadyOKClicked()',
-                onNo: 'orderReadyCancelClicked()',
+                okButtonText: 'OK',
+                onOk: 'orderReadyOKClicked()',
                 width: 400,
                 height: 250
             } );

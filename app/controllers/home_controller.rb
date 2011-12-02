@@ -67,40 +67,6 @@ class HomeController < ApplicationController
     @order_ready_notification = fetch_order_ready_notification @last_order_ready_notification_time
     
     if @order_ready_notification
-      EXCEPTION_LOGGER.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       @order_ready_request_time = @order_ready['order_ready_request_time']
       @order_ready_request_employee_id = @order_ready['order_ready_request_employee_id']
@@ -183,7 +149,8 @@ class HomeController < ApplicationController
   def request_terminal_reload
     request_reload_app @terminal_id
     
-    redirect_to(:back, :notice => 'Reload request sent.')
+    flash[:notice] = "Reload Request Sent To All Terminals"
+    redirect_to :back
   end
   
   def clear_all_fragment_caches

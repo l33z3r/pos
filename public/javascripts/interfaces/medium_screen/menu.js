@@ -340,9 +340,9 @@ function loadReceipt(order) {
     
     setReceiptsHTML(getCurrentRecptHTML() + allOrderItemsRecptHTML)
 
-        if(orderTotal != null) {
-            writeTotalToReceipt(order, orderTotal);
-        }
+    if(orderTotal != null) {
+        writeTotalToReceipt(order, orderTotal);
+    }
     
     menuRecptScroll();
 }
@@ -630,13 +630,22 @@ function doReceiveOrderReady(employee_id, terminal_id, table_id, table_label) {
     if(employee_id == current_user_id || allDevicesOrderNotification) {
         vibrateConstant();        
      
-        ModalPopups.Confirm('niceAlertContainer',
+        //        ModalPopups.Confirm('niceAlertContainer',
+        //            'Order Ready!', "<div id='nice_alert'>Order for table <b>" + table_label + "</b> is ready</div>",
+        //            {
+        //                yesButtonText: 'OK',
+        //                noButtonText: 'Cancel',
+        //                onYes: 'orderReadyOKClicked()',
+        //                onNo: 'orderReadyCancelClicked()',
+        //                width: 400,
+        //                height: 250
+        //            } );
+
+        ModalPopups.Alert('niceAlertContainer',
             'Order Ready!', "<div id='nice_alert'>Order for table <b>" + table_label + "</b> is ready</div>",
             {
-                yesButtonText: 'OK',
-                noButtonText: 'Cancel',
-                onYes: 'orderReadyOKClicked()',
-                onNo: 'orderReadyCancelClicked()',
+                okButtonText: 'OK',
+                onOk: 'orderReadyOKClicked()',
                 width: 400,
                 height: 250
             } );
@@ -679,7 +688,7 @@ function displayDropdownSelected(selectedDisplayId) {
         type: 'POST',
         url: '/admin/terminals/link_display',
         success: function() {
-            location.reload();
+            window.location.reload();
         },
         data: {
             terminal_id : terminalID,

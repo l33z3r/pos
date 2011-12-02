@@ -9,6 +9,14 @@
       <div id="body">
         <%= render :partial => "/partials/interfaces/large_screen/nav" %>
 
+        <script type="text/javascript">
+          $(function() {
+            <% [:notice, :warning, :error].collect do |key| %>
+              <%= "niceAlert('#{flash[key].html_safe}');" unless flash[key].blank? %>
+            <% end %>
+          });
+        </script>
+        
         <div id="content_container">
           <div id="admin_content_screen">
             <%= render :partial => "/partials/interfaces/large_screen/admin_nav" unless @hide_admin_header %>

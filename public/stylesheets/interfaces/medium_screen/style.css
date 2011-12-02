@@ -107,18 +107,6 @@ div.wrapper div td {
     text-align: left;
 }
 
-span#reload_message {
-    cursor: pointer;
-    background: -moz-linear-gradient(#558ED5, #17365D) repeat scroll 0 0 transparent;
-    background: -webkit-gradient(linear, left top, left bottom, from(#558ED5), to(#17365D));
-    border: 1px solid black;
-    -moz-border-radius: 3px;
-    border-radius: 19px;
-    display: block;
-    color: white;
-    padding: 15px;
-}
-
 div.screen_header {
     height: 50px;
     background: -moz-linear-gradient(#558ED5, #17365D) repeat scroll 0 0 transparent;

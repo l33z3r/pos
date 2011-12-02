@@ -1,11 +1,3 @@
-<script type="text/javascript">
-  $(function() {
-<% [:notice, :warning, :error].collect do |key| %>
-  <%= "niceAlert('#{flash[key].html_safe}');" unless flash[key].blank? %>
-<% end %>
-  });
-</script>
-
 <div id="admin_subnav_left">
   <%= render :partial => "/partials/interfaces/large_screen/menu_screen_options_screen_buttons" %>
 
