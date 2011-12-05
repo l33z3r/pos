@@ -400,7 +400,7 @@ function inProdMode() {
 }
 
 function inKioskMode() {
-    return kioskMode && !overrideKiosk;
+    return kioskMode && !overrideKiosk && !inMobileContext();
 }
 
 function pauseScript(ms) {
