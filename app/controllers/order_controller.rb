@@ -90,6 +90,11 @@ class OrderController < ApplicationController
     @order_details = @order_params.delete(:order_details)
     @order = Order.new(@order_params)
     
+    if(!Employee.find_by_id(@order.employee_id))
+      #employee id not set correctly, so just grab the last active employee
+      @order.employee_id = Employee.order("last_active desc").first
+    end
+    
     if !@order.order_num or @order.order_num.to_s.length == 0
       @order.order_num = Order.next_order_num
     end

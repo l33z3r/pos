@@ -135,6 +135,8 @@ function doMenuPageSelect(pageNum, pageId) {
 }
 
 function doSelectMenuItem(productId, menuItemId, element) {
+    ensureLoggedIn();
+    
     if(inStockTakeMode) {
         loadStockTakeReceiptArea(productId, menuItemId);
         return;
@@ -782,6 +784,10 @@ function doTotal() {
         return;
     }
     
+    if(!ensureLoggedIn()) {
+        return;
+    }
+    
     applyDefaultServiceChargePercent();
     
     totalOrder = getCurrentOrder();
@@ -826,6 +832,10 @@ function doTotal() {
 function doTotalFinal() {    
     if(currentOrderEmpty()) {
         setStatusMessage("No order present to total!", true, true);
+        return;
+    }
+    
+    if(!ensureLoggedIn()) {
         return;
     }
     

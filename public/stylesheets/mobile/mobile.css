@@ -1,10 +1,9 @@
 body.mobile {
-    width: 480px;
-    height: 798px;
+
 }
 
 body div#jqt {
-    width: 478px;
+    position: relative;
     text-align: center;
     font-size: 22px;
 }
@@ -30,6 +29,26 @@ body div#jqt ul li.arrow a:active {
 }
 
 /* Misc */
+
+div#loading_orders_spinner {
+    z-index: 100;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: #FFF;
+    margin-left: 10px;
+    width: 20px;
+    min-width: 20px;
+    padding: 6px;
+    -moz-border-bottom-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    -moz-border-bottom-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+div#loading_orders_spinner img {
+    height: 16px;
+}
 
 div.mobile_button {
     float: left;

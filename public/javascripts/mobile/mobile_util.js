@@ -87,3 +87,12 @@ function renderMobileActiveTableList() {
         $('#table_' + tableIDS[i] + '_list_item').show();
     }
 }
+
+function checkInitDataDownload() {
+    if(!callHomePollInitSequenceComplete) {
+        niceAlert("Downloading data from server, please wait.");
+        return false;
+    }
+    
+    return true;
+}

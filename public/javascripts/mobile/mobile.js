@@ -187,3 +187,21 @@ function tableRecptPollComplete() {
         setTimeout(tableRecptPoll, tableRecptPollingAmount);
     }
 }
+
+function viewByTerminalClicked() {
+    if(checkInitDataDownload()) {
+        jQT.goTo('#terminal_list');
+    }
+}
+
+function viewByTableClicked() {
+    if(checkInitDataDownload()) {
+        jQT.goTo('#table_list');
+    }
+}
+
+function viewByServerClicked() {
+    if(checkInitDataDownload()) {
+        jQT.goTo('#server_list')
+    }
+}

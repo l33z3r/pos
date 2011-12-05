@@ -2,6 +2,9 @@ var lastSyncedOrder = null;
 var orderInProcess = false;
 
 function doSyncTableOrder() {
+    if(!ensureLoggedIn()) {
+        return;
+    }
     
     if(!callHomePollInitSequenceComplete) {
         niceAlert("Downloading data from server, please wait.");
@@ -10,12 +13,6 @@ function doSyncTableOrder() {
     
     if(orderInProcess) {
         niceAlert("There is an order being processed, please wait.");
-        return;
-    }
-    
-    //make sure logged in
-    if(!current_user_id) {
-        niceAlert("You are not logged in, you may have been logged out elsewhere. Please log in again, and re-order.");
         return;
     }
     

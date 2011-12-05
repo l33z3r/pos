@@ -85,6 +85,10 @@ function doMenuPageSelect(pageNum, pageId) {
 }
 
 function doSelectMenuItem(productId, element) {
+    if(!ensureLoggedIn()) {
+        return;
+    }
+    
     if(currentMenuItemQuantity == "")
         currentMenuItemQuantity = "1";
     
@@ -419,6 +423,10 @@ function doCanceltableNumberSelectKeypad() {
 }
 
 function doSubmitTableNumber() {
+    if(!ensureLoggedIn()) {
+        return;
+    }
+    
     table_label = $('#table_num').val().toString();
     
     //check table exists
