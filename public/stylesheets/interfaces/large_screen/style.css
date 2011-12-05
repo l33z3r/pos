@@ -51,7 +51,13 @@ input[type=submit] {
     cursor: pointer;
 }
 
-input.focus {
+input, select {
+    border: 2px solid #B4B4B4;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+input.focus, select.focus {
     border: 2px solid #E36C0A;
     -moz-border-radius: 4px;
     border-radius: 4px;
@@ -2472,6 +2478,17 @@ div#table_select_screen div#room_list div#room_buttons {
     border-spacing: 7px;
 }
 
+div#table_select_screen div#tables_screen_status_message {
+    border: 1px solid #000;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background-color: white;
+    margin: 10px auto 10px auto;
+    width: 400px;
+    padding: 2px;
+    display: none;
+}
+
 div#table_select_screen div#room_list div#room_buttons div.button {
     max-width: 130px;
     width: 130px;
@@ -2910,13 +2927,14 @@ div.button.selected {
 }
 
 div.button div.icon {
-    height: 28px;
-    margin-bottom: 5px;
+    height: 36px;
+    margin-bottom: 2px;
+    margin-top: 3px;
 }
 
 div.button div.icon img {
-    max-height: 28px;
-    max-width: 28px;
+    max-height: 36px;
+    max-width: 36px;
 }
 
 div.button div.button_name {

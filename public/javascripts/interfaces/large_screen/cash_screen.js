@@ -18,7 +18,7 @@ function takeTendered() {
 var cashTendered;
 
 function getTendered() {
-    var val = cashTendered;    
+    var val = cashTendered;   
     
     if(isNaN(parseFloat(val))) {
         val = 0;

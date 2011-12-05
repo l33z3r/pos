@@ -16,12 +16,12 @@
 
   <div id="only_void_orders_selector">
     <%= check_box_tag "only_void_orders", params[:only_void_orders], params[:only_void_orders], :id => "only_void_orders_checkbox" %> 
-    <div class="label" onclick="$('#only_void_orders_checkbox').click();">Only Void Orders</div>
+    <div class="label" onclick="$('#only_void_orders_checkbox').click();">Void Orders</div>
   </div>
 
   <div id="date_select_container">
     <div class="date_box">
-      <div class="label">Date From:</div>
+      <div class="label">From:</div>
       <div class="date_select">
         <input type="text" size="8" id="date_from" name="date_from"
                value="<%=@selected_from_date%>"/>

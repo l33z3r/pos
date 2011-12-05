@@ -81,6 +81,23 @@ class OrderController < ApplicationController
       render :json => {:success => false}.to_json
     end
   end
+  
+  def transfer_order
+    @table_from_id = params[:table_from_id]
+    @table_from_order_num = params[:table_from_order_num]
+    @table_to_id = params[:table_to_id]
+    
+    @table_from = TableInfo.find(@table_from_id)
+    @table_to = TableInfo.find(@table_to_id)
+    
+    @error = false
+    
+    if !@table_from or !@table_to
+      @error = true
+    end
+    
+    do_request_clear_table_order @terminal_id, Time.now.to_i, @table_from_id, @table_from_order_num, e
+  end
 
   private
 
@@ -89,6 +106,11 @@ class OrderController < ApplicationController
 
     @order_details = @order_params.delete(:order_details)
     @order = Order.new(@order_params)
+    
+    if(!Employee.find_by_id(@order.employee_id))
+      #employee id not set correctly, so just grab the last active employee
+      @order.employee_id = Employee.order("last_active desc").first
+    end
     
     if !@order.order_num or @order.order_num.to_s.length == 0
       @order.order_num = Order.next_order_num

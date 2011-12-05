@@ -9,6 +9,7 @@ div.admin div#content_container section {
 }
 
 div.admin input[type=submit] {
+    color: #000;
     padding: 0px 15px;
     height: 40px;
     max-height: 40px;
@@ -23,6 +24,39 @@ div.admin input[type=submit] {
     box-shadow: 0px 1px 0px #777;
     background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+
+div.admin div#actions {
+    margin-top: 20px;
+}
+
+div.admin div#actions a {
+    margin: 0px 8px;
+    color: #000;
+    padding: 11px 15px;
+    text-decoration: none;
+    height: 16px;
+    max-height: 16px;
+    overflow: hidden;
+    vertical-align: middle;
+    display: table-cell;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+
+div.admin div#content_container section#form_container div#fields div.field {
+    margin-top: 6px;
+}
+
+div.admin div#content_container section#form_container div#fields div.field label {
+    display: -webkit-inline-box;
+    margin-bottom: 4px;
 }
 
 div#admin_subnav_left {
@@ -163,7 +197,6 @@ div#new_employee section#form_container form div {
 
 div#new_employee section#form_container form div#actions a {
     float: right;
-    margin: 3px 8px 0px 0px;
 }
 
 div#new_employee section#form_container form div#actions input {
@@ -182,7 +215,6 @@ div#show_employee section#employee_info p.employee_image img {
 
 div#show_employee section#employee_info div#actions a {
     float: right;
-    margin: 3px 8px 0px 0px;
 }
 
 div#show_employee section#employee_info div#actions input {
@@ -221,7 +253,6 @@ div#edit_employee section#form_container form div {
 
 div#edit_employee section#form_container form div#actions a {
     float: right;
-    margin: 3px 8px 0px 0px;
 }
 
 div#edit_employee section#form_container form div#actions input {
@@ -481,7 +512,6 @@ div#show_product section#product_info p.product_image img {
 
 div#show_product section#product_info div#actions a {
     float: right;
-    margin: 3px 8px 0px 0px;
 }
 
 div#show_product section#product_info div#actions input {
@@ -625,7 +655,6 @@ div#new_modifier_category section#form_container form div {
 
 div#new_modifier_category section#form_container form div#actions a {
     float: right;
-    margin: 3px 8px 0px 0px;
 }
 
 div#new_modifier_category section#form_container form div#actions input {
@@ -644,7 +673,6 @@ div#show_modifier_category section#modifier_category_info div#actions {
 
 div#show_modifier_category section#modifier_category_info div#actions a {
     float: right;
-    margin: 3px 8px 0px 0px;
 }
 
 div#show_modifier_category section#modifier_category_info div#actions input {
@@ -675,7 +703,6 @@ div#edit_modifier_category section#form_container form div {
 
 div#edit_modifier_category section#form_container form div#actions a {
     float: right;
-    margin: 3px 8px 0px 0px;
 }
 
 div#edit_modifier_category section#form_container form div#actions input {
@@ -720,7 +747,6 @@ div#new_category section#form_container form div {
 
 div#new_category section#form_container form div#actions a {
     float: right;
-    margin: 3px 8px 0px 0px;
 }
 
 div#new_category section#form_container form div#actions input {
@@ -735,7 +761,6 @@ div#show_category section#category_info {
 
 div#show_category section#category_info div#actions a {
     float: right;
-    margin: 3px 8px 0px 0px;
 }
 
 div#show_category section#category_info div#actions input {
@@ -766,7 +791,6 @@ div#edit_category section#form_container form div {
 
 div#edit_category section#form_container form div#actions a {
     float: right;
-    margin: 3px 8px 0px 0px;
 }
 
 div#edit_category section#form_container form div#actions input {
@@ -815,7 +839,6 @@ div#new_display section#form_container form div {
 
 div#new_display section#form_container form div#actions a {
     float: right;
-    margin: 3px 8px 0px 0px;
 }
 
 div#new_display section#form_container form div#actions input {
@@ -830,7 +853,6 @@ div#show_display section#display_info {
 
 div#show_display section#display_info div#actions a {
     float: right;
-    margin: 3px 8px 0px 0px;
 }
 
 div#show_display section#display_info div#actions input {
@@ -861,7 +883,6 @@ div#edit_display section#form_container form div {
 
 div#edit_display section#form_container form div#actions a {
     float: right;
-    margin: 3px 8px 0px 0px;
 }
 
 div#edit_display section#form_container form div#actions input {
@@ -906,7 +927,6 @@ div#new_room section#form_container form div {
 
 div#new_room section#form_container form div#actions a {
     float: right;
-    margin: 3px 8px 0px 0px;
 }
 
 div#new_room section#form_container form div#actions input {
@@ -981,7 +1001,7 @@ div#admin_order_list section#orders div#order_list_section div#order_list_contai
 }
 
 div#admin_order_list section#orders div#order_list_section div#order_list_container div#only_void_orders_selector {
-    margin: 6px 10px;
+    margin-top: 10px;
     font-weight: bold;
     float: left;
 }
@@ -992,7 +1012,7 @@ div#admin_order_list section#orders div#order_list_section div#order_list_contai
 }
 
 div#admin_order_list section#orders div#order_list_section div#order_list_container div#only_void_orders_selector div {
-    margin-top: 6px;
+    margin-top: 3px;
     margin-left: 2px;
     float: left;
 }
@@ -1004,6 +1024,7 @@ div#admin_order_list section#orders div#order_list_section div#order_list_contai
 
 div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container div.date_box {
     float: left;
+    margin-top: 2px;
 }
 
 div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container div.date_box div.label {
@@ -1045,14 +1066,12 @@ div#admin_order_list section#orders div#order_list_section div#order_list_contai
 
 div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container div.go_button {
     float: left;
-    margin-right: 10px;
 }
 
 div#admin_order_list section#orders div#order_list_section div#order_list_container div#date_select_container div.go_button div.button {
     padding-top: 2px;
     height: 25px;
-    font-weight: bold;
-    width: 30px;
+    width: 80px;
 }
 
 div#admin_order_list section#orders div#receipt_buttons_section div#admin_order_list_receipt {
@@ -1099,7 +1118,7 @@ div#admin_order_list section#orders div#receipt_buttons_section div#total_contai
 
 div#admin_order_list section#orders table.order_list {
     min-width: 720px;
-    margin: 20px auto 20px auto;
+    margin: 10px auto 10px auto;
 }
 
 div#admin_order_list section#orders td#no_orders_message {
@@ -1166,7 +1185,6 @@ div#new_role section#form_container form div {
 
 div#new_role section#form_container form div#actions a {
     float: right;
-    margin: 3px 8px 0px 0px;
 }
 
 div#new_role section#form_container form div#actions input {
@@ -1181,7 +1199,6 @@ div#show_role section#role_info {
 
 div#show_role section#role_info div#actions a {
     float: right;
-    margin: 3px 8px 0px 0px;
 }
 
 div#show_role section#role_info div#actions input {
@@ -1212,7 +1229,6 @@ div#edit_role section#form_container form div {
 
 div#edit_role section#form_container form div#actions a {
     float: right;
-    margin: 3px 8px 0px 0px;
 }
 
 div#edit_role section#form_container form div#actions input {

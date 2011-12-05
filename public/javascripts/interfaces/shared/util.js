@@ -400,7 +400,7 @@ function inProdMode() {
 }
 
 function inKioskMode() {
-    return kioskMode && !overrideKiosk;
+    return kioskMode && !overrideKiosk && !inMobileContext();
 }
 
 function pauseScript(ms) {
@@ -685,4 +685,26 @@ function checkUpdateOpenOrdersScreen() {
             loadOpenOrders();
         }
     }
+}
+
+function ensureLoggedIn() {
+    if(current_user_id == null) {
+        //hide previous popups
+        hideNiceAlert();
+    
+        var message = "You have been logged out, please log in again";
+        
+        ModalPopups.Alert('niceAlertContainer',
+            "Logged Out", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
+            {
+                width: 360,
+                height: 280,
+                okButtonText: 'Ok',
+                onOk: "doReload()"
+            });
+            
+        return false;
+    }
+    
+    return true;
 }

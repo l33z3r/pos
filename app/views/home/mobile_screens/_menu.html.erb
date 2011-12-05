@@ -1,4 +1,8 @@
 <div id="menu">
+  <div id="loading_orders_spinner">
+    <%= image_tag "spinner.gif" %>
+  </div>
+
   <div class="toolbar">
 
     <h1>Cluey</h1>
@@ -23,21 +27,21 @@
   </div>
 
   <div id="menu_buttons">
-    <div class="mobile_button" onclick="jQT.goTo('#terminal_list')">
+    <div class="mobile_button" onclick="viewByTerminalClicked();">
       <div class="icon">
         <%= image_tag "/images/button_logos/mobile/view_by_terminal.png" %>
       </div>
       <div class="button_name">View By Terminal</div>
     </div>
 
-    <div class="mobile_button" onclick="jQT.goTo('#table_list')">
+    <div class="mobile_button" onclick="viewByTableClicked();">
       <div class="icon">
         <%= image_tag "/images/button_logos/mobile/view_by_table.png" %>
       </div>
       <div class="button_name">View By Table</div>
     </div>
 
-    <div class="mobile_button" onclick="jQT.goTo('#server_list')">
+    <div class="mobile_button" onclick="viewByServerClicked();">
       <div class="icon">
         <%= image_tag "/images/button_logos/mobile/view_by_server.png" %>
       </div>
@@ -50,14 +54,14 @@
       </div>
       <div class="button_name">Exit</div>
     </div>
-    
-    <div class="mobile_button" onclick="window.location.reload();">
+
+    <div class="mobile_button" onclick="showSpinner();window.location.reload();">
       <div class="icon">
         <%= image_tag "/images/button_logos/reload.png" %>
       </div>
       <div class="button_name">Refresh</div>
     </div>
-    
+
     <!--div class="mobile_button" onclick="jQT.goTo('#cash_count_screen')">
       <div class="icon">
     <%= image_tag "/images/button_logos/mobile/cash_count.png" %>

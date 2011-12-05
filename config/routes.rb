@@ -13,15 +13,12 @@ Pos::Application.routes.draw do
   #orders
   match 'order' => "order#create", :via => :post
   match 'sync_table_order' => "order#sync_table_order", :via => :post
+  match 'transfer_order' => "order#transfer_order", :via => :post
   match 'cash_total' => "order#cash_total", :via => :post
   match 'add_float' => "order#add_float", :via => :post
   match 'float_history' => "order#float_history", :via => :get
   match 'cash_total_history' => "order#cash_total_history", :via => :get
   match 'outstanding_orders' => "order#create_outstanding", :via => :post
-
-  #previous cash
- # match 'previous_cash' => "admin/previous_cash", :via => :get
-#  match 'cash_total_search' => "previous_cash#cash_total_search", :via => :post
 
   #routes for screens to login etc
   match 'home' => "home#index"

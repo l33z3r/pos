@@ -422,5 +422,21 @@ function openCashDrawer() {
     }
 }
 
-
-
+function startTransferOrderMode() {
+    if(selectedTable == 0 || selectedTable == -1) {
+        setStatusMessage("Only valid for table orders!");
+        return;
+    }
+    
+    order = tableOrders[selectedTable];
+    
+    if(order.items.length == 0) {
+        setStatusMessage("No items present in current table order.");
+        return;
+    }
+    
+    inTransferOrderMode = true;
+    
+    showTablesScreen();
+    setStatusMessage("Please choose a free table to transfer this order to.", false, false);
+}

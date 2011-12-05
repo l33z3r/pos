@@ -91,8 +91,10 @@ function orderListTabSelected(tab, selectedTabName) {
     $('#' + selectedTabName + "_content").show();
     
     if(selectedTabName == "open_orders") {
+        window.history.pushState(null, "Open Orders", "/admin/orders?section=open_orders");
         $('#admin_order_list_receipt_header').html("Open Order");
     } else if(selectedTabName == "closed_orders") {
+        window.history.pushState(null, "Open Orders", "/admin/orders?section=closed_orders");
         $('#admin_order_list_receipt_header').html("Closed Sale");
     }
     

@@ -2,6 +2,9 @@ var lastSyncedOrder = null;
 var orderInProcess = false;
 
 function doSyncTableOrder() {
+    if(!ensureLoggedIn()) {
+        return;
+    }
     
     if(!callHomePollInitSequenceComplete) {
         niceAlert("Downloading data from server, please wait.");
@@ -13,12 +16,6 @@ function doSyncTableOrder() {
         return;
     }
     
-    //make sure logged in
-    if(!current_user_id) {
-        niceAlert("You are not logged in, you may have been logged out elsewhere. Please log in again, and re-order.");
-        return;
-    }
-    
     if(selectedTable == 0 || selectedTable == -1) {
         setStatusMessage("Only valid for table orders!");
         return;
@@ -27,7 +24,7 @@ function doSyncTableOrder() {
         
         order = tableOrders[selectedTable];
         if(order.items.length == 0) {
-            setStatusMessage("No items present in current table order!");
+            setStatusMessage("No items present in current table order.");
             return;
         }
     }
