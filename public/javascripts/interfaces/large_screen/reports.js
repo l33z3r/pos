@@ -1,9 +1,11 @@
 $(function() {
       setReportsDatePickers();
+      setOnchangeEvents();
 });
 
 var selectedFromDate;
 var selectedToDate;
+var terminal_id;
 
 /**
  *  Reports
@@ -29,3 +31,20 @@ function setReportsDatePickers() {
     });
 }
 
+function setOnchangeEvents(){
+
+}
+
+function addTerminalFilter(terminal_id) {
+    terminalId = terminal_id;
+    runSalesSearch();
+}
+
+function addDateFilter(date) {
+    terminalId = terminal_id;
+    runSalesSearch();
+}
+
+function runSalesSearch(){
+
+}

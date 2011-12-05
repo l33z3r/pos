@@ -3077,11 +3077,18 @@ div#cash_reports_screen div#search_previous_cash_totals_container div#results_ta
 div#reports_container {
     width: 990px;
     margin: auto;
-    height: 690px;
+    height: 710px;
 }
 
 div#reports_container div#report_option_tabs{
     margin-top: 15px;
+    height: 710px;
+}
+
+div#reports_container div#report_option_tabs div.vtabs-content-panel{
+    margin-top: 15px;
+    height: 690px;
+    max-height: 690px;
 }
 
 div#reports_container div#report_option_tabs div.vtabs,
@@ -3089,8 +3096,8 @@ div#reports_container div#report_option_tabs div.vtabs-tab-column {
     position: absolute;
     left: 0;
     margin: 0;
-    width: 120px;
-    min-width: 120px;
+    width: 80px;
+    min-width: 80px;
 }
 
 div#reports_container  h3.global_settings_header {
@@ -3121,29 +3128,74 @@ div#reports_container  div.container h4 {
 
 div#reports_container  div#at_a_glance_filters {
     float: left;
-    height: 40px;
-    width: 90%;
+    height: 50px;
+    width: 87%;
     margin-right: 10px;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
 }
+
 
 div#reports_container  div#at_a_glance_filters div.dropdown_container{
     float: left;
     width: 170px;
+    text-align: left;
+    font-weight: bold;
 }
 
-div#reports_container  div#at_a_glance_results {
+div#reports_container  div#at_a_glance_filters div.label,
+div#reports_container  div#at_a_glance_filters div.input_date{
+    text-align: left;
+}
+
+div#reports_container  div#at_a_glance_results_left,
+div#reports_container  div#at_a_glance_results_right{
     float: left;
-    height: 570px;
-    width: 90%;
+    height: 650px;
+    width: 50%;
+}
+
+div#reports_container  div#at_a_glance_results{
+    float: left;
+    height: 650px;
+    width: 87%;
     margin-right: 10px;
+    border: 1px solid #777;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
 }
 
-div#reports_container  div#at_a_glance_right_buttons {
-    
+div#reports_container div#right_buttons div#options_button {
+    position: relative;
+    margin-left: 800px;
+    display: block;
 }
 
-div#reports_container  div#at_a_glance_right_buttons div.summary_button {
+div#reports_container  div#right_buttons div.summary_button {
     margin-top: 7px;
+}
+
+div#reports_container  div.wide_button {
+    width: 100px;
+    max-width: 100px;
+    height: 51px;
+    max-height: 51px;
+    overflow: hidden;
+    vertical-align: middle;
+    display: table-cell;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
 }
 
 /* used to previous_cash_totals and reports */

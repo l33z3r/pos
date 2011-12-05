@@ -21,7 +21,7 @@
           <li><a id="payments_section_link" href="#payments_section">Payments</a></li>
           <li><a id="customers_section_link" href="#customers_section">Customers</a></li>
           <li><a id="suppliers_section_link" href="#suppliers_section">Suppliers</a></li>
-          <li><a id="stock_control_section_link" href="#stock_control_section">Stock Control</a></li>
+          <li><a id="stock_control_section_link" href="#stock_control_section">Stock</a></li>
           <li><a id="staff_section_link" href="#staff_section">Staff</a></li>
         </ul>
       </div>
@@ -33,6 +33,7 @@
             <div id="at_a_glance_filters" class="popout_dialog">
                <div id="date_select_container">
                   <div class="dropdown_container">
+                    <div class="label">Terminal</div>
                     <select onchange="addTerminalFilter($(this).val())">
                       <option value="">All Terminals</option>
                       <% @all_terminals.each do |terminal_id|%>
@@ -42,6 +43,7 @@
                   </div>
 
                   <div class="dropdown_container">
+                    <div class="label">Date</div>
                     <select onchange="addDateFilter($(this).val())">
                       <option value="1">Today</option>
                       <option value="2">Yesterday</option>
@@ -51,16 +53,16 @@
                     </select>
                   </div>
 
-                  <div class="date_box">
-                    <div class="label">From:</div>
-                    <div class="date_select">
+                  <div class="dropdown_container">
+                    <div class="label">From</div>
+                    <div class="input_date">
                       <input type="text" size="8" id="date_from" name="date_from"
                              value="<%=@selected_from_date%>"/>
                     </div>
                   </div>
-                  <div class="date_box">
-                    <div class="label">To:</div>
-                    <div class="date_select">
+                  <div class="dropdown_container">
+                    <div class="label">To</div>
+                    <div class="input_date">
                       <input type="text" size="8" id="date_to" name="date_to"
                              value="<%=@selected_to_date%>"/>
                     </div>
@@ -70,27 +72,39 @@
             </div>
 
             <div id="at_a_glance_results">
-                  <%= high_chart("graph_container", @graph) %>
+              <div id="at_a_glance_results_left">
+
+              </div>
+
+              <div id="at_a_glance_results_right">
+                <%= render 'glance' %>
+              </div>
             </div>
 
-            <div id="at_a_glance_right_buttons">
-              <div class="summary_button" onclick="">
-                <div class="button">Sales Summary Today</div>
+            <div id="right_buttons">
+              <div id="options_button" class="button" onclick="adminShowMoreOptions();">
+                <div class="icon">
+                  <%= image_tag "/images/button_logos/more_options_button.png" %>
+                </div>
+                <div class="button_name">More Options</div>
               </div>
               <div class="summary_button" onclick="">
-                <div class="button">Cash Summary Today</div>
+                <div class="wide_button">Sales Summary Today</div>
               </div>
               <div class="summary_button" onclick="">
-                <div class="button">Payments Summary Today</div>
+                <div class="wide_button">Cash Summary Today</div>
               </div>
               <div class="summary_button" onclick="">
-                <div class="button">Stock Control Summary Today</div>
+                <div class="wide_button">Payments Summary Today</div>
               </div>
               <div class="summary_button" onclick="">
-                <div class="button">Staff Summary Today</div>
+                <div class="wide_button">Stock Control Summary Today</div>
               </div>
+              <div class="summary_button" onclick="">
+                <div class="wide_button">Staff Summary Today</div>
+              </div>
+            </div>
 
-          </div>
         </div>
 
         <div class="container" id="#sales_info_section">
