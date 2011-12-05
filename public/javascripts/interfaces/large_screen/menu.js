@@ -706,14 +706,6 @@ function tableScreenSelectTable(tableId) {
             return;
         }
         
-        transferOrderInProgress = true;
-        
-        $('#nav_back_link').unbind();
-        $('#nav_back_link').click(function() {
-            niceAlert("Transfer table order in progress, please wait.");
-            return;
-        });
-        
         var activeTableIDS = getActiveTableIDS();
         //alert(activeTableIDS + " " + $.inArray(tableId.toString(), activeTableIDS));
         
@@ -726,6 +718,14 @@ function tableScreenSelectTable(tableId) {
             niceAlert("This table is occupied, please choose another.");
             return;
         }
+        
+        transferOrderInProgress = true;
+        
+        $('#nav_back_link').unbind();
+        $('#nav_back_link').click(function() {
+            niceAlert("Transfer table order in progress, please wait.");
+            return;
+        });
         
         niceAlert("Transfering order from table " + tables[selectedTable].label + " to table " + tables[tableId].label + ". Please wait.");
         
@@ -1465,6 +1465,7 @@ function postDoSyncTableOrder() {
     //so that the highlighted items are no longer highlighted
     doSelectTable(selectedTable);
     
+    //clean up after transfer order mode
     if(inTransferOrderMode) {
         niceAlert("Order Transfered.");
         $('#tables_screen_status_message').hide();
