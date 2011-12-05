@@ -6,7 +6,6 @@ class Category < ActiveRecord::Base
   belongs_to :parent_category, :class_name => "Category"
 
   validates :name, :presence => true, :uniqueness => true
-  validates :description, :presence => true
   
   #for will_paginate
   cattr_reader :per_page

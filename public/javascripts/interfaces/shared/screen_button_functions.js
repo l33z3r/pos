@@ -24,7 +24,7 @@ function doSyncTableOrder() {
         
         order = tableOrders[selectedTable];
         if(order.items.length == 0) {
-            setStatusMessage("No items present in current table order!");
+            setStatusMessage("No items present in current table order.");
             return;
         }
     }

@@ -59,7 +59,7 @@ class ButtonMapper
   
   RESTRICTED_BUTTON_IDS = [
     ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON,
-    CASH_OUT_BUTTON, DELIVERY_BUTTON, STOCK_TAKE_BUTTON, SPLIT_ORDER_BUTTON, TRANSFER_ORDER_BUTTON,
+    CASH_OUT_BUTTON, DELIVERY_BUTTON, STOCK_TAKE_BUTTON, SPLIT_ORDER_BUTTON,
     PRINTERS_BUTTON, CHANGE_WAITER_BUTTON, REFUND_BUTTON, WASTE_BUTTON, CLIENT_BUTTON
   ]
   
@@ -135,7 +135,7 @@ class ButtonMapper
     when PRINTERS_BUTTON
       @retval = "alert('printers button clicked');"
     when TRANSFER_ORDER_BUTTON
-      @retval = "alert('transfer order button clicked');"
+      @retval = "startTransferOrderMode();"
     when SPLIT_ORDER_BUTTON
       @retval = "alert('split order button clicked');"
     when STOCK_TAKE_BUTTON

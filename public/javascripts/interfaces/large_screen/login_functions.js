@@ -45,6 +45,22 @@ function doCancelLoginKeypad() {
     $('#num').val(newVal);
 }
 
+function forceLogin(user_id) {
+    for (var i = 0; i < employees.length; i++){
+        id = employees[i].id;
+        if(id == user_id) {
+            user_index = i;
+            break;
+        }
+    }
+    
+    var nickname = employees[user_index].nickname;
+    var is_admin = employees[user_index].is_admin;
+    var passcode = employees[user_index].passcode;
+    
+    loginSuccess(user_id, nickname, is_admin, passcode);
+}
+
 function doLogin() {
     entered_code = $('#num').val();
     

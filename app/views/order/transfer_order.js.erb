@@ -1,0 +1,11 @@
+<% if !@error %>
+  storeTableOrderInStorage(current_user_id, <%= @table_to_id %>, tableOrders[<%= @table_from_id %>]);
+  doSelectTable(<%= @table_to_id %>);
+  doSyncTableOrder();
+<% else %>
+  niceAlert("Error transferring order.");
+  showMenuScreen();
+  inTransferOrderMode = false;
+<% end %>
+
+transferOrderInProgress = false;

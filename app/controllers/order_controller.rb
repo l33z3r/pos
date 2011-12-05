@@ -81,6 +81,23 @@ class OrderController < ApplicationController
       render :json => {:success => false}.to_json
     end
   end
+  
+  def transfer_order
+    @table_from_id = params[:table_from_id]
+    @table_from_order_num = params[:table_from_order_num]
+    @table_to_id = params[:table_to_id]
+    
+    @table_from = TableInfo.find(@table_from_id)
+    @table_to = TableInfo.find(@table_to_id)
+    
+    @error = false
+    
+    if !@table_from or !@table_to
+      @error = true
+    end
+    
+    do_request_clear_table_order @terminal_id, Time.now.to_i, @table_from_id, @table_from_order_num, e
+  end
 
   private
 

@@ -8,6 +8,9 @@ var defaultShortcutDropdownText = "Menu";
 
 var editItemPopupAnchor;
 
+var inTransferOrderMode = false;
+var transferOrderInProgress = false;
+
 //this function is called from application.js on page load
 function initMenu() {
     loadFirstMenuPage();
@@ -697,6 +700,48 @@ function writeTotalToReceipt(order, orderTotal) {
 }
 
 function tableScreenSelectTable(tableId) {
+    if(inTransferOrderMode) {
+        if(transferOrderInProgress) {
+            niceAlert("Transfer table order in progress, please wait.");
+            return;
+        }
+        
+        transferOrderInProgress = true;
+        
+        $('#nav_back_link').unbind();
+        $('#nav_back_link').click(function() {
+            niceAlert("Transfer table order in progress, please wait.");
+            return;
+        });
+        
+        var activeTableIDS = getActiveTableIDS();
+        //alert(activeTableIDS + " " + $.inArray(tableId.toString(), activeTableIDS));
+        
+        if(tableId.toString() == selectedTable) {
+            niceAlert("You cannot transfer to the same table, please choose another.");
+            return;
+        }
+        
+        if($.inArray(tableId.toString(), activeTableIDS) != -1) {
+            niceAlert("This table is occupied, please choose another.");
+            return;
+        }
+        
+        niceAlert("Transfering order from table " + tables[selectedTable].label + " to table " + tables[tableId].label + ". Please wait.");
+        
+        $.ajax({
+            type: 'POST',
+            url: '/transfer_order',
+            data: {
+                table_from_id : selectedTable,
+                table_from_order_num : getCurrentOrder().order_num,
+                table_to_id : tableId
+            }
+        });
+        
+        return;
+    }
+    
     //back to menu screen
     showMenuScreen();
     
@@ -903,10 +948,10 @@ function doTotalFinal() {
     }
     
     cashTendered = getTendered();
-
+    
     if(parseFloat(cashTendered) == 0.0) {
-        cashTendered = orderTotal;
-        totalOrder.cash_tendered = orderTotal;
+        cashTendered = orderTotal + serviceCharge;
+        totalOrder.cash_tendered = orderTotal + serviceCharge;
     } else {
         totalOrder.cash_tendered = cashTendered;
     }
@@ -1391,7 +1436,7 @@ function renderMenuItemButtonDimensions() {
 
 //mark tables in the list as active
 function renderActiveTables() {
-    activeTableIDS = getActiveTableIDS();
+    var activeTableIDS = getActiveTableIDS();
     
     $("#table_select").children('li').children('ul').children('li').each( 
         function(id, element) {
@@ -1419,6 +1464,15 @@ function postDoSyncTableOrder() {
     //redraw the receipt if we dont leave this screen
     //so that the highlighted items are no longer highlighted
     doSelectTable(selectedTable);
+    
+    if(inTransferOrderMode) {
+        niceAlert("Order Transfered.");
+        $('#tables_screen_status_message').hide();
+        inTransferOrderMode = false;
+        tableScreenSelectTable(selectedTable);
+        showMenuScreen();
+        return;
+    }
     
     //pick up the default home screen and load it
     loadAfterSaleScreen();

@@ -10,6 +10,19 @@ div#kitchen_screen div#header div#tabs {
     float: left;
 }
 
+div#kitchen_screen div#header div#kitchen_screen_status_message {
+    float: left;
+    border: 1px solid #000;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background-color: white;
+    margin-top: 30px;
+    margin-left: 10px;
+    width: 400px;
+    padding: 2px;
+    display: none;
+}
+
 div#kitchen_screen div#loading_message {
     font-size: 32px;
     border: 3px solid #000;

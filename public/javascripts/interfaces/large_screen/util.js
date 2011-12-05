@@ -136,6 +136,10 @@ function setStatusMessage(message, hide, shake) {
         statusEl = $('#login_screen_status_message')
     } else if(currentScreenIsMenu()) {
         statusEl = $('#menu_screen_status_message');
+    } else if(currentScreenIsTables()) {
+        statusEl = $('#tables_screen_status_message');
+    } else if(inKitchenContext()) {
+        statusEl = $('#kitchen_screen_status_message');
     } else {
         niceAlert(message);
         return;
@@ -175,6 +179,10 @@ function hideStatusMessage() {
         statusEl = $('#login_screen_status_message')
     } else if(currentScreenIsMenu()) {
         statusEl = $('#menu_screen_status_message');
+    } else if(currentScreenIsTables()) {
+        statusEl = $('#tables_screen_status_message');
+    } else if(inKitchenContext()) {
+        statusEl = $('#kitchen_screen_status_message');
     } else {
         hideNiceAlert();
         return;
@@ -208,7 +216,16 @@ function showMenuScreen() {
 
 function showTablesScreen() {
     setNavTitle("Table Selection");
+    
+    $('#nav_back_link').unbind();
+    
     showNavBackLinkMenuScreen();
+    
+    $('#nav_back_link').click(function() {
+        inTransferOrderMode = false;
+        $('#tables_screen_status_message').hide();
+    });
+    
     hideAllScreens();
     
     //hide the dropdown menu
@@ -284,10 +301,13 @@ function currentScreenIsCashReports() {
     return $('#cash_reports_screen').is(":visible");
 }
 
-function currentScreenIsCashReports() {
+function currentScreenIsFloat() {
     return $('#float_screen').is(":visible");
 }
 
+function currentScreenIsTables() {
+    return $('#table_select_screen').is(":visible");
+}
 function showNavBackLinkMenuScreen() {
     $('#nav_back_link').show();
     $('#nav_back_link').click(function() {
