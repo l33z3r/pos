@@ -68,7 +68,7 @@
   
   var terminalID = "<%=@terminal_id%>";
   
-  var pollingAmount = <%= (ENV['RAILS_ENV'] == 'development') ? "1000" : "2000" %>;
+  var pollingAmount = <%= development_mode? ? "1000" : "1000" %>;
   
   var using_mobile = <%= mobile_device? ? "true" : "false" %>;
   

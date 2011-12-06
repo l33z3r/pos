@@ -360,6 +360,15 @@ function postDoSyncTableOrder() {
     //so that the highlighted items are no longer highlighted
     doSelectTable(selectedTable);
     
+    //clean up after transfer order mode
+    if(inTransferOrderMode) {
+        niceAlert("Order Transfered.");
+        inTransferOrderMode = false;
+        $('#table_num').val(tables[selectedTable].label);
+        doSubmitTableNumber();
+        return;
+    }
+    
     setStatusMessage("Order Sent");
     
     //vibrate!
@@ -427,7 +436,7 @@ function doSubmitTableNumber() {
         return;
     }
     
-    table_label = $('#table_num').val().toString();
+    var table_label = $('#table_num').val().toString();
     
     //check table exists
     table_info = getTableForLabel(table_label);
@@ -436,6 +445,17 @@ function doSubmitTableNumber() {
     
     if(!table_info) {
         $('#table_number_show').html("No Such Table!");
+        return;
+    }
+    
+    if(inTransferOrderMode) {
+        if(transferOrderInProgress) {
+            niceAlert("Transfer table order in progress, please wait.");
+            return;
+        }
+        
+        doTransferTable(selectedTable, table_info.id);
+        
         return;
     }
     

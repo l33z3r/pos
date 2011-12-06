@@ -137,3 +137,27 @@ function applyDefaultServiceChargePercent() {
     serviceCharge = (defaultServiceChargePercent * parseFloat(getCurrentOrder().total))/100;
     saveServiceCharge(false);
 }
+
+function startTransferOrderMode() {
+    if(!callHomePollInitSequenceComplete) {
+        niceAlert("Downloading data from server, please wait.");
+        return;
+    }
+    
+    if(selectedTable == 0 || selectedTable == -1) {
+        setStatusMessage("Only valid for table orders!");
+        return;
+    }
+    
+    order = tableOrders[selectedTable];
+    
+    if(order.items.length == 0) {
+        setStatusMessage("No items present in current table order.");
+        return;
+    }
+    
+    inTransferOrderMode = true;
+    
+    showTablesScreen();
+    setStatusMessage("Please choose a free table to transfer this order to.", false, false);
+}

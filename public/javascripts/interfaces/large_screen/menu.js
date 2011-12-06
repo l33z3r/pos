@@ -8,9 +8,6 @@ var defaultShortcutDropdownText = "Menu";
 
 var editItemPopupAnchor;
 
-var inTransferOrderMode = false;
-var transferOrderInProgress = false;
-
 //this function is called from application.js on page load
 function initMenu() {
     loadFirstMenuPage();
@@ -706,38 +703,7 @@ function tableScreenSelectTable(tableId) {
             return;
         }
         
-        var activeTableIDS = getActiveTableIDS();
-        //alert(activeTableIDS + " " + $.inArray(tableId.toString(), activeTableIDS));
-        
-        if(tableId.toString() == selectedTable) {
-            niceAlert("You cannot transfer to the same table, please choose another.");
-            return;
-        }
-        
-        if($.inArray(tableId.toString(), activeTableIDS) != -1) {
-            niceAlert("This table is occupied, please choose another.");
-            return;
-        }
-        
-        transferOrderInProgress = true;
-        
-        $('#nav_back_link').unbind();
-        $('#nav_back_link').click(function() {
-            niceAlert("Transfer table order in progress, please wait.");
-            return;
-        });
-        
-        niceAlert("Transfering order from table " + tables[selectedTable].label + " to table " + tables[tableId].label + ". Please wait.");
-        
-        $.ajax({
-            type: 'POST',
-            url: '/transfer_order',
-            data: {
-                table_from_id : selectedTable,
-                table_from_order_num : getCurrentOrder().order_num,
-                table_to_id : tableId
-            }
-        });
+        doTransferTable(selectedTable, tableId);
         
         return;
     }

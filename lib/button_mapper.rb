@@ -135,7 +135,7 @@ class ButtonMapper
     when PRINTERS_BUTTON
       @retval = "alert('printers button clicked');"
     when TRANSFER_ORDER_BUTTON
-      @retval = "startTransferOrderMode();"
+      @retval = wrap_with_menu_screen_function_check "startTransferOrderMode();"
     when SPLIT_ORDER_BUTTON
       @retval = "alert('split order button clicked');"
     when STOCK_TAKE_BUTTON
