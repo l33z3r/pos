@@ -55,7 +55,7 @@ class ButtonMapper
   PRINT_BILL_BUTTON = 52
   COURSE_BUTTON = 53
   KITCHEN_SCREEN_BUTTON = 54
-  PREVIOUS_CASH_SALES_BUTTON = 55
+  PREVIOUS_CASH_TOTALS_BUTTON = 55
   
   RESTRICTED_BUTTON_IDS = [
     ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON,
@@ -176,7 +176,7 @@ class ButtonMapper
       @retval = "printBill();"
     when KITCHEN_SCREEN_BUTTON
       @retval = "window.location = '#{kitchen_path}'; return false;"
-    when PREVIOUS_CASH_SALES_BUTTON
+    when PREVIOUS_CASH_TOTALS_BUTTON
       @retval = "window.location = '#{admin_previous_cash_totals_path}'; return false;"
     end
 

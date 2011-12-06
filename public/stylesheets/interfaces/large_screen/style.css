@@ -1311,6 +1311,39 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
     width: 75px;
 }
 
+div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table,
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table {
+    margin-top: 10px;
+}
+
+div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_header,
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_header {
+    width: 84px;
+    float: left;
+    text-align: right;
+}
+
+div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_label_header,
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_label_header {
+    width: 130px;
+    float: left;
+    text-align: left;
+}
+
+div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_label,
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_label {
+    float: left;
+    text-align: left;
+    width: 130px;
+}
+
+div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data,
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data {
+    float: left;
+    text-align: right;
+    width: 84px;
+}
+
 /* End Cash Reports Screen */
 
 /* Float Screen */
