@@ -1,6 +1,7 @@
 var currentMenuPage;
 var currentMenuPageId;
 
+var menuItemDoubleMode = false;
 var currentMenuItemQuantity = "";
 
 var selectedTable = 0;
@@ -94,6 +95,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         //make sure the data types are converted correctly
         if(tableOrderDataJSON.items[itemKey].product.show_price_on_receipt) {
             tableOrderDataJSON.items[itemKey].product.show_price_on_receipt = (tableOrderDataJSON.items[itemKey].product.show_price_on_receipt.toString() == "true" ? true : false);
+            tableOrderDataJSON.items[itemKey].is_double = (tableOrderDataJSON.items[itemKey].is_double.toString() == "true" ? true : false);
         }
         
         var copiedOrderItem = {};
@@ -445,12 +447,22 @@ function buildOrderItem(product, amount) {
         taxRate = product.tax_rate;
     }
     
+    var productPrice = product.price;
+    var isDouble = false;
+    
+    if(menuItemDoubleMode) {
+        productPrice = product.double_price;
+        isDouble = true;
+        setMenuItemDoubleMode(false);
+    }
+    
     orderItem = {
         'amount':amount,
         'product':product,
         'tax_rate':taxRate,
-        'product_price':product.price,
-        'total_price':(product.price*amount)
+        'product_price':productPrice,
+        'is_double':isDouble,
+        'total_price':(productPrice*amount)
     }
 
     //store the terminal id 

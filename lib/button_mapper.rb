@@ -56,10 +56,11 @@ class ButtonMapper
   COURSE_BUTTON = 53
   KITCHEN_SCREEN_BUTTON = 54
   PREVIOUS_CASH_TOTALS_BUTTON = 55
+  TOGGLE_MENU_ITEM_DOUBLE_BUTTON = 56
   
   RESTRICTED_BUTTON_IDS = [
     ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON,
-    CASH_OUT_BUTTON, DELIVERY_BUTTON, STOCK_TAKE_BUTTON, SPLIT_ORDER_BUTTON,
+    CASH_OUT_BUTTON, DELIVERY_BUTTON, STOCK_TAKE_BUTTON, SPLIT_ORDER_BUTTON, TOGGLE_MENU_ITEM_DOUBLE_BUTTON,
     PRINTERS_BUTTON, CHANGE_WAITER_BUTTON, REFUND_BUTTON, WASTE_BUTTON, CLIENT_BUTTON
   ]
   
@@ -178,6 +179,8 @@ class ButtonMapper
       @retval = "window.location = '#{kitchen_path}'; return false;"
     when PREVIOUS_CASH_TOTALS_BUTTON
       @retval = "window.location = '#{admin_previous_cash_totals_path}'; return false;"
+    when TOGGLE_MENU_ITEM_DOUBLE_BUTTON
+      @retval = wrap_with_menu_screen_function_check "toggleMenuItemDoubleMode(); return false;"
     end
 
     @retval

@@ -1779,12 +1779,12 @@ div#receipt_item_discount_popup_anchor {
 }
 
 div#discounts_popup_markup_container {
-    width: 280px;
+    width: 335px;
     height: 610px;
 }
 
 div#discounts_popup_markup_container.higher {
-    height: 625px;
+    height: 665px;
 }
 
 div#discounts_popup_markup_container div.header {
@@ -1797,6 +1797,7 @@ div#discounts_popup_markup_container div.header {
 
 div#discounts_popup_markup_container div.discount_buttons {
     margin: 3px auto;
+    width: 325px;
 }
 
 div#discounts_popup_markup_container div.discount_buttons div.button {
@@ -1809,7 +1810,7 @@ div#discounts_popup_markup_container div.discount_buttons div.button {
     height: 35px;
     margin: 3px;
     padding: 4px;
-    width: 77px;
+    width: 65px;
     max-width: 77px;
     text-align: center;
 }
@@ -1841,7 +1842,7 @@ div#discounts_popup_markup_container div#apply_discount_to {
 
 div#discounts_popup_markup_container div#apply_discount_to input[type=radio] {
     height: 20px;
-    margin-left: 65px;
+    margin-left: 90px;
     float: left;
 }
 
@@ -2367,8 +2368,8 @@ div#display_button_passcode_popup div.button {
     color: #333;
     float: right;
     width: 70px;
-    height: 30px;
-    padding-top: 10px;
+    height: 27px;
+    padding-top: 11px;
     margin-left: 10px;
     cursor: pointer;
     font-weight: bold;

@@ -161,11 +161,19 @@ class OrderController < ApplicationController
       #do we want to show the serveraddeditem text
       @order_item.show_server_added_text = item[:showServerAddedText]
       
+      @order_item.is_double = item[:is_double]
+      
       #this happens for every item
       @order_item_saved = @order_item_saved and @order_item.save
       
+      @item_stock_usage = @order_item.quantity.to_f
+      
+      if(@order_item.is_double)
+        @item_stock_usage *= 2
+      end
+      
       #decrement the stock for this item
-      @order_item.product.decrement_stock @order_item.quantity.to_f
+      @order_item.product.decrement_stock @item_stock_usage
     end
     
     #must tell all terminals that this order is cleared

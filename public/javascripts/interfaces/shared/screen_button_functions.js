@@ -161,3 +161,17 @@ function startTransferOrderMode() {
     showTablesScreen();
     setStatusMessage("Please choose a free table to transfer this order to.", false, false);
 }
+
+function toggleMenuItemDoubleMode() {
+    setMenuItemDoubleMode(!menuItemDoubleMode);
+}
+
+function setMenuItemDoubleMode(turnOn) {
+    if(turnOn) {
+        menuItemDoubleMode = true;
+        $('.button[id=sales_button_' + toggleMenuItemDoubleModeButtonID + ']').addClass("selected");
+    } else {
+        menuItemDoubleMode = false;
+        $('.button[id=sales_button_' + toggleMenuItemDoubleModeButtonID + ']').removeClass("selected");
+    }
+}

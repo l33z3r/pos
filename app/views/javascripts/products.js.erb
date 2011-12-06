@@ -4,7 +4,9 @@ var products = new Array();
   products[<%= p.id %>] = {
   'id':'<%= p.id %>', 'name':'<%= escape_javascript p.name %>', 
   'price':<%= p.price %>, 'tax_rate':<%=p.sales_tax_rate%>,
+  'double_price' : <%=p.double_price%>,
   'show_price_on_receipt' : <%=p.show_price_on_receipt%>,
+  'prompt_price' : <%=p.show_price_prompt%>,
   'printers' : "<%= p.printers %>",
   'deleted' : <%= p.is_deleted %>,
   'category_id' : <%= p.category ? p.category.id : "null" %>
