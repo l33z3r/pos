@@ -132,12 +132,12 @@
         width: 40px;
         text-align: right;
       }
-      
+
       /* need to force a height so it prints correctly */
       div.oia {
         float: left;
       }
-      
+
       div.oia.hide_on_receipt {
         visibility: hidden;
         height: 0px;
@@ -309,13 +309,41 @@
         text-align: right;
         width: 50px;
       }
-      
+
+      div#cash_totals_data_table div.products_data_table {
+        margin-top: 10px;
+      }
+
+      div.products_data_table div.products_data_table_header {
+        width: 58px;
+        float: left;
+        text-align: right;
+      }
+
+      div#cash_totals_data_table div.products_data_table div.products_data_table_label_header {
+        width: 85px;
+        float: left;
+        text-align: left;
+      }
+
+      div#cash_totals_data_table div.products_data_table div.products_label {
+        float: left;
+        text-align: left;
+        width: 85px;
+      }
+
+      div#cash_totals_data_table div.products_data_table div.products_data {
+        float: left;
+        text-align: right;
+        width: 58px;
+      }
+
       /* Settings for order receipt */
-      
+
       div.order_receipt div.oia.hide_on_receipt {
         visibility: visible;
       }
-      
+
       <%= render "/partials/interfaces/shared/order_receipt_css_#{@order_receipt_width_setting}" %>
     </style>    
   </head>

@@ -51,7 +51,13 @@ function getLineItemHTMLForPrintedOrderReceipt(orderItem) {
     //we don't show the amount for the order receipt
     lineItemHTMLForOrder += "<div class='amount'>" + orderItem.amount + "</div>";
     
-    lineItemHTMLForOrder += "<div class='name'>" + orderItem.product.name + "</div>";
+    lineItemHTMLForOrder += "<div class='name'>";
+        
+    if(orderItem.is_double) {
+        lineItemHTMLForOrder += "*Double* ";
+    }
+        
+    lineItemHTMLForOrder += orderItem.product.name + "</div>";
     
     //we don't show the total for the order receipt
     lineItemHTMLForOrder += "<div class='total'>&nbsp;</div>";

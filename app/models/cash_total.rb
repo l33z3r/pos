@@ -40,10 +40,11 @@ class CashTotal < ActiveRecord::Base
   RS_CASH_PAID_OUT = 5
   RS_SALES_TAX_SUMMARY = 6
   RS_SALES_BY_CATEGORY = 7
+  RS_SALES_BY_PRODUCT = 8
   
   REPORT_SECTIONS = [
     RS_SALES_BY_DEPARTMENT, RS_SALES_BY_PAYMENT_TYPE, RS_CASH_SUMMARY, RS_SALES_BY_SERVER, 
-    RS_CASH_PAID_OUT, RS_SALES_TAX_SUMMARY, RS_SALES_BY_CATEGORY
+    RS_CASH_PAID_OUT, RS_SALES_TAX_SUMMARY, RS_SALES_BY_CATEGORY, RS_SALES_BY_PRODUCT
   ]
   
   validates :total_type, :presence => true, :inclusion => { :in => VALID_TOTAL_TYPES }
@@ -74,6 +75,7 @@ class CashTotal < ActiveRecord::Base
   end
   
   def self.prepare_cash_total_data terminal_id, cash_count
+    @sales_by_product = {}
     @sales_by_category = {}
     @sales_by_department = {}
     @sales_by_server = {}
@@ -87,20 +89,13 @@ class CashTotal < ActiveRecord::Base
     @cash_back_total = 0
         
     #load the first order, based on the last z total or the very first if none exists
-#    @last_performed_non_zero_z_total = find(:last, :conditions => "total_type = '#{Z_TOTAL}' and end_calc_order_id is not null and terminal_id = '#{terminal_id}'", :order => "created_at")
-    
     @last_performed_non_zero_z_total = where("total_type = ?", Z_TOTAL).where("end_calc_order_id is not ?", nil).where("terminal_id = ?", terminal_id).order("created_at").last
     
     if @last_performed_non_zero_z_total
       #now load the next order after the end order from the previous z total
-##      @first_order = Order.find(:first, 
-#        :conditions => "created_at > '#{@last_performed_non_zero_z_total.end_order.created_at}' and terminal_id = '#{terminal_id}'", 
-#        :order => "created_at")
-      
       @first_order = Order.where("created_at > ?", @last_performed_non_zero_z_total.end_order.created_at).where("terminal_id = ?", terminal_id).order("created_at").first
     else
       #no z totals yet, so just grab orders
-#      @first_order = Order.find(:first, :conditions => "terminal_id = '#{terminal_id}'", :order => "created_at")
       @first_order = Order.where("terminal_id = ?", terminal_id).order("created_at").first
     end
       
@@ -108,8 +103,8 @@ class CashTotal < ActiveRecord::Base
       @overall_total = 0
     else
       #load the most recent order
-#      @last_order = Order.find(:last, :conditions => "terminal_id = '#{terminal_id}'", :order => "created_at")
       @last_order = Order.where("terminal_id = ?", terminal_id).order("created_at").last
+
       #do the calculation
       @overall_total = 0
         
@@ -119,6 +114,16 @@ class CashTotal < ActiveRecord::Base
       @orders.each do |order|
         order.order_items.each do |order_item|
             
+          @product_name = order_item.product.name
+          
+          #sales by product
+          if !@sales_by_product[@product_name]
+            @sales_by_product[@product_name] = {
+              :quantity => 0,
+              :sales_total => 0
+            }
+          end
+          
           if order_item.product.category
             @category_name = order_item.product.category.name
           else 
@@ -156,6 +161,9 @@ class CashTotal < ActiveRecord::Base
           if @tax_chargable
             @order_item_price += ((@global_tax_rate * @order_item_price)/100)
           end
+          
+          @sales_by_product[@product_name][:quantity] += 1
+          @sales_by_product[@product_name][:sales_total] += @order_item_price
           
           @sales_by_category[@category_name] += @order_item_price
           @sales_by_department[@department_name] += @order_item_price
@@ -209,9 +217,6 @@ class CashTotal < ActiveRecord::Base
       end
     
       #total of all cash sales
-#      @cash_sale_orders = Order.find(:all,
-#        :conditions => "created_at >= '#{@first_order.created_at}' and created_at <= '#{@last_order.created_at}' and terminal_id = '#{terminal_id}' and payment_type = 'cash'")
-          
       @cash_sales_total += Order.where("created_at >= ?", @first_order.created_at)
       .where("created_at <= ?", @last_order.created_at)
       .where("terminal_id = ?", terminal_id)
@@ -243,6 +248,7 @@ class CashTotal < ActiveRecord::Base
     @cash_summary["Cash In Drawer"] = cash_count
     @cash_summary["Shortfall"] = @shortfall
           
+    @cash_total_data[:sales_by_product] = @sales_by_product
     @cash_total_data[:sales_by_category] = @sales_by_category
     @cash_total_data[:sales_by_department] = @sales_by_department
     @cash_total_data[:sales_by_server] = @sales_by_server
@@ -272,7 +278,6 @@ class CashTotal < ActiveRecord::Base
   end
   
   def self.last_z_total terminal_id
-#    find(:last, :conditions => "total_type = '#{Z_TOTAL}' and terminal_id = '#{terminal_id}'", :order => "created_at")
     where("total_type = ?", Z_TOTAL).where("terminal_id = ?", terminal_id).order("created_at").last
   end
 
@@ -287,15 +292,7 @@ class CashTotal < ActiveRecord::Base
   def self.floats_since_last_z_total terminal_id
     @last_z_total = CashTotal.last_z_total terminal_id
     
-#    #select all previous floats since last z total
-#    if @last_z_total
-#      @time_condition = "created_at >= '#{@last_z_total.created_at}' and "
-#    else
-#      @time_condition = ""
-#    end
-#    
-#    @previous_floats = find(:all, :conditions => "#{@time_condition} total_type = '#{CashTotal::FLOAT}' and terminal_id = '#{terminal_id}'", :order => "created_at desc")
-    
+    #select all previous floats since last z total
     @previous_floats = where("total_type = ?", CashTotal::FLOAT).where("terminal_id = ?", terminal_id)
     
     if @last_z_total
@@ -308,7 +305,6 @@ class CashTotal < ActiveRecord::Base
   end
   
   def self.all_cash_totals total_type, terminal_id
-#    find(:all, :conditions => "total_type = '#{total_type}' and terminal_id = '#{terminal_id}'", :order => "created_at desc")
     where("total_type = ?", total_type).where("terminal_id = ?", terminal_id).order("created_at desc")
   end
   

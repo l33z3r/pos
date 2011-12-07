@@ -8,9 +8,6 @@ var defaultShortcutDropdownText = "Menu";
 
 var editItemPopupAnchor;
 
-var inTransferOrderMode = false;
-var transferOrderInProgress = false;
-
 //this function is called from application.js on page load
 function initMenu() {
     loadFirstMenuPage();
@@ -60,7 +57,7 @@ function initPreviousOrder() {
 function menuScreenKeypadClick(val) {
     if(showingDisplayButtonPasscodePromptPopup) {
         $('#display_button_passcode').val($('#display_button_passcode').val() + val);
-        $('#display_button_passcode_show').html($('#display_button_passcode_show').html() + val);
+        $('#display_button_passcode_show').html($('#display_button_passcode_show').html() + "*");
     } else if(inStockTakeMode) {
         $('#stock_take_new_amount_input').val($('#stock_take_new_amount_input').val() + val);
     } else if(inPriceChangeMode) {
@@ -90,6 +87,10 @@ function menuScreenKeypadClickCancel() {
     } else if(inPriceChangeMode) {
         $('#price_change_new_price_input').val("");
     } else {
+        if(menuItemDoubleMode) {
+            setMenuItemDoubleMode(false);
+        }
+        
         currentMenuItemQuantity = "";
     }
 }
@@ -263,6 +264,17 @@ function finishDoSelectMenuItem() {
     writeOrderItemToReceipt(orderItem);
     writeTotalToReceipt(currentOrder, currentOrder.total);
 
+    //do we need to prompt for a price
+    if(orderItem.product.prompt_price) {
+        var popupEl = doSelectReceiptItem(getSelectedOrLastReceiptItem());
+        popupEl.find('#discount_button').hide();
+        popupEl.find('#delete_button').hide();
+        popupEl.find('#quantity_editor').hide();
+        popupEl.find('#header').html("Enter A Price");
+        popupEl.find('#current_selected_receipt_item_price').focus();
+        popupEl.find('#current_selected_receipt_item_price').val("");
+    }
+
     setTimeout(menuRecptScroll, 20);
 }
 
@@ -331,7 +343,15 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     }
     
     orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
-    orderHTML += "<div class='name'>" + notSyncedMarker + " " + orderItem.product.name + "</div>";
+    
+    orderHTML += "<div class='name'>" + notSyncedMarker + " ";
+        
+    if(orderItem.is_double) {
+        orderHTML += "*Double* ";
+    }
+        
+    orderHTML += orderItem.product.name + "</div>";
+    
     orderItemTotalPriceText = number_to_currency(itemPriceWithoutModifier, {
         precision : 2
     });
@@ -706,38 +726,7 @@ function tableScreenSelectTable(tableId) {
             return;
         }
         
-        var activeTableIDS = getActiveTableIDS();
-        //alert(activeTableIDS + " " + $.inArray(tableId.toString(), activeTableIDS));
-        
-        if(tableId.toString() == selectedTable) {
-            niceAlert("You cannot transfer to the same table, please choose another.");
-            return;
-        }
-        
-        if($.inArray(tableId.toString(), activeTableIDS) != -1) {
-            niceAlert("This table is occupied, please choose another.");
-            return;
-        }
-        
-        transferOrderInProgress = true;
-        
-        $('#nav_back_link').unbind();
-        $('#nav_back_link').click(function() {
-            niceAlert("Transfer table order in progress, please wait.");
-            return;
-        });
-        
-        niceAlert("Transfering order from table " + tables[selectedTable].label + " to table " + tables[tableId].label + ". Please wait.");
-        
-        $.ajax({
-            type: 'POST',
-            url: '/transfer_order',
-            data: {
-                table_from_id : selectedTable,
-                table_from_order_num : getCurrentOrder().order_num,
-                table_to_id : tableId
-            }
-        });
+        doTransferTable(selectedTable, tableId);
         
         return;
     }

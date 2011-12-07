@@ -66,7 +66,7 @@
         <div class="clear">&nbsp;</div>
 
         <!--div id="height">
-          <%= f.text_field :menu_button_height, {:size => 1} %>
+        <%= f.text_field :menu_button_height, {:size => 1} %>
           <div class="label">High</div>
           <div class="clear">&nbsp;</div>
         </div-->
@@ -133,11 +133,11 @@
                    name="product[selected_printers][]" value="<%= id_safe terminal_name %>" 
                    style="display: none;" <%= @product.printing_to_terminal?(id_safe(terminal_name)) ? "checked" : "" %>/>
                  <% end %>
-            
-            <!-- the following input is to make sure that we send the product[selected_printers] param when no printers are selected -->
-            <input type="checkbox" id="choose_printer_checkbox_blank"
-                   name="product[selected_printers][]" value="" 
-                   style="display: none;" checked/>
+
+          <!-- the following input is to make sure that we send the product[selected_printers] param when no printers are selected -->
+          <input type="checkbox" id="choose_printer_checkbox_blank"
+                 name="product[selected_printers][]" value="" 
+                 style="display: none;" checked/>
 
           <div id="select_printers_markup" style="display: none;">
             <div class="select_printers_dialog">
@@ -162,7 +162,7 @@
         </div>
         <div class="field">
           <div class="label">Kitchen Note</div>
-          <%= f.text_area :kitchen_note, :rows => 6 %>
+          <%= f.text_area :kitchen_note, :rows => 5 %>
           <div class="clear">&nbsp;</div>
         </div>
         <div class="field">
@@ -170,14 +170,14 @@
           <%= f.check_box :is_active %>
           <div class="clear">&nbsp;</div>
         </div>
-      </div>
-
-      <div class="right_col">
         <div class="field">
           <div class="label">Qty in Stock</div>
           <%= f.text_field :quantity_in_stock, :disabled => true %>
           <div class="clear">&nbsp;</div>
         </div>
+      </div>
+
+      <div class="right_col">
         <div class="field">
           <div class="label">Code No.</div>
           <%= f.text_field :code_num %>
@@ -193,6 +193,11 @@
           <%= f.text_field :price %>
           <div class="clear">&nbsp;</div>
         </div>
+        <!--div class="field">
+          <div class="label">Double Price</div>
+          <%= f.text_field :double_price %>
+          <div class="clear">&nbsp;</div>
+        </div-->
         <div class="field">
           <div class="label">Price 2</div>
           <%= f.text_field :price_2 %>

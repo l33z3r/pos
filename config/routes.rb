@@ -212,8 +212,14 @@ Pos::Application.routes.draw do
   namespace :reports do
     resources :glances, :only => [:index] do
       collection do
-        #get 'previous_cash_total'
-        #get 'cash_total_search'
+        get 'glances_search'
+        get 'sales_search'
+        get 'cash_search'
+        get 'payments_search'
+        get 'customers_search'
+        get 'suppliers_search'
+        get 'stock_search'
+        get 'staff_search'
       end
     end
   end

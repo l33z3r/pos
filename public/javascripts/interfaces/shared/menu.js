@@ -1,6 +1,7 @@
 var currentMenuPage;
 var currentMenuPageId;
 
+var menuItemDoubleMode = false;
 var currentMenuItemQuantity = "";
 
 var selectedTable = 0;
@@ -22,6 +23,9 @@ var currentSelectedMenuItemElement;
 var oiaIsAdd = true;
 
 var currentSelectedReceiptItemEl;
+
+var inTransferOrderMode = false;
+var transferOrderInProgress = false;
 
 function getCurrentOrder() {
     if(selectedTable == 0) {
@@ -91,6 +95,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         //make sure the data types are converted correctly
         if(tableOrderDataJSON.items[itemKey].product.show_price_on_receipt) {
             tableOrderDataJSON.items[itemKey].product.show_price_on_receipt = (tableOrderDataJSON.items[itemKey].product.show_price_on_receipt.toString() == "true" ? true : false);
+            tableOrderDataJSON.items[itemKey].is_double = (tableOrderDataJSON.items[itemKey].is_double.toString() == "true" ? true : false);
         }
         
         var copiedOrderItem = {};
@@ -442,12 +447,22 @@ function buildOrderItem(product, amount) {
         taxRate = product.tax_rate;
     }
     
+    var productPrice = product.price;
+    var isDouble = false;
+    
+    if(menuItemDoubleMode) {
+        productPrice = product.double_price;
+        isDouble = true;
+        setMenuItemDoubleMode(false);
+    }
+    
     orderItem = {
         'amount':amount,
         'product':product,
         'tax_rate':taxRate,
-        'product_price':product.price,
-        'total_price':(product.price*amount)
+        'product_price':productPrice,
+        'is_double':isDouble,
+        'total_price':(productPrice*amount)
     }
 
     //store the terminal id 
@@ -691,4 +706,41 @@ function orderStartTime(order) {
     }
     
     return order.items[0].time_added;
+}
+
+function doTransferTable(tableFrom, tableTo) {
+    var activeTableIDS = getActiveTableIDS();
+    //alert(activeTableIDS + " " + $.inArray(tableId.toString(), activeTableIDS));
+        
+    if(tableTo.toString() == tableFrom) {
+        niceAlert("You cannot transfer to the same table, please choose another.");
+        return;
+    }
+        
+    if($.inArray(tableTo.toString(), activeTableIDS) != -1) {
+        niceAlert("This table is occupied, please choose another.");
+        return;
+    }
+        
+    transferOrderInProgress = true;
+        
+    //this bit of code is only for the large interface, but can still be 
+    //included here as it is non breaking for medium interface
+    $('#nav_back_link').unbind();
+    $('#nav_back_link').click(function() {
+        niceAlert("Transfer table order in progress, please wait.");
+        return;
+    });
+        
+    niceAlert("Transfering order from table " + tables[tableFrom].label + " to table " + tables[tableTo].label + ". Please wait.");
+        
+    $.ajax({
+        type: 'POST',
+        url: '/transfer_order',
+        data: {
+            table_from_id : tableFrom,
+            table_from_order_num : getCurrentOrder().order_num,
+            table_to_id : tableTo
+        }
+    });
 }

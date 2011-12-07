@@ -1,18 +1,15 @@
 function mobileLoginScreenKeypadClick(val) {
     newVal = $('#num').val().toString() + val;
-    $('#clockincode_show').html(newVal);
+    $('#clockincode_show').html($('#clockincode_show').html() + "*");
     $('#num').val(newVal);
 }
 
 function doCancelMobileLoginKeypad() {
-    oldVal = $('#num').val().toString();
-    newVal = oldVal.substring(0, oldVal.length - 1);
-    $('#clockincode_show').html(newVal);
-    $('#num').val(newVal);
+    $('#clockincode_show').html("");
+    $('#num').val("");
 }
 
 function doMobileLogin() {
-    
     if(typeof(employees) == "undefined") {
         setMobileStatusMessage("Please wait while employee list loads");
         return;

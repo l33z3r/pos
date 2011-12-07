@@ -1,14 +1,5 @@
 <% @nav_title = "Reports" %>
 
-<%= javascript_include_tag "rails", "interfaces/large_screen/reports", :cache => "cache/large_screen" %>
-<%= javascript_include_tag :high_charts %>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        <%= yield :javascript %>
-    });
-</script>
-
 <div id="reports_container">
 
     <div id="report_option_tabs" class="vtabs report_option_tabs">
@@ -72,13 +63,7 @@
             </div>
 
             <div id="at_a_glance_results">
-              <div id="at_a_glance_results_left">
-
-              </div>
-
-              <div id="at_a_glance_results_right">
-                <%= render 'glance' %>
-              </div>
+                <%= render 'glances_tab' %>
             </div>
 
             <div id="right_buttons">

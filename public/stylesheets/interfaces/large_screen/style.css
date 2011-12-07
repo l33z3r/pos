@@ -1311,6 +1311,39 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
     width: 75px;
 }
 
+div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table,
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table {
+    margin-top: 10px;
+}
+
+div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_header,
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_header {
+    width: 84px;
+    float: left;
+    text-align: right;
+}
+
+div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_label_header,
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_label_header {
+    width: 130px;
+    float: left;
+    text-align: left;
+}
+
+div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_label,
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_label {
+    float: left;
+    text-align: left;
+    width: 130px;
+}
+
+div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data,
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data {
+    float: left;
+    text-align: right;
+    width: 84px;
+}
+
 /* End Cash Reports Screen */
 
 /* Float Screen */
@@ -1746,12 +1779,12 @@ div#receipt_item_discount_popup_anchor {
 }
 
 div#discounts_popup_markup_container {
-    width: 280px;
+    width: 335px;
     height: 610px;
 }
 
 div#discounts_popup_markup_container.higher {
-    height: 625px;
+    height: 665px;
 }
 
 div#discounts_popup_markup_container div.header {
@@ -1764,6 +1797,7 @@ div#discounts_popup_markup_container div.header {
 
 div#discounts_popup_markup_container div.discount_buttons {
     margin: 3px auto;
+    width: 325px;
 }
 
 div#discounts_popup_markup_container div.discount_buttons div.button {
@@ -1776,7 +1810,7 @@ div#discounts_popup_markup_container div.discount_buttons div.button {
     height: 35px;
     margin: 3px;
     padding: 4px;
-    width: 77px;
+    width: 65px;
     max-width: 77px;
     text-align: center;
 }
@@ -1808,7 +1842,7 @@ div#discounts_popup_markup_container div#apply_discount_to {
 
 div#discounts_popup_markup_container div#apply_discount_to input[type=radio] {
     height: 20px;
-    margin-left: 65px;
+    margin-left: 90px;
     float: left;
 }
 
@@ -2334,8 +2368,8 @@ div#display_button_passcode_popup div.button {
     color: #333;
     float: right;
     width: 70px;
-    height: 30px;
-    padding-top: 10px;
+    height: 27px;
+    padding-top: 11px;
     margin-left: 10px;
     cursor: pointer;
     font-weight: bold;
@@ -3175,6 +3209,28 @@ div#reports_container  div#at_a_glance_results_right{
     float: left;
     height: 650px;
     width: 50%;
+}
+
+div#reports_container  div#at_a_glance_results_right div#graph_container{
+    height: 300px;
+}
+
+div#reports_container  div#at_a_glance_results_right div#top_selling_items table#top_selling_items_table,
+div#reports_container  div#at_a_glance_results_right div#sales_per_hour_items table#items_table{
+    font-size: 10px;
+    line-height: 10px;
+}
+
+div#reports_container  div#at_a_glance_results_right div#sales_per_hour_items table#items_table div.left{
+    text-align: left;
+}
+
+div#reports_container  div#at_a_glance_results_right div#sales_per_hour_items table#items_table div.center{
+    text-align: center;
+}
+
+div#reports_container  div#at_a_glance_results_right div#sales_per_hour_items table#items_table div.right{
+    text-align: right;
 }
 
 div#reports_container  div#at_a_glance_results{

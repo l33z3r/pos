@@ -398,7 +398,7 @@ div#product_builder div#builder_fields_container div.extra_options div.field div
 div#product_builder div#builder_fields_container div.extra_options div.tab_content {
     background-color: #E0E0E0;
     padding: 10px 0px;
-    height: 350px;
+    height: 355px;
 }
 
 div#product_builder div#builder_fields_container div.extra_options div#options_tab_content div.field {
@@ -554,7 +554,7 @@ div#admin_product_list div#search_fields_container div.button_col{
 div#admin_product_list div#search_fields_container div.button_col div.button{
     float: right;
     padding-top: 2px;
-    height: 50px;
+    height: 56px;
     width: 150px;
 }
 

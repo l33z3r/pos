@@ -98,6 +98,11 @@ function swipeToReceipt() {
 }
 
 function swipeToMenu() {
+    if(!callHomePollInitSequenceComplete) {
+        niceAlert("Downloading data from server, please wait.");
+        return;
+    }
+    
     if(currentScreenIsMenu) return;
     clearAllPageFlags();
     doScroll((menuPageNum - 1) * pageWidth);

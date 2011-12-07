@@ -7,10 +7,6 @@ Main stylesheet.
 */
 
 /* Global Styles */
-body * {
-    -webkit-backface-visibility: hidden;
-}
-
 body {
     width: 480px;
     height: 798px;
