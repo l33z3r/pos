@@ -217,7 +217,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     orderHTML += "<div class='name'>" + notSyncedMarker + " ";
         
     if(orderItem.is_double) {
-        orderHTML += "*Double* ";
+        orderHTML += "Double ";
     }
         
     orderHTML += orderItem.product.name + "</div>";

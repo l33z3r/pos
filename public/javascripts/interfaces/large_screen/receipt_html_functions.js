@@ -54,7 +54,7 @@ function getLineItemHTMLForPrintedOrderReceipt(orderItem) {
     lineItemHTMLForOrder += "<div class='name'>";
         
     if(orderItem.is_double) {
-        lineItemHTMLForOrder += "*Double* ";
+        lineItemHTMLForOrder += "Double ";
     }
         
     lineItemHTMLForOrder += orderItem.product.name + "</div>";

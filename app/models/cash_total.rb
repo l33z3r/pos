@@ -248,6 +248,9 @@ class CashTotal < ActiveRecord::Base
     @cash_summary["Cash In Drawer"] = cash_count
     @cash_summary["Shortfall"] = @shortfall
           
+    #sort sales_by_product alphabetically
+    @sales_by_product = @sales_by_product.sort
+    
     @cash_total_data[:sales_by_product] = @sales_by_product
     @cash_total_data[:sales_by_category] = @sales_by_category
     @cash_total_data[:sales_by_department] = @sales_by_department

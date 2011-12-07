@@ -26,6 +26,10 @@ div.admin input[type=submit] {
     background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
 }
 
+div.admin input[type=file] {
+    background-color: #FFF;
+}
+
 div.admin div#actions {
     margin-top: 20px;
 }
@@ -615,7 +619,73 @@ div#admin_product_list div.right_col div.field div.label {
     width: 120px;
 }
 
+div#import_products section#form_container {
+    margin: auto;
+    text-align: center;
+}
 
+div#import_products section#form_container h3 {
+    width: 250px;
+    margin: auto;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+div#import_products section#form_container div#fields {
+    width: 250px;
+    margin: auto;
+}
+
+div#import_products section#form_container form div {
+    text-align: left;
+}
+
+div#import_products section#form_container form div#actions a {
+    float: right;
+}
+
+div#import_products section#form_container form div#actions input {
+    float: right;
+}
+
+div#import_products section#form_container div#errors_container {
+    max-height: 510px;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+div#import_products section#form_container div#upload_again_button {
+    float: right;
+    margin-right: 80px;
+    height: 50px;
+    padding-top: 20px;
+}
+
+div#import_products section#form_container div#guidelines {
+    padding: 10px;
+    width: 540px;
+    margin: auto;
+    margin-bottom: 30px;
+    border: 2px solid #000;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    background-color: #FFF;
+    color: #000;
+    text-align: left;
+}
+
+div#import_products section#form_container div#guidelines li {
+    margin: 8px 3px;
+}
+
+div#import_products section#form_container div#errors_container table#csv_error_list {
+    width: 900px;
+}
+
+div#import_products section#form_container div#errors_container table#csv_error_list td div.error_line {
+    text-align: left;
+    padding: 2px;
+}
 
 /* End Admin Products Page */
 

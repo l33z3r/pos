@@ -16,13 +16,25 @@ class Product < ActiveRecord::Base
   belongs_to :menu_page_1, :class_name => "MenuPage"
   belongs_to :menu_page_2, :class_name => "MenuPage"
   
-  validates :name, :presence => true
+  validates :name, :presence => true, :uniqueness => true
   validates :category_id, :numericality => true, :allow_blank => true
-  validates :size, :numericality => true, :allow_blank => true
-  validates :price, :presence => true, :numericality => true
-  validates :items_per_unit, :numericality => true, :allow_blank => true
-  validates :sales_tax_rate, :numericality => true, :allow_blank => true
+  validates :size, :numericality => {:greater_than_or_equal_to => 0}, :allow_blank => true
+  validates :price, :presence => true, :numericality => {:greater_than_or_equal_to => 0}
+  
+  validates :double_price, :numericality => {:greater_than_or_equal_to => 0}, :allow_blank => true
+  
+  validates :price_2, :numericality => {:greater_than_or_equal_to => 0}, :allow_blank => true
+  validates :price_3, :numericality => {:greater_than_or_equal_to => 0}, :allow_blank => true
+  validates :price_4, :numericality => {:greater_than_or_equal_to => 0}, :allow_blank => true
+  
+  validates :items_per_unit, :numericality => {:greater_than_or_equal_to => 0}, :allow_blank => true
+  validates :sales_tax_rate, :numericality => {:greater_than_or_equal_to => 0, :less_than_or_equal_to => 100}, :allow_blank => true
+  validates :margin_percent, :numericality => {:greater_than_or_equal_to => 0, :less_than_or_equal_to => 100}, :allow_blank => true
+  validates :commission_percent, :numericality => {:greater_than_or_equal_to => 0, :less_than_or_equal_to => 100}, :allow_blank => true
 
+  validates :cost_price, :numericality => {:greater_than_or_equal_to => 0}, :allow_blank => true
+  validates :shipping_cost, :numericality => {:greater_than_or_equal_to => 0}, :allow_blank => true
+  
   VALID_BUTTON_WIDTHS = [1, 2, 3, 4, 5]
   VALID_BUTTON_HEIGHTS = [1]
   

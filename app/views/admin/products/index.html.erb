@@ -7,6 +7,14 @@
     </div>
     <div class="button_name">Create Product</div>
   </div>
+
+  <div class="button" onclick="goTo('<%= csv_import_admin_products_path %>');">
+    <div class="icon">
+      <%= image_tag "/images/button_logos/import_products_button.png" %>
+    </div>
+    <div class="button_name">Import Products</div>
+  </div>
+
 <% end %>
 
 <% if params[:show_specials_only] %>
@@ -21,7 +29,7 @@
 <div id="admin_product_list">
 
   <%= hidden_field_tag 'current_letter', @selected_letter %>
-  
+
   <div id="search_fields_container">
     <div class="left_col">
       <div class="field">
@@ -58,8 +66,8 @@
         <div class="label">Daily Special</div>
         <%= check_box_tag :is_special_equals, @session_is_specials, @session_is_specials, :class => 'filterCheck' %>
         <div id="deleted">
-         <div class="label">Deleted</div>
-         <%= check_box_tag :is_deleted_equals, @session_is_deleted, @session_is_deleted, :class => 'filterCheck' %>
+          <div class="label">Deleted</div>
+          <%= check_box_tag :is_deleted_equals, @session_is_deleted, @session_is_deleted, :class => 'filterCheck' %>
         </div>
       </div>
     </div>
