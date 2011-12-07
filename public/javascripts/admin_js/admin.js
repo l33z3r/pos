@@ -7,9 +7,6 @@ function initAdminScreen() {
     
     $('#admin_nav_back_link').show();
     
-    //allow the page to scroll in the admin pages
-    $('body').css("overflow", "scroll");
-    
     display_button_passcode_permissions = all_display_button_permissions[current_user_role_id];
     
     //make links in the table bigger

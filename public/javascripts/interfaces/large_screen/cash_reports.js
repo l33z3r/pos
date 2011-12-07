@@ -19,12 +19,12 @@ function getCashTotalSalesByProductDataTable(products_data) {
     cash_total_data_html = "<div class='products_data_table'>";
     
     cash_total_data_html += "<div class='products_data_table_label_header'>Product</div>";
-    cash_total_data_html += "<div class='products_data_table_header'>Quantity</div>";
+    cash_total_data_html += "<div class='products_data_table_header quantity'>Qty</div>";
     cash_total_data_html += "<div class='products_data_table_header'>Total</div>" + clear10HTML;
         
     for(var i=0; i<products_data.length; i++) {
         cash_total_data_html += "<div class='products_label'>" + products_data[i][0] + "</div>";
-        cash_total_data_html += "<div class='products_data'>" + products_data[i][1] + "</div>";
+        cash_total_data_html += "<div class='products_data quantity'>" + products_data[i][1] + "</div>";
         cash_total_data_html += "<div class='products_data'>" + currency(products_data[i][2]) + "</div>" + clearHTML;
     }
     
