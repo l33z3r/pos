@@ -53,14 +53,22 @@
       <div class="button_name">Main Menu</div>
     </div>
 
+    <div id="sales_button_<%=@global_settings_button.id%>" 
+         class="button" onclick="<%= button_action @global_settings_button %>">
+      <div class="icon">
+        <%= button_icon @global_settings_button %>
+      </div>
+      <div class="button_name"><%=@global_settings_button.button_text%></div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
     <div class="button" onclick="doClearAndReload();">
       <div class="icon">
         <%= image_tag "/images/button_logos/clear_refresh.png" %>
       </div>
       <div class="button_name">Clear</div>
     </div>
-
-    <div class="clear">&nbsp;</div>
 
     <div class="button" onclick="doReload();">
       <div class="icon">

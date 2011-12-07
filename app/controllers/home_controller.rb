@@ -330,8 +330,7 @@ class HomeController < ApplicationController
     
     @functions_display_buttons = []
     @functions_display_buttons << @course_button << @remove_item_button 
-    @functions_display_buttons << @print_bill_button << @global_settings_button
-    @functions_display_buttons << @transfer_order_button << @toggle_menu_item_double_mode_button
+    @functions_display_buttons << @print_bill_button << @transfer_order_button << @toggle_menu_item_double_mode_button
     
   end
   
