@@ -1,0 +1,101 @@
+<% @nav_title = "Product Import" %>
+
+<div id="import_products">
+
+  <h3>Product Import</h3>
+
+  <section id="form_container">
+
+    <% if @csv_validation_errors %>
+
+      <div id="errors_container" class="jscrollpane">
+
+        <table id="csv_error_list" class="admin_table">
+          <thead>
+            <tr>
+              <th width="100">Line Number</th>
+              <th width="300">Error Description For Line</th>
+              <th width="500">Row Data</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @csv_validation_errors.each do |key, map| %>
+              <tr>
+                <td class="line_number">
+                  CSV Line <%=key%>
+                </td>
+                <td>
+                  <%map[:errors].each do |var, error|%>
+                    <div class="error_line">
+                      Product <%=var%>: <%=error%>
+                    </div>
+                  <% end %>
+                </td>
+                <td>
+                  <%=map[:row_data]%>
+                </td>
+              </tr>
+            <% end %>
+            </</tbody>
+        </table>
+      </div>
+
+      <div class="button" id="upload_again_button" onclick="goTo('<%= csv_import_admin_products_path %>');">Try Again</div>
+
+    <% else %>
+
+      <div id="guidelines">
+        <ul>
+          <li>
+            You can upload a CSV file to import products to your database. 
+          </li>
+          <li>
+            The format of the CSV file is particular to the cluey app itself.
+          </li>
+          <li>
+            Please <%= link_to "Click Here", "/files/sample_products.csv" %> for a sample csv file that you can use. 
+          </li>
+          <li>
+            Note that the first line of the CSV is ignored as it conatains the header.
+          </li>
+          <li>
+            The file will create categories for the ones defined in the file. 
+          </li>
+          <li>
+            Please specify all details carefully.
+          </li>
+          <li>
+            Make sure all prices are numbers with no currency symbol.
+          </li>
+          <li>
+            Make sure all product names are unique.
+          </li>
+          <li>
+            The order of the CSV values are:
+            </br>
+            <b>
+              DEPARTMENT, CATEGORY, NAME , BRAND, DESCRIPTION, PRICE, DOUBLE_PRICE, 
+              CODE_NUM, UPC, PRICE_2, PRICE_3, PRICE_4, MARGIN_PERCENT, ITEMS_PER_UNIT, 
+              QUANTITY_PER_CONTAINER, UNIT, SIZE
+            </b>
+          </li>
+      </div>
+
+      <% form_tag(csv_upload_admin_products_path, :multipart => true) do %>
+        <div id="fields">
+          <div class="field">
+            <label>Select CSV File</label><br/>
+            <%= file_field_tag :dump_file %>
+          </div>
+
+          <div id="actions">
+            <%= submit_tag "Upload", :disable_with => 'Uploading...' %>
+            <%= link_to "Back", admin_products_path %>
+          </div>
+        </div>
+      <% end %>
+
+    <% end %>
+  </section>
+
+</div>

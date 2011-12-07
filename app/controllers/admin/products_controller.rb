@@ -1,3 +1,5 @@
+require 'csv'
+
 class Admin::ProductsController < Admin::AdminController
   cache_sweeper :product_sweeper
   
@@ -16,6 +18,71 @@ class Admin::ProductsController < Admin::AdminController
         @letters += element
       end
     end
+  end
+  
+  def csv_import
+    
+  end
+  
+  def csv_upload 
+    @product_count = 0
+    
+    @products = []
+    
+    @csv_validation_errors = {}
+    @validation_passed = true
+    
+    @first_row = true
+    
+    CSV.parse(params[:dump_file].read)  do |row|
+      if @first_row
+        @first_row = false
+        next
+      end
+      
+      @product_count += 1
+      
+      @new_product = ProductCSVMapper::product_from_row row
+      
+      #validate the product
+      logger.info "!!!VALID? #{@new_product.valid?}"
+      
+      @name_taken = false
+      
+      @products.each do |p|
+        if p.name == @new_product.name
+          @name_taken = true
+          @new_product.errors.add "name", "is already taken"
+        end
+      end
+      
+      if !@new_product.valid? or @name_taken
+        @validation_passed = false
+        
+        @csv_validation_errors[@product_count] = {
+          :row_data => row,
+          :errors => @new_product.errors
+        }
+      end
+      
+      @products << @new_product
+      
+      logger.info "!!!!#{@new_product.name}"
+    end
+    
+    if @validation_passed
+      
+      @products.each do |p|
+        p.save
+      end
+      
+      flash[:notice] = "CSV Import Successful!  #{@product_count} new products added to database."
+      redirect_to admin_products_path
+    else
+      flash.now[:error] = "Import Failed, please check the errors and modify the CSV file accordingly."
+      render :csv_import
+    end
+    
   end
 
   def show
