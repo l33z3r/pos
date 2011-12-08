@@ -257,11 +257,6 @@ function showCashReportsScreen() {
     $('#cash_reports_screen').show();
 }
 
-function showPreviousCashReportsScreen() {
-    hideAllScreens();
-    $('#previous_cash_reports_screen').show();
-}
-
 function showFloatScreen() {
     hideAllScreens();
     $('#float_screen').show();

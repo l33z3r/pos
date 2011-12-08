@@ -1,18 +1,92 @@
 <div id="at_a_glance_results_left">
-
+  <div id="sales_items">
+    <h3>SALES</h3>
+    <table class="items_table">
+      <tbody>
+        <% @sales_by_department.keys.each do |key| %>
+          <tr>
+            <td width="200" class="left"><%=key%></td>
+            <td width="80" class="right">&euro; <%=sprintf("%.2f", @sales_by_department[key])%></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td width="200" class="left"><b>Total Sales</b></td>
+          <td width="80" class="right"><b>&euro; <%=sprintf("%.2f", @sales_by_department_total)%></b></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h3>SALES BY PAYMENT TYPE</h3>
+    <table class="items_table">
+      <tbody>
+        <% @sales_by_payment_type.keys.each do |key| %>
+          <tr>
+            <td width="200" class="left"><%=key%></td>
+            <td width="80" class="right">&euro; <%=sprintf("%.2f", @sales_by_payment_type[key])%></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td width="200" class="left"><b>Total Sales</b></td>
+          <td width="80" class="right"><b>&euro; <%=sprintf("%.2f", @sales_by_payment_total)%></b></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h3>SALES BY SERVER</h3>
+    <table class="items_table">
+      <tbody>
+        <% @sales_by_server.keys.each do |key| %>
+          <tr>
+            <td width="200" class="left"><%=key%></td>
+            <td width="80" class="right">&euro; <%=sprintf("%.2f", @sales_by_server[key])%></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td width="200" class="left"><b>Total Sales</b></td>
+          <td width="80" class="right"><b>&euro; <%=sprintf("%.2f", @sales_by_server_total)%></b></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h3>CASH PAID OUT</h3>
+    <table class="items_table">
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h3>LAST 7 DAYS SUMMARY</h3>
+    <table class="items_table">
+      <tbody>
+        <% @sales_last_7_days.keys.sort.reverse.each do |key| %>
+          <tr>
+            <td width="200" class="left"><%=@sales_last_7_days[key][0]%></td>
+            <td width="80" class="right">&euro; <%=sprintf("%.2f", @sales_last_7_days[key][1])%></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td width="200" class="left"><b>Total Last 7 Days</b></td>
+          <td width="80" class="right"><b>&euro; <%=sprintf("%.2f", @sales_last_7_days_total)%></b></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <div id="at_a_glance_results_right">
 
-  <div id="top_selling_items">
+  <div>
     <h3>TOP SELLING ITEMS</h3>
-    <table id="top_selling_items_table">
+    <table class="items_table">
       <tbody>
         <% @top_selling_items.each do |top_item| %>
           <tr>
             <td width="40" class="left"><%=top_item[1][1]%></td>
             <td width="160" class="center"><%=(!top_item[1][0].nil?)?top_item[1][0]:"<NAME>"%></td>
-            <td width="70" class="right">&euro; <%=top_item[1][2].round(2)%></td>
+            <td width="70" class="right">&euro; <%=sprintf("%.2f", top_item[1][2])%></td>
           </tr>
         <% end %>
       </tbody>
@@ -23,21 +97,21 @@
     <%= "options.tooltip.formatter = function() { return this.x +'-'+ parseInt(this.x+1) +' hs: '+ this.y +' euros';}" %>
   <%end %>
 
-  <div id="sales_per_hour_items">
-    <table id="items_table">
+  <div>
+    <table class="items_table">
       <thead>
         <tr>
           <th width="80" class="left">Hour</th>
-          <th width="80" class="center">Qty</th>
+          <th width="80" >Qty</th>
           <th width="80" class="right">Total Sales</th>
         </tr>
       </thead>
       <tbody>
         <% @items_per_hour.keys.sort.each do |key| %>
           <tr>
-            <td class="left"><%=key%> - <%=key+1%></td>
-            <td class="center"><%=@items_per_hour[key]%> items</td>
-            <td class="right">&euro; <%=@sales_per_hour[key]%></td>
+            <td width="80" class="left"><%=key%> - <%=key+1%></td>
+            <td width="80" class="center-column"><%=@items_per_hour[key][0]%> items</td>
+            <td width="80" class="right">&euro; <%=sprintf("%.2f", @items_per_hour[key][1])%></td>
           </tr>
         <% end %>
       </tbody>

@@ -68,12 +68,6 @@
 
   <div id="appearance_tab_content" class="tab_content" style="display: none;">
     <div class="field">
-      <div class="label">Preview</div>
-      <div class="product_image_preview">
-        <%= product_image_thumb(@product, true) %>
-      </div>
-    </div>
-    <div class="field">
       <div class="label">Line 1</div>
       <%= f.text_field :button_text_line_1 %>
       <div class="clear">&nbsp;</div>
@@ -112,13 +106,25 @@
         :onblur => "productBuidlerHideTextColorPicker()"} %>
       <div class="clear">&nbsp;</div>
     </div>
-    <div class="field">
+    <!--div class="field">
       <div class="label">Vertical Align</div>
-      <%= f.select :button_vertical_align, %w[Top Middle Bottom] %>
+    <%= f.select :button_vertical_align, %w[Top Middle Bottom] %>
       <div class="clear">&nbsp;</div>
-    </div>
+    </div-->
     <div class="field">
       <div class="label">Image</div>
+      <div class="product_image_preview">
+        <%= product_image_thumb(@product, true) %>
+      </div>
+    </div>
+    <div class="clear">&nbsp;</div>
+    <div class="field">
+      <div class="label">Choose Image</div>
+      <div onclick="openChooseProductImageDialog();" class="button" id="choose_image_button">Select</div>
+      <input type="hidden" id="display_image" name="product[display_image]" value="<%=@product.display_image%>"/>
+    </div>
+    <div class="field">
+      <div class="label">or Upload Image</div>
       <div id="product_image_input_container">
         <%= f.file_field :product_image %>
         <div class="fakefile">
@@ -126,7 +132,7 @@
         </div>
         <!-- 
         <% if @product.has_product_image? %>
-                <p class="label">Select to Delete Image:</p>
+                    <p class="label">Select to Delete Image:</p>
           <%= check_box_tag :delete_product_image, false %>
         <% end %>
         -->

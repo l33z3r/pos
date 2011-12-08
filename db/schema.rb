@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111206181245) do
+ActiveRecord::Schema.define(:version => 20111208140023) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -287,6 +287,7 @@ ActiveRecord::Schema.define(:version => 20111206181245) do
     t.boolean  "is_deleted",                 :default => false
     t.boolean  "show_price_on_receipt",      :default => true
     t.float    "double_price",               :default => 0.0
+    t.string   "display_image"
   end
 
   create_table "roles", :force => true do |t|

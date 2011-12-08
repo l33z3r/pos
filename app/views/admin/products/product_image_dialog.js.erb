@@ -1,0 +1,13 @@
+//hide the waiting dialog
+hideNiceAlert();
+
+ModalPopups.Alert('niceAlertContainer',
+"Select Image", "<%=escape_javascript(render "product_image_selection_dialog_content")%>",
+{
+okButtonText: 'OK',
+onOk: 'hideNiceAlert()',
+width: 750,
+height: 500
+} );
+
+setTimeout(initScrollPanes, 2000);

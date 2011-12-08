@@ -3,6 +3,8 @@ module ApplicationHelper
   def product_image_thumb product, show_default=false
     if product.has_product_image?
       image_tag product.product_image.url(:thumb, false)
+    elsif product.display_image
+      image_tag "product_images/#{product.display_image}"
     elsif show_default
       image_tag "default_product_image.jpg"
     end

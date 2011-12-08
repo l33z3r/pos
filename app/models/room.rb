@@ -1,17 +1,3 @@
-# == Schema Information
-# Schema version: 20110510063013
-#
-# Table name: rooms
-#
-#  id              :integer(4)      not null, primary key
-#  name            :string(255)
-#  grid_x_size     :integer(4)
-#  grid_y_size     :integer(4)
-#  created_at      :datetime
-#  updated_at      :datetime
-#  grid_resolution :integer(4)      default(5)
-#
-
 class Room < ActiveRecord::Base
   has_many :room_objects, :dependent => :destroy
   has_many :table_infos, :through => :room_objects, :order => :perm_id
@@ -39,3 +25,18 @@ class Room < ActiveRecord::Base
     "#{grid_x_size}x#{grid_y_size}"
   end
 end
+
+# == Schema Information
+#
+# Table name: rooms
+#
+#  id                             :integer(4)      not null, primary key
+#  name                           :string(255)
+#  grid_x_size                    :integer(4)
+#  grid_y_size                    :integer(4)
+#  created_at                     :datetime
+#  updated_at                     :datetime
+#  grid_resolution                :integer(4)      default(5)
+#  default_service_charge_percent :float
+#
+

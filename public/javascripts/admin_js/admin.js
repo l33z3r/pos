@@ -450,7 +450,7 @@ function markProductAsDeleted(product_id) {
             type: 'POST',
             url: '/admin/products/'+ product_id +'/mark_as_deleted',
             success: function() {
-                $("#product_id_"+product_id).hide(1000);
+                $("#product_id_"+product_id).slideUp(1000);
             },
             error: function() {
                 niceAlert("Error deleting product");

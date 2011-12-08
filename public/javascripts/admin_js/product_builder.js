@@ -265,3 +265,21 @@ function productBuilderShowMoreOptionsShortcut() {
     toggleUtilKeyboard();
     adminShowMoreOptions();
 }
+
+var chooseProductImageDialogPopupEl;
+
+function openChooseProductImageDialog() {
+    niceAlert("Loading images, please wait...");
+    $.ajax({url: '/admin/products/product_image_dialog'});
+}
+
+function productImageSelected(el, image_name) {
+    $(".image").removeClass("selected");
+    $(el).addClass("selected");
+    
+    //switch out the preview image
+    $('.product_image_preview img').attr("src", "/images/product_images/" + image_name);
+    
+    $('#display_image').val(image_name);
+    hideNiceAlert();
+}
