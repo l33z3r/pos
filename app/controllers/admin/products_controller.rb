@@ -26,6 +26,8 @@ class Admin::ProductsController < Admin::AdminController
   
   def csv_upload 
     @product_count = 0
+    @category_count = 0
+    @department_count = 0
     
     @products = []
     
@@ -34,6 +36,9 @@ class Admin::ProductsController < Admin::AdminController
     
     @first_row = true
     
+    @categories = {}
+    @departments = {}
+
     CSV.parse(params[:dump_file].read)  do |row|
       if @first_row
         @first_row = false
@@ -42,7 +47,26 @@ class Admin::ProductsController < Admin::AdminController
       
       @product_count += 1
       
+      @department_name = ProductCSVMapper::department_from_row row
+      @category_name = ProductCSVMapper::category_from_row row
+      
+      if @department_name and !@departments[@department_name]
+        @departments[@department_name] = []
+      end
+      
+      if @category_name and !@categories[@category_name]
+        @categories[@category_name] = []
+      end
+      
       @new_product = ProductCSVMapper::product_from_row row
+      
+      if @department_name and @category_name
+        @departments[@department_name] << @category_name
+      end
+      
+      if @category_name
+        @categories[@category_name] << @new_product
+      end
       
       #validate the product
       logger.info "!!!VALID? #{@new_product.valid?}"
@@ -73,10 +97,48 @@ class Admin::ProductsController < Admin::AdminController
     if @validation_passed
       
       @products.each do |p|
+        #attatch an image
+        p.set_image
         p.save
+        p.reload
       end
       
-      flash[:notice] = "CSV Import Successful!  #{@product_count} new products added to database."
+      #build the categories
+      @categories.each do |name, products|
+        @category_product_ids = products.collect &:id
+        
+        @new_category = Category.find_or_initialize_by_name(name)
+        
+        if @new_category.new_record?
+          @category_count += 1
+          @new_category.save
+          @new_category.reload
+        end
+        
+        Product.update_all({:category_id => @new_category.id}, {:id => @category_product_ids})
+      end
+      
+      #build the departments
+      @departments.each do |dep_name, category_names|
+        @new_department = Category.find_or_initialize_by_name(dep_name)
+        
+        if @new_department.new_record?
+          @department_count += 1
+          @new_department.save
+          @new_department.reload
+        end
+        
+        #we don't override a category if it already has a department
+        category_names.each do |cn|
+          c = Category.find_by_name(cn)
+          if !c.parent_category
+            c.parent_category_id = @new_department.id
+            c.save
+          end
+        end
+      end
+      
+      flash[:notice] = "CSV Import Successful! #{@product_count} new products, #{@category_count} new categories and #{@department_count} new departments have been added to the database."
       redirect_to admin_products_path
     else
       flash.now[:error] = "Import Failed, please check the errors and modify the CSV file accordingly."
@@ -146,19 +208,16 @@ class Admin::ProductsController < Admin::AdminController
     end
   end
   
+  def product_image_dialog
+    @all_product_images = load_all_product_images
+  end
+  
   def update_price
     @product = Product.find(params[:id])
     @product.price = params[:price]
     @product.save!
     
     render :json => {:success => true}.to_json
-  end
-
-  def destroy
-    @product = Product.find(params[:id])
-    @product.destroy
-
-    redirect_to(admin_products_url, :notice => 'Product was successfully deleted.')
   end
 
   def search
@@ -266,4 +325,12 @@ class Admin::ProductsController < Admin::AdminController
     
   end
 
+  def load_all_product_images
+    @all_images = Dir.glob(Product::PRODUCT_IMAGE_DIRECTORY).collect do |image_path|
+      @start_index = image_path.rindex("/") + 1
+      image_path[@start_index..image_path.length]
+    end
+    
+    @all_images
+  end
 end

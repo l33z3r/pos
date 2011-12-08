@@ -140,6 +140,7 @@ Pos::Application.routes.draw do
       end
       collection do
         get 'search'
+        get 'product_image_dialog'
         get 'csv_import'
         post 'csv_upload'
       end

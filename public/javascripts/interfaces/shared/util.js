@@ -99,15 +99,9 @@ function doReload(resetSession) {
 }
 
 function doClearAndReload() {
-    doIt = confirm("Are you sure you want to clear your cookies and local web storage?");
-    
-    if(doIt) {
-        showSpinner();
-        
-        clearLocalStorageAndCookies();
-        
-        doReload(true);
-    }
+    showSpinner();
+    clearLocalStorageAndCookies();
+    doReload(true);
 }
 
 var terminalFingerPrintCookieName = "terminal_fingerprint";
@@ -623,15 +617,19 @@ function clueyTimestamp() {
     return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
 }
 
-function alertReloadRequest(terminalId, hardReload) {
+function alertReloadRequest(reloadTerminalId, hardReload) {
+    if(reloadTerminalId == terminalID) {
+        return;
+    }
+    
     //hide any previous popups
     hideNiceAlert();
     
     if(hardReload) {
-        message = "A hard reset has been requested by " + terminalId + ". Please click OK to reload.";
+        message = "A hard reset has been requested by " + reloadTerminalId + ". Please click OK to reload.";
         okFuncCall = "doClearAndReload();"
     } else {
-        message = "Settings have been changed by " + terminalId + ". Please click OK to reload.";
+        message = "Settings have been changed by " + reloadTerminalId + ". Please click OK to reload.";
         okFuncCall = "doReload(false);"
     }
     

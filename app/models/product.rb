@@ -1,8 +1,11 @@
 class Product < ActiveRecord::Base
 
+  PRODUCT_IMAGE_DIRECTORY = "#{Rails.root}/public/images/product_images/*"
+  
   has_attached_file :product_image, PAPERCLIP_STORAGE_OPTIONS.merge(:styles => { :medium => "300x300>", :thumb => "115x115>" })
   
   before_post_process :transliterate_file_name
+  before_validation :strip_whitespace, :only => [:name, :brand, :description]
   
   belongs_to :category
   belongs_to :tax_rate
@@ -41,6 +44,8 @@ class Product < ActiveRecord::Base
   validates :menu_button_width, :presence => true, :inclusion => { :in => VALID_BUTTON_WIDTHS }
   validates :menu_button_height, :presence => true, :inclusion => { :in => VALID_BUTTON_HEIGHTS }
   
+  after_create :set_image
+  
   #for will_paginate
   cattr_reader :per_page
   @@per_page = 10
@@ -74,6 +79,7 @@ class Product < ActiveRecord::Base
   end
   
   def mark_as_deleted
+    self.name += "_deleted_#{Time.now.to_i}"
     self.is_deleted = true
     save!
     
@@ -120,6 +126,30 @@ class Product < ActiveRecord::Base
     stock_transactions
   end
   
+  def set_image
+    @product_name_normalised = self.name.downcase.gsub(" ", "_")
+    @product_name_parts = self.name.downcase.split(" ")
+    
+    @found_image = false
+    
+    #fetch all images in the product images directory
+    @all_images = Dir.glob(PRODUCT_IMAGE_DIRECTORY)
+    
+    @all_images.each do |image_name|
+      #strip white space and the .*** part
+      @start_index = image_name.rindex("/") + 1
+      @end_index = image_name.rindex(".") - 1
+      @image_name = image_name[@start_index..@end_index]
+      
+      if @product_name_normalised == @image_name
+        @found_image = true
+        self.display_image = image_name[@start_index..image_name.length]
+        self.save
+        break
+      end
+    end
+  end
+  
   def transliterate_file_name
     extension = File.extname(product_image_file_name).gsub(/^\.+/, '')
     filename = product_image_file_name.gsub(/\.#{extension}$/, '')
@@ -150,10 +180,13 @@ class Product < ActiveRecord::Base
     return s
   end
   
+  def strip_whitespace
+    self.name = self.name ? self.name.strip : nil
+    self.brand = self.brand ? self.brand.strip : nil
+    self.description = self.description ? self.description.strip : nil
+  end
+  
 end
-
-
-
 
 
 # == Schema Information
@@ -226,5 +259,7 @@ end
 #  is_special                 :boolean(1)      default(FALSE)
 #  is_deleted                 :boolean(1)      default(FALSE)
 #  show_price_on_receipt      :boolean(1)      default(TRUE)
+#  double_price               :float           default(0.0)
+#  display_image              :string(255)
 #
 

@@ -1,0 +1,7 @@
+<div id="product_image_selection_dialog" class="jscrollpane">
+  <% @all_product_images.each do |image_name| %>
+    <div class="image" onclick="productImageSelected(this, '<%=image_name%>');">
+      <%=image_tag "product_images/#{image_name}"%>
+    </div>
+  <% end %>
+</div>

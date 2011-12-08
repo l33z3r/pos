@@ -15,6 +15,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: products
@@ -85,5 +86,7 @@ end
 #  is_special                 :boolean(1)      default(FALSE)
 #  is_deleted                 :boolean(1)      default(FALSE)
 #  show_price_on_receipt      :boolean(1)      default(TRUE)
+#  double_price               :float           default(0.0)
+#  display_image              :string(255)
 #
 

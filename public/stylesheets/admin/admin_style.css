@@ -425,7 +425,7 @@ div#product_builder div#builder_fields_container div.extra_options div#appearanc
 div#product_builder div#builder_fields_container div.extra_options div#appearance_tab_content div#product_image_input_container div.fakefile {
     position: absolute;
     top: 3px;
-    left: 188px;
+    left: 189px;
     z-index: 1;
 }
 
@@ -438,6 +438,38 @@ div#product_builder div#builder_fields_container div.extra_options div#appearanc
     z-index: 2;
 }
 
+div#product_builder div#builder_fields_container div.extra_options div#appearance_tab_content div#choose_image_button {
+    height: 25px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    width: 91px;
+    max-width: 91px;
+}
+
+div#product_image_selection_dialog {
+    width: 740px;
+    height: 500px;
+    overflow: hidden;
+}
+
+div#product_image_selection_dialog div.image {
+    float: left;
+    padding: 5px;
+    width: 105px;
+    height: 100px;
+    cursor: pointer;
+}
+
+div#product_image_selection_dialog div.image img {
+    max-height: 100px;
+    max-width: 100px;
+    border: 1px solid #000;
+}
+
+div#product_image_selection_dialog div.image.selected img {
+    border: 1px solid #E36C0A;
+}
+    
 div.select_printers_dialog {
     padding: 10px;
 }

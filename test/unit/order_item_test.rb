@@ -10,6 +10,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: order_items
@@ -31,5 +32,6 @@ end
 #  time_added             :string(255)
 #  show_server_added_text :boolean(1)      default(FALSE)
 #  product_name           :string(255)
+#  is_double              :boolean(1)      default(FALSE)
 #
 
