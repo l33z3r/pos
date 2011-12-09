@@ -90,7 +90,6 @@ function doAjaxProductGridPlacement(product_id_string, menu_item_id_string) {
 }
 
 function createSpacer(menu_item_id) {
-    alert("CS");
     if(!menu_item_id) {
         menu_item_id_string = "new_menu_item";
     } else {
