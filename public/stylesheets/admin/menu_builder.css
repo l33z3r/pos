@@ -116,6 +116,10 @@ div#display_builder div#menu_pages_container div#pages div.page div.name {
     padding: 4px;
 }
 
+div#display_builder div#menu_pages_container div#pages div.page.new_page div.name {
+    text-decoration: underline;
+}
+
 div#display_builder div#menu_pages_container div#pages div.page div.name a:hover {
     background-color: transparent;
 }
@@ -155,6 +159,7 @@ div#display_builder div#menu_pages_container div#builder_menu_items_container di
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_pic {
     padding-top: 2px;
+    cursor: pointer;
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_pic img {
@@ -162,11 +167,11 @@ div#display_builder div#menu_pages_container div#builder_menu_items_container di
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.drag_message {
-    font-size: 14px;
+    font-size: 13px;
     text-decoration: none;
     text-align: center;
     background-color: #FFF;
-    padding: 15px 2px;
+    padding: 25px 2px 5px 2px;
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.loading_message {
@@ -185,16 +190,30 @@ div#display_builder div#menu_pages_container div#builder_menu_items_container di
     padding: 1px;
     bottom: 0px;
     width: 82px;
+    cursor: pointer;
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.new_item {
-    
+
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.new_item div.item_name {
-    font-size: 12px;
+    font-size: 11px;
     background-color: #FFF;
-    padding: 15px 2px;
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#embedded_display_message {
+    padding: 40px;
+    width: 540px;
+    margin: 100px auto 0px auto;
+    border: 2px solid #000;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    background-color: #FFF;
+    color: #000;
+    text-align: center;
 }
 
 div#display_builder {
@@ -277,6 +296,60 @@ div#display_builder ul#products_tree .expanded:before {
 div#display_builder ul#products_tree .collapsed {
     display: none;
 }
+
+/* New Menu Page Popup */
+
+div#new_menu_page_popup_content {
+    display: none;
+}
+
+div#new_menu_page_popup_container {
+
+}
+
+div#new_menu_page_popup_container div.header {
+    font-weight: bold;
+    font-size: 14px;
+    padding: 5px;
+}
+
+div#new_menu_page_popup_container div#selection {
+    padding: 5px;
+    margin-top: 10px;
+}
+
+div#new_menu_page_popup_container div#selection div.menu_type {
+    margin: 15px 3px;
+}
+
+div#new_menu_page_popup_container div#selection div.menu_type div.label {
+    float: left;
+    width: 170px;
+}
+
+div#new_menu_page_popup_container div#selection div.menu_type div.data {
+    float: left;
+    margin-top: -4px;
+    text-align: center;
+}
+
+div#new_menu_page_popup_container div#selection div.menu_type div.data select {
+    max-width: 90px;
+    width: 90px;
+    padding: 3px;
+}
+
+div#new_menu_page_popup_container div#selection div.menu_type div.data.create {
+    margin-top: -8px;
+}
+
+div#new_menu_page_popup_container div#selection div.menu_type div.data div.button {
+    height: 30px;
+    max-width: 90px;
+    width: 90px;
+}
+
+/* End New Menu Page Popup */
 
 /* End Menu Builder  */
 

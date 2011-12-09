@@ -1,18 +1,102 @@
 <%#TODO: NEED TO CACHE BASED OFF THE TERMINAL ID SOMEHOW, OR FINGERPRINT%>
 <%# cache("menu_items_screen") do %>
 
-  <div id="menu_container">
-    <div id="pages">
-      <% @display.menu_pages.each do |page| %>
-        <div class="page" id="menu_page_<%=page.id%>"
-             onclick="doMenuPageSelect(<%= page.page_num %>, <%= page.id %>);">
-          <div class="name">
-            <%= page.name %>
-          </div>
+<div id="menu_container">
+  <div id="pages">
+    <% @display.menu_pages.each do |page| %>
+      <div class="page" id="menu_page_<%=page.id%>"
+           onclick="doMenuPageSelect(<%= page.page_num %>, <%= page.id %>);">
+        <div class="name">
+          <%= page.name %>
         </div>
+      </div>
 
-        <div style="display: none;" id="menu_items_<%= page.page_num %>">
-          <div id="items">
+      <div style="display: none;" id="menu_items_<%= page.page_num %>">
+        <div id="items">
+          <% if page.embedded_display %>
+
+
+
+
+
+
+
+
+
+
+
+
+            <div id="pages" class="subpages embedded_pages_<%= page.page_num %>">
+              <% page.embedded_display.menu_pages.each do |embedded_page| %>
+
+                <div class="subpage page" id="sub_menu_page_<%=embedded_page.id%>"
+                     onclick="doSubMenuPageSelect(<%= page.page_num %>, <%= embedded_page.id %>);">
+                  <div class="name">
+                    <%= embedded_page.name %>
+                  </div>
+                </div>
+
+
+                <div style="display: none;" id="sub_menu_items_<%= embedded_page.id %>">
+                  <div id="items" class="subitems">
+                    <% embedded_page.menu_items.each do |embedded_item| %>
+                      <% if embedded_item.product %>
+                        <div class="item <%= !embedded_item.product.is_active ? "inactive" : "" %>" 
+                             data-button_width="<%= embedded_item.product.menu_button_width %>" 
+                             data-menu_item_id="<%= embedded_item.id %>"
+                             onclick="<%= embedded_item.product.is_active ? "doSelectMenuItem(#{embedded_item.product_id}, #{embedded_item.id}, this);" : "" %>"
+                             style="<%= menu_item_background_css embedded_item %>">
+
+                          <div class="stock_count" style="display: none;" id="stock_count_<%= embedded_item.id %>"></div>
+                          <div class="price_change" style="display: none;" id="price_change_<%= embedded_item.id %>"></div>
+
+                          <div class="item_pic">
+                            <%= product_image_thumb embedded_item.product if embedded_item.product.show_button_image %>
+                          </div>
+                          <div class="item_name" style="<%= menu_item_background_css embedded_item %><%= embedded_item.product.button_text_color.blank? ? "" : "color: #{embedded_item.product.button_text_color};" %>">
+                            <%= menu_item_name embedded_item %>
+                          </div>
+                        </div>
+                      <% else %>
+                        <div class="menu_item_spacer"></div>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </div>
+
+              <% end %>
+            </div>
+
+          <div id="sub_menu_items_<%= page.page_num %>_container" class="sub_menu_items_container">
+              Loading...
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <% else %>
             <% page.menu_items.each do |item| %>
               <% if item.product %>
                 <div class="item <%= !item.product.is_active ? "inactive" : "" %>" 
@@ -20,10 +104,10 @@
                      data-menu_item_id="<%= item.id %>"
                      onclick="<%= item.product.is_active ? "doSelectMenuItem(#{item.product_id}, #{item.id}, this);" : "" %>"
                      style="<%= menu_item_background_css item %>">
-                  
+
                   <div class="stock_count" style="display: none;" id="stock_count_<%= item.id %>"></div>
                   <div class="price_change" style="display: none;" id="price_change_<%= item.id %>"></div>
-                  
+
                   <div class="item_pic">
                     <%= product_image_thumb item.product if item.product.show_button_image %>
                   </div>
@@ -31,19 +115,22 @@
                     <%= menu_item_name item %>
                   </div>
                 </div>
+              <% else %>
+                <div class="menu_item_spacer"></div>
               <% end %>
             <% end %>
-          </div>
+          <% end %>
         </div>
+      </div>
 
-      <% end %>
-    </div>
-
-    <div class="clear">&nbsp;</div>
-
-    <div id="menu_items_container">
-      Loading...
-    </div>
+    <% end %>
   </div>
+
+  <div class="clear">&nbsp;</div>
+
+  <div id="menu_items_container">
+    Loading...
+  </div>
+</div>
 
 <%# end %>

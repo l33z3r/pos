@@ -53,7 +53,7 @@ function startPriceChangeMode() {
     $('#receipt_container').hide();
     $('#price_change_receipt').show();
         
-    loadPriceDivs(currentMenuPage);   
+    loadPriceDivs(currentMenuPage, currentMenuSubPageId);   
     
     if(currentStockTakeProductId) {
         loadStockTakeReceiptArea(currentStockTakeProductId, currentStockMenuItemId);
@@ -110,7 +110,7 @@ function startStockTakeMode() {
     $('#receipt_container').hide();
     $('#stock_take_receipt').show();
         
-    loadStockDivs(currentMenuPage);   
+    loadStockDivs(currentMenuPage, currentMenuSubPageId);   
     
     if(currentStockTakeProductId) {
         loadStockTakeReceiptArea(currentStockTakeProductId, currentStockMenuItemId);
@@ -133,13 +133,14 @@ function finishStockTakeMode() {
     setShortcutDropdownDefaultText();
 }
 
-function loadPriceDivs(pageNum) {
+function loadPriceDivs(pageNum, subPageId) {
     //load the stock divs
     //send ajax request with page number
     $.ajax({
         url: '/load_price_for_menu_page',
         data: {
-            page_num : pageNum
+            page_num : pageNum, 
+            sub_page_id : subPageId
         }
     });
 }
@@ -196,13 +197,14 @@ function loadStockTakeReceiptArea(productId, menuItemId) {
     });
 }
 
-function loadStockDivs(pageNum) {
+function loadStockDivs(pageNum, subPageId) {
     //load the stock divs
     //send ajax request with page number
     $.ajax({
         url: '/load_stock_for_menu_page',
         data: {
-            page_num : pageNum
+            page_num : pageNum, 
+            sub_page_id : subPageId
         }
     });
 }

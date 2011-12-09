@@ -2,10 +2,10 @@
   X
 </div>
 <% if item.product %>
-  <div class="item_pic">
+  <div class="item_pic" onclick="createSpacer(<%=item.id%>);">
     <%= product_image_thumb item.product %>
   </div>
-  <div class="item_name" id="menu_item_name_<%=item.id%>" 
+  <div class="item_name" id="menu_item_name_<%=item.id%>" onclick="createSpacer(<%=item.id%>);"
        ondblclick="openEditMenuItemNameTextBox(<%=item.id%>, <%=item.product.id%>, this)">
          <%= item.name %>
   </div>

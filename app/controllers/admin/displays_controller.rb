@@ -69,6 +69,9 @@ class Admin::DisplaysController < Admin::AdminController
     @display = Display.find(params[:id])
     @display.destroy
 
+    #force load default in case it was destroyed
+    Display.load_default
+    
     redirect_to(admin_displays_url, :notice => 'Display was deleted.')
   end
 
@@ -85,11 +88,12 @@ class Admin::DisplaysController < Admin::AdminController
   #try to use as much ajax as possible here
   def builder
     @display = Display.find(params[:id])
+    @displays = Display.all
   end
 
   #when a product is dragged to a square
   def place_product
-    @product = Product.find(params[:product_id])
+    @product = Product.find_by_id(params[:product_id])
 
     @menu_item_id = params[:menu_item_id]
 
@@ -106,11 +110,36 @@ class Admin::DisplaysController < Admin::AdminController
       end
 
       @menu_item = MenuItem.create({:menu_page_id => @menu_page.id, :order_num => @next_order_num})
+      
+      if @product
+        #we are replacing
+        @menu_item.product_id = @product.id 
+        @menu_item.save
+      end
+      
     else
-      @menu_item = MenuItem.find(params[:menu_item_id])
+      @menu_item = MenuItem.find(@menu_item_id)
+      
+      if @product
+        #we are replacing
+        @menu_item.product_id = @product.id 
+      else
+        #we are inserting before
+        @order_num = @menu_item.order_num
+        
+        #renumber the following menu items
+        #shift the order number down on all following menu items
+        @menu_items_to_shift = @menu_item.menu_page.menu_items.where("order_num >= #{@order_num}")
+    
+        @menu_items_to_shift.each do |mi|
+          mi.order_num +=1
+          mi.save
+        end
+        
+        @new_menu_item = MenuItem.create({:menu_page_id => @menu_item.menu_page_id, :order_num => @order_num})
+      end
     end
-
-    @menu_item.product_id = @product.id
+    
     @menu_item.save!
   end
 
@@ -128,14 +157,44 @@ class Admin::DisplaysController < Admin::AdminController
     @display = Display.find(params[:id])
 
     @next_page_num = @display.menu_pages.last.page_num + 1
+    
     @new_page = @display.menu_pages.build({:name => "Page #{@next_page_num}", :page_num => @next_page_num})
     @new_page.save!
-
-    (1..16).each do |num|
-      @new_page.menu_items.build({:order_num => num}).save!
+    
+    @embedded_display_id = params[:embedded_display_id]
+    
+    if @embedded_display_id
+      
+      #same display?
+      if @embedded_display_id == @display.id.to_s
+        @new_page.destroy
+        flash[:error] = "You cannot embed a display within itself."
+        redirect_to builder_admin_display_path(@display)
+        return
+      end
+      
+      #make sure that this display has no nested one
+      @embedded_display = Display.find(@embedded_display_id)
+      
+      if @embedded_display.has_nested
+        @new_page.destroy
+        flash[:error] = "You cannot nest a display here, as this display contains a nested display."
+        redirect_to builder_admin_display_path(@display)
+        return
+      else
+        @new_page.embedded_display_id = @embedded_display_id
+        @new_page.name = @embedded_display.name
+      end
+    else
+      (1..16).each do |num|
+        @new_page.menu_items.build({:order_num => num}).save!
+      end
     end
-
-    redirect_to(builder_admin_display_path(@display), :notice => 'New Page Added.')
+    
+    #save again after build
+    @new_page.save!
+    flash[:notice] = "Page Created"
+    redirect_to builder_admin_display_path(@display)
   end
 
   def delete_menu_page

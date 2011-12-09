@@ -10,6 +10,7 @@ function initMenu() {
     $('#menu_pages_container .page').first().click();
     
     currentMenuPage = 1;
+    currentMenuSubPageId = null;
     currentOrder = new Array();
 
     $('#table_num_holder').html("Select Table");

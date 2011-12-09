@@ -84,11 +84,19 @@ class HomeController < ApplicationController
   
   def load_price_for_menu_page
     @page_num = params[:page_num].to_i
+    @sub_page_id = params[:sub_page_id].to_i
+    
     @display = TerminalDisplayLink.load_display_for_terminal @terminal_id
     
     @price_map = {}
     
-    @display.menu_pages[@page_num-1].menu_items.each do |mi|
+    @menu_page = @display.menu_pages[@page_num-1]
+    
+    if @sub_page_id and @sub_page_id > 0
+      @menu_page = MenuPage.find(@sub_page_id)
+    end
+    
+    @menu_page.menu_items.each do |mi|
       next if !mi.product
       @price = mi.product.price
       @price_map[mi.id] = @price ? print_money(@price) : 0
@@ -113,11 +121,19 @@ class HomeController < ApplicationController
   
   def load_stock_for_menu_page    
     @page_num = params[:page_num].to_i
+    @sub_page_id = params[:sub_page_id].to_i
+    
     @display = TerminalDisplayLink.load_display_for_terminal @terminal_id
     
     @stock_map = {}
     
-    @display.menu_pages[@page_num-1].menu_items.each do |mi|
+    @menu_page = @display.menu_pages[@page_num-1]
+    
+    if @sub_page_id and @sub_page_id > 0
+      @menu_page = MenuPage.find(@sub_page_id)
+    end
+    
+    @menu_page.menu_items.each do |mi|
       next if !mi.product
       @stock = mi.product.quantity_in_stock
       @stock_map[mi.id] = @stock ? number_to_human(@stock) : 0

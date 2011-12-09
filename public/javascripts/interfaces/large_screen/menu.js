@@ -13,6 +13,7 @@ function initMenu() {
     loadFirstMenuPage();
     
     currentMenuPage = 1;
+    currentMenuSubPageId = null;
     currentOrder = new Array();
 
     loadCurrentOrder();
@@ -130,11 +131,41 @@ function doMenuPageSelect(pageNum, pageId) {
 
     currentMenuPage = pageNum;
     currentMenuPageId = pageId;
-
+    currentMenuSubPageId = null;
+    
+    //load the first sub menu page if sub menu present
+    $('.embedded_pages_' + pageNum + ' div:first').click();
+    
     if(inStockTakeMode) {
-        loadStockDivs(pageNum);
+        loadStockDivs(pageNum, currentMenuSubPageId);
     } else if(inPriceChangeMode) {
-        loadPriceDivs(pageNum);
+        loadPriceDivs(pageNum, currentMenuSubPageId);
+    }
+}
+
+function doSubMenuPageSelect(parentPageNum, pageId) {
+    //make sure the modifier popups are closed
+    if(currentSelectedMenuItemElement) {
+        $(currentSelectedMenuItemElement).HideBubblePopup();
+        $(currentSelectedMenuItemElement).FreezeBubblePopup();
+    }
+    
+    //set this pages class to make it look selected
+    $('#pages .subpage').removeClass('selected');
+    $('div[id=sub_menu_page_' + pageId + "]").addClass('selected');
+
+    newHTML = $('#sub_menu_items_' + pageId).html();
+    
+    $('div[id=sub_menu_items_' + parentPageNum + '_container]').html(newHTML);
+
+    currentMenuPage = parentPageNum;
+    currentMenuPageId = pageId;
+    currentMenuSubPageId = pageId;
+    
+    if(inStockTakeMode) {
+        loadStockDivs(parentPageNum, pageId);
+    } else if(inPriceChangeMode) {
+        loadPriceDivs(parentPageNum, pageId);
     }
 }
 
@@ -1416,6 +1447,15 @@ function renderMenuItemButtonDimensions() {
     $('#items .item').each(function() {
         var item = $(this);
         var width_factor = item.data("button_width");
+        
+        item.width((original_width * width_factor) 
+            + (button_margin * 2 * (width_factor - 1)) 
+            + (button_border * 2 * (width_factor - 1)));
+    });
+    
+    $('#items .menu_item_spacer').each(function() {
+        var item = $(this);
+        var width_factor = 1;
         
         item.width((original_width * width_factor) 
             + (button_margin * 2 * (width_factor - 1)) 

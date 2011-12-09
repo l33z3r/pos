@@ -13,6 +13,7 @@
 
 class MenuPage < ActiveRecord::Base
   belongs_to :display
+  belongs_to :embedded_display, :class_name => "Display"
   has_many :menu_items, :dependent => :destroy, :order => "order_num"
 
   has_many :products, :through => :menu_items, :order => "menu_items.order_num"

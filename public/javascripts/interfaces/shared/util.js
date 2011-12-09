@@ -17,6 +17,28 @@ function goTo(place) {
     return false;
 }
 
+function postTo(place, data) {
+    var formHTML = '<form action="' + place + '" method="POST">';
+    
+    for (var key in data) {
+        formHTML += '<input type="hidden" name="' + key + '" value="' + data[key] + '"/>';
+    }
+    
+    formHTML += '</form>';
+    
+    $(formHTML).submit();
+
+//    $.ajax({
+//        type: 'POST',
+//        url: place, 
+//        data: data,
+//        async : false,
+//        complete: function() {
+//            window.location.reload();
+//        }
+//    });
+}
+
 function inMobileContext() {
     return $('body.mobile').length > 0;
 }
@@ -705,4 +727,17 @@ function ensureLoggedIn() {
     }
     
     return true;
+}
+
+function showLoadingDiv() {
+    hideNiceAlert();
+    
+    ModalPopups.Indicator("niceAlertContainer",
+        "Loading",
+        "<div style='text-align: center; font-size: 24px;padding-top: 60px;'>\n\
+        Please Wait...</div>",
+        { 
+            width: 300,
+            height: 200
+        } );
 }
