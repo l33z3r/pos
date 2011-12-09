@@ -14,18 +14,6 @@
       <div style="display: none;" id="menu_items_<%= page.page_num %>">
         <div id="items">
           <% if page.embedded_display %>
-
-
-
-
-
-
-
-
-
-
-
-
             <div id="pages" class="subpages embedded_pages_<%= page.page_num %>">
               <% page.embedded_display.menu_pages.each do |embedded_page| %>
 
@@ -67,35 +55,9 @@
               <% end %>
             </div>
 
-          <div id="sub_menu_items_<%= page.page_num %>_container" class="sub_menu_items_container">
+            <div id="sub_menu_items_<%= page.page_num %>_container" class="sub_menu_items_container">
               Loading...
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           <% else %>
             <% page.menu_items.each do |item| %>
               <% if item.product %>
