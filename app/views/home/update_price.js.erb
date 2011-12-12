@@ -1,7 +1,7 @@
 //update the menu item
 loadPriceChangeReceiptArea(<%=@product.id%>, <%= @menu_item_id %>);
-loadPriceDivs(currentMenuPage);
+loadPriceDivs(currentMenuPage, currentMenuSubPageId);
 
-$('#price_change_new_price_input').val("");
+$('div[id=price_change_new_price_input]').val("");
 
 setStatusMessage("Price changed!");

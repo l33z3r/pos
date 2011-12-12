@@ -101,7 +101,9 @@
 
           <div class="page new_page" id="new_menu_page">
             <div class="name">
-              <%= link_to "New Page", create_menu_page_admin_display_path(@display), :method => :post %>
+              <div onclick="newMenuPagePopup();">
+                New Page
+              </div>
             </div>
           </div>
         </div>
@@ -112,16 +114,28 @@
 
           <% @display.menu_pages.each_with_index do |page, index| %>
             <div style="<%=index==0 ? "" : "display: none;" %>" id="builder_menu_items_<%= page.page_num %>" class="builder_menu_items">
-              <div id="items">
-                <!-- make sure no white space here, as it interferes with the inline-block display -->
-                <% page.menu_items.each do |item| %><%= render :partial => "builder_menu_item_with_wrapper_div", :locals => {:item => item} %><% end %><div class="new_item_container item_container">
-                  <div class="item new_item" id="new_menu_item">
-                    <div class="item_name">
-                      Drag New Item Here
+              <% if page.embedded_display %>
+                <div id="embedded_display_message">
+                  This page contains an embedded display
+
+                  <div class="clear_top_margin_20">&nbsp;</div>
+
+                  <%= page.embedded_display.name %> 
+
+                  <%= link_to "(edit)", builder_admin_display_path(page.embedded_display) %>
+                </div>
+              <% else %>
+                <div id="items">
+                  <!-- make sure no white space here, as it interferes with the inline-block display -->
+                  <% page.menu_items.each do |item| %><%= render :partial => "builder_menu_item_with_wrapper_div", :locals => {:item => item} %><% end %><div class="new_item_container item_container">
+                    <div class="item new_item" id="new_menu_item">
+                      <div class="item_name" onclick="createSpacer(null);">
+                        Drag new product here, OR <b>Click Here</b> to create spacer
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              <% end %>
             </div>
 
           <% end %>
@@ -133,5 +147,37 @@
 
     <div class="clear">&nbsp;</div>
 
+  </div>
+</div>
+
+<div id="new_menu_page_popup_content">
+  <div id="new_menu_page_popup_container">
+    <div class="header">
+      Please choose a page type:
+    </div>
+    <div id="selection">
+      <div class="menu_type">
+        <div class="label">
+          Normal Product Page
+        </div>
+        <div class="data create">
+          <div class="button" onclick="postTo('<%=create_menu_page_admin_display_path(@display)%>', null);">Create</div>
+        </div>
+        <div class="clear">&nbsp;</div>
+      </div>
+
+      <div class="clear">&nbsp;</div>
+
+      <div class="menu_type">
+        <div class="label">
+          Embedded Display
+        </div>
+        <div class="data">
+          <%= select_tag "display", options_from_collection_for_select(@displays, "id", "name", nil), :include_blank => "Select...", 
+            :onchange => "newEmbeddedDisplaySelected(this.value, '#{create_menu_page_admin_display_path(@display)}');" %>
+        </div>
+        <div class="clear">&nbsp;</div>
+      </div>
+    </div>
   </div>
 </div>

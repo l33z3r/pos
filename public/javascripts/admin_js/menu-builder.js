@@ -41,6 +41,8 @@ function doBuilderMenuPageSelect(pageNum, pageId) {
 }
 
 function initDisplayBuilderDragDrop() {
+    $('#builder_menu_items_container .item').droppable("destroy");
+    
     $('#builder_menu_items_container .item').droppable({
         drop: function( event, ui ) {
             product_id_string = ui.draggable.attr("id");
@@ -52,16 +54,27 @@ function initDisplayBuilderDragDrop() {
 }
 
 function doAjaxProductGridPlacement(product_id_string, menu_item_id_string) {
-    var product_id = product_id_string.split("_")[2];
+    var product_id;
+        
+    if(product_id_string) {
+        product_id = product_id_string.split("_")[2];
+    } else {
+        product_id = null;
+    }
 
     var loadingMessageHTML = "<div class='loading_message'>Loading...</div>";
 
     if(menu_item_id_string == "new_menu_item") {
         menu_item_id = -1;
+        
         $('.new_item').html(loadingMessageHTML);
     } else {
         menu_item_id = menu_item_id_string.split("_")[2];
-        $('#menu_item_' + menu_item_id).html(loadingMessageHTML);
+        
+        //don't show loading if we are not replacing
+        if(product_id) {
+            $('#menu_item_' + menu_item_id).html(loadingMessageHTML);
+        }
     }
     
     //send ajax menu update
@@ -76,12 +89,22 @@ function doAjaxProductGridPlacement(product_id_string, menu_item_id_string) {
     });
 }
 
+function createSpacer(menu_item_id) {
+    if(!menu_item_id) {
+        menu_item_id_string = "new_menu_item";
+    } else {
+        menu_item_id_string = "menu_item_" + menu_item_id;
+    }
+    
+    doAjaxProductGridPlacement(null, menu_item_id_string);
+}
+
 function doDeleteMenuItem(itemId) {
     doIt = confirm("Are you sure you want to delete this item?");
 
-    if(!doIt) return;
+    if(!doIt) return false;
     
-    $('#menu_item_' + itemId).remove();
+    $('#menu_item_' + itemId).parent().remove();
 
     $.ajax({
         type: 'POST',
@@ -90,6 +113,7 @@ function doDeleteMenuItem(itemId) {
             menu_item_id : itemId
         }
     });
+    return false;
 }
 
 function openEditNameTextBox(pageId) {
@@ -174,5 +198,24 @@ function showRenameDisplay() {
                 }
             });
         }
+    });
+}
+
+function newMenuPagePopup() {
+    var popupContent = $('#new_menu_page_popup_content').html();
+    
+    ModalPopups.Alert('niceAlertContainer',
+        'New Menu Page', popupContent,
+        {
+            okButtonText: 'Cancel',
+            onOk: 'hideNiceAlert()',
+            width: 300,
+            height: 250
+        } );
+}
+
+function newEmbeddedDisplaySelected(displayId, path) {
+    postTo(path, {
+        embedded_display_id : displayId
     });
 }

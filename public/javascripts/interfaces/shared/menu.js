@@ -1,5 +1,6 @@
 var currentMenuPage;
 var currentMenuPageId;
+var currentMenuSubPageId;
 
 var menuItemDoubleMode = false;
 var currentMenuItemQuantity = "";

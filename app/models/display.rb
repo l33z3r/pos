@@ -2,6 +2,7 @@ class Display < ActiveRecord::Base
   has_many :display_buttons
   has_many :menu_pages, :dependent => :destroy, :order => "page_num"
   has_many :menu_items, :through => :menu_pages
+  has_many :terminal_display_links, :dependent => :destroy
   
   belongs_to :order_item_addition_grid
   
@@ -25,15 +26,21 @@ class Display < ActiveRecord::Base
 
     if !display
       display = find(:first)
-      
-      if !display
-        display = find(:first)
-        display.is_default = true
-        display.save
-      end
+      display.is_default = true
+      display.save
     end
     
     display
+  end
+  
+  def has_nested
+    menu_pages.each do |mp|
+      if mp.embedded_display_id
+        return true
+      end
+    end
+    
+    return false
   end
   
 end

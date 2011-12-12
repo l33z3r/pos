@@ -10,8 +10,11 @@ var display_button_passcode_permissions;
 $(function(){
     doGlobalInit();
 });
-   
+ 
 function doGlobalInit() {
+    
+    window.onbeforeunload = showLoadingDiv;
+    
     if(inKioskMode()) {
         //to run chrome in kiosk mode, use this command in linux (google-chrome --kiosk http://localhost:3000)
         registerDisallowRightClick();

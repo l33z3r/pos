@@ -704,6 +704,7 @@ div#import_products section#form_container div#guidelines {
     background-color: #FFF;
     color: #000;
     text-align: left;
+    font-size: 21px;
 }
 
 div#import_products section#form_container div#guidelines li {
@@ -1500,7 +1501,6 @@ div#edit_theme_settings section#theme_settings div#global_font_color_container i
     display: none;
 }
 
-
 /* End Theme Settings Page */
 
 /* Previous Cash Totals */
@@ -1622,144 +1622,144 @@ div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll 
     margin: 20px 0px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_name {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_name {
     font-weight: bold;
     font-size: 13px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_address {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_address {
     font-size: 13px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_telephone {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_telephone {
     font-size: 13px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_email_address {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_email_address {
     font-size: 13px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table_header {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table_header {
     font-weight: bold;
     font-size: 14px;
     margin: 3px;
     margin-top: 15px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table {
     margin-top: 10px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table div.label {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table div.label {
     float: left;
     text-align: left;
     width: 180px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table div.data {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table div.data {
     float: left;
     text-align: right;
     width: 120px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table {
     margin-top: 5px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table div.totals_label {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table div.totals_label {
     float: left;
     text-align: left;
     width: 180px;
     font-weight: bold;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table div.totals_data {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table div.totals_data {
     float: left;
     text-align: right;
     width: 120px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table {
     margin-top: 10px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_header {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_header {
     width: 75px;
     float: left;
     text-align: right;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_label_header {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_label_header {
     width: 75px;
     float: left;
     text-align: left;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_label {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_label {
     float: left;
     text-align: left;
     width: 75px;
     font-weight: bold;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data {
     float: left;
     text-align: right;
     width: 75px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table {
     margin-top: 5px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_label {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_label {
     float: left;
     text-align: left;
     width: 75px;
     font-weight: bold;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_data {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_data {
     float: left;
     text-align: right;
     width: 75px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table {
     margin-top: 10px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_header {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_header {
     font-weight: bold;
     width: 84px;
     float: left;
     text-align: right;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_header.quantity {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_header.quantity {
     width: 30px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_label_header {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_label_header {
     font-weight: bold;
     width: 185px;
     float: left;
     text-align: left;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_label {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_label {
     float: left;
     text-align: left;
     width: 185px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data {
     float: left;
     text-align: right;
     width: 84px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data.quantity {
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data.quantity {
     width: 30px;
 }
 

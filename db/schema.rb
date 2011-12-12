@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111208140023) do
+ActiveRecord::Schema.define(:version => 20111209080306) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(:version => 20111208140023) do
     t.integer  "page_num"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "embedded_display_id"
   end
 
   create_table "modifier_categories", :force => true do |t|

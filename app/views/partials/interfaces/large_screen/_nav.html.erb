@@ -18,7 +18,7 @@
   <div id="loading_orders_spinner">
     <%= image_tag "spinner.gif" %>
   </div>
-  
+
   <div style="display: none;" id="nav_save_button" onclick="doLogout();">
     <%= image_tag "exit.gif" %>
   </div>
@@ -46,7 +46,10 @@
         Change Menu
         <ul>
           <% Display.all.each do |display| %>
-            <li rel="1-<%= display.id %>"><%= display.name %></li>
+            <li rel="1-<%= display.id %>">              
+              <%= @display.id == display.id ? "* " : "" %>
+              <%= display.name %>
+            </li>
           <% end %>
         </ul>
       </li>
