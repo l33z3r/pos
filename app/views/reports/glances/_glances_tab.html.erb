@@ -80,24 +80,31 @@
 
   <div>
     <h3>TOP SELLING ITEMS</h3>
-    <table class="items_table">
-      <tbody>
-        <% @top_selling_items.each do |top_item| %>
-          <tr>
-            <td width="40" class="left"><%=top_item[1][1]%></td>
-            <td width="160" class="center"><%=(!top_item[1][0].nil?)?top_item[1][0]:"<NAME>"%></td>
-            <td width="70" class="right">&euro; <%=sprintf("%.2f", top_item[1][2])%></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <% if !@top_selling_items.empty? %>
+      <table class="items_table">
+        <tbody>
+          <% @top_selling_items.each do |top_item| %>
+            <tr>
+              <td width="40" class="left"><%=top_item[1][1]%></td>
+              <td width="160" class="center"><%=(!top_item[1][0].nil?)?top_item[1][0]:"<NAME>"%></td>
+              <td width="70" class="right">&euro; <%=sprintf("%.2f", top_item[1][2])%></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="drag_message">No items found.</div>
+    <% end %>
   </div>
 
-  <%= high_chart("graph_container", @graph) do |c| %>
-    <%= "options.tooltip.formatter = function() { return this.x +'-'+ parseInt(this.x+1) +' hs: '+ this.y +' euros';}" %>
+  <% if !@items_per_hour.empty? %>
+    <%= high_chart("graph_container", @graph) do |c| %>
+      <%= "options.tooltip.formatter = function() { return this.x +'-'+ parseInt(this.x+1) +' hs: '+ this.y +' euros';}" %>
+    <%end %>
   <%end %>
 
   <div>
+    <% if !@items_per_hour.empty? %>
     <table class="items_table">
       <thead>
         <tr>
@@ -116,6 +123,7 @@
         <% end %>
       </tbody>
     </table>
+    <% end %>
   </div>
 
 </div>

@@ -143,6 +143,10 @@ class Reports::GlancesController < ApplicationController
      @selected_to_date = params[:search][:created_at_lte]
      params[:search][:created_at_lte] = @selected_to_date.to_date.tomorrow.midnight
     end
-    @orders = Order.search(params[:search])
+    if !params[:search]
+      @orders = Order.where("created_at >= ? AND created_at < ?", @selected_from_date, @selected_to_date.to_date.tomorrow.midnight)
+    else
+      @orders = Order.search(params[:search])
+    end
   end
 end

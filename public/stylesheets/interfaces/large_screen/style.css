@@ -1176,7 +1176,6 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
     margin-left: 8px;
 }
 
-div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll {
     background-color: #FFF;
     padding: 20px 15px;
@@ -1184,33 +1183,27 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
     height: 630px;
 }
 
-div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section {
     margin: 20px 0px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_name,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_name {
     font-weight: bold;
     font-size: 13px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_address,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_address {
     font-size: 13px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_telephone,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_telephone {
     font-size: 13px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_email_address,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_email_address {
     font-size: 13px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table_header,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table_header {
     font-weight: bold;
     font-size: 14px;
@@ -1218,31 +1211,26 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
     margin-top: 15px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table {
     margin-top: 10px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table div.label,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table div.label {
     float: left;
     text-align: left;
     width: 180px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table div.data,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table div.data {
     float: left;
     text-align: right;
     width: 120px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table {
     margin-top: 5px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table div.totals_label,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table div.totals_label {
     float: left;
     text-align: left;
@@ -1250,33 +1238,28 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
     font-weight: bold;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table div.totals_data,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.totals_data_table div.totals_data {
     float: left;
     text-align: right;
     width: 120px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table {
     margin-top: 10px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_header,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_header {
     width: 75px;
     float: left;
     text-align: right;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_label_header,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_label_header {
     width: 75px;
     float: left;
     text-align: left;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_label,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_label {
     float: left;
     text-align: left;
@@ -1284,19 +1267,16 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
     font-weight: bold;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_data_table div.taxes_data {
     float: left;
     text-align: right;
     width: 75px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table {
     margin-top: 5px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_label,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_label {
     float: left;
     text-align: left;
@@ -1304,19 +1284,16 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
     font-weight: bold;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_data,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_data {
     float: left;
     text-align: right;
     width: 75px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table {
     margin-top: 10px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_header,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_header {
     font-weight: bold;
     width: 84px;
@@ -1324,12 +1301,10 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
     text-align: right;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_header.quantity,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_header.quantity {
     width: 30px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_label_header,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data_table_label_header {
     font-weight: bold;
     width: 185px;
@@ -1337,21 +1312,18 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
     text-align: left;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_label,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_label {
     float: left;
     text-align: left;
     width: 185px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data {
     float: left;
     text-align: right;
     width: 84px;
 }
 
-div#cash_reports_screen  div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data.quantity,
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data.quantity {
     width: 30px;
 }
@@ -3112,6 +3084,4 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
     list-style: square;
 }
 
-
 /* end styles carried over from scaffold css */
-
