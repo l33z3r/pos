@@ -82,13 +82,13 @@
           </div>
         </div>
       <% end %>
-      
+
       <div class="clear">&nbsp;</div>
-      
+
     </div>
 
     <div class="clear">&nbsp;</div>
-    
+
     <div id="manual_discount">
       <div class="header">Or Enter a Discount Percentage</div>
 
@@ -113,7 +113,7 @@
       <input type="radio" name="discount_type" value="last_item" checked/>
       <div class="label">Last Item</div>
       <div class="clear">&nbsp;</div>
-      
+
       <div class="clear_top_margin_10">&nbsp;</div>
     </div>
 
@@ -233,5 +233,42 @@
     </div>
 
     <div class="clear">&nbsp;</div>
+  </div>
+</div>
+
+<div id="name_table_popup_markup">
+  <div id="name_table_popup_markup_container" class="popup_container">
+
+    <div id="header">Add Name To Table</div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div id="table_name_input_container">
+      <div id="table_name_input_label">Name:</div>
+      <input type="text" size="20" id="table_name_input"/>
+      <div class="clear">&nbsp;</div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div class="clear_top_margin_10">&nbsp;</div>
+
+    <div class="action_buttons_container">
+      <div class="action_buttons">
+        <div id="cancel_button" class="button" onclick="closePromptAddNameToTable();">
+          <div class="icon">
+            <%= image_tag "button_logos/cancel_button.png"%>
+          </div>
+          <div class="button_name">Cancel</div>
+        </div>
+        <div id="save_button" class="button" onclick="saveAddNameToTable();">
+          <div class="icon">
+            <%= image_tag "button_logos/ok_button.png"%>
+          </div>
+          <div class="button_name">OK</div>
+        </div>
+        <div class="clear">&nbsp;</div>
+      </div>
+    </div>
   </div>
 </div>

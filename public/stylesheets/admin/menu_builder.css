@@ -273,6 +273,7 @@ div#display_builder ul#products_tree div.select_product img {
 div#display_builder ul#products_tree div.name {
     float: left;
     margin-top: 10px;
+    width: 110px;
 }
 
 div#display_builder ul#products_tree div.edit_link {

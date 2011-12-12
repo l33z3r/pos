@@ -54,6 +54,12 @@ class TerminalSyncData < ActiveRecord::Base
   
   def self.request_notify_order_ready employee_id, terminal_id, table_info
     TerminalSyncData.transaction do
+      TerminalSyncData.fetch_order_ready_request_times.each do |tsd|
+        if tsd.data[:table_id].to_s ==  table_info.id.to_s
+          tsd.destroy
+        end
+      end
+      
       TerminalSyncData.create!({:sync_type => TerminalSyncData::ORDER_READY_REQUEST, 
           :time => Time.now.to_i.to_s, :data => {:employee_id => employee_id, :terminal_id => terminal_id, :table_id => table_info.id, :table_label => table_info.perm_id}})
     end
