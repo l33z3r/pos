@@ -482,8 +482,8 @@ function initMcDropDowns() {
     
     //menu screen shortcut dropdown, first init then get reference
     $("#menu_screen_shortcut_dropdown_input").mcDropdown("#menu_screen_shortcut_dropdown", {
-        maxRows: 10,
-        minRows: 10, 
+        maxRows: 13,
+        minRows: 13, 
         select: menuScreenDropdownItemSelected
     });
     menuScreenShortcutSelectMenu = $("#menu_screen_shortcut_dropdown_input").mcDropdown();
