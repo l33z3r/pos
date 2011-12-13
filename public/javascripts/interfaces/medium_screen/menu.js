@@ -81,8 +81,24 @@ function doMenuPageSelect(pageNum, pageId) {
         kickMenuScrollers();
     }
     
+    //show the subpages if there are any
+    $('#menu_items_' + pageNum + ' div.subpages div.subpage').show();
+    $('.embedded_pages_' + pageNum + ' .subitems').hide();
+    
     currentMenuPage = pageNum;
     currentMenuPageId = pageId;
+}
+
+function doSubMenuPageSelect(parentPageNum, pageId) {
+    //hide the subpage headers
+    $('#menu_items_' + parentPageNum + ' div.subpages div.subpage').hide();
+    
+    //show the subpages
+    $('#sub_menu_items_' + pageId).show();
+    
+    currentMenuPage = parentPageNum;
+    currentMenuPageId = pageId;
+    currentMenuSubPageId = pageId;
 }
 
 function doSelectMenuItem(productId, element) {

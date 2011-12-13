@@ -202,6 +202,14 @@ class Admin::DisplaysController < Admin::AdminController
 
     @menu_page = @display.menu_pages.find(params[:menu_page_id])
 
+    #shift the order number down on all following menu pages
+    @menu_pages_to_shift = @display.menu_pages.where("page_num > #{@menu_page.page_num}")
+    
+    @menu_pages_to_shift.each do |mp|
+      mp.page_num -=1
+      mp.save
+    end
+    
     @menu_page.destroy
 
     redirect_to(builder_admin_display_path(@display), :notice => 'Page Deleted.')

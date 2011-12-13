@@ -431,11 +431,11 @@ function promptAddNameToTable() {
         return;
     }
     
-//    if(currentOrderEmpty()) {
-//        setStatusMessage("No order present!", true, true);
-//        return;
-//    }
-//    
+    //    if(currentOrderEmpty()) {
+    //        setStatusMessage("No order present!", true, true);
+    //        return;
+    //    }
+    //    
     var popupHTML = $("#name_table_popup_markup").html();
         
     addTableNamePopupAnchor = $('#receipt');
@@ -505,9 +505,15 @@ function saveAddNameToTable() {
     
     storeTableOrderInStorage(current_user_id, selectedTable, tableOrder);
     
-    doAutoLoginAfterSync = true;
-    
-    doSyncTableOrder();
+    if(!currentOrderEmpty()) {
+        doAutoLoginAfterSync = true;
+        doSyncTableOrder();
+    } else {
+        //must manually set the label
+        if(tableOrder.client_name.length > 0) {
+            $('#table_label_' + selectedTable).html(tables[selectedTable].label + " (" + tableOrder.client_name + ")");
+        }
+    }
     
     setStatusMessage("Name added to table");
 }

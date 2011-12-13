@@ -23,10 +23,10 @@ function doSyncTableOrder() {
         lastOrderSaleText = "Last Order";
         
         order = tableOrders[selectedTable];
-        if(order.items.length == 0) {
-            setStatusMessage("No items present in current table order.");
-            return;
-        }
+//        if(order.items.length == 0) {
+//            setStatusMessage("No items present in current table order.");
+//            return;
+//        }
     }
     
     orderInProcess = true;

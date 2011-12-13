@@ -97,11 +97,32 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         if(tableOrderDataJSON.items[itemKey].product.show_price_on_receipt) {
             tableOrderDataJSON.items[itemKey].product.show_price_on_receipt = (tableOrderDataJSON.items[itemKey].product.show_price_on_receipt.toString() == "true" ? true : false);
             
+            
+            
+            
+            
+            
+            
+            
+            
+            //this is only untill we have the new code deployed for a while we can be sure that clientName will be present on newly created orders
             if(typeof(tableOrderDataJSON.items[itemKey].is_double) != 'undefined') {
                 tableOrderDataJSON.items[itemKey].is_double = (tableOrderDataJSON.items[itemKey].is_double.toString() == "true" ? true : false);
             } else {
                 tableOrderDataJSON.items[itemKey].is_double = false;
             }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
         }
         
         var copiedOrderItem = {};
@@ -198,10 +219,28 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     var clientName = tableOrderDataJSON.client_name;
     
     
+    
+    
+    
+    
+    
+    
+    
+    
     //this is only untill we have the new code deployed for a while we can be sure that clientName will be present on newly created orders
     if(typeof(clientName) == 'undefined') {
         clientName = "";
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     tableOrders[tableID].client_name = clientName;
     
