@@ -4,8 +4,7 @@ $(function() {
     $('#products_tree').menuTree({
         animation: true,
         handler: 'slideToggle',
-        anchor: 'a[href="#"]',
-        callback: initBuilderScrollPane
+        anchor: 'a[href="#"]'
     });
 
     $('.select_product').draggable({
