@@ -475,13 +475,15 @@ function hideBubblePopup(popupEl) {
 function initMcDropDowns() {
     //table select dropdown, first init then get reference
     $("#table_select_input").mcDropdown("#table_select", {
-        maxRows: 8
+        maxRows: 8,
+        minRows: 8
     });
     tableSelectMenu = $("#table_select_input").mcDropdown();
     
     //menu screen shortcut dropdown, first init then get reference
     $("#menu_screen_shortcut_dropdown_input").mcDropdown("#menu_screen_shortcut_dropdown", {
-        maxRows: 10, 
+        maxRows: 10,
+        minRows: 10, 
         select: menuScreenDropdownItemSelected
     });
     menuScreenShortcutSelectMenu = $("#menu_screen_shortcut_dropdown_input").mcDropdown();
