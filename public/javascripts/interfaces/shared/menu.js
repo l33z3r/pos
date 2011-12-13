@@ -96,7 +96,12 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         //make sure the data types are converted correctly
         if(tableOrderDataJSON.items[itemKey].product.show_price_on_receipt) {
             tableOrderDataJSON.items[itemKey].product.show_price_on_receipt = (tableOrderDataJSON.items[itemKey].product.show_price_on_receipt.toString() == "true" ? true : false);
-            tableOrderDataJSON.items[itemKey].is_double = (tableOrderDataJSON.items[itemKey].is_double.toString() == "true" ? true : false);
+            
+            if(typeof(tableOrderDataJSON.items[itemKey].is_double) != 'undefined') {
+                tableOrderDataJSON.items[itemKey].is_double = (tableOrderDataJSON.items[itemKey].is_double.toString() == "true" ? true : false);
+            } else {
+                tableOrderDataJSON.items[itemKey].is_double = false;
+            }
         }
         
         var copiedOrderItem = {};
