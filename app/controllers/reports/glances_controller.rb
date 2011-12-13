@@ -8,35 +8,58 @@ class Reports::GlancesController < ApplicationController
   def glances_search
     @all_terminals = all_terminals
     get_sales_data
+    @voided_orders = get_voided_orders
     iterate_orders
-    calculate_summary
-    create_sales_per_hour_graph
+    calculate_summary    
+    if !@orders.nil? and !@orders.empty?
+      create_sales_per_hour_graph
+      get_busiest_hour
+    end
   end
 
   def iterate_orders
     @sales_per_hour = Hash.new { |h,k| h[k] = 0.0 }
     @items_per_hour = Hash.new { |h,k| h[k] = [0,0.0] }
     @sales_by_payment_type = Hash.new { |h,k| h[k] = 0.0 }
-    @sales_by_payment_total = 0.0
+    @total_discount =  @average_sale =  @total_of_sales =  @cash_paid_out_total =  @sales_last_7_days_total = @sales_by_payment_total = @sales_by_server_total = @sales_by_department_total = 0.0
+    @voided_sales = @number_of_sales = 0
     @sales_by_server = Hash.new { |h,k| h[k] = 0.0 }
-    @sales_by_server_total = 0.0
     @top_selling_items = Hash.new { |h,k| h[k] = ["",0,0.0] }
     @sales_by_department = Hash.new { |h,k| h[k] = 0.0 }
-    @sales_by_department_total = 0.0
     @sales_last_7_days = Hash.new { |h,k| h[k] = ["",0.0] }
-    @sales_last_7_days_total = 0.0
 
     for order in @orders
-      #iterate order items
-      iterate_order_items(order)
-      #sales per hour for graph
-      calculate_sales_per_hour(order)
-      #sales by payment type
-      calculate_sales_by_payment_type(order)
-      #by server
-      calculate_sales_by_server(order)
+      if !order.is_void
+        #iterate order items
+        iterate_order_items(order)
+        #sales per hour for graph
+        calculate_sales_per_hour(order)
+        #sales by payment type
+        calculate_sales_by_payment_type(order)
+        #by server
+        calculate_sales_by_server(order)
+        #misca data
+        calculate_misc_values(order)
+      else
+        @voided_sales += 1
+      end
     end
     @top_selling_items = @top_selling_items.sort_by { |k, v| v[1] }.reverse.first(5)
+  end
+
+  def get_busiest_hour
+    if !@items_per_hour.nil? and !@items_per_hour.empty?
+      @busiest_hour = @items_per_hour.sort_by { |k, v| v }.reverse.first[0]
+    end
+  end
+
+  def calculate_misc_values order
+    @number_of_sales += 1
+    @total_of_sales += order.total
+    @average_sale = @total_of_sales / @number_of_sales
+    if !order.pre_discount_price.nil? and !order.discount_percent.eql?(0)
+      @total_discount += order.pre_discount_price - order.total
+    end
   end
 
   def calculate_summary
@@ -45,29 +68,10 @@ class Reports::GlancesController < ApplicationController
     @orders = Order.where("created_at >= ? AND created_at < ?", date_from, date_to)
     for order in @orders
       if(@sales_last_7_days[order.created_at.to_date.to_s][0].eql?(""))
-        @sales_last_7_days[order.created_at.to_date.to_s][0] = textual_day order.created_at.to_date.cwday
+        @sales_last_7_days[order.created_at.to_date.to_s][0] = order.created_at.to_date.strftime("%A")
       end
       @sales_last_7_days[order.created_at.to_date.to_s][1] += order.total
       @sales_last_7_days_total += order.total
-    end
-  end
-
-  def textual_day day
-    case day
-    when 1
-      return "Monday"
-    when 2
-      return "Tuesday"
-    when 3
-      return "Wednesday"
-    when 4
-      return "Thursday"
-    when 5
-      return "Friday"
-    when 6
-      return "Saturday"
-    when 7
-      return "Sunday"
     end
   end
 
@@ -95,6 +99,13 @@ class Reports::GlancesController < ApplicationController
       calculate_top_selling_items(order_item)
       calculate_items_by_hour(order_item)
       calculate_sales_by_department(order_item)
+      calculate_discount_by_item(order_item)
+    end
+  end
+
+  def calculate_discount_by_item order_item
+    if !order_item.pre_discount_price.nil? and order_item.discount_percent > 0
+      @total_discount += order_item.pre_discount_price - order_item.total_price
     end
   end
 
@@ -135,6 +146,10 @@ class Reports::GlancesController < ApplicationController
       f.options[:yAxis][:title][:text] = "Total (Euros)"
       f.series(:name=>'Sales', :data=> values )
     end
+  end
+
+  def get_voided_orders
+
   end
 
   def get_sales_data

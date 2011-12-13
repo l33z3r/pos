@@ -13,6 +13,37 @@
           <td width="200" class="left"><b>Total Sales</b></td>
           <td width="80" class="right"><b>&euro; <%=sprintf("%.2f", @sales_by_department_total)%></b></td>
         </tr>
+        <div class="clear">&nbsp;</div>
+        <% if !@items_per_hour.nil? and !@items_per_hour.empty? %>
+          <tr>
+            <td width="200" class="left">No of Sales</td>
+            <td width="80" class="right"><%=@number_of_sales%></td>
+          </tr>
+          <tr>
+            <td width="200" class="left">Average Sale</td>
+            <td width="80" class="right">&euro; <%=sprintf("%.2f", @average_sale)%></td>
+          </tr>
+          <tr>
+            <td width="200" class="left">Busiest Hour</td>
+            <td width="80" class="right"><%=@busiest_hour%>-<%=@busiest_hour+1%> hs.</td>
+          </tr>
+          <%#*<tr>%>
+            <%#*<td width="200" class="left">Qty of No Sale</td>%>
+            <%#*<td width="80" class="right"></td>%>
+          <%#*</tr>%>
+          <tr>
+            <td width="200" class="left">Qty of Voided Sales</td>
+            <td width="80" class="right"><%=@voided_sales%></td>
+          </tr>
+          <%#*<tr>%>
+            <%#*<td width="200" class="left">Refunds</td>%>
+            <%#*<td width="80" class="right"></td>%>
+          <%#*</tr>%>
+          <tr>
+            <td width="200" class="left">Total Discount</td>
+            <td width="80" class="right">&euro; <%=sprintf("%.2f", @total_discount)%></td>
+          </tr>
+        <%end%>
       </tbody>
     </table>
   </div>
@@ -47,13 +78,6 @@
           <td width="200" class="left"><b>Total Sales</b></td>
           <td width="80" class="right"><b>&euro; <%=sprintf("%.2f", @sales_by_server_total)%></b></td>
         </tr>
-      </tbody>
-    </table>
-  </div>
-  <div>
-    <h3>CASH PAID OUT</h3>
-    <table class="items_table">
-      <tbody>
       </tbody>
     </table>
   </div>
