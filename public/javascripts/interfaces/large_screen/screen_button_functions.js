@@ -431,11 +431,11 @@ function promptAddNameToTable() {
         return;
     }
     
-    if(currentOrderEmpty()) {
-        setStatusMessage("No order present!", true, true);
-        return;
-    }
-    
+//    if(currentOrderEmpty()) {
+//        setStatusMessage("No order present!", true, true);
+//        return;
+//    }
+//    
     var popupHTML = $("#name_table_popup_markup").html();
         
     addTableNamePopupAnchor = $('#receipt');

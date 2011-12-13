@@ -195,7 +195,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     //set the client name on the tables screen if there is one present
     if(clientName.length > 0) {
-        $('#table_label_' + tableID).html(tableID + " (" + clientName + ")");
+        $('#table_label_' + tableID).html(tables[tableID].label + " (" + clientName + ")");
     }
     
     //copy over the discount
@@ -347,7 +347,7 @@ function doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmploye
             loadReceipt(tableOrders[tableID]);
         }
         
-        $('#table_label_' + tableID).html(tableID);
+        $('#table_label_' + tableID).html(tables[tableID].label);
     }
 }
 

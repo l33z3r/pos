@@ -954,6 +954,8 @@ function doTotalFinal() {
         totalOrder.cash_tendered = cashTendered;
     }
     
+    totalOrder.change = $('#totals_change_value').html();
+    
     //do up the subtotal and total and retrieve the receipt html for both the login screen and for print
     receiptHTML = fetchFinalReceiptHTML(false, true);
     printReceiptHTML = fetchFinalReceiptHTML(true, false);
@@ -973,8 +975,6 @@ function doTotalFinal() {
         orderSalesTaxRate = -1;
         orderTotal = totalOrder.total;
     }
-    
-    totalOrder.change = $('#totals_change_value').html();
     
     //make sure 2 decimal places
     orderTotal = parseFloat(orderTotal).toFixed(2);
