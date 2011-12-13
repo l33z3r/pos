@@ -191,6 +191,13 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     //copy over the client name
     var clientName = tableOrderDataJSON.client_name;
+    
+    
+    //this is only untill we have the new code deployed for a while we can be sure that clientName will be present on newly created orders
+    if(typeof(clientName) == 'undefined') {
+        clientName = "";
+    }
+    
     tableOrders[tableID].client_name = clientName;
     
     //set the client name on the tables screen if there is one present
