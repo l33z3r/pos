@@ -189,6 +189,15 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     tableOrders[tableID].order_num = tableOrderDataJSON.order_num;
     //alert("OrderNum: " + tableOrders[tableID].order_num);
     
+    //copy over the client name
+    var clientName = tableOrderDataJSON.client_name;
+    tableOrders[tableID].client_name = clientName;
+    
+    //set the client name on the tables screen if there is one present
+    if(clientName.length > 0) {
+        $('#table_label_' + tableID).html(tableID + " (" + clientName + ")");
+    }
+    
     //copy over the discount
     tableOrders[tableID].discount_percent = tableOrderDataJSON.discount_percent;
     
@@ -337,6 +346,8 @@ function doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmploye
         if(tableID == selectedTable && nextUserIDToSyncWith == current_user_id) {
             loadReceipt(tableOrders[tableID]);
         }
+        
+        $('#table_label_' + tableID).html(tableID);
     }
 }
 

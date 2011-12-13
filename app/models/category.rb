@@ -1,5 +1,5 @@
 class Category < ActiveRecord::Base
-  has_many :products, :conditions => "products.is_deleted = false"
+  has_many :products, :conditions => "products.is_deleted = false", :dependent => :nullify  
   
   belongs_to :tax_rate
   

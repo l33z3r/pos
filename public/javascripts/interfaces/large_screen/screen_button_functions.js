@@ -421,3 +421,93 @@ function openCashDrawer() {
     //    process.run(false, args, args.length);
     }
 }
+
+var addTableNamePopupEl;
+var addTableNamePopupAnchor;
+
+function promptAddNameToTable() {
+    if(selectedTable == 0 || selectedTable == -1) {
+        setStatusMessage("Only valid for table orders!");
+        return;
+    }
+    
+    if(currentOrderEmpty()) {
+        setStatusMessage("No order present!", true, true);
+        return;
+    }
+    
+    var popupHTML = $("#name_table_popup_markup").html();
+        
+    addTableNamePopupAnchor = $('#receipt');
+    
+    if(addTableNamePopupAnchor.HasBubblePopup()) {
+        addTableNamePopupAnchor.RemoveBubblePopup();
+    }
+    
+    addTableNamePopupAnchor.CreateBubblePopup();
+    
+    addTableNamePopupAnchor.ShowBubblePopup({
+        position: 'right',  
+        align: 'top',
+        tail	 : {
+            align: 'middle'
+        },
+        innerHtml: popupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+        
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false        
+    }, false);
+    
+    addTableNamePopupAnchor.FreezeBubblePopup();
+         
+    var popupId = addTableNamePopupAnchor.GetBubblePopupID();
+    
+    addTableNamePopupEl = $('#' + popupId);
+    
+    var tableOrder = getCurrentOrder();
+    
+    if(tableOrder.client_name) {
+        addTableNamePopupEl.find('input').val(tableOrder.client_name);
+    }
+    
+    addTableNamePopupEl.find('input').focus();
+    
+    //show the keyboard
+    $('#util_keyboard_container').slideDown(300);
+}
+
+function closePromptAddNameToTable() {
+    if(addTableNamePopupEl) {
+        hideBubblePopup(addTableNamePopupAnchor);
+    }
+    
+    //hide the keyboard
+    $('#util_keyboard_container').slideUp(300);
+}
+
+function saveAddNameToTable() {
+    //do nothing if not table order
+    if(selectedTable == 0 || selectedTable == -1) {
+        closePromptAddNameToTable();
+        return;
+    }
+    
+    var tableOrder = getCurrentOrder();
+    
+    tableOrder.client_name = addTableNamePopupEl.find("#table_name_input").val();
+    
+    closePromptAddNameToTable();
+    
+    storeTableOrderInStorage(current_user_id, selectedTable, tableOrder);
+    
+    doAutoLoginAfterSync = true;
+    
+    doSyncTableOrder();
+    
+    setStatusMessage("Name added to table");
+}

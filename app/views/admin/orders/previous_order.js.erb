@@ -38,6 +38,10 @@ previousOrderJSON.cash_tendered = previousOrderJSON.amount_tendered;
 
 //the change is worked out from the old total which does not include the cashback or service charge
 previousOrderJSON.change = previousOrderJSON.cash_tendered - previousOrderJSON.cashback - previousOrderJSON.service_charge - oldTotal;
+
+//make sure to only round to two decimal places so we dont get rounding errors
+previousOrderJSON.change = parseFloat(previousOrderJSON.change).toFixed(2);
+
 previousOrderJSON.payment_method = previousOrderJSON.payment_type;
 
 orderDateString = "<%= @order.created_at %>";

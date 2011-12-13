@@ -223,7 +223,8 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
     tableOrders[tableNum] = {
         'items': new Array(),
         'courses' : new Array(),
-        'total':0
+        'total':0,
+        'client_name' : ""
     };
     
     //fill in the table order array
@@ -242,6 +243,8 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
         tableOrders[tableNum].order_num = currentTableOrderJSON.order_num;
         tableOrders[tableNum].table = currentTableOrderJSON.table;
         tableOrders[tableNum].total = currentTableOrderJSON.total;
+        
+        tableOrders[tableNum].client_name = currentTableOrderJSON.client_name;
         
         //load the cashback
         tableOrders[tableNum].cashback = currentTableOrderJSON.cashback;

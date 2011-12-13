@@ -8,6 +8,8 @@ var defaultShortcutDropdownText = "Menu";
 
 var editItemPopupAnchor;
 
+var doAutoLoginAfterSync = false;
+
 //this function is called from application.js on page load
 function initMenu() {
     loadFirstMenuPage();
@@ -110,9 +112,7 @@ function menuScreenKeypadClickDecimal() {
 
 function loadFirstMenuPage() {
     //set the inital menu page selected to be the first
-    $('#menu_items_container').html($('#menu_items_1').html());
-    $('#pages .page').removeClass("selected");
-    $('#pages .page').first().addClass("selected");
+    $('#pages .page:first').click();
 }
 
 function doMenuPageSelect(pageNum, pageId) {
@@ -894,7 +894,7 @@ function doTotal() {
     takeTendered();
 }
 
-function doTotalFinal() {    
+function doTotalFinal() {
     if(currentOrderEmpty()) {
         setStatusMessage("No order present to total!", true, true);
         return;
@@ -946,7 +946,14 @@ function doTotalFinal() {
     
     discountPercent = totalOrder.discount_percent;
     preDiscountPrice = totalOrder.pre_discount_price;
-
+    
+    if(parseFloat(cashTendered) == 0.0) {
+        cashTendered = orderTotal + serviceCharge;
+        totalOrder.cash_tendered = orderTotal + serviceCharge;
+    } else {
+        totalOrder.cash_tendered = cashTendered;
+    }
+    
     //do up the subtotal and total and retrieve the receipt html for both the login screen and for print
     receiptHTML = fetchFinalReceiptHTML(false, true);
     printReceiptHTML = fetchFinalReceiptHTML(true, false);
@@ -965,15 +972,6 @@ function doTotalFinal() {
     } else {
         orderSalesTaxRate = -1;
         orderTotal = totalOrder.total;
-    }
-    
-    cashTendered = getTendered();
-    
-    if(parseFloat(cashTendered) == 0.0) {
-        cashTendered = orderTotal + serviceCharge;
-        totalOrder.cash_tendered = orderTotal + serviceCharge;
-    } else {
-        totalOrder.cash_tendered = cashTendered;
     }
     
     totalOrder.change = $('#totals_change_value').html();
@@ -1504,8 +1502,11 @@ function postDoSyncTableOrder() {
         return;
     }
     
-    //pick up the default home screen and load it
-    loadAfterSaleScreen();
+    if(!doAutoLoginAfterSync) {
+        doAutoLoginAfterSync = false;
+        //pick up the default home screen and load it
+        loadAfterSaleScreen();
+    }
     
     setStatusMessage("Order Sent");
 
