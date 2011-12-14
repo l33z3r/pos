@@ -5,7 +5,7 @@ var products = new Array();
   'id':'<%= p.id %>', 'name':'<%= escape_javascript p.name %>', 
   'price':<%= p.price %>, 'tax_rate':<%=p.sales_tax_rate%>,
   'double_price' : <%=p.double_price%>,
-  'hide_on_printed_receipt' : '<%=p.hide_on_printed_receipt%>',
+  'hide_on_printed_receipt' : <%=p.hide_on_printed_receipt%>,
   'show_price_on_receipt' : <%=p.show_price_on_receipt%>,
   'prompt_price' : <%=p.show_price_prompt%>,
   'printers' : "<%= p.printers %>",
