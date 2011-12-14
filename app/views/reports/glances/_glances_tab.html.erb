@@ -1,0 +1,153 @@
+<div id="at_a_glance_results_left">
+  <div id="sales_items">
+    <h3>SALES</h3>
+    <table class="items_table">
+      <tbody>
+        <% @sales_by_department.keys.each do |key| %>
+          <tr>
+            <td width="200" class="left"><%=key%></td>
+            <td width="80" class="right">&euro; <%=sprintf("%.2f", @sales_by_department[key])%></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td width="200" class="left"><b>Total Sales</b></td>
+          <td width="80" class="right"><b>&euro; <%=sprintf("%.2f", @sales_by_department_total)%></b></td>
+        </tr>
+        <div class="clear">&nbsp;</div>
+        <% if !@items_per_hour.nil? and !@items_per_hour.empty? %>
+          <tr>
+            <td width="200" class="left">No of Sales</td>
+            <td width="80" class="right"><%=@number_of_sales%></td>
+          </tr>
+          <tr>
+            <td width="200" class="left">Average Sale</td>
+            <td width="80" class="right">&euro; <%=sprintf("%.2f", @average_sale)%></td>
+          </tr>
+          <tr>
+            <td width="200" class="left">Busiest Hour</td>
+            <td width="80" class="right"><%=@busiest_hour%>-<%=@busiest_hour+1%> hs.</td>
+          </tr>
+          <%#*<tr>%>
+            <%#*<td width="200" class="left">Qty of No Sale</td>%>
+            <%#*<td width="80" class="right"></td>%>
+          <%#*</tr>%>
+          <tr>
+            <td width="200" class="left">Qty of Voided Sales</td>
+            <td width="80" class="right"><%=@voided_sales%></td>
+          </tr>
+          <%#*<tr>%>
+            <%#*<td width="200" class="left">Refunds</td>%>
+            <%#*<td width="80" class="right"></td>%>
+          <%#*</tr>%>
+          <tr>
+            <td width="200" class="left">Total Discount</td>
+            <td width="80" class="right">&euro; <%=sprintf("%.2f", @total_discount)%></td>
+          </tr>
+        <%end%>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h3>SALES BY PAYMENT TYPE</h3>
+    <table class="items_table">
+      <tbody>
+        <% @sales_by_payment_type.keys.each do |key| %>
+          <tr>
+            <td width="200" class="left"><%=key%></td>
+            <td width="80" class="right">&euro; <%=sprintf("%.2f", @sales_by_payment_type[key])%></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td width="200" class="left"><b>Total Sales</b></td>
+          <td width="80" class="right"><b>&euro; <%=sprintf("%.2f", @sales_by_payment_total)%></b></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h3>SALES BY SERVER</h3>
+    <table class="items_table">
+      <tbody>
+        <% @sales_by_server.keys.each do |key| %>
+          <tr>
+            <td width="200" class="left"><%=key%></td>
+            <td width="80" class="right">&euro; <%=sprintf("%.2f", @sales_by_server[key])%></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td width="200" class="left"><b>Total Sales</b></td>
+          <td width="80" class="right"><b>&euro; <%=sprintf("%.2f", @sales_by_server_total)%></b></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h3>LAST 7 DAYS SUMMARY</h3>
+    <table class="items_table">
+      <tbody>
+        <% @sales_last_7_days.keys.sort.reverse.each do |key| %>
+          <tr>
+            <td width="200" class="left"><%=@sales_last_7_days[key][0]%></td>
+            <td width="80" class="right">&euro; <%=sprintf("%.2f", @sales_last_7_days[key][1])%></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td width="200" class="left"><b>Total Last 7 Days</b></td>
+          <td width="80" class="right"><b>&euro; <%=sprintf("%.2f", @sales_last_7_days_total)%></b></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div id="at_a_glance_results_right">
+
+  <div>
+    <h3>TOP SELLING ITEMS</h3>
+    <% if !@top_selling_items.empty? %>
+      <table class="items_table">
+        <tbody>
+          <% @top_selling_items.each do |top_item| %>
+            <tr>
+              <td width="40" class="left"><%=top_item[1][1]%></td>
+              <td width="160" class="center"><%=(!top_item[1][0].nil?)?top_item[1][0]:"<NAME>"%></td>
+              <td width="70" class="right">&euro; <%=sprintf("%.2f", top_item[1][2])%></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="drag_message">No items found.</div>
+    <% end %>
+  </div>
+
+  <% if !@items_per_hour.empty? %>
+    <%= high_chart("graph_container", @graph) do |c| %>
+      <%= "options.tooltip.formatter = function() { return this.x +'-'+ parseInt(this.x+1) +' hs: '+ this.y +' euros';}" %>
+    <%end %>
+  <%end %>
+
+  <div>
+    <% if !@items_per_hour.empty? %>
+    <table class="items_table">
+      <thead>
+        <tr>
+          <th width="80" class="left">Hour</th>
+          <th width="80" >Qty</th>
+          <th width="80" class="right">Total Sales</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @items_per_hour.keys.sort.each do |key| %>
+          <tr>
+            <td width="80" class="left"><%=key%> - <%=key+1%></td>
+            <td width="80" class="center-column"><%=@items_per_hour[key][0]%> items</td>
+            <td width="80" class="right">&euro; <%=sprintf("%.2f", @items_per_hour[key][1])%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% end %>
+  </div>
+
+</div>

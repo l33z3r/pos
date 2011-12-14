@@ -45,6 +45,8 @@ GEM
       i18n (~> 0.4)
     gem_plugin (0.2.3)
     i18n (0.5.0)
+    lazy_high_charts (1.1.5)
+      bundler (~> 1.0)
     linecache19 (0.5.12)
       ruby_core_source (>= 0.1.4)
     mail (2.2.19)
@@ -123,6 +125,7 @@ DEPENDENCIES
   arel (= 2.0.9)
   aws-s3 (= 0.6.2)
   faker
+  lazy_high_charts (~> 1.1.5)
   meta_search (= 1.0.5)
   mongrel (= 1.2.0.pre2)
   mysql2 (= 0.2.6)

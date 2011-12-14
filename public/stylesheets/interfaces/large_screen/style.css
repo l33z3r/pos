@@ -3169,4 +3169,154 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
     list-style: square;
 }
 
+/* Reports Page */
+
+div#reports_container {
+    width: 990px;
+    margin: auto;
+    height: 710px;
+}
+
+div#reports_container div#report_option_tabs{
+    margin-top: 15px;
+    height: 710px;
+}
+
+div#reports_container div#report_option_tabs div.vtabs-content-panel{
+    margin-top: 15px;
+    height: 690px;
+    max-height: 690px;
+}
+
+div#reports_container div#report_option_tabs div.vtabs,
+div#reports_container div#report_option_tabs div.vtabs-tab-column {
+    position: absolute;
+    left: 0;
+    margin: 0;
+    width: 80px;
+    min-width: 80px;
+}
+
+div#reports_container  h3.global_settings_header {
+    text-align: left;
+}
+
+div#reports_container  h3.global_settings_header a {
+    text-decoration: none;
+}
+
+div#reports_container  div#actions {
+    float: right;
+}
+
+div#reports_container  div.container div.jspContainer {
+    width: 820px;
+    max-width: 820px;
+}
+
+div#reports_container  div.container div.jspContainer div.jspPane {
+    width: 790px;
+    max-width: 790px;
+}
+
+div#reports_container  div.container h4 {
+    float: left;
+}
+
+div#reports_container  div#at_a_glance_filters {
+    float: left;
+    height: 50px;
+    width: 87%;
+    margin-right: 10px;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+
+
+div#reports_container  div#at_a_glance_filters div.dropdown_container{
+    float: left;
+    width: 170px;
+    text-align: left;
+    font-weight: bold;
+    margin-left: 15px;
+    margin-top: 5px;
+}
+
+div#reports_container  div#at_a_glance_filters div.label,
+div#reports_container  div#at_a_glance_filters div.input_date{
+    text-align: left;
+}
+
+div#reports_container  div#at_a_glance_results_left,
+div#reports_container  div#at_a_glance_results_right{
+    float: left;
+    height: 650px;
+    width: 50%;
+}
+
+div#reports_container table.items_table{
+    width: 80%;
+    margin-left: 20px;
+    font-size: 12px;
+    line-height: 10px;
+}
+
+div#reports_container table.items_table td.center-column,
+div#reports_container table.items_table th.right,
+div#reports_container table.items_table td.right{
+    text-align: right;
+}
+
+div#reports_container table.items_table th.left,
+div#reports_container table.items_table td.left{
+    text-align: left;
+}
+
+div#reports_container  div#at_a_glance_results_right div#graph_container{
+    height: 300px;
+}
+
+div#reports_container  div#at_a_glance_results{
+    float: left;
+    height: 650px;
+    width: 87%;
+    margin-right: 10px;
+    border: 1px solid #777;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+}
+
+div#reports_container div#right_buttons div#options_button {
+    position: relative;
+    margin-left: 800px;
+    display: block;
+}
+
+div#reports_container  div#right_buttons div.summary_button {
+    margin-top: 7px;
+}
+
+div#reports_container  div.wide_button {
+    width: 100px;
+    max-width: 100px;
+    height: 51px;
+    max-height: 51px;
+    overflow: hidden;
+    vertical-align: middle;
+    display: table-cell;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+
 /* end styles carried over from scaffold css */

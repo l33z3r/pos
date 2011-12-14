@@ -65,6 +65,7 @@ Pos::Application.routes.draw do
   # admin homepage
   match 'admin' => "admin/home#index"
 
+
   namespace :admin do
     resources :displays do
       member do
@@ -209,6 +210,22 @@ Pos::Application.routes.draw do
     get 'custom_theme' => "custom_themes#custom_theme"
     
   end
+
+  namespace :reports do
+    resources :glances, :only => [:index] do
+      collection do
+        get 'glances_search'
+        get 'sales_search'
+        get 'cash_search'
+        get 'payments_search'
+        get 'customers_search'
+        get 'suppliers_search'
+        get 'stock_search'
+        get 'staff_search'
+      end
+    end
+  end
+
 
   match 'javascripts/:action.:format' => "javascripts"
 

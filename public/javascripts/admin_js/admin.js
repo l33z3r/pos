@@ -486,3 +486,26 @@ function settingStateFields(){
     }
     changeStyleButton($("#current_letter").val());
 }
+
+$(function() {
+      addEnterKeyEvents();
+});
+
+function addEnterKeyEvents(){
+    $('#all_fields').keyup(function(e) {
+	if(e.keyCode == 13) {
+		runSearch();
+	}
+    });
+    $('#code_num_equals').keyup(function(e) {
+	if(e.keyCode == 13) {
+		runSearch();
+	}
+    });
+    $('#description_contains').keyup(function(e) {
+	if(e.keyCode == 13) {
+		runSearch();
+	}
+    });
+}
+
