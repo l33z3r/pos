@@ -221,7 +221,9 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     
     var courseLineClass = orderItem.is_course ? "course" : "";
     
-    orderHTML = "<div class='order_line " + notSyncedClass + " " + courseLineClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
+    var hideOnPrintedReceiptClass = orderItem.product.hide_on_printed_receipt ? "hide_on_printed_receipt" : "";
+    
+    orderHTML = "<div class='order_line " + notSyncedClass + " " + hideOnPrintedReceiptClass + " " + courseLineClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
     
     if(includeServerAddedText && orderItem.showServerAddedText) {
         var nickname = serverNickname(orderItem.serving_employee_id);

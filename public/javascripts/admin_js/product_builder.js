@@ -8,6 +8,7 @@ $(function() {
 });
 
 function productBuilderOkClicked() {
+    showSpinner();
     $('#product_builder_form').submit();
 }
 

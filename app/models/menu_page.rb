@@ -1,16 +1,3 @@
-# == Schema Information
-# Schema version: 20110331125705
-#
-# Table name: menu_pages
-#
-#  id         :integer(4)      not null, primary key
-#  name       :string(255)
-#  display_id :integer(4)
-#  page_num   :integer(4)
-#  created_at :datetime
-#  updated_at :datetime
-#
-
 class MenuPage < ActiveRecord::Base
   belongs_to :display
   belongs_to :embedded_display, :class_name => "Display"
@@ -32,3 +19,17 @@ class MenuPage < ActiveRecord::Base
     @options.collect{|p| [p.name, p.id]}
   end
 end
+
+# == Schema Information
+#
+# Table name: menu_pages
+#
+#  id                  :integer(4)      not null, primary key
+#  name                :string(255)
+#  display_id          :integer(4)
+#  page_num            :integer(4)
+#  created_at          :datetime
+#  updated_at          :datetime
+#  embedded_display_id :integer(4)
+#
+

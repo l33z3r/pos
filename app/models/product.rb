@@ -189,6 +189,8 @@ class Product < ActiveRecord::Base
 end
 
 
+
+
 # == Schema Information
 #
 # Table name: products
@@ -261,5 +263,6 @@ end
 #  show_price_on_receipt      :boolean(1)      default(TRUE)
 #  double_price               :float           default(0.0)
 #  display_image              :string(255)
+#  hide_on_printed_receipt    :boolean(1)      default(TRUE)
 #
 

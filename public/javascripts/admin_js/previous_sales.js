@@ -29,16 +29,19 @@ function setDatePickers() {
     
 function addTableFilter(tablePermId) {
     $('#search_table_info_perm_id_equals').val(tablePermId);
+    showSpinner();
     $('#order_search').submit();
 }
 
 function addTerminalFilter(terminalId) {
     $('#search_terminal_id_equals').val(terminalId);
+    showSpinner();
     $('#order_search').submit();
 }
 
 function addServerFilter(server_nickname) {
     $('#search_employee_nickname_equals').val(server_nickname);
+    showSpinner();
     $('#order_search').submit();
 }
 
@@ -61,6 +64,8 @@ function forceDateSubmit(date) {
     $('#search_created_at_lte').val(date);
     $('#date_from').val(date);
     $('#date_to').val(date);
+    
+    showSpinner();
     $('#order_search').submit();
 }
 

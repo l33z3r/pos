@@ -48,8 +48,9 @@ function getLineItemHTMLForPrintedOrderReceipt(orderItem) {
     
     var lineItemHTMLForOrder = "<div class='order_line " + courseLineClass + "'>";
     
-    //we don't show the amount for the order receipt
-    lineItemHTMLForOrder += "<div class='amount'>" + orderItem.amount + "</div>";
+    if(!orderItem.product.hide_on_printed_receipt) {
+        lineItemHTMLForOrder += "<div class='amount'>" + orderItem.amount + "</div>";
+    }
     
     lineItemHTMLForOrder += "<div class='name'>";
         

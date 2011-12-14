@@ -13,7 +13,7 @@ function isTouchDevice() {
 }
 
 function goTo(place) {
-    showLoadingDiv();
+    showSpinner();
     window.location = place;
     return false;
 }
@@ -27,7 +27,7 @@ function postTo(place, data) {
     
     formHTML += '</form>';
     
-    showLoadingDiv();
+    showSpinner();
     $(formHTML).submit();
 }
 
