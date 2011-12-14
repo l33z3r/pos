@@ -15,6 +15,15 @@ div#display_builder {
 
 div#display_builder div#builder {
     height: 600px;
+    overflow-y: auto;
+}
+
+div#display_builder ::-webkit-scrollbar {
+    width: 40px;
+}
+
+div#display_builder div#builder div#grid {
+    position: relative;
 }
 
 div#display_builder div#header {
@@ -45,9 +54,10 @@ div#display_builder div#header a#delete_link {
 }
 
 div#display_builder div#menu_pages_container {
-    position: relative;
+    position: fixed;
+    top: 153px;
     width: 740px;
-    float: right;
+    margin-left: 220px
 }
 
 div#display_builder div#menu_pages_container div#pages {
@@ -229,7 +239,7 @@ div#display_builder div#tree_container {
 div#display_builder ul#products_tree,
 div#display_builder ul#products_tree ul {
     list-style-type: none;
-    padding-left: 7px;
+    padding-left: 1px;
 }
 
 div#display_builder ul#products_tree li ul li{
@@ -240,6 +250,11 @@ div#display_builder ul#products_tree li ul li{
 div#display_builder ul#products_tree li ul ul li {
     text-align: left;
     margin: 5px 1px;
+    padding: 2px;
+    border: 1px solid #777;
+    background-color: #FFF;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
 }
 
 div#display_builder ul#products_tree li ul li a,
@@ -256,34 +271,28 @@ div#display_builder ul#products_tree li ul li ul li a {
     font-weight: normal;
 }
 
+div#display_builder ul#products_tree div.image_container {
+    width: 40px;
+    float: left;
+    border: 1px solid #000;
+    margin: 0px 10px 0px 0px;
+}
+
 div#display_builder ul#products_tree div.select_product {
     cursor: pointer;
     font-weight: bold;
-    width: -moz-max-content;
     z-index: 100;
 }
 
 div#display_builder ul#products_tree div.select_product img {
-    width: 34px;
-    height: 34px;
-    float: left;
-    margin: 0px 10px 0px 0px;
+    max-width: 34px;
+    max-height: 34px;
 }
 
 div#display_builder ul#products_tree div.name {
+    text-align: left;
     float: left;
-    margin-top: 10px;
     width: 110px;
-}
-
-div#display_builder ul#products_tree div.edit_link {
-    float: right;
-    margin-top: 10px;
-}
-
-div#display_builder ul#products_tree div.edit_link a {
-    font-size: 10px;
-    text-decoration: underline;
 }
 
 div#display_builder ul#products_tree .menuTree:before {

@@ -4,30 +4,16 @@ $(function() {
     $('#products_tree').menuTree({
         animation: true,
         handler: 'slideToggle',
-        anchor: 'a[href="#"]',
-        callback: initBuilderScrollPane
+        anchor: 'a[href="#"]'
     });
 
     $('.select_product').draggable({
-        revert: true
+        revert: true,
+        revertDuration: 0
     });
     
     initDisplayBuilderDragDrop();
-    
-    initBuilderScrollPane();
 });
-
-function initBuilderScrollPane() {
-    var bindFunction = function(event, scrollPositionY, isAtTop, isAtBottom) {
-        $('#menu_pages_container').css("top", scrollPositionY);
-    };
-            
-    setTimeout(function() {
-        $('#builder').bind('jsp-scroll-y',bindFunction).jScrollPane({
-            showArrows: true
-        });
-    }, 500);
-}
 
 function doBuilderMenuPageSelect(pageNum, pageId) {
     //set this pages class to make it look selected

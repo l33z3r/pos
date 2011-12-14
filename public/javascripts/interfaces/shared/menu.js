@@ -96,7 +96,33 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         //make sure the data types are converted correctly
         if(tableOrderDataJSON.items[itemKey].product.show_price_on_receipt) {
             tableOrderDataJSON.items[itemKey].product.show_price_on_receipt = (tableOrderDataJSON.items[itemKey].product.show_price_on_receipt.toString() == "true" ? true : false);
-            tableOrderDataJSON.items[itemKey].is_double = (tableOrderDataJSON.items[itemKey].is_double.toString() == "true" ? true : false);
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            //this is only untill we have the new code deployed for a while we can be sure that clientName will be present on newly created orders
+            if(typeof(tableOrderDataJSON.items[itemKey].is_double) != 'undefined') {
+                tableOrderDataJSON.items[itemKey].is_double = (tableOrderDataJSON.items[itemKey].is_double.toString() == "true" ? true : false);
+            } else {
+                tableOrderDataJSON.items[itemKey].is_double = false;
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
         }
         
         var copiedOrderItem = {};
@@ -191,11 +217,36 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     //copy over the client name
     var clientName = tableOrderDataJSON.client_name;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //this is only untill we have the new code deployed for a while we can be sure that clientName will be present on newly created orders
+    if(typeof(clientName) == 'undefined') {
+        clientName = "";
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     tableOrders[tableID].client_name = clientName;
     
     //set the client name on the tables screen if there is one present
     if(clientName.length > 0) {
-        $('#table_label_' + tableID).html(tableID + " (" + clientName + ")");
+        $('#table_label_' + tableID).html(tables[tableID].label + " (" + clientName + ")");
     }
     
     //copy over the discount
@@ -347,7 +398,7 @@ function doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmploye
             loadReceipt(tableOrders[tableID]);
         }
         
-        $('#table_label_' + tableID).html(tableID);
+        $('#table_label_' + tableID).html(tables[tableID].label);
     }
 }
 

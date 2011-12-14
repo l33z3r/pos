@@ -18,20 +18,56 @@
     <div id="menu_items_scroller">
       <% @display.menu_pages.each do |page| %>
         <div style="display: none;" id="menu_items_<%= page.page_num %>" class="items">
-          <% page.menu_items.each do |item| %>
-            <% if item.product %>
-              <div class="item <%= !item.product.is_active ? "inactive" : "" %>" data-button_width="<%= item.product.menu_button_width %>" 
-                   onclick="<%= item.product.is_active ? "doSelectMenuItem(#{item.product_id}, this);" : "" %>"
-                   style="<%= menu_item_background_css item %>">
-                     <% if item.product.show_button_image %>
-                  <div class="item_pic">
-                    <%= product_image_thumb item.product %>
+          <% if page.embedded_display %>
+            <div id="pages" class="subpages embedded_pages_<%= page.page_num %>">
+              <% page.embedded_display.menu_pages.each do |embedded_page| %>
+
+                <div class="subpage page" id="sub_menu_page_<%=embedded_page.id%>"
+                     onclick="doSubMenuPageSelect(<%= page.page_num %>, <%= embedded_page.id %>);">
+                  <div class="name">
+                    <%= embedded_page.name %>
                   </div>
-                <% end %>
-                <div class="item_name" style="<%= menu_item_background_css item %><%= item.product.button_text_color.blank? ? "" : "color: #{item.product.button_text_color}" %>">
-                  <%= menu_item_name item %>
                 </div>
-              </div>
+
+                <div style="display: none;" id="sub_menu_items_<%= embedded_page.id %>" class="subitems">
+                  <div id="items">
+                    <% embedded_page.menu_items.each do |embedded_item| %>
+                      <% if embedded_item.product %>
+                        <div class="item <%= !embedded_item.product.is_active ? "inactive" : "" %>" data-button_width="<%= embedded_item.product.menu_button_width %>" 
+                             onclick="<%= embedded_item.product.is_active ? "doSelectMenuItem(#{embedded_item.product_id}, this);" : "" %>"
+                             style="<%= menu_item_background_css embedded_item %>">
+                               <% if embedded_item.product.show_button_image %>
+                            <div class="item_pic">
+                              <%= product_image_thumb embedded_item.product %>
+                            </div>
+                          <% end %>
+                          <div class="item_name" style="<%= menu_item_background_css embedded_item %><%= embedded_item.product.button_text_color.blank? ? "" : "color: #{embedded_item.product.button_text_color}" %>">
+                            <%= menu_item_name embedded_item %>
+                          </div>
+                        </div>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+
+          <% else %>
+            <% page.menu_items.each do |item| %>
+              <% if item.product %>
+                <div class="item <%= !item.product.is_active ? "inactive" : "" %>" data-button_width="<%= item.product.menu_button_width %>" 
+                     onclick="<%= item.product.is_active ? "doSelectMenuItem(#{item.product_id}, this);" : "" %>"
+                     style="<%= menu_item_background_css item %>">
+                       <% if item.product.show_button_image %>
+                    <div class="item_pic">
+                      <%= product_image_thumb item.product %>
+                    </div>
+                  <% end %>
+                  <div class="item_name" style="<%= menu_item_background_css item %><%= item.product.button_text_color.blank? ? "" : "color: #{item.product.button_text_color}" %>">
+                    <%= menu_item_name item %>
+                  </div>
+                </div>
+              <% end %>
             <% end %>
           <% end %>
         </div>
@@ -40,7 +76,7 @@
   </div>
 
   <div class="clear">&nbsp;</div>
-  
+
   <div id="bottom_functions">
     <div class="button" onclick="addCourseEndToOrder();">Course</div>
     <div class="button" onclick="swipeToReceipt();">Receipt</div>
