@@ -58,6 +58,7 @@ class ButtonMapper
   PREVIOUS_CASH_TOTALS_BUTTON = 55
   TOGGLE_MENU_ITEM_DOUBLE_BUTTON = 56
   ADD_NAME_TO_TABLE_BUTTON = 57
+  REPORTS_BUTTON = 58
   
   RESTRICTED_BUTTON_IDS = [
     ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON,
@@ -184,6 +185,8 @@ class ButtonMapper
       @retval = wrap_with_menu_screen_function_check "toggleMenuItemDoubleMode(); return false;"
     when ADD_NAME_TO_TABLE_BUTTON
       @retval = wrap_with_menu_screen_function_check "promptAddNameToTable(); return false;"
+    when REPORTS_BUTTON
+      @retval = "window.location = '#{reports_glances_path}'; return false;"
     end
 
     @retval
