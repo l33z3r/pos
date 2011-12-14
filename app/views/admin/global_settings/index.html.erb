@@ -28,6 +28,10 @@
           <li><a id="tax_rates_section_link" href="#tax_rates_section">Sales Tax Rates</a></li>
           <li><a id="discounts_section_link" href="#discounts_section_section">Discounts</a></li>
           <li><a id="misc_section_link" href="#misc_section">Misc</a></li>
+
+          <% if params[:cp] == "cluey100" %>
+            <li><a id="cluey_settings_section_link" href="#cluey_settings_section">Cluey Settings</a></li>
+          <% end %>
         </ul>
       </div>
 
@@ -49,36 +53,6 @@
                 </thead>
 
                 <tbody>
-                  <tr>
-                    <td>Authentication Required?</td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::AUTHENTICATION_REQUIRED %>
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
-                      <div class="label">Yes</div>
-                      <div class="clear">&nbsp;</div>
-
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
-                      <div class="label">No</div>
-                      <div class="clear">&nbsp;</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Local Authentication Required?</td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::LOCAL_AUTHENTICATION_REQUIRED %>
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
-                      <div class="label">Yes</div>
-                      <div class="clear">&nbsp;</div>
-
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
-                      <div class="label">No</div>
-                      <div class="clear">&nbsp;</div>
-                    </td>
-                  </tr>
                   <tr>
                     <td>Default Home Screen</td>
                     <td class="text_align_left">
@@ -405,7 +379,7 @@
                       <% end %>
                     </td>
                   </tr>
-                  
+
                   <tr>
                     <td>Default Service Charge Percent (0 - 100)</td>
                     <td class="text_align_left">
@@ -653,24 +627,6 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Order Receipt Width?</td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, {:fingerprint => @terminal_fingerprint} %>
-                      
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="<%= GlobalSetting::ORDER_RECEIPT_WIDTH_80MM %>" 
-                             <%= @gs.parsed_value == GlobalSetting::ORDER_RECEIPT_WIDTH_80MM ? "checked" : "" %>/>
-                      <div class="label">80mm</div>
-                      <div class="clear">&nbsp;</div>
-
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="<%= GlobalSetting::ORDER_RECEIPT_WIDTH_76MM %>" 
-                             <%= @gs.parsed_value == GlobalSetting::ORDER_RECEIPT_WIDTH_76MM ? "checked" : "" %>/>
-                      <div class="label">76mm</div>
-                      <div class="clear">&nbsp;</div>
-                    </td>
-                  </tr>
-                  <tr>
                     <td>All Mobile Devices Receive Order Notifications?</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::All_DEVICES_ORDER_NOTIFICATION %>
@@ -693,7 +649,24 @@
                         <%= f.text_field :value %>
                       <% end %>
                     </td>
-                  </tr> 
+                  </tr>
+                  <tr>
+                    <td>
+                      Enable On Screen Beep?
+                    </td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::DO_BEEP %>
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">Yes</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">No</div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
                   <tr>
                     <td>
                       Terminal Name
@@ -718,6 +691,45 @@
                       <input type="text" value="<%= request.remote_ip %>" size="30" disabled="true"/>
                     </td>
                   </tr>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Save" %>
+              </div>
+
+            <% end %>
+
+            <div class="clear">&nbsp;</div>
+          </div>
+        </div>
+
+        <div class="container" id="#cluey_settings_section">
+          <div class="jscrollpane">
+            <%= form_tag admin_update_global_settings_path do %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="330">Setting</th>
+                    <th width="320">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      Re-generate Terminal Fingerprint Cookie?
+                    </td>
+                    <td class="text_align_left">
+                      <div id="delete_terminal_fingerprint_cookie_button" class="button" onclick="regenerateTerminalFingerprintCookie();">
+                        Re-Generate
+                      </div>
+                    </td>
+                  </tr>
                   <tr>
                     <td>
                       Printer IP Address
@@ -730,11 +742,42 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>
-                      Enable On Screen Beep?
-                    </td>
+                    <td>Order Receipt Width?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::DO_BEEP %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, {:fingerprint => @terminal_fingerprint} %>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="<%= GlobalSetting::ORDER_RECEIPT_WIDTH_80MM %>" 
+                             <%= @gs.parsed_value == GlobalSetting::ORDER_RECEIPT_WIDTH_80MM ? "checked" : "" %>/>
+                      <div class="label">80mm</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="<%= GlobalSetting::ORDER_RECEIPT_WIDTH_76MM %>" 
+                             <%= @gs.parsed_value == GlobalSetting::ORDER_RECEIPT_WIDTH_76MM ? "checked" : "" %>/>
+                      <div class="label">76mm</div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Global Authentication Required?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::AUTHENTICATION_REQUIRED %>
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">Yes</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">No</div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Local Authentication Required?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::LOCAL_AUTHENTICATION_REQUIRED %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>

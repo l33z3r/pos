@@ -27,16 +27,6 @@ function postTo(place, data) {
     formHTML += '</form>';
     
     $(formHTML).submit();
-
-//    $.ajax({
-//        type: 'POST',
-//        url: place, 
-//        data: data,
-//        async : false,
-//        complete: function() {
-//            window.location.reload();
-//        }
-//    });
 }
 
 function inMobileContext() {
@@ -137,7 +127,7 @@ function clearLocalStorageAndCookies() {
     //now clear cookies
     var c = document.cookie.split(";");
         
-    for(var i=0;i<c.length;i++){
+    for(var i=0;i<c.length;i++) {
         var e = c[i].indexOf("=");
         var cname = c[i].substr(0,e);
         
@@ -146,7 +136,7 @@ function clearLocalStorageAndCookies() {
         }
         
         var n= e>-1 ? cname : c[i];
-        document.cookie = n + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        setRawCookie(n, "", -365);
     }
 }
 
@@ -169,6 +159,16 @@ function setFingerPrintCookie() {
         exdays = 365 * 100;
     
         setRawCookie(terminalFingerPrintCookieName, c_value, exdays);
+    }
+}
+
+function regenerateTerminalFingerprintCookie() {
+    var answer = confirm("Are you sure?");
+    
+    if (answer) {
+        setRawCookie(terminalFingerPrintCookieName, "", -365);
+        setFingerPrintCookie()
+        doReload(false);
     }
 }
 
@@ -368,7 +368,6 @@ function removeActiveTable(tableID) {
 }
 
 function setRawCookie(c_name, value, expires) {
-    
     var today = new Date();
     today.setTime( today.getTime() );
     
@@ -378,7 +377,7 @@ function setRawCookie(c_name, value, expires) {
     
     var expires_date = new Date(today.getTime() + (expires));
     
-    var c_value= escape(value) + ((expires==null) ? "" : ";expires=" + expires_date.toUTCString());
+    var c_value= escape(value) + ((expires==null) ? "" : ";path=/;expires=" + expires_date.toUTCString());
     document.cookie= c_name + "=" + c_value;
 }
 

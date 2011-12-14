@@ -247,27 +247,30 @@ class GlobalSetting < ActiveRecord::Base
         if value_changed?
           @res = GlobalSetting.where("global_settings.key != ?", key).where("global_settings.value = ?", value)
           if @res.size > 0
-            #conflict, delete the old one
-            @res.first.destroy
+            #copy the settings over to the new fingerprint
+            @old_terminal_gs = @res.first
+            @old_fingerprint = @old_terminal_gs.key.split("_").last
             
-            #now copy the settings over to the new fingerprint
+            #web socket ip
+            @websocket_ip_gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, {:fingerprint => @old_fingerprint}
             
+            @my_terminal_fingerprint = key.split("_").last
             
+            @my_websocket_ip_gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, {:fingerprint => @my_terminal_fingerprint}
+            @my_websocket_ip_gs.value = @websocket_ip_gs.value
+            @my_websocket_ip_gs.save
+              
+            #order receipt width
+            @order_reciept_width_gs = GlobalSetting.setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, {:fingerprint => @old_fingerprint}
             
+            @my_order_reciept_width_gs = GlobalSetting.setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, {:fingerprint => @my_terminal_fingerprint}
+            @my_order_reciept_width_gs.value = @order_reciept_width_gs.value
+            @my_order_reciept_width_gs.save
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+            #delete old gs objects
+            @websocket_ip_gs.destroy
+            @order_reciept_width_gs.destroy
+            @old_terminal_gs.destroy
           end
         end
         if value

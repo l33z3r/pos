@@ -1404,6 +1404,13 @@ div.admin div#edit_global_settings section#global_settings div#actions input[typ
     font-weight: bold;
 }
 
+div.admin div#edit_global_settings section#global_settings div#delete_terminal_fingerprint_cookie_button {
+    width: 150px;
+    max-width: 150px;
+    height: 40px;
+    max-height: 40px;
+}
+
 div#edit_global_settings section#global_settings div.container div.jspContainer {
     width: 820px;
     max-width: 820px;

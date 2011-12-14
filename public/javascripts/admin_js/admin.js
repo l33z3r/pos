@@ -445,7 +445,7 @@ function runDeletedProjectsHook() {
 function markProductAsDeleted(product_id) {
     var answer = confirm("Are you sure?");
     
-    if (answer){
+    if (answer) {
         $.ajax({
             type: 'POST',
             url: '/admin/products/'+ product_id +'/mark_as_deleted',
