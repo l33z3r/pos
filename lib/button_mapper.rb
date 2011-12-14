@@ -76,27 +76,27 @@ class ButtonMapper
     when Z_TOTAL_BUTTON
       @retval = wrap_with_menu_screen_function_check "prepareZTotal();"
     when X_REPORTS_BUTTON
-      @retval = "window.location = '#{admin_cash_total_options_path}?section=x'; return false;"
+      @retval = "goTo('#{admin_cash_total_options_path}?section=x'); return false;"
     when Z_REPORTS_BUTTON
-      @retval = "window.location = '#{admin_cash_total_options_path}?section=z'; return false;"
+      @retval = "goTo('#{admin_cash_total_options_path}?section=z'); return false;"
     when MANAGE_USERS_BUTTON
-      @retval = "window.location = '#{admin_employees_path}'; return false;"
+      @retval = "goTo('#{admin_employees_path}'); return false;"
     when MANAGE_ROLES_BUTTON
-      @retval = "window.location = '#{admin_roles_path}'; return false;"
+      @retval = "goTo('#{admin_roles_path}'); return false;"
     when MANAGE_PRODUCTS_BUTTON
-      @retval = "window.location = '#{admin_products_path}'; return false;"
+      @retval = "goTo('#{admin_products_path}'); return false;"
     when MANAGE_CATEGORIES_BUTTON
-      @retval = "window.location = '#{admin_categories_path}'; return false;"
+      @retval = "goTo('#{admin_categories_path}'); return false;"
     when MANAGE_DISPLAYS_BUTTON
-      @retval = "window.location = '#{admin_displays_path}'; return false;"
+      @retval = "goTo('#{admin_displays_path}'); return false;"
     when MANAGE_SALES_SCREEN_BUTTON
-      @retval = "window.location = '#{screen_admin_display_buttons_path}'; return false;"
+      @retval = "goTo('#{screen_admin_display_buttons_path}'); return false;"
     when ACCESS_CONTROL_BUTTON
-      @retval = "window.location = '#{access_admin_display_buttons_path}'; return false;"
+      @retval = "goTo('#{access_admin_display_buttons_path}'); return false;"
     when MANAGE_MODIFIER_CATEGORIES_BUTTON
-      @retval = "window.location = '#{admin_modifier_categories_path}'; return false;"
+      @retval = "goTo('#{admin_modifier_categories_path}'; return false;"
     when ROOM_BUILDER_BUTTON
-      @retval = "window.location = '#{admin_rooms_path}'; return false;"
+      @retval = "goTo('#{admin_rooms_path}'); return false;"
     when TOTAL_BUTTON
       @retval = "quickSale();"
     when SUBTOTAL_BUTTON
@@ -106,13 +106,13 @@ class ButtonMapper
     when MORE_OPTIONS_BUTTON
       @retval = "showMoreOptionsScreen(); return false;"
     when BUTTON_CONFIG_BUTTON
-      @retval = "window.location = '#{edit_multiple_admin_display_buttons_path}'; return false;"
+      @retval = "goTo('#{edit_multiple_admin_display_buttons_path}'); return false;"
     when TABLES_BUTTON
       @retval = "showTablesScreen(); return false;"
     when SYSTEM_BUTTON
       @retval = "showGlobalSettingsPage();"
     when THEMES_BUTTON
-      @retval = "window.location = '#{admin_custom_themes_path}'; return false;"
+      @retval = "goTo('#{admin_custom_themes_path}'); return false;"
     when DISCOUNT_BUTTON
       @retval = wrap_with_menu_screen_function_check "showDiscountPopup(null);"
     when CLIENT_BUTTON
@@ -150,13 +150,13 @@ class ButtonMapper
     when RECEIPT_SETUP_BUTTON
       @retval = "alert('receipt setup button clicked');"
     when PAYMENT_METHODS_BUTTON
-      @retval = "window.location = '#{admin_global_settings_path}?section=payment_methods'; return false;"
+      @retval = "goTo('#{admin_global_settings_path}?section=payment_methods'); return false;"
     when GIFT_VOUCHER_BUTTON
       @retval = wrap_with_menu_screen_function_check "alert('gift voucher button clicked');"
     when ORDER_TYPES_BUTTON
       @retval = "alert('order types button clicked');"
     when DISCOUNTS_SURCHARGES_BUTTON
-      @retval = "window.location = '#{admin_global_settings_path}?section=discounts'; return false;"
+      @retval = "goTo('#{admin_global_settings_path}?section=discounts'); return false;"
     when PRINT_RECEIPT_BUTTON
       @retval = "printCurrentReceipt();"
     when ORDER_BUTTON
@@ -164,29 +164,29 @@ class ButtonMapper
     when SERVICE_CHARGE_BUTTON
       @retval = wrap_with_menu_screen_function_check "promptForServiceCharge()"
     when PREVIOUS_ORDERS_BUTTON
-      @retval = "window.location = '#{admin_orders_path}'; return false;"
+      @retval = "goTo('#{admin_orders_path}'); return false;"
     when MODIFY_ORDER_ITEM_BUTTON
       @retval = wrap_with_menu_screen_function_check "toggleModifyOrderItemScreen(); return false;"
     when MANAGE_ORDER_ITEM_ADDITION_GRIDS_BUTTON
-      @retval = "window.location = '#{admin_order_item_addition_grids_path}'; return false;"
+      @retval = "goTo('#{admin_order_item_addition_grids_path}'); return false;"
     when CURRENT_ORDERS_BUTTON
-      @retval = "window.location = '#{admin_orders_path}?section=open_orders'; return false;"
+      @retval = "goTo('#{admin_orders_path}?section=open_orders'); return false;"
     when MODIFY_TERMINALS_BUTTON
-      @retval = "window.location = '#{admin_terminals_path}'; return false;"
+      @retval = "goTo('#{admin_terminals_path}'); return false;"
     when COURSE_BUTTON
       @retval = wrap_with_menu_screen_function_check "addCourseEndToOrder(); return false;";
     when PRINT_BILL_BUTTON
       @retval = "printBill();"
     when KITCHEN_SCREEN_BUTTON
-      @retval = "window.location = '#{kitchen_path}'; return false;"
+      @retval = "goTo('#{kitchen_path}'); return false;"
     when PREVIOUS_CASH_TOTALS_BUTTON
-      @retval = "window.location = '#{admin_previous_cash_totals_path}'; return false;"
+      @retval = "goTo('#{admin_previous_cash_totals_path}'); return false;"
     when TOGGLE_MENU_ITEM_DOUBLE_BUTTON
       @retval = wrap_with_menu_screen_function_check "toggleMenuItemDoubleMode(); return false;"
     when ADD_NAME_TO_TABLE_BUTTON
       @retval = wrap_with_menu_screen_function_check "promptAddNameToTable(); return false;"
     when REPORTS_BUTTON
-      @retval = "window.location = '#{reports_glances_path}'; return false;"
+      @retval = "goTo('#{reports_glances_path}'); return false;"
     end
 
     @retval

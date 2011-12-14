@@ -13,7 +13,8 @@ $(function(){
  
 function doGlobalInit() {
     
-    window.onbeforeunload = showLoadingDiv;
+    //whenever a link is clicked, we show a loading div
+    $('a').click(showLoadingDiv);
     
     if(inKioskMode()) {
         //to run chrome in kiosk mode, use this command in linux (google-chrome --kiosk http://localhost:3000)

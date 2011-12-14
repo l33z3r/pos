@@ -13,6 +13,7 @@ function isTouchDevice() {
 }
 
 function goTo(place) {
+    showLoadingDiv();
     window.location = place;
     return false;
 }
@@ -26,6 +27,7 @@ function postTo(place, data) {
     
     formHTML += '</form>';
     
+    showLoadingDiv();
     $(formHTML).submit();
 }
 
@@ -722,7 +724,7 @@ function ensureLoggedIn() {
                 width: 360,
                 height: 280,
                 okButtonText: 'Ok',
-                onOk: "doReload()"
+                onOk: "doReload(false)"
             });
             
         return false;
@@ -732,14 +734,16 @@ function ensureLoggedIn() {
 }
 
 function showLoadingDiv() {
-    hideNiceAlert();
+    if(!inAndroidWrapper()) {
+        hideNiceAlert();
     
-    ModalPopups.Indicator("niceAlertContainer",
-        "Loading",
-        "<div style='text-align: center; font-size: 24px;padding-top: 60px;'>\n\
+        ModalPopups.Indicator("niceAlertContainer",
+            "Loading",
+            "<div style='text-align: center; font-size: 24px;padding-top: 60px;'>\n\
         Please Wait...</div>",
-        { 
-            width: 300,
-            height: 200
-        } );
+            { 
+                width: 300,
+                height: 200
+            } );
+    }
 }

@@ -12,7 +12,10 @@
         <div id="menu_select_input" onclick="menuSelectMenu.openMenu();">Select Menu</div>
         <ul id="menu_select" class="mcdropdown_menu">
           <% Display.all.each do |display| %>
-            <li rel="<%= display.id %>" onclick="displayDropdownSelected(<%= display.id %>);"><%=display.name%></li>
+            <li rel="<%= display.id %>" onclick="displayDropdownSelected(<%= display.id %>);">
+              <%= @display.id == display.id ? "* " : "" %>
+              <%=display.name%>
+            </li>
           <% end %>
         </ul>
       </div>

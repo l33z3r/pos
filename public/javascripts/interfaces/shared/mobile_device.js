@@ -2,6 +2,8 @@ function showSpinner() {
     if(inAndroidWrapper()) {
         clueyAndroidJSInterface.showSpinner();
     }
+    
+    showLoadingDiv();
 }
 
 function hideSpinner() {

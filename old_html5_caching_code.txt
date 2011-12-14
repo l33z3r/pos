@@ -1,3 +1,9 @@
+see: http://www.html5rocks.com/en/tutorials/appcache/beginner/
+
+
+
+
+
 application controller:
 
   before_filter :check_reset_cache_timestamp

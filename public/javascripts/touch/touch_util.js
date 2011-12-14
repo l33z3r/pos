@@ -18,4 +18,9 @@ function initTouch() {
             swipeDownHandler();
         }
     });
+    
+    //get rid of the webkit scrollbars
+    var sheet = document.createElement('style')
+    sheet.innerHTML = "::-webkit-scrollbar {display: none;}";
+    document.body.appendChild(sheet);
 }

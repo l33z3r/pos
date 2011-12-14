@@ -267,7 +267,7 @@ function makeBiggerAdminTableLinks() {
                 
                 if(doIt) {
                     $.post($(this).find(":first-child").attr("href"), "_method=delete", function(data) {});
-                    window.location.reload();
+                    doReload(false);
                     event.stopPropagation();
                     return false;
                 } else {
@@ -277,7 +277,7 @@ function makeBiggerAdminTableLinks() {
             });
         } else {
             tdEl.click(function(){
-                location = $(this).find(":first-child").attr("href");
+                goTo($(this).find(":first-child").attr("href"));
             });
         }
     });
