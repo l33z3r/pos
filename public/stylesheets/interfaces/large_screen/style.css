@@ -1229,6 +1229,10 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
     font-size: 13px;
 }
 
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_fax {
+    font-size: 13px;
+}
+
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.data_table_header {
     font-weight: bold;
     font-size: 14px;
