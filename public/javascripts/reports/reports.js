@@ -17,6 +17,9 @@ function setReportsDatePickers() {
         onSelect: function(dateText, inst) {
             $('#date_select_container').find('#date_to').datepicker("option", "minDate", dateText);
             selectedFromDate = dateText;
+            if($('#date_select_container').find('#date_to').val()!=""){
+                runGlancesSearch();
+            }
         }
     });
 
@@ -26,7 +29,9 @@ function setReportsDatePickers() {
         onSelect: function(dateText, inst) {
             $('#date_select_container').find('#date_from').datepicker("option", "maxDate", dateText);
             selectedToDate = dateText;
-            runGlancesSearch();
+            if($('#date_select_container').find('#date_from').val()!=""){
+                runGlancesSearch();
+            }
         }
     });
 }
@@ -90,8 +95,8 @@ function runGlancesSearch(){
         type: 'GET',
         url: '/reports/glances/glances_search',
         data: {
-             "search[created_at_gte]" : selectedFromDate,
-             "search[created_at_lte]" : selectedToDate,
+             "search[created_at_gt]" : selectedFromDate,
+             "search[created_at_lt]" : selectedToDate,
              "search[terminal_id_equals]" : terminalId
         }
     });

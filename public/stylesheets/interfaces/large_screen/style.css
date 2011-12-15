@@ -3193,8 +3193,8 @@ div#reports_container div#report_option_tabs div.vtabs-tab-column {
     position: absolute;
     left: 0;
     margin: 0;
-    width: 80px;
-    min-width: 80px;
+    width: 90px;
+    min-width: 90px;
 }
 
 div#reports_container  h3.global_settings_header {
@@ -3289,6 +3289,18 @@ div#reports_container  div#at_a_glance_results{
     border: 1px solid #777;
     -moz-border-radius: 7px;
     border-radius: 7px;
+}
+
+div#reports_container div#last_z_total_info {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: 11px;
+    margin-right: 10px;
+}
+
+div#reports_container div#last_z_total_info div.label{
+    text-align: left;
 }
 
 div#reports_container div#right_buttons div#options_button {

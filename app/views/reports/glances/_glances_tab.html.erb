@@ -123,12 +123,12 @@
 
   <% if !@items_per_hour.empty? %>
     <%= high_chart("graph_container", @graph) do |c| %>
-      <%= "options.tooltip.formatter = function() { return this.x +'-'+ parseInt(this.x+1) +' hs: '+ this.y +' euros';}" %>
+      <%= "options.tooltip.formatter = function() { return this.x +'-'+ parseInt(parseInt(this.x)+parseInt(#{@h_interval})) +' hs: '+ this.y +' euros';}" %>
     <%end %>
   <%end %>
 
   <div>
-    <% if !@items_per_hour.empty? %>
+    <% if !@items_per_interval_hour.empty? %>
     <table class="items_table">
       <thead>
         <tr>
@@ -138,11 +138,11 @@
         </tr>
       </thead>
       <tbody>
-        <% @items_per_hour.keys.sort.each do |key| %>
+        <% @items_per_interval_hour.keys.sort.each do |key| %>
           <tr>
-            <td width="80" class="left"><%=key%> - <%=key+1%></td>
-            <td width="80" class="center-column"><%=@items_per_hour[key][0]%> items</td>
-            <td width="80" class="right">&euro; <%=sprintf("%.2f", @items_per_hour[key][1])%></td>
+            <td width="80" class="left"><%=key%>-<%=key+@h_interval%></td>
+            <td width="80" class="center-column"><%=@items_per_interval_hour[key][0]%> items</td>
+            <td width="80" class="right">&euro; <%=sprintf("%.2f", @items_per_interval_hour[key][1])%></td>
           </tr>
         <% end %>
       </tbody>

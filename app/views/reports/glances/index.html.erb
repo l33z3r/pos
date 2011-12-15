@@ -73,21 +73,28 @@
                 </div>
                 <div class="button_name">Functions</div>
               </div>
-              <div class="summary_button" onclick="">
+              <div class="summary_button" onclick="$('#sales_section_link').click()">
                 <div class="wide_button">Sales Summary Today</div>
               </div>
-              <div class="summary_button" onclick="">
+              <div class="summary_button" onclick="$('#cash_section_link').click()">
                 <div class="wide_button">Cash Summary Today</div>
               </div>
-              <div class="summary_button" onclick="">
+              <div class="summary_button" onclick="$('#payments_section_link').click()">
                 <div class="wide_button">Payments Summary Today</div>
               </div>
-              <div class="summary_button" onclick="">
+              <div class="summary_button" onclick="$('#stock_control_section_link').click()">
                 <div class="wide_button">Stock Control Summary Today</div>
               </div>
-              <div class="summary_button" onclick="">
+              <div class="summary_button" onclick="$('#staff_section_link').click()">
                 <div class="wide_button">Staff Summary Today</div>
               </div>
+            </div>
+
+            <div id="last_z_total_info">
+              <div class="label"><b>Last Z Total</b></div>
+              <div class="label"><b>By: </b><%= @last_z_total_by %></div>
+              <div class="label"><b>Date: </b><%= @last_z_total_date %></div>
+              <div class="label"><b>Time: </b><%= @last_z_total_time %></div>
             </div>
 
         </div>
