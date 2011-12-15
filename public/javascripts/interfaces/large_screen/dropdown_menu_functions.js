@@ -12,6 +12,8 @@ function menuScreenDropdownItemSelected(index, name) {
     if(index.startsWith("1")) {
         var displayID = index.substring(2);
         
+        showLoadingDiv();
+        
         //do ajax request and then reload   
         $.ajax({
             type: 'POST',

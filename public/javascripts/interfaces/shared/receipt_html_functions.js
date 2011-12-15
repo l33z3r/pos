@@ -68,7 +68,7 @@ function printReceipt(content, printRecptMessage) {
 function print(content) {
     $('#printFrame').contents().find('#till_roll').html(content);
     
-    var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>" 
+        var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>" 
     + $('#printFrame').contents().find('html').html() + "</html>";
       
     var print_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/receipt_printer';

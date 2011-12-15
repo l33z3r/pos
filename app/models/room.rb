@@ -26,6 +26,7 @@ class Room < ActiveRecord::Base
   end
 end
 
+
 # == Schema Information
 #
 # Table name: rooms
@@ -38,5 +39,6 @@ end
 #  updated_at                     :datetime
 #  grid_resolution                :integer(4)      default(5)
 #  default_service_charge_percent :float
+#  prompt_for_client_name         :boolean(1)      default(FALSE)
 #
 

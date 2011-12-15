@@ -16,7 +16,8 @@ var rooms = new Array();
 <% Room.all.each do |room|-%>
   room_info = {
   id : '<%= room.id %>',
-  defaultServiceChargePercent : '<%= room.default_service_charge_percent %>'
+  defaultServiceChargePercent : '<%= room.default_service_charge_percent %>', 
+  prompt_for_client_name : <%= room.prompt_for_client_name %>
   }
 
   rooms['<%=room.id%>'] = room_info;

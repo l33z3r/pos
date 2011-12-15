@@ -2052,6 +2052,7 @@ div#name_table_popup_markup_container div#table_name_input_container div#table_n
 
 div#name_table_popup_markup_container div#table_name_input_container input {
     float: left;
+    text-transform: uppercase;
 }
 
 /* End Name Table Popup Markup */

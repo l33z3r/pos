@@ -14,7 +14,12 @@ $(function(){
 function doGlobalInit() {
     
     //whenever a link is clicked, we show a loading div
-    $('a[href!=#], input[type=submit]').click(showLoadingDiv);
+    $('a').live("click", function() {
+        if($(this).attr("href") != "" && $(this).attr("href") != '#') {
+            showLoadingDiv();
+        }
+    });
+    $('input[type=submit]').click(showLoadingDiv);
     
     if(inKioskMode()) {
         //to run chrome in kiosk mode, use this command in linux (google-chrome --kiosk http://localhost:3000)

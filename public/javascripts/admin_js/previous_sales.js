@@ -137,7 +137,9 @@ function parsePreviousOrder(previousOrderJSON) {
     
     if(previousOrderJSON.replacement_for_order_id) {
         voidOrderInfoHTML += "<div class='replacement_for_link'>Replacement For Order " + previousOrderJSON.replacement_for_order_id + "</div>";
-    } else if(previousOrderJSON.replacement_by_order_id) {
+    } 
+    
+    if(previousOrderJSON.replacement_by_order_id) {
         voidOrderInfoHTML += "<div class='replaced_by_link'>Replaced By Order " + previousOrderJSON.replacement_by_order_id + "</div>";
     }
     
@@ -148,15 +150,16 @@ function parsePreviousOrder(previousOrderJSON) {
     //enable the "re-open order" button
     $('#continue_order_button').hide();
     $('#reopen_order_button').show();
+    $('#print_order_button').show();
     
     $('#total_container div#label').html("Total:");
     $('#admin_order_list_total_value').html(currency(totalOrder.totalFinal + totalOrder.cashback));
 }
 
-function initReopenOrderButton(is_void_or_replacement) {
-    if(is_void_or_replacement) {
+function initReopenOrderButton(is_void) {
+    if(is_void) {
         reOpenOrderHandler = function() {
-            setStatusMessage("Cannot re-open a void or replacement order!");
+            setStatusMessage("Cannot re-open a void order!");
         };
     } else {
         reOpenOrderHandler = reOpenOrder;
@@ -287,6 +290,7 @@ function loadOpenTableOrder(table_id) {
     //enable the "continue order" button
     $('#continue_order_button').show();
     $('#reopen_order_button').hide();
+    $('#print_order_button').hide();
 }
 
 function continueOrder() {
@@ -320,4 +324,14 @@ function fetchPreviousSalesReceiptHeaderHTML(order) {
     headerHTML += "</div>";
     
     return headerHTML;
+}
+
+function printPreviousSale() {
+    if(!totalOrder) {
+        setStatusMessage("Please select a closed order to print.");
+        return;
+    }
+    
+    printReceiptHTML = fetchFinalReceiptHTML(true, false);
+    printReceipt(printReceiptHTML, true);
 }

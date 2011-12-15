@@ -426,16 +426,16 @@ var addTableNamePopupEl;
 var addTableNamePopupAnchor;
 
 function promptAddNameToTable() {
+    if(!callHomePollInitSequenceComplete) {
+        niceAlert("Downloading data from server, please wait.");
+        return;
+    }    
+    
     if(selectedTable == 0 || selectedTable == -1) {
         setStatusMessage("Only valid for table orders!");
         return;
     }
     
-    //    if(currentOrderEmpty()) {
-    //        setStatusMessage("No order present!", true, true);
-    //        return;
-    //    }
-    //    
     var popupHTML = $("#name_table_popup_markup").html();
         
     addTableNamePopupAnchor = $('#receipt');
@@ -499,7 +499,7 @@ function saveAddNameToTable() {
     
     var tableOrder = getCurrentOrder();
     
-    tableOrder.client_name = addTableNamePopupEl.find("#table_name_input").val();
+    tableOrder.client_name = addTableNamePopupEl.find("#table_name_input").val().toUpperCase();
     
     closePromptAddNameToTable();
     

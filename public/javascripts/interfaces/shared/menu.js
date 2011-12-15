@@ -663,13 +663,17 @@ function doSelectTable(tableNum) {
         return;
     }
     
+    var promptForClientName;
+    
     if(tableNum == -1) {
         currentSelectedRoom = -1;
         defaultServiceChargePercent = globalDefaultServiceChargePercent;
+        promptForClientName = false;
     } else {
         currentSelectedRoom = tables[tableNum].room_id;
         //set the defautl service charge for this room
         defaultServiceChargePercent = rooms[currentSelectedRoom].defaultServiceChargePercent;
+        promptForClientName = rooms[currentSelectedRoom].prompt_for_client_name;
     }
     
     storeLastRoom(current_user_id, currentSelectedRoom);
@@ -680,6 +684,10 @@ function doSelectTable(tableNum) {
 
     //display the receipt for this table
     loadReceipt(tableOrders[tableNum]);
+    
+    if(promptForClientName && tableOrders[tableNum].client_name == "") {
+        promptAddNameToTable();
+    }
     
     postDoSelectTable();
 }

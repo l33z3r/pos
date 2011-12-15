@@ -277,7 +277,11 @@ function makeBiggerAdminTableLinks() {
             });
         } else {
             tdEl.click(function(){
-                goTo($(this).find(":first-child").attr("href"));
+                var theHref= $(this).find(":first-child").attr("href");
+                
+                if(theHref != "" && theHref != "#") {
+                    goTo(theHref);
+                }
             });
         }
     });
@@ -488,23 +492,23 @@ function settingStateFields(){
 }
 
 $(function() {
-      addEnterKeyEvents();
+    addEnterKeyEvents();
 });
 
 function addEnterKeyEvents(){
     $('#all_fields').keyup(function(e) {
-	if(e.keyCode == 13) {
-		runSearch();
-	}
+        if(e.keyCode == 13) {
+            runSearch();
+        }
     });
     $('#code_num_equals').keyup(function(e) {
-	if(e.keyCode == 13) {
-		runSearch();
-	}
+        if(e.keyCode == 13) {
+            runSearch();
+        }
     });
     $('#description_contains').keyup(function(e) {
-	if(e.keyCode == 13) {
-		runSearch();
-	}
+        if(e.keyCode == 13) {
+            runSearch();
+        }
     });
 }
