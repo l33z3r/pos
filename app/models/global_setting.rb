@@ -58,6 +58,8 @@ class GlobalSetting < ActiveRecord::Base
   LOCAL_AUTHENTICATION_REQUIRED = 29
   All_DEVICES_ORDER_NOTIFICATION = 30
   DEFAULT_SERVICE_CHARGE_PERCENT = 31
+  TAX_NUMBER = 32
+  PRINT_VAT_RECEIPT = 33
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -90,7 +92,9 @@ class GlobalSetting < ActiveRecord::Base
     AUTHENTICATION_REQUIRED => "Authentication Required",
     LOCAL_AUTHENTICATION_REQUIRED => "Local Authentication Required",
     All_DEVICES_ORDER_NOTIFICATION => "All Device Receive Order Notification",
-    DEFAULT_SERVICE_CHARGE_PERCENT => "Default Service Charge Percent"
+    DEFAULT_SERVICE_CHARGE_PERCENT => "Default Service Charge Percent",
+    TAX_NUMBER => "Tax Number",
+    PRINT_VAT_RECEIPT => "Print VAT Receipt"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -175,6 +179,12 @@ class GlobalSetting < ActiveRecord::Base
     when DEFAULT_SERVICE_CHARGE_PERCENT
       @gs = find_or_create_by_key(:key => DEFAULT_SERVICE_CHARGE_PERCENT.to_s, :value => 0, :label_text => LABEL_MAP[DEFAULT_SERVICE_CHARGE_PERCENT])
       @gs.parsed_value = @gs.value.to_f
+    when TAX_NUMBER
+      @gs = find_or_create_by_key(:key => TAX_NUMBER.to_s, :value => "", :label_text => LABEL_MAP[TAX_NUMBER])
+      @gs.parsed_value = @gs.value
+    when PRINT_VAT_RECEIPT
+      @gs = find_or_create_by_key(:key => PRINT_VAT_RECEIPT.to_s, :value => "true", :label_text => LABEL_MAP[PRINT_VAT_RECEIPT])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -240,6 +250,9 @@ class GlobalSetting < ActiveRecord::Base
         new_value = value_as_num
       end
       
+      write_attribute("value", new_value)
+    when PRINT_VAT_RECEIPT
+      new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     else
       #catch the keys that are not only integers and wont get caught in the switch statement
