@@ -1,5 +1,9 @@
-class Reports::GlancesController < ApplicationController
+class Reports::GlancesController < Admin::AdminController
+  
+  before_filter :check_logged_in
+
   layout 'reports'
+
   def index
     @selected_to_date = @selected_from_date = Date.today   
     glances_search
@@ -22,11 +26,11 @@ class Reports::GlancesController < ApplicationController
     if !@orders.nil?
       create_sales_per_hour_graph
       get_busiest_hour
-      logger.info "*****************************************"
-      logger.info "#{params[:search]}"
-      for o in @orders
-        logger.info "created_at-> #{o.created_at}  total->#{o.total}"
-      end
+#      logger.info "*****************************************"
+#      logger.info "#{@sales_last_7_days}"
+#      for o in @orders
+#        logger.info "created_at-> #{o.created_at}  total->#{o.total}"
+#      end
     end
   end
 
@@ -84,15 +88,21 @@ class Reports::GlancesController < ApplicationController
   end
 
   def calculate_summary
-    date_to = Date.today.prev_day(1).tomorrow.midnight
-    date_from = Date.today.prev_day(7)
-    @summary_orders = Order.where("created_at >= ? AND created_at < ?", date_from, date_to)
+    date_to = Date.today.tomorrow.midnight
+    date_from = Date.today.prev_day(6)
+    @summary_orders = Order.where("created_at >= ? AND created_at < ? AND is_void = ?", date_from, date_to, false)
     for order in @summary_orders
       if(@sales_last_7_days[order.created_at.to_date.to_s][0].eql?(""))
         @sales_last_7_days[order.created_at.to_date.to_s][0] = order.created_at.to_date.strftime("%A")
       end
       @sales_last_7_days[order.created_at.to_date.to_s][1] += order.total
       @sales_last_7_days_total += order.total
+    end
+    if @sales_last_7_days[Date.today.to_s]
+      @sales_last_7_days[Date.today.to_s][0] = "Today"
+    end
+    if @sales_last_7_days[Date.today.prev_day(1).to_s]
+      @sales_last_7_days[Date.today.prev_day(1).to_s][0] = "Yesterday"
     end
   end
 
@@ -154,7 +164,7 @@ class Reports::GlancesController < ApplicationController
     x_axis = Array.new
     values = Array.new
     max_value = 0.0
-    if @items_per_hour.length <= 15
+    if @items_per_hour.length <= 10
       #items per hour table
       @items_per_interval_hour = @items_per_hour
       #graph's axis
@@ -187,14 +197,15 @@ class Reports::GlancesController < ApplicationController
       @h_interval = 2
       max_value = values.max_by { |v| v }
     end
+    @currency = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL
     @graph = LazyHighCharts::HighChart.new('graph') do |f|
-      f.options[:chart][:defaultSeriesType] = "line"
+      f.options[:chart][:defaultSeriesType] = "column"
       f.options[:chart][:animation] = true
       f.options[:title][:text] = "Sales Per Hour"
       f.options[:xAxis][:categories] = x_axis
       f.options[:yAxis][:min] = "0"
       f.options[:yAxis][:max] = max_value
-      f.options[:yAxis][:title][:text] = "Total (Euros)"
+      f.options[:yAxis][:title][:text] = "Total (#{@currency})"
       f.series(:name=>'Sales', :data=> values )
     end
   end

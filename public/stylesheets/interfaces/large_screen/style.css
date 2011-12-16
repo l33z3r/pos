@@ -3302,6 +3302,7 @@ div#reports_container div#last_z_total_info {
     right: 0;
     font-size: 11px;
     margin-right: 10px;
+    margin-bottom: 3px;
 }
 
 div#reports_container div#last_z_total_info div.label{

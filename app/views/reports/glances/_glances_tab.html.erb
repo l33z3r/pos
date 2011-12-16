@@ -6,12 +6,12 @@
         <% @sales_by_department.keys.each do |key| %>
           <tr>
             <td width="200" class="left"><%=key%></td>
-            <td width="80" class="right">&euro; <%=sprintf("%.2f", @sales_by_department[key])%></td>
+            <td width="80" class="right"><%=@currency%> <%=sprintf("%.2f", @sales_by_department[key])%></td>
           </tr>
         <% end %>
         <tr>
           <td width="200" class="left"><b>Total Sales</b></td>
-          <td width="80" class="right"><b>&euro; <%=sprintf("%.2f", @sales_by_department_total)%></b></td>
+          <td width="80" class="right"><b><%=@currency%> <%=sprintf("%.2f", @sales_by_department_total)%></b></td>
         </tr>
         <div class="clear">&nbsp;</div>
         <% if !@items_per_hour.nil? and !@items_per_hour.empty? %>
@@ -21,7 +21,7 @@
           </tr>
           <tr>
             <td width="200" class="left">Average Sale</td>
-            <td width="80" class="right">&euro; <%=sprintf("%.2f", @average_sale)%></td>
+            <td width="80" class="right"><%=@currency%> <%=sprintf("%.2f", @average_sale)%></td>
           </tr>
           <tr>
             <td width="200" class="left">Busiest Hour</td>
@@ -41,7 +41,7 @@
           <%#*</tr>%>
           <tr>
             <td width="200" class="left">Total Discount</td>
-            <td width="80" class="right">&euro; <%=sprintf("%.2f", @total_discount)%></td>
+            <td width="80" class="right"><%=@currency%> <%=sprintf("%.2f", @total_discount)%></td>
           </tr>
         <%end%>
       </tbody>
@@ -54,12 +54,12 @@
         <% @sales_by_payment_type.keys.each do |key| %>
           <tr>
             <td width="200" class="left"><%=key%></td>
-            <td width="80" class="right">&euro; <%=sprintf("%.2f", @sales_by_payment_type[key])%></td>
+            <td width="80" class="right"><%=@currency%> <%=sprintf("%.2f", @sales_by_payment_type[key])%></td>
           </tr>
         <% end %>
         <tr>
           <td width="200" class="left"><b>Total Sales</b></td>
-          <td width="80" class="right"><b>&euro; <%=sprintf("%.2f", @sales_by_payment_total)%></b></td>
+          <td width="80" class="right"><b><%=@currency%> <%=sprintf("%.2f", @sales_by_payment_total)%></b></td>
         </tr>
       </tbody>
     </table>
@@ -71,12 +71,12 @@
         <% @sales_by_server.keys.each do |key| %>
           <tr>
             <td width="200" class="left"><%=key%></td>
-            <td width="80" class="right">&euro; <%=sprintf("%.2f", @sales_by_server[key])%></td>
+            <td width="80" class="right"><%=@currency%> <%=sprintf("%.2f", @sales_by_server[key])%></td>
           </tr>
         <% end %>
         <tr>
           <td width="200" class="left"><b>Total Sales</b></td>
-          <td width="80" class="right"><b>&euro; <%=sprintf("%.2f", @sales_by_server_total)%></b></td>
+          <td width="80" class="right"><b><%=@currency%> <%=sprintf("%.2f", @sales_by_server_total)%></b></td>
         </tr>
       </tbody>
     </table>
@@ -88,12 +88,12 @@
         <% @sales_last_7_days.keys.sort.reverse.each do |key| %>
           <tr>
             <td width="200" class="left"><%=@sales_last_7_days[key][0]%></td>
-            <td width="80" class="right">&euro; <%=sprintf("%.2f", @sales_last_7_days[key][1])%></td>
+            <td width="80" class="right"><%=@currency%> <%=sprintf("%.2f", @sales_last_7_days[key][1])%></td>
           </tr>
         <% end %>
         <tr>
           <td width="200" class="left"><b>Total Last 7 Days</b></td>
-          <td width="80" class="right"><b>&euro; <%=sprintf("%.2f", @sales_last_7_days_total)%></b></td>
+          <td width="80" class="right"><b><%=@currency%> <%=sprintf("%.2f", @sales_last_7_days_total)%></b></td>
         </tr>
       </tbody>
     </table>
@@ -111,7 +111,7 @@
             <tr>
               <td width="40" class="left"><%=top_item[1][1]%></td>
               <td width="160" class="center"><%=(!top_item[1][0].nil?)?top_item[1][0]:"<NAME>"%></td>
-              <td width="70" class="right">&euro; <%=sprintf("%.2f", top_item[1][2])%></td>
+              <td width="70" class="right"><%=@currency%> <%=sprintf("%.2f", top_item[1][2])%></td>
             </tr>
           <% end %>
         </tbody>
@@ -123,7 +123,7 @@
 
   <% if !@items_per_hour.empty? %>
     <%= high_chart("graph_container", @graph) do |c| %>
-      <%= "options.tooltip.formatter = function() { return this.x +'-'+ parseInt(parseInt(this.x)+parseInt(#{@h_interval})) +' hs: '+ this.y +' euros';}" %>
+      <%= "options.tooltip.formatter = function() { return this.x +'-'+ parseInt(parseInt(this.x)+parseInt(#{@h_interval})) +' hs: #{@currency}'+ this.y;}" %>
     <%end %>
   <%end %>
 
@@ -142,7 +142,7 @@
           <tr>
             <td width="80" class="left"><%=key%>-<%=key+@h_interval%></td>
             <td width="80" class="center-column"><%=@items_per_interval_hour[key][0]%> items</td>
-            <td width="80" class="right">&euro; <%=sprintf("%.2f", @items_per_interval_hour[key][1])%></td>
+            <td width="80" class="right"><%=@currency%> <%=sprintf("%.2f", @items_per_interval_hour[key][1])%></td>
           </tr>
         <% end %>
       </tbody>

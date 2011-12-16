@@ -7,13 +7,13 @@
       <div>
         <ul>
           <li><a id="at_a_glance_section_link" href="#at_a_glance_section">At a Glance</a></li>
-          <li><a id="sales_section_link" href="#sales_info_section">Sales</a></li>
-          <li><a id="cash_section_link" href="#cash_section">Cash</a></li>
-          <li><a id="payments_section_link" href="#payments_section">Payments</a></li>
-          <li><a id="customers_section_link" href="#customers_section">Customers</a></li>
-          <li><a id="suppliers_section_link" href="#suppliers_section">Suppliers</a></li>
-          <li><a id="stock_control_section_link" href="#stock_control_section">Stock</a></li>
-          <li><a id="staff_section_link" href="#staff_section">Staff</a></li>
+          <%#*<li><a id="sales_section_link" href="#sales_info_section">Sales</a></li>%>
+          <%#*<li><a id="cash_section_link" href="#cash_section">Cash</a></li>%>
+          <%#*<li><a id="payments_section_link" href="#payments_section">Payments</a></li>%>
+          <%#*<li><a id="customers_section_link" href="#customers_section">Customers</a></li>%>
+          <%#*<li><a id="suppliers_section_link" href="#suppliers_section">Suppliers</a></li>%>
+          <%#*<li><a id="stock_control_section_link" href="#stock_control_section">Stock</a></li>%>
+          <%#*<li><a id="staff_section_link" href="#staff_section">Staff</a></li>%>
         </ul>
       </div>
 
@@ -95,6 +95,9 @@
               <div class="label"><b>By: </b><%= @last_z_total_by %></div>
               <div class="label"><b>Date: </b><%= @last_z_total_date %></div>
               <div class="label"><b>Time: </b><%= @last_z_total_time %></div>
+              <div class="previous_cash_totals_button" onclick="goTo('/admin/previous_cash_totals');">
+                <div class="wide_button">Previous Cash Totals</div>
+              </div>
             </div>
 
         </div>
