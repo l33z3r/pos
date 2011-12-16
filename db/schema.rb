@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111214155822) do
+ActiveRecord::Schema.define(:version => 20111215162025) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -320,6 +320,7 @@ ActiveRecord::Schema.define(:version => 20111214155822) do
     t.datetime "updated_at"
     t.integer  "grid_resolution",                :default => 5
     t.float    "default_service_charge_percent"
+    t.boolean  "prompt_for_client_name",         :default => false
   end
 
   create_table "sessions", :force => true do |t|

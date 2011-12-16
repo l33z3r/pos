@@ -1053,13 +1053,8 @@ div#admin_order_list section#orders div#receipt_buttons_section {
 
 div#admin_order_list section#orders div#receipt_buttons_section div#action_buttons_container {
     width: 168px;
-    margin: 10px auto;
+    margin: 52px auto;
     border-spacing: 7px;
-}
-
-div#admin_order_list section#orders div#receipt_buttons_section div#action_buttons_container div#void_button_container {
-    width: 90px;
-    margin: auto;
 }
 
 div#admin_order_list section#orders div#order_list_section {

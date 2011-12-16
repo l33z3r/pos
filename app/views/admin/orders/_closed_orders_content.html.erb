@@ -56,7 +56,7 @@
     <thead>
       <tr>
         <th width="180"><%= sort_link @search, :created_at, "Sale Time" %></th>
-        <th width="65">Order No.</th>
+        <th width="65"><%= sort_link @search, :order_num, "Order No." %></th>
 
         <th width="80">
     <div class="label">Table</div>
@@ -116,8 +116,8 @@
 
     <% @orders.each do |order| %>
       <tr class="<%= order.is_void ? "void" : "" %>">
-        <td><%= link_to_function order.created_at.strftime(@defaultDateFormat), "orderSelected(#{order.id}, #{order.is_void or order.is_replacement?}); return false;" %></td>
-        <td><%= link_to_function order.order_num, "orderSelected(#{order.id}, #{order.is_void or order.is_replacement?})" %></td>
+        <td><%= link_to_function order.created_at.strftime(@defaultDateFormat), "orderSelected(#{order.id}, #{order.is_void}); return false;" %></td>
+        <td><%= link_to_function order.order_num, "orderSelected(#{order.id}, #{order.is_void})" %></td>
         <td><%= order.table_info_label %></td>
         <td><%= order.terminal_id %></td>
         <td><%= order.employee.nickname %></td>

@@ -10,6 +10,7 @@
           <th width="180">Name</th>
           <th width="180">Dimension</th>
           <th width="200">Service Charge &#37;</th>
+          <th width="200">Prompt For Client Name?</th>
           <th width="80">Delete</th>
         </tr>
       </thead>
@@ -26,6 +27,14 @@
                   <option <%= room.default_service_charge_percent == 10 ? "selected" : ""%> value="10">10%</option>
                   <option <%= room.default_service_charge_percent == 12.5 ? "selected" : ""%> value="12.5">12.5%</option>
                   <option <%= room.default_service_charge_percent == 15 ? "selected" : ""%> value="15">15%</option>
+                </select>
+              <% end %>
+            </td>
+            <td>
+              <%= form_for([:admin, room]) do |f| %>
+                <select name="room[prompt_for_client_name]" onchange="$(this).parent('form').submit();">
+                  <option <%= room.prompt_for_client_name ? "selected" : ""%> value="true">Yes</option>
+                  <option <%= !room.prompt_for_client_name ? "selected" : ""%> value="false">No</option>
                 </select>
               <% end %>
             </td>

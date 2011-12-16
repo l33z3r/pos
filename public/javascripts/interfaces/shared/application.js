@@ -11,6 +11,11 @@ var lastActiveElement;
 var callHomePollInitSequenceComplete = false;
 var callHome = true;
 
+$(function(){   
+    //disable image drag
+    $('img').live("mousedown", preventImageDrag);
+});
+    
 function callHomePoll() {
     if(!callHome) {
         setTimeout(callHomePoll, 5000);
@@ -81,4 +86,10 @@ function callHomePollInitSequenceCompleteHook() {
     
     //hide the spinner at the top nav
     $('#loading_orders_spinner').hide();
+}
+
+function preventImageDrag(event) {
+    if (event.preventDefault) {
+        event.preventDefault();
+    }
 }

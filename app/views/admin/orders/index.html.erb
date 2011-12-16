@@ -48,20 +48,25 @@
       <div class="clear">&nbsp;</div>
 
       <div id="action_buttons_container">
-        <div id="void_button_container">
-          <div class="button" id="reopen_order_button" onclick="doReopenOrder();">
-            <div class="icon">
-              <%= image_tag "/images/button_logos/reopen_order.png" %>
-            </div>
-            <div class="button_name">Re-Open</div>
+        <div class="button" id="reopen_order_button" onclick="doReopenOrder();">
+          <div class="icon">
+            <%= image_tag "/images/button_logos/reopen_order.png" %>
           </div>
+          <div class="button_name">Re-Open</div>
+        </div>
 
-          <div class="button" id="continue_order_button" style="display: none;" onclick="continueOrder();">
-            <div class="icon">
-              <%= image_tag "/images/button_logos/continue_order.png" %>
-            </div>
-            <div class="button_name">Continue</div>
+        <div class="button" id="continue_order_button" style="display: none;" onclick="continueOrder();">
+          <div class="icon">
+            <%= image_tag "/images/button_logos/continue_order.png" %>
           </div>
+          <div class="button_name">Continue</div>
+        </div>
+
+        <div class="button" id="print_order_button" onclick="printPreviousSale();">
+          <div class="icon">
+            <%= image_tag "/images/button_logos/print_receipt_button.png" %>
+          </div>
+          <div class="button_name">Print</div>
         </div>
 
         <div class="clear">&nbsp;</div>
@@ -79,10 +84,6 @@
           </div>
           <div class="button_name">More Options</div>
         </div>
-
-        <div class="clear">&nbsp;</div>
-
-        <%= render :partial => "/partials/interfaces/large_screen/ok_cancel_buttons" %>
 
         <div class="clear">&nbsp;</div>
       </div>
