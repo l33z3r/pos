@@ -65,7 +65,7 @@ class Product < ActiveRecord::Base
   def sales_tax_rate
     if tax_rate_id.blank?
       if category_id
-        if !category.tax_rate or category.tax_rate_id.blank?
+        if category.tax_rate_id.blank?
           TaxRate.load_default.rate
         else
           category.tax_rate.rate

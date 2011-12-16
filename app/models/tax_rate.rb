@@ -15,8 +15,8 @@ class TaxRate < ActiveRecord::Base
   validates :name, :presence => true
   validates :rate, :presence => true, :numericality => true
   
-  has_many :categories
-  has_many :products
+  has_many :categories, :dependent => :nullify
+  has_many :products, :dependent => :nullify
   
   def name_for_select
     "#{name} (#{rate}%)"  
