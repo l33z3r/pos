@@ -795,6 +795,10 @@ function loginRecptScroll() {
     recptScroll("login_");
 }
 
+function loginRecptUpdate() {
+    updateRecpt("login_");
+}
+
 function menuRecptScroll() {
     recptScroll("");
 }
@@ -1524,6 +1528,7 @@ function postDoSyncTableOrder() {
 function finishDoSyncTableOrder() {
     orderReceiptHTML = fetchOrderReceiptHTML(lastSyncedOrder);
     setLoginReceipt("Last Order", orderReceiptHTML);
+    loginRecptUpdate();
 }
 
 function toggleModifyOrderItemScreen() {

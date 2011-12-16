@@ -1180,6 +1180,12 @@ div#admin_order_list section#orders div#receipt_buttons_section div#admin_order_
     padding-top: 2px;
 }
 
+div#admin_order_list section#orders div#receipt_buttons_section div#admin_order_list_till_roll {
+    height: 355px;
+    display: block;
+    background-color: #FFF;
+}
+
 div#admin_order_list section#orders div#receipt_buttons_section div#admin_order_list_receipt_header {
     background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));

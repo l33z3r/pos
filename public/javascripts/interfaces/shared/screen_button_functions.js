@@ -29,6 +29,8 @@ function doSyncTableOrder() {
         }
     }
     
+    setStatusMessage("Sending Order.");
+    
     orderInProcess = true;
     
     lastSyncedOrder = order;

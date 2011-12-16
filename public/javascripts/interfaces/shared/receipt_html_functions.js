@@ -68,7 +68,7 @@ function printReceipt(content, printRecptMessage) {
 function print(content) {
     $('#printFrame').contents().find('#till_roll').html(content);
     
-        var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>" 
+    var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>" 
     + $('#printFrame').contents().find('html').html() + "</html>";
       
     var print_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/receipt_printer';
@@ -245,7 +245,11 @@ function fetchFinalReceiptHeaderHTML() {
         headerHTML += "<div class='label'>Table:</div><div class='data'>" + totalOrder.table + "</div>" + clearHTML;
     }
     
-    headerHTML += "<div class='label'>Terminal:</div><div class='data'>" + terminalID + "</div>" + clearHTML;
+    if(totalOrder.terminal_id) {
+        headerHTML += "<div class='label'>Terminal:</div><div class='data'>" + totalOrder.terminal_id + "</div>" + clearHTML;   
+    } else {
+        headerHTML += "<div class='label'>Terminal:</div><div class='data'>" + terminalID + "</div>" + clearHTML;   
+    }
     
     if(typeof(totalOrder.payment_method) != 'undefined') {
         headerHTML += "<div class='label'>Payment Method:</div><div class='data'>" + totalOrder.payment_method + "</div>" + clearHTML;
