@@ -202,6 +202,15 @@ class ApplicationController < ActionController::Base
     raise exception
   end
   
+  rescue_from Errno::EHOSTUNREACH, SocketError do |host_unreachable_exception|
+    SOCKET_EXCEPTION_LOGGER.error
+    SOCKET_EXCEPTION_LOGGER.error('SOCKET ERROR!')
+    SOCKET_EXCEPTION_LOGGER.error("Time: #{Time.now.to_s(:long)}")
+    SOCKET_EXCEPTION_LOGGER.error(params.inspect)
+    SOCKET_EXCEPTION_LOGGER.error(host_unreachable_exception.message)
+    SOCKET_EXCEPTION_LOGGER.error(host_unreachable_exception.backtrace.join("\n") + "\n\n\n\n")
+  end
+  
   private
   
   def check_reset_session

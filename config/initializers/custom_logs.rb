@@ -1,6 +1,8 @@
 #an exception logger
 EXCEPTION_LOGGER = Logger.new(Rails.root.join('log', 'errors.log'), 10, 20.megabytes)
 
+#a logger for network exceptions
+SOCKET_EXCEPTION_LOGGER = Logger.new(Rails.root.join('log', 'network_errors.log'), 10, 20.megabytes)
 #this will be the default logger that will do conditional logging,
 #we use it to seperate the call_home action
 class NoisyLogger < Rails::Rack::Logger
