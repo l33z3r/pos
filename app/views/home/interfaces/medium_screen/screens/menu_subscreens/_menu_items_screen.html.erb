@@ -2,7 +2,7 @@
   <div id="menu_pages_container">
     <div id="menu_pages_scroller">
       <% @display.menu_pages.each do |page| %>
-        <div class="page" id="menu_page_<%=page.id%>"
+        <div class="page" id="menu_page_<%=page.id%>" data-page_num="<%= page.page_num %>"
              onclick="doMenuPageSelect(<%= page.page_num %>, <%= page.id %>);">
           <div class="name">
             <%= page.name %>

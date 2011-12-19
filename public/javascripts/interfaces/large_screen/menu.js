@@ -29,6 +29,11 @@ function initMenu() {
     setTimeout("menuRecptScroll()", 1000);
 }
 
+//this is to make sure that when all the images are loaded, that the ipad dislays them correctly
+$(window).load(function(){
+    tryDocumentLoadedLoadFirstMenuPage();
+});
+
 function initPreviousOrder() {
     if(havePreviousOrder(current_user_id)) {
         selectedTable = -1;
@@ -110,9 +115,15 @@ function menuScreenKeypadClickDecimal() {
     }
 }
 
+function tryDocumentLoadedLoadFirstMenuPage() {
+    if(inMenuContext()) {
+        doMenuPageSelect(currentMenuPage, currentMenuPageId);
+    }
+}
+
 function loadFirstMenuPage() {
     //set the inital menu page selected to be the first
-    $('#pages .page:first').click();
+    $('#pages .page:first').click();        
 }
 
 function doMenuPageSelect(pageNum, pageId) {
@@ -793,6 +804,10 @@ function loadReceipt(order) {
 
 function loginRecptScroll() {
     recptScroll("login_");
+}
+
+function loginRecptUpdate() {
+    updateRecpt("login_");
 }
 
 function menuRecptScroll() {
@@ -1524,6 +1539,7 @@ function postDoSyncTableOrder() {
 function finishDoSyncTableOrder() {
     orderReceiptHTML = fetchOrderReceiptHTML(lastSyncedOrder);
     setLoginReceipt("Last Order", orderReceiptHTML);
+    loginRecptUpdate();
 }
 
 function toggleModifyOrderItemScreen() {

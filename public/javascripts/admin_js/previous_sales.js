@@ -105,7 +105,7 @@ function orderListTabSelected(tab, selectedTabName) {
     
     setDatePickers();
     
-    $('#admin_order_list_till_roll').html("");
+    setPreviousSaleReceipt("");
     $('#admin_order_list_total_value').html(currency(0));
     
     loadOpenOrders();
@@ -117,7 +117,7 @@ function loadFirstTab() {
 }
 
 function orderSelected(orderId, is_void) {
-    $('#admin_order_list_till_roll').html("Loading...");
+    setPreviousSaleReceipt("Loading...");
     
     initReopenOrderButton(is_void);
     
@@ -145,7 +145,7 @@ function parsePreviousOrder(previousOrderJSON) {
     
     voidOrderInfoHTML += clearHTML;
     
-    $('#admin_order_list_till_roll').html(voidOrderInfoHTML + fetchFinalReceiptHTML(false, true));
+    setPreviousSaleReceipt(voidOrderInfoHTML + fetchFinalReceiptHTML(false, true));
     
     //enable the "re-open order" button
     $('#continue_order_button').hide();
@@ -282,7 +282,7 @@ function loadOpenTableOrder(table_id) {
     
     orderHTML += getAllOrderItemsReceiptHTML(currentSelectedOpenTableOrder, false, false, true);
     
-    $('#admin_order_list_till_roll').html(orderHTML);
+    setPreviousSaleReceipt(orderHTML);
     
     $('#total_container div#label').html("Sub-Total:");
     $('#admin_order_list_total_value').html(currency(currentSelectedOpenTableOrder.total));
@@ -291,6 +291,14 @@ function loadOpenTableOrder(table_id) {
     $('#continue_order_button').show();
     $('#reopen_order_button').hide();
     $('#print_order_button').hide();
+}
+
+function setPreviousSaleReceipt(theHTML) {
+    $('#admin_order_list_till_roll').html(theHTML);
+    
+    setTimeout(function() {
+        updateRecpt("admin_order_list_")
+    }, 500);
 }
 
 function continueOrder() {

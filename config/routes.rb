@@ -17,6 +17,7 @@ Pos::Application.routes.draw do
   match 'cash_total' => "order#cash_total", :via => :post
   match 'add_float' => "order#add_float", :via => :post
   match 'float_history' => "order#float_history", :via => :get
+  match 'cash_total_history' => "order#cash_total_history", :via => :get
   match 'outstanding_orders' => "order#create_outstanding", :via => :post
 
   #routes for screens to login etc

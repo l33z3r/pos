@@ -25,3 +25,7 @@ function saveServiceCharge(performTotal) {
         storeOrderInStorage(current_user_id, order);
     }
 }
+
+function promptAddNameToTable() {
+    
+}

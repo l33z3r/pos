@@ -639,6 +639,12 @@ function recptScroll(targetPrefix) {
     }
 }
 
+function updateRecpt(targetPrefix) {
+    if(isTouchDevice()) {
+        $('#' + targetPrefix + 'till_roll').touchScroll('update');
+    }
+}
+
 function doSelectTable(tableNum) {
     selectedTable = tableNum;
     
