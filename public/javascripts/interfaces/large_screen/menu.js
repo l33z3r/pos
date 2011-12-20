@@ -53,10 +53,19 @@ function initMenuScreenType() {
     
         setTimeout(function(){
             $('#scan_upc').focus();
+            scanFocusPoll();
         }, 1000);
     }
 }
 
+function scanFocusPoll() {
+    if(lastActiveElement.attr("id") == "scan_upc") {
+        $('#scan_upc').focus();
+        setTimeout(scanFocusPoll, 1000);
+        return;
+    }
+}
+    
 function initPreviousOrder() {
     if(havePreviousOrder(current_user_id)) {
         selectedTable = -1;
@@ -698,6 +707,8 @@ function closeEditOrderItem() {
     
         currentSelectedReceiptItemEl = null;
     }
+    
+    $('#scan_upc').focus();
 }
 
 function saveEditOrderItem() {

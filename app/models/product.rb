@@ -193,6 +193,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: products
@@ -220,7 +221,7 @@ end
 #  kitchen_note               :text
 #  quantity_in_stock          :float           default(0.0)
 #  code_num                   :integer(4)
-#  upc                        :integer(4)
+#  upc                        :string(255)
 #  price_2                    :float
 #  price_3                    :float
 #  price_4                    :float

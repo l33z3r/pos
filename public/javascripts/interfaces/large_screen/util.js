@@ -212,6 +212,7 @@ function showMenuScreen() {
     $('#menu_screen_shortcut_dropdown_container').show();
     
     $('#menu_screen').show();
+    $('#scan_upc').focus();
 }
 
 function showTablesScreen() {
