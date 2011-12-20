@@ -34,7 +34,7 @@ function renderActiveTables() {
     
 //TODO: something with the active table ids
 }
-
+    
 function menuScreenKeypadClick(val) {
     if(this.innerHTML == '0') {
         if(currentMenuItemQuantity.length > 0)
