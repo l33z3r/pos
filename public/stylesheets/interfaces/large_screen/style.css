@@ -693,6 +693,7 @@ div#receipt_keypad_container div#top_buttons {
 }
 
 div#receipt_keypad_container div#top_buttons div#upc_code_lookup_container {
+    display: none;
     height: 28px;
     padding: 5px;
 }
