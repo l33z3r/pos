@@ -48,21 +48,21 @@
       <div class="clear">&nbsp;</div>
 
       <div id="action_buttons_container">
-        <div class="button" id="reopen_order_button" onclick="doReopenOrder();">
+        <div class="button" id="reopen_order_button" data-onpress="doReopenOrder();">
           <div class="icon">
             <%= image_tag "/images/button_logos/reopen_order.png" %>
           </div>
           <div class="button_name">Re-Open</div>
         </div>
 
-        <div class="button" id="continue_order_button" style="display: none;" onclick="continueOrder();">
+        <div class="button" id="continue_order_button" style="display: none;" data-onpress="continueOrder();">
           <div class="icon">
             <%= image_tag "/images/button_logos/continue_order.png" %>
           </div>
           <div class="button_name">Continue</div>
         </div>
 
-        <div class="button" id="print_order_button" onclick="printPreviousSale();">
+        <div class="button" id="print_order_button" data-onpress="printPreviousSale();">
           <div class="icon">
             <%= image_tag "/images/button_logos/print_receipt_button.png" %>
           </div>
@@ -71,14 +71,14 @@
 
         <div class="clear">&nbsp;</div>
 
-        <div class="button" onclick="goTo('<%=home_path%>#screen=menu');">
+        <div class="button" data-onpress="goTo('<%=home_path%>#screen=menu');">
           <div class="icon">
             <%= image_tag "/images/button_logos/manage_sales_screen_button.png" %>
           </div>
           <div class="button_name">Sales Screen</div>
         </div>
 
-        <div class="button" onclick="adminShowMoreOptions();">
+        <div class="button" data-onpress="adminShowMoreOptions();">
           <div class="icon">
             <%= image_tag "/images/button_logos/more_options_button.png" %>
           </div>

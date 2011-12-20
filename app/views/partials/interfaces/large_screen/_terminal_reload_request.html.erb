@@ -1,6 +1,6 @@
 <form style="display: none;" method="post" action="/request_terminal_reload" id="reload_request_form"></form>
 
-<div id="request_terminal_reload_button" class="button" onclick="$('#reload_request_form').submit();">
+<div id="request_terminal_reload_button" class="button" data-onpress="$('#reload_request_form').submit();">
   <div class="icon">
     <%= image_tag "/images/button_logos/reload_request_button.png" %>
   </div>

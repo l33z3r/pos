@@ -1,7 +1,7 @@
 class Admin::EmployeesController < Admin::AdminController
 
   def index
-    @employees = Employee.paginate :page => params[:page], :order => 'nickname'
+    @employees = Employee.all_except_cluey.paginate :page => params[:page], :order => 'nickname'
   end
 
   def show

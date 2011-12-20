@@ -20,6 +20,7 @@ class Product < ActiveRecord::Base
   belongs_to :menu_page_2, :class_name => "MenuPage"
   
   validates :name, :presence => true, :uniqueness => true
+  validates :upc, :uniqueness => true, :allow_blank => true
   validates :category_id, :numericality => true, :allow_blank => true
   validates :size, :numericality => {:greater_than_or_equal_to => 0}, :allow_blank => true
   validates :price, :presence => true, :numericality => {:greater_than_or_equal_to => 0}

@@ -12,7 +12,7 @@
 <% end %>
 
 <% content_for :admin_subnav_links_left do %>
-  <div class="button" onclick="goTo('<%=admin_displays_path%>');">
+  <div class="button" data-onpress="goTo('<%=admin_displays_path%>');">
     <div class="icon">
       <%= image_tag "/images/button_logos/sales_screen_list_button.png" %>
     </div>
@@ -170,7 +170,7 @@
           Normal Product Page
         </div>
         <div class="data create">
-          <div class="button" onclick="postTo('<%=create_menu_page_admin_display_path(@display)%>', null);">Create</div>
+          <div class="button" data-onpress="postTo('<%=create_menu_page_admin_display_path(@display)%>', null);">Create</div>
         </div>
         <div class="clear">&nbsp;</div>
       </div>

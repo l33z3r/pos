@@ -47,7 +47,16 @@ function doGlobalInit() {
         }
         
         initTouchRecpts();
-    } 
+        
+        $('div.item, div.page, div.button, div.employee_box, div.key, div.go_key, div.cancel_key').live('click', function() {
+            eval($(this).data('onpress'));
+        });
+    } else {
+        //copy over the onclick events to the onmousedown events for a better interface
+        $('div.item, div.page, div.button, div.employee_box, div.key, div.go_key, div.cancel_key').live('mousedown', function() {
+            eval($(this).data('onpress'));
+        });
+    }
     
     initPressedCSS();
     
@@ -97,15 +106,6 @@ function doGlobalInit() {
         
         //unhighlight last active
         lastActiveElement.addClass("focus");
-        
-        event = event || window.event
- 
-        //the following was an attempt to hide the ipad keyboard but didnt work
-        if (event.preventDefault) {  // W3C variant
-            event.preventDefault()
-        } else { // IE<9 variant:
-            event.returnValue = false
-        }
         
     });
     

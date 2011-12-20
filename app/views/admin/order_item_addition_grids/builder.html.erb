@@ -15,7 +15,7 @@
 <div id="modifier_grid_builder">
 
   <div id="builder_action_buttons">
-    <div class="button" onclick="goTo('<%=home_path%>#screen=menu');">
+    <div class="button" data-onpress="goTo('<%=home_path%>#screen=menu');">
       <div class="icon">
         <%= image_tag "/images/button_logos/manage_sales_screen_button.png" %>
       </div>
@@ -24,7 +24,7 @@
 
     <div class="clear">&nbsp;</div>
 
-    <div class="button" onclick="adminShowMoreOptions();">
+    <div class="button" data-onpress="adminShowMoreOptions();">
       <div class="icon">
         <%= image_tag "/images/button_logos/more_options_button.png" %>
       </div>
@@ -33,7 +33,7 @@
 
     <div class="clear">&nbsp;</div>
 
-    <div class="button" onclick="adminCancelClicked()">
+    <div class="button" data-onpress="adminCancelClicked()">
       <div class="icon">
         <%= image_tag "/images/button_logos/cancel_button.png" %>
       </div>
@@ -42,7 +42,7 @@
 
     <div class="clear">&nbsp;</div>
 
-    <div class="button" onclick="adminOkClicked()">
+    <div class="button" data-onpress="adminOkClicked()">
       <div class="icon">
         <%= image_tag "/images/button_logos/ok_button.png" %>
       </div>

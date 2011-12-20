@@ -614,7 +614,7 @@ function registerDisallowRightClick() {
     document.oncontextmenu=new Function("return false");
 }
 
-function setConnectionStatus(connected) {
+function postSetConnectionStatus(connected) {
     var color = "#00FF33";
     
     if(!connected) {

@@ -51,6 +51,10 @@
   var MENU_SCREEN = <%= GlobalSetting::MENU_SCREEN %>;
   var TABLES_SCREEN = <%= GlobalSetting::TABLES_SCREEN %>;
   
+  var menuScreenType = <%= GlobalSetting.parsed_setting_for GlobalSetting::MENU_SCREEN_TYPE %>;
+  var RESTAURANT_MENU_SCREEN = <%= GlobalSetting::RESTAURANT_MENU_SCREEN %>;
+  var RETAIL_MENU_SCREEN = <%= GlobalSetting::RETAIL_MENU_SCREEN %>;
+  
   //these variables are used for polling and they get updated by the dynamic javascript
   var lastInterfaceReloadTime = <%=Time.now.to_i%>;
   

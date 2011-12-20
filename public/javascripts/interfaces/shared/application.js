@@ -11,9 +11,12 @@ var lastActiveElement;
 var callHomePollInitSequenceComplete = false;
 var callHome = true;
 
-$(function(){   
+$(function() {
     //disable image drag
     $('img').live("mousedown", preventImageDrag);
+    
+    //make sure all links only work when app online.
+    $('a').live("click", preventOfflineHref);
 });
     
 function callHomePoll() {
@@ -92,4 +95,14 @@ function preventImageDrag(event) {
     if (event.preventDefault) {
         event.preventDefault();
     }
+}
+
+function preventOfflineHref() {
+    if(!appOnline) {
+        appOfflinePopup();
+        event.preventDefault();
+        return false;
+    }
+        
+    return true;
 }

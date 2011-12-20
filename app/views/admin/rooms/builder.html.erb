@@ -12,7 +12,7 @@
 <% end %>
 
 <% content_for :admin_subnav_links_left do %>
-  <div class="button" onclick="goTo('<%=admin_rooms_path%>');">
+  <div class="button" data-onpress="goTo('<%=admin_rooms_path%>');">
     <div class="icon">
       <%= image_tag "/images/button_logos/room_builder_button.png" %>
     </div>

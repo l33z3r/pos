@@ -1,7 +1,9 @@
 var products = new Array();
+var products_by_upc = new Array();
 
-<% Product.all.each do |p|%>    
-  products[<%= p.id %>] = {
+<% Product.all.each do |p|%>  
+
+  var nextProduct = {
   'id':'<%= p.id %>', 'name':'<%= escape_javascript p.name %>', 
   'price':<%= p.price %>, 'tax_rate':<%=p.sales_tax_rate%>,
   'double_price' : <%=p.double_price%>,
@@ -10,8 +12,16 @@ var products = new Array();
   'prompt_price' : <%=p.show_price_prompt%>,
   'printers' : "<%= p.printers %>",
   'deleted' : <%= p.is_deleted %>,
-  'category_id' : <%= p.category ? p.category.id : "null" %>
+  'category_id' : <%= p.category ? p.category.id : "null" %>,
+  'upc' : '<%= p.upc %>'
   };
+
+  products[<%= p.id %>] = nextProduct;
+
+  <% if !p.upc.blank? %>
+    products_by_upc[<%= p.upc %>] = nextProduct;
+  <% end %>
+
   <% if p.modifier_category_id %>
     products[<%= p.id %>]['modifier_category_id'] = <%=p.modifier_category_id%>;
   <% end %>

@@ -78,6 +78,24 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>Type Of Menu Screen</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::MENU_SCREEN_TYPE %>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="<%= GlobalSetting::RESTAURANT_MENU_SCREEN %>" 
+                             <%= @gs.parsed_value == GlobalSetting::RESTAURANT_MENU_SCREEN ? "checked" : "" %>/>
+                      <div class="label">Restaurant</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="<%= GlobalSetting::RETAIL_MENU_SCREEN %>" 
+                             <%= @gs.parsed_value == GlobalSetting::RETAIL_MENU_SCREEN ? "checked" : "" %>/>
+                      <div class="label">Retail</div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
                     <td>Screen That Shows After Login</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_POST_LOGIN_SCREEN %>
@@ -749,7 +767,7 @@
                       Re-generate Terminal Fingerprint Cookie?
                     </td>
                     <td class="text_align_left">
-                      <div id="delete_terminal_fingerprint_cookie_button" class="button" onclick="regenerateTerminalFingerprintCookie();">
+                      <div id="delete_terminal_fingerprint_cookie_button" class="button" data-onpress="regenerateTerminalFingerprintCookie();">
                         Re-Generate
                       </div>
                     </td>

@@ -60,6 +60,7 @@ class GlobalSetting < ActiveRecord::Base
   DEFAULT_SERVICE_CHARGE_PERCENT = 31
   TAX_NUMBER = 32
   PRINT_VAT_RECEIPT = 33
+  MENU_SCREEN_TYPE = 34
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -94,7 +95,8 @@ class GlobalSetting < ActiveRecord::Base
     All_DEVICES_ORDER_NOTIFICATION => "All Device Receive Order Notification",
     DEFAULT_SERVICE_CHARGE_PERCENT => "Default Service Charge Percent",
     TAX_NUMBER => "Tax Number",
-    PRINT_VAT_RECEIPT => "Print VAT Receipt"
+    PRINT_VAT_RECEIPT => "Print VAT Receipt",
+    MENU_SCREEN_TYPE => "Menu Screen Type"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -185,6 +187,9 @@ class GlobalSetting < ActiveRecord::Base
     when PRINT_VAT_RECEIPT
       @gs = find_or_create_by_key(:key => PRINT_VAT_RECEIPT.to_s, :value => "true", :label_text => LABEL_MAP[PRINT_VAT_RECEIPT])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when MENU_SCREEN_TYPE
+      @gs = find_or_create_by_key(:key => "#{MENU_SCREEN_TYPE.to_s}_#{args[:fingerprint]}", :value => 1, :label_text => LABEL_MAP[MENU_SCREEN_TYPE])
+      @gs.parsed_value = @gs.value.to_i
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -280,10 +285,18 @@ class GlobalSetting < ActiveRecord::Base
             @my_order_reciept_width_gs.value = @order_reciept_width_gs.value
             @my_order_reciept_width_gs.save
             
+            #menu screen type
+            @menu_screen_type_gs = GlobalSetting.setting_for GlobalSetting::MENU_SCREEN_TYPE, {:fingerprint => @old_fingerprint}
+            
+            @my_menu_screen_type_gs = GlobalSetting.setting_for GlobalSetting::MENU_SCREEN_TYPE, {:fingerprint => @my_terminal_fingerprint}
+            @my_menu_screen_type_gs.value = @menu_screen_type_gs.value
+            @my_menu_screen_type_gs.save
+            
             #delete old gs objects
             @websocket_ip_gs.destroy
             @order_reciept_width_gs.destroy
             @old_terminal_gs.destroy
+            @menu_screen_type_gs.destroy
           end
         end
         if value
@@ -375,4 +388,8 @@ class GlobalSetting < ActiveRecord::Base
   #settings for order receipt width
   ORDER_RECEIPT_WIDTH_80MM = "80mm"
   ORDER_RECEIPT_WIDTH_76MM = "76mm"
+  
+  #properties for menu screen type
+  RESTAURANT_MENU_SCREEN = 1
+  RETAIL_MENU_SCREEN = 2
 end
