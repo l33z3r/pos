@@ -213,16 +213,16 @@ function productScanned() {
     
     var scannedProduct = products_by_upc[upc];
     
-    if(scannedProduct.length == 0) {
-        setStatusMessage("Please enter product code, or use barcode scanner");
-        return;
-    }
-    
     if(typeof(scannedProduct) != 'undefined') {
         //alert(scannedProduct.name);
         doSelectMenuItem(scannedProduct.id, null, null)
         $('#scan_upc').val("");
     } else {
+        if(scannedProduct.length == 0) {
+            setStatusMessage("Please enter product code, or use barcode scanner");
+            return;
+        }
+        
         niceAlert("Product not found... UPC:" + upc);
     }
 }
