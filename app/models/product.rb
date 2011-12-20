@@ -128,7 +128,7 @@ class Product < ActiveRecord::Base
   end
   
   def set_image
-    @product_name_normalised = self.name.downcase.gsub(" ", "_")
+    @product_name_normalised = self.name.downcase.gsub(" ", "-")
     @product_name_parts = self.name.downcase.split(" ")
     
     @found_image = false
@@ -140,7 +140,7 @@ class Product < ActiveRecord::Base
       #strip white space and the .*** part
       @start_index = image_name.rindex("/") + 1
       @end_index = image_name.rindex(".") - 1
-      @image_name = image_name[@start_index..@end_index]
+      @image_name = image_name[@start_index..@end_index].downcase
       
       if @product_name_normalised == @image_name
         @found_image = true

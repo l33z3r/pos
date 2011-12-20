@@ -709,7 +709,7 @@ div#receipt_keypad_container div#top_buttons div#upc_code_lookup_container div#i
 }
 
 div#receipt_keypad_container div#top_buttons div#upc_code_lookup_container div#input_container input {
-    width: 120px;
+    width: 115px;
     height: 23px;
 }
 
