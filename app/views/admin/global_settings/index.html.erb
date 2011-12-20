@@ -80,7 +80,7 @@
                   <tr>
                     <td>Type Of Menu Screen</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::MENU_SCREEN_TYPE %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::MENU_SCREEN_TYPE, {:fingerprint => @terminal_fingerprint} %>
 
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::RESTAURANT_MENU_SCREEN %>" 

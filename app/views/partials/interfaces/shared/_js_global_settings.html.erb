@@ -51,7 +51,7 @@
   var MENU_SCREEN = <%= GlobalSetting::MENU_SCREEN %>;
   var TABLES_SCREEN = <%= GlobalSetting::TABLES_SCREEN %>;
   
-  var menuScreenType = <%= GlobalSetting.parsed_setting_for GlobalSetting::MENU_SCREEN_TYPE %>;
+  var menuScreenType = <%= GlobalSetting.parsed_setting_for GlobalSetting::MENU_SCREEN_TYPE, {:fingerprint => @terminal_fingerprint} %>;
   var RESTAURANT_MENU_SCREEN = <%= GlobalSetting::RESTAURANT_MENU_SCREEN %>;
   var RETAIL_MENU_SCREEN = <%= GlobalSetting::RETAIL_MENU_SCREEN %>;
   
