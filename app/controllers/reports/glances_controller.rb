@@ -4,8 +4,13 @@ class Reports::GlancesController < Admin::AdminController
 
   layout 'reports'
 
+  #format 0-24
+  @@opening_time = 10
+  @@closing_time = 2
+
   def index
-    @selected_to_date = @selected_from_date = Date.today   
+    @selected_from_date = Date.today.midnight + @@opening_time.hours
+    @selected_to_date = Date.tomorrow.midnight + @@closing_time.hours
     glances_search
     last_z_total
   end
@@ -26,11 +31,6 @@ class Reports::GlancesController < Admin::AdminController
     if !@orders.nil?
       create_sales_per_hour_graph
       get_busiest_hour
-#      logger.info "*****************************************"
-#      logger.info "#{@sales_last_7_days}"
-#      for o in @orders
-#        logger.info "created_at-> #{o.created_at}  total->#{o.total}"
-#      end
     end
   end
 
@@ -88,17 +88,21 @@ class Reports::GlancesController < Admin::AdminController
   end
 
   def calculate_summary
-    date_to = Date.today.tomorrow.midnight
-    date_from = Date.today.prev_day(6)
+    date_to = Date.today.tomorrow.midnight + @@closing_time.hours
+    date_from = Date.today.prev_day(6).midnight + @@opening_time.hours
     @summary_orders = Order.where("created_at >= ? AND created_at < ? AND is_void = ?", date_from, date_to, false)
     for order in @summary_orders
+      #check if the order is of the past day after 24 hs
+      if order.created_at.to_time.strftime("%H").to_i < @@opening_time
+        order.created_at = order.created_at.to_date - 1.day
+      end
       if(@sales_last_7_days[order.created_at.to_date.to_s][0].eql?(""))
         @sales_last_7_days[order.created_at.to_date.to_s][0] = order.created_at.to_date.strftime("%A")
       end
       @sales_last_7_days[order.created_at.to_date.to_s][1] += order.total
       @sales_last_7_days_total += order.total
     end
-    if @sales_last_7_days[Date.today.to_s]
+    if @sales_last_7_days[Date.today.to_s] 
       @sales_last_7_days[Date.today.to_s][0] = "Today"
     end
     if @sales_last_7_days[Date.today.prev_day(1).to_s]
@@ -186,7 +190,7 @@ class Reports::GlancesController < Admin::AdminController
         if(i % 2 != 0)
           @items_per_interval_hour[i-1][0] += sum_qty.to_i
           @items_per_interval_hour[i-1][1] += sum_total
-          values.push(total_sales)
+          values.push(total_sales.round(2))
           total_sales = 0.0
           sum_qty = 0.0
           sum_total = 0.0
@@ -197,6 +201,16 @@ class Reports::GlancesController < Admin::AdminController
       @h_interval = 2
       max_value = values.max_by { |v| v }
     end
+
+    #start to show respect the opening time
+    if @h_interval == 1
+      @elems_to_move = x_axis.select { |elem| elem.to_i < @@opening_time }.length
+    else
+      @elems_to_move = x_axis.select { |elem| elem.to_i < @@opening_time and elem.to_i+1 < @@opening_time }.length
+    end
+    x_axis = x_axis.rotate(@elems_to_move)
+    values = values.rotate(@elems_to_move)
+
     @currency = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL
     @graph = LazyHighCharts::HighChart.new('graph') do |f|
       f.options[:chart][:defaultSeriesType] = "column"
@@ -211,14 +225,17 @@ class Reports::GlancesController < Admin::AdminController
   end
 
   def get_sales_data
-    #must push the "to" date forward a day to match today
-    if params[:search] and params[:search][:created_at_lt] and !params[:search][:created_at_lt].empty?
-     @selected_to_date = params[:search][:created_at_lt]
-     params[:search][:created_at_lt] = @selected_to_date.to_date.tomorrow.midnight
-    end
     if !params[:search]
-      query = Order.where("created_at >= ? AND created_at < ?", @selected_from_date, @selected_to_date.to_date.tomorrow.midnight)
+      query = Order.where("created_at >= ? AND created_at < ?", @selected_from_date, @selected_to_date)
     else
+      if params[:search] and params[:search][:created_at_gt] and !params[:search][:created_at_gt].empty?
+        @selected_from_date = params[:search][:created_at_gt]
+        params[:search][:created_at_gt] = @selected_from_date.to_date.midnight + @@opening_time.hours
+      end
+      if params[:search] and params[:search][:created_at_lt] and !params[:search][:created_at_lt].empty?
+        @selected_to_date = params[:search][:created_at_lt]
+        params[:search][:created_at_lt] = @selected_to_date.to_date.tomorrow.midnight + @@closing_time.hours
+      end
       query = Order.search(params[:search])
     end
     return query

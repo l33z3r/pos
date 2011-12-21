@@ -61,6 +61,8 @@ class GlobalSetting < ActiveRecord::Base
   TAX_NUMBER = 32
   PRINT_VAT_RECEIPT = 33
   MENU_SCREEN_TYPE = 34
+  EARLIEST_OPENING_HOUR = 35
+  LATEST_CLOSING_HOUR = 36
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -96,7 +98,9 @@ class GlobalSetting < ActiveRecord::Base
     DEFAULT_SERVICE_CHARGE_PERCENT => "Default Service Charge Percent",
     TAX_NUMBER => "Tax Number",
     PRINT_VAT_RECEIPT => "Print VAT Receipt",
-    MENU_SCREEN_TYPE => "Menu Screen Type"
+    MENU_SCREEN_TYPE => "Menu Screen Type",
+    EARLIEST_OPENING_HOUR => "Earliest Opening Hour",
+    LATEST_CLOSING_HOUR => "Latest Closing Hour"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -189,6 +193,12 @@ class GlobalSetting < ActiveRecord::Base
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when MENU_SCREEN_TYPE
       @gs = find_or_create_by_key(:key => "#{MENU_SCREEN_TYPE.to_s}_#{args[:fingerprint]}", :value => 1, :label_text => LABEL_MAP[MENU_SCREEN_TYPE])
+      @gs.parsed_value = @gs.value.to_i
+    when EARLIEST_OPENING_HOUR
+      @gs = find_or_create_by_key(:key => EARLIEST_OPENING_HOUR.to_s, :value => 5, :label_text => LABEL_MAP[EARLIEST_OPENING_HOUR])
+      @gs.parsed_value = @gs.value.to_i
+    when LATEST_CLOSING_HOUR
+      @gs = find_or_create_by_key(:key => LATEST_CLOSING_HOUR.to_s, :value => 5, :label_text => LABEL_MAP[LATEST_CLOSING_HOUR])
       @gs.parsed_value = @gs.value.to_i
     else
       @gs = load_setting property

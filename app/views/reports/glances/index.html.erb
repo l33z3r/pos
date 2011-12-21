@@ -48,14 +48,14 @@
                     <div class="label">From</div>
                     <div class="input_date">
                       <input type="text" size="8" id="date_from" name="date_from"
-                             value="<%=@selected_from_date%>"/>
+                             value="<%=@selected_from_date.to_date.strftime("%d-%m-%Y")%>"/>
                     </div>
                   </div>
                   <div class="dropdown_container">
                     <div class="label">To</div>
                     <div class="input_date">
                       <input type="text" size="8" id="date_to" name="date_to"
-                             value="<%=@selected_to_date%>"/>
+                             value="<%=@selected_to_date.to_date.strftime("%d-%m-%Y")%>"/>
                     </div>
                   </div>
                   <div class="clear">&nbsp;</div>

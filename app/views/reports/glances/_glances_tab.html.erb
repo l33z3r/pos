@@ -138,7 +138,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @items_per_interval_hour.keys.sort.each do |key| %>
+        <% @items_per_interval_hour.keys.sort.rotate(@elems_to_move).each do |key| %>
           <tr>
             <td width="80" class="left"><%=key%>-<%=key+@h_interval%></td>
             <td width="80" class="center-column"><%=@items_per_interval_hour[key][0]%> items</td>

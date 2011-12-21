@@ -733,6 +733,30 @@
                       <input type="text" value="<%= request.remote_ip %>" size="30" disabled="true"/>
                     </td>
                   </tr>
+                  <tr>
+                    <td>
+                      Earliest Opening Hour
+                    </td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::EARLIEST_OPENING_HOUR %>
+
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Latest Closing Hour
+                    </td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::LATEST_CLOSING_HOUR %>
+
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
 
