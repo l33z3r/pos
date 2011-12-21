@@ -111,16 +111,18 @@ function updateProductPrice(product_id, currentPrice) {
 function newButtonGroup() {
     name = prompt("Button Group Name:");
     
-    $.ajax({
-        type: 'POST',
-        url: 'create_button_group',
-        success : function() {
-            window.location.reload();
-        },
-        data: {
-            name : name
-        }
-    });
+    if(name != null) {
+        $.ajax({
+            type: 'POST',
+            url: 'create_button_group',
+            success : function() {
+                window.location.reload();
+            },
+            data: {
+                name : name
+            }
+        });
+    }
 }
 
 function toggleButtonGroup(bg_id) {

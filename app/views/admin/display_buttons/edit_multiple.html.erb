@@ -6,6 +6,14 @@
   <%= render :partial => "/partials/interfaces/large_screen/ok_cancel_buttons" %>
 <% end %>
 
+<% content_for :admin_subnav_links_left do %>
+  <div class="button" data-onpress="newButtonGroup();">
+    <div class="button_name">New Group</div>
+  </div>
+<% end %>
+
+
+
 <div id="edit_display_buttons">
 
   <section id="display_buttons">
