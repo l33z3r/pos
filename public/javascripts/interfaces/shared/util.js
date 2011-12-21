@@ -3,6 +3,8 @@ var clear10HTML = "<div class='clear_top_margin_10'>&nbsp;</div>";
 var clear30HTML = "<div class='clear_top_margin_30'>&nbsp;</div>";
 var clear10BottomBorderHTML = "<div class='clear_top_margin_10_bottom_border'>&nbsp;</div>";
 
+var appOnline = true;
+
 function isTouchDevice() {
     try {
         document.createEvent("TouchEvent");
@@ -13,6 +15,12 @@ function isTouchDevice() {
 }
 
 function goTo(place) {
+    //only allow if not offline
+    if(!appOnline) {
+        appOfflinePopup();
+        return false;
+    }
+    
     showSpinner();
     window.location = place;
     return false;
@@ -98,6 +106,11 @@ function roundNumberDown(num, dec) {
 }
 
 function doReload(resetSession) {
+    if(!appOnline) {
+        appOfflinePopup();
+        return;
+    }
+    
     var reload_location;
     
     showSpinner();
@@ -105,7 +118,7 @@ function doReload(resetSession) {
     if(resetSession) {
         reload_location = "/";
         reload_location += "?reset_session=true";
-        location = reload_location;
+        window.location = reload_location;
     } else {
         //pick up current url
         window.location.reload();
@@ -746,4 +759,13 @@ function showLoadingDiv() {
                 height: 200
             } );
     }
+}
+
+function setConnectionStatus(connected) {
+    appOnline = connected;
+    postSetConnectionStatus(connected);
+}
+
+function appOfflinePopup() {
+    niceAlert("Server cannot be contacted. App will operate in restricted mode. Some features may not be available.");
 }

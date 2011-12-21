@@ -12,6 +12,8 @@ var doAutoLoginAfterSync = false;
 
 //this function is called from application.js on page load
 function initMenu() {
+    initMenuScreenType();
+    
     loadFirstMenuPage();
     
     currentMenuPage = 1;
@@ -34,6 +36,36 @@ $(window).load(function(){
     tryDocumentLoadedLoadFirstMenuPage();
 });
 
+function initMenuScreenType() {
+    if(menuScreenType == RESTAURANT_MENU_SCREEN) {
+    //everything is already set up
+    } else if(menuScreenType == RETAIL_MENU_SCREEN) {
+        //hide the table select box
+        $('#table_screen_button').add('#table_select_container').hide();
+        
+        $('#upc_code_lookup_container').show();
+        
+        $('#scan_upc').keyup(function(e) {
+            if(e.keyCode == 13) {
+                productScanned();
+            }
+        });
+    
+        setTimeout(function(){
+            $('#scan_upc').focus();
+            scanFocusPoll();
+        }, 1000);
+    }
+}
+
+function scanFocusPoll() {
+    if(lastActiveElement.attr("id") == "scan_upc") {
+        $('#scan_upc').focus();
+        setTimeout(scanFocusPoll, 1000);
+        return;
+    }
+}
+    
 function initPreviousOrder() {
     if(havePreviousOrder(current_user_id)) {
         selectedTable = -1;
@@ -70,6 +102,8 @@ function menuScreenKeypadClick(val) {
         $('#stock_take_new_amount_input').val($('#stock_take_new_amount_input').val() + val);
     } else if(inPriceChangeMode) {
         $('#price_change_new_price_input').val($('#price_change_new_price_input').val() + val);
+    } else if(menuScreenType == RETAIL_MENU_SCREEN) {
+        $('#scan_upc').val($('#scan_upc').val() + val);
     } else {
         closePreviousModifierDialog();
         
@@ -94,6 +128,8 @@ function menuScreenKeypadClickCancel() {
         $('#stock_take_new_amount_input').val("");
     } else if(inPriceChangeMode) {
         $('#price_change_new_price_input').val("");
+    } else if(menuScreenType == RETAIL_MENU_SCREEN) {
+        $('#scan_upc').val("");
     } else {
         if(menuItemDoubleMode) {
             setMenuItemDoubleMode(false);
@@ -123,7 +159,7 @@ function tryDocumentLoadedLoadFirstMenuPage() {
 
 function loadFirstMenuPage() {
     //set the inital menu page selected to be the first
-    $('#pages .page:first').click();        
+    eval($('#pages .page:first').data('onpress'));
 }
 
 function doMenuPageSelect(pageNum, pageId) {
@@ -145,7 +181,7 @@ function doMenuPageSelect(pageNum, pageId) {
     currentMenuSubPageId = null;
     
     //load the first sub menu page if sub menu present
-    $('.embedded_pages_' + pageNum + ' div:first').click();
+    eval($('.embedded_pages_' + pageNum + ' div:first').data('onpress'));
     
     if(inStockTakeMode) {
         loadStockDivs(pageNum, currentMenuSubPageId);
@@ -177,6 +213,26 @@ function doSubMenuPageSelect(parentPageNum, pageId) {
         loadStockDivs(parentPageNum, pageId);
     } else if(inPriceChangeMode) {
         loadPriceDivs(parentPageNum, pageId);
+    }
+}
+
+function productScanned() {
+    //fetch the upc
+    var upc = $('#scan_upc').val();
+    
+    if(upc.length == 0) {
+        setStatusMessage("Please enter product code, or use barcode scanner");
+        return;
+    }
+        
+    var scannedProduct = products_by_upc[upc];
+    
+    if(typeof(scannedProduct) != 'undefined') {
+        //alert(scannedProduct.name);
+        doSelectMenuItem(scannedProduct.id, null, null)
+        $('#scan_upc').val("");
+    } else {
+        niceAlert("Product not found... UPC:" + upc);
     }
 }
 
@@ -651,6 +707,8 @@ function closeEditOrderItem() {
     
         currentSelectedReceiptItemEl = null;
     }
+    
+    $('#scan_upc').focus();
 }
 
 function saveEditOrderItem() {

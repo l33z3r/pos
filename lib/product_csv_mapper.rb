@@ -124,6 +124,10 @@ class ProductCSVMapper
   end
   
   def self.get_index row, index
-    row[index].strip.length > 0 ? row[index].strip : nil
+    if row[index]
+      return row[index].strip.length > 0 ? row[index].strip : nil
+    else
+      return nil
+    end
   end
 end

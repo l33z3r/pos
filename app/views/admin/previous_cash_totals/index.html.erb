@@ -56,28 +56,28 @@
 
         <div class="action_buttons">
 
-          <div class="button" onclick="printCashTotal()">
+          <div class="button" data-onpress="printCashTotal()">
             <div class="icon">
               <%= image_tag "button_logos/print_bill_button.png" %>
             </div>
             <div class="button_name">Print</div>
           </div>
 
-          <div class="button" onclick="adminShowMoreOptions();">
+          <div class="button" data-onpress="adminShowMoreOptions();">
             <div class="icon">
               <%= image_tag "/images/button_logos/more_options_button.png" %>
             </div>
             <div class="button_name">More Options</div>
           </div>
 
-          <div class="button" onclick="goTo('/home#screen=menu');">
+          <div class="button" data-onpress="goTo('/home#screen=menu');">
             <div class="icon">
               <%= image_tag "/images/button_logos/manage_sales_screen_button.png" %>
             </div>
             <div class="button_name">Sales Screen</div>
           </div>
 
-          <div class="button" onclick="adminCancelClicked()">
+          <div class="button" data-onpress="adminCancelClicked()">
             <div class="icon">
               <%= image_tag "button_logos/cancel_button.png" %>
             </div>

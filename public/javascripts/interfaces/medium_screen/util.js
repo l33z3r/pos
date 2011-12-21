@@ -61,7 +61,7 @@ function getLastReceiptItem() {
     return currentSelectedReceiptItemEl;
 }
 
-function setConnectionStatus(connected) {
+function postSetConnectionStatus(connected) {
     var color = "#E0E0E0";
     
     if(!connected) {

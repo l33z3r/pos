@@ -1,14 +1,14 @@
 <% @nav_title = "Products" %>
 
 <% content_for :admin_subnav_links_left do %>
-  <div class="button" onclick="goTo('<%= new_admin_product_path %>');">
+  <div class="button" data-onpress="goTo('<%= new_admin_product_path %>');">
     <div class="icon">
       <%= image_tag "/images/button_logos/create_product_button.png" %>
     </div>
     <div class="button_name">Create Product</div>
   </div>
 
-  <div class="button" onclick="goTo('<%= csv_import_admin_products_path %>');">
+  <div class="button" data-onpress="goTo('<%= csv_import_admin_products_path %>');">
     <div class="icon">
       <%= image_tag "/images/button_logos/import_products_button.png" %>
     </div>
@@ -73,7 +73,7 @@
     </div>
 
     <div class="button_col">
-      <div class="button" id="submit_search_button" onclick="runSearch();">
+      <div class="button" id="submit_search_button" data-onpress="runSearch();">
         <div class="icon">
           <%= image_tag "/images/search.png" %>
         </div>

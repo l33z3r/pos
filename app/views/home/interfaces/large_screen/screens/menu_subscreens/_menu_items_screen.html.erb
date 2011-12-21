@@ -5,7 +5,7 @@
   <div id="pages">
     <% @display.menu_pages.each do |page| %>
       <div class="page" id="menu_page_<%=page.id%>"
-           onclick="doMenuPageSelect(<%= page.page_num %>, <%= page.id %>);">
+           data-onpress="doMenuPageSelect(<%= page.page_num %>, <%= page.id %>);">
         <div class="name">
           <%= page.name %>
         </div>
@@ -18,7 +18,7 @@
               <% page.embedded_display.menu_pages.each do |embedded_page| %>
 
                 <div class="subpage page" id="sub_menu_page_<%=embedded_page.id%>"
-                     onclick="doSubMenuPageSelect(<%= page.page_num %>, <%= embedded_page.id %>);">
+                     data-onpress="doSubMenuPageSelect(<%= page.page_num %>, <%= embedded_page.id %>);">
                   <div class="name">
                     <%= embedded_page.name %>
                   </div>
@@ -31,7 +31,7 @@
                         <div class="item <%= !embedded_item.product.is_active ? "inactive" : "" %>" 
                              data-button_width="<%= embedded_item.product.menu_button_width %>" 
                              data-menu_item_id="<%= embedded_item.id %>"
-                             onclick="<%= embedded_item.product.is_active ? "doSelectMenuItem(#{embedded_item.product_id}, #{embedded_item.id}, this);" : "" %>"
+                             data-onpress="<%= embedded_item.product.is_active ? "doSelectMenuItem(#{embedded_item.product_id}, #{embedded_item.id}, this);" : "" %>"
                              style="<%= menu_item_background_css embedded_item %>">
 
                           <div class="stock_count" style="display: none;" id="stock_count_<%= embedded_item.id %>"></div>
@@ -63,7 +63,7 @@
                 <div class="item <%= !item.product.is_active ? "inactive" : "" %>" 
                      data-button_width="<%= item.product.menu_button_width %>" 
                      data-menu_item_id="<%= item.id %>"
-                     onclick="<%= item.product.is_active ? "doSelectMenuItem(#{item.product_id}, #{item.id}, this);" : "" %>"
+                     data-onpress="<%= item.product.is_active ? "doSelectMenuItem(#{item.product_id}, #{item.id}, this);" : "" %>"
                      style="<%= menu_item_background_css item %>">
 
                   <div class="stock_count" style="display: none;" id="stock_count_<%= item.id %>"></div>

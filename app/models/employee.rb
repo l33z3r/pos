@@ -28,6 +28,10 @@ class Employee < ActiveRecord::Base
   def has_employee_image?
     return (!employee_image_file_name.nil? and !employee_image_file_name.blank?)
   end
+  
+  def self.all_except_cluey
+    where("nickname != ?", "cluey")
+  end
 end
 
 # == Schema Information

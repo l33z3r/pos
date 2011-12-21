@@ -212,6 +212,7 @@ function showMenuScreen() {
     $('#menu_screen_shortcut_dropdown_container').show();
     
     $('#menu_screen').show();
+    $('#scan_upc').focus();
 }
 
 function showTablesScreen() {
@@ -614,7 +615,7 @@ function registerDisallowRightClick() {
     document.oncontextmenu=new Function("return false");
 }
 
-function setConnectionStatus(connected) {
+function postSetConnectionStatus(connected) {
     var color = "#00FF33";
     
     if(!connected) {

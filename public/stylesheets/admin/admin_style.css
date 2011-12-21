@@ -704,7 +704,8 @@ div#import_products section#form_container div#guidelines {
     background-color: #FFF;
     color: #000;
     text-align: left;
-    font-size: 21px;
+    font-size: 16px;
+    line-height: 17px;
 }
 
 div#import_products section#form_container div#guidelines li {

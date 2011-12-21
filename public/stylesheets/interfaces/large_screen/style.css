@@ -692,6 +692,37 @@ div#receipt_keypad_container div#top_buttons {
     font-weight: bold;
 }
 
+div#receipt_keypad_container div#top_buttons div#upc_code_lookup_container {
+    display: none;
+    height: 28px;
+    padding: 5px;
+}
+
+div#receipt_keypad_container div#top_buttons div#upc_code_lookup_container div.label {
+    float: left;
+    margin: 7px;
+    font-size: 14px;
+}
+
+div#receipt_keypad_container div#top_buttons div#upc_code_lookup_container div#input_container {
+    float: left;
+}
+
+div#receipt_keypad_container div#top_buttons div#upc_code_lookup_container div#input_container input {
+    width: 115px;
+    height: 23px;
+}
+
+div#receipt_keypad_container div#top_buttons div#upc_code_lookup_container div.button {
+    float: left;
+    width: 60px;
+    height: 22px;
+    font-size: 14px;
+    margin-left: 8px;
+    padding-top: 6px;
+    margin-top: -1px;
+}
+
 div#receipt_keypad_container div#top_buttons div#price_change_header {
     display: none;
     background: #E36C0A;

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111215162025) do
+ActiveRecord::Schema.define(:version => 20111220114511) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -244,7 +244,7 @@ ActiveRecord::Schema.define(:version => 20111215162025) do
     t.text     "kitchen_note"
     t.float    "quantity_in_stock",          :default => 0.0
     t.integer  "code_num"
-    t.integer  "upc"
+    t.string   "upc"
     t.float    "price_2"
     t.float    "price_3"
     t.float    "price_4"

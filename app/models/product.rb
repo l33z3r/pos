@@ -20,6 +20,7 @@ class Product < ActiveRecord::Base
   belongs_to :menu_page_2, :class_name => "MenuPage"
   
   validates :name, :presence => true, :uniqueness => true
+  validates :upc, :uniqueness => true, :allow_blank => true
   validates :category_id, :numericality => true, :allow_blank => true
   validates :size, :numericality => {:greater_than_or_equal_to => 0}, :allow_blank => true
   validates :price, :presence => true, :numericality => {:greater_than_or_equal_to => 0}
@@ -127,7 +128,7 @@ class Product < ActiveRecord::Base
   end
   
   def set_image
-    @product_name_normalised = self.name.downcase.gsub(" ", "_")
+    @product_name_normalised = self.name.downcase.gsub(" ", "-")
     @product_name_parts = self.name.downcase.split(" ")
     
     @found_image = false
@@ -139,7 +140,7 @@ class Product < ActiveRecord::Base
       #strip white space and the .*** part
       @start_index = image_name.rindex("/") + 1
       @end_index = image_name.rindex(".") - 1
-      @image_name = image_name[@start_index..@end_index]
+      @image_name = image_name[@start_index..@end_index].downcase
       
       if @product_name_normalised == @image_name
         @found_image = true
@@ -192,6 +193,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: products
@@ -219,7 +221,7 @@ end
 #  kitchen_note               :text
 #  quantity_in_stock          :float           default(0.0)
 #  code_num                   :integer(4)
-#  upc                        :integer(4)
+#  upc                        :string(255)
 #  price_2                    :float
 #  price_3                    :float
 #  price_4                    :float

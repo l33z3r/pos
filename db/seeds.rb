@@ -4,6 +4,10 @@
     :passcode => "1111", :clockin_code => "1111", :address => "admin address", :telephone => "admin telephone",
     :hourly_rate => "1", :overtime_rate => "1", :role_id => @super_user_role.id})
 
+@cluey_employee = Employee.find_or_create_by_nickname({:nickname => "cluey", :staff_id => "99999", :name => "cluey", 
+    :passcode => "999", :clockin_code => "999", :address => "cluey", :telephone => "cluey",
+    :hourly_rate => "1", :overtime_rate => "1", :role_id => @super_user_role.id})
+
 #
 #
 #
@@ -14,18 +18,18 @@
 #
 #
 #Display Buttons and Roles
-@display_buttons_map = [[1, "X Total"],[2, "Z Total"],[3, "X Reports"], [4, "Z Reports"], [5, "Users"],
-  [6, "Roles"], [7, "Products"], [8, "Categories"], [9, "Displays"], [10, "Sales Screen"],
-  [11, "Access Control"], [12, "Modifier Categories"], [13, "Room Builder"], [14, "Total"],
-  [15, "Sub-Total"], [16, "Save"], [17, "More Options"], [18, "Button Config"], [19, "Tables"],
-  [20, "System"], [21, "Themes"], [22, "Discount"], [23, "Client"], [24, "Waste"],
+@display_buttons_map = [[1, "X Total"],[2, "Z Total"],[3, "X Options"], [4, "Z Options"], [5, "Employees"],
+  [6, "Employee Roles"], [7, "Products"], [8, "Categories"], [9, "Displays"], [10, "Sales Screen"],
+  [11, "Access Control"], [12, "Modifier Categories"], [13, "Room Design"], [14, "Cash"],
+  [15, "Sub-Total"], [16, "Wait"], [17, "Functions"], [18, "Button Names"], [19, "Tables"],
+  [20, "System Settings"], [21, "Themes"], [22, "Discount"], [23, "Clients"], [24, "Waste"],
   [25, "Free"], [26, "Change Price"], [27, "Float"], [28, "No Sale"], [29, "Refund"],
   [30, "Remove Item"], [31, "Add Note"], [32, "Change Waiter"], [33, "Printers"], [34, "Transfer"],
   [35, "Split Order"], [36, "Stock Take"], [37, "Delivery"], [38, "Cash Out"], [39, "Receipt Setup"],
   [40, "Payment Methods"], [41, "Gift Voucher"], [42, "Order Types"], [43, "Set Up Discounts"],
   [44, "Print Receipt"], [45, "Order"], [46, "Service Charge"], [47, "Previous Sales"], [48, "Modify"],
   [49, "Modifier Grids"], [50, "Current Orders"], [51, "Manage Terminals"], [52, "Print Bill"], [53, "Course"],
-  [54, "Kitchen Screen"], [55, "Previous Cash Totals"], [56, "Double"], [57, "Add Name To Table"], [58, "Reports"]
+  [54, "Kitchen Screen"], [55, "X/Z History"], [56, "Double"], [57, "Table Name"], [58, "Reports"]
   ]
 
 #now create the buttons and also init a button role for admin user

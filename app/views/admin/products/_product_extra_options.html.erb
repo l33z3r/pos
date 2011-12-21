@@ -125,7 +125,7 @@
     <div class="clear">&nbsp;</div>
     <div class="field">
       <div class="label">Choose Image</div>
-      <div onclick="openChooseProductImageDialog();" class="button" id="choose_image_button">Select</div>
+      <div data-onpress="openChooseProductImageDialog();" class="button" id="choose_image_button">Select</div>
       <input type="hidden" id="display_image" name="product[display_image]" value="<%=@product.display_image%>"/>
     </div>
     <div class="field">

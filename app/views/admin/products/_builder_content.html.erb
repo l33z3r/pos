@@ -18,7 +18,7 @@
     <% end %>
 
     <div class="action_buttons">
-      <div class="button" onclick="goTo('<%=home_path%>#screen=menu');">
+      <div class="button" data-onpress="goTo('<%=home_path%>#screen=menu');">
         <div class="icon">
           <%= image_tag "/images/button_logos/manage_sales_screen_button.png" %>
         </div>
@@ -27,7 +27,7 @@
 
       <div class="clear">&nbsp;</div>
 
-      <div class="button" onclick="productBuilderShowMoreOptionsShortcut();">
+      <div class="button" data-onpress="productBuilderShowMoreOptionsShortcut();">
         <div class="icon">
           <%= image_tag "/images/button_logos/more_options_button.png" %>
         </div>
@@ -36,7 +36,7 @@
 
       <div class="clear">&nbsp;</div>
 
-      <div class="button" onclick="productBuilderCancelClicked()">
+      <div class="button" data-onpress="productBuilderCancelClicked()">
         <div class="icon">
           <%= image_tag "/images/button_logos/cancel_button.png" %>
         </div>
@@ -45,7 +45,7 @@
 
       <div class="clear">&nbsp;</div>
 
-      <div class="button" onclick="productBuilderOkClicked()">
+      <div class="button" data-onpress="productBuilderOkClicked()">
         <div class="icon">
           <%= image_tag "/images/button_logos/ok_button.png" %>
         </div>

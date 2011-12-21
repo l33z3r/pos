@@ -5,8 +5,8 @@
 
     <div id="header">Edit Item</div>
 
-    <div id="delete_button" class="button" onclick="removeSelectedOrderItem()">Delete</div>
-    <div id="discount_button" class="button" onclick="showDiscountPopupFromEditDialog()">Discount</div>
+    <div id="delete_button" class="button" data-onpress="removeSelectedOrderItem()">Delete</div>
+    <div id="discount_button" class="button" data-onpress="showDiscountPopupFromEditDialog()">Discount</div>
 
     <div class="clear">&nbsp;</div>
 
@@ -16,8 +16,8 @@
       <input type="text" class="quantity" size="2" id="current_selected_receipt_item_quantity"/>
 
       <div id="buttons_container">
-        <div id="plus_button" class="button" onclick="editOrderItemIncreaseQuantity()"><div>+</div></div>
-        <div id="minus_button" class="button" onclick="editOrderItemDecreaseQuantity()"><div>-</div></div>
+        <div id="plus_button" class="button" data-onpress="editOrderItemIncreaseQuantity()"><div>+</div></div>
+        <div id="minus_button" class="button" data-onpress="editOrderItemDecreaseQuantity()"><div>-</div></div>
       </div>
       <div class="clear">&nbsp;</div>
     </div>
@@ -38,13 +38,13 @@
 
     <div class="action_buttons_container">
       <div class="action_buttons">
-        <div id="cancel_button" class="button" onclick="closeEditOrderItem()">
+        <div id="cancel_button" class="button" data-onpress="closeEditOrderItem()">
           <div class="icon">
             <%= image_tag "button_logos/cancel_button.png"%>
           </div>
           <div class="button_name">Cancel</div>
         </div>
-        <div id="save_button" class="button" onclick="saveEditOrderItem()">
+        <div id="save_button" class="button" data-onpress="saveEditOrderItem()">
           <div class="icon">
             <%= image_tag "button_logos/ok_button.png"%>
           </div>
@@ -64,7 +64,7 @@
     <div class="clear">&nbsp;</div>
 
     <div class="discount_buttons">
-      <div class="button" id="discount_button_0" onclick="setDiscountVal(0)">
+      <div class="button" id="discount_button_0" data-onpress="setDiscountVal(0)">
         <div class="name">
           None
         </div>
@@ -73,7 +73,7 @@
         </div>
       </div>
       <% Discount.all.each do |discount| %>
-        <div class="button" id="discount_button_<%=discount.id%>" onclick="setDiscountVal(<%=discount.percent%>)">
+        <div class="button" id="discount_button_<%=discount.id%>" data-onpress="setDiscountVal(<%=discount.percent%>)">
           <div class="name">
             <%=discount.name%>
           </div>
@@ -125,13 +125,13 @@
 
     <div class="action_buttons_container">
       <div class="action_buttons">
-        <div id="cancel_button" class="button" onclick="closeDiscountPopup()">
+        <div id="cancel_button" class="button" data-onpress="closeDiscountPopup()">
           <div class="icon">
             <%= image_tag "button_logos/cancel_button.png"%>
           </div>
           <div class="button_name">Cancel</div>
         </div>
-        <div id="save_button" class="button" onclick="saveDiscount()">
+        <div id="save_button" class="button" data-onpress="saveDiscount()">
           <div class="icon">
             <%= image_tag "button_logos/ok_button.png"%>
           </div>
@@ -170,13 +170,13 @@
 
     <div class="action_buttons_container">
       <div class="action_buttons">
-        <div id="cancel_button" class="button" onclick="cancelServiceCharge()">
+        <div id="cancel_button" class="button" data-onpress="cancelServiceCharge()">
           <div class="icon">
             <%= image_tag "button_logos/cancel_button.png"%>
           </div>
           <div class="button_name">Cancel</div>
         </div>
-        <div id="save_button" class="button" onclick="saveServiceCharge(true)">
+        <div id="save_button" class="button" data-onpress="saveServiceCharge(true)">
           <div class="icon">
             <%= image_tag "button_logos/ok_button.png"%>
           </div>
@@ -196,10 +196,10 @@
     <div class="header">Cash Back</div>
 
     <div id="cashback_amount_buttons">
-      <div class="button" onclick="presetCashbackAmountClicked(5);"><%= @currency_symbol %>5</div>
-      <div class="button" onclick="presetCashbackAmountClicked(10);"><%= @currency_symbol %>10</div>
-      <div class="button" onclick="presetCashbackAmountClicked(20);"><%= @currency_symbol %>20</div>
-      <div class="button" onclick="presetCashbackAmountClicked(50);"><%= @currency_symbol %>50</div>
+      <div class="button" data-onpress="presetCashbackAmountClicked(5);"><%= @currency_symbol %>5</div>
+      <div class="button" data-onpress="presetCashbackAmountClicked(10);"><%= @currency_symbol %>10</div>
+      <div class="button" data-onpress="presetCashbackAmountClicked(20);"><%= @currency_symbol %>20</div>
+      <div class="button" data-onpress="presetCashbackAmountClicked(50);"><%= @currency_symbol %>50</div>
       <div class="clear_top_margin_10">&nbsp;</div>
     </div>
 
@@ -216,13 +216,13 @@
 
     <div class="action_buttons_container">
       <div class="action_buttons">
-        <div id="cancel_button" class="button" onclick="cancelCashback()">
+        <div id="cancel_button" class="button" data-onpress="cancelCashback()">
           <div class="icon">
             <%= image_tag "button_logos/cancel_button.png"%>
           </div>
           <div class="button_name">Cancel</div>
         </div>
-        <div id="save_button" class="button" onclick="saveCashback()">
+        <div id="save_button" class="button" data-onpress="saveCashback()">
           <div class="icon">
             <%= image_tag "button_logos/ok_button.png"%>
           </div>
@@ -255,13 +255,13 @@
 
     <div class="action_buttons_container">
       <div class="action_buttons">
-        <div id="cancel_button" class="button" onclick="closePromptAddNameToTable();">
+        <div id="cancel_button" class="button" data-onpress="closePromptAddNameToTable();">
           <div class="icon">
             <%= image_tag "button_logos/cancel_button.png"%>
           </div>
           <div class="button_name">Cancel</div>
         </div>
-        <div id="save_button" class="button" onclick="saveAddNameToTable();">
+        <div id="save_button" class="button" data-onpress="saveAddNameToTable();">
           <div class="icon">
             <%= image_tag "button_logos/ok_button.png"%>
           </div>
