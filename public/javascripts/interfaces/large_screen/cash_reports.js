@@ -6,8 +6,15 @@ function getCashTotalDataTable(cash_total_data, show_currency) {
     cash_total_data_html = "<div class='data_table'>";
     
     for(var i=0; i<cash_total_data.length; i++) {
-        cash_total_data_html += "<div class='label'>" + cash_total_data[i][0] + "</div>";
-        cash_total_data_html += "<div class='data'>" + (show_currency && (!isNaN( parseFloat(cash_total_data[i][1]))) ? currency(cash_total_data[i][1]) : cash_total_data[i][1]) + "</div>" + clearHTML;
+        //give extra width to date fields
+        var timeClass = "";
+        
+        if(cash_total_data[i][0] == "Date") {
+            timeClass = "time";
+        }
+        
+        cash_total_data_html += "<div class='label " + timeClass + "'>" + cash_total_data[i][0] + "</div>";
+        cash_total_data_html += "<div class='data " + timeClass + "'>" + (show_currency && (!isNaN( parseFloat(cash_total_data[i][1]))) ? currency(cash_total_data[i][1]) : cash_total_data[i][1]) + "</div>" + clearHTML;
     }
     
     cash_total_data_html += "</div>";
