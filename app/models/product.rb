@@ -138,8 +138,14 @@ class Product < ActiveRecord::Base
     
     @all_images.each do |image_name|
       #strip white space and the .*** part
-      @start_index = image_name.rindex("/") + 1
-      @end_index = image_name.rindex(".") - 1
+      @last_slash_index = image_name.rindex("/")
+      @last_dot_index = image_name.rindex(".")
+      
+      next unless @last_slash_index
+      next unless @last_dot_index
+      
+      @start_index = @last_slash_index + 1
+      @end_index = @last_dot_index - 1
       @image_name = image_name[@start_index..@end_index].downcase
       
       if @product_name_normalised == @image_name
