@@ -12,8 +12,6 @@
   </div>
 <% end %>
 
-
-
 <div id="edit_display_buttons">
 
   <section id="display_buttons">
@@ -30,13 +28,15 @@
         <div id="#display_buttons_section">
           <div class="container jscrollpane">
 
-            <div id="actions">
-              <%= submit_tag "Save" %>
-            </div>
-
             <div class="clear">&nbsp;</div>
 
             <%= form_tag update_multiple_admin_display_buttons_path do %>
+
+              <div id="actions">
+                <%= submit_tag "Save" %>
+              </div>
+
+              <div class="clear">&nbsp;</div>
 
               <table id="display_button_list" class="admin_table">
                 <thead>
@@ -88,7 +88,7 @@
 
             <div class="clear">&nbsp;</div>
 
-            <%= form_tag update_multiple_groups_admin_display_buttons_path do %>
+            <%= form_tag button_group_update_multiple_admin_display_buttons_path do %>
 
               <table id="display_button_group_list" class="admin_table">
                 <thead>
@@ -107,8 +107,7 @@
                         <% end %>
                       </td>
                       <td>
-                        <%= link_to "Delete", destroy_button_group_admin_display_buttons_path(:dbg_id => dbg.id),
-                          :method => "post", :confirm => "Are You Sure?" %>
+                        <div class="button delete_button" data-onpress="deleteButtonGroup(<%=dbg.id%>);">Delete</div>
                       </td>
                     </tr>
                   <% end %>

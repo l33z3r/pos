@@ -29,7 +29,14 @@ class Admin::DisplayButtonsController < Admin::AdminController
     end
   end
   
-  def update_multiple_groups
+  def button_group_create
+    DisplayButtonGroup.create({:name => params[:name]})
+    
+    flash[:notice] = "Button Group created!"
+    render :json => {:success => true}.to_json
+  end
+
+  def button_group_update_multiple
     @display_button_groups = DisplayButtonGroup.update(params[:display_button_groups].keys, params[:display_button_groups].values).reject { |p| p.errors.empty? }
     
     if @display_button_groups.empty?
@@ -40,20 +47,14 @@ class Admin::DisplayButtonsController < Admin::AdminController
     end
   end
   
-  def destroy_button_group
+  def button_group_delete
     @dbg = DisplayButtonGroup.find(params[:dbg_id])
-    
-    @dbg.display_buttons.each do |db|
-      db.display_button_group_id = nil
-      db.save!
-    end
-    
     @dbg.destroy
     
     flash[:notice] = "Button Group deleted!"
-    redirect_to edit_multiple_admin_display_buttons_path
+    render :json => {:success => true}.to_json
   end
-
+  
   def update_sales_screen_button_role
     @dbr = DisplayButtonRole.find(params[:id])
     @dbr.show_on_sales_screen = params[:checked]
@@ -75,13 +76,5 @@ class Admin::DisplayButtonsController < Admin::AdminController
 
     render :json => {:success => true}.to_json
   end
-  
-  def create_button_group
-    DisplayButtonGroup.create({:name => params[:name]})
-    
-    render :json => {:success => true}.to_json
-  end
-  
-  private
   
 end

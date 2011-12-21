@@ -1378,6 +1378,10 @@ div#edit_display_buttons section#display_buttons div#actions div {
     cursor: pointer;
 }
 
+div#edit_display_buttons section#display_buttons div.container table#display_button_group_list div.delete_button {
+    height: 30px;
+}
+
 /* End Admin Display Buttons Page */
 
 /* Global Settings Page */

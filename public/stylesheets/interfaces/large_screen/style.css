@@ -1510,7 +1510,7 @@ div#menu_screen div#receipt_keypad_container div#menu_buttons_popup_anchor {
 
 /* End keypad */
 
-/* Till Roll */
+/* Generic Till Roll */
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll {
     height: 260px;
@@ -1704,7 +1704,68 @@ div#menu_screen div#receipt_keypad_container div#receipt div#sales_tax_total div
     font-style: italic;
 }
 
-/* End Till Roll */
+div.receipt div.vat_breakdown {
+    padding-left: 5px;
+}
+
+div.receipt div.vat_breakdown div.header {
+    text-align: left;
+    font-weight: bold;
+}
+
+div.receipt div.vat_breakdown div.footer {
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: left;
+}
+
+div.receipt div#cash_totals_data_table div.taxes_data_table {
+    margin-top: 10px;
+}
+
+div.receipt div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_header {
+    width: 63px;
+    float: left;
+    text-align: right;
+}
+
+div.receipt div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_label_header {
+    width: 50px;
+    float: left;
+    text-align: left;
+}
+
+div.receipt div#cash_totals_data_table div.taxes_data_table div.taxes_label {
+    float: left;
+    text-align: left;
+    width: 50px;
+    font-weight: bold;
+}
+
+div.receipt div#cash_totals_data_table div.taxes_data_table div.taxes_data {
+    float: left;
+    text-align: right;
+    width: 63px;
+}
+
+div.receipt div#cash_totals_data_table div.taxes_totals_data_table {
+    margin-top: 5px;
+}
+
+div.receipt div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_label {
+    float: left;
+    text-align: left;
+    width: 50px;
+    font-weight: bold;
+}
+
+div.receipt div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_data {
+    float: left;
+    text-align: right;
+    width: 63px;
+}
+
+/* End Generic Till Roll */
 
 /* Edit Order Item Popup */
 

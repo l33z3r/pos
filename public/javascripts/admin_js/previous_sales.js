@@ -145,7 +145,7 @@ function parsePreviousOrder(previousOrderJSON) {
     
     voidOrderInfoHTML += clearHTML;
     
-    setPreviousSaleReceipt(voidOrderInfoHTML + fetchFinalReceiptHTML(false, true));
+    setPreviousSaleReceipt(voidOrderInfoHTML + fetchFinalReceiptHTML(false, true, printVatReceipt));
     
     //enable the "re-open order" button
     $('#continue_order_button').hide();
@@ -340,6 +340,6 @@ function printPreviousSale() {
         return;
     }
     
-    printReceiptHTML = fetchFinalReceiptHTML(true, false);
+    printReceiptHTML = fetchFinalReceiptHTML(true, false, printVatReceipt);
     printReceipt(printReceiptHTML, true);
 }

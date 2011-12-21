@@ -13,6 +13,10 @@
         width: 210px;
         margin: 0px;
         overflow: hidden;
+
+        <% if @windows_printer_margins %>
+          margin-left: 14px;
+        <% end %>
       }
 
       body * {
@@ -68,11 +72,12 @@
       }
 
       div.data_table div.label.time {
-        width: 90px;
+        width: 93px;
       }
 
       div.data_table div.data.time {
         width: 109px;
+        padding-right: 0px;
       }
 
       div.terminal {
@@ -87,9 +92,9 @@
       }
 
       div.order_line.course {
-        
+
       }
-      
+
       div.order_line.hide_on_printed_receipt {
         display: none;
       }
@@ -268,6 +273,17 @@
         width: 109px;
       }
 
+      div.vat_breakdown div.header {
+        text-align: left;
+        font-weight: bold;
+      }
+
+      div.vat_breakdown div.footer {
+        font-weight: bold;
+        margin-top: 10px;
+        text-align: left;
+      }
+
       div#cash_totals_data_table div.taxes_data_table {
         margin-top: 10px;
       }
@@ -324,7 +340,7 @@
         float: left;
         text-align: right;
       }
-      
+
       div.products_data_table div.products_data_table_header.quantity {
         width: 25px;
       }
@@ -347,7 +363,7 @@
         text-align: right;
         width: 58px;
       }
-      
+
       div#cash_totals_data_table div.products_data_table div.products_data.quantity {
         width: 25px;
       }

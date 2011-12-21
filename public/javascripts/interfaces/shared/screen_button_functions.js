@@ -132,7 +132,10 @@ function printBill() {
         return;
     }
     
-    printReceipt(fetchFinalReceiptHTML(true, false), true);
+    //don't print vat on this receipt
+    var printVat = false;
+    
+    printReceipt(fetchFinalReceiptHTML(true, false, printVat), true);
 }
 
 function applyDefaultServiceChargePercent() {

@@ -308,6 +308,19 @@ class ApplicationController < ActionController::Base
     
     @tax_label = GlobalSetting.parsed_setting_for GlobalSetting::TAX_LABEL
     @tax_chargable = GlobalSetting.parsed_setting_for GlobalSetting::TAX_CHARGABLE
+    
+    @web_socket_service_ip_gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, {:fingerprint => @terminal_fingerprint}
+    
+    if @web_socket_service_ip_gs.value.blank?
+      @web_socket_service_ip_gs.value = request.remote_ip
+      @web_socket_service_ip_gs.save
+      @web_socket_service_ip_gs.reload
+    end
+    
+    @web_socket_service_ip = @web_socket_service_ip_gs.value
+    
+    @windows_printer_margins = GlobalSetting.parsed_setting_for GlobalSetting::WINDOWS_PRINTER_MARGINS, {:fingerprint => @terminal_fingerprint}
+    
   end
   
   def mobile_device?

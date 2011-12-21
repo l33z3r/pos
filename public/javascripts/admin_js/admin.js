@@ -112,9 +112,11 @@ function newButtonGroup() {
     name = prompt("Button Group Name:");
     
     if(name != null) {
+        showLoadingDiv();
+    
         $.ajax({
             type: 'POST',
-            url: 'create_button_group',
+            url: 'button_group_create',
             success : function() {
                 window.location.reload();
             },
@@ -123,6 +125,21 @@ function newButtonGroup() {
             }
         });
     }
+}
+
+function deleteButtonGroup(dbg_id) {
+    showLoadingDiv();
+    
+    $.ajax({
+        type: 'POST',
+        url: 'button_group_delete',
+        success : function() {
+            window.location.reload();
+        },
+        data: {
+            dbg_id : dbg_id
+        }
+    });
 }
 
 function toggleButtonGroup(bg_id) {

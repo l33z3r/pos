@@ -179,9 +179,10 @@ Pos::Application.routes.draw do
         post 'update_admin_screen_button_role'
         post 'update_sales_screen_button_role'
         post 'update_multiple'
-        post 'create_button_group'
-        post 'update_multiple_groups'
-        post 'destroy_button_group'
+        
+        post 'button_group_create'
+        post 'button_group_update_multiple'
+        post 'button_group_delete'
       end
     end
     
