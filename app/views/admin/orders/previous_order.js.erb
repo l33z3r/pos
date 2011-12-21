@@ -8,6 +8,8 @@ var orderItems = new Array();
   var orderItem = <%= raw(order_item.to_json) %>.order_item;
   orderItem.product = <%= raw(order_item.product.to_json) %>.product;
 
+  //copy the tax rate from the order item over to the product
+  orderItem.product.tax_rate = orderItem.tax_rate;
   orderItem.modifier = {'name' : '<%= raw(order_item.modifier_name) %>', 'price' : '<%= raw(order_item.modifier_price) %>'};
 
   //attach the item number to the order item 

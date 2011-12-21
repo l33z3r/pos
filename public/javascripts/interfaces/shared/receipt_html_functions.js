@@ -219,7 +219,7 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, incl
             //construct table
             var taxRates = {}
         
-            for(var i=0; i<order.items.length; i++) {
+            for(var i=0; i<totalOrder.items.length; i++) {
                 var item = totalOrder.items[i];
             
                 var itemPrice = parseFloat(item['total_price']);
