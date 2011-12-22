@@ -1,0 +1,12 @@
+install java
+
+download /install/printer_service.zip
+install tm-t20 printer driver
+create printer_service directory somewhere where there are no spaces
+place start cluey print service batch file here
+place cash drawer code text file here
+modify the batch file
+create shortcut to the start file in the startup folder and start it minimized
+
+download the loopback adapter (instructions in folder)
+do the net use command
