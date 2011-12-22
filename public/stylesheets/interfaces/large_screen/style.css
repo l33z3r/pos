@@ -286,7 +286,7 @@ div#landing div#active_users_buttons_container div#active_users div.employee_box
 }
 
 div#landing div#active_users_buttons_container div#active_users div.employee_box div.nickname {
-
+    margin-top: 5px;
 }
 
 div#landing div#active_users_buttons_container div#active_users div.employee_box div.avatar img {

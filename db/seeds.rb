@@ -4,7 +4,7 @@
     :passcode => "1111", :clockin_code => "1111", :address => "admin address", :telephone => "admin telephone",
     :hourly_rate => "1", :overtime_rate => "1", :role_id => @super_user_role.id})
 
-@cluey_employee = Employee.find_or_create_by_nickname({:nickname => "cluey", :staff_id => "99999", :name => "cluey", 
+@cluey_employee = Employee.find_or_create_by_nickname({:nickname => "cluey", :staff_id => "-1", :name => "cluey", 
     :passcode => "999", :clockin_code => "999", :address => "cluey", :telephone => "cluey",
     :hourly_rate => "1", :overtime_rate => "1", :role_id => @super_user_role.id})
 

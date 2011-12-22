@@ -29,7 +29,7 @@
           <li><a id="discounts_section_link" href="#discounts_section_section">Discounts</a></li>
           <li><a id="misc_section_link" href="#misc_section">Misc</a></li>
 
-          <% if params[:cp] == "cluey100" %>
+          <% if params[:cp] == "cluey100" or is_cluey_user? %>
             <li><a id="cluey_settings_section_link" href="#cluey_settings_section">Cluey Settings</a></li>
           <% end %>
         </ul>

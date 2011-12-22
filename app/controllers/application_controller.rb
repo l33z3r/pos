@@ -4,8 +4,8 @@ class ApplicationController < ActionController::Base
   
   before_filter :check_reset_session
   
-  helper_method :e, :current_employee, :print_money, :mobile_device?
-  helper_method :all_terminals, :all_servers, :current_interface
+  helper_method :e, :is_cluey_user?, :current_employee, :print_money
+  helper_method :mobile_device?, :all_terminals, :all_servers, :current_interface
   helper_method :development_mode?, :production_mode?
   helper_method :server_ip, :active_employee_ids
   
@@ -19,6 +19,10 @@ class ApplicationController < ActionController::Base
   
   def e
     session[:current_employee_id]
+  end
+  
+  def is_cluey_user?
+    Employee.is_cluey_user? e
   end
 
   def current_employee
