@@ -106,6 +106,16 @@ function doSelectMenuItem(productId, element) {
         return;
     }
     
+    //fetch this product from the products js array
+    product = products[productId];
+    
+    //if double and no price set
+    if(menuItemDoubleMode && (product.double_price == 0)) {
+        niceAlert("Price has not been set for a double of this item.");
+        setMenuItemDoubleMode(false);
+        return;
+    }
+    
     if(currentMenuItemQuantity == "")
         currentMenuItemQuantity = "1";
     
@@ -117,8 +127,6 @@ function doSelectMenuItem(productId, element) {
             
     currentSelectedMenuItemElement = element;
 
-    //fetch this product from the products js array
-    product = products[productId];
     amount = currentMenuItemQuantity;
     
     //reset the quantity

@@ -237,7 +237,19 @@ function productScanned() {
 }
 
 function doSelectMenuItem(productId, menuItemId, element) {
-    ensureLoggedIn();
+    if(!ensureLoggedIn()) {
+        return;
+    }
+    
+    //fetch this product from the products js array
+    product = products[productId];
+    
+    //if double and no price set
+    if(menuItemDoubleMode && (product.double_price == 0)) {
+        niceAlert("Price has not been set for a double of this item.");
+        setMenuItemDoubleMode(false);
+        return;
+    }
     
     if(inStockTakeMode) {
         loadStockTakeReceiptArea(productId, menuItemId);
@@ -260,8 +272,6 @@ function doSelectMenuItem(productId, menuItemId, element) {
     
     currentSelectedMenuItemElement = element;
 
-    //fetch this product from the products js array
-    product = products[productId]
     amount = currentMenuItemQuantity;
     
     //reset the quantity
@@ -918,7 +928,7 @@ function clearOrder(selectedTable) {
     clearReceipt();
 }
 
-function doTotal() {
+function doTotal(applyDefaultServiceCharge) {
     if(currentOrderEmpty()) {
         setStatusMessage("No order present to sub-total!", true, true);
         return;
@@ -928,7 +938,9 @@ function doTotal() {
         return;
     }
     
-    applyDefaultServiceChargePercent();
+    if(applyDefaultServiceCharge) {
+        applyDefaultServiceChargePercent();
+    }
     
     totalOrder = getCurrentOrder();
     

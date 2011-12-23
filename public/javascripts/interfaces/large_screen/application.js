@@ -107,6 +107,16 @@ function doGlobalInit() {
         //unhighlight last active
         lastActiveElement.addClass("focus");
         
+        if(lastActiveElement.attr("id") != "scan_upc") {
+            event = event || window.event
+ 
+            //the following was an attempt to hide the ipad keyboard but didnt work
+            if (event.preventDefault) {  // W3C variant
+                event.preventDefault()
+            } else { // IE<9 variant:
+                event.returnValue = false
+            }
+        }
     });
     
     if(doBeep) {

@@ -41,10 +41,12 @@ class CashTotal < ActiveRecord::Base
   RS_SALES_TAX_SUMMARY = 6
   RS_SALES_BY_CATEGORY = 7
   RS_SALES_BY_PRODUCT = 8
+  RS_SERVICE_CHARGE_BY_PAYMENT_TYPE = 9
   
   REPORT_SECTIONS = [
     RS_SALES_BY_DEPARTMENT, RS_SALES_BY_PAYMENT_TYPE, RS_CASH_SUMMARY, RS_SALES_BY_SERVER, 
-    RS_CASH_PAID_OUT, RS_SALES_TAX_SUMMARY, RS_SALES_BY_CATEGORY, RS_SALES_BY_PRODUCT
+    RS_CASH_PAID_OUT, RS_SALES_TAX_SUMMARY, RS_SALES_BY_CATEGORY, RS_SALES_BY_PRODUCT,
+    RS_SERVICE_CHARGE_BY_PAYMENT_TYPE
   ]
   
   validates :total_type, :presence => true, :inclusion => { :in => VALID_TOTAL_TYPES }
@@ -80,6 +82,7 @@ class CashTotal < ActiveRecord::Base
     @sales_by_department = {}
     @sales_by_server = {}
     @sales_by_payment_type = {}
+    @service_charge_by_payment_type = {}
     @cash_summary = {}
     @taxes = {}
         
@@ -221,6 +224,13 @@ class CashTotal < ActiveRecord::Base
         logger.info "Increasing sales_by_payment_type for payment_type: #{@payment_type} by: #{order.total}"
         @sales_by_payment_type[@payment_type] += order.total 
         
+        if !@service_charge_by_payment_type[@payment_type]
+          @service_charge_by_payment_type[@payment_type] = 0
+        end
+            
+        logger.info "Increasing service_charge_by_payment_type for payment_type: #{@payment_type} by: #{order.service_charge}"
+        @service_charge_by_payment_type[@payment_type] += order.service_charge 
+        
         #overall total
         @overall_total += order.total
       end
@@ -265,6 +275,7 @@ class CashTotal < ActiveRecord::Base
     @cash_total_data[:sales_by_department] = @sales_by_department
     @cash_total_data[:sales_by_server] = @sales_by_server
     @cash_total_data[:sales_by_payment_type] = @sales_by_payment_type
+    @cash_total_data[:service_charge_by_payment_type] = @service_charge_by_payment_type
     @cash_total_data[:taxes] = @taxes
     @cash_total_data[:cash_summary] = @cash_summary
     

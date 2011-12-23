@@ -60,15 +60,17 @@ function promptForServiceCharge() {
     
     keypadPosition = $('#' + popupId).find('.service_charge_popup_keypad_container');
     
-    clickFunction = function(val) {
-        if(serviceCharge == 0) serviceCharge = "";
-        
-        serviceCharge = serviceCharge.toString() + val;
-        
-        $('#' + popupId).find('.service_charge_popup_amount').html(serviceCharge);
-    };
+    //    clickFunction = function(val) {
+    //        if(serviceCharge == 0) serviceCharge = "";
+    //        
+    //        serviceCharge = serviceCharge.toString() + val;
+    //        
+    //        $('#' + popupId).find('.service_charge_popup_amount').html(serviceCharge);
+    //    };
+    clickFunction = null;
     
     cancelFunction = function() {
+        alert("ok");
         oldVal = $('#' + popupId).find('.service_charge_popup_amount').html();
         newVal = oldVal.substring(0, oldVal.length - 1);
         $('#' + popupId).find('.service_charge_popup_amount').html(newVal);
@@ -82,12 +84,14 @@ function promptForServiceCharge() {
     
     setDefaultServiceChargeButtonSelected(popupEl, defaultServiceChargePercent);
     
+    serviceCharge = number_to_currency(serviceCharge);
+    
     popupEl.find('.service_charge_popup_amount').html(serviceCharge);
     
     setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
 }
 
-function saveServiceCharge(performTotal) {    
+function saveServiceCharge(performTotal) {
     serviceCharge = parseFloat(serviceCharge);
     
     if(isNaN(serviceCharge)) {
@@ -108,8 +112,22 @@ function saveServiceCharge(performTotal) {
     hideServiceChargePopup();
     
     if(performTotal) {
-        doTotal();
+        doTotal(false);
     }
+}
+
+function setServiceCharge() {
+    popupEl = $('#totals_screen_default_popup_anchor');
+    popupId = popupEl.GetBubblePopupID();
+    var popupEl = $('#' + popupId);
+    
+    serviceCharge = parseFloat(popupEl.find('.service_charge_popup_amount').html());
+    
+    if(isNaN(serviceCharge)) {
+        serviceCharge = 0;
+    }
+    
+    saveServiceCharge(true);
 }
 
 function cancelServiceCharge() {
@@ -124,11 +142,7 @@ function cancelServiceCharge() {
 }
 
 function hideServiceChargePopup() {
-    if(currentScreenIsMenu()) {
-        hideMenuScreenDefaultPopup();
-    } else if (currentScreenIsTotals()) {
-        hideTotalsScreenDefaultPopup();
-    }
+    hideTotalsScreenDefaultPopup();
 }
 
 function presetServiceChargePercentageClicked(percentage) {
@@ -140,14 +154,8 @@ function presetServiceChargePercentageClicked(percentage) {
         serviceCharge = currency((percentage * parseFloat(getCurrentOrder().total))/100, false);
     }
     
-    if(currentScreenIsMenu()) {
-        popupEl = $('#menu_screen_default_popup_anchor');
-    } else if (currentScreenIsTotals()) {
-        popupEl = $('#totals_screen_default_popup_anchor');
-    }
-        
+    popupEl = $('#totals_screen_default_popup_anchor');
     popupId = popupEl.GetBubblePopupID();
-    
     var popupEl = $('#' + popupId);
     
     popupEl.find('.service_charge_popup_amount').html(serviceCharge);
@@ -222,7 +230,7 @@ function saveCashback() {
     hideCashbackPopup();
     
     if (currentScreenIsTotals()) {
-        doTotal();
+        doTotal(false);
     }
 }
 

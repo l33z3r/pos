@@ -100,7 +100,7 @@ class ButtonMapper
     when TOTAL_BUTTON
       @retval = "quickSale();"
     when SUBTOTAL_BUTTON
-      @retval = "doTotal();"
+      @retval = "doTotal(true);"
     when SAVE_BUTTON
       @retval = "doLogout();"
     when MORE_OPTIONS_BUTTON

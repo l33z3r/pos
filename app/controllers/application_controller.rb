@@ -206,7 +206,7 @@ class ApplicationController < ActionController::Base
     raise exception
   end
   
-  rescue_from Errno::EHOSTUNREACH, SocketError do |host_unreachable_exception|
+  rescue_from Errno::EHOSTUNREACH, Errno::ECONNREFUSED, Errno::EALREADY, SocketError do |host_unreachable_exception|
     SOCKET_EXCEPTION_LOGGER.error
     SOCKET_EXCEPTION_LOGGER.error('SOCKET ERROR!')
     SOCKET_EXCEPTION_LOGGER.error("Time: #{Time.now.to_s(:long)}")
