@@ -10,7 +10,7 @@
 #
 
 class DisplayButtonGroup < ActiveRecord::Base
-  has_many :display_buttons
+  has_many :display_buttons, :dependent => :nullify
   
   validates :name, :presence => true, :length => { :minimum => 3 }
   

@@ -5,6 +5,8 @@ $(function() {
 var selectedFromDate;
 var selectedToDate;
 var terminalId;
+var hour_from;
+var hour_to;
 
 /**
  *  Reports
@@ -47,6 +49,15 @@ function addTerminalFilter(terminal_id) {
     runGlancesSearch();
 }
 
+function addHourFromFilter(hour) {
+    hour_from = hour;
+    runGlancesSearch();
+}
+
+function addHourToFilter(hour) {
+    hour_to = hour;
+    runGlancesSearch();
+}
 
 function addDateFilter(interval_selected) {
     //clear from and to fields
@@ -97,7 +108,9 @@ function runGlancesSearch(){
         data: {
              "search[created_at_gt]" : selectedFromDate,
              "search[created_at_lt]" : selectedToDate,
-             "search[terminal_id_equals]" : terminalId
+             "search[terminal_id_equals]" : terminalId,
+             "search2[hour_from]" : hour_from,
+             "search2[hour_to]" : hour_to
         }
     });
 }

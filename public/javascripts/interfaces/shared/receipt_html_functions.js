@@ -148,7 +148,7 @@ function print(content) {
     
 }
 
-function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText) {
+function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, includeVatBreakdown) {
     if(typeof(includeBusinessInfo) == 'undefined') {
         includeBusinessInfo = false;
     }
@@ -207,6 +207,58 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText) {
     }
     
     finalReceiptHTML += "</div>" + clearHTML;
+    
+    if(includeVatBreakdown) {
+        
+        if(taxChargable) {
+        //TODO
+        } else {
+            finalReceiptHTML += "<div class='data_table vat_breakdown'>";
+            finalReceiptHTML += "<div class='header'>" + taxLabel + " Breakdown</div>" + clearHTML;
+        
+            //construct table
+            var taxRates = {}
+        
+            for(var i=0; i<totalOrder.items.length; i++) {
+                var item = totalOrder.items[i];
+            
+                var itemPrice = parseFloat(item['total_price']);
+                var itemTaxRate = item.product['tax_rate'];
+            
+                console.log("TR: " + itemTaxRate);
+            
+                var taxAmount = itemPrice - (itemPrice/(1 + (parseFloat(itemTaxRate)/100)));
+                var netAmount = itemPrice - taxAmount;
+                var grossAmount = itemPrice;
+            
+                if(typeof(taxRates[itemTaxRate]) == 'undefined') {
+                    taxRates[itemTaxRate] = {
+                        net : 0, 
+                        tax : 0, 
+                        gross : 0
+                    };
+                }
+            
+                taxRates[itemTaxRate].net += netAmount;
+                taxRates[itemTaxRate].tax += taxAmount;
+                taxRates[itemTaxRate].gross += grossAmount;
+            }
+            
+            var taxes_data = new Array();
+            for(taxRateKey in taxRates) {
+                var taxData = taxRates[taxRateKey];
+                taxes_data.push(new Array(taxRateKey, taxData.net, taxData.tax, taxData.gross));
+            }
+    
+            finalReceiptHTML += "<div id='cash_totals_data_table'>";
+            finalReceiptHTML += getCashTotalTaxesDataTable(taxes_data) + clearHTML;
+            finalReceiptHTML += getCashTotalTaxesDataTableTotals("Total", taxes_data) + clearHTML;
+            finalReceiptHTML += "</div>" + clearHTML;
+    
+            finalReceiptHTML += "<div class='footer'>Tax Reg No: " + taxNumber + "</div>" + clearHTML;
+            finalReceiptHTML += "</div>" + clearHTML;
+        }
+    }
     
     return finalReceiptHTML;
 }

@@ -17,6 +17,8 @@ class Employee < ActiveRecord::Base
   validates :overtime_rate, :numericality => true, :allow_blank => true
   validates :role_id, :presence => true
   
+  CLUEY_USER_STAFF_ID = -1
+  
   #for will_paginate
   cattr_reader :per_page
   @@per_page = 10
@@ -30,7 +32,12 @@ class Employee < ActiveRecord::Base
   end
   
   def self.all_except_cluey
-    where("nickname != ?", "cluey")
+    where("staff_id != ?", CLUEY_USER_STAFF_ID)
+  end
+  
+  def self.is_cluey_user? id
+    @employee = find_by_id(id)
+    @employee and (@employee.staff_id.to_i == CLUEY_USER_STAFF_ID)
   end
 end
 

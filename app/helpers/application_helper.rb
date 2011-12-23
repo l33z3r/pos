@@ -11,7 +11,9 @@ module ApplicationHelper
   end
   
   def employee_image_thumb employee, show_default=false
-    if employee.has_employee_image?
+    if Employee.is_cluey_user?(employee.id)
+      image_tag "cluey_user_image.jpg"
+    elsif employee.has_employee_image?
       image_tag employee.employee_image.url(:thumb)
     elsif show_default
       image_tag "default_employee_image.jpg"

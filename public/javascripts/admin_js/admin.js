@@ -113,14 +113,33 @@ function updateProductPrice(product_id, currentPrice) {
 function newButtonGroup() {
     name = prompt("Button Group Name:");
     
+    if(name != null) {
+        showLoadingDiv();
+    
+        $.ajax({
+            type: 'POST',
+            url: 'button_group_create',
+            success : function() {
+                window.location.reload();
+            },
+            data: {
+                name : name
+            }
+        });
+    }
+}
+
+function deleteButtonGroup(dbg_id) {
+    showLoadingDiv();
+    
     $.ajax({
         type: 'POST',
-        url: 'create_button_group',
+        url: 'button_group_delete',
         success : function() {
             window.location.reload();
         },
         data: {
-            name : name
+            dbg_id : dbg_id
         }
     });
 }

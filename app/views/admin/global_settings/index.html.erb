@@ -29,7 +29,7 @@
           <li><a id="discounts_section_link" href="#discounts_section_section">Discounts</a></li>
           <li><a id="misc_section_link" href="#misc_section">Misc</a></li>
 
-          <% if params[:cp] == "cluey100" %>
+          <% if params[:cp] == "cluey100" or is_cluey_user? %>
             <li><a id="cluey_settings_section_link" href="#cluey_settings_section">Cluey Settings</a></li>
           <% end %>
         </ul>
@@ -213,15 +213,6 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Tax Number</td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::TAX_NUMBER %>
-                      <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.text_field :value %>
-                      <% end %>
-                    </td>
-                  </tr>
-                  <tr>
                     <td>Email</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::EMAIL %>
@@ -386,7 +377,33 @@
                       <% end %>
                     </td>
                   </tr>
+                  
+                  <tr>
+                    <td>Tax Number</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::TAX_NUMBER %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
 
+                  <tr>
+                    <td>Print <%= @tax_label %> Receipt?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PRINT_VAT_RECEIPT %>
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">Yes</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">No</div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  
                   <tr>
                     <td>Enter Default Sales Tax Rate</td>
                     <td class="text_align_left">
@@ -654,21 +671,6 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Print VAT Receipt?</td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::PRINT_VAT_RECEIPT %>
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
-                      <div class="label">Yes</div>
-                      <div class="clear">&nbsp;</div>
-
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
-                      <div class="label">No</div>
-                      <div class="clear">&nbsp;</div>
-                    </td>
-                  </tr>
-                  <tr>
                     <td>All Mobile Devices Receive Order Notifications?</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::All_DEVICES_ORDER_NOTIFICATION %>
@@ -805,6 +807,29 @@
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Use Windows OS Printer Margins?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::WINDOWS_PRINTER_MARGINS %>
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">Yes</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">No</div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Your IP Address
+                    </td>
+                    <td class="text_align_left">
+                      <input type="text" value="<%= request.remote_ip %>" size="30" disabled="true"/>
                     </td>
                   </tr>
                   <tr>

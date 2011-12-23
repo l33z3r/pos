@@ -158,37 +158,46 @@ class CashTotal < ActiveRecord::Base
           @tax_chargable = GlobalSetting.parsed_setting_for GlobalSetting::TAX_CHARGABLE
           @global_tax_rate = GlobalSetting.parsed_setting_for GlobalSetting::GLOBAL_TAX_RATE
             
-          if @tax_chargable
-            @order_item_price += ((@global_tax_rate * @order_item_price)/100)
-          end
-          
           @sales_by_product[@product_name][:quantity] += 1
           @sales_by_product[@product_name][:sales_total] += @order_item_price
           
           @sales_by_category[@category_name] += @order_item_price
           @sales_by_department[@department_name] += @order_item_price
           
-          @tax_rate = order_item.tax_rate
-          
-          #if tax rate on an item is -1 then tax was not chargable for that transaction
-          if @tax_rate == -1
-            #use the global tax rate
+          if @tax_chargable
             @tax_rate = @global_tax_rate
-          end
             
-          @tax_rate_key = @tax_rate.to_s
+            @tax_rate_key = @tax_rate.to_s
               
-          if !@taxes[@tax_rate_key]
-            @taxes[@tax_rate_key] = {:net => 0, :tax => 0, :gross => 0}
+            if !@taxes[@tax_rate_key]
+              @taxes[@tax_rate_key] = {:net => 0, :tax => 0, :gross => 0}
+            end
+              
+            @order_item_tax = (@tax_rate.to_f * @order_item_price.to_f)/100
+            @order_item_price_before_tax = @order_item_price.to_f - @order_item_tax
+            @order_item_gross = @order_item_price
+              
+            @taxes[@tax_rate_key][:net] += @order_item_price_before_tax
+            @taxes[@tax_rate_key][:tax] += @order_item_tax
+            @taxes[@tax_rate_key][:gross] += @order_item_gross
+            
+          else
+            @tax_rate = order_item.tax_rate
+          
+            @tax_rate_key = @tax_rate.to_s
+              
+            if !@taxes[@tax_rate_key]
+              @taxes[@tax_rate_key] = {:net => 0, :tax => 0, :gross => 0}
+            end
+
+            @order_item_tax = @order_item_price.to_f - (@order_item_price.to_f/(1 + (@tax_rate.to_f/100)))
+            @order_item_price_before_tax = @order_item_price.to_f - @order_item_tax
+            @order_item_gross = @order_item_price
+              
+            @taxes[@tax_rate_key][:net] += @order_item_price_before_tax
+            @taxes[@tax_rate_key][:tax] += @order_item_tax
+            @taxes[@tax_rate_key][:gross] += @order_item_gross
           end
-              
-          @order_item_tax = (@tax_rate.to_f * @order_item_price.to_f)/100
-          @order_item_price_before_tax = @order_item_price.to_f - @order_item_tax
-          @order_item_gross = @order_item_price
-              
-          @taxes[@tax_rate_key][:net] += @order_item_price_before_tax
-          @taxes[@tax_rate_key][:tax] += @order_item_tax
-          @taxes[@tax_rate_key][:gross] += @order_item_gross
             
         end
           

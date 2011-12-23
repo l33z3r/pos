@@ -4,13 +4,7 @@ class Reports::GlancesController < Admin::AdminController
 
   layout 'reports'
 
-  #format 0-24
-  @@opening_time = 10
-  @@closing_time = 2
-
   def index
-    @selected_from_date = Date.today.midnight + @@opening_time.hours
-    @selected_to_date = Date.tomorrow.midnight + @@closing_time.hours
     glances_search
     last_z_total
   end
@@ -23,6 +17,10 @@ class Reports::GlancesController < Admin::AdminController
   end
 
   def glances_search
+    @opening_time = GlobalSetting.parsed_setting_for GlobalSetting::EARLIEST_OPENING_HOUR
+    @closing_time = GlobalSetting.parsed_setting_for GlobalSetting::LATEST_CLOSING_HOUR
+    @selected_from_date = Date.today.midnight + @opening_time.hours
+    @selected_to_date = Date.tomorrow.midnight + @closing_time.hours
     @all_terminals = all_terminals
    # get_sales_data
     @orders = get_sales_data
@@ -54,7 +52,7 @@ class Reports::GlancesController < Admin::AdminController
     @sales_last_7_days = Hash.new { |h,k| h[k] = ["",0.0] }
     
     for order in orders
-      if !order.is_void
+      if !order.is_void and check_interval_hour(order)
         #iterate order items
         iterate_order_items(order)
         #sales per hour for graph
@@ -70,6 +68,29 @@ class Reports::GlancesController < Admin::AdminController
       end
     end
     @top_selling_items = @top_selling_items.sort_by { |k, v| v[1] }.reverse.first(5)
+  end
+
+  def check_interval_hour order
+    if @hour_interval_from.nil? and @hour_interval_to.nil?
+      logger.info "ACAAAAAAAAAAA-1"    
+      return true
+    else
+      order_hour = order.created_at.hour
+      if @hour_interval_from.nil? and order_hour.to_i < @hour_interval_to.to_i
+        logger.info "ACAAAAAAAAAAA-2"
+        return true
+      elsif @hour_interval_to.nil? and order_hour.to_i >= @hour_interval_from.to_i
+        logger.info "ACAAAAAAAAAAA-3"
+        return true
+      elsif order_hour.to_i >= @hour_interval_from.to_i and order_hour.to_i < @hour_interval_to.to_i
+        logger.info "ACAAAAAAAAAAA-4"
+        return true
+      end
+    end
+    logger.info "###########################}}"
+    logger.info "#{order_hour.to_i}"
+    logger.info "#{@hour_interval_from.to_i}"
+    logger.info "#{@hour_interval_to.to_i}"
   end
 
   def get_busiest_hour
@@ -88,12 +109,12 @@ class Reports::GlancesController < Admin::AdminController
   end
 
   def calculate_summary
-    date_to = Date.today.tomorrow.midnight + @@closing_time.hours
-    date_from = Date.today.prev_day(6).midnight + @@opening_time.hours
+    date_to = Date.today.tomorrow.midnight + @closing_time.hours
+    date_from = Date.today.prev_day(6).midnight + @opening_time.hours
     @summary_orders = Order.where("created_at >= ? AND created_at < ? AND is_void = ?", date_from, date_to, false)
     for order in @summary_orders
       #check if the order is of the past day after 24 hs
-      if order.created_at.to_time.strftime("%H").to_i < @@opening_time
+      if order.created_at.to_time.strftime("%H").to_i < @opening_time
         order.created_at = order.created_at.to_date - 1.day
       end
       if(@sales_last_7_days[order.created_at.to_date.to_s][0].eql?(""))
@@ -121,7 +142,7 @@ class Reports::GlancesController < Admin::AdminController
   end
 
   def calculate_sales_per_hour order
-    order_hour = order.created_at.strftime('%Y-%m-%d %H:%M:%S').to_time.hour
+    order_hour = order.created_at.strftime('%Y-%m-%d %H:%M:%S').to_time.hour   # verrrrrrrrrrrrrrrrrrrrrr
     @sales_per_hour[order_hour] += order.total
     @sales_per_hour[order_hour] = @sales_per_hour[order_hour].round(2)
   end
@@ -204,9 +225,9 @@ class Reports::GlancesController < Admin::AdminController
 
     #start to show respect the opening time
     if @h_interval == 1
-      @elems_to_move = x_axis.select { |elem| elem.to_i < @@opening_time }.length
+      @elems_to_move = x_axis.select { |elem| elem.to_i < @opening_time }.length
     else
-      @elems_to_move = x_axis.select { |elem| elem.to_i < @@opening_time and elem.to_i+1 < @@opening_time }.length
+      @elems_to_move = x_axis.select { |elem| elem.to_i < @opening_time and elem.to_i+1 < @opening_time }.length
     end
     x_axis = x_axis.rotate(@elems_to_move)
     values = values.rotate(@elems_to_move)
@@ -228,13 +249,19 @@ class Reports::GlancesController < Admin::AdminController
     if !params[:search]
       query = Order.where("created_at >= ? AND created_at < ?", @selected_from_date, @selected_to_date)
     else
+      if params[:search2] and params[:search2][:hour_from]
+        @hour_interval_from = params[:search2][:hour_from]
+      end
+      if params[:search2] and params[:search2][:hour_to]
+        @hour_interval_to = params[:search2][:hour_to]
+      end
       if params[:search] and params[:search][:created_at_gt] and !params[:search][:created_at_gt].empty?
         @selected_from_date = params[:search][:created_at_gt]
-        params[:search][:created_at_gt] = @selected_from_date.to_date.midnight + @@opening_time.hours
+        params[:search][:created_at_gt] = @selected_from_date.to_date.midnight + @opening_time.hours
       end
       if params[:search] and params[:search][:created_at_lt] and !params[:search][:created_at_lt].empty?
         @selected_to_date = params[:search][:created_at_lt]
-        params[:search][:created_at_lt] = @selected_to_date.to_date.tomorrow.midnight + @@closing_time.hours
+        params[:search][:created_at_lt] = @selected_to_date.to_date.tomorrow.midnight + @closing_time.hours
       end
       query = Order.search(params[:search])
     end

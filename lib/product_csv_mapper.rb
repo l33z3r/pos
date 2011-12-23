@@ -72,11 +72,17 @@ class ProductCSVMapper
   end
   
   def self.price_from_row row
-    get_index row, PRICE_INDEX
+    get_index row, PRICE_INDEX 
   end
       
   def self.double_price_from_row row
-    get_index row, DOUBLE_PRICE_INDEX
+    double_price = get_index row, DOUBLE_PRICE_INDEX
+    
+    if double_price.blank?
+      double_price = 0
+    end
+    
+    return double_price
   end
   
   def self.code_num_from_row row
@@ -88,15 +94,33 @@ class ProductCSVMapper
   end
   
   def self.price_2_from_row row
-    get_index row, PRICE_2_INDEX
+    price_2 = get_index row, PRICE_2_INDEX
+    
+    if price_2.blank?
+      price_2 = 0
+    end
+    
+    return price_2
   end
   
   def self.price_3_from_row row
-    get_index row, PRICE_3_INDEX
+    price_3 = get_index row, PRICE_3_INDEX
+    
+    if price_3.blank?
+      price_3 = 0
+    end
+    
+    return price_3
   end
   
   def self.price_4_from_row row
-    get_index row, PRICE_4_INDEX
+    price_4 = get_index row, PRICE_4_INDEX
+    
+    if price_4.blank?
+      price_4 = 0
+    end
+    
+    return price_4
   end
   
   def self.margin_percent_from_row row

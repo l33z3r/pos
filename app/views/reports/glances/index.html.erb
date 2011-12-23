@@ -43,21 +43,40 @@
                       <option value="5">All Time</option>
                     </select>
                   </div>
-
-                  <div class="dropdown_container">
-                    <div class="label">From</div>
-                    <div class="input_date">
-                      <input type="text" size="8" id="date_from" name="date_from"
-                             value="<%=@selected_from_date.to_date.strftime("%d-%m-%Y")%>"/>
-                    </div>
-                  </div>
-                  <div class="dropdown_container">
-                    <div class="label">To</div>
-                    <div class="input_date">
-                      <input type="text" size="8" id="date_to" name="date_to"
-                             value="<%=@selected_to_date.to_date.strftime("%d-%m-%Y")%>"/>
-                    </div>
-                  </div>
+                 <div id="days">
+                   <div class="dropdown_container">
+                     <div class="label">Day From</div>
+                     <div class="input_date">
+                       <input type="text" size="8" id="date_from" name="date_from"
+                              value="<%=@selected_from_date.to_date.strftime("%d-%m-%Y")%>"/>
+                     </div>
+                   </div>
+                   <div class="dropdown_container">
+                     <div class="label">Day To</div>
+                     <div class="input_date">
+                       <input type="text" size="8" id="date_to" name="date_to"
+                              value="<%=@selected_to_date.to_date.strftime("%d-%m-%Y")%>"/>
+                     </div>
+                   </div>
+                 </div>
+                 <div id="hours">
+                   <div class="dropdown_container">
+                     <div class="label">Hour From</div>
+                     <select onchange="addHourFromFilter($(this).val())">
+                       <% for h in 0..23 %>
+                         <option value="<%=h%>" <%= (h==0) ?"selected":"" %>><%=h%></option>
+                       <% end %>
+                     </select> 
+                   </div>
+                   <div class="dropdown_container">
+                     <div class="label">Hour To</div>
+                     <select onchange="addHourToFilter($(this).val())">
+                       <% for h in 0..23 %>
+                         <option value="<%=h%>" <%= (h==23) ?"selected":"" %>><%=h%></option>
+                       <% end %>
+                     </select>
+                   </div>
+                 </div>
                   <div class="clear">&nbsp;</div>
                 </div>
             </div>

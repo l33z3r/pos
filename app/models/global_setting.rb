@@ -61,8 +61,9 @@ class GlobalSetting < ActiveRecord::Base
   TAX_NUMBER = 32
   PRINT_VAT_RECEIPT = 33
   MENU_SCREEN_TYPE = 34
-  EARLIEST_OPENING_HOUR = 35
-  LATEST_CLOSING_HOUR = 36
+  WINDOWS_PRINTER_MARGINS = 35
+  EARLIEST_OPENING_HOUR = 36
+  LATEST_CLOSING_HOUR = 37
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -99,6 +100,7 @@ class GlobalSetting < ActiveRecord::Base
     TAX_NUMBER => "Tax Number",
     PRINT_VAT_RECEIPT => "Print VAT Receipt",
     MENU_SCREEN_TYPE => "Menu Screen Type",
+    WINDOWS_PRINTER_MARGINS => "Use Windows Printer Margins",
     EARLIEST_OPENING_HOUR => "Earliest Opening Hour",
     LATEST_CLOSING_HOUR => "Latest Closing Hour"
   }
@@ -165,7 +167,7 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_key(:key => RELOAD_HTML5_CACHE_TIMESTAMP.to_s, :value => 0, :label_text => LABEL_MAP[RELOAD_HTML5_CACHE_TIMESTAMP])
       @gs.parsed_value = @gs.value.to_f
     when WEBSOCKET_IP
-      @gs = find_or_create_by_key(:key => "#{WEBSOCKET_IP.to_s}_#{args[:fingerprint]}", :value => "192.168.1.X", :label_text => LABEL_MAP[WEBSOCKET_IP])
+      @gs = find_or_create_by_key(:key => "#{WEBSOCKET_IP.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[WEBSOCKET_IP])
       @gs.parsed_value = @gs.value
     when CURRENCY_NOTES_IMAGES
       @gs = find_or_create_by_key(:key => CURRENCY_NOTES_IMAGES.to_s, :value => CURRENCY_NOTES_IMAGES_EURO, :label_text => LABEL_MAP[CURRENCY_NOTES_IMAGES])
@@ -194,6 +196,9 @@ class GlobalSetting < ActiveRecord::Base
     when MENU_SCREEN_TYPE
       @gs = find_or_create_by_key(:key => "#{MENU_SCREEN_TYPE.to_s}_#{args[:fingerprint]}", :value => 1, :label_text => LABEL_MAP[MENU_SCREEN_TYPE])
       @gs.parsed_value = @gs.value.to_i
+    when WINDOWS_PRINTER_MARGINS
+      @gs = find_or_create_by_key(:key => WINDOWS_PRINTER_MARGINS.to_s, :value => "false", :label_text => LABEL_MAP[WINDOWS_PRINTER_MARGINS])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when EARLIEST_OPENING_HOUR
       @gs = find_or_create_by_key(:key => EARLIEST_OPENING_HOUR.to_s, :value => 5, :label_text => LABEL_MAP[EARLIEST_OPENING_HOUR])
       @gs.parsed_value = @gs.value.to_i
@@ -267,6 +272,9 @@ class GlobalSetting < ActiveRecord::Base
       
       write_attribute("value", new_value)
     when PRINT_VAT_RECEIPT
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when WINDOWS_PRINTER_MARGINS
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     else
