@@ -121,7 +121,7 @@
     <% end %>
   </div>
 
-  <% if !@items_per_hour.empty? %>
+  <% if !@items_per_hour.empty? and @graph %>
     <%= high_chart("graph_container", @graph) do |c| %>
       <%= "options.tooltip.formatter = function() { return this.x +'-'+ parseInt(this.x+1) +' hs: '+ this.y +' euros';}" %>
     <%end %>
