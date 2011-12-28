@@ -94,7 +94,7 @@ class ButtonMapper
     when ACCESS_CONTROL_BUTTON
       @retval = "goTo('#{access_admin_display_buttons_path}'); return false;"
     when MANAGE_MODIFIER_CATEGORIES_BUTTON
-      @retval = "goTo('#{admin_modifier_categories_path}'; return false;"
+      @retval = "goTo('#{admin_modifier_categories_path}'); return false;"
     when ROOM_BUILDER_BUTTON
       @retval = "goTo('#{admin_rooms_path}'); return false;"
     when TOTAL_BUTTON
