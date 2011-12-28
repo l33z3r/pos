@@ -25,7 +25,7 @@
           </tr>
           <tr>
             <td width="200" class="left">Busiest Hour</td>
-            <td width="80" class="right"><%=@busiest_hour%>-<%=@busiest_hour+1%> hs.</td>
+            <td width="80" class="right"><% if @busiest_hour %><%=@busiest_hour%>-<%=@busiest_hour+1%> hs.<% end %></td>
           </tr>
           <%#*<tr>%>
             <%#*<td width="200" class="left">Qty of No Sale</td>%>
