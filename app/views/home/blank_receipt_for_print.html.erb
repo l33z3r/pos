@@ -14,9 +14,7 @@
         margin: 0px;
         overflow: hidden;
 
-        <% if @windows_printer_margins %>
-          margin-left: 14px;
-        <% end %>
+        <%= render "/partials/interfaces/shared/receipt_margins_css_#{@order_receipt_width_setting}" %>
       }
 
       body * {

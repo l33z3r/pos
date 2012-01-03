@@ -124,19 +124,45 @@ class ProductCSVMapper
   end
   
   def self.margin_percent_from_row row
-    get_index row, MARGIN_PERCENT_INDEX
+    margin_percent = get_index row, MARGIN_PERCENT_INDEX
+    
+    if margin_percent.blank?
+      margin_percent = 0
+    end
+    
+    return margin_percent
   end
   
   def self.items_per_unit_from_row row
-    get_index row, ITEMS_PER_UNIT_INDEX
+    items_per_unit = get_index row, ITEMS_PER_UNIT_INDEX
+    
+    if items_per_unit.blank?
+      items_per_unit = 1
+    end
+    
+    return items_per_unit
   end
   
   def self.quantity_per_container_from_row row
-    get_index row, QUANTITY_PER_CONTAINER_INDEX
+    quantity_per_container = get_index row, QUANTITY_PER_CONTAINER_INDEX
+    
+    if quantity_per_container.blank?
+      quantity_per_container = 1
+    end
+    
+    return quantity_per_container
   end
   
   def self.cost_price_from_row row
     get_index row, COST_PRICE_INDEX
+    
+    cost_price = get_index row, COST_PRICE_INDEX
+    
+    if cost_price.blank?
+      cost_price = 0
+    end
+    
+    return cost_price
   end
   
   def self.unit_from_row row
@@ -144,7 +170,13 @@ class ProductCSVMapper
   end
   
   def self.size_from_row row
-    get_index row, SIZE_INDEX
+    size = get_index row, SIZE_INDEX
+    
+    if size.blank?
+      size = 0
+    end
+    
+    return size
   end
   
   def self.get_index row, index
