@@ -71,26 +71,19 @@ class Reports::GlancesController < Admin::AdminController
   end
 
   def check_interval_hour order
+    order_hour = order.created_at.hour
     if @hour_interval_from.nil? and @hour_interval_to.nil?
-      logger.info "ACAAAAAAAAAAA-1"    
       return true
-    else
-      order_hour = order.created_at.hour
-      if @hour_interval_from.nil? and order_hour.to_i < @hour_interval_to.to_i
-        logger.info "ACAAAAAAAAAAA-2"
-        return true
-      elsif @hour_interval_to.nil? and order_hour.to_i >= @hour_interval_from.to_i
-        logger.info "ACAAAAAAAAAAA-3"
-        return true
-      elsif order_hour.to_i >= @hour_interval_from.to_i and order_hour.to_i < @hour_interval_to.to_i
-        logger.info "ACAAAAAAAAAAA-4"
-        return true
-      end
+    elsif @hour_interval_from.nil? and order_hour.to_i < @hour_interval_to.to_i
+      return true
+    elsif @hour_interval_to.nil? and order_hour.to_i >= @hour_interval_from.to_i
+      return true
+    elsif @hour_interval_from.to_i <= @hour_interval_to.to_i and order_hour.to_i >= @hour_interval_from.to_i and order_hour.to_i < @hour_interval_to.to_i
+      return true
+    elsif @hour_interval_from.to_i > @hour_interval_to.to_i and (order_hour.to_i >= @hour_interval_from.to_i or order_hour.to_i < @hour_interval_to.to_i)
+      return true
     end
-    logger.info "###########################}}"
-    logger.info "#{order_hour.to_i}"
-    logger.info "#{@hour_interval_from.to_i}"
-    logger.info "#{@hour_interval_to.to_i}"
+    return false
   end
 
   def get_busiest_hour
@@ -134,7 +127,7 @@ class Reports::GlancesController < Admin::AdminController
   def calculate_sales_by_server order
     @sales_by_server[order.employee.nickname] += order.total
     @sales_by_server_total += order.total
-  end
+  end   
 
   def calculate_sales_by_payment_type order
     @sales_by_payment_type[order.payment_type] += order.total
@@ -142,7 +135,7 @@ class Reports::GlancesController < Admin::AdminController
   end
 
   def calculate_sales_per_hour order
-    order_hour = order.created_at.strftime('%Y-%m-%d %H:%M:%S').to_time.hour   # verrrrrrrrrrrrrrrrrrrrrr
+    order_hour = order.created_at.to_time.hour
     @sales_per_hour[order_hour] += order.total
     @sales_per_hour[order_hour] = @sales_per_hour[order_hour].round(2)
   end
@@ -189,7 +182,7 @@ class Reports::GlancesController < Admin::AdminController
     x_axis = Array.new
     values = Array.new
     max_value = 0.0
-    if @items_per_hour.length <= 10
+    if @items_per_hour.length <= 15
       #items per hour table
       @items_per_interval_hour = @items_per_hour
       #graph's axis
