@@ -1,7 +1,5 @@
 class Reports::GlancesController < Admin::AdminController
   
-  before_filter :check_logged_in
-
   layout 'reports'
 
   def index
