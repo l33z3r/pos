@@ -747,6 +747,7 @@ div#functions_screen div#header {
 
 div#functions_screen div#header div#back_button {
     float: left;
+    color: #000;
 }
 
 div#functions_screen div#header div.header_label {
