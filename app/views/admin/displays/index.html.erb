@@ -12,7 +12,6 @@
       <thead>
         <tr>
           <th width="180">Name</th>
-          <th width="110">Modifier Grid</th>
           <th width="40">Default?</th>
           <th width="40">Delete</th>
           <th width="80">Duplicate</th>
@@ -23,12 +22,6 @@
         <% @displays.each do |display| %>
           <tr>
             <td><%= link_to display.name, builder_admin_display_path(display) %></td>
-            <td>
-              <%= form_for([:admin, display]) do |f| %>
-                <%= f.collection_select :order_item_addition_grid_id, OrderItemAdditionGrid.find(:all), :id, :name, 
-                  {:prompt => "Select a Modifier Grid"}, {:onchange => "$(this).parent('form').submit();"} %>
-              <% end %>
-            </td>
             <td>
               <!-- jscrollpane requires all radio buttons go in a form as any that are not get unchecked! -->
               <form>
