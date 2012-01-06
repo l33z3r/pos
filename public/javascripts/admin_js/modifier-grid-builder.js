@@ -125,7 +125,7 @@ function clearCellInputs() {
     
     resetIsAddableInput();
     
-    $('#is_addable_input').attr('checked', false);
+    $('#is_addable_input').attr('checked', true);
     
     $('#is_addable_input').iphoneStyle({
         resizeContainer: false, 
