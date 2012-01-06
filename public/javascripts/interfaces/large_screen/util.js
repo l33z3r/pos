@@ -213,6 +213,8 @@ function showMenuScreen() {
     
     $('#menu_screen').show();
     $('#scan_upc').focus();
+    
+    hideStatusMessage();
 }
 
 function showTablesScreen() {
