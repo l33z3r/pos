@@ -3328,8 +3328,8 @@ div#reports_container div#report_option_tabs div.vtabs-tab-column {
     position: absolute;
     left: 0;
     margin: 0;
-    width: 80px;
-    min-width: 80px;
+    width: 90px;
+    min-width: 90px;
 }
 
 div#reports_container  h3.global_settings_header {
@@ -3374,11 +3374,23 @@ div#reports_container  div#at_a_glance_filters {
 
 div#reports_container  div#at_a_glance_filters div.dropdown_container{
     float: left;
-    width: 170px;
+    width: 110px;
     text-align: left;
     font-weight: bold;
     margin-left: 15px;
     margin-top: 5px;
+}
+
+div#reports_container  div#at_a_glance_filters div#days{
+    margin-left: 280px;
+}
+
+div#reports_container  div#at_a_glance_filters div#hours{
+    float: right;
+}
+
+div#reports_container  div#at_a_glance_filters div#hours div.dropdown_container{
+    width: 90px;
 }
 
 div#reports_container  div#at_a_glance_filters div.label,
@@ -3424,6 +3436,19 @@ div#reports_container  div#at_a_glance_results{
     border: 1px solid #777;
     -moz-border-radius: 7px;
     border-radius: 7px;
+}
+
+div#reports_container div#last_z_total_info {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: 11px;
+    margin-right: 10px;
+    margin-bottom: 3px;
+}
+
+div#reports_container div#last_z_total_info div.label{
+    text-align: left;
 }
 
 div#reports_container div#right_buttons div#options_button {

@@ -5,6 +5,8 @@ $(function() {
 var selectedFromDate;
 var selectedToDate;
 var terminalId;
+var hour_from;
+var hour_to;
 
 /**
  *  Reports
@@ -17,6 +19,9 @@ function setReportsDatePickers() {
         onSelect: function(dateText, inst) {
             $('#date_select_container').find('#date_to').datepicker("option", "minDate", dateText);
             selectedFromDate = dateText;
+            if($('#date_select_container').find('#date_to').val()!=""){
+                runGlancesSearch();
+            }
         }
     });
 
@@ -26,7 +31,9 @@ function setReportsDatePickers() {
         onSelect: function(dateText, inst) {
             $('#date_select_container').find('#date_from').datepicker("option", "maxDate", dateText);
             selectedToDate = dateText;
-            runGlancesSearch();
+            if($('#date_select_container').find('#date_from').val()!=""){
+                runGlancesSearch();
+            }
         }
     });
 }
@@ -42,6 +49,15 @@ function addTerminalFilter(terminal_id) {
     runGlancesSearch();
 }
 
+function addHourFromFilter(hour) {
+    hour_from = hour;
+    runGlancesSearch();
+}
+
+function addHourToFilter(hour) {
+    hour_to = hour;
+    runGlancesSearch();
+}
 
 function addDateFilter(interval_selected) {
     //clear from and to fields
@@ -90,9 +106,11 @@ function runGlancesSearch(){
         type: 'GET',
         url: '/reports/glances/glances_search',
         data: {
-             "search[created_at_gte]" : selectedFromDate,
-             "search[created_at_lte]" : selectedToDate,
-             "search[terminal_id_equals]" : terminalId
+             "search[created_at_gt]" : selectedFromDate,
+             "search[created_at_lt]" : selectedToDate,
+             "search[terminal_id_equals]" : terminalId,
+             "search2[hour_from]" : hour_from,
+             "search2[hour_to]" : hour_to
         }
     });
 }

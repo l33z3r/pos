@@ -18,6 +18,8 @@ function initAdminScreen() {
 
 $(function(){
     initAdminScreen();
+    //key enter event in product list
+    addEnterKeyEvents();
 });
 
 function addModifierFields(link, content) {
@@ -512,10 +514,6 @@ function settingStateFields(){
     }
     changeStyleButton($("#current_letter").val());
 }
-
-$(function() {
-    addEnterKeyEvents();
-});
 
 function addEnterKeyEvents(){
     $('#all_fields').keyup(function(e) {

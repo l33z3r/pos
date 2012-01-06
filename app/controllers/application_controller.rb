@@ -295,6 +295,9 @@ class ApplicationController < ActionController::Base
 
     @currency_symbol = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL
     @currency_symbol_small = GlobalSetting.parsed_setting_for GlobalSetting::SMALL_CURRENCY_SYMBOL
+
+    @earliest_opening_hour = GlobalSetting.parsed_setting_for GlobalSetting::EARLIEST_OPENING_HOUR
+    @latest_closing_hour = GlobalSetting.parsed_setting_for GlobalSetting::LATEST_CLOSING_HOUR
     
     @currency_note_image_setting = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_NOTES_IMAGES
     

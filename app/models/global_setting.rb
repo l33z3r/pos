@@ -62,6 +62,8 @@ class GlobalSetting < ActiveRecord::Base
   PRINT_VAT_RECEIPT = 33
   MENU_SCREEN_TYPE = 34
   WINDOWS_PRINTER_MARGINS = 35
+  EARLIEST_OPENING_HOUR = 36
+  LATEST_CLOSING_HOUR = 37
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -98,7 +100,9 @@ class GlobalSetting < ActiveRecord::Base
     TAX_NUMBER => "Tax Number",
     PRINT_VAT_RECEIPT => "Print VAT Receipt",
     MENU_SCREEN_TYPE => "Menu Screen Type",
-    WINDOWS_PRINTER_MARGINS => "Use Windows Printer Margins"
+    WINDOWS_PRINTER_MARGINS => "Use Windows Printer Margins",
+    EARLIEST_OPENING_HOUR => "Earliest Opening Hour",
+    LATEST_CLOSING_HOUR => "Latest Closing Hour"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -195,6 +199,12 @@ class GlobalSetting < ActiveRecord::Base
     when WINDOWS_PRINTER_MARGINS
       @gs = find_or_create_by_key(:key => WINDOWS_PRINTER_MARGINS.to_s, :value => "false", :label_text => LABEL_MAP[WINDOWS_PRINTER_MARGINS])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when EARLIEST_OPENING_HOUR
+      @gs = find_or_create_by_key(:key => EARLIEST_OPENING_HOUR.to_s, :value => 5, :label_text => LABEL_MAP[EARLIEST_OPENING_HOUR])
+      @gs.parsed_value = @gs.value.to_i
+    when LATEST_CLOSING_HOUR
+      @gs = find_or_create_by_key(:key => LATEST_CLOSING_HOUR.to_s, :value => 5, :label_text => LABEL_MAP[LATEST_CLOSING_HOUR])
+      @gs.parsed_value = @gs.value.to_i
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
