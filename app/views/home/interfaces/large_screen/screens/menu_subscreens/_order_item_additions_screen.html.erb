@@ -1,32 +1,41 @@
 <%# cache("order_item_additions_screen") do %>
 
-  <div id="order_item_additions">
+<div id="order_item_additions">
 
-    <div id="oia_tabs" class="tabs">
-      <div class="tab" id="oia_tab_add" onclick="orderItemAdditionAddSelected();">
-        <%= image_tag "oia_add.png" %>
-        <div class="label">Add</div>
-      </div>
-      <div class="tab" id="oia_tab_no" onclick="orderItemAdditionNoSelected();">
-        <%= image_tag "oia_no.png" %>
-        <div class="label">No</div>
-      </div>
-      <div class="tab" id="oia_tab_note" onclick="doOpenOIANoteScreen();">
-        <%= image_tag "oia_note.png" %>
-        <div class="label">Note</div>
-      </div>
-      <div class="clear">&nbsp;</div>
+  <div id="oia_tabs" class="tabs">
+    <div class="tab" id="oia_tab_note" data-onpress="doOpenOIANoteScreen();">
+      <%= image_tag "oia_note.png" %>
+      <div class="label">Note</div>
     </div>
 
-    <div id="oia_container">
-      <% (1..@display.order_item_addition_grid.grid_y_size).each do |y| %>
+    <% OrderItemAdditionGrid.all.each do |oiag| %>
+      <div class="tab oia_tab" id="oia_tab_<%= oiag.id %>" data-oiag_id="<%= oiag.id %>" data-onpress="orderItemAdditionTabSelected(<%= oiag.id %>);">
+        <div class="label"><%= oiag.name %></div>
+      </div>
+    <% end %>
+
+    <!--div class="tab" id="oia_tab_add" onclick="orderItemAdditionAddSelected();">
+    <%= image_tag "oia_add.png" %>
+      <div class="label">Add</div>
+    </div>
+    <div class="tab" id="oia_tab_no" onclick="orderItemAdditionNoSelected();">
+    <%= image_tag "oia_no.png" %>
+      <div class="label">No</div>
+    </div-->
+
+    <div class="clear">&nbsp;</div>
+  </div>
+
+  <% OrderItemAdditionGrid.all.each do |oiag| %>
+    <div id="oiag_<%=oiag.id%>" class="oia_container" data-grid_x_size="<%=oiag.grid_x_size%>" data-grid_y_size="<%=oiag.grid_y_size%>">
+      <% (1..oiag.grid_y_size).each do |y| %>
         <div class="grid_row">
-          <% (1..@display.order_item_addition_grid.grid_x_size).each do |x| %>
-            <% @oia = @display.order_item_addition_grid.item_for_position(x, y) %>
+          <% (1..oiag.grid_x_size).each do |x| %>
+            <% @oia = oiag.item_for_position(x, y) %>
 
             <% if @oia %>
               <div class="grid_item <%=@oia.available ? "" : "not_available" %>" style="<%= oia_background_css @oia %>;" 
-                   onclick="orderItemAdditionClicked(this)"
+                   data-onpress="orderItemAdditionClicked(this)"
                    data-description="<%=@oia.description%>" data-add_charge="<%=@oia.add_charge%>"
                    data-minus_charge="<%=@oia.minus_charge%>" data-available="<%=@oia.available%>"
                    data-hide_on_receipt="<%=@oia.hide_on_receipt%>" data-is_addable="<%=@oia.is_addable%>">
@@ -35,6 +44,12 @@
                 </div>
                 <div style="color: <%=@oia.text_color%>;font-size: <%=@oia.text_size%>px;" class="charge">
                   <%= print_money @oia.add_charge unless @oia.add_charge == 0 %>
+                </div>
+                <div class="grid_graphic add">
+                  <%= image_tag "modifier_add.png" %>
+                </div>
+                <div class="grid_graphic remove">
+                  <%= image_tag "modifier_subtract.png" %>
                 </div>
               </div>
             <% else %>
@@ -50,36 +65,38 @@
 
     </div>
 
-    <div id="add_note" style="display: none;">
+  <% end %>
 
-      <div id="note_input_container">
-        <textarea id="note_input"></textarea>
+  <div id="add_note" style="display: none;">
+
+    <div id="note_input_container">
+      <textarea id="note_input"></textarea>
+    </div>
+
+    <div id="controls">
+      <div id="plus_minus" onclick="toggelNoteChargePlusMins()">
+        <%= image_tag "plus_mins.png" %>
+      </div>
+      <div id="charge_input_container">
+        <div id="plus_minus_text_container">+</div>
+        <input type="text" id="charge_input"/>
       </div>
 
-      <div id="controls">
-        <div id="plus_minus" onclick="toggelNoteChargePlusMins()">
-          <%= image_tag "plus_mins.png" %>
-        </div>
-        <div id="charge_input_container">
-          <div id="plus_minus_text_container">+</div>
-          <input type="text" id="charge_input"/>
-        </div>
-
-        <div id="cancel_button" onclick="$('#charge_input').val('0');">C</div>
-
-        <div class="clear">&nbsp;</div>
-
-        <div class="action_buttons">
-          <div class="button" data-onpress="doSaveNote();">OK</div>
-          <div class="button" data-onpress="doCancelNote();">Cancel</div>
-        </div>
-      </div>
+      <div id="cancel_button" onclick="$('#charge_input').val('0');">C</div>
 
       <div class="clear">&nbsp;</div>
 
-      <div id="keyboard"></div>
-
+      <div class="action_buttons">
+        <div class="button" data-onpress="doSaveNote();">OK</div>
+        <div class="button" data-onpress="doCancelNote();">Cancel</div>
+      </div>
     </div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div id="keyboard"></div>
+
   </div>
+</div>
 
 <%# end %>

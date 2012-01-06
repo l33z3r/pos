@@ -161,13 +161,19 @@
           <div class="clear">&nbsp;</div>
         </div>
         <div class="field">
-          <div class="label">Kitchen Note</div>
-          <%= f.text_area :kitchen_note, :rows => 4 %>
+          <div class="label">Product Active</div>
+          <%= f.check_box :is_active %>
           <div class="clear">&nbsp;</div>
         </div>
         <div class="field">
-          <div class="label">Product Active</div>
-          <%= f.check_box :is_active %>
+          <div class="label">Modifier Grid</div>
+          <%= f.collection_select :order_item_addition_grid_id, OrderItemAdditionGrid.find(:all), :id, :name, 
+            :prompt => "Select a Modifier Grid", :include_blank => "None" %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Modifier Grid Mandatory?</div>
+          <%= f.check_box :order_item_addition_grid_id_is_mandatory %>
           <div class="clear">&nbsp;</div>
         </div>
         <div class="field">

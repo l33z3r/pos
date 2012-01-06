@@ -496,26 +496,6 @@ function getTableForLabel(table_label) {
     return table_info;
 }
 
-function initModifierGrid() {
-    //set the width of each grid item
-    var rowWidth = $('div#order_item_additions .grid_row:first').css("width");
-    
-    var newWidth = roundNumberDown(parseFloat(rowWidth)/modifierGridXSize, 0) - 5;
-    
-    $('div#order_item_additions .grid_row .grid_item').css("width", newWidth + "px");
-    
-    var panelHeight = $('div#order_item_additions').css("height");
-    
-    //take away the height of the tabs if they exist
-    if($('#oia_tabs .tab').length>0) {
-        panelHeight = parseFloat(panelHeight) - parseFloat($('#oia_tabs .tab').css("height"));
-    }
-    
-    var newHeight = roundNumberDown(parseFloat(panelHeight)/modifierGridYSize, 0) - 4;
-    
-    $('div#order_item_additions .grid_row .grid_item').css("height", newHeight + "px");
-}
-
 function initUIElements() {
     //initialize the tabs
     $(".vtabs").jVertTabs({

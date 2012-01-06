@@ -13,7 +13,6 @@
         <tr>
           <th width="180">Name</th>
           <th width="70">Display</th>
-          <th width="70">Default?</th>
           <th width="80">Delete</th>
         </tr>
       </thead>
@@ -23,13 +22,6 @@
           <tr>
             <td><%= link_to oiag.name, builder_admin_order_item_addition_grid_path(oiag) %></td>
             <td><%= oiag.display ? (link_to oiag.display.name, builder_admin_display_path(oiag.display)) : "None" %></td>
-            <td>
-              <!-- jscrollpane requires all radio buttons go in a form as any that are not get unchecked! -->
-              <form>
-                <%= radio_button_tag "set_default_order_item_addition_grid", "#{oiag.id}", oiag.is_default, 
-                  :onchange => "doSetDefaultOrderItemAdditionGrid(this.value);" %>
-              </form>
-            </td>
             <td><%= link_to "Delete", admin_order_item_addition_grid_path(oiag), :method => :delete, :confirm => "Are You Sure?" %></td>
           </tr>
         <% end %>

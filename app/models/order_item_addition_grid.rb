@@ -1,8 +1,6 @@
 class OrderItemAdditionGrid < ActiveRecord::Base
   has_many :order_item_additions, :dependent => :destroy
   
-  has_one :display
-  
   validates :name, :presence => true, :uniqueness => true
   validates :grid_x_size, :presence => true, :numericality => true
   validates :grid_y_size, :presence => true, :numericality => true
@@ -31,6 +29,7 @@ class OrderItemAdditionGrid < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: order_item_addition_grids
@@ -39,7 +38,6 @@ end
 #  name        :string(255)
 #  grid_x_size :integer(4)
 #  grid_y_size :integer(4)
-#  is_default  :boolean(1)      default(FALSE)
 #  created_at  :datetime
 #  updated_at  :datetime
 #

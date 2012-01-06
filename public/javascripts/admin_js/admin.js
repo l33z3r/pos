@@ -259,7 +259,10 @@ function linkTerminalDisplay(terminal_id, display_id) {
 
 //following is for the more options screen shortcut
 function adminShowMoreOptions() {
-    //try to load the div first
+    //make sure the keyboard is hidden
+    toggleKeyboardEnable = true;
+    hideUtilKeyboard();
+    
     $('#admin_content_screen').hide();
     $('#shortcut_more_options').show();
 }

@@ -98,7 +98,7 @@ function clearCellInputs() {
     
     resetAvailableInput();
     
-    $('#available_input').attr('checked', false);
+    $('#available_input').attr('checked', true);
     
     $('#available_input').iphoneStyle({
         resizeContainer: false, 
@@ -110,7 +110,9 @@ function clearCellInputs() {
     $('#bg_color_input').val("");
     $('#bg_color_2_input').val("");
     $('#text_color_input').val("");
-    $('#text_size_input').val("");
+    $('#text_size_input').val(20);
+    
+    resetHideOnReceiptInput();
     
     $('#hide_on_receipt_input').attr('checked', false);
     
@@ -121,7 +123,9 @@ function clearCellInputs() {
         uncheckedLabel: 'No'
     });
     
-    $('#is_addable_input').attr('checked', false);
+    resetIsAddableInput();
+    
+    $('#is_addable_input').attr('checked', true);
     
     $('#is_addable_input').iphoneStyle({
         resizeContainer: false, 

@@ -3,6 +3,7 @@ class Category < ActiveRecord::Base
   has_many :products_including_deleted, :class_name => "Product", :dependent => :nullify 
   
   belongs_to :tax_rate
+  belongs_to :order_item_addition_grid
   
   belongs_to :parent_category, :class_name => "Category"
 
@@ -43,17 +44,21 @@ class Category < ActiveRecord::Base
 end
 
 
+
+
 # == Schema Information
 #
 # Table name: categories
 #
-#  id                 :integer(4)      not null, primary key
-#  name               :string(255)
-#  parent_category_id :integer(4)
-#  description        :string(255)
-#  created_at         :datetime
-#  updated_at         :datetime
-#  tax_rate_id        :integer(4)
-#  printers           :string(255)     default("")
+#  id                                       :integer(4)      not null, primary key
+#  name                                     :string(255)
+#  parent_category_id                       :integer(4)
+#  description                              :string(255)
+#  created_at                               :datetime
+#  updated_at                               :datetime
+#  tax_rate_id                              :integer(4)
+#  printers                                 :string(255)     default("")
+#  order_item_addition_grid_id              :integer(4)
+#  order_item_addition_grid_id_is_mandatory :boolean(1)      default(FALSE)
 #
 

@@ -28,6 +28,10 @@ var currentSelectedReceiptItemEl;
 var inTransferOrderMode = false;
 var transferOrderInProgress = false;
 
+var modifierGridXSize;
+var modifierGridYSize;
+var currentModifierGridIdForProduct;
+
 function getCurrentOrder() {
     if(selectedTable == 0) {
         return currentOrder;
@@ -281,7 +285,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     storeTableOrderInStorage(nextUserIDToSyncWith, tableID, tableOrders[tableID]);
     
     if(tableID == selectedTable && nextUserIDToSyncWith == current_user_id) {
-        loadReceipt(tableOrders[tableID]);
+        loadReceipt(tableOrders[tableID], true);
     }
 }
 
@@ -398,7 +402,7 @@ function doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmploye
         clearTableOrderInStorage(nextUserIDToSyncWith, tableID);
         
         if(tableID == selectedTable && nextUserIDToSyncWith == current_user_id) {
-            loadReceipt(tableOrders[tableID]);
+            loadReceipt(tableOrders[tableID], true);
         }
         
         $('#table_label_' + tableID).html(tables[tableID].label);
@@ -541,6 +545,16 @@ function buildOrderItem(product, amount) {
     currentOrderItem = orderItem;
 }
 
+function setModifierGridIdForProduct(product) {
+    if(product.modifier_grid_id) {
+        currentModifierGridIdForProduct = product.modifier_grid_id;
+    } else if(categories[product.category_id] && categories[product.category_id].modifier_grid_id) {
+        currentModifierGridIdForProduct = categories[product.category_id].modifier_grid_id;
+    } else {
+        currentModifierGridIdForProduct = null;
+    }
+}
+
 function addItemToOrderAndSave(orderItem) {
     //mark the item as synced as we are not on a table receipt
     orderItem.synced = true;
@@ -665,7 +679,7 @@ function doSelectTable(tableNum) {
         //total the order first
         calculateOrderTotal(currentOrder);
         
-        loadReceipt(currentOrder);
+        loadReceipt(currentOrder, true);
         return;
     }
     
@@ -689,7 +703,7 @@ function doSelectTable(tableNum) {
     getTableOrderFromStorage(current_user_id, selectedTable);
 
     //display the receipt for this table
-    loadReceipt(tableOrders[tableNum]);
+    loadReceipt(tableOrders[tableNum], true);
     
     if(promptForClientName && tableOrders[tableNum].client_name == "") {
         promptAddNameToTable();
@@ -716,7 +730,7 @@ function removeSelectedOrderItem() {
     }
     
     currentSelectedReceiptItemEl.hide();
-    loadReceipt(order);
+    loadReceipt(order, true);
     
     closeEditOrderItem();
 }
@@ -823,4 +837,234 @@ function doTransferTable(tableFrom, tableTo) {
             table_to_id : tableTo
         }
     });
+}
+
+function testForMandatoryModifier(product) {
+    if(orderItem.product.modifier_grid_id && orderItem.product.modifier_grid_id_mandatory) {
+        switchToModifyOrderItemSubscreen();
+        orderItemAdditionTabSelected(orderItem.product.modifier_grid_id);
+    } else if(categories[product.category_id] && categories[product.category_id].modifier_grid_id && 
+        categories[product.category_id].modifier_grid_id_mandatory) {
+        switchToModifyOrderItemSubscreen();
+        orderItemAdditionTabSelected(categories[product.category_id].modifier_grid_id);
+    }
+}
+
+function orderItemAdditionClicked(el) {
+    currentSelectedReceiptItemEl = getSelectedOrLastReceiptItem();
+    
+    if(!currentSelectedReceiptItemEl) {
+        return;
+    }
+    
+    var order = getCurrentOrder();
+    
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    
+    var orderItem = order.items[itemNumber-1];
+    
+    el = $(el);
+    
+    //is this available
+    var available = el.data("available");
+    
+    if(!available) {
+        return;
+    }
+    
+    //get the oia data
+    var desc = el.data("description");
+    
+    var absCharge = 0;
+    
+    var plusCharge = el.data("add_charge");
+    var minusCharge = el.data("minus_charge");
+    
+    //oia here is always true
+    //for now assume it is being added, we wont know until we iterate through the modifiers
+    if(oiaIsAdd) {
+        absCharge = plusCharge;
+    } else {
+        absCharge = minusCharge;
+    }
+    
+    var hideOnReceipt = el.data("hide_on_receipt");
+    var isAddable = el.data("is_addable");
+    
+    addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, false, hideOnReceipt, isAddable);
+}
+
+function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, isNote, hideOnReceipt, isAddable) {
+    if(typeof(orderItem.oia_items) == 'undefined') {
+        orderItem.oia_items = new Array();
+    }
+    
+    //make sure all values in calc are floats
+    absCharge = parseFloat(absCharge);
+    
+    if(orderItem.pre_discount_price) {
+        orderItem.pre_discount_price = parseFloat(orderItem.pre_discount_price);
+    } else {
+        orderItem.total_price = parseFloat(orderItem.total_price);
+    }
+    
+    var oiaEdited = false;
+    
+    //check if the last item is the same as this one
+    if(orderItem.oia_items.length>0) {
+        var oiaFound = false;
+        
+        var nextOIA;
+        var existingOIA;
+        var existingOIAIndex;
+        
+        //search through the existing modifiers 
+        for(i=0; i<orderItem.oia_items.length; i++) {
+            nextOIA = orderItem.oia_items[i];
+            
+            if(nextOIA.description == desc) {
+                oiaFound = true;
+                existingOIA = nextOIA;
+                existingOIAIndex = i;
+                break;
+            }
+        }
+        
+        if(oiaFound) {
+            oiaEdited = true;
+            
+            if(existingOIA.is_add) {
+                existingOIA.is_add = false;
+                
+                //save the new abs_charge to be the minus charge
+                existingOIA.abs_charge = minusCharge;
+            
+                //take away the charge that was added before
+                if(plusCharge > 0) {
+                    if(orderItem.pre_discount_price) {
+                        orderItem.pre_discount_price -= (orderItem.amount * plusCharge);
+                    } else {
+                        orderItem.total_price -= (orderItem.amount * plusCharge);
+                    }
+                }
+                
+                console.log("taking away minus charge: " + minusCharge);
+                //take away the minus charge now
+                if(minusCharge > 0) {
+                    if(orderItem.pre_discount_price) {
+                        orderItem.pre_discount_price -= (orderItem.amount * minusCharge);
+                    } else {
+                        orderItem.total_price -= (orderItem.amount * minusCharge);
+                    }
+                }
+            } else {
+                //add back on any minus charge that was present
+                if(minusCharge > 0) {
+                    if(orderItem.pre_discount_price) {
+                        orderItem.pre_discount_price += (orderItem.amount * minusCharge);
+                    } else {
+                        orderItem.total_price += (orderItem.amount * minusCharge);
+                    }
+                }
+                
+                orderItem.oia_items.splice(existingOIAIndex, 1);
+                
+                //nullify the oia_items if it is empty
+                if(orderItem.oia_items.length == 0) {
+                    delete orderItem['oia_items'];
+                }
+            }
+        }
+    }
+
+    //it is a new one
+    if(!oiaEdited) {
+        oia_item = {
+            'description' : desc,
+            'abs_charge' : absCharge,
+            'is_add' : oiaIsAdd, 
+            'is_note' : isNote,
+            'hide_on_receipt' : hideOnReceipt,
+            'is_addable' : isAddable
+        }
+        
+        //update the total with new oia total
+        if(absCharge > 0) {
+            if(oiaIsAdd) {
+                if(orderItem.pre_discount_price) {
+                    orderItem.pre_discount_price += (orderItem.amount * absCharge);
+                } else {
+                    orderItem.total_price += (orderItem.amount * absCharge);
+                }
+            } else {
+                if(orderItem.pre_discount_price) {
+                    orderItem.pre_discount_price -= (orderItem.amount * absCharge);
+                } else {
+                    orderItem.total_price -= (orderItem.amount * absCharge);
+                }
+            }
+        }
+    
+        orderItem.oia_items.push(oia_item);
+    }
+
+    applyExistingDiscountToOrderItem(order, orderItem.itemNumber);
+
+    //store the modified order
+    if(selectedTable != 0) {
+        storeTableOrderInStorage(current_user_id, selectedTable, order);
+    }else {
+        storeOrderInStorage(current_user_id, order);
+    }
+        
+    //redraw the receipt
+    calculateOrderTotal(order);
+    loadReceipt(order, false);
+    
+    //only scroll the receipt if the last item is the selected one
+    if(currentSelectedReceiptItemEl.data("item_number") == getLastReceiptItem().data("item_number")) {
+        setTimeout(menuRecptScroll, 20);
+    } else {
+        //maintain the blue selected border on the last selected item?   
+        currentSelectedReceiptItemEl.addClass("selected");
+    }
+    
+    setOrderItemAdditionsGridState();
+}
+
+function setOrderItemAdditionsGridState() {
+    //clear the grid
+    $('.oia_container:visible .grid_item .grid_graphic').hide();
+    
+    currentSelectedReceiptItemEl = getSelectedOrLastReceiptItem();
+    
+    if(!currentSelectedReceiptItemEl) {
+        return;
+    }
+    
+    var order = getCurrentOrder();
+    
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    
+    var orderItem = order.items[itemNumber-1];
+    var nextOIA;
+    
+    if(orderItem.oia_items && orderItem.oia_items.length > 0) {
+        
+        for(i=0; i<orderItem.oia_items.length; i++) {
+            nextOIA = orderItem.oia_items[i];
+            
+            $('.oia_container:visible .grid_item').each(function() {
+                var gi = $(this);
+                
+                if(nextOIA.description == gi.data("description")) {
+                    if(nextOIA.is_add) {
+                        gi.find(".add").show();
+                    } else {
+                        gi.find(".remove").show();
+                    }
+                }
+            });
+        }
+    }
 }

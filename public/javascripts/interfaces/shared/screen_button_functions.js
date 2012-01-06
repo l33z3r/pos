@@ -112,7 +112,7 @@ function addCourseEndToOrder() {
         if(!currentOrder.items[itemNumber-1].is_course) {
             currentOrder.items[itemNumber-1].is_course = true;
             currentOrder.courses.push(itemNumber);
-            loadReceipt(currentOrder);
+            loadReceipt(currentOrder, true);
         }
     }
 }
