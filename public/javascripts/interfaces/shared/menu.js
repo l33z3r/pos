@@ -891,10 +891,13 @@ function orderItemAdditionClicked(el) {
     var hideOnReceipt = el.data("hide_on_receipt");
     var isAddable = el.data("is_addable");
     
-    addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, false, hideOnReceipt, isAddable);
+    var productId = el.data("product_id");
+    var followOnGridId = el.data("follow_on_grid_id");
+    
+    addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, false, hideOnReceipt, isAddable, productId, followOnGridId);
 }
 
-function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, isNote, hideOnReceipt, isAddable) {
+function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, isNote, hideOnReceipt, isAddable, productId, followOnGridId) {
     if(typeof(orderItem.oia_items) == 'undefined') {
         orderItem.oia_items = new Array();
     }
@@ -985,7 +988,8 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusC
             'is_add' : oiaIsAdd, 
             'is_note' : isNote,
             'hide_on_receipt' : hideOnReceipt,
-            'is_addable' : isAddable
+            'is_addable' : isAddable,
+            'product_id' : productId
         }
         
         //update the total with new oia total
@@ -1030,6 +1034,10 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusC
     }
     
     setOrderItemAdditionsGridState();
+    
+    if(followOnGridId != -1) {
+        orderItemAdditionTabSelected(followOnGridId);
+    }
 }
 
 function setOrderItemAdditionsGridState() {

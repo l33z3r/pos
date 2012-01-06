@@ -1563,7 +1563,7 @@ function doSaveNote() {
     var desc = noteInput;
     var absCharge = charge;
     
-    addOIAToOrderItem(order, orderItem, desc, absCharge, 0, 0, noteChargeIsPlus, true, false, false);
+    addOIAToOrderItem(order, orderItem, desc, absCharge, 0, 0, noteChargeIsPlus, true, false, false, -1, -1);
     
     clearNoteInputs();
     

@@ -45,6 +45,8 @@ function initCellInputs(gridEL) {
     var textSize = gridEL.data("text_size");
     var hideOnReceipt = gridEL.data("hide_on_receipt");
     var isAddable = gridEL.data("is_addable");
+    var productId = gridEL.data("product_id");
+    var followOnGridId = gridEL.data("follow_on_grid_id");
     
     $('#description_input').val(description);
     
@@ -88,6 +90,9 @@ function initCellInputs(gridEL) {
         checkedLabel: 'Yes', 
         uncheckedLabel: 'No'
     });
+    
+    $('#product_id_input').val(productId);
+    $('#follow_grid_id_input').val(followOnGridId);
 }
 
 function clearCellInputs() {
@@ -133,6 +138,9 @@ function clearCellInputs() {
         checkedLabel: 'Yes', 
         uncheckedLabel: 'No'
     });
+    
+    $('#product_id_input').val(-1);
+    $('#follow_grid_id_input').val(-1);
 }
 
 function setGridScrollerWidth(grid_x) {
@@ -193,23 +201,36 @@ function updateSelectedGridItem() {
     var hideOnReceipt = $('#hide_on_receipt_input').attr("checked");
     var isAddable = $('#is_addable_input').attr("checked");
     
+    var oiaData = {
+        x : current_grid_x,
+        y : current_grid_y,
+        description : description,
+        addCharge : addCharge,
+        minusCharge : minusCharge, 
+        available : available,
+        bgColor : bgColor,
+        bgColor2 : bgColor2,
+        textColor : textColor,
+        textSize : textSize,
+        hideOnReceipt : hideOnReceipt,
+        isAddable : isAddable
+    };
+        
+    var productId = $('#product_id_input').val();
+    var followOnGridId = $('#follow_grid_id_input').val();
+    
+    if(productId != -1) {
+        oiaData.productId = productId;
+    }
+    
+    if(followOnGridId != -1) {
+        oiaData.followOnGridId = followOnGridId;
+    }
+    
     $.ajax({
         type: 'POST',
         url: '/admin/order_item_addition_grids/' + grid_id + '/update_item' ,
-        data: {
-            x : current_grid_x,
-            y : current_grid_y,
-            description : description,
-            addCharge : addCharge,
-            minusCharge : minusCharge, 
-            available : available,
-            bgColor : bgColor,
-            bgColor2 : bgColor2,
-            textColor : textColor,
-            textSize : textSize,
-            hideOnReceipt : hideOnReceipt,
-            isAddable : isAddable
-        }
+        data: oiaData
     });
 }
 

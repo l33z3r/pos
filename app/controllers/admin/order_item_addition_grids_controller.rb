@@ -78,6 +78,14 @@ class Admin::OrderItemAdditionGridsController < Admin::AdminController
     @item.hide_on_receipt = params[:hideOnReceipt]
     @item.is_addable = params[:isAddable]
     
+    if params[:productId]
+      @item.product_id = params[:productId]
+    end
+    
+    if params[:followOnGridId]
+      @item.follow_on_grid_id = params[:followOnGridId]
+    end
+    
     @item.save!
   end
   

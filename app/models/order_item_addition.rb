@@ -1,6 +1,8 @@
 class OrderItemAddition < ActiveRecord::Base
   belongs_to :order_item_addition_grid
-  
+  belongs_to :follow_on_grid, :class_name => "OrderItemAdditionGrid"
+  belongs_to :product
+    
   validates :order_item_addition_grid_id, :presence => true, :numericality => true
   
   validates :description, :presence => true
@@ -11,6 +13,7 @@ class OrderItemAddition < ActiveRecord::Base
   validates :pos_y, :presence => true, :numericality => true
 
 end
+
 
 
 # == Schema Information
@@ -33,5 +36,7 @@ end
 #  background_color_2          :string(255)
 #  hide_on_receipt             :boolean(1)      default(FALSE)
 #  is_addable                  :boolean(1)      default(TRUE)
+#  follow_on_grid_id           :integer(4)
+#  product_id                  :integer(4)
 #
 

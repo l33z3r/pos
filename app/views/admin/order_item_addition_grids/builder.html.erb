@@ -48,9 +48,9 @@
       </div>
       <div class="button_name">Ok</div>
     </div>
-    
+
     <div class="clear">&nbsp;</div>
-    
+
     <%= render :partial => "/partials/interfaces/large_screen/terminal_reload_request" %>
 
     <div class="clear">&nbsp;</div>
@@ -167,21 +167,49 @@
           </select>
         </div>
       </div>
-      
+
       <div id="hide_on_receipt">
         <div class="top_label">Hide On Receipt</div>
         <div class="input_box">
 
         </div>
       </div>
-      
+
       <div id="is_addable">
         <div class="top_label">Is an Add-On</div>
         <div class="input_box">
 
         </div>
       </div>
+
+      <div id="product_id">
+        <div class="top_label">Product</div>
+        <div class="input_box">
+          <select id="product_id_input" onchange="updateSelectedGridItem()">
+            <option value="-1">None</div>
+            <% Product.non_deleted.each do |p| %>                     
+              <option value="<%= p.id %>">
+                <%= p.name %>
+              </option>
+            <% end %>
+          </select>
+        </div>
+      </div>
       
+      <div id="follow_grid_id">
+        <div class="top_label">Follow Grid</div>
+        <div class="input_box">
+          <select id="follow_grid_id_input" onchange="updateSelectedGridItem()">
+            <option value="-1">None</div>
+            <% OrderItemAdditionGrid.all.each do |o| %>                     
+              <option value="<%= o.id %>">
+                <%= o.name %>
+              </option>
+            <% end %>
+          </select>
+        </div>
+      </div>
+
     </div>
 
     <div class="clear">&nbsp;</div>

@@ -61,7 +61,7 @@ class Product < ActiveRecord::Base
   end
   
   def self.non_deleted 
-    where(:is_deleted => false)
+    where(:is_deleted => false).order(:name)
   end
   
   def sales_tax_rate

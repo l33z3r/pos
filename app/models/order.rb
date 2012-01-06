@@ -14,6 +14,11 @@
 #
 # Service charge and cashback are stored in sepreate columns to total
 #
+#
+# Remember that products can be stored as order_item_additions and will not have a line in order_item to represent the sale of that item
+#
+#
+
 
 class Order < ActiveRecord::Base
   has_many :order_items

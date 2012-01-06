@@ -99,7 +99,7 @@ div#modifier_grid_builder div#builder div#grid_item_inputs {
 }
 
 div#modifier_grid_builder div#builder div#grid_item_inputs>div {
-    width: 173px;
+    width: 143px;
     float: left;
     padding: 1px 3px;
 }
@@ -113,7 +113,7 @@ div#modifier_grid_builder div#builder div#grid_item_inputs div.top_label {
 div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box {
     background-color: #FFF;
     border: 1px solid #222; 
-    width: 162px;
+    width: 130px;
     height: 25px;
     padding: 5px;
 }
@@ -124,7 +124,7 @@ div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box select 
 }
 
 div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box div.iPhoneCheckContainer {
-    margin-left: 38px;
+    margin-left: 26px;
 }
 
 div#modifier_grid_builder div#keyboard {

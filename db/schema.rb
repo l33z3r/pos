@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120103155224) do
+ActiveRecord::Schema.define(:version => 20120106170653) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -165,6 +165,8 @@ ActiveRecord::Schema.define(:version => 20120103155224) do
     t.string   "background_color_2"
     t.boolean  "hide_on_receipt",             :default => false
     t.boolean  "is_addable",                  :default => true
+    t.integer  "follow_on_grid_id"
+    t.integer  "product_id"
   end
 
   create_table "order_items", :force => true do |t|
@@ -182,9 +184,10 @@ ActiveRecord::Schema.define(:version => 20120103155224) do
     t.float    "tax_rate"
     t.string   "terminal_id"
     t.string   "time_added"
-    t.boolean  "show_server_added_text", :default => false
+    t.boolean  "show_server_added_text",                       :default => false
     t.string   "product_name"
-    t.boolean  "is_double",              :default => false
+    t.boolean  "is_double",                                    :default => false
+    t.text     "oia_data",               :limit => 2147483647
   end
 
   create_table "orders", :force => true do |t|

@@ -146,6 +146,25 @@ class OrderController < ApplicationController
         @order_item.modifier_price = item[:modifier][:price]
       end
       
+      #oias
+      if item[:oia_items]
+        item[:oia_items].each do |index, oia|
+          if oia[:product_id]
+            #decrement stock for this oia product
+            @oia_stock_usage = @order_item.quantity.to_f
+      
+            if(@order_item.is_double)
+              @oia_stock_usage *= 2
+            end
+      
+            Product.find_by_id(oia[:product_id]).decrement_stock @oia_stock_usage
+          end
+        end
+        
+        #store this hash of oia items
+        @order_item.oia_data = item[:oia_items]
+      end
+      
       #discount
       if item[:discount_percent]
         @order_item.discount_percent = item[:discount_percent]
