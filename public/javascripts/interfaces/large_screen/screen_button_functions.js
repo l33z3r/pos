@@ -303,7 +303,7 @@ function markFreeLastOrderItem() {
         }
     
         //redraw the receipt
-        loadReceipt(order);
+        loadReceipt(order, true);
     }
     
     currentSelectedReceiptItemEl = null;

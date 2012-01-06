@@ -22,7 +22,7 @@ function hideAllMenuSubScreens() {
     $('#table_screen').hide();
     
     $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').removeClass("selected");
-    $('#order_item_additions').hide();
+    $('#oia_subscreen').hide();
 }
 
 function currentMenuSubscreenIsMenu() {
@@ -30,7 +30,7 @@ function currentMenuSubscreenIsMenu() {
 }
 
 function currentMenuSubscreenIsModifyOrderItem() {
-    return $('#order_item_additions').is(":visible");
+    return $('#oia_subscreen').is(":visible");
 }
 
 function currentMenuSubscreenIsTableScreen() {
@@ -51,14 +51,14 @@ function getSelectedOrLastReceiptItem() {
 }
 
 function getLastReceiptItem() {
-    currentSelectedReceiptItemEl = $('#menu_screen_till_roll > div.order_line:last');
+    lastReceiptItemEl = $('#menu_screen_till_roll > div.order_line:last');
     
-    if(currentSelectedReceiptItemEl.length == 0) {
+    if(lastReceiptItemEl.length == 0) {
         setStatusMessage("There are no receipt items!");
         return null;
     }
     
-    return currentSelectedReceiptItemEl;
+    return lastReceiptItemEl;
 }
 
 function postSetConnectionStatus(connected) {
@@ -90,6 +90,15 @@ function kickMenuScrollers() {
     newHeight = scrollHeight - currentHeight;
         
     $('#menu_pages_scroller').touchScroll('setPosition', 0);
+    
+    //oia tabs
+    $('#oia_tabs').touchScroll('update');
+            
+    currentHeight = $('#oia_tabs').height();
+    scrollHeight = $('#oia_tabs').attr('scrollHeight');
+    newHeight = scrollHeight - currentHeight;
+        
+    $('#oia_tabs').touchScroll('setPosition', 0);
 }
 
 function showTablesScreen() {
@@ -113,4 +122,19 @@ function goToMainMenu() {
 
 function showGlobalSettingsPage() {
     swipeToSettings();
+}
+
+function initModifierGrid() {
+    //set the width of each grid item
+    var rowWidth = $('div#order_item_additions').css("width");
+    
+    var newWidth = roundNumberDown(parseFloat(rowWidth)/modifierGridXSize, 0) - 5;
+    
+    $('div#order_item_additions .grid_row .grid_item').css("width", newWidth + "px");
+    
+    var panelHeight = $('div#oia_subscreen').css("height");
+    
+    var newHeight = roundNumberDown(parseFloat(panelHeight)/modifierGridYSize, 0) - 6;
+    
+    $('div#order_item_additions .grid_row .grid_item').css("height", newHeight + "px");
 }

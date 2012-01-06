@@ -176,9 +176,11 @@ class OrderController < ApplicationController
       @order_item.product.decrement_stock @item_stock_usage
     end
     
+    @table_info = TableInfo.find_by_id(@order.table_info_id)
+    
     #must tell all terminals that this order is cleared
-    #skip it if it is a table order with id 0 as that is a previous order
-    if @order.is_table_order and @order.table_info_id != 0
+    #only do this if that table still exists!
+    if @order.is_table_order and @table_info
       @employee_id = @order_params['employee_id']
       do_request_clear_table_order @terminal_id, Time.now.to_i, @order.table_info_id, @order.order_num, @employee_id
     end

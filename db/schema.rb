@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111220114511) do
+ActiveRecord::Schema.define(:version => 20120103155224) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -32,7 +32,9 @@ ActiveRecord::Schema.define(:version => 20111220114511) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "tax_rate_id"
-    t.string   "printers",           :default => ""
+    t.string   "printers",                                 :default => ""
+    t.integer  "order_item_addition_grid_id"
+    t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
   end
 
   create_table "discounts", :force => true do |t|
@@ -71,8 +73,7 @@ ActiveRecord::Schema.define(:version => 20111220114511) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_default",                  :default => false
-    t.integer  "order_item_addition_grid_id"
+    t.boolean  "is_default", :default => false
   end
 
   create_table "employees", :force => true do |t|
@@ -144,7 +145,6 @@ ActiveRecord::Schema.define(:version => 20111220114511) do
     t.string   "name"
     t.integer  "grid_x_size"
     t.integer  "grid_y_size"
-    t.boolean  "is_default",  :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -240,9 +240,8 @@ ActiveRecord::Schema.define(:version => 20111220114511) do
     t.integer  "modifier_category_id"
     t.integer  "tax_rate_id"
     t.integer  "parent_product_id"
-    t.string   "printers",                   :default => ""
-    t.text     "kitchen_note"
-    t.float    "quantity_in_stock",          :default => 0.0
+    t.string   "printers",                                 :default => ""
+    t.float    "quantity_in_stock",                        :default => 0.0
     t.integer  "code_num"
     t.string   "upc"
     t.float    "price_2"
@@ -253,18 +252,18 @@ ActiveRecord::Schema.define(:version => 20111220114511) do
     t.float    "shipping_cost"
     t.float    "commission_percent"
     t.integer  "container_type_id"
-    t.float    "quantity_per_container",     :default => 1.0
-    t.boolean  "is_active",                  :default => true
-    t.boolean  "is_service",                 :default => false
-    t.boolean  "show_price_prompt",          :default => false
-    t.boolean  "show_quantity_prompt",       :default => false
-    t.boolean  "show_serial_num_prompt",     :default => false
-    t.boolean  "show_add_note_prompt",       :default => false
-    t.boolean  "sell_if_out_of_stock",       :default => true
-    t.boolean  "show_on_web",                :default => true
-    t.boolean  "notify_stock_manager",       :default => true
-    t.boolean  "use_weigh_scales",           :default => false
-    t.float    "minimum_quantity",           :default => 1.0
+    t.float    "quantity_per_container",                   :default => 1.0
+    t.boolean  "is_active",                                :default => true
+    t.boolean  "is_service",                               :default => false
+    t.boolean  "show_price_prompt",                        :default => false
+    t.boolean  "show_quantity_prompt",                     :default => false
+    t.boolean  "show_serial_num_prompt",                   :default => false
+    t.boolean  "show_add_note_prompt",                     :default => false
+    t.boolean  "sell_if_out_of_stock",                     :default => true
+    t.boolean  "show_on_web",                              :default => true
+    t.boolean  "notify_stock_manager",                     :default => true
+    t.boolean  "use_weigh_scales",                         :default => false
+    t.float    "minimum_quantity",                         :default => 1.0
     t.float    "order_quantity"
     t.integer  "supplier_1_id"
     t.float    "supplier_1_cost"
@@ -278,18 +277,20 @@ ActiveRecord::Schema.define(:version => 20111220114511) do
     t.string   "button_bg_color"
     t.string   "button_text_color"
     t.string   "button_vertical_align"
-    t.boolean  "show_button_image",          :default => true
-    t.integer  "menu_button_width",          :default => 1
-    t.integer  "menu_button_height",         :default => 1
+    t.boolean  "show_button_image",                        :default => true
+    t.integer  "menu_button_width",                        :default => 1
+    t.integer  "menu_button_height",                       :default => 1
     t.string   "menu_page_1_id"
     t.string   "menu_page_2_id"
     t.string   "button_bg_color_2"
-    t.boolean  "is_special",                 :default => false
-    t.boolean  "is_deleted",                 :default => false
-    t.boolean  "show_price_on_receipt",      :default => true
-    t.float    "double_price",               :default => 0.0
+    t.boolean  "is_special",                               :default => false
+    t.boolean  "is_deleted",                               :default => false
+    t.boolean  "show_price_on_receipt",                    :default => true
+    t.float    "double_price",                             :default => 0.0
     t.string   "display_image"
-    t.boolean  "hide_on_printed_receipt",    :default => false
+    t.boolean  "hide_on_printed_receipt",                  :default => false
+    t.integer  "order_item_addition_grid_id"
+    t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
   end
 
   create_table "roles", :force => true do |t|

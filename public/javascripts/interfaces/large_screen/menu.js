@@ -24,8 +24,6 @@ function initMenu() {
     displayLastReceipt();
     initOptionButtons();
     
-    initModifierGrid();
-    
     //hack to scroll the recpt a little after page has loaded as there 
     //were problems on touch interface with recpt getting stuck
     setTimeout("menuRecptScroll()", 1000);
@@ -272,12 +270,15 @@ function doSelectMenuItem(productId, menuItemId, element) {
     
     currentSelectedMenuItemElement = element;
 
+    closeEditOrderItem();
+    
     amount = currentMenuItemQuantity;
     
     //reset the quantity
     currentMenuItemQuantity = "";
 
     buildOrderItem(product, amount);
+    setModifierGridIdForProduct(product);
     
     //does this product have a modifier
     modifierCategoryId = product['modifier_category_id'];
@@ -372,6 +373,31 @@ function finishDoSelectMenuItem() {
     writeOrderItemToReceipt(orderItem);
     writeTotalToReceipt(currentOrder, currentOrder.total);
 
+    testForPricePrompt(orderItem);
+
+    setTimeout(menuRecptScroll, 20);
+        
+    //do the mandatory modifier grids
+    testForMandatoryModifier(orderItem.product);
+    currentSelectedReceiptItemEl = getLastReceiptItem();
+}
+
+function tableSelectMenuItem(orderItem) {
+    addItemToTableOrderAndSave(orderItem);
+    
+    var total = currentTableOrder.total;
+    
+    writeTotalToReceipt(currentTableOrder, total);
+    
+    testForPricePrompt(orderItem);
+    
+    setTimeout(menuRecptScroll, 20);
+    
+    testForMandatoryModifier(orderItem.product);
+    currentSelectedReceiptItemEl = getLastReceiptItem();
+}
+
+function testForPricePrompt(orderItem) {
     //do we need to prompt for a price
     if(orderItem.product.prompt_price) {
         var popupEl = doSelectReceiptItem(getSelectedOrLastReceiptItem());
@@ -382,17 +408,6 @@ function finishDoSelectMenuItem() {
         popupEl.find('#current_selected_receipt_item_price').focus();
         popupEl.find('#current_selected_receipt_item_price').val("");
     }
-
-    setTimeout(menuRecptScroll, 20);
-}
-
-function tableSelectMenuItem(orderItem) {
-    addItemToTableOrderAndSave(orderItem);
-    
-    var total = currentTableOrder.total;
-    
-    writeTotalToReceipt(currentTableOrder, total);
-    setTimeout(menuRecptScroll, 20);
 }
     
 function writeOrderItemToReceipt(orderItem) {
@@ -575,11 +590,14 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     return orderHTML;
 }
 
-function doSelectReceiptItem(orderItemEl) {
+function doSelectReceiptItem(orderItemEl) { 
     orderItemEl = $(orderItemEl);
     
     //close any open popup
     closeEditOrderItem();
+    
+    //make sure the modifier grids are closed
+    switchToMenuItemsSubscreen();
     
     //are we allowed to view the discount button
     //we are if the button id is present in this array
@@ -605,8 +623,20 @@ function doSelectReceiptItem(orderItemEl) {
         $('#delete_button').hide();
     }
     
+    //are we allowed to oia an item
+    //we are if the button id is present in this array
+    if(typeof(display_button_passcode_permissions[parseInt(oiaButtonID)]) != 'undefined') {
+        $('#oia_button').show();
+    } else {
+        $('#oia_button').hide();
+    }
+    
     //save the currently opened dialog
     currentSelectedReceiptItemEl = orderItemEl;
+    
+    //fetch the selected product and set its default oia grid
+    var selectedProduct = products[getCurrentOrder().items[parseInt(orderItemEl.data("item_number"))-1].product.id];    
+    setModifierGridIdForProduct(selectedProduct);
     
     //keep the border
     orderItemEl.addClass("selected");
@@ -758,7 +788,12 @@ function saveEditOrderItem() {
     }
     
     //redraw the receipt
-    loadReceipt(order);
+    loadReceipt(order, true);
+}
+
+    function editOrderItemOIAClicked() {
+    hideBubblePopup(editItemPopupAnchor);
+    showModifyOrderItemScreen();
 }
 
 function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit) {
@@ -850,7 +885,7 @@ function tableScreenSelectTable(tableId) {
     doSelectTable(tableId);
 }
 
-function loadReceipt(order) {
+function loadReceipt(order, doScroll) {
     clearReceipt();
     
     if(order == null){
@@ -867,7 +902,15 @@ function loadReceipt(order) {
         writeTotalToReceipt(order, orderTotal);
     }
     
-    menuRecptScroll();
+    if(doScroll) {
+        menuRecptScroll();
+    }
+    
+    //we need to copy over the selected item as there is new markup
+    if(currentSelectedReceiptItemEl) {
+        var selectedReceiptItemNumber = currentSelectedReceiptItemEl.data("item_number");
+        currentSelectedReceiptItemEl = $('#till_roll div[data-item_number=' + selectedReceiptItemNumber + ']');
+    }
 }
 
 function loginRecptScroll() {
@@ -1003,9 +1046,6 @@ function doTotalFinal() {
         totalOrder = tableOrders[selectedTable];
 
         if(selectedTable == -1) {
-            //we dump the id of the table when it is stored in db (to deal with tables no longer existing)
-            //so we cant carry it over here, so we test for the "none" word to test for a table order
-            
             //pick up the previous table
             tableInfoLabel = tables[-1].label;
             isTableOrder = (tableInfoLabel != 'None');
@@ -1382,7 +1422,7 @@ function saveDiscount() {
     closeDiscountPopup();
     
     //redraw the receipt
-    loadReceipt(order);
+    loadReceipt(order, true);
     setTimeout(menuRecptScroll, 20);
 }
 
@@ -1402,42 +1442,64 @@ function getExistingDiscountPercentForCurrentOrderItem(itemNumber) {
     return existingDiscount;
 }
 
-function orderItemAdditionAddSelected() {
-    $('#add_note').hide();
-    resetKeyboard();
-    $('#oia_container').show();
-    
-    clearSelectedOIATabs();
-    $('#oia_tab_add').addClass("selected");
-    oiaIsAdd = true;
-    
-    $('#order_item_additions .grid_item:not(.empty)').each(function() {
-        addCharge = $(this).data("add_charge");
-        if(addCharge != 0) {
-            $(this).find(".charge").html(currency(addCharge));
-        }else {
-            $(this).find(".charge").html("");
-        }
-    });
-}
+//function orderItemAdditionAddSelected() {
+//    $('#add_note').hide();
+//    resetKeyboard();
+//    $('#oia_container').show();
+//    
+//    clearSelectedOIATabs();
+//    $('#oia_tab_add').addClass("selected");
+//    oiaIsAdd = true;
+//    
+//    $('#order_item_additions .grid_item:not(.empty)').each(function() {
+//        addCharge = $(this).data("add_charge");
+//        if(addCharge != 0) {
+//            $(this).find(".charge").html(currency(addCharge));
+//        }else {
+//            $(this).find(".charge").html("");
+//        }
+//    });
+//}
+//
+//function orderItemAdditionNoSelected() {
+//    $('#add_note').hide();
+//    resetKeyboard();
+//    $('#oia_container').show();
+//    
+//    clearSelectedOIATabs();
+//    $('#oia_tab_no').addClass("selected");
+//    oiaIsAdd = false;
+//    
+//    $('#order_item_additions .grid_item:not(.empty)').each(function() {
+//        noCharge = $(this).data("minus_charge");
+//        if(noCharge != 0) {
+//            $(this).find(".charge").html(currency(noCharge));
+//        } else {
+//            $(this).find(".charge").html("");
+//        }
+//    });
+//}
 
-function orderItemAdditionNoSelected() {
-    $('#add_note').hide();
-    resetKeyboard();
-    $('#oia_container').show();
+function orderItemAdditionTabSelected(oiagId) {
+    if(!oiagId) {
+        oiagId = $('#oia_tabs .oia_tab').first().data("oiag_id");
+    }
     
     clearSelectedOIATabs();
-    $('#oia_tab_no').addClass("selected");
-    oiaIsAdd = false;
+    $('#add_note').hide();
+    resetKeyboard();
     
-    $('#order_item_additions .grid_item:not(.empty)').each(function() {
-        noCharge = $(this).data("minus_charge");
-        if(noCharge != 0) {
-            $(this).find(".charge").html(currency(noCharge));
-        } else {
-            $(this).find(".charge").html("");
-        }
-    });
+    $('#oia_tab_' + oiagId).addClass("selected");
+    $('.oia_container').hide();
+    
+    modifierGridXSize = $('#oiag_' + oiagId).data("grid_x_size");
+    modifierGridYSize = $('#oiag_' + oiagId).data("grid_y_size");
+    
+    initModifierGrid();
+    
+    $('#oiag_' + oiagId).show();
+    
+    setOrderItemAdditionsGridState();
 }
 
 function clearSelectedOIATabs() {
@@ -1446,6 +1508,8 @@ function clearSelectedOIATabs() {
 
 function doOpenOIANoteScreen() {
     clearSelectedOIATabs();
+    $('.oia_container').hide();
+    
     $('#oia_tab_note').addClass("selected");
     
     $('.button[id=sales_button_' + addNoteButtonID + ']').addClass("selected");
@@ -1645,11 +1709,12 @@ function switchToModifyOrderItemSubscreen() {
         $('#add_note').hide();
         resetKeyboard();
         hideAllMenuSubScreens();
+        
         $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').addClass("selected");
-        $('#oia_tab_add').click();
         $('#order_item_additions').show();
         $('#order_item_additions #add_note').hide();
-        $('#order_item_additions #oia_container').show();
+        
+        orderItemAdditionTabSelected(currentModifierGridIdForProduct);
     }
 }
 
@@ -1657,105 +1722,105 @@ function postDoSelectTable() {
 //does nothing for now, but the medium interface needed this callback
 }
 
-function orderItemAdditionClicked(el) {
-    currentSelectedReceiptItemEl = getLastReceiptItem();
-    
-    if(!currentSelectedReceiptItemEl) {
-        setStatusMessage("There are no receipt items!");
-        return;
-    }
-    
-    var order = getCurrentOrder();
-    
-    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
-    
-    var orderItem = order.items[itemNumber-1];
-    
-    el = $(el);
-    
-    //is this available
-    var available = el.data("available");
-    
-    if(!available) {
-        return;
-    }
-    
-    //get the oia data
-    var desc = el.data("description");
-    
-    var absCharge = 0;
-    
-    var plusCharge = el.data("add_charge");
-    var minusCharge = el.data("minus_charge");
-    
-    if(oiaIsAdd) {
-        absCharge = plusCharge;
-    } else {
-        absCharge = minusCharge;
-    }
-    
-    var hideOnReceipt = el.data("hide_on_receipt");
-    var isAddable = el.data("is_addable");
-    
-    addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, false, hideOnReceipt, isAddable);
-}
-
-function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, isNote, hideOnReceipt, isAddable) {
-    //make sure all values in calc are floats
-    absCharge = parseFloat(absCharge);
-    
-    if(orderItem.pre_discount_price) {
-        orderItem.pre_discount_price = parseFloat(orderItem.pre_discount_price);
-    } else {
-        orderItem.total_price = parseFloat(orderItem.total_price);
-    }
-    
-    oia_item = {
-        'description' : desc,
-        'abs_charge' : absCharge,
-        'is_add' : oiaIsAdd, 
-        'is_note' : isNote,
-        'hide_on_receipt' : hideOnReceipt,
-        'is_addable' : isAddable
-    }
-    
-    if(typeof(orderItem.oia_items) == 'undefined') {
-        orderItem.oia_items = new Array();
-    }
-    
-    //update the total
-    if(oiaIsAdd) {
-        if(orderItem.pre_discount_price) {
-            orderItem.pre_discount_price += (orderItem.amount * absCharge);
-        } else {
-            orderItem.total_price += (orderItem.amount * absCharge);
-        }
-    } else {
-        if(orderItem.pre_discount_price) {
-            orderItem.pre_discount_price -= (orderItem.amount * absCharge);
-        } else {
-            orderItem.total_price -= (orderItem.amount * absCharge);
-        }
-    }
-    
-    orderItem.oia_items.push(oia_item);
-   
-    applyExistingDiscountToOrderItem(order, orderItem.itemNumber);
-   
-    //store the modified order
-    if(selectedTable != 0) {
-        storeTableOrderInStorage(current_user_id, selectedTable, order);
-    }else {
-        storeOrderInStorage(current_user_id, order);
-    }
-        
-    //redraw the receipt
-    calculateOrderTotal(order);
-    loadReceipt(order);
-    setTimeout(menuRecptScroll, 20);
-    
-    currentSelectedReceiptItemEl = null;
-}
+//function orderItemAdditionClicked(el) {
+//    currentSelectedReceiptItemEl = getSelectedOrLastReceiptItem();
+//    
+//    if(!currentSelectedReceiptItemEl) {
+//        setStatusMessage("There are no receipt items!");
+//        return;
+//    }
+//    
+//    var order = getCurrentOrder();
+//    
+//    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
+//    
+//    var orderItem = order.items[itemNumber-1];
+//    
+//    el = $(el);
+//    
+//    //is this available
+//    var available = el.data("available");
+//    
+//    if(!available) {
+//        return;
+//    }
+//    
+//    //get the oia data
+//    var desc = el.data("description");
+//    
+//    var absCharge = 0;
+//    
+//    var plusCharge = el.data("add_charge");
+//    var minusCharge = el.data("minus_charge");
+//    
+//    if(oiaIsAdd) {
+//        absCharge = plusCharge;
+//    } else {
+//        absCharge = minusCharge;
+//    }
+//    
+//    var hideOnReceipt = el.data("hide_on_receipt");
+//    var isAddable = el.data("is_addable");
+//    
+//    addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, false, hideOnReceipt, isAddable);
+//}
+//
+//function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, isNote, hideOnReceipt, isAddable) {
+//    //make sure all values in calc are floats
+//    absCharge = parseFloat(absCharge);
+//    
+//    if(orderItem.pre_discount_price) {
+//        orderItem.pre_discount_price = parseFloat(orderItem.pre_discount_price);
+//    } else {
+//        orderItem.total_price = parseFloat(orderItem.total_price);
+//    }
+//    
+//    oia_item = {
+//        'description' : desc,
+//        'abs_charge' : absCharge,
+//        'is_add' : oiaIsAdd, 
+//        'is_note' : isNote,
+//        'hide_on_receipt' : hideOnReceipt,
+//        'is_addable' : isAddable
+//    }
+//    
+//    if(typeof(orderItem.oia_items) == 'undefined') {
+//        orderItem.oia_items = new Array();
+//    }
+//    
+//    //update the total
+//    if(oiaIsAdd) {
+//        if(orderItem.pre_discount_price) {
+//            orderItem.pre_discount_price += (orderItem.amount * absCharge);
+//        } else {
+//            orderItem.total_price += (orderItem.amount * absCharge);
+//        }
+//    } else {
+//        if(orderItem.pre_discount_price) {
+//            orderItem.pre_discount_price -= (orderItem.amount * absCharge);
+//        } else {
+//            orderItem.total_price -= (orderItem.amount * absCharge);
+//        }
+//    }
+//    
+//    orderItem.oia_items.push(oia_item);
+//   
+//    applyExistingDiscountToOrderItem(order, orderItem.itemNumber);
+//   
+//    //store the modified order
+//    if(selectedTable != 0) {
+//        storeTableOrderInStorage(current_user_id, selectedTable, order);
+//    }else {
+//        storeOrderInStorage(current_user_id, order);
+//    }
+//        
+//    //redraw the receipt
+//    calculateOrderTotal(order);
+//    loadReceipt(order, true);
+//    setTimeout(menuRecptScroll, 20);
+//    
+//    currentSelectedReceiptItemEl = null;
+//}
 
 function doReceiveOrderReady(employee_id, terminal_id, table_id, table_label) {
     if(inKitchenContext()) {

@@ -244,6 +244,7 @@ function showTotalsScreen() {
 
 function showMoreOptionsScreen() {
     hideAllScreens();
+    hideUtilKeyboard();
     $('#more_options').show();
     
     //hide the shortcut dropdown
@@ -344,20 +345,27 @@ function doCoinCounterTotal() {
     utilCounterTotalCalculated(sum);
 }
 
-var toggleKeyboardEnable= true;
+var toggleKeyboardEnable = true;
 
 function toggleUtilKeyboard() {
-    
     if(!toggleKeyboardEnable) {
         setStatusMessage("Toggling Keyboard disabled for this screen!");
         return;
     }
     
     if($('#util_keyboard_container').is(":visible")) {
-        $('#util_keyboard_container').slideUp(300);
+        hideUtilKeyboard();
     } else {
-        $('#util_keyboard_container').slideDown(300);
+        showUtilKeyboard();
     }
+}
+
+function hideUtilKeyboard() {
+    $('#util_keyboard_container').slideUp(300);
+}
+
+function showUtilKeyboard() {
+    $('#util_keyboard_container').slideDown(300);
 }
 
 function doWriteToLastActiveInput(val) {
@@ -507,14 +515,14 @@ function getSelectedOrLastReceiptItem() {
 }
 
 function getLastReceiptItem() {
-    currentSelectedReceiptItemEl = $('#till_roll > div.order_line:last');
+    lastReceiptItemEl = $('#till_roll > div.order_line:last');
     
-    if(currentSelectedReceiptItemEl.length == 0) {
+    if(lastReceiptItemEl.length == 0) {
         setStatusMessage("There are no receipt items!");
         return null;
     }
     
-    return currentSelectedReceiptItemEl;
+    return lastReceiptItemEl;
 }
 
 function hideAllMenuSubScreens() {
@@ -624,4 +632,22 @@ function postSetConnectionStatus(connected) {
     
     //we must be offline, so set the connection status light
     $('#connection_status').css("background-color", color);
+}
+
+function initModifierGrid() {
+    //set the width of each grid item
+    var rowWidth = $('div#order_item_additions .grid_row:first').css("width");
+    
+    var newWidth = roundNumberDown(parseFloat(rowWidth)/modifierGridXSize, 0) - 5;
+    
+    $('div#order_item_additions .grid_row .grid_item').css("width", newWidth + "px");
+    
+    var panelHeight = $('div#order_item_additions').css("height");
+    
+    //take away the height of the tabs
+    panelHeight = parseFloat(panelHeight) - parseFloat($('#oia_tabs .tab').css("height"));
+    
+    var newHeight = roundNumberDown(parseFloat(panelHeight)/modifierGridYSize, 0) - 6;
+    
+    $('div#order_item_additions .grid_row .grid_item').css("height", newHeight + "px");
 }

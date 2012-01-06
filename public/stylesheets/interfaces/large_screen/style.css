@@ -828,6 +828,8 @@ div#menu_screen div#menu_pages_container div#menu_buttons div#menu_buttons_loadi
 
 div#menu_screen div#menu_pages_container div#pages {
     border-spacing: 2px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
     margin-bottom: -4px;
     background-color: #B4B4B4;
 }
@@ -846,7 +848,7 @@ div#menu_screen div#menu_pages_container div#pages div.page {
     width: 88px;
     cursor: pointer;
     border: 1px solid #AAA;
-    top-lcursor: pointer;
+    cursor: pointer;
     -moz-border-top-left-radius: 7px;
     -moz-border-top-right-radius: 7px;
     border-top-left-radius: 7px;
@@ -966,9 +968,12 @@ div#menu_screen div#order_item_additions {
     background-color: #E0E0E0;
 }
 
-div#menu_screen div#order_item_additions div#oia_container {
+div#menu_screen div#order_item_additions div.oia_container {
+    display: none;
     background-color: #E0E0E0;
     padding: 3px 4px 4px 4px;
+    overflow: hidden;
+    height: 480px;
 }
 
 div#menu_screen div#order_item_additions div#add_note {
@@ -979,6 +984,8 @@ div#menu_screen div#order_item_additions div.tabs {
     background-color: #B4B4B4;
     border-spacing: 2px;
     margin-bottom: -4px;
+    padding-left: 2px;
+    padding-top: 2px;
 }
 
 div#menu_screen div#order_item_additions div.tabs div.tab {
@@ -1002,12 +1009,23 @@ div#menu_screen div#order_item_additions div.tabs div.tab.selected {
     border-bottom-width: 0;
 }
 
-div#menu_screen div#order_item_additions div.tabs div.tab img {
+div#menu_screen div#order_item_additions div.tabs div.tab div.label {
+    font-size: 13px;
+    color: black;
+    text-decoration: none;
+    padding: 4px;
+    margin-left: 0px;
+    margin-top: 0px;
+    float: none;
+}
+
+div#menu_screen div#order_item_additions div.tabs div#oia_tab_note img {
     float: left;
     margin-left: 6px;
 }
 
-div#menu_screen div#order_item_additions div.tabs div.tab div.label {
+div#menu_screen div#order_item_additions div.tabs div#oia_tab_note div.label {
+    padding: 0px;
     float: left;
     margin-left: 9px;
     margin-top: 9px;
@@ -1023,6 +1041,20 @@ div#menu_screen div#order_item_additions div.grid_row div.grid_item {
     background-color: #FFF;
     border: 1px solid #555;
     cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+div#menu_screen div#order_item_additions div.grid_row div.grid_item div.grid_graphic {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    z-index: 100;
+}
+
+div#menu_screen div#order_item_additions div.grid_row div.grid_item img {
+    max-height: 20px;
+    max-width: 20px;
 }
 
 div#menu_screen div#order_item_additions div.grid_row div.grid_item.not_available>div {
@@ -1778,14 +1810,6 @@ div#edit_receipt_item_popup_markup_container {
     height: 500px;
 }
 
-div#edit_receipt_item_popup_markup_container div#header {
-    float: left;
-    margin: 5px;
-    margin-top: 16px;
-    font-size: 17px;
-    font-weight: bold;
-}
-
 div#edit_receipt_item_popup_markup_container div#quantity_editor {
     padding-top: 10px;
 }
@@ -1843,6 +1867,20 @@ div#edit_receipt_item_popup_markup_container div#price_editor input.price {
     border-radius: 5px;
 }
 
+div#edit_receipt_item_popup_markup_container div#oia_button {
+    padding: 10px;
+    float: right;
+    cursor: pointer;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    height: 18px;
+    width: 60px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    margin: 3px 6px 3px 6px;
+}
+
 div#edit_receipt_item_popup_markup_container div#discount_button {
     padding: 10px;
     float: right;
@@ -1868,7 +1906,7 @@ div#edit_receipt_item_popup_markup_container div#delete_button {
     font-size: 14px;
     font-weight: bold;
     color: #666;
-    margin: 3px 10px 3px 10px;
+    margin: 3px 6px 3px 6px;
 }
 
 /* End Edit Order Item Popup */

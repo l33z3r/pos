@@ -1777,3 +1777,12 @@ div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll 
 }
 
 /* Previous Cash Totals */
+
+/* OIAGs */
+
+div#new_order_item_addition_grid div#fields {
+    width: 300px;
+    margin: auto;
+}
+
+/* End OIAGs */

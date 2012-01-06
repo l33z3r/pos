@@ -391,33 +391,104 @@ div#menu_screen div#menu_container div#menu_keypad div#menu_keypad_header div#cl
     height: 60px;
 }
 
-div#menu_screen div#order_item_additions {
+div#menu_screen div#oia_subscreen {
     display: none;
     height: 603px;
 }
 
-div#menu_screen div#order_item_additions div.grid_row {
-    width: 480px;
+div#menu_screen div#oia_subscreen div#oia_tabs_container {
+    height: 500px;
+    overflow: hidden;
+    float: left;
+    width: 120px;
 }
 
-div#menu_screen div#order_item_additions div.grid_row div.grid_item {
+div#menu_screen div#oia_subscreen div#oia_tabs {
+    
+}
+
+div#menu_screen div#oia_subscreen div#oia_tabs div.tabs {
+    background-color: transparent;
+}
+
+div#menu_screen div#oia_subscreen div#oia_tabs div.tabs div.tab {
+    width: 110px;
+    height: 57px;
+    display: table-cell;
+    overflow: hidden;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+    line-height: 17px;
+}
+
+div#menu_screen div#oia_subscreen div#oia_tabs div.tabs div.tab.selected {
+    background: -moz-linear-gradient(#C1C1C1, #101010) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#C1C1C1), to(#101010));
+}
+
+div#menu_screen div#oia_subscreen div#oia_tabs div.tabs div.tab div.label {
+    font-size: 20px;
+    margin-left: 0px;
+    margin-top: 0px;
+    float: none;
+}
+
+div#menu_screen div#oia_subscreen div#oia_tabs div.tabs div.tab.selected div.label {
+    color: #FFF;
+}
+
+div#menu_screen div#oia_subscreen div#order_item_additions {
+    float: left;
+    width: 360px;
+}
+
+div#menu_screen div#oia_subscreen div#order_item_additions div.oia_container {
+    display: none;
+}
+
+div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row {
+    
+}
+
+div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row div.grid_item {
     font-size: 22px;
     margin: 0px 1px;
     float: left;
     background-color: #FFF;
     border: 1px solid #555;
     cursor: pointer;
+    overflow: hidden;
+    position: relative;
 }
 
-div#menu_screen div#order_item_additions div.grid_row div.grid_item.not_available>div {
+div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row div.grid_item div.grid_graphic {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    z-index: 100;
+}
+
+div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row div.grid_item img {
+    max-height: 20px;
+    max-width: 20px;
+}
+
+div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row div.grid_item.not_available>div {
     text-decoration: line-through;
 }
 
-div#menu_screen div#order_item_additions div.grid_row div.grid_item div.name {
+div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row div.grid_item div.name {
     margin: 30px 0px 5px 0px;
 }
 
-div#menu_screen div#order_item_additions div.grid_row div.grid_item.empty {
+div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row div.grid_item.empty {
     cursor: auto;
 }
 
