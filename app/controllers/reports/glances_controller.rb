@@ -9,9 +9,11 @@ class Reports::GlancesController < Admin::AdminController
 
   def last_z_total
     @last_z_total = CashTotal.where("total_type = ?","Z").order("created_at DESC").first
-    @last_z_total_by = @last_z_total.employee.nickname
-    @last_z_total_date = @last_z_total.created_at.to_date.strftime("%d %b %Y")
-    @last_z_total_time = @last_z_total.created_at.to_time.strftime("%H:%M")
+    if(@last_z_total)
+      @last_z_total_by = @last_z_total.employee.nickname
+      @last_z_total_date = @last_z_total.created_at.to_date.strftime("%d %b %Y")
+      @last_z_total_time = @last_z_total.created_at.to_time.strftime("%H:%M")
+    end
   end
 
   def glances_search
