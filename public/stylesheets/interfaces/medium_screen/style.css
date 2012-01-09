@@ -486,6 +486,7 @@ div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row div.grid
 
 div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row div.grid_item div.name {
     margin: 30px 0px 5px 0px;
+    line-height: 100%;
 }
 
 div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row div.grid_item div.charge {

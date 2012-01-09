@@ -1070,6 +1070,7 @@ div#menu_screen div#order_item_additions div.grid_row div.grid_item.not_availabl
 
 div#menu_screen div#order_item_additions div.grid_row div.grid_item div.name {
     margin: 5px 0px;
+    line-height: 100%;
 }
 
 div#menu_screen div#order_item_additions div.grid_row div.grid_item.empty {

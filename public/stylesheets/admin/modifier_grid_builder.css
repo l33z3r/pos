@@ -152,7 +152,6 @@ div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container {
     height: 70px;
     padding: 5px;
     position: relative;
-    line-height: 100%;
 }
 
 div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container div.delete_link {
@@ -167,6 +166,7 @@ div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container d
 
 div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container div.name {
     margin-top: 3px;
+    line-height: 100%;
 }
 
 div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container div.charge {
