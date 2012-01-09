@@ -108,7 +108,7 @@ div#display_builder div#menu_pages_container div#pages {
 }
 
 div#display_builder div#menu_pages_container div#builder_menu_items_container {
-    height: 420px;
+    height: 480px;
     padding-top: 4px;
     background-color: #E0E0E0;
 }
@@ -152,7 +152,6 @@ div#display_builder div#menu_pages_container div#pages div.delete_link a {
     color: red;
     text-decoration: none;
 }
-
 
 div#display_builder div#menu_pages_container div#pages div.selected {
     border-bottom-width: 0px;

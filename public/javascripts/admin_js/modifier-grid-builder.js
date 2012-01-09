@@ -5,6 +5,8 @@ var grid_id;
 var current_grid_x = null;
 var current_grid_y = null;
 
+var updateInProgress = false;
+
 $(function() {
     setGridScrollerWidth(grid_x);
     cellSelected(1, 1);
@@ -12,9 +14,54 @@ $(function() {
     var keyboardPlaceHolderEl = $('#modifier_grid_builder #keyboard')
     
     placeUtilKeyboard(keyboardPlaceHolderEl);
+    
+    $('#description_input').keyup(function(e) {
+        if(e.keyCode == 13) {
+            updateSelectedGridItem();
+        }
+    });
+    $('#add_charge_input').keyup(function(e) {
+        if(e.keyCode == 13) {
+            updateSelectedGridItem();
+        }
+    });
+    $('#minus_charge_input').keyup(function(e) {
+        if(e.keyCode == 13) {
+            updateSelectedGridItem();
+        }
+    });
 });
 
+function updateGridName() {
+    var newName = $('#grid_name_input').val();
+    
+    if(newName.length < 1) {
+        alert("Please Enter a valid name.");
+        return;
+    }
+    
+    $.ajax({
+        type: 'POST',
+        url: '/admin/order_item_addition_grids/' + grid_id + '/rename' ,
+        data: {
+            newName : newName
+        },
+        success: function(){alert("Grid Renamed");}
+    });
+}
+
 function cellSelected(x, y) {
+    if(current_grid_x == x && current_grid_y == y) {
+        return;
+    }
+    
+    if(updateInProgress) {
+        alert("Please wait, updating cell.");
+        return;
+    }
+    
+    $('#description_input').focus();
+    
     updateSelectedGridItem();
     
     current_grid_x = x;
@@ -170,7 +217,6 @@ function updateGridSize() {
 }
 
 function updateSelectedGridItem() {
-    
     if(current_grid_x == null) {
         return;
     }
@@ -181,6 +227,9 @@ function updateSelectedGridItem() {
     if(description.length == 0) {
         return;
     }
+    
+    $('#cell_' + current_grid_x + "_" + current_grid_y).html("Updating...");
+    updateInProgress = true;
     
     var addCharge = $('#add_charge_input').val();
     
@@ -201,6 +250,9 @@ function updateSelectedGridItem() {
     var hideOnReceipt = $('#hide_on_receipt_input').attr("checked");
     var isAddable = $('#is_addable_input').attr("checked");
     
+    var productId = $('#product_id_input').val();
+    var followOnGridId = $('#follow_grid_id_input').val();
+    
     var oiaData = {
         x : current_grid_x,
         y : current_grid_y,
@@ -213,24 +265,16 @@ function updateSelectedGridItem() {
         textColor : textColor,
         textSize : textSize,
         hideOnReceipt : hideOnReceipt,
-        isAddable : isAddable
+        isAddable : isAddable,
+        productId : productId,
+        followOnGridId : followOnGridId
     };
         
-    var productId = $('#product_id_input').val();
-    var followOnGridId = $('#follow_grid_id_input').val();
-    
-    if(productId != -1) {
-        oiaData.productId = productId;
-    }
-    
-    if(followOnGridId != -1) {
-        oiaData.followOnGridId = followOnGridId;
-    }
-    
     $.ajax({
         type: 'POST',
         url: '/admin/order_item_addition_grids/' + grid_id + '/update_item' ,
-        data: oiaData
+        data: oiaData, 
+        complete: function() {updateInProgress = false;}
     });
 }
 
@@ -274,11 +318,38 @@ function showBGColorPicker() {
     bgColorPicker.addChangeListener(bgColorPickerChanged);
 }
 
+function deleteGridItem(gridX, gridY) {
+    window.event.stopPropagation();
+    
+    if(updateInProgress) {
+        alert("Please wait, updating cell.");
+        return;
+    }
+    
+    doIt = confirm("Are you sure you want to delete this grid item?");
+
+    if(!doIt) return;
+    
+    updateInProgress = true;
+    
+    $('#cell_' + gridX + "_" + gridY).html("Deleting...");
+    
+    var oiaData = {
+        x : gridX,
+        y : gridY
+    };
+    
+    $.ajax({
+        type: 'POST',
+        url: '/admin/order_item_addition_grids/' + grid_id + '/delete_item' ,
+        data: oiaData, 
+        complete: function() {updateInProgress = false;}
+    });
+}
+
 function bgColorPickerChanged(newColour, colourPickerObj) {
     newColorCSSVal = newColour.getCSSHexadecimalRGB();
     $('#bg_color_input').val(newColorCSSVal);
-    
-//doCloseBGColorPickerPopup();
 }
 
 function doCloseBGColorPickerPopup() {

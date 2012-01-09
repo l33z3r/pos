@@ -190,7 +190,9 @@ Pos::Application.routes.draw do
       member do
         get 'builder'
         post 'resize'
+        post 'rename'
         post 'update_item'
+        post 'delete_item'
         post 'default'
         
         #ajax functions

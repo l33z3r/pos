@@ -9,6 +9,9 @@
        data-follow_on_grid_id="<%=oia.follow_on_grid_id%>"
        style="<%= oia_background_css oia %>;">
 
+    <div class="delete_link" onclick="deleteGridItem(<%=x%>, <%=y%>);">
+      X
+    </div>
 
     <div style="color: <%=oia.text_color%>;font-size: <%=oia.text_size%>px" class="name">
       <%= oia.description %>
@@ -23,6 +26,6 @@
   </div>
 <% else %>
   <div id="grid_<%=x%>_<%=y%>">
-    
+
   </div>
 <% end %>

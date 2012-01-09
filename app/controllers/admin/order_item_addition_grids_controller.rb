@@ -55,6 +55,17 @@ class Admin::OrderItemAdditionGridsController < Admin::AdminController
     @oiag.save!
   end
   
+  def rename
+    @oiag = OrderItemAdditionGrid.find(params[:id])
+    @newName = params[:newName]
+    
+    @oiag.name = @newName
+    
+    @oiag.save!
+    
+    render :json => {:success => true}.to_json
+  end
+  
   def update_item
     @oiag = OrderItemAdditionGrid.find(params[:id])
     @x = params[:x]
@@ -78,15 +89,22 @@ class Admin::OrderItemAdditionGridsController < Admin::AdminController
     @item.hide_on_receipt = params[:hideOnReceipt]
     @item.is_addable = params[:isAddable]
     
-    if params[:productId]
-      @item.product_id = params[:productId]
-    end
-    
-    if params[:followOnGridId]
-      @item.follow_on_grid_id = params[:followOnGridId]
-    end
+    @item.product_id = params[:productId]
+    @item.follow_on_grid_id = params[:followOnGridId]
     
     @item.save!
+  end
+  
+  def delete_item
+    @oiag = OrderItemAdditionGrid.find(params[:id])
+    @x = params[:x]
+    @y = params[:y]
+    
+    @item = @oiag.item_for_position(@x, @y)
+    
+    if @item
+      @item.destroy
+    end
   end
   
   private

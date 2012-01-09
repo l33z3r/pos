@@ -107,7 +107,7 @@ function doGlobalInit() {
         //unhighlight last active
         lastActiveElement.addClass("focus");
         
-        if(lastActiveElement.attr("id") != "scan_upc") {
+        if(lastActiveElement.attr("id") != "scan_upc" && lastActiveElement.attr("id") != "description_input") {
             event = event || window.event
  
             //the following was an attempt to hide the ipad keyboard but didnt work

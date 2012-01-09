@@ -9,6 +9,36 @@ div#modifier_grid_builder div#builder_action_buttons {
     float: left;
 }
 
+div#modifier_grid_builder div#builder_action_buttons div#grid_renamer {
+    width: 85px;
+    height: 100px;
+    background-color: #555;
+    padding: 3px;
+    text-align: center;
+    margin-top: 15px;
+    border: 1px solid #000;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_renamer div.button {
+    height: 25px;
+    color: #333;
+    font-weight: normal;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_renamer * {
+    color: #FFF;
+    font-weight: bold;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_renamer input {
+    color: #333;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_renamer div.top_label {
+    padding: 4px;
+    margin-bottom: 5px;
+}
+
 div#modifier_grid_builder div#builder_action_buttons div#grid_resizer {
     width: 85px;
     height: 90px;
@@ -76,6 +106,17 @@ div#modifier_grid_builder div#builder div#grid div.oia {
 div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container {
     height: 70px;
     padding: 5px;
+    position: relative;
+}
+
+div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container div.delete_link {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    padding: 1px 3px;
+    cursor: pointer;
+    color: red;
+    text-decoration: none;
 }
 
 div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container div.name {

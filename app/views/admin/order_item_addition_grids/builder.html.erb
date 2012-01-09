@@ -55,6 +55,18 @@
 
     <div class="clear">&nbsp;</div>
 
+    <div id="grid_renamer">
+      <div class="top_label">Grid Name</div>
+
+      <div id="name">
+        <input type="text" id="grid_name_input" size="6" value="<%=@oiag.name%>"/>
+        <div class="clear">&nbsp;</div>
+        <div class="button" onclick="updateGridName();">Update</div>
+      </div>
+
+      <div class="clear">&nbsp;</div>
+    </div>
+    
     <div id="grid_resizer">
       <div class="top_label">Grid Size</div>
 
@@ -87,21 +99,21 @@
       <div id="description">
         <div class="top_label">Description</div>
         <div class="input_box">
-          <input type="text" id="description_input" value="" onchange="updateSelectedGridItem()"/>
-        </div>
+          <input type="text" id="description_input" value=""/>
+          </div>
       </div>
 
       <div id="charge">
         <div class="top_label">Add Charge</div>
         <div class="input_box">
-          <input type="text" id="add_charge_input" value="" onchange="updateSelectedGridItem()"/>
+          <input type="text" id="add_charge_input" value=""/>
         </div>
       </div>
 
       <div id="charge">
         <div class="top_label">Minus Charge</div>
         <div class="input_box">
-          <input type="text" id="minus_charge_input" value="" onchange="updateSelectedGridItem()"/>
+          <input type="text" id="minus_charge_input" value=""/>
         </div>
       </div>
 
