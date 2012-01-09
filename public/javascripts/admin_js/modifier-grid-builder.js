@@ -83,8 +83,8 @@ function cellSelected(x, y) {
 
 function initCellInputs(gridEL) {
     var description = gridEL.data("description");
-    var addCharge = parseInt(gridEL.data("add_charge"));
-    var minusCharge = parseInt(gridEL.data("minus_charge"));
+    var addCharge = parseFloat(gridEL.data("add_charge"));
+    var minusCharge = parseFloat(gridEL.data("minus_charge"));
     var available = gridEL.data("available");
     var bgColor = gridEL.data("bg_color");
     var bgColor2 = gridEL.data("bg_color_2");
