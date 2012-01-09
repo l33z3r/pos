@@ -936,7 +936,7 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusC
         if(oiaFound) {
             oiaEdited = true;
             
-            if(existingOIA.is_add) {
+            if(existingOIA.is_add && existingOIA.is_addable) {
                 existingOIA.is_add = false;
                 
                 //save the new abs_charge to be the minus charge
