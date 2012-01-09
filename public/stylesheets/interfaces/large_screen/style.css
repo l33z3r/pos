@@ -1043,6 +1043,13 @@ div#menu_screen div#order_item_additions div.grid_row div.grid_item {
     cursor: pointer;
     overflow: hidden;
     position: relative;
+    line-height: 100%;
+}
+
+div#menu_screen div#order_item_additions div.grid_row div.grid_item div.charge {
+    bottom: 4px;
+    width: 100%;
+    position: absolute;
 }
 
 div#menu_screen div#order_item_additions div.grid_row div.grid_item div.grid_graphic {
@@ -3016,6 +3023,7 @@ div#nice_alert {
     text-align: center;
     margin-top: 20px;
     line-height: 32px;
+    color: #000;
 }
 
 input#niceAlertContainer_okButton,

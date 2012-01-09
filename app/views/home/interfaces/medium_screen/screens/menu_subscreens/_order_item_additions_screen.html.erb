@@ -30,7 +30,7 @@
                   <div style="color: <%=@oia.text_color%>;font-size: <%=@oia.text_size%>px;" class="name">
                     <%= @oia.description %>
                   </div>
-                  <div style="color: <%=@oia.text_color%>;font-size: <%=@oia.text_size%>px;" class="charge">
+                  <div style="color: <%=@oia.text_color%>;" class="charge">
                     <%= print_money @oia.add_charge unless @oia.add_charge == 0 %>
                   </div>
                   <div class="grid_graphic add">

@@ -458,7 +458,7 @@ div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row {
 }
 
 div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row div.grid_item {
-    font-size: 22px;
+    font-size: 18px;
     margin: 0px 1px;
     float: left;
     background-color: #FFF;
@@ -486,6 +486,12 @@ div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row div.grid
 
 div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row div.grid_item div.name {
     margin: 30px 0px 5px 0px;
+}
+
+div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row div.grid_item div.charge {
+    bottom: 4px;
+    width: 100%;
+    position: absolute;
 }
 
 div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row div.grid_item.empty {
@@ -1023,6 +1029,7 @@ div#nice_alert {
     text-align: center;
     margin-top: 20px;
     line-height: 32px;
+    color: #000;
 }
 
 input#niceAlertContainer_okButton,

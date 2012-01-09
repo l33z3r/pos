@@ -56,9 +56,9 @@ function cellSelected(x, y) {
     }
     
     if(updateInProgress) {
-        alert("Please wait, updating cell.");
+        alert("Cell update in progress, please wait before selecting another cell.");
         return;
-    }
+    } 
     
     $('#description_input').focus();
     
@@ -162,7 +162,7 @@ function clearCellInputs() {
     $('#bg_color_input').val("");
     $('#bg_color_2_input').val("");
     $('#text_color_input').val("");
-    $('#text_size_input').val(20);
+    $('#text_size_input').val(18);
     
     resetHideOnReceiptInput();
     

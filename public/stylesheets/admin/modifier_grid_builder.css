@@ -2,6 +2,50 @@ div#modifier_grid_builder {
 
 }
 
+div#modifier_grid_builder ::-webkit-scrollbar {
+    width: 40px;
+}
+
+/* Track */
+div#modifier_grid_builder ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+/* Handle */
+div#modifier_grid_builder ::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1)); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+
+div#modifier_grid_builder ::-webkit-scrollbar-thumb:window-inactive {
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1)); 
+}
+
+div#modifier_grid_builder ::-webkit-scrollbar-button:start:decrement,
+div#modifier_grid_builder ::-webkit-scrollbar-button:end:increment {
+    display: block;
+    height: 40px;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+
+div#modifier_grid_builder ::-webkit-scrollbar-button:vertical:increment{
+    background:no-repeat url("/images/arrow_down.png") 10px 10px;
+}
+
+div#modifier_grid_builder ::-webkit-scrollbar-button:vertical:decrement{
+    background:no-repeat url("/images/arrow_up.png") 10px 10px;
+}
+
+div#modifier_grid_builder ::-webkit-scrollbar-button:horizontal:increment{
+    background:no-repeat url("/images/arrow_right.png") 10px 10px;
+}
+
+div#modifier_grid_builder ::-webkit-scrollbar-button:horizontal:decrement{
+    background:no-repeat url("/images/arrow_left.png") 10px 10px;
+}
+
 div#modifier_grid_builder div#builder_action_buttons {
     border-spacing: 7px;
     padding-left: 12px;
@@ -88,6 +132,7 @@ div#modifier_grid_builder div#builder div#grid_scroller {
     height: 310px;
     overflow: scroll;
     border: 1px solid #222;
+    background: #E0E0E0;
 } 
 
 div#modifier_grid_builder div#builder div#grid_scroller div#grid {
@@ -107,6 +152,7 @@ div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container {
     height: 70px;
     padding: 5px;
     position: relative;
+    line-height: 100%;
 }
 
 div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container div.delete_link {
@@ -124,7 +170,9 @@ div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container d
 }
 
 div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container div.charge {
-    margin-top: 3px;
+    bottom: 4px;
+    width: 100%;
+    position: absolute;
 }
 
 div#modifier_grid_builder div#builder div#grid div.oia.selected {
@@ -161,7 +209,7 @@ div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box {
 
 div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box input,
 div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box select {
-    width: 65px;
+    width: 125px;
 }
 
 div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box div.iPhoneCheckContainer {
