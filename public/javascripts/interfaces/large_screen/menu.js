@@ -403,6 +403,7 @@ function testForPricePrompt(orderItem) {
         var popupEl = doSelectReceiptItem(getSelectedOrLastReceiptItem());
         popupEl.find('#discount_button').hide();
         popupEl.find('#delete_button').hide();
+        popupEl.find('#oia_button').hide();
         popupEl.find('#quantity_editor').hide();
         popupEl.find('#header').html("Enter A Price");
         popupEl.find('#current_selected_receipt_item_price').focus();

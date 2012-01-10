@@ -65,6 +65,16 @@ class OrderController < ApplicationController
   
   def sync_table_order
     @table_order_data = params[:tableOrderData]
+    @order_num = @table_order_data[:orderData][:order_num]
+    
+    if @order_num 
+      if Order.find_by_order_num @order_num
+        #this order has already been cashed, so do nothing...
+        logger.info "Order has already been cashed. Ignoring..."
+        render :json => {:success => false}.to_json and return
+      end
+    end
+    
     @employee_id = params[:employee_id]
     
     @table_id = @table_order_data['tableID']
