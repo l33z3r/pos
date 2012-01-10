@@ -14,6 +14,9 @@ class Admin::RoomsController < Admin::AdminController
     @room = Room.new(params[:room])
 
     if @room.save
+      #send a reload request to other terminals
+      request_reload_app @terminal_id
+    
       redirect_to([:builder, :admin, @room], :notice => 'Room was successfully created.')
     else
       render :action => "new"
@@ -23,6 +26,9 @@ class Admin::RoomsController < Admin::AdminController
   def rename_room
     @room.name = params[:name]
     @room.save!
+    
+    #send a reload request to other terminals
+    request_reload_app @terminal_id
     
     render :json => {:success => true}.to_json
   end
@@ -69,6 +75,9 @@ class Admin::RoomsController < Admin::AdminController
       else
         @place_error = true
       end
+      
+      #send a reload request to other terminals
+      request_reload_app @terminal_id
     end
   end
   
@@ -139,6 +148,9 @@ class Admin::RoomsController < Admin::AdminController
       @table_info.perm_id = @new_label
       @table_info.save!
     end
+    
+    #send a reload request to other terminals
+    request_reload_app @terminal_id
   end
   
   def remove_table
@@ -171,6 +183,9 @@ class Admin::RoomsController < Admin::AdminController
       #remove the sync info for that table
       TerminalSyncData.remove_sync_data_for_table @table_id
     end
+    
+    #send a reload request to other terminals
+    request_reload_app @terminal_id
   end
   
   def remove_wall
@@ -217,6 +232,9 @@ class Admin::RoomsController < Admin::AdminController
       @room.destroy
     
       @notice = "Room was deleted."
+      
+      #send a reload request to other terminals
+      request_reload_app @terminal_id
     else
       @notice = "Please close all tables for this room before you delete it"
     end
