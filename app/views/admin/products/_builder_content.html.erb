@@ -81,47 +81,41 @@
           <div class="clear">&nbsp;</div>
         </div>
         <div class="field">
-          <div class="label">Brand</div>
-          <%= f.text_field :brand %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">Description</div>
-          <%= f.text_field :description %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
           <div class="label">Category</div>
           <%= f.collection_select :category_id, Category.find(:all), :id, :name, 
             :prompt => "Select a Category", :include_blank => "None" %>
           <div class="clear">&nbsp;</div>
         </div>
         <div class="field">
+          <div class="label">Standard Price</div>
+          <%= f.text_field :price %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Code No.</div>
+          <%= f.text_field :code_num %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">UPC</div>
+          <%= f.text_field :upc %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Modifier Grid</div>
+          <%= f.collection_select :order_item_addition_grid_id, OrderItemAdditionGrid.find(:all), :id, :name, 
+            :prompt => "Select a Modifier Grid", :include_blank => "None" %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Modifier Grid Mandatory?</div>
+          <%= f.check_box :order_item_addition_grid_id_is_mandatory %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
           <div class="label">Parent Product</div>
           <%= f.collection_select :parent_product_id, Product.find(:all), :id, :name, 
             :prompt => "Select a Product", :include_blank => "None" %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">Modifier</div>
-          <%= f.collection_select :modifier_category_id, ModifierCategory.find(:all), :id, :name, 
-            :prompt => "Select a Modifier", :include_blank => "None" %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label"><%=@tax_label%> Rate</div>
-          <%= f.collection_select :tax_rate_id, TaxRate.find(:all), :id, :name_for_select, 
-            :prompt => "Select a #{@tax_label} Rate", :include_blank => "Default" %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">Menu 1</div>
-          <%= f.select :menu_page_1_id, MenuPage.select_opts, :prompt => "Select a Menu"%>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">Menu 2</div>
-          <%= f.select :menu_page_2_id, MenuPage.select_opts, :prompt => "Select a Menu" %>
           <div class="clear">&nbsp;</div>
         </div>
         <div class="field">
@@ -166,17 +160,6 @@
           <div class="clear">&nbsp;</div>
         </div>
         <div class="field">
-          <div class="label">Modifier Grid</div>
-          <%= f.collection_select :order_item_addition_grid_id, OrderItemAdditionGrid.find(:all), :id, :name, 
-            :prompt => "Select a Modifier Grid", :include_blank => "None" %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">Modifier Grid Mandatory?</div>
-          <%= f.check_box :order_item_addition_grid_id_is_mandatory %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
           <div class="label">Qty in Stock</div>
           <%= f.text_field :quantity_in_stock, :disabled => true %>
           <div class="clear">&nbsp;</div>
@@ -184,81 +167,13 @@
       </div>
 
       <div class="right_col">
-        <div class="field">
-          <div class="label">Code No.</div>
-          <%= f.text_field :code_num %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">UPC</div>
-          <%= f.text_field :upc %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">Standard Price</div>
-          <%= f.text_field :price %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">Double Price</div>
-          <%= f.text_field :double_price %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">Price 2</div>
-          <%= f.text_field :price_2 %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">Price 3</div>
-          <%= f.text_field :price_3 %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">Price 4</div>
-          <%= f.text_field :price_4 %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">Margin &#37;</div>
-          <%= f.text_field :margin_percent %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">Cost Price</div>
-          <%= f.text_field :cost_price %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">Shipping</div>
-          <%= f.text_field :cost_price %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">Comission &#37;</div>
-          <%= f.text_field :cost_price %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">Container Type</div>
-          <%= f.collection_select :container_type_id, Category.find(:all), :id, :name, 
-            :prompt => "Select a Category", :include_blank => "None" %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">Qty per Container</div>
-          <%= f.text_field :items_per_unit %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">Unit of Measure</div>
-          <%= f.text_field :unit %>
-        </div>
-        <div class="field">
-          <div class="label">Unit Size</div>
-          <%= f.text_field :size %>
-          <div class="clear">&nbsp;</div>
-        </div>
+
+
+
+
+
+
+
       </div>
 
       <%= render 'product_extra_options', :f => f %>
