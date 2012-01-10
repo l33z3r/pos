@@ -197,7 +197,7 @@ function getTillRollDiscountHTML(order) {
         
         discountAmountFormatted = currency(order.pre_discount_price - order.total);
         
-        tillRollDiscountHTML = clearHTML + "<div class='data_table'><div class='label'>Sub-Total</div>";
+        tillRollDiscountHTML = clearHTML + "<div class='data_table'><div class='label'>Pre-Discount Price</div>";
         tillRollDiscountHTML += "<div class='data'>" + preDiscountFormatted + "</div>";
         tillRollDiscountHTML += "<div class='label'>Discount - " + order.discount_percent + "%</div>";
         tillRollDiscountHTML += "<div class='data'>" + discountAmountFormatted + "</div>" + clearHTML + "</div>";
