@@ -1,4 +1,10 @@
-CUSTOM_CONFIG = YAML.load_file("#{RAILS_ROOT}/config/custom_config.yml")[RAILS_ENV]
+begin
+  YAML_CONFIG_FILE = YAML.load_file("#{RAILS_ROOT}/config/custom_config.yml")
+rescue
+  YAML_CONFIG_FILE = YAML.load_file("#{RAILS_ROOT}/config/default_custom_config.yml")
+end
+
+CUSTOM_CONFIG = YAML_CONFIG_FILE[RAILS_ENV]
 
 HTTP_BASIC_AUTH_USERNAME = CUSTOM_CONFIG["http_basic_auth_username"]
 HTTP_BASIC_AUTH_PASSWORD = CUSTOM_CONFIG["http_basic_auth_password"]
