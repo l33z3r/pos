@@ -1,5 +1,5 @@
 $(function() {
-    extraOptionsOptionsSelected();
+    extraOptionsGeneralSelected();
     
     var keyboardPlaceHolderEl = $('#product_builder #keyboard')
     placeUtilKeyboard(keyboardPlaceHolderEl);
@@ -16,6 +16,10 @@ function productBuilderCancelClicked() {
     goTo("/admin/products");
 }
 
+function extraOptionsGeneralSelected() {
+    setExtraOptionsSelectedTab("extra_options_tab_general", "general_tab_content");
+}
+
 function extraOptionsOptionsSelected() {
     setExtraOptionsSelectedTab("extra_options_tab_options", "options_tab_content");
 }
@@ -26,6 +30,10 @@ function extraOptionsAppearanceSelected() {
 
 function extraOptionsStockSelected() {
     setExtraOptionsSelectedTab("extra_options_tab_stock", "stock_tab_content");
+}
+
+function extraOptionsIngredientsSelected() {
+    setExtraOptionsSelectedTab("extra_options_tab_ingredients", "ingredients_tab_content");
 }
 
 function setExtraOptionsSelectedTab(tab_el_name, tab_content_el_name) {

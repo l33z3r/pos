@@ -323,18 +323,23 @@ div#product_builder div#builder_fields_container div.left_col {
     width: 320px;    
 }
 
-div#product_builder div#builder_fields_container div.right_col {
-    float: left;
-    width: 230px;
-}
-
 div#product_builder div#builder_fields_container div.extra_options {
     float: left;
-    width: 345px;
+    width: 577px;
 }
 
 div#product_builder div#builder_fields_container div.extra_options div.tab_content {
     height: 350px;
+}
+
+div#product_builder div#builder_fields_container div.extra_options div.left_col {
+    float: left;
+    width: 280px;    
+}
+
+div#product_builder div#builder_fields_container div.extra_options div.right_col {
+    float: left;
+    width: 280px;
 }
 
 div#product_builder div#keyboard {
@@ -368,8 +373,9 @@ div#product_builder div#builder_fields_container div.extra_options div.field div
     float: left;
     text-align: right;
     margin-top: 5px;
-    margin-right: 40px;
-    width: 150px;
+    margin-right: 30px;
+    margin-left: 10px;
+    width: 130px;
 }
 
 div#product_builder div#builder_fields_container div.left_col div.field input,
@@ -425,7 +431,7 @@ div#product_builder div#builder_fields_container div.extra_options div#appearanc
 div#product_builder div#builder_fields_container div.extra_options div#appearance_tab_content div#product_image_input_container div.fakefile {
     position: absolute;
     top: 3px;
-    left: 189px;
+    left: 170px;
     z-index: 1;
 }
 
