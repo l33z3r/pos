@@ -1,5 +1,5 @@
 class OrderItem < ActiveRecord::Base
-  serialize :oia_data, String
+  serialize :oia_data
   
   belongs_to :order
   belongs_to :employee

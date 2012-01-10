@@ -225,8 +225,6 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, incl
                 var itemPrice = parseFloat(item['total_price']);
                 var itemTaxRate = item.product['tax_rate'];
             
-                console.log("TR: " + itemTaxRate);
-            
                 var taxAmount = itemPrice - (itemPrice/(1 + (parseFloat(itemTaxRate)/100)));
                 var netAmount = itemPrice - taxAmount;
                 var grossAmount = itemPrice;

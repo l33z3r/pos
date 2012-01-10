@@ -2,7 +2,7 @@ class Product < ActiveRecord::Base
 
   PRODUCT_IMAGE_DIRECTORY = "#{Rails.root}/public/images/product_images/*"
   
-  has_attached_file :product_image, PAPERCLIP_STORAGE_OPTIONS.merge(:styles => { :medium => "300x300>", :thumb => "115x115>" })
+  has_attached_file :product_image, PAPERCLIP_STORAGE_OPTIONS.merge(:styles => { :medium => "300x300>", :thumb => "115x60>" })
   
   before_post_process :transliterate_file_name
   before_validation :strip_whitespace, :only => [:name, :brand, :description]
