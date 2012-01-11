@@ -781,7 +781,7 @@ function saveEditOrderItem() {
         order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
     
         storeTableOrderInStorage(current_user_id, selectedTable, order);
-    }else {
+    } else {
         order = currentOrder;
         order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
         
@@ -869,6 +869,11 @@ function writeTotalToReceipt(order, orderTotal) {
 
 function tableScreenSelectTable(tableId) {
     if(inTransferOrderMode) {
+        if(tableId == 0) {
+            niceAlert("Cannot move order to table 0");
+            return;
+        }
+        
         if(transferOrderInProgress) {
             niceAlert("Transfer table order in progress, please wait.");
             return;
@@ -1534,7 +1539,7 @@ function doSaveNote() {
     
     var noteInput = $('#note_input').val();
     
-    noteInput = noteInput.replace(/ /g,'')
+    noteInput = $.trim(noteInput);
     
     //exit if no charge and no note entered
     if(noteInput.length == 0 && charge ==0) {

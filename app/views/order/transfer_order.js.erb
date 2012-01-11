@@ -1,5 +1,16 @@
 <% if !@error %>
-  storeTableOrderInStorage(current_user_id, <%= @table_to_id %>, tableOrders[<%= @table_from_id %>]);
+  var orderFrom;
+
+  if(selectedTable != 0) {
+    orderFrom = tableOrders[<%= @table_from_id %>];
+  } else {
+    orderFrom = currentOrder;
+    //clear the order
+    clearOrder(0);
+  }
+
+  storeTableOrderInStorage(current_user_id, <%= @table_to_id %>, orderFrom);
+  
   doSelectTable(<%= @table_to_id %>);
   doSyncTableOrder();
 <% else %>
