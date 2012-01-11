@@ -4,15 +4,21 @@
 
   <div id="room_list">
     <div id="room_buttons">
+      
+      <div id="select_table_0_button" 
+           class="button room_name" data-onpress="tableScreenSelectTable(0);">
+        <div class="button_name">No Table</div>
+      </div>
+      
       <% @rooms.each do |room| %>
         <div id="select_room_button_<%=room.id%>" 
-             class="button room_name" onclick="loadRoomGraphic(<%=room.id%>)">
+             class="button room_name" data-onpress="loadRoomGraphic(<%=room.id%>)">
           <div class="button_name"><%= room.name %></div>
         </div>
       <% end %>
     </div>
   </div>
-  
+
   <div id="tables_screen_status_message"></div>
 
   <div class="clear">&nbsp;</div>

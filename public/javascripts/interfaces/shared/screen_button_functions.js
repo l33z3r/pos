@@ -16,8 +16,11 @@ function doSyncTableOrder() {
         return;
     }
     
-    if(selectedTable == 0 || selectedTable == -1) {
-        setStatusMessage("Only valid for table orders!");
+    if(selectedTable == -1) {
+        setStatusMessage("Not valid for reopened orders!");
+        return;
+    } else if(selectedTable == 0) {
+        startTransferOrderMode();
         return;
     } else {
         lastOrderSaleText = "Last Order";
@@ -149,12 +152,16 @@ function startTransferOrderMode() {
         return;
     }
     
-    if(selectedTable == 0 || selectedTable == -1) {
+    if(selectedTable == -1) {
         setStatusMessage("Only valid for table orders!");
         return;
     }
     
-    order = tableOrders[selectedTable];
+    if(selectedTable != 0) {
+        order = tableOrders[selectedTable];
+    } else {
+        order = currentOrder;
+    }
     
     if(order.items.length == 0) {
         setStatusMessage("No items present in current table order.");
@@ -165,6 +172,19 @@ function startTransferOrderMode() {
     
     showTablesScreen();
     setStatusMessage("Please choose a free table to transfer this order to.", false, false);
+}
+
+function startTransferOrderItemMode() {
+    if(!callHomePollInitSequenceComplete) {
+        niceAlert("Downloading data from server, please wait.");
+        return;
+    }
+    
+    inTransferOrderItemMode = true;
+    
+    hideBubblePopup(editItemPopupAnchor);
+    showTablesScreen();
+    setStatusMessage("Please choose a table to transfer this order item to.", false, false);
 }
 
 function toggleMenuItemDoubleMode() {

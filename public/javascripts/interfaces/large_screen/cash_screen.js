@@ -126,7 +126,16 @@ function moneySelected(amount) {
     takeTendered();
 }
 
+var togglePrintReceiptInProgress = false;
+
 function togglePrintReceipt() {
+    if(togglePrintReceiptInProgress) {
+        niceAlert("Please wait, request pending");
+        return;
+    }
+    
+    togglePrintReceiptInProgress = true;
+    
     $.ajax({
         type: 'POST',
         url: '/admin/toggle_print_receipt.js'

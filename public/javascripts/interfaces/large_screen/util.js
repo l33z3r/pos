@@ -226,6 +226,7 @@ function showTablesScreen() {
     
     $('#nav_back_link').click(function() {
         inTransferOrderMode = false;
+        inTransferOrderItemMode = false;
         $('#tables_screen_status_message').hide();
     });
     
@@ -272,6 +273,9 @@ function showMobileScreen() {
 }
 
 function hideAllScreens() {
+    //make sure the keyboard from the add note screen is hidden
+    resetKeyboard();
+    
     $('#landing').hide();
     $('#menu_screen').hide();
     $('#table_select_screen').hide();

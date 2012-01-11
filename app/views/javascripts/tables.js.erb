@@ -1,5 +1,12 @@
 var tables = new Array();
 
+//hard code table 0
+tables['0'] = {
+  id : '0',
+  label : '0',
+  room_id : '0'
+}
+
 <% TableInfo.all.each do |ti|-%>
   table_info = {
   id : '<%= ti.id %>',

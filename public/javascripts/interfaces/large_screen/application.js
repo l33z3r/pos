@@ -48,12 +48,12 @@ function doGlobalInit() {
         
         initTouchRecpts();
         
-        $('div.item, div.page, div.button, div.employee_box, div.key, div.go_key, div.cancel_key, div.util_keypadkey, div.tab, div.grid_item').live('click', function() {
+        $('div.item, div.page, div.button, div.employee_box, div.key, div.go_key, div.cancel_key, div.util_keypadkey, div.tab, div.grid_item, div.room_object').live('click', function() {
             eval($(this).data('onpress'));
         });
     } else {
         //copy over the onclick events to the onmousedown events for a better interface
-        $('div.item, div.page, div.button, div.employee_box, div.key, div.go_key, div.cancel_key, div.util_keypadkey, div.tab, div.grid_item').live('mousedown', function() {
+        $('div.item, div.page, div.button, div.employee_box, div.key, div.go_key, div.cancel_key, div.util_keypadkey, div.tab, div.grid_item, div.room_object').live('mousedown', function() {
             eval($(this).data('onpress'));
         });
     }
@@ -268,7 +268,7 @@ function initTableSelectScreen() {
         currentSelectedRoom = $('.room_graphic').first().data('room_id');
     }
     
-    $('#select_room_button_' + currentSelectedRoom).click();
+    $('#select_room_button_' + currentSelectedRoom).mousedown().mouseup();
     setSelectedTable();
 }
 

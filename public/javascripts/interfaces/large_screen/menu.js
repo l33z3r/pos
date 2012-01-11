@@ -404,6 +404,7 @@ function testForPricePrompt(orderItem) {
         popupEl.find('#discount_button').hide();
         popupEl.find('#delete_button').hide();
         popupEl.find('#oia_button').hide();
+        popupEl.find('#transfer_button').hide();
         popupEl.find('#quantity_editor').hide();
         popupEl.find('#header').html("Enter A Price");
         popupEl.find('#current_selected_receipt_item_price').focus();
@@ -781,7 +782,7 @@ function saveEditOrderItem() {
         order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
     
         storeTableOrderInStorage(current_user_id, selectedTable, order);
-    }else {
+    } else {
         order = currentOrder;
         order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
         
@@ -792,7 +793,7 @@ function saveEditOrderItem() {
     loadReceipt(order, true);
 }
 
-    function editOrderItemOIAClicked() {
+function editOrderItemOIAClicked() {
     hideBubblePopup(editItemPopupAnchor);
     showModifyOrderItemScreen();
 }
@@ -869,12 +870,31 @@ function writeTotalToReceipt(order, orderTotal) {
 
 function tableScreenSelectTable(tableId) {
     if(inTransferOrderMode) {
+        if(tableId == 0) {
+            niceAlert("Cannot move order to table 0");
+            return;
+        }
+        
         if(transferOrderInProgress) {
             niceAlert("Transfer table order in progress, please wait.");
             return;
         }
         
         doTransferTable(selectedTable, tableId);
+        
+        return;
+    } else if(inTransferOrderItemMode) {
+        if(tableId == 0) {
+            niceAlert("Cannot move order item to table 0");
+            return;
+        }
+        
+        if(transferOrderItemInProgress) {
+            niceAlert("Transfer table order item in progress, please wait.");
+            return;
+        }
+        
+        doTransferOrderItem(selectedTable, tableId);
         
         return;
     }
@@ -1534,7 +1554,7 @@ function doSaveNote() {
     
     var noteInput = $('#note_input').val();
     
-    noteInput = noteInput.replace(/ /g,'')
+    noteInput = $.trim(noteInput);
     
     //exit if no charge and no note entered
     if(noteInput.length == 0 && charge ==0) {
@@ -1651,6 +1671,9 @@ function postDoSyncTableOrder() {
         inTransferOrderMode = false;
         tableScreenSelectTable(selectedTable);
         showMenuScreen();
+        return;
+    } else if(inTransferOrderItemMode) {
+        finishTransferOrderItem();
         return;
     }
     

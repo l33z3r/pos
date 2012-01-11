@@ -1,6 +1,6 @@
 <% room.room_objects.each do |ro| %>
   <div class="room_object" id="<%= ro.object_type == RoomObject::TABLE ? "table_#{ro.table_info.id}" : "wall_#{ro.id}" %>"
-       onclick="<%= ro.object_type == RoomObject::TABLE ? "tableScreenSelectTable(#{ro.table_info.id});" : "" %>"
+       data-onpress="<%= ro.object_type == RoomObject::TABLE ? "tableScreenSelectTable(#{ro.table_info.id});" : "" %>"
        data-grid_x="<%=ro.grid_x%>" data-grid_y="<%=ro.grid_y%>"
        data-grid_x_size="<%=ro.grid_x_size%>" data-grid_y_size="<%=ro.grid_y_size%>">
 
