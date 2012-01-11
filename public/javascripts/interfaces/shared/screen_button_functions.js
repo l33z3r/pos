@@ -174,6 +174,19 @@ function startTransferOrderMode() {
     setStatusMessage("Please choose a free table to transfer this order to.", false, false);
 }
 
+function startTransferOrderItemMode() {
+    if(!callHomePollInitSequenceComplete) {
+        niceAlert("Downloading data from server, please wait.");
+        return;
+    }
+    
+    inTransferOrderItemMode = true;
+    
+    hideBubblePopup(editItemPopupAnchor);
+    showTablesScreen();
+    setStatusMessage("Please choose a table to transfer this order item to.", false, false);
+}
+
 function toggleMenuItemDoubleMode() {
     setMenuItemDoubleMode(!menuItemDoubleMode);
 }

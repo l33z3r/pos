@@ -404,6 +404,7 @@ function testForPricePrompt(orderItem) {
         popupEl.find('#discount_button').hide();
         popupEl.find('#delete_button').hide();
         popupEl.find('#oia_button').hide();
+        popupEl.find('#transfer_button').hide();
         popupEl.find('#quantity_editor').hide();
         popupEl.find('#header').html("Enter A Price");
         popupEl.find('#current_selected_receipt_item_price').focus();
@@ -792,7 +793,7 @@ function saveEditOrderItem() {
     loadReceipt(order, true);
 }
 
-    function editOrderItemOIAClicked() {
+function editOrderItemOIAClicked() {
     hideBubblePopup(editItemPopupAnchor);
     showModifyOrderItemScreen();
 }
@@ -880,6 +881,20 @@ function tableScreenSelectTable(tableId) {
         }
         
         doTransferTable(selectedTable, tableId);
+        
+        return;
+    } else if(inTransferOrderItemMode) {
+        if(tableId == 0) {
+            niceAlert("Cannot move order item to table 0");
+            return;
+        }
+        
+        if(transferOrderItemInProgress) {
+            niceAlert("Transfer table order item in progress, please wait.");
+            return;
+        }
+        
+        doTransferOrderItem(selectedTable, tableId);
         
         return;
     }
@@ -1090,7 +1105,7 @@ function doTotalFinal() {
     totalOrder.change = $('#totals_change_value').html();
     
     //do up the subtotal and total and retrieve the receipt html for both the login screen and for print
-    receiptHTML = fetchFinalReceiptHTML(false, true, printVatReceipt);
+    receiptHTML = fetchFinalReceiptHTML(false, true, false);
     printReceiptHTML = fetchFinalReceiptHTML(true, false, printVatReceipt);
         
     //open cash drawer explicitly 
@@ -1656,6 +1671,9 @@ function postDoSyncTableOrder() {
         inTransferOrderMode = false;
         tableScreenSelectTable(selectedTable);
         showMenuScreen();
+        return;
+    } else if(inTransferOrderItemMode) {
+        finishTransferOrderItem();
         return;
     }
     

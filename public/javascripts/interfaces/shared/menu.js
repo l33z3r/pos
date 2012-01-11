@@ -28,6 +28,9 @@ var currentSelectedReceiptItemEl;
 var inTransferOrderMode = false;
 var transferOrderInProgress = false;
 
+var inTransferOrderItemMode = false;
+var transferOrderItemInProgress = false;
+
 var modifierGridXSize;
 var modifierGridYSize;
 var currentModifierGridIdForProduct;
@@ -839,6 +842,70 @@ function doTransferTable(tableFrom, tableTo) {
     });
 }
 
+var savedTableTo;
+
+function doTransferOrderItem(tableFrom, tableTo) {
+    if(tableTo.toString() == tableFrom) {
+        niceAlert("You cannot transfer to the same table, please choose another.");
+        return;
+    }
+        
+    transferOrderItemInProgress = true;
+    savedTableTo = tableTo;
+    
+    //this bit of code is only for the large interface, but can still be 
+    //included here as it is non breaking for medium interface
+    $('#nav_back_link').unbind();
+    $('#nav_back_link').click(function() {
+        niceAlert("Transfer table order item in progress, please wait.");
+        return;
+    });
+     
+    itemNumber = currentSelectedReceiptItemEl.data("item_number");
+      
+    var orderFrom;
+
+    if(selectedTable != 0) {
+        orderFrom = tableOrders[selectedTable];
+    } else {
+        orderFrom = currentOrder;
+    }
+  
+    //copy the item
+    var theItem = orderFrom.items[itemNumber-1];
+      
+    var copiedOrderItem = {};
+    var itemToTransfer = $.extend(true, copiedOrderItem, theItem);
+    
+    //delete it from the current order
+    doSelectTable(tableFrom);
+    removeSelectedOrderItem();
+      
+    //place the item in the new table
+    doSelectTable(tableTo);
+    addItemToTableOrderAndSave(itemToTransfer);
+      
+    niceAlert("Transfering order item from table " + tables[tableFrom].label + " to table " + tables[tableTo].label + ". Please wait.");
+    
+    //select the original table for the sync
+    doSelectTable(tableFrom);
+      
+    if(tableFrom == 0 || currentOrderEmpty()) {
+        finishTransferOrderItem();
+    } else {
+        doSyncTableOrder();
+    }
+}
+
+function finishTransferOrderItem() {
+    niceAlert("Order Item Transfered. Hit Order to update other terminals.");
+    $('#tables_screen_status_message').hide();
+    transferOrderItemInProgress = false;
+    inTransferOrderItemMode = false;
+    tableScreenSelectTable(savedTableTo);
+    showMenuScreen();
+}
+
 function testForMandatoryModifier(product) {
     if(orderItem.product.modifier_grid_id && orderItem.product.modifier_grid_id_mandatory) {
         switchToModifyOrderItemSubscreen();
@@ -935,13 +1002,50 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusC
         
         if(oiaFound) {
             oiaEdited = true;
-            
-            if(existingOIA.is_add && existingOIA.is_addable) {
-                existingOIA.is_add = false;
+           
+            if(existingOIA.is_addable) {
+                if(existingOIA.is_add) {
+                    existingOIA.is_add = false;
                 
-                //save the new abs_charge to be the minus charge
-                existingOIA.abs_charge = minusCharge;
+                    //save the new abs_charge to be the minus charge
+                    existingOIA.abs_charge = minusCharge;
             
+                    //take away the charge that was added before
+                    if(plusCharge > 0) {
+                        if(orderItem.pre_discount_price) {
+                            orderItem.pre_discount_price -= (orderItem.amount * plusCharge);
+                        } else {
+                            orderItem.total_price -= (orderItem.amount * plusCharge);
+                        }
+                    }
+                
+                    console.log("taking away minus charge: " + minusCharge);
+                    //take away the minus charge now
+                    if(minusCharge > 0) {
+                        if(orderItem.pre_discount_price) {
+                            orderItem.pre_discount_price -= (orderItem.amount * minusCharge);
+                        } else {
+                            orderItem.total_price -= (orderItem.amount * minusCharge);
+                        }
+                    }
+                } else {
+                    //add back on any minus charge that was present
+                    if(minusCharge > 0) {
+                        if(orderItem.pre_discount_price) {
+                            orderItem.pre_discount_price += (orderItem.amount * minusCharge);
+                        } else {
+                            orderItem.total_price += (orderItem.amount * minusCharge);
+                        }
+                    }
+                
+                    orderItem.oia_items.splice(existingOIAIndex, 1);
+                
+                    //nullify the oia_items if it is empty
+                    if(orderItem.oia_items.length == 0) {
+                        delete orderItem['oia_items'];
+                    }
+                }
+            } else {
                 //take away the charge that was added before
                 if(plusCharge > 0) {
                     if(orderItem.pre_discount_price) {
@@ -950,26 +1054,7 @@ function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusC
                         orderItem.total_price -= (orderItem.amount * plusCharge);
                     }
                 }
-                
-                console.log("taking away minus charge: " + minusCharge);
-                //take away the minus charge now
-                if(minusCharge > 0) {
-                    if(orderItem.pre_discount_price) {
-                        orderItem.pre_discount_price -= (orderItem.amount * minusCharge);
-                    } else {
-                        orderItem.total_price -= (orderItem.amount * minusCharge);
-                    }
-                }
-            } else {
-                //add back on any minus charge that was present
-                if(minusCharge > 0) {
-                    if(orderItem.pre_discount_price) {
-                        orderItem.pre_discount_price += (orderItem.amount * minusCharge);
-                    } else {
-                        orderItem.total_price += (orderItem.amount * minusCharge);
-                    }
-                }
-                
+                    
                 orderItem.oia_items.splice(existingOIAIndex, 1);
                 
                 //nullify the oia_items if it is empty

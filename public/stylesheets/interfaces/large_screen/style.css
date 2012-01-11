@@ -1815,7 +1815,7 @@ div#edit_receipt_item_popup_markup {
 
 div#edit_receipt_item_popup_markup_container {
     width: 280px;
-    height: 512px;
+    height: 560px;
 }
 
 div#edit_receipt_item_popup_markup_container div#quantity_editor {
@@ -1885,11 +1885,11 @@ div#edit_receipt_item_popup_markup_container div#oia_button {
     -moz-border-radius: 5px;
     border-radius: 5px;
     height: 18px;
-    width: 60px;
+    width: 100px;
     font-size: 14px;
     font-weight: bold;
     color: #666;
-    margin: 3px 6px 3px 6px;
+    margin: 3px 22px;
 }
 
 div#edit_receipt_item_popup_markup_container div#discount_button {
@@ -1899,11 +1899,11 @@ div#edit_receipt_item_popup_markup_container div#discount_button {
     -moz-border-radius: 5px;
     border-radius: 5px;
     height: 18px;
-    width: 60px;
+    width: 100px;
     font-size: 14px;
     font-weight: bold;
     color: #666;
-    margin: 3px;
+    margin: 3px 22px;
 }
 
 div#edit_receipt_item_popup_markup_container div#delete_button {
@@ -1913,11 +1913,25 @@ div#edit_receipt_item_popup_markup_container div#delete_button {
     -moz-border-radius: 5px;
     border-radius: 5px;
     height: 18px;
-    width: 60px;
+    width: 100px;
     font-size: 14px;
     font-weight: bold;
     color: #666;
-    margin: 3px 6px 3px 6px;
+    margin: 3px 22px;
+}
+
+div#edit_receipt_item_popup_markup_container div#transfer_button {
+    padding: 10px;
+    float: right;
+    cursor: pointer;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    height: 18px;
+    width: 100px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    margin: 3px 22px;
 }
 
 /* End Edit Order Item Popup */
@@ -2279,8 +2293,9 @@ div.popout_dialog div.header {
 /* Totals Screen */
 
 div#total_screen div#payment_options_money_info_container {
-    width: 740px;
+    width: 730px;
     float: right;
+    padding: 0px 10px;
 }
 
 div#total_screen div#totals_receipt {
@@ -2366,7 +2381,7 @@ div#total_screen div#payment_options_money_info_container div#tender_section {
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container {
     float: left;
-    width: 590px;
+    width: 585px;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout {

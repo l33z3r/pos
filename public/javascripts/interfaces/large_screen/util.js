@@ -226,6 +226,7 @@ function showTablesScreen() {
     
     $('#nav_back_link').click(function() {
         inTransferOrderMode = false;
+        inTransferOrderItemMode = false;
         $('#tables_screen_status_message').hide();
     });
     

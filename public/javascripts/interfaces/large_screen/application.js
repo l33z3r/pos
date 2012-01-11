@@ -268,7 +268,7 @@ function initTableSelectScreen() {
         currentSelectedRoom = $('.room_graphic').first().data('room_id');
     }
     
-    $('#select_room_button_' + currentSelectedRoom).mousedown();
+    $('#select_room_button_' + currentSelectedRoom).mousedown().mouseup();
     setSelectedTable();
 }
 
