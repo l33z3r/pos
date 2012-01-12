@@ -263,8 +263,20 @@ class HomeController < ApplicationController
     @html_data = params[:html_data]
     
     logger.info "Forwarding a print service request to #{@url}"
+
+    url = URI.parse(@url)
+    params = {"content_to_print" => @html_data}
     
-    @forward_response = Net::HTTP.post_form(URI.parse(@url), {"content_to_print" => @html_data})
+    req = Net::HTTP::Post.new(url.path)
+    req.form_data = params
+  
+    @http = Net::HTTP.new(url.host, url.port)
+    
+    @http.open_timeout = 5
+    
+    @http.start {|http|
+      http.request(req)
+    }
 
     logger.info "Got response from print service: #{@forward_response}"
     
@@ -277,7 +289,19 @@ class HomeController < ApplicationController
     
     logger.info "Forwarding a cash drawer request to #{@url}"
     
-    @forward_response = Net::HTTP.post_form(URI.parse(@url), {"message" => @message})
+    url = URI.parse(@url)
+    params = {"message" => @message}
+    
+    req = Net::HTTP::Post.new(url.path)
+    req.form_data = params
+  
+    @http = Net::HTTP.new(url.host, url.port)
+    
+    @http.open_timeout = 5
+    
+    @http.start {|http|
+      http.request(req)
+    }
 
     logger.info "Got response from cash drawer service: #{@forward_response}"
     

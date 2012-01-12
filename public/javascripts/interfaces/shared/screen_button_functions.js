@@ -157,14 +157,25 @@ function startTransferOrderMode() {
         return;
     }
     
-    if(selectedTable != 0) {
-        order = tableOrders[selectedTable];
-    } else {
-        order = currentOrder;
-    }
+    var order = getCurrentOrder();
     
     if(order.items.length == 0) {
         setStatusMessage("No items present in current table order.");
+        return;
+    }
+    
+    //make sure all items in this order have already been ordered
+    var orderSynced = true;
+    
+    for(var i=0; i<order.items.length; i++) {
+        if(!order.items[i].synced) {
+            orderSynced = false;
+            break;
+        }
+    }
+    
+    if(!orderSynced && selectedTable != 0) {
+        niceAlert("All items in the order must be ordered before you can transfer. You can also delete un-ordered items.");
         return;
     }
     
@@ -177,6 +188,16 @@ function startTransferOrderMode() {
 function startTransferOrderItemMode() {
     if(!callHomePollInitSequenceComplete) {
         niceAlert("Downloading data from server, please wait.");
+        return;
+    }
+    
+    //only allow transfer if the item has already been orderd
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
+      
+    var order = getCurrentOrder();
+
+    if(!order.items[itemNumber-1]['synced']) {
+        niceAlert("Only ordered items can be transfered.");
         return;
     }
     

@@ -731,7 +731,9 @@ function ensureLoggedIn() {
 }
 
 function showLoadingDiv() {
-    if(!inAndroidWrapper()) {
+    if(inAndroidWrapper()) {
+        showSpinner();
+    } else {
         hideNiceAlert();
     
         ModalPopups.Indicator("niceAlertContainer",
@@ -746,7 +748,11 @@ function showLoadingDiv() {
 }
 
 function hideLoadingDiv() {
-    hideNiceAlert();
+    if(inAndroidWrapper()) {
+        showSpinner();
+    } else {
+        hideNiceAlert();
+    }
 }
 
 function setConnectionStatus(connected) {

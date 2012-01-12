@@ -828,8 +828,8 @@ function doTransferTable(tableFrom, tableTo) {
         niceAlert("Transfer table order in progress, please wait.");
         return;
     });
-        
-    niceAlert("Transfering order from table " + tables[tableFrom].label + " to table " + tables[tableTo].label + ". Please wait.");
+       
+    showLoadingDiv();
         
     $.ajax({
         type: 'POST',
@@ -884,8 +884,12 @@ function doTransferOrderItem(tableFrom, tableTo) {
     //place the item in the new table
     doSelectTable(tableTo);
     addItemToTableOrderAndSave(itemToTransfer);
-      
-    niceAlert("Transfering order item from table " + tables[tableFrom].label + " to table " + tables[tableTo].label + ". Please wait.");
+     
+    //make sure the item is marked as synced so it doesn't get ordered twice
+    itemToTransfer['synced'] = true;
+    storeTableOrderInStorage(current_user_id, selectedTable, tableOrders[selectedTable]);
+    
+    showLoadingDiv();
     
     //select the original table for the sync
     doSelectTable(tableFrom);
@@ -898,12 +902,13 @@ function doTransferOrderItem(tableFrom, tableTo) {
 }
 
 function finishTransferOrderItem() {
-    niceAlert("Order Item Transfered. Hit Order to update other terminals.");
     $('#tables_screen_status_message').hide();
     transferOrderItemInProgress = false;
     inTransferOrderItemMode = false;
     tableScreenSelectTable(savedTableTo);
-    showMenuScreen();
+    doAutoLoginAfterSync = true;
+    doSyncTableOrder();
+    niceAlert("Order Item Transfered");
 }
 
 function testForMandatoryModifier(product) {
