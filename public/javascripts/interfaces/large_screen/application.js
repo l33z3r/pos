@@ -14,8 +14,10 @@ $(function(){
 function doGlobalInit() {
     
     //whenever a link is clicked, we show a loading div
-    $('a').live("click", function() {
-        if($(this).attr("href") != "" && $(this).attr("href") != '#') {
+    $('a:not(.no_loading_div)').live("click", function() {
+        var href = $(this).attr("href");
+        
+        if(href != "" && href != '#' && href.endsWith(".csv") && href.endsWith(".txt")) {
             showLoadingDiv();
         }
     });
@@ -107,7 +109,13 @@ function doGlobalInit() {
         //unhighlight last active
         lastActiveElement.addClass("focus");
         
-        if(lastActiveElement.attr("id") != "scan_upc" && lastActiveElement.attr("id") != "description_input") {
+        var allowFocusElements = [
+            "scan_upc", "description_input", "price_change_new_price_input", "stock_take_new_amount_input"
+        ]
+        
+        var focusedElementId = lastActiveElement.attr("id");
+        
+        if($.inArray(focusedElementId, allowFocusElements) == -1) {
             event = event || window.event
  
             //the following was an attempt to hide the ipad keyboard but didnt work

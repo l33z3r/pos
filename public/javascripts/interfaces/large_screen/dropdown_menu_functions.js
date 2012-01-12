@@ -63,8 +63,14 @@ function startPriceChangeMode() {
 }
 
 function finishPriceChangeMode() {
+    showLoadingDiv();
+    
     //reload the products
-    $.getScript('/javascripts/products.js');
+    $.getScript('/javascripts/products.js', priceChangeModeComplete);
+}
+
+function priceChangeModeComplete() {   
+    hideLoadingDiv();
     
     //change the screen to stocktake mode
     inPriceChangeMode = false;

@@ -414,7 +414,11 @@ function getRawCookie(c_name) {
 
 String.prototype.startsWith = function(str){
     return (this.indexOf(str) === 0);
-}
+};
+
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
 
 function utilFormatDate(date) {
     return formatDate(date, defaultJSDateFormat);
@@ -739,6 +743,10 @@ function showLoadingDiv() {
                 height: 200
             } );
     }
+}
+
+function hideLoadingDiv() {
+    hideNiceAlert();
 }
 
 function setConnectionStatus(connected) {
