@@ -2,7 +2,7 @@
 
 #try read config file from home directory first
 begin
-  YAML_CONFIG_FILE = YAML.load_file("~/cluey/cluey_config.yml")
+  YAML_CONFIG_FILE = YAML.load_file("#{File.expand_path('~')}/cluey/cluey_config.yml")
 rescue
   @config_file_found = false
 end
