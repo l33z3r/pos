@@ -1,7 +1,18 @@
+@config_file_found = true
+
+#try read config file from home directory first
 begin
-  YAML_CONFIG_FILE = YAML.load_file("#{RAILS_ROOT}/config/custom_config.yml")
+  YAML_CONFIG_FILE = YAML.load_file("~/cluey/cluey_config.yml")
 rescue
-  YAML_CONFIG_FILE = YAML.load_file("#{RAILS_ROOT}/config/default_custom_config.yml")
+  @config_file_found = false
+end
+
+if !@config_file_found
+  begin
+    YAML_CONFIG_FILE = YAML.load_file("#{RAILS_ROOT}/config/custom_config.yml")
+  rescue
+    YAML_CONFIG_FILE = YAML.load_file("#{RAILS_ROOT}/config/default_custom_config.yml")
+  end
 end
 
 CUSTOM_CONFIG = YAML_CONFIG_FILE[RAILS_ENV]
