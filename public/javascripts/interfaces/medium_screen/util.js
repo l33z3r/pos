@@ -74,31 +74,35 @@ function postSetConnectionStatus(connected) {
 
 function kickMenuScrollers() {
     //menu items
-    $('#menu_items_scroller').touchScroll('update');
+    if($('#menu_items_scroller:visible').length > 0 && $('#menu_pages_scroller:visible').length > 0) {
+        $('#menu_items_scroller').touchScroll('update');
             
-    currentHeight = $('#menu_items_scroller').height();
-    scrollHeight = $('#menu_items_scroller').attr('scrollHeight');
-    newHeight = scrollHeight - currentHeight;
+        currentHeight = $('#menu_items_scroller').height();
+        scrollHeight = $('#menu_items_scroller').attr('scrollHeight');
+        newHeight = scrollHeight - currentHeight;
         
-    $('#menu_items_scroller').touchScroll('setPosition', 0);
+        $('#menu_items_scroller').touchScroll('setPosition', 0);
     
-    //menu pages
-    $('#menu_pages_scroller').touchScroll('update');
+        //menu pages
+        $('#menu_pages_scroller').touchScroll('update');
             
-    currentHeight = $('#menu_pages_scroller').height();
-    scrollHeight = $('#menu_pages_scroller').attr('scrollHeight');
-    newHeight = scrollHeight - currentHeight;
+        currentHeight = $('#menu_pages_scroller').height();
+        scrollHeight = $('#menu_pages_scroller').attr('scrollHeight');
+        newHeight = scrollHeight - currentHeight;
         
-    $('#menu_pages_scroller').touchScroll('setPosition', 0);
+        $('#menu_pages_scroller').touchScroll('setPosition', 0);
+    }
     
     //oia tabs
-    $('#oia_tabs').touchScroll('update');
+    if($('#oia_tabs:visible').length > 0) {
+        $('#oia_tabs').touchScroll('update');
             
-    currentHeight = $('#oia_tabs').height();
-    scrollHeight = $('#oia_tabs').attr('scrollHeight');
-    newHeight = scrollHeight - currentHeight;
+        currentHeight = $('#oia_tabs').height();
+        scrollHeight = $('#oia_tabs').attr('scrollHeight');
+        newHeight = scrollHeight - currentHeight;
         
-    $('#oia_tabs').touchScroll('setPosition', 0);
+        $('#oia_tabs').touchScroll('setPosition', 0);
+    }
 }
 
 function showTablesScreen() {
