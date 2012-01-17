@@ -321,7 +321,7 @@ class HomeController < ApplicationController
   
     @http = Net::HTTP.new(url.host, url.port)
     
-    @http.open_timeout = 50
+    @http.open_timeout = 5
     
     @forward_response = @http.start {|http|
       http.request(req)

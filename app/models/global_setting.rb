@@ -197,7 +197,7 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_key(:key => "#{MENU_SCREEN_TYPE.to_s}_#{args[:fingerprint]}", :value => 1, :label_text => LABEL_MAP[MENU_SCREEN_TYPE])
       @gs.parsed_value = @gs.value.to_i
     when WINDOWS_PRINTER_MARGINS
-      @gs = find_or_create_by_key(:key => WINDOWS_PRINTER_MARGINS.to_s, :value => "false", :label_text => LABEL_MAP[WINDOWS_PRINTER_MARGINS])
+      @gs = find_or_create_by_key(:key => "#{WINDOWS_PRINTER_MARGINS.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[WINDOWS_PRINTER_MARGINS])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when EARLIEST_OPENING_HOUR
       @gs = find_or_create_by_key(:key => EARLIEST_OPENING_HOUR.to_s, :value => 5, :label_text => LABEL_MAP[EARLIEST_OPENING_HOUR])
