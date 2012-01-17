@@ -1453,7 +1453,11 @@ div#edit_global_settings section#global_settings div.container.payment_methods_s
 
 div#edit_global_settings section#global_settings div.container.payment_methods_section div.payment_method_logo img {
     width: 50px;
-    height: 30px;
+    height: 50px;
+}
+
+div#edit_global_settings section#global_settings div.container.payment_methods_section input[type=file] {
+    width: 150px;
 }
 
 div#edit_global_settings div#terminal_name_field_unique_error {

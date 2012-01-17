@@ -104,12 +104,14 @@ class CashTotal < ActiveRecord::Base
       
     if !@first_order
       @overall_total = 0
+      @service_charge_total = 0
     else
       #load the most recent order
       @last_order = Order.where("terminal_id = ?", terminal_id).order("created_at").last
 
       #do the calculation
       @overall_total = 0
+      @service_charge_total = 0
         
       #here are all the orders for this terminal since the last z total
       @orders = Order.where("created_at >= ?", @first_order.created_at).where("created_at <= ?", @last_order.created_at).where("terminal_id = ?", terminal_id).where("is_void is false")
@@ -233,6 +235,8 @@ class CashTotal < ActiveRecord::Base
         
         #overall total
         @overall_total += order.total
+        
+        @service_charge_total += order.service_charge
       end
     
       #total of all cash sales
@@ -276,6 +280,8 @@ class CashTotal < ActiveRecord::Base
     @cash_total_data[:sales_by_server] = @sales_by_server
     @cash_total_data[:sales_by_payment_type] = @sales_by_payment_type
     @cash_total_data[:service_charge_by_payment_type] = @service_charge_by_payment_type
+    @cash_total_data[:service_charge_total] = @service_charge_total
+    @cash_total_data[:total_with_service_charge] = @service_charge_total + @overall_total
     @cash_total_data[:taxes] = @taxes
     @cash_total_data[:cash_summary] = @cash_summary
     
