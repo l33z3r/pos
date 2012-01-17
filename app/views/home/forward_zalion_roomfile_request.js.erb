@@ -1,0 +1,9 @@
+<%=raw @forward_response.body%>
+
+//show the box that allows you to select a room
+$('#charge_room_section').show();
+$('#room_number_input').focus();
+
+setTenderedBoxFocus(false);
+$('#name_list').html("");
+hideLoadingDiv();

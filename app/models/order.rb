@@ -31,6 +31,8 @@ class Order < ActiveRecord::Base
   #point to replacement order
   has_one :replacement_order, :class_name => "Order", :foreign_key => "void_order_id"
   
+  has_one :client_transaction
+  
   #for will_paginate
   cattr_reader :per_page
   @@per_page = 15

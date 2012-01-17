@@ -9,6 +9,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: order_items
@@ -31,5 +32,6 @@ end
 #  show_server_added_text :boolean(1)      default(FALSE)
 #  product_name           :string(255)
 #  is_double              :boolean(1)      default(FALSE)
+#  oia_data               :text(2147483647
 #
 

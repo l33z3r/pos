@@ -122,6 +122,8 @@ class OrderController < ApplicationController
     @order_params = order_params
 
     @order_details = @order_params.delete(:order_details)
+    @charged_room = @order_params.delete(:charged_room)
+    
     @order = Order.new(@order_params)
     
     if(!Employee.find_by_id(@order.employee_id))
@@ -222,6 +224,25 @@ class OrderController < ApplicationController
     end
 
     @success = @order_saved and @order_item_saved
+    
+    #store a client transaction if this sale was linked to a charged_room
+    if @charged_room
+      @client_name = @charged_room['selected_folio_name']
+      @payment_integration_type_id = @charged_room['payment_integration_type_id']
+      
+      @transaction_data = {
+        :selected_room_number => @charged_room['selected_room_number'],
+        :selected_folio_number => @charged_room['selected_folio_number']
+      }
+      
+      @ct = ClientTransaction.create(
+        :order_id => @order.id, 
+        :client_name => @client_name, 
+        :transaction_data => @transaction_data,
+        :payment_integration_type_id => @payment_integration_type_id
+      )
+    end
+    
     @success
   end
 

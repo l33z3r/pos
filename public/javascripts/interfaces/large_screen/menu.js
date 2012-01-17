@@ -1030,7 +1030,7 @@ function doTotal(applyDefaultServiceCharge) {
         paymentMethod = defaultPaymentMethod;
     }
     
-    paymentMethodSelected(paymentMethod);
+    paymentMethodSelected(paymentMethod, 0);
     
     //hide the dropdown menu
     $('#menu_screen_shortcut_dropdown_container').hide();
@@ -1043,6 +1043,8 @@ function doTotal(applyDefaultServiceCharge) {
     
     $('#totals_tendered_value').html(currency(0, false));
     takeTendered();
+    
+    $('#totals_tendered_box').addClass("selected");
 }
 
 function doTotalFinal() {
@@ -1148,6 +1150,18 @@ function doTotalFinal() {
         'order_details':totalOrder,
         'terminal_id':terminalID,
         'void_order_id': totalOrder.void_order_id
+    }
+    
+    //was this charged to a room?
+    if(selectedRoomNumber && selectedFolioNumber) {
+        orderData['charged_room'] = {
+            selected_room_number : selectedRoomNumber,
+            selected_folio_number : selectedFolioNumber,
+            selected_folio_name : selectedFolioName,
+            payment_integration_type_id : paymentIntegrationId
+        }
+        
+        doChargeRoom(orderData);
     }
 
     sendOrderToServer(orderData);

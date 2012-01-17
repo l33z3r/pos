@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120106170653) do
+ActiveRecord::Schema.define(:version => 20120113173142) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -35,6 +35,15 @@ ActiveRecord::Schema.define(:version => 20120106170653) do
     t.string   "printers",                                 :default => ""
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
+  end
+
+  create_table "client_transactions", :force => true do |t|
+    t.integer  "order_id"
+    t.integer  "payment_integration_type_id"
+    t.string   "client_name"
+    t.text     "transaction_data",            :limit => 2147483647
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "discounts", :force => true do |t|
@@ -85,9 +94,9 @@ ActiveRecord::Schema.define(:version => 20120106170653) do
     t.string   "telephone"
     t.float    "hourly_rate"
     t.float    "overtime_rate"
-    t.datetime "last_login",                  :default => '2011-05-01 13:22:42'
-    t.datetime "last_active",                 :default => '2011-05-01 13:22:42'
-    t.datetime "last_logout",                 :default => '2011-05-01 13:22:42'
+    t.datetime "last_login",                  :default => '2012-01-07 09:28:01'
+    t.datetime "last_active",                 :default => '2012-01-07 09:28:01'
+    t.datetime "last_logout",                 :default => '2012-01-07 09:28:01'
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "role_id",                     :default => 1
@@ -222,6 +231,7 @@ ActiveRecord::Schema.define(:version => 20120106170653) do
     t.datetime "logo_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "payment_integration_id", :default => 0
   end
 
   create_table "products", :force => true do |t|

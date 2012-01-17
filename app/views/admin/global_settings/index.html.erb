@@ -266,6 +266,7 @@
                     <th width="350">Logo</th>
                     <th width="100">Delete</th>
                     <th width="140">Set Default</th>
+                    <th width="140">Integration</th>
                   </tr>
                 </thead>
 
@@ -286,6 +287,9 @@
                         <td>
                           <%= radio_button_tag "set_default_payment_method", "#{pm.id}", pm.is_default, 
                             :onchange => "doSetDefaultPaymentMethod(this.value);" %>
+                        </td>
+                        <td>
+                          <%= f.select :payment_integration_id, options_for_select(PaymentMethod.payment_integration_options_for_select, pm.payment_integration_id), :include_blank => "None" %>
                         </td>
                       </tr>
                     <% end %>

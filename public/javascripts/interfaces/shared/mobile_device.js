@@ -1,14 +1,16 @@
 function showSpinner() {
     if(inAndroidWrapper()) {
         clueyAndroidJSInterface.showSpinner();
+    } else {    
+        showLoadingDiv();
     }
-    
-    showLoadingDiv();
 }
 
 function hideSpinner() {
     if(inAndroidWrapper()) {
         clueyAndroidJSInterface.hideSpinner();
+    } else {    
+        hideLoadingDiv();
     }
 }
 

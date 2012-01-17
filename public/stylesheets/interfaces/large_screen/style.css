@@ -2259,7 +2259,7 @@ div.popup_container div.action_buttons div.button {
 /* End Generic Dialog Styling */
 
 div.popout_dialog {
-    width: 320px;
+    width: 370px;
     margin: auto;
     border: 1px solid #CCC;
     -moz-border-radius: 7px;
@@ -2385,7 +2385,77 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout {
-    margin-top: 115px;
+    margin-top: 30px;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div#charge_room_section {
+    display: none;
+    margin: 10px 17px 20px 17px;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div.label {
+    float: left;
+    font-weight: bold;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div.input_container {
+    float: left;
+    margin: -4px 10px 0px 54px;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div.room_number_lookup {
+    float: left;
+    height: 22px;
+    padding-top: 8px;
+    margin-top: -8px;
+    font-weight: bold;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div#charge_room_section div#name_list {
+    width: 284px;
+    margin: auto;
+    background: white;
+    border: 1px solid #E0E0E0;
+    margin-top: 10px;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div#charge_room_section div#name_list div.name_header {
+    font-weight: bold;
+    background: #CCC;
+    padding: 4px;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div#charge_room_section div#name_list div.folio_entries div.entry {
+    border-bottom: 1px solid #E0E0E0;
+    height: 20px;
+    padding-top: 3px;
+    cursor: pointer;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div#charge_room_section div#name_list div.folio_entries div.entry.selected {
+    border: 1px solid #E36C0A;
+    background: #E0E0E0;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div#charge_room_section div#name_list div.folio_entries div.number {
+    float: left;
+    border-right: 1px solid #E0E0E0;
+    width: 60px;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div#charge_room_section div#name_list div.folio_entries div.name {
+    float: left;
+    margin-left: 20px;
+    width: 110px;
+    text-align: left;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div#charge_room_section div#name_list div.folio_entries div.balance {
+    float: left;
+    margin-left: 10px;
+    text-align: left;
+    padding-left: 10px;
+    border-left: 1px solid #E0E0E0;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div.action_buttons {
@@ -2444,6 +2514,10 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
     padding: 2px;
     margin-top: -5px;
     margin-left: -3px;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.data div#totals_tendered_box.selected {
+    border: 2px solid #E36C0A;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.data div#totals_tendered_box div#totals_tendered_value {

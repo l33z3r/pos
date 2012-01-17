@@ -41,6 +41,7 @@ class Employee < ActiveRecord::Base
   end
 end
 
+
 # == Schema Information
 #
 # Table name: employees
@@ -54,9 +55,9 @@ end
 #  telephone                   :string(255)
 #  hourly_rate                 :float
 #  overtime_rate               :float
-#  last_login                  :datetime        default(2011-05-01 13:22:42 UTC)
-#  last_active                 :datetime        default(2011-05-01 13:22:42 UTC)
-#  last_logout                 :datetime        default(2011-05-01 13:22:42 UTC)
+#  last_login                  :datetime        default(2012-01-07 09:28:01 UTC)
+#  last_active                 :datetime        default(2012-01-07 09:28:01 UTC)
+#  last_logout                 :datetime        default(2012-01-07 09:28:01 UTC)
 #  created_at                  :datetime
 #  updated_at                  :datetime
 #  role_id                     :integer(4)      default(1)

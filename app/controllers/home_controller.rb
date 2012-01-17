@@ -274,7 +274,7 @@ class HomeController < ApplicationController
     
     @http.open_timeout = 5
     
-    @http.start {|http|
+    @forward_response = @http.start {|http|
       http.request(req)
     }
 
@@ -299,11 +299,60 @@ class HomeController < ApplicationController
     
     @http.open_timeout = 5
     
-    @http.start {|http|
+    @forward_response = @http.start {|http|
       http.request(req)
     }
 
     logger.info "Got response from cash drawer service: #{@forward_response}"
+    
+    render :json => {:success => true}.to_json
+  end
+  
+  def forward_zalion_roomfile_request
+    @url = params[:zalion_roomfile_request_url]
+    
+    logger.info "Forwarding a zalion roomfile request to #{@url}"
+
+    url = URI.parse(@url)
+    params = {"message" => "gimme the roomfile"}
+    
+    req = Net::HTTP::Post.new(url.path)
+    req.form_data = params
+  
+    @http = Net::HTTP.new(url.host, url.port)
+    
+    @http.open_timeout = 50
+    
+    @forward_response = @http.start {|http|
+      http.request(req)
+    }
+
+    logger.info "Got response from room file servlet: #{@forward_response.body}"
+  end
+  
+  def forward_zalion_charge_request
+    @url = params[:zalion_charge_request_url]
+    
+    logger.info "Forwarding a zalion charge request to #{@url}"
+
+    url = URI.parse(@url)
+    
+    params = {
+      "message" => "charge this room"
+    }
+    
+    req = Net::HTTP::Post.new(url.path)
+    req.form_data = params
+  
+    @http = Net::HTTP.new(url.host, url.port)
+    
+    @http.open_timeout = 50
+    
+    @forward_response = @http.start {|http|
+      http.request(req)
+    }
+
+    logger.info "Got response from room charge servlet: #{@forward_response.body}"
     
     render :json => {:success => true}.to_json
   end

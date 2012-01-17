@@ -54,7 +54,10 @@ end
 #
 #
 #Taxes and Payment Methods ETC
-@default_payment_method = PaymentMethod.find_or_create_by_name(:name => "cash", :is_default => true)
+@default_payment_method = PaymentMethod.find_or_create_by_name(:name => "cash", :payment_integration_id => 0, :is_default => true)
+
+#charge to room payment method
+@default_payment_method = PaymentMethod.find_or_create_by_name(:name => "charge room", :payment_integration_id => 1, :is_default => false)
 
 @default_tax_rate = TaxRate.find_or_create_by_name(:name => "default", :rate => 12, :is_default => true)
 

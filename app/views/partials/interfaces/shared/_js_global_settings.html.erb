@@ -123,4 +123,7 @@
   var serverCounterStartTimeMillis = <%= Time.now.to_f * 1000 %>;
   var counterStartTimeMillis = new Date().getTime();
   
+  //payment integration IDs
+  var zalionPaymentIntegrationId = <%= PaymentMethod::PAYMENT_INTEGRATION_ZALION %>;
+  
 </script>

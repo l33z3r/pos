@@ -33,6 +33,16 @@ function getTendered() {
 }
 
 function finishSale() {
+    if(paymentIntegrationId != 0) {
+        if(paymentIntegrationId == zalionPaymentIntegrationId) {
+            //make sure we have set the variables to be able to charge the room
+            if(!selectedRoomNumber || !selectedFolioNumber || !selectedFolioName) {
+                niceAlert("You must select a guest to charge this bill to");
+                return;
+            }
+        }
+    }
+    
     cashTendered = getTendered();
 
     totalAmountInclCashback = roundNumber(currentTotalFinal + cashback, 2);
@@ -62,7 +72,14 @@ function cashOutCancel() {
     showMenuScreen();
 }
 
-function paymentMethodSelected(method) {
+var paymentIntegrationId = null;
+
+function paymentMethodSelected(method, integration_id) {
+    clearSelectedFolio();
+    
+    $('#charge_room_section').hide();
+    setTenderedBoxFocus(true);
+    
     paymentMethod = method;
     $('#selected_payment_method_holder').html(paymentMethod);
     
@@ -72,11 +89,130 @@ function paymentMethodSelected(method) {
     });
     
     $('#' + method.replace(/ /g,"_") + '_payment_method_button').addClass('selected');
+    
+    paymentIntegrationId = integration_id;
+    
+    //check if the payment method is the charge room and do some magic
+    if(paymentIntegrationId != 0) {
+        if(paymentIntegrationId == zalionPaymentIntegrationId) {
+            //alert("Zalion Integration");
+            showLoadingDiv();
+            
+            //fire off request to get contents of ROOMFILE
+            var zalion_roomfile_request_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/zalion_roomfile';
+            
+            $.ajax({
+                type: 'GET',
+                url: '/forward_zalion_roomfile_request',
+                error: function() {
+                    hideLoadingDiv();
+                    setStatusMessage("Error Getting Zalion Data", false, false);                   
+                },
+                data: {
+                    zalion_roomfile_request_url : zalion_roomfile_request_url
+                }
+            });
+        }
+    }
+}
+
+var selectedRoomNumber = null;
+var selectedFolioNumber = null;
+var selectedFolioName = null;
+
+function doRoomNumberLookup() {
+    clearSelectedFolio();
+    
+    var roomNumber = $('#room_number_input').val();
+    
+    roomNumber = parseInt(roomNumber);
+    
+    //alert("Looking up room: " + roomNumber);
+    
+    if(isNaN(roomNumber)) {
+        niceAlert("Please enter a valid room number.");
+        return;
+    }
+    
+    var roomInfo = clientRooms[roomNumber.toString()];
+    
+    if(roomInfo) {
+        //alert("found room " + roomNumber);
+        
+        //build up a table of folios for this room
+        var folioTableHTML = "<div class='name_header'>Guests in Room " + roomNumber + "</div>" + clearHTML;
+        
+        folioTableHTML += "<div class='folio_entries'>";
+        
+        for(var folioNumber in roomInfo) {
+            //alert(roomInfo[folioNumber]["NAME"]);
+            var folioName = roomInfo[folioNumber]["NAME"];
+            var folioBalance = roomInfo[folioNumber]["BALANCE"];
+            var folioCreditLimit = roomInfo[folioNumber]["CREDITLIMIT"];
+            
+            folioTableHTML += "<div id='folio_" + folioNumber + "' onclick=\"selectFolio(" + roomNumber + ", " + folioNumber + ", '" + folioName + "', "    + folioBalance + ", " + folioCreditLimit + ");\" class='entry'>";
+            folioTableHTML += "<div class='number'>" + folioNumber + "</div>";
+            folioTableHTML += "<div class='name'>" + folioName + "</div>";
+            folioTableHTML += "<div class='balance'>" + currency(folioBalance) + "</div>";
+            folioTableHTML += "</div>" + clearHTML;
+        }
+    
+        folioTableHTML += "</div>" + clearHTML;
+        
+        $('#name_list').html(folioTableHTML);
+    } else {
+        niceAlert("Room " + roomNumber + " not found.");
+        return;
+    }
+}
+
+function selectFolio(roomNumber, folioNumber, folioName, folioBalance, folioCreditLimit) {
+    clearSelectedFolio();
+    $('#name_list .entry').removeClass("selected");
+    
+    folioBalance = parseFloat(folioBalance);
+    folioCreditLimit = parseFloat(folioCreditLimit);
+    
+    if(folioBalance >= folioCreditLimit) {
+        niceAlert("This guests credit limit of " + currency(folioCreditLimit) + " has been exceeded");
+        return;
+    }
+    
+    $('#folio_' + folioNumber).addClass("selected");
+    
+    setTenderedBoxFocus(true);
+    
+    selectedRoomNumber = roomNumber;
+    selectedFolioNumber = folioNumber;
+    selectedFolioName = folioName;
+}
+
+function clearSelectedFolio() {
+    //reset vars
+    selectedRoomNumber = null;
+    selectedFolioNumber = null;
+    selectedFolioName = null;
+}
+
+function setTenderedBoxFocus(focus) {
+    if(focus) {
+        roomNumberInputFocus = false;
+        $('#totals_tendered_box').addClass("selected");
+    } else {
+        roomNumberInputFocus = true;
+        $('#totals_tendered_box').removeClass("selected");
+    }
 }
 
 var cashTenderedKeypadString = "";
+var roomNumberInputFocus = false;
 
 function totalsScreenKeypadClick(val) {
+    if(roomNumberInputFocus) {
+        $('#room_number_input').val($('#room_number_input').val() + val);
+        return;
+    }
+    
     //make sure you cannot enter a 3rd decimal place number
     if(cashTenderedKeypadString.indexOf(".") != -1) {
         if(cashTenderedKeypadString.length - cashTenderedKeypadString.indexOf(".") > 3) {
@@ -96,6 +232,11 @@ function totalsScreenKeypadClickDecimal() {
 }
 
 function totalsScreenKeypadClickCancel() {
+    if(roomNumberInputFocus) {
+        $('#room_number_input').val("");
+        return;
+    }
+    
     $('#totals_tendered_value').html(currency(0, false));
     resetTendered();
 }
@@ -124,6 +265,35 @@ function moneySelected(amount) {
     cashTenderedKeypadString = "" + newAmount;
     cashTendered = newAmount;
     takeTendered();
+}
+
+function doChargeRoom(orderData) {
+    if(paymentIntegrationId != 0) {
+        if(paymentIntegrationId == zalionPaymentIntegrationId) {
+            //send request to charge via zalion
+            //alert("Zalion Integration");
+            showLoadingDiv();
+            
+            //fire off request to get contents of ROOMFILE
+            var zalion_charge_request_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/zalion_charge';
+            
+            $.ajax({
+                type: 'POST',
+                url: '/forward_zalion_charge_request',
+                error: function() {
+                    hideLoadingDiv();
+                    setStatusMessage("Error Charging to Zalion", false, false);
+                },
+                success: function() {
+                    hideLoadingDiv();
+                    setStatusMessage("Room successfully charged.", false, false);                   
+                },
+                data: {
+                    zalion_charge_request_url : zalion_charge_request_url
+                }
+            });
+        }
+    }
 }
 
 var togglePrintReceiptInProgress = false;
