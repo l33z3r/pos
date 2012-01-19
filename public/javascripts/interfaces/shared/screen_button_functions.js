@@ -121,6 +121,15 @@ function addCourseEndToOrder() {
 }
 
 function quickSale() {
+    if(currentOrderEmpty()) {
+        setStatusMessage("No order present to total!", true, true);
+        return;
+    }
+    
+    if(!ensureLoggedIn()) {
+        return;
+    }
+    
     applyDefaultServiceChargePercent();
     doTotalFinal();
 }
