@@ -1152,20 +1152,27 @@ function doTotalFinal() {
         'void_order_id': totalOrder.void_order_id
     }
     
-    //was this charged to a room?
-    if(selectedRoomNumber && selectedFolioNumber) {
-        orderData['charged_room'] = {
-            selected_room_number : selectedRoomNumber,
-            selected_folio_number : selectedFolioNumber,
-            selected_folio_name : selectedFolioName,
-            payment_integration_type_id : paymentIntegrationId
-        }
-        
-        doChargeRoom(orderData);
-    }
-
+    showLoadingDiv();
     sendOrderToServer(orderData);
+}
 
+function orderSentToServerCallback(orderData, errorOccured) {
+    hideLoadingDiv();
+    
+    if(!errorOccured) {
+        //was this charged to a room?
+        if(selectedRoomNumber && selectedFolioNumber) {
+            orderData['charged_room'] = {
+                selected_room_number : selectedRoomNumber,
+                selected_folio_number : selectedFolioNumber,
+                selected_folio_name : selectedFolioName,
+                payment_integration_type_id : paymentIntegrationId
+            }
+        
+            doChargeRoom(orderData);
+        }
+    }
+    
     //clear the order
     clearOrder(selectedTable);
 
@@ -1223,7 +1230,11 @@ function sendOrderToServer(orderData) {
         type: 'POST',
         url: '/order',
         error: function() {
-            storeOrderForLaterSend(orderData)
+            storeOrderForLaterSend(orderData);
+            orderSentToServerCallback(orderData, true);
+        },
+        success: function() {
+            orderSentToServerCallback(orderData, false);
         },
         data: {
             order : orderData

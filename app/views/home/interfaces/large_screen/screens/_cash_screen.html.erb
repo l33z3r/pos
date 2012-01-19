@@ -59,79 +59,81 @@
 
     <div id="tender_section">
 
-      <div id="take_tendered_container">
+      <div id="take_tendered_outer_container">
+        <div id="take_tendered_container">
 
-        <div id="tendered_popout" class="popout_dialog">
-          <div id="payment_method_header" class="header">
-            <div class="label">Selected Payment Method:</div>
-            <div id="selected_payment_method_holder"></div>
-            <div class="clear">&nbsp;</div>
-          </div>
-
-          <div class="clear_top_margin_20">&nbsp;</div>
-
-          <div id="charge_room_section">
-            <div class="label">Enter Room Number:</div>
-            <div class="input_container">
-              <input id="room_number_input" type="text" size="4"/>
-            </div>
-            <div class="button room_number_lookup" data-onpress="doRoomNumberLookup()">Lookup</div>
-
-            <div class="clear">&nbsp;</div>
-
-            <div id="name_list">
-
-            </div>
-          </div>
-
-          <div id="tendered_data_tables_container">
-
-            <div id="totals_data_table"></div>
-
-            <div class="data_table">
-              <div class="label">Cash Back:</div>
-              <div id="cashback_amount_holder" class="data"><%= @currency_symbol %>0</div>
+          <div id="tendered_popout" class="popout_dialog">
+            <div id="payment_method_header" class="header">
+              <div class="label">Selected Payment Method:</div>
+              <div id="selected_payment_method_holder"></div>
               <div class="clear">&nbsp;</div>
             </div>
-            <div class="clear">&nbsp;</div>
 
-            <div class="data_table">
-              <div class="bold label">Amount Tendered:</div>
-              <div class="data">
-                <div id="totals_tendered_box" onclick="setTenderedBoxFocus(true)">
-                  <div id="totals_tendered_value"></div>
-                  <div class="right"><%= @currency_symbol %></div>
-                  <div class="clear">&nbsp;</div>
-                </div>
+            <div class="clear_top_margin_20">&nbsp;</div>
+
+            <div id="charge_room_section">
+              <div class="label">Enter Room Number:</div>
+              <div class="input_container">
+                <input id="room_number_input" type="text" size="4"/>
               </div>
-              <div class="clear">&nbsp;</div>
-            </div>
-            <div class="clear">&nbsp;</div>
+              <div class="button room_number_lookup" data-onpress="doRoomNumberLookup()">Lookup</div>
 
-            <div class="data_table">
-              <div class="bold label">Change Due:</div>
-              <div class="bold data">
-                <div id="totals_change_value">0</div>
-                <div class="right"><%= @currency_symbol %></div>
+              <div class="clear">&nbsp;</div>
+
+              <div id="name_list">
+
+              </div>
+            </div>
+
+            <div id="tendered_data_tables_container">
+
+              <div id="totals_data_table"></div>
+
+              <div class="data_table">
+                <div class="label">Cash Back:</div>
+                <div id="cashback_amount_holder" class="data"><%= @currency_symbol %>0</div>
                 <div class="clear">&nbsp;</div>
               </div>
               <div class="clear">&nbsp;</div>
-            </div>
-          </div>
 
-          <div class="action_buttons">
-            <div class="button" data-onpress="cashOutCancel()">
-              <div class="icon">
-                <%= image_tag "button_logos/cancel_tendered.png" %>
+              <div class="data_table">
+                <div class="bold label">Amount Tendered:</div>
+                <div class="data">
+                  <div id="totals_tendered_box" onclick="setTenderedBoxFocus(true)">
+                    <div id="totals_tendered_value"></div>
+                    <div class="right"><%= @currency_symbol %></div>
+                    <div class="clear">&nbsp;</div>
+                  </div>
+                </div>
+                <div class="clear">&nbsp;</div>
               </div>
-              <div class="button_name">Cancel</div>
+              <div class="clear">&nbsp;</div>
+
+              <div class="data_table">
+                <div class="bold label">Change Due:</div>
+                <div class="bold data">
+                  <div id="totals_change_value">0</div>
+                  <div class="right"><%= @currency_symbol %></div>
+                  <div class="clear">&nbsp;</div>
+                </div>
+                <div class="clear">&nbsp;</div>
+              </div>
             </div>
 
-            <div id="finish_sale_button" class="button" data-onpress="finishSale()">
-              <div class="icon">
-                <%= image_tag "button_logos/final_sale.png" %>
+            <div class="action_buttons">
+              <div class="button" data-onpress="cashOutCancel()">
+                <div class="icon">
+                  <%= image_tag "button_logos/cancel_tendered.png" %>
+                </div>
+                <div class="button_name">Cancel</div>
               </div>
-              <div class="button_name">Finish Sale</div>
+
+              <div id="finish_sale_button" class="button" data-onpress="finishSale()">
+                <div class="icon">
+                  <%= image_tag "button_logos/final_sale.png" %>
+                </div>
+                <div class="button_name">Finish Sale</div>
+              </div>
             </div>
           </div>
         </div>

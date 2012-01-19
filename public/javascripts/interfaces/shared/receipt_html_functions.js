@@ -185,6 +185,9 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, incl
         discountAmount = 0;
     } 
     
+    //set the discountAmount on the order as we use it later when charging a room etc
+    totalOrder.discount_amount = discountAmount;
+    
     finalReceiptHTML += taxChargable ? fetchTotalsHTMLWithTaxChargable() : fetchTotalsWithoutTaxChargableHTML();
     
     if(totalOrder.cashback > 0) {

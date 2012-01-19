@@ -2379,13 +2379,20 @@ div#total_screen div#payment_options_money_info_container div#tender_section {
     height: 531px;
 }
 
-div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container {
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_outer_container {
     float: left;
-    width: 585px;
 }
 
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    height: 530px;
+    width: 585px;
+}  
+
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout {
-    margin-top: 30px;
+    
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div#charge_room_section {
