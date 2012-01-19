@@ -11,6 +11,9 @@
   //load the setting for bypass pin
   var bypassPin = <%= GlobalSetting.parsed_setting_for GlobalSetting::BYPASS_PIN %>;
     
+  //are we allowing bypassing of open orders for z totals on this terminal
+  var bypassOpenOrdersForCashTotal = true;//<%= GlobalSetting.parsed_setting_for GlobalSetting::BYPASS_PIN, {:fingerprint => @terminal_fingerprint} %>;
+    
   //clock format
   var clockFormat = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CLOCK_FORMAT %>";
     
