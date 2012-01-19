@@ -281,12 +281,6 @@ class GlobalSetting < ActiveRecord::Base
     when PRINT_VAT_RECEIPT
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
-    when WINDOWS_PRINTER_MARGINS
-      new_value = (value == "true" ? "yes" : "no")
-      write_attribute("value", new_value)
-    when BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL
-      new_value = (value == "true" ? "yes" : "no")
-      write_attribute("value", new_value)
     else
       #catch the keys that are not only integers and wont get caught in the switch statement
       if key.starts_with? TERMINAL_ID.to_s
@@ -331,6 +325,12 @@ class GlobalSetting < ActiveRecord::Base
           new_value = (value ? value.gsub(" ", "").gsub("'", "").gsub("\"", "") : nil)
           write_attribute("value", new_value)
         end
+      elsif key.starts_with? WINDOWS_PRINTER_MARGINS.to_s
+        new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
+      elsif key.starts_with? BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL.to_s
+        new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
       end
     end
     
