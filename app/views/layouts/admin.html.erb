@@ -1,8 +1,27 @@
 <!DOCTYPE html>
 <html>
   <head>
+
     <%= render :partial => "/partials/interfaces/large_screen/common_head" %>
     <%= javascript_include_tag "admin_js/admin" %>
+    <%= javascript_include_tag "tiny_mce/tiny_mce" %>
+    <%= javascript_include_tag "tiny_mce/plugins/maxlength/editor_plugin" %>
+    <script type="text/javascript">
+    tinyMCE.init({
+        mode : "specific_textareas",
+        mceEditor : "mceEditor",
+        theme : "simple",
+        plugins : "maxlength",
+        maxlength_textarea_0 : 70,
+        maxlength_onchange_callback : "writeLen"
+    });
+
+    function writeLen(len, maxlength){
+        document.getElementById('spaceleft').value=maxlength-len;
+        document.getElementById('space').value=maxlength;
+    }
+    </script>
+
   </head>
   <body>
     <div id="wrapper" class="wrapper admin large_interface">

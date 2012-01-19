@@ -70,8 +70,10 @@
   
   var autoPrintReceipt = <%= @auto_print_receipt %>;
   
-  var receiptMessage = "<%= GlobalSetting.parsed_setting_for GlobalSetting::RECEIPT_MESSAGE %>";
-  
+  var receiptMessage = "<%= raw escape_javascript((GlobalSetting.parsed_setting_for (GlobalSetting::RECEIPT_MESSAGE))) %>";
+
+  var businessInfoMessage = "<%= raw escape_javascript((GlobalSetting.parsed_setting_for (GlobalSetting::BUSINESS_INFO_MESSAGE))) %>";
+
   var defaultDiscountPercent = "<%=Discount.load_default.percent%>";
   
   var terminalID = "<%=@terminal_id%>";

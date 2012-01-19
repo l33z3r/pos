@@ -458,6 +458,12 @@ div#product_image_selection_dialog {
     overflow: hidden;
 }
 
+div#product_image_selection_dialog div.letter_pagination {
+    float: left;
+    padding: 5px;
+    cursor: pointer;
+}
+
 div#product_image_selection_dialog div.image {
     float: left;
     padding: 5px;

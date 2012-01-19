@@ -1,7 +1,11 @@
 <div id="product_image_selection_dialog" class="jscrollpane">
-  <% @all_product_images.each do |image_name| %>
-    <div class="image" onclick="productImageSelected(this, '<%=image_name%>');">
-      <%=image_tag "product_images/#{image_name}"%>
+<% @first_letters.each do |letter| %>
+    <div class="letter_pagination">
+        <div onclick="loadCurrentImages('<%= letter %>')"><b><%= letter %></b></div>
     </div>
-  <% end %>
+
+<% end %>
+<div id="show_current_images">
+      <%= render :partial => "current_product_images" %>
+</div>
 </div>

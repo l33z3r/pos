@@ -262,12 +262,8 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, incl
 }
 
 function fetchBusinessInfoHeaderHTML() {
-    businessInfoHeaderHTML = "<div class='business_info'>";
-    businessInfoHeaderHTML += "<div class='business_name'>" + business_name + "</div>";
-    businessInfoHeaderHTML += "<div class='business_address'>" + business_address + "</div>";
-    businessInfoHeaderHTML += "<div class='business_telephone'>" + business_telephone + "</div>";
-    businessInfoHeaderHTML += "<div class='business_fax'>" + business_fax + "</div>";
-    businessInfoHeaderHTML += "<div class='business_email_address'>" + business_email_address + "</div>";
+    businessInfoHeaderHTML = "<div class='custom_business_info'>";
+    businessInfoHeaderHTML += "<div>" + businessInfoMessage + "</div>";
     businessInfoHeaderHTML += "</div>";
   
     return businessInfoHeaderHTML;

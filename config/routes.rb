@@ -48,6 +48,9 @@ Pos::Application.routes.draw do
   match 'load_stock_for_menu_page' => "home#load_stock_for_menu_page", :via => :get
   match 'load_stock_receipt_for_product' => "home#load_stock_receipt_for_product", :via => :get
   match 'update_stock' => "home#update_stock", :via => :post
+
+  # route for handling letter pagination when selecting from pre stored images
+  #match "products/current_product_images(/:letter)" => "products#current_product_images", :as => :products_pagination
   
   #these routes load prices for a menu page and a price receipt for a product
   match 'load_price_for_menu_page' => "home#load_price_for_menu_page", :via => :get
@@ -146,6 +149,7 @@ Pos::Application.routes.draw do
         get 'product_image_dialog'
         get 'csv_import'
         post 'csv_upload'
+        get 'current_product_images'
       end
     end
 

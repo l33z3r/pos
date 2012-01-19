@@ -1,10 +1,11 @@
 class Admin::AdminController < ApplicationController
   #we used to check for admin, we use the access page now
   #before_filter :check_admin
+
   
   before_filter :check_logged_in
   before_filter :load_more_options_buttons_for_role
-  
+
   layout 'admin'
 
   private

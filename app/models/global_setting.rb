@@ -64,6 +64,8 @@ class GlobalSetting < ActiveRecord::Base
   WINDOWS_PRINTER_MARGINS = 35
   EARLIEST_OPENING_HOUR = 36
   LATEST_CLOSING_HOUR = 37
+  BUSINESS_INFO_MESSAGE = 38
+
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -102,7 +104,8 @@ class GlobalSetting < ActiveRecord::Base
     MENU_SCREEN_TYPE => "Menu Screen Type",
     WINDOWS_PRINTER_MARGINS => "Use Windows Printer Margins",
     EARLIEST_OPENING_HOUR => "Earliest Opening Hour",
-    LATEST_CLOSING_HOUR => "Latest Closing Hour"
+    LATEST_CLOSING_HOUR => "Latest Closing Hour",
+    BUSINESS_INFO_MESSAGE => "Busniess Information"
   }
   
   LATEST_TERMINAL_HOURS = 24

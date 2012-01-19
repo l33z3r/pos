@@ -1,3 +1,5 @@
+
+
 <% if params[:section] %>
   <% content_for :head do %>
     <script type="text/javascript">
@@ -218,6 +220,17 @@
                       <% @gs = GlobalSetting.setting_for GlobalSetting::EMAIL %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Business Information</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::BUSINESS_INFO_MESSAGE %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_area :value, :class => "mceEditor", :id=>"textarea_0" %>
+                        <br>
+                        Space left: <input id="spaceleft" size="3" />/<input id="space" size="3" />
                       <% end %>
                     </td>
                   </tr>
@@ -691,10 +704,11 @@
                   </tr>
                   <tr>
                     <td>Receipt Message</td>
+
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::RECEIPT_MESSAGE %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.text_field :value %>
+                        <%= f.text_area :value, :class => "mceEditor" %>
                       <% end %>
                     </td>
                   </tr>

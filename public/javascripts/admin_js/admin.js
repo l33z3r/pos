@@ -110,6 +110,11 @@ function updateProductPrice(product_id, currentPrice) {
     }
 }
 
+function loadCurrentImages(letter){
+
+        jQuery.get('/admin/products/current_product_images?letter=' + letter, function(data) {})
+    }
+
 function newButtonGroup() {
     name = prompt("Button Group Name:");
     
