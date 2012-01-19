@@ -229,8 +229,6 @@
                       <% @gs = GlobalSetting.setting_for GlobalSetting::BUSINESS_INFO_MESSAGE %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_area :value, :class => "mceEditor", :id=>"textarea_0" %>
-                        <br>
-                        Space left: <input id="spaceleft" size="3" />/<input id="space" size="3" />
                       <% end %>
                     </td>
                   </tr>
