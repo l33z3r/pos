@@ -1,6 +1,5 @@
 class Admin::GlobalSettingsController < Admin::AdminController
   cache_sweeper :display_button_sweeper
-  #uses_tiny_mce :options => {  :theme => 'simple', :editor_selector => 'mceEditor', :plugins => "maxlength", :maxlength_textarea_0 => 200, :maxlength_textarea_1 => 100}
   
   def index
     
