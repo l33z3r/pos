@@ -268,6 +268,13 @@ function moneySelected(amount) {
 }
 
 function doChargeRoom(orderData) {
+    //need to add some additional data to the order data to charge the room
+    orderData.datetime = utilFormatDate(new Date());
+    orderData.location = business_name;
+    
+    //convert json to string
+    var orderDataString = JSON.stringify(orderData);
+    
     if(paymentIntegrationId != 0) {
         if(paymentIntegrationId == zalionPaymentIntegrationId) {
             //send request to charge via zalion
@@ -289,7 +296,8 @@ function doChargeRoom(orderData) {
                     setStatusMessage("Room successfully charged.", false, false);                   
                 },
                 data: {
-                    zalion_charge_request_url : zalion_charge_request_url
+                    zalion_charge_request_url : zalion_charge_request_url,
+                    order_data : orderDataString
                 }
             });
         }

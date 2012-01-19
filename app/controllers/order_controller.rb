@@ -2,12 +2,6 @@ class OrderController < ApplicationController
 
   def create
     @success = create_order(params[:order])
-
-    if @success
-      render :json => {:success => true}.to_json
-    else
-      render :json => {:success => false}.to_json
-    end
   end
 
   def create_outstanding

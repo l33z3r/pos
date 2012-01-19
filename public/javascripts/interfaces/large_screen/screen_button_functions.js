@@ -9,7 +9,7 @@ function prepareXTotal() {
 function prepareZTotal() {
     var doIt = checkAllOrdersClosedForCashTotal();
     
-    if(doIt) {
+    if(doIt || bypassOpenOrdersForCashTotal) {
         doCashTotalReport("Z", false);
     }
 }
