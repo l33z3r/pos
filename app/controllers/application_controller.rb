@@ -326,6 +326,16 @@ class ApplicationController < ActionController::Base
     
     @web_socket_service_ip = @web_socket_service_ip_gs.value
     
+    @zalion_charge_room_service_ip_gs = GlobalSetting.setting_for GlobalSetting::ZALION_ROOM_CHARGE_SERVICE_IP, {:fingerprint => @terminal_fingerprint}
+    
+    if @zalion_charge_room_service_ip_gs.value.blank?
+      @zalion_charge_room_service_ip_gs.value = request.remote_ip
+      @zalion_charge_room_service_ip_gs.save
+      @zalion_charge_room_service_ip_gs.reload
+    end
+    
+    @zalion_charge_room_service_ip = @zalion_charge_room_service_ip_gs.value
+    
     @windows_printer_margins = GlobalSetting.parsed_setting_for GlobalSetting::WINDOWS_PRINTER_MARGINS, {:fingerprint => @terminal_fingerprint}
     
   end

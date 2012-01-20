@@ -99,7 +99,7 @@ function paymentMethodSelected(method, integration_id) {
             showLoadingDiv();
             
             //fire off request to get contents of ROOMFILE
-            var zalion_roomfile_request_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/zalion_roomfile';
+            var zalion_roomfile_request_url = 'http://' + zalionChargeRoomServiceIP + ':8080/ClueyWebSocketServices/zalion_roomfile';
             
             $.ajax({
                 type: 'GET',
@@ -281,8 +281,8 @@ function doChargeRoom(orderData) {
             //alert("Zalion Integration");
             showLoadingDiv();
             
-            //fire off request to get contents of ROOMFILE
-            var zalion_charge_request_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/zalion_charge';
+            //fire off request to post to POSTINGS.TXT
+            var zalion_charge_request_url = 'http://' + zalionChargeRoomServiceIP + ':8080/ClueyWebSocketServices/zalion_charge';
             
             $.ajax({
                 type: 'POST',

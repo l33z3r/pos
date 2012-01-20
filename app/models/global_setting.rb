@@ -66,6 +66,7 @@ class GlobalSetting < ActiveRecord::Base
   LATEST_CLOSING_HOUR = 37
   BUSINESS_INFO_MESSAGE = 38
   BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL = 39
+  ZALION_ROOM_CHARGE_SERVICE_IP = 40
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -106,7 +107,8 @@ class GlobalSetting < ActiveRecord::Base
     EARLIEST_OPENING_HOUR => "Earliest Opening Hour",
     LATEST_CLOSING_HOUR => "Latest Closing Hour",
     BUSINESS_INFO_MESSAGE => "Business Information",
-    BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL => "Bypass open orders for z total"
+    BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL => "Bypass open orders for z total",
+    ZALION_ROOM_CHARGE_SERVICE_IP => "Zalion room charge service ip address"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -212,6 +214,9 @@ class GlobalSetting < ActiveRecord::Base
     when BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL
       @gs = find_or_create_by_key(:key => "#{BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when ZALION_ROOM_CHARGE_SERVICE_IP
+      @gs = find_or_create_by_key(:key => "#{ZALION_ROOM_CHARGE_SERVICE_IP.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[ZALION_ROOM_CHARGE_SERVICE_IP])
+      @gs.parsed_value = @gs.value
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
