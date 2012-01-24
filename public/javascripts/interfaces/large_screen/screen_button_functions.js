@@ -525,3 +525,51 @@ function saveAddNameToTable() {
     
     setStatusMessage("Name added to table");
 }
+
+function startSplitBillMode() {
+    if(haveSplitBillOrder(current_user_id)) {
+        niceAlert("You must deal with the split order that is currently open. Please select it from the menu and either transfer it to a table or cash it out.");
+        tableSelectMenu.setValue(tempSplitBillTableNum);
+        doSelectTable(tempSplitBillTableNum);
+        return;
+    }
+    
+    if(selectedTable == 0 || selectedTable == previousOrderTableNum) {
+        setStatusMessage("Only valid for table orders!");
+        return;
+    }
+    
+    var order = getCurrentOrder();
+    
+    var orderSynced = true;
+    
+    //make sure all items are synced
+    for(var i=0; i<order.items.length; i++) {
+        if(!order.items[i].synced) {
+            orderSynced = false;
+            break;
+        }
+    }
+    
+    if(!orderSynced) {
+        niceAlert("All items in the order must be ordered before you can split bill. You can also delete un-ordered items.");
+        return;
+    }
+    
+    inSplitBillMode = true;
+    
+    splitBillTableNumber = selectedTable;
+    
+    splitBillOrderFrom = order;
+    
+    splitBillOrderTo = buildInitialOrder();
+    
+    //record the split bill table number
+    splitBillOrderTo.split_bill_table_num = splitBillTableNumber;
+    
+    showSplitBillScreen();
+    
+    $('#split_bill_from_receipt_header').html("Table " + selectedTable);
+    
+    loadSplitBillReceipts();
+}   

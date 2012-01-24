@@ -21,6 +21,9 @@ class PaymentMethod < ActiveRecord::Base
       @options << [val, key]
     end
     
+    #the none option
+    @options << ["None", 0]
+    
     @options
   end
   

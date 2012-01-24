@@ -269,7 +269,7 @@ function moneySelected(amount) {
 
 function doChargeRoom(orderData) {
     //need to add some additional data to the order data to charge the room
-    orderData.datetime = utilFormatDate(new Date());
+    orderData.datetime = formatDate(new Date(), "dd/MM/yyyy hh:mm:ss");
     orderData.location = business_name;
     
     //convert json to string
@@ -278,7 +278,6 @@ function doChargeRoom(orderData) {
     if(paymentIntegrationId != 0) {
         if(paymentIntegrationId == zalionPaymentIntegrationId) {
             //send request to charge via zalion
-            //alert("Zalion Integration");
             showLoadingDiv();
             
             //fire off request to post to POSTINGS.TXT

@@ -95,7 +95,7 @@ class OrderController < ApplicationController
     @table_to = TableInfo.find(@table_to_id)
     
     if @table_to
-      if @table_from_id.to_i != 0
+      if @table_from_id.to_i != 0 and @table_from_id.to_i != -2
         @table_from = TableInfo.find(@table_from_id)      
     
         if @table_from
@@ -117,6 +117,10 @@ class OrderController < ApplicationController
 
     @order_details = @order_params.delete(:order_details)
     @charged_room = @order_params.delete(:charged_room)
+    
+    @is_split_bill_order_param = @order_params.delete(:is_split_bill)
+    
+    @is_split_bill_order = @is_split_bill_order_param == "true"
     
     @order = Order.new(@order_params)
     
@@ -212,7 +216,7 @@ class OrderController < ApplicationController
     
     #must tell all terminals that this order is cleared
     #only do this if that table still exists!
-    if @order.is_table_order and @table_info
+    if @order.is_table_order and @table_info and !@is_split_bill_order
       @employee_id = @order_params['employee_id']
       do_request_clear_table_order @terminal_id, Time.now.to_i, @order.table_info_id, @order.order_num, @employee_id
     end

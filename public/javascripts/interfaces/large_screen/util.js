@@ -1,5 +1,11 @@
 function havePreviousOrder(current_user_id) {
-    var key = "user_" + current_user_id + "_table_-1_current_order";
+    var key = "user_" + current_user_id + "_table_" + previousOrderTableNum + "_current_order";
+    var data = retrieveStorageValue(key);
+    return data;
+}
+
+function haveSplitBillOrder(current_user_id) {
+    var key = "user_" + current_user_id + "_table_" + tempSplitBillTableNum + "_current_order";
     var data = retrieveStorageValue(key);
     return data;
 }
@@ -239,6 +245,26 @@ function showTablesScreen() {
     initTableSelectScreen();
 }
 
+function showSplitBillScreen() {
+    setNavTitle("Split Bill");
+    
+    $('#nav_back_link').unbind();
+    
+    showNavBackLinkMenuScreen();
+    
+    $('#nav_back_link').click(function() {
+        inSplitBillMode = true;
+        cancelSplitBillMode();
+    });
+    
+    hideAllScreens();
+    
+    //hide the dropdown menu
+    $('#menu_screen_shortcut_dropdown_container').hide();
+        
+    $('#split_bill_screen').show();
+}
+
 function showTotalsScreen() {
     setNavTitle("Sub Total");
     hideAllScreens();
@@ -285,6 +311,7 @@ function hideAllScreens() {
     $('#float_screen').hide();
     $('#mobile_screen').hide();
     $('#previous_cash_reports_screen').hide();
+    $('#split_bill_screen').hide();
 
 }
 
@@ -311,6 +338,11 @@ function currentScreenIsFloat() {
 function currentScreenIsTables() {
     return $('#table_select_screen').is(":visible");
 }
+
+function currentScreenIsSplitBill() {
+    return $('#split_bill_screen').is(":visible");
+}
+
 function showNavBackLinkMenuScreen() {
     $('#nav_back_link').show();
     $('#nav_back_link').click(function() {

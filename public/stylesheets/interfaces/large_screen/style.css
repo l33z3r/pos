@@ -531,12 +531,12 @@ div.global_status_message {
 }
 
 div#receipt_keypad_container div#receipt_container {
-    height: 379px;
+    height: 351px;
     background-color: #FFF;
 }
 
 div#receipt_keypad_container div#receipt {
-    height: 330px;
+    height: 305px;
     overflow-y: auto;
     display: block;
     background-color: #FFF;
@@ -1179,12 +1179,112 @@ div#menu_screen div#controls {
     height: 100px;
 }
 
-/* Main Menu Screen */
+div#split_bill_screen div#split_bill_receipt_keypad_container {
+    width: 265px;
+    float: left;
+    border: 1px solid #CCC;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+}
+
+div#split_bill_screen div#split_bill_receipt_keypad_container div#split_bill_from_receipt_header {
+    ackground: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+    border: 1px solid #AAA;
+    font-weight: bold;
+    font-size: 14px;
+    padding-top: 7px;
+    height: 25px;
+}
+
+div#split_bill_screen div#split_bill_receipt_keypad_container div#split_bill_keypad_input {
+    height: 40px;
+    clear: both;
+    width: 100%;
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+}
+
+div#split_bill_screen div#split_bill_receipt_keypad_container div#split_bill_input_show {
+    border: 1px solid #DDD;
+    width: 220px;
+    height: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 5px;
+    float: left;
+    border: 1px solid #CCC;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 0px 1px 1px 0px #777;
+    margin-left: 20px;
+    margin-top: 6px;
+    margin-right: 20px;
+    background-color: #FFF;
+}
+
+div#split_bill_screen div#split_bill_receipt_keypad_container div#split_bill_from_receipt_container {
+    height: 408px;
+    overflow-y: auto;
+    display: block;
+    background-color: white;
+}
+
+div#split_bill_screen div#split_bill_to_receipt_container {
+    width: 740px;
+    height: 723px;
+    float: right;
+    border: 1px solid #CCC;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+}
+
+div#split_bill_screen div#split_bill_to_receipt_container div#split_bill_to_receipt_content_container {
+    margin: auto;
+    margin-top: 10px;
+    width: 265px;
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+    border: 1px solid #AAA;
+    padding: 20px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+}
+
+div#split_bill_screen div#split_bill_to_receipt_container div#split_bill_to_receipt_content_container div#split_bill_to_receipt_header {
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+    border: 1px solid #AAA;
+    font-weight: bold;
+    font-size: 14px;
+    padding-top: 7px;
+    height: 25px;
+}
+
+div#split_bill_screen div#split_bill_to_receipt_container div#split_bill_to_receipt {
+    width: 265px;
+    height: 379px;
+    overflow-y: auto;
+    display: block;
+    background-color: white;
+}
+
+div#split_bill_screen div#split_bill_to_receipt_container div.action_buttons {
+    display: inline-block;
+    border-spacing: 7px;
+    margin-top: 10px;
+}
+
+div#split_bill_screen div#split_bill_to_receipt_container div.action_buttons div.button {
+    
+}
+
+/* End Main Menu Screen */
 
 /* Cash Reports Screen */
 
 div#cash_reports_screen div#coin_counter_keypad_container {
-    width: 325px;
+    width: 447px;
     float: left;
     border: 1px solid #CCC;
     -moz-border-radius: 7px;
@@ -1579,6 +1679,32 @@ div#menu_screen div#receipt_keypad_container div#total_container div#total_value
     text-align: right;
     font-weight: bold;
     color: #FFF;
+}
+
+div#menu_screen div#receipt_keypad_container div#menu_screen_keypad_input {
+    height: 27px;
+    clear: both;
+    width: 100%;
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+}
+
+div#menu_screen div#receipt_keypad_container div#menu_screen_input_show {
+    border: 1px solid #DDD;
+    width: 220px;
+    height: 17px;
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 2px;
+    float: left;
+    border: 1px solid #CCC;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 0px 1px 1px 0px #777;
+    margin-left: 20px;
+    margin-top: 2px;
+    margin-right: 20px;
+    background-color: white;
 }
 
 div.receipt {
@@ -2392,7 +2518,7 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
 }  
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout {
-    
+
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div#charge_room_section {
