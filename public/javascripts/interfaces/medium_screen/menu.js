@@ -180,26 +180,27 @@ function closeEditOrderItem() {
 }
 
 function doSelectReceiptItem(orderItemEl) {
+//    newMenuPagePopup();
     orderItemEl = $(orderItemEl);
-    
+
     //close any open popup
     closeEditOrderItem();
-    
+
     //make sure the modifier grids are closed
     switchToMenuItemsSubscreen();
-    
+
     //save the currently opened dialog
     currentSelectedReceiptItemEl = orderItemEl;
-    
+
     //fetch the selected product and set its default oia grid
-    var selectedProduct = products[getCurrentOrder().items[parseInt(orderItemEl.data("item_number"))-1].product.id];    
+    var selectedProduct = products[getCurrentOrder().items[parseInt(orderItemEl.data("item_number"))-1].product.id];
     setModifierGridIdForProduct(selectedProduct);
-    
+
     //keep the border
     orderItemEl.addClass("selected");
-    
+
     setOrderItemAdditionsGridState();
-}
+//}
 
 function writeOrderItemToReceipt(orderItem) {
     setReceiptsHTML(getCurrentRecptHTML() + getOrderItemReceiptHTML(orderItem));

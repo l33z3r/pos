@@ -209,33 +209,37 @@ class Admin::ProductsController < Admin::AdminController
   end
 
   def product_image_dialog
-    #@first_letters = Product.all.collect { |s| [s.name[0,1]] }.uniq.sort
-    #@all_product_images = load_all_product_images
+
+    @selected_images = Array.new
+    @selected_names = Array.new
     @first_letters = Array.new
     @all_product_images = Dir.glob(Product::PRODUCT_IMAGE_DIRECTORY)
-    @all_product_images.each_with_index do |image, index|
-      @first_letters.push Dir.glob(Product::PRODUCT_IMAGE_DIRECTORY)[index].split("#{Rails.root}/public/images/product_images/")[1][0]
-    end
-    @first_letters = @first_letters.uniq.sort
-
-  end
-
-  def current_product_images
 
     if params[:letter]
-      @selected_images = Array.new
-      @all_product_images = Dir.glob(Product::PRODUCT_IMAGE_DIRECTORY)
-      @all_product_images.each_with_index do |image, index|
-        curr_letter = Dir.glob(Product::PRODUCT_IMAGE_DIRECTORY)[index].split("#{Rails.root}/public/images/product_images/")[1][0]
-        if curr_letter == params[:letter]
-            @selected_images.push Dir.glob(Product::PRODUCT_IMAGE_DIRECTORY)[index]
-            logger.debug Dir.glob(Product::PRODUCT_IMAGE_DIRECTORY)[index]
-        end
+    @all_product_images.each_with_index do |image, index|
+      current_file =  @all_product_images[index].split("#{Rails.root}/public/images/product_images/")[1]
+      curr_letter = current_file[0].downcase
+      @first_letters.push curr_letter
+      if curr_letter.downcase == params[:letter].downcase
+            @selected_images.push current_file
+            @selected_names.push current_file.split(".")[0]
       end
-    else
     end
-    logger.debug "here"
-    render "show_current_images", :collection => @selected_images
+    else
+      @all_product_images.each_with_index do |image, index|
+      current_file =  @all_product_images[index].split("#{Rails.root}/public/images/product_images/")[1]
+      curr_letter = current_file[0].downcase
+      @first_letters.push curr_letter
+      if curr_letter.downcase == "a"
+            @selected_images.push current_file
+            @selected_names.push current_file.split(".")[0]
+      end
+    end
+    end
+
+    @first_letters = @first_letters.uniq.sort
+    render "product_image_dialog"
+
   end
 
   def update_price
@@ -351,12 +355,4 @@ class Admin::ProductsController < Admin::AdminController
 
   end
 
-  def load_all_product_images
-    @all_images = Dir.glob(Product::PRODUCT_IMAGE_DIRECTORY).collect do |image_path|
-      @start_index = image_path.rindex("/") + 1
-      image_path[@start_index..image_path.length]
-    end
-
-    @all_images
-  end
 end

@@ -111,8 +111,9 @@ function updateProductPrice(product_id, currentPrice) {
 }
 
 function loadCurrentImages(letter){
-
-        jQuery.get('/admin/products/current_product_images?letter=' + letter, function(data) {})
+        $("#container_images").hide()
+        $("#container_spinner").show()
+        jQuery.get('/admin/products/product_image_dialog?letter=' + letter, function(data) {})
     }
 
 function newButtonGroup() {

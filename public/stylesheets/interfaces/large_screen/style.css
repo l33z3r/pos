@@ -3243,6 +3243,24 @@ div.button {
     background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
 }
 
+div.popup_button {
+    width: 40px;
+    max-width: 40px;
+    height: 40px;
+    max-height: 40px;
+    overflow: hidden;
+    vertical-align: middle;
+    display: table-cell;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+
 div.button.selected {
     background: -moz-linear-gradient(#C1C1C1, #101010) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#C1C1C1), to(#101010));
