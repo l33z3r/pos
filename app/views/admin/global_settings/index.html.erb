@@ -289,7 +289,7 @@
                             :onchange => "doSetDefaultPaymentMethod(this.value);" %>
                         </td>
                         <td>
-                          <%= f.select :payment_integration_id, options_for_select(PaymentMethod.payment_integration_options_for_select, pm.payment_integration_id), :include_blank => "None" %>
+                          <%= f.select :payment_integration_id, options_for_select(PaymentMethod.payment_integration_options_for_select, pm.payment_integration_id) %>
                         </td>
                       </tr>
                     <% end %>
@@ -330,7 +330,7 @@
               <div class="clear_top_margin_10">&nbsp;</div>
 
               <div id="actions">
-                <%= submit_tag "Save" %>
+                <%= submit_tag "Create" %>
               </div>
 
             <% end %>

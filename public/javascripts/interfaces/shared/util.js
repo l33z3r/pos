@@ -233,14 +233,8 @@ function clearTableOrderInStorage(current_user_id, selectedTable) {
 }
 
 function parseAndFillTableOrderJSON(currentTableOrderJSON) {
-    
     //init an in memory version of this order
-    tableOrders[tableNum] = {
-        'items': new Array(),
-        'courses' : new Array(),
-        'total':0,
-        'client_name' : ""
-    };
+    tableOrders[tableNum] = buildInitialOrder();
     
     //fill in the table order array
     if(currentTableOrderJSON != null) {
@@ -309,6 +303,17 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
         
     //total the order first
     calculateOrderTotal(tableOrders[tableNum]);
+}
+
+function buildInitialOrder() {
+    var initOrder = {
+        'items': new Array(),
+        'courses' : new Array(),
+        'total':0,
+        'client_name' : ""
+    };
+    
+    return initOrder;
 }
 
 function storeKeyValue(key, value) {
@@ -557,7 +562,7 @@ function niceAlert(message, title) {
         title, "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
         {
             width: 360,
-            height: 280,
+            height: 310,
             okButtonText: 'Ok',
             onOk: "hideNiceAlert()"
         });

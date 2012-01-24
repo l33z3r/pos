@@ -278,11 +278,10 @@ function doChargeRoom(orderData) {
     if(paymentIntegrationId != 0) {
         if(paymentIntegrationId == zalionPaymentIntegrationId) {
             //send request to charge via zalion
-            //alert("Zalion Integration");
             showLoadingDiv();
             
             //fire off request to get contents of ROOMFILE
-            var zalion_charge_request_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/zalion_charge';
+            var zalion_charge_request_url = 'http://' + zal + ':8080/ClueyWebSocketServices/zalion_charge';
             
             $.ajax({
                 type: 'POST',

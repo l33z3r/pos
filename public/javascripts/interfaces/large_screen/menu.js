@@ -10,6 +10,15 @@ var editItemPopupAnchor;
 
 var doAutoLoginAfterSync = false;
 
+var inSplitBillMode = false;
+
+var splitBillOrderFrom;
+var splitBillOrderTo;
+var splitBillTableNumber;
+
+var previousOrderTableNum = -1;
+var tempSplitBillTableNum = -2;
+
 //this function is called from application.js on page load
 function initMenu() {
     initMenuScreenType();
@@ -69,12 +78,12 @@ function initPreviousOrder() {
         selectedTable = -1;
         $('#previous_order_select_item').show();
         
-        tableSelectMenu.setValue(-1);
-        doSelectTable(-1);
+        tableSelectMenu.setValue(previousOrderTableNum);
+        doSelectTable(previousOrderTableNum);
         
-        getTableOrderFromStorage(current_user_id, -1)
+        getTableOrderFromStorage(current_user_id, previousOrderTableNum)
         
-        previousTableOrder = tableOrders[-1];
+        previousTableOrder = tableOrders[previousOrderTableNum];
         
         //carry over service charge
         serviceCharge = parseFloat(previousTableOrder.service_charge);
@@ -85,10 +94,16 @@ function initPreviousOrder() {
         cashback = parseFloat(previousTableOrder.cashback);
         
         //carry over the table number
-        tables[-1] = {
+        tables[previousOrderTableNum] = {
             id : '-1', 
             label : previousTableOrder.table_info_label
         };
+    }
+}
+
+function initSplitBillOrder() {
+    if(haveSplitBillOrder(current_user_id)) {
+        $('#split_bill_select_item').show();
     }
 }
 
@@ -417,6 +432,10 @@ function writeOrderItemToReceipt(orderItem) {
 }
 
 function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
+    if(typeof order.items == "undefined") {
+        return "";
+    }
+    
     allOrderItemsReceiptHTML = "";
 
     for(var i=0; i<order.items.length; i++) {
@@ -799,7 +818,7 @@ function editOrderItemOIAClicked() {
 }
 
 function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit) {
-    targetOrderItem = order.items[itemNumber-1];
+    var targetOrderItem = order.items[itemNumber-1];
     
     targetOrderItem.amount = newQuantity;
     targetOrderItem.product_price = newPricePerUnit;
@@ -1070,7 +1089,7 @@ function doTotalFinal() {
 
         if(selectedTable == -1) {
             //pick up the previous table
-            tableInfoLabel = tables[-1].label;
+            tableInfoLabel = tables[previousOrderTableNum].label;
             isTableOrder = (tableInfoLabel != 'None');
             tableInfoId = totalOrder.tableInfoId;
         } else {
@@ -1204,8 +1223,13 @@ function orderSentToServerCallback(orderData, errorOccured) {
     }
 
     //do we need to clear the previous order from the receipt dropdown selection?
-    if(selectedTable == -1) {
+    if(selectedTable == previousOrderTableNum) {
         $('#previous_order_select_item').hide();
+    }
+    
+    //do we need to clear the previous order from the receipt dropdown selection?
+    if(selectedTable == tempSplitBillTableNum) {
+        $('#split_bill_select_item').hide();
     }
 }
 
@@ -1927,4 +1951,82 @@ function hideOrderReadyPopup() {
     } catch (e) {
         
     }
+}
+
+function splitBillScreenKeypadClick(num) {
+    
+}
+
+function splitBillScreenKeypadClickDecimal() {
+    
+}
+
+function splitBillScreenKeypadClickCancel() {
+    
+}
+
+function loadSplitBillReceipts() {
+    var orderFromReceiptHTML = getAllOrderItemsReceiptHTML(splitBillOrderFrom, false, false, true);
+    $('#split_bill_from_till_roll').html(orderFromReceiptHTML);
+    
+    var orderToReceiptHTML = getAllOrderItemsReceiptHTML(splitBillOrderTo, false, false, true);
+    $('#split_bill_to_till_roll').html(orderToReceiptHTML);
+    
+    $('#split_bill_from_till_roll .order_line').each(function() {
+        var orderLine = $(this);
+        
+        orderLine.click(function() {
+            doSplitOrderItem($(this)); 
+        });
+    });
+}
+
+function doSplitOrderItem(orderLine) {
+    var itemNumber = parseInt(orderLine.data("item_number"));
+    
+    var theItem = splitBillOrderFrom.items[itemNumber - 1];
+    
+    //take it from the order
+    if(theItem.amount > 1) {
+        modifyOrderItem(splitBillOrderFrom, itemNumber, theItem.amount - 1, theItem.product_price);
+    } else {
+        doRemoveOrderItem(splitBillOrderFrom, itemNumber);
+    }
+    
+    var copiedOrderItem = {};
+    
+    var theCopiedOrderItem = $.extend(true, copiedOrderItem, theItem);
+    
+    theCopiedOrderItem.itemNumber = splitBillOrderTo.items.length + 1;
+    
+    //add this item to the order array
+    splitBillOrderTo.items.push(theCopiedOrderItem);
+    
+    modifyOrderItem(splitBillOrderTo, theCopiedOrderItem.itemNumber, 1, theCopiedOrderItem.product_price);
+    
+    loadSplitBillReceipts();
+}
+
+function cancelSplitBillMode() {
+    alert("Canceled");
+    splitBillOrderTo = null;
+    inSplitBillMode = false;
+    showMenuScreen();
+}
+
+function finishSplitBillMode() {
+    //store it and then populate tableOrders
+    //then we can access it at tableOrders[tempSplitBillTableNum]
+    storeTableOrderInStorage(current_user_id, tempSplitBillTableNum, splitBillOrderTo);    
+    getTableOrderFromStorage(current_user_id, tempSplitBillTableNum);
+    
+    //save the orderFrom
+    storeTableOrderInStorage(current_user_id, splitBillTableNumber, splitBillOrderFrom);
+    
+    inSplitBillMode = false;
+    showMenuScreen();
+    
+    $('#split_bill_select_item').show();
+    tableSelectMenu.setValue(tempSplitBillTableNum);
+    doSelectTable(tempSplitBillTableNum);
 }

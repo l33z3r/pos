@@ -1179,12 +1179,62 @@ div#menu_screen div#controls {
     height: 100px;
 }
 
-/* Main Menu Screen */
+div#split_bill_screen div#split_bill_receipt_keypad_container {
+    width: 265px;
+    float: left;
+    border: 1px solid #CCC;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+}
+
+div#split_bill_screen div#split_bill_receipt_keypad_container div#split_bill_from_receipt_header {
+    ackground: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+    border: 1px solid #AAA;
+    font-weight: bold;
+    height: 20px;
+}
+
+div#split_bill_screen div#split_bill_receipt_keypad_container div#split_bill_from_receipt_container {
+    height: 448px;
+    background-color: white;
+}
+
+div#split_bill_screen div#split_bill_to_receipt_container {
+    width: 740px;
+    height: 735px;
+    float: right;
+    border: 1px solid #CCC;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+}
+
+div#split_bill_screen div#split_bill_to_receipt_container div#split_bill_to_receipt_content_container {
+    margin: auto;
+    margin-top: 100px;
+    width: 265px;
+}
+
+div#split_bill_screen div#split_bill_to_receipt_container div#split_bill_to_receipt_content_container div#split_bill_to_receipt_header {
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+    border: 1px solid #AAA;
+    font-weight: bold;
+    height: 20px;
+}
+
+div#split_bill_screen div#split_bill_to_receipt_container div#split_bill_to_receipt_container {
+    width: 265px;
+    height: 379px;
+    background-color: white;
+}
+
+/* End Main Menu Screen */
 
 /* Cash Reports Screen */
 
 div#cash_reports_screen div#coin_counter_keypad_container {
-    width: 325px;
+    width: 447px;
     float: left;
     border: 1px solid #CCC;
     -moz-border-radius: 7px;
@@ -2392,7 +2442,7 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
 }  
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout {
-    
+
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div#charge_room_section {

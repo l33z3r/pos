@@ -525,3 +525,29 @@ function saveAddNameToTable() {
     
     setStatusMessage("Name added to table");
 }
+
+function startSplitBillMode() {
+    if(haveSplitBillOrder(current_user_id)) {
+        niceAlert("You must deal with the split order that is currently open. Please select it from the menu and either transfer it to a table or cash it out.");
+        tableSelectMenu.setValue(tempSplitBillTableNum);
+        doSelectTable(tempSplitBillTableNum);
+        return;
+    }
+    
+    if(selectedTable == 0 || selectedTable == previousOrderTableNum) {
+        setStatusMessage("Only valid for table orders!");
+        return;
+    }
+    
+    inSplitBillMode = true;
+    
+    splitBillTableNumber = selectedTable;
+    
+    splitBillOrderFrom = getCurrentOrder();
+    
+    splitBillOrderTo = buildInitialOrder();
+    
+    showSplitBillScreen();
+    
+    loadSplitBillReceipts();
+}

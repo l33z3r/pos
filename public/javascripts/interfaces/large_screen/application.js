@@ -73,6 +73,7 @@ function doGlobalInit() {
         //check if we have loaded a previous order from the admin interface
         //this will also load it into tableOrders[-1]
         initPreviousOrder();
+        initSplitBillOrder();
     
         //init the display button passcode request popup
         $('#menu_buttons_popup_anchor').CreateBubblePopup();
