@@ -8,6 +8,8 @@ gem 'rails', '3.0.5'
 #had an issue with arel auto updating and breaking code, so sticking to 2.0.9
 gem 'arel', '2.0.9'
 
+gem 'rake', '0.8.7'
+
 gem 'populator'
 gem 'faker'
   
