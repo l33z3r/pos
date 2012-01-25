@@ -539,6 +539,8 @@ function startSplitBillMode() {
         return;
     }
     
+    afterSplitBillSyncCallback = null;
+    
     var order = getCurrentOrder();
     
     var orderSynced = true;
@@ -560,7 +562,12 @@ function startSplitBillMode() {
     
     splitBillTableNumber = selectedTable;
     
-    splitBillOrderFrom = order;
+    //copy over the order
+    var copiedOrder = {};
+    
+    var theCopiedOrder = $.extend(true, copiedOrder, order);
+    
+    splitBillOrderFrom = theCopiedOrder;
     
     splitBillOrderTo = buildInitialOrder();
     

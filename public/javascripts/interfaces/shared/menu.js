@@ -915,7 +915,7 @@ function finishTransferOrderItem() {
     tableScreenSelectTable(savedTableTo);
     doAutoLoginAfterSync = true;
     doSyncTableOrder();
-    niceAlert("Order Item Transfered");
+    niceAlert("Order Item Transfered.");
 }
 
 function testForMandatoryModifier(product) {
