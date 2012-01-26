@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120113173142) do
+ActiveRecord::Schema.define(:version => 20120126102750) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -204,7 +204,7 @@ ActiveRecord::Schema.define(:version => 20120113173142) do
     t.float    "total"
     t.string   "payment_type"
     t.float    "amount_tendered"
-    t.boolean  "is_table_order",                     :default => false
+    t.boolean  "is_table_order",                              :default => false
     t.integer  "num_persons"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -213,13 +213,14 @@ ActiveRecord::Schema.define(:version => 20120113173142) do
     t.float    "pre_discount_price"
     t.string   "terminal_id"
     t.string   "table_info_label"
-    t.boolean  "tax_chargable",                      :default => false
+    t.boolean  "tax_chargable",                               :default => false
     t.float    "global_sales_tax_rate"
     t.float    "service_charge"
     t.float    "cashback"
     t.integer  "void_order_id"
-    t.boolean  "is_void",                            :default => false
+    t.boolean  "is_void",                                     :default => false
     t.integer  "order_num",             :limit => 8
+    t.text     "split_payments",        :limit => 2147483647
   end
 
   create_table "payment_methods", :force => true do |t|

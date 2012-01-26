@@ -1179,6 +1179,10 @@ div#menu_screen div#controls {
     height: 100px;
 }
 
+div#split_bill_screen {
+    display: none;
+}
+
 div#split_bill_screen div#split_bill_receipt_keypad_container {
     width: 265px;
     float: left;
@@ -1316,7 +1320,7 @@ div#split_bill_screen div.total_container div.total_value {
 /* Cash Reports Screen */
 
 div#cash_reports_screen div#coin_counter_keypad_container {
-    width: 447px;
+    width: 325px;
     float: left;
     border: 1px solid #CCC;
     -moz-border-radius: 7px;
@@ -2679,13 +2683,31 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
     padding: 2px;
     margin-top: -5px;
     margin-left: -3px;
-}
-
-div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.data div#totals_tendered_box.selected {
-    border: 2px solid #E36C0A;
+    text-align: right;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.data div#totals_tendered_box div#totals_tendered_value {
+    float: right;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.data div#tendered_box {
+    border: 1px solid #CCC;
+    background-color: #FFF;
+    padding: 2px;
+    margin-top: -5px;
+    margin-left: -3px;
+    text-align: right;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.data div#tendered_box.selected {
+    border: 2px solid #E36C0A;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.data div#tendered_box div#tendered_value {
+    float: right;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.data div#totals_balance_value {
     float: right;
 }
 

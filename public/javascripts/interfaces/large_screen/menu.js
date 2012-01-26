@@ -1057,6 +1057,8 @@ function doTotal(applyDefaultServiceCharge) {
         paymentMethod = defaultPaymentMethod;
     }
     
+    splitPayments = {};
+    
     paymentMethodSelected(paymentMethod, 0);
     
     //hide the dropdown menu
@@ -1069,7 +1071,7 @@ function doTotal(applyDefaultServiceCharge) {
     $('#cashback_amount_holder').html(currency(cashback));
     
     $('#totals_tendered_value').html(currency(0, false));
-    takeTendered();
+    updateTotalTendered();
     
     $('#totals_tendered_box').addClass("selected");
 }
@@ -1188,7 +1190,8 @@ function doTotalFinal() {
         'order_details':totalOrder,
         'terminal_id':terminalID,
         'void_order_id': totalOrder.void_order_id,
-        'is_split_bill': is_split_bill
+        'is_split_bill': is_split_bill,
+        'split_payments': splitPayments
     }
     
     showLoadingDiv();

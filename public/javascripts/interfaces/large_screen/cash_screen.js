@@ -1,35 +1,45 @@
-function takeTendered() {
-    cashTendered = getTendered();
+var splitPayments;
 
+function updateTotalTendered() {
+    var totalCashTendered = getTotalTendered();
+
+    if(isNaN(parseFloat(totalCashTendered))) {
+        totalCashTendered = 0;
+    }
+        
+    if(totalCashTendered >= 0) {
+        var formattedVal = currency(totalCashTendered, false);
+        $('#totals_tendered_value').html(formattedVal);
+    }
+    
     totalAmountInclCashback = currentTotalFinal + cashback;
 
     //calculate change and show the finish sale button
-    change = cashTendered - totalAmountInclCashback;
+    change = totalCashTendered - totalAmountInclCashback;
     
     //as we calculate change dynamically, it could be negative while
     //it is being entered, so we must stop that
     if(change < 0) {
-        change = 0;
+        $('#totals_change_container').hide();
+        $('#totals_balance_container').show();
+        $('#totals_balance_value').html(currency(Math.abs(change), false));
+    } else {
+        $('#totals_balance_container').hide();
+        $('#totals_change_container').show();
+        $('#totals_change_value').html(currency(change, false));
     }
-    
-    $('#totals_change_value').html(currency(change, false));
 }
 
 var cashTendered;
 
-function getTendered() {
-    var val = cashTendered;   
+function getTotalTendered() {
+    var totalTendered = 0;
     
-    if(isNaN(parseFloat(val))) {
-        val = 0;
-    }
-        
-    if(val > 0) {
-        var formattedVal = currency(val, false);
-        $('#totals_tendered_value').html(formattedVal);
+    for(pm in splitPayments) {
+        totalTendered += splitPayments[pm];
     }
     
-    return val;
+    return totalTendered;
 }
 
 function finishSale() {
@@ -43,7 +53,7 @@ function finishSale() {
         }
     }
     
-    cashTendered = getTendered();
+    cashTendered = getTotalTendered();
 
     totalAmountInclCashback = roundNumber(currentTotalFinal + cashback, 2);
 
@@ -64,7 +74,7 @@ function finishSale() {
 function resetTendered() {
     cashTendered = 0;
     cashTenderedKeypadString = "";
-    takeTendered();
+    updateTotalTendered();
 }
 
 function cashOutCancel() {
@@ -94,6 +104,10 @@ function paymentMethodSelected(method, integration_id) {
     
     //check if the payment method is the charge room and do some magic
     if(paymentIntegrationId != 0) {
+        //integrations do not allow for split payments
+        splitPayments = {};
+        splitPayments[paymentMethod] = 0;
+        
         if(paymentIntegrationId == zalionPaymentIntegrationId) {
             //alert("Zalion Integration");
             showLoadingDiv();
@@ -114,6 +128,16 @@ function paymentMethodSelected(method, integration_id) {
             });
         }
     }
+    
+    resetTendered();
+    
+    //lazy init
+    if(!splitPayments[paymentMethod]) {
+        splitPayments[paymentMethod] = 0;
+    }
+    
+    cashTendered = splitPayments[paymentMethod];
+    $('#tendered_value').html(currency(cashTendered, false));
 }
 
 var selectedRoomNumber = null;
@@ -197,10 +221,10 @@ function clearSelectedFolio() {
 function setTenderedBoxFocus(focus) {
     if(focus) {
         roomNumberInputFocus = false;
-        $('#totals_tendered_box').addClass("selected");
+        $('#tendered_box').addClass("selected");
     } else {
         roomNumberInputFocus = true;
-        $('#totals_tendered_box').removeClass("selected");
+        $('#tendered_box').removeClass("selected");
     }
 }
 
@@ -222,7 +246,11 @@ function totalsScreenKeypadClick(val) {
     
     cashTenderedKeypadString += val;
     cashTendered = parseFloat(cashTenderedKeypadString);
-    takeTendered();
+    //alert(splitPayments[paymentMethod] + " " + cashTendered);
+    splitPayments[paymentMethod] = cashTendered;
+    $('#tendered_value').html(currency(splitPayments[paymentMethod], false));
+    
+    updateTotalTendered();
 }
 
 function totalsScreenKeypadClickDecimal() {
@@ -237,13 +265,13 @@ function totalsScreenKeypadClickCancel() {
         return;
     }
     
-    $('#totals_tendered_value').html(currency(0, false));
+    $('#tendered_value').html(currency(0, false));
+    splitPayments[paymentMethod] = 0;
     resetTendered();
+    updateTotalTendered();
 }
 
 function moneySelected(amount) {
-    $('#totals_change_value').html(currency(0, false));
-    
     if(amount == -1) {
         totalAmountInclCashback = currentTotalFinal + cashback;
         newAmount = totalAmountInclCashback;
@@ -262,9 +290,13 @@ function moneySelected(amount) {
     
     newAmount = roundNumber(newAmount, 2);
     
-    cashTenderedKeypadString = "" + newAmount;
-    cashTendered = newAmount;
-    takeTendered();
+    cashTendered = parseFloat(newAmount);
+    //alert(splitPayments[paymentMethod] + " " + cashTendered);
+    splitPayments[paymentMethod] = cashTendered;
+    $('#tendered_value').html(currency(splitPayments[paymentMethod], false));
+    
+    updateTotalTendered();
+    
 }
 
 function doChargeRoom(orderData) {

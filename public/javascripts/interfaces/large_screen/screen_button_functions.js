@@ -60,17 +60,15 @@ function promptForServiceCharge() {
     
     keypadPosition = $('#' + popupId).find('.service_charge_popup_keypad_container');
     
-    //    clickFunction = function(val) {
-    //        if(serviceCharge == 0) serviceCharge = "";
-    //        
-    //        serviceCharge = serviceCharge.toString() + val;
-    //        
-    //        $('#' + popupId).find('.service_charge_popup_amount').html(serviceCharge);
-    //    };
-    clickFunction = null;
+    clickFunction = function(val) {
+        if(serviceCharge == 0) serviceCharge = "";
+            
+        serviceCharge = serviceCharge.toString() + val;
+            
+        $('#' + popupId).find('.service_charge_popup_amount').html(serviceCharge);
+    };
     
     cancelFunction = function() {
-        alert("ok");
         oldVal = $('#' + popupId).find('.service_charge_popup_amount').html();
         newVal = oldVal.substring(0, oldVal.length - 1);
         $('#' + popupId).find('.service_charge_popup_amount').html(newVal);
