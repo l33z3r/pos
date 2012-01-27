@@ -1,11 +1,28 @@
-<div id="product_image_selection_dialog" class="jscrollpane">
-<% @first_letters.each do |letter| %>
-    <div class="letter_pagination">
-        <div onclick="loadCurrentImages('<%= letter %>')"><b><%= letter %></b></div>
-    </div>
+<div id="product_image_selection_dialog" >
+    <div id="container">
+    <% @first_letters.each do |letter| %>
+        <div class="letter_pagination">
+            <div onclick="loadCurrentImages('<%= letter %>')" class="popup_button">
+                <% if letter == params[:letter] %>
+                    <b><u><%= letter %></u></b>
+                <% else %>
+                    <b><%= letter %></b>
+                <% end %>
+            </div>
+        </div>
 
-<% end %>
-<div id="show_current_images">
-      <%= render :partial => "current_product_images" %>
+    <% end %>
+    </div>
+    <br>
+    <div id="container_images" class="jscrollpane">
+    <% @selected_images.each_with_index do |image_name, i| %>
+        <div class="image" onclick="productImageSelected(this, '<%=image_name%>');">
+            <%= image_tag "product_images/#{image_name}" %><br>
+            <%= @selected_names[i] %>
+        </div>
+    <% end %>
 </div>
+    <div id="container_spinner" >
+      <img src="/images/spinner.gif" alt="">
+</div>    
 </div>

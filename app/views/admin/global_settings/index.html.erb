@@ -224,7 +224,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Business Information</td>
+                    <td>Business Information (200 Chars)</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::BUSINESS_INFO_MESSAGE %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
@@ -701,7 +701,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Receipt Message</td>
+                    <td>Receipt Message (200 Chars)</td>
 
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::RECEIPT_MESSAGE %>

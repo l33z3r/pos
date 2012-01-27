@@ -1,6 +1,6 @@
 class Admin::GlobalSettingsController < Admin::AdminController
   cache_sweeper :display_button_sweeper
-  
+
   def index
     
   end

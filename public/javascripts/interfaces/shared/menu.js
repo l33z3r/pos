@@ -416,6 +416,54 @@ function applyExistingDiscountToOrderItem(order, itemNumber) {
     applyDiscountToOrderItem(order, itemNumber, -1);
 }
 
+function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit) {
+    targetOrderItem = order.items[itemNumber-1];
+
+    targetOrderItem.amount = newQuantity;
+    targetOrderItem.product_price = newPricePerUnit;
+
+    if(targetOrderItem.pre_discount_price) {
+        targetOrderItem.pre_discount_price = newPricePerUnit * newQuantity;
+    } else {
+        targetOrderItem.total_price = newPricePerUnit * newQuantity;
+    }
+
+    //add the new total modifier price
+    if(targetOrderItem.modifier) {
+        if(targetOrderItem.pre_discount_price) {
+            targetOrderItem.pre_discount_price += targetOrderItem.modifier.price * newQuantity;
+        } else {
+            targetOrderItem.total_price += targetOrderItem.modifier.price * newQuantity;
+        }
+    }
+
+    //add the new total oia prices
+    if(targetOrderItem.oia_items) {
+        for(i=0; i<targetOrderItem.oia_items.length; i++) {
+            if(targetOrderItem.pre_discount_price) {
+                if(targetOrderItem.oia_items[i].is_add) {
+                    targetOrderItem.pre_discount_price += targetOrderItem.oia_items[i].abs_charge * newQuantity;
+                    console.log("pdp: " + (targetOrderItem.oia_items[i].abs_charge));
+                } else {
+                    targetOrderItem.pre_discount_price -= targetOrderItem.oia_items[i].abs_charge * newQuantity;
+                }
+            } else {
+                if(targetOrderItem.oia_items[i].is_add) {
+                    targetOrderItem.total_price += targetOrderItem.oia_items[i].abs_charge * newQuantity;
+                    console.log("pdp: " + (targetOrderItem.oia_items[i].abs_charge));
+                } else {
+                    targetOrderItem.total_price -= targetOrderItem.oia_items[i].abs_charge * newQuantity;
+                }
+            }
+        }
+    }
+
+    applyExistingDiscountToOrderItem(order, itemNumber);
+    calculateOrderTotal(order);
+
+    return order;
+}
+
 function applyDiscountToOrderItem(order, itemNumber, amount) {
     //should already be a float, but just to be sure
     amount = parseFloat(amount);
@@ -726,6 +774,8 @@ function doSelectTable(tableNum) {
 }
 
 function removeSelectedOrderItem() {
+
+    ModalPopups.Close('niceAlertContainer');
     //fetch the item number
     itemNumber = currentSelectedReceiptItemEl.data("item_number");
     

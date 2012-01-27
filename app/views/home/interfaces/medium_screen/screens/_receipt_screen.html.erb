@@ -13,7 +13,77 @@
 
   <div id="large_receipt_container">
     <div id="large_menu_screen_receipt" class="receipt">
-      <div id="large_menu_screen_till_roll" class="till_roll"></div>
+      <div id="large_menu_screen_till_roll" class="till_roll">
+          <div id="label">Sub-Total:</div>
+          <div id="cash_screen_sub_total_value"></div>
+      </div>
+    <div id="total_container">
+
     </div>
+    </div>
+
   </div>
+
 </div>
+
+  <div id="receipt_function_popup_content">
+    <div id="function_popup_buttons">
+    <div class="button" onclick="removeSelectedOrderItem()">Delete</div><br>
+    <!-- <div class="button" onclick="">Cancel</div><br>
+    <div class="button" onclick="">Course</div><br>
+    <div class="button" onclick="">Hold</div><br> -->
+    <div class="button" onclick="ModalPopups.Close('niceAlertContainer');doDisplayButtonPasscodePrompt(48, function () {var switchHappened = checkMenuScreenForFunction();if(switchHappened) {timeout = 100;} else {timeout = 0;}setTimeout(function() {toggleModifyOrderItemScreen(); return false;}, timeout);});">Modify</div><br>
+    </div>
+      <br>
+    <div id="price_editor">
+      <div class="price_label">Price Per Unit:</div>
+      <input type="text" class="price" size="2" id="current_selected_receipt_item_price"/>
+    </div>
+    <div class="discount_buttons">
+        <br><br>
+      <div class="header">Apply Discount</div>
+        <br>
+      <div class="button" id="discount_button_0" onclick="setDiscountVal(0)">
+        <div class="name">
+          None
+        </div>
+        <div class="percent">
+          0%
+        </div>
+      </div>
+      <% Discount.all.each do |discount| %>
+        <div class="button" id="discount_button_<%=discount.id%>" onclick="setDiscountVal(<%=discount.percent%>)">
+          <div class="name">
+            <%=discount.name%>
+          </div>
+          <div class="percent">
+            <%=discount.percent%>%
+          </div>
+        </div>
+      <% end %>
+      <div>
+          <div class="label">Amount:</div>
+        <input type="text" class="percent" size="4" id="discount_percent_input"/>
+      </div>
+      <div class="clear">&nbsp;</div>
+
+    </div>
+    <div id="quantity_editor">
+        <br>
+      <div class="header">Quantity</div>
+        <br>
+      <div id="buttons_container">
+        <div id="plus_button" class="button" onclick="editOrderItemIncreaseQuantity()"><div>+</div></div>
+        <div id="minus_button" class="button" onclick="editOrderItemDecreaseQuantity()"><div>-</div></div>
+      </div>
+      <div style="float: left;">
+      <input type="text" size="2" class="quantity" id="current_selected_receipt_item_quantity"/>
+      </div>
+    </div>
+
+
+
+</div>
+
+
+

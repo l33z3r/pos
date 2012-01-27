@@ -458,10 +458,32 @@ div#product_image_selection_dialog {
     overflow: hidden;
 }
 
+div#product_image_selection_dialog div#container {
+    float: left;
+    margin-top: 10px;
+
+}
+
+div#product_image_selection_dialog div#container_images {
+    float: left;
+    margin-top: 20px;
+    height: 400px;
+    overflow: hidden;
+
+}
+
+div#product_image_selection_dialog div#container_spinner {
+    display: none;
+    float: left;
+    margin-top: 50px;
+    margin-left: 350px
+
+}
+
 div#product_image_selection_dialog div.letter_pagination {
     float: left;
-    padding: 5px;
     cursor: pointer;
+
 }
 
 div#product_image_selection_dialog div.image {
