@@ -187,7 +187,7 @@ function doSelectReceiptItem(orderItemEl) {
     orderItemEl = $(orderItemEl);
 
     //close any open popup
-//    closeEditOrderItem();
+    closeEditOrderItem();
 
     //make sure the modifier grids are closed
     switchToMenuItemsSubscreen();
@@ -204,16 +204,16 @@ function doSelectReceiptItem(orderItemEl) {
 
 
 
-    newMenuPagePopup(getCurrentOrder().items[parseInt(orderItemEl.data("item_number"))-1].product.name);
-
-    currentPrice = orderItemEl.children('.total').data("per_unit_price");
-    currentPrice = currency(currentPrice, false);
-    $('.price').val(currentPrice);
-
-    currentQuantity = orderItemEl.children('.amount').html();
-    $('.quantity').val(currentQuantity);
-
-    $('.quantity').focus();
+//    newMenuPagePopup(getCurrentOrder().items[parseInt(orderItemEl.data("item_number"))-1].product.name);
+//
+//    currentPrice = orderItemEl.children('.total').data("per_unit_price");
+//    currentPrice = currency(currentPrice, false);
+//    $('.price').val(currentPrice);
+//
+//    currentQuantity = orderItemEl.children('.amount').html();
+//    $('.quantity').val(currentQuantity);
+//
+//    $('.quantity').focus();
 
 //    getCurrentOrder().items[parseInt(orderItemEl.data("item_number"))-1] = null;
 
