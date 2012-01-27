@@ -195,8 +195,8 @@ function newMenuPagePopup() {
         {
             okButtonText: 'Cancel',
             onOk: 'hideNiceAlert()',
-            width: 40,
-            height: 20
+            width: 300,
+            height: 250
         } );
 }
 
