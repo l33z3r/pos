@@ -130,6 +130,8 @@ function menuScreenKeypadClick(val) {
     
             currentMenuItemQuantity += val;
         }
+        
+        $('#menu_screen_input_show').html(currentMenuItemQuantity);
     }
 }
 
