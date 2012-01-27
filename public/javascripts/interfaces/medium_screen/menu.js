@@ -217,7 +217,7 @@ function doSelectReceiptItem(orderItemEl) {
 
     getCurrentOrder().items[parseInt(orderItemEl.data("item_number"))-1] = null;
 
-    setOrderItemAdditionsGridState();
+//    setOrderItemAdditionsGridState();
 
 }
 
@@ -264,6 +264,7 @@ function setDiscountVal(val) {
 function setPriceVal(val) {
     targetInputPer = $('.price');
     targetInputPer.val(val);
+    alert(targetInputPer)
 }
 
 function saveEditOrderItem() {

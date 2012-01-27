@@ -98,6 +98,12 @@ function initPreviousOrder() {
     }
 }
 
+function initSplitBillOrder() {
+    if(haveSplitBillOrder(current_user_id)) {
+        $('#split_bill_select_item').show();
+    }
+}
+
 function menuScreenKeypadClick(val) {
     if(showingDisplayButtonPasscodePromptPopup) {
         $('#display_button_passcode').val($('#display_button_passcode').val() + val);
