@@ -35,6 +35,9 @@ var modifierGridXSize;
 var modifierGridYSize;
 var currentModifierGridIdForProduct;
 
+var previousOrderTableNum = -1;
+var tempSplitBillTableNum = -2;
+
 function getCurrentOrder() {
     if(selectedTable == 0) {
         return currentOrder;

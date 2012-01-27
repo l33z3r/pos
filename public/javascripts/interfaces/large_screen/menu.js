@@ -16,9 +16,6 @@ var splitBillOrderFrom;
 var splitBillOrderTo;
 var splitBillTableNumber;
 
-var previousOrderTableNum = -1;
-var tempSplitBillTableNum = -2;
-
 //this function is called from application.js on page load
 function initMenu() {
     initMenuScreenType();
