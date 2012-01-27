@@ -479,7 +479,6 @@ nav#main_nav div#menu_screen_shortcut_dropdown_container {
 
 nav#main_nav div#menu_screen_shortcut_dropdown_container div.mcdropdown {
     height: 22px;
-
     padding: 0px;
 }
 
@@ -1987,7 +1986,7 @@ div#edit_receipt_item_popup_markup_container div#quantity_editor {
 div#edit_receipt_item_popup_markup_container div#quantity_editor div#quantity_label {
     font-weight: bold;
     float: left;
-    margin: 4px 35px 1px 6px;
+    margin: 4px 11px 1px 6px;
     font-size: 12px;
 }
 

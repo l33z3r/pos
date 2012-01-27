@@ -68,7 +68,7 @@ class Admin::ProductsController < Admin::AdminController
         @categories[@category_name] << @new_product
       end
 
-        #validate the product
+      #validate the product
       logger.info "!!!VALID? #{@new_product.valid?}"
 
       @name_taken = false
@@ -84,8 +84,8 @@ class Admin::ProductsController < Admin::AdminController
         @validation_passed = false
 
         @csv_validation_errors[@product_count] = {
-            :row_data => row,
-            :errors => @new_product.errors
+          :row_data => row,
+          :errors => @new_product.errors
         }
       end
 
@@ -103,7 +103,7 @@ class Admin::ProductsController < Admin::AdminController
         p.reload
       end
 
-        #build the categories
+      #build the categories
       @categories.each do |name, products|
         @category_product_ids = products.collect &:id
 
@@ -118,7 +118,7 @@ class Admin::ProductsController < Admin::AdminController
         Product.update_all({:category_id => @new_category.id}, {:id => @category_product_ids})
       end
 
-        #build the departments
+      #build the departments
       @departments.each do |dep_name, category_names|
         @new_department = Category.find_or_initialize_by_name(dep_name)
 
@@ -128,7 +128,7 @@ class Admin::ProductsController < Admin::AdminController
           @new_department.reload
         end
 
-          #we don't override a category if it already has a department
+        #we don't override a category if it already has a department
         category_names.each do |cn|
           c = Category.find_by_name(cn)
           if !c.parent_category
@@ -194,8 +194,8 @@ class Admin::ProductsController < Admin::AdminController
 
       update_menus_for_product @product, @new_menu_1_id, @old_menu_1_id, @new_menu_2_id, @old_menu_2_id
 
-        #we may have came to this page directly from the menu builder screen
-        #we want to store the fact, so that when we update the product, we go back to that screen
+      #we may have came to this page directly from the menu builder screen
+      #we want to store the fact, so that when we update the product, we go back to that screen
       if !params[:back_builder_screen_id].blank?
         @display = Display.find(params[:back_builder_screen_id])
         redirect_to(builder_admin_display_path(@display), :notice => 'Product was successfully updated.')
@@ -210,34 +210,51 @@ class Admin::ProductsController < Admin::AdminController
 
   def product_image_dialog
 
-    @selected_images = Array.new
-    @selected_names = Array.new
+    @selected_images = {}
+    
     @first_letters = Array.new
     @all_product_images = Dir.glob(Product::PRODUCT_IMAGE_DIRECTORY)
 
     if params[:letter]
-    @all_product_images.each_with_index do |image, index|
-      current_file =  @all_product_images[index].split("#{Rails.root}/public/images/product_images/")[1]
-      curr_letter = current_file[0].downcase
-      @first_letters.push curr_letter
-      if curr_letter.downcase == params[:letter].downcase
-            @selected_images.push current_file
-            @selected_names.push current_file.split(".")[0]
+      @all_product_images.each_with_index do |image, index|
+        current_file =  @all_product_images[index].split("#{Rails.root}/public/images/product_images/")[1]
+        curr_letter = current_file[0].downcase
+        @first_letters.push curr_letter
+        
+        @filename = current_file
+        @filename_without_extension = current_file.split(".")[0]
+          
+        if curr_letter.downcase == params[:letter].downcase
+          @selected_images[current_file.split(".")[0].downcase] = {
+            :name => @filename_without_extension,
+            :image => @filename
+          }
+        end
       end
-    end
     else
       @all_product_images.each_with_index do |image, index|
-      current_file =  @all_product_images[index].split("#{Rails.root}/public/images/product_images/")[1]
-      curr_letter = current_file[0].downcase
-      @first_letters.push curr_letter
-      if curr_letter.downcase == "a"
-            @selected_images.push current_file
-            @selected_names.push current_file.split(".")[0]
+        current_file =  @all_product_images[index].split("#{Rails.root}/public/images/product_images/")[1]
+        curr_letter = current_file[0].downcase
+        @first_letters.push curr_letter
+        
+        @filename = current_file
+        @filename_without_extension = current_file.split(".")[0]
+          
+        if curr_letter.downcase == "a"
+          @selected_images[current_file.split(".")[0].downcase] = {
+            :name => @filename_without_extension,
+            :image => @filename
+          }
+        end
       end
-    end
+      
+      
     end
 
     @first_letters = @first_letters.uniq.sort
+    
+    @selected_images = @selected_images.sort
+    
     render "product_image_dialog"
 
   end
@@ -263,7 +280,7 @@ class Admin::ProductsController < Admin::AdminController
       @param3 = session[:search3]
       get_session_parameters_to_fields
     end
-      #search
+    #search
     @search1 = Product.search(@param1).order('name')
     @products1 = @search1.all
     if (!@param2.nil? && !@param3.nil?)
@@ -283,7 +300,7 @@ class Admin::ProductsController < Admin::AdminController
     @product = Product.find(params[:id])
     @product.mark_as_deleted
 
-      #send a reload request to other terminals
+    #send a reload request to other terminals
     request_reload_app @terminal_id
 
     render :json => {:success => true}.to_json
@@ -317,7 +334,7 @@ class Admin::ProductsController < Admin::AdminController
 
     return if new_menu_id == old_menu_id
 
-      #remove it from old_menu_id
+    #remove it from old_menu_id
     if !old_menu_id.blank?
       @old_menu_page = MenuPage.find(old_menu_id)
 
@@ -331,7 +348,7 @@ class Admin::ProductsController < Admin::AdminController
       end
     end
 
-      #add it to new_menu_id if it's not already there
+    #add it to new_menu_id if it's not already there
     if !new_menu_id.blank?
       @new_menu_page = MenuPage.find(new_menu_id)
 
@@ -350,7 +367,7 @@ class Admin::ProductsController < Admin::AdminController
       end
 
       @menu_item = MenuItem.create({:product_id => product.id,
-                                    :menu_page_id => new_menu_id, :order_num => @next_order_num})
+          :menu_page_id => new_menu_id, :order_num => @next_order_num})
     end
 
   end

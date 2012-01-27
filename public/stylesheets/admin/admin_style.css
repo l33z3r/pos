@@ -461,7 +461,7 @@ div#product_image_selection_dialog {
 div#product_image_selection_dialog div#container {
     float: left;
     margin-top: 10px;
-
+    text-align: center;
 }
 
 div#product_image_selection_dialog div#container_images {
@@ -483,7 +483,7 @@ div#product_image_selection_dialog div#container_spinner {
 div#product_image_selection_dialog div.letter_pagination {
     float: left;
     cursor: pointer;
-
+    margin: 2px;
 }
 
 div#product_image_selection_dialog div.image {
@@ -492,6 +492,7 @@ div#product_image_selection_dialog div.image {
     width: 105px;
     height: 100px;
     cursor: pointer;
+    text-align: center;
 }
 
 div#product_image_selection_dialog div.image img {

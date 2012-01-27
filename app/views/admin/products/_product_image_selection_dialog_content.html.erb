@@ -15,10 +15,10 @@
     </div>
     <br>
     <div id="container_images" class="jscrollpane">
-    <% @selected_images.each_with_index do |image_name, i| %>
-        <div class="image" onclick="productImageSelected(this, '<%=image_name%>');">
-            <%= image_tag "product_images/#{image_name}" %><br>
-            <%= @selected_names[i] %>
+    <% @selected_images.each do |image_name, data| %>
+        <div class="image" onclick="productImageSelected(this, '<%=data[:image]%>');">
+            <%= image_tag "product_images/#{data[:image]}" %><br>
+            <%= data[:name] %>
         </div>
     <% end %>
 </div>
