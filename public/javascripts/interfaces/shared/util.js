@@ -763,3 +763,4 @@ function setConnectionStatus(connected) {
 function appOfflinePopup() {
     niceAlert("Server cannot be contacted. App will operate in restricted mode. Some features may not be available.");
 }
+

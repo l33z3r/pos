@@ -159,34 +159,3 @@
   </div>
 </div>
 
-<div id="new_menu_page_popup_content">
-  <div id="new_menu_page_popup_container">
-    <div class="header">
-      Please choose a page type:
-    </div>
-    <div id="selection">
-      <div class="menu_type">
-        <div class="label">
-          Normal Product Page
-        </div>
-        <div class="data create">
-          <div class="button" data-onpress="postTo('<%=create_menu_page_admin_display_path(@display)%>', null);">Create</div>
-        </div>
-        <div class="clear">&nbsp;</div>
-      </div>
-
-      <div class="clear">&nbsp;</div>
-
-      <div class="menu_type">
-        <div class="label">
-          Embedded Display
-        </div>
-        <div class="data">
-          <%= select_tag "display", options_from_collection_for_select(@displays, "id", "name", nil), :include_blank => "Select...", 
-            :onchange => "newEmbeddedDisplaySelected(this.value, '#{create_menu_page_admin_display_path(@display)}');" %>
-        </div>
-        <div class="clear">&nbsp;</div>
-      </div>
-    </div>
-  </div>
-</div>

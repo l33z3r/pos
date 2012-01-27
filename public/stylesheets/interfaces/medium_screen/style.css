@@ -641,8 +641,7 @@ div.receipt div.till_roll div.oia_name.note {
 
 div.receipt div.till_roll div.oia_price {
     float: left;
-    width: 0px;
-    height: 0px;
+    width: 60px;
     text-align: right;
     font-size: 19px;
     overflow: hidden;
@@ -650,7 +649,7 @@ div.receipt div.till_roll div.oia_price {
 
 div.receipt div.till_roll div.total {
     float: left;
-    width: 0px;
+    width: 60px;
     text-align: right;
     overflow: hidden;
 }
@@ -677,6 +676,125 @@ div.receipt div.till_roll div.discount div.new_price {
 }
 
 div.receipt div.till_roll div.discount div.header {
+    float: none;
+    width: 120px;
+    text-align: right;
+    font-style: italic;
+}
+
+div.receipt div.till_roll_small div.order_line {
+    margin: 0px 2px;
+    cursor: pointer;
+}
+
+div.receipt div.till_roll_small div.order_line.course {
+    border-bottom: 2px solid #4F81BD;
+}
+
+div.receipt div.till_roll_small div.order_line.not_synced div.name {
+    font-style: italic;
+    font-weight: bold;
+}
+
+div.receipt div.till_roll_small div.order_line.selected {
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background-color: #4297D7;
+}
+
+div.receipt div.till_roll_small div.server {
+    font-size: 16px;
+    font-style: italic;
+    margin-top: 4px;
+    text-align: left;
+    margin-left: 5px;
+}
+
+div.receipt div.till_roll_small div.amount {
+    float: left;
+    text-align: left;
+    width: 29px;
+    margin-left: 3px;
+}
+
+div.receipt div.till_roll_small div.name {
+    float: left;
+    width: 190px;
+    text-align: left;
+}
+
+div.receipt div.till_roll_small div.modifier_name {
+    float: left;
+    width: 150px;
+    margin-left: 50px;
+    text-align: left;
+}
+
+div.receipt div.till_roll_small div.modifier_price {
+    float: left;
+    width: 30px;
+    text-align: right;
+}
+
+div.receipt div.till_roll_small div.oia_add {
+    float: left;
+    width: 70px;
+    text-align: right;
+    font-size: 19px;
+}
+
+div.receipt div.till_roll_small div.oia_name {
+    float: left;
+    width: 150px;
+    margin-left: 10px;
+    text-align: left;
+    font-size: 19px;
+}
+
+div.receipt div.till_roll_small div.oia_name.note {
+    font-style: italic;
+    width: 190px;
+    font-size: 19px;
+    font-size: 19px;
+}
+
+div.receipt div.till_roll_small div.oia_price {
+    float: left;
+    width: 60px;
+    text-align: right;
+    font-size: 19px;
+    overflow: hidden;
+}
+
+div.receipt div.till_roll_small div.total {
+    float: left;
+    width: 0px;
+    text-align: right;
+    overflow: hidden;
+}
+
+div.receipt div.till_roll_small div.discount div.header {
+    float: left;
+    width: 120px;
+    text-align: right;
+    font-style: italic;
+}
+
+div.receipt div.till_roll_small div.discount div.discount_amount {
+    float: left;
+    width: 170px;
+    text-align: center;
+    font-style: italic;
+}
+
+div.receipt div.till_roll_small div.discount div.new_price {
+    float: left;
+    width: 40px;
+    text-align: left;
+    font-style: italic;
+}
+
+div.receipt div.till_roll_small div.discount div.header {
     float: none;
     width: 120px;
     text-align: right;
@@ -738,6 +856,39 @@ div#receipt_screen div#large_receipt_container div#large_menu_screen_receipt div
     height: 610px;
     display: block;
     background-color: #FFF;
+}
+
+div#receipt_screen div#large_receipt_container div#large_menu_screen_receipt div#large_menu_screen_till_roll div#cash_screen_sub_total_value {
+    float: left;
+    width: 100px;
+    text-align: right;
+    font-weight: bold;
+    color: #FFF;
+    margin-left: 60px;
+}
+
+div#receipt_screen div#large_receipt_container div#large_menu_screen_receipt div#large_menu_screen_till_roll div#label {
+    font-weight: bold;
+    width: 145px;
+    text-align: left;
+    float: left;
+    color: #FFF;
+}
+
+div#receipt_screen div#receipt_keypad_container div#total_container {
+    font-size: 16px;
+    background-color: #333;
+    border: 1px solid #333;
+    padding: 3px 5px;
+}
+
+
+div#receipt_screen div#receipt_keypad_container div#total_container div#total_value {
+    float: left;
+    width: 92px;
+    text-align: right;
+    font-weight: bold;
+    color: #FFF;
 }
 
 /* End Receipt Screen */
@@ -1103,6 +1254,182 @@ ul.mcdropdown_menu {
 
 div.mcdropdown div {
     font-size: 20px;
+}
+
+div#receipt_function_popup_content{
+    display: none;
+}
+
+
+div#receipt_function_popup_content div#quantity_editor {
+    width: 280px;
+}
+
+div#quantity_editor div.header {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 4px 4px 1px 6px;
+}
+
+div#receipt_function_popup_content div#quantity_editor div#quantity_label {
+    font-weight: bold;
+    float: left;
+    font-size: 14px;
+}
+
+div#quantity_editor input.quantity {
+    float: left;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    width: 80px;
+    height: 35px;
+    margin-top: 2px;
+}
+
+div#quantity_editor div#buttons_container {
+    float: left;
+    margin-left: 4px;
+
+}
+
+div#quantity_editor div#buttons_container div#plus_button,
+div#quantity_editor div#buttons_container div#minus_button {
+    border-radius: 5px 5px 5px 5px;
+    color: #333;
+    cursor: pointer;
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    height: 35px;
+    margin: 3px;
+    padding: 4px;
+    width: 80px;
+    max-width: 80px;
+    text-align: center;
+}
+
+div#receipt_function_popup_content div#price_editor {
+    padding-bottom: 10px;
+    padding-top: 12px;
+}
+
+div#price_editor div.price_label {
+    font-weight: bold;
+    float: left;
+    margin: 4px 4px 1px 6px;
+    font-size: 14px;
+}
+
+div#price_editor input.price {
+    float: left;
+    margin: -5px 0px 1px 30px;
+    height: 25px;
+    width: 120px;
+    height: 25px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+div#receipt_function_popup_content div.action_buttons_container {
+    text-align: center;
+}
+
+
+
+div#receipt_function_popup_content div.action_buttons div.button {
+    display: block;
+    float: left;
+    height: 60px;
+    padding-top: 5px;
+    margin: 0px 5px;
+}
+
+
+
+div#function_popup_buttons {
+    margin-left: 5px;
+}
+
+div#function_popup_buttons div.button {
+    height: 40px;
+    max-height: 40px;
+    width: 280px;
+    max-width: 280px;
+    font-weight: bold;
+    font-size: 14px
+
+}
+
+div#receipt_function_popup_content div.discount_buttons {
+    width: 280px;
+    margin-left: 4px;
+
+}
+
+div.discount_buttons div.button {
+    border-radius: 5px 5px 5px 5px;
+    color: #333;
+    cursor: pointer;
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    height: 35px;
+    margin: 3px;
+    padding: 4px;
+    width: 65px;
+    max-width: 77px;
+    text-align: center;
+}
+
+div.discount_buttons div.percent {
+    margin-top: 2px;
+    font-size: 13px;
+    height: 25px;
+}
+
+div#receipt_function_popup_content div#manual_discount div.fields {
+    width: 130px;
+    margin: auto;
+}
+
+div#receipt_function_popup_content div#manual_discount div.fields div.label {
+    float: left;
+    font-weight: bold;
+    margin-right: 4px;
+    margin-top: 6px;
+    font-size: 12px;
+}
+
+div#receipt_function_popup_content div#apply_discount_to {
+    margin-top: 10px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+div#receipt_function_popup_content div#apply_discount_to input[type=radio] {
+    height: 20px;
+    margin-left: 90px;
+    float: left;
+}
+
+div#receipt_function_popup_content div#apply_discount_to div.header_label {
+    text-align: left;
+    font-weight: bold;
+    margin: 6px;
+    font-size: 12px;
+}
+
+div#receipt_function_popup_content div#apply_discount_to div.label {
+    float: left;
+    margin-top: 2px;
+    font-size: 12px;
+}
+
+div.discount_buttons div.header {
+    font-size: 14px;
+    margin: 4px 4px 1px 6px;
+    font-weight: bold;
 }
 
 /* End Generic Styles */
