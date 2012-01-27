@@ -65,7 +65,8 @@ class GlobalSetting < ActiveRecord::Base
   EARLIEST_OPENING_HOUR = 36
   LATEST_CLOSING_HOUR = 37
   BUSINESS_INFO_MESSAGE = 38
-
+  BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL = 39
+  ZALION_ROOM_CHARGE_SERVICE_IP = 40
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -105,7 +106,9 @@ class GlobalSetting < ActiveRecord::Base
     WINDOWS_PRINTER_MARGINS => "Use Windows Printer Margins",
     EARLIEST_OPENING_HOUR => "Earliest Opening Hour",
     LATEST_CLOSING_HOUR => "Latest Closing Hour",
-    BUSINESS_INFO_MESSAGE => "Busniess Information"
+    BUSINESS_INFO_MESSAGE => "Business Information",
+    BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL => "Bypass open orders for z total",
+    ZALION_ROOM_CHARGE_SERVICE_IP => "Zalion room charge service ip address"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -208,6 +211,12 @@ class GlobalSetting < ActiveRecord::Base
     when LATEST_CLOSING_HOUR
       @gs = find_or_create_by_key(:key => LATEST_CLOSING_HOUR.to_s, :value => 5, :label_text => LABEL_MAP[LATEST_CLOSING_HOUR])
       @gs.parsed_value = @gs.value.to_i
+    when BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL
+      @gs = find_or_create_by_key(:key => "#{BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when ZALION_ROOM_CHARGE_SERVICE_IP
+      @gs = find_or_create_by_key(:key => "#{ZALION_ROOM_CHARGE_SERVICE_IP.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[ZALION_ROOM_CHARGE_SERVICE_IP])
+      @gs.parsed_value = @gs.value
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -277,9 +286,6 @@ class GlobalSetting < ActiveRecord::Base
     when PRINT_VAT_RECEIPT
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
-    when WINDOWS_PRINTER_MARGINS
-      new_value = (value == "true" ? "yes" : "no")
-      write_attribute("value", new_value)
     else
       #catch the keys that are not only integers and wont get caught in the switch statement
       if key.starts_with? TERMINAL_ID.to_s
@@ -324,6 +330,12 @@ class GlobalSetting < ActiveRecord::Base
           new_value = (value ? value.gsub(" ", "").gsub("'", "").gsub("\"", "") : nil)
           write_attribute("value", new_value)
         end
+      elsif key.starts_with? WINDOWS_PRINTER_MARGINS.to_s
+        new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
+      elsif key.starts_with? BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL.to_s
+        new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
       end
     end
     

@@ -12,7 +12,7 @@
   var bypassPin = <%= GlobalSetting.parsed_setting_for GlobalSetting::BYPASS_PIN %>;
     
   //are we allowing bypassing of open orders for z totals on this terminal
-  var bypassOpenOrdersForCashTotal = true;//<%= GlobalSetting.parsed_setting_for GlobalSetting::BYPASS_PIN, {:fingerprint => @terminal_fingerprint} %>;
+  var bypassOpenOrdersForCashTotal = <%= GlobalSetting.parsed_setting_for GlobalSetting::BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL, {:fingerprint => @terminal_fingerprint} %>;
     
   //clock format
   var clockFormat = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CLOCK_FORMAT %>";
@@ -131,4 +131,6 @@
   //payment integration IDs
   var zalionPaymentIntegrationId = <%= PaymentMethod::PAYMENT_INTEGRATION_ZALION %>;
   
+  var zalionChargeRoomServiceIP = "<%= @zalion_charge_room_service_ip %>";
+
 </script>

@@ -139,7 +139,7 @@ function fetchCashScreenReceiptTotalsDataTable() {
         discountAmount = 0;
     } 
     
-    cashScreenReceiptTotalsDataTableHTML += taxChargable ? fetchTotalsHTMLWithTaxChargable("Balance Due") : fetchTotalsWithoutTaxChargableHTML("Balance Due");
+    cashScreenReceiptTotalsDataTableHTML += taxChargable ? fetchTotalsHTMLWithTaxChargable("Total") : fetchTotalsWithoutTaxChargableHTML("Total");
     cashScreenReceiptTotalsDataTableHTML += clearHTML;
     
     cashScreenReceiptTotalsDataTableHTML += "</div>" + clearHTML; 

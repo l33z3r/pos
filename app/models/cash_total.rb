@@ -214,24 +214,35 @@ class CashTotal < ActiveRecord::Base
         end
             
         logger.info "Increasing sales_by_server for server: #{@server_name} by: #{order.total}"
-        @sales_by_server[@server_nickname] += order.total 
-          
-        #sales by payment type
-        @payment_type = order.payment_type
-            
-        if !@sales_by_payment_type[@payment_type]
-          @sales_by_payment_type[@payment_type] = 0
-        end
-            
-        logger.info "Increasing sales_by_payment_type for payment_type: #{@payment_type} by: #{order.total}"
-        @sales_by_payment_type[@payment_type] += order.total 
+        @sales_by_server[@server_nickname] += order.total
         
-        if !@service_charge_by_payment_type[@payment_type]
-          @service_charge_by_payment_type[@payment_type] = 0
+        #sales by payment type calculated from split payments array
+        @payment_types = order.split_payments
+        
+        if @payment_types
+          @payment_types.each do |pt, amount|
+            amount = amount.to_f
+           
+            #if the amount tendered was bigger than the total, we have to subtract from the cash payment for reporting
+            if pt == "cash" and order.amount_tendered > order.total
+              amount -= (order.amount_tendered - order.total)
+            end
+          
+            if !@sales_by_payment_type[pt]
+              @sales_by_payment_type[pt] = 0
+            end
+          
+            logger.info "Increasing sales_by_payment_type for payment_type: #{pt} by: #{amount}"
+            @sales_by_payment_type[pt] += amount
+          
+            if !@service_charge_by_payment_type[pt]
+              @service_charge_by_payment_type[pt] = 0
+            end
+        
+            logger.info "Increasing service_charge_by_payment_type for payment_type: #{pt} by: #{amount}"
+            @service_charge_by_payment_type[pt] += amount
+          end
         end
-            
-        logger.info "Increasing service_charge_by_payment_type for payment_type: #{@payment_type} by: #{order.service_charge}"
-        @service_charge_by_payment_type[@payment_type] += order.service_charge 
         
         #overall total
         @overall_total += order.total

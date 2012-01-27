@@ -25,6 +25,8 @@ class Order < ActiveRecord::Base
   belongs_to :employee
   belongs_to :table_info
 
+  serialize :split_payments
+  
   #point to original order
   belongs_to :void_order, :class_name => "Order"
   

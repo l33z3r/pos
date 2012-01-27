@@ -233,14 +233,8 @@ function clearTableOrderInStorage(current_user_id, selectedTable) {
 }
 
 function parseAndFillTableOrderJSON(currentTableOrderJSON) {
-    
     //init an in memory version of this order
-    tableOrders[tableNum] = {
-        'items': new Array(),
-        'courses' : new Array(),
-        'total':0,
-        'client_name' : ""
-    };
+    tableOrders[tableNum] = buildInitialOrder();
     
     //fill in the table order array
     if(currentTableOrderJSON != null) {
@@ -258,6 +252,9 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
         tableOrders[tableNum].order_num = currentTableOrderJSON.order_num;
         tableOrders[tableNum].table = currentTableOrderJSON.table;
         tableOrders[tableNum].total = currentTableOrderJSON.total;
+        
+        //is it a split bill
+        tableOrders[tableNum].split_bill_table_num = currentTableOrderJSON.split_bill_table_num;
         
         tableOrders[tableNum].client_name = currentTableOrderJSON.client_name;
         
@@ -309,6 +306,17 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
         
     //total the order first
     calculateOrderTotal(tableOrders[tableNum]);
+}
+
+function buildInitialOrder() {
+    var initOrder = {
+        'items': new Array(),
+        'courses' : new Array(),
+        'total':0,
+        'client_name' : ""
+    };
+    
+    return initOrder;
 }
 
 function storeKeyValue(key, value) {
@@ -557,7 +565,7 @@ function niceAlert(message, title) {
         title, "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
         {
             width: 360,
-            height: 280,
+            height: 310,
             okButtonText: 'Ok',
             onOk: "hideNiceAlert()"
         });

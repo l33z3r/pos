@@ -35,7 +35,7 @@ function callHomePoll() {
     
     currentTableLabel = "";
     
-    if(selectedTable != -1 && selectedTable != 0) {
+    if(selectedTable != previousOrderTableNum && selectedTable != tempSplitBillTableNum && selectedTable != 0) {
         currentTableLabel = tableInfoLabel = tables[selectedTable].label;
     }
     

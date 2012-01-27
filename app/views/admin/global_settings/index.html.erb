@@ -300,7 +300,7 @@
                             :onchange => "doSetDefaultPaymentMethod(this.value);" %>
                         </td>
                         <td>
-                          <%= f.select :payment_integration_id, options_for_select(PaymentMethod.payment_integration_options_for_select, pm.payment_integration_id), :include_blank => "None" %>
+                          <%= f.select :payment_integration_id, options_for_select(PaymentMethod.payment_integration_options_for_select, pm.payment_integration_id) %>
                         </td>
                       </tr>
                     <% end %>
@@ -341,7 +341,7 @@
               <div class="clear_top_margin_10">&nbsp;</div>
 
               <div id="actions">
-                <%= submit_tag "Save" %>
+                <%= submit_tag "Create" %>
               </div>
 
             <% end %>
@@ -752,6 +752,21 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>Bypass open orders for Z totals on this terminal?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL, {:fingerprint => @terminal_fingerprint} %>
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">Yes</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">No</div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
                     <td>
                       Earliest Opening Hour
                     </td>
@@ -820,6 +835,17 @@
                     </td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, {:fingerprint => @terminal_fingerprint} %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Zalion Room Charge Service IP Address
+                    </td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::ZALION_ROOM_CHARGE_SERVICE_IP, {:fingerprint => @terminal_fingerprint} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>

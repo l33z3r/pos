@@ -136,7 +136,7 @@ function doSelectMenuItem(productId, element) {
 
     //reset the quantity
     currentMenuItemQuantity = "";
-
+    
     buildOrderItem(product, amount);
     setModifierGridIdForProduct(product);
 

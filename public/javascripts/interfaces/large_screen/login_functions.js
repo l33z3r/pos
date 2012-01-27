@@ -268,6 +268,13 @@ function loginSuccess(id, nickname, is_admin, passcode) {
     } else {
         $('#previous_order_select_item').hide();
     }
+    
+    //dont show the split bill order dropdown if there is none in memory
+    if(haveSplitBillOrder(current_user_id)) {
+        $('#split_bill_select_item').show();
+    } else {
+        $('#split_bill_select_item').hide();
+    }
 }
 
 function clockinFailure() {

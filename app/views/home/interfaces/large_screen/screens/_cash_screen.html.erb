@@ -97,9 +97,9 @@
               <div class="clear">&nbsp;</div>
 
               <div class="data_table">
-                <div class="bold label">Amount Tendered:</div>
+                <div class="bold label">Total Paid:</div>
                 <div class="data">
-                  <div id="totals_tendered_box" onclick="setTenderedBoxFocus(true)">
+                  <div id="totals_tendered_box">
                     <div id="totals_tendered_value"></div>
                     <div class="right"><%= @currency_symbol %></div>
                     <div class="clear">&nbsp;</div>
@@ -110,6 +110,29 @@
               <div class="clear">&nbsp;</div>
 
               <div class="data_table">
+                <div class="bold label">Amount Tendered:</div>
+                <div class="data">
+                  <div id="tendered_box" onclick="setTenderedBoxFocus(true)">
+                    <div id="tendered_value"></div>
+                    <div class="right"><%= @currency_symbol %></div>
+                    <div class="clear">&nbsp;</div>
+                  </div>
+                </div>
+                <div class="clear">&nbsp;</div>
+              </div>
+              <div class="clear">&nbsp;</div>
+              
+              <div class="data_table" id="totals_balance_container">
+                <div class="bold label">Balance Due:</div>
+                <div class="bold data">
+                  <div id="totals_balance_value">0</div>
+                  <div class="right"><%= @currency_symbol %></div>
+                  <div class="clear">&nbsp;</div>
+                </div>
+                <div class="clear">&nbsp;</div>
+              </div>
+              
+              <div class="data_table" id="totals_change_container">
                 <div class="bold label">Change Due:</div>
                 <div class="bold data">
                   <div id="totals_change_value">0</div>

@@ -1,9 +1,8 @@
 <% if !@error %>
   var orderFrom;
 
-  if(<%= @table_from_id %> != 0) {
-    orderFrom = tableOrders[<%= @table_from_id %>];
-  } else {
+  //is this coming from the no table or the split bill
+  if(<%= @table_from_id %> == 0 || <%= @table_from_id %> == -2) {
     orderFrom = currentOrder;
     
     //mark all items as unsynced, so that they get ordered as they came from no table
@@ -12,7 +11,9 @@
     } 
     
     //clear the order
-    clearOrder(0);
+    clearOrder(<%= @table_from_id %>);
+  } else {
+    orderFrom = tableOrders[<%= @table_from_id %>];
   }
 
   storeTableOrderInStorage(current_user_id, <%= @table_to_id %>, orderFrom);

@@ -397,10 +397,7 @@ function doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmploye
     }
     
     if(doClear) {
-        tableOrders[tableID] = {
-            'items': new Array(),
-            'total':0
-        };
+        tableOrders[tableID] = buildInitialOrder();
         
         clearTableOrderInStorage(nextUserIDToSyncWith, tableID);
         
@@ -626,11 +623,7 @@ function addItemToOrderAndSave(orderItem) {
 
     //lazy init currentOrder
     if(currentOrder == null) {
-        currentOrder = {
-            'items': new Array(),
-            'courses' : new Array(),
-            'total':0
-        };
+        currentOrder = buildInitialOrder();
     }
 
     //attach the item number to the order item 
@@ -972,7 +965,7 @@ function finishTransferOrderItem() {
     tableScreenSelectTable(savedTableTo);
     doAutoLoginAfterSync = true;
     doSyncTableOrder();
-    niceAlert("Order Item Transfered");
+    niceAlert("Order Item Transfered.");
 }
 
 function testForMandatoryModifier(product) {
