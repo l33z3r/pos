@@ -15,7 +15,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b175b289-9e99-4e0b-90b8-c6462789b4b1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cluey_pos.iws" afterPath="$PROJECT_DIR$/cluey_pos.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/database.yml" afterPath="$PROJECT_DIR$/config/database.yml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" />
     </list>
@@ -79,25 +79,25 @@
       <file leaf-file-name="_receipt_screen.html.erb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="38" selection-start="1712" selection-end="1712" vertical-scroll-proportion="-9.041667">
+            <state line="44" column="101" selection-start="1918" selection-end="1918" vertical-scroll-proportion="2.142857">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="menu.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="menu.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="190" column="54" selection-start="4725" selection-end="4725" vertical-scroll-proportion="-0.24197531">
+            <state line="196" column="85" selection-start="4896" selection-end="4896" vertical-scroll-proportion="-8.4">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="database.yml" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="database.yml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/config/database.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="24" selection-start="323" selection-end="323" vertical-scroll-proportion="0.0">
+            <state line="48" column="17" selection-start="1018" selection-end="1018" vertical-scroll-proportion="0.9322799">
               <folding />
             </state>
           </provider>
@@ -183,10 +183,10 @@
         <option value="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/util.js" />
         <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_menu_screen.html.erb" />
         <option value="$PROJECT_DIR$/public/stylesheets/interfaces/medium_screen/style.css" />
-        <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb" />
         <option value="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js" />
-        <option value="$PROJECT_DIR$/config/database.yml" />
+        <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb" />
         <option value="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" />
+        <option value="$PROJECT_DIR$/config/database.yml" />
       </list>
     </option>
   </component>
@@ -1176,13 +1176,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="38" selection-start="1712" selection-end="1712" vertical-scroll-proportion="-9.041667">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/util.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1" column="75" selection-start="100" selection-end="121" vertical-scroll-proportion="0.0">
@@ -1211,13 +1204,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/database.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="24" selection-start="323" selection-end="323" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/screen_button_functions.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="540" column="39" selection-start="15310" selection-end="15310" vertical-scroll-proportion="0.0">
@@ -1225,9 +1211,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="101" selection-start="1918" selection-end="1918" vertical-scroll-proportion="2.142857">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="190" column="54" selection-start="4725" selection-end="4725" vertical-scroll-proportion="-0.24197531">
+        <state line="196" column="85" selection-start="4896" selection-end="4896" vertical-scroll-proportion="-8.4">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/database.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="17" selection-start="1018" selection-end="1018" vertical-scroll-proportion="0.9322799">
           <folding />
         </state>
       </provider>
