@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120126102750) do
+ActiveRecord::Schema.define(:version => 20120127170432) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(:version => 20120126102750) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "is_default", :default => false
+    t.boolean  "is_public",  :default => false
   end
 
   create_table "employees", :force => true do |t|

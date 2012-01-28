@@ -71,13 +71,13 @@ Pos::Application.routes.draw do
   # admin homepage
   match 'admin' => "admin/home#index"
 
-
   namespace :admin do
     resources :displays do
       member do
         get 'builder'
         post 'duplicate'
         post 'default'
+        post 'public'
         
         #menu builder ajax functions
         post 'place_product'
@@ -236,6 +236,9 @@ Pos::Application.routes.draw do
     end
   end
 
+  namespace :api do 
+    get 'menu' => "main#menu"
+  end
 
   match 'javascripts/:action.:format' => "javascripts"
 

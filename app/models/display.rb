@@ -18,6 +18,18 @@ class Display < ActiveRecord::Base
     display
   end
   
+  def self.load_public
+    display = find_by_is_public(true)
+
+    if !display
+      display = find(:first)
+      display.is_public = true
+      display.save
+    end
+    
+    display
+  end
+  
   def has_nested
     menu_pages.each do |mp|
       if mp.embedded_display_id

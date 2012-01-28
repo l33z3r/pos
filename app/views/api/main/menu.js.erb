@@ -1,0 +1,25 @@
+<%- @display = Display.load_public -%>
+{ 'display' : [
+<%- @display.menu_pages.each do |page| -%>
+  { 'page' : [
+  <%- page.menu_items.each do |mi| -%>
+    <%- next unless mi.product -%>
+    { 'product' : {
+    'id':'<%= mi.product.id %>', 'name':'<%= escape_javascript mi.product.name %>', 
+    'price':<%= mi.product.price %>, 'tax_rate':<%=mi.product.sales_tax_rate%>,
+    'double_price' : <%=mi.product.double_price%>,
+    'hide_on_printed_receipt' : <%=mi.product.hide_on_printed_receipt%>,
+    'show_price_on_receipt' : <%=mi.product.show_price_on_receipt%>,
+    'prompt_price' : <%=mi.product.show_price_prompt%>,
+    'printers' : "<%= mi.product.printers %>",
+    'deleted' : <%= mi.product.is_deleted %>,
+    'category_id' : <%= mi.product.category ? mi.product.category.id : "null" %>,
+    'upc' : '<%= mi.product.upc %>',
+    'modifier_grid_id' : <%= mi.product.order_item_addition_grid ? mi.product.order_item_addition_grid.id : "null" %>,
+    'modifier_grid_id_mandatory' : <%= mi.product.order_item_addition_grid_id_is_mandatory %>
+    }
+    },
+  <%- end -%>
+  ]},
+<%- end -%>
+]}

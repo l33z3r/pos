@@ -1652,6 +1652,8 @@ function renderActiveTables() {
         });  
 }
 
+var afterSplitBillSyncCallback;
+
 function postDoSyncTableOrder() {
     clearLoginReceipt();
 
@@ -1670,14 +1672,27 @@ function postDoSyncTableOrder() {
     } else if(inTransferOrderItemMode) {
         finishTransferOrderItem();
         return;
+    } else if(inSplitBillMode) {
+        inSplitBillMode = false;
+        showMenuScreen();
+        $('#split_bill_select_item').show();
+        tableSelectMenu.setValue(tempSplitBillTableNum);
+        doSelectTable(tempSplitBillTableNum);
+        
+        if(afterSplitBillSyncCallback) {
+            afterSplitBillSyncCallback();
+        }
+        
+        return;
     }
     
     if(!doAutoLoginAfterSync) {
-        doAutoLoginAfterSync = false;
         //pick up the default home screen and load it
         loadAfterSaleScreen();
     }
     
+    doAutoLoginAfterSync = false;
+        
     setStatusMessage("Order Sent");
 
     if(!order.order_num) {
@@ -1897,4 +1912,170 @@ function hideOrderReadyPopup() {
     } catch (e) {
         
     }
+}
+
+var currentSplitBillItemQuantity = "";
+    
+function splitBillScreenKeypadClick(val) {
+    if(val == '0') {
+        if(currentSplitBillItemQuantity.length > 0)
+            currentSplitBillItemQuantity += val
+    } else {
+        //make sure you cannot enter a 2nd decimal place number
+        if(currentSplitBillItemQuantity.indexOf(".") != -1) {
+            if(currentSplitBillItemQuantity.length - currentSplitBillItemQuantity.indexOf(".") > 1) {
+                return;
+            }
+        }
+    
+        currentSplitBillItemQuantity += val;
+    }
+    
+    $('#split_bill_input_show').html(currentSplitBillItemQuantity);
+}
+
+function splitBillScreenKeypadClickDecimal() {
+    if(currentSplitBillItemQuantity.indexOf(".") == -1) {
+        currentSplitBillItemQuantity += ".";
+    }
+    
+    $('#split_bill_input_show').html(currentSplitBillItemQuantity);
+}
+
+function splitBillScreenKeypadClickCancel() {
+    currentSplitBillItemQuantity = "";
+    $('#split_bill_input_show').html(currentSplitBillItemQuantity);
+}
+
+function loadSplitBillReceipts() {
+    //ORDER FROM
+    var orderFromReceiptHTML = getAllOrderItemsReceiptHTML(splitBillOrderFrom, false, false, true);
+    $('#split_bill_from_till_roll').html(orderFromReceiptHTML);
+    
+    $('#split_bill_from_till_roll .order_line').each(function() {
+        var orderLine = $(this);
+        
+        orderLine.click(function() {
+            doSplitOrderItem($(this), false); 
+        });
+    });
+    
+    var tillRollDiscountHTML = getTillRollDiscountHTML(splitBillOrderFrom);
+    $('#split_bill_from_till_roll_discount').html(tillRollDiscountHTML);
+    
+    calculateOrderTotal(splitBillOrderFrom);
+    $('#split_bill_from_total_value').html(currency(splitBillOrderFrom.total));
+    
+    //ORDER TO
+    var orderToReceiptHTML = getAllOrderItemsReceiptHTML(splitBillOrderTo, false, false, true);
+    $('#split_bill_to_till_roll').html(orderToReceiptHTML);
+    
+    $('#split_bill_to_till_roll .order_line').each(function() {
+        var orderLine = $(this);
+        
+        orderLine.click(function() {
+            doSplitOrderItem($(this), true); 
+        });
+    });
+    
+    calculateOrderTotal(splitBillOrderTo);
+    $('#split_bill_to_total_value').html(currency(splitBillOrderTo.total));
+}
+
+function doSplitOrderItem(orderLine, reverse) {
+    var orderFrom = splitBillOrderFrom;
+    var orderTo = splitBillOrderTo;
+    
+    if(reverse) {
+        orderFrom = splitBillOrderTo;
+        orderTo = splitBillOrderFrom;
+    }
+    
+    var itemNumber = parseInt(orderLine.data("item_number"));
+    
+    var theItem = orderFrom.items[itemNumber - 1];
+    
+    if(currentSplitBillItemQuantity == "") {
+        currentSplitBillItemQuantity = "1";
+    }
+
+    if(currentSplitBillItemQuantity.indexOf(".") != -1) {
+        if(currentSplitBillItemQuantity.length - currentSplitBillItemQuantity.indexOf(".") == 1) {
+            currentSplitBillItemQuantity = "1";
+        }
+    }
+    
+    //take it from the order
+    if(theItem.amount - currentSplitBillItemQuantity > 0) {
+        modifyOrderItem(orderFrom, itemNumber, theItem.amount - currentSplitBillItemQuantity, theItem.product_price);
+    } else {
+        currentSplitBillItemQuantity = theItem.amount;
+        doRemoveOrderItem(orderFrom, itemNumber);
+    }
+    
+    var copiedOrderItem = {};
+    
+    var theCopiedOrderItem = $.extend(true, copiedOrderItem, theItem);
+    
+    theCopiedOrderItem.itemNumber = orderTo.items.length + 1;
+    
+    //add this item to the order array
+    orderTo.items.push(theCopiedOrderItem);
+    
+    modifyOrderItem(orderTo, theCopiedOrderItem.itemNumber, currentSplitBillItemQuantity, theCopiedOrderItem.product_price);
+    
+    loadSplitBillReceipts();
+    
+    currentSplitBillItemQuantity = "";
+    $('#split_bill_input_show').html("");
+}
+
+function cancelSplitBillMode() {
+    splitBillOrderTo = null;
+    inSplitBillMode = false;
+    showMenuScreen();
+}
+
+function splitBillShortcutPrintBill() {
+    if(!splitBillEmptyItems()) {
+        finishSplitBillMode();
+        afterSplitBillSyncCallback = printBill;
+    }
+}
+
+function splitBillShortcutPayNow() {
+    if(!splitBillEmptyItems()) {
+        finishSplitBillMode();
+        afterSplitBillSyncCallback = doTotal;
+    }
+}
+
+function splitBillShortcutTransfer() {
+    if(!splitBillEmptyItems()) {
+        finishSplitBillMode();
+        afterSplitBillSyncCallback = startTransferOrderMode;
+    }
+}
+
+function splitBillEmptyItems() {
+    if(splitBillOrderTo.items.length == 0) {
+        niceAlert("Please transfer over some items first.");
+        return true;
+    }
+    
+    return false;
+}
+
+function finishSplitBillMode() {
+    //store it and then populate tableOrders
+    //then we can access it at tableOrders[tempSplitBillTableNum]
+    storeTableOrderInStorage(current_user_id, tempSplitBillTableNum, splitBillOrderTo);    
+    getTableOrderFromStorage(current_user_id, tempSplitBillTableNum);
+    
+    //save the orderFrom
+    storeTableOrderInStorage(current_user_id, splitBillTableNumber, splitBillOrderFrom);
+    
+    doAutoLoginAfterSync = true;
+    doSelectTable(splitBillTableNumber);
+    doSyncTableOrder();    
 }

@@ -48,6 +48,21 @@ function doSetDefaultDisplay(displayId) {
     });
 }
 
+function doSetPublicDisplay(displayId) {
+    //clear all the other default radio buttons
+    $('input[name=set_public_display]').each(function() {
+        if($(this).attr("id") != "set_public_display_" + displayId) {
+            $(this).attr("checked", false);
+        } 
+    });
+    
+    //send an update to display controller
+    $.ajax({
+        type: 'POST',
+        url: '/admin/displays/' + displayId + '/public'
+    });
+}
+
 function doSetDefaultTaxRate(taxRateId) {
     //send an update to display controller
     $.ajax({

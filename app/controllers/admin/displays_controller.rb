@@ -245,5 +245,17 @@ class Admin::DisplaysController < Admin::AdminController
 
     render :json => {:success => true}.to_json
   end
+  
+  def public
+    @old_public_display = Display.load_public
+    @old_public_display.is_public = false
+    @old_public_display.save
+
+    @new_public_display = Display.find(params[:id])
+    @new_public_display.is_public = true
+    @new_public_display.save
+
+    render :json => {:success => true}.to_json
+  end
 
 end

@@ -13,6 +13,7 @@
         <tr>
           <th width="180">Name</th>
           <th width="40">Default?</th>
+          <th width="40">Public?</th>
           <th width="40">Delete</th>
           <th width="80">Duplicate</th>
         </tr>
@@ -27,6 +28,13 @@
               <form>
                 <%= radio_button_tag "set_default_display", "#{display.id}", display.is_default, 
                   :onchange => "doSetDefaultDisplay(this.value);" %>
+              </form>
+            </td>
+            <td>
+              <!-- jscrollpane requires all radio buttons go in a form as any that are not get unchecked! -->
+              <form>
+                <%= radio_button_tag "set_public_display", "#{display.id}", display.is_public, 
+                  :onchange => "doSetPublicDisplay(this.value);" %>
               </form>
             </td>
             <td><%= link_to "Delete", admin_display_path(display), :method => :delete, :confirm => "Are You Sure?" %></td>
