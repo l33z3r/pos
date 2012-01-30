@@ -775,7 +775,6 @@ function doSelectTable(tableNum) {
 
 function removeSelectedOrderItem() {
 
-    ModalPopups.Close('niceAlertContainer');
     //fetch the item number
     itemNumber = currentSelectedReceiptItemEl.data("item_number");
     
