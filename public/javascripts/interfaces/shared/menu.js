@@ -586,16 +586,16 @@ function buildOrderItem(product, amount) {
         'total_price':(productPrice*amount)
     }
     
-    //fill in the category of the product
-    if(categories[orderItem.product.category_id]) {
-        orderItem.product.category = categories[orderItem.product.category_id].name;
+    //fill in the category id of the product
+    if(orderItem.product.category_id != null) {
+        orderItem.product.category = orderItem.product.category_id;
     } else {
         orderItem.product.category = "None";
     }
     
     //fill in the department of the product
-    if(categories[orderItem.product.category_id] && categories[categories[orderItem.product.category_id].parent_category_id]) {
-        orderItem.product.department = categories[categories[orderItem.product.category_id].parent_category_id].name;
+    if(categories[orderItem.product.category_id] != null && categories[orderItem.product.category_id].parent_category_id != null) {
+        orderItem.product.department = categories[orderItem.product.category_id].parent_category_id;
     } else {
         orderItem.product.department = "None";
     }
