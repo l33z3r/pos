@@ -14,6 +14,7 @@ var products_by_upc = new Array();
   'deleted' : <%= p.is_deleted %>,
   'category_id' : <%= p.category ? p.category.id : "null" %>,
   'upc' : '<%= p.upc %>',
+  'code_num' : '<%= p.code_num %>',
   'modifier_grid_id' : <%= p.order_item_addition_grid ? p.order_item_addition_grid.id : "null" %>,
   'modifier_grid_id_mandatory' : <%= p.order_item_addition_grid_id_is_mandatory %>
   };
