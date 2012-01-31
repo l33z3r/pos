@@ -815,6 +815,7 @@ div#receipt_screen div#header {
 
 div#receipt_screen div#header div#back_button {
     float: right;
+    color: #333;
 }
 
 div#receipt_screen div#header div#table_name {
