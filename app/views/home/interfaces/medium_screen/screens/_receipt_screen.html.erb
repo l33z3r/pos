@@ -37,7 +37,7 @@
       <br>
     <div id="price_editor">
       <div class="price_label">Price Per Unit:</div>
-      <input type="text" class="price" size="2" id="current_selected_receipt_item_price" onchange="setPriceVal(this.value)"/>
+      <input type="number" class="price" size="2" id="current_selected_receipt_item_price"/>
     </div>
     <div class="discount_buttons">
         <br><br>
@@ -62,8 +62,7 @@
         </div>
       <% end %>
       <div>
-          <div class="label">Amount:</div>
-        <input type="text" class="percent" size="4" id="discount_percent_input"/>
+        <input type="number" class="percent_number" id="discount_percent_input"/>
       </div>
       <div class="clear">&nbsp;</div>
 
@@ -77,7 +76,7 @@
         <div id="minus_button" class="button" onclick="editOrderItemDecreaseQuantity()"><div>-</div></div>
       </div>
       <div style="float: left;">
-      <input type="text" size="2" class="quantity" id="current_selected_receipt_item_quantity"/>
+      <input type="text" class="quantity" id="current_selected_receipt_item_quantity"/>
       </div>
     </div>
 

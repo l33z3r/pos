@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(:version => 20120131114457) do
     t.string   "printers",                                 :default => ""
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => 0
+    t.integer  "course_num",                               :default => -1
   end
 
   create_table "client_transactions", :force => true do |t|
@@ -307,7 +307,7 @@ ActiveRecord::Schema.define(:version => 20120131114457) do
     t.boolean  "hide_on_printed_receipt",                  :default => false
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => 0
+    t.integer  "course_num",                               :default => -1
   end
 
   create_table "roles", :force => true do |t|
