@@ -416,12 +416,13 @@ function applyExistingDiscountToOrderItem(order, itemNumber) {
     applyDiscountToOrderItem(order, itemNumber, -1);
 }
 
-function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit) {
+function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum) {
     targetOrderItem = order.items[itemNumber-1];
 
     targetOrderItem.amount = newQuantity;
     targetOrderItem.product_price = newPricePerUnit;
-
+    targetOrderItem.product.course_num = newCourseNum;
+    
     if(targetOrderItem.pre_discount_price) {
         targetOrderItem.pre_discount_price = newPricePerUnit * newQuantity;
     } else {
@@ -629,10 +630,6 @@ function addItemToOrderAndSave(orderItem) {
         currentOrder = buildInitialOrder();
     }
 
-    //attach the item number to the order item 
-    //which is its number in the receipt
-    orderItem.itemNumber = currentOrder.items.length + 1;
-    
     //add this item to the order array
     currentOrder.items.push(orderItem);
     
@@ -764,6 +761,7 @@ function doSelectTable(tableNum) {
     getTableOrderFromStorage(current_user_id, selectedTable);
 
     //display the receipt for this table
+    doAutoCoursing(tableOrders[tableNum]);
     loadReceipt(tableOrders[tableNum], true);
     
     if(promptForClientName && tableOrders[tableNum].client_name == "") {
@@ -805,25 +803,25 @@ function doRemoveOrderItem(order, itemNumber) {
     //we must pass the line back to the previous menu item
     //if the item number is only one, then this is the first 
     //item in the receipt and we don't worry about it
-    var courseIndex = $.inArray(itemNumber, order.courses);
-    
-    if(courseIndex >= 0) {
-        //3 cases here, 
-        //1. this is a first item on the list (so delete the first entry which will be 1)
-        //2. the previous item is already a course
-        //3. we can pass back the course
-        if(itemNumber == 1) {
-            //remove this so it doesn't get decremented to 0
-            order.courses.splice(0, 1);
-        } else if(order.items[itemNumber-2].is_course) {
-            //remove this from the courses array as the previous item is a course
-            order.courses.splice(courseIndex, 1);
-        } else {
-            //pass back the course line
-            order.courses[courseIndex]--;
-            order.items[itemNumber-2].is_course = true;
-        }
-    }
+//    var courseIndex = $.inArray(itemNumber, order.courses);
+//    
+//    if(courseIndex >= 0) {
+//        //3 cases here, 
+//        //1. this is a first item on the list (so delete the first entry which will be 1)
+//        //2. the previous item is already a course
+//        //3. we can pass back the course
+//        if(itemNumber == 1) {
+//            //remove this so it doesn't get decremented to 0
+//            order.courses.splice(0, 1);
+//        } else if(order.items[itemNumber-2].is_course) {
+//            //remove this from the courses array as the previous item is a course
+//            order.courses.splice(courseIndex, 1);
+//        } else {
+//            //pass back the course line
+//            order.courses[courseIndex]--;
+//            order.items[itemNumber-2].is_course = true;
+//        }
+//    }
     
     order.items.splice(itemNumber-1, 1);
     
@@ -957,6 +955,41 @@ function doTransferOrderItem(tableFrom, tableTo) {
         finishTransferOrderItem();
     } else {
         doSyncTableOrder();
+    }
+}
+
+function doAutoCoursing(order) {
+    //now sort them by their course number and apply item numbers
+    order.items.sort(function(a, b) {
+        var sortVal = parseInt(a.product.course_num) - parseInt(b.product.course_num);
+        
+        if(sortVal == 0) {
+            sortVal = parseFloat(a.time_added) - parseFloat(b.time_added);
+        }
+        
+        return sortVal;
+    });
+    
+    var nextCourse = false;
+    var nextCourseNum;
+    
+    order.courses = new Array();
+    
+    for(var i=0; i<order.items.length; i++) {
+        
+        nextCourseNum = parseInt(order.items[i].product.course_num);
+            
+        order.items[i].itemNumber = i + 1;
+        order.items[i].is_course = false;
+        
+        nextCourse = (i != order.items.length - 1) && (parseInt(order.items[i+1].product.course_num) != nextCourseNum);
+        
+        if(nextCourse) {
+            order.items[i].is_course = true;
+            order.courses.push(i + 1);
+            
+            nextCourse = false;
+        }
     }
 }
 

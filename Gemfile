@@ -23,6 +23,9 @@ gem 'aws-s3', '0.6.2'
 #smurf for minifying js and css
 gem 'smurf', '1.0.8'
 
+# for building json
+gem 'jbuilder', '0.3.2' 
+ 
 # Use unicorn as the web server
 # gem 'unicorn'
 

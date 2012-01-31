@@ -1976,7 +1976,7 @@ div#edit_receipt_item_popup_markup {
 
 div#edit_receipt_item_popup_markup_container {
     width: 280px;
-    height: 560px;
+    height: 610px;
 }
 
 div#edit_receipt_item_popup_markup_container div#quantity_editor {
@@ -2028,9 +2028,32 @@ div#edit_receipt_item_popup_markup_container div#price_editor div.price_label {
     float: left;
     margin: 4px 4px 1px 6px;
     font-size: 12px;
+    width: 100px;
 }
 
 div#edit_receipt_item_popup_markup_container div#price_editor input.price {
+    float: left;
+    margin: -5px 0px 1px 30px;
+    width: 120px;
+    height: 25px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+div#edit_receipt_item_popup_markup_container div#course_num_editor {
+    padding-bottom: 10px;
+    padding-top: 12px;
+}
+
+div#edit_receipt_item_popup_markup_container div#course_num_editor div.course_num_label {
+    font-weight: bold;
+    float: left;
+    margin: 4px 4px 1px 6px;
+    font-size: 12px;
+    width: 100px;
+}
+
+div#edit_receipt_item_popup_markup_container div#course_num_editor input.course_num {
     float: left;
     margin: -5px 0px 1px 30px;
     width: 120px;

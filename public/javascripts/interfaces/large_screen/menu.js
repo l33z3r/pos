@@ -253,6 +253,8 @@ function doSelectMenuItem(productId, menuItemId, element) {
         return;
     }
     
+    currentOrder = getCurrentOrder();
+
     //fetch this product from the products js array
     product = products[productId];
     
@@ -383,32 +385,36 @@ function finishDoSelectMenuItem() {
     
     addItemToOrderAndSave(orderItem);
     
-    //add a line to the receipt
-    writeOrderItemToReceipt(orderItem);
-    writeTotalToReceipt(currentOrder, currentOrder.total);
-
+    //do coursing and load receipt
+    doAutoCoursing(currentOrder);
+    loadReceipt(currentOrder, true);
+    
+    currentSelectedReceiptItemEl = $('#till_roll div[data-item_number=' + currentOrderItem.itemNumber + ']');
+    currentSelectedReceiptItemEl.addClass("selected");
+    
     testForPricePrompt(orderItem);
 
     setTimeout(menuRecptScroll, 20);
         
     //do the mandatory modifier grids
     testForMandatoryModifier(orderItem.product);
-    currentSelectedReceiptItemEl = getLastReceiptItem();
+    
 }
 
 function tableSelectMenuItem(orderItem) {
     addItemToTableOrderAndSave(orderItem);
     
-    var total = currentTableOrder.total;
+    doAutoCoursing(currentOrder);
+    loadReceipt(currentOrder, true);
     
-    writeTotalToReceipt(currentTableOrder, total);
+    currentSelectedReceiptItemEl = $('#till_roll div[data-item_number=' + currentOrderItem.itemNumber + ']');
+    currentSelectedReceiptItemEl.addClass("selected");
     
     testForPricePrompt(orderItem);
     
     setTimeout(menuRecptScroll, 20);
     
     testForMandatoryModifier(orderItem.product);
-    currentSelectedReceiptItemEl = getLastReceiptItem();
 }
 
 function testForPricePrompt(orderItem) {
@@ -420,6 +426,7 @@ function testForPricePrompt(orderItem) {
         popupEl.find('#oia_button').hide();
         popupEl.find('#transfer_button').hide();
         popupEl.find('#quantity_editor').hide();
+        popupEl.find('#course_num_editor').hide();
         popupEl.find('#header').html("Enter A Price");
         popupEl.find('#current_selected_receipt_item_price').focus();
         popupEl.find('#current_selected_receipt_item_price').val("");
@@ -485,13 +492,13 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     
     orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
     
-    orderHTML += "<div class='name'>" + notSyncedMarker + " ";
+    orderHTML += "<div class='name' data-course_num='" + orderItem.product.course_num + "'>" + notSyncedMarker + " ";
         
     if(orderItem.is_double) {
         orderHTML += "Double ";
     }
         
-    orderHTML += orderItem.product.name + "</div>";
+    orderHTML += orderItem.product.name + " " + orderItem.product.course_num + "</div>";
     
     orderItemTotalPriceText = number_to_currency(itemPriceWithoutModifier, {
         precision : 2
@@ -647,6 +654,14 @@ function doSelectReceiptItem(orderItemEl) {
         $('#oia_button').hide();
     }
     
+    //are we allowed to view the course num controls
+    //we are if the button id is present in this array
+    if(typeof(display_button_passcode_permissions[parseInt(courseNumButtonID)]) != 'undefined') {
+        $('#course_num_editor').show();
+    } else {
+        $('#course_num_editor').hide();
+    }
+    
     //save the currently opened dialog
     currentSelectedReceiptItemEl = orderItemEl;
     
@@ -688,6 +703,9 @@ function doSelectReceiptItem(orderItemEl) {
          
     //set the current price and quantity
     popupId = editItemPopupAnchor.GetBubblePopupID();
+    
+    currentCourseNum = orderItemEl.children('.name').data("course_num");
+    $('#' + popupId).find('.course_num').val(currentCourseNum);
     
     currentPrice = orderItemEl.children('.total').data("per_unit_price");
     currentPrice = currency(currentPrice, false);
@@ -791,19 +809,33 @@ function saveEditOrderItem() {
         newPricePerUnit = 0;
     }
     
+    targetInputCourseNumEl = $('#' + popupId).find('.course_num');
+    newCourseNum = parseInt(targetInputCourseNumEl.val());
+    
+    if(isNaN(newCourseNum)) {
+        newCourseNum = 0;
+    } else if(newCourseNum > 10) {
+        newCourseNum = 10;
+    } else if(newCourseNum < 0) {
+        newCourseNum = 0;
+    }
+    
     if(selectedTable != 0) {
         order = tableOrders[selectedTable];
-        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
+        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum);
     
         storeTableOrderInStorage(current_user_id, selectedTable, order);
     } else {
         order = currentOrder;
-        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
+        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum);
         
         storeOrderInStorage(current_user_id, order);
     }
     
+    order = getCurrentOrder();
+    
     //redraw the receipt
+    doAutoCoursing(order);
     loadReceipt(order, true);
 }
 

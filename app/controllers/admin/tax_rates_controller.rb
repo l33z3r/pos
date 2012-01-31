@@ -6,7 +6,7 @@ class Admin::TaxRatesController < Admin::AdminController
     if @tax_rate.save
       redirect_to admin_global_settings_path, :notice => 'Tax Rate was successfully created.'
     else
-      render :action => admin_global_settings_path
+      redirect_to admin_global_settings_path, :error => 'Error creating new tax rate.'
     end
   end
 

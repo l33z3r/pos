@@ -175,7 +175,7 @@ class ButtonMapper
     when MODIFY_TERMINALS_BUTTON
       @retval = "goTo('#{admin_terminals_path}'); return false;"
     when COURSE_BUTTON
-      @retval = wrap_with_menu_screen_function_check "addCourseEndToOrder(); return false;";
+      @retval = wrap_with_menu_screen_function_check "changeCourseNum(); return false;";
     when PRINT_BILL_BUTTON
       @retval = "printBill();"
     when KITCHEN_SCREEN_BUTTON

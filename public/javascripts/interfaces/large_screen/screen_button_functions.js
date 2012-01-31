@@ -578,3 +578,21 @@ function startSplitBillMode() {
     
     loadSplitBillReceipts();
 }   
+
+function changeCourseNum() {
+    var receiptItem = getSelectedOrLastReceiptItem();
+ 
+    if(receiptItem) {
+        var popupEl = doSelectReceiptItem(receiptItem);
+        
+        popupEl.find('#discount_button').hide();
+        popupEl.find('#delete_button').hide();
+        popupEl.find('#oia_button').hide();
+        popupEl.find('#transfer_button').hide();
+        popupEl.find('#quantity_editor').hide();
+        popupEl.find('#price_editor').hide();
+        
+        popupEl.find('#header').html("Enter A Course Number (0 to 10)");
+        popupEl.find('#current_selected_receipt_item_course_num').focus();
+    }
+}
