@@ -67,6 +67,10 @@
           :prompt => "Select a #{@tax_label} Rate", :include_blank => "Default" %>
         <div class="clear">&nbsp;</div>
       </div>
+      <div class="field">
+        <div class="label">Course Number</div>
+        <%= f.select :course_num, (-1..10).to_a %>
+      </div>
     </div>
     <div class="right_col">
       <div class="field">
@@ -247,7 +251,7 @@
           </div>
           <!-- 
           <% if @product.has_product_image? %>
-                                <p class="label">Select to Delete Image:</p>
+                                  <p class="label">Select to Delete Image:</p>
             <%= check_box_tag :delete_product_image, false %>
           <% end %>
           -->

@@ -238,6 +238,8 @@ Pos::Application.routes.draw do
 
   namespace :api do 
     get 'menu' => "main#menu"
+    get 'categories' => "main#categories"
+    get 'products' => "main#products"
   end
 
   match 'javascripts/:action.:format' => "javascripts"

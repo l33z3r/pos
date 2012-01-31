@@ -29,3 +29,17 @@ function saveServiceCharge(performTotal) {
 function promptAddNameToTable() {
     
 }
+
+function changeCourseNum() {
+    var receiptItem = getSelectedOrLastReceiptItem();
+ 
+    if(receiptItem) {
+        var itemNumber = receiptItem.data("item_number");
+        
+        var currentOrder = getCurrentOrder();
+        
+        var orderItem = currentOrder.items[itemNumber-1];
+        
+        alert("popup for change course num");
+    }
+}

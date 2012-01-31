@@ -46,6 +46,10 @@
         :prompt => "Select a #{@tax_label} Rate", :include_blank => "Default" %>
     </div>
     <div class="field">
+      <%= f.label :course_num, "Course Number" %><br />
+      <%= f.select :course_num, (-1..10).to_a %>
+    </div>
+    <div class="field">
       <label for="category[selected_printers][]">Printers</label>
 
       <div class="clear">&nbsp;</div>

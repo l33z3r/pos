@@ -80,6 +80,20 @@ class Product < ActiveRecord::Base
     end
   end
   
+  def course_num
+    @the_course_num = 0
+    
+    if read_attribute("course_num") == -1
+      if category and category.course_num != -1
+        @the_course_num = category.course_num
+      end
+    else
+      @the_course_num = read_attribute("course_num")
+    end
+    
+    return @the_course_num
+  end
+  
   def mark_as_deleted
     self.name += "_deleted_#{Time.now.to_i}"
     self.is_deleted = true
