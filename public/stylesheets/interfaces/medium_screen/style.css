@@ -1281,7 +1281,7 @@ div#quantity_editor input.quantity {
     float: left;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    width: 80px;
+    width: 35px;
     height: 35px;
     margin-top: 2px;
 }
@@ -1385,6 +1385,15 @@ div.discount_buttons div.percent {
     margin-top: 2px;
     font-size: 13px;
     height: 25px;
+}
+
+div.discount_buttons input.percent_number {
+    float: left;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    width: 55px;
+    height: 35px;
+    margin-top: 2px;
 }
 
 div#receipt_function_popup_content div#manual_discount div.fields {

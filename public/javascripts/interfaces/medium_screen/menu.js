@@ -183,11 +183,10 @@ function closeEditOrderItem() {
 }
 
 function doSelectReceiptItem(orderItemEl) {
-
     orderItemEl = $(orderItemEl);
 
     //close any open popup
-//    closeEditOrderItem();
+    closeEditOrderItem();
 
     //make sure the modifier grids are closed
     switchToMenuItemsSubscreen();
@@ -202,8 +201,6 @@ function doSelectReceiptItem(orderItemEl) {
     //keep the border
     orderItemEl.addClass("selected");
 
-
-
     newMenuPagePopup(getCurrentOrder().items[parseInt(orderItemEl.data("item_number"))-1].product.name);
 
     currentPrice = orderItemEl.children('.total').data("per_unit_price");
@@ -215,9 +212,7 @@ function doSelectReceiptItem(orderItemEl) {
 
     $('.quantity').focus();
 
-    getCurrentOrder().items[parseInt(orderItemEl.data("item_number"))-1] = null;
-
-//    setOrderItemAdditionsGridState();
+    setOrderItemAdditionsGridState();
 
 }
 
@@ -257,14 +252,13 @@ function editOrderItemDecreaseQuantity() {
 }
 
 function setDiscountVal(val) {
-    targetInputPer = $('#discount_percent_input');
+    targetInputPer = $('.percent_number');
     targetInputPer.val(val);
 }
 
 function setPriceVal(val) {
     targetInputPer = $('.price');
     targetInputPer.val(val);
-    alert(targetInputPer)
 }
 
 function saveEditOrderItem() {
@@ -286,9 +280,9 @@ function saveEditOrderItem() {
     targetInputPricePerUnitEl = $('.price');
     newPricePerUnit = parseFloat(targetInputPricePerUnitEl.val());
 
-    if(isNaN(newPricePerUnit)) {
-        newPricePerUnit = 0;
-    }
+
+
+
 
     if(selectedTable != 0) {
         order = tableOrders[selectedTable];
@@ -302,23 +296,61 @@ function saveEditOrderItem() {
         storeOrderInStorage(current_user_id, order);
     }
 
-    targetInputEl = $('.quantity');
-
-    currentVal = parseFloat(targetInputEl.val());
-
-    var newQuantity = currentVal;
-
-    if(isNaN(currentVal)) {
-        newQuantity = 1;
-    } else {
-        newQuantity = currentVal + 1;
-    }
-
-    targetInputEl.val(newQuantity);
+//    if ($('#discount_percent_input').val() != null){
+//        alert($('#discount_percent_input').val());
+//        saveDiscount();
+//    }
 
     //redraw the receipt
     loadReceipt(order, true);
     ModalPopups.Close('niceAlertContainer');
+}
+
+var individualItemDiscount = true;
+
+function saveDiscount() {
+//    popupId = currentTargetPopupAnchor.GetBubblePopupID();
+    selectedValue = $('#discount_percent_input').val();
+
+    selectedValue = parseFloat(selectedValue);
+
+    if(isNaN(selectedValue)) {
+        selectedValue = 0;
+    }
+
+    if(selectedValue<0 || selectedValue>100) {
+        alert("You must enter a number between 0 and 100");
+        return;
+    }
+
+    order = getCurrentOrder();
+
+    wholeOrderDiscount = ($("input[name='discount_type']:checked").val() == 'whole_order');
+
+    //discount on whole order or individual item?
+    if(individualItemDiscount) {
+        //fetch the item number
+        itemNumber = currentSelectedReceiptItemEl.data("item_number");
+        applyDiscountToOrderItem(order, itemNumber, selectedValue);
+    } else if(wholeOrderDiscount) {
+        addDiscountToOrder(order, selectedValue);
+    } else {
+        //last item
+        applyDiscountToOrderItem(order, -1, selectedValue);
+    }
+
+    //store the modified order
+    if(selectedTable != 0) {
+        storeTableOrderInStorage(current_user_id, selectedTable, order);
+    }else {
+        storeOrderInStorage(current_user_id, order);
+    }
+
+//    closeDiscountPopup();
+
+    //redraw the receipt
+//    loadReceipt(order, true);
+//    setTimeout(menuRecptScroll, 20);
 }
 
 function newMenuPagePopup(pName) {
@@ -509,13 +541,6 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     }
 
     orderHTML += clearHTML + "</div>" + clearHTML;
-
-    $('#cash_screen_sub_total_value').html(currency(orderTotal));
-
-    if($('#menu_screen').is(":visible")){
-          $('.oia_price').hide();
-
-    }
 
     return orderHTML;
 }
