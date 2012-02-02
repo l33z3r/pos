@@ -111,7 +111,9 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
             tableOrderDataJSON.items[itemKey].product.hide_on_printed_receipt = (tableOrderDataJSON.items[itemKey].product.hide_on_printed_receipt.toString() == "true" ? true : false);   
         }
         
-        
+        if(tableOrderDataJSON.items[itemKey].is_course) {
+            tableOrderDataJSON.items[itemKey].is_course = (tableOrderDataJSON.items[itemKey].is_course.toString() == "true" ? true : false);   
+        }
         
         
         
@@ -711,6 +713,34 @@ function recptScroll(targetPrefix) {
     }
 }
 
+function scrollReceiptToSelected(targetPrefix, selectedReceiptItemEl) {
+    if(selectedReceiptItemEl) {
+        if(isTouchDevice()) {
+            $('#' + targetPrefix + 'till_roll').touchScroll('update');
+            
+            currentHeight = $('#' + targetPrefix + 'till_roll').height();
+            scrollHeight = $('#' + targetPrefix + 'till_roll').attr('scrollHeight');
+            newHeight = scrollHeight - currentHeight;
+        
+            $('#' + targetPrefix + 'till_roll').touchScroll('setPosition', newHeight);
+        
+        } else {
+            //jscrollpane force scroll to end
+            var jscroll_api = $('#' + targetPrefix + 'receipt').data('jsp');
+        
+            if(jscroll_api) {
+                currentHeight = $('#' + targetPrefix + 'till_roll').height();
+                scrollHeight = $('#' + targetPrefix + 'till_roll').attr('scrollHeight');
+                newHeight = scrollHeight - currentHeight;
+       
+                jscroll_api.scrollToY(newHeight + 20);
+            } else {
+                $('#' + targetPrefix + 'receipt').scrollTop($('#' + targetPrefix + 'receipt').scrollTop() + (selectedReceiptItemEl.offset().top - $('#' + targetPrefix + 'receipt').offset().top - 4));
+            }
+        }
+    }
+}
+
 function updateRecpt(targetPrefix) {
     if(isTouchDevice()) {
         $('#' + targetPrefix + 'till_roll').touchScroll('update');
@@ -803,25 +833,25 @@ function doRemoveOrderItem(order, itemNumber) {
     //we must pass the line back to the previous menu item
     //if the item number is only one, then this is the first 
     //item in the receipt and we don't worry about it
-//    var courseIndex = $.inArray(itemNumber, order.courses);
-//    
-//    if(courseIndex >= 0) {
-//        //3 cases here, 
-//        //1. this is a first item on the list (so delete the first entry which will be 1)
-//        //2. the previous item is already a course
-//        //3. we can pass back the course
-//        if(itemNumber == 1) {
-//            //remove this so it doesn't get decremented to 0
-//            order.courses.splice(0, 1);
-//        } else if(order.items[itemNumber-2].is_course) {
-//            //remove this from the courses array as the previous item is a course
-//            order.courses.splice(courseIndex, 1);
-//        } else {
-//            //pass back the course line
-//            order.courses[courseIndex]--;
-//            order.items[itemNumber-2].is_course = true;
-//        }
-//    }
+    //    var courseIndex = $.inArray(itemNumber, order.courses);
+    //    
+    //    if(courseIndex >= 0) {
+    //        //3 cases here, 
+    //        //1. this is a first item on the list (so delete the first entry which will be 1)
+    //        //2. the previous item is already a course
+    //        //3. we can pass back the course
+    //        if(itemNumber == 1) {
+    //            //remove this so it doesn't get decremented to 0
+    //            order.courses.splice(0, 1);
+    //        } else if(order.items[itemNumber-2].is_course) {
+    //            //remove this from the courses array as the previous item is a course
+    //            order.courses.splice(courseIndex, 1);
+    //        } else {
+    //            //pass back the course line
+    //            order.courses[courseIndex]--;
+    //            order.items[itemNumber-2].is_course = true;
+    //        }
+    //    }
     
     order.items.splice(itemNumber-1, 1);
     

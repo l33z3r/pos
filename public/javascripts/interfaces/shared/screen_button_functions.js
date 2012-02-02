@@ -16,8 +16,11 @@ function doSyncTableOrder() {
         return;
     }
     
-    if(selectedTable == -1) {
+    if(selectedTable == previousOrderTableNum) {
         setStatusMessage("Not valid for reopened orders!");
+        return;
+    } else if(selectedTable == tempSplitBillTableNum) {
+        setStatusMessage("Not valid for split orders!");
         return;
     } else if(selectedTable == 0) {
         startTransferOrderMode();
@@ -115,6 +118,10 @@ function quickSale() {
     }
     
     applyDefaultServiceChargePercent();
+    
+    cashTendered = 0;
+    splitPayments = {};
+    
     doTotalFinal();
 }
 

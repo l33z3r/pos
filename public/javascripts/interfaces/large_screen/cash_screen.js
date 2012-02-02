@@ -43,6 +43,8 @@ function getTotalTendered() {
 }
 
 function finishSale() {
+    updateTotalTendered();
+    
     if(paymentIntegrationId != 0) {
         if(paymentIntegrationId == zalionPaymentIntegrationId) {
             //make sure we have set the variables to be able to charge the room
@@ -74,7 +76,6 @@ function finishSale() {
 function resetTendered() {
     cashTendered = 0;
     cashTenderedKeypadString = "";
-    updateTotalTendered();
 }
 
 function cashOutCancel() {
@@ -85,6 +86,7 @@ function cashOutCancel() {
 var paymentIntegrationId = null;
 
 function paymentMethodSelected(method, integration_id) {
+    updateTotalTendered();
     clearSelectedFolio();
     
     $('#charge_room_section').hide();
@@ -249,8 +251,6 @@ function totalsScreenKeypadClick(val) {
     //alert(splitPayments[paymentMethod] + " " + cashTendered);
     splitPayments[paymentMethod] = cashTendered;
     $('#tendered_value').html(currency(splitPayments[paymentMethod], false));
-    
-    updateTotalTendered();
 }
 
 function totalsScreenKeypadClickDecimal() {
@@ -268,7 +268,6 @@ function totalsScreenKeypadClickCancel() {
     $('#tendered_value').html(currency(0, false));
     splitPayments[paymentMethod] = 0;
     resetTendered();
-    updateTotalTendered();
 }
 
 function moneySelected(amount) {

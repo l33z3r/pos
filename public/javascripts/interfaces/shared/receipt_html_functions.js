@@ -190,10 +190,6 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, incl
     
     finalReceiptHTML += taxChargable ? fetchTotalsHTMLWithTaxChargable() : fetchTotalsWithoutTaxChargableHTML();
     
-    if(totalOrder.cashback > 0) {
-        finalReceiptHTML += "<div class='label'>Cashback:</div><div class='data'>" + currency(totalOrder.cashback) + "</div>" + clearHTML;
-    }
-    
     cashTendered = totalOrder.cash_tendered;
     
     if(cashTendered > 0) {
@@ -316,16 +312,14 @@ function fetchFinalReceiptHeaderHTML() {
 }
 
 // you must set dicountAmount and subTotal before this funciton is called
-function fetchTotalsHTMLWithTaxChargable(totalLabelText) {
-    if(typeof(totalLabelText) == 'undefined') {
-        totalLabelText = "Total";
-    }
-    
+function fetchTotalsHTMLWithTaxChargable() {
     //write the tax total
     taxAmount = ((subTotal - discountAmount) * globalTaxRate)/100;
     totalsHTML = "<div class='label'>" + taxLabel + " " + globalTaxRate + "%:</div><div class='data'>" + currency(taxAmount) + "</div>" + clearHTML;
         
     totalsHTML += fetchServiceChargeHTML();
+    
+    totalsHTML += fetchCashbackHTML();
     
     //finally add up the total from the generated values above to avoid rounding errors
     total = (parseFloat(subTotal) - parseFloat(discountAmount)) + parseFloat(serviceCharge) + parseFloat(taxAmount);
@@ -334,18 +328,16 @@ function fetchTotalsHTMLWithTaxChargable(totalLabelText) {
     //temporarily set the totalFinal
     totalOrder.totalFinal = total;
     
-    totalsHTML += "<div class='label bold'>" + totalLabelText + ":</div><div class='data bold total_container'>" + currency(total) + "</div>" + clearHTML;
+    totalsHTML += "<div class='total_line_container'><div class='label bold'>Total:</div><div class='data bold total_container'>" + currency(total + totalOrder.cashback) + "</div></div>" + clearHTML;
     
     return totalsHTML;
 }
 
 // you must set dicountAmount and subTotal before this funciton is called
-function fetchTotalsWithoutTaxChargableHTML(totalLabelText) {
-    if(typeof(totalLabelText) == 'undefined') {
-        totalLabelText = "Total";
-    }
-    
+function fetchTotalsWithoutTaxChargableHTML() {
     totalsHTML = fetchServiceChargeHTML();
+    
+    totalsHTML += fetchCashbackHTML();
     
     //finally add up the total from the generated values above to avoid rounding errors
     total = (parseFloat(subTotal) - parseFloat(discountAmount)) + parseFloat(serviceCharge);
@@ -355,13 +347,13 @@ function fetchTotalsWithoutTaxChargableHTML(totalLabelText) {
     //temporarily set the totalFinal
     totalOrder.totalFinal = total;
     
-    totalsHTML += "<div class='label bold'>" + totalLabelText + ":</div><div class='data bold total_container'>" + currency(total) + "</div>" + clearHTML;
+    totalsHTML += "<div class='total_line_container'><div class='label bold'>Total:</div><div class='data bold total_container'>" + currency(total + totalOrder.cashback) + "</div></div>" + clearHTML;
     
     return totalsHTML;
 }
 
 function fetchServiceChargeHTML() {
-    serviceChargeHTML = "";
+    var serviceChargeHTML = "";
     
     //is there a service charge set?
     if(serviceCharge>0) {
@@ -369,4 +361,18 @@ function fetchServiceChargeHTML() {
     }
     
     return serviceChargeHTML;
+}
+
+function fetchCashbackHTML() {
+    var cashbackHTML = "";
+    
+    if(typeof(totalOrder.cashback) == 'undefined') {
+        totalOrder.cashback = 0;
+    }
+    
+    if(totalOrder.cashback > 0) {
+        cashbackHTML += "<div class='label'>Cashback:</div><div class='data'>" + currency(totalOrder.cashback) + "</div>" + clearHTML;
+    }
+    
+    return cashbackHTML;
 }

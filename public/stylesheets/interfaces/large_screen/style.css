@@ -2695,8 +2695,18 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
     font-weight: bold;
 }
 
-div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.data.total_container {
-    border-top: 1px solid #000;
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.total_line_container {
+    border: 2px solid #000;
+    margin-top: 10px;
+    height: 20px;
+    padding: 2px;
+    padding-top: 5px;
+    font-size: 16px;
+    background-color: #EEE;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.total_line_container div.data {
+    font-size: 16px;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_data_tables_container div.data_table div.data div#totals_tendered_box {

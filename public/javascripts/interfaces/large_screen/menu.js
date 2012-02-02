@@ -72,15 +72,15 @@ function scanFocusPoll() {
     
 function initPreviousOrder() {
     if(havePreviousOrder(current_user_id)) {
-        selectedTable = -1;
+        selectedTable = previousOrderTableNum;
         $('#previous_order_select_item').show();
         
-        tableSelectMenu.setValue(-1);
-        doSelectTable(-1);
+        tableSelectMenu.setValue(previousOrderTableNum);
+        doSelectTable(previousOrderTableNum);
         
-        getTableOrderFromStorage(current_user_id, -1)
+        getTableOrderFromStorage(current_user_id, previousOrderTableNum)
         
-        previousTableOrder = tableOrders[-1];
+        previousTableOrder = tableOrders[previousOrderTableNum];
         
         //carry over service charge
         serviceCharge = parseFloat(previousTableOrder.service_charge);
@@ -91,7 +91,7 @@ function initPreviousOrder() {
         cashback = parseFloat(previousTableOrder.cashback);
         
         //carry over the table number
-        tables[-1] = {
+        tables[previousOrderTableNum] = {
             id : '-1', 
             label : previousTableOrder.table_info_label
         };
@@ -130,9 +130,9 @@ function menuScreenKeypadClick(val) {
     
             currentMenuItemQuantity += val;
         }
-        
-        $('#menu_screen_input_show').html(currentMenuItemQuantity);
     }
+    
+    $('#menu_screen_input_show').html(currentMenuItemQuantity);
 }
 
 function menuScreenKeypadClickCancel() {
@@ -149,6 +149,8 @@ function menuScreenKeypadClickCancel() {
         
         currentMenuItemQuantity = "";
     }
+    
+    $('#menu_screen_input_show').html(currentMenuItemQuantity);
 }
 
 function menuScreenKeypadClickDecimal() {
@@ -161,6 +163,8 @@ function menuScreenKeypadClickDecimal() {
             currentMenuItemQuantity += ".";
         }
     }
+    
+    $('#menu_screen_input_show').html(currentMenuItemQuantity);
 }
 
 function tryDocumentLoadedLoadFirstMenuPage() {
@@ -292,6 +296,7 @@ function doSelectMenuItem(productId, menuItemId, element) {
     
     //reset the quantity
     currentMenuItemQuantity = "";
+    $('#menu_screen_input_show').html("");
 
     buildOrderItem(product, amount);
     setModifierGridIdForProduct(product);
@@ -387,10 +392,12 @@ function finishDoSelectMenuItem() {
     
     //do coursing and load receipt
     doAutoCoursing(currentOrder);
-    loadReceipt(currentOrder, true);
+    loadReceipt(currentOrder, false);
     
     currentSelectedReceiptItemEl = $('#till_roll div[data-item_number=' + currentOrderItem.itemNumber + ']');
     currentSelectedReceiptItemEl.addClass("selected");
+    
+    scrollMenuReceiptToSelected();
     
     testForPricePrompt(orderItem);
 
@@ -405,10 +412,11 @@ function tableSelectMenuItem(orderItem) {
     addItemToTableOrderAndSave(orderItem);
     
     doAutoCoursing(currentOrder);
-    loadReceipt(currentOrder, true);
-    
+    loadReceipt(currentOrder, false);
     currentSelectedReceiptItemEl = $('#till_roll div[data-item_number=' + currentOrderItem.itemNumber + ']');
     currentSelectedReceiptItemEl.addClass("selected");
+    
+    scrollMenuReceiptToSelected();
     
     testForPricePrompt(orderItem);
     
@@ -844,26 +852,12 @@ function editOrderItemOIAClicked() {
     showModifyOrderItemScreen();
 }
 
-
-
 function writeTotalToReceipt(order, orderTotal) {
     if(!order) return;
     
-    //write the total order discount to the end of the order items
-    //    tillRollServiceChargeHTML = getTillRollServiceChargeHTML(order);
-    //    
-    //    $('#till_roll_service_charge').html(tillRollServiceChargeHTML);
-    
-    //write the total order discount to the end of the order items
     tillRollDiscountHTML = getTillRollDiscountHTML(order);
     
     $('#till_roll_discount').html(tillRollDiscountHTML);
-    
-    //    if(order.service_charge) {
-    //        orderTotal += parseFloat(order.service_charge);
-    //    } else if(serviceCharge) {
-    //        orderTotal += parseFloat(serviceCharge);
-    //    }
     
     $('#total_value').html(currency(orderTotal));
 }
@@ -931,6 +925,12 @@ function loadReceipt(order, doScroll) {
     if(currentSelectedReceiptItemEl) {
         var selectedReceiptItemNumber = currentSelectedReceiptItemEl.data("item_number");
         currentSelectedReceiptItemEl = $('#till_roll div[data-item_number=' + selectedReceiptItemNumber + ']');
+    }
+}
+
+function scrollMenuReceiptToSelected() {
+    if(currentSelectedReceiptItemEl) {
+        scrollReceiptToSelected("", currentSelectedReceiptItemEl);
     }
 }
 
@@ -1041,8 +1041,6 @@ function doTotal(applyDefaultServiceCharge) {
     showTotalsScreen();
     totalsRecptScroll();
     
-    $('#cashback_amount_holder').html(currency(cashback));
-    
     $('#totals_tendered_value').html(currency(0, false));
     updateTotalTendered();
     
@@ -1059,6 +1057,8 @@ function doTotalFinal() {
         return;
     }
     
+    var isSplitBill = false;
+    
     numPersons = 0
 
     if(selectedTable == 0) {
@@ -1070,10 +1070,19 @@ function doTotalFinal() {
         //get total for table
         totalOrder = tableOrders[selectedTable];
 
-        if(selectedTable == -1) {
+        if(selectedTable == previousOrderTableNum) {
             //pick up the previous table
-            tableInfoLabel = tables[-1].label;
+            tableInfoLabel = tables[previousOrderTableNum].label;
             isTableOrder = (tableInfoLabel != 'None');
+            tableInfoId = totalOrder.tableInfoId;
+        } else if(selectedTable == tempSplitBillTableNum) {
+            
+            isSplitBill = true;
+            
+            //pick up the table
+            totalOrder.tableInfoId = totalOrder.split_bill_table_num;
+            tableInfoLabel = tables[totalOrder.tableInfoId].label + " Split";
+            isTableOrder = true;
             tableInfoId = totalOrder.tableInfoId;
         } else {
             isTableOrder = true;
@@ -1104,6 +1113,10 @@ function doTotalFinal() {
         totalOrder.cash_tendered = orderTotal + serviceCharge;
     } else {
         totalOrder.cash_tendered = cashTendered;
+    }
+    
+    if($.isEmptyObject(splitPayments)) {
+        splitPayments[paymentMethod] = totalOrder.cash_tendered;
     }
     
     totalOrder.change = $('#totals_change_value').html();
@@ -1151,7 +1164,9 @@ function doTotalFinal() {
         'pre_discount_price':preDiscountPrice,
         'order_details':totalOrder,
         'terminal_id':terminalID,
-        'void_order_id': totalOrder.void_order_id
+        'void_order_id': totalOrder.void_order_id,
+        'is_split_bill': isSplitBill,
+        'split_payments': splitPayments
     }
     
     showLoadingDiv();
@@ -1206,8 +1221,13 @@ function orderSentToServerCallback(orderData, errorOccured) {
     }
 
     //do we need to clear the previous order from the receipt dropdown selection?
-    if(selectedTable == -1) {
+    if(selectedTable == previousOrderTableNum) {
         $('#previous_order_select_item').hide();
+    }
+    
+    //do we need to clear the previous order from the receipt dropdown selection?
+    if(selectedTable == tempSplitBillTableNum) {
+        $('#split_bill_select_item').hide();
     }
 }
 
@@ -1490,44 +1510,6 @@ function getExistingDiscountPercentForCurrentOrderItem(itemNumber) {
     return existingDiscount;
 }
 
-//function orderItemAdditionAddSelected() {
-//    $('#add_note').hide();
-//    resetKeyboard();
-//    $('#oia_container').show();
-//    
-//    clearSelectedOIATabs();
-//    $('#oia_tab_add').addClass("selected");
-//    oiaIsAdd = true;
-//    
-//    $('#order_item_additions .grid_item:not(.empty)').each(function() {
-//        addCharge = $(this).data("add_charge");
-//        if(addCharge != 0) {
-//            $(this).find(".charge").html(currency(addCharge));
-//        }else {
-//            $(this).find(".charge").html("");
-//        }
-//    });
-//}
-//
-//function orderItemAdditionNoSelected() {
-//    $('#add_note').hide();
-//    resetKeyboard();
-//    $('#oia_container').show();
-//    
-//    clearSelectedOIATabs();
-//    $('#oia_tab_no').addClass("selected");
-//    oiaIsAdd = false;
-//    
-//    $('#order_item_additions .grid_item:not(.empty)').each(function() {
-//        noCharge = $(this).data("minus_charge");
-//        if(noCharge != 0) {
-//            $(this).find(".charge").html(currency(noCharge));
-//        } else {
-//            $(this).find(".charge").html("");
-//        }
-//    });
-//}
-
 function orderItemAdditionTabSelected(oiagId) {
     if(!oiagId) {
         oiagId = $('#oia_tabs .oia_tab').first().data("oiag_id");
@@ -1788,106 +1770,6 @@ function postDoSelectTable() {
 //does nothing for now, but the medium interface needed this callback
 }
 
-//function orderItemAdditionClicked(el) {
-//    currentSelectedReceiptItemEl = getSelectedOrLastReceiptItem();
-//    
-//    if(!currentSelectedReceiptItemEl) {
-//        setStatusMessage("There are no receipt items!");
-//        return;
-//    }
-//    
-//    var order = getCurrentOrder();
-//    
-//    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
-//    
-//    var orderItem = order.items[itemNumber-1];
-//    
-//    el = $(el);
-//    
-//    //is this available
-//    var available = el.data("available");
-//    
-//    if(!available) {
-//        return;
-//    }
-//    
-//    //get the oia data
-//    var desc = el.data("description");
-//    
-//    var absCharge = 0;
-//    
-//    var plusCharge = el.data("add_charge");
-//    var minusCharge = el.data("minus_charge");
-//    
-//    if(oiaIsAdd) {
-//        absCharge = plusCharge;
-//    } else {
-//        absCharge = minusCharge;
-//    }
-//    
-//    var hideOnReceipt = el.data("hide_on_receipt");
-//    var isAddable = el.data("is_addable");
-//    
-//    addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, false, hideOnReceipt, isAddable);
-//}
-//
-//function addOIAToOrderItem(order, orderItem, desc, absCharge, plusCharge, minusCharge, oiaIsAdd, isNote, hideOnReceipt, isAddable) {
-//    //make sure all values in calc are floats
-//    absCharge = parseFloat(absCharge);
-//    
-//    if(orderItem.pre_discount_price) {
-//        orderItem.pre_discount_price = parseFloat(orderItem.pre_discount_price);
-//    } else {
-//        orderItem.total_price = parseFloat(orderItem.total_price);
-//    }
-//    
-//    oia_item = {
-//        'description' : desc,
-//        'abs_charge' : absCharge,
-//        'is_add' : oiaIsAdd, 
-//        'is_note' : isNote,
-//        'hide_on_receipt' : hideOnReceipt,
-//        'is_addable' : isAddable
-//    }
-//    
-//    if(typeof(orderItem.oia_items) == 'undefined') {
-//        orderItem.oia_items = new Array();
-//    }
-//    
-//    //update the total
-//    if(oiaIsAdd) {
-//        if(orderItem.pre_discount_price) {
-//            orderItem.pre_discount_price += (orderItem.amount * absCharge);
-//        } else {
-//            orderItem.total_price += (orderItem.amount * absCharge);
-//        }
-//    } else {
-//        if(orderItem.pre_discount_price) {
-//            orderItem.pre_discount_price -= (orderItem.amount * absCharge);
-//        } else {
-//            orderItem.total_price -= (orderItem.amount * absCharge);
-//        }
-//    }
-//    
-//    orderItem.oia_items.push(oia_item);
-//   
-//    applyExistingDiscountToOrderItem(order, orderItem.itemNumber);
-//   
-//    //store the modified order
-//    if(selectedTable != 0) {
-//        storeTableOrderInStorage(current_user_id, selectedTable, order);
-//    }else {
-//        storeOrderInStorage(current_user_id, order);
-//    }
-//        
-//    //redraw the receipt
-//    calculateOrderTotal(order);
-//    loadReceipt(order, true);
-//    setTimeout(menuRecptScroll, 20);
-//    
-//    currentSelectedReceiptItemEl = null;
-//}
-
 function doReceiveOrderReady(employee_id, terminal_id, table_id, table_label) {
     if(inKitchenContext()) {
         return;
@@ -1980,6 +1862,9 @@ function splitBillScreenKeypadClickCancel() {
 }
 
 function loadSplitBillReceipts() {
+    doAutoCoursing(splitBillOrderFrom);
+    doAutoCoursing(splitBillOrderTo);
+    
     //ORDER FROM
     var orderFromReceiptHTML = getAllOrderItemsReceiptHTML(splitBillOrderFrom, false, false, true);
     $('#split_bill_from_till_roll').html(orderFromReceiptHTML);
@@ -2039,7 +1924,7 @@ function doSplitOrderItem(orderLine, reverse) {
     
     //take it from the order
     if(theItem.amount - currentSplitBillItemQuantity > 0) {
-        modifyOrderItem(orderFrom, itemNumber, theItem.amount - currentSplitBillItemQuantity, theItem.product_price);
+        modifyOrderItem(orderFrom, itemNumber, theItem.amount - currentSplitBillItemQuantity, theItem.product_price, theItem.product.course_num);
     } else {
         currentSplitBillItemQuantity = theItem.amount;
         doRemoveOrderItem(orderFrom, itemNumber);
@@ -2054,7 +1939,7 @@ function doSplitOrderItem(orderLine, reverse) {
     //add this item to the order array
     orderTo.items.push(theCopiedOrderItem);
     
-    modifyOrderItem(orderTo, theCopiedOrderItem.itemNumber, currentSplitBillItemQuantity, theCopiedOrderItem.product_price);
+    modifyOrderItem(orderTo, theCopiedOrderItem.itemNumber, currentSplitBillItemQuantity, theCopiedOrderItem.product_price, theCopiedOrderItem.product.course_num);
     
     loadSplitBillReceipts();
     
