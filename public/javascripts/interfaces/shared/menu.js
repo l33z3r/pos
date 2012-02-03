@@ -106,9 +106,12 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
             tableOrderDataJSON.items[itemKey].product.show_price_on_receipt = (tableOrderDataJSON.items[itemKey].product.show_price_on_receipt.toString() == "true" ? true : false);   
         }
         
-        //make sure the data types are converted correctly
         if(tableOrderDataJSON.items[itemKey].product.hide_on_printed_receipt) {
             tableOrderDataJSON.items[itemKey].product.hide_on_printed_receipt = (tableOrderDataJSON.items[itemKey].product.hide_on_printed_receipt.toString() == "true" ? true : false);   
+        }
+        
+        if(tableOrderDataJSON.items[itemKey].product.category_id == "null") {
+            tableOrderDataJSON.items[itemKey].product.category_id = null;
         }
         
         if(tableOrderDataJSON.items[itemKey].is_course) {
@@ -333,17 +336,20 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
             } 
             
             var categoryId = items[itemKey].product.category_id;
-            var categoryPrinters = categories[categoryId].printers;
             
-            if(!foundPrinter && (typeof categoryPrinters != "undefined") && categoryPrinters.length > 0) {
-                var categoryPrintersArray = categoryPrinters.split(",");
+            if(categoryId != null) {
+                var categoryPrinters = categories[categoryId].printers;
+            
+                if(!foundPrinter && (typeof categoryPrinters != "undefined") && categoryPrinters.length > 0) {
+                    var categoryPrintersArray = categoryPrinters.split(",");
                 
-                if($.inArray(terminalID.toLowerCase(), categoryPrintersArray) != -1) {
-                    foundPrinter = true;
-                    //pushcount++;
-                    itemsToPrint.push(items[itemKey]);
+                    if($.inArray(terminalID.toLowerCase(), categoryPrintersArray) != -1) {
+                        foundPrinter = true;
+                        //pushcount++;
+                        itemsToPrint.push(items[itemKey]);
+                    }
                 }
-            } 
+            }
         }
     }
     
