@@ -207,10 +207,7 @@ function doSelectReceiptItem(orderItemEl) {
     var selectedProduct = products[getCurrentOrder().items[parseInt(orderItemEl.data("item_number"))-1].product.id];
     setModifierGridIdForProduct(selectedProduct);
 
-    //keep the border
-    orderItemEl.addClass("selected");
 
-    setOrderItemAdditionsGridState();
 
     showEditPopupInit();
 
@@ -224,6 +221,11 @@ function doSelectReceiptItem(orderItemEl) {
     $('#' + popupId).find('.quantity').val(currentQuantity);
 
     $('#' + popupId).find('.new_price').focus();
+
+    //keep the border
+    orderItemEl.addClass("selected");
+
+    setOrderItemAdditionsGridState();
 
 }
 
