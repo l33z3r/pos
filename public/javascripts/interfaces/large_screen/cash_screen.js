@@ -139,7 +139,7 @@ function paymentMethodSelected(method, integration_id) {
     }
     
     cashTendered = splitPayments[paymentMethod];
-    $('#tendered_value').html(currency(cashTendered, false));
+    $('#tendered_value').html(cashTendered * 100);
 }
 
 var selectedRoomNumber = null;
@@ -239,24 +239,11 @@ function totalsScreenKeypadClick(val) {
         return;
     }
     
-    //make sure you cannot enter a 3rd decimal place number
-    if(cashTenderedKeypadString.indexOf(".") != -1) {
-        if(cashTenderedKeypadString.length - cashTenderedKeypadString.indexOf(".") > 3) {
-            return;
-        }
-    }
-    
     cashTenderedKeypadString += val;
-    cashTendered = parseFloat(cashTenderedKeypadString);
+    cashTendered = parseFloat(cashTenderedKeypadString/100.0);
     //alert(splitPayments[paymentMethod] + " " + cashTendered);
     splitPayments[paymentMethod] = cashTendered;
-    $('#tendered_value').html(currency(splitPayments[paymentMethod], false));
-}
-
-function totalsScreenKeypadClickDecimal() {
-    if(cashTenderedKeypadString.indexOf(".") == -1) {
-        cashTenderedKeypadString += ".";
-    }
+    $('#tendered_value').html(cashTenderedKeypadString);
 }
 
 function totalsScreenKeypadClickCancel() {
@@ -265,7 +252,7 @@ function totalsScreenKeypadClickCancel() {
         return;
     }
     
-    $('#tendered_value').html(currency(0, false));
+    $('#tendered_value').html('0');
     splitPayments[paymentMethod] = 0;
     resetTendered();
 }
@@ -292,10 +279,9 @@ function moneySelected(amount) {
     cashTendered = parseFloat(newAmount);
     //alert(splitPayments[paymentMethod] + " " + cashTendered);
     splitPayments[paymentMethod] = cashTendered;
-    $('#tendered_value').html(currency(splitPayments[paymentMethod], false));
+    $('#tendered_value').html(newAmount * 100);
     
     updateTotalTendered();
-    
 }
 
 function doChargeRoom(orderData) {

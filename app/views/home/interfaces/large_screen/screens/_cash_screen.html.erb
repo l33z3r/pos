@@ -32,8 +32,8 @@
           <% end %>
         <% end %>
 
-        <div id="totals_keypad_num_0" class="key" data-onpress="totalsScreenKeypadClick(0)">0</div>
-        <div id="totals_decimal_key" class="key" data-onpress="totalsScreenKeypadClickDecimal()">.</div>
+        <div id="totals_keypad_num_0" class="key" data-onpress="totalsScreenKeypadClick('0')">0</div>
+        <div id="totals_keypad_num_00" class="key" data-onpress="totalsScreenKeypadClick('00')">00</div>
         <div id="totals_cancel_key" class="key" data-onpress="totalsScreenKeypadClickCancel()">C</div>
       </div>
 
@@ -107,7 +107,6 @@
                 <div class="data">
                   <div id="tendered_box" onclick="setTenderedBoxFocus(true)">
                     <div id="tendered_value"></div>
-                    <div class="right"><%= @currency_symbol %></div>
                     <div class="clear">&nbsp;</div>
                   </div>
                 </div>
