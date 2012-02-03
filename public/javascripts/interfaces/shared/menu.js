@@ -424,7 +424,7 @@ function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCou
     targetOrderItem.amount = newQuantity;
     targetOrderItem.product_price = newPricePerUnit;
     targetOrderItem.product.course_num = newCourseNum;
-    
+
     if(targetOrderItem.pre_discount_price) {
         targetOrderItem.pre_discount_price = newPricePerUnit * newQuantity;
     } else {
@@ -823,6 +823,8 @@ function removeSelectedOrderItem() {
     loadReceipt(order, true);
     
     closeEditOrderItem();
+    closeDiscountPopup();
+
 }
 
 function doRemoveOrderItem(order, itemNumber) {

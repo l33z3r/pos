@@ -1372,7 +1372,7 @@ function showDiscountPopup(receiptItem) {
     discountsPopupHTML = $("#discounts_popup_markup").html();
     
     currentTargetPopupAnchor.ShowBubblePopup({
-        position: 'right',  
+        position: 'right',
         align: 'top',
         tail	 : {
             align: 'middle'

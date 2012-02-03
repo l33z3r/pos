@@ -1259,6 +1259,8 @@ div.mcdropdown div {
 
 div#receipt_function_popup_content{
     display: none;
+    height: 300px;
+    width: 350px
 }
 
 
@@ -1321,7 +1323,7 @@ div#price_editor div.price_label {
     font-size: 14px;
 }
 
-div#price_editor input.price {
+div#price_editor input.new_price {
     float: left;
     margin: -5px 0px 1px 30px;
     height: 25px;
@@ -1331,8 +1333,11 @@ div#price_editor input.price {
     border-radius: 5px;
 }
 
+
+
 div#receipt_function_popup_content div.action_buttons_container {
     text-align: center;
+    margin-left: 20px;
 }
 
 
@@ -1340,7 +1345,7 @@ div#receipt_function_popup_content div.action_buttons_container {
 div#receipt_function_popup_content div.action_buttons div.button {
     display: block;
     float: left;
-    height: 60px;
+    height: 45px;
     padding-top: 5px;
     margin: 0px 5px;
 }
@@ -1365,6 +1370,52 @@ div#receipt_function_popup_content div.discount_buttons {
     width: 280px;
     margin-left: 4px;
 
+}
+
+div.popup_container div.action_buttons_container {
+    text-align: center;
+}
+
+div.popup_container div.action_buttons {
+    width: 175px;
+    margin: auto;
+}
+
+div.popup_container div.action_buttons div.button {
+    display: block;
+    float: left;
+    height: 60px;
+    padding-top: 5px;
+    margin: 0px 5px;
+}
+
+div#receipt_function_popup_content div.actions div#save_button {
+    padding: 4px;
+    padding-left: 7px;
+    float: right;
+    cursor: pointer;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    height: 18px;
+    width: 38px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    margin: 3px;
+}
+
+div#receipt_function_popup_content div.actions div#cancel_button {
+    padding: 4px;
+    float: left;
+    cursor: pointer;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    height: 18px;
+    width: 52px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    margin: 3px;
 }
 
 div.discount_buttons div.button {
@@ -1443,3 +1494,4 @@ div.discount_buttons div.header {
 }
 
 /* End Generic Styles */
+
