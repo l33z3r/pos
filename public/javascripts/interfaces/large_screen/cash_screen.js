@@ -106,9 +106,12 @@ function paymentMethodSelected(method, integration_id) {
     
     //check if the payment method is the charge room and do some magic
     if(paymentIntegrationId != 0) {
+        
+        totalAmountInclCashback = currentTotalFinal + cashback
+        
         //integrations do not allow for split payments
         splitPayments = {};
-        splitPayments[paymentMethod] = 0;
+        splitPayments[paymentMethod] = totalAmountInclCashback;
         
         if(paymentIntegrationId == zalionPaymentIntegrationId) {
             //alert("Zalion Integration");
@@ -123,12 +126,15 @@ function paymentMethodSelected(method, integration_id) {
                 error: function() {
                     hideLoadingDiv();
                     setStatusMessage("Error Getting Zalion Data", false, false);                   
+                    paymentMethodSelected(defaultPaymentMethod, 0);
                 },
                 data: {
                     zalion_roomfile_request_url : zalion_roomfile_request_url
                 }
             });
         }
+        
+        return;
     }
     
     resetTendered();
