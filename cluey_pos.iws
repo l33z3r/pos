@@ -15,8 +15,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b175b289-9e99-4e0b-90b8-c6462789b4b1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cluey_pos.iws" afterPath="$PROJECT_DIR$/cluey_pos.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_menu_items_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_menu_items_screen.html.erb" />
     </list>
     <ignored path="cluey_pos.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -123,7 +122,16 @@
       <file leaf-file-name="_menu_items_screen.html.erb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_menu_items_screen.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="94" column="76" selection-start="4246" selection-end="4246" vertical-scroll-proportion="0.61728394">
+            <state line="102" column="49" selection-start="4649" selection-end="4649" vertical-scroll-proportion="0.80260307">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main_controller.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/api/main_controller.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="63" selection-start="49" selection-end="49" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -151,15 +159,6 @@
         <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/large_screen/screens/_menu_screen.html.erb">
           <provider selected="true" editor-type-id="text-editor">
             <state line="76" column="59" selection-start="2689" selection-end="2689" vertical-scroll-proportion="-47.5">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="style.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/stylesheets/interfaces/medium_screen/style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1441" column="48" selection-start="31383" selection-end="31383" vertical-scroll-proportion="-11.88">
               <folding />
             </state>
           </provider>
@@ -1336,16 +1335,16 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32784638" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32458565" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32458565" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946485" sideWeight="0.6726027" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24723756" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24723756" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21985815" sideWeight="0.6754144" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21985815" sideWeight="0.75276244" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1398,13 +1397,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/views/partials/interfaces/shared/_shared_js_includes.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="54" selection-start="452" selection-end="463" vertical-scroll-proportion="-4.375">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/plugins/jquery.bubblepopup.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="166" column="9" selection-start="7727" selection-end="7727" vertical-scroll-proportion="0.33333334">
@@ -1482,9 +1474,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/large_screen/screens/_menu_screen.html.erb">
+    <entry file="file://$PROJECT_DIR$/config/database.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="76" column="59" selection-start="2689" selection-end="2689" vertical-scroll-proportion="-47.5">
+        <state line="29" column="60" selection-start="696" selection-end="696" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/api/main_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="63" selection-start="49" selection-end="49" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -1496,16 +1495,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/database.yml">
+    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/large_screen/screens/_menu_screen.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="60" selection-start="696" selection-end="696" vertical-scroll-proportion="0.0">
+        <state line="76" column="59" selection-start="2689" selection-end="2689" vertical-scroll-proportion="-47.5">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_menu_items_screen.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="94" column="76" selection-start="4246" selection-end="4246" vertical-scroll-proportion="0.61728394">
+        <state line="102" column="49" selection-start="4649" selection-end="4649" vertical-scroll-proportion="0.80260307">
           <folding />
         </state>
       </provider>
