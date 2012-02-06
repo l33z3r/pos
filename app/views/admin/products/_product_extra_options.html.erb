@@ -172,13 +172,18 @@
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
-        <div class="label">Is Special?</div>
+        <div class="label">Daily Special</div>
         <%= f.check_box :is_special %>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
         <div class="label">Hide On Printed Receipt?</div>
         <%= f.check_box :hide_on_printed_receipt %>
+        <div class="clear">&nbsp;</div>
+      </div>
+      <div class="field">
+        <div class="label">Stock Item</div>
+        <%= f.check_box :is_stock_item %>
         <div class="clear">&nbsp;</div>
       </div>
     </div>
@@ -251,7 +256,7 @@
           </div>
           <!-- 
           <% if @product.has_product_image? %>
-                                  <p class="label">Select to Delete Image:</p>
+                                              <p class="label">Select to Delete Image:</p>
             <%= check_box_tag :delete_product_image, false %>
           <% end %>
           -->
@@ -320,5 +325,33 @@
 
   <div id="ingredients_tab_content" class="tab_content" style="display: none;">
 
+    <div class="product_header">Product Name</div>
+    <div class="uses">uses</div>
+    <div class="quantity_header">Quantity</div>
+
+    <div class="clear_top_margin_10">&nbsp;</div>
+
+    <% for ingredient in @product.ingredients %>
+      <div class="ingredient">
+        <%= fields_for "product[#{ingredient.new_record? ? "" : "existing_"}ingredient_products][]", ingredient do |ingredient_form| %>
+
+          <div class="product">
+            <%= ingredient_form.select :product_id, options_for_select((Product.product_options_for_select @product.id), ingredient.product_id) %>
+          </div>
+
+          <%= ingredient_form.hidden_field :ingredient_product_id, {:value => @product.id} %>
+
+          <div class="quantity">
+            <%= ingredient_form.text_field :quantity_numerator, :size => 2 %> /
+            <%= ingredient_form.text_field :quantity_denominator, :size => 2 %>
+          </div>
+
+          <div class="calculation">
+            = <%=ingredient.stock_usage.round(3)%>
+          </div>
+        <% end %>
+      </div>
+      <div class="clear">&nbsp;</div>
+    <% end %>
   </div>
 </div>

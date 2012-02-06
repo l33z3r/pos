@@ -415,6 +415,45 @@ div#product_builder div#builder_fields_container div.extra_options div#options_t
     height: 30px;
 }
 
+div#product_builder div#builder_fields_container div.extra_options div#ingredients_tab_content div.product_header {
+    float: left;
+    margin-left: 80px;
+    width: 220px;
+    font-weight: bold;
+}
+
+div#product_builder div#builder_fields_container div.extra_options div#ingredients_tab_content div.uses {
+    float: left;
+    width: 50px;
+    font-weight: bold;
+}
+
+div#product_builder div#builder_fields_container div.extra_options div#ingredients_tab_content div.quantity_header {
+    float: left;
+    width: 200px;
+    font-weight: bold;
+}
+
+div#product_builder div#builder_fields_container div.extra_options div#ingredients_tab_content div.product {
+    float: left;
+    margin-left: 80px;
+    width: 220px;
+}
+
+div#product_builder div#builder_fields_container div.extra_options div#ingredients_tab_content div.quantity {
+    float: left;
+    margin-left: 50px;
+    width: 140px;
+}
+
+div#product_builder div#builder_fields_container div.extra_options div#ingredients_tab_content div.calculation {
+    float: left;
+    font-weight: bold;
+    width: 70px;
+    text-align: left;
+    margin-top: 3px;
+}
+
 div#product_builder div#builder_fields_container div.extra_options div#appearance_tab_content div#product_image_input_container {
     position: relative;
 }

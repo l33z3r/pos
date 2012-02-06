@@ -46,6 +46,9 @@ class Product < ActiveRecord::Base
   validates :menu_button_width, :presence => true, :inclusion => { :in => VALID_BUTTON_WIDTHS }
   validates :menu_button_height, :presence => true, :inclusion => { :in => VALID_BUTTON_HEIGHTS }
   
+  has_many :ingredients, :foreign_key => "ingredient_product_id"
+  after_update :save_ingredients
+  
   after_create :set_image
   
   #for will_paginate
@@ -54,6 +57,40 @@ class Product < ActiveRecord::Base
 
   def has_product_image?
     return (!product_image_file_name.nil? and !product_image_file_name.blank?)
+  end
+  
+  def existing_ingredient_products= ingredient_products
+    ingredients.reject(&:new_record?).each do |ingredient|
+      attributes = ingredient_products[ingredient.id.to_s]
+      
+      if attributes[:product_id] == "0"
+        ingredient.destroy
+      else 
+        ingredient.attributes = attributes
+      end
+    end
+  end
+  
+  def ingredient_products= ingredient_products
+    ingredient_products.each do |ingredient_attributes|
+      if !ingredient_attributes[:id] and ingredient_attributes[:product_id] != "0"
+        ingredients.build(ingredient_attributes)
+      end
+    end
+  end
+  
+  def save_ingredients
+    ingredients.each do |ingredient|
+      if(ingredient.quantity_numerator <= 0)
+        ingredient.quantity_numerator = 1
+      end
+      
+      if(ingredient.quantity_denominator <= 0)
+        ingredient.quantity_denominator = 1
+      end
+      
+      ingredient.save(false)
+    end
   end
   
   def self.categoryless
@@ -134,12 +171,29 @@ class Product < ActiveRecord::Base
   end
   
   def decrement_stock quantity
+    logger.info "!!!! decrementing #{name} by #{quantity}"
     @decrement_val = quantity/quantity_per_container
     decrement!(:quantity_in_stock, @decrement_val)
   end
   
   def last_stock_transaction
     stock_transactions
+  end
+  
+  def self.product_options_for_select product_id
+    @options = []
+    
+    #the none option
+    @options << ["None", "0"]
+    
+    Product.non_deleted.each do |p|
+      #product cant be its own ingredient
+      next if product_id == p.id
+      
+      @options << [p.name, p.id]
+    end
+    
+    @options
   end
   
   def set_image
@@ -209,6 +263,7 @@ class Product < ActiveRecord::Base
   end
   
 end
+
 
 
 
@@ -291,5 +346,7 @@ end
 #  hide_on_printed_receipt                  :boolean(1)      default(FALSE)
 #  order_item_addition_grid_id              :integer(4)
 #  order_item_addition_grid_id_is_mandatory :boolean(1)      default(FALSE)
+#  course_num                               :integer(4)      default(0)
+#  is_stock_item                            :boolean(1)      default(TRUE)
 #
 

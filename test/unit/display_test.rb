@@ -9,6 +9,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: displays
@@ -18,5 +19,6 @@ end
 #  created_at :datetime
 #  updated_at :datetime
 #  is_default :boolean(1)      default(FALSE)
+#  is_public  :boolean(1)      default(FALSE)
 #
 

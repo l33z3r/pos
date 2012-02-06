@@ -154,11 +154,13 @@ class Admin::ProductsController < Admin::AdminController
   def new
     @hide_admin_header = true
     @product = Product.new
+    12.times { @product.ingredients.build }
   end
 
   def edit
     @hide_admin_header = true
     @product = Product.find(params[:id])
+    (12 - @product.ingredients.length).times { @product.ingredients.build }
   end
 
   def create

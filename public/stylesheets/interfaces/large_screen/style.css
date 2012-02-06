@@ -543,23 +543,23 @@ div#receipt_keypad_container div#receipt {
 }
 
 div#receipt_keypad_container div#stock_take_receipt {
-    height: 379px;
+    height: 351px;
     display: none;
     background-color: #FFF;
 }
 
 div#receipt_keypad_container div#stock_take_receipt div#receipt_area {
-    height: 250px;
+    height: 222px;
 }
 
 div#receipt_keypad_container div#price_change_receipt {
-    height: 379px;
+    height: 351px;
     display: none;
     background-color: #FFF;
 }
 
 div#receipt_keypad_container div#price_change_receipt div#receipt_area {
-    height: 250px;
+    height: 222px;
 }
 
 div#receipt_keypad_container div#price_change_receipt div#price_change_new_price_input_container {

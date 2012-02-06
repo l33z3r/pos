@@ -10,6 +10,7 @@ var products_by_upc = new Array();
   'hide_on_printed_receipt' : <%=p.hide_on_printed_receipt%>,
   'show_price_on_receipt' : <%=p.show_price_on_receipt%>,
   'prompt_price' : <%=p.show_price_prompt%>,
+  'is_stock_item' : <%=p.is_stock_item%>,
   'printers' : "<%= p.printers %>",
   'deleted' : <%= p.is_deleted %>,
   'category_id' : <%= p.category ? p.category.id : "null" %>,
