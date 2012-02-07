@@ -215,7 +215,7 @@ class OrderController < ApplicationController
         #decrement the ingredient stock
         @order_item.product.ingredients.each do |ingredient|
           @ingredient_usage = ingredient.stock_usage
-          ingredient.product.decrement_stock @ingredient_usage
+          ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
         end
       end
     end

@@ -331,7 +331,7 @@
 
     <div class="clear_top_margin_10">&nbsp;</div>
 
-    <% for ingredient in @product.ingredients %>
+    <% @product.ingredients.each_with_index do |ingredient, index| %>
       <div class="ingredient">
         <%= fields_for "product[#{ingredient.new_record? ? "" : "existing_"}ingredient_products][]", ingredient do |ingredient_form| %>
 
@@ -342,11 +342,11 @@
           <%= ingredient_form.hidden_field :ingredient_product_id, {:value => @product.id} %>
 
           <div class="quantity">
-            <%= ingredient_form.text_field :quantity_numerator, :size => 2 %> /
-            <%= ingredient_form.text_field :quantity_denominator, :size => 2 %>
+            <%= ingredient_form.text_field :quantity_numerator, :id => "quantity_numerator_#{index}", :size => 2, :onkeyup => "updateStockCalculation(#{index});" %> /
+            <%= ingredient_form.text_field :quantity_denominator, :id => "quantity_denominator_#{index}", :size => 2, :onkeyup => "updateStockCalculation(#{index});" %>
           </div>
 
-          <div class="calculation">
+        <div id="stock_calculation_<%=index%>" class="calculation">
             = <%=ingredient.stock_usage.round(3)%>
           </div>
         <% end %>

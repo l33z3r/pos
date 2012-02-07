@@ -48,6 +48,21 @@ function setExtraOptionsSelectedTab(tab_el_name, tab_content_el_name) {
     $('#' + tab_content_el_name).show();
 }
 
+function updateStockCalculation(index) {
+    var numerator = parseInt($('#quantity_numerator_' + index).val());
+    var denominator = parseInt($('#quantity_denominator_' + index).val());
+    
+    if(isNaN(numerator) || numerator <=0) {
+        numerator = 1;
+    }
+    
+    if(isNaN(denominator) || denominator <=0) {
+        denominator = 1;
+    }
+    
+    $('#stock_calculation_' + index).html(" = " + roundNumber((parseFloat(numerator)/parseFloat(denominator)), 3));
+}
+
 var bgColorPickerAnchor = null;
 
 function productBuidlerShowBgColorPicker() {
