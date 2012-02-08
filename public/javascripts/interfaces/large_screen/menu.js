@@ -1588,7 +1588,7 @@ function doTotalFinal() {
             
         mandatoryFooterMessageHTML += "</div>" + clear30HTML;
         
-//        printReceipt(receiptCasioHTML, true);
+        printReceipt(receiptCasioHTML, true);
     } else if(autoPrintReceipt) {
         printReceipt(receiptCasioHTML, true);
     }

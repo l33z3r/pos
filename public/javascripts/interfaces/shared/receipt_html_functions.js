@@ -55,32 +55,32 @@ function printReceipt(content, printRecptMessage) {
 
     printCasioContent(content);
 
-    if(!inKitchenContext()) {
-        setStatusMessage("Printing Receipt");
-    }
-    
-    var footer = receiptMessage;
-
-    //check if a custom footer should be used
-    if(customFooterId != null) {
-        footer = customReceiptFooters[customFooterId].content;
-    }
-
-    //you set mandatoryFooterMessageHTML before calling this and it will print it
-    //used for the likes of zalion
-    if(mandatoryFooterMessageHTML != null) {
-        content += clearHTML + mandatoryFooterMessageHTML;
-        mandatoryFooterMessageHTML = null;
-    }
-
-    if(printRecptMessage) {
-        receiptMessageHTML = "<div id='receipt_message'>" + footer + "</div>";
-        content += clearHTML + receiptMessageHTML;
-    }
-    //add space and a dot so we print a bottom margin
-    content += clear30HTML + "<div class='the_dots'>.  .  .</div>";
-    
-    printContent(content);
+//    if(!inKitchenContext()) {
+//        setStatusMessage("Printing Receipt");
+//    }
+//
+//    var footer = receiptMessage;
+//
+//    //check if a custom footer should be used
+//    if(customFooterId != null) {
+//        footer = customReceiptFooters[customFooterId].content;
+//    }
+//
+//    //you set mandatoryFooterMessageHTML before calling this and it will print it
+//    //used for the likes of zalion
+//    if(mandatoryFooterMessageHTML != null) {
+//        content += clearHTML + mandatoryFooterMessageHTML;
+//        mandatoryFooterMessageHTML = null;
+//    }
+//
+//    if(printRecptMessage) {
+//        receiptMessageHTML = "<div id='receipt_message'>" + footer + "</div>";
+//        content += clearHTML + receiptMessageHTML;
+//    }
+//    //add space and a dot so we print a bottom margin
+//    content += clear30HTML + "<div class='the_dots'>.  .  .</div>";
+//
+//    printContent(content);
 }
 
 function printCasioContent(content) {
