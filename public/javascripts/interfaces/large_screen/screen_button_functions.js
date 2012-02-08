@@ -361,6 +361,8 @@ function showGlobalSettingsPage() {
 }
 
 function openCashDrawer() {
+    openCasioDrawer();
+
     if(using_wss_cash_drawer) {
         if ("WebSocket" in window) {
             console.log("Sending cash drawer message");
@@ -640,6 +642,9 @@ function saveButton() {
 }
 
 function unorderedItemsPopup(evalCode, doAutoLogin) {
+
+
+
     if(currentOrderEmpty()) {
         eval(evalCode);
         return;

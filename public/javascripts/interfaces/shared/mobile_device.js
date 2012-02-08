@@ -52,9 +52,15 @@ function openCasioDrawer() {
     }
 }
 
-function printCasioReceipt() {
+function printCasioReceipt(content) {
     if(inAndroidWrapper()) {
-        clueyAndroidJSInterface.printCasioReceipt();
+        clueyAndroidJSInterface.printCasioReceipt(content);
+    }
+}
+
+function showCasioLineDisplay(content1, content2) {
+    if(inAndroidWrapper()) {
+        clueyAndroidJSInterface.showLineDisplay(content1, content2);
     }
 }
 

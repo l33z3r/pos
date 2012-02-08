@@ -526,10 +526,155 @@ function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnCl
     for(var i=0; i<order.items.length; i++) {
         item = order.items[i];
         allOrderItemsReceiptHTML += getOrderItemReceiptHTML(order.items[i], includeNonSyncedStyling, includeOnClick, includeServerAddedText);
+
     }
-    
+    showCasioLineDisplay(order.items[order.items.length-1].product.name + " - " + currency(order.items[order.items.length-1].product_price,false), "Sub-Total: " + currency(totalOrder.total, false))
     return allOrderItemsReceiptHTML;
 }
+
+function getCasioOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
+    casioOrderItemsReceiptHTML = "";
+
+    for(var i=0; i<order.items.length; i++) {
+        item = order.items[i];
+        casioOrderItemsReceiptHTML += getCasioOrderItemReceiptHTML(order.items[i], includeNonSyncedStyling, includeOnClick, includeServerAddedText);
+    }
+
+    return casioOrderItemsReceiptHTML;
+}
+
+//TODO: replace with jquery template => http://api.jquery.com/jQuery.template/
+function getCasioOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
+
+//    if (typeof includeNonSyncedStyling == "undefined") {
+//        includeNonSyncedStyling = true;
+//    }
+//
+//    if (typeof includeOnClick == "undefined") {
+//        includeOnClick = true;
+//    }
+//
+//    if (typeof includeServerAddedText == "undefined") {
+//        includeServerAddedText = true;
+//    }
+    casioorderHTML = ""
+    casioorderHTML += orderItem.product.name + "    " + currency(orderItem.product_price, false) + "\n";
+
+//    casioorderHTML += orderItem.product.course_num + notSyncedMarker;
+//
+//    if(orderItem.is_double) {
+//        casioorderHTML += "Double ";
+//    }
+//
+//    casioorderHTML += orderItem.product.name;
+//
+//    orderItemTotalPriceText = number_to_currency(itemPriceWithoutModifier, {
+//        precision : 2
+//    });
+//    casioorderHTML += orderItem.product_price + (orderItem.product.show_price_on_receipt ? orderItemTotalPriceText : "");
+//
+//    if(orderItem.show_course_label) {
+//        casioorderHTML += courseLabels[parseInt(orderItem.product.course_num)];
+//    }
+//
+//    if(orderItem.modifier) {
+//        casioorderHTML += orderItem.modifier.name;
+//
+//        modifierPriceWithoutDiscount = orderItem.modifier.price * orderItem.amount;
+//
+//        if(haveDiscount) {
+//            modifierPrice = modifierPriceWithoutDiscount - ((modifierPriceWithoutDiscount * orderItem.discount_percent)/100);
+//        } else {
+//            modifierPrice = modifierPriceWithoutDiscount;
+//        }
+//
+//        //only show modifier price if not zero
+//        if(orderItem.modifier.price > 0) {
+//            modifierPriceText = number_to_currency(modifierPrice, {
+//                precision : 2
+//            });
+//            casioorderHTML += modifierPriceText;
+//        }
+//
+//        casioorderHTML += clearHTML;
+//    }
+//
+//    if(orderItem.oia_items) {
+//        for(var j=0; j<orderItem.oia_items.length; j++) {
+//
+//            oia_is_add = orderItem.oia_items[j].is_add;
+//
+//            casioorderHTML += clearHTML + (orderItem.oia_items[j].hide_on_receipt ? "hide_on_receipt" : "");
+//
+//            casioorderHTML += (orderItem.oia_items[j].is_note ? "note" : "");
+//
+//            if(!orderItem.oia_items[j].is_note) {
+//                if(orderItem.oia_items[j].is_addable) {
+//                    casioorderHTML += oia_is_add ? "Add " : "No ";
+//                }
+//            }
+//
+//            casioorderHTML += orderItem.oia_items[j].description;
+//
+//            if(orderItem.oia_items[j].abs_charge != 0) {
+//
+//                oiaPriceWithoutDiscount = orderItem.oia_items[j].abs_charge * orderItem.amount;
+//
+//                if(haveDiscount && oia_is_add) {
+//                    oiaPrice = oiaPriceWithoutDiscount - ((oiaPriceWithoutDiscount * orderItem.discount_percent)/100);
+//                } else {
+//                    oiaPrice = oiaPriceWithoutDiscount;
+//                }
+//
+//                casioorderHTML += (!oia_is_add ? "-" : "") + currency(oiaPrice, false);
+//            }
+//
+//        }
+//    }
+//
+//    var preDiscountPrice = (orderItem.product_price * orderItem.amount);
+//
+//    //add the modifiers price to the preDiscountPrice
+//    if(orderItem.modifier) {
+//        preDiscountPrice += orderItem.modifier.price * orderItem.amount;
+//    }
+//
+//    //add the oias price to the preDiscountPrice
+//    if(orderItem.oia_items) {
+//        var oiaPriceTotal = 0;
+//
+//        for(var j=0; j<orderItem.oia_items.length; j++) {
+//            var nextOia = orderItem.oia_items[j];
+//
+//            if(nextOia.is_add) {
+//                oiaPriceTotal += orderItem.oia_items[j].abs_charge;
+//            } else {
+//                oiaPriceTotal -= orderItem.oia_items[j].abs_charge;
+//            }
+//        }
+//
+//        preDiscountPrice += oiaPriceTotal * orderItem.amount;
+//    }
+//
+//    if(haveDiscount) {
+//        formattedPreDiscountedPrice = number_to_currency(preDiscountPrice, {
+//            precision : 2
+//        });
+//
+//        orderHTML += clearHTML;
+//
+//        if(orderItem.discount_percent == 100) {
+//            casioorderHTML += formattedPreDiscountedPrice;
+//        } else {
+//            casioorderHTML += Discounted;
+//            casioorderHTML += orderItem.discount_percent;
+//            casioorderHTML += formattedPreDiscountedPrice;
+//        }
+//    }
+
+    return casioorderHTML;
+}
+
     
 //TODO: replace with jquery template => http://api.jquery.com/jQuery.template/
 function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
@@ -580,6 +725,8 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     }
     
     orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
+
+
     
     orderHTML += "<div class='name' data-course_num='" + orderItem.product.course_num + "'>" + notSyncedMarker + " ";
 
@@ -1331,6 +1478,7 @@ function doTotalFinal() {
     
     //do up the subtotal and total and retrieve the receipt html for both the login screen and for print
     receiptHTML = fetchFinalReceiptHTML(false, true, false);
+    receiptCasioHTML = fetchCasioFinalReceiptHTML(false, true, false);
     printReceiptHTML = fetchFinalReceiptHTML(true, false, printVatReceipt);
         
     setLoginReceipt("Last Sale", receiptHTML);
@@ -1429,9 +1577,9 @@ function doTotalFinal() {
             
         mandatoryFooterMessageHTML += "</div>" + clear30HTML;
         
-        printReceipt(printReceiptHTML, true);
+//        printReceipt(receiptCasioHTML, true);
     } else if(autoPrintReceipt) {
-        printReceipt(printReceiptHTML, true);
+        printReceipt(receiptCasioHTML, true);
     }
     
     customFooterId = null;

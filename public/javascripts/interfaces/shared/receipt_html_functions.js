@@ -52,24 +52,27 @@ function fetchLastRoomID(user_id) {
 }
 
 function printReceipt(content, printRecptMessage) {
+
+    printCasioContent(content);
+
     if(!inKitchenContext()) {
         setStatusMessage("Printing Receipt");
     }
     
     var footer = receiptMessage;
-    
+
     //check if a custom footer should be used
     if(customFooterId != null) {
         footer = customReceiptFooters[customFooterId].content;
     }
-    
+
     //you set mandatoryFooterMessageHTML before calling this and it will print it
     //used for the likes of zalion
     if(mandatoryFooterMessageHTML != null) {
         content += clearHTML + mandatoryFooterMessageHTML;
         mandatoryFooterMessageHTML = null;
     }
-    
+
     if(printRecptMessage) {
         receiptMessageHTML = "<div id='receipt_message'>" + footer + "</div>";
         content += clearHTML + receiptMessageHTML;
@@ -78,6 +81,13 @@ function printReceipt(content, printRecptMessage) {
     content += clear30HTML + "<div class='the_dots'>.  .  .</div>";
     
     printContent(content);
+}
+
+function printCasioContent(content) {
+
+    showCasioLineDisplay("Sub-Total: " + currency(subTotal, false), "")
+    printCasioReceipt(content);
+
 }
 
 function printContent(content) {
@@ -90,65 +100,87 @@ function printContent(content) {
     //replace <hr> with <hr></hr>
     content_with_css = content_with_css.replace("<hr>", "<hr></hr>");
 
-    if(using_wss_receipt_printer) {
-        if ("WebSocket" in window) {
-            var ws = new WebSocket("ws://" + webSocketServiceIP + ":8080/ClueyWebSocketServices/receipt_printer_ws");
-
-            ws.onopen = function()
-            {
-                //there is a maximum limit on the size of the message we can send,
-                //so we split it into groups of 3072 chars (3kb of data)
-                var charsPerGroup = 3072;
-
-                console.log("Breaking data up into " + Math.ceil(content_with_css.length/charsPerGroup) + " groups to send to print service");
-                for(var i = 0; i < content_with_css.length; i+=charsPerGroup) {
-                    var nextGroup = content_with_css.substring(i, i + charsPerGroup);
-                    console.log("Sending group " + ((i/charsPerGroup) + 1));
-                    ws.send(nextGroup);
-                }
-
-                ws.close();
-            };
-
-            ws.onmessage = function (evt)
-            {
-                var received_msg = evt.data;
-                console.log("Message received: " + received_msg);
-            };
-            ws.onclose = function()
-            {
-                // websocket is closed.
-                console.log("Connection closed!");
-            };
-        } else {
-            // The browser doesn't support WebSocket
-            alert("WebSocket NOT supported by your browser, Please disable web sockets!");
-        }
-    } else {
-        var print_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/receipt_printer';
-
-        $.ajax({
-            type: 'POST',
-            url: '/forward_print_service_request',
-            error: function() {
-                setStatusMessage("Printer service cannot be reached.", false, false);
-            },
-            data: {
-                print_service_url : print_service_url,
-                html_data : content_with_css
-            }
-        });
-    }
-
-//DO IT THE OLD FASHIONED WAY (firefox)
-//    $('#printFrame').contents().find('#till_roll').html(content);
-//
-//    printFrame.focus();
-//    printFrame.print();
+    print(content);
 
 }
 
-function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, includeVatBreakdown) {
+function print(content) {
+    $('#printFrame').contents().find('#till_roll').html(content);
+
+    var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>"
+    + $('#printFrame').contents().find('html').html() + "</html>";
+
+    var print_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/receipt_printer';
+
+    $.ajax({
+        type: 'POST',
+        url: '/forward_print_service_request',
+        error: function() {
+            setStatusMessage("Error Sending Data To Print Service. URL: " + print_service_url, false, false);
+        },
+        data: {
+            print_service_url : print_service_url,
+            html_data : content_with_css
+        }
+    });
+
+    return;
+
+
+    //TODO: display an error if the service is not running...
+
+
+
+    console.log("Websocket support? " + ("WebSocket" in window));
+
+    if ("WebSocket" in window) {
+        //console.log("Sending receipt content over websocket: " + content_with_css);
+
+        // Let us open a web socket
+        var ws = new WebSocket("ws://" + webSocketServiceIP + ":8080/ClueyWebSocketServices/receipt_printer");
+
+        ws.onopen = function()
+        {
+            //there is a maximum limit on the size of the message we can send,
+            //so we split it into groups of 3072 chars (3kb of data)
+            var charsPerGroup = 3072;
+
+            console.log("Breaking data up into " + Math.ceil(content_with_css.length/charsPerGroup) + " groups to send to print service");
+            for(var i = 0; i < content_with_css.length; i+=charsPerGroup) {
+                var nextGroup = content_with_css.substring(i, i + charsPerGroup);
+                console.log("Sending group " + ((i/charsPerGroup) + 1));
+                ws.send(nextGroup);
+            }
+
+            //ws.send(content_with_css);
+
+            ws.close();
+        };
+
+        ws.onmessage = function (evt)
+        {
+            var received_msg = evt.data;
+            console.log("Message received: " + received_msg);
+        };
+        ws.onclose = function()
+        {
+            // websocket is closed.
+            console.log("Connection closed!");
+        };
+    } else {
+        // The browser doesn't support WebSocket
+        alert("WebSocket NOT supported by your Browser!");
+
+    //DO IT THE OLD FASHIONED WAY
+    //    $('#printFrame').contents().find('#till_roll').html(content);
+    //
+    //    printFrame.focus();
+    //    printFrame.print();
+    }
+
+}
+
+function fetchCasioFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, includeVatBreakdown) {
     if(typeof(includeBusinessInfo) == 'undefined') {
         includeBusinessInfo = false;
     }
@@ -159,23 +191,71 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, incl
     
     finalReceiptHTML = "";
     
+    allOrderItemsRecptHTML = getCasioOrderItemsReceiptHTML(totalOrder, false, false, false);
+
+    finalReceiptHTML += allOrderItemsRecptHTML;
+//
+    finalReceiptHTML += "\n";
+
+    if(totalOrder.discount_percent) {
+        subTotal = totalOrder.pre_discount_price;
+
+        finalReceiptHTML += "Sub-Total: " + subTotal + "\n";
+
+        //calculate the amount of discount
+        discountAmount = (totalOrder.pre_discount_price * totalOrder.discount_percent)/100;
+        finalReceiptHTML += "Discount " + totalOrder.discount_percent + "%" + discountAmount + "\n";
+    } else {
+        subTotal = totalOrder.total;
+        finalReceiptHTML += "Sub-Total: " + currency(subTotal, false) + "\n";
+        discountAmount = 0;
+    }
+
+    finalReceiptHTML += "\n";
+    finalReceiptHTML += "\n";
+    finalReceiptHTML += "\n";
+    finalReceiptHTML += "\n";
+    finalReceiptHTML += "\n";
+    finalReceiptHTML += "\n";
+    finalReceiptHTML += "\n";
+    finalReceiptHTML += "\n";
+    finalReceiptHTML += "\n";
+
+
+    //set the discountAmount on the order as we use it later when charging a room etc
+    totalOrder.discount_amount = discountAmount;
+
+    return finalReceiptHTML;
+}
+
+function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, includeVatBreakdown) {
+    if(typeof(includeBusinessInfo) == 'undefined') {
+        includeBusinessInfo = false;
+    }
+
+    if(typeof(includeServerAddedText) == 'undefined') {
+        includeServerAddedText = true;
+    }
+
+    finalReceiptHTML = "";
+
     if(includeBusinessInfo) {
         finalReceiptHTML += fetchBusinessInfoHeaderHTML();
     }
-    
+
     finalReceiptHTML += fetchFinalReceiptHeaderHTML();
-    
+
     allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(totalOrder, false, false, includeServerAddedText);
-    
+
     finalReceiptHTML += clearHTML + allOrderItemsRecptHTML;
-    
+
     finalReceiptHTML += "<div class='data_table'>";
-    
+
     if(totalOrder.discount_percent) {
         subTotal = totalOrder.pre_discount_price;
-        
+
         finalReceiptHTML += "<div class='label'>Sub-Total:</div><div class='data'>" + currency(subTotal) + "</div>" + clearHTML;
-        
+
         //calculate the amount of discount
         discountAmount = (totalOrder.pre_discount_price * totalOrder.discount_percent)/100;
         finalReceiptHTML += "<div class='label'>Discount " + totalOrder.discount_percent + "%:</div><div class='data'>" + currency(discountAmount) + "</div>" + clearHTML;
@@ -183,25 +263,26 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, incl
         subTotal = totalOrder.total;
         finalReceiptHTML += "<div class='label'>Sub-Total:</div><div class='data'>" + currency(subTotal) + "</div>" + clearHTML;
         discountAmount = 0;
-    } 
-    
+    }
+
+
     //set the discountAmount on the order as we use it later when charging a room etc
     totalOrder.discount_amount = discountAmount;
-    
+
     finalReceiptHTML += taxChargable ? fetchTotalsHTMLWithTaxChargable() : fetchTotalsWithoutTaxChargableHTML();
-    
+
     cashTendered = totalOrder.cash_tendered;
-    
+
     if(typeof(totalOrder.split_payments) != 'undefined') {
         for(var pm in totalOrder.split_payments) {
             finalReceiptHTML += "<div class='label'>Paid: " + pm + "</div><div class='data'>" + currency(totalOrder.split_payments[pm]) + "</div>" + clearHTML;
         }
-        
+
         finalReceiptHTML += clearHTML;
     } else if(cashTendered > 0) {
         finalReceiptHTML += "<div class='label'>Paid:</div><div class='data'>" + currency(cashTendered) + "</div>" + clearHTML;
     }
-    
+
     change = parseFloat(totalOrder.change);
 
     //is there any change? we include cashback in the change here
@@ -210,59 +291,59 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, incl
     if(changeWithCashback > 0) {
         finalReceiptHTML += "<div class='change_line_container'><div class='label'>Change:</div><div class='data'>" + currency(changeWithCashback) + "</div></div>" + clearHTML;
     }
-    
+
     finalReceiptHTML += "</div>" + clearHTML;
-    
+
     if(includeVatBreakdown) {
-        
+
         if(taxChargable) {
         //TODO
         } else {
             finalReceiptHTML += "<div class='data_table vat_breakdown'>";
             finalReceiptHTML += "<div class='header'>" + taxLabel + " Breakdown</div>" + clearHTML;
-        
+
             //construct table
             var taxRates = {}
-        
+
             for(var i=0; i<totalOrder.items.length; i++) {
                 var item = totalOrder.items[i];
-            
+
                 var itemPrice = parseFloat(item['total_price']);
                 var itemTaxRate = item.product['tax_rate'];
-            
+
                 var taxAmount = itemPrice - (itemPrice/(1 + (parseFloat(itemTaxRate)/100)));
                 var netAmount = itemPrice - taxAmount;
                 var grossAmount = itemPrice;
-            
+
                 if(typeof(taxRates[itemTaxRate]) == 'undefined') {
                     taxRates[itemTaxRate] = {
-                        net : 0, 
-                        tax : 0, 
+                        net : 0,
+                        tax : 0,
                         gross : 0
                     };
                 }
-            
+
                 taxRates[itemTaxRate].net += netAmount;
                 taxRates[itemTaxRate].tax += taxAmount;
                 taxRates[itemTaxRate].gross += grossAmount;
             }
-            
+
             var taxes_data = new Array();
             for(taxRateKey in taxRates) {
                 var taxData = taxRates[taxRateKey];
                 taxes_data.push(new Array(taxRateKey, taxData.net, taxData.tax, taxData.gross));
             }
-    
+
             finalReceiptHTML += "<div id='cash_totals_data_table'>";
             finalReceiptHTML += getCashTotalTaxesDataTable(taxes_data) + clearHTML;
             finalReceiptHTML += getCashTotalTaxesDataTableTotals("Total", taxes_data) + clearHTML;
             finalReceiptHTML += "</div>" + clearHTML;
-    
+
             finalReceiptHTML += "<div class='footer'>Tax Reg No: " + taxNumber + "</div>" + clearHTML;
             finalReceiptHTML += "</div>" + clearHTML;
         }
     }
-    
+
     return finalReceiptHTML;
 }
 
