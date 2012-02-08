@@ -15,12 +15,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="54a8a260-c178-4ce3-883c-3e317bc82f2c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cluey_pos.iws" afterPath="$PROJECT_DIR$/cluey_pos.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/screen_button_functions.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/screen_button_functions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/shared/mobile_device.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/shared/mobile_device.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/shared/receipt_html_functions.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/shared/receipt_html_functions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/shared/screen_button_functions.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/shared/screen_button_functions.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/database.yml" afterPath="$PROJECT_DIR$/config/database.yml" />
     </list>
     <ignored path="cluey_pos.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -106,10 +101,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="menu.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="menu.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1576" column="66" selection-start="50180" selection-end="50180" vertical-scroll-proportion="0.48766327">
+            <state line="532" column="121" selection-start="16457" selection-end="16457" vertical-scroll-proportion="-10.04">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="database.yml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/config/database.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="16" column="108" selection-start="365" selection-end="365" vertical-scroll-proportion="0.34188035">
               <folding />
             </state>
           </provider>
@@ -153,7 +157,6 @@
         <option value="$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/stocks/export_excel.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/sales/export_excel.html.erb" />
-        <option value="$PROJECT_DIR$/config/database.yml" />
         <option value="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/application.js" />
         <option value="$PROJECT_DIR$/app/controllers/reports/sales_controller.rb" />
         <option value="$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb" />
@@ -163,6 +166,7 @@
         <option value="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js" />
         <option value="$PROJECT_DIR$/public/javascripts/interfaces/shared/receipt_html_functions.js" />
         <option value="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/screen_button_functions.js" />
+        <option value="$PROJECT_DIR$/config/database.yml" />
       </list>
     </option>
   </component>
@@ -488,11 +492,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/config/database.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="10" selection-start="324" selection-end="324" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="130" column="107" selection-start="5489" selection-end="5489" vertical-scroll-proportion="0.0" />
@@ -579,7 +578,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1576" column="66" selection-start="50180" selection-end="50180" vertical-scroll-proportion="0.48766327">
+        <state line="532" column="121" selection-start="16457" selection-end="16457" vertical-scroll-proportion="-10.04">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/database.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="108" selection-start="365" selection-end="365" vertical-scroll-proportion="0.34188035">
           <folding />
         </state>
       </provider>
