@@ -1,9 +1,5 @@
 function prepareXTotal() {
-    var doIt = true;
-    
-    if(doIt) {
-        doCashTotalReport("X", false);
-    }
+    doCashTotalReport("X", false);
 }
 
 function prepareZTotal() {
@@ -584,15 +580,15 @@ function changeCourseNum() {
  
     if(receiptItem) {
         var popupEl = doSelectReceiptItem(receiptItem);
-        
-        popupEl.find('#discount_button').hide();
-        popupEl.find('#delete_button').hide();
-        popupEl.find('#oia_button').hide();
-        popupEl.find('#transfer_button').hide();
-        popupEl.find('#quantity_editor').hide();
-        popupEl.find('#price_editor').hide();
-        
-        popupEl.find('#header').html("Enter A Course Number (0 to 10)");
-        popupEl.find('#current_selected_receipt_item_course_num').focus();
+        popupEl.find('#course_button').mousedown().mouseup();
+    }
+}
+
+function exitApp() {
+    var doIt = confirm("Are you sure?");
+    
+    if(doIt) {
+        window.open('','_self','');
+        window.close();
     }
 }

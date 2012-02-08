@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120206105649) do
+ActiveRecord::Schema.define(:version => 20120207162905) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(:version => 20120206105649) do
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
     t.integer  "course_num",                               :default => 0
+    t.string   "kitchen_screens",                          :default => ""
   end
 
   create_table "client_transactions", :force => true do |t|
@@ -318,6 +319,7 @@ ActiveRecord::Schema.define(:version => 20120206105649) do
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
     t.integer  "course_num",                               :default => 0
     t.boolean  "is_stock_item",                            :default => true
+    t.string   "kitchen_screens",                          :default => ""
   end
 
   create_table "roles", :force => true do |t|

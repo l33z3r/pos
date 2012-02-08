@@ -391,13 +391,10 @@ function finishDoSelectMenuItem() {
     addItemToOrderAndSave(orderItem);
     
     //do coursing and load receipt
-    doAutoCoursing(currentOrder);
     loadReceipt(currentOrder, false);
     
     currentSelectedReceiptItemEl = $('#till_roll div[data-item_number=' + currentOrderItem.itemNumber + ']');
     currentSelectedReceiptItemEl.addClass("selected");
-    
-    scrollMenuReceiptToSelected();
     
     testForPricePrompt(orderItem);
 
@@ -411,12 +408,10 @@ function finishDoSelectMenuItem() {
 function tableSelectMenuItem(orderItem) {
     addItemToTableOrderAndSave(orderItem);
     
-    doAutoCoursing(currentOrder);
     loadReceipt(currentOrder, false);
+    
     currentSelectedReceiptItemEl = $('#till_roll div[data-item_number=' + currentOrderItem.itemNumber + ']');
     currentSelectedReceiptItemEl.addClass("selected");
-    
-    scrollMenuReceiptToSelected();
     
     testForPricePrompt(orderItem);
     
@@ -434,16 +429,16 @@ function testForPricePrompt(orderItem) {
         popupEl.find('#oia_button').hide();
         popupEl.find('#transfer_button').hide();
         popupEl.find('#quantity_editor').hide();
-        popupEl.find('#course_num_editor').hide();
+        popupEl.find('#course_button').hide();
         popupEl.find('#header').html("Enter A Price");
         popupEl.find('#current_selected_receipt_item_price').focus();
         popupEl.find('#current_selected_receipt_item_price').val("");
     }
 }
     
-function writeOrderItemToReceipt(orderItem) {
-    $('#till_roll').html($('#till_roll').html() + getOrderItemReceiptHTML(orderItem));
-}
+//function writeOrderItemToReceipt(orderItem) {
+//    $('#till_roll').html($('#till_roll').html() + getOrderItemReceiptHTML(orderItem));
+//}
 
 function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
     allOrderItemsReceiptHTML = "";
@@ -665,9 +660,9 @@ function doSelectReceiptItem(orderItemEl) {
     //are we allowed to view the course num controls
     //we are if the button id is present in this array
     if(typeof(display_button_passcode_permissions[parseInt(courseNumButtonID)]) != 'undefined') {
-        $('#course_num_editor').show();
+        $('#course_button').show();
     } else {
-        $('#course_num_editor').hide();
+        $('#course_button').hide();
     }
     
     //save the currently opened dialog
@@ -817,25 +812,16 @@ function saveEditOrderItem() {
         newPricePerUnit = 0;
     }
     
-    targetInputCourseNumEl = $('#' + popupId).find('.course_num');
-    newCourseNum = parseInt(targetInputCourseNumEl.val());
-    
-    if(isNaN(newCourseNum)) {
-        newCourseNum = 0;
-    } else if(newCourseNum > 10) {
-        newCourseNum = 10;
-    } else if(newCourseNum < 0) {
-        newCourseNum = 0;
-    }
+    var courseNum = order.items[itemNumber - 1].product.course_num;
     
     if(selectedTable != 0) {
         order = tableOrders[selectedTable];
-        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum);
+        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum);
     
         storeTableOrderInStorage(current_user_id, selectedTable, order);
     } else {
         order = currentOrder;
-        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum);
+        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum);
         
         storeOrderInStorage(current_user_id, order);
     }
@@ -843,7 +829,6 @@ function saveEditOrderItem() {
     order = getCurrentOrder();
     
     //redraw the receipt
-    doAutoCoursing(order);
     loadReceipt(order, true);
 }
 
@@ -928,11 +913,11 @@ function loadReceipt(order, doScroll) {
     }
 }
 
-function scrollMenuReceiptToSelected() {
-    if(currentSelectedReceiptItemEl) {
-        scrollReceiptToSelected("", currentSelectedReceiptItemEl);
-    }
-}
+//function scrollMenuReceiptToSelected() {
+//    if(currentSelectedReceiptItemEl) {
+//        scrollReceiptToSelected("", currentSelectedReceiptItemEl);
+//    }
+//}
 
 function loginRecptScroll() {
     recptScroll("login_");
@@ -1494,6 +1479,89 @@ function saveDiscount() {
     setTimeout(menuRecptScroll, 20);
 }
 
+var currentCoursePopupAnchor = null;
+
+function showCoursePopupFromEditDialog() {
+    receiptItem = currentSelectedReceiptItemEl;
+    
+    currentCoursePopupAnchor = $('#receipt');
+    
+    if(currentCoursePopupAnchor.HasBubblePopup()) {
+        currentCoursePopupAnchor.RemoveBubblePopup();
+    }
+    
+    currentCoursePopupAnchor.CreateBubblePopup();
+    
+    coursePopupHTML = $("#course_popup_markup").html();
+    
+    currentCoursePopupAnchor.ShowBubblePopup({
+        position: 'right',
+        align: 'top',
+        tail	 : {
+            align: 'middle'
+        },
+        innerHtml: coursePopupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+        
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false
+
+    }, false);
+    
+    currentCoursePopupAnchor.FreezeBubblePopup();
+    
+    var coursePopupId = currentCoursePopupAnchor.GetBubblePopupID();
+    
+    var current_course_num = receiptItem.find(".name").data("course_num");
+   
+    //show the selected course
+    var selectedCourseEl = $('#' + coursePopupId).find('.course_label_' + current_course_num);
+        
+    selectedCourseEl.html(selectedCourseEl.html() + " *");
+   
+    registerPopupClickHandler($('#' + coursePopupId), closeCoursePopup);
+}
+
+function closeCoursePopup() {
+    if(currentCoursePopupAnchor) {
+        hideBubblePopup(currentCoursePopupAnchor);
+    }
+}
+
+function applyCourseFromPopup(courseVal) {
+    closeCoursePopup();
+    
+    itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    order = getCurrentOrder();
+    
+    var item = order.items[itemNumber - 1];
+    
+    newCourseNum = courseVal
+    
+    //alert("APPLYING COURSE " + newCourseNum + " old: " + item.product.course_num);
+    
+    if(selectedTable != 0) {
+        order = tableOrders[selectedTable];
+        order = modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum);
+    
+        storeTableOrderInStorage(current_user_id, selectedTable, order);
+    } else {
+        order = currentOrder;
+        order = modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum);
+        
+        storeOrderInStorage(current_user_id, order);
+    }
+    
+    order = getCurrentOrder();
+    
+    //redraw the receipt
+    loadReceipt(order, true);
+}
+
 function addDiscountToOrder(order, amount) {
     order['discount_percent'] = amount;
     
@@ -1862,9 +1930,6 @@ function splitBillScreenKeypadClickCancel() {
 }
 
 function loadSplitBillReceipts() {
-    doAutoCoursing(splitBillOrderFrom);
-    doAutoCoursing(splitBillOrderTo);
-    
     //ORDER FROM
     var orderFromReceiptHTML = getAllOrderItemsReceiptHTML(splitBillOrderFrom, false, false, true);
     $('#split_bill_from_till_roll').html(orderFromReceiptHTML);

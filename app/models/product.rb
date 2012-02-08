@@ -117,7 +117,7 @@ class Product < ActiveRecord::Base
     end
   end
   
-  def course_num
+  def calc_course_num
     @the_course_num = 0
     
     if read_attribute("course_num") == -1
@@ -168,6 +168,34 @@ class Product < ActiveRecord::Base
     end
     
     write_attribute("printers", printers_val)
+  end
+  
+  def appearing_on_kitchen_screen? id_safe_terminal_name
+    @kitchen_screens_string = read_attribute("kitchen_screens")
+    
+    if @kitchen_screens_string
+      @kitchen_screens_string.split(",").each do |terminal_name|
+        return true if id_safe_terminal_name == terminal_name
+      end
+    end
+    
+    return false
+  end
+  
+  def selected_kitchen_screens=(selected_kitchen_screens_array)
+    
+    #remove any empty strings from the selected_kitchen_screens_array
+    selected_kitchen_screens_array.delete("")
+    
+    if selected_kitchen_screens_array.size == 0
+      kitchen_screens_val = ""
+    elsif selected_kitchen_screens_array.size == 1
+      kitchen_screens_val = selected_kitchen_screens_array[0].to_s
+    else
+      kitchen_screens_val = selected_kitchen_screens_array.join(",")
+    end
+    
+    write_attribute("kitchen_screens", kitchen_screens_val)
   end
   
   def decrement_stock quantity

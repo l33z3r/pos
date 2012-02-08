@@ -68,8 +68,8 @@
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
-        <div class="label">Course Number</div>
-        <%= f.select :course_num, (-1..10).to_a %>
+        <div class="label">Course</div>
+        <%= f.select :course_num, options_for_select(GlobalSetting.course_options, @product.course_num) %>
       </div>
     </div>
     <div class="right_col">
@@ -256,7 +256,7 @@
           </div>
           <!-- 
           <% if @product.has_product_image? %>
-                                              <p class="label">Select to Delete Image:</p>
+                                                <p class="label">Select to Delete Image:</p>
             <%= check_box_tag :delete_product_image, false %>
           <% end %>
           -->
@@ -346,7 +346,7 @@
             <%= ingredient_form.text_field :quantity_denominator, :id => "quantity_denominator_#{index}", :size => 2, :onkeyup => "updateStockCalculation(#{index});" %>
           </div>
 
-        <div id="stock_calculation_<%=index%>" class="calculation">
+          <div id="stock_calculation_<%=index%>" class="calculation">
             = <%=ingredient.stock_usage.round(3)%>
           </div>
         <% end %>

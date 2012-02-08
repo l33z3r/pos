@@ -46,8 +46,8 @@
         :prompt => "Select a #{@tax_label} Rate", :include_blank => "Default" %>
     </div>
     <div class="field">
-      <%= f.label :course_num, "Course Number" %><br />
-      <%= f.select :course_num, (-1..10).to_a %>
+      <%= f.label :course_num, "Course" %><br />
+      <%= f.select :course_num, options_for_select(GlobalSetting.course_options, @category.course_num) %>
     </div>
     <div class="field">
       <label for="category[selected_printers][]">Printers</label>
@@ -62,7 +62,7 @@
                style="display: none;" <%= @category.printing_to_terminal?(id_safe(terminal_name)) ? "checked" : "" %>/>
              <% end %>
 
-      <!-- the following input is to make sure that we send the product[selected_printers] param when no printers are selected -->
+      <!-- the following input is to make sure that we send the category[selected_printers] param when no printers are selected -->
       <input type="checkbox" id="choose_printer_checkbox_blank"
              name="category[selected_printers][]" value="" 
              style="display: none;" checked/>
@@ -84,6 +84,45 @@
           </div>
 
           <div class="button ok_button" onclick="hideSelectPrintersDialog()">Done</div>
+        </div>
+      </div>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <label for="category[selected_kitchen_screens][]">Screens</label>
+
+      <div class="clear">&nbsp;</div>
+      
+      <input id="select_kitchen_screens_button" type="button" value="Select" onclick="showSelectKitchenScreensDialog()"/>
+
+      <% all_terminals.each do |terminal_name| %>
+        <input type="checkbox" id="choose_kitchen_screen_checkbox_<%= id_safe terminal_name %>"
+               name="category[selected_kitchen_screens][]" value="<%= id_safe terminal_name %>" 
+               style="display: none;" <%= @category.appearing_on_kitchen_screen?(id_safe(terminal_name)) ? "checked" : "" %>/>
+             <% end %>
+
+      <!-- the following input is to make sure that we send the category[selected_kitchen_screens] param when no kitchen_screens are selected -->
+      <input type="checkbox" id="choose_kitchen_screen_checkbox_blank"
+             name="category[selected_kitchen_screens][]" value="" 
+             style="display: none;" checked/>
+
+      <div id="select_kitchen_screens_markup" style="display: none;">
+        <div class="select_kitchen_screens_dialog">
+
+          <div class="header">Select Kitchen Screens</div>
+
+          <div class="terminal_switches">
+            <% all_terminals.each do |terminal_name| %>
+              <div class="terminal_switch">
+                <input type="checkbox" data-terminal_name="<%= id_safe terminal_name%>"
+                       onchange="kitchenScreenSwitchToggle(this)"/>
+                <div class="label"><%=terminal_name%></div>
+              </div>
+              <div class="clear_top_margin_5">&nbsp;</div>
+            <% end %>
+          </div>
+
+          <div class="button ok_button" onclick="hideSelectKitchenScreensDialog()">Done</div>
         </div>
       </div>
       <div class="clear">&nbsp;</div>

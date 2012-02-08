@@ -155,6 +155,42 @@
           <div class="clear">&nbsp;</div>
         </div>
         <div class="field">
+          <div class="label">Screens</div>
+          <input id="select_kitchen_screens_button" type="button" value="Select" onclick="showSelectKitchenScreensDialog()"/>
+
+          <% all_terminals.each do |terminal_name| %>
+            <input type="checkbox" id="choose_kitchen_screen_checkbox_<%= id_safe terminal_name %>"
+                   name="product[selected_kitchen_screens][]" value="<%= id_safe terminal_name %>" 
+                   style="display: none;" <%= @product.appearing_on_kitchen_screen?(id_safe(terminal_name)) ? "checked" : "" %>/>
+                 <% end %>
+
+          <!-- the following input is to make sure that we send the product[selected_kitchen_screens] param when no kitchen_screens are selected -->
+          <input type="checkbox" id="choose_kitchen_screen_checkbox_blank"
+                 name="product[selected_kitchen_screens][]" value="" 
+                 style="display: none;" checked/>
+
+          <div id="select_kitchen_screens_markup" style="display: none;">
+            <div class="select_kitchen_screens_dialog">
+
+              <div class="header">Select Kitchen Screens</div>
+
+              <div class="terminal_switches">
+                <% all_terminals.each do |terminal_name| %>
+                  <div class="terminal_switch">
+                    <input type="checkbox" data-terminal_name="<%= id_safe terminal_name%>"
+                           onchange="kitchenScreenSwitchToggle(this)"/>
+                    <div class="label"><%=terminal_name%></div>
+                  </div>
+                  <div class="clear_top_margin_5">&nbsp;</div>
+                <% end %>
+              </div>
+
+              <div class="button ok_button" onclick="hideSelectKitchenScreensDialog()">Done</div>
+            </div>
+          </div>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
           <div class="label">Product Active</div>
           <%= f.check_box :is_active %>
           <div class="clear">&nbsp;</div>

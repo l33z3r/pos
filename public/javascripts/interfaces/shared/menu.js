@@ -303,55 +303,82 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
 function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID) {
     var itemsToPrint = new Array();
     
-    //TODO: the course line gets lost when it is not on the item that is going to be printed here...
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    var foundPrinter = false;
+    //OLD WAY
+    //    var foundPrinter = false;
+    //    
+    //    for(var itemKey in items) {
+    //        //we only want to print items from the order that are new i.e. not synced on the other terminal yet
+    //        var isItemSynced = (items[itemKey].synced === 'true');
+    //        
+    //        if(!isItemSynced) {
+    //            foundPrinter = false;
+    //            
+    //            var itemPrinters = items[itemKey].product.printers;
+    //            
+    //            if((typeof itemPrinters != "undefined") && itemPrinters.length > 0) {
+    //                var printersArray = itemPrinters.split(",");
+    //                
+    //                if($.inArray(terminalID.toLowerCase(), printersArray) != -1) {
+    //                    foundPrinter = true;
+    //                    itemsToPrint.push(items[itemKey]);
+    //                }
+    //            } 
+    //            
+    //            var categoryId = items[itemKey].product.category_id;
+    //            
+    //            if(categoryId != null) {
+    //                var categoryPrinters = categories[categoryId].printers;
+    //            
+    //                if(!foundPrinter && (typeof categoryPrinters != "undefined") && categoryPrinters.length > 0) {
+    //                    var categoryPrintersArray = categoryPrinters.split(",");
+    //                
+    //                    if($.inArray(terminalID.toLowerCase(), categoryPrintersArray) != -1) {
+    //                        foundPrinter = true;
+    //                        //pushcount++;
+    //                        itemsToPrint.push(items[itemKey]);
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
     
     for(var itemKey in items) {
         //we only want to print items from the order that are new i.e. not synced on the other terminal yet
         var isItemSynced = (items[itemKey].synced === 'true');
         
         if(!isItemSynced) {
-            foundPrinter = false;
-            
             var itemPrinters = items[itemKey].product.printers;
             
             if((typeof itemPrinters != "undefined") && itemPrinters.length > 0) {
                 var printersArray = itemPrinters.split(",");
                 
                 if($.inArray(terminalID.toLowerCase(), printersArray) != -1) {
-                    foundPrinter = true;
                     itemsToPrint.push(items[itemKey]);
                 }
-            } 
+            } else {
+                //check category printers
+                var categoryId = items[itemKey].product.category_id;
             
-            var categoryId = items[itemKey].product.category_id;
+                if(categoryId != null) {
+                    var categoryPrinters = categories[categoryId].printers;
             
-            if(categoryId != null) {
-                var categoryPrinters = categories[categoryId].printers;
-            
-                if(!foundPrinter && (typeof categoryPrinters != "undefined") && categoryPrinters.length > 0) {
-                    var categoryPrintersArray = categoryPrinters.split(",");
+                    if((typeof categoryPrinters != "undefined") && categoryPrinters.length > 0) {
+                        var categoryPrintersArray = categoryPrinters.split(",");
                 
-                    if($.inArray(terminalID.toLowerCase(), categoryPrintersArray) != -1) {
-                        foundPrinter = true;
-                        //pushcount++;
-                        itemsToPrint.push(items[itemKey]);
+                        if($.inArray(terminalID.toLowerCase(), categoryPrintersArray) != -1) {
+                            itemsToPrint.push(items[itemKey]);
+                        }
                     }
                 }
             }
         }
     }
+    
+    var itemsToPrintOrder = {
+        'items' : itemsToPrint
+    }
+    
+    doAutoCoursing(itemsToPrintOrder);
     
     if(itemsToPrint.length > 0) {
         printItemsFromOrder(serverNickname, recvdTerminalID, orderJSON, itemsToPrint);
@@ -637,6 +664,10 @@ function addItemToOrderAndSave(orderItem) {
     if(currentOrder == null) {
         currentOrder = buildInitialOrder();
     }
+    
+    //attach the item number to the order item 
+    //which is its number in the receipt
+    orderItem.itemNumber = currentOrder.items.length + 1;
 
     //add this item to the order array
     currentOrder.items.push(orderItem);
@@ -663,8 +694,8 @@ function addItemToTableOrderAndSave(orderItem) {
 
     storeTableOrderInStorage(current_user_id, selectedTable, currentTableOrder);
     
-    //add a line to the receipt
-    writeOrderItemToReceipt(orderItem);
+//add a line to the receipt
+//writeOrderItemToReceipt(orderItem);
 }
 
 //load the current bar receipt order into memory
@@ -719,34 +750,6 @@ function recptScroll(targetPrefix) {
     }
 }
 
-function scrollReceiptToSelected(targetPrefix, selectedReceiptItemEl) {
-    if(selectedReceiptItemEl) {
-        if(isTouchDevice()) {
-            $('#' + targetPrefix + 'till_roll').touchScroll('update');
-            
-            currentHeight = $('#' + targetPrefix + 'till_roll').height();
-            scrollHeight = $('#' + targetPrefix + 'till_roll').attr('scrollHeight');
-            newHeight = scrollHeight - currentHeight;
-        
-            $('#' + targetPrefix + 'till_roll').touchScroll('setPosition', newHeight);
-        
-        } else {
-            //jscrollpane force scroll to end
-            var jscroll_api = $('#' + targetPrefix + 'receipt').data('jsp');
-        
-            if(jscroll_api) {
-                currentHeight = $('#' + targetPrefix + 'till_roll').height();
-                scrollHeight = $('#' + targetPrefix + 'till_roll').attr('scrollHeight');
-                newHeight = scrollHeight - currentHeight;
-       
-                jscroll_api.scrollToY(newHeight + 20);
-            } else {
-                $('#' + targetPrefix + 'receipt').scrollTop($('#' + targetPrefix + 'receipt').scrollTop() + (selectedReceiptItemEl.offset().top - $('#' + targetPrefix + 'receipt').offset().top - 4));
-            }
-        }
-    }
-}
-
 function updateRecpt(targetPrefix) {
     if(isTouchDevice()) {
         $('#' + targetPrefix + 'till_roll').touchScroll('update');
@@ -797,7 +800,6 @@ function doSelectTable(tableNum) {
     getTableOrderFromStorage(current_user_id, selectedTable);
 
     //display the receipt for this table
-    doAutoCoursing(tableOrders[tableNum]);
     loadReceipt(tableOrders[tableNum], true);
     
     if(promptForClientName && tableOrders[tableNum].client_name == "") {

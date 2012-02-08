@@ -60,6 +60,7 @@ class ButtonMapper
   ADD_NAME_TO_TABLE_BUTTON = 57
   REPORTS_BUTTON = 58
   SPLIT_BILL_BUTTON = 59
+  EXIT_APP_BUTTON = 60
   
   RESTRICTED_BUTTON_IDS = [
     ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON,
@@ -190,6 +191,8 @@ class ButtonMapper
       @retval = "goTo('#{reports_glances_path}'); return false;"
     when SPLIT_BILL_BUTTON
       @retval = wrap_with_menu_screen_function_check "startSplitBillMode();"
+    when EXIT_APP_BUTTON
+      @retval = "exitApp();"
     end
 
     @retval
