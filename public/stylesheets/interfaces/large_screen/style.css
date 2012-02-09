@@ -2422,22 +2422,7 @@ div.popup_container div.header {
     font-size: 13px;
 }
 
-div.popup_container div.action_buttons_container {
-    text-align: center;
-}
 
-div.popup_container div.action_buttons {
-    width: 175px;
-    margin: auto;
-}
-
-div.popup_container div.action_buttons div.button {
-    display: block;
-    float: left;
-    height: 60px;
-    padding-top: 5px;
-    margin: 0px 5px;
-}
 
 /* Generic Popup Styling */
 

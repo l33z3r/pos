@@ -207,20 +207,18 @@ function doSelectReceiptItem(orderItemEl) {
     var selectedProduct = products[getCurrentOrder().items[parseInt(orderItemEl.data("item_number"))-1].product.id];
     setModifierGridIdForProduct(selectedProduct);
 
-
-
     showEditPopupInit();
 
     popupId = currentTargetPopupAnchor.GetBubblePopupID();
 
     currentPrice = orderItemEl.children('.total').data("per_unit_price");
     currentPrice = currency(currentPrice, false);
-    $('#' + popupId).find('.new_price').val(currentPrice);
+
+    var courseLineClass = orderItemEl.is_course ? "course" : "";
+    currentCourseNum = courseLineClass;
+    $('#' + popupId).find('.course_num').val(currentCourseNum);
 
     currentQuantity = orderItemEl.children('.amount').html();
-    $('#' + popupId).find('.quantity').val(currentQuantity);
-
-    $('#' + popupId).find('.new_price').focus();
 
     //keep the border
     orderItemEl.addClass("selected");
@@ -329,21 +327,33 @@ function saveEditOrderItem() {
     if(isNaN(newQuantity) || newQuantity == 0) {
         newQuantity = 1;
     }
+
+    targetInputCourseNumEl = $('#' + popupId).find('.course_num');
+    newCourseNum = parseInt(targetInputCourseNumEl.val());
+
+    if(isNaN(newCourseNum)) {
+        newCourseNum = 0;
+    } else if(newCourseNum > 10) {
+        newCourseNum = 10;
+    } else if(newCourseNum < 0) {
+        newCourseNum = 0;
+    }
+
     targetInputPricePerUnitEl = $('#' + popupId).find('.new_price');
     newPricePerUnit = parseFloat(targetInputPricePerUnitEl.val());
 
     if(isNaN(newPricePerUnit)) {
-        newPricePerUnit = 0;
+        newPricePerUnit = currentPrice;
     }
     if(selectedTable != 0) {
         order = tableOrders[selectedTable];
 
-        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
+        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum);
 
         storeTableOrderInStorage(current_user_id, selectedTable, order);
     } else {
         order = currentOrder;
-        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
+        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum);
 
         storeOrderInStorage(current_user_id, order);
     }
@@ -382,10 +392,10 @@ function showEditPopup(receiptItem) {
     discountsPopupHTML = $("#receipt_function_popup_content").html();
 
     currentTargetPopupAnchor.ShowBubblePopup({
-        position: 'center',
-        align: 'top',
+        position: 'bottom',
+        align: 'right',
         tail	 : {
-            align: 'middle'
+            align: 'right'
         },
         innerHtml: discountsPopupHTML,
 
@@ -402,6 +412,183 @@ function showEditPopup(receiptItem) {
     currentTargetPopupAnchor.FreezeBubblePopup();
 
     popupId = currentTargetPopupAnchor.GetBubblePopupID();
+
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
+}
+
+function showPricePopup() {
+
+    currentSelectedReceiptItemEl = receiptItem;
+    //make sure both discount popups are closed
+    closeDiscountPopup();
+
+    currentTargetPopupAnchor = $('.receipt_top');
+
+    if(currentTargetPopupAnchor.HasBubblePopup()) {
+        currentTargetPopupAnchor.RemoveBubblePopup();
+    }
+
+    currentTargetPopupAnchor.CreateBubblePopup();
+
+    discountsPopupHTML = $("#price_function_popup_content").html();
+
+    currentTargetPopupAnchor.ShowBubblePopup({
+        position: 'bottom',
+        align: 'right',
+        tail	 : {
+            align: 'right'
+        },
+        innerHtml: discountsPopupHTML,
+
+        innerHtmlStyle:{
+            'text-align':'left'
+        },
+
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false
+
+    }, false);
+
+
+
+    currentTargetPopupAnchor.FreezeBubblePopup();
+
+    popupId = currentTargetPopupAnchor.GetBubblePopupID();
+
+    $('#' + popupId).find('.new_price').val(currentPrice);
+    $('#' + popupId).find('.quantity').val(currentQuantity);
+
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
+}
+
+function showDiscountPopup() {
+
+    currentSelectedReceiptItemEl = receiptItem;
+    //make sure both discount popups are closed
+    closeDiscountPopup();
+
+    currentTargetPopupAnchor = $('.receipt_top');
+
+    if(currentTargetPopupAnchor.HasBubblePopup()) {
+        currentTargetPopupAnchor.RemoveBubblePopup();
+    }
+
+    currentTargetPopupAnchor.CreateBubblePopup();
+
+    discountsPopupHTML = $("#discount_function_popup_content").html();
+
+    currentTargetPopupAnchor.ShowBubblePopup({
+        position: 'bottom',
+        align: 'right',
+        tail	 : {
+            align: 'right'
+        },
+        innerHtml: discountsPopupHTML,
+
+        innerHtmlStyle:{
+            'text-align':'left'
+        },
+
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false
+
+    }, false);
+
+    currentTargetPopupAnchor.FreezeBubblePopup();
+
+    popupId = currentTargetPopupAnchor.GetBubblePopupID();
+    $('#' + popupId).find('.new_price').val(currentPrice);
+    $('#' + popupId).find('.quantity').val(currentQuantity);
+
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
+}
+
+function showQuantityPopup() {
+
+    currentSelectedReceiptItemEl = receiptItem;
+    //make sure both discount popups are closed
+    closeDiscountPopup();
+
+    currentTargetPopupAnchor = $('.receipt_top');
+
+    if(currentTargetPopupAnchor.HasBubblePopup()) {
+        currentTargetPopupAnchor.RemoveBubblePopup();
+    }
+
+    currentTargetPopupAnchor.CreateBubblePopup();
+
+    discountsPopupHTML = $("#quantity_function_popup_content").html();
+
+    currentTargetPopupAnchor.ShowBubblePopup({
+        position: 'bottom',
+        align: 'right',
+        tail	 : {
+            align: 'right'
+        },
+        innerHtml: discountsPopupHTML,
+
+        innerHtmlStyle:{
+            'text-align':'left'
+        },
+
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false
+
+    }, false);
+
+    currentTargetPopupAnchor.FreezeBubblePopup();
+
+    popupId = currentTargetPopupAnchor.GetBubblePopupID();
+    $('#' + popupId).find('.new_price').val(currentPrice);
+    $('#' + popupId).find('.quantity').val(currentQuantity);
+
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
+}
+
+function showCoursePopup() {
+
+    currentSelectedReceiptItemEl = receiptItem;
+    //make sure both discount popups are closed
+    closeDiscountPopup();
+
+    currentTargetPopupAnchor = $('.receipt_top');
+
+    if(currentTargetPopupAnchor.HasBubblePopup()) {
+        currentTargetPopupAnchor.RemoveBubblePopup();
+    }
+
+    currentTargetPopupAnchor.CreateBubblePopup();
+
+    discountsPopupHTML = $("#course_function_popup_content").html();
+
+    currentTargetPopupAnchor.ShowBubblePopup({
+        position: 'bottom',
+        align: 'right',
+        tail	 : {
+            align: 'right'
+        },
+        innerHtml: discountsPopupHTML,
+
+        innerHtmlStyle:{
+            'text-align':'left'
+        },
+
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false
+
+    }, false);
+
+    currentTargetPopupAnchor.FreezeBubblePopup();
+
+    $('#' + popupId).find('.course_num').val(currentCourseNum);
 
     //register the click handler to hide the popup when outside clicked
     registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
@@ -741,7 +928,6 @@ function showTablesSubscreen() {
     //blank the function buttons
     $('#menu_screen #buttons_container').hide();
     $('#menu_screen #cluey_logo').show();
-
     $('.button[id=sales_button_' + tablesButtonID + ']').addClass("selected");
     $('#table_screen').show();
 }
