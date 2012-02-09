@@ -48,6 +48,21 @@ function setExtraOptionsSelectedTab(tab_el_name, tab_content_el_name) {
     $('#' + tab_content_el_name).show();
 }
 
+function updateStockCalculation(index) {
+    var numerator = parseInt($('#quantity_numerator_' + index).val());
+    var denominator = parseInt($('#quantity_denominator_' + index).val());
+    
+    if(isNaN(numerator) || numerator <=0) {
+        numerator = 1;
+    }
+    
+    if(isNaN(denominator) || denominator <=0) {
+        denominator = 1;
+    }
+    
+    $('#stock_calculation_' + index).html(" = " + roundNumber((parseFloat(numerator)/parseFloat(denominator)), 3));
+}
+
 var bgColorPickerAnchor = null;
 
 function productBuidlerShowBgColorPicker() {
@@ -267,6 +282,71 @@ function printerSwitchToggle(switchEl) {
     var terminalName = switchEl.data("terminal_name");
    
     $('#choose_printer_checkbox_' + terminalName).attr("checked", is_selected);
+}
+
+var selectKitchenScreensDialogAnchor = null;
+
+function showSelectKitchenScreensDialog() {
+    selectKitchenScreensDialogAnchor = $('#select_kitchen_screens_button');
+    
+    if(selectKitchenScreensDialogAnchor.HasBubblePopup()) {
+        selectKitchenScreensDialogAnchor.RemoveBubblePopup();
+    }
+    
+    selectKitchenScreensDialogAnchor.CreateBubblePopup();
+    
+    popupHTML = $('#select_kitchen_screens_markup').html();
+    
+    selectKitchenScreensDialogAnchor.ShowBubblePopup({
+        position: 'bottom',  
+        align: 'middle',
+        tail	 : {
+            align: 'middle'
+        },
+        innerHtml: popupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+        
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false        
+    }, false);
+    
+    selectKitchenScreensDialogAnchor.FreezeBubblePopup();
+    
+    //initialize the iphone sliders
+    var popupId = selectKitchenScreensDialogAnchor.GetBubblePopupID();
+    
+    $('#' + popupId).find(':checkbox').each(function() {
+        var terminalName = $(this).data("terminal_name")
+        var origChecked = $('#choose_kitchen_screen_checkbox_' + terminalName).attr("checked");
+        $(this).attr("checked", origChecked);
+    });
+    
+    $('#' + popupId).find(':checkbox').iphoneStyle({
+        resizeContainer: false, 
+        resizeHandle : false, 
+        checkedLabel: 'Yes', 
+        uncheckedLabel: 'No'
+    });
+}
+
+function hideSelectKitchenScreensDialog() {
+    if(selectKitchenScreensDialogAnchor.HasBubblePopup()) {
+        selectKitchenScreensDialogAnchor.HideBubblePopup();
+        selectKitchenScreensDialogAnchor.FreezeBubblePopup();
+    }
+}
+
+function kitchenScreenSwitchToggle(switchEl) {
+    switchEl = $(switchEl);
+   
+    var is_selected = switchEl.attr("checked");
+    var terminalName = switchEl.data("terminal_name");
+   
+    $('#choose_kitchen_screen_checkbox_' + terminalName).attr("checked", is_selected);
 }
 
 function productBuilderShowMoreOptionsShortcut() {

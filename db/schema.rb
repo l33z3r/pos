@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120131114457) do
+ActiveRecord::Schema.define(:version => 20120207162905) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -35,7 +35,8 @@ ActiveRecord::Schema.define(:version => 20120131114457) do
     t.string   "printers",                                 :default => ""
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => -1
+    t.integer  "course_num",                               :default => 0
+    t.string   "kitchen_screens",                          :default => ""
   end
 
   create_table "client_transactions", :force => true do |t|
@@ -117,6 +118,15 @@ ActiveRecord::Schema.define(:version => 20120131114457) do
     t.string   "logo_content_type"
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ingredients", :force => true do |t|
+    t.integer  "product_id"
+    t.integer  "ingredient_product_id"
+    t.integer  "quantity_numerator",    :default => 1
+    t.integer  "quantity_denominator",  :default => 1
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -307,7 +317,9 @@ ActiveRecord::Schema.define(:version => 20120131114457) do
     t.boolean  "hide_on_printed_receipt",                  :default => false
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => -1
+    t.integer  "course_num",                               :default => 0
+    t.boolean  "is_stock_item",                            :default => true
+    t.string   "kitchen_screens",                          :default => ""
   end
 
   create_table "roles", :force => true do |t|

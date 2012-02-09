@@ -54,6 +54,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: orders
@@ -79,5 +80,6 @@ end
 #  void_order_id         :integer(4)
 #  is_void               :boolean(1)      default(FALSE)
 #  order_num             :integer(8)
+#  split_payments        :text(2147483647
 #
 

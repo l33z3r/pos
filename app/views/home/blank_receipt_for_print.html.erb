@@ -94,7 +94,7 @@
       }
 
       div.order_line.course {
-        border-bottom: 2px solid #4F81BD;
+        
       }
 
       div.order_line.hide_on_printed_receipt {
@@ -374,6 +374,10 @@
 
       div.order_receipt div.oia.hide_on_receipt {
         visibility: visible;
+      }
+      
+      div.order_receipt div.order_line.course {
+        border-bottom: 2px solid #4F81BD;
       }
 
       <%= render "/partials/interfaces/shared/order_receipt_css_#{@order_receipt_width_setting}" %>

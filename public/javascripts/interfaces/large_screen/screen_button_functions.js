@@ -1,9 +1,5 @@
 function prepareXTotal() {
-    var doIt = true;
-    
-    if(doIt) {
-        doCashTotalReport("X", false);
-    }
+    doCashTotalReport("X", false);
 }
 
 function prepareZTotal() {
@@ -584,15 +580,49 @@ function changeCourseNum() {
  
     if(receiptItem) {
         var popupEl = doSelectReceiptItem(receiptItem);
+        popupEl.find('#course_button').mousedown().mouseup();
+    }
+}
+
+function exitApp() {
+    var doIt = confirm("Are you sure?");
+    
+    if(doIt) {
+        window.open('','_self','');
+        window.close();
+    }
+}
+
+function tablesButtonPressed() {
+    if(currentMenuItemQuantity.length > 0) {
+        //switch to table shortcut
+        var tableLabelToSwitchTo = parseInt(Math.round(currentMenuItemQuantity));
         
-        popupEl.find('#discount_button').hide();
-        popupEl.find('#delete_button').hide();
-        popupEl.find('#oia_button').hide();
-        popupEl.find('#transfer_button').hide();
-        popupEl.find('#quantity_editor').hide();
-        popupEl.find('#price_editor').hide();
+        var tableID;
         
-        popupEl.find('#header').html("Enter A Course Number (0 to 10)");
-        popupEl.find('#current_selected_receipt_item_course_num').focus();
+        if(tableLabelToSwitchTo == 0) {
+            tableID = 0;
+        } else {
+            var table = getTableForLabel(tableLabelToSwitchTo);
+            
+            if(table == null) {
+                setStatusMessage("Table " + tableLabelToSwitchTo + " does not exist.");
+                //reset the quantity
+                currentMenuItemQuantity = "";
+                $('#menu_screen_input_show').html("");
+                return;
+            }
+            
+            tableID = table.id;
+        }
+        
+        tableSelectMenu.setValue(tableID);
+        doSelectTable(tableID);
+        
+        //reset the quantity
+        currentMenuItemQuantity = "";
+        $('#menu_screen_input_show').html("");
+    } else {
+        showTablesScreen();
     }
 }

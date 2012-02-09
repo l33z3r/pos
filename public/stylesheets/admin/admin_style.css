@@ -415,6 +415,45 @@ div#product_builder div#builder_fields_container div.extra_options div#options_t
     height: 30px;
 }
 
+div#product_builder div#builder_fields_container div.extra_options div#ingredients_tab_content div.product_header {
+    float: left;
+    margin-left: 80px;
+    width: 220px;
+    font-weight: bold;
+}
+
+div#product_builder div#builder_fields_container div.extra_options div#ingredients_tab_content div.uses {
+    float: left;
+    width: 50px;
+    font-weight: bold;
+}
+
+div#product_builder div#builder_fields_container div.extra_options div#ingredients_tab_content div.quantity_header {
+    float: left;
+    width: 200px;
+    font-weight: bold;
+}
+
+div#product_builder div#builder_fields_container div.extra_options div#ingredients_tab_content div.product {
+    float: left;
+    margin-left: 80px;
+    width: 220px;
+}
+
+div#product_builder div#builder_fields_container div.extra_options div#ingredients_tab_content div.quantity {
+    float: left;
+    margin-left: 50px;
+    width: 140px;
+}
+
+div#product_builder div#builder_fields_container div.extra_options div#ingredients_tab_content div.calculation {
+    float: left;
+    font-weight: bold;
+    width: 70px;
+    text-align: left;
+    margin-top: 5px;
+}
+
 div#product_builder div#builder_fields_container div.extra_options div#appearance_tab_content div#product_image_input_container {
     position: relative;
 }
@@ -534,6 +573,45 @@ div.select_printers_dialog div.terminal_switches div.terminal_switch {
 }
 
 div.select_printers_dialog div.ok_button {
+    height: 30px;
+    display: block;
+    padding-top: 15px;
+    color: #000;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 5px 0px;
+    float: right;
+}
+
+div.select_kitchen_screens_dialog {
+    padding: 10px;
+}
+
+div.select_kitchen_screens_dialog div.header {
+    font-size: 16px;
+    color: #000;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+div.select_kitchen_screens_dialog div.terminal_switches {
+
+}
+
+div.select_kitchen_screens_dialog div.terminal_switches div.terminal_switch div.label {
+    float: left;
+    margin-left: 10px;
+    margin-top: 4px;
+    font-size: 14px;
+    color: #000;
+    width: 100px;
+}
+
+div.select_kitchen_screens_dialog div.terminal_switches div.terminal_switch {
+    margin-bottom: 5px;
+}
+
+div.select_kitchen_screens_dialog div.ok_button {
     height: 30px;
     display: block;
     padding-top: 15px;
@@ -937,6 +1015,10 @@ div#edit_category section#form_container form div#actions input {
 }
 
 div#edit_category section#form_container input#select_printers_button {
+    width: 220px;
+}
+
+div#edit_category section#form_container input#select_kitchen_screens_button {
     width: 220px;
 }
 

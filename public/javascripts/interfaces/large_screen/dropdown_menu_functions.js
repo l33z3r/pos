@@ -189,6 +189,12 @@ var currentStockMenuItemId = null;
 var oldStockValue = null;
 
 function loadStockTakeReceiptArea(productId, menuItemId) {
+    //if this is not a stock item, then ignore
+    if(!products[productId].is_stock_item) {
+        setStatusMessage("This is not a stock item.");
+        return;
+    }
+    
     currentStockMenuItemId = menuItemId;
     
     $('#stock_take_new_amount_input').attr("disabled", false);

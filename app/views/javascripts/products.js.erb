@@ -10,14 +10,16 @@ var products_by_upc = new Array();
   'hide_on_printed_receipt' : <%=p.hide_on_printed_receipt%>,
   'show_price_on_receipt' : <%=p.show_price_on_receipt%>,
   'prompt_price' : <%=p.show_price_prompt%>,
+  'is_stock_item' : <%=p.is_stock_item%>,
   'printers' : "<%= p.printers %>",
+  'kitchen_screens' : "<%=p.kitchen_screens%>",
   'deleted' : <%= p.is_deleted %>,
   'category_id' : <%= p.category ? p.category.id : "null" %>,
   'upc' : '<%= p.upc %>',
   'code_num' : '<%= p.code_num %>',
   'modifier_grid_id' : <%= p.order_item_addition_grid ? p.order_item_addition_grid.id : "null" %>,
   'modifier_grid_id_mandatory' : <%= p.order_item_addition_grid_id_is_mandatory %>,
-  'course_num' : <%= p.course_num %>
+  'course_num' : <%= p.calc_course_num %>
   };
 
   products[<%= p.id %>] = nextProduct;
@@ -47,6 +49,7 @@ var categories = new Array();
   categories[<%= c.id %>] = {
   'id':'<%= c.id %>', 'name':'<%= escape_javascript c.name %>', 
   'printers': "<%= c.printers %>",
+  'kitchen_screens' : "<%=c.kitchen_screens%>",
   'modifier_grid_id' : <%= c.order_item_addition_grid ? c.order_item_addition_grid.id : "null" %>,
   'modifier_grid_id_mandatory' : <%= c.order_item_addition_grid_id_is_mandatory %>, 
   'parent_category_id' : <%= c.parent_category ? c.parent_category_id : "null" %>,

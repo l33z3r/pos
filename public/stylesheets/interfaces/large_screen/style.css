@@ -543,23 +543,23 @@ div#receipt_keypad_container div#receipt {
 }
 
 div#receipt_keypad_container div#stock_take_receipt {
-    height: 379px;
+    height: 351px;
     display: none;
     background-color: #FFF;
 }
 
 div#receipt_keypad_container div#stock_take_receipt div#receipt_area {
-    height: 250px;
+    height: 222px;
 }
 
 div#receipt_keypad_container div#price_change_receipt {
-    height: 379px;
+    height: 351px;
     display: none;
     background-color: #FFF;
 }
 
 div#receipt_keypad_container div#price_change_receipt div#receipt_area {
-    height: 250px;
+    height: 222px;
 }
 
 div#receipt_keypad_container div#price_change_receipt div#price_change_new_price_input_container {
@@ -1288,7 +1288,7 @@ div#split_bill_screen div#split_bill_to_receipt_container div.action_buttons {
 }
 
 div#split_bill_screen div#split_bill_to_receipt_container div.action_buttons div.button {
-    
+
 }
 
 div#split_bill_screen div.total_container {
@@ -1804,7 +1804,7 @@ div.receipt div.till_roll div.order_line.not_synced div.name {
 div.receipt div.till_roll div.order_line.selected {
     -moz-border-radius: 3px;
     border-radius: 3px;
-    background-color: #4297D7;
+    background-color: #E36C0A;
 }
 
 div.receipt div.till_roll div.server {
@@ -2040,28 +2040,6 @@ div#edit_receipt_item_popup_markup_container div#price_editor input.price {
     border-radius: 5px;
 }
 
-div#edit_receipt_item_popup_markup_container div#course_num_editor {
-    padding-bottom: 10px;
-    padding-top: 12px;
-}
-
-div#edit_receipt_item_popup_markup_container div#course_num_editor div.course_num_label {
-    font-weight: bold;
-    float: left;
-    margin: 4px 4px 1px 6px;
-    font-size: 12px;
-    width: 100px;
-}
-
-div#edit_receipt_item_popup_markup_container div#course_num_editor input.course_num {
-    float: left;
-    margin: -5px 0px 1px 30px;
-    width: 120px;
-    height: 25px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-}
-
 div#edit_receipt_item_popup_markup_container div#oia_button {
     padding: 10px;
     float: right;
@@ -2116,6 +2094,45 @@ div#edit_receipt_item_popup_markup_container div#transfer_button {
     font-weight: bold;
     color: #666;
     margin: 3px 22px;
+}
+
+div#edit_receipt_item_popup_markup_container div#course_button {
+    padding: 10px;
+    float: right;
+    cursor: pointer;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    height: 18px;
+    width: 100px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    margin: 3px 22px;
+}
+
+div#course_popup_markup {
+    display: none;
+}
+
+div#course_popup_markup_container {
+    width: 200px;
+    height: 300px;
+}
+
+div#course_popup_markup_container div.header {
+    text-align: left;
+}
+
+div#course_popup_markup_container div.course_label {
+    background-color: #FFF;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 10px;
+    cursor: pointer;
+}
+
+div#course_popup_markup_container div.course_label.selected {
+    background-color: red;
 }
 
 /* End Edit Order Item Popup */

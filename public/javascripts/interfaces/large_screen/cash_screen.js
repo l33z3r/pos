@@ -106,9 +106,12 @@ function paymentMethodSelected(method, integration_id) {
     
     //check if the payment method is the charge room and do some magic
     if(paymentIntegrationId != 0) {
+        
+        totalAmountInclCashback = currentTotalFinal + cashback
+        
         //integrations do not allow for split payments
         splitPayments = {};
-        splitPayments[paymentMethod] = 0;
+        splitPayments[paymentMethod] = totalAmountInclCashback;
         
         if(paymentIntegrationId == zalionPaymentIntegrationId) {
             //alert("Zalion Integration");
@@ -123,12 +126,16 @@ function paymentMethodSelected(method, integration_id) {
                 error: function() {
                     hideLoadingDiv();
                     setStatusMessage("Error Getting Zalion Data", false, false);                   
+                    paymentMethodSelected(defaultPaymentMethod, 0);
+                    splitPayments = {};
                 },
                 data: {
                     zalion_roomfile_request_url : zalion_roomfile_request_url
                 }
             });
         }
+        
+        return;
     }
     
     resetTendered();
@@ -243,7 +250,7 @@ function totalsScreenKeypadClick(val) {
     cashTendered = parseFloat(cashTenderedKeypadString/100.0);
     //alert(splitPayments[paymentMethod] + " " + cashTendered);
     splitPayments[paymentMethod] = cashTendered;
-    $('#tendered_value').html(cashTenderedKeypadString);
+    $('#tendered_value').html(currency(cashTenderedKeypadString/100.0));
 }
 
 function totalsScreenKeypadClickCancel() {
@@ -252,7 +259,7 @@ function totalsScreenKeypadClickCancel() {
         return;
     }
     
-    $('#tendered_value').html('0');
+    $('#tendered_value').html(currency(0));
     splitPayments[paymentMethod] = 0;
     resetTendered();
 }
@@ -279,9 +286,7 @@ function moneySelected(amount) {
     cashTendered = parseFloat(newAmount);
     //alert(splitPayments[paymentMethod] + " " + cashTendered);
     splitPayments[paymentMethod] = cashTendered;
-    $('#tendered_value').html(newAmount * 100);
-    
-    updateTotalTendered();
+    $('#tendered_value').html(currency(newAmount));
 }
 
 function doChargeRoom(orderData) {

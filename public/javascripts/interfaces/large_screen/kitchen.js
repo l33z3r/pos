@@ -2,6 +2,8 @@ var courseChecks = {};
 var orderXClicked = {};
 var orderNums = {};
 
+var kitchenOrders;
+
 function initKitchen() {
     //hide the red x 
     $('#nav_save_button').hide();
@@ -10,10 +12,24 @@ function initKitchen() {
     $('#menu_screen_shortcut_dropdown_container').hide();
     
     loadCourseChecks();
+    
+    kitchenOrders = {};
 }
 
 function renderReceipt(tableID) {
-    var nextKitchenOrder = tableOrders[tableID];
+    
+    //need to copy the tableOrder to the kitchenOrders array 
+    //so we can strip products and do auto coursing on it
+    //copy over the order
+    var copiedOrder = {};
+    var theCopiedOrder = $.extend(true, copiedOrder, tableOrders[tableID]);
+    kitchenOrders[tableID] = theCopiedOrder;
+    
+    var nextKitchenOrder = kitchenOrders[tableID];
+    
+    //strip products that do not belong on this screen
+    stripProducts(nextKitchenOrder);
+    doAutoCoursing(nextKitchenOrder);
     
     if(!courseChecks[tableID]) {
         courseChecks[tableID] = new Array();
@@ -246,7 +262,7 @@ function sendCourseCheck(orderLine) {
     }
     
     //send a vibrate to the employee who started the order
-    var kitchenOrder = tableOrders[tableID];
+    var kitchenOrder = kitchenOrders[tableID];
     var terminalID = kitchenOrder.items[orderLine.data("item_number")-1].terminal_id;
     var employeeID = firstServerID(kitchenOrder);
     
@@ -387,6 +403,8 @@ function tableCleared(tableID, orderNum) {
     courseChecks[tableID] = new Array();
     orderXClicked[tableID] = false;
     
+    kitchenOrders[tableID] = null;
+    
     saveCourseChecks();
     
     //move it to the empty section
@@ -415,4 +433,41 @@ function hideOrderReadyNotificationPopup() {
     } catch (e) {
         
     }
+}
+
+function stripProducts(order) {
+    var newItems = new Array();
+    
+    for(var i=0; i<order.items.length; i++) {
+        var nextItem = order.items[i];
+        
+        var itemScreens = nextItem.product.kitchen_screens;
+            
+        if((typeof itemScreens != "undefined") && itemScreens.length > 0) {
+            var screensArray = itemScreens.split(",");
+                
+            if($.inArray(terminalID.toLowerCase(), screensArray) != -1) {
+                //keep it
+                newItems.push(nextItem);
+            }
+        } else {
+            //check category printers
+            var categoryId = nextItem.product.category_id;
+            
+            if(categoryId != null) {
+                var categoryScreens = categories[categoryId].kitchen_screens;
+            
+                if((typeof categoryScreens != "undefined") && categoryScreens.length > 0) {
+                    var categoryScreensArray = categoryScreens.split(",");
+                
+                    if($.inArray(terminalID.toLowerCase(), categoryScreensArray) != -1)  {
+                        //keep it
+                        newItems.push(nextItem);
+                    }
+                }
+            }
+        }
+    }
+    
+    order.items = newItems;
 }

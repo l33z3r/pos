@@ -135,6 +135,7 @@ class HomeController < ApplicationController
     
     @menu_page.menu_items.each do |mi|
       next if !mi.product
+      next if !mi.product.is_stock_item
       @stock = mi.product.quantity_in_stock
       @stock_map[mi.id] = @stock ? number_to_human(@stock) : 0
     end

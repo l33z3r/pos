@@ -43,3 +43,7 @@ function changeCourseNum() {
         alert("popup for change course num");
     }
 }
+
+function tablesButtonPressed() {
+    showTablesScreen();
+}

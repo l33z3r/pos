@@ -157,7 +157,6 @@ function finishDoSelectMenuItem() {
     addItemToOrderAndSave(orderItem);
 
     //do coursing and load receipt
-    doAutoCoursing(currentOrder);
     loadReceipt(currentOrder, true);
     
     currentSelectedReceiptItemEl = $('#menu_screen_till_roll div[data-item_number=' + currentOrderItem.itemNumber + ']');
@@ -170,8 +169,6 @@ function finishDoSelectMenuItem() {
 function tableSelectMenuItem(orderItem) {
     addItemToTableOrderAndSave(orderItem);
     
-    //do coursing and load receipt
-    doAutoCoursing(currentOrder);
     loadReceipt(currentOrder, true);
     
     currentSelectedReceiptItemEl = $('#menu_screen_till_roll div[data-item_number=' + currentOrderItem.itemNumber + ']');
@@ -638,9 +635,9 @@ function showEditPopupInit() {
     showEditPopup(receiptItem);
 }
 
-function writeOrderItemToReceipt(orderItem) {
-    setReceiptsHTML(getCurrentRecptHTML() + getOrderItemReceiptHTML(orderItem));
-}
+//function writeOrderItemToReceipt(orderItem) {
+//    setReceiptsHTML(getCurrentRecptHTML() + getOrderItemReceiptHTML(orderItem));
+//}
 
 function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
     allOrderItemsReceiptHTML = "";
