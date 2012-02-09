@@ -250,7 +250,7 @@ function totalsScreenKeypadClick(val) {
     cashTendered = parseFloat(cashTenderedKeypadString/100.0);
     //alert(splitPayments[paymentMethod] + " " + cashTendered);
     splitPayments[paymentMethod] = cashTendered;
-    $('#tendered_value').html(cashTenderedKeypadString);
+    $('#tendered_value').html(currency(cashTenderedKeypadString/100.0));
 }
 
 function totalsScreenKeypadClickCancel() {
@@ -259,7 +259,7 @@ function totalsScreenKeypadClickCancel() {
         return;
     }
     
-    $('#tendered_value').html('0');
+    $('#tendered_value').html(currency(0));
     splitPayments[paymentMethod] = 0;
     resetTendered();
 }
@@ -286,9 +286,7 @@ function moneySelected(amount) {
     cashTendered = parseFloat(newAmount);
     //alert(splitPayments[paymentMethod] + " " + cashTendered);
     splitPayments[paymentMethod] = cashTendered;
-    $('#tendered_value').html(newAmount * 100);
-    
-    updateTotalTendered();
+    $('#tendered_value').html(currency(newAmount));
 }
 
 function doChargeRoom(orderData) {

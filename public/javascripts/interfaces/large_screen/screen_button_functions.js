@@ -592,3 +592,37 @@ function exitApp() {
         window.close();
     }
 }
+
+function tablesButtonPressed() {
+    if(currentMenuItemQuantity.length > 0) {
+        //switch to table shortcut
+        var tableLabelToSwitchTo = parseInt(Math.round(currentMenuItemQuantity));
+        
+        var tableID;
+        
+        if(tableLabelToSwitchTo == 0) {
+            tableID = 0;
+        } else {
+            var table = getTableForLabel(tableLabelToSwitchTo);
+            
+            if(table == null) {
+                setStatusMessage("Table " + tableLabelToSwitchTo + " does not exist.");
+                //reset the quantity
+                currentMenuItemQuantity = "";
+                $('#menu_screen_input_show').html("");
+                return;
+            }
+            
+            tableID = table.id;
+        }
+        
+        tableSelectMenu.setValue(tableID);
+        doSelectTable(tableID);
+        
+        //reset the quantity
+        currentMenuItemQuantity = "";
+        $('#menu_screen_input_show').html("");
+    } else {
+        showTablesScreen();
+    }
+}

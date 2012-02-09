@@ -110,7 +110,7 @@ class ButtonMapper
     when BUTTON_CONFIG_BUTTON
       @retval = "goTo('#{edit_multiple_admin_display_buttons_path}'); return false;"
     when TABLES_BUTTON
-      @retval = "showTablesScreen(); return false;"
+      @retval = "tablesButtonPressed(); return false;"
     when SYSTEM_BUTTON
       @retval = "showGlobalSettingsPage();"
     when THEMES_BUTTON

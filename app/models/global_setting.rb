@@ -409,7 +409,7 @@ class GlobalSetting < ActiveRecord::Base
   end
   
   def self.course_vals
-    return 1..5
+    return 1..7
   end
   
   def self.course_options
