@@ -1,7 +1,7 @@
 <div id="receipt_screen" class="content-item">
     <div id="header" class="screen_header_receipt">
         <div style="float: right">
-        <div id="sales_button_<%= @display_buttons[0].id %>" class="button" onclick="<%= button_action @display_buttons[0] %>"><div class="icon">
+        <div id="sales_button_<%= @display_buttons[0].id %>" class="button" onclick="swipeToMenu();<%= button_action @display_buttons[0] %>"><div class="icon">
             <%= button_icon @display_buttons[0] %>
           </div>
           <div class="button_name"><%= @display_buttons[0].button_text %></div></div>
@@ -25,17 +25,16 @@
 
         </div>
     </div>
-     <div id="total_container">
-
-      <div id="label">Sub-Total:</div>
+     <div id="total_container" style="height: 25px; background-color: #888">
+      <div style="height: 7px"></div>
+      <div id="label" style="width: 100px; float: left; margin-left: 180px; font-size: 20px;">Sub-Total:</div>
       <div id="cash_screen_sub_total_value"></div>
-
 
     </div>
     <div id="function_buttons">
-        <div class="button" onclick="changeCourseNum();">Course</div>
-        <div class="button" onclick="<%= button_action @modify_button %>">Modify</div>
         <div class="button" onclick="swipeToFunctions();">Options</div>
+        <div class="button" onclick="<%= button_action @modify_button %>">Modify</div>
+        <div class="button" onclick="removeSelectedOrderItem();">Delete</div>
         <div class="button" onclick="swipeToMenu();">Menu</div>
     </div>
 </div>
@@ -152,31 +151,21 @@
 </div>
 
 <div id="course_function_popup_content">
-    <div id="course_editor">
-        <div class="course_label">Course Number:</div>
-        <br>
-        <input type="number" class="course_num" size="2" id="current_selected_receipt_item_course"/>
+<div id="course_popup_markup_container">
 
-        <div class="action_buttons_container">
-            <div class="action_buttons">
-                <div id="cancel_button" class="button" onclick="closeDiscountPopup()">
-                    <div class="icon">
-                        <%= image_tag "button_logos/cancel_button.png" %>
-                    </div>
-                    <div class="button_name">Cancel</div>
-                </div>
-                <div id="save_button" class="button" onclick="saveEditOrderItem()">
-                    <div class="icon">
-                        <%= image_tag "button_logos/ok_button.png" %>
-                    </div>
-                    <div class="button_name">OK</div>
-                </div>
-                <div class="clear">&nbsp;</div>
-            </div>
-        </div>
-    </div>
-    <br>
+    <div class="header">Serve As</div>
+
+    <div class="clear">&nbsp;</div>
+
+    <% GlobalSetting.course_vals.each do |course_val| %>
+      <% @gs = GlobalSetting.setting_for GlobalSetting::COURSE_LABEL, {:course_val => course_val} %>
+      <div class="course_label course_label_<%=course_val%>" onclick="applyCourseFromPopup(<%=course_val%>);"><%= @gs.value %></div>
+      <div class="clear">&nbsp;</div>
+    <% end %>
+
 </div>
+</div>
+
 
 <div id="receipt_function_popup_content">
     <div id="function_popup_buttons">
