@@ -9,10 +9,12 @@
 
       body {
         font-family: verdana, sans-serif;
-        font-size: 9px;
+        font-size: 12px;
         width: 210px;
         margin: 0px;
         overflow: hidden;
+
+        margin-left: <%=@printer_left_margin%>px;
 
         <%= render "/partials/interfaces/shared/receipt_margins_css_#{@order_receipt_width_setting}" %>
       }
@@ -73,13 +75,17 @@
         font-weight: bold;
       }
 
+      div.data_table div.total_line_container {
+        float: left;
+      }
+
       div.data_table div.label.time {
-        width: 93px;
+        width: 88px;
       }
 
       div.data_table div.data.time {
-        width: 106px;
-        padding-right: 0px;
+        width: 110px;
+        padding-right: 3px;
       }
 
       div.terminal {
@@ -94,7 +100,7 @@
       }
 
       div.order_line.course {
-        
+
       }
 
       div.order_line.hide_on_printed_receipt {
@@ -375,9 +381,19 @@
       div.order_receipt div.oia.hide_on_receipt {
         visibility: visible;
       }
-      
+
       div.order_receipt div.order_line.course {
         border-bottom: 2px solid #4F81BD;
+      }
+
+      div.order_receipt div.course_label {
+        float: left;
+        padding-left: 20px;
+        text-align: left;
+      }
+
+      div.order_receipt div.total {
+        width: 10px;
       }
 
       <%= render "/partials/interfaces/shared/order_receipt_css_#{@order_receipt_width_setting}" %>

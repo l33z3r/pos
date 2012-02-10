@@ -118,6 +118,10 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
             tableOrderDataJSON.items[itemKey].is_course = (tableOrderDataJSON.items[itemKey].is_course.toString() == "true" ? true : false);   
         }
         
+        if(tableOrderDataJSON.items[itemKey].show_course_label) {
+            tableOrderDataJSON.items[itemKey].show_course_label = (tableOrderDataJSON.items[itemKey].show_course_label.toString() == "true" ? true : false);   
+        }
+        
         
         
         
@@ -302,45 +306,6 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
 
 function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID) {
     var itemsToPrint = new Array();
-    
-    //OLD WAY
-    //    var foundPrinter = false;
-    //    
-    //    for(var itemKey in items) {
-    //        //we only want to print items from the order that are new i.e. not synced on the other terminal yet
-    //        var isItemSynced = (items[itemKey].synced === 'true');
-    //        
-    //        if(!isItemSynced) {
-    //            foundPrinter = false;
-    //            
-    //            var itemPrinters = items[itemKey].product.printers;
-    //            
-    //            if((typeof itemPrinters != "undefined") && itemPrinters.length > 0) {
-    //                var printersArray = itemPrinters.split(",");
-    //                
-    //                if($.inArray(terminalID.toLowerCase(), printersArray) != -1) {
-    //                    foundPrinter = true;
-    //                    itemsToPrint.push(items[itemKey]);
-    //                }
-    //            } 
-    //            
-    //            var categoryId = items[itemKey].product.category_id;
-    //            
-    //            if(categoryId != null) {
-    //                var categoryPrinters = categories[categoryId].printers;
-    //            
-    //                if(!foundPrinter && (typeof categoryPrinters != "undefined") && categoryPrinters.length > 0) {
-    //                    var categoryPrintersArray = categoryPrinters.split(",");
-    //                
-    //                    if($.inArray(terminalID.toLowerCase(), categoryPrintersArray) != -1) {
-    //                        foundPrinter = true;
-    //                        //pushcount++;
-    //                        itemsToPrint.push(items[itemKey]);
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
     
     for(var itemKey in items) {
         //we only want to print items from the order that are new i.e. not synced on the other terminal yet

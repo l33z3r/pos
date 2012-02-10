@@ -63,6 +63,11 @@ function getLineItemHTMLForPrintedOrderReceipt(orderItem) {
     //we don't show the total for the order receipt
     lineItemHTMLForOrder += "<div class='total'>&nbsp;</div>";
     
+    if(orderItem.show_course_label) {
+        lineItemHTMLForOrder += "<div class='clear'>&nbsp;</div>";
+        lineItemHTMLForOrder += "<div class='course_label'>Serve As: " + courseLabels[parseInt(orderItem.product.course_num)] + "</div>";
+    }
+    
     if(orderItem.modifier) {
         lineItemHTMLForOrder += "<div class='clear'>&nbsp;</div>";
         lineItemHTMLForOrder += "<div class='modifier_name'>" + orderItem.modifier.name + "</div>" + clearHTML;

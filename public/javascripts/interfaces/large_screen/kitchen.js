@@ -14,6 +14,9 @@ function initKitchen() {
     loadCourseChecks();
     
     kitchenOrders = {};
+    
+    //have to force all orders to come in from start time
+    lastSyncTableOrderTime = 0;
 }
 
 function renderReceipt(tableID) {
@@ -92,7 +95,7 @@ function renderReceipt(tableID) {
     
     $('#kitchen_table_' + tableID + "_receipt_order_num").html("Order #" + nextKitchenOrderNum);
      
-    var allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(nextKitchenOrder, false, false, true);
+    var allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(nextKitchenOrder, false, false, false);
      
     $('#kitchen_table_' + tableID + '_till_roll').html($('#kitchen_table_' + tableID + '_till_roll').html() + allOrderItemsRecptHTML);
     

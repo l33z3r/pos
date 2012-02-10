@@ -889,7 +889,18 @@
                       Zalion Room Charge Service IP Address
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::ZALION_ROOM_CHARGE_SERVICE_IP, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::ZALION_ROOM_CHARGE_SERVICE_IP %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Printer Left Margin (Pixels)
+                    </td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PRINTER_LEFT_MARGIN, {:fingerprint => @terminal_fingerprint} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>

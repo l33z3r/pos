@@ -37,5 +37,7 @@ else
   PAPERCLIP_STORAGE_OPTIONS = {}
 end
 
+GOOGLE_TRANSLATE_API_KEY = CUSTOM_CONFIG['google_translate_api_key']
+
 require "net/http"
 require "uri"

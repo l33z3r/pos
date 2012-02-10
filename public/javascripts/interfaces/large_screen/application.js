@@ -134,6 +134,8 @@ function doGlobalInit() {
     
     //start calling home
     callHomePoll();
+    
+    clueyScheduler();
 }
 
 function showInitialScreen() {

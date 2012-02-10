@@ -277,7 +277,7 @@ function doSelectMenuItem(productId, menuItemId, element) {
         return;
     }
     
-    if(currentMenuItemQuantity == "")
+    if(currentMenuItemQuantity == "" || currentMenuItemQuantity == "0")
         currentMenuItemQuantity = "1";
 
     if(currentMenuItemQuantity.indexOf(".") != -1) {
@@ -435,10 +435,6 @@ function testForPricePrompt(orderItem) {
         popupEl.find('#current_selected_receipt_item_price').val("");
     }
 }
-    
-//function writeOrderItemToReceipt(orderItem) {
-//    $('#till_roll').html($('#till_roll').html() + getOrderItemReceiptHTML(orderItem));
-//}
 
 function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
     allOrderItemsReceiptHTML = "";
@@ -507,6 +503,11 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         precision : 2
     });
     orderHTML += "<div class='total' data-per_unit_price='" + orderItem.product_price + "'>" + (orderItem.product.show_price_on_receipt ? orderItemTotalPriceText : "") + "</div>";
+    
+    if(orderItem.show_course_label) {
+        orderHTML += "<div class='clear'>&nbsp;</div>";
+        orderHTML += "<div class='course_label'>Serve As " + courseLabels[parseInt(orderItem.product.course_num)] + "</div>";
+    }
     
     if(orderItem.modifier) {
         orderHTML += "<div class='clear'>&nbsp;</div>";
@@ -706,9 +707,6 @@ function doSelectReceiptItem(orderItemEl) {
          
     //set the current price and quantity
     popupId = editItemPopupAnchor.GetBubblePopupID();
-    
-    currentCourseNum = orderItemEl.children('.name').data("course_num");
-    $('#' + popupId).find('.course_num').val(currentCourseNum);
     
     currentPrice = orderItemEl.children('.total').data("per_unit_price");
     currentPrice = currency(currentPrice, false);
@@ -1543,6 +1541,9 @@ function applyCourseFromPopup(courseVal) {
     newCourseNum = courseVal
     
     //alert("APPLYING COURSE " + newCourseNum + " old: " + item.product.course_num);
+    
+    //mark that we should show the course label for this item
+    item.show_course_label = true;
     
     if(selectedTable != 0) {
         order = tableOrders[selectedTable];

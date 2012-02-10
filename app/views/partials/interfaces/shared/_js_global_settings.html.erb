@@ -65,9 +65,6 @@
   //these variables are used for polling and they get updated by the dynamic javascript
   var lastInterfaceReloadTime = <%=Time.now.to_i%>;
   
-  //this will set off a bunch of requests to fill up out table order receipts
-  var lastSyncTableOrderTime = 0;
-  
   //this is for the order ready notifications on mobile
   var lastOrderReadyNotificationTime = <%=Time.now.to_i%>;
   
@@ -134,4 +131,11 @@
   
   var zalionChargeRoomServiceIP = "<%= @zalion_charge_room_service_ip %>";
 
+  //enumerate the course labels
+  var courseLabels = {};
+
+<% GlobalSetting.course_options.each do |label, course_val| %>
+    courseLabels[<%=course_val%>] = "<%=label%>";
+<% end %>
+    
 </script>
