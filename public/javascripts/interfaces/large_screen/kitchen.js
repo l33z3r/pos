@@ -14,6 +14,9 @@ function initKitchen() {
     loadCourseChecks();
     
     kitchenOrders = {};
+    
+    //have to force all orders to come in from start time
+    lastSyncTableOrderTime = 0;
 }
 
 function renderReceipt(tableID) {
