@@ -11,6 +11,8 @@ var lastActiveElement;
 var callHomePollInitSequenceComplete = false;
 var callHome = true;
 
+var lastSyncTableOrderTime = null;
+
 $(function() {
     //disable image drag
     $('img').live("mousedown", preventImageDrag);
@@ -23,6 +25,23 @@ function callHomePoll() {
     if(!callHome) {
         setTimeout(callHomePoll, 5000);
         return;
+    }
+    
+    //load/store the timestamp
+    var lastSyncKey = "last_sync_table_order_time";
+    
+    if(lastSyncTableOrderTime == null) {
+        //read it from web db
+        var syncVal = retrieveStorageValue(lastSyncKey);
+        
+        if(syncVal != null) {
+            lastSyncTableOrderTime = parseFloat(syncVal);
+        } else {
+            lastSyncTableOrderTime = 0;
+        }
+    } else {
+        //write it to web db
+        storeKeyValue(lastSyncKey, lastSyncTableOrderTime);
     }
     
     callHomeURL = "/call_home.js"
@@ -89,6 +108,11 @@ function callHomePollInitSequenceCompleteHook() {
     
     //hide the spinner at the top nav
     $('#loading_orders_spinner').hide();
+}
+
+function clueyScheduler() {
+    rollDate();
+    setTimeout(clueyScheduler, 1000);
 }
 
 function preventImageDrag(event) {

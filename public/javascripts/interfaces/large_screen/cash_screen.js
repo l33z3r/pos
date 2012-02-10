@@ -146,7 +146,7 @@ function paymentMethodSelected(method, integration_id) {
     }
     
     cashTendered = splitPayments[paymentMethod];
-    $('#tendered_value').html(cashTendered * 100);
+    $('#tendered_value').html(currency(cashTendered));
 }
 
 var selectedRoomNumber = null;
@@ -186,7 +186,7 @@ function doRoomNumberLookup() {
             folioTableHTML += "<div id='folio_" + folioNumber + "' onclick=\"selectFolio(" + roomNumber + ", " + folioNumber + ", '" + folioName + "', "    + folioBalance + ", " + folioCreditLimit + ");\" class='entry'>";
             folioTableHTML += "<div class='number'>" + folioNumber + "</div>";
             folioTableHTML += "<div class='name'>" + folioName + "</div>";
-            folioTableHTML += "<div class='balance'>" + currency(folioBalance) + "</div>";
+            folioTableHTML += "<div class='balance'>Bal: " + currency(folioBalance) + "</div>";
             folioTableHTML += "</div>" + clearHTML;
         }
     
@@ -267,7 +267,10 @@ function totalsScreenKeypadClickCancel() {
 function moneySelected(amount) {
     if(amount == -1) {
         totalAmountInclCashback = currentTotalFinal + cashback;
-        newAmount = totalAmountInclCashback;
+        
+        var totalCashTendered = getTotalTendered();
+        
+        newAmount = totalAmountInclCashback - totalCashTendered;
     } else {
         //add to amount tendered
         currentAmount = cashTendered;

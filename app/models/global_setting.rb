@@ -68,6 +68,7 @@ class GlobalSetting < ActiveRecord::Base
   BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL = 39
   ZALION_ROOM_CHARGE_SERVICE_IP = 40
   COURSE_LABEL = 41
+  PRINTER_LEFT_MARGIN = 42
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -110,7 +111,8 @@ class GlobalSetting < ActiveRecord::Base
     BUSINESS_INFO_MESSAGE => "Business Information",
     BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL => "Bypass open orders for z total",
     ZALION_ROOM_CHARGE_SERVICE_IP => "Zalion room charge service ip address",
-    COURSE_LABEL => "Course Label"
+    COURSE_LABEL => "Course Label", 
+    PRINTER_LEFT_MARGIN => "Printer Left Margin"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -217,10 +219,13 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_key(:key => "#{BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when ZALION_ROOM_CHARGE_SERVICE_IP
-      @gs = find_or_create_by_key(:key => "#{ZALION_ROOM_CHARGE_SERVICE_IP.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[ZALION_ROOM_CHARGE_SERVICE_IP])
+      @gs = find_or_create_by_key(:key => "#{ZALION_ROOM_CHARGE_SERVICE_IP.to_s}", :value => "", :label_text => LABEL_MAP[ZALION_ROOM_CHARGE_SERVICE_IP])
       @gs.parsed_value = @gs.value
     when COURSE_LABEL
       @gs = find_or_create_by_key(:key => "#{COURSE_LABEL.to_s}_#{args[:course_val]}", :value => "Course #{args[:course_val]}", :label_text => LABEL_MAP[COURSE_LABEL])
+      @gs.parsed_value = @gs.value
+    when PRINTER_LEFT_MARGIN
+      @gs = find_or_create_by_key(:key => "#{PRINTER_LEFT_MARGIN.to_s}_#{args[:fingerprint]}", :value => 0, :label_text => LABEL_MAP[PRINTER_LEFT_MARGIN])
       @gs.parsed_value = @gs.value
     else
       @gs = load_setting property
@@ -324,11 +329,19 @@ class GlobalSetting < ActiveRecord::Base
             @my_menu_screen_type_gs.value = @menu_screen_type_gs.value
             @my_menu_screen_type_gs.save
             
+            #printer left margin
+            @printer_left_margin_gs = GlobalSetting.setting_for GlobalSetting::PRINTER_LEFT_MARGIN, {:fingerprint => @old_fingerprint}
+            
+            @my_printer_left_margin_gs = GlobalSetting.setting_for GlobalSetting::PRINTER_LEFT_MARGIN, {:fingerprint => @my_terminal_fingerprint}
+            @my_printer_left_margin_gs.value = @printer_left_margin_gs.value
+            @my_printer_left_margin_gs.save
+            
             #delete old gs objects
             @websocket_ip_gs.destroy
             @order_reciept_width_gs.destroy
             @old_terminal_gs.destroy
             @menu_screen_type_gs.destroy
+            @printer_left_margin_gs.destroy
           end
         end
         if value
@@ -340,6 +353,9 @@ class GlobalSetting < ActiveRecord::Base
         write_attribute("value", new_value)
       elsif key.starts_with? BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL.to_s
         new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
+      elsif key.starts_with? PRINTER_LEFT_MARGIN.to_s
+        new_value = value.to_i
         write_attribute("value", new_value)
       end
     end

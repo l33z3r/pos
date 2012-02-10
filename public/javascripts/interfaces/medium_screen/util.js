@@ -142,3 +142,7 @@ function initModifierGrid() {
     
     $('div#order_item_additions .grid_row .grid_item').css("height", newHeight + "px");
 }
+
+function rollDate() {
+    //NYI
+}
