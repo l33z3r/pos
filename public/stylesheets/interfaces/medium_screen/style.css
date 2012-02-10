@@ -250,8 +250,6 @@ div#menu_screen div#menu_container div#menu_pages_container {
 }
 
 div#menu_screen div#menu_container div#menu_pages_scroller {
-    padding-top: 15px;
-    height: 481px;
 
 }
 
@@ -294,7 +292,6 @@ div#menu_screen div#menu_container div#menu_items_container {
 }
 
 div#menu_screen div#menu_container div#menu_items_scroller {
-    padding-top: 5px;
 
 }
 
@@ -597,7 +594,7 @@ div.receipt div.till_roll div.order_line {
 }
 
 div.receipt div.till_roll div.order_line.course {
-    border-bottom: 2px solid #4297D7;
+    border-bottom: 2px solid #4F81BD;
 }
 
 div.receipt div.till_roll div.order_line.not_synced div.name {
@@ -609,7 +606,7 @@ div.receipt div.till_roll div.order_line.not_synced div.name {
 div.receipt div.till_roll div.order_line.selected {
     -moz-border-radius: 3px;
     border-radius: 3px;
-    background-color: #4297D7;
+    background-color: #E36C0A;
 }
 
 div.receipt div.till_roll div.server {

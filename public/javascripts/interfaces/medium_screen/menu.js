@@ -602,12 +602,14 @@ function showCoursePopup() {
 }
 
 function showCourseMenuPopup() {
+
     receiptItem = currentSelectedReceiptItemEl;
 
     if($('#menuCourseAnchor').hasClass('selected')) {
         currentTargetPopupAnchor.removeClass("selected");
         currentTargetPopupAnchor.HideBubblePopup();
     }else{
+    getSelectedOrLastReceiptItem();
     closeDiscountPopup();
 
     currentTargetPopupAnchor = $('#menuCourseAnchor');
