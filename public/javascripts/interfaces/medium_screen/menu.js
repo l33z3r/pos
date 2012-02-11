@@ -121,7 +121,7 @@ function doSelectMenuItem(productId, element) {
         return;
     }
 
-    if(currentMenuItemQuantity == "")
+    if(currentMenuItemQuantity == "" || currentMenuItemQuantity == "0")
         currentMenuItemQuantity = "1";
 
     if(currentMenuItemQuantity.indexOf(".") != -1) {
@@ -204,20 +204,21 @@ function doSelectReceiptItem(orderItemEl) {
     var selectedProduct = products[getCurrentOrder().items[parseInt(orderItemEl.data("item_number"))-1].product.id];
     setModifierGridIdForProduct(selectedProduct);
 
-
-
     showEditPopupInit();
 
     popupId = currentTargetPopupAnchor.GetBubblePopupID();
 
+    currentCourseNum = orderItemEl.children('.name').data("course_num");
+    $('#' + popupId).find('.course_num').val(currentCourseNum);
+
     currentPrice = orderItemEl.children('.total').data("per_unit_price");
     currentPrice = currency(currentPrice, false);
-    $('#' + popupId).find('.new_price').val(currentPrice);
+
+    var courseLineClass = orderItemEl.is_course ? "course" : "";
+    currentCourseNum = courseLineClass;
+    $('#' + popupId).find('.course_num').val(currentCourseNum);
 
     currentQuantity = orderItemEl.children('.amount').html();
-    $('#' + popupId).find('.quantity').val(currentQuantity);
-
-    $('#' + popupId).find('.new_price').focus();
 
     //keep the border
     orderItemEl.addClass("selected");
@@ -326,21 +327,33 @@ function saveEditOrderItem() {
     if(isNaN(newQuantity) || newQuantity == 0) {
         newQuantity = 1;
     }
+
+    targetInputCourseNumEl = $('#' + popupId).find('.course_num');
+    newCourseNum = parseInt(targetInputCourseNumEl.val());
+
+    if(isNaN(newCourseNum)) {
+        newCourseNum = 0;
+    } else if(newCourseNum > 10) {
+        newCourseNum = 10;
+    } else if(newCourseNum < 0) {
+        newCourseNum = 0;
+    }
+
     targetInputPricePerUnitEl = $('#' + popupId).find('.new_price');
     newPricePerUnit = parseFloat(targetInputPricePerUnitEl.val());
 
     if(isNaN(newPricePerUnit)) {
-        newPricePerUnit = 0;
+        newPricePerUnit = currentPrice;
     }
     if(selectedTable != 0) {
         order = tableOrders[selectedTable];
 
-        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
+        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum);
 
         storeTableOrderInStorage(current_user_id, selectedTable, order);
     } else {
         order = currentOrder;
-        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit);
+        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum);
 
         storeOrderInStorage(current_user_id, order);
     }
@@ -379,10 +392,10 @@ function showEditPopup(receiptItem) {
     discountsPopupHTML = $("#receipt_function_popup_content").html();
 
     currentTargetPopupAnchor.ShowBubblePopup({
-        position: 'center',
-        align: 'top',
+        position: 'bottom',
+        align: 'right',
         tail	 : {
-            align: 'middle'
+            align: 'right'
         },
         innerHtml: discountsPopupHTML,
 
@@ -404,8 +417,282 @@ function showEditPopup(receiptItem) {
     registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
 }
 
+function showPricePopup() {
+
+    currentSelectedReceiptItemEl = receiptItem;
+    //make sure both discount popups are closed
+    closeDiscountPopup();
+
+    currentTargetPopupAnchor = $('.receipt_top');
+
+    if(currentTargetPopupAnchor.HasBubblePopup()) {
+        currentTargetPopupAnchor.RemoveBubblePopup();
+    }
+
+    currentTargetPopupAnchor.CreateBubblePopup();
+
+    discountsPopupHTML = $("#price_function_popup_content").html();
+
+    currentTargetPopupAnchor.ShowBubblePopup({
+        position: 'bottom',
+        align: 'right',
+        tail	 : {
+            align: 'right'
+        },
+        innerHtml: discountsPopupHTML,
+
+        innerHtmlStyle:{
+            'text-align':'left'
+        },
+
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false
+
+    }, false);
+
+
+
+    currentTargetPopupAnchor.FreezeBubblePopup();
+
+    popupId = currentTargetPopupAnchor.GetBubblePopupID();
+
+    $('#' + popupId).find('.new_price').val("");
+    $('#' + popupId).find('.new_price').focus();
+
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
+}
+
+function showDiscountPopup() {
+
+    currentSelectedReceiptItemEl = receiptItem;
+    //make sure both discount popups are closed
+    closeDiscountPopup();
+
+    currentTargetPopupAnchor = $('.receipt_top');
+
+    if(currentTargetPopupAnchor.HasBubblePopup()) {
+        currentTargetPopupAnchor.RemoveBubblePopup();
+    }
+
+    currentTargetPopupAnchor.CreateBubblePopup();
+
+    discountsPopupHTML = $("#discount_function_popup_content").html();
+
+    currentTargetPopupAnchor.ShowBubblePopup({
+        position: 'bottom',
+        align: 'right',
+        tail	 : {
+            align: 'right'
+        },
+        innerHtml: discountsPopupHTML,
+
+        innerHtmlStyle:{
+            'text-align':'left'
+        },
+
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false
+
+    }, false);
+
+    currentTargetPopupAnchor.FreezeBubblePopup();
+
+    popupId = currentTargetPopupAnchor.GetBubblePopupID();
+    $('#' + popupId).find('.new_price').val(currentPrice);
+    $('#' + popupId).find('.quantity').val(currentQuantity);
+
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
+}
+
+function showQuantityPopup() {
+
+    currentSelectedReceiptItemEl = receiptItem;
+    //make sure both discount popups are closed
+    closeDiscountPopup();
+
+    currentTargetPopupAnchor = $('.receipt_top');
+
+    if(currentTargetPopupAnchor.HasBubblePopup()) {
+        currentTargetPopupAnchor.RemoveBubblePopup();
+    }
+
+    currentTargetPopupAnchor.CreateBubblePopup();
+
+    discountsPopupHTML = $("#quantity_function_popup_content").html();
+
+    currentTargetPopupAnchor.ShowBubblePopup({
+        position: 'bottom',
+        align: 'right',
+        tail	 : {
+            align: 'right'
+        },
+        innerHtml: discountsPopupHTML,
+
+        innerHtmlStyle:{
+            'text-align':'left'
+        },
+
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false
+
+    }, false);
+
+    currentTargetPopupAnchor.FreezeBubblePopup();
+
+    popupId = currentTargetPopupAnchor.GetBubblePopupID();
+    $('#' + popupId).find('.new_price').val(currentPrice);
+    $('#' + popupId).find('.quantity').val(currentQuantity);
+
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
+}
+
+var currentCoursePopupAnchor = null;
+
+function showCoursePopup() {
+    receiptItem = currentSelectedReceiptItemEl;
+    closeDiscountPopup();
+
+    currentTargetPopupAnchor = $('.receipt_top');
+
+    if(currentTargetPopupAnchor.HasBubblePopup()) {
+        currentTargetPopupAnchor.RemoveBubblePopup();
+    }
+
+    currentTargetPopupAnchor.CreateBubblePopup();
+
+    discountsPopupHTML = $("#course_function_popup_content").html();
+
+    currentTargetPopupAnchor.ShowBubblePopup({
+        position: 'bottom',
+        align: 'right',
+        tail	 : {
+            align: 'right'
+        },
+        innerHtml: discountsPopupHTML,
+
+        innerHtmlStyle:{
+            'text-align':'left'
+        },
+
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false
+
+    }, false);
+
+    currentTargetPopupAnchor.FreezeBubblePopup();
+
+    var coursePopupId = currentTargetPopupAnchor.GetBubblePopupID();
+
+    var current_course_num = receiptItem.find(".name").data("course_num");
+
+    //show the selected course
+    var selectedCourseEl = $('#' + coursePopupId).find('.course_label_' + current_course_num);
+
+    selectedCourseEl.html(selectedCourseEl.html() + " *");
+
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
+}
+
+function showCourseMenuPopup() {
+
+    receiptItem = currentSelectedReceiptItemEl;
+
+    if($('#menuCourseAnchor').hasClass('selected')) {
+        currentTargetPopupAnchor.removeClass("selected");
+        currentTargetPopupAnchor.HideBubblePopup();
+    }else{
+    getSelectedOrLastReceiptItem();
+    closeDiscountPopup();
+
+    currentTargetPopupAnchor = $('#menuCourseAnchor');
+
+    if(currentTargetPopupAnchor.HasBubblePopup()) {
+        currentTargetPopupAnchor.RemoveBubblePopup();
+    }
+    currentTargetPopupAnchor.addClass("selected");
+
+    currentTargetPopupAnchor.CreateBubblePopup();
+
+    discountsPopupHTML = $("#course_function_popup_content").html();
+
+    currentTargetPopupAnchor.ShowBubblePopup({
+        position: 'top',
+        align: 'center',
+        tail	 : {
+            align: 'center'
+        },
+        innerHtml: discountsPopupHTML,
+
+        innerHtmlStyle:{
+            'text-align':'left'
+        },
+
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false
+
+    }, false);
+
+    currentTargetPopupAnchor.FreezeBubblePopup();
+
+    var coursePopupId = currentTargetPopupAnchor.GetBubblePopupID();
+
+    var current_course_num = receiptItem.find(".name").data("course_num");
+
+    //show the selected course
+    var selectedCourseEl = $('#' + coursePopupId).find('.course_label_' + current_course_num);
+
+    selectedCourseEl.html(selectedCourseEl.html() + " *");
+
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
+    }
+}
+
+
+function applyCourseFromPopup(courseVal) {
+    $('#menuCourseAnchor').removeClass("selected");
+    closeDiscountPopup();
+
+    itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    order = getCurrentOrder();
+
+    var item = order.items[itemNumber - 1];
+
+    newCourseNum = courseVal
+
+    //alert("APPLYING COURSE " + newCourseNum + " old: " + item.product.course_num);
+
+    if(selectedTable != 0) {
+        order = tableOrders[selectedTable];
+        order = modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum);
+
+        storeTableOrderInStorage(current_user_id, selectedTable, order);
+    } else {
+        order = currentOrder;
+        order = modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum);
+
+        storeOrderInStorage(current_user_id, order);
+    }
+
+    order = getCurrentOrder();
+
+    //redraw the receipt
+    loadReceipt(order, true);
+}
+
+
 function registerPopupClickHandler(popupEl, outsideClickHandler) {
     activePopupElSet = $(popupEl);
+    $('#menuCourseAnchor').removeClass("selected");
 
     //must have a slight delay so that the click that showed the popup doesn't close it
     setTimeout(function(){
@@ -508,7 +795,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
 
     orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
 
-    orderHTML += "<div class='name'>" + notSyncedMarker + " ";
+    orderHTML += "<div class='name' data-course_num='" + orderItem.product.course_num + "'>" + notSyncedMarker + " ";
 
     if(orderItem.is_double) {
         orderHTML += "Double ";
@@ -738,7 +1025,6 @@ function showTablesSubscreen() {
     //blank the function buttons
     $('#menu_screen #buttons_container').hide();
     $('#menu_screen #cluey_logo').show();
-
     $('.button[id=sales_button_' + tablesButtonID + ']').addClass("selected");
     $('#table_screen').show();
 }

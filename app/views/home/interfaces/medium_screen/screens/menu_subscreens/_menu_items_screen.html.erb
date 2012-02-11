@@ -13,7 +13,6 @@
       <% end %>
     </div>
   </div>
-
   <div id="menu_items_container">
     <div id="menu_items_scroller">
       <% @display.menu_pages.each do |page| %>
@@ -78,9 +77,11 @@
   <div class="clear">&nbsp;</div>
 
   <div id="bottom_functions">
-    <div class="button" onclick="addCourseEndToOrder();">Course</div>
+    <div class="button" onclick="goToMainMenu();">Main Menu</div>
+    <div class="button" onclick="removeLastOrderItem()">Delete</div>
+    <div class="button" id="menuCourseAnchor" onclick="showCourseMenuPopup();">Course</div>
     <div class="button" onclick="swipeToReceipt();">Receipt</div>
-    <div class="button" onclick="showMenuKeypad();">Keypad</div>
+    <div class="button" onclick="swipeToFunctions();">Options</div>
   </div>
 
   <div id="menu_keypad" class="keypad">

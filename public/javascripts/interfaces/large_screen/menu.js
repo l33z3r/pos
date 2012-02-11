@@ -492,13 +492,13 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
     
     orderHTML += "<div class='name' data-course_num='" + orderItem.product.course_num + "'>" + notSyncedMarker + " ";
-        
+
     if(orderItem.is_double) {
         orderHTML += "Double ";
     }
         
     orderHTML += orderItem.product.name + "</div>";
-    
+
     orderItemTotalPriceText = number_to_currency(itemPriceWithoutModifier, {
         precision : 2
     });

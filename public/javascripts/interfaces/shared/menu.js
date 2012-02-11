@@ -778,7 +778,7 @@ function removeSelectedOrderItem() {
 
     //fetch the item number
     itemNumber = currentSelectedReceiptItemEl.data("item_number");
-    
+
     if(selectedTable != 0) {
         order = tableOrders[selectedTable];
         order = doRemoveOrderItem(order, itemNumber);
@@ -791,7 +791,6 @@ function removeSelectedOrderItem() {
         
         storeOrderInStorage(current_user_id, order);
     }
-    
     currentSelectedReceiptItemEl.hide();
     loadReceipt(order, true);
     
