@@ -810,15 +810,21 @@ function saveEditOrderItem() {
         newPricePerUnit = 0;
     }
     
-    var courseNum = order.items[itemNumber - 1].product.course_num;
+    var courseNum;
     
     if(selectedTable != 0) {
         order = tableOrders[selectedTable];
+        
+        courseNum = order.items[itemNumber - 1].product.course_num;
+        
         order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum);
     
         storeTableOrderInStorage(current_user_id, selectedTable, order);
     } else {
         order = currentOrder;
+        
+        courseNum = order.items[itemNumber - 1].product.course_num;
+        
         order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum);
         
         storeOrderInStorage(current_user_id, order);
