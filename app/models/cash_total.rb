@@ -253,14 +253,7 @@ class CashTotal < ActiveRecord::Base
       end
     
       #total of all cash sales (include the service charge)
-      @cash_orders = Order.where("created_at >= ?", @first_order.created_at)
-      .where("created_at <= ?", @last_order.created_at)
-      .where("terminal_id = ?", terminal_id)
-      .where("is_void is false")
-      .where("payment_type = ?", "cash")
-      
-      @cash_sales_total += @cash_orders.sum("total")
-      @cash_sales_total += @cash_orders.sum("service_charge")
+      @cash_sales_total += @sales_by_payment_type["cash"]
       
       #total of all cash back
       @cash_back_total += Order.where("created_at >= ?", @first_order.created_at)
