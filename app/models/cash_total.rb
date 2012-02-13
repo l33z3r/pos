@@ -222,6 +222,8 @@ class CashTotal < ActiveRecord::Base
         if @payment_types and @payment_types.length > 0
           @payment_types.each do |pt, amount|
             amount = amount.to_f
+            
+            pt = pt.downcase
            
             #if the amount tendered was bigger than the total, we have to subtract from the cash payment for reporting
             if pt == "cash" and order.amount_tendered > order.total
