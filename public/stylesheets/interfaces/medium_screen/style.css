@@ -305,8 +305,7 @@ div#menu_screen div#menu_container div#menu_items_container div.item {
     -moz-border-radius: 3px;
     border-radius: 3px;
     box-shadow: 0 1px 0 #777777;
-    cursor: pointer;
-    background: #FFF;
+    cursor: pointer; background: #FFF;
 }
 
 div#menu_screen div#menu_container div#menu_items_container div.item.inactive {
