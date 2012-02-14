@@ -29,17 +29,21 @@ cash_totals_data_html = "<div id='cash_totals_data_table'>";
     cash_totals_data_html += getCashTotalDataTable(sales_by_department_data) + clearHTML;
     cash_totals_data_html += getCashTotalDataTableTotals("Total Sales", sales_by_department_data) + clearHTML;
 
-    <% if @cash_total_data[:service_charge_total] != 0 %>
-      var sales_by_department_addendum = new Array();
+    var sales_by_department_addendum = new Array();
 
+    <% if @cash_total_data[:service_charge_total] != 0 %>
       sales_by_department_addendum.push(new Array('<%= @service_charge_label %> Collected', '<%= @cash_total_data[:service_charge_total] %>'));
       sales_by_department_addendum.push(new Array('Total Collected', '<%= @cash_total_data[:total_with_service_charge] %>'));
-
-      //open order totals
-      sales_by_department_addendum.push(new Array('Open Orders Total', getOpenOrdersTotal()));
-
-      cash_totals_data_html += getCashTotalDataTable(sales_by_department_addendum) + clearHTML;
     <% end %>
+
+    <% if @cash_total_data[:total_discounts] != 0 %>
+      sales_by_department_addendum.push(new Array('Total Discounts', <%=@cash_total_data[:total_discounts]%>));
+    <% end %>
+
+    //open order totals
+    sales_by_department_addendum.push(new Array('Open Orders Total', getOpenOrdersTotal()));
+
+    cash_totals_data_html += getCashTotalDataTable(sales_by_department_addendum) + clearHTML;
 
   <% end %>
 
