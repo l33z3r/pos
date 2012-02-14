@@ -350,7 +350,7 @@ function openCashDrawer() {
         type: 'POST',
         url: '/forward_cash_drawer_request',
         error: function() {
-            setStatusMessage("Error Sending Data To Cash Drawer Service. URL: " + cash_drawer_service_url, false, false);
+            setStatusMessage("Cash drawer service cannot be reached.", false, false);
         },
         data: {
             cash_drawer_service_url : cash_drawer_service_url,

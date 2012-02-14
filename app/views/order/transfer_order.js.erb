@@ -3,27 +3,29 @@
 
   //is this coming from the no table or the split bill
   if(<%= @table_from_id %> == 0 || <%= @table_from_id %> == -2) {
-    orderFrom = currentOrder;
-    
-    //mark all items as unsynced, so that they get ordered as they came from no table
-    for(var i=0; i<orderFrom.items.length; i++) {
-        orderFrom.items[i].synced = false;
-    } 
-    
-    //clear the order
-    clearOrder(<%= @table_from_id %>);
-  } else {
-    orderFrom = tableOrders[<%= @table_from_id %>];
+  orderFrom = currentOrder;
+
+  if(<%= @table_from_id %> == 0) {
+  //mark all items as unsynced if coming from table 0, so that they get ordered as they came from no table
+  for(var i=0; i<orderFrom.items.length; i++) {
+    orderFrom.items[i].synced = false;
+    }
   }
 
-  storeTableOrderInStorage(current_user_id, <%= @table_to_id %>, orderFrom);
-  
-  doSelectTable(<%= @table_to_id %>);
-  doSyncTableOrder();
-<% else %>
-  niceAlert("Error transferring order.");
-  showMenuScreen();
-  inTransferOrderMode = false;
-<% end %>
+    //clear the order
+    clearOrder(<%= @table_from_id %>);
+    } else {
+    orderFrom = tableOrders[<%= @table_from_id %>];
+    }
 
-transferOrderInProgress = false;
+    storeTableOrderInStorage(current_user_id, <%= @table_to_id %>, orderFrom);
+
+    doSelectTable(<%= @table_to_id %>);
+    doSyncTableOrder();
+  <% else %>
+    niceAlert("Error transferring order.");
+    showMenuScreen();
+    inTransferOrderMode = false;
+  <% end %>
+
+  transferOrderInProgress = false;

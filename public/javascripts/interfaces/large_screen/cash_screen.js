@@ -125,7 +125,7 @@ function paymentMethodSelected(method, integration_id) {
                 url: '/forward_zalion_roomfile_request',
                 error: function() {
                     hideLoadingDiv();
-                    setStatusMessage("Error Getting Zalion Data", false, false);                   
+                    setStatusMessage("Error Getting Zalion Data.", false, false);                   
                     paymentMethodSelected(defaultPaymentMethod, 0);
                     splitPayments = {};
                 },
