@@ -313,7 +313,7 @@ class Admin::ProductsController < Admin::AdminController
   def get_session_parameters_to_fields
     @selected_letter = (!session[:search1][:name_starts_with].eql?("")) ? session[:search1][:name_starts_with] : ((!session[:search1][:name_starts_with_any].eql?("")) ? "hash" : "all")
     @session_code_num_upc = session[:search1][:code_num_or_upc_equals]
-    @session_description = session[:search1][:description_contains]
+    @session_name = session[:search1][:name_contains]
     @session_category = session[:search1][:category_id_equals]
     @session_menu = session[:search1][:menu_page_1_id_equals]
     @session_all_fields = session[:search2]

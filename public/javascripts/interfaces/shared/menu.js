@@ -274,11 +274,15 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     //copy over the discount
     tableOrders[tableID].discount_percent = tableOrderDataJSON.discount_percent;
     
-    //copy over the discount
-    tableOrders[tableID].service_charge = tableOrderDataJSON.service_charge;
+    //copy over the service charge
+    if(typeof tableOrderDataJSON.service_charge != 'undefined') {
+        tableOrders[tableID].service_charge = parseFloat(tableOrderDataJSON.service_charge);
+    }
     
-    //copy over the discount
-    tableOrders[tableID].cashback = tableOrderDataJSON.cashback;
+    //copy over the cashback
+    if(typeof tableOrderDataJSON.cashback != 'undefined') {
+        tableOrders[tableID].cashback = parseFloat(tableOrderDataJSON.cashback);
+    }
     
     //copy over the courses array
     tableOrders[tableID].courses = tableOrderDataJSON.courses;
