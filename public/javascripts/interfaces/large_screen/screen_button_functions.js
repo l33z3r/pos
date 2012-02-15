@@ -594,6 +594,10 @@ function exitApp() {
 }
 
 function tablesButtonPressed() {
+    unorderedItemsPopup('doTablesButtonPressed();', true);
+}
+
+function doTablesButtonPressed() {
     if(currentMenuItemQuantity.length > 0) {
         //switch to table shortcut
         var tableLabelToSwitchTo = parseInt(Math.round(currentMenuItemQuantity));
@@ -628,6 +632,10 @@ function tablesButtonPressed() {
 }
 
 function saveButton() {
+    unorderedItemsPopup('doLogout();', false);
+}
+
+function unorderedItemsPopup(evalCode, doAutoLogin) {
     //make sure all items in this order have already been ordered
     var orderSynced = true;
     
@@ -643,17 +651,25 @@ function saveButton() {
     //if there are unordered items, we want to popup saying so, and ask the user
     //if they would like to order these items
     if(!orderSynced && selectedTable != 0 && selectedTable != previousOrderTableNum && selectedTable != tempSplitBillTableNum) {
+        var yesCode = "hideNiceAlert();doSyncTableOrder();";
+            
+        if(doAutoLogin) {
+            yesCode += "doAutoLoginAfterSync = true;";
+        }
+            
+        var noCode = "hideNiceAlert();" + evalCode;
+            
         ModalPopups.Confirm('niceAlertContainer',
-            'Items Not Ordered!', "<div id='nice_alert'>There are items present that have not yet been ordered. Would you like to order them?</div>",
+            'Items Not Ordered!', "<div id='nice_alert'>These items are not ordered. Would you like to order them?</div>",
             {
                 yesButtonText: 'Yes',
                 noButtonText: 'No',
-                onYes: 'hideNiceAlert();doSyncTableOrder();',
-                onNo: 'hideNiceAlert();doLogout();',
+                onYes: yesCode,
+                onNo: noCode,
                 width: 400,
                 height: 250
             } );
     } else {
-        doLogout();   
+        eval(evalCode);  
     }
 }

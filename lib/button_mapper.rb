@@ -102,7 +102,7 @@ class ButtonMapper
     when TOTAL_BUTTON
       @retval = "quickSale();"
     when SUBTOTAL_BUTTON
-      @retval = "doTotal(true);"
+      @retval = "totalPressed();"
     when SAVE_BUTTON
       @retval = "saveButton();"
     when MORE_OPTIONS_BUTTON

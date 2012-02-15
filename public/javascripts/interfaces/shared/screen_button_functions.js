@@ -108,6 +108,10 @@ function removeLastOrderItem() {
 }
 
 function quickSale() {
+    unorderedItemsPopup('doQuickSale()', true);
+}
+
+function doQuickSale() {
     if(currentOrderEmpty()) {
         setStatusMessage("No order present to total!", true, true);
         return;
@@ -123,6 +127,10 @@ function quickSale() {
     splitPayments = {};
     
     doTotalFinal();
+}
+
+function totalPressed() {
+    unorderedItemsPopup('doTotal(true);', true);
 }
 
 function printBill() {
