@@ -626,3 +626,34 @@ function tablesButtonPressed() {
         showTablesScreen();
     }
 }
+
+function saveButton() {
+    //make sure all items in this order have already been ordered
+    var orderSynced = true;
+    
+    var order = getCurrentOrder();
+    
+    for(var i=0; i<order.items.length; i++) {
+        if(!order.items[i].synced) {
+            orderSynced = false;
+            break;
+        }
+    }
+    
+    //if there are unordered items, we want to popup saying so, and ask the user
+    //if they would like to order these items
+    if(!orderSynced && selectedTable != 0 && selectedTable != previousOrderTableNum && selectedTable != tempSplitBillTableNum) {
+        ModalPopups.Confirm('niceAlertContainer',
+            'Items Not Ordered!', "<div id='nice_alert'>There are items present that have not yet been ordered. Would you like to order them?</div>",
+            {
+                yesButtonText: 'Yes',
+                noButtonText: 'No',
+                onYes: 'hideNiceAlert();doSyncTableOrder();',
+                onNo: 'hideNiceAlert();doLogout();',
+                width: 400,
+                height: 250
+            } );
+    } else {
+        doLogout();   
+    }
+}

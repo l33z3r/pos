@@ -104,7 +104,7 @@ class ButtonMapper
     when SUBTOTAL_BUTTON
       @retval = "doTotal(true);"
     when SAVE_BUTTON
-      @retval = "doLogout();"
+      @retval = "saveButton();"
     when MORE_OPTIONS_BUTTON
       @retval = "showMoreOptionsScreen(); return false;"
     when BUTTON_CONFIG_BUTTON

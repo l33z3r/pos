@@ -1197,6 +1197,16 @@ function orderSentToServerCallback(orderData, errorOccured) {
     cashback = 0;
     paymentMethod = null;
     
+    //do we need to clear the previous order from the receipt dropdown selection?
+    if(selectedTable == previousOrderTableNum) {
+        $('#previous_order_select_item').hide();
+    }
+    
+    //do we need to clear the previous order from the receipt dropdown selection?
+    if(selectedTable == tempSplitBillTableNum) {
+        $('#split_bill_select_item').hide();
+    }
+    
     //set the select item to the personal receipt
     tableSelectMenu.setValue(0);
     doSelectTable(0);
@@ -1207,16 +1217,6 @@ function orderSentToServerCallback(orderData, errorOccured) {
     //now print the receipt
     if(autoPrintReceipt) {
         printReceipt(printReceiptHTML, true);
-    }
-
-    //do we need to clear the previous order from the receipt dropdown selection?
-    if(selectedTable == previousOrderTableNum) {
-        $('#previous_order_select_item').hide();
-    }
-    
-    //do we need to clear the previous order from the receipt dropdown selection?
-    if(selectedTable == tempSplitBillTableNum) {
-        $('#split_bill_select_item').hide();
     }
 }
 

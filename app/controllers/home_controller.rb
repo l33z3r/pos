@@ -280,7 +280,7 @@ class HomeController < ApplicationController
         http.request(req)
       }
     rescue
-      render :status => 503 and return
+      render :status => 503, :inline => "Cannot reach printer service" and return
     end
 
     logger.info "Got response from print service: #{@forward_response}"
@@ -309,7 +309,7 @@ class HomeController < ApplicationController
         http.request(req)
       }
     rescue
-      render :status => 503 and return
+      render :status => 503, :inline => "Cannot reach cash drawer service"  and return
     end
 
     logger.info "Got response from cash drawer service: #{@forward_response}"
@@ -337,7 +337,7 @@ class HomeController < ApplicationController
         http.request(req)
       }
     rescue
-      render :status => 503 and return
+      render :status => 503, :inline => "Cannot reach zalion roomfile service"  and return
     end
 
     logger.info "Got response from room file servlet: #{@forward_response.body}"
@@ -368,7 +368,7 @@ class HomeController < ApplicationController
         http.request(req)
       }
     rescue
-      render :status => 503 and return
+      render :status => 503, :inline => "Cannot reach zalion charge service"  and return
     end
 
     logger.info "Got response from room charge servlet: #{@forward_response.body}"
