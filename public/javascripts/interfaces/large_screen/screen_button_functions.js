@@ -350,7 +350,7 @@ function openCashDrawer() {
         type: 'POST',
         url: '/forward_cash_drawer_request',
         error: function() {
-            setStatusMessage("Error Sending Data To Cash Drawer Service. URL: " + cash_drawer_service_url, false, false);
+            setStatusMessage("Cash drawer service cannot be reached.", false, false);
         },
         data: {
             cash_drawer_service_url : cash_drawer_service_url,
@@ -594,6 +594,10 @@ function exitApp() {
 }
 
 function tablesButtonPressed() {
+    unorderedItemsPopup('doTablesButtonPressed();', true);
+}
+
+function doTablesButtonPressed() {
     if(currentMenuItemQuantity.length > 0) {
         //switch to table shortcut
         var tableLabelToSwitchTo = parseInt(Math.round(currentMenuItemQuantity));
@@ -624,5 +628,53 @@ function tablesButtonPressed() {
         $('#menu_screen_input_show').html("");
     } else {
         showTablesScreen();
+    }
+}
+
+function saveButton() {
+    unorderedItemsPopup('doLogout();', false);
+}
+
+function unorderedItemsPopup(evalCode, doAutoLogin) {
+    if(currentOrderEmpty()) {
+        eval(evalCode);
+        return;
+    }
+    
+    //make sure all items in this order have already been ordered
+    var orderSynced = true;
+    
+    var order = getCurrentOrder();
+    
+    for(var i=0; i<order.items.length; i++) {
+        if(!order.items[i].synced) {
+            orderSynced = false;
+            break;
+        }
+    }
+    
+    //if there are unordered items, we want to popup saying so, and ask the user
+    //if they would like to order these items
+    if(!orderSynced && selectedTable != 0 && selectedTable != previousOrderTableNum && selectedTable != tempSplitBillTableNum) {
+        var yesCode = "hideNiceAlert();doSyncTableOrder();";
+            
+        if(doAutoLogin) {
+            yesCode += "doAutoLoginAfterSync = true;";
+        }
+            
+        var noCode = "hideNiceAlert();" + evalCode;
+            
+        ModalPopups.Confirm('niceAlertContainer',
+            'Items Not Ordered!', "<div id='nice_alert'>These items are not ordered. Would you like to order them?</div>",
+            {
+                yesButtonText: 'Yes',
+                noButtonText: 'No',
+                onYes: yesCode,
+                onNo: noCode,
+                width: 400,
+                height: 250
+            } );
+    } else {
+        eval(evalCode);  
     }
 }

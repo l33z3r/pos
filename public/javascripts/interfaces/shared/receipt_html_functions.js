@@ -77,7 +77,7 @@ function print(content) {
         type: 'POST',
         url: '/forward_print_service_request',
         error: function() {
-            setStatusMessage("Error Sending Data To Print Service. URL: " + print_service_url, false, false);
+            setStatusMessage("Printer service cannot be reached.", false, false);
         },
         data: {
             print_service_url : print_service_url,

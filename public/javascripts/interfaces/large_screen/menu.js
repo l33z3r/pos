@@ -810,15 +810,21 @@ function saveEditOrderItem() {
         newPricePerUnit = 0;
     }
     
-    var courseNum = order.items[itemNumber - 1].product.course_num;
+    var courseNum;
     
     if(selectedTable != 0) {
         order = tableOrders[selectedTable];
+        
+        courseNum = order.items[itemNumber - 1].product.course_num;
+        
         order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum);
     
         storeTableOrderInStorage(current_user_id, selectedTable, order);
     } else {
         order = currentOrder;
+        
+        courseNum = order.items[itemNumber - 1].product.course_num;
+        
         order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum);
         
         storeOrderInStorage(current_user_id, order);
@@ -935,6 +941,10 @@ function totalsRecptScroll() {
 
 function reportsRecptScroll() {
     recptScroll("reports_center_");
+}
+
+function reportsRecptUpdate() {
+    updateRecpt("reports_center_");
 }
 
 function reportsLeftRecptScroll() {
@@ -1152,26 +1162,7 @@ function doTotalFinal() {
         'split_payments': splitPayments
     }
     
-    showLoadingDiv();
     sendOrderToServer(orderData);
-}
-
-function orderSentToServerCallback(orderData, errorOccured) {
-    hideLoadingDiv();
-    
-    if(!errorOccured) {
-        //was this charged to a room?
-        if(selectedRoomNumber && selectedFolioNumber) {
-            orderData['charged_room'] = {
-                selected_room_number : selectedRoomNumber,
-                selected_folio_number : selectedFolioNumber,
-                selected_folio_name : selectedFolioName,
-                payment_integration_type_id : paymentIntegrationId
-            }
-        
-            doChargeRoom(orderData);
-        }
-    }
     
     //clear the order
     clearOrder(selectedTable);
@@ -1191,6 +1182,16 @@ function orderSentToServerCallback(orderData, errorOccured) {
     cashback = 0;
     paymentMethod = null;
     
+    //do we need to clear the previous order from the receipt dropdown selection?
+    if(selectedTable == previousOrderTableNum) {
+        $('#previous_order_select_item').hide();
+    }
+    
+    //do we need to clear the previous order from the receipt dropdown selection?
+    if(selectedTable == tempSplitBillTableNum) {
+        $('#split_bill_select_item').hide();
+    }
+    
     //set the select item to the personal receipt
     tableSelectMenu.setValue(0);
     doSelectTable(0);
@@ -1202,15 +1203,21 @@ function orderSentToServerCallback(orderData, errorOccured) {
     if(autoPrintReceipt) {
         printReceipt(printReceiptHTML, true);
     }
+}
 
-    //do we need to clear the previous order from the receipt dropdown selection?
-    if(selectedTable == previousOrderTableNum) {
-        $('#previous_order_select_item').hide();
-    }
-    
-    //do we need to clear the previous order from the receipt dropdown selection?
-    if(selectedTable == tempSplitBillTableNum) {
-        $('#split_bill_select_item').hide();
+function orderSentToServerCallback(orderData, errorOccured) {
+    if(!errorOccured) {
+        //was this charged to a room?
+        if(selectedRoomNumber && selectedFolioNumber) {
+            orderData['charged_room'] = {
+                selected_room_number : selectedRoomNumber,
+                selected_folio_number : selectedFolioNumber,
+                selected_folio_name : selectedFolioName,
+                payment_integration_type_id : paymentIntegrationId
+            }
+        
+            doChargeRoom(orderData);
+        }
     }
 }
 

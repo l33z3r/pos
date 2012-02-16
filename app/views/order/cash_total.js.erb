@@ -28,12 +28,23 @@ cash_totals_data_html = "<div id='cash_totals_data_table'>";
     cash_totals_data_html += "<div class='data_table_header'>Total Sales Summary</div>";
     cash_totals_data_html += getCashTotalDataTable(sales_by_department_data) + clearHTML;
     cash_totals_data_html += getCashTotalDataTableTotals("Total Sales", sales_by_department_data) + clearHTML;
-    
+
     var sales_by_department_addendum = new Array();
-    sales_by_department_addendum.push(new Array('<%= @service_charge_label %> Collected', '<%= @cash_total_data[:service_charge_total] %>'));
-    sales_by_department_addendum.push(new Array('Total Collected', '<%= @cash_total_data[:total_with_service_charge] %>'));
-    
+
+    <% if @cash_total_data[:service_charge_total] != 0 %>
+      sales_by_department_addendum.push(new Array('<%= @service_charge_label %> Collected', '<%= @cash_total_data[:service_charge_total] %>'));
+      sales_by_department_addendum.push(new Array('Total Collected', '<%= @cash_total_data[:total_with_service_charge] %>'));
+    <% end %>
+
+    <% if @cash_total_data[:total_discounts] != 0 %>
+      sales_by_department_addendum.push(new Array('Total Discounts', <%=@cash_total_data[:total_discounts]%>));
+    <% end %>
+
+    //open order totals
+    sales_by_department_addendum.push(new Array('Open Orders Total', getOpenOrdersTotal()));
+
     cash_totals_data_html += getCashTotalDataTable(sales_by_department_addendum) + clearHTML;
+
   <% end %>
 
   <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_TOTAL_OPTION, {:total_type => @total_type, :employee_role => current_employee.role.name, :report_section => CashTotal::RS_SALES_BY_PAYMENT_TYPE} %>
@@ -54,9 +65,6 @@ cash_totals_data_html = "<div id='cash_totals_data_table'>";
   <% if @gs.parsed_value %>
     //construct the cash summary data table
     cash_summary_data = new Array();
-
-    //open order totals
-    cash_summary_data.push(new Array('Open Orders Total', getOpenOrdersTotal()));
 
     <% @cash_total_data[:cash_summary].each do |label, amount| %>
       cash_summary_data.push(new Array('<%=label%>', '<%=amount%>'));

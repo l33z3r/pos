@@ -90,7 +90,9 @@ class CashTotal < ActiveRecord::Base
     
     @cash_sales_total = 0
     @cash_back_total = 0
-        
+       
+    @total_discounts = 0
+    
     #load the first order, based on the last z total or the very first if none exists
     @last_performed_non_zero_z_total = where("total_type = ?", Z_TOTAL).where("end_calc_order_id is not ?", nil).where("terminal_id = ?", terminal_id).order("created_at").last
     
@@ -169,6 +171,9 @@ class CashTotal < ActiveRecord::Base
           @sales_by_category[@category_name] += @order_item_price
           @sales_by_department[@department_name] += @order_item_price
           
+          @order_item_total_discount = order_item.total_price - @order_item_price
+          @total_discounts += @order_item_total_discount
+            
           if @tax_chargable
             @tax_rate = @global_tax_rate
             
@@ -219,9 +224,11 @@ class CashTotal < ActiveRecord::Base
         #sales by payment type calculated from split payments array
         @payment_types = order.split_payments
         
-        if @payment_types
+        if @payment_types and @payment_types.length > 0
           @payment_types.each do |pt, amount|
             amount = amount.to_f
+            
+            pt = pt.downcase
            
             #if the amount tendered was bigger than the total, we have to subtract from the cash payment for reporting
             if pt == "cash" and order.amount_tendered > order.total
@@ -234,14 +241,16 @@ class CashTotal < ActiveRecord::Base
           
             logger.info "Increasing sales_by_payment_type for payment_type: #{pt} by: #{amount}"
             @sales_by_payment_type[pt] += amount
-          
-            if !@service_charge_by_payment_type[pt]
-              @service_charge_by_payment_type[pt] = 0
-            end
-        
-            logger.info "Increasing service_charge_by_payment_type for payment_type: #{pt} by: #{amount}"
-            @service_charge_by_payment_type[pt] += amount
           end
+          
+          @first_pt = @payment_types.keys[0]
+          
+          if !@service_charge_by_payment_type[@first_pt]
+            @service_charge_by_payment_type[@first_pt] = 0
+          end
+        
+          logger.info "Increasing service_charge_by_payment_type for payment_type: #{@first_pt} by: #{order.service_charge}"
+          @service_charge_by_payment_type[@first_pt] += order.service_charge
         end
         
         #overall total
@@ -250,12 +259,8 @@ class CashTotal < ActiveRecord::Base
         @service_charge_total += order.service_charge
       end
     
-      #total of all cash sales
-      @cash_sales_total += Order.where("created_at >= ?", @first_order.created_at)
-      .where("created_at <= ?", @last_order.created_at)
-      .where("terminal_id = ?", terminal_id)
-      .where("is_void is false")
-      .where("payment_type = ?", "cash").sum("total")
+      #total of all cash sales (include the service charge)
+      @cash_sales_total += @sales_by_payment_type["cash"]
       
       #total of all cash back
       @cash_back_total += Order.where("created_at >= ?", @first_order.created_at)
@@ -293,6 +298,7 @@ class CashTotal < ActiveRecord::Base
     @cash_total_data[:service_charge_by_payment_type] = @service_charge_by_payment_type
     @cash_total_data[:service_charge_total] = @service_charge_total
     @cash_total_data[:total_with_service_charge] = @service_charge_total + @overall_total
+    @cash_total_data[:total_discounts] = @total_discounts
     @cash_total_data[:taxes] = @taxes
     @cash_total_data[:cash_summary] = @cash_summary
     

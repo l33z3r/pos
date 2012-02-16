@@ -125,7 +125,7 @@ function paymentMethodSelected(method, integration_id) {
                 url: '/forward_zalion_roomfile_request',
                 error: function() {
                     hideLoadingDiv();
-                    setStatusMessage("Error Getting Zalion Data", false, false);                   
+                    setStatusMessage("Error Getting Zalion Data.", false, false);                   
                     paymentMethodSelected(defaultPaymentMethod, 0);
                     splitPayments = {};
                 },
@@ -302,21 +302,16 @@ function doChargeRoom(orderData) {
     
     if(paymentIntegrationId != 0) {
         if(paymentIntegrationId == zalionPaymentIntegrationId) {
-            //send request to charge via zalion
-            showLoadingDiv();
-            
-            //fire off request to post to POSTINGS.TXT
+            //send request to charge via zalion by firing off request to post to POSTINGS.TXT
             var zalion_charge_request_url = 'http://' + zalionChargeRoomServiceIP + ':8080/ClueyWebSocketServices/zalion_charge';
             
             $.ajax({
                 type: 'POST',
                 url: '/forward_zalion_charge_request',
                 error: function() {
-                    hideLoadingDiv();
                     setStatusMessage("Error Charging to Zalion", false, false);
                 },
                 success: function() {
-                    hideLoadingDiv();
                     setStatusMessage("Room successfully charged.", false, false);                   
                 },
                 data: {

@@ -448,7 +448,7 @@ function runSearch() {
             url: '/admin/products/search',
             data: {
                 "search1[code_num_or_upc_equals]" : $("#code_num_equals").val(),
-                "search1[description_contains]" : $("#description_contains").val(),
+                "search1[name_contains]" : $("#name_contains").val(),
                 "search1[is_special_equals]" : is_special,
                 "search1[category_id_equals]" : $("#category_id_equals").val(),
                 "search1[menu_page_1_id_equals]" : $("#menu_page_1_id_equals").val(),
@@ -467,7 +467,7 @@ function runSearch() {
             url: '/admin/products/search',
             data: {
                 "search1[code_num_or_upc_equals]" : $("#code_num_equals").val(),
-                "search1[description_contains]" : $("#description_contains").val(),
+                "search1[name_contains]" : $("#name_contains").val(),
                 "search1[is_special_equals]" : is_special,
                 "search1[category_id_equals]" : $("#category_id_equals").val(),
                 "search1[menu_page_1_id_equals]" : $("#menu_page_1_id_equals").val(),
@@ -513,7 +513,7 @@ function markProductAsDeleted(product_id) {
 
 function disableSearchFields(){
     $("#code_num_equals").attr('disabled', 'disabled');
-    $("#description_contains").attr('disabled', 'disabled');
+    $("#name_contains").attr('disabled', 'disabled');
     $("#category_id_equals").attr('disabled', 'disabled');
     $("#menu_page_1_id_equals").attr('disabled', 'disabled');
     $("#all_fields").attr('disabled', 'disabled');
@@ -522,7 +522,7 @@ function disableSearchFields(){
 
 function enableSearchFields(){
     $("#code_num_equals").removeAttr('disabled');
-    $("#description_contains").removeAttr('disabled');
+    $("#name_contains").removeAttr('disabled');
     $("#category_id_equals").removeAttr('disabled');
     $("#menu_page_1_id_equals").removeAttr('disabled');
     $("#all_fields").removeAttr('disabled');
@@ -547,7 +547,7 @@ function addEnterKeyEvents(){
             runSearch();
         }
     });
-    $('#description_contains').keyup(function(e) {
+    $('#name_contains').keyup(function(e) {
         if(e.keyCode == 13) {
             runSearch();
         }
