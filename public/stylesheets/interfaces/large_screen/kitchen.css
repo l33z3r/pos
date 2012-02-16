@@ -29,7 +29,7 @@ div#kitchen_screen div#loading_message {
     -moz-border-radius: 11px;
     border-radius: 11px;
     background-color: white;
-    width: 490px;
+    width: 650px;
     height: 75px;
     padding-top: 50px;
     margin: 200px auto 0px auto;
@@ -120,7 +120,8 @@ div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.head
 }
 
 div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.header div.hide_order_button img {
-    width: 20px;
+    width: 30px;
+    margin-top: -5px;
     cursor: pointer;
 }
 

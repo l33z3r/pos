@@ -1866,7 +1866,7 @@ function postDoSelectTable() {
 //does nothing for now, but the medium interface needed this callback
 }
 
-function doReceiveOrderReady(employee_id, terminal_id, table_id, table_label) {
+function doReceiveOrderReady(employee_id, terminal_id, table_id, order_num, table_label) {
     if(inKitchenContext()) {
         return;
     }
@@ -1887,8 +1887,16 @@ function doReceiveOrderReady(employee_id, terminal_id, table_id, table_label) {
         //                height: 250
         //            } );
 
+        var orderReadyText;
+
+        if(table_id.toString() == "0") {
+            orderReadyText = "Order #" + order_num;
+        } else {
+            orderReadyText = "Order #" + order_num + " for table " + table_label;
+        }
+
         ModalPopups.Alert('niceAlertContainer',
-            'Order Ready!', "<div id='nice_alert'>Order for table " + table_label + " is ready</div>",
+            'Order Ready!', "<div id='nice_alert'>" + orderReadyText + " is ready</div>",
             {
                 okButtonText: 'OK',
                 onOk: 'orderReadyOKClicked()',

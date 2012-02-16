@@ -168,6 +168,8 @@ class ApplicationController < ActionController::Base
       order_ready_request_terminal_id = order_ready_data[:terminal_id]
       order_ready_request_table_id = order_ready_data[:table_id]
       order_ready_request_table_label = order_ready_data[:table_label]
+      order_ready_request_order_num = order_ready_data[:order_num]
+      
       if order_ready_request_time.to_i > time.to_i
         @order_ready = {}
         @order_ready['order_ready_request_time'] = order_ready_request_time
@@ -175,6 +177,7 @@ class ApplicationController < ActionController::Base
         @order_ready['order_ready_request_terminal_id'] = order_ready_request_terminal_id
         @order_ready['order_ready_request_table_id'] = order_ready_request_table_id
         @order_ready['order_ready_request_table_label'] = order_ready_request_table_label
+        @order_ready['order_ready_request_order_num'] = order_ready_request_order_num
         return @order_ready
       end
     end

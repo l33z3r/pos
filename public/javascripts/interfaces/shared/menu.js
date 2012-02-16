@@ -301,7 +301,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     calculateOrderTotal(tableOrders[tableID]);
     storeTableOrderInStorage(nextUserIDToSyncWith, tableID, tableOrders[tableID]);
     
-    if(tableID == selectedTable && nextUserIDToSyncWith == current_user_id) {
+    if(tableID != 0 && tableID == selectedTable && nextUserIDToSyncWith == current_user_id) {
         loadReceipt(tableOrders[tableID], true);
     }
 }

@@ -29,5 +29,5 @@ immediateCallHome = false;
 
 <% if @order_ready_notification %>
   lastOrderReadyNotificationTime = <%= @new_order_ready_update_time %>;
-  doReceiveOrderReady(<%= @order_ready_request_employee_id %>, "<%= @order_ready_request_terminal_id %>", <%= @order_ready_request_table_id %>, "<%= @order_ready_reqeust_table_label %>");
+  doReceiveOrderReady(<%= @order_ready_request_employee_id %>, "<%= @order_ready_request_terminal_id %>", <%= @order_ready_request_table_id %>, <%= @order_ready_request_order_num %>,  "<%= @order_ready_reqeust_table_label %>");
 <% end %>

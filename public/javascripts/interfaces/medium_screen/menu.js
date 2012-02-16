@@ -609,51 +609,51 @@ function showCourseMenuPopup() {
         currentTargetPopupAnchor.removeClass("selected");
         currentTargetPopupAnchor.HideBubblePopup();
     }else{
-    getSelectedOrLastReceiptItem();
-    closeDiscountPopup();
+        getSelectedOrLastReceiptItem();
+        closeDiscountPopup();
 
-    currentTargetPopupAnchor = $('#menuCourseAnchor');
+        currentTargetPopupAnchor = $('#menuCourseAnchor');
 
-    if(currentTargetPopupAnchor.HasBubblePopup()) {
-        currentTargetPopupAnchor.RemoveBubblePopup();
-    }
-    currentTargetPopupAnchor.addClass("selected");
+        if(currentTargetPopupAnchor.HasBubblePopup()) {
+            currentTargetPopupAnchor.RemoveBubblePopup();
+        }
+        currentTargetPopupAnchor.addClass("selected");
 
-    currentTargetPopupAnchor.CreateBubblePopup();
+        currentTargetPopupAnchor.CreateBubblePopup();
 
-    discountsPopupHTML = $("#course_function_popup_content").html();
+        discountsPopupHTML = $("#course_function_popup_content").html();
 
-    currentTargetPopupAnchor.ShowBubblePopup({
-        position: 'top',
-        align: 'center',
-        tail	 : {
-            align: 'center'
-        },
-        innerHtml: discountsPopupHTML,
+        currentTargetPopupAnchor.ShowBubblePopup({
+            position: 'top',
+            align: 'center',
+            tail	 : {
+                align: 'center'
+            },
+            innerHtml: discountsPopupHTML,
 
-        innerHtmlStyle:{
-            'text-align':'left'
-        },
+            innerHtmlStyle:{
+                'text-align':'left'
+            },
 
-        themeName: 	'all-grey',
-        themePath: 	'/images/jquerybubblepopup-theme',
-        alwaysVisible: false
+            themeName: 	'all-grey',
+            themePath: 	'/images/jquerybubblepopup-theme',
+            alwaysVisible: false
 
-    }, false);
+        }, false);
 
-    currentTargetPopupAnchor.FreezeBubblePopup();
+        currentTargetPopupAnchor.FreezeBubblePopup();
 
-    var coursePopupId = currentTargetPopupAnchor.GetBubblePopupID();
+        var coursePopupId = currentTargetPopupAnchor.GetBubblePopupID();
 
-    var current_course_num = receiptItem.find(".name").data("course_num");
+        var current_course_num = receiptItem.find(".name").data("course_num");
 
-    //show the selected course
-    var selectedCourseEl = $('#' + coursePopupId).find('.course_label_' + current_course_num);
+        //show the selected course
+        var selectedCourseEl = $('#' + coursePopupId).find('.course_label_' + current_course_num);
 
-    selectedCourseEl.html(selectedCourseEl.html() + " *");
+        selectedCourseEl.html(selectedCourseEl.html() + " *");
 
-    //register the click handler to hide the popup when outside clicked
-    registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
+        //register the click handler to hide the popup when outside clicked
+        registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
     }
 }
 
@@ -1127,7 +1127,7 @@ function tableScreenBack() {
     showMenuItemsSubscreen();
 }
 
-function doReceiveOrderReady(employee_id, terminal_id, table_id, table_label) {
+function doReceiveOrderReady(employee_id, terminal_id, table_id, order_num, table_label) {
     hidePreviousOrderReadyPopup();
 
     if(employee_id == current_user_id || allDevicesOrderNotification) {
@@ -1144,8 +1144,16 @@ function doReceiveOrderReady(employee_id, terminal_id, table_id, table_label) {
         //                height: 250
         //            } );
 
+        var orderReadyText;
+
+        if(table_id.toString() == "0") {
+            orderReadyText = "Order #" + order_num;
+        } else {
+            orderReadyText = "Order #" + order_num + " for table " + table_label;
+        }
+
         ModalPopups.Alert('niceAlertContainer',
-            'Order Ready!', "<div id='nice_alert'>Order for table <b>" + table_label + "</b> is ready</div>",
+            'Order Ready!', "<div id='nice_alert'>" + orderReadyText + " is ready</div>",
             {
                 okButtonText: 'OK',
                 onOk: 'orderReadyOKClicked()',

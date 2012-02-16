@@ -25,7 +25,14 @@ function renderReceipt(tableID) {
     
     if(tableID == 0) {
         tableID += "_" + tableOrders[0].order_num;
+        
+        if($('#kitchen_receipt_container_' + tableID).length > 0) {
+            return;
+        }
+        
         orderToCopy = tableOrders[0];
+        
+        saveTable0Order(orderToCopy, tableID);
         
         //make a div for this order
         $.ajax({
@@ -105,7 +112,15 @@ function renderReceipt(tableID) {
     
     console.log("Rendering receipt for table " + tableID);
     
-    $('#loading_table').html(tableID);
+    var loadingTableLabel;
+    
+    if(tableID.toString().startsWith("0_")) {
+        loadingTableLabel = "Order #" + tableID.split("_")[1];
+    } else {
+        loadingTableLabel = "Table " + tableID;
+    }
+    
+    $('#loading_table').html(loadingTableLabel);
     
     $('#kitchen_receipt_container_' + tableID).show();
     
@@ -178,6 +193,8 @@ function renderReceipt(tableID) {
 function finishedLoadingKitchenScreen() {
     $('#kitchen_screen #loading_message').hide();
     $('#kitchen_screen #receipts_container').show();
+    
+    loadSavedTable0Orders();
     
     setTimeout(kitchenTableRecptScrollAll, 200);
 }
@@ -290,10 +307,11 @@ function sendCourseCheck(orderLine) {
     var kitchenOrder = kitchenOrders[tableID];
     var terminalID = kitchenOrder.items[orderLine.data("item_number")-1].terminal_id;
     var employeeID = firstServerID(kitchenOrder);
+    var orderNum = kitchenOrder.order_num;
     
     var theTableID = tableID;
     
-    if(tableID.startsWith("0_")) {
+    if(tableID.toString().startsWith("0_")) {
         theTableID = tableID.split("_")[0];
     }
     
@@ -306,7 +324,8 @@ function sendCourseCheck(orderLine) {
         data: {
             employee_id : employeeID,
             terminal_id : terminalID,
-            table_id : theTableID
+            table_id : theTableID,
+            order_num : orderNum
         }
     });
     
@@ -323,6 +342,11 @@ function hideTableOrder(tableID) {
     orderXClicked[tableID] = true;
     saveCourseChecks();
     sendOrderToCompleted(tableID);
+    
+    //remove it from saved table 0 orders
+    if(tableID.startsWith("0_")) {
+        localStorage.removeItem("kitchen_orders_saved_table_0_order_" + tableID);
+    }
 }
 
 function sendOrderToCompleted(tableID) {
@@ -501,4 +525,19 @@ function stripProducts(order) {
     }
     
     order.items = newItems;
+}
+
+function saveTable0Order(order, id) {
+    var key = "kitchen_orders_saved_table_0_order_" + id;
+    var val = JSON.stringify(order);
+    localStorage.setItem(key, val);
+}
+
+function loadSavedTable0Orders() {
+    Object.keys(localStorage).forEach(function(key) {
+        if (/^kitchen_orders_saved_table_0_order_/.test(key)) {
+            tableOrders[0] = JSON.parse(localStorage.getItem(key));
+            renderReceipt(0);
+        }
+    });
 }
