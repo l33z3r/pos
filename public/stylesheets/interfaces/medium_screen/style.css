@@ -245,11 +245,12 @@ div#menu_screen div#menu_container div#menu_pages_container {
     float: left;
     width: 120px;
     border-spacing: 1px;
-    height: 500px;
+    height: 525px;
     overflow: hidden;
 }
 
 div#menu_screen div#menu_container div#menu_pages_scroller {
+    height: 525px;
 
 }
 
@@ -286,7 +287,7 @@ div#menu_screen div#menu_container div#menu_pages_container div.page.selected di
 div#menu_screen div#menu_container div#menu_items_container {
     float: left;
     width: 360px;
-    height: 530px;
+    height: 525px;
     overflow: hidden;
     border-spacing: 3px 1px;
 }
@@ -332,6 +333,11 @@ div#menu_screen div#menu_container div#menu_items_container div.item_pic img {
     max-height: 50px;
     max-width: 110px;
     margin-top: 1px;
+}
+
+div#util_keypad_container {
+    display: none;
+    width: 220px
 }
 
 div#menu_screen div#menu_container div#menu_items_container div.subpages div.subpage {
@@ -419,14 +425,14 @@ div#menu_screen div#oia_subscreen {
 }
 
 div#menu_screen div#oia_subscreen div#oia_tabs_container {
-    height: 500px;
+    height: 582px;
     overflow: hidden;
     float: left;
     width: 120px;
 }
 
 div#menu_screen div#oia_subscreen div#oia_tabs {
-
+    height: 582px;
 }
 
 div#menu_screen div#oia_subscreen div#oia_tabs div.tabs {
@@ -1112,10 +1118,10 @@ div.top_menu_button div.icon img {
     max-width: 35px;
 }
 
-div.button div.button_name {
-    padding: 0px 3px;
-    font-size: 16px;
-}
+/*div.button div.button_name {*/
+    /*padding: 0px 3px;*/
+    /*font-size: 16px;*/
+/*}*/
 
 div.top_menu_button div.button_name {
     padding: 0px 2px;
@@ -1128,7 +1134,8 @@ div.button div.button_name {
     line-height: 23px;
     text-decoration: none;
     color: #333;
-    width: 102px;
+    width: auto;
+    height: 15px;
     overflow: hidden;
 }
 
@@ -1256,6 +1263,36 @@ div.keypad div.keys div {
     background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
 }
+
+div.keypad_small {
+    height: 350px;
+    margin-left: 10px
+}
+
+div.keypad_small div.keys {
+    width: 340px;
+    margin: auto;
+}
+
+div.keypad_small div.keys div {
+    color: #333333;
+    vertical-align: middle;
+    text-align: center;
+    float: left;
+    margin: 2px;
+    width: 100px;
+    padding-top: 47px;
+    height: 47px;
+    font-size: 30px;
+    border: 1px solid #777;
+    cursor: pointer;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    box-shadow: 0px 1px 1px 0px #777;
+    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
+}
+
 
 div#nice_alert {
     font-size: 28px;
@@ -1444,6 +1481,7 @@ div#quantity_editor div#buttons_container div#minus_button {
 div#price_editor
 {   padding-bottom: 10px;
     width: 280px;
+    margin-left: 20px;
     padding-top: 12px;
 }
 
@@ -1494,10 +1532,24 @@ div.action_buttons {
     border-spacing: 7px;
     width: 250px;
     margin: auto;
-    margin-left: 15px;
+}
+
+div.price_action_buttons {
+    border-spacing: 7px;
+    width: 250px;
+    margin: auto;
+    margin-left: 60px;
 }
 
 div.action_buttons div.button {
+    display: block;
+    float: left;
+    height: 60px;
+    padding-top: 3px;
+    margin: 0px 2px;
+}
+
+div.price_action_buttons div.button {
     display: block;
     float: left;
     height: 60px;

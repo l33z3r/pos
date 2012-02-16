@@ -1,7 +1,7 @@
 <div id="receipt_screen" class="content-item">
     <div id="header" class="screen_header_receipt">
         <div style="float: right">
-        <div id="sales_button_<%= @display_buttons[0].id %>" class="button" onclick="swipeToMenu();<%= button_action @display_buttons[0] %>"><div class="icon">
+        <div id="sales_button_<%= @display_buttons[0].id %>" style="max-height: 97px" class="button" onclick="swipeToMenu();setScreenOrder('false');<%= button_action @display_buttons[0] %>"><div class="icon">
             <%= button_icon @display_buttons[0] %>
           </div>
           <div class="button_name"><%= @display_buttons[0].button_text %></div></div>
@@ -9,7 +9,7 @@
         <div id="sales_button_<%= @display_buttons[1].id %>" class="button" onclick="<%= button_action @display_buttons[1] %>"><div class="icon">
             <%= button_icon @display_buttons[1] %>
           </div>
-          <div class="button_name"><%=@display_buttons[1].button_text%></div></div>
+          <div class="button_name"><%=@display_buttons[1].button_text %></div></div>
         </div>
       <div class="header_label" id="table_name">Table</div>
     </div>
@@ -22,7 +22,6 @@
 
 
             </div>
-
         </div>
     </div>
      <div id="total_container" style="height: 25px; background-color: #888">
@@ -34,8 +33,8 @@
     <div id="function_buttons">
         <div class="button" onclick="swipeToFunctions();">Options</div>
         <div class="button" onclick="<%= button_action @modify_button %>">Modify</div>
-        <div class="button" onclick="removeSelectedOrderItem();">Delete</div>
-        <div class="button" onclick="swipeToMenu();">Menu</div>
+        <div class="button" onclick="removeLastOrderItem();">Delete</div>
+        <div class="button" onclick="setScreenOrder('true');swipeToMenu();">Menus</div>
     </div>
 </div>
 
@@ -46,7 +45,11 @@
         <input type="number" class="new_price" size="2" id="current_selected_receipt_item_price"/>
     </div>
     <div class="clear">&nbsp;</div>
-    <div class="action_buttons">
+
+    <div class="edit_order_item_popup_keypad_container"></div>
+
+    <div class="clear_top_margin_10">&nbsp;</div>
+    <div class="price_action_buttons">
         <div id="cancel_button" class="button" onclick="closeDiscountPopup()">
             <div class="icon">
                 <%= image_tag "button_logos/cancel_button.png" %>

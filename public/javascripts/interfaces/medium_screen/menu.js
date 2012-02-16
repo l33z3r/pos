@@ -142,6 +142,10 @@ function doSelectMenuItem(productId, element) {
     buildOrderItem(product, amount);
     setModifierGridIdForProduct(product);
 
+    if(orderItem.product.prompt_price) {
+        showPrePricePopup();
+    }
+
     finishDoSelectMenuItem();
 }
 
@@ -160,9 +164,11 @@ function finishDoSelectMenuItem() {
     loadReceipt(currentOrder, true);
     
     currentSelectedReceiptItemEl = $('#menu_screen_till_roll div[data-item_number=' + currentOrderItem.itemNumber + ']');
+
     currentSelectedReceiptItemEl.addClass("selected");
-    
-    
+
+
+
     testForMandatoryModifier(orderItem.product);
 }
 
@@ -219,6 +225,11 @@ function doSelectReceiptItem(orderItemEl) {
     $('#' + popupId).find('.course_num').val(currentCourseNum);
 
     currentQuantity = orderItemEl.children('.amount').html();
+
+
+
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closeEditOrderItem);
 
     //keep the border
     orderItemEl.addClass("selected");
@@ -373,6 +384,12 @@ function saveEditOrderItem() {
     closeDiscountPopup();
 }
 
+function setUtilKeypad(position, clickFunction, cancelFunction) {
+    $(position).html($('#util_keypad_container').html());
+    utliKeypadClickFunction = clickFunction;
+    utilKeypadCancelFunction = cancelFunction;
+}
+
 var currentTargetPopupAnchor = null;
 
 function showEditPopup(receiptItem) {
@@ -419,7 +436,7 @@ function showEditPopup(receiptItem) {
 
 function showPricePopup() {
 
-    currentSelectedReceiptItemEl = receiptItem;
+     receiptItem = getSelectedOrLastReceiptItem();
     //make sure both discount popups are closed
     closeDiscountPopup();
 
@@ -451,14 +468,86 @@ function showPricePopup() {
 
     }, false);
 
-
-
     currentTargetPopupAnchor.FreezeBubblePopup();
 
     popupId = currentTargetPopupAnchor.GetBubblePopupID();
 
+    keypadPosition = $('#' + popupId).find('.edit_order_item_popup_keypad_container');
+
+    clickFunction = function(val) {
+        currentVal = $('#' + popupId).find('.new_price').val();
+        newVal = currentVal.toString() + val;
+        $('#' + popupId).find('.new_price').val(newVal);
+    };
+
+    cancelFunction = function() {
+        oldVal = $('#' + popupId).find('.new_price').val();
+        newVal = oldVal.substring(0, oldVal.length - 1);
+        $('#' + popupId).find('.new_price').val(newVal);
+    };
+
+    setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
+
     $('#' + popupId).find('.new_price').val("");
     $('#' + popupId).find('.new_price').focus();
+
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
+}
+
+function showPrePricePopup() {
+
+     receiptItem = getSelectedOrLastReceiptItem();
+    //make sure both discount popups are closed
+    closeDiscountPopup();
+
+    currentTargetPopupAnchor = $('#open_food_anchor');
+
+    if(currentTargetPopupAnchor.HasBubblePopup()) {
+        currentTargetPopupAnchor.RemoveBubblePopup();
+    }
+
+    currentTargetPopupAnchor.CreateBubblePopup();
+
+    discountsPopupHTML = $("#price_function_popup_content").html();
+
+    currentTargetPopupAnchor.ShowBubblePopup({
+        position: 'bottom',
+        align: 'center',
+        tail	 : {
+            align: 'center'
+        },
+        innerHtml: discountsPopupHTML,
+
+        innerHtmlStyle:{
+            'text-align':'left'
+        },
+
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false
+
+    }, false);
+
+    popupId = currentTargetPopupAnchor.GetBubblePopupID();
+
+    keypadPosition = $('#' + popupId).find('.edit_order_item_popup_keypad_container');
+
+    clickFunction = function(val) {
+        currentVal = $('#' + popupId).find('.new_price').val();
+        newVal = currentVal.toString() + val;
+        $('#' + popupId).find('.new_price').val(newVal);
+    };
+
+    cancelFunction = function() {
+        oldVal = $('#' + popupId).find('.new_price').val();
+        newVal = oldVal.substring(0, oldVal.length - 1);
+        $('#' + popupId).find('.new_price').val(newVal);
+    };
+
+    setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
+
+    $('#' + popupId).find('.new_price').val("");
 
     //register the click handler to hide the popup when outside clicked
     registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
@@ -603,16 +692,17 @@ function showCoursePopup() {
 
 function showCourseMenuPopup() {
 
-    receiptItem = currentSelectedReceiptItemEl;
+    receiptItem = getSelectedOrLastReceiptItem();
+    currentTargetPopupAnchor = $('#menuCourseAnchor');
 
     if($('#menuCourseAnchor').hasClass('selected')) {
         currentTargetPopupAnchor.removeClass("selected");
         currentTargetPopupAnchor.HideBubblePopup();
     }else{
-    getSelectedOrLastReceiptItem();
+//    getSelectedOrLastReceiptItem();
     closeDiscountPopup();
 
-    currentTargetPopupAnchor = $('#menuCourseAnchor');
+
 
     if(currentTargetPopupAnchor.HasBubblePopup()) {
         currentTargetPopupAnchor.RemoveBubblePopup();
@@ -659,7 +749,7 @@ function showCourseMenuPopup() {
 
 
 function applyCourseFromPopup(courseVal) {
-    $('#menuCourseAnchor').removeClass("selected");
+//    $('#menuCourseAnchor').removeClass("selected");
     closeDiscountPopup();
 
     itemNumber = currentSelectedReceiptItemEl.data("item_number");
@@ -1025,7 +1115,7 @@ function showTablesSubscreen() {
     //blank the function buttons
     $('#menu_screen #buttons_container').hide();
     $('#menu_screen #cluey_logo').show();
-    $('.button[id=sales_button_' + tablesButtonID + ']').addClass("selected");
+//    $('.button[id=sales_button_' + tablesButtonID + ']').addClass("selected");
     $('#table_screen').show();
 }
 
@@ -1040,6 +1130,12 @@ function doCanceltableNumberSelectKeypad() {
     newVal = oldVal.substring(0, oldVal.length - 1);
     $('#table_number_show').html(newVal);
     $('#table_num').val(newVal);
+}
+
+var menuScreenDefault = "true";
+
+function setScreenOrder(value){
+  menuScreenDefault = value;
 }
 
 function doSubmitTableNumber() {
@@ -1075,7 +1171,16 @@ function doSubmitTableNumber() {
     doSelectTable(table_info.id);
 
     clearTableNumberEntered();
-    showMenuItemsSubscreen();
+    if (menuScreenDefault == "true"){
+       showMenuItemsSubscreen();
+    }else{
+        swipeToReceipt();
+    }
+
+}
+
+function removeTableClass(table_class){
+    $('.button').removeClass("selected");
 }
 
 function clearTableNumberEntered() {
