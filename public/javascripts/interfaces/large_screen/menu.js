@@ -945,6 +945,10 @@ function reportsRecptScroll() {
     recptScroll("reports_center_");
 }
 
+function reportsRecptUpdate() {
+    updateRecpt("reports_center_");
+}
+
 function reportsLeftRecptScroll() {
     recptScroll("reports_left_");
 }

@@ -636,6 +636,11 @@ function saveButton() {
 }
 
 function unorderedItemsPopup(evalCode, doAutoLogin) {
+    if(currentOrderEmpty()) {
+        eval(evalCode);
+        return;
+    }
+    
     //make sure all items in this order have already been ordered
     var orderSynced = true;
     
