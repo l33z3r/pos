@@ -88,9 +88,6 @@ function doSyncTableOrder() {
             employee_id : userId
         }
     });
-    
-    //reset this var
-    isTableZeroOrder = false;
 }
 
 function finishSyncTableOrder() {

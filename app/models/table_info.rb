@@ -11,11 +11,21 @@
 #
 
 class TableInfo < ActiveRecord::Base
+  GHOST_TABLE = TableInfo.new({:id => 0, :perm_id => 0})
+  
   belongs_to :room_object, :dependent => :destroy
   
   validates :perm_id, :presence => true
   
   def self.all
     where("perm_id != 0")
+  end
+  
+  def self.find_by_id(theid)
+    if theid.to_s == "0"
+      return GHOST_TABLE
+    else
+      super theid
+    end
   end
 end

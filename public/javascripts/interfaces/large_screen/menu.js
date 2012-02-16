@@ -1230,7 +1230,6 @@ function orderSentToServerCallback(orderData, errorOccured) {
         //first see if its table 0 and send into system orders
         //a null test is to see if table 0
         if(isTableZeroOrder) {
-            alert("table 0 order, sending into order system!");
             doSyncTableOrder();
         }
     }
@@ -1760,6 +1759,12 @@ function renderActiveTables() {
 var afterSplitBillSyncCallback;
 
 function postDoSyncTableOrder() {
+    if(isTableZeroOrder) {
+        //reset this var
+        isTableZeroOrder = false;
+        return;
+    }
+    
     clearLoginReceipt();
 
     //redraw the receipt if we dont leave this screen

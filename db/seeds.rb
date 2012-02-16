@@ -31,7 +31,7 @@
   [49, "Modifier Grids"], [50, "Current Orders"], [51, "Manage Terminals"], [52, "Print Bill"], [53, "Course"],
   [54, "Kitchen Screen"], [55, "X/Z History"], [56, "Double"], [57, "Table Name"], [58, "Reports"], 
   [59, "Split Bill"], [60, "Exit App"]
-  ]
+]
 
 #now create the buttons and also init a button role for admin user
 @display_buttons_map.each do |perm_id, button_text|
@@ -101,6 +101,3 @@ if !@default_display
     
   @default_display.save!
 end
-
-#create a table 0 for ghost orders
-@table_0 = TableInfo.create({:id => 0, :perm_id => 0})

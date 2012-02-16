@@ -93,11 +93,11 @@ class OrderController < ApplicationController
     @table_from_id = params[:table_from_id]
     
     @table_to_id = params[:table_to_id]
-    @table_to = TableInfo.find(@table_to_id)
+    @table_to = TableInfo.find_by_id(@table_to_id)
     
     if @table_to
       if @table_from_id.to_i != 0 and @table_from_id.to_i != -2
-        @table_from = TableInfo.find(@table_from_id)      
+        @table_from = TableInfo.find_by_id(@table_from_id)      
     
         if @table_from
           @table_from_order_num = params[:table_from_order_num] 

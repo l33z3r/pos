@@ -39,7 +39,7 @@ class HomeController < ApplicationController
       if @sync_table_order[:clear_table_order]
         @clear_table_order = @sync_table_order
         @sync_table_order = nil
-        @table_label = TableInfo.find(@clear_table_order[:table_id]).perm_id
+        @table_label = TableInfo.find_by_id(@clear_table_order[:table_id]).perm_id
         
         @serving_employee_id = @clear_table_order[:serving_employee_id];
         @terminal_employee = Employee.find(@serving_employee_id).nickname;
@@ -52,7 +52,7 @@ class HomeController < ApplicationController
         @sync_table_order_request_terminal_id = @sync_table_order[:sync_table_order_request_terminal_id]
         @sync_table_order_data = JSON.parse(@sync_table_order[:order_data]).symbolize_keys!
       
-        @table_label = TableInfo.find(@sync_table_order_data[:tableID]).perm_id
+        @table_label = TableInfo.find_by_id(@sync_table_order_data[:tableID]).perm_id
       
         @serving_employee_id = @sync_table_order[:serving_employee_id];
         @terminal_employee = Employee.find(@serving_employee_id).nickname;
