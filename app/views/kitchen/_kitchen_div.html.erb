@@ -1,0 +1,23 @@
+<div id="kitchen_receipt_container_<%= table_id %>" class="kitchen_receipt_container" data-table_id="<%= table_id %>">
+
+  <div class="header">
+    <div class="table_number">
+      Table <%= perm_id %>
+    </div>
+
+    <div class="hide_order_button" id="hide_order_button_<%= table_id %>" onclick="hideTableOrder(<%= table_id %>)">
+      <%= image_tag "red_x.gif" %>
+    </div>
+
+    <div id="kitchen_table_<%= table_id %>_receipt_order_num" class="order_num"></div>
+
+    <div class="clear">&nbsp;</div>
+
+  </div>
+
+  <div class="clear">&nbsp;</div>
+
+  <div id="kitchen_table_<%= table_id %>_receipt" class="receipt">
+    <div id="kitchen_table_<%= table_id %>_till_roll" class="till_roll"></div>
+  </div>
+</div>
