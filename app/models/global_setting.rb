@@ -69,6 +69,7 @@ class GlobalSetting < ActiveRecord::Base
   ZALION_ROOM_CHARGE_SERVICE_IP = 40
   COURSE_LABEL = 41
   PRINTER_LEFT_MARGIN = 42
+  DISABLE_ADVANCED_TOUCH = 43
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -112,7 +113,8 @@ class GlobalSetting < ActiveRecord::Base
     BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL => "Bypass open orders for z total",
     ZALION_ROOM_CHARGE_SERVICE_IP => "Zalion room charge service ip address",
     COURSE_LABEL => "Course Label", 
-    PRINTER_LEFT_MARGIN => "Printer Left Margin"
+    PRINTER_LEFT_MARGIN => "Printer Left Margin",
+    DISABLE_ADVANCED_TOUCH => "Disable Advanced Touch"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -227,6 +229,9 @@ class GlobalSetting < ActiveRecord::Base
     when PRINTER_LEFT_MARGIN
       @gs = find_or_create_by_key(:key => "#{PRINTER_LEFT_MARGIN.to_s}_#{args[:fingerprint]}", :value => 0, :label_text => LABEL_MAP[PRINTER_LEFT_MARGIN])
       @gs.parsed_value = @gs.value
+    when DISABLE_ADVANCED_TOUCH
+      @gs = find_or_create_by_key(:key => "#{DISABLE_ADVANCED_TOUCH.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[DISABLE_ADVANCED_TOUCH])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -336,12 +341,20 @@ class GlobalSetting < ActiveRecord::Base
             @my_printer_left_margin_gs.value = @printer_left_margin_gs.value
             @my_printer_left_margin_gs.save
             
+            #disable advanced touch
+            @disable_advanced_touch_gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @old_fingerprint}
+            
+            @my_disable_advanced_touch_gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @my_terminal_fingerprint}
+            @my_disable_advanced_touch_gs.value = @disable_advanced_touch_gs.value
+            @my_disable_advanced_touch_gs.save
+            
             #delete old gs objects
             @websocket_ip_gs.destroy
             @order_reciept_width_gs.destroy
             @old_terminal_gs.destroy
             @menu_screen_type_gs.destroy
             @printer_left_margin_gs.destroy
+            @disable_advanced_touch_gs.destroy
           end
         end
         if value
@@ -356,6 +369,9 @@ class GlobalSetting < ActiveRecord::Base
         write_attribute("value", new_value)
       elsif key.starts_with? PRINTER_LEFT_MARGIN.to_s
         new_value = value.to_i
+        write_attribute("value", new_value)
+      elsif key.starts_with? DISABLE_ADVANCED_TOUCH.to_s
+        new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
       end
     end

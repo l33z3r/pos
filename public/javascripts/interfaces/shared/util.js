@@ -125,6 +125,13 @@ function doReload(resetSession) {
     }
 }
 
+function refreshClicked() {
+    lastSyncTableOrderTime = 0;
+    storeKeyValue(lastSyncKey, lastSyncTableOrderTime);
+    
+    doReload(false);
+}
+
 function doClearAndReload() {
     showSpinner();
     clearLocalStorageAndCookies();

@@ -12,6 +12,7 @@ var callHomePollInitSequenceComplete = false;
 var callHome = true;
 
 var lastSyncTableOrderTime = null;
+var lastSyncKey = "last_sync_table_order_time";
 
 $(function() {
     //disable image drag
@@ -28,8 +29,6 @@ function callHomePoll() {
     }
     
     //load/store the timestamp
-    var lastSyncKey = "last_sync_table_order_time";
-    
     if(lastSyncTableOrderTime == null) {
         //read it from web db
         var syncVal = retrieveStorageValue(lastSyncKey);
