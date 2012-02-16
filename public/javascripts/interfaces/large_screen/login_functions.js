@@ -222,6 +222,7 @@ function loginSuccess(id, nickname, is_admin, passcode) {
     showingPassCodeDialog = false;
     
     current_user_id = id;
+    last_user_id = current_user_id;
     current_user_nickname = nickname;
     current_user_is_admin = is_admin;
     current_user_passcode = passcode;

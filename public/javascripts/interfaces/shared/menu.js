@@ -49,7 +49,14 @@ function getCurrentOrder() {
 }
 
 function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee, tableOrderDataJSON) {
-    //console.log("order num " + tableOrderDataJSON.order_num);
+    if(inKitchenContext()) {
+        renderReceipt(tableID);
+    }
+    
+    if(tableID == 0) {
+        alert("Table 0 sync, skipping!");
+        return;
+    }
     
     if(lastSyncedOrder) {
         //set the order id on the lastSyncedOrder variable so that it prints on the login receipt
@@ -70,10 +77,6 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         //        }
         
         doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith);
-    }
-    
-    if(inKitchenContext()) {
-        renderReceipt(tableID);
     }
     
     if(callHomePollInitSequenceComplete) {

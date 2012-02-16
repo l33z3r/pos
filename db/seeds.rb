@@ -101,3 +101,6 @@ if !@default_display
     
   @default_display.save!
 end
+
+#create a table 0 for ghost orders
+@table_0 = TableInfo.create({:id => 0, :perm_id => 0})

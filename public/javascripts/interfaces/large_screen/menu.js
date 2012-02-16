@@ -16,6 +16,8 @@ var splitBillOrderFrom;
 var splitBillOrderTo;
 var splitBillTableNumber;
 
+var lastTableZeroOrder;
+
 //this function is called from application.js on page load
 function initMenu() {
     initMenuScreenType();
@@ -1055,6 +1057,12 @@ function doTotalFinal() {
         tableInfoId = null;
         tableInfoLabel = "None";
         isTableOrder = false;
+        
+        isTableZeroOrder = true;
+            
+        //copy the order to distribute through system after processing
+        var copiedLastTableZeroOrder = {};
+        lastTableZeroOrder = $.extend(true, copiedLastTableZeroOrder, totalOrder);        
     } else {
         //get total for table
         totalOrder = tableOrders[selectedTable];
@@ -1213,6 +1221,13 @@ function orderSentToServerCallback(orderData, errorOccured) {
             }
         
             doChargeRoom(orderData);
+        }
+        
+        //first see if its table 0 and send into system orders
+        //a null test is to see if table 0
+        if(isTableZeroOrder) {
+            alert("table 0 order, sending into order system!");
+            doSyncTableOrder();
         }
     }
 }

@@ -14,4 +14,8 @@ class TableInfo < ActiveRecord::Base
   belongs_to :room_object, :dependent => :destroy
   
   validates :perm_id, :presence => true
+  
+  def self.all
+    where("perm_id != 0")
+  end
 end
