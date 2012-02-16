@@ -1158,26 +1158,7 @@ function doTotalFinal() {
         'split_payments': splitPayments
     }
     
-    showLoadingDiv();
     sendOrderToServer(orderData);
-}
-
-function orderSentToServerCallback(orderData, errorOccured) {
-    hideLoadingDiv();
-    
-    if(!errorOccured) {
-        //was this charged to a room?
-        if(selectedRoomNumber && selectedFolioNumber) {
-            orderData['charged_room'] = {
-                selected_room_number : selectedRoomNumber,
-                selected_folio_number : selectedFolioNumber,
-                selected_folio_name : selectedFolioName,
-                payment_integration_type_id : paymentIntegrationId
-            }
-        
-            doChargeRoom(orderData);
-        }
-    }
     
     //clear the order
     clearOrder(selectedTable);
@@ -1217,6 +1198,22 @@ function orderSentToServerCallback(orderData, errorOccured) {
     //now print the receipt
     if(autoPrintReceipt) {
         printReceipt(printReceiptHTML, true);
+    }
+}
+
+function orderSentToServerCallback(orderData, errorOccured) {
+    if(!errorOccured) {
+        //was this charged to a room?
+        if(selectedRoomNumber && selectedFolioNumber) {
+            orderData['charged_room'] = {
+                selected_room_number : selectedRoomNumber,
+                selected_folio_number : selectedFolioNumber,
+                selected_folio_name : selectedFolioName,
+                payment_integration_type_id : paymentIntegrationId
+            }
+        
+            doChargeRoom(orderData);
+        }
     }
 }
 
