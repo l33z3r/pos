@@ -749,7 +749,7 @@ function showCourseMenuPopup() {
 
 
 function applyCourseFromPopup(courseVal) {
-//    $('#menuCourseAnchor').removeClass("selected");
+    $('#menuCourseAnchor').removeClass("selected");
     closeDiscountPopup();
 
     itemNumber = currentSelectedReceiptItemEl.data("item_number");
@@ -782,11 +782,11 @@ function applyCourseFromPopup(courseVal) {
 
 function registerPopupClickHandler(popupEl, outsideClickHandler) {
     activePopupElSet = $(popupEl);
-    $('#menuCourseAnchor').removeClass("selected");
 
     //must have a slight delay so that the click that showed the popup doesn't close it
     setTimeout(function(){
         $("body").click(function(eventObj) {
+            $('#menuCourseAnchor').removeClass("selected");
             if(activePopupElSet && (activePopupElSet.has(eventObj.target).length == 0)) {
                 outsideClickHandler();
             }
@@ -839,7 +839,7 @@ function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnCl
 
     return allOrderItemsReceiptHTML;
 }
-
+                                                                                                                         //alert("APPLYING COURSE " + newCourseNum + " old: " + item.product.course_num);
 function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
     //default the args to true
     if (typeof includeNonSyncedStyling == "undefined") {

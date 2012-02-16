@@ -1,7 +1,7 @@
 <div id="receipt_screen" class="content-item">
     <div id="header" class="screen_header_receipt">
         <div style="float: right">
-        <div id="sales_button_<%= @display_buttons[0].id %>" style="max-height: 97px" class="button" onclick="swipeToMenu();setScreenOrder('false');<%= button_action @display_buttons[0] %>"><div class="icon">
+        <div id="sales_button_<%= @display_buttons[0].id %>" style="max-height: 97px" class="button" onclick="swipeToMenu();setScreenOrder('false');showTablesSubscreen()"><div class="icon">
             <%= button_icon @display_buttons[0] %>
           </div>
           <div class="button_name"><%= @display_buttons[0].button_text %></div></div>
