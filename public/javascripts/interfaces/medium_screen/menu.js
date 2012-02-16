@@ -80,7 +80,7 @@ function doMenuPageSelect(pageNum, pageId) {
     $('#menu_items_' + pageNum).show();
 
     //wake up the scrollers
-    if(isTouchDevice()) {
+    if(!disableAdvancedTouch && isTouchDevice()) {
         kickMenuScrollers();
     }
 

@@ -4,7 +4,7 @@
 
   <script type="text/javascript">
     $(function() {
-      if(isTouchDevice()) {
+      if(!disableAdvancedTouch && isTouchDevice()) {
         niceAlert("Drag/Drop is not supported on touch interfaces yet, please use a desktop PC to build your rooms.");
       }
     });
