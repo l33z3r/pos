@@ -35,29 +35,7 @@
     <div id="empty_orders">
       <% Room.all.each do |room|%>
         <% room.table_infos.each do |table_info| %>
-          <div id="kitchen_receipt_container_<%= table_info.id %>" class="kitchen_receipt_container" data-table_id="<%= table_info.id %>">
-
-            <div class="header">
-              <div class="table_number">
-                Table <%= table_info.perm_id %>
-              </div>
-
-              <div class="hide_order_button" id="hide_order_button_<%= table_info.id %>" onclick="hideTableOrder(<%= table_info.id %>)">
-                <%= image_tag "red_x.gif" %>
-              </div>
-
-              <div id="kitchen_table_<%= table_info.id %>_receipt_order_num" class="order_num"></div>
-
-              <div class="clear">&nbsp;</div>
-
-            </div>
-
-            <div class="clear">&nbsp;</div>
-            
-            <div id="kitchen_table_<%= table_info.id %>_receipt" class="receipt">
-              <div id="kitchen_table_<%= table_info.id %>_till_roll" class="till_roll"></div>
-            </div>
-          </div>
+          <%= render "kitchen_div", :table_id => table_info.id, :perm_id => table_info.perm_id %>
         <% end %>
       <% end %>
     </div>

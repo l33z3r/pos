@@ -21,6 +21,15 @@ class TableInfo < ActiveRecord::Base
     where("perm_id != 0")
   end
   
+  #need to stub this out for the ghost table
+  def id
+    if(perm_id == 0)
+      return 0
+    else
+      super
+    end
+  end
+  
   def self.find_by_id(theid)
     if theid.to_s == "0"
       return GHOST_TABLE

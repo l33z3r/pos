@@ -21,11 +21,33 @@ function initKitchen() {
 
 function renderReceipt(tableID) {
     
+    var orderToCopy; 
+    
+    if(tableID == 0) {
+        tableID += "_" + tableOrders[0].order_num;
+        orderToCopy = tableOrders[0];
+        
+        //make a div for this order
+        $.ajax({
+            url: '/kitchen/table_0_kitchen_div',
+            data: {
+                'id' : tableID
+            },
+            async: false,
+            success: function(data) {
+                //put this order to the end of the active orders queue
+                $('#active_orders').append(data);
+            }
+        });    
+    } else {
+        orderToCopy = tableOrders[tableID];
+    }
+    
     //need to copy the tableOrder to the kitchenOrders array 
     //so we can strip products and do auto coursing on it
     //copy over the order
     var copiedOrder = {};
-    var theCopiedOrder = $.extend(true, copiedOrder, tableOrders[tableID]);
+    var theCopiedOrder = $.extend(true, copiedOrder, orderToCopy);
     kitchenOrders[tableID] = theCopiedOrder;
     
     var nextKitchenOrder = kitchenOrders[tableID];
@@ -269,6 +291,12 @@ function sendCourseCheck(orderLine) {
     var terminalID = kitchenOrder.items[orderLine.data("item_number")-1].terminal_id;
     var employeeID = firstServerID(kitchenOrder);
     
+    var theTableID = tableID;
+    
+    if(tableID.startsWith("0_")) {
+        theTableID = tableID.split("_")[0];
+    }
+    
     $.ajax({
         type: 'POST',
         url: 'kitchen/order_ready',
@@ -278,7 +306,7 @@ function sendCourseCheck(orderLine) {
         data: {
             employee_id : employeeID,
             terminal_id : terminalID,
-            table_id : tableID
+            table_id : theTableID
         }
     });
     

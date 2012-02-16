@@ -17,5 +17,10 @@ class KitchenController < ApplicationController
       @notification_sent = true
     end
   end
+  
+  def table_0_kitchen_div
+    @id = params[:id]
+    render :partial => "kitchen_div", :locals => { :table_id => @id, :perm_id => 0 }
+  end
 
 end
