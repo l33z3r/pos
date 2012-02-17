@@ -15,6 +15,9 @@ class ApplicationController < ActionController::Base
   MEDIUM_INTERFACE = "medium"
   SMALL_INTERFACE = "small"
   
+  HTTP_BASIC_AUTH_USERNAME = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_USERNAME
+  HTTP_BASIC_AUTH_PASSWORD = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_PASSWORD
+      
   include ActionView::Helpers::NumberHelper
   
   def e
@@ -393,6 +396,9 @@ class ApplicationController < ActionController::Base
   end
   
   def http_basic_authenticate
+    
+    logger.info "!!!!USER: #{HTTP_BASIC_AUTH_USERNAME}, PASS: #{HTTP_BASIC_AUTH_PASSWORD}"
+    
     logger.info "Checking auth for remote ip: #{request.remote_ip}"
     
     @need_auth = false

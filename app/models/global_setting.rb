@@ -70,6 +70,8 @@ class GlobalSetting < ActiveRecord::Base
   COURSE_LABEL = 41
   PRINTER_LEFT_MARGIN = 42
   DISABLE_ADVANCED_TOUCH = 43
+  HTTP_AUTH_USERNAME = 44
+  HTTP_AUTH_PASSWORD = 45
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -114,7 +116,9 @@ class GlobalSetting < ActiveRecord::Base
     ZALION_ROOM_CHARGE_SERVICE_IP => "Zalion room charge service ip address",
     COURSE_LABEL => "Course Label", 
     PRINTER_LEFT_MARGIN => "Printer Left Margin",
-    DISABLE_ADVANCED_TOUCH => "Disable Advanced Touch"
+    DISABLE_ADVANCED_TOUCH => "Disable Advanced Touch",
+    HTTP_AUTH_USERNAME => "HTTP Basic Auth Username",
+    HTTP_AUTH_PASSWORD => "HTTP Basic Auth Password"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -232,6 +236,10 @@ class GlobalSetting < ActiveRecord::Base
     when DISABLE_ADVANCED_TOUCH
       @gs = find_or_create_by_key(:key => "#{DISABLE_ADVANCED_TOUCH.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[DISABLE_ADVANCED_TOUCH])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when HTTP_AUTH_USERNAME
+      @gs = find_or_create_by_key(:key => HTTP_AUTH_USERNAME.to_s, :value => "cluey", :label_text => LABEL_MAP[HTTP_AUTH_USERNAME])
+    when HTTP_AUTH_PASSWORD
+      @gs = find_or_create_by_key(:key => HTTP_AUTH_PASSWORD.to_s, :value => "cluey100", :label_text => LABEL_MAP[HTTP_AUTH_PASSWORD])
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
