@@ -37,6 +37,23 @@ function currentMenuSubscreenIsTableScreen() {
     return $('#table_screen').is(":visible");
 }
 
+var utliKeypadClickFunction;
+var utilKeypadCancelFunction;
+
+function setUtilKeypad(position, clickFunction, cancelFunction) {
+    $(position).html($('#util_keypad_container').html());
+    utliKeypadClickFunction = clickFunction;
+    utilKeypadCancelFunction = cancelFunction;
+}
+
+function utilKeypadClick(val) {
+    utliKeypadClickFunction(val);
+}
+
+function doCancelUtilKeypad() {
+    utilKeypadCancelFunction();
+}
+
 function getSelectedOrLastReceiptItem() {
     if(!currentSelectedReceiptItemEl) {
         currentSelectedReceiptItemEl = $('#menu_screen_till_roll > div.order_line:last');

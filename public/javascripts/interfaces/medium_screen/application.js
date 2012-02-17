@@ -38,7 +38,7 @@ function doGlobalInit() {
     
     setFingerPrintCookie();
     
-    if(isTouchDevice()) {
+    if(!disableAdvancedTouch && isTouchDevice()) {
         initTouch();
         initTouchRecpts();
         

@@ -15,6 +15,9 @@ class ApplicationController < ActionController::Base
   MEDIUM_INTERFACE = "medium"
   SMALL_INTERFACE = "small"
   
+  HTTP_BASIC_AUTH_USERNAME = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_USERNAME
+  HTTP_BASIC_AUTH_PASSWORD = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_PASSWORD
+      
   include ActionView::Helpers::NumberHelper
   
   def e
@@ -396,7 +399,8 @@ class ApplicationController < ActionController::Base
   end
   
   def http_basic_authenticate
-    logger.info "Checking auth for remote ip: #{request.remote_ip}"
+    
+    #logger.info "Checking auth for remote ip: #{request.remote_ip}"
     
     @need_auth = false
     
@@ -404,12 +408,12 @@ class ApplicationController < ActionController::Base
     @local_auth_required = GlobalSetting.parsed_setting_for GlobalSetting::LOCAL_AUTHENTICATION_REQUIRED
     
     if @authentication_required 
-      logger.info "Auth is required by setting"
+      #logger.info "Auth is required by setting"
       
       @need_auth = true
       
       if !@local_auth_required
-        logger.info "Local Auth not required, testing for local"
+        #logger.info "Local Auth not required, testing for local"
         
         @local_access = false
         
@@ -420,12 +424,12 @@ class ApplicationController < ActionController::Base
         
         @server_ip_base = "#{@server_ip_parts[0]}.#{@server_ip_parts[1]}.#{@server_ip_parts[2]}."
           
-        logger.info "Testing remote ip #{@remote_ip} again server base #{@server_ip_base}"
+        #logger.info "Testing remote ip #{@remote_ip} again server base #{@server_ip_base}"
         
         if @remote_ip.starts_with? @server_ip_base or @remote_ip == "127.0.0.1"
           @local_access = true
         else 
-          logger.info "Request not on same LAN. Requesting auth!"
+          #logger.info "Request not on same LAN. Requesting auth!"
           @local_access = false
         end
         
@@ -441,10 +445,10 @@ class ApplicationController < ActionController::Base
       return
     end
 
-    logger.info "previous succeed? #{session[:auth_succeeded] == true}"
+    #logger.info "previous succeed? #{session[:auth_succeeded] == true}"
     
     if !session[:auth_succeeded]
-      logger.info "Checking manual auth with params u=#{params[:u]} and p=#{params[:p]}"
+      #logger.info "Checking manual auth with params u=#{params[:u]} and p=#{params[:p]}"
       #check is the name and password sent in the url and authenticate off that first if it is present
       @username_param = params[:u]
       @password_param = params[:p]
@@ -453,7 +457,7 @@ class ApplicationController < ActionController::Base
       @password_ok = (@password_param and @password_param == HTTP_BASIC_AUTH_PASSWORD)
     
       if @username_ok and @password_ok
-        logger.info "Manual Auth succeeded"
+        #logger.info "Manual Auth succeeded"
         session[:auth_succeeded] = true
         return
       end
@@ -461,7 +465,7 @@ class ApplicationController < ActionController::Base
       return
     end
     
-    logger.info "Doing http basic auth"
+    #logger.info "Doing http basic auth"
     
     authenticate_or_request_with_http_basic do |username, password|
       @auth_ok = username == HTTP_BASIC_AUTH_USERNAME && password == HTTP_BASIC_AUTH_PASSWORD

@@ -834,6 +834,25 @@
                       <% end %>
                     </td>
                   </tr>
+                  <tr>
+                    <td>App HTTP Authentication Username?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::HTTP_AUTH_USERNAME %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>App HTTP Authentication Password?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::HTTP_AUTH_PASSWORD %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
 
