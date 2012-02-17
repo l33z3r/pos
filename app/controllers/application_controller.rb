@@ -338,9 +338,20 @@ class ApplicationController < ActionController::Base
       @web_socket_service_ip_gs.reload
     end
     
-    @printer_left_margin = GlobalSetting.parsed_setting_for GlobalSetting::PRINTER_LEFT_MARGIN, {:fingerprint => @terminal_fingerprint}
-    
     @web_socket_service_ip = @web_socket_service_ip_gs.value
+    
+    @cash_drawer_service_ip_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_IP_ADDRESS, {:fingerprint => @terminal_fingerprint}
+    
+    #if this isn't set, copy the value from the printer ip
+    if @cash_drawer_service_ip_gs.value.blank?
+      @cash_drawer_service_ip_gs.value = @web_socket_service_ip
+      @cash_drawer_service_ip_gs.save
+      @cash_drawer_service_ip_gs.reload
+    end
+    
+    @cash_drawer_service_ip = @cash_drawer_service_ip_gs.value
+    
+    @printer_left_margin = GlobalSetting.parsed_setting_for GlobalSetting::PRINTER_LEFT_MARGIN, {:fingerprint => @terminal_fingerprint}
     
     @zalion_charge_room_service_ip_gs = GlobalSetting.setting_for GlobalSetting::ZALION_ROOM_CHARGE_SERVICE_IP
     

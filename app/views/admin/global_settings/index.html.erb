@@ -905,6 +905,17 @@
                   </tr>
                   <tr>
                     <td>
+                      Cash Drawer IP Address
+                    </td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_IP_ADDRESS, {:fingerprint => @terminal_fingerprint} %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
                       Zalion Room Charge Service IP Address
                     </td>
                     <td class="text_align_left">
