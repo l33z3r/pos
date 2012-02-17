@@ -364,9 +364,10 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, orderNum, tableLabel
         doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployee, nextUserIDToSyncWith);
     }
     
-    if(inKitchenContext()) {
-        tableCleared(tableID, orderNum);
-    }
+    //WE DONT AUTO CLEAR ANYMORE ON KITCHEN SCREEN
+//    if(inKitchenContext()) {
+//        tableCleared(tableID, orderNum);
+//    }
     
     //remove the table from the active table ids array
     removeActiveTable(tableID);

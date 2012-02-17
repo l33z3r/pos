@@ -109,6 +109,14 @@ class ApplicationController < ActionController::Base
   
   def do_request_sync_table_order terminal_id, table_order_data, table_id, employee_id
     TerminalSyncData.transaction do
+      ###CHECK FOR TABLE 0
+      
+      
+      
+      
+      
+      
+      
       remove_previous_sync_for_table table_id, false
     
       #does this order have an order id? if not generate one

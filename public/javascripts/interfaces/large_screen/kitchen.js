@@ -22,8 +22,9 @@ function initKitchen() {
 function renderReceipt(tableID) {
     
     var orderToCopy; 
+    var table0Order = (tableID == 0);
     
-    if(tableID == 0) {
+    if(table0Order) {
         tableID += "_" + tableOrders[0].order_num;
         
         if($('#kitchen_receipt_container_' + tableID).length > 0) {
@@ -48,6 +49,10 @@ function renderReceipt(tableID) {
         });    
     } else {
         orderToCopy = tableOrders[tableID];
+        
+        if(kitchenOrders[tableID] != null && orderNums[tableID] && (orderNums[tableID] != orderToCopy.order_num)) {
+            tableCleared(tableID, orderNums[tableID]);
+        }
     }
     
     //need to copy the tableOrder to the kitchenOrders array 
@@ -71,7 +76,7 @@ function renderReceipt(tableID) {
         orderXClicked[tableID] = false;
     }
     
-    if(!orderNums[tableID]) {
+    if(!table0Order && !orderNums[tableID]) {
         orderNums[tableID] = nextKitchenOrder.order_num;
     }
         
@@ -443,17 +448,6 @@ function loadCourseChecks() {
 //this is called by the do clear order from call home
 function tableCleared(tableID, orderNum) {
     console.log("table clear request!!! " + tableID + " ORDER NUM: " + orderNum);
-    
-    //it order_num is null, then we clear as the order has been cashed out
-    //if order num exists then there is a new order on that table so leave it alone
-    if(orderNums[tableID] != orderNum) {
-        console.log("Not current order");
-        return;
-    }
-    
-    orderNums[tableID] = null;
-    
-    console.log("clearing table order " + tableID);
     
     courseChecks[tableID] = new Array();
     orderXClicked[tableID] = false;

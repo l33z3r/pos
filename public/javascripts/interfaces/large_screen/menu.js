@@ -1042,7 +1042,18 @@ function doTotal(applyDefaultServiceCharge) {
     $('#totals_tendered_box').addClass("selected");
 }
 
+var cashSaleInProcess = false;
+
 function doTotalFinal() {
+    //as we now send orders when a cash out is done for table 0, 
+    //we must halt here if there is an order in progress, otherwise we would lose this order
+    if(cashSaleInProcess || orderInProcess) {
+        niceAlert("There is an order being processed, please wait.");
+        return;
+    }
+    
+    cashSaleInProcess = true;
+    
     if(currentOrderEmpty()) {
         setStatusMessage("No order present to total!", true, true);
         return;
@@ -1233,6 +1244,8 @@ function orderSentToServerCallback(orderData, errorOccured) {
             doSyncTableOrder();
         }
     }
+    
+    cashSaleInProcess = false;
 }
 
 function loadAfterSaleScreen() {
