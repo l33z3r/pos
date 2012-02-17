@@ -44,16 +44,16 @@ class Admin::OrderItemAdditionGridsController < Admin::AdminController
     render :json => {:success => true}.to_json
   end
   
-  def resize
-    @oiag = OrderItemAdditionGrid.find(params[:id])
-    new_width = params[:width]
-    new_height = params[:height]
-    
-    @oiag.grid_x_size = new_width
-    @oiag.grid_y_size = new_height
-    
-    @oiag.save!
-  end
+#  def resize
+#    @oiag = OrderItemAdditionGrid.find(params[:id])
+#    new_width = params[:width]
+#    new_height = params[:height]
+#    
+#    @oiag.grid_x_size = new_width
+#    @oiag.grid_y_size = new_height
+#    
+#    @oiag.save!
+#  end
   
   def rename
     @oiag = OrderItemAdditionGrid.find(params[:id])

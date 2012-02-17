@@ -198,23 +198,23 @@ function setGridScrollerWidth(grid_x) {
     $('.grid_row').css("width", newWidth + "px");
 }
 
-function updateGridSize() {
-    var newWidth = $('#grid_width_input').val();
-    var newHeight = $('#grid_height_input').val();
-    
-    if(isNaN(newWidth) || isNaN(newHeight)) {
-        setStatusMessage("Please enter a number for width/height");
-    }
-    
-    $.ajax({
-        type: 'POST',
-        url: '/admin/order_item_addition_grids/' + grid_id + '/resize' ,
-        data: {
-            width : newWidth,
-            height : newHeight
-        }
-    });
-}
+//function updateGridSize() {
+//    var newWidth = $('#grid_width_input').val();
+//    var newHeight = $('#grid_height_input').val();
+//    
+//    if(isNaN(newWidth) || isNaN(newHeight)) {
+//        setStatusMessage("Please enter a number for width/height");
+//    }
+//    
+//    $.ajax({
+//        type: 'POST',
+//        url: '/admin/order_item_addition_grids/' + grid_id + '/resize' ,
+//        data: {
+//            width : newWidth,
+//            height : newHeight
+//        }
+//    });
+//}
 
 function updateSelectedGridItem() {
     if(current_grid_x == null) {
@@ -228,9 +228,6 @@ function updateSelectedGridItem() {
         return;
     }
     
-    $('#cell_' + current_grid_x + "_" + current_grid_y).html("Updating...");
-    updateInProgress = true;
-    
     var addCharge = $('#add_charge_input').val();
     
     var minusCharge = $('#minus_charge_input').val();
@@ -239,6 +236,9 @@ function updateSelectedGridItem() {
         setStatusMessage("Please enter numbers for both add charge and minus charge!");
         return;
     }
+    
+    $('#cell_' + current_grid_x + "_" + current_grid_y).html("Updating...");
+    updateInProgress = true;
     
     var available = $('#available_input').attr("checked");
     
