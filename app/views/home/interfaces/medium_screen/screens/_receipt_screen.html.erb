@@ -1,15 +1,15 @@
 <div id="receipt_screen" class="content-item">
     <div id="header" class="screen_header_receipt">
         <div style="float: right">
-        <div id="sales_button_<%= @display_buttons[0].id %>" style="max-height: 97px" class="button" onclick="swipeToMenu();setScreenOrder('false');showTablesSubscreen()"><div class="icon">
-            <%= button_icon @display_buttons[0] %>
+        <div id="sales_button_<%= @tables_button.id %>" style="max-height: 97px" class="button" onclick="swipeToMenu();setScreenOrder('false');showTablesSubscreen()"><div class="icon">
+            <%= button_icon @tables_button %>
           </div>
-          <div class="button_name"><%= @display_buttons[0].button_text %></div></div>
+          <div class="button_name"><%= @tables_button.button_text %></div></div>
 
-        <div id="sales_button_<%= @display_buttons[1].id %>" class="button" onclick="<%= button_action @display_buttons[1] %>"><div class="icon">
-            <%= button_icon @display_buttons[1] %>
+        <div id="sales_button_<%= @order_button.id %>" class="button" onclick="<%= button_action @order_button %>"><div class="icon">
+            <%= button_icon @order_button %>
           </div>
-          <div class="button_name"><%=@display_buttons[1].button_text %></div></div>
+          <div class="button_name"><%= @order_button.button_text %></div></div>
         </div>
       <div class="header_label" id="table_name">Table</div>
     </div>

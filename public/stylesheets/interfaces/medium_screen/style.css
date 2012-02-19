@@ -425,14 +425,15 @@ div#menu_screen div#oia_subscreen {
 }
 
 div#menu_screen div#oia_subscreen div#oia_tabs_container {
-    height: 582px;
+    height: 575px;
     overflow: hidden;
     float: left;
     width: 120px;
 }
 
 div#menu_screen div#oia_subscreen div#oia_tabs {
-    height: 582px;
+    height: 575px;
+
 }
 
 div#menu_screen div#oia_subscreen div#oia_tabs div.tabs {
@@ -584,6 +585,60 @@ div#menu_screen div#table_screen div#keypad_container div.keypad {
 
 /* End Menu Screen */
 
+div#menu_screen div#edit_price_screen {
+    display: none;
+    height: 603px;
+}
+
+div#menu_screen div#edit_price_screen div#header {
+    text-align: center;
+    padding: 8px;
+    height: 60px;
+    background: -moz-linear-gradient(#558ED5, #17365D) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#558ED5), to(#17365D));
+}
+
+div#menu_screen div#edit_price_screen div#header div#back_button {
+    float: left;
+}
+
+div#menu_screen div#edit_price_screen div#header div#options_button {
+    float: right;
+}
+
+div#menu_screen div#edit_price_screen div#header div.title {
+    float: left;
+    margin-left: 32px;
+    margin-top: 22px;
+    font-size: 24px;
+    color: #FFF;
+    font-weight: bold;
+}
+
+div#menu_screen div#edit_price_screen div#table_number_show {
+    margin: 5px auto;
+    border: 1px solid #DDD;
+    width: 430px;
+    height: 28px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px 0px 5px 0px;
+    border: 1px solid #CCC;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 0px 1px 1px 0px #777;
+    background-color: #FFF;
+    text-align: center;
+}
+
+div#menu_screen div#edit_price_screen div#keypad_container {
+    height: 554px;
+    background-color: #E0E0E0;
+}
+
+div#menu_screen div#edit_price_screen div#keypad_container div.keypad {
+
+}
 /* Menu Screen Receipt */
 
 div.receipt {
@@ -1137,6 +1192,7 @@ div.button div.button_name {
     width: auto;
     height: 15px;
     overflow: hidden;
+    margin-bottom: 5px;
 }
 
 div.button.selected div.button_name {
@@ -1333,11 +1389,11 @@ div.small_button.pressed,
 #wrapper div.key.pressed,
 #wrapper div.go_key.pressed,
 #wrapper div.cancel_key.pressed {
-    border: 1px solid #E36C0A; 
+    border: 1px solid #E36C0A;
     background: #eee;
     -moz-opacity: 90;
     filter:alpha(opacity: .90);
-    opacity: .90;    
+    opacity: .90;
 }
 
 div#menu_screen div#menu_container div#menu_items_container div.items div.item.pressed *,
@@ -1353,7 +1409,7 @@ div.small_button.pressed *,
     background: #eee;
     -moz-opacity: 90;
     filter:alpha(opacity: .90);
-    opacity: .90;     
+    opacity: .90;
 }
 
 div#menu_screen div#menu_container div#menu_items_container div.items div.item.pressed img {

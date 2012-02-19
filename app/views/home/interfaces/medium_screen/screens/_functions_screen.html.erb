@@ -30,7 +30,7 @@
 
   <div id="functions_buttons_container">
 
-    <div class="button" onclick="swipeToMenu();">
+    <div class="button" onclick="setInitScreen('true');swipeToMenu();">
       <div class="icon">
         <%= image_tag "/images/button_logos/mobile/orders.png" %>
       </div>
@@ -85,6 +85,12 @@
         <%= image_tag "/images/button_logos/exit.png" %>
       </div>
       <div class="button_name">Exit</div>
+    </div>
+    <div class="button" onclick="doMobileLogout();">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/exit.png" %>
+      </div>
+      <div class="button_name">Logout</div>
     </div>
 
     <div class="clear">&nbsp;</div>
