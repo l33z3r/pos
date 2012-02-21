@@ -149,6 +149,13 @@ function doCashTotalReport(total_type, commit) {
 }
 
 function saveCashReportCoinCount() {
+    if(cashTotalInOperation) {
+        niceAlert("Cash Total is in operation, please wait!");
+        return;
+    }
+    
+    cashTotalInOperation = true;
+    
     doCoinCounterTotal();
     doCashTotalReport(currentTotalType, false);
 }
@@ -190,7 +197,7 @@ function finishCashTotal() {
     
     doCashTotalReport(currentTotalType, true);
     
-    showMenuScreen();
+    //showMenuScreen();
     
     printReceipt(content, false);
     
