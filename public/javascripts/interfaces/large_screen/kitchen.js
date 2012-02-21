@@ -66,6 +66,12 @@ function renderReceipt(tableID) {
     
     //strip products that do not belong on this screen
     stripProducts(nextKitchenOrder);
+    
+    //if all items were stripped out of this order, then we must not show it on the screen
+    if(nextKitchenOrder.items.length == 0) {
+        return;
+    }
+    
     doAutoCoursing(nextKitchenOrder);
     
     if(!courseChecks[tableID]) {
