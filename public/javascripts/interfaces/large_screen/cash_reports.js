@@ -197,7 +197,7 @@ function finishCashTotal() {
     
     doCashTotalReport(currentTotalType, true);
     
-    //showMenuScreen();
+    showMenuScreen();
     
     printReceipt(content, false);
     
