@@ -69,6 +69,11 @@ function renderReceipt(tableID) {
     
     //if all items were stripped out of this order, then we must not show it on the screen
     if(nextKitchenOrder.items.length == 0) {
+        //delete the html for that kitchen div if it is table 0
+        if(table0Order) {
+            $('#kitchen_receipt_container_' + tableID).remove();
+        }
+        
         return;
     }
     
