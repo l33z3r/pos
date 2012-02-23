@@ -78,16 +78,12 @@
   <div class="clear">&nbsp;</div>
 
   <div id="bottom_functions">
-    <div id="bottom_open_food_anchor" style="height: 4px; width: 10px; margin-left: 230px"></div>
-    <div class="button" onclick="showMenuKeypad();">Keypad</div>
-    <div class="button" onclick="removeLastOrderItem()">Delete</div>
-    <div class="button" id="menuCourseAnchor" onclick="showCourseMenuPopup();">Course</div>
-    <div class="button" onclick="setScreenOrder('false');swipeToReceipt();">Receipt</div>
-    <div class="button" onclick="swipeToFunctions();">
-
-    <br>    Options
-        <%= image_tag "/images/button_logos/mobile/right_arrow.png" %>
-    </div>
+    <div id="bottom_open_food_anchor" style="height: 0px; width: 10px; margin-left: 230px"></div>
+    <div class="bottom_button" onclick="setScreenOrder('false');swipeToReceipt();">Receipt</div>
+    <div class="bottom_button" onclick="showMenuKeypad();">Keypad</div>
+    <div class="bottom_button" onclick="removeLastOrderItem()">Delete</div>
+    <div class="bottom_button" id="menuCourseAnchor" onclick="showCourseMenuPopup();">Course</div>
+    <div class="bottom_button" onclick="swipeToFunctions();">Options</div>
 
   </div>
 

@@ -7,10 +7,8 @@ function updateTotalTendered() {
         totalCashTendered = 0;
     }
         
-    if(totalCashTendered >= 0) {
-        var formattedVal = currency(totalCashTendered, false);
-        $('#totals_tendered_value').html(formattedVal);
-    }
+    var formattedVal = currency(totalCashTendered, false);
+    $('#totals_tendered_value').html(formattedVal);
     
     totalAmountInclCashback = currentTotalFinal + cashback;
 
@@ -269,6 +267,9 @@ function moneySelected(amount) {
         totalAmountInclCashback = currentTotalFinal + cashback;
         
         var totalCashTendered = getTotalTendered();
+        
+        //take away the amount already paid in by this payment method
+        totalCashTendered -= splitPayments[paymentMethod];
         
         newAmount = totalAmountInclCashback - totalCashTendered;
     } else {

@@ -8,12 +8,6 @@
           </div>
           <div class="clear">&nbsp;</div>
         <% end %>
-        <% OrderItemAdditionGrid.all.each do |oiag| %>
-          <div class="tab oia_tab" id="oia_tab_<%= oiag.id %>" data-oiag_id="<%= oiag.id %>" onclick="orderItemAdditionTabSelected(<%= oiag.id %>);">
-            <div class="label"><%= oiag.name %></div>
-          </div>
-          <div class="clear">&nbsp;</div>
-        <% end %>
       </div>
     </div>
   </div>
@@ -22,12 +16,16 @@
     <% OrderItemAdditionGrid.all.each do |oiag| %>
       <div id="oiag_<%=oiag.id%>" class="oia_container" data-grid_x_size="<%=oiag.grid_x_size%>" data-grid_y_size="<%=oiag.grid_y_size%>">
         <% (1..oiag.grid_y_size).each do |y| %>
-          <div class="grid_row">
-            <% (1..oiag.grid_x_size).each do |x| %>
+              <div class="grid_row">
+            <% (1..oiag.grid_x_size).each_with_index do |x,i| %>
+               <% if i == 3 %>
+                   <div class="grid_row">
+                          </div>
+               <% end %>
               <% @oia = oiag.item_for_position(x, y) %>
 
               <% if @oia %>
-                <div class="grid_item <%=@oia.available ? "" : "not_available" %>" style="<%= oia_background_css @oia %>;" 
+                <div class="grid_item <%=@oia.available ? "" : "not_available" %>" style="<%= oia_background_css @oia %>;"
                      onclick="orderItemAdditionClicked(this)"
                      data-description="<%=@oia.description%>" data-add_charge="<%=@oia.add_charge%>"
                      data-minus_charge="<%=@oia.minus_charge%>" data-available="<%=@oia.available%>"
@@ -50,9 +48,12 @@
                 <div class="grid_item empty">&nbsp;</div>
               <% end %>
 
+            <% if i == 3 %>
+                 <div class="grid_row">
+                 </div>
             <% end %>
-          </div>
-
+            <% end %>
+            </div>
           <div class="clear">&nbsp;</div>
         <% end %>
       </div>

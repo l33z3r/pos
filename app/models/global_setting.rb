@@ -70,6 +70,9 @@ class GlobalSetting < ActiveRecord::Base
   COURSE_LABEL = 41
   PRINTER_LEFT_MARGIN = 42
   DISABLE_ADVANCED_TOUCH = 43
+  HTTP_AUTH_USERNAME = 44
+  HTTP_AUTH_PASSWORD = 45
+  CASH_DRAWER_IP_ADDRESS = 46
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -96,7 +99,7 @@ class GlobalSetting < ActiveRecord::Base
     DO_BEEP => "Do Beep",
     LAST_ORDER_ID => "Last Order ID", 
     RELOAD_HTML5_CACHE_TIMESTAMP => "HTML5 Cache Reload Timestamp",
-    WEBSOCKET_IP => "Web Socket Ip Adress",
+    WEBSOCKET_IP => "Web Socket IP Address",
     CURRENCY_NOTES_IMAGES => "Currency Notes Images", 
     ORDER_RECEIPT_WIDTH => "Order Receipt Width",
     AUTHENTICATION_REQUIRED => "Authentication Required",
@@ -114,7 +117,10 @@ class GlobalSetting < ActiveRecord::Base
     ZALION_ROOM_CHARGE_SERVICE_IP => "Zalion room charge service ip address",
     COURSE_LABEL => "Course Label", 
     PRINTER_LEFT_MARGIN => "Printer Left Margin",
-    DISABLE_ADVANCED_TOUCH => "Disable Advanced Touch"
+    DISABLE_ADVANCED_TOUCH => "Disable Advanced Touch",
+    HTTP_AUTH_USERNAME => "HTTP Basic Auth Username",
+    HTTP_AUTH_PASSWORD => "HTTP Basic Auth Password",
+    CASH_DRAWER_IP_ADDRESS => "Cash Drawer Ip Address"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -232,6 +238,13 @@ class GlobalSetting < ActiveRecord::Base
     when DISABLE_ADVANCED_TOUCH
       @gs = find_or_create_by_key(:key => "#{DISABLE_ADVANCED_TOUCH.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[DISABLE_ADVANCED_TOUCH])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when HTTP_AUTH_USERNAME
+      @gs = find_or_create_by_key(:key => HTTP_AUTH_USERNAME.to_s, :value => "cluey", :label_text => LABEL_MAP[HTTP_AUTH_USERNAME])
+    when HTTP_AUTH_PASSWORD
+      @gs = find_or_create_by_key(:key => HTTP_AUTH_PASSWORD.to_s, :value => "cluey100", :label_text => LABEL_MAP[HTTP_AUTH_PASSWORD])
+    when CASH_DRAWER_IP_ADDRESS
+      @gs = find_or_create_by_key(:key => "#{CASH_DRAWER_IP_ADDRESS.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[CASH_DRAWER_IP_ADDRESS])
+      @gs.parsed_value = @gs.value
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -319,6 +332,13 @@ class GlobalSetting < ActiveRecord::Base
             @my_websocket_ip_gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, {:fingerprint => @my_terminal_fingerprint}
             @my_websocket_ip_gs.value = @websocket_ip_gs.value
             @my_websocket_ip_gs.save
+
+            #cash drawer ip
+            @cash_drawer_ip_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_IP_ADDRESS, {:fingerprint => @old_fingerprint}
+            
+            @my_cash_drawer_ip_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_IP_ADDRESS, {:fingerprint => @my_terminal_fingerprint}
+            @my_cash_drawer_ip_gs.value = @cash_drawer_ip_gs.value
+            @my_cash_drawer_ip_gs.save
               
             #order receipt width
             @order_reciept_width_gs = GlobalSetting.setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, {:fingerprint => @old_fingerprint}
@@ -350,6 +370,7 @@ class GlobalSetting < ActiveRecord::Base
             
             #delete old gs objects
             @websocket_ip_gs.destroy
+            @cash_drawer_ip_gs.destroy
             @order_reciept_width_gs.destroy
             @old_terminal_gs.destroy
             @menu_screen_type_gs.destroy

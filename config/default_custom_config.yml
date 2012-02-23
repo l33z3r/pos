@@ -1,6 +1,4 @@
 development:
-  http_basic_auth_username: cluey
-  http_basic_auth_password: cluey100
   use_s3: false
   s3_bucket_name: clueypos_development
   s3_access_key_id: AKIAIY5ORKJHOQ7C5ZHA
@@ -9,8 +7,6 @@ development:
   in_kiosk_mode: false
 
 test:
-  http_basic_auth_username: cluey
-  http_basic_auth_password: cluey100
   use_s3: false
   s3_bucket_name: clueypos_test
   s3_access_key_id: AKIAIY5ORKJHOQ7C5ZHA
@@ -19,8 +15,6 @@ test:
   in_kiosk_mode: false
 
 production:
-  http_basic_auth_username: cluey
-  http_basic_auth_password: cluey100
   use_s3: false
   s3_bucket_name: clueypos_production
   s3_access_key_id: AKIAIY5ORKJHOQ7C5ZHA
@@ -29,8 +23,6 @@ production:
   in_kiosk_mode: true
   
 production_heroku:
-  http_basic_auth_username: cluey
-  http_basic_auth_password: cluey100
   use_s3: true
   s3_bucket_name: clueypos_production_heroku
   s3_access_key_id: AKIAIY5ORKJHOQ7C5ZHA

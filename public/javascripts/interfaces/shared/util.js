@@ -623,7 +623,7 @@ function initPressedCSS() {
     var stopEventName = "mouseup";
     var cancelEventName = "mouseout"
     
-    if(isTouchDevice()) {
+    if(!disableAdvancedTouch && isTouchDevice()) {
         startEventName = "touchstart";
         stopEventName = "touchend";
         cancelEventName = "touchcancel";

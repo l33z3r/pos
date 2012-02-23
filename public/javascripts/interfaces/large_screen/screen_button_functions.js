@@ -344,7 +344,7 @@ function showGlobalSettingsPage() {
 }
 
 function openCashDrawer() {
-    var cash_drawer_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/cash_drawer_controller';
+    var cash_drawer_service_url = 'http://' + cashDrawerServiceIP + ':8080/ClueyWebSocketServices/cash_drawer_controller';
     
     $.ajax({
         type: 'POST',
@@ -374,7 +374,7 @@ function openCashDrawer() {
         console.log("Sending cash drawer message");
         
         // Let us open a web socket
-        var ws = new WebSocket("ws://" + webSocketServiceIP + ":8080/ClueyWebSocketServices/cash_drawer_controller");
+        var ws = new WebSocket("ws://" + cashDrawerServiceIP + ":8080/ClueyWebSocketServices/cash_drawer_controller");
         
         ws.onopen = function()
         {

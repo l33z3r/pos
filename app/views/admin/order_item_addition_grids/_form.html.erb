@@ -18,14 +18,25 @@
         <%= f.label :name %><br />
         <%= f.text_field :name %>
       </div>
-      <div class="field">
-        <%= f.label :grid_x_size, "Dimension: how many tiles across?" %><br />
-        <%= f.text_field :grid_x_size %>
+
+      
+      
+      <!-- FORCE A 6X6 GRID -->
+      <%= f.hidden_field :grid_x_size, :value => 6 %>
+      <%= f.hidden_field :grid_y_size, :value => 6 %>
+      <!--div class="field">
+      <%= f.label :grid_x_size, "Dimension: how many tiles across?" %><br />
+      <%= f.text_field :grid_x_size %>
       </div>
       <div class="field">
-        <%= f.label :grid_y_size, "Dimension: how many tiles down?" %><br />
-        <%= f.text_field :grid_y_size %>
-      </div>
+      <%= f.label :grid_y_size, "Dimension: how many tiles down?" %><br />
+      <%= f.text_field :grid_y_size %>
+      </div-->
+      
+      
+      
+      
+      
       <div id="actions">
         <%= f.submit %>
         <%= link_to "Back", :back %>
