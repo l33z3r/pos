@@ -50,8 +50,17 @@ function renderReceipt(tableID) {
     } else {
         orderToCopy = tableOrders[tableID];
         
+        //clear the previous tables order when a new one is started      
         if(kitchenOrders[tableID] != null && orderNums[tableID] && (orderNums[tableID] != orderToCopy.order_num)) {
             tableCleared(tableID, orderNums[tableID]);
+        }
+        
+        //is this a result of transfering a table? if so we must clear the last order
+        for(var theTableID in orderNums) {
+            if(orderNums[theTableID] == orderToCopy.order_num) {
+                tableCleared(theTableID, orderNums[theTableID]);
+                break;
+            }
         }
     }
     
