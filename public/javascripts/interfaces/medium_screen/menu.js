@@ -31,7 +31,6 @@ function checkMenuScreenForFunction() {
 }
 
 
-
 function renderActiveTables() {
     activeTableIDS = getActiveTableIDS();
 
@@ -39,13 +38,13 @@ function renderActiveTables() {
 }
 
 function menuScreenKeypadClick(val) {
-    if(this.innerHTML == '0') {
-        if(currentMenuItemQuantity.length > 0)
+    if (this.innerHTML == '0') {
+        if (currentMenuItemQuantity.length > 0)
             currentMenuItemQuantity += val
     } else {
         //make sure you cannot enter a 2nd decimal place number
-        if(currentMenuItemQuantity.indexOf(".") != -1) {
-            if(currentMenuItemQuantity.length - currentMenuItemQuantity.indexOf(".") > 1) {
+        if (currentMenuItemQuantity.indexOf(".") != -1) {
+            if (currentMenuItemQuantity.length - currentMenuItemQuantity.indexOf(".") > 1) {
                 return false;
             }
         }
@@ -57,7 +56,7 @@ function menuScreenKeypadClick(val) {
 }
 
 function menuScreenKeypadClickDecimal() {
-    if(currentMenuItemQuantity.indexOf(".") == -1) {
+    if (currentMenuItemQuantity.indexOf(".") == -1) {
         currentMenuItemQuantity += ".";
     }
 
@@ -80,7 +79,7 @@ function doMenuPageSelect(pageNum, pageId) {
     $('#menu_items_' + pageNum).show();
 
     //wake up the scrollers
-    if(!disableAdvancedTouch && isTouchDevice()) {
+    if (isTouchDevice()) {
         kickMenuScrollers();
     }
 
@@ -105,7 +104,7 @@ function doSubMenuPageSelect(parentPageNum, pageId) {
 }
 
 function doSelectMenuItem(productId, element) {
-    if(!ensureLoggedIn()) {
+    if (!ensureLoggedIn()) {
         return;
     }
 
@@ -115,17 +114,17 @@ function doSelectMenuItem(productId, element) {
     product = products[productId];
 
     //if double and no price set
-    if(menuItemDoubleMode && (product.double_price == 0)) {
+    if (menuItemDoubleMode && (product.double_price == 0)) {
         niceAlert("Price has not been set for a double of this item.");
         setMenuItemDoubleMode(false);
         return;
     }
 
-    if(currentMenuItemQuantity == "" || currentMenuItemQuantity == "0")
+    if (currentMenuItemQuantity == "" || currentMenuItemQuantity == "0")
         currentMenuItemQuantity = "1";
 
-    if(currentMenuItemQuantity.indexOf(".") != -1) {
-        if(currentMenuItemQuantity.length - currentMenuItemQuantity.indexOf(".") == 1) {
+    if (currentMenuItemQuantity.indexOf(".") != -1) {
+        if (currentMenuItemQuantity.length - currentMenuItemQuantity.indexOf(".") == 1) {
             currentMenuItemQuantity = "1";
         }
     }
@@ -138,12 +137,12 @@ function doSelectMenuItem(productId, element) {
 
     //reset the quantity
     currentMenuItemQuantity = "";
-    
+
     buildOrderItem(product, amount);
     setModifierGridIdForProduct(product);
 
-    if(orderItem.product.prompt_price) {
-        showPrePricePopup();
+    if (orderItem.product.prompt_price) {
+        showPricePopup();
     }
 
     finishDoSelectMenuItem();
@@ -153,7 +152,7 @@ function finishDoSelectMenuItem() {
     var orderItem = currentOrderItem;
 
     //if this is a tables order deal with it in another function
-    if(selectedTable != 0) {
+    if (selectedTable != 0) {
         tableSelectMenuItem(orderItem);
         return;
     }
@@ -162,11 +161,10 @@ function finishDoSelectMenuItem() {
 
     //do coursing and load receipt
     loadReceipt(currentOrder, true);
-    
+
     currentSelectedReceiptItemEl = $('#menu_screen_till_roll div[data-item_number=' + currentOrderItem.itemNumber + ']');
 
     currentSelectedReceiptItemEl.addClass("selected");
-
 
 
     testForMandatoryModifier(orderItem.product);
@@ -174,19 +172,19 @@ function finishDoSelectMenuItem() {
 
 function tableSelectMenuItem(orderItem) {
     addItemToTableOrderAndSave(orderItem);
-    
+
     loadReceipt(currentOrder, true);
-    
+
     currentSelectedReceiptItemEl = $('#menu_screen_till_roll div[data-item_number=' + currentOrderItem.itemNumber + ']');
     currentSelectedReceiptItemEl.addClass("selected");
-    
+
     testForMandatoryModifier(orderItem.product);
 }
 
 function closeEditOrderItem() {
     console.log("CloseEditOrderItem in medium interface called!");
 
-    if(currentSelectedReceiptItemEl) {
+    if (currentSelectedReceiptItemEl) {
         currentSelectedReceiptItemEl.removeClass("selected");
 
         currentSelectedReceiptItemEl = null;
@@ -207,7 +205,7 @@ function doSelectReceiptItem(orderItemEl) {
     currentSelectedReceiptItemEl = orderItemEl;
 
     //fetch the selected product and set its default oia grid
-    var selectedProduct = products[getCurrentOrder().items[parseInt(orderItemEl.data("item_number"))-1].product.id];
+    var selectedProduct = products[getCurrentOrder().items[parseInt(orderItemEl.data("item_number")) - 1].product.id];
     setModifierGridIdForProduct(selectedProduct);
 
     showEditPopupInit();
@@ -224,8 +222,9 @@ function doSelectReceiptItem(orderItemEl) {
     currentCourseNum = courseLineClass;
     $('#' + popupId).find('.course_num').val(currentCourseNum);
 
-    currentQuantity = orderItemEl.children('.amount').html();
 
+
+    currentQuantity = orderItemEl.children('.amount').html();
 
 
     //register the click handler to hide the popup when outside clicked
@@ -247,7 +246,7 @@ function editOrderItemIncreaseQuantity() {
 
     var newQuantity = currentVal;
 
-    if(isNaN(currentVal)) {
+    if (isNaN(currentVal)) {
         newQuantity = 1;
     } else {
         newQuantity = currentVal + 1;
@@ -264,9 +263,9 @@ function editOrderItemDecreaseQuantity() {
 
     var newQuantity = currentVal;
 
-    if(isNaN(currentVal)) {
+    if (isNaN(currentVal)) {
         newQuantity = 1;
-    } else if(currentVal > 1) {
+    } else if (currentVal > 1) {
         newQuantity = currentVal - 1;
     }
 
@@ -287,11 +286,11 @@ function saveDiscount() {
 
     selectedValue = parseFloat(selectedValue);
 
-    if(isNaN(selectedValue)) {
+    if (isNaN(selectedValue)) {
         selectedValue = 0;
     }
 
-    if(selectedValue<0 || selectedValue>100) {
+    if (selectedValue < 0 || selectedValue > 100) {
         setStatusMessage("You must enter a number between 0 and 100", true, true);
         return;
     }
@@ -301,11 +300,11 @@ function saveDiscount() {
     wholeOrderDiscount = ($("input[name='discount_type']:checked").val() == 'whole_order');
 
     //discount on whole order or individual item?
-    if(individualItemDiscount) {
+    if (individualItemDiscount) {
         //fetch the item number
         itemNumber = currentSelectedReceiptItemEl.data("item_number");
         applyDiscountToOrderItem(order, itemNumber, selectedValue);
-    } else if(wholeOrderDiscount) {
+    } else if (wholeOrderDiscount) {
         addDiscountToOrder(order, selectedValue);
     } else {
         //last item
@@ -313,9 +312,9 @@ function saveDiscount() {
     }
 
     //store the modified order
-    if(selectedTable != 0) {
+    if (selectedTable != 0) {
         storeTableOrderInStorage(current_user_id, selectedTable, order);
-    }else {
+    } else {
         storeOrderInStorage(current_user_id, order);
     }
 
@@ -335,28 +334,28 @@ function saveEditOrderItem() {
 
     newQuantity = parseFloat(targetInputQuantityEl.val());
 
-    if(isNaN(newQuantity) || newQuantity == 0) {
+    if (isNaN(newQuantity) || newQuantity == 0) {
         newQuantity = 1;
     }
 
     targetInputCourseNumEl = $('#' + popupId).find('.course_num');
     newCourseNum = parseInt(targetInputCourseNumEl.val());
 
-    if(isNaN(newCourseNum)) {
+    if (isNaN(newCourseNum)) {
         newCourseNum = 0;
-    } else if(newCourseNum > 10) {
+    } else if (newCourseNum > 10) {
         newCourseNum = 10;
-    } else if(newCourseNum < 0) {
+    } else if (newCourseNum < 0) {
         newCourseNum = 0;
     }
 
-    targetInputPricePerUnitEl = $('#' + popupId).find('.new_price');
+    targetInputPricePerUnitEl = $('.new_price');
     newPricePerUnit = parseFloat(targetInputPricePerUnitEl.val());
 
-    if(isNaN(newPricePerUnit)) {
+    if (isNaN(newPricePerUnit)) {
         newPricePerUnit = currentPrice;
     }
-    if(selectedTable != 0) {
+    if (selectedTable != 0) {
         order = tableOrders[selectedTable];
 
         order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum);
@@ -369,7 +368,7 @@ function saveEditOrderItem() {
         storeOrderInStorage(current_user_id, order);
     }
 
-    if(isNaN(targetInputQuantityEl)) {
+    if (isNaN(targetInputQuantityEl)) {
         newQuantity = 1;
     } else {
         targetInputQuantityEl = currentVal + 1;
@@ -400,7 +399,7 @@ function showEditPopup(receiptItem) {
 
     currentTargetPopupAnchor = $('.receipt_top');
 
-    if(currentTargetPopupAnchor.HasBubblePopup()) {
+    if (currentTargetPopupAnchor.HasBubblePopup()) {
         currentTargetPopupAnchor.RemoveBubblePopup();
     }
 
@@ -411,7 +410,7 @@ function showEditPopup(receiptItem) {
     currentTargetPopupAnchor.ShowBubblePopup({
         position: 'bottom',
         align: 'right',
-        tail	 : {
+        tail     : {
             align: 'right'
         },
         innerHtml: discountsPopupHTML,
@@ -420,8 +419,8 @@ function showEditPopup(receiptItem) {
             'text-align':'left'
         },
 
-        themeName: 	'all-grey',
-        themePath: 	'/images/jquerybubblepopup-theme',
+        themeName:     'all-grey',
+        themePath:     '/images/jquerybubblepopup-theme',
         alwaysVisible: false
 
     }, false);
@@ -435,75 +434,25 @@ function showEditPopup(receiptItem) {
 }
 
 function showPricePopup() {
+    currentTargetPopupAnchor.RemoveBubblePopup();
+    swipeToMenu();
+    hideAllMenuSubScreens();
+    $('.new_price').val("");
+    $('#price_number_show').html("");
+    $('#edit_price_screen').show();
 
-     receiptItem = getSelectedOrLastReceiptItem();
-    //make sure both discount popups are closed
-    closeDiscountPopup();
 
-    currentTargetPopupAnchor = $('.receipt_top');
-
-    if(currentTargetPopupAnchor.HasBubblePopup()) {
-        currentTargetPopupAnchor.RemoveBubblePopup();
-    }
-
-    currentTargetPopupAnchor.CreateBubblePopup();
-
-    discountsPopupHTML = $("#price_function_popup_content").html();
-
-    currentTargetPopupAnchor.ShowBubblePopup({
-        position: 'bottom',
-        align: 'right',
-        tail	 : {
-            align: 'right'
-        },
-        innerHtml: discountsPopupHTML,
-
-        innerHtmlStyle:{
-            'text-align':'left'
-        },
-
-        themeName: 	'all-grey',
-        themePath: 	'/images/jquerybubblepopup-theme',
-        alwaysVisible: false
-
-    }, false);
-
-    currentTargetPopupAnchor.FreezeBubblePopup();
-
-    popupId = currentTargetPopupAnchor.GetBubblePopupID();
-
-    keypadPosition = $('#' + popupId).find('.edit_order_item_popup_keypad_container');
-
-    clickFunction = function(val) {
-        currentVal = $('#' + popupId).find('.new_price').val();
-        newVal = currentVal.toString() + val;
-        $('#' + popupId).find('.new_price').val(newVal);
-    };
-
-    cancelFunction = function() {
-        oldVal = $('#' + popupId).find('.new_price').val();
-        newVal = oldVal.substring(0, oldVal.length - 1);
-        $('#' + popupId).find('.new_price').val(newVal);
-    };
-
-    setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
-
-    $('#' + popupId).find('.new_price').val("");
-    $('#' + popupId).find('.new_price').focus();
-
-    //register the click handler to hide the popup when outside clicked
-    registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
 }
 
 function showPrePricePopup() {
 
-     receiptItem = getSelectedOrLastReceiptItem();
+    receiptItem = getSelectedOrLastReceiptItem();
     //make sure both discount popups are closed
     closeDiscountPopup();
 
     currentTargetPopupAnchor = $('#open_food_anchor');
 
-    if(currentTargetPopupAnchor.HasBubblePopup()) {
+    if (currentTargetPopupAnchor.HasBubblePopup()) {
         currentTargetPopupAnchor.RemoveBubblePopup();
     }
 
@@ -514,7 +463,7 @@ function showPrePricePopup() {
     currentTargetPopupAnchor.ShowBubblePopup({
         position: 'bottom',
         align: 'center',
-        tail	 : {
+        tail     : {
             align: 'center'
         },
         innerHtml: discountsPopupHTML,
@@ -523,8 +472,8 @@ function showPrePricePopup() {
             'text-align':'left'
         },
 
-        themeName: 	'all-grey',
-        themePath: 	'/images/jquerybubblepopup-theme',
+        themeName:     'all-grey',
+        themePath:     '/images/jquerybubblepopup-theme',
         alwaysVisible: false
 
     }, false);
@@ -561,7 +510,7 @@ function showDiscountPopup() {
 
     currentTargetPopupAnchor = $('.receipt_top');
 
-    if(currentTargetPopupAnchor.HasBubblePopup()) {
+    if (currentTargetPopupAnchor.HasBubblePopup()) {
         currentTargetPopupAnchor.RemoveBubblePopup();
     }
 
@@ -572,7 +521,7 @@ function showDiscountPopup() {
     currentTargetPopupAnchor.ShowBubblePopup({
         position: 'bottom',
         align: 'right',
-        tail	 : {
+        tail     : {
             align: 'right'
         },
         innerHtml: discountsPopupHTML,
@@ -581,8 +530,8 @@ function showDiscountPopup() {
             'text-align':'left'
         },
 
-        themeName: 	'all-grey',
-        themePath: 	'/images/jquerybubblepopup-theme',
+        themeName:     'all-grey',
+        themePath:     '/images/jquerybubblepopup-theme',
         alwaysVisible: false
 
     }, false);
@@ -605,7 +554,7 @@ function showQuantityPopup() {
 
     currentTargetPopupAnchor = $('.receipt_top');
 
-    if(currentTargetPopupAnchor.HasBubblePopup()) {
+    if (currentTargetPopupAnchor.HasBubblePopup()) {
         currentTargetPopupAnchor.RemoveBubblePopup();
     }
 
@@ -616,7 +565,7 @@ function showQuantityPopup() {
     currentTargetPopupAnchor.ShowBubblePopup({
         position: 'bottom',
         align: 'right',
-        tail	 : {
+        tail     : {
             align: 'right'
         },
         innerHtml: discountsPopupHTML,
@@ -625,8 +574,8 @@ function showQuantityPopup() {
             'text-align':'left'
         },
 
-        themeName: 	'all-grey',
-        themePath: 	'/images/jquerybubblepopup-theme',
+        themeName:     'all-grey',
+        themePath:     '/images/jquerybubblepopup-theme',
         alwaysVisible: false
 
     }, false);
@@ -649,7 +598,7 @@ function showCoursePopup() {
 
     currentTargetPopupAnchor = $('.receipt_top');
 
-    if(currentTargetPopupAnchor.HasBubblePopup()) {
+    if (currentTargetPopupAnchor.HasBubblePopup()) {
         currentTargetPopupAnchor.RemoveBubblePopup();
     }
 
@@ -660,7 +609,7 @@ function showCoursePopup() {
     currentTargetPopupAnchor.ShowBubblePopup({
         position: 'bottom',
         align: 'right',
-        tail	 : {
+        tail     : {
             align: 'right'
         },
         innerHtml: discountsPopupHTML,
@@ -669,8 +618,8 @@ function showCoursePopup() {
             'text-align':'left'
         },
 
-        themeName: 	'all-grey',
-        themePath: 	'/images/jquerybubblepopup-theme',
+        themeName:     'all-grey',
+        themePath:     '/images/jquerybubblepopup-theme',
         alwaysVisible: false
 
     }, false);
@@ -695,7 +644,7 @@ function showCourseMenuPopup() {
     receiptItem = getSelectedOrLastReceiptItem();
     currentTargetPopupAnchor = $('#menuCourseAnchor');
 
-    if($('#menuCourseAnchor').hasClass('selected')) {
+    if ($('#menuCourseAnchor').hasClass('selected')) {
         currentTargetPopupAnchor.removeClass("selected");
         currentTargetPopupAnchor.HideBubblePopup();
     }else{
@@ -757,11 +706,13 @@ function applyCourseFromPopup(courseVal) {
 
     var item = order.items[itemNumber - 1];
 
+    item.show_course_label = true;
+
     newCourseNum = courseVal
 
     //alert("APPLYING COURSE " + newCourseNum + " old: " + item.product.course_num);
 
-    if(selectedTable != 0) {
+    if (selectedTable != 0) {
         order = tableOrders[selectedTable];
         order = modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum);
 
@@ -784,10 +735,10 @@ function registerPopupClickHandler(popupEl, outsideClickHandler) {
     activePopupElSet = $(popupEl);
 
     //must have a slight delay so that the click that showed the popup doesn't close it
-    setTimeout(function(){
+    setTimeout(function() {
         $("body").click(function(eventObj) {
             $('#menuCourseAnchor').removeClass("selected");
-            if(activePopupElSet && (activePopupElSet.has(eventObj.target).length == 0)) {
+            if (activePopupElSet && (activePopupElSet.has(eventObj.target).length == 0)) {
                 outsideClickHandler();
             }
         });
@@ -797,7 +748,7 @@ function registerPopupClickHandler(popupEl, outsideClickHandler) {
 function getExistingDiscountPercentForCurrentOrderItem(itemNumber) {
     order = getCurrentOrder();
 
-    orderItem = order.items[itemNumber-1];
+    orderItem = order.items[itemNumber - 1];
 
     existingDiscount = orderItem['discount_percent'];
 
@@ -805,13 +756,13 @@ function getExistingDiscountPercentForCurrentOrderItem(itemNumber) {
 }
 
 function closeDiscountPopup() {
-    if(currentTargetPopupAnchor) {
+    if (currentTargetPopupAnchor) {
         hideBubblePopup(currentTargetPopupAnchor);
     }
 }
 
 function hideBubblePopup(popupEl) {
-    if(typeof(popupEl) != 'undefined') {
+    if (typeof(popupEl) != 'undefined') {
         popupEl.HideBubblePopup();
         popupEl.FreezeBubblePopup();
         $("body").unbind('click');
@@ -832,14 +783,14 @@ function showEditPopupInit() {
 function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
     allOrderItemsReceiptHTML = "";
 
-    for(var i=0; i<order.items.length; i++) {
+    for (var i = 0; i < order.items.length; i++) {
         item = order.items[i];
         allOrderItemsReceiptHTML += getOrderItemReceiptHTML(order.items[i], includeNonSyncedStyling, includeOnClick, includeServerAddedText);
     }
 
     return allOrderItemsReceiptHTML;
 }
-                                                                                                                         //alert("APPLYING COURSE " + newCourseNum + " old: " + item.product.course_num);
+//alert("APPLYING COURSE " + newCourseNum + " old: " + item.product.course_num);
 function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
     //default the args to true
     if (typeof includeNonSyncedStyling == "undefined") {
@@ -855,13 +806,12 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     }
 
 
-
     haveDiscount = orderItem.discount_percent && orderItem.discount_percent > 0;
 
     itemPriceWithoutDiscountOrModifier = orderItem.amount * orderItem.product_price;
 
-    if(haveDiscount) {
-        itemPriceWithoutModifier = itemPriceWithoutDiscountOrModifier - ((itemPriceWithoutDiscountOrModifier * orderItem.discount_percent)/100);
+    if (haveDiscount) {
+        itemPriceWithoutModifier = itemPriceWithoutDiscountOrModifier - ((itemPriceWithoutDiscountOrModifier * orderItem.discount_percent) / 100);
     } else {
         itemPriceWithoutModifier = itemPriceWithoutDiscountOrModifier;
     }
@@ -877,7 +827,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
 
     orderHTML = "<div class='order_line " + notSyncedClass + " " + hideOnPrintedReceiptClass + " " + courseLineClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
 
-    if(includeServerAddedText && orderItem.showServerAddedText) {
+    if (includeServerAddedText && orderItem.showServerAddedText) {
         var nickname = serverNickname(orderItem.serving_employee_id);
         var timeAdded = utilFormatTime(new Date(parseInt(orderItem.time_added)));
         orderHTML += "<div class='server'>At " + timeAdded + " " + nickname + " added:</div>";
@@ -887,7 +837,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
 
     orderHTML += "<div class='name' data-course_num='" + orderItem.product.course_num + "'>" + notSyncedMarker + " ";
 
-    if(orderItem.is_double) {
+    if (orderItem.is_double) {
         orderHTML += "Double ";
     }
 
@@ -897,20 +847,24 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         precision : 2
     });
     orderHTML += "<div class='total' data-per_unit_price='" + orderItem.product_price + "'>" + (orderItem.product.show_price_on_receipt ? orderItemTotalPriceText : "") + "</div>";
-    if(orderItem.modifier) {
+    if(orderItem.show_course_label) {
+        orderHTML += "<div class='clear'>&nbsp;</div>";
+        orderHTML += "<div class='course_label'>Serve As " + courseLabels[parseInt(orderItem.product.course_num)] + "</div>";
+    }
+    if (orderItem.modifier) {
         orderHTML += "<div class='clear'>&nbsp;</div>";
         orderHTML += "<div class='modifier_name'>" + orderItem.modifier.name + "</div>";
 
         modifierPriceWithoutDiscount = orderItem.modifier.price * orderItem.amount;
 
-        if(haveDiscount) {
-            modifierPrice = modifierPriceWithoutDiscount - ((modifierPriceWithoutDiscount * orderItem.discount_percent)/100);
+        if (haveDiscount) {
+            modifierPrice = modifierPriceWithoutDiscount - ((modifierPriceWithoutDiscount * orderItem.discount_percent) / 100);
         } else {
             modifierPrice = modifierPriceWithoutDiscount;
         }
 
         //only show modifier price if not zero
-        if(orderItem.modifier.price > 0) {
+        if (orderItem.modifier.price > 0) {
             modifierPriceText = number_to_currency(modifierPrice, {
                 precision : 2
             });
@@ -920,16 +874,16 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         orderHTML += clearHTML;
     }
 
-    if(orderItem.oia_items) {
-        for(var j=0; j<orderItem.oia_items.length; j++) {
+    if (orderItem.oia_items) {
+        for (var j = 0; j < orderItem.oia_items.length; j++) {
             oia_is_add = orderItem.oia_items[j].is_add;
 
             orderHTML += clearHTML + "<div class='oia " + (orderItem.oia_items[j].hide_on_receipt ? "hide_on_receipt" : "") + "'>";
 
-            if(!orderItem.oia_items[j].is_note) {
+            if (!orderItem.oia_items[j].is_note) {
                 orderHTML += "<div class='oia_add'>";
 
-                if(orderItem.oia_items[j].is_addable) {
+                if (orderItem.oia_items[j].is_addable) {
                     orderHTML += oia_is_add ? "Add" : "No";
                 } else {
                     orderHTML += "&nbsp;";
@@ -940,12 +894,12 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
 
             orderHTML += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>" + orderItem.oia_items[j].description + "</div>";
 
-            if(orderItem.oia_items[j].abs_charge != 0) {
+            if (orderItem.oia_items[j].abs_charge != 0) {
 
                 oiaPriceWithoutDiscount = orderItem.oia_items[j].abs_charge * orderItem.amount;
 
-                if(haveDiscount && oia_is_add) {
-                    oiaPrice = oiaPriceWithoutDiscount - ((oiaPriceWithoutDiscount * orderItem.discount_percent)/100);
+                if (haveDiscount && oia_is_add) {
+                    oiaPrice = oiaPriceWithoutDiscount - ((oiaPriceWithoutDiscount * orderItem.discount_percent) / 100);
                 } else {
                     oiaPrice = oiaPriceWithoutDiscount;
                 }
@@ -960,18 +914,18 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     var preDiscountPrice = (orderItem.product_price * orderItem.amount);
 
     //add the modifiers price to the preDiscountPrice
-    if(orderItem.modifier) {
+    if (orderItem.modifier) {
         preDiscountPrice += orderItem.modifier.price * orderItem.amount;
     }
 
     //add the oias price to the preDiscountPrice
-    if(orderItem.oia_items) {
+    if (orderItem.oia_items) {
         var oiaPriceTotal = 0;
 
-        for(var j=0; j<orderItem.oia_items.length; j++) {
+        for (var j = 0; j < orderItem.oia_items.length; j++) {
             var nextOia = orderItem.oia_items[j];
 
-            if(nextOia.is_add) {
+            if (nextOia.is_add) {
                 oiaPriceTotal += orderItem.oia_items[j].abs_charge;
             } else {
                 oiaPriceTotal -= orderItem.oia_items[j].abs_charge;
@@ -981,14 +935,14 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         preDiscountPrice += oiaPriceTotal * orderItem.amount;
     }
 
-    if(haveDiscount) {
+    if (haveDiscount) {
         formattedPreDiscountedPrice = number_to_currency(preDiscountPrice, {
             precision : 2
         });
 
         orderHTML += clearHTML;
 
-        if(orderItem.discount_percent == 100) {
+        if (orderItem.discount_percent == 100) {
             orderHTML += "<div class='discount_complimentary'>Complimentary (was " + formattedPreDiscountedPrice + ")</div>";
         } else {
             orderHTML += "<div class='discount'><div class='header'>Discounted</div>";
@@ -1001,7 +955,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
 
     $('#cash_screen_sub_total_value').html(currency(orderTotal));
 
-    if($('#menu_screen').is(":visible")){
+    if ($('#menu_screen').is(":visible")) {
         $('.oia_price').hide();
 
     }
@@ -1015,11 +969,10 @@ function menuRecptScroll() {
 }
 
 
-
 function loadReceipt(order, doScroll) {
     clearReceipt();
 
-    if(order == null){
+    if (order == null) {
         return;
     }
 
@@ -1029,16 +982,16 @@ function loadReceipt(order, doScroll) {
     allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(order);
     setReceiptsHTML(getCurrentRecptHTML() + allOrderItemsRecptHTML)
 
-    if(orderTotal != null) {
+    if (orderTotal != null) {
         writeTotalToReceipt(order, orderTotal);
     }
 
-    if(doScroll) {
+    if (doScroll) {
         menuRecptScroll();
     }
 
     //we need to copy over the selected item as there is new markup
-    if(currentSelectedReceiptItemEl) {
+    if (currentSelectedReceiptItemEl) {
         var selectedReceiptItemNumber = currentSelectedReceiptItemEl.data("item_number");
         currentSelectedReceiptItemEl = $('#menu_screen_till_roll div[data-item_number=' + selectedReceiptItemNumber + ']');
     }
@@ -1054,7 +1007,7 @@ function postDoSyncTableOrder() {
     doSelectTable(selectedTable);
 
     //clean up after transfer order mode
-    if(inTransferOrderMode) {
+    if (inTransferOrderMode) {
         niceAlert("Order Transfered.");
         inTransferOrderMode = false;
         $('#table_num').val(tables[selectedTable].label);
@@ -1075,7 +1028,7 @@ function showModifyOrderItemScreen() {
 }
 
 function switchToMenuItemsSubscreen() {
-    if(currentScreenIsMenu) {
+    if (currentScreenIsMenu) {
         showMenuItemsSubscreen();
     }
 }
@@ -1093,7 +1046,7 @@ function showMenuItemsSubscreen() {
 }
 
 function switchToModifyOrderItemSubscreen() {
-    if(currentScreenIsMenu) {
+    if (currentScreenIsMenu) {
         hideAllMenuSubScreens();
         $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').addClass("selected");
         $('#oia_subscreen').show();
@@ -1113,9 +1066,12 @@ function showTablesSubscreen() {
     hideAllMenuSubScreens();
 
     //blank the function buttons
-    $('#menu_screen #buttons_container').hide();
-    $('#menu_screen #cluey_logo').show();
-//    $('.button[id=sales_button_' + tablesButtonID + ']').addClass("selected");
+    if (initScreenDefault == "false") {
+        $('#menu_screen #buttons_container').hide();
+        $('#menu_screen #cluey_logo').show();
+        initScreenDefault = "true";
+    }
+    $('.button[id=sales_button_' + tablesButtonID + ']').addClass("selected");
     $('#table_screen').show();
 }
 
@@ -1125,21 +1081,78 @@ function tableNumberSelectKeypadClick(val) {
     $('#table_num').val(newVal);
 }
 
+function priceNumberSelectKeypadClick(val) {
+    var newVal = $('.new_price').val().toString() + val;
+    $('#price_number_show').html(newVal);
+    $('.new_price').val(newVal);
+}
+
+function priceDecimalSelectKeypadClick(val) {
+    oldVal = $('#price_number_show').html().toString();
+    if (oldVal.length == 1){
+    newVal = oldVal[0] + ".00";
+    }
+    if (oldVal.length == 2){
+    newVal = oldVal[0] + "." + oldVal[1] + "0";
+    }
+    if (oldVal.length == 3){
+    newVal = oldVal[0] + "." + oldVal[1] + oldVal[2];
+    }
+    if (oldVal.length == 4){
+    newVal = oldVal[0] + oldVal[1] + "." + oldVal[2] + oldVal[3];
+    }
+//    $('#price_number_show').html(newVal);
+    $('.new_price').val(newVal);
+    $('#price_number_show').html(newVal);
+}
+
 function doCanceltableNumberSelectKeypad() {
     oldVal = $('#table_num').val().toString();
     newVal = oldVal.substring(0, oldVal.length - 1);
+    newVal = oldVal.substring(0, oldVal.length - 1);
     $('#table_number_show').html(newVal);
     $('#table_num').val(newVal);
+    $('.new_price').val(newVal);
+}
+
+function doCancelpriceNumberSelectKeypad() {
+    oldVal = $('.new_price').val().toString();
+    newVal = oldVal.substring(0, oldVal.length - 1);
+    $('#price_number_show').html(newVal);
+    $('.new_price').val(newVal);
+}
+
+function setNewPrice(val) {
+    $('.new_price').val(parseInt(val) / 100);
+    saveEditOrderItem();
+    backScreenNav();
+
+}
+
+function backScreenNav(){
+     if (menuScreenDefault == "true") {
+        showMenuItemsSubscreen();
+    } else {
+        showMenuItemsSubscreen();
+        swipeToReceipt();
+        menuScreenDefault = "true"
+    }
 }
 
 var menuScreenDefault = "true";
+var initScreenDefault = "false";
 
-function setScreenOrder(value){
-  menuScreenDefault = value;
+function setScreenOrder(value) {
+    menuScreenDefault = value;
+}
+
+function setInitScreen(value) {
+    initScreenDefault  = value;
 }
 
 function doSubmitTableNumber() {
-    if(!ensureLoggedIn()) {
+//    $('.table_tab_container').hide();
+    if (!ensureLoggedIn()) {
         return;
     }
 
@@ -1150,13 +1163,13 @@ function doSubmitTableNumber() {
 
     clearTableNumberEntered();
 
-    if(!table_info) {
+    if (!table_info) {
         $('#table_number_show').html("No Such Table!");
         return;
     }
 
-    if(inTransferOrderMode) {
-        if(transferOrderInProgress) {
+    if (inTransferOrderMode) {
+        if (transferOrderInProgress) {
             niceAlert("Transfer table order in progress, please wait.");
             return;
         }
@@ -1171,15 +1184,17 @@ function doSubmitTableNumber() {
     doSelectTable(table_info.id);
 
     clearTableNumberEntered();
-    if (menuScreenDefault == "true"){
-       showMenuItemsSubscreen();
-    }else{
+    if (menuScreenDefault == "true") {
+        showMenuItemsSubscreen();
+    } else {
+        showMenuItemsSubscreen();
         swipeToReceipt();
+        menuScreenDefault = "true"
     }
 
 }
 
-function removeTableClass(table_class){
+function removeTableClass(table_class) {
     $('.button').removeClass("selected");
 }
 
@@ -1195,7 +1210,7 @@ function postDoSelectTable() {
 }
 
 function orderItemAdditionTabSelected(oiagId) {
-    if(!oiagId) {
+    if (!oiagId) {
         oiagId = $('#oia_tabs .oia_tab').first().data("oiag_id");
     }
 
@@ -1219,13 +1234,13 @@ function clearSelectedOIATabs() {
 }
 
 function writeTotalToReceipt(order, orderTotal) {
-    if(!order) return;
+    if (!order) return;
 
     console.log("Write total to receipt NYI!");
 }
 
 function tableScreenBack() {
-    if(selectedTable == 0) {
+    if (selectedTable == 0) {
         $('#table_number_show').html("Enter a Table!");
         return;
     }
@@ -1235,7 +1250,7 @@ function tableScreenBack() {
 function doReceiveOrderReady(employee_id, terminal_id, table_id, order_num, table_label) {
     hidePreviousOrderReadyPopup();
 
-    if(employee_id == current_user_id || allDevicesOrderNotification) {
+    if (employee_id == current_user_id || allDevicesOrderNotification) {
         vibrateConstant();
 
         //        ModalPopups.Confirm('niceAlertContainer',
@@ -1264,7 +1279,7 @@ function doReceiveOrderReady(employee_id, terminal_id, table_id, order_num, tabl
                 onOk: 'orderReadyOKClicked()',
                 width: 400,
                 height: 250
-            } );
+            });
     }
 }
 
@@ -1314,3 +1329,13 @@ function displayDropdownSelected(selectedDisplayId) {
 
 }
 
+function doMobileLogout() {
+
+
+    //send ajax logout
+    $.ajax({
+        type: 'POST',
+        url: '/logout'
+    });
+    goToMainMenu();
+}

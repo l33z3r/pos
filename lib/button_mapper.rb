@@ -35,7 +35,7 @@ class ButtonMapper
   CHANGE_WAITER_BUTTON = 32
   PRINTERS_BUTTON = 33
   TRANSFER_ORDER_BUTTON = 34
-  SPLIT_ORDER_BUTTON = 35
+  #SPLIT_ORDER_BUTTON = 35
   STOCK_TAKE_BUTTON = 36
   DELIVERY_BUTTON = 37
   CASH_OUT_BUTTON = 38
@@ -64,7 +64,7 @@ class ButtonMapper
   
   RESTRICTED_BUTTON_IDS = [
     ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON,
-    CASH_OUT_BUTTON, DELIVERY_BUTTON, STOCK_TAKE_BUTTON, SPLIT_ORDER_BUTTON,
+    CASH_OUT_BUTTON, DELIVERY_BUTTON, STOCK_TAKE_BUTTON,
     PRINTERS_BUTTON, CHANGE_WAITER_BUTTON, REFUND_BUTTON, WASTE_BUTTON, CLIENT_BUTTON, THEMES_BUTTON
   ]
   
@@ -141,8 +141,8 @@ class ButtonMapper
       @retval = "alert('printers button clicked');"
     when TRANSFER_ORDER_BUTTON
       @retval = wrap_with_menu_screen_function_check "startTransferOrderMode();"
-    when SPLIT_ORDER_BUTTON
-      @retval = "alert('split order button clicked');"
+#    when SPLIT_ORDER_BUTTON
+#      @retval = "alert('split order button clicked');"
     when STOCK_TAKE_BUTTON
       @retval = "alert('stock take button clicked');"
     when DELIVERY_BUTTON

@@ -1,6 +1,5 @@
 <div id="functions_screen" class="content-item">
   <div id="header" class="screen_header">
-    <div id="back_button" class="small_button" onclick="swipeToMenu();">Menu</div>
     <div class="header_label">Options</div>
   </div>
 
@@ -30,7 +29,7 @@
 
   <div id="functions_buttons_container">
 
-    <div class="button" onclick="swipeToMenu();">
+    <div class="button" onclick="setInitScreen('true');swipeToMenu();">
       <div class="icon">
         <%= image_tag "/images/button_logos/mobile/orders.png" %>
       </div>
@@ -86,8 +85,25 @@
       </div>
       <div class="button_name">Exit</div>
     </div>
+    <div class="button" onclick="doMobileLogout();">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/manage_users_button.png" %>
+      </div>
+      <div class="button_name">Logout</div>
+    </div>
 
     <div class="clear">&nbsp;</div>
 
   </div>
+ <!-- <div id="function_buttons">
+        <div class="bottom_button" onclick="setScreenOrder('false');swipeToReceipt();">Receipt</div>
+        <div class="bottom_button" onclick="setScreenOrder('true');swipeToMenu();">Menus</div>
+    </div>  -->
 </div>
+
+<script type="text/javascript">
+    window.onload = function() {
+       setInitScreen('true');
+        swipeToMenu();
+    }
+</script>

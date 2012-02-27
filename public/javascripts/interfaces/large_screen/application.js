@@ -136,6 +136,12 @@ function doGlobalInit() {
     callHomePoll();
     
     clueyScheduler();
+    
+    //enable this for html5 cache flushing
+//    if(inProdMode()) {
+//        //start checking for cache updates
+//        cacheUpdateCheckPoll();
+//    }
 }
 
 function showInitialScreen() {
@@ -374,4 +380,14 @@ function initAdminTables() {
     });
     
     $('.admin_table tbody tr:odd').addClass('odd');
+}
+
+function cacheUpdateCheckPoll() {
+    console.log("Checking for cache update");
+    
+    try{
+        window.applicationCache.update();
+    } catch(e){}
+    
+    setTimeout(cacheUpdateCheckPoll, 5000);
 }
