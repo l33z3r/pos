@@ -32,6 +32,17 @@ function initMenu() {
     displayLastReceipt();
     initOptionButtons();
     
+    //set price level
+    var storedGlobalPriceLevel = retrieveStorageValue(globalPriceLevelKey);
+    
+    if(storedGlobalPriceLevel == null) {
+        storedGlobalPriceLevel = 1;
+    } else {
+        storedGlobalPriceLevel = parseInt(storedGlobalPriceLevel);
+    }
+    
+    setGlobalPriceLevel(storedGlobalPriceLevel);
+    
     //hack to scroll the recpt a little after page has loaded as there 
     //were problems on touch interface with recpt getting stuck
     setTimeout("menuRecptScroll()", 1000);
@@ -62,6 +73,21 @@ function initMenuScreenType() {
             scanFocusPoll();
         }, 1000);
     }
+}
+
+function setGlobalPriceLevel(priceLevel) {
+    if(globalPriceLevel != null) {
+        var oldSelectedPriceLeveLiEl = $('#menu_screen_shortcut_dropdown li[rel=5-' + globalPriceLevel + ']');
+        oldSelectedPriceLeveLiEl.html(oldSelectedPriceLeveLiEl.html().substring(2));
+    }
+    
+    var selectedPriceLevelLiEl = $('#menu_screen_shortcut_dropdown li[rel=5-' + priceLevel + ']');
+    selectedPriceLevelLiEl.html("* " + selectedPriceLevelLiEl.html());
+        
+    globalPriceLevel = parseInt(priceLevel);
+        
+    //store it in global storage
+    storeKeyValue(globalPriceLevelKey, globalPriceLevel);
 }
 
 function scanFocusPoll() {
@@ -261,8 +287,12 @@ function doSelectMenuItem(productId, menuItemId, element) {
     
     currentOrder = getCurrentOrder();
 
-    //fetch this product from the products js array
-    product = products[productId];
+    //fetch this product from the products js array and COPY It into the order
+    var productToCopy = products[productId];
+    
+    var copiedProduct = {};
+    
+    var product = $.extend(true, copiedProduct, productToCopy);
     
     //if double and no price set
     if(menuItemDoubleMode && (product.double_price == 0)) {
@@ -1573,8 +1603,6 @@ function applyCourseFromPopup(courseVal) {
     var item = order.items[itemNumber - 1];
     
     newCourseNum = courseVal
-    
-    //alert("APPLYING COURSE " + newCourseNum + " old: " + item.product.course_num);
     
     //mark that we should show the course label for this item
     item.show_course_label = true;

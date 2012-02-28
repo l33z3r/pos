@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120207162905) do
+ActiveRecord::Schema.define(:version => 20120228160718) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(:version => 20120207162905) do
     t.string   "printers",                                 :default => ""
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => -1
+    t.integer  "course_num",                               :default => 0
     t.string   "kitchen_screens",                          :default => ""
   end
 
@@ -252,11 +252,11 @@ ActiveRecord::Schema.define(:version => 20120207162905) do
     t.string   "name"
     t.integer  "category_id"
     t.string   "description"
-    t.float    "size"
+    t.float    "size",                                     :default => 0.0,   :null => false
     t.string   "unit"
-    t.integer  "items_per_unit"
-    t.float    "sales_tax_rate"
-    t.float    "price"
+    t.integer  "items_per_unit",                           :default => 0,     :null => false
+    t.float    "sales_tax_rate",                           :default => 0.0,   :null => false
+    t.float    "price",                                    :default => 0.0,   :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "product_image_file_name"
@@ -270,15 +270,15 @@ ActiveRecord::Schema.define(:version => 20120207162905) do
     t.float    "quantity_in_stock",                        :default => 0.0
     t.integer  "code_num"
     t.string   "upc"
-    t.float    "price_2"
-    t.float    "price_3"
-    t.float    "price_4"
-    t.float    "margin_percent"
-    t.float    "cost_price"
-    t.float    "shipping_cost"
-    t.float    "commission_percent"
+    t.float    "price_2",                                  :default => 0.0,   :null => false
+    t.float    "price_3",                                  :default => 0.0,   :null => false
+    t.float    "price_4",                                  :default => 0.0,   :null => false
+    t.float    "margin_percent",                           :default => 0.0,   :null => false
+    t.float    "cost_price",                               :default => 0.0,   :null => false
+    t.float    "shipping_cost",                            :default => 0.0,   :null => false
+    t.float    "commission_percent",                       :default => 0.0,   :null => false
     t.integer  "container_type_id"
-    t.float    "quantity_per_container",                   :default => 1.0
+    t.float    "quantity_per_container",                   :default => 0.0,   :null => false
     t.boolean  "is_active",                                :default => true
     t.boolean  "is_service",                               :default => false
     t.boolean  "show_price_prompt",                        :default => false
@@ -312,12 +312,12 @@ ActiveRecord::Schema.define(:version => 20120207162905) do
     t.boolean  "is_special",                               :default => false
     t.boolean  "is_deleted",                               :default => false
     t.boolean  "show_price_on_receipt",                    :default => true
-    t.float    "double_price",                             :default => 0.0
+    t.float    "double_price",                             :default => 0.0,   :null => false
     t.string   "display_image"
     t.boolean  "hide_on_printed_receipt",                  :default => false
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => -1
+    t.integer  "course_num",                               :default => 0
     t.boolean  "is_stock_item",                            :default => true
     t.string   "kitchen_screens",                          :default => ""
   end

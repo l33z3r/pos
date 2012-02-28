@@ -110,8 +110,12 @@ function doSelectMenuItem(productId, element) {
 
     currentOrder = getCurrentOrder();
 
-    //fetch this product from the products js array
-    product = products[productId];
+    //fetch this product from the products js array and COPY It into the order
+    var productToCopy = products[productId];
+    
+    var copiedProduct = {};
+    
+    var product = $.extend(true, copiedProduct, productToCopy);
 
     //if double and no price set
     if (menuItemDoubleMode && (product.double_price == 0)) {

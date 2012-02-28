@@ -579,8 +579,7 @@ function changeCourseNum() {
     var receiptItem = getSelectedOrLastReceiptItem();
  
     if(receiptItem) {
-        var popupEl = doSelectReceiptItem(receiptItem);
-        popupEl.find('#course_button').mousedown().mouseup();
+        showCoursePopupFromEditDialog();
     }
 }
 
