@@ -6,7 +6,7 @@
           </div>
           <div class="button_name"><%= @tables_button.button_text %></div></div>
 
-        <div id="sales_button_<%= @order_button.id %>" class="button" onclick="<%= button_action @order_button %>"><div class="icon">
+        <div id="sales_button_<%= @order_button.id %>" class="button" onclick="setInitScreen('false');<%= button_action @order_button %>"><div class="icon">
             <%= button_icon @order_button %>
           </div>
           <div class="button_name"><%= @order_button.button_text %></div></div>

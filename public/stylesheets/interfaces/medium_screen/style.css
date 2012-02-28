@@ -676,6 +676,131 @@ div#menu_screen div#edit_price_screen div#keypad_container {
 div#menu_screen div#edit_price_screen div#keypad_container div.keypad {
 
 }
+
+/* Add Note Screen */
+
+div#menu_screen div#add_note_screen {
+    display: none;
+    height: 603px;
+}
+
+div#menu_screen div#add_note_screen div#header {
+    text-align: center;
+    padding: 8px;
+    height: 60px;
+    background: -moz-linear-gradient(#558ED5, #17365D) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#558ED5), to(#17365D));
+}
+
+div#menu_screen div#add_note_screen div#header div#back_button {
+    float: left;
+}
+
+div#menu_screen div#add_note_screen div#header div#options_button {
+    float: right;
+}
+
+div#menu_screen div#add_note_screen div#header div.title {
+    float: left;
+    margin-left: 32px;
+    margin-top: 22px;
+    font-size: 24px;
+    color: #FFF;
+    font-weight: bold;
+}
+
+div#menu_screen div#add_note_screen .note_input {
+    /*float: right;*/
+    margin-right: 5px;
+    /*width: 40px;*/
+    text-align: left;
+    width: 440px;
+    height:170px;
+}
+
+/* Add Charge Screen */
+
+div#menu_screen div#add_charge_screen {
+    display: none;
+    height: 603px;
+}
+
+div#menu_screen div#add_charge_screen div#header_charge {
+    text-align: center;
+    padding: 8px;
+    height: 60px;
+    background: -moz-linear-gradient(#558ED5, #17365D) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#558ED5), to(#17365D));
+}
+
+div#menu_screen div#add_charge_screen div#header_charge div#back_button_charge {
+    float: left;
+}
+
+div#menu_screen div#add_charge_screen div#header_charge div#options_button_charge {
+    float: right;
+}
+
+div#menu_screen div#add_charge_screen div#header_charge div#title {
+    float: left;
+    margin-left: 32px;
+    margin-top: 22px;
+    font-size: 24px;
+    color: #FFF;
+    font-weight: bold;
+}
+
+div#menu_screen div#add_charge_screen .note_charge {
+    /*float: right;*/
+    margin-right: 5px;
+    /*width: 40px;*/
+    text-align: left;
+    width: 160px;
+    height: 35px;
+}
+
+div#menu_screen div#add_charge_screen div#price_number_show {
+    margin: 5px auto;
+    border: 1px solid #DDD;
+    width: 430px;
+    height: 28px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px 0px 5px 0px;
+    border: 1px solid #CCC;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 0px 1px 1px 0px #777;
+    background-color: #FFF;
+    text-align: center;
+}
+
+div#menu_screen div#add_charge_screen div#table_number_show {
+    margin: 5px auto;
+    border: 1px solid #DDD;
+    width: 430px;
+    height: 28px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px 0px 5px 0px;
+    border: 1px solid #CCC;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 0px 1px 1px 0px #777;
+    background-color: #FFF;
+    text-align: center;
+}
+
+div#menu_screen div#add_charge_screen div#keypad_container {
+    height: 554px;
+    background-color: #E0E0E0;
+}
+
+div#menu_screen div#add_charge_screen div#keypad_container div.keypad {
+
+}
+
+
 /* Menu Screen Receipt */
 
 div.receipt {
@@ -855,19 +980,19 @@ div.receipt div.till_roll_small div.name {
     text-align: left;
 }
 
+
 div.receipt div.till_roll_small div.course_label {
     float: left;
-    width: 0px;
-    height: 0px;
+    width: auto;
     text-align: right;
-    font-size: 19px;
-    overflow: hidden;
+    margin-left: 50px;
+    font-size: 20px;
+    margin-top: 2px;
 }
 
 div.receipt div.till_roll_small div.modifier_name {
     float: left;
-    width: 0px;
-    height: 0px;
+    width: 150px;
     margin-left: 50px;
     text-align: left;
 }
@@ -889,18 +1014,16 @@ div.receipt div.till_roll_small div.oia_add {
 
 div.receipt div.till_roll_small div.oia_name {
     float: left;
-    width: 0px;
-    text-align: right;
-    overflow: hidden;
-    height: 0px;
+    width: 150px;
+    margin-left: 50px;
+    text-align: left;
 }
 
 div.receipt div.till_roll_small div.oia_name.note {
-    font-style: italic;
-    width: 0px;
-    height: 0px;
-    font-size: 19px;
-    font-size: 19px;
+    float: left;
+    width: 150px;
+    margin-left: 50px;
+    text-align: left;
 }
 
 div.receipt div.till_roll_small div.oia_price {

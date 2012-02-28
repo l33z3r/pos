@@ -440,67 +440,85 @@ function showPricePopup() {
     $('.new_price').val("");
     $('#price_number_show').html("");
     $('#edit_price_screen').show();
-
-
 }
 
-function showPrePricePopup() {
+function showAddNotePopup() {
+    swipeToMenu();
+    hideAllMenuSubScreens();
+    $('.note_input').focus();
+    $('#add_note_screen').show();
+}
 
-    receiptItem = getSelectedOrLastReceiptItem();
-    //make sure both discount popups are closed
-    closeDiscountPopup();
+function showChargeNotePopup() {
+    $('#add_note_screen').hide();
+    $('#add_charge_screen').show();
+}
 
-    currentTargetPopupAnchor = $('#open_food_anchor');
+var noteChargeIsPlus = true;
 
-    if (currentTargetPopupAnchor.HasBubblePopup()) {
-        currentTargetPopupAnchor.RemoveBubblePopup();
+function doSaveNote() {
+
+
+    if($('.note_charge').val() != "") {
+        var charge = $('.note_charge').val();
+    }else {charge = '0';}
+
+    var noteInput = $('.note_input').val();
+
+    noteInput = $.trim(noteInput);
+
+    //exit if no charge and no note entered
+    if(noteInput.length == 0 && charge ==0) {
+        doCancelNote();
+        return true;
     }
 
-    currentTargetPopupAnchor.CreateBubblePopup();
+    if(noteInput.length == 0) {
+        setStatusMessage("Please enter some text for this note!");
+        return false;
+    }
 
-    discountsPopupHTML = $("#price_function_popup_content").html();
+    currentSelectedReceiptItemEl = getLastReceiptItem();
 
-    currentTargetPopupAnchor.ShowBubblePopup({
-        position: 'bottom',
-        align: 'center',
-        tail     : {
-            align: 'center'
-        },
-        innerHtml: discountsPopupHTML,
+    if(!currentSelectedReceiptItemEl) {
+        setStatusMessage("There are no receipt items!");
+        return false;
+    }
 
-        innerHtmlStyle:{
-            'text-align':'left'
-        },
+    var order = getCurrentOrder();
 
-        themeName:     'all-grey',
-        themePath:     '/images/jquerybubblepopup-theme',
-        alwaysVisible: false
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
 
-    }, false);
+    var orderItem = order.items[itemNumber-1];
 
-    popupId = currentTargetPopupAnchor.GetBubblePopupID();
+    //get the oia data
+    var desc = noteInput;
+    var absCharge = charge;
 
-    keypadPosition = $('#' + popupId).find('.edit_order_item_popup_keypad_container');
+    addOIAToOrderItem(order, orderItem, desc, absCharge, 0, 0, noteChargeIsPlus, true, false, false, -1, -1);
 
-    clickFunction = function(val) {
-        currentVal = $('#' + popupId).find('.new_price').val();
-        newVal = currentVal.toString() + val;
-        $('#' + popupId).find('.new_price').val(newVal);
-    };
+    clearNoteInputs();
+    $('#add_note_screen').hide();
 
-    cancelFunction = function() {
-        oldVal = $('#' + popupId).find('.new_price').val();
-        newVal = oldVal.substring(0, oldVal.length - 1);
-        $('#' + popupId).find('.new_price').val(newVal);
-    };
+    switchToMenuItemsSubscreen();
+    $('.note_input').val('');
+    $('.note_charge').val('');
 
-    setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
+    return true;
 
-    $('#' + popupId).find('.new_price').val("");
-
-    //register the click handler to hide the popup when outside clicked
-    registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
 }
+
+function doCancelNote() {
+    clearNoteInputs();
+//    toggleModifyOrderItemScreen();
+}
+
+function clearNoteInputs() {
+    $('#note_charge').val("0");
+    $('#note_input').val("");
+}
+
+
 
 function showDiscountPopup() {
 
@@ -1086,24 +1104,11 @@ function priceNumberSelectKeypadClick(val) {
     $('.new_price').val(newVal);
 }
 
-function priceDecimalSelectKeypadClick(val) {
-    oldVal = $('#price_number_show').html().toString();
-    if (oldVal.length == 1){
-    newVal = oldVal[0] + ".00";
-    }
-    if (oldVal.length == 2){
-    newVal = oldVal[0] + "." + oldVal[1] + "0";
-    }
-    if (oldVal.length == 3){
-    newVal = oldVal[0] + "." + oldVal[1] + oldVal[2];
-    }
-    if (oldVal.length == 4){
-    newVal = oldVal[0] + oldVal[1] + "." + oldVal[2] + oldVal[3];
-    }
-//    $('#price_number_show').html(newVal);
-    $('.new_price').val(newVal);
-    $('#price_number_show').html(newVal);
+function chargeNumberSelectKeypadClick(val) {
+    var newVal = $('.note_charge').val().toString() + val;
+    $('.note_charge').val(newVal);
 }
+
 
 function doCanceltableNumberSelectKeypad() {
     oldVal = $('#table_num').val().toString();
@@ -1121,10 +1126,23 @@ function doCancelpriceNumberSelectKeypad() {
     $('.new_price').val(newVal);
 }
 
+function doCancelchargeNumberSelectKeypad() {
+    oldVal = $('.note_charge').val().toString();
+    newVal = oldVal.substring(0, oldVal.length - 1);
+    $('.note_charge').val(newVal);
+}
+
 function setNewPrice(val) {
     $('.new_price').val(parseInt(val) / 100);
     saveEditOrderItem();
     backScreenNav();
+
+}
+
+function setNewCharge(val) {
+    if (val != ""){
+    $('.note_charge').val(parseInt(val) / 100);
+    }else{$('.note_charge').val('')}
 
 }
 

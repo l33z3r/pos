@@ -53,7 +53,7 @@ function currency(number, showUnit) {
     }
     
     return number_to_currency(number, {
-        precision : 2, 
+        precision : 2,
         showunit : showUnit
     });
 }

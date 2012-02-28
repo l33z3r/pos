@@ -47,6 +47,9 @@
       </div>
     <% end %>
 
+
+
+
     <div id="main_menu_button" 
          class="button" onclick="goToMainMenu();">
       <div class="icon">
@@ -71,6 +74,14 @@
     </div>
 
     <div class="clear">&nbsp;</div>
+
+    <div id="main_menu_button"
+         class="button" onclick="setInitScreen('true');showAddNotePopup()">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/add_note_button.png" %>
+      </div>
+      <div class="button_name">Add Note</div>
+    </div>
 
     <div class="button" onclick="refreshClicked();">
       <div class="icon">
