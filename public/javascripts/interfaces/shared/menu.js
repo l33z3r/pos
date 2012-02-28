@@ -38,6 +38,9 @@ var currentModifierGridIdForProduct;
 var previousOrderTableNum = -1;
 var tempSplitBillTableNum = -2;
 
+var globalPriceLevel = null;
+var globalPriceLevelKey = "global_price_level";
+
 function getCurrentOrder() {
     if(selectedTable == 0) {
         return currentOrder;
@@ -580,6 +583,12 @@ function buildOrderItem(product, amount) {
         productPrice = product.double_price;
         isDouble = true;
         setMenuItemDoubleMode(false);
+    } else if(globalPriceLevel == 2) {
+        productPrice = product.price_2;
+    } else if(globalPriceLevel == 3) {
+        productPrice = product.price_3;
+    } else if(globalPriceLevel == 4) {
+        productPrice = product.price_4;
     }
     
     orderItem = {
