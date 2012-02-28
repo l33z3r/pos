@@ -116,7 +116,6 @@ function doReload(resetSession) {
     showSpinner();
     
     if(resetSession) {
-        alert("sync time after clear: " +  retrieveStorageValue(lastSyncKey));
         reload_location = "/";
         reload_location += "?reset_session=true";
         window.location = reload_location;

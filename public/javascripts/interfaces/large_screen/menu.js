@@ -259,8 +259,12 @@ function doSelectMenuItem(productId, menuItemId, element) {
     
     currentOrder = getCurrentOrder();
 
-    //fetch this product from the products js array
-    product = products[productId];
+    //fetch this product from the products js array and COPY It into the order
+    var productToCopy = products[productId];
+    
+    var copiedProduct = {};
+    
+    var product = $.extend(true, copiedProduct, productToCopy);
     
     //if double and no price set
     if(menuItemDoubleMode && (product.double_price == 0)) {
@@ -1546,8 +1550,6 @@ function applyCourseFromPopup(courseVal) {
     var item = order.items[itemNumber - 1];
     
     newCourseNum = courseVal
-    
-    //alert("APPLYING COURSE " + newCourseNum + " old: " + item.product.course_num);
     
     //mark that we should show the course label for this item
     item.show_course_label = true;
