@@ -167,7 +167,7 @@ class CashTotal < ActiveRecord::Base
           @tax_chargable = GlobalSetting.parsed_setting_for GlobalSetting::TAX_CHARGABLE
           @global_tax_rate = GlobalSetting.parsed_setting_for GlobalSetting::GLOBAL_TAX_RATE
             
-          @sales_by_product[@product_name][:quantity] += 1
+          @sales_by_product[@product_name][:quantity] += order_item.quantity
           @sales_by_product[@product_name][:sales_total] += @order_item_price
           
           @sales_by_category[@category_name] += @order_item_price
@@ -262,7 +262,7 @@ class CashTotal < ActiveRecord::Base
       end
     
       #total of all cash sales (include the service charge)
-      @cash_sales_total += @sales_by_payment_type["cash"]
+      @cash_sales_total += @sales_by_payment_type["cash"] if @sales_by_payment_type["cash"]
       
       #total of all cash back
       @cash_back_total += Order.where("created_at >= ?", @first_order.created_at)
