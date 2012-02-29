@@ -1248,6 +1248,8 @@ function orderSentToServerCallback(orderData, errorOccured) {
         
             doChargeRoom(orderData);
         }
+    } else {
+        niceAlert("There was an error cashing out the last order, the server could not process it. It will automatically resend itself, please do not cash out on another terminal!");
     }
 }
 
@@ -1297,7 +1299,13 @@ function storeOrderForLaterSend(orderData) {
     saveOrdersForLaterSend(ordersForLaterSend);
 }
 
+var sendingOutstandingOrders = false;
+
 function trySendOutstandingOrdersToServer() {
+    if(sendingOutstandingOrders) {
+        return;
+    }
+    
     ordersForLaterSend = retrieveOrdersForLaterSend();
     
     if(ordersForLaterSend.length>0) {
@@ -1306,10 +1314,15 @@ function trySendOutstandingOrdersToServer() {
 }
 
 function sendOutstandingOrdersToServer(outstandingOrdersData) {
+    sendingOutstandingOrders = true;
+    
     $.ajax({
         type: 'POST',
         url: '/outstanding_orders',
         success: clearOutstandingOrders,
+        complete: function() {
+            sendingOutstandingOrders = false;
+        },
         data: {
             orders : outstandingOrdersData
         }
