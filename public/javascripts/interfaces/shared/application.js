@@ -113,7 +113,10 @@ function callHomePollInitSequenceCompleteHook() {
 
 function clueyScheduler() {
     rollDate();
-    setTimeout(clueyScheduler, 1000);
+    trySendOutstandingOrdersToServer();
+    
+    var numSeconds = 10;
+    setTimeout(clueyScheduler, numSeconds * 1000);
 }
 
 function preventImageDrag(event) {

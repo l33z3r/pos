@@ -174,7 +174,7 @@ function doDisplayButtonPasscodePrompt(button_id, forwardFunction) {
         
         if(inAdminContext()) {
             if(!currentScreenIsMenu()) {
-                setStatusMessage("Must be on menu screen for this function!");
+                setStatusMessage("Must be on menu screen for this function, as it requires a passcode prompt!");
                 return;
             }
             showAdminDisplayButtonPasscodePromptPopup(button_id, forwardFunction);
