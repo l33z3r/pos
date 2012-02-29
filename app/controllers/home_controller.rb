@@ -376,6 +376,82 @@ class HomeController < ApplicationController
     render :json => {:success => true}.to_json
   end
   
+  # Rails controller action for an HTML5 cache manifest file.
+  # Generates a plain text list of files that changes
+  # when one of the listed files change...
+  # So the client knows when to refresh its cache.
+  def cache_manifest
+    @files = ["CACHE MANIFEST\n"]
+
+    @all_images = Dir.glob("#{Rails.root}/public/images/**/*") | Dir.glob("#{Rails.root}/public/system/**/*")
+    
+    @all_images.each do |rb_file|
+      next if !rb_file.match /\.png$/ and !rb_file.match /\.jpg$/ and !rb_file.match /\.gif$/
+      
+      #escape whitespace
+      if rb_file.match /\s+/ 
+        rb_file.gsub!(" ", "%20")
+        rb_file
+      end
+      
+      @files << "#{rb_file[rb_file.rindex("/public/")+7..rb_file.length-1]}"
+      
+    end
+    
+    @all_scripts = Dir.glob("#{Rails.root}/public/javascripts/**/*")
+    
+    @all_scripts.each do |rb_file|
+      next if !rb_file.match /\.js$/
+      
+      #escape whitespace
+      if rb_file.match /\s+/ 
+        rb_file.gsub!(" ", "%20")
+        rb_file
+      end
+      
+      @files << "#{rb_file[rb_file.rindex("/public/")+7..rb_file.length-1]}"
+      
+    end
+    
+    @files << "/javascripts/init.js"
+    @files << "/javascripts/tables.js"
+    @files << "/javascripts/employees.js"
+    @files << "/javascripts/products.js"
+    
+    @all_stylesheets = Dir.glob("#{Rails.root}/public/stylesheets/**/*")
+    
+    @all_stylesheets.each do |rb_file|
+      next if !rb_file.match /\.css$/
+      
+      #escape whitespace
+      if rb_file.match /\s+/ 
+        rb_file.gsub!(" ", "%20")
+        rb_file
+      end
+      
+      @files << "#{rb_file[rb_file.rindex("/public/")+7..rb_file.length-1]}"
+      
+    end
+
+    @files << "\nNETWORK:"
+    @files << '*'
+    
+    digest = Digest::SHA1.new
+    @files.each do |f|
+      actual_file = File.join(Rails.root,'public',f)
+      digest << "##{File.mtime(actual_file)}" if File.exist?(actual_file)
+    end
+    
+    #a digest of all the files
+    @files << "\n# Modification Digest: #{digest.hexdigest}"
+    
+    #a timestamp that we can update from the app to force a reload
+    @modification_timestamp = GlobalSetting.parsed_setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP
+    @files << "\n# Modification Timestamp: #{@modification_timestamp}"
+    
+    render :text => @files.join("\n"), :content_type => 'text/cache-manifest', :layout => nil
+  end
+  
   def js_error_log
     #spit out the params
     params.each do |key, value|

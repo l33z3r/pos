@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   
   before_filter :check_reset_session
   
+  before_filter :check_reset_cache_timestamp
+  
   helper_method :e, :is_cluey_user?, :current_employee, :print_money
   helper_method :mobile_device?, :all_terminals, :all_servers, :current_interface
   helper_method :development_mode?, :production_mode?
@@ -408,21 +410,15 @@ class ApplicationController < ActionController::Base
   
   def http_basic_authenticate
     
-    #logger.info "Checking auth for remote ip: #{request.remote_ip}"
-    
     @need_auth = false
     
     @authentication_required = GlobalSetting.parsed_setting_for GlobalSetting::AUTHENTICATION_REQUIRED
     @local_auth_required = GlobalSetting.parsed_setting_for GlobalSetting::LOCAL_AUTHENTICATION_REQUIRED
     
     if @authentication_required 
-      #logger.info "Auth is required by setting"
-      
       @need_auth = true
       
       if !@local_auth_required
-        #logger.info "Local Auth not required, testing for local"
-        
         @local_access = false
         
         @remote_ip = request.remote_ip
@@ -432,12 +428,9 @@ class ApplicationController < ActionController::Base
         
         @server_ip_base = "#{@server_ip_parts[0]}.#{@server_ip_parts[1]}.#{@server_ip_parts[2]}."
           
-        #logger.info "Testing remote ip #{@remote_ip} again server base #{@server_ip_base}"
-        
         if @remote_ip.starts_with? @server_ip_base or @remote_ip == "127.0.0.1"
           @local_access = true
         else 
-          #logger.info "Request not on same LAN. Requesting auth!"
           @local_access = false
         end
         
@@ -453,10 +446,7 @@ class ApplicationController < ActionController::Base
       return
     end
 
-    #logger.info "previous succeed? #{session[:auth_succeeded] == true}"
-    
     if !session[:auth_succeeded]
-      #logger.info "Checking manual auth with params u=#{params[:u]} and p=#{params[:p]}"
       #check is the name and password sent in the url and authenticate off that first if it is present
       @username_param = params[:u]
       @password_param = params[:p]
@@ -465,15 +455,12 @@ class ApplicationController < ActionController::Base
       @password_ok = (@password_param and @password_param == HTTP_BASIC_AUTH_PASSWORD)
     
       if @username_ok and @password_ok
-        #logger.info "Manual Auth succeeded"
         session[:auth_succeeded] = true
         return
       end
     else
       return
     end
-    
-    #logger.info "Doing http basic auth"
     
     authenticate_or_request_with_http_basic do |username, password|
       @auth_ok = username == HTTP_BASIC_AUTH_USERNAME && password == HTTP_BASIC_AUTH_PASSWORD
@@ -484,6 +471,18 @@ class ApplicationController < ActionController::Base
       
       @auth_ok
     end
+  end
+  
+  def check_reset_cache_timestamp
+    if params[:reset_cache]
+      update_html5_cache_timestamp
+    end
+  end
+  
+  def update_html5_cache_timestamp 
+    @timestamp_setting = GlobalSetting.setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP
+    @timestamp_setting.value = Time.now.to_i
+    @timestamp_setting.save
   end
   
   ###

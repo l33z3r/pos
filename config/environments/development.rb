@@ -28,5 +28,8 @@ Pos::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
+  
+  #enable this for html5 caching
+  #ENV["RAILS_ASSET_ID"] = ""
 end
 

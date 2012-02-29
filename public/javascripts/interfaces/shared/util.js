@@ -126,6 +126,8 @@ function doReload(resetSession) {
 }
 
 function refreshClicked() {
+    callHome = false;
+    
     lastSyncTableOrderTime = 0;
     storeKeyValue(lastSyncKey, lastSyncTableOrderTime);
     
@@ -133,6 +135,8 @@ function refreshClicked() {
 }
 
 function doClearAndReload() {
+    callHome = false;
+    
     showSpinner();
     clearLocalStorageAndCookies();
     doReload(true);
