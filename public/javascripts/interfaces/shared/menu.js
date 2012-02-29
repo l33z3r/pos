@@ -38,6 +38,9 @@ var currentModifierGridIdForProduct;
 var previousOrderTableNum = -1;
 var tempSplitBillTableNum = -2;
 
+var globalPriceLevel = null;
+var globalPriceLevelKey = "global_price_level";
+
 function getCurrentOrder() {
     if(selectedTable == 0) {
         return currentOrder;
@@ -388,32 +391,18 @@ function doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmploye
     //save the current users table order to reload it after sync
     savedTableID = selectedTable;
     
-    doClear = true;
-    
     //only clear the order on this users receipt if they have no unsynced items
     getTableOrderFromStorage(nextUserIDToSyncWith, tableID);
     
-    //delete all items that have been synced already
-    existingOrderItems = tableOrders[tableID].items;
-    
-    for(var i=0;i<existingOrderItems.length;i++) {
-        if(!existingOrderItems[i].synced) {
-            doClear = false;
-            break;
-        }
+    tableOrders[tableID] = buildInitialOrder();
+        
+    clearTableOrderInStorage(nextUserIDToSyncWith, tableID);
+        
+    if(tableID == selectedTable && nextUserIDToSyncWith == current_user_id) {
+        loadReceipt(tableOrders[tableID], true);
     }
-    
-    if(doClear) {
-        tableOrders[tableID] = buildInitialOrder();
         
-        clearTableOrderInStorage(nextUserIDToSyncWith, tableID);
-        
-        if(tableID == selectedTable && nextUserIDToSyncWith == current_user_id) {
-            loadReceipt(tableOrders[tableID], true);
-        }
-        
-        $('#table_label_' + tableID).html(tables[tableID].label);
-    }
+    $('#table_label_' + tableID).html(tables[tableID].label);
 }
 
 function applyExistingDiscountToOrderItem(order, itemNumber) {
@@ -580,6 +569,12 @@ function buildOrderItem(product, amount) {
         productPrice = product.double_price;
         isDouble = true;
         setMenuItemDoubleMode(false);
+    } else if(globalPriceLevel == 2) {
+        productPrice = product.price_2;
+    } else if(globalPriceLevel == 3) {
+        productPrice = product.price_3;
+    } else if(globalPriceLevel == 4) {
+        productPrice = product.price_4;
     }
     
     orderItem = {

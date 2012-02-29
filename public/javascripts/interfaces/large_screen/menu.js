@@ -30,6 +30,17 @@ function initMenu() {
     displayLastReceipt();
     initOptionButtons();
     
+    //set price level
+    var storedGlobalPriceLevel = retrieveStorageValue(globalPriceLevelKey);
+    
+    if(storedGlobalPriceLevel == null) {
+        storedGlobalPriceLevel = 1;
+    } else {
+        storedGlobalPriceLevel = parseInt(storedGlobalPriceLevel);
+    }
+    
+    setGlobalPriceLevel(storedGlobalPriceLevel);
+    
     //hack to scroll the recpt a little after page has loaded as there 
     //were problems on touch interface with recpt getting stuck
     setTimeout("menuRecptScroll()", 1000);
@@ -60,6 +71,21 @@ function initMenuScreenType() {
             scanFocusPoll();
         }, 1000);
     }
+}
+
+function setGlobalPriceLevel(priceLevel) {
+    if(globalPriceLevel != null) {
+        var oldSelectedPriceLeveLiEl = $('#menu_screen_shortcut_dropdown li[rel=5-' + globalPriceLevel + ']');
+        oldSelectedPriceLeveLiEl.html(oldSelectedPriceLeveLiEl.html().substring(2));
+    }
+    
+    var selectedPriceLevelLiEl = $('#menu_screen_shortcut_dropdown li[rel=5-' + priceLevel + ']');
+    selectedPriceLevelLiEl.html("* " + selectedPriceLevelLiEl.html());
+        
+    globalPriceLevel = parseInt(priceLevel);
+        
+    //store it in global storage
+    storeKeyValue(globalPriceLevelKey, globalPriceLevel);
 }
 
 function scanFocusPoll() {
@@ -1222,6 +1248,8 @@ function orderSentToServerCallback(orderData, errorOccured) {
         
             doChargeRoom(orderData);
         }
+    } else {
+        niceAlert("There was an error cashing out the last order, the server could not process it. It will automatically resend itself, please do not cash out on another terminal!");
     }
 }
 
@@ -1271,7 +1299,13 @@ function storeOrderForLaterSend(orderData) {
     saveOrdersForLaterSend(ordersForLaterSend);
 }
 
+var sendingOutstandingOrders = false;
+
 function trySendOutstandingOrdersToServer() {
+    if(sendingOutstandingOrders) {
+        return;
+    }
+    
     ordersForLaterSend = retrieveOrdersForLaterSend();
     
     if(ordersForLaterSend.length>0) {
@@ -1280,10 +1314,15 @@ function trySendOutstandingOrdersToServer() {
 }
 
 function sendOutstandingOrdersToServer(outstandingOrdersData) {
+    sendingOutstandingOrders = true;
+    
     $.ajax({
         type: 'POST',
         url: '/outstanding_orders',
         success: clearOutstandingOrders,
+        complete: function() {
+            sendingOutstandingOrders = false;
+        },
         data: {
             orders : outstandingOrdersData
         }

@@ -252,8 +252,6 @@ function loginSuccess(id, nickname, is_admin, passcode) {
     //initialise the options buttons
     initOptionButtons();
     
-    trySendOutstandingOrdersToServer();
-    
     //finally, if the default screen to show 
     //after login is the tables screen then show it!
     if(defaultPostLoginScreen == TABLES_SCREEN) {

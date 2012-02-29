@@ -36,7 +36,20 @@ function menuScreenDropdownItemSelected(index, name) {
     } else if(index == 4) {
         goToSpecials();
         return;
-    } 
+    } else if(index.startsWith("5")) {
+        var priceLevel = index.substring(2);
+        
+        setGlobalPriceLevel(priceLevel);
+        
+        setShortcutDropdownDefaultText();
+        return;
+    } else if(index == 6) {
+        goToAddProduct();
+        return;
+    } else if(index == 7) {
+        goToCurrentOrders();
+        return;
+    }
     
     setShortcutDropdownDefaultText();
 }
@@ -257,4 +270,12 @@ function updateStock(type) {
 
 function goToSpecials() {
     goTo("/admin/products?show_specials_only=true");
+}
+
+function goToAddProduct() {
+    goTo("/admin/products/new");
+}
+
+function goToCurrentOrders() {
+    goTo("/admin/orders?section=open_orders");
 }
