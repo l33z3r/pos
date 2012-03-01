@@ -20,6 +20,9 @@ $(function() {
     
     //make sure all links only work when app online.
     $('a').live("click", preventOfflineHref);
+    
+    //the following hack is due to eventX eventY being deprecated in new builds of chrome
+    $.event.props = $.event.props.join('|').replace('layerX|layerY|', '').split('|');
 });
     
 function callHomePoll() {
