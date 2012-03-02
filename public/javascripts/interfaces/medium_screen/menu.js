@@ -448,9 +448,9 @@ function showPricePopup() {
 function showAddNotePopup() {
     swipeToMenu();
     hideAllMenuSubScreens();
-    showAndroidKeyboard();
-    $('#add_note_screen').show();
 
+    $('#add_note_screen').show();
+    showAndroidKeyboard();
 //    window.setTimeout($('.note_input').focus(),2000);
 }
 
