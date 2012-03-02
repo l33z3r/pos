@@ -112,9 +112,9 @@ function doSelectMenuItem(productId, element) {
 
     //fetch this product from the products js array and COPY It into the order
     var productToCopy = products[productId];
-    
+
     var copiedProduct = {};
-    
+
     var product = $.extend(true, copiedProduct, productToCopy);
 
     //if double and no price set
@@ -225,7 +225,6 @@ function doSelectReceiptItem(orderItemEl) {
     var courseLineClass = orderItemEl.is_course ? "course" : "";
     currentCourseNum = courseLineClass;
     $('#' + popupId).find('.course_num').val(currentCourseNum);
-
 
 
     currentQuantity = orderItemEl.children('.amount').html();
@@ -449,65 +448,85 @@ function showPricePopup() {
 function showAddNotePopup() {
     swipeToMenu();
     hideAllMenuSubScreens();
-    $('.note_input').focus();
+    showAndroidKeyboard();
     $('#add_note_screen').show();
+
+//    window.setTimeout($('.note_input').focus(),2000);
 }
+
+function focusIt() {
+    $('.note_input').focus();
+}
+
 
 function showChargeNotePopup() {
     $('#add_note_screen').hide();
     $('#add_charge_screen').show();
+    $('.note_charge').focus();
 }
 
 var noteChargeIsPlus = true;
 
 function doSaveNote() {
+    if ($('.note_input').val() == "") {
+        clearNoteInputs();
+        $('#add_note_screen').hide();
+
+        switchToMenuItemsSubscreen();
+        $('.note_input').val('');
+        $('.note_charge').val('');
+        $('.display_charge').val('');
+    } else {
 
 
-    if($('.note_charge').val() != "") {
-        var charge = $('.note_charge').val();
-    }else {charge = '0';}
+        if ($('.note_charge').val() != "") {
+            var charge = $('.note_charge').val();
+        } else {
+            charge = '0';
+        }
 
-    var noteInput = $('.note_input').val();
+        var noteInput = $('.note_input').val();
 
-    noteInput = $.trim(noteInput);
+        noteInput = $.trim(noteInput);
 
-    //exit if no charge and no note entered
-    if(noteInput.length == 0 && charge ==0) {
-        doCancelNote();
-        return true;
+        //exit if no charge and no note entered
+        if (noteInput.length == 0 && charge == 0) {
+            doCancelNote();
+            return true;
+        }
+
+        if (noteInput.length == 0) {
+            setStatusMessage("Please enter some text for this note!");
+            return false;
+        }
+
+        currentSelectedReceiptItemEl = getLastReceiptItem();
+
+        if (!currentSelectedReceiptItemEl) {
+            setStatusMessage("There are no receipt items!");
+            return false;
+        }
+
+        var order = getCurrentOrder();
+
+        var itemNumber = currentSelectedReceiptItemEl.data("item_number");
+
+        var orderItem = order.items[itemNumber - 1];
+
+        //get the oia data
+        var desc = noteInput;
+        var absCharge = charge;
+
+        addOIAToOrderItem(order, orderItem, desc, absCharge, 0, 0, noteChargeIsPlus, true, false, false, -1, -1);
+
+        clearNoteInputs();
+        $('#add_note_screen').hide();
+
+        switchToMenuItemsSubscreen();
+        $('.note_input').val('');
+        $('.note_charge').val('');
+        $('.display_charge').val('');
     }
-
-    if(noteInput.length == 0) {
-        setStatusMessage("Please enter some text for this note!");
-        return false;
-    }
-
-    currentSelectedReceiptItemEl = getLastReceiptItem();
-
-    if(!currentSelectedReceiptItemEl) {
-        setStatusMessage("There are no receipt items!");
-        return false;
-    }
-
-    var order = getCurrentOrder();
-
-    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
-
-    var orderItem = order.items[itemNumber-1];
-
-    //get the oia data
-    var desc = noteInput;
-    var absCharge = charge;
-
-    addOIAToOrderItem(order, orderItem, desc, absCharge, 0, 0, noteChargeIsPlus, true, false, false, -1, -1);
-
-    clearNoteInputs();
-    $('#add_note_screen').hide();
-
-    switchToMenuItemsSubscreen();
-    $('.note_input').val('');
-    $('.note_charge').val('');
-
     return true;
 
 }
@@ -521,7 +540,6 @@ function clearNoteInputs() {
     $('#note_charge').val("0");
     $('#note_input').val("");
 }
-
 
 
 function showDiscountPopup() {
@@ -605,6 +623,7 @@ function showQuantityPopup() {
     currentTargetPopupAnchor.FreezeBubblePopup();
 
     popupId = currentTargetPopupAnchor.GetBubblePopupID();
+    $('#' + popupId).find('.quantity').focus();
     $('#' + popupId).find('.new_price').val(currentPrice);
     $('#' + popupId).find('.quantity').val(currentQuantity);
 
@@ -868,7 +887,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         precision : 2
     });
     orderHTML += "<div class='total' data-per_unit_price='" + orderItem.product_price + "'>" + (orderItem.product.show_price_on_receipt ? orderItemTotalPriceText : "") + "</div>";
-    if(orderItem.show_course_label) {
+    if (orderItem.show_course_label) {
         orderHTML += "<div class='clear'>&nbsp;</div>";
         orderHTML += "<div class='course_label'>Serve As " + courseLabels[parseInt(orderItem.product.course_num)] + "</div>";
     }
@@ -1104,13 +1123,47 @@ function tableNumberSelectKeypadClick(val) {
 
 function priceNumberSelectKeypadClick(val) {
     var newVal = $('.new_price').val().toString() + val;
-    $('#price_number_show').html(newVal);
+
     $('.new_price').val(newVal);
+
+    var displayVal = $('.new_price').val();
+
+
+
+    if (displayVal.length == 1) {
+        displayVal = displayVal.charAt(0) + "." + displayVal.charAt(1) + "0"
+    }
+    if (displayVal.length == 2) {
+        displayVal = displayVal.charAt(0) + "." + displayVal.charAt(1) + "0"
+    }
+    if (newVal.length == 3) {
+        displayVal = displayVal.charAt(0) + "." + displayVal.charAt(1) + displayVal.charAt(2)
+    }
+    if (newVal.length == 4) {
+        displayVal = displayVal.charAt(0) + displayVal.charAt(1) + "." + displayVal.charAt(2) + displayVal.charAt(3)
+    }
+    $('#price_number_show').html(displayVal.toString());
 }
 
 function chargeNumberSelectKeypadClick(val) {
     var newVal = $('.note_charge').val().toString() + val;
     $('.note_charge').val(newVal);
+    var displayVal = $('.note_charge').val();
+
+    if (displayVal.length == 1) {
+        displayVal = displayVal.charAt(0) + "." + displayVal.charAt(1) + "0"
+    }
+    if (displayVal.length == 2) {
+        displayVal = displayVal.charAt(0) + "." + displayVal.charAt(1) + "0"
+    }
+    if (newVal.length == 3) {
+        displayVal = displayVal.charAt(0) + "." + displayVal.charAt(1) + displayVal.charAt(2)
+    }
+    if (newVal.length == 4) {
+        displayVal = displayVal.charAt(0) + displayVal.charAt(1) + "." + displayVal.charAt(2) + displayVal.charAt(3)
+    }
+
+    $('.display_charge').val(displayVal.toString());
 }
 
 
@@ -1137,21 +1190,29 @@ function doCancelchargeNumberSelectKeypad() {
 }
 
 function setNewPrice(val) {
-    $('.new_price').val(parseInt(val) / 100);
+    if ($('.new_price').val().length == 2){
+          $('.new_price').val(parseInt(val) / 10);
+    }else{
+    $('.new_price').val(parseInt(val) / 100); }
     saveEditOrderItem();
     backScreenNav();
 
 }
 
 function setNewCharge(val) {
-    if (val != ""){
-    $('.note_charge').val(parseInt(val) / 100);
-    }else{$('.note_charge').val('')}
+    if (val != "") {
+        if ($('.note_charge').val().length == 2){
+          $('.note_charge').val(parseInt(val) / 10);
+    }else{
+        $('.note_charge').val(parseInt(val) / 100); }
+    } else {
+        $('.note_charge').val('')
+    }
 
 }
 
-function backScreenNav(){
-     if (menuScreenDefault == "true") {
+function backScreenNav() {
+    if (menuScreenDefault == "true") {
         showMenuItemsSubscreen();
     } else {
         showMenuItemsSubscreen();
@@ -1168,7 +1229,7 @@ function setScreenOrder(value) {
 }
 
 function setInitScreen(value) {
-    initScreenDefault  = value;
+    initScreenDefault = value;
 }
 
 function doSubmitTableNumber() {

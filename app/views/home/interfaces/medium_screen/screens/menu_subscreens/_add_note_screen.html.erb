@@ -1,19 +1,21 @@
 <div id="add_note_screen">
   <div id="header">
 
-    <div id="back_button" class="small_button" onclick="showChargeNotePopup();">Charge</div>
+    <div id="back_button" class="small_button" onclick="hideAndroidKeyboard(); showChargeNotePopup();">Charge</div>
 
     <div class="title">Add Note</div>
 
-    <div id="options_button" class="small_button" onclick="doSaveNote();">OK</div>
+    <div id="options_button" class="small_button" onclick="hideAndroidKeyboard();doSaveNote();">OK</div>
 
     <div class="clear">&nbsp;</div>
   </div>
   <div id="keypad_container">
     <div class="clear">&nbsp;</div>
       <input type="text" class="note_input">
+
   </div>
 </div>
+
 
 
 <div id="add_charge_screen">
@@ -33,7 +35,9 @@
     <div class="clear">&nbsp;</div>
 
     <div id="entered_table_number_container">
-      Add Charge to Note <input type="text" class="note_charge">
+       <input type="number" class="note_charge"/>
+
+      Charge to Note <input type="text" class="display_charge"/>
     </div>
 
     <div id="keypad" class="keypad">
