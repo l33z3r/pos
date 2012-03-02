@@ -53,18 +53,18 @@
           <% end %>
         </ul>
       </li>
-      <li rel="2">Change Prices</li>
-      <li rel="3">Check Stock</li>
-      <li rel="4">Edit Specials</li>
       <li>
         Price Level
         <ul id="price_levels">
-          <li rel="5-1">Standard</li>
-          <li rel="5-2">Price 2</li>
-          <li rel="5-3">Price 3</li>
-          <li rel="5-4">Price 4</li>
+          <li rel="2-1">Standard</li>
+          <li rel="2-2"><%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, {:price_level => 2} %></li>
+          <li rel="2-3"><%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, {:price_level => 3} %></li>
+          <li rel="2-4"><%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, {:price_level => 4} %></li>
         </ul>
       </li>
+      <li rel="3">Change Prices</li>
+      <li rel="4">Check Stock</li>
+      <li rel="5">Edit Specials</li>
       <li rel="6">Add Product</li>
       <li rel="7">Current Orders</li>
     </ul>

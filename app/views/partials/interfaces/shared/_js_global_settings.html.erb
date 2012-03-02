@@ -103,15 +103,16 @@
   var selectedDisplayId = <%= @display.id %>;
     
   //we need some button ids to mark them as selected and set permissions etsc
-  var modifyOrderItemButtonID = "<%= ButtonMapper::MODIFY_ORDER_ITEM_BUTTON %>";
-  var addNoteButtonID = "<%= ButtonMapper::ADD_NOTE_BUTTON %>";
-  var tablesButtonID = "<%= ButtonMapper::TABLES_BUTTON %>";
-  var discountButtonID = "<%= ButtonMapper::DISCOUNT_BUTTON %>";
-  var changePriceButtonID = "<%= ButtonMapper::CHANGE_PRICE_BUTTON %>";
-  var removeItemButtonID = "<%= ButtonMapper::REMOVE_ITEM_BUTTON %>";
-  var toggleMenuItemDoubleModeButtonID = "<%= ButtonMapper::TOGGLE_MENU_ITEM_DOUBLE_BUTTON %>";
-  var oiaButtonID = "<%= ButtonMapper::MODIFY_ORDER_ITEM_BUTTON %>";
-  var courseNumButtonID = "<%= ButtonMapper::COURSE_BUTTON %>";
+  var modifyOrderItemButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::MODIFY_ORDER_ITEM_BUTTON).id %>";
+  var addNoteButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::ADD_NOTE_BUTTON).id %>";
+  var tablesButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::TABLES_BUTTON).id %>";
+  var discountButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::DISCOUNT_BUTTON).id %>";
+  var changePriceButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::CHANGE_PRICE_BUTTON).id %>";
+  var removeItemButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::REMOVE_ITEM_BUTTON).id %>";
+  var toggleMenuItemDoubleModeButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::TOGGLE_MENU_ITEM_DOUBLE_BUTTON).id %>";
+  var toggleMenuItemStandardPriceOverrideModeButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::TOGGLE_MENU_ITEM_STANDARD_PRICE_OVERRIDE_BUTTON).id %>";
+  var oiaButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::MODIFY_ORDER_ITEM_BUTTON).id %>";
+  var courseNumButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::COURSE_BUTTON).id %>";
   
   var updateStockType = <%= StockTransaction::STOCK_UPDATE %>;
   var transferStockType = <%= StockTransaction::STOCK_TRANSFER %>;

@@ -27,21 +27,21 @@ function menuScreenDropdownItemSelected(index, name) {
             }
         });
         return;
-    } else if(index == 2) {
-        startPriceChangeMode();
-        return;
-    } else if(index == 3) {
-        startStockTakeMode();
-        return;
-    } else if(index == 4) {
-        goToSpecials();
-        return;
-    } else if(index.startsWith("5")) {
+    } else if(index.startsWith("2")) {
         var priceLevel = index.substring(2);
         
         setGlobalPriceLevel(priceLevel);
         
         setShortcutDropdownDefaultText();
+        return;
+    } else if(index == 3) {
+        startPriceChangeMode();
+        return;
+    } else if(index == 4) {
+        startStockTakeMode();
+        return;
+    } else if(index == 5) {
+        goToSpecials();
         return;
     } else if(index == 6) {
         goToAddProduct();

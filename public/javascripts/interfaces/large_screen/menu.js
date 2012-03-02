@@ -75,11 +75,11 @@ function initMenuScreenType() {
 
 function setGlobalPriceLevel(priceLevel) {
     if(globalPriceLevel != null) {
-        var oldSelectedPriceLeveLiEl = $('#menu_screen_shortcut_dropdown li[rel=5-' + globalPriceLevel + ']');
+        var oldSelectedPriceLeveLiEl = $('#menu_screen_shortcut_dropdown li[rel=2-' + globalPriceLevel + ']');
         oldSelectedPriceLeveLiEl.html(oldSelectedPriceLeveLiEl.html().substring(2));
     }
     
-    var selectedPriceLevelLiEl = $('#menu_screen_shortcut_dropdown li[rel=5-' + priceLevel + ']');
+    var selectedPriceLevelLiEl = $('#menu_screen_shortcut_dropdown li[rel=2-' + priceLevel + ']');
     selectedPriceLevelLiEl.html("* " + selectedPriceLevelLiEl.html());
         
     globalPriceLevel = parseInt(priceLevel);
@@ -171,6 +171,10 @@ function menuScreenKeypadClickCancel() {
     } else {
         if(menuItemDoubleMode) {
             setMenuItemDoubleMode(false);
+        }
+        
+        if(menuItemStandardPriceOverrideMode) {
+            setMenuItemStandardPriceOverrideMode(false);
         }
         
         currentMenuItemQuantity = "";
