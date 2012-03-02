@@ -57,7 +57,7 @@ function renderReceipt(tableID) {
         
         //is this a result of transfering a table? if so we must clear the last order
         for(var theTableID in orderNums) {
-            if(orderNums[theTableID] == orderToCopy.order_num && tableID != theTableID) {
+            if(orderNums[theTableID] == orderToCopy.order_num) {
                 tableCleared(theTableID, orderNums[theTableID]);
                 break;
             }
@@ -450,7 +450,7 @@ function loadCourseChecks() {
     //load course checks from the web db
     courseChecks = retrieveStorageJSONValue("kitchen_course_checks");
     orderXClicked = retrieveStorageJSONValue("kitchen_order_x_clicked");
-    orderNumbs = retrieveStorageJSONValue("order_nums");
+    orderNums = retrieveStorageJSONValue("order_nums");
     
     if(!courseChecks) {
         courseChecks = {};
@@ -473,6 +473,7 @@ function tableCleared(tableID, orderNum) {
     orderXClicked[tableID] = false;
     
     kitchenOrders[tableID] = null;
+    orderNums[tableID] = null;
     
     saveCourseChecks();
     
