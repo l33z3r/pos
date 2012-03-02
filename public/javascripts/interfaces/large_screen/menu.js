@@ -16,6 +16,8 @@ var splitBillOrderFrom;
 var splitBillOrderTo;
 var splitBillTableNumber;
 
+var lastTableZeroOrder;
+
 //this function is called from application.js on page load
 function initMenu() {
     initMenuScreenType();
@@ -75,11 +77,11 @@ function initMenuScreenType() {
 
 function setGlobalPriceLevel(priceLevel) {
     if(globalPriceLevel != null) {
-        var oldSelectedPriceLeveLiEl = $('#menu_screen_shortcut_dropdown li[rel=5-' + globalPriceLevel + ']');
+        var oldSelectedPriceLeveLiEl = $('#menu_screen_shortcut_dropdown li[rel=2-' + globalPriceLevel + ']');
         oldSelectedPriceLeveLiEl.html(oldSelectedPriceLeveLiEl.html().substring(2));
     }
     
-    var selectedPriceLevelLiEl = $('#menu_screen_shortcut_dropdown li[rel=5-' + priceLevel + ']');
+    var selectedPriceLevelLiEl = $('#menu_screen_shortcut_dropdown li[rel=2-' + priceLevel + ']');
     selectedPriceLevelLiEl.html("* " + selectedPriceLevelLiEl.html());
         
     globalPriceLevel = parseInt(priceLevel);
@@ -171,6 +173,10 @@ function menuScreenKeypadClickCancel() {
     } else {
         if(menuItemDoubleMode) {
             setMenuItemDoubleMode(false);
+        }
+        
+        if(menuItemStandardPriceOverrideMode) {
+            setMenuItemStandardPriceOverrideMode(false);
         }
         
         currentMenuItemQuantity = "";
@@ -818,7 +824,7 @@ function closeEditOrderItem() {
 
 function saveEditOrderItem() {
     //fetch the item number
-    itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
     
     popupId = editItemPopupAnchor.GetBubblePopupID();
     
@@ -1070,7 +1076,18 @@ function doTotal(applyDefaultServiceCharge) {
     $('#totals_tendered_box').addClass("selected");
 }
 
+var cashSaleInProcess = false;
+
 function doTotalFinal() {
+    //as we now send orders when a cash out is done for table 0, 
+    //we must halt here if there is an order in progress, otherwise we would lose this order
+    if(cashSaleInProcess || orderInProcess) {
+        niceAlert("There is an order being processed, please wait.");
+        return;
+    }
+    
+    cashSaleInProcess = true;
+    
     if(currentOrderEmpty()) {
         setStatusMessage("No order present to total!", true, true);
         return;
@@ -1089,6 +1106,12 @@ function doTotalFinal() {
         tableInfoId = null;
         tableInfoLabel = "None";
         isTableOrder = false;
+        
+        isTableZeroOrder = true;
+            
+        //copy the order to distribute through system after processing
+        var copiedLastTableZeroOrder = {};
+        lastTableZeroOrder = $.extend(true, copiedLastTableZeroOrder, totalOrder);        
     } else {
         //get total for table
         totalOrder = tableOrders[selectedTable];
@@ -1248,9 +1271,17 @@ function orderSentToServerCallback(orderData, errorOccured) {
         
             doChargeRoom(orderData);
         }
+        
+        //first see if its table 0 and send into system orders
+        //a null test is to see if table 0
+        if(isTableZeroOrder) {
+            doSyncTableOrder();
+        }
     } else {
         niceAlert("There was an error cashing out the last order, the server could not process it. It will automatically resend itself, please do not cash out on another terminal!");
     }
+    
+    cashSaleInProcess = false;
 }
 
 function loadAfterSaleScreen() {
@@ -1428,7 +1459,7 @@ function showDiscountPopup(receiptItem) {
     
     //fill in the input with either existing or default discount percent
     if(receiptItem) {
-        itemNumber = receiptItem.data("item_number");
+        var itemNumber = receiptItem.data("item_number");
         existingDiscountPercent = getExistingDiscountPercentForCurrentOrderItem(itemNumber);
         
         if(existingDiscountPercent) {
@@ -1504,7 +1535,7 @@ function saveDiscount() {
     //discount on whole order or individual item?
     if(individualItemDiscount) {
         //fetch the item number
-        itemNumber = currentSelectedReceiptItemEl.data("item_number");
+        var itemNumber = currentSelectedReceiptItemEl.data("item_number");
         applyDiscountToOrderItem(order, itemNumber, selectedValue);
     } else if(wholeOrderDiscount) {
         addDiscountToOrder(order, selectedValue);
@@ -1583,7 +1614,7 @@ function closeCoursePopup() {
 function applyCourseFromPopup(courseVal) {
     closeCoursePopup();
     
-    itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
     order = getCurrentOrder();
     
     var item = order.items[itemNumber - 1];
@@ -1786,6 +1817,12 @@ function renderActiveTables() {
 var afterSplitBillSyncCallback;
 
 function postDoSyncTableOrder() {
+    if(isTableZeroOrder) {
+        //reset this var
+        isTableZeroOrder = false;
+        return;
+    }
+    
     clearLoginReceipt();
 
     //redraw the receipt if we dont leave this screen
@@ -1887,7 +1924,7 @@ function postDoSelectTable() {
 //does nothing for now, but the medium interface needed this callback
 }
 
-function doReceiveOrderReady(employee_id, terminal_id, table_id, table_label) {
+function doReceiveOrderReady(employee_id, terminal_id, table_id, order_num, table_label) {
     if(inKitchenContext()) {
         return;
     }
@@ -1908,8 +1945,16 @@ function doReceiveOrderReady(employee_id, terminal_id, table_id, table_label) {
         //                height: 250
         //            } );
 
+        var orderReadyText;
+
+        if(table_id.toString() == "0") {
+            orderReadyText = "Order #" + order_num;
+        } else {
+            orderReadyText = "Order #" + order_num + " for table " + table_label;
+        }
+
         ModalPopups.Alert('niceAlertContainer',
-            'Order Ready!', "<div id='nice_alert'>Order for table " + table_label + " is ready</div>",
+            'Order Ready!', "<div id='nice_alert'>" + orderReadyText + " is ready</div>",
             {
                 okButtonText: 'OK',
                 onOk: 'orderReadyOKClicked()',

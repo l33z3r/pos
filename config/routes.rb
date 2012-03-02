@@ -1,6 +1,7 @@
 Pos::Application.routes.draw do
 
   get "kitchen/index"
+  get "kitchen/table_0_kitchen_div"
   post "kitchen/order_ready"
 
   #js error logging

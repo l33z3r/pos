@@ -73,6 +73,7 @@ class GlobalSetting < ActiveRecord::Base
   HTTP_AUTH_USERNAME = 44
   HTTP_AUTH_PASSWORD = 45
   CASH_DRAWER_IP_ADDRESS = 46
+  PRICE_LEVEL_LABEL = 47
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -120,7 +121,8 @@ class GlobalSetting < ActiveRecord::Base
     DISABLE_ADVANCED_TOUCH => "Disable Advanced Touch",
     HTTP_AUTH_USERNAME => "HTTP Basic Auth Username",
     HTTP_AUTH_PASSWORD => "HTTP Basic Auth Password",
-    CASH_DRAWER_IP_ADDRESS => "Cash Drawer Ip Address"
+    CASH_DRAWER_IP_ADDRESS => "Cash Drawer Ip Address",
+    PRICE_LEVEL_LABEL => "Price Level Label"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -244,6 +246,9 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_key(:key => HTTP_AUTH_PASSWORD.to_s, :value => "cluey100", :label_text => LABEL_MAP[HTTP_AUTH_PASSWORD])
     when CASH_DRAWER_IP_ADDRESS
       @gs = find_or_create_by_key(:key => "#{CASH_DRAWER_IP_ADDRESS.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[CASH_DRAWER_IP_ADDRESS])
+      @gs.parsed_value = @gs.value
+    when PRICE_LEVEL_LABEL
+      @gs = find_or_create_by_key(:key => "#{PRICE_LEVEL_LABEL.to_s}_#{args[:price_level]}", :value => "Price #{args[:price_level]}", :label_text => LABEL_MAP[PRICE_LEVEL_LABEL])
       @gs.parsed_value = @gs.value
     else
       @gs = load_setting property
@@ -473,6 +478,10 @@ class GlobalSetting < ActiveRecord::Base
     end
     
     @options
+  end
+  
+  def self.price_levels 
+    return 2..4
   end
   
   #these properties are for particular properties in the db

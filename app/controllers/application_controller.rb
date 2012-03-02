@@ -110,9 +110,14 @@ class ApplicationController < ActionController::Base
   end
   
   def do_request_sync_table_order terminal_id, table_order_data, table_id, employee_id
-    TerminalSyncData.transaction do
-      remove_previous_sync_for_table table_id, false
     
+      
+      if table_id != "0"
+        remove_previous_sync_for_table table_id, false
+      else
+        remove_old_table_0_orders
+      end
+      
       #does this order have an order id? if not generate one
       if !table_order_data[:orderData][:order_num]
         table_order_data[:orderData][:order_num] = Order.next_order_num
@@ -137,7 +142,7 @@ class ApplicationController < ActionController::Base
       
       TerminalSyncData.create!({:sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 
           :time => @time, :data => @sync_data})
-    end
+    
   end
   
   def do_request_clear_table_order terminal_id, time, table_id, order_num, employee_id
@@ -165,6 +170,25 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def remove_old_table_0_orders
+    
+    @max_table_0_orders = 50
+    @tsds_reversed = TerminalSyncData.fetch_sync_table_order_times.reverse
+    
+    #remove table orders
+    @table_0_order_count = 0
+    
+    @tsds_reversed.each do |tsd|
+      if tsd.data[:table_id].to_s == "0"
+        @table_0_order_count += 1
+        
+        if @table_0_order_count >= @max_table_0_orders
+          tsd.destroy
+        end
+      end
+    end
+  end
+  
   def fetch_order_ready_notification time
     @order_ready_notification_times = order_ready_notification_times
     
@@ -173,6 +197,8 @@ class ApplicationController < ActionController::Base
       order_ready_request_terminal_id = order_ready_data[:terminal_id]
       order_ready_request_table_id = order_ready_data[:table_id]
       order_ready_request_table_label = order_ready_data[:table_label]
+      order_ready_request_order_num = order_ready_data[:order_num]
+      
       if order_ready_request_time.to_i > time.to_i
         @order_ready = {}
         @order_ready['order_ready_request_time'] = order_ready_request_time
@@ -180,6 +206,7 @@ class ApplicationController < ActionController::Base
         @order_ready['order_ready_request_terminal_id'] = order_ready_request_terminal_id
         @order_ready['order_ready_request_table_id'] = order_ready_request_table_id
         @order_ready['order_ready_request_table_label'] = order_ready_request_table_label
+        @order_ready['order_ready_request_order_num'] = order_ready_request_order_num
         return @order_ready
       end
     end

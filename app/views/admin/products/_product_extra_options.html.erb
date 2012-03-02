@@ -27,17 +27,23 @@
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
-        <div class="label">Price 2</div>
+        <div class="label">
+          <%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, {:price_level => 2} %>
+        </div>
         <%= f.text_field :price_2 %>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
-        <div class="label">Price 3</div>
+        <div class="label">
+          <%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, {:price_level => 3} %>
+        </div>
         <%= f.text_field :price_3 %>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
-        <div class="label">Price 4</div>
+        <div class="label">
+          <%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, {:price_level => 4} %>
+        </div>
         <%= f.text_field :price_4 %>
         <div class="clear">&nbsp;</div>
       </div>

@@ -35,7 +35,7 @@ class ButtonMapper
   CHANGE_WAITER_BUTTON = 32
   PRINTERS_BUTTON = 33
   TRANSFER_ORDER_BUTTON = 34
-  #SPLIT_ORDER_BUTTON = 35
+  TOGGLE_MENU_ITEM_STANDARD_PRICE_OVERRIDE_BUTTON = 35
   STOCK_TAKE_BUTTON = 36
   DELIVERY_BUTTON = 37
   CASH_OUT_BUTTON = 38
@@ -141,8 +141,8 @@ class ButtonMapper
       @retval = "alert('printers button clicked');"
     when TRANSFER_ORDER_BUTTON
       @retval = wrap_with_menu_screen_function_check "startTransferOrderMode();"
-#    when SPLIT_ORDER_BUTTON
-#      @retval = "alert('split order button clicked');"
+    when TOGGLE_MENU_ITEM_STANDARD_PRICE_OVERRIDE_BUTTON
+      @retval = wrap_with_menu_screen_function_check "toggleMenuItemStandardPriceOverrideMode(); return false;"
     when STOCK_TAKE_BUTTON
       @retval = "alert('stock take button clicked');"
     when DELIVERY_BUTTON

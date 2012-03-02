@@ -1,8 +1,10 @@
 var lastSyncedOrder = null;
 var orderInProcess = false;
 
+var isTableZeroOrder = false;
+
 function doSyncTableOrder() {
-    if(!ensureLoggedIn()) {
+    if(!isTableZeroOrder && !ensureLoggedIn()) {
         return;
     }
     
@@ -23,8 +25,15 @@ function doSyncTableOrder() {
         setStatusMessage("Not valid for split orders!");
         return;
     } else if(selectedTable == 0) {
-        startTransferOrderMode();
-        return;
+        if(!isTableZeroOrder) {
+            startTransferOrderMode();
+            return;
+        } else {
+            //when a sale on table 0 happens, this line executes
+            //dont need to check if empty as this will only ever be called after a sale
+            lastOrderSaleText = "Last Sale";
+            order = lastTableZeroOrder;
+        }
     } else {
         lastOrderSaleText = "Last Order";
         
@@ -63,6 +72,12 @@ function doSyncTableOrder() {
         orderData : copiedOrderForSend
     }
     
+    var userId = current_user_id;
+    
+    if(isTableZeroOrder) {
+        userId = last_user_id;
+    }
+
     $.ajax({
         type: 'POST',
         url: '/sync_table_order',
@@ -70,7 +85,7 @@ function doSyncTableOrder() {
         success: finishSyncTableOrder,
         data: {
             tableOrderData : tableOrderData,
-            employee_id : current_user_id
+            employee_id : userId
         }
     });
 }
@@ -227,5 +242,19 @@ function setMenuItemDoubleMode(turnOn) {
     } else {
         menuItemDoubleMode = false;
         $('.button[id=sales_button_' + toggleMenuItemDoubleModeButtonID + ']').removeClass("selected");
+    }
+}
+
+function toggleMenuItemStandardPriceOverrideMode() {
+    setMenuItemStandardPriceOverrideMode(!menuItemStandardPriceOverrideMode);
+}
+
+function setMenuItemStandardPriceOverrideMode(turnOn) {
+    if(turnOn) {
+        menuItemStandardPriceOverrideMode = true;
+        $('.button[id=sales_button_' + toggleMenuItemStandardPriceOverrideModeButtonID + ']').addClass("selected");
+    } else {
+        menuItemStandardPriceOverrideMode = false;
+        $('.button[id=sales_button_' + toggleMenuItemStandardPriceOverrideModeButtonID + ']').removeClass("selected");
     }
 }

@@ -10,14 +10,18 @@
   <%#*height: 250%>
   <%#*} );%>
   
+  hideNiceAlert();
+
   ModalPopups.Alert('niceAlertContainer',
-  'Order Ready!', "<div id='nice_alert'><%= @employee.nickname %>  has been notified of order for table <%= @table_info.perm_id %></div>",
+  'Order Ready!', "<div id='nice_alert'><%= @employee.nickname %>  has been notified!</div>",
   {
   okButtonText: 'OK',
   onOk: 'orderReadyNotificationSentConfirm()',
   width: 400,
   height: 250
   } );
+  
+  setTimeout(hideNiceAlert, 5000);
 <% else %>
   niceAlert("Error sending notification to <%= @employee.nickname %>", "Notification");
 <% end %>

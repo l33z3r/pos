@@ -1,5 +1,3 @@
-
-
 <% if params[:section] %>
   <% content_for :head do %>
     <script type="text/javascript">
@@ -30,6 +28,7 @@
           <li><a id="tax_rates_section_link" href="#tax_rates_section">Sales Tax Rates</a></li>
           <li><a id="discounts_section_link" href="#discounts_section_section">Discounts</a></li>
           <li><a id="coursing_section_link" href="#coursing_section">Coursing</a></li>
+          <li><a id="price_level_labels_section_link" href="#coursing_section">Price Levels</a></li>
           <li><a id="misc_section_link" href="#misc_section">Misc</a></li>
 
           <% if params[:cp] == "cluey100" or is_cluey_user? %>
@@ -642,6 +641,49 @@
                       <td><%= course_val %></td>
                       <td>
                         <% @gs = GlobalSetting.setting_for GlobalSetting::COURSE_LABEL, {:course_val => course_val} %>
+                        <%= fields_for "global_settings[]", @gs do |f| %>
+                          <%= f.text_field :value %>
+                        <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Save" %>
+              </div>
+
+            <% end %>
+
+            <div class="clear">&nbsp;</div>
+          </div>
+        </div>
+        
+        <div class="container" id="#price_level_labels_section">
+          <div class="jscrollpane">
+            <h4>Price Level Labels</h4>
+
+            <%= form_tag admin_update_global_settings_path do %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="330">Price Level</th>
+                    <th width="70">Label</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <% GlobalSetting.price_levels.each do |price_level| %>
+                    <tr>
+                      <td><%= price_level %></td>
+                      <td>
+                        <% @gs = GlobalSetting.setting_for GlobalSetting::PRICE_LEVEL_LABEL, {:price_level => price_level} %>
                         <%= fields_for "global_settings[]", @gs do |f| %>
                           <%= f.text_field :value %>
                         <% end %>

@@ -688,12 +688,13 @@ function showCourseMenuPopup() {
     if ($('#menuCourseAnchor').hasClass('selected')) {
         currentTargetPopupAnchor.removeClass("selected");
         currentTargetPopupAnchor.HideBubblePopup();
-    } else {
-//    getSelectedOrLastReceiptItem();
+    }else{
+        getSelectedOrLastReceiptItem();
         closeDiscountPopup();
 
+        currentTargetPopupAnchor = $('#menuCourseAnchor');
 
-        if (currentTargetPopupAnchor.HasBubblePopup()) {
+        if(currentTargetPopupAnchor.HasBubblePopup()) {
             currentTargetPopupAnchor.RemoveBubblePopup();
         }
         currentTargetPopupAnchor.addClass("selected");
@@ -705,7 +706,7 @@ function showCourseMenuPopup() {
         currentTargetPopupAnchor.ShowBubblePopup({
             position: 'top',
             align: 'center',
-            tail     : {
+            tail	 : {
                 align: 'center'
             },
             innerHtml: discountsPopupHTML,
@@ -714,8 +715,8 @@ function showCourseMenuPopup() {
                 'text-align':'left'
             },
 
-            themeName:     'all-grey',
-            themePath:     '/images/jquerybubblepopup-theme',
+            themeName: 	'all-grey',
+            themePath: 	'/images/jquerybubblepopup-theme',
             alwaysVisible: false
 
         }, false);
@@ -1329,7 +1330,7 @@ function tableScreenBack() {
     showMenuItemsSubscreen();
 }
 
-function doReceiveOrderReady(employee_id, terminal_id, table_id, table_label) {
+function doReceiveOrderReady(employee_id, terminal_id, table_id, order_num, table_label) {
     hidePreviousOrderReadyPopup();
 
     if (employee_id == current_user_id || allDevicesOrderNotification) {
@@ -1346,8 +1347,16 @@ function doReceiveOrderReady(employee_id, terminal_id, table_id, table_label) {
         //                height: 250
         //            } );
 
+        var orderReadyText;
+
+        if(table_id.toString() == "0") {
+            orderReadyText = "Order #" + order_num;
+        } else {
+            orderReadyText = "Order #" + order_num + " for table " + table_label;
+        }
+
         ModalPopups.Alert('niceAlertContainer',
-            'Order Ready!', "<div id='nice_alert'>Order for table <b>" + table_label + "</b> is ready</div>",
+            'Order Ready!', "<div id='nice_alert'>" + orderReadyText + " is ready</div>",
             {
                 okButtonText: 'OK',
                 onOk: 'orderReadyOKClicked()',

@@ -61,7 +61,10 @@ class OrderController < ApplicationController
     @table_order_data = params[:tableOrderData]
     @order_num = @table_order_data[:orderData][:order_num]
     
-    if @order_num 
+    @table_id = @table_order_data['tableID']
+    
+    #check if this order has been cashed out already but let the table 0 order through
+    if @table_id != "0" and @order_num 
       if Order.find_by_order_num @order_num
         #this order has already been cashed, so do nothing...
         logger.info "Order has already been cashed. Ignoring..."
@@ -70,8 +73,6 @@ class OrderController < ApplicationController
     end
     
     @employee_id = params[:employee_id]
-    
-    @table_id = @table_order_data['tableID']
     
     #make sure the table still exists in the system as it will cause a weird error if not
     @table = TableInfo.find_by_id(@table_id)
@@ -92,11 +93,11 @@ class OrderController < ApplicationController
     @table_from_id = params[:table_from_id]
     
     @table_to_id = params[:table_to_id]
-    @table_to = TableInfo.find(@table_to_id)
+    @table_to = TableInfo.find_by_id(@table_to_id)
     
     if @table_to
       if @table_from_id.to_i != 0 and @table_from_id.to_i != -2
-        @table_from = TableInfo.find(@table_from_id)      
+        @table_from = TableInfo.find_by_id(@table_from_id)      
     
         if @table_from
           @table_from_order_num = params[:table_from_order_num] 

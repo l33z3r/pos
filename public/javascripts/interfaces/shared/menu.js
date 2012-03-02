@@ -3,6 +3,7 @@ var currentMenuPageId;
 var currentMenuSubPageId;
 
 var menuItemDoubleMode = false;
+var menuItemStandardPriceOverrideMode = false;
 var currentMenuItemQuantity = "";
 
 var selectedTable = 0;
@@ -52,8 +53,6 @@ function getCurrentOrder() {
 }
 
 function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee, tableOrderDataJSON) {
-    //console.log("order num " + tableOrderDataJSON.order_num);
-    
     if(lastSyncedOrder) {
         //set the order id on the lastSyncedOrder variable so that it prints on the login receipt
         lastSyncedOrder.order_num = tableOrderDataJSON.order_num;
@@ -306,7 +305,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     calculateOrderTotal(tableOrders[tableID]);
     storeTableOrderInStorage(nextUserIDToSyncWith, tableID, tableOrders[tableID]);
     
-    if(tableID == selectedTable && nextUserIDToSyncWith == current_user_id) {
+    if(tableID != 0 && tableID == selectedTable && nextUserIDToSyncWith == current_user_id) {
         loadReceipt(tableOrders[tableID], true);
     }
 }
@@ -369,9 +368,10 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, orderNum, tableLabel
         doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployee, nextUserIDToSyncWith);
     }
     
-    if(inKitchenContext()) {
-        tableCleared(tableID, orderNum);
-    }
+    //WE DONT AUTO CLEAR ANYMORE ON KITCHEN SCREEN
+    //    if(inKitchenContext()) {
+    //        tableCleared(tableID, orderNum);
+    //    }
     
     //remove the table from the active table ids array
     removeActiveTable(tableID);
@@ -569,6 +569,9 @@ function buildOrderItem(product, amount) {
         productPrice = product.double_price;
         isDouble = true;
         setMenuItemDoubleMode(false);
+    } else if(menuItemStandardPriceOverrideMode) {
+        productPrice = product.price;
+        setMenuItemStandardPriceOverrideMode(false);
     } else if(globalPriceLevel == 2) {
         productPrice = product.price_2;
     } else if(globalPriceLevel == 3) {
@@ -723,6 +726,14 @@ function updateRecpt(targetPrefix) {
 function doSelectTable(tableNum) {
     selectedTable = tableNum;
     
+    
+    
+    
+    
+    
+    
+    
+    
     //write to storage that this user was last looking at this receipt
     storeLastReceipt(current_user_id, tableNum);
     
@@ -730,6 +741,19 @@ function doSelectTable(tableNum) {
         currentSelectedRoom = 0;
         
         loadCurrentOrder();
+        
+        
+        
+        
+        //we are having a problem with the items in a receipt not being ordered correctly sometimes
+        //it has to do with itemNumber not being set correctly. Cant figure out what is causing it, but
+        //this here will solve the problem for now, by reordering the receipt each time it is loaded
+        //this function is also in other places so if you are removing it make sure all calls to it are removed
+        orderReceiptItems(currentOrder);
+    
+    
+    
+    
         
         defaultServiceChargePercent = globalDefaultServiceChargePercent;
         
@@ -763,6 +787,19 @@ function doSelectTable(tableNum) {
     //this will fill the tableOrders[tableNum] variable
     getTableOrderFromStorage(current_user_id, selectedTable);
 
+
+
+
+    //we are having a problem with the items in a receipt not being ordered correctly sometimes
+    //it has to do with itemNumber not being set correctly. Cant figure out what is causing it, but
+    //this here will solve the problem for now, by reordering the receipt each time it is loaded
+    //this function is also in other places so if you are removing it make sure all calls to it are removed
+    orderReceiptItems(tableOrders[tableNum]);
+    
+    
+    
+    
+    
     //display the receipt for this table
     loadReceipt(tableOrders[tableNum], true);
     
@@ -773,10 +810,18 @@ function doSelectTable(tableNum) {
     postDoSelectTable();
 }
 
+function orderReceiptItems(order) {
+    if(!order) return;
+    
+    for(var i=0;i<order.items.length;i++) {
+        order.items[i].itemNumber = i + 1;
+    }
+}
+
 function removeSelectedOrderItem() {
 
     //fetch the item number
-    itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
 
     if(selectedTable != 0) {
         order = tableOrders[selectedTable];
@@ -921,7 +966,7 @@ function doTransferOrderItem(tableFrom, tableTo) {
         return;
     });
      
-    itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
       
     var orderFrom;
 

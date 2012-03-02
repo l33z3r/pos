@@ -22,10 +22,6 @@ task :delete_historical_data => :environment do
   puts "Deleting #{@recpt_htmls.length} receipt_htmls"
   @recpt_htmls.each(&:destroy) 
   
-  #terminal_ids
-  puts "Deleting terminal sync data"
-  GlobalSetting.remove_all_terminal_ids
-  
   puts "Done!"
 end
 
