@@ -369,9 +369,9 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, orderNum, tableLabel
     }
     
     //WE DONT AUTO CLEAR ANYMORE ON KITCHEN SCREEN
-//    if(inKitchenContext()) {
-//        tableCleared(tableID, orderNum);
-//    }
+    //    if(inKitchenContext()) {
+    //        tableCleared(tableID, orderNum);
+    //    }
     
     //remove the table from the active table ids array
     removeActiveTable(tableID);
@@ -726,6 +726,14 @@ function updateRecpt(targetPrefix) {
 function doSelectTable(tableNum) {
     selectedTable = tableNum;
     
+    
+    
+    
+    
+    
+    
+    
+    
     //write to storage that this user was last looking at this receipt
     storeLastReceipt(current_user_id, tableNum);
     
@@ -733,6 +741,19 @@ function doSelectTable(tableNum) {
         currentSelectedRoom = 0;
         
         loadCurrentOrder();
+        
+        
+        
+        
+        //we are having a problem with the items in a receipt not being ordered correctly sometimes
+        //it has to do with itemNumber not being set correctly. Cant figure out what is causing it, but
+        //this here will solve the problem for now, by reordering the receipt each time it is loaded
+        //this function is also in other places so if you are removing it make sure all calls to it are removed
+        orderReceiptItems(currentOrder);
+    
+    
+    
+    
         
         defaultServiceChargePercent = globalDefaultServiceChargePercent;
         
@@ -766,6 +787,19 @@ function doSelectTable(tableNum) {
     //this will fill the tableOrders[tableNum] variable
     getTableOrderFromStorage(current_user_id, selectedTable);
 
+
+
+
+    //we are having a problem with the items in a receipt not being ordered correctly sometimes
+    //it has to do with itemNumber not being set correctly. Cant figure out what is causing it, but
+    //this here will solve the problem for now, by reordering the receipt each time it is loaded
+    //this function is also in other places so if you are removing it make sure all calls to it are removed
+    orderReceiptItems(tableOrders[tableNum]);
+    
+    
+    
+    
+    
     //display the receipt for this table
     loadReceipt(tableOrders[tableNum], true);
     
@@ -774,6 +808,14 @@ function doSelectTable(tableNum) {
     }
     
     postDoSelectTable();
+}
+
+function orderReceiptItems(order) {
+    if(!order) return;
+    
+    for(var i=0;i<order.items.length;i++) {
+        order.items[i].itemNumber = i + 1;
+    }
 }
 
 function removeSelectedOrderItem() {
