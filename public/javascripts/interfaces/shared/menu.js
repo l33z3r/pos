@@ -780,7 +780,7 @@ function doSelectTable(tableNum) {
 function removeSelectedOrderItem() {
 
     //fetch the item number
-    itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
 
     if(selectedTable != 0) {
         order = tableOrders[selectedTable];
@@ -925,7 +925,7 @@ function doTransferOrderItem(tableFrom, tableTo) {
         return;
     });
      
-    itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
       
     var orderFrom;
 

@@ -822,7 +822,7 @@ function closeEditOrderItem() {
 
 function saveEditOrderItem() {
     //fetch the item number
-    itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
     
     popupId = editItemPopupAnchor.GetBubblePopupID();
     
@@ -1432,7 +1432,7 @@ function showDiscountPopup(receiptItem) {
     
     //fill in the input with either existing or default discount percent
     if(receiptItem) {
-        itemNumber = receiptItem.data("item_number");
+        var itemNumber = receiptItem.data("item_number");
         existingDiscountPercent = getExistingDiscountPercentForCurrentOrderItem(itemNumber);
         
         if(existingDiscountPercent) {
@@ -1508,7 +1508,7 @@ function saveDiscount() {
     //discount on whole order or individual item?
     if(individualItemDiscount) {
         //fetch the item number
-        itemNumber = currentSelectedReceiptItemEl.data("item_number");
+        var itemNumber = currentSelectedReceiptItemEl.data("item_number");
         applyDiscountToOrderItem(order, itemNumber, selectedValue);
     } else if(wholeOrderDiscount) {
         addDiscountToOrder(order, selectedValue);
@@ -1587,7 +1587,7 @@ function closeCoursePopup() {
 function applyCourseFromPopup(courseVal) {
     closeCoursePopup();
     
-    itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
     order = getCurrentOrder();
     
     var item = order.items[itemNumber - 1];
