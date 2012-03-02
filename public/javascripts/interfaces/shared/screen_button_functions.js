@@ -244,3 +244,17 @@ function setMenuItemDoubleMode(turnOn) {
         $('.button[id=sales_button_' + toggleMenuItemDoubleModeButtonID + ']').removeClass("selected");
     }
 }
+
+function toggleMenuItemStandardPriceOverrideMode() {
+    setMenuItemStandardPriceOverrideMode(!menuItemStandardPriceOverrideMode);
+}
+
+function setMenuItemStandardPriceOverrideMode(turnOn) {
+    if(turnOn) {
+        menuItemStandardPriceOverrideMode = true;
+        $('.button[id=sales_button_' + toggleMenuItemStandardPriceOverrideModeButtonID + ']').addClass("selected");
+    } else {
+        menuItemStandardPriceOverrideMode = false;
+        $('.button[id=sales_button_' + toggleMenuItemStandardPriceOverrideModeButtonID + ']').removeClass("selected");
+    }
+}

@@ -3,6 +3,7 @@ var currentMenuPageId;
 var currentMenuSubPageId;
 
 var menuItemDoubleMode = false;
+var menuItemStandardPriceOverrideMode = false;
 var currentMenuItemQuantity = "";
 
 var selectedTable = 0;
@@ -568,6 +569,9 @@ function buildOrderItem(product, amount) {
         productPrice = product.double_price;
         isDouble = true;
         setMenuItemDoubleMode(false);
+    } else if(menuItemStandardPriceOverrideMode) {
+        productPrice = product.price;
+        setMenuItemStandardPriceOverrideMode(false);
     } else if(globalPriceLevel == 2) {
         productPrice = product.price_2;
     } else if(globalPriceLevel == 3) {
@@ -775,7 +779,7 @@ function doSelectTable(tableNum) {
 function removeSelectedOrderItem() {
 
     //fetch the item number
-    itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
 
     if(selectedTable != 0) {
         order = tableOrders[selectedTable];
@@ -920,7 +924,7 @@ function doTransferOrderItem(tableFrom, tableTo) {
         return;
     });
      
-    itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
       
     var orderFrom;
 

@@ -15,6 +15,9 @@ var callHome = true;
 
 var lastSyncTableOrderTime = null;
 var lastSyncKey = "last_sync_table_order_time";
+    
+//the following hack is due to eventX eventY being deprecated in new builds of chrome
+$.event.props = $.event.props.join('|').replace('layerX|layerY|', '').split('|');
 
 $(function() {
     //disable image drag
