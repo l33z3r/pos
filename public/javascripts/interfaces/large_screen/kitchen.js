@@ -57,7 +57,7 @@ function renderReceipt(tableID) {
         
         //is this a result of transfering a table? if so we must clear the last order
         for(var theTableID in orderNums) {
-            if(orderNums[theTableID] == orderToCopy.order_num && tableId != theTableID) {
+            if(orderNums[theTableID] == orderToCopy.order_num && tableID != theTableID) {
                 tableCleared(theTableID, orderNums[theTableID]);
                 break;
             }
