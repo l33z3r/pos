@@ -461,7 +461,7 @@ function loadCourseChecks() {
     }
     
     if(!orderNums) {
-        orderXNums = {};
+        orderNums = {};
     }
 }
 
