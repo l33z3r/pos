@@ -688,13 +688,13 @@ function showCourseMenuPopup() {
     if ($('#menuCourseAnchor').hasClass('selected')) {
         currentTargetPopupAnchor.removeClass("selected");
         currentTargetPopupAnchor.HideBubblePopup();
-    }else{
+    } else {
         getSelectedOrLastReceiptItem();
         closeDiscountPopup();
 
         currentTargetPopupAnchor = $('#menuCourseAnchor');
 
-        if(currentTargetPopupAnchor.HasBubblePopup()) {
+        if (currentTargetPopupAnchor.HasBubblePopup()) {
             currentTargetPopupAnchor.RemoveBubblePopup();
         }
         currentTargetPopupAnchor.addClass("selected");
@@ -706,7 +706,7 @@ function showCourseMenuPopup() {
         currentTargetPopupAnchor.ShowBubblePopup({
             position: 'top',
             align: 'center',
-            tail	 : {
+            tail     : {
                 align: 'center'
             },
             innerHtml: discountsPopupHTML,
@@ -715,8 +715,8 @@ function showCourseMenuPopup() {
                 'text-align':'left'
             },
 
-            themeName: 	'all-grey',
-            themePath: 	'/images/jquerybubblepopup-theme',
+            themeName:     'all-grey',
+            themePath:     '/images/jquerybubblepopup-theme',
             alwaysVisible: false
 
         }, false);
@@ -1130,7 +1130,6 @@ function priceNumberSelectKeypadClick(val) {
     var displayVal = $('.new_price').val();
 
 
-
     if (displayVal.length == 1) {
         displayVal = displayVal.charAt(0) + "." + displayVal.charAt(1) + "0"
     }
@@ -1191,10 +1190,14 @@ function doCancelchargeNumberSelectKeypad() {
 }
 
 function setNewPrice(val) {
-    if ($('.new_price').val().length == 2){
-          $('.new_price').val(parseInt(val) / 10);
-    }else{
-    $('.new_price').val(parseInt(val) / 100); }
+    if ($('.new_price').val().length == 2) {
+        $('.new_price').val(parseInt(val) / 10); }
+    else if ($('.new_price').val().length == 1)
+        {
+            $('.new_price').val($('.new_price').val());
+        }else {
+        $('.new_price').val(parseInt(val) / 100);
+    }
     saveEditOrderItem();
     backScreenNav();
 
@@ -1202,10 +1205,15 @@ function setNewPrice(val) {
 
 function setNewCharge(val) {
     if (val != "") {
-        if ($('.note_charge').val().length == 2){
-          $('.note_charge').val(parseInt(val) / 10);
-    }else{
-        $('.note_charge').val(parseInt(val) / 100); }
+        if ($('.note_charge').val().length == 2) {
+            $('.note_charge').val(parseInt(val) / 10);
+        } else if ($('.note_charge').val().length == 1)
+        {
+            $('.note_charge').val($('.note_charge').val());
+        }else
+        {
+            $('.note_charge').val(parseInt(val) / 100);
+        }
     } else {
         $('.note_charge').val('')
     }
@@ -1349,7 +1357,7 @@ function doReceiveOrderReady(employee_id, terminal_id, table_id, order_num, tabl
 
         var orderReadyText;
 
-        if(table_id.toString() == "0") {
+        if (table_id.toString() == "0") {
             orderReadyText = "Order #" + order_num;
         } else {
             orderReadyText = "Order #" + order_num + " for table " + table_label;
