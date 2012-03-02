@@ -22,6 +22,9 @@ task :delete_historical_data => :environment do
   puts "Deleting #{@recpt_htmls.length} receipt_htmls"
   @recpt_htmls.each(&:destroy) 
   
+  puts "Issuing a reset of all terminals"
+  TerminalSyncData.request_hard_reload_app "Master Terminal"
+  
   puts "Done!"
 end
 
