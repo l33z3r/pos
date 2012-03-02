@@ -228,6 +228,7 @@ div#menu_screen div#receipt_buttons_container div#buttons_container {
 
 div#menu_screen div#receipt_buttons_container div#buttons_container div.button {
     white-space: nowrap;
+    min-width: 104px;
 }
 
 div#menu_screen div#receipt_buttons_container div#cluey_logo {
@@ -712,10 +713,12 @@ div#menu_screen div#add_note_screen div#header div.title {
 div#menu_screen div#add_note_screen .note_input {
     /*float: right;*/
     margin-right: 5px;
+     line-height: 20px;
+    font-size: 22px;
     /*width: 40px;*/
-    text-align: left;
     width: 440px;
-    height:170px;
+    height:171px;
+    text-transform: uppercase;
 }
 
 /* Add Charge Screen */
@@ -756,7 +759,18 @@ div#menu_screen div#add_charge_screen .note_charge {
     /*width: 40px;*/
     text-align: left;
     width: 160px;
-    height: 35px;
+    height: 55px;
+    display: none;
+}
+
+div#menu_screen div#add_charge_screen .display_charge {
+    /*float: right;*/
+    margin-right: 5px;
+    /*width: 40px;*/
+    text-align: left;
+    font-size: 20px;
+    width: 160px;
+    height: 45px;
 }
 
 div#menu_screen div#add_charge_screen div#price_number_show {
@@ -855,7 +869,7 @@ div.receipt div.till_roll div.name {
 div.receipt div.till_roll div.modifier_name {
     float: left;
     width: 150px;
-    margin-left: 50px;
+    margin-left: 10px;
     text-align: left;
 }
 
@@ -863,7 +877,7 @@ div.receipt div.till_roll div.course_label {
     float: left;
     width: auto;
     text-align: right;
-    margin-left: 50px;
+    margin-left: 10px;
     font-size: 18px;
     margin-top: 2px;
 }
@@ -892,8 +906,8 @@ div.receipt div.till_roll div.oia_name {
 div.receipt div.till_roll div.oia_name.note {
     font-style: italic;
     width: 190px;
-    font-size: 19px;
-    font-size: 19px;
+    font-size: 18px;
+    text-transform: uppercase;
 }
 
 div.receipt div.till_roll div.oia_price {
@@ -985,7 +999,7 @@ div.receipt div.till_roll_small div.course_label {
     float: left;
     width: auto;
     text-align: right;
-    margin-left: 50px;
+    margin-left: 10px;
     font-size: 20px;
     margin-top: 2px;
 }
@@ -993,7 +1007,7 @@ div.receipt div.till_roll_small div.course_label {
 div.receipt div.till_roll_small div.modifier_name {
     float: left;
     width: 150px;
-    margin-left: 50px;
+    margin-left: 10px;
     text-align: left;
 }
 
@@ -1015,15 +1029,17 @@ div.receipt div.till_roll_small div.oia_add {
 div.receipt div.till_roll_small div.oia_name {
     float: left;
     width: 150px;
-    margin-left: 50px;
+    margin-left: 10px;
     text-align: left;
 }
 
 div.receipt div.till_roll_small div.oia_name.note {
     float: left;
     width: 150px;
-    margin-left: 50px;
+    margin-left: 10px;
     text-align: left;
+    font-size: 16px;
+    text-transform: uppercase;
 }
 
 div.receipt div.till_roll_small div.oia_price {
@@ -1431,7 +1447,7 @@ div.button div.button_name {
     line-height: 23px;
     text-decoration: none;
     color: #333;
-    width: auto;
+    max-width: 100px;
     height: 15px;
     overflow: hidden;
     margin-bottom: 5px;

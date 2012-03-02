@@ -501,7 +501,7 @@ class HomeController < ApplicationController
     
     @tables_button = DisplayButton.find_by_perm_id(ButtonMapper::TABLES_BUTTON) 
     @order_button = DisplayButton.find_by_perm_id(ButtonMapper::ORDER_BUTTON) 
-    @modify_button = DisplayButton.find_by_perm_id(ButtonMapper::MODIFY_ORDER_ITEM_BUTTON) 
+    @modify_button = DisplayButton.find_by_perm_id(ButtonMapper::MODIFY_ORDER_ITEM_BUTTON)
     @course_button = DisplayButton.find_by_perm_id(ButtonMapper::COURSE_BUTTON)
     @remove_item_button = DisplayButton.find_by_perm_id(ButtonMapper::REMOVE_ITEM_BUTTON);
     @print_bill_button = DisplayButton.find_by_perm_id(ButtonMapper::PRINT_BILL_BUTTON);
@@ -510,6 +510,8 @@ class HomeController < ApplicationController
     @toggle_menu_item_double_mode_button = DisplayButton.find_by_perm_id(ButtonMapper::TOGGLE_MENU_ITEM_DOUBLE_BUTTON);
     
     @display_buttons = []
+
+    @modify_button.button_text = @modify_button.button_text
     
     @display_buttons << @tables_button << @order_button << @modify_button
     
