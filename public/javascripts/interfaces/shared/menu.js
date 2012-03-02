@@ -78,9 +78,7 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         renderReceipt(tableID);
     }
     
-    if(callHomePollInitSequenceComplete) {
-        checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);
-    }
+    checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);
     
     newlyAdded = addActiveTable(tableID);
     renderActiveTables();
