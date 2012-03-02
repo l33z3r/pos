@@ -54,14 +54,6 @@ function renderReceipt(tableID) {
         if(kitchenOrders[tableID] != null && orderNums[tableID] && (orderNums[tableID] != orderToCopy.order_num)) {
             tableCleared(tableID, orderNums[tableID]);
         }
-        
-        //is this a result of transfering a table? if so we must clear the last order
-        for(var theTableID in orderNums) {
-            if(orderNums[theTableID] == orderToCopy.order_num) {
-                tableCleared(theTableID, orderNums[theTableID]);
-                break;
-            }
-        }
     }
     
     //need to copy the tableOrder to the kitchenOrders array 
@@ -212,6 +204,14 @@ function renderReceipt(tableID) {
         $('#no_orders_message').show();
     } else {
         $('#no_orders_message').hide();
+    }
+        
+    //is this a result of transfering a table? if so we must clear the last order
+    for(var theTableID in orderNums) {
+        if(orderNums[theTableID] == orderToCopy.order_num && theTableID != tableID) {
+            tableCleared(theTableID, orderNums[theTableID]);
+            break;
+        }
     }
 }
 
