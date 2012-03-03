@@ -391,3 +391,8 @@ function cacheUpdateCheckPoll() {
     
     setTimeout(cacheUpdateCheckPoll, 5000);
 }
+
+function doScheduledTasks() {
+    rollDate();
+    trySendOutstandingOrdersToServer();
+}

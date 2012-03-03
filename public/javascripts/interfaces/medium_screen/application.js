@@ -83,3 +83,7 @@ function doSubmitSettings() {
     showSpinner();
     $('#settings_form').submit();
 }
+
+function doScheduledTasks() {
+    //this is called on callhome poll
+}

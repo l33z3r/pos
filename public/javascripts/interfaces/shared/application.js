@@ -115,8 +115,7 @@ function callHomePollInitSequenceCompleteHook() {
 }
 
 function clueyScheduler() {
-    rollDate();
-    trySendOutstandingOrdersToServer();
+    doScheduledTasks();
     
     var numSeconds = 10;
     setTimeout(clueyScheduler, numSeconds * 1000);
