@@ -54,14 +54,6 @@ function renderReceipt(tableID) {
         if(kitchenOrders[tableID] != null && orderNums[tableID] && (orderNums[tableID] != orderToCopy.order_num)) {
             tableCleared(tableID, orderNums[tableID]);
         }
-        
-        //is this a result of transfering a table? if so we must clear the last order
-        for(var theTableID in orderNums) {
-            if(orderNums[theTableID] == orderToCopy.order_num && tableId != theTableID) {
-                tableCleared(theTableID, orderNums[theTableID]);
-                break;
-            }
-        }
     }
     
     //need to copy the tableOrder to the kitchenOrders array 
@@ -212,6 +204,14 @@ function renderReceipt(tableID) {
         $('#no_orders_message').show();
     } else {
         $('#no_orders_message').hide();
+    }
+        
+    //is this a result of transfering a table? if so we must clear the last order
+    for(var theTableID in orderNums) {
+        if(orderNums[theTableID] == orderToCopy.order_num && theTableID != tableID) {
+            tableCleared(theTableID, orderNums[theTableID]);
+            break;
+        }
     }
 }
 
@@ -450,7 +450,7 @@ function loadCourseChecks() {
     //load course checks from the web db
     courseChecks = retrieveStorageJSONValue("kitchen_course_checks");
     orderXClicked = retrieveStorageJSONValue("kitchen_order_x_clicked");
-    orderNumbs = retrieveStorageJSONValue("order_nums");
+    orderNums = retrieveStorageJSONValue("order_nums");
     
     if(!courseChecks) {
         courseChecks = {};
@@ -461,7 +461,7 @@ function loadCourseChecks() {
     }
     
     if(!orderNums) {
-        orderXNums = {};
+        orderNums = {};
     }
 }
 
@@ -473,6 +473,7 @@ function tableCleared(tableID, orderNum) {
     orderXClicked[tableID] = false;
     
     kitchenOrders[tableID] = null;
+    orderNums[tableID] = null;
     
     saveCourseChecks();
     
