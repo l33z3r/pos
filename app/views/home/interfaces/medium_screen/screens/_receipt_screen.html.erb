@@ -179,7 +179,7 @@
         <div class="button" onclick="closeDiscountPopup();doDisplayButtonPasscodePrompt(48, function () {var switchHappened = checkMenuScreenForFunction();if(switchHappened) {timeout = 100;} else {timeout = 0;}setTimeout(function() {toggleModifyOrderItemScreen(); return false;}, timeout);});">Modify</div>
         <br>
 
-        <div class="button" onclick="setScreenOrder('false');showPricePopup();">Change Price</div>
+        <div class="button" onclick="setScreenOrder('false');removePriceBubble();showPricePopup();">Change Price</div>
         <br>
 
         <div class="button" onclick="showDiscountPopup();">Apply Discount</div>

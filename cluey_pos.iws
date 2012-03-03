@@ -15,6 +15,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b175b289-9e99-4e0b-90b8-c6462789b4b1" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cluey_pos.iws" afterPath="$PROJECT_DIR$/cluey_pos.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/database.yml" afterPath="$PROJECT_DIR$/config/database.yml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" />
@@ -79,16 +80,16 @@
       <file leaf-file-name="menu.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="444" column="70" selection-start="11958" selection-end="11958" vertical-scroll-proportion="-7.2">
+            <state line="457" column="17" selection-start="12165" selection-end="12165" vertical-scroll-proportion="-21.6">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="database.yml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="database.yml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config/database.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="116" selection-start="835" selection-end="835" vertical-scroll-proportion="0.53125">
+            <state line="5" column="39" selection-start="123" selection-end="123" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -106,7 +107,7 @@
       <file leaf-file-name="_edit_price_screen.html.erb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_edit_price_screen.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="56" selection-start="360" selection-end="360" vertical-scroll-proportion="-7.5">
+            <state line="11" column="56" selection-start="330" selection-end="330" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -115,7 +116,16 @@
       <file leaf-file-name="_functions_screen.html.erb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_functions_screen.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="78" column="92" selection-start="2525" selection-end="2525" vertical-scroll-proportion="-5.5">
+            <state line="78" column="93" selection-start="2526" selection-end="2526" vertical-scroll-proportion="-11.375">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_receipt_screen.html.erb" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="192" column="30" selection-start="7415" selection-end="7415" vertical-scroll-proportion="0.80972517">
               <folding />
             </state>
           </provider>
@@ -124,7 +134,23 @@
       <file leaf-file-name="_add_note_screen.html.erb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_add_note_screen.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="77" selection-start="857" selection-end="857" vertical-scroll-proportion="-1.375">
+            <state line="9" column="157" selection-start="345" selection-end="345" vertical-scroll-proportion="-5.625">
+              <folding>
+                <element signature="tag#div#1" expanded="false" />
+                <element signature="tag#div#0;tag#div#1" expanded="false" />
+                <element signature="tag#div#1;tag#div#1" expanded="false" />
+                <element signature="tag#div#1;tag#div#1;tag#div#1" expanded="false" />
+                <element signature="tag#div#2;tag#div#1;tag#div#1" expanded="false" />
+                <element signature="tag#div#0;tag#div#2;tag#div#1;tag#div#1" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_menu_items_screen.html.erb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_menu_items_screen.html.erb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="36" column="93" selection-start="1801" selection-end="1817" vertical-scroll-proportion="-6.25">
               <folding />
             </state>
           </provider>
@@ -147,7 +173,6 @@
         <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_menu_items_screen.html.erb" />
         <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_order_item_additions_screen.html.erb" />
         <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_menu_screen.html.erb" />
-        <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb" />
         <option value="$PROJECT_DIR$/app/views/layouts/admin.html.erb" />
         <option value="$PROJECT_DIR$/config/environments/production.rb" />
         <option value="$PROJECT_DIR$/.gitignore" />
@@ -158,8 +183,9 @@
         <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_edit_price_screen.html.erb" />
         <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_functions_screen.html.erb" />
         <option value="$PROJECT_DIR$/public/javascripts/interfaces/shared/util.js" />
-        <option value="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" />
         <option value="$PROJECT_DIR$/config/database.yml" />
+        <option value="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" />
+        <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb" />
       </list>
     </option>
   </component>
@@ -532,7 +558,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope">
         <subPane subId="Project Files">
           <PATH>
@@ -680,6 +705,7 @@
         </subPane>
       </pane>
       <pane id="Favorites" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -695,15 +721,15 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="163" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="1049" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="1051" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="1049" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="162" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="154" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.includeJavaFiles" value="false" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="154" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
@@ -910,27 +936,27 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="24" width="1602" height="853" extended-state="6" />
+    <frame x="-1" y="24" width="1922" height="1153" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3890411" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946485" sideWeight="0.6726027" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21643835" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21643835" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946485" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25531915" sideWeight="0.78356165" order="0" side_tool="false" content_ui="tabs" x="376" y="260" width="366" height="490" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25494388" sideWeight="0.78356165" order="0" side_tool="false" content_ui="tabs" x="376" y="260" width="366" height="490" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3890411" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -980,11 +1006,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/helpers/application_helper.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="18" selection-start="189" selection-end="189" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state line="8" column="19" selection-start="138" selection-end="138" vertical-scroll-proportion="0.0" />
@@ -997,91 +1018,89 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/mobile_device.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="28" selection-start="946" selection-end="965" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_menu_items_screen.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="43" selection-start="530" selection-end="530" vertical-scroll-proportion="-7.5">
-          <folding />
-        </state>
+        <state line="48" column="28" selection-start="946" selection-end="965" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/admin/display_buttons_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="4" selection-start="218" selection-end="218" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="16" column="4" selection-start="218" selection-end="218" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/util.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="9" selection-start="863" selection-end="863" vertical-scroll-proportion="0.37320575">
-          <folding />
-        </state>
+        <state line="29" column="9" selection-start="863" selection-end="863" vertical-scroll-proportion="0.37320575" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/home_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="512" column="59" selection-start="15370" selection-end="15370" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="512" column="59" selection-start="15370" selection-end="15370" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/stylesheets/interfaces/medium_screen/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="772" column="14" selection-start="17972" selection-end="17972" vertical-scroll-proportion="-11.72">
-          <folding />
-        </state>
+        <state line="772" column="14" selection-start="17972" selection-end="17972" vertical-scroll-proportion="-11.72" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_menu_screen.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="31" selection-start="354" selection-end="354" vertical-scroll-proportion="-1.875">
-          <folding />
-        </state>
+        <state line="9" column="31" selection-start="354" selection-end="354" vertical-scroll-proportion="-1.875" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/database.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="39" selection-start="123" selection-end="123" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/util.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="21" selection-start="1296" selection-end="1296" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="55" column="21" selection-start="1296" selection-end="1296" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_edit_price_screen.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="56" selection-start="360" selection-end="360" vertical-scroll-proportion="-7.5">
+        <state line="11" column="56" selection-start="330" selection-end="330" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_add_note_screen.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="77" selection-start="857" selection-end="857" vertical-scroll-proportion="-1.375">
+        <state line="9" column="157" selection-start="345" selection-end="345" vertical-scroll-proportion="-5.625">
+          <folding>
+            <element signature="tag#div#1" expanded="false" />
+            <element signature="tag#div#0;tag#div#1" expanded="false" />
+            <element signature="tag#div#1;tag#div#1" expanded="false" />
+            <element signature="tag#div#1;tag#div#1;tag#div#1" expanded="false" />
+            <element signature="tag#div#2;tag#div#1;tag#div#1" expanded="false" />
+            <element signature="tag#div#0;tag#div#2;tag#div#1;tag#div#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_menu_items_screen.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="93" selection-start="1801" selection-end="1817" vertical-scroll-proportion="-6.25">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_functions_screen.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="78" column="92" selection-start="2525" selection-end="2525" vertical-scroll-proportion="-5.5">
+        <state line="78" column="93" selection-start="2526" selection-end="2526" vertical-scroll-proportion="-11.375">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="444" column="70" selection-start="11958" selection-end="11958" vertical-scroll-proportion="-7.2">
+        <state line="457" column="17" selection-start="12165" selection-end="12165" vertical-scroll-proportion="-21.6">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/database.yml">
+    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="116" selection-start="835" selection-end="835" vertical-scroll-proportion="0.53125">
+        <state line="192" column="30" selection-start="7415" selection-end="7415" vertical-scroll-proportion="0.80972517">
           <folding />
         </state>
       </provider>

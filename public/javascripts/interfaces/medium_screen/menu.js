@@ -436,8 +436,12 @@ function showEditPopup(receiptItem) {
     registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
 }
 
-function showPricePopup() {
+function removePriceBubble(){
     currentTargetPopupAnchor.RemoveBubblePopup();
+}
+
+function showPricePopup() {
+
     swipeToMenu();
     hideAllMenuSubScreens();
     $('.new_price').val("");
@@ -448,9 +452,10 @@ function showPricePopup() {
 function showAddNotePopup() {
     swipeToMenu();
     hideAllMenuSubScreens();
-
-    $('#add_note_screen').show();
+    $('.note_input').focus();
     showAndroidKeyboard();
+    $('#add_note_screen').show();
+
 //    window.setTimeout($('.note_input').focus(),2000);
 }
 
