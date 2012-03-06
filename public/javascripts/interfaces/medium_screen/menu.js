@@ -341,32 +341,24 @@ function saveEditOrderItem() {
         newQuantity = 1;
     }
 
-    targetInputCourseNumEl = $('#' + popupId).find('.course_num');
-    newCourseNum = parseInt(targetInputCourseNumEl.val());
-
-    if (isNaN(newCourseNum)) {
-        newCourseNum = 0;
-    } else if (newCourseNum > 10) {
-        newCourseNum = 10;
-    } else if (newCourseNum < 0) {
-        newCourseNum = 0;
-    }
-
     targetInputPricePerUnitEl = $('.new_price');
     newPricePerUnit = parseFloat(targetInputPricePerUnitEl.val());
+
+    var courseNum;
 
     if (isNaN(newPricePerUnit)) {
         newPricePerUnit = currentPrice;
     }
     if (selectedTable != 0) {
         order = tableOrders[selectedTable];
-
-        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum);
+        courseNum = order.items[itemNumber - 1].product.course_num;
+        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum);
 
         storeTableOrderInStorage(current_user_id, selectedTable, order);
     } else {
         order = currentOrder;
-        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum);
+        courseNum = order.items[itemNumber - 1].product.course_num;
+        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum);
 
         storeOrderInStorage(current_user_id, order);
     }
@@ -436,7 +428,7 @@ function showEditPopup(receiptItem) {
     registerPopupClickHandler($('#' + popupId), closeDiscountPopup);
 }
 
-function removePriceBubble(){
+function removePriceBubble() {
     currentTargetPopupAnchor.RemoveBubblePopup();
 }
 
@@ -1133,40 +1125,18 @@ function priceNumberSelectKeypadClick(val) {
     $('.new_price').val(newVal);
 
     var displayVal = $('.new_price').val();
+     displayVal = currency(parseInt(displayVal) / 100, false);
 
-
-    if (displayVal.length == 1) {
-        displayVal = displayVal.charAt(0) + "." + displayVal.charAt(1) + "0"
-    }
-    if (displayVal.length == 2) {
-        displayVal = displayVal.charAt(0) + "." + displayVal.charAt(1) + "0"
-    }
-    if (newVal.length == 3) {
-        displayVal = displayVal.charAt(0) + "." + displayVal.charAt(1) + displayVal.charAt(2)
-    }
-    if (newVal.length == 4) {
-        displayVal = displayVal.charAt(0) + displayVal.charAt(1) + "." + displayVal.charAt(2) + displayVal.charAt(3)
-    }
     $('#price_number_show').html(displayVal.toString());
 }
 
 function chargeNumberSelectKeypadClick(val) {
+
     var newVal = $('.note_charge').val().toString() + val;
     $('.note_charge').val(newVal);
     var displayVal = $('.note_charge').val();
 
-    if (displayVal.length == 1) {
-        displayVal = displayVal.charAt(0) + "." + displayVal.charAt(1) + "0"
-    }
-    if (displayVal.length == 2) {
-        displayVal = displayVal.charAt(0) + "." + displayVal.charAt(1) + "0"
-    }
-    if (newVal.length == 3) {
-        displayVal = displayVal.charAt(0) + "." + displayVal.charAt(1) + displayVal.charAt(2)
-    }
-    if (newVal.length == 4) {
-        displayVal = displayVal.charAt(0) + displayVal.charAt(1) + "." + displayVal.charAt(2) + displayVal.charAt(3)
-    }
+    displayVal = currency(parseInt(displayVal) / 100, false);
 
     $('.display_charge').val(displayVal.toString());
 }
@@ -1192,17 +1162,12 @@ function doCancelchargeNumberSelectKeypad() {
     oldVal = $('.note_charge').val().toString();
     newVal = oldVal.substring(0, oldVal.length - 1);
     $('.note_charge').val(newVal);
+    $('.display_charge').val(newVal);
 }
 
 function setNewPrice(val) {
-    if ($('.new_price').val().length == 2) {
-        $('.new_price').val(parseInt(val) / 10); }
-    else if ($('.new_price').val().length == 1)
-        {
-            $('.new_price').val($('.new_price').val());
-        }else {
-        $('.new_price').val(parseInt(val) / 100);
-    }
+
+    $('.new_price').val(parseInt(val) / 100);
     saveEditOrderItem();
     backScreenNav();
 
@@ -1210,15 +1175,7 @@ function setNewPrice(val) {
 
 function setNewCharge(val) {
     if (val != "") {
-        if ($('.note_charge').val().length == 2) {
-            $('.note_charge').val(parseInt(val) / 10);
-        } else if ($('.note_charge').val().length == 1)
-        {
-            $('.note_charge').val($('.note_charge').val());
-        }else
-        {
-            $('.note_charge').val(parseInt(val) / 100);
-        }
+        $('.note_charge').val(parseInt(val) / 100);
     } else {
         $('.note_charge').val('')
     }
@@ -1244,6 +1201,17 @@ function setScreenOrder(value) {
 
 function setInitScreen(value) {
     initScreenDefault = value;
+}
+
+function swipeToNote(){
+   if (selectedTable == 0)  {
+        niceAlert("Please select a table first");
+        return;
+    }else{
+       setInitScreen('true');
+       $('#edit_price_screen').hide();
+       showAddNotePopup()
+   }
 }
 
 function doSubmitTableNumber() {
