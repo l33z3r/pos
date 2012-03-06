@@ -76,7 +76,7 @@ Pos::Application.routes.draw do
     resources :displays do
       member do
         get 'builder'
-        post 'duplicate'
+        get 'duplicate'
         post 'default'
         post 'public'
         

@@ -82,8 +82,10 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);
     }
     
-    newlyAdded = addActiveTable(tableID);
-    renderActiveTables();
+    if(tableID != 0) {
+        newlyAdded = addActiveTable(tableID);
+        renderActiveTables();
+    }
     
     if(current_user_id) {
         //now load back up the current users order

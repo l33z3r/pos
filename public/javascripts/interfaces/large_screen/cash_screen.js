@@ -81,7 +81,7 @@ function cashOutCancel() {
     showMenuScreen();
 }
 
-var paymentIntegrationId = null;
+var paymentIntegrationId = 0;
 
 function paymentMethodSelected(method, integration_id) {
     updateTotalTendered();
@@ -100,19 +100,20 @@ function paymentMethodSelected(method, integration_id) {
     
     $('#' + method.replace(/ /g,"_") + '_payment_method_button').addClass('selected');
     
+    //if the previously selected payment method had an integration, we want to popup a notice saying that it
+    //must be the last payment method you select in order to actually do the integration
+    if(paymentIntegrationId != 0) {
+        niceAlert("In order to use a payment integration it must be the last payment method that you select while doing split payments!");
+    }
+    
     paymentIntegrationId = integration_id;
     
     //check if the payment method is the charge room and do some magic
     if(paymentIntegrationId != 0) {
         
-        totalAmountInclCashback = currentTotalFinal + cashback
-        
-        //integrations do not allow for split payments
-        splitPayments = {};
-        splitPayments[paymentMethod] = totalAmountInclCashback;
+        totalAmountInclCashback = currentTotalFinal + cashback;
         
         if(paymentIntegrationId == zalionPaymentIntegrationId) {
-            //alert("Zalion Integration");
             showLoadingDiv();
             
             //fire off request to get contents of ROOMFILE
@@ -132,8 +133,6 @@ function paymentMethodSelected(method, integration_id) {
                 }
             });
         }
-        
-        return;
     }
     
     resetTendered();
@@ -299,7 +298,7 @@ function doChargeRoom(orderData) {
     orderData.location = business_name;
     
     //convert json to string
-    var orderDataString = JSON.stringify(orderData);
+    //var orderDataString = JSON.stringify(orderData);
     
     if(paymentIntegrationId != 0) {
         if(paymentIntegrationId == zalionPaymentIntegrationId) {
@@ -317,7 +316,7 @@ function doChargeRoom(orderData) {
                 },
                 data: {
                     zalion_charge_request_url : zalion_charge_request_url,
-                    order_data : orderDataString
+                    order_data : orderData
                 }
             });
         }

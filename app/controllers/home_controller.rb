@@ -354,7 +354,7 @@ class HomeController < ApplicationController
     
     params = {
       "message" => "charge this room",
-      "order_data" => @order_data
+      "order_data" => @order_data.to_s
     }
     
     req = Net::HTTP::Post.new(url.path)
@@ -368,8 +368,27 @@ class HomeController < ApplicationController
       @forward_response = @http.start {|http|
         http.request(req)
       }
+    
+      #store a client transaction if this sale was linked to a charged_room
+      @order_id = @order_data['order_num']
+      @charged_room = @order_data['charged_room']
+      
+      @client_name = @charged_room['selected_folio_name']
+      @payment_integration_type_id = @charged_room['payment_integration_type_id']
+      
+      @transaction_data = {
+        :selected_room_number => @charged_room['selected_room_number'],
+        :selected_folio_number => @charged_room['selected_folio_number']
+      }
+      
+      @ct = ClientTransaction.create(
+        :order_id => @order_id, 
+        :client_name => @client_name, 
+        :transaction_data => @transaction_data,
+        :payment_integration_type_id => @payment_integration_type_id
+      )
     rescue
-      render :status => 503, :inline => "Cannot reach zalion charge service"  and return
+      render :status => 503, :inline => "Cannot reach zalion charge service" and return
     end
 
     logger.info "Got response from room charge servlet: #{@forward_response.body}"

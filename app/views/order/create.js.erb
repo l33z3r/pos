@@ -1,5 +1,6 @@
-//set the order number on the order so that if we are chargin a room we can send the order number too
+//set the order number and id on the order so that if we are chargin a room we can send the order number too
 orderData.order_num = <%=@order.order_num%>;
+orderData.id = <%=@order.id%>;
 
 if(isTableZeroOrder) {
   lastTableZeroOrder.order_num = orderData.order_num;

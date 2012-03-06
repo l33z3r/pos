@@ -242,8 +242,10 @@ class GlobalSetting < ActiveRecord::Base
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when HTTP_AUTH_USERNAME
       @gs = find_or_create_by_key(:key => HTTP_AUTH_USERNAME.to_s, :value => "cluey", :label_text => LABEL_MAP[HTTP_AUTH_USERNAME])
+      @gs.parsed_value = @gs.value
     when HTTP_AUTH_PASSWORD
       @gs = find_or_create_by_key(:key => HTTP_AUTH_PASSWORD.to_s, :value => "cluey100", :label_text => LABEL_MAP[HTTP_AUTH_PASSWORD])
+      @gs.parsed_value = @gs.value
     when CASH_DRAWER_IP_ADDRESS
       @gs = find_or_create_by_key(:key => "#{CASH_DRAWER_IP_ADDRESS.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[CASH_DRAWER_IP_ADDRESS])
       @gs.parsed_value = @gs.value
