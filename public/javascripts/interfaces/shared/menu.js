@@ -82,8 +82,10 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);
     }
     
-    newlyAdded = addActiveTable(tableID);
-    renderActiveTables();
+    if(tableID != 0) {
+        newlyAdded = addActiveTable(tableID);
+        renderActiveTables();
+    }
     
     if(current_user_id) {
         //now load back up the current users order
@@ -691,7 +693,7 @@ function loadCurrentOrder() {
 function recptScroll(targetPrefix) {
     //console.log("Updating receipt: " + '#' + targetPrefix + 'till_roll');
     
-    if(!disableAdvancedTouch && isTouchDevice()) {
+    if(isTouchDevice()) {
         $('#' + targetPrefix + 'till_roll').touchScroll('update');
             
         currentHeight = $('#' + targetPrefix + 'till_roll').height();
@@ -718,7 +720,7 @@ function recptScroll(targetPrefix) {
 }
 
 function updateRecpt(targetPrefix) {
-    if(!disableAdvancedTouch && isTouchDevice()) {
+    if(isTouchDevice()) {
         $('#' + targetPrefix + 'till_roll').touchScroll('update');
     }
 }

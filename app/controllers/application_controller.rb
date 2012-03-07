@@ -16,9 +16,6 @@ class ApplicationController < ActionController::Base
   LARGE_INTERFACE = "large"
   MEDIUM_INTERFACE = "medium"
   SMALL_INTERFACE = "small"
-  
-  HTTP_BASIC_AUTH_USERNAME = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_USERNAME
-  HTTP_BASIC_AUTH_PASSWORD = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_PASSWORD
       
   include ActionView::Helpers::NumberHelper
   
@@ -112,36 +109,36 @@ class ApplicationController < ActionController::Base
   def do_request_sync_table_order terminal_id, table_order_data, table_id, employee_id
     
       
-      if table_id != "0"
-        remove_previous_sync_for_table table_id, false
-      else
-        remove_old_table_0_orders
+    if table_id != "0"
+      remove_previous_sync_for_table table_id, false
+    else
+      remove_old_table_0_orders
+    end
+      
+    #does this order have an order id? if not generate one
+    if !table_order_data[:orderData][:order_num]
+      table_order_data[:orderData][:order_num] = Order.next_order_num
+    end
+      
+    table_order_data = table_order_data.to_json
+      
+    @sync_data = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => employee_id}.to_yaml
+      
+    @time = Time.now.to_i
+      
+    #make sure the time is at least 2 milliseconds afte the last sync so that it gets picked up ok
+    @last_table_order_sync = TerminalSyncData.fetch_sync_table_order_times.last
+      
+    if @last_table_order_sync
+      @last_sync_time = @last_table_order_sync.time.to_i
+      
+      if (@last_sync_time + 2) > @time
+        @time = @last_sync_time + 2
       end
+    end
       
-      #does this order have an order id? if not generate one
-      if !table_order_data[:orderData][:order_num]
-        table_order_data[:orderData][:order_num] = Order.next_order_num
-      end
-      
-      table_order_data = table_order_data.to_json
-      
-      @sync_data = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => employee_id}.to_yaml
-      
-      @time = Time.now.to_i
-      
-      #make sure the time is at least 2 milliseconds afte the last sync so that it gets picked up ok
-      @last_table_order_sync = TerminalSyncData.fetch_sync_table_order_times.last
-      
-      if @last_table_order_sync
-        @last_sync_time = @last_table_order_sync.time.to_i
-      
-        if (@last_sync_time + 2) > @time
-          @time = @last_sync_time + 2
-        end
-      end
-      
-      TerminalSyncData.create!({:sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 
-          :time => @time, :data => @sync_data})
+    TerminalSyncData.create!({:sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 
+        :time => @time, :data => @sync_data})
     
   end
   
@@ -442,6 +439,9 @@ class ApplicationController < ActionController::Base
     @authentication_required = GlobalSetting.parsed_setting_for GlobalSetting::AUTHENTICATION_REQUIRED
     @local_auth_required = GlobalSetting.parsed_setting_for GlobalSetting::LOCAL_AUTHENTICATION_REQUIRED
     
+    @http_basic_username = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_USERNAME
+    @http_basic_password = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_PASSWORD
+  
     if @authentication_required 
       @need_auth = true
       
@@ -478,8 +478,8 @@ class ApplicationController < ActionController::Base
       @username_param = params[:u]
       @password_param = params[:p]
     
-      @username_ok = (@username_param and @username_param == HTTP_BASIC_AUTH_USERNAME)
-      @password_ok = (@password_param and @password_param == HTTP_BASIC_AUTH_PASSWORD)
+      @username_ok = (@username_param and @username_param == @http_basic_username)
+      @password_ok = (@password_param and @password_param == @http_basic_password)
     
       if @username_ok and @password_ok
         session[:auth_succeeded] = true
@@ -490,7 +490,8 @@ class ApplicationController < ActionController::Base
     end
     
     authenticate_or_request_with_http_basic do |username, password|
-      @auth_ok = username == HTTP_BASIC_AUTH_USERNAME && password == HTTP_BASIC_AUTH_PASSWORD
+      logger.info "#{username} #{password} #{@http_basic_username} #{@http_basic_password}"
+      @auth_ok = username == @http_basic_username && password == @http_basic_password
       
       if @auth_ok
         session[:auth_succeeded] = true

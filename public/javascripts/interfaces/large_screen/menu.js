@@ -1059,7 +1059,9 @@ function doTotal(applyDefaultServiceCharge) {
         paymentMethod = defaultPaymentMethod;
     }
     
+    //reset some vars
     splitPayments = {};
+    paymentIntegrationId = 0;
     
     paymentMethodSelected(paymentMethod, 0);
     

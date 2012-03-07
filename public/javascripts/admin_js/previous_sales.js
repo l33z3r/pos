@@ -189,6 +189,8 @@ function loadOpenOrders() {
     var amount;
     
     for(var table_id in tables) {
+        if(table_id == "0") continue;
+        
         getTableOrderFromStorage(current_user_id, table_id);
         
         var order = tableOrders[table_id];

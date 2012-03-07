@@ -62,9 +62,6 @@
   var RESTAURANT_MENU_SCREEN = <%= GlobalSetting::RESTAURANT_MENU_SCREEN %>;
   var RETAIL_MENU_SCREEN = <%= GlobalSetting::RETAIL_MENU_SCREEN %>;
   
-  //these variables are used for polling and they get updated by the dynamic javascript
-  var lastInterfaceReloadTime = <%=Time.now.to_i%>;
-  
   //this is for the order ready notifications on mobile
   var lastOrderReadyNotificationTime = <%=Time.now.to_i%>;
   
@@ -133,7 +130,7 @@
   
   var zalionChargeRoomServiceIP = "<%= @zalion_charge_room_service_ip %>";
 
-  var disableAdvancedTouch = <%= GlobalSetting.parsed_setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @terminal_fingerprint} %>;
+  var disableAdvancedTouch = <%= GlobalSetting.parsed_setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @terminal_fingerprint, :user_agent => request.user_agent} %>;
 
   //enumerate the course labels
   var courseLabels = {};

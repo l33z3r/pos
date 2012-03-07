@@ -6,12 +6,7 @@ var clear10BottomBorderHTML = "<div class='clear_top_margin_10_bottom_border'>&n
 var appOnline = true;
 
 function isTouchDevice() {
-    try {
-        document.createEvent("TouchEvent");
-        return true;
-    } catch (e) {
-        return false;
-    }
+    return !disableAdvancedTouch;
 }
 
 function goTo(place) {
@@ -144,6 +139,7 @@ function doClearAndReload() {
 
 var terminalFingerPrintCookieName = "terminal_fingerprint";
 var sessionIdCookieName = "_session_id";
+var lastReloadCookieName = "last_reload_time";
 
 //deletes everything but the fingerprint cookie
 function clearLocalStorageAndCookies() {
@@ -157,7 +153,7 @@ function clearLocalStorageAndCookies() {
         var e = c[i].indexOf("=");
         var cname = c[i].substr(0,e);
         
-        if($.trim(cname) == terminalFingerPrintCookieName || $.trim(cname) == sessionIdCookieName) {
+        if($.trim(cname) == terminalFingerPrintCookieName || $.trim(cname) == sessionIdCookieName || $.trim(cname) == lastReloadCookieName) {
             continue;
         }
         
@@ -627,7 +623,7 @@ function initPressedCSS() {
     var stopEventName = "mouseup";
     var cancelEventName = "mouseout"
     
-    if(!disableAdvancedTouch && isTouchDevice()) {
+    if(isTouchDevice()) {
         startEventName = "touchstart";
         stopEventName = "touchend";
         cancelEventName = "touchcancel";

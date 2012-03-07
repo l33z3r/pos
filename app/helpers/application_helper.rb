@@ -1,13 +1,21 @@
 module ApplicationHelper
 
   def product_image_thumb product, show_default=false
+    @img_url = product_image_url product, show_default
+    
+    image_tag(@img_url) if @img_url
+  end
+  
+  def product_image_url product, show_default=false
     if product.has_product_image?
-      image_tag product.product_image.url(:thumb, false)
+      return product.product_image.url(:thumb, false)
     elsif product.display_image and !product.display_image.blank?
-      image_tag "product_images/#{product.display_image}"
+      return "product_images/#{product.display_image}"
     elsif show_default
-      image_tag "default_product_image.jpg"
+      return "default_product_image.jpg"
     end
+    
+    return nil
   end
   
   def employee_image_thumb employee, show_default=false

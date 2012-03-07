@@ -42,7 +42,7 @@ function doGlobalInit() {
     
     setFingerPrintCookie();
     
-    if(!disableAdvancedTouch && isTouchDevice()) {
+    if(isTouchDevice()) {
         //init touch if were not in mobile as that uses jqt
         if(!inMobileContext()) {
             initTouch();

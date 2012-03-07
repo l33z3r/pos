@@ -238,12 +238,31 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_key(:key => "#{PRINTER_LEFT_MARGIN.to_s}_#{args[:fingerprint]}", :value => 0, :label_text => LABEL_MAP[PRINTER_LEFT_MARGIN])
       @gs.parsed_value = @gs.value
     when DISABLE_ADVANCED_TOUCH
-      @gs = find_or_create_by_key(:key => "#{DISABLE_ADVANCED_TOUCH.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[DISABLE_ADVANCED_TOUCH])
+      
+      # Base the advanced touch on the user agent if it is not set explicitly
+      # we want to default the ipads and mobile devices to use the touch and to disable it for desktop
+      
+      # SAMPLE USER AGENTS:
+      #desktop ua: Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.186 Safari/535.1
+      #android mobile ua: Mozilla/5.0 (Linux; U; Android 2.3.5; en-gb; GT-I9100 Build/GINGERBREAD) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1
+      #ipad ua using atomic: Mozilla/5.0 (iPad; CPU OS 5_0_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9A405
+      #ipad ua using kiosk: Mozilla/5.0 (iPad; U; CPU OS 5_0_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A405 Safari/7534.48.3
+      
+      @test_for_desktop = "Chrome"
+      @test_for_android = "Android"
+      @test_for_ipad = "iPad"
+      
+      @user_agent = args[:user_agent]
+      @default_disable_advanced_touch = @user_agent.include?(@test_for_desktop) and !@user_agent.include?(@test_for_android) and !@user_agent.include?(@test_for_ipad)
+      
+      @gs = find_or_create_by_key(:key => "#{DISABLE_ADVANCED_TOUCH.to_s}_#{args[:fingerprint]}", :value => "#{@default_disable_advanced_touch}", :label_text => LABEL_MAP[DISABLE_ADVANCED_TOUCH])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when HTTP_AUTH_USERNAME
       @gs = find_or_create_by_key(:key => HTTP_AUTH_USERNAME.to_s, :value => "cluey", :label_text => LABEL_MAP[HTTP_AUTH_USERNAME])
+      @gs.parsed_value = @gs.value
     when HTTP_AUTH_PASSWORD
       @gs = find_or_create_by_key(:key => HTTP_AUTH_PASSWORD.to_s, :value => "cluey100", :label_text => LABEL_MAP[HTTP_AUTH_PASSWORD])
+      @gs.parsed_value = @gs.value
     when CASH_DRAWER_IP_ADDRESS
       @gs = find_or_create_by_key(:key => "#{CASH_DRAWER_IP_ADDRESS.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[CASH_DRAWER_IP_ADDRESS])
       @gs.parsed_value = @gs.value

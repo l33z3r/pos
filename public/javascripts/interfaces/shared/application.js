@@ -15,6 +15,8 @@ var callHome = true;
 
 var lastSyncTableOrderTime = null;
 var lastSyncKey = "last_sync_table_order_time";
+
+var lastInterfaceReloadTime = null;
     
 //the following hack is due to eventX eventY being deprecated in new builds of chrome
 $.event.props = $.event.props.join('|').replace('layerX|layerY|', '').split('|');
@@ -33,7 +35,7 @@ function callHomePoll() {
         return;
     }
     
-    //load/store the timestamp
+    //load/store the timestamp for table sync
     if(lastSyncTableOrderTime == null) {
         //read it from web db
         var syncVal = retrieveStorageValue(lastSyncKey);
@@ -46,6 +48,23 @@ function callHomePoll() {
     } else {
         //write it to web db
         storeKeyValue(lastSyncKey, lastSyncTableOrderTime);
+    }
+    
+    //load/store the timestamp for reloads
+    if(lastInterfaceReloadTime == null) {
+        //read it from cookie
+        var lastReloadTime = getRawCookie(lastReloadCookieName);
+        
+        if(lastReloadTime != null) {
+            lastInterfaceReloadTime = parseFloat(lastReloadTime);
+        } else {
+            lastInterfaceReloadTime = 0;
+        }
+    } else {
+        //write it to cookie        
+        //100 year expiry, but will really end up in year 2038 due to limitations in browser
+        var exdays = 365 * 100;
+        setRawCookie(lastReloadCookieName, lastInterfaceReloadTime, exdays);
     }
     
     callHomeURL = "/call_home.js"
