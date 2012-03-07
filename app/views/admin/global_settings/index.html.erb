@@ -58,7 +58,7 @@
                   <tr>
                     <td>Default Home Screen</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_HOME_SCREEN %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_HOME_SCREEN, {:fingerprint => @terminal_fingerprint} %>
 
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::LOGIN_SCREEN %>" 

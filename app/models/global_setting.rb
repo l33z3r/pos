@@ -150,7 +150,7 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_key(:key => BYPASS_PIN.to_s, :value => "false", :label_text => LABEL_MAP[BYPASS_PIN])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when DEFAULT_HOME_SCREEN
-      @gs = find_or_create_by_key(:key => DEFAULT_HOME_SCREEN.to_s, :value => 1, :label_text => LABEL_MAP[DEFAULT_HOME_SCREEN])
+      @gs = find_or_create_by_key(:key => "#{DEFAULT_HOME_SCREEN.to_s}_#{args[:fingerprint]}", :value => 1, :label_text => LABEL_MAP[DEFAULT_HOME_SCREEN])
       @gs.parsed_value = @gs.value.to_i
     when AUTO_PRINT_RECEIPT
       @gs = find_or_create_by_key(:key => AUTO_PRINT_RECEIPT.to_s, :value => "false", :label_text => LABEL_MAP[AUTO_PRINT_RECEIPT])
@@ -392,6 +392,13 @@ class GlobalSetting < ActiveRecord::Base
             @my_disable_advanced_touch_gs.value = @disable_advanced_touch_gs.value
             @my_disable_advanced_touch_gs.save
             
+            #home screen
+            @home_screen_gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_HOME_SCREEN, {:fingerprint => @old_fingerprint}
+            
+            @my_home_screen_gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_HOME_SCREEN, {:fingerprint => @my_terminal_fingerprint}
+            @my_home_screen_gs.value = @home_screen_gs.value
+            @my_home_screen_gs.save
+            
             #delete old gs objects
             @websocket_ip_gs.destroy
             @cash_drawer_ip_gs.destroy
@@ -400,6 +407,7 @@ class GlobalSetting < ActiveRecord::Base
             @menu_screen_type_gs.destroy
             @printer_left_margin_gs.destroy
             @disable_advanced_touch_gs.destroy
+            @home_screen_gs.destroy
           end
         end
         if value

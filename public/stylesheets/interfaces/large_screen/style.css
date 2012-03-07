@@ -515,6 +515,11 @@ div#menu_screen div#menu_pages_container {
     border-radius: 7px;
 }
 
+div#menu_screen div#menu_pages_container div#menu_container {
+    height: 546px;
+    overflow-y: hidden;
+}
+
 div.global_status_message_container {
     width: -moz-fit-content;
     margin: 1px auto 0px auto;

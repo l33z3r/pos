@@ -51,5 +51,5 @@ end
 #swap out the default logger for our custom one
 Pos::Application.config.middleware.swap(
   Rails::Rack::Logger, NoisyLogger, :noisy => 
-    ["/call_home.js", "/ping.js", "/last_receipt_for_terminal.js", "/last_receipt_for_server.js", "/last_receipt_for_table.js", "/blank_receipt_for_print"]
+    ["/call_home.js", "/ping", "/last_receipt_for_terminal.js", "/last_receipt_for_server.js", "/last_receipt_for_table.js", "/blank_receipt_for_print"]
 )
