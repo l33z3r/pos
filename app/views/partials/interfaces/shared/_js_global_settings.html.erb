@@ -130,7 +130,7 @@
   
   var zalionChargeRoomServiceIP = "<%= @zalion_charge_room_service_ip %>";
 
-  var disableAdvancedTouch = <%= GlobalSetting.parsed_setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @terminal_fingerprint} %>;
+  var disableAdvancedTouch = <%= GlobalSetting.parsed_setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @terminal_fingerprint, :user_agent => request.user_agent} %>;
 
   //enumerate the course labels
   var courseLabels = {};

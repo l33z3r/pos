@@ -693,7 +693,7 @@ function loadCurrentOrder() {
 function recptScroll(targetPrefix) {
     //console.log("Updating receipt: " + '#' + targetPrefix + 'till_roll');
     
-    if(!disableAdvancedTouch && isTouchDevice()) {
+    if(isTouchDevice()) {
         $('#' + targetPrefix + 'till_roll').touchScroll('update');
             
         currentHeight = $('#' + targetPrefix + 'till_roll').height();
@@ -720,7 +720,7 @@ function recptScroll(targetPrefix) {
 }
 
 function updateRecpt(targetPrefix) {
-    if(!disableAdvancedTouch && isTouchDevice()) {
+    if(isTouchDevice()) {
         $('#' + targetPrefix + 'till_roll').touchScroll('update');
     }
 }

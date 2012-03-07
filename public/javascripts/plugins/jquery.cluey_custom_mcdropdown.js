@@ -448,7 +448,7 @@
         //CLUEY: need to bind the mousedown or touchstart
         //to the hoverOver for the ipad as it does not do hover
         function addBindings(el){
-            var eventName = (!disableAdvancedTouch && isTouchDevice()) ? "touchstart" : "mousedown";
+            var eventName = (isTouchDevice()) ? "touchstart" : "mousedown";
             
             removeBindings(el);
             $("> li", el)
@@ -456,7 +456,7 @@
         };
 		
         function removeBindings(el){
-            var eventName = (!disableAdvancedTouch && isTouchDevice()) ? "touchstart" : "mousedown";
+            var eventName = (isTouchDevice()) ? "touchstart" : "mousedown";
             
             $("> li", el)
             .unbind(eventName, hoverOver);

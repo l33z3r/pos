@@ -6,12 +6,7 @@ var clear10BottomBorderHTML = "<div class='clear_top_margin_10_bottom_border'>&n
 var appOnline = true;
 
 function isTouchDevice() {
-    try {
-        document.createEvent("TouchEvent");
-        return true;
-    } catch (e) {
-        return false;
-    }
+    return !disableAdvancedTouch;
 }
 
 function goTo(place) {
@@ -628,7 +623,7 @@ function initPressedCSS() {
     var stopEventName = "mouseup";
     var cancelEventName = "mouseout"
     
-    if(!disableAdvancedTouch && isTouchDevice()) {
+    if(isTouchDevice()) {
         startEventName = "touchstart";
         stopEventName = "touchend";
         cancelEventName = "touchcancel";
