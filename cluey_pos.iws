@@ -15,10 +15,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b175b289-9e99-4e0b-90b8-c6462789b4b1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_functions_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_functions_screen.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_settings_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_settings_screen.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_order_item_additions_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_order_item_additions_screen.html.erb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cluey_pos.iws" afterPath="$PROJECT_DIR$/cluey_pos.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/database.yml" afterPath="$PROJECT_DIR$/config/database.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/stylesheets/interfaces/medium_screen/style.css" afterPath="$PROJECT_DIR$/public/stylesheets/interfaces/medium_screen/style.css" />
     </list>
     <ignored path="cluey_pos.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -77,55 +79,37 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="_add_note_screen.html.erb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_add_note_screen.html.erb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="86" selection-start="290" selection-end="290" vertical-scroll-proportion="-4.375">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="menu.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1202" column="65" selection-start="34364" selection-end="34364" vertical-scroll-proportion="-4.96">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="database.yml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/config/database.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="57" selection-start="638" selection-end="638" vertical-scroll-proportion="0.6605505">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_functions_screen.html.erb" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="_functions_screen.html.erb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_functions_screen.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="78" column="41" selection-start="2474" selection-end="2474" vertical-scroll-proportion="-3.75">
+            <state line="98" column="65" selection-start="3106" selection-end="3106" vertical-scroll-proportion="0.4331307">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="touch.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/touch.js">
+      <file leaf-file-name="products_controller.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/admin/products_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="101" column="34" selection-start="2705" selection-end="2706" vertical-scroll-proportion="-6.92">
+            <state line="22" column="79" selection-start="646" selection-end="646" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="menu.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js">
+      <file leaf-file-name="_settings_screen.html.erb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_settings_screen.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="853" column="68" selection-start="27668" selection-end="27727" vertical-scroll-proportion="0.0">
+            <state line="20" column="65" selection-start="1044" selection-end="1044" vertical-scroll-proportion="-12.5">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main_controller.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/api/main_controller.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="4" column="19" selection-start="165" selection-end="165" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -134,16 +118,43 @@
       <file leaf-file-name="_receipt_screen.html.erb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="164" column="81" selection-start="6267" selection-end="6267" vertical-scroll-proportion="-10.0">
+            <state line="123" column="59" selection-start="4635" selection-end="4635" vertical-scroll-proportion="-6.1666665">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="util.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/util.js">
+      <file leaf-file-name="style.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/stylesheets/interfaces/medium_screen/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="729" column="9" selection-start="20010" selection-end="20010" vertical-scroll-proportion="-109.52">
+            <state line="1815" column="80" selection-start="40733" selection-end="40733" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="display.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/models/display.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="60" selection-start="468" selection-end="468" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_order_item_additions_screen.html.erb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_order_item_additions_screen.html.erb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="35" column="111" selection-start="1755" selection-end="1755" vertical-scroll-proportion="-1.6734694">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="product.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/models/product.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="372" column="16" selection-start="13030" selection-end="13043" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -163,22 +174,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_menu_items_screen.html.erb" />
-        <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_order_item_additions_screen.html.erb" />
         <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_menu_screen.html.erb" />
         <option value="$PROJECT_DIR$/app/views/layouts/admin.html.erb" />
         <option value="$PROJECT_DIR$/config/environments/production.rb" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/app/controllers/api/main_controller.rb" />
         <option value="$PROJECT_DIR$/app/controllers/home_controller.rb" />
-        <option value="$PROJECT_DIR$/public/stylesheets/interfaces/medium_screen/style.css" />
         <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_add_note_screen.html.erb" />
         <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_edit_price_screen.html.erb" />
-        <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb" />
         <option value="$PROJECT_DIR$/public/javascripts/interfaces/shared/util.js" />
         <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_functions_screen.html.erb" />
         <option value="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" />
         <option value="$PROJECT_DIR$/config/database.yml" />
+        <option value="$PROJECT_DIR$/app/controllers/api/main_controller.rb" />
+        <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb" />
+        <option value="$PROJECT_DIR$/public/stylesheets/interfaces/medium_screen/style.css" />
+        <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_order_item_additions_screen.html.erb" />
+        <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_settings_screen.html.erb" />
       </list>
     </option>
   </component>
@@ -217,153 +228,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Favorites" />
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="pos">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="pos">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="spec">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="pos">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="public">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="pos">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="db">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="pos">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="config">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="pos">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="app">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="pos">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="app">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="controllers">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="pos">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="app">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="controllers">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="api">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="pos">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="app">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="controllers">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="admin">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -699,6 +563,153 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Favorites" />
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="pos">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="pos">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="spec">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="pos">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="public">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="pos">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="db">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="pos">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="config">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="pos">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="app">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="pos">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="app">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="controllers">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="pos">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="app">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="controllers">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="api">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="pos">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="app">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="controllers">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="admin">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -714,15 +725,15 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="202" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="928" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="929" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="928" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="201" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="194" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.includeJavaFiles" value="false" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="194" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
@@ -929,7 +940,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="24" width="1602" height="853" extended-state="6" />
+    <frame x="0" y="24" width="1600" height="852" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
@@ -938,18 +949,18 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946485" sideWeight="0.6726027" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21506849" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21506849" sideWeight="0.0" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946485" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23210831" sideWeight="0.7849315" order="0" side_tool="false" content_ui="tabs" x="376" y="260" width="366" height="490" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23176242" sideWeight="0.7849315" order="0" side_tool="false" content_ui="tabs" x="376" y="260" width="366" height="490" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3890411" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -999,106 +1010,100 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/controllers/admin/display_buttons_controller.rb">
+    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/util.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="4" selection-start="218" selection-end="218" vertical-scroll-proportion="0.0" />
+        <state line="33" column="12" selection-start="954" selection-end="957" vertical-scroll-proportion="0.115384616" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/home_controller.rb">
+    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="512" column="59" selection-start="15370" selection-end="15370" vertical-scroll-proportion="0.0" />
+        <state line="853" column="68" selection-start="27668" selection-end="27727" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_add_note_screen.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="86" selection-start="290" selection-end="290" vertical-scroll-proportion="-4.375" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/touch.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="101" column="34" selection-start="2705" selection-end="2706" vertical-scroll-proportion="-6.92" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/util.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="729" column="9" selection-start="20010" selection-end="20010" vertical-scroll-proportion="-109.52" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/database.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="24" selection-start="322" selection-end="322" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1204" column="12" selection-start="34367" selection-end="34367" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/product.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="372" column="16" selection-start="13030" selection-end="13043" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/stylesheets/interfaces/medium_screen/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="772" column="14" selection-start="17972" selection-end="17972" vertical-scroll-proportion="-11.72" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_menu_screen.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="31" selection-start="354" selection-end="354" vertical-scroll-proportion="-1.875" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_menu_items_screen.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="93" selection-start="1801" selection-end="1817" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_edit_price_screen.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="26" selection-start="330" selection-end="330" vertical-scroll-proportion="-6.875">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/application.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="55" selection-start="392" selection-end="392" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/util.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="12" selection-start="954" selection-end="957" vertical-scroll-proportion="0.115384616">
+        <state line="1815" column="80" selection-start="40733" selection-end="40733" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="164" column="81" selection-start="6267" selection-end="6267" vertical-scroll-proportion="-10.0">
+        <state line="123" column="59" selection-start="4635" selection-end="4635" vertical-scroll-proportion="-6.1666665">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js">
+    <entry file="file://$PROJECT_DIR$/app/controllers/api/main_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="853" column="68" selection-start="27668" selection-end="27727" vertical-scroll-proportion="0.0">
+        <state line="4" column="19" selection-start="165" selection-end="165" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_add_note_screen.html.erb">
+    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_order_item_additions_screen.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="86" selection-start="290" selection-end="290" vertical-scroll-proportion="-4.375">
+        <state line="35" column="111" selection-start="1755" selection-end="1755" vertical-scroll-proportion="-1.6734694">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/touch.js">
+    <entry file="file://$PROJECT_DIR$/app/models/display.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="34" selection-start="2705" selection-end="2706" vertical-scroll-proportion="-6.92">
+        <state line="15" column="60" selection-start="468" selection-end="468" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/util.js">
+    <entry file="file://$PROJECT_DIR$/app/controllers/admin/products_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="729" column="9" selection-start="20010" selection-end="20010" vertical-scroll-proportion="-109.52">
+        <state line="22" column="79" selection-start="646" selection-end="646" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_settings_screen.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="65" selection-start="1044" selection-end="1044" vertical-scroll-proportion="-12.5">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_functions_screen.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="78" column="41" selection-start="2474" selection-end="2474" vertical-scroll-proportion="-3.75">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1202" column="65" selection-start="34364" selection-end="34364" vertical-scroll-proportion="-4.96">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/database.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="57" selection-start="638" selection-end="638" vertical-scroll-proportion="0.6605505">
+        <state line="98" column="65" selection-start="3106" selection-end="3106" vertical-scroll-proportion="0.4331307">
           <folding />
         </state>
       </provider>

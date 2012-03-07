@@ -1376,6 +1376,7 @@ div.button {
     background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
 }
 
+
 div.top_menu_button {
     width: 90px;
     max-width: 90px;
@@ -1766,7 +1767,7 @@ div#receipt_function_popup_content{
 
 div#quantity_function_popup_content{
     display: none;
-    width: 350px
+    width: 260px
 }
 
 div#discount_function_popup_content{
@@ -1816,8 +1817,8 @@ div#course_popup_markup_container div.course_label.selected {
 
 
 div#quantity_editor {
-    width: 280px;
-    margin-left: 15px
+    width: 260px;
+    margin-left: 20px
 }
 
 div#quantity_editor div.header {
@@ -1840,6 +1841,7 @@ div#quantity_editor input.quantity {
     width: 55px;
     height: 40px;
     margin-top: 2px;
+    font-size: 22px;
 }
 
 div#quantity_editor div#buttons_container {
@@ -1848,13 +1850,13 @@ div#quantity_editor div#buttons_container {
 
 }
 
-div#quantity_editor div#buttons_container div#plus_button,
-div#quantity_editor div#buttons_container div#minus_button {
+div#plus_button,
+div#minus_button {
     border-radius: 5px 5px 5px 5px;
     color: #333;
     cursor: pointer;
     float: left;
-    font-size: 12px;
+    font-size: 24px;
     font-weight: bold;
     height: 35px;
     margin: 3px;
