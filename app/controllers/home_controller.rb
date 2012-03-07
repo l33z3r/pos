@@ -371,7 +371,7 @@ class HomeController < ApplicationController
       }
     
       #store a client transaction if this sale was linked to a charged_room
-      @order_id = @order_data['order_num']
+      @order_id = @order_data['id']
       @charged_room = @order_data['charged_room']
       
       @client_name = @charged_room['selected_folio_name']

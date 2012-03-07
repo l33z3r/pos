@@ -68,6 +68,23 @@ function finishSale() {
         return;
     }
     
+    //make sure that you cannot have any change if there is no cash in the split payments array
+    if(cashTendered > totalAmountInclCashback) {
+        var positiveCashAmount = false;
+        
+        for(pm in splitPayments) {
+            if(pm == "cash" && parseFloat(splitPayments[pm]) > 0) {
+                positiveCashAmount = true;
+                break;
+            }
+        }
+        
+        if(!positiveCashAmount) {
+            niceAlert("You cannot enter an amount (" + currency(cashTendered) + ") above the total (" + currency(totalAmountInclCashback) + "), if you are not taking a cash payment, as you cannot issue change without cash.");
+            return;
+        }
+    }
+    
     doTotalFinal();
 }
 
@@ -82,6 +99,7 @@ function cashOutCancel() {
 }
 
 var paymentIntegrationId = 0;
+var currentZalionPaymentMethodName = null;
 
 function paymentMethodSelected(method, integration_id) {
     updateTotalTendered();
@@ -114,6 +132,10 @@ function paymentMethodSelected(method, integration_id) {
         totalAmountInclCashback = currentTotalFinal + cashback;
         
         if(paymentIntegrationId == zalionPaymentIntegrationId) {
+            //we have to store the string that represents the current zalion payment method, so that
+            //we can retrieve the amount later that will be actually charged to the room
+            currentZalionPaymentMethodName = paymentMethod;
+            
             showLoadingDiv();
             
             //fire off request to get contents of ROOMFILE
@@ -294,17 +316,20 @@ function moneySelected(amount) {
 
 function doChargeRoom(orderData) {
     //need to add some additional data to the order data to charge the room
-    orderData.datetime = formatDate(new Date(), "dd/MM/yyyy hh:mm:ss");
+    orderData.datetime = formatDate(new Date(), "dd/MM/yyyy HH:mm:ss");
     orderData.location = business_name;
-    
-    //convert json to string
-    var orderDataString = JSON.stringify(orderData);
     
     if(paymentIntegrationId != 0) {
         if(paymentIntegrationId == zalionPaymentIntegrationId) {
             //send request to charge via zalion by firing off request to post to POSTINGS.TXT
             var zalion_charge_request_url = 'http://' + zalionChargeRoomServiceIP + ':8080/ClueyWebSocketServices/zalion_charge';
             
+            //we only want to send over the amount that was actually charged to the room, not the entire total
+            orderData.total = parseFloat(splitPayments[currentZalionPaymentMethodName]);
+            
+            //convert json to string
+            var orderDataString = JSON.stringify(orderData);
+    
             $.ajax({
                 type: 'POST',
                 url: '/forward_zalion_charge_request',
