@@ -298,7 +298,7 @@ function doChargeRoom(orderData) {
     orderData.location = business_name;
     
     //convert json to string
-    //var orderDataString = JSON.stringify(orderData);
+    var orderDataString = JSON.stringify(orderData);
     
     if(paymentIntegrationId != 0) {
         if(paymentIntegrationId == zalionPaymentIntegrationId) {
@@ -316,6 +316,7 @@ function doChargeRoom(orderData) {
                 },
                 data: {
                     zalion_charge_request_url : zalion_charge_request_url,
+                    order_data_json_string : orderDataString,
                     order_data : orderData
                 }
             });

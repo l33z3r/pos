@@ -346,6 +346,7 @@ class HomeController < ApplicationController
   
   def forward_zalion_charge_request
     @url = params[:zalion_charge_request_url]
+    @order_data_json_string = params[:order_data_json_string]
     @order_data = params[:order_data]
     
     logger.info "Forwarding a zalion charge request to #{@url}"
@@ -354,7 +355,7 @@ class HomeController < ApplicationController
     
     params = {
       "message" => "charge this room",
-      "order_data" => @order_data.to_s
+      "order_data" => @order_data_json_string
     }
     
     req = Net::HTTP::Post.new(url.path)
