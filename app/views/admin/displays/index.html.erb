@@ -11,7 +11,7 @@
     <table id="display_list" class="admin_table">
       <thead>
         <tr>
-          <th width="180">Name</th>
+          <th width="280">Name</th>
           <th width="40">Default?</th>
           <th width="40">Public?</th>
           <th width="40">Delete</th>
@@ -38,7 +38,7 @@
               </form>
             </td>
             <td><%= link_to "Delete", admin_display_path(display), :method => :delete, :confirm => "Are You Sure?" %></td>
-            <td><%= link_to "Duplicate", duplicate_admin_display_path(display), :confirm => "Are You Sure?" %></td>
+            <td><%= link_to "Duplicate", duplicate_admin_display_path(display) %></td>
           </tr>
         <% end %>
       </tbody>

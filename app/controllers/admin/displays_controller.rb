@@ -45,7 +45,7 @@ class Admin::DisplaysController < Admin::AdminController
   
   def duplicate
     @display_to_dup = Display.find(params[:id])
-    @new_display = Display.new({:name => "#{@display_to_dup.name} (#{Time.now.to_s(:short)})"})
+    @new_display = Display.new({:name => "#{@display_to_dup.name} (Copied: #{Time.now.to_s(:short)})"})
     
     @new_display.save!
     
@@ -53,9 +53,14 @@ class Admin::DisplaysController < Admin::AdminController
       @new_page = @new_display.menu_pages.build({:name => mp.name, :page_num => mp.page_num})
       @new_page.save!
       
-      mp.menu_items.each do |mi|
-        @new_menu_item = @new_page.menu_items.build({:product_id => mi.product_id, :order_num => mi.order_num})
-        @new_menu_item.save!
+      if mp.embedded_display
+        @new_page.embedded_display_id = mp.embedded_display_id
+        @new_page.save!
+      else
+        mp.menu_items.each do |mi|
+          @new_menu_item = @new_page.menu_items.build({:product_id => mi.product_id, :order_num => mi.order_num})
+          @new_menu_item.save!
+        end
       end
     end
     
