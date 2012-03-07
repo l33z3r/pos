@@ -87,7 +87,6 @@ function callHomePoll() {
         dataType: 'script',
         success: callHomePollComplete,
         error: function() {
-            setConnectionStatus(false);
             setTimeout(callHomePoll, 5000);
         },
         data : {
@@ -104,8 +103,6 @@ function callHomePoll() {
 var immediateCallHome = false;
 
 function callHomePollComplete() {
-    setConnectionStatus(true); 
-    
     if(immediateCallHome) {
         callHomePoll();
     } else {
@@ -154,4 +151,18 @@ function preventOfflineHref() {
     }
         
     return true;
+}
+
+function pingHome() {
+    $.ajax({
+        url: "/ping",
+        type : "GET",
+        success: function() {
+            setConnectionStatus(true);
+        },
+        error: function() {
+            setConnectionStatus(false);
+        }
+    });
+    
 }

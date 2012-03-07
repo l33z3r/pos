@@ -83,6 +83,10 @@ class HomeController < ApplicationController
     
   end
   
+  def ping
+    render :json => {:success => true}.to_json
+  end
+  
   def load_price_for_menu_page
     @page_num = params[:page_num].to_i
     @sub_page_id = params[:sub_page_id].to_i
