@@ -1,3 +1,5 @@
+var cashTotalInOperation = false;
+
 function getCashTotalDataTable(cash_total_data, show_currency) {
     if(typeof(show_currency) == "undefined") {
         show_currency = true
@@ -102,11 +104,18 @@ var reportsCashCount = 0;
 var currentTotalType = null;
 
 function doCashTotalReport(total_type, commit) {
+    if(cashTotalInOperation) {
+        niceAlert("Cash Total is in operation, please wait!");
+        return;
+    }
+    
+    cashTotalInOperation = true;
+        
     setNavTitle(total_type + " Total");
     showNavBackLinkMenuScreen();
     
-    $('#reports_left_till_roll').html("Loading...");
-    $('#cash_total_data_table_container').html("Loading...");
+    $('#reports_left_till_roll').html("Please Wait...");
+    $('#cash_total_data_table_container').html("Please Wait...");
     
     currentTotalType = total_type;
     
@@ -139,6 +148,13 @@ function doCashTotalReport(total_type, commit) {
             total_type : total_type,
             cash_count : reportsCashCount,
             commit : commit
+        },
+        error: function() {
+            niceAlert("An error has occured!");
+            $('#cash_total_data_table_container').html("Error!");
+        }, 
+        complete: function() {
+            cashTotalInOperation = false;
         }
     });
     
@@ -153,8 +169,6 @@ function saveCashReportCoinCount() {
         niceAlert("Cash Total is in operation, please wait!");
         return;
     }
-    
-    cashTotalInOperation = true;
     
     doCoinCounterTotal();
     doCashTotalReport(currentTotalType, false);
@@ -181,16 +195,12 @@ function cashReportsScreenKeypadClickTab() {
     lastActiveElement.focusNextInputField();
 }
 
-var cashTotalInOperation = false;
-
 function finishCashTotal() {
     if(cashTotalInOperation) {
         niceAlert("Cash Total is in operation, please wait!");
         return;
     }
     
-    cashTotalInOperation = true;
-        
     $('#cash_totals_header_section').show();
     
     content = $('#reports_center_till_roll').html() + clear10HTML;

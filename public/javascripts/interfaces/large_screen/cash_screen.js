@@ -57,14 +57,10 @@ function finishSale() {
 
     totalAmountInclCashback = roundNumber(currentTotalFinal + cashback, 2);
 
-    if(cashTendered == 0 && (totalAmountInclCashback > 0)) {
+    if(cashTendered < totalAmountInclCashback) {
         //auto fill to exact amount 
         moneySelected(-1);
         finishSale();
-        return;
-    } else if(cashTendered < totalAmountInclCashback) {
-        setStatusMessage("Must enter a higher value than current total: " + currency(totalAmountInclCashback), true, true);
-        resetTendered();
         return;
     }
     
@@ -73,7 +69,7 @@ function finishSale() {
         var positiveCashAmount = false;
         
         for(pm in splitPayments) {
-            if(pm == "cash" && parseFloat(splitPayments[pm]) > 0) {
+            if(pm.toLowerCase() == "cash" && parseFloat(splitPayments[pm]) > 0) {
                 positiveCashAmount = true;
                 break;
             }
