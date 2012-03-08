@@ -455,7 +455,7 @@ function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCou
     }
     
     //get rid of rounding errors
-    targetOrderItem.total_price = roundNumber(targetOrderItem.total_price);
+    targetOrderItem.total_price = roundNumber(parseFloat(targetOrderItem.total_price), 2);
 
     applyExistingDiscountToOrderItem(order, itemNumber);
     calculateOrderTotal(order);
