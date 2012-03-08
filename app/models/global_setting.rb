@@ -460,7 +460,7 @@ class GlobalSetting < ActiveRecord::Base
   end
   
   def self.all_terminals
-    where("global_settings.key like ?", "#{TERMINAL_ID}%").where("global_settings.value not like ?", "NT%").collect(&:value).uniq
+    where("global_settings.key like ?", "#{TERMINAL_ID}%").where("global_settings.value not like ?", "NT%").order("value").collect(&:value).uniq
   end
   
   def self.latest_terminals
