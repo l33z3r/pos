@@ -26,30 +26,6 @@
         :prompt => "Select a Category", :include_blank => "None" %>
     </div>
     <div class="field">
-      <%= f.label :modifier_grid_id %><br/>
-      <%= f.collection_select :order_item_addition_grid_id, OrderItemAdditionGrid.find(:all), :id, :name, 
-        :prompt => "Select a Modifier Grid", :include_blank => "None" %>
-      <div class="clear">&nbsp;</div>
-    </div>
-    <div class="field">
-      <%= f.label :order_item_addition_grid_id_is_mandatory %><br/>
-      <%= f.check_box :order_item_addition_grid_id_is_mandatory %>
-      <div class="clear">&nbsp;</div>
-    </div>
-    <div class="field">
-      <%= f.label :description %><br />
-      <%= f.text_field :description %>
-    </div>
-    <div class="field">
-      <%= f.label :tax_rate_id %><br />
-      <%= f.collection_select :tax_rate_id, TaxRate.find(:all), :id, :name_for_select, 
-        :prompt => "Select a #{@tax_label} Rate", :include_blank => "Default" %>
-    </div>
-    <div class="field">
-      <%= f.label :course_num, "Course" %><br />
-      <%= f.select :course_num, options_for_select(GlobalSetting.course_options, @category.course_num) %>
-    </div>
-    <div class="field">
       <label for="category[selected_printers][]">Printers</label>
 
       <div class="clear">&nbsp;</div>
@@ -126,6 +102,30 @@
         </div>
       </div>
       <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <%= f.label :modifier_grid_id %><br/>
+      <%= f.collection_select :order_item_addition_grid_id, OrderItemAdditionGrid.find(:all), :id, :name, 
+        :prompt => "Select a Modifier Grid", :include_blank => "None" %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <%= f.label :order_item_addition_grid_id_is_mandatory %><br/>
+      <%= f.check_box :order_item_addition_grid_id_is_mandatory %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <%= f.label :description %><br />
+      <%= f.text_field :description %>
+    </div>
+    <div class="field">
+      <%= f.label :tax_rate_id %><br />
+      <%= f.collection_select :tax_rate_id, TaxRate.find(:all), :id, :name_for_select, 
+        :prompt => "Select a #{@tax_label} Rate", :include_blank => "Default" %>
+    </div>
+    <div class="field">
+      <%= f.label :course_num, "Course" %><br />
+      <%= f.select :course_num, options_for_select(GlobalSetting.course_options, @category.course_num) %>
     </div>
     <div id="actions">
       <%= f.submit %>

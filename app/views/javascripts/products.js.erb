@@ -4,7 +4,7 @@ var products_by_upc = new Array();
 <% Product.all.each do |p|%>  
 
   var nextProduct = {
-  'id':'<%= p.id %>', 'name':'<%= escape_javascript p.name %>', 
+  'id':'<%= p.id %>', 'name':'<%= escape_javascript raw(p.name) %>', 
   'price':<%= p.price %>, 'tax_rate':<%=p.sales_tax_rate%>,
   'price_2':<%= p.price_2 %>, 'price_3':<%= p.price_3 %>, 'price_4':<%= p.price_4 %>,
   'double_price' : <%=p.double_price%>,
@@ -37,7 +37,7 @@ var products_by_upc = new Array();
 var modifier_categories = new Array();
 
 <% ModifierCategory.all.each do |mc| %>
-  modifier_categories[<%=mc.id%>] = {'id':<%=mc.id%>, 'name':'<%= escape_javascript mc.name %>'}
+  modifier_categories[<%=mc.id%>] = {'id':<%=mc.id%>, 'name':'<%= escape_javascript raw(mc.name) %>'}
   modifier_categories[<%=mc.id%>]['modifiers'] = new Array();
   <% mc.modifiers.all.each do |m| %>
     modifier_categories[<%=mc.id%>]['modifiers'][<%=m.id%>] = {'id':<%=m.id%>, 'name':'<%= escape_javascript m.name%>', 'price':<%=m.price%>}
@@ -48,7 +48,7 @@ var categories = new Array();
 
 <% Category.all.each do |c|%>    
   categories[<%= c.id %>] = {
-  'id':'<%= c.id %>', 'name':'<%= escape_javascript c.name %>', 
+  'id':'<%= c.id %>', 'name':'<%= escape_javascript raw(c.name) %>', 
   'printers': "<%= c.printers %>",
   'kitchen_screens' : "<%=c.kitchen_screens%>",
   'modifier_grid_id' : <%= c.order_item_addition_grid ? c.order_item_addition_grid.id : "null" %>,

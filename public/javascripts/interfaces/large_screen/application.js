@@ -393,6 +393,8 @@ function cacheUpdateCheckPoll() {
 }
 
 function doScheduledTasks() {
+    //this is called on at regular intervals
     rollDate();
     trySendOutstandingOrdersToServer();
+    pingHome();
 }

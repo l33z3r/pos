@@ -11,8 +11,8 @@ class Employee < ActiveRecord::Base
   validates :staff_id, :presence => true, :uniqueness => true
   validates :name, :presence => true
   validates :nickname, :presence => true, :uniqueness => true
-  validates :passcode, :presence => true
-  validates :clockin_code, :presence => true
+  validates :passcode, :presence => true, :uniqueness => true
+  validates :clockin_code, :presence => true, :uniqueness => true
   validates :hourly_rate, :numericality => true, :allow_blank => true
   validates :overtime_rate, :numericality => true, :allow_blank => true
   validates :role_id, :presence => true

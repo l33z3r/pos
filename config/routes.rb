@@ -1,9 +1,5 @@
 Pos::Application.routes.draw do
 
-  get "kitchen/index"
-  get "kitchen/table_0_kitchen_div"
-  post "kitchen/order_ready"
-
   #js error logging
   match 'js_error_log' => "home#js_error_log", :via => :post
   
@@ -30,6 +26,9 @@ Pos::Application.routes.draw do
   
   #kitchen screen
   match 'kitchen' => "kitchen#index"
+  get "kitchen/index"
+  get "kitchen/table_0_kitchen_div"
+  post "kitchen/order_ready"
   
   #routes for mobile app
   match 'mbl' => "home#mobile_index"
@@ -39,6 +38,9 @@ Pos::Application.routes.draw do
   
   #this route is to call home with js polling
   match 'call_home' => "home#call_home", :via => :post
+  
+  #misc routes to home
+  get 'ping' => "home#ping"
   match 'request_terminal_reload' => "home#request_terminal_reload", :via => :post
   match 'clear_all_fragment_caches' => "home#clear_all_fragment_caches", :via => :post
   

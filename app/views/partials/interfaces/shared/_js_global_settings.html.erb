@@ -52,7 +52,7 @@
   var dynamicCurrencySymbol = "<%= @currency_symbol %>";
   
   //load the dynamically set screen that appears after a sale and login screen
-  var defaultHomeScreen = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_HOME_SCREEN %>;
+  var defaultHomeScreen = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_HOME_SCREEN, {:fingerprint => @terminal_fingerprint} %>;
   var defaultPostLoginScreen = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_POST_LOGIN_SCREEN %>;
   var LOGIN_SCREEN = <%= GlobalSetting::LOGIN_SCREEN %>;
   var MENU_SCREEN = <%= GlobalSetting::MENU_SCREEN %>;

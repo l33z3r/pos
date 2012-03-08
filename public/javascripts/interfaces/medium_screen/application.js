@@ -85,5 +85,6 @@ function doSubmitSettings() {
 }
 
 function doScheduledTasks() {
-    //this is called on callhome poll
+    //this is called on at regular intervals
+    pingHome();
 }

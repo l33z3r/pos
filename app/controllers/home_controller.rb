@@ -83,6 +83,10 @@ class HomeController < ApplicationController
     
   end
   
+  def ping
+    render :json => {:success => true}.to_json
+  end
+  
   def load_price_for_menu_page
     @page_num = params[:page_num].to_i
     @sub_page_id = params[:sub_page_id].to_i
@@ -371,7 +375,7 @@ class HomeController < ApplicationController
       }
     
       #store a client transaction if this sale was linked to a charged_room
-      @order_id = @order_data['order_num']
+      @order_id = @order_data['id']
       @charged_room = @order_data['charged_room']
       
       @client_name = @charged_room['selected_folio_name']
