@@ -199,9 +199,13 @@ class Product < ActiveRecord::Base
   end
   
   def decrement_stock quantity
-    logger.info "!!!! decrementing #{name} by #{quantity}"
-    @decrement_val = quantity/quantity_per_container
-    decrement!(:quantity_in_stock, @decrement_val)
+    @qpc = read_attribute("quantity_per_container")
+    
+    if @qpc > 0
+      logger.info "!!!! decrementing #{name} by #{quantity} with qtypct: #{@qpc}"
+      @decrement_val = quantity/@qpc
+      decrement!(:quantity_in_stock, @decrement_val)
+    end
   end
   
   def last_stock_transaction
