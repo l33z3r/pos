@@ -20,7 +20,7 @@
         <div style="display: none;" id="menu_items_<%= page.page_num %>" class="items">
           <% if page.embedded_display %>
             <div id="pages" class="subpages embedded_pages_<%= page.page_num %>">
-              <% page.embedded_display.menu_pages.each do |embedded_page| %>
+                <% page.embedded_display.menu_pages.each do |embedded_page| %>
 
                 <div class="subpage page" id="sub_menu_page_<%=embedded_page.id%>"
                      onclick="doSubMenuPageSelect(<%= page.page_num %>, <%= embedded_page.id %>);">
@@ -33,7 +33,7 @@
                   <div id="items">
                     <% embedded_page.menu_items.each do |embedded_item| %>
                       <% if embedded_item.product %>
-                        <div class="item <%= !embedded_item.product.is_active ? "inactive" : "" %>" data-button_width="<%= embedded_item.product.menu_button_width %>" 
+                        <div class="item <%= !embedded_item.product.is_active ? "inactive" : "" %>" data-button_width="<%= embedded_item.product.menu_button_width %>"
                              onclick="<%= embedded_item.product.is_active ? "doSelectMenuItem(#{embedded_item.product_id}, this);" : "" %>"
                              style="<%= menu_item_background_css embedded_item %>">
                                <% if embedded_item.product.show_button_image %>
@@ -50,6 +50,7 @@
                   </div>
                 </div>
               <% end %>
+              <div class="subpage_hidden"></div>
             </div>
 
           <% else %>
@@ -72,6 +73,7 @@
           <% end %>
         </div>
       <% end %>
+
     </div>
   </div>
 

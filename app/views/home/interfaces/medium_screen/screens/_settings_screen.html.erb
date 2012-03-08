@@ -5,7 +5,10 @@
   </div>
 
   <div id="settings_container">
-    <tr>
+
+    <%= form_tag admin_update_global_settings_path, :id => "settings_form" do %>
+      <table id="global_settings_list" class="admin_table">
+        <tr>
             <td class="label">Disable Touch?</td>
             <td class="data text_align_left">
               <% @gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @terminal_fingerprint, :user_agent => request.user_agent} %>
@@ -20,8 +23,6 @@
               <div class="clear">&nbsp;</div>
             </td>
           </tr>
-    <%= form_tag admin_update_global_settings_path, :id => "settings_form" do %>
-      <table id="global_settings_list" class="admin_table">
         <thead>
           <tr>
             <th width="270">&nbsp;</th>

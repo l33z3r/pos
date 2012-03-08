@@ -256,9 +256,10 @@ div#menu_screen div#menu_container div#menu_pages_container {
 }
 
 div#menu_screen div#menu_container div#menu_pages_scroller {
-    height: 525px;
 
 }
+
+
 
 div#menu_screen div#menu_container div#menu_pages_container div.page {
     width: 110px;
@@ -294,7 +295,7 @@ div#menu_screen div#menu_container div#menu_items_container {
     float: left;
     width: 360px;
     height: 525px;
-    overflow: hidden;
+    overflow: scroll;
     border-spacing: 3px 1px;
 }
 
@@ -361,6 +362,14 @@ div#menu_screen div#menu_container div#menu_items_container div.subpages div.sub
     background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
 }
 
+div#menu_screen div#menu_container div#menu_items_container div.subpages div.subpage_hidden {
+    position: relative;
+    float: left;
+    width: 116px;
+    margin: 1px;
+    height: 700px;
+}
+
 div#menu_screen div#menu_container div#menu_items_container div.subpages div.subpage div.name {
     background-color: transparent;
 }
@@ -374,6 +383,7 @@ div#menu_screen div#menu_container div#menu_items_container div.name {
     background-color: #FFF;
     width: 114px;
 }
+
 
 div#menu_screen div#menu_container div#bottom_functions {
     /*display: inline-block;*/
@@ -1029,7 +1039,7 @@ div.receipt div.till_roll_small div.oia_add {
 div.receipt div.till_roll_small div.oia_name {
     float: left;
     width: 150px;
-    margin-left: 10px;
+    margin-left: 50px;
     text-align: left;
 }
 
@@ -1749,6 +1759,10 @@ div#menu_screen div#menu_container div#menu_items_container div.items div.item.p
 
 .text_align_left {
     text-align: left;
+}
+
+.sit_left {
+    float: left;
 }
 
 ul.mcdropdown_menu {
