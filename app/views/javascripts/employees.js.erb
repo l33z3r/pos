@@ -3,7 +3,7 @@ var employees = new Array();
 <% Employee.all.each do |e|-%>
   employee_info = {
   id : '<%= e.id %>',
-  nickname : '<%=h e.nickname %>',
+  nickname : '<%= escape_javascript raw(e.nickname) %>',
   passcode : '<%= e.passcode %>',
   clockin_code : '<%= e.clockin_code %>',
   is_admin : <%= e.is_admin %>,

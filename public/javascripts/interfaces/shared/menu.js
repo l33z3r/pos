@@ -453,6 +453,9 @@ function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCou
             }
         }
     }
+    
+    //get rid of rounding errors
+    targetOrderItem.total_price = roundNumber(targetOrderItem.total_price);
 
     applyExistingDiscountToOrderItem(order, itemNumber);
     calculateOrderTotal(order);
@@ -494,6 +497,9 @@ function applyDiscountToOrderItem(order, itemNumber, amount) {
     newPrice = preDiscountPrice - ((preDiscountPrice * amount) / 100);
     orderItem['total_price'] = newPrice;
 
+    //get rid of rounding errors
+    orderItem['total_price'] = roundNumber(orderItem['total_price'], 2);
+
     if(selectedTable == 0) {
         //mark the item as synced as we are not on a table receipt
         orderItem.synced = true;
@@ -515,7 +521,7 @@ function calculateOrderTotal(order) {
         orderTotal += parseFloat(item['total_price']);
     }
 
-    order['total'] = orderTotal;
+    order['total'] = roundNumber(orderTotal, 2);
 
     //apply the discount if there is one
     discountAmount = order['discount_percent'];
@@ -582,13 +588,15 @@ function buildOrderItem(product, amount) {
         productPrice = product.price_4;
     }
     
+    var totalProductPrice = roundNumber(productPrice*amount, 2);
+    
     orderItem = {
         'amount':amount,
         'product':product,
         'tax_rate':taxRate,
         'product_price':productPrice,
         'is_double':isDouble,
-        'total_price':(productPrice*amount)
+        'total_price':totalProductPrice
     }
     
     //fill in the category id of the product
