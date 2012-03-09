@@ -114,125 +114,127 @@ class OrderController < ApplicationController
   private
 
   def create_order order_params
-    @order_params = order_params
+    Order.transaction do
+      @order_params = order_params
 
-    @order_details = @order_params.delete(:order_details)
+      @order_details = @order_params.delete(:order_details)
     
-    @is_split_bill_order_param = @order_params.delete(:is_split_bill)
+      @is_split_bill_order_param = @order_params.delete(:is_split_bill)
     
-    @is_split_bill_order = @is_split_bill_order_param == "true"
+      @is_split_bill_order = @is_split_bill_order_param == "true"
     
-    @order = Order.new(@order_params)
+      @order = Order.new(@order_params)
     
-    if(!Employee.find_by_id(@order.employee_id))
-      #employee id not set correctly, so just grab the last active employee
-      @order.employee_id = Employee.order("last_active desc").first
-    end
-    
-    if !@order.order_num or @order.order_num.to_s.length == 0
-      @order.order_num = Order.next_order_num
-    end
-    
-    #is this a re initiailised previous order?
-    if @order.void_order_id
-      @order_to_void = Order.find(@order.void_order_id)
-      @order_to_void.is_void = true
-      @order_to_void.save
-    end
-
-    @order_saved = @order.save
-    @order.reload
-
-    @order_item_saved = true
-
-    #build order items
-    @order_details[:items].each do |index, item|
-      @order_item = @order.order_items.build
-      @order_item.employee_id = item[:serving_employee_id]
-
-      @order_item.product_id = item[:product][:id]
-      @order_item.product_name = item[:product][:name]
-
-      @order_item.quantity = item[:amount]
-      @order_item.total_price = item[:total_price]
-
-      @order_item.terminal_id = item[:terminal_id]
-      
-      #modifier
-      if item[:modifier]
-        @order_item.modifier_name = item[:modifier][:name]
-        @order_item.modifier_price = item[:modifier][:price]
+      if(!Employee.find_by_id(@order.employee_id))
+        #employee id not set correctly, so just grab the last active employee
+        @order.employee_id = Employee.order("last_active desc").first
       end
+    
+      if !@order.order_num or @order.order_num.to_s.length == 0
+        @order.order_num = Order.next_order_num
+      end
+    
+      #is this a re initiailised previous order?
+      if @order.void_order_id
+        @order_to_void = Order.find(@order.void_order_id)
+        @order_to_void.is_void = true
+        @order_to_void.save
+      end
+
+      @order_saved = @order.save
+      @order.reload
+
+      @order_item_saved = true
+
+      #build order items
+      @order_details[:items].each do |index, item|
+        @order_item = @order.order_items.build
+        @order_item.employee_id = item[:serving_employee_id]
+
+        @order_item.product_id = item[:product][:id]
+        @order_item.product_name = item[:product][:name]
+
+        @order_item.quantity = item[:amount]
+        @order_item.total_price = item[:total_price]
+
+        @order_item.terminal_id = item[:terminal_id]
       
-      #oias
-      if item[:oia_items]
-        item[:oia_items].each do |index, oia|
-          if oia[:product_id] != "-1"
-            #decrement stock for this oia product
-            @oia_stock_usage = @order_item.quantity.to_f
+        #modifier
+        if item[:modifier]
+          @order_item.modifier_name = item[:modifier][:name]
+          @order_item.modifier_price = item[:modifier][:price]
+        end
       
-            if(@order_item.is_double)
-              @oia_stock_usage *= 2
+        #oias
+        if item[:oia_items]
+          item[:oia_items].each do |index, oia|
+            if oia[:product_id] != "-1"
+              #decrement stock for this oia product
+              @oia_stock_usage = @order_item.quantity.to_f
+      
+              if(@order_item.is_double)
+                @oia_stock_usage *= 2
+              end
+      
+              Product.find_by_id(oia[:product_id]).decrement_stock @oia_stock_usage
             end
+          end
+        
+          #store this hash of oia items
+          @order_item.oia_data = item[:oia_items]
+        end
       
-            Product.find_by_id(oia[:product_id]).decrement_stock @oia_stock_usage
+        #discount
+        if item[:discount_percent]
+          @order_item.discount_percent = item[:discount_percent]
+          @order_item.pre_discount_price = item[:pre_discount_price]
+        end
+      
+        #tax rate
+        @order_item.tax_rate = item[:tax_rate]
+      
+        #the time it was added to the order
+        @order_item.time_added = item[:time_added]
+
+        #do we want to show the serveraddeditem text
+        @order_item.show_server_added_text = item[:showServerAddedText]
+      
+        @order_item.is_double = item[:is_double]
+      
+        #this happens for every item
+        @order_item_saved = @order_item_saved and @order_item.save
+      
+        @item_stock_usage = @order_item.quantity.to_f
+      
+        if(@order_item.is_double)
+          @item_stock_usage *= 2
+        end
+      
+        #decrement the stock for this item
+        if @order_item.product.is_stock_item
+          @order_item.product.decrement_stock @item_stock_usage
+        else
+          #decrement the ingredient stock
+          @order_item.product.ingredients.each do |ingredient|
+            @ingredient_usage = ingredient.stock_usage
+            ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
           end
         end
-        
-        #store this hash of oia items
-        @order_item.oia_data = item[:oia_items]
       end
-      
-      #discount
-      if item[:discount_percent]
-        @order_item.discount_percent = item[:discount_percent]
-        @order_item.pre_discount_price = item[:pre_discount_price]
+    
+      @table_info = TableInfo.find_by_id(@order.table_info_id)
+    
+      #must tell all terminals that this order is cleared
+      #only do this if that table still exists!
+      if @order.is_table_order and @table_info and !@is_split_bill_order
+        @employee_id = @order_params['employee_id']
+        do_request_clear_table_order @terminal_id, Time.now.to_i, @order.table_info_id, @order.order_num, @employee_id
       end
-      
-      #tax rate
-      @order_item.tax_rate = item[:tax_rate]
-      
-      #the time it was added to the order
-      @order_item.time_added = item[:time_added]
 
-      #do we want to show the serveraddeditem text
-      @order_item.show_server_added_text = item[:showServerAddedText]
-      
-      @order_item.is_double = item[:is_double]
-      
-      #this happens for every item
-      @order_item_saved = @order_item_saved and @order_item.save
-      
-      @item_stock_usage = @order_item.quantity.to_f
-      
-      if(@order_item.is_double)
-        @item_stock_usage *= 2
-      end
-      
-      #decrement the stock for this item
-      if @order_item.product.is_stock_item
-        @order_item.product.decrement_stock @item_stock_usage
-      else
-        #decrement the ingredient stock
-        @order_item.product.ingredients.each do |ingredient|
-          @ingredient_usage = ingredient.stock_usage
-          ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
-        end
-      end
+      @success = @order_saved and @order_item_saved
+    
+      @success
     end
-    
-    @table_info = TableInfo.find_by_id(@order.table_info_id)
-    
-    #must tell all terminals that this order is cleared
-    #only do this if that table still exists!
-    if @order.is_table_order and @table_info and !@is_split_bill_order
-      @employee_id = @order_params['employee_id']
-      do_request_clear_table_order @terminal_id, Time.now.to_i, @order.table_info_id, @order.order_num, @employee_id
-    end
-
-    @success = @order_saved and @order_item_saved
-    
-    @success
   end
 
 end

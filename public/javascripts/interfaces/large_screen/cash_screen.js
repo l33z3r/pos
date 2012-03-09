@@ -98,6 +98,14 @@ var paymentIntegrationId = 0;
 var currentZalionPaymentMethodName = null;
 
 function paymentMethodSelected(method, integration_id) {
+    //if the previously selected payment method had an integration, we want to popup a notice saying that it
+    //must be the last payment method you select in order to actually do the integration
+    if(paymentIntegrationId != 0 && splitPayments[paymentMethod] > 0) {
+        var warningMessage = "In order to use a payment integration it must be the last payment method that you select while doing split payments (Enter zero amount to cancel)!";
+        niceAlert(warningMessage);
+        return;
+    }
+    
     updateTotalTendered();
     clearSelectedFolio();
     
@@ -113,12 +121,6 @@ function paymentMethodSelected(method, integration_id) {
     });
     
     $('#' + method.replace(/ /g,"_") + '_payment_method_button').addClass('selected');
-    
-    //if the previously selected payment method had an integration, we want to popup a notice saying that it
-    //must be the last payment method you select in order to actually do the integration
-    if(paymentIntegrationId != 0) {
-        niceAlert("In order to use a payment integration it must be the last payment method that you select while doing split payments!");
-    }
     
     paymentIntegrationId = integration_id;
     
