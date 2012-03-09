@@ -316,6 +316,15 @@ div#menu_screen div#menu_container div#menu_items_container div.item {
     cursor: pointer; background: #FFF;
 }
 
+div#menu_screen div#menu_container div#menu_items_container div.menu_item_spacer {
+    position: relative;
+    float: left;
+    margin: 2px;
+    height: 92px;
+    cursor: pointer;
+    background-color: transparent;
+}
+
 div#menu_screen div#menu_container div#menu_items_container div.item.inactive {
     text-decoration: line-through;
 }

@@ -74,6 +74,8 @@ class GlobalSetting < ActiveRecord::Base
   HTTP_AUTH_PASSWORD = 45
   CASH_DRAWER_IP_ADDRESS = 46
   PRICE_LEVEL_LABEL = 47
+  USE_WHITE_SPACE_MOBILE_MENUS = 48
+  USE_WHITE_SPACE_DESKTOP_MENUS = 49
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -122,7 +124,9 @@ class GlobalSetting < ActiveRecord::Base
     HTTP_AUTH_USERNAME => "HTTP Basic Auth Username",
     HTTP_AUTH_PASSWORD => "HTTP Basic Auth Password",
     CASH_DRAWER_IP_ADDRESS => "Cash Drawer Ip Address",
-    PRICE_LEVEL_LABEL => "Price Level Label"
+    PRICE_LEVEL_LABEL => "Price Level Label",
+    USE_WHITE_SPACE_MOBILE_MENUS => "Use White Space Mobile Menus",
+    USE_WHITE_SPACE_DESKTOP_MENUS => "Use White Space Mobile Menus",
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -269,6 +273,12 @@ class GlobalSetting < ActiveRecord::Base
     when PRICE_LEVEL_LABEL
       @gs = find_or_create_by_key(:key => "#{PRICE_LEVEL_LABEL.to_s}_#{args[:price_level]}", :value => "Price #{args[:price_level]}", :label_text => LABEL_MAP[PRICE_LEVEL_LABEL])
       @gs.parsed_value = @gs.value
+    when USE_WHITE_SPACE_MOBILE_MENUS
+      @gs = find_or_create_by_key(:key => USE_WHITE_SPACE_MOBILE_MENUS.to_s, :value => "true", :label_text => LABEL_MAP[USE_WHITE_SPACE_MOBILE_MENUS])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when USE_WHITE_SPACE_DESKTOP_MENUS
+      @gs = find_or_create_by_key(:key => USE_WHITE_SPACE_DESKTOP_MENUS.to_s, :value => "true", :label_text => LABEL_MAP[USE_WHITE_SPACE_DESKTOP_MENUS])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -320,6 +330,12 @@ class GlobalSetting < ActiveRecord::Base
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     when All_DEVICES_ORDER_NOTIFICATION
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when USE_WHITE_SPACE_MOBILE_MENUS
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when USE_WHITE_SPACE_DESKTOP_MENUS
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     when DEFAULT_SERVICE_CHARGE_PERCENT

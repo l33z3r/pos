@@ -44,7 +44,7 @@
                             <%= menu_item_name embedded_item %>
                           </div>
                         </div>
-                      <% else %>
+                      <% elsif @use_whitespace_in_desktop_menus %>
                         <div class="menu_item_spacer"></div>
                       <% end %>
                     <% end %>
@@ -76,7 +76,7 @@
                     <%= menu_item_name item %>
                   </div>
                 </div>
-              <% else %>
+              <% elsif @use_whitespace_in_desktop_menus %>
                 <div class="menu_item_spacer"></div>
               <% end %>
             <% end %>
