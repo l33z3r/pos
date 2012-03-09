@@ -24,7 +24,7 @@
           <td><%= product.menu_page_1.name if product.menu_page_1 %></td>
           <td>
             <div class="product_price" id="product_price_<%=product.id%>" 
-                 onclick="updateProductPrice(<%=product.id%>, '<%=number_with_precision product.price, :precision => 2 %>')">
+                 onclick="updateProductPrice(<%=product.id%>, '<%= print_money product.price %>')">
                    <%= print_money product.price %>
             </div>
           </td>

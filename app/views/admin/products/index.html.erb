@@ -15,6 +15,13 @@
     <div class="button_name">Import Products</div>
   </div>
 
+  <div class="button" data-onpress="window.location = '<%= admin_products_path(:format => :csv) %>';">
+    <div class="icon">
+      <%= image_tag "/images/button_logos/export_products_button.png" %>
+    </div>
+    <div class="button_name">Export Products</div>
+  </div>
+
 <% end %>
 
 <% if params[:show_specials_only] %>

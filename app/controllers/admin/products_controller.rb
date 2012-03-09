@@ -4,19 +4,49 @@ class Admin::ProductsController < Admin::AdminController
   cache_sweeper :product_sweeper
 
   def index
-    if (session[:search1].nil? && session[:search2].nil? && session[:search3].nil?)
-      @selected_letter = "all"
-      @products = Product.where("is_deleted = ?", false).order("name")
-    else
-      search
-    end
-    query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from products group by substr(name,1,1)")
-    @letters = []
-    for element in query
-      if (!"0123456789".include?(element[0]))
-        element[0].upcase!
-        @letters += element
+    respond_to do |format|
+      
+      format.html do
+        if (session[:search1].nil? && session[:search2].nil? && session[:search3].nil?)
+          @selected_letter = "all"
+          @products = Product.non_deleted
+        else
+          search
+        end
+        query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from products group by substr(name,1,1)")
+        @letters = []
+        for element in query
+          if (!"0123456789".include?(element[0]))
+            element[0].upcase!
+            @letters += element
+          end
+        end
       end
+      
+      format.csv do 
+        @products = Product.non_deleted
+  
+        @csv_string = "Department,Category,Name,Brand,Description,Price,Double Price,Code Number,"
+        @csv_string += "UPC,Price 2,Price 3,Price 4,Margin Percent,Items Per Unit,Quantity Per Container,"
+        @csv_string += "Cost Price,Unit,Size\n"
+        
+        @products.each do |p|
+          
+          @category = (p.category ? p.category.name : "none").gsub(",", "")
+          @department = ((p.category and p.category.parent_category) ? p.category.parent_category.name : "none").gsub(",", "")
+          
+          @name = p.name.gsub(",", "")
+          @brand = (p.brand ? p.brand : "").gsub(",", "")
+          @description = (p.description ? p.description : "").gsub(",", "")
+          
+          @csv_string += "#{@department},#{@category},#{@name},#{@brand},#{@description},#{print_money p.price},"
+          @csv_string += "#{print_money p.double_price},#{p.code_num},#{p.upc},#{print_money p.price_2},#{print_money p.price_3},#{print_money p.price_4},"
+          @csv_string += "#{p.margin_percent},#{p.items_per_unit},#{p.quantity_per_container},#{print_money p.cost_price},#{p.unit}, #{p.size}\n"
+        end
+        
+        render :text => @csv_string
+      end
+      
     end
   end
 
