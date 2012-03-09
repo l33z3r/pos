@@ -153,6 +153,10 @@ function renderReceipt(tableID) {
      
     $('#kitchen_table_' + tableID + '_till_roll').html($('#kitchen_table_' + tableID + '_till_roll').html() + allOrderItemsRecptHTML);
     
+    //set the start time on the header
+    var startTime = utilFormatTime(new Date(parseInt(orderStartTime(nextKitchenOrder))));
+    $('#table_time_' + tableID).html("(" + startTime + ")");
+    
     //apply the course checks
     applyCourseChecks(tableID);
     

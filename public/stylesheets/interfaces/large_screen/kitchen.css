@@ -105,6 +105,12 @@ div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.head
     margin-left: 7px;
 }
 
+div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.header div.table_time {
+    float: left;
+    margin: 4px;
+    margin-left: 2px;
+}
+
 div#kitchen_screen div#receipts_container div.kitchen_receipt_container div.header div.order_num {
     float: right;
     margin: 4px;
