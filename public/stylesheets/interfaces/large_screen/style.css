@@ -3517,11 +3517,9 @@ div.button div.icon img {
 div.button div.button_name {
     padding: 0px 3px;
     font-size: 12px;
-}
-
-div.button div.button_name {
     text-decoration: none;
     color: #333333;
+    max-height: 30px;
 }
 
 div.button.selected div.button_name {

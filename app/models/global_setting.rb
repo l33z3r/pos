@@ -274,7 +274,7 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_key(:key => "#{PRICE_LEVEL_LABEL.to_s}_#{args[:price_level]}", :value => "Price #{args[:price_level]}", :label_text => LABEL_MAP[PRICE_LEVEL_LABEL])
       @gs.parsed_value = @gs.value
     when USE_WHITE_SPACE_MOBILE_MENUS
-      @gs = find_or_create_by_key(:key => USE_WHITE_SPACE_MOBILE_MENUS.to_s, :value => "true", :label_text => LABEL_MAP[USE_WHITE_SPACE_MOBILE_MENUS])
+      @gs = find_or_create_by_key(:key => USE_WHITE_SPACE_MOBILE_MENUS.to_s, :value => "false", :label_text => LABEL_MAP[USE_WHITE_SPACE_MOBILE_MENUS])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when USE_WHITE_SPACE_DESKTOP_MENUS
       @gs = find_or_create_by_key(:key => USE_WHITE_SPACE_DESKTOP_MENUS.to_s, :value => "true", :label_text => LABEL_MAP[USE_WHITE_SPACE_DESKTOP_MENUS])

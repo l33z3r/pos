@@ -28,7 +28,7 @@ class Admin::ProductsController < Admin::AdminController
   
         @csv_string = "Department,Category,Name,Brand,Description,Price,Double Price,Code Number,"
         @csv_string += "UPC,Price 2,Price 3,Price 4,Margin Percent,Items Per Unit,Quantity Per Container,"
-        @csv_string += "Cost Price,Unit,Size\n"
+        @csv_string += "Cost Price,Unit,Size,Sales Tax Percent\n"
         
         @products.each do |p|
           
@@ -39,9 +39,9 @@ class Admin::ProductsController < Admin::AdminController
           @brand = (p.brand ? p.brand : "").gsub(",", "")
           @description = (p.description ? p.description : "").gsub(",", "")
           
-          @csv_string += "#{@department},#{@category},#{@name},#{@brand},#{@description},#{print_money p.price},"
-          @csv_string += "#{print_money p.double_price},#{p.code_num},#{p.upc},#{print_money p.price_2},#{print_money p.price_3},#{print_money p.price_4},"
-          @csv_string += "#{p.margin_percent},#{p.items_per_unit},#{p.quantity_per_container},#{print_money p.cost_price},#{p.unit}, #{p.size}\n"
+          @csv_string += "#{@department},#{@category},#{@name},#{@brand},#{@description},#{p.price},"
+          @csv_string += "#{p.double_price},#{p.code_num},#{p.upc},#{p.price_2},#{p.price_3},#{p.price_4},"
+          @csv_string += "#{p.margin_percent},#{p.items_per_unit},#{p.quantity_per_container},#{p.cost_price},#{p.unit}, #{p.size},#{p.sales_tax_rate}\n"
         end
         
         render :text => @csv_string
