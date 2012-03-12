@@ -69,6 +69,12 @@
   
   var receiptMessage = "<%= raw escape_javascript((GlobalSetting.parsed_setting_for (GlobalSetting::RECEIPT_MESSAGE))) %>";
 
+  var customReceiptFooters = {};
+
+<% ReceiptFooter.all.each do |rf| %>
+    customReceiptFooters[<%=rf.id%>] = {"name" : "<%=rf.name%>", "content" : "<%= raw escape_javascript(rf.content) %>"};
+<% end %>
+      
   var businessInfoMessage = "<%= raw escape_javascript((GlobalSetting.parsed_setting_for (GlobalSetting::BUSINESS_INFO_MESSAGE))) %>";
 
   var defaultDiscountPercent = "<%=Discount.load_default.percent%>";

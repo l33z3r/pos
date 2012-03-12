@@ -25,6 +25,7 @@
           <li><a id="general_section_link" href="#general_section">General</a></li>
           <li><a id="business_info_section_link" href="#business_info_section">Business Info</a></li>
           <li><a id="payment_methods_section_link" href="#payment_methods_section">Accepted Payment Methods</a></li>
+          <li><a id="receipt_footers_section_link" href="#receipt_footers_section">Receipt Footers</a></li>
           <li><a id="tax_rates_section_link" href="#tax_rates_section">Sales Tax Rates</a></li>
           <li><a id="discounts_section_link" href="#discounts_section_section">Discounts</a></li>
           <li><a id="coursing_section_link" href="#coursing_section">Coursing</a></li>
@@ -305,9 +306,10 @@
                   <tr>
                     <th width="230">Name</th>
                     <th width="350">Logo</th>
-                    <th width="100">Delete</th>
                     <th width="140">Set Default</th>
                     <th width="140">Integration</th>
+                    <th width="140">Receipt Footer</th>
+                    <th width="100">Delete</th>
                   </tr>
                 </thead>
 
@@ -324,7 +326,6 @@
                             <%= f.file_field :logo %>
                           </p>
                         </td>
-                        <td><%= link_to "Delete", admin_payment_method_path(pm), :method => :delete, :confirm => "Are You Sure?" %></td>
                         <td>
                           <%= radio_button_tag "set_default_payment_method", "#{pm.id}", pm.is_default, 
                             :onchange => "doSetDefaultPaymentMethod(this.value);" %>
@@ -332,6 +333,11 @@
                         <td>
                           <%= f.select :payment_integration_id, options_for_select(PaymentMethod.payment_integration_options_for_select, pm.payment_integration_id) %>
                         </td>
+                        <td>
+                          <%= f.collection_select :receipt_footer_id, ReceiptFooter.all, :id, :name, 
+                            :prompt => "Select a Footer", :include_blank => "None" %>
+                        </td>
+                        <td><%= link_to "Delete", admin_payment_method_path(pm), :method => :delete, :confirm => "Are You Sure?" %></td>
                       </tr>
                     <% end %>
                   <% end %>
@@ -362,7 +368,83 @@
                 <tbody>
                   <tr>
                     <td>
-                      <%= f.text_field :name %>
+                      <%= f.text_field :name, :size => 17 %>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Create" %>
+              </div>
+
+            <% end %>
+
+            <div class="clear">&nbsp;</div>
+          </div>
+        </div>
+
+        <div class="container receipt_footers_section" id="#receipt_footers_section">
+          <div class="jscrollpane">
+            <h4>Receipt Footers</h4>
+
+            <%= form_tag update_multiple_admin_receipt_footers_path, :multipart => true do %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="230">Name</th>
+                    <th width="330">Content</th>
+                    <th width="100">Delete</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <% ReceiptFooter.all(:order => :name).each do |rf| %>
+                    <%= fields_for "payment_methods[]", rf do |f| %>
+                      <tr>
+                        <td><%= f.text_field :name, :size => 17 %></td>
+                        <td><%= f.text_field :name %></td>
+                        <td><%= link_to "Delete", admin_receipt_footer_path(rf), :method => :delete, :confirm => "Are You Sure?" %></td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Save" %>
+              </div>
+
+            <% end %>
+
+            <h4>New Receipt Footer</h4>
+
+            <%= form_for [:admin, ReceiptFooter.new] do |f| %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="330">Name</th>
+                    <th width="330">Content</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>
+                      <%= f.text_field :name, :size => 17 %>
+                    </td>
+                    <td>
+                      <%= f.text_field :content %>
                     </td>
                   </tr>
                 </tbody>
@@ -691,7 +773,7 @@
             <div class="clear">&nbsp;</div>
           </div>
         </div>
-        
+
         <div class="container" id="#price_level_labels_section">
           <div class="jscrollpane">
             <h4>Price Level Labels</h4>

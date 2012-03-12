@@ -1258,6 +1258,8 @@ function doTotalFinal() {
     if(autoPrintReceipt) {
         printReceipt(printReceiptHTML, true);
     }
+    
+    customFooterId = null;
 }
 
 function orderSentToServerCallback(orderData, errorOccured) {

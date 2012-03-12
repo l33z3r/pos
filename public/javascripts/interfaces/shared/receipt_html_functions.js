@@ -54,8 +54,15 @@ function printReceipt(content, printRecptMessage) {
         setStatusMessage("Printing Receipt");
     }
     
+    var footer = receiptMessage;
+    
+    //check if a custom footer should be used
+    if(customFooterId != null) {
+        footer = customReceiptFooters[customFooterId].content;
+    }
+    
     if(printRecptMessage) {
-        receiptMessageHTML = "<div id='receipt_message'>" + receiptMessage + "</div>";
+        receiptMessageHTML = "<div id='receipt_message'>" + footer + "</div>";
         content += clearHTML + receiptMessageHTML;
     }
     
