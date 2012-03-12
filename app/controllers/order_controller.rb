@@ -168,7 +168,7 @@ class OrderController < ApplicationController
         #oias
         if item[:oia_items]
           item[:oia_items].each do |index, oia|
-            if oia[:product_id] != "-1"
+            if oia[:product_id] != "-1" and !oia[:product_id].blank?
               #decrement stock for this oia product
               @oia_stock_usage = @order_item.quantity.to_f
       
