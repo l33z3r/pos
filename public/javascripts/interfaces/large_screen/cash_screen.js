@@ -68,9 +68,12 @@ function finishSale() {
     if(cashTendered > totalAmountInclCashback) {
         var positiveCashAmount = false;
         
+        var totalCashAmount = 0;
+        
         for(pm in splitPayments) {
             if(pm.toLowerCase() == "cash" && parseFloat(splitPayments[pm]) > 0) {
                 positiveCashAmount = true;
+                totalCashAmount = parseFloat(splitPayments[pm]);
                 break;
             }
         }
@@ -79,13 +82,14 @@ function finishSale() {
             niceAlert("You cannot enter an amount (" + currency(cashTendered) + ") above the total (" + currency(totalAmountInclCashback) + "), if you are not taking a cash payment, as you cannot issue change without cash.");
             return;
         }
-    }
-    
-    change = cashTendered - totalAmountInclCashback;
-    
-    if(change > totalAmountInclCashback) {
-        niceAlert("Change cannot be greater than the cash amount!");
-        return;
+        
+        change = roundNumber(parseFloat(cashTendered - totalAmountInclCashback), 2);
+        
+        //make sure the change cannot be greater than the cash amount
+        if(change >= totalCashAmount) {
+            niceAlert("Change cannot be greater than or equal the cash amount!");
+            return;
+        }
     }
     
     doTotalFinal();
@@ -309,6 +313,11 @@ function moneySelected(amount) {
         currentAmount = parseFloat(currentAmount);
     
         newAmount = parseInt(amount) + currentAmount;
+    }
+    
+    //make sure it is a positive number
+    if(newAmount < 0) {
+        newAmount = 0;
     }
     
     newAmount = roundNumber(newAmount, 2);
