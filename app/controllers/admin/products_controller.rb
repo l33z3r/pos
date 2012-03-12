@@ -31,7 +31,6 @@ class Admin::ProductsController < Admin::AdminController
         @csv_string += "Cost Price,Unit,Size,Sales Tax Percent\n"
         
         @products.each do |p|
-          
           @category = (p.category ? p.category.name : "none").gsub(",", "")
           @department = ((p.category and p.category.parent_category) ? p.category.parent_category.name : "none").gsub(",", "")
           

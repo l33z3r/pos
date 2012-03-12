@@ -33,11 +33,15 @@ class TerminalSyncData < ActiveRecord::Base
   def self.request_reload_app terminal_id
     TerminalSyncData.transaction do
       TerminalSyncData.fetch_terminal_reload_request_times.each do |tsd|
-        tsd.destroy
+        if !tsd.data[:hard_reset]
+          tsd.destroy
+        end
       end
     
+      @now_millis = (Time.now.to_f * 1000).to_i
+      
       TerminalSyncData.create!({:sync_type => TerminalSyncData::TERMINAL_RELOAD_REQUEST, 
-          :time => Time.now.to_i.to_s, :data => {:terminal_id => terminal_id}})
+          :time => @now_millis.to_s, :data => {:terminal_id => terminal_id}})
     end
   end
   
@@ -47,8 +51,10 @@ class TerminalSyncData < ActiveRecord::Base
         tsd.destroy
       end
     
+      @now_millis = (Time.now.to_f * 1000).to_i
+      
       TerminalSyncData.create!({:sync_type => TerminalSyncData::TERMINAL_RELOAD_REQUEST, 
-          :time => Time.now.to_i.to_s, :data => {:terminal_id => terminal_id, :hard_reset => true}})
+          :time => @now_millis.to_s, :data => {:terminal_id => terminal_id, :hard_reset => true}})
     end
   end
   
@@ -60,8 +66,10 @@ class TerminalSyncData < ActiveRecord::Base
         end
       end
       
+      @now_millis = (Time.now.to_f * 1000).to_i
+      
       TerminalSyncData.create!({:sync_type => TerminalSyncData::ORDER_READY_REQUEST, 
-          :time => Time.now.to_i.to_s, :data => {:order_num => order_num, :employee_id => employee_id, :terminal_id => terminal_id, :table_id => table_info.id, :table_label => table_info.perm_id}})
+          :time => @now_millis.to_s, :data => {:order_num => order_num, :employee_id => employee_id, :terminal_id => terminal_id, :table_id => table_info.id, :table_label => table_info.perm_id}})
     end
   end
   

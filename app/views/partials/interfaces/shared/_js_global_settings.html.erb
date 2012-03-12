@@ -122,7 +122,7 @@
   var allDevicesOrderNotification = <%= GlobalSetting.parsed_setting_for GlobalSetting::All_DEVICES_ORDER_NOTIFICATION %>;
   
   //these variables are used to get a syncronised time on each device
-  var serverCounterStartTimeMillis = <%= Time.now.to_f * 1000 %>;
+  var serverCounterStartTimeMillis = <%= (Time.now.to_f * 1000).to_i %>;
   var counterStartTimeMillis = new Date().getTime();
   
   //payment integration IDs

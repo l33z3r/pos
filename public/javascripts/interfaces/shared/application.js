@@ -58,7 +58,7 @@ function callHomePoll() {
         if(lastReloadTime != null) {
             lastInterfaceReloadTime = parseFloat(lastReloadTime);
         } else {
-            lastInterfaceReloadTime = 0;
+            lastInterfaceReloadTime = clueyTimestamp();
         }
     } else {
         //write it to cookie        

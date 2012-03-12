@@ -26,7 +26,6 @@ class HomeController < ApplicationController
       @reload_request_time = @reload_app['reload_request_time']
       @reload_request_terminal_id = @reload_app['reload_request_terminal_id']
       @reload_request_hard_reset = @reload_app['reload_request_hard_reset']
-      @new_reload_app_update_time = @reload_request_time.to_i + 1
     end
     
     #check the last timestamp for the table order sync
