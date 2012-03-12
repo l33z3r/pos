@@ -402,9 +402,9 @@ class GlobalSetting < ActiveRecord::Base
             @my_printer_left_margin_gs.save
             
             #disable advanced touch
-            @disable_advanced_touch_gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @old_fingerprint}
+            @disable_advanced_touch_gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @old_fingerprint, :user_agent => ""}
             
-            @my_disable_advanced_touch_gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @my_terminal_fingerprint}
+            @my_disable_advanced_touch_gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @my_terminal_fingerprint, :user_agent => ""}
             @my_disable_advanced_touch_gs.value = @disable_advanced_touch_gs.value
             @my_disable_advanced_touch_gs.save
             

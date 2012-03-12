@@ -81,6 +81,13 @@ function finishSale() {
         }
     }
     
+    change = cashTendered - totalAmountInclCashback;
+    
+    if(change > totalAmountInclCashback) {
+        niceAlert("Change cannot be greater than the cash amount!");
+        return;
+    }
+    
     doTotalFinal();
 }
 
