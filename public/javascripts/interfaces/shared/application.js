@@ -17,6 +17,7 @@ var lastSyncTableOrderTime = null;
 var lastSyncKey = "last_sync_table_order_time";
 
 var lastInterfaceReloadTime = null;
+var lastPrintCheckTime = null;
     
 //the following hack is due to eventX eventY being deprecated in new builds of chrome
 $.event.props = $.event.props.join('|').replace('layerX|layerY|', '').split('|');
@@ -65,6 +66,27 @@ function callHomePoll() {
         //100 year expiry, but will really end up in year 2038 due to limitations in browser
         var exdays = 365 * 100;
         setRawCookie(lastReloadCookieName, lastInterfaceReloadTime, exdays);
+    }
+    
+    //load/store the timestamp for print checks
+    //also copy this timestamp into a variable that says when we last checked an order for printed items
+    //this is to stop orders from re-printing once we reload the terminal
+    if(lastPrintCheckTime == null) {
+        //read it from cookie
+        var lastCheckTime = getRawCookie(lastPrintCheckCookieName);
+        
+        if(lastCheckTime != null) {
+            lastPrintCheckTime = parseFloat(lastCheckTime);
+        } else {
+            lastPrintCheckTime = clueyTimestamp();
+        }
+        
+        console.log("init print check to : " + lastPrintCheckTime);
+    } else {
+        //write it to cookie        
+        //100 year expiry, but will really end up in year 2038 due to limitations in browser
+        var exdays = 365 * 100;
+        setRawCookie(lastPrintCheckCookieName, lastPrintCheckTime, exdays);
     }
     
     callHomeURL = "/call_home.js"

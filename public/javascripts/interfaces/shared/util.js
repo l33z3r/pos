@@ -140,6 +140,7 @@ function doClearAndReload() {
 var terminalFingerPrintCookieName = "terminal_fingerprint";
 var sessionIdCookieName = "_session_id";
 var lastReloadCookieName = "last_reload_time";
+var lastPrintCheckCookieName = "last_print_check_time";
 
 //deletes everything but the fingerprint cookie
 function clearLocalStorageAndCookies() {
@@ -153,7 +154,8 @@ function clearLocalStorageAndCookies() {
         var e = c[i].indexOf("=");
         var cname = c[i].substr(0,e);
         
-        if($.trim(cname) == terminalFingerPrintCookieName || $.trim(cname) == sessionIdCookieName || $.trim(cname) == lastReloadCookieName) {
+        if($.trim(cname) == terminalFingerPrintCookieName || $.trim(cname) == sessionIdCookieName 
+            || $.trim(cname) == lastReloadCookieName || $.trim(cname) == lastPrintCheckCookieName) {
             continue;
         }
         

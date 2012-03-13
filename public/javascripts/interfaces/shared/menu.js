@@ -77,9 +77,12 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
     if(inKitchenContext()) {
         renderReceipt(tableID);
     }
-    
-    if(callHomePollInitSequenceComplete) {
+    console.log(lastSyncTableOrderTime + " " + lastPrintCheckTime);
+    if(lastSyncTableOrderTime > lastPrintCheckTime) {
+        console.log("printing");
         checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);
+    } else {
+        console.log("skipping");
     }
     
     if(tableID != 0) {
