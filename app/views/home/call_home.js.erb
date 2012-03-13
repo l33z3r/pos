@@ -2,8 +2,13 @@
 immediateCallHome = false;
 
 <% if @reload_app %>
-  //set the reload time to 5 seconds in the future to stop any others from coming in
-  lastInterfaceReloadTime = clueyTimestamp() + (5 * 1000);
+  //update the timestamp and make sure the time is in the future
+  lastInterfaceReloadTime = clueyTimestamp();
+  
+  if(lastInterfaceReloadTime <= <%=@reload_request_time%>) {
+    lastInterfaceReloadTime = <%=@reload_request_time%> + 1;
+  }
+  
   alertReloadRequest("<%= @reload_request_terminal_id %>", <%=@reload_request_hard_reset %>);
 <% end %>
 
