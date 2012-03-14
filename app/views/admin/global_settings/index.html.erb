@@ -255,11 +255,11 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Business Information (200 Chars)</td>
+                    <td>Business Information</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::BUSINESS_INFO_MESSAGE %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.text_area :value, :class => "mceEditor", :id=>"textarea_0" %>
+                        <%= f.text_area :value, :class => "mceEditor" %>
                       <% end %>
                     </td>
                   </tr>
@@ -405,10 +405,10 @@
 
                 <tbody>
                   <% ReceiptFooter.all(:order => :name).each do |rf| %>
-                    <%= fields_for "payment_methods[]", rf do |f| %>
+                    <%= fields_for "receipt_footers[]", rf do |f| %>
                       <tr>
                         <td><%= f.text_field :name, :size => 17 %></td>
-                        <td><%= f.text_field :name %></td>
+                        <td><%= f.text_area :content, :class => "mceEditor" %></td>
                         <td><%= link_to "Delete", admin_receipt_footer_path(rf), :method => :delete, :confirm => "Are You Sure?" %></td>
                       </tr>
                     <% end %>
@@ -444,7 +444,7 @@
                       <%= f.text_field :name, :size => 17 %>
                     </td>
                     <td>
-                      <%= f.text_field :content %>
+                      <%= f.text_area :content, :class => "mceEditor" %>
                     </td>
                   </tr>
                 </tbody>

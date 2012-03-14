@@ -3,6 +3,14 @@ class ReceiptFooter < ActiveRecord::Base
   validates :name, :uniqueness => true
   
   has_many :payment_methods
+  
+  before_save :validate_html
+  
+  def validate_html
+    self.content = self.content.gsub("<hr />", "<hr></hr>")
+    
+    #must validate the html
+  end
 end
 # == Schema Information
 #

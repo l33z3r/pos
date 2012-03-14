@@ -20,6 +20,8 @@ $(function(){
     initAdminScreen();
     //key enter event in product list
     addEnterKeyEvents();
+    
+    initTinyMCE();
 });
 
 function addModifierFields(link, content) {
@@ -126,10 +128,10 @@ function updateProductPrice(product_id, currentPrice) {
 }
 
 function loadCurrentImages(letter){
-        $("#container_images").hide()
-        $("#container_spinner").show()
-        jQuery.get('/admin/products/product_image_dialog?letter=' + letter, function(data) {})
-    }
+    $("#container_images").hide()
+    $("#container_spinner").show()
+    jQuery.get('/admin/products/product_image_dialog?letter=' + letter, function(data) {})
+}
 
 function newButtonGroup() {
     name = prompt("Button Group Name:");
@@ -550,6 +552,24 @@ function addEnterKeyEvents(){
     $('#name_contains').keyup(function(e) {
         if(e.keyCode == 13) {
             runSearch();
+        }
+    });
+}
+
+function initTinyMCE() {
+    tinyMCE.init({
+        mode : "specific_textareas",
+        mceEditor : "mceEditor",
+        theme : "advanced",
+        setup : function(ed) {
+            ed.onKeyUp.add(function(ed, e) {
+//                txt = tinyMCE.activeEditor.getContent();alert(txt);
+//                
+//                //convert the hr
+//                txt = txt.replace("<hr />", "<hr></hr>");alert(txt);
+//                
+//                tinyMCE.execCommand('mceSetContent',false,txt);
+            });
         }
     });
 }
