@@ -561,15 +561,8 @@ function initTinyMCE() {
         mode : "specific_textareas",
         mceEditor : "mceEditor",
         theme : "advanced",
-        setup : function(ed) {
-            ed.onKeyUp.add(function(ed, e) {
-//                txt = tinyMCE.activeEditor.getContent();alert(txt);
-//                
-//                //convert the hr
-//                txt = txt.replace("<hr />", "<hr></hr>");alert(txt);
-//                
-//                tinyMCE.execCommand('mceSetContent',false,txt);
-            });
-        }
+        theme_advanced_buttons1 : "|,fontselect,fontsizeselect,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|",
+        theme_advanced_buttons2 : "|,bullist,numlist,|,outdent,indent,blockquote,|sub,sup,|,charmap,|",
+        theme_advanced_buttons3 : ""
     });
 }

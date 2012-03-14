@@ -80,6 +80,11 @@ function print(content) {
       
     var print_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/receipt_printer';
     
+    //make sure the html content is compatible with the print service
+    
+    //replace <hr> with <hr></hr>
+    content_with_css = content_with_css.replace("<hr>", "<hr></hr>");
+    
     $.ajax({
         type: 'POST',
         url: '/forward_print_service_request',

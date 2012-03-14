@@ -2,7 +2,7 @@ class CreateReceiptFooters < ActiveRecord::Migration
   def self.up
     create_table :receipt_footers do |t|
       t.string :name      
-      t.string :content
+      t.text :content
     end
     
     add_column :payment_methods, :receipt_footer_id, :integer

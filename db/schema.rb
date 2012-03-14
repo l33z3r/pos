@@ -325,7 +325,7 @@ ActiveRecord::Schema.define(:version => 20120312174903) do
 
   create_table "receipt_footers", :force => true do |t|
     t.string "name"
-    t.string "content"
+    t.text   "content"
   end
 
   create_table "roles", :force => true do |t|
