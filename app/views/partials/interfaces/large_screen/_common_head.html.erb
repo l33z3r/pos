@@ -5,6 +5,9 @@
 <!-- load the dynamic theme -->
 <!--link type="text/css" href="<%= admin_custom_theme_path(:format => :css) %> " media="screen" rel="stylesheet" /-->
 
+<!-- TINY MCE EDITOR CAUSES PROBLEMS WHEN INCLUDED WITH THE OTHER JS FILES SO HERE IT IS ALONE and first in the list of js -->
+<%= javascript_include_tag "plugins/tiny_mce/tiny_mce" %>
+
 <%= render "/partials/interfaces/shared/shared_js_includes" %>
 
 <!-- application specific js -->
