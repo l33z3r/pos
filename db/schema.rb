@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120309095350) do
+ActiveRecord::Schema.define(:version => 20120312174903) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -245,6 +245,7 @@ ActiveRecord::Schema.define(:version => 20120309095350) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "payment_integration_id", :default => 0
+    t.integer  "receipt_footer_id"
   end
 
   create_table "products", :force => true do |t|
@@ -320,6 +321,11 @@ ActiveRecord::Schema.define(:version => 20120309095350) do
     t.integer  "course_num",                               :default => 0
     t.boolean  "is_stock_item",                            :default => true
     t.string   "kitchen_screens",                          :default => ""
+  end
+
+  create_table "receipt_footers", :force => true do |t|
+    t.string "name"
+    t.text   "content"
   end
 
   create_table "roles", :force => true do |t|

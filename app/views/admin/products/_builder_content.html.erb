@@ -82,7 +82,7 @@
         </div>
         <div class="field">
           <div class="label">Category</div>
-          <%= f.collection_select :category_id, Category.find(:all), :id, :name, 
+          <%= f.collection_select :category_id, Category.all, :id, :name, 
             :prompt => "Select a Category", :include_blank => "None" %>
           <div class="clear">&nbsp;</div>
         </div>
@@ -103,7 +103,7 @@
         </div>
         <div class="field">
           <div class="label">Modifier Grid</div>
-          <%= f.collection_select :order_item_addition_grid_id, OrderItemAdditionGrid.find(:all), :id, :name, 
+          <%= f.collection_select :order_item_addition_grid_id, OrderItemAdditionGrid.all, :id, :name, 
             :prompt => "Select a Modifier Grid", :include_blank => "None" %>
           <div class="clear">&nbsp;</div>
         </div>

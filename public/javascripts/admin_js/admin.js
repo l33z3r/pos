@@ -20,6 +20,8 @@ $(function(){
     initAdminScreen();
     //key enter event in product list
     addEnterKeyEvents();
+    
+    initTinyMCE();
 });
 
 function addModifierFields(link, content) {
@@ -126,10 +128,10 @@ function updateProductPrice(product_id, currentPrice) {
 }
 
 function loadCurrentImages(letter){
-        $("#container_images").hide()
-        $("#container_spinner").show()
-        jQuery.get('/admin/products/product_image_dialog?letter=' + letter, function(data) {})
-    }
+    $("#container_images").hide()
+    $("#container_spinner").show()
+    jQuery.get('/admin/products/product_image_dialog?letter=' + letter, function(data) {})
+}
 
 function newButtonGroup() {
     name = prompt("Button Group Name:");
@@ -551,5 +553,16 @@ function addEnterKeyEvents(){
         if(e.keyCode == 13) {
             runSearch();
         }
+    });
+}
+
+function initTinyMCE() {
+    tinyMCE.init({
+        mode : "specific_textareas",
+        mceEditor : "mceEditor",
+        theme : "advanced",
+        theme_advanced_buttons1 : "|,fontselect,fontsizeselect,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|",
+        theme_advanced_buttons2 : "|,bullist,numlist,|,outdent,indent,blockquote,|sub,sup,|,charmap,|",
+        theme_advanced_buttons3 : ""
     });
 }

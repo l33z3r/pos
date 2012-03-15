@@ -54,8 +54,15 @@ function printReceipt(content, printRecptMessage) {
         setStatusMessage("Printing Receipt");
     }
     
+    var footer = receiptMessage;
+    
+    //check if a custom footer should be used
+    if(customFooterId != null) {
+        footer = customReceiptFooters[customFooterId].content;
+    }
+    
     if(printRecptMessage) {
-        receiptMessageHTML = "<div id='receipt_message'>" + receiptMessage + "</div>";
+        receiptMessageHTML = "<div id='receipt_message'>" + footer + "</div>";
         content += clearHTML + receiptMessageHTML;
     }
     
@@ -72,6 +79,11 @@ function print(content) {
     + $('#printFrame').contents().find('html').html() + "</html>";
       
     var print_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/receipt_printer';
+    
+    //make sure the html content is compatible with the print service
+    
+    //replace <hr> with <hr></hr>
+    content_with_css = content_with_css.replace("<hr>", "<hr></hr>");
     
     $.ajax({
         type: 'POST',

@@ -1,4 +1,5 @@
 var splitPayments;
+var customFooterId = null;
 
 function updateTotalTendered() {
     var totalCashTendered = getTotalTendered();
@@ -108,7 +109,7 @@ function cashOutCancel() {
 var paymentIntegrationId = 0;
 var currentZalionPaymentMethodName = null;
 
-function paymentMethodSelected(method, integration_id) {
+function paymentMethodSelected(method, integration_id, custom_footer_id) {    
     //if the previously selected payment method had an integration, we want to popup a notice saying that it
     //must be the last payment method you select in order to actually do the integration
     if(paymentIntegrationId != 0 && splitPayments[paymentMethod] > 0) {
@@ -175,6 +176,9 @@ function paymentMethodSelected(method, integration_id) {
     
     cashTendered = splitPayments[paymentMethod];
     $('#tendered_value').html(currency(cashTendered));
+    
+    //set the custom footer id
+    customFooterId = custom_footer_id;
 }
 
 var selectedRoomNumber = null;

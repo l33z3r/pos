@@ -1,36 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-
     <%= render :partial => "/partials/interfaces/large_screen/common_head" %>
     <%= javascript_include_tag "admin_js/admin" %>
-    <%= javascript_include_tag "plugins/tiny_mce/tiny_mce" %>
-
-    <script type="text/javascript">
-    tinyMCE.init({
-        mode : "specific_textareas",
-        mceEditor : "mceEditor",
-        theme : "simple",
-        setup : function(ed) {
-                ed.onKeyUp.add(function(ed, e) {
-                    txt = tinyMCE.activeEditor.getContent();
-                    //strip the html
-                    txt = txt.replace(/(<([^>]+)>)/ig,"");
-                    txt = txt.replace(/ /g,"");
-                    if (txt.length > 200) {
-                          txt = txt.substring(0,200);
-                          tinyMCE.execCommand('mceSetContent',false,txt);
-                  }
-                });
-             }
-    });
-
-    function writeLen(len, maxlength){
-        document.getElementById('spaceleft').value=maxlength-len;
-        document.getElementById('space').value=maxlength;
-    }
-    </script>
-
   </head>
   <body>
     <div id="wrapper" class="wrapper admin large_interface">
