@@ -33,6 +33,11 @@ function doSyncTableOrder() {
             //dont need to check if empty as this will only ever be called after a sale
             lastOrderSaleText = "Last Sale";
             order = lastTableZeroOrder;
+            
+            //mark all the items as unsynced for table 0 so they get printed
+            for(var i=0; i<order.items.length; i++) {
+                order.items[i].synced = false;
+            }
         }
     } else {
         lastOrderSaleText = "Last Order";
@@ -55,7 +60,7 @@ function doSyncTableOrder() {
     //add the serverAddedText to the first non synced item
     var checkForShowServerAddedText = true;
     
-    //mark all items in this order as synced
+    //mark the item that we need to show the server added text for
     for(var i=0; i<order.items.length; i++) {
         if(checkForShowServerAddedText && !order.items[i].synced) {
             order.items[i].showServerAddedText = true;
