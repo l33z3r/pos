@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   helper_method :e, :is_cluey_user?, :current_employee, :print_money
   helper_method :mobile_device?, :all_terminals, :all_servers, :current_interface
   helper_method :development_mode?, :production_mode?
-  helper_method :server_ip, :active_employee_ids
+  helper_method :server_ip, :active_employee_ids, :now_millis
   
   before_filter :load_global_vars
   
@@ -123,7 +123,7 @@ class ApplicationController < ActionController::Base
       
     @sync_data = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => employee_id}.to_yaml
       
-    @time = (Time.now.to_f * 1000).to_i
+    @time = now_millis
       
     #make sure the time is at least 2 milliseconds afte the last sync so that it gets picked up ok
     @last_table_order_sync = TerminalSyncData.fetch_sync_table_order_times.last
@@ -400,6 +400,10 @@ class ApplicationController < ActionController::Base
     session[:active_employee_ids] ||= []
     
     session[:active_employee_ids]
+  end
+  
+  def now_millis
+    (Time.now.to_f * 1000).to_i
   end
   
   def current_interface
