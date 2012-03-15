@@ -403,7 +403,7 @@ class ApplicationController < ActionController::Base
   end
   
   def now_millis
-    (Time.now.to_f * 1000).to_i
+    GlobalSetting.now_millis
   end
   
   def current_interface

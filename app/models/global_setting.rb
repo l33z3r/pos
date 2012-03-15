@@ -527,6 +527,10 @@ class GlobalSetting < ActiveRecord::Base
     return 2..4
   end
   
+  def self.now_millis
+    (Time.now.to_f * 1000).to_i
+  end
+  
   #these properties are for particular properties in the db
   
   #properties for home screen
