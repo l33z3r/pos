@@ -101,7 +101,7 @@ class OrderController < ApplicationController
     
         if @table_from
           @table_from_order_num = params[:table_from_order_num] 
-          do_request_clear_table_order @terminal_id, Time.now.to_i, @table_from_id, @table_from_order_num, e
+          do_request_clear_table_order @terminal_id, now_millis, @table_from_id, @table_from_order_num, e
         else
           @error = true
         end
@@ -228,7 +228,7 @@ class OrderController < ApplicationController
       #only do this if that table still exists!
       if @order.is_table_order and @table_info and !@is_split_bill_order
         @employee_id = @order_params['employee_id']
-        do_request_clear_table_order @terminal_id, Time.now.to_i, @order.table_info_id, @order.order_num, @employee_id
+        do_request_clear_table_order @terminal_id, now_millis, @order.table_info_id, @order.order_num, @employee_id
       end
 
       @success = @order_saved and @order_item_saved

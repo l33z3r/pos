@@ -515,7 +515,7 @@ class ApplicationController < ActionController::Base
   
   def update_html5_cache_timestamp 
     @timestamp_setting = GlobalSetting.setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP
-    @timestamp_setting.value = Time.now.to_i
+    @timestamp_setting.value = now_millis
     @timestamp_setting.save
   end
   
