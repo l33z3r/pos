@@ -1738,7 +1738,7 @@ div.small_button.pressed,
 #wrapper div.go_key.pressed,
 #wrapper div.cancel_key.pressed {
     border: 1px solid #E36C0A;
-    background: #eee;
+    background: #AAA;
     -moz-opacity: 90;
     filter:alpha(opacity: .90);
     opacity: .90;
@@ -1754,7 +1754,7 @@ div.small_button.pressed *,
 #wrapper div.key.pressed *,
 #wrapper div.go_key.pressed *,
 #wrapper div.cancel_key.pressed * {
-    background: #eee;
+    background: #AAA;
     -moz-opacity: 90;
     filter:alpha(opacity: .90);
     opacity: .90;

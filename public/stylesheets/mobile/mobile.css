@@ -202,7 +202,7 @@ div#table_info_screen span.table_label {
 #jqt div.go_key.pressed,
 #jqt div.cancel_key.pressed{
     border: 1px solid #E36C0A; 
-    background: #eee;
+    background: #AAA;
     -moz-opacity: 90;
     filter:alpha(opacity: .90);
     opacity: .90;    
@@ -212,7 +212,7 @@ div#table_info_screen span.table_label {
 #jqt div.key.pressed *,
 #jqt div.go_key.pressed *,
 #jqt div.cancel_key.pressed *{
-    background: #eee;
+    background: #AAA;
     -moz-opacity: 90;
     filter:alpha(opacity: .90);
     opacity: .90;     

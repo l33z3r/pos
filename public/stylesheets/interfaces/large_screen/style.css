@@ -3547,14 +3547,14 @@ div.button_small.pressed,
 #wrapper div#landing div#active_users_buttons_container div#active_users div.employee_box.pressed,
 #wrapper div.cancel_key.pressed {
     border: 1px solid #E36C0A; 
-    background: #eee;
+    background: #AAA;
     -moz-opacity: 90;
     filter:alpha(opacity: .90);
     opacity: .90;    
 }
 
 nav#main_nav div#nav_util_button.pressed {
-    background: #eee;
+    background: #AAA;
     -moz-opacity: 90;
     filter:alpha(opacity: .90);
     opacity: .90;
@@ -3571,7 +3571,7 @@ div.button_small.pressed *,
 #wrapper div.go_key.pressed *,
 #wrapper div#landing div#active_users_buttons_container div#active_users div.employee_box.pressed *,
 #wrapper div.cancel_key.pressed * {
-    background: #eee;
+    background: #AAA;
     -moz-opacity: 90;
     filter:alpha(opacity: .90);
     opacity: .90;    

@@ -135,7 +135,7 @@ function showTablesScreen() {
 }
 
 function showMoreOptionsScreen() {
-    alert("more options button pressed!");
+    alert("functions button pressed!");
 }
 
 function goToMainMenu() {
