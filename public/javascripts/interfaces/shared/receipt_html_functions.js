@@ -45,7 +45,7 @@ function fetchLastRoomID(user_id) {
     } else {
         lastRoomID = lastRoomIDOBJ.room_id;
     }
-    
+    //alert("last room id: " + lastRoomID);
     return lastRoomID;
 }
 

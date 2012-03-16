@@ -115,6 +115,10 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
             tableOrderDataJSON.items[itemKey].product.show_price_on_receipt = (tableOrderDataJSON.items[itemKey].product.show_price_on_receipt.toString() == "true" ? true : false);   
         }
         
+        if(tableOrderDataJSON.items[itemKey].showServerAddedText) {
+            tableOrderDataJSON.items[itemKey].showServerAddedText = (tableOrderDataJSON.items[itemKey].showServerAddedText.toString() == "true" ? true : false);   
+        }
+        
         if(tableOrderDataJSON.items[itemKey].product.hide_on_printed_receipt) {
             tableOrderDataJSON.items[itemKey].product.hide_on_printed_receipt = (tableOrderDataJSON.items[itemKey].product.hide_on_printed_receipt.toString() == "true" ? true : false);   
         }
@@ -374,11 +378,6 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, orderNum, tableLabel
         
         doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployee, nextUserIDToSyncWith);
     }
-    
-    //WE DONT AUTO CLEAR ANYMORE ON KITCHEN SCREEN
-    //    if(inKitchenContext()) {
-    //        tableCleared(tableID, orderNum);
-    //    }
     
     //remove the table from the active table ids array
     removeActiveTable(tableID);

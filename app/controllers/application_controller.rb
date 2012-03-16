@@ -115,7 +115,7 @@ class ApplicationController < ActionController::Base
     end
       
     #does this order have an order id? if not generate one
-    if !table_order_data[:orderData][:order_num]
+    if !table_order_data[:orderData][:order_num] or table_order_data[:orderData][:order_num].blank?
       table_order_data[:orderData][:order_num] = Order.next_order_num
     end
       

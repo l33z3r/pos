@@ -279,6 +279,11 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
         //load the service charge
         tableOrders[tableNum].service_charge = currentTableOrderJSON.service_charge;
         
+        //load the void order id if there is one
+        if(currentTableOrderJSON.void_order_id) {
+            tableOrders[tableNum].void_order_id = currentTableOrderJSON.void_order_id;
+        }
+        
         if(typeof tableOrders[tableNum].service_charge == "undefined") {
             tableOrders[tableNum].service_charge = 0;
         }

@@ -1,13 +1,13 @@
 function havePreviousOrder(current_user_id) {
     var key = "user_" + current_user_id + "_table_" + previousOrderTableNum + "_current_order";
     var data = retrieveStorageValue(key);
-    return data;
+    return data != null;
 }
 
 function haveSplitBillOrder(current_user_id) {
     var key = "user_" + current_user_id + "_table_" + tempSplitBillTableNum + "_current_order";
     var data = retrieveStorageValue(key);
-    return data;
+    return data != null;
 }
 
 function showScreenFromHashParams() {

@@ -180,10 +180,10 @@ function startTransferOrderMode() {
         return;
     }
     
-    if(selectedTable == -1) {
-        setStatusMessage("Only valid for table orders!");
-        return;
-    }
+//    if(selectedTable == -1) {
+//        setStatusMessage("Only valid for table orders!");
+//        return;
+//    }
     
     var order = getCurrentOrder();
     
