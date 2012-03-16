@@ -147,7 +147,7 @@ function renderReceipt(tableID) {
      
     var nextKitchenOrderNum = nextKitchenOrder.order_num;
     
-    $('#kitchen_table_' + tableID + "_receipt_order_num").html("Order #" + nextKitchenOrderNum);
+    $('#kitchen_table_' + tableID + "_receipt_order_num").html("#" + nextKitchenOrderNum);
      
     var allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(nextKitchenOrder, false, false, false);
      

@@ -77,12 +77,14 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
     if(inKitchenContext()) {
         renderReceipt(tableID);
     }
-    console.log(lastSyncTableOrderTime + " " + lastPrintCheckTime);
+    
+    console.log("Got order, print? (this, last) = (" + lastSyncTableOrderTime + ", " + lastPrintCheckTime + ")");
+    
     if(lastSyncTableOrderTime > lastPrintCheckTime) {
-        console.log("printing");
+        console.log("checking for items to print");
         checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);
     } else {
-        console.log("skipping");
+        console.log("skipping check for print");
     }
     
     if(tableID != 0) {
@@ -503,14 +505,6 @@ function applyDiscountToOrderItem(order, itemNumber, amount) {
     //get rid of rounding errors
     orderItem['total_price'] = roundNumber(orderItem['total_price'], 2);
 
-    if(selectedTable == 0) {
-        //mark the item as synced as we are not on a table receipt
-        orderItem.synced = true;
-    } else {
-        //mark this item as unsynced
-        orderItem['synced'] = false;
-    }
-    
     calculateOrderTotal(order);
 }
 

@@ -153,21 +153,32 @@ class ApplicationController < ActionController::Base
   end
   
   def remove_previous_sync_for_table table_id, delete_clear_table_order_syncs
-    TerminalSyncData.fetch_sync_table_order_times.each do |tsd|
+    #we keep the previous 5 orders for this table so that orders from
+    #multiple terminals at once do not overwrite eachother and they
+    #all get printed
+    @max_orders_kept = 5
+    @order_count = 0
+    
+    @tsds = TerminalSyncData.fetch_sync_table_order_times.reverse
+    
+    @tsds.each do |tsd|
       if tsd.data[:table_id].to_s == table_id.to_s
-        
         #don't delete the clear table order syncs as we need at least one there at all times
         if tsd.data[:clear_table_order] and !delete_clear_table_order_syncs
           next
         end
         
-        tsd.destroy
+        @order_count += 1
+        
+        #always keep @max_orders_kept orders, unless we are clearing the table
+        if delete_clear_table_order_syncs or (@order_count >= @max_orders_kept)
+          tsd.destroy
+        end
       end
     end
   end
   
   def remove_old_table_0_orders
-    
     @max_table_0_orders = 50
     @tsds_reversed = TerminalSyncData.fetch_sync_table_order_times.reverse
     
