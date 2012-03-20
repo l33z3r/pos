@@ -9,128 +9,6 @@ class HomeController < ApplicationController
     do_common_interface_actions
   end
   
-  # reports for cps
-  # 
-  # REPORT 1
-  # 
-  #  respond_to do |format|
-  #      format.csv do
-  #        @sales = {}
-  #        @payment_methods = []
-  #      
-  #        Order.order("created_at").each do |order|
-  #          @date = order.created_at.strftime("%d/%m/%Y")
-  #        
-  #          @order_data = {}
-  #        
-  #          @item_count = order.order_items.to_a.sum(&:quantity)
-  #          @sales_total = order.total
-  #       
-  #          @split_payments = {}
-  #       
-  #          if !@sales[@date]
-  #            @sales[@date] = {:items_sold => 0, :sales_total => 0, :split_payments => {}}
-  #          end
-  #       
-  #          @sales[@date][:items_sold] += @item_count
-  #          @sales[@date][:sales_total] += @sales_total
-  #       
-  #          if order.split_payments
-  #            order.split_payments.each do |pt, am|
-  #              if !@sales[@date][:split_payments][pt]
-  #                @sales[@date][:split_payments][pt] = 0
-  #              end
-  #              
-  #              if pt.downcase == "cash"
-  #                am = am.to_f - (order.amount_tendered - order.total)
-  #              end
-  #         
-  #              @payment_methods << pt
-  #              @payment_methods.uniq!
-  #              @payment_methods.sort!
-  #         
-  #              logger.info("pt: " + pt + " am:" + am.to_s)
-  #              @sales[@date][:split_payments][pt] += am.to_f
-  #            end
-  #          else
-  #            @pt = order.payment_type
-  #            
-  #            if !@sales[@date][:split_payments][@pt]
-  #              @sales[@date][:split_payments][@pt] = 0
-  #            end
-  #         
-  #            @payment_methods << @pt
-  #            @payment_methods.uniq!
-  #            @payment_methods.sort!
-  #         
-  #            logger.info("pt: " + @pt + " am:" + @sales_total.to_s)
-  #            @sales[@date][:split_payments][@pt] += @sales_total.to_f
-  #          end
-  #       
-  #        end
-  #     
-  #        @csv_string = "Date,Items Sold,Sales Total"
-  #     
-  #        @payment_methods.each do |pm|
-  #          @csv_string += ",#{pm}"
-  #        end
-  #         
-  #        @csv_string += "\n"
-  #     
-  #        @sales.each do |day, sales_for_day|
-  #          @csv_string += "#{day},#{sales_for_day[:items_sold]},#{sales_for_day[:sales_total].to_f.round(2)}"
-  #           
-  #          @payment_methods.each do |pm|
-  #            @pm_amount = sales_for_day[:split_payments][pm]
-  #             
-  #            if !@pm_amount
-  #              @pm_amount = 0
-  #            end
-  #             
-  #            @csv_string += ",#{@pm_amount.to_f.round(2)}"
-  #          end
-  #         
-  #          @csv_string += "\n"
-  #        end
-  #        
-  #        render :text => @csv_string
-  #      end
-  #    end
-  #  
-  #  
-  #  REPORT 2
-  #  
-  #  #  respond_to do |format|
-  #      format.csv do
-  #        @items = {}
-  #        
-  #        OrderItem.all.each do |oi|
-  #          if !@items[oi.product.name]
-  #            @items[oi.product.name] = {
-  #              :category => oi.product.category ? oi.product.category.name : "None",
-  #              :item_count => 0,
-  #              :sales_total => 0
-  #            }
-  #          end
-  #          
-  #          @items[oi.product.name][:item_count] += oi.quantity
-  #          @items[oi.product.name][:sales_total] += oi.total_price
-  #        end
-  #      
-  #        @csv_string = "Product,Category,Items Sold,Sales Total\n"
-  #        
-  #        @items = @items.sort
-  #        
-  #        @items.each do |pname, data|
-  #          @csv_string += "#{pname},#{data[:category]},#{data[:item_count]},#{data[:sales_total]}\n"
-  #        end
-  #  
-  #        render :text => @csv_string
-  #      end 
-  #    end
-  #  
-  
-  
   def mobile_index
     @all_terminals = all_terminals
     @all_servers = all_servers
@@ -662,7 +540,17 @@ class HomeController < ApplicationController
     Role.all.each do |role|
       @menu_screen_buttons_map[role.id] = DisplayButtonRole.menu_screen_buttons_for_role(role.id)
       @options_screen_buttons_map[role.id] = DisplayButtonRole.admin_screen_buttons_for_role(role.id)
-    end  
+    end 
+    
+    query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from customers where customer_type in ('#{Customer::NORMAL}', '#{Customer::NORMAL}') group by substr(name,1,1)")
+
+    @customer_letters = []
+    
+    for element in query
+      element[0].downcase!
+      @customer_letters += element
+    end
+     
   end
   
   def do_medium_interface_actions

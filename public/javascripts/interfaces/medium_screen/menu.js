@@ -483,8 +483,6 @@ function doSaveNote() {
         $('.note_charge').val('');
         $('.display_charge').val('');
     } else {
-
-
         if ($('.note_charge').val() != "") {
             var charge = $('.note_charge').val();
         } else {
@@ -533,8 +531,8 @@ function doSaveNote() {
         $('.note_charge').val('');
         $('.display_charge').val('');
     }
+    
     return true;
-
 }
 
 function doCancelNote() {
@@ -880,7 +878,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     if (orderItem.is_double) {
         orderHTML += "Double ";
     } else if (orderItem.is_half) {
-        orderHTML += "Half ";
+        orderHTML += halfMeasureLabel + " ";
     }
 
     orderHTML += orderItem.product.name + "</div>";

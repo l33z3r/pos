@@ -104,6 +104,7 @@ class CashTotal < ActiveRecord::Base
        
     @total_discounts = 0
     @total_covers = 0
+    @loyalty_points_redeemed = 0
     
     #load the first order, based on the last z total or the very first if none exists
     @last_performed_non_zero_z_total = where("total_type = ?", Z_TOTAL).where("end_calc_order_id is not ?", nil).where("terminal_id = ?", terminal_id).order("created_at").lock(true).last
@@ -136,8 +137,10 @@ class CashTotal < ActiveRecord::Base
         
         order.order_items.each do |order_item|
             
+          #the @order_item_price variable will be the total price for that item 
+          #including discounts at both the order level and the order item level
           @order_item_price = order_item.total_price
-            
+          
           #take away the whole order discount
           if order.discount_percent and order.discount_percent > 0
             @order_item_price -= ((order.discount_percent * @order_item_price)/100)
@@ -209,7 +212,19 @@ class CashTotal < ActiveRecord::Base
           @sales_by_category[@category_name] += @order_item_price
           @sales_by_department[@department_name] += @order_item_price
           
-          @order_item_total_discount = order_item.total_price - @order_item_price
+          if order_item.pre_discount_price
+            @order_item_price_including_item_discount = order_item.pre_discount_price
+            @order_item_total_discount = order_item.pre_discount_price - order_item.total_price
+          else 
+            @order_item_price_including_item_discount = order_item.total_price
+            @order_item_total_discount = 0
+          end
+          
+          #add on whole order discount
+          if order.discount_percent and order.discount_percent > 0
+            @order_item_total_discount += (order.discount_percent * @order_item_price_including_item_discount)/100
+          end
+          
           @total_discounts += @order_item_total_discount
             
           if @tax_chargable
@@ -269,8 +284,8 @@ class CashTotal < ActiveRecord::Base
             pt = pt.downcase
            
             #if the amount tendered was bigger than the total, we have to subtract from the cash payment for reporting
-            if pt == "cash" and order.amount_tendered > order.total
-              amount -= (order.amount_tendered - order.total)
+            if pt == PaymentMethod::CASH_PAYMENT_METHOD_NAME and order.amount_tendered > order.total
+              amount -= (order.amount_tendered - (order.total + order.service_charge))
             end
           
             if !@sales_by_payment_type[pt]
@@ -281,14 +296,22 @@ class CashTotal < ActiveRecord::Base
             @sales_by_payment_type[pt] += amount
           end
           
-          @first_pt = @payment_types.keys[0]
+          @first_pt = @payment_types.keys[0].downcase
           
           if !@service_charge_by_payment_type[@first_pt]
             @service_charge_by_payment_type[@first_pt] = 0
           end
         
-          logger.info "Increasing service_charge_by_payment_type for payment_type: #{@first_pt} by: #{order.service_charge}"
+          logger.info "Increasing service_charge_by_payment_type for payment_type: #{@first_pt} by: #{order.service_charge} #{@sales_by_payment_type[@first_pt]} #{@cash_sales_total}"
           @service_charge_by_payment_type[@first_pt] += order.service_charge
+          
+          #now deduct that service charge from that payment types entry in @sales_by_payment_type
+          if !@sales_by_payment_type[@first_pt]
+            @sales_by_payment_type[@first_pt] = 0
+          end
+        
+          @sales_by_payment_type[@first_pt] -= order.service_charge
+          
         end
         
         #overall total
@@ -297,8 +320,11 @@ class CashTotal < ActiveRecord::Base
         @service_charge_total += order.service_charge
       end
     
-      #total of all cash sales (include the service charge)
-      @cash_sales_total += @sales_by_payment_type["cash"] if @sales_by_payment_type["cash"]
+      #total of all cash sales (including the service charge)
+      @cash_sales_total += @sales_by_payment_type[PaymentMethod::CASH_PAYMENT_METHOD_NAME] if @sales_by_payment_type[PaymentMethod::CASH_PAYMENT_METHOD_NAME]
+      
+      #total of all loyalty points redeemed (including the service charge)
+      @loyalty_points_redeemed += @sales_by_payment_type[PaymentMethod::LOYALTY_PAYMENT_METHOD_NAME] if @sales_by_payment_type[PaymentMethod::LOYALTY_PAYMENT_METHOD_NAME]
       
       #total of all cash back
       @cash_back_total += Order.where("created_at >= ?", @first_order.created_at)
@@ -334,6 +360,10 @@ class CashTotal < ActiveRecord::Base
     @cash_total_data[:voids_by_employee] = @voids_by_employee
     
     @cash_total_data[:sales_by_category] = @sales_by_category
+    
+    #put the discounts in as the last item in sales by department
+    @sales_by_department["Discounts"] = @total_discounts
+    
     @cash_total_data[:sales_by_department] = @sales_by_department
     @cash_total_data[:sales_by_server] = @sales_by_server
     @cash_total_data[:sales_by_payment_type] = @sales_by_payment_type
@@ -341,6 +371,7 @@ class CashTotal < ActiveRecord::Base
     @cash_total_data[:service_charge_total] = @service_charge_total
     @cash_total_data[:total_with_service_charge] = @service_charge_total + @overall_total
     @cash_total_data[:total_discounts] = @total_discounts
+    @cash_total_data[:loyalty_redeemed] = @loyalty_points_redeemed
     @cash_total_data[:taxes] = @taxes
     @cash_total_data[:total_covers] = @total_covers
     @cash_total_data[:cash_summary] = @cash_summary

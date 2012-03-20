@@ -65,10 +65,11 @@ function printReceipt(content, printRecptMessage) {
     
     //you set mandatoryFooterMessageHTML before calling this and it will print it
     //used for the likes of zalion
-    if(mandatoryFooterMessageHTML != null) {
+    if(mandatoryFooterMessageHTML != null && mandatoryFooterMessageHTML.length > 0) {
         content += clearHTML + mandatoryFooterMessageHTML;
-        mandatoryFooterMessageHTML = null;
     }
+    
+    mandatoryFooterMessageHTML = null;
     
     if(printRecptMessage) {
         receiptMessageHTML = "<div id='receipt_message'>" + footer + "</div>";

@@ -414,9 +414,19 @@ function showUtilKeyboard() {
     $('#util_keyboard_container').slideDown(300);
 }
 
+var lastActiveElementInputCallback = null;
+
+function setUtilKeyboardCallback(callbackFunction) {
+    lastActiveElementInputCallback = callbackFunction;
+}
+
 function doWriteToLastActiveInput(val) {
     if(lastActiveElement) {
         lastActiveElement.val(lastActiveElement.val() + val);
+        
+        if(lastActiveElementInputCallback) {
+            lastActiveElementInputCallback.call();
+        }
     }
 }
 
@@ -431,6 +441,10 @@ function doDeleteCharLastActiveInput() {
     newVal = oldVal.substring(0, oldVal.length - 1);
     
     lastActiveElement.val(newVal);
+    
+    if(lastActiveElementInputCallback) {
+        lastActiveElementInputCallback.call();
+    }
 }
 
 $.fn.focusNextInputField = function() {

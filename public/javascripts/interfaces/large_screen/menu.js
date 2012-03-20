@@ -77,7 +77,7 @@ $(window).load(function(){
 
 function initMenuScreenType() {
     if(menuScreenType == RESTAURANT_MENU_SCREEN) {
-    //nothing needed here    
+        performScreenResolutionCSSMods();    
     } else if(menuScreenType == RETAIL_MENU_SCREEN) {
         //hide the table select box
         $('#table_screen_button, #table_select_container').hide();
@@ -595,7 +595,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     if (orderItem.is_double) {
         orderHTML += "Double ";
     } else if (orderItem.is_half) {
-        orderHTML += "Half ";
+        orderHTML += halfMeasureLabel + " ";
     }
     
     orderHTML += orderItem.product.name + "</div>";
@@ -1197,6 +1197,7 @@ function doTotal(applyDefaultServiceCharge) {
     $('#totals_tendered_box').addClass("selected");
     
     resetLoyaltyCustomer();
+    resetCustomerSelect();
 }
 
 var cashSaleInProcess = false;
@@ -1334,8 +1335,6 @@ function doTotalFinal() {
         }
     }
     
-    console.log("opening cash drawer: " + doOpenCashDrawer);
-    
     if(doOpenCashDrawer) {
         openCashDrawer();
     }
@@ -1424,13 +1423,36 @@ function doTotalFinal() {
     tableSelectMenu.setValue(0);
     doSelectTable(0);
     
+    mandatoryFooterMessageHTML = "";
+
+    var loyalty = totalOrder.loyalty;
+    
+    //print loyalty points earned
+    if(loyalty) {
+        var customerName = loyalty.customer_name;
+        var customerNumber = loyalty.customer_number;
+        var pointsEarned = loyalty.points_earned;
+        
+        mandatoryFooterMessageHTML += clearHTML + "<div id='loyalty_receipt_info'>";
+        
+        mandatoryFooterMessageHTML += "<div class='header'>Loyalty Info:</div>" + clearHTML;
+        
+        mandatoryFooterMessageHTML += "<div class='label'>Customer Name:</div><div class='data'>" + customerName + "</div>" + clearHTML;
+        mandatoryFooterMessageHTML += "<div class='label'>Customer Number:</div><div class='data'>" + customerNumber + "</div>" + clearHTML;
+        mandatoryFooterMessageHTML += "<div class='label'>Points Earned:</div><div class='data'>" + pointsEarned + "</div>" + clearHTML;
+        
+        mandatoryFooterMessageHTML += "</div>" + clear30HTML;
+    }
+
     totalOrder = null;
     currentTotalFinal = 0;
 
     //now print the receipt
     if(paymentIntegrationId == zalionPaymentIntegrationId && selectedRoomNumber != null && selectedFolioName != null) {
         //always print
-        mandatoryFooterMessageHTML = clearHTML + "<div id='zalion_receipt_info'>";
+        mandatoryFooterMessageHTML += clearHTML + "<div id='zalion_receipt_info'>";
+        
+        mandatoryFooterMessageHTML += "<div class='header'>Room Charge Info:</div>" + clearHTML;
         
         mandatoryFooterMessageHTML += "<div class='label'>Room Number:</div><div class='data'>" + selectedRoomNumber + "</div>" + clearHTML;
         mandatoryFooterMessageHTML += "<div class='label'>Client Name:</div><div class='data'>" + selectedFolioName + "</div>" + clearHTML;
@@ -1990,6 +2012,7 @@ function doSaveNote() {
     var absCharge = charge;
     
     addOIAToOrderItem(order, orderItem, desc, absCharge, 0, 0, noteChargeIsPlus, true, false, false, -1, -1);
+    toggleModifyOrderItemScreen();
     
     clearNoteInputs();
     
@@ -2489,34 +2512,44 @@ function clearMenuScreenInput() {
 
 function performCustomerScreenCSSMods() {
     //resize menu items
-        $('#items .item').height(133);
-        $('#items .item').width(176);
-        $('#items .item').css("margin", "3px");
-        $('#items .item .item_pic').height(116);
-        $('#items .item .item_pic img').height(90);
-        $('#items .item .item_pic img').css("max-height", "90px");
-        $('#items .item .item_pic img').css("max-width", "172px");
-        $('#items .item .item_pic img').css("margin-top", "5px");
+    $('#items .item').height(133);
+    $('#items .item').width(176);
+    $('#items .item').css("margin", "3px");
+    $('#items .item .item_pic').height(116);
+    $('#items .item .item_pic img').height(90);
+    $('#items .item .item_pic img').css("max-height", "90px");
+    $('#items .item .item_pic img').css("max-width", "172px");
+    $('#items .item .item_pic img').css("margin-top", "5px");
         
-        $('#items .menu_item_spacer').height(135);
-        $('#items .menu_item_spacer').width(178);
-        $('#items .menu_item_spacer').css("margin", "3px");
+    $('#items .menu_item_spacer').height(135);
+    $('#items .menu_item_spacer').width(178);
+    $('#items .menu_item_spacer').css("margin", "3px");
         
-        $('#items .item .item_name').css("width", "172px");
-        $('#items .item .item_name').css("font-size", "16px");
-        $('#items .item .item_name').css("bottom", "7px");
+    $('#items .item .item_name').css("width", "172px");
+    $('#items .item .item_name').css("font-size", "16px");
+    $('#items .item .item_name').css("bottom", "7px");
         
-        $('div#menu_screen div#menu_pages_container div#menu_container').height(631);
-        $('div#menu_screen div#menu_items_container').height(563);
-        $('div#menu_screen div#order_item_additions').height(631);
-        $('div#menu_screen div#order_item_additions div.oia_container').height(558);
-        $('div#menu_screen div#menu_buttons').height(79);
+    $('div#menu_screen div#menu_pages_container div#menu_container').height(631);
+    $('div#menu_screen div#menu_items_container').height(563);
+    $('div#menu_screen div#order_item_additions').height(631);
+    $('div#menu_screen div#order_item_additions div.oia_container').height(558);
+    $('div#menu_screen div#menu_buttons').height(79);
         
-        //hide the table select box
-        $('#table_screen_button, #table_select_container').hide();
+    //hide the table select box
+    $('#table_screen_button, #table_select_container').hide();
         
-        $('#box_label_container').show();
+    $('#box_label_container').show();
         
-        //hide the shortcut dropdown
-        $('#menu_screen_shortcut_dropdown_container').hide();
+    //hide the shortcut dropdown
+    $('#menu_screen_shortcut_dropdown_container').hide();
+}
+
+function performScreenResolutionCSSMods() {
+    //set resolutions
+    if(currentResolution == normalResolution) {
+    //normal screen, nothing to do
+    } else if (currentResolution == resolution1360x786) {
+        $('#wrapper').css("width", "1366px");
+        $('#menu_screen #menu_pages_container').css("width", "1090px");
+    }
 }

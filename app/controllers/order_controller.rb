@@ -144,6 +144,7 @@ class OrderController < ApplicationController
       @is_split_bill_order_param = @order_params.delete(:is_split_bill)
       
       @loyalty_details = @order_details.delete(:loyalty)
+      @customer_details = @order_details.delete(:customer)
     
       @is_split_bill_order = @is_split_bill_order_param == "true"
     
@@ -259,11 +260,13 @@ class OrderController < ApplicationController
       if @card_charge_details
         @card_charge_payment_method = @card_charge_details[:paymentMethod]
         @card_charge_amount = @card_charge_details[:amount]
+        @card_charge_reference_number = @card_charge_details[:reference_number]
         
         CardTransaction.create({
             :order_id => @order.id, 
             :payment_method => @card_charge_payment_method, 
-            :amount => @card_charge_amount})
+            :amount => @card_charge_amount,
+            :reference_number => @card_charge_reference_number})
       end
       
       #was the loyalty system used
@@ -274,11 +277,12 @@ class OrderController < ApplicationController
           if @order_details[:split_payments][:loyalty]
             @points_per_currency_unit = GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_POINTS_PER_CURRENCY_UNIT
             @points_used_this_sale = @order_details[:split_payments][:loyalty].to_f * @points_per_currency_unit
+            
             logger.info("!!!!!!!!!!!!!!!!!!!!!!!Decrementing points by #{@points_used_this_sale}")
             @loyalty_customer.decrement!(:available_points, @points_used_this_sale.to_f)
             
             CustomerPointsAllocation.create({:customer_id => @loyalty_customer.id, :order_id => @order.id, 
-              :amount => @points_used_this_sale * -1, :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
+                :amount => @points_used_this_sale * -1, :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
           end
           
           @points_earned = @loyalty_details[:points_earned]
@@ -287,6 +291,18 @@ class OrderController < ApplicationController
           
           @loyalty_customer.increment!(:available_points, @points_earned.to_f)
         end
+      end
+      
+      if @customer_details
+        @customer = Customer.find_by_id(@customer_details[:customer_id])
+        
+        CustomerTransaction.create({:transaction_type => CustomerTransaction::CHARGE,
+            :order_id => @order.id, :customer_id => @customer.id,
+            :abs_amount => @order.total, :actual_amount => @order.total, :is_credit => false
+          })
+        
+        @customer.current_balance = @customer.current_balance + @order.total 
+        @customer.save
       end
     
       @table_info = TableInfo.find_by_id(@order.table_info_id)

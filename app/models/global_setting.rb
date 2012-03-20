@@ -73,6 +73,10 @@ class GlobalSetting < ActiveRecord::Base
   LOYALTY_POINTS_PER_CURRENCY_UNIT = 58
   USE_WSS_CASH_DRAWER = 59
   USE_WSS_RECEIPT_PRINTER = 60
+  HALF_MEASURE_LABEL = 61
+  SHOW_CHARGE_CARD_BUTTON = 62
+  ALLOW_ZALION_SPLIT_PAYMENTS = 63
+  SCREEN_RESOLUTION = 64
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -134,7 +138,11 @@ class GlobalSetting < ActiveRecord::Base
     ENABLE_LOYALTY_REDEMPTION => "Enable Loyalty Redemption",
     LOYALTY_POINTS_PER_CURRENCY_UNIT => "Loyalty Points Per Currency Unit",
     USE_WSS_CASH_DRAWER => "Use Web Sockets For Cash Drawer",
-    USE_WSS_RECEIPT_PRINTER => "Use Web Sockets For Receipt Printing"
+    USE_WSS_RECEIPT_PRINTER => "Use Web Sockets For Receipt Printing",
+    HALF_MEASURE_LABEL => "Half Measure Label",
+    SHOW_CHARGE_CARD_BUTTON => "Show Charge Card",
+    ALLOW_ZALION_SPLIT_PAYMENTS => "Allow Zalion Split Payments",
+    SCREEN_RESOLUTION => "Screen Resolution"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -327,6 +335,18 @@ class GlobalSetting < ActiveRecord::Base
     when USE_WSS_RECEIPT_PRINTER
       @gs = find_or_create_by_key(:key => "#{USE_WSS_RECEIPT_PRINTER.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[USE_WSS_RECEIPT_PRINTER])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when HALF_MEASURE_LABEL
+      @gs = find_or_create_by_key(:key => HALF_MEASURE_LABEL.to_s, :value => "Half", :label_text => LABEL_MAP[HALF_MEASURE_LABEL])
+      @gs.parsed_value = @gs.value
+    when SHOW_CHARGE_CARD_BUTTON
+      @gs = find_or_create_by_key(:key => SHOW_CHARGE_CARD_BUTTON.to_s, :value => "true", :label_text => LABEL_MAP[SHOW_CHARGE_CARD_BUTTON])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when ALLOW_ZALION_SPLIT_PAYMENTS
+      @gs = find_or_create_by_key(:key => ALLOW_ZALION_SPLIT_PAYMENTS.to_s, :value => "false", :label_text => LABEL_MAP[ALLOW_ZALION_SPLIT_PAYMENTS])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when SCREEN_RESOLUTION
+      @gs = find_or_create_by_key(:key => "#{SCREEN_RESOLUTION.to_s}_#{args[:fingerprint]}", :value => SCREEN_RESOLUTION_NORMAL, :label_text => LABEL_MAP[SCREEN_RESOLUTION])
+      @gs.parsed_value = @gs.value
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -435,6 +455,12 @@ class GlobalSetting < ActiveRecord::Base
       end
       
       write_attribute("value", new_value)
+    when SHOW_CHARGE_CARD_BUTTON
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when ALLOW_ZALION_SPLIT_PAYMENTS
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
     else
       #catch the keys that are not only integers and wont get caught in the switch statement
       if key.starts_with? TERMINAL_ID.to_s
@@ -538,6 +564,13 @@ class GlobalSetting < ActiveRecord::Base
             @my_wss_receipt_printer_gs.value = @wss_receipt_printer_gs.value
             @my_wss_receipt_printer_gs.save
 	    
+	    #screen resolution
+            @screen_resolution_gs = GlobalSetting.setting_for GlobalSetting::SCREEN_RESOLUTION, {:fingerprint => @old_fingerprint}
+	    
+            @my_screen_resolution_gs = GlobalSetting.setting_for GlobalSetting::SCREEN_RESOLUTION, {:fingerprint => @my_terminal_fingerprint}
+            @my_screen_resolution_gs.value = @screen_resolution_gs.value
+            @my_screen_resolution_gs.save
+	    
             #delete old gs objects
             @websocket_ip_gs.destroy
             @cash_drawer_ip_gs.destroy
@@ -553,6 +586,7 @@ class GlobalSetting < ActiveRecord::Base
             @do_beep_gs.destroy
             @wss_cash_drawer_gs.destroy
             @wss_receipt_printer_gs.destroy
+	    @screen_resolution_gs.destroy
           end
         end
         if value
@@ -701,6 +735,10 @@ class GlobalSetting < ActiveRecord::Base
   #min and max values for polling in seconds
   POLLING_MIN_SECONDS = 1
   POLLING_MAX_SECONDS = 5
+  
+  #screen resolutions
+  SCREEN_RESOLUTION_NORMAL = "1024x768"
+  SCREEN_RESOLUTION_1360x786 = "1360x786"
 end
 
 # == Schema Information

@@ -34,7 +34,7 @@ class Order < ActiveRecord::Base
   has_one :replacement_order, :class_name => "Order", :foreign_key => "void_order_id"
   
   has_one :client_transaction
-  
+  has_one :customer_transaction
   has_one :customer_points_allocation
   
   #for will_paginate
@@ -52,15 +52,7 @@ class Order < ActiveRecord::Base
   def is_replacement?
     void_order != nil
   end
-
-
-
 end
-
-
-
-
-
 
 # == Schema Information
 #

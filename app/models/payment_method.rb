@@ -14,14 +14,34 @@ class PaymentMethod < ActiveRecord::Base
     PAYMENT_INTEGRATION_ZALION
   ]
   
+  CASH_PAYMENT_METHOD_NAME = "cash"
+  LOYALTY_PAYMENT_METHOD_NAME = "loyalty"
+  ACCOUNT_PAYMENT_METHOD_NAME = "account"
+  
   has_attached_file :logo, PAPERCLIP_STORAGE_OPTIONS.merge(:styles => { :medium => "300x300>", :thumb => "115x115>" })
   
   def is_cash?
-    self.name.downcase == "cash"
+    self.name.downcase == CASH_PAYMENT_METHOD_NAME
   end
   
   def is_loyalty?
-    self.name.downcase == "loyalty"
+    self.name.downcase == LOYALTY_PAYMENT_METHOD_NAME
+  end
+  
+  def is_account?
+    self.name.downcase == ACCOUNT_PAYMENT_METHOD_NAME
+  end
+  
+  def is_system_pm?
+    self.is_cash? or self.is_loyalty? or self.is_account?
+  end
+  
+  def can_be_default?
+    self.is_cash? or (!self.is_system_pm? and (self.payment_integration_id == 0))
+  end
+  
+  def can_have_integration?
+    !self.is_system_pm?
   end
   
   def self.payment_integration_options_for_select
@@ -41,7 +61,7 @@ class PaymentMethod < ActiveRecord::Base
     payment_method = find_by_is_default(true)
     
     if !payment_method
-      payment_method = find(:first)
+      payment_method = find_by_name(CASH_PAYMENT_METHOD_NAME)
       
       payment_method.is_default = true
       payment_method.save

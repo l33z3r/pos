@@ -1,3 +1,5 @@
+#THIS RECORDS A CHARGE ROOM TRANSACTION
+
 class ClientTransaction < ActiveRecord::Base
   belongs_to :order
   serialize :transaction_data, Hash

@@ -2222,4 +2222,18 @@ div#customer_builder div#builder_fields_container div.extra_options div#options_
     height: 30px;
 }
 
+div#customer_builder div#builder_fields_container div.extra_options div#loyalty_tab_content div.left_col {
+    float: left;
+    width: 450px;    
+}
+
+div#customer_builder div#builder_fields_container div.extra_options div#loyalty_tab_content div.left_col input {
+    width: 110px;
+}
+
+div#customer_builder div#builder_fields_container div.extra_options div#loyalty_tab_content div.right_col {
+    float: left;
+    width: 110px;
+}
+
 /* End Customers */
