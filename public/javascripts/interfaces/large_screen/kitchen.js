@@ -4,11 +4,6 @@ var orderNums = {};
 
 var kitchenOrders;
 
-//need to make sure to prune courseChecks, orderXClicked and orderNums for table 0 orders to stop memory leaks
-
-
-
-
 function initKitchen() {
     //hide the red x 
     $('#nav_save_button').hide();
@@ -385,7 +380,9 @@ function hideTableOrder(tableID) {
         $('#kitchen_receipt_container_' + tableID).remove();
         localStorage.removeItem("kitchen_orders_saved_table_0_order_" + tableID);
         
-        delete courseChecks[tableID];
+        //TODO: only delete enough to keep a certain amount in the buffer
+        //the same amount that is kept on the server
+        deleteTable0CourseChecks();
         delete orderXClicked[tableID];
         
         saveCourseChecks();
@@ -531,7 +528,7 @@ function stripProducts(order) {
         
         var itemScreens = nextItem.product.kitchen_screens;
             
-        if(false) {//(typeof itemScreens != "undefined") && itemScreens.length > 0) {
+        if((typeof itemScreens != "undefined") && itemScreens.length > 0) {
             var screensArray = itemScreens.split(",");
                 
             if($.inArray(terminalID.toLowerCase(), screensArray) != -1) {
@@ -573,4 +570,32 @@ function loadSavedTable0Orders() {
             renderReceipt(0);
         }
     });
+}
+
+function deleteTable0CourseChecks() {
+    //keep 50 of the most frequent in memory
+    var tidKeys = [];
+    
+    for(tid in courseChecks) {
+        if(tid.toString().startsWith("0_")) {
+            tidKeys.push(tid); 
+        }
+    }
+    
+    //keep the last 50 keys in that array
+    var keepCount = tidKeys.length - 50;
+    
+    if(keepCount > 0) {
+        tidKeys.splice(0, keepCount);
+        
+        for(tid in courseChecks) {
+            if(tid.toString().startsWith("0_")) {
+                //if not it array, then delete
+                if($.inArray(tid, tidKeys) == -1) {
+                    delete courseChecks[tid];
+                }
+            }
+        }
+    }
+ 
 }
