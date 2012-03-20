@@ -1626,6 +1626,11 @@ div#edit_global_settings table#global_settings_list td div.label {
     font-weight: bold;
 }
 
+div#edit_global_settings table#global_settings_list td#dat_section div.controls {
+    float: left;
+    margin-top: 5px;
+}
+
 /* End Global Settings Page */
 
 /* Theme Settings Page */

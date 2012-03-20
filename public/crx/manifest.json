@@ -1,19 +1,21 @@
 {
-    "name": "My Offline App",
-    "description": "the description for my offline app",
+    "name": "Cluey",
+    "description": "Cluey",
     "version": "0.1",
     "app": {
         "urls": [
-            "http://localhost:3000/"
+            "http://demo.cluey.com/"
         ],
         "launch": {
-            "web_url": "http://localhost:3000/"
+            "web_url": "http://demo.cluey.com/"
         }
     },
     "icons": {
         "128": "icon_128.png"
     },
     "permissions": [
-        "unlimitedStorage"
+        "unlimitedStorage",
+        "bookmarks",
+        "management"
     ]
 }

@@ -392,7 +392,7 @@
 
             <div class="clear">&nbsp;</div>
             <h5>Be Careful when using html in footers as invalid html will break receipt printing</h5>
-            
+
             <div class="clear">&nbsp;</div>
             <h5>If you experience problems printing receipts, please clear the footer content</h5>
 
@@ -1024,6 +1024,28 @@
                 </thead>
                 <tbody>
                   <tr>
+                    <td>Disable Advanced Touch?</td>
+                    <td id="dat_section" class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @terminal_fingerprint, :user_agent => request.user_agent} %>
+                      <div class="controls">
+                        <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                               value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                        <div class="label">Yes</div>
+                        <div class="clear">&nbsp;</div>
+
+                        <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                               value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                        <div class="label">No</div>
+                      </div>
+
+                      <div id="actions">
+                        <%= submit_tag "Save" %>
+                      </div>
+
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
                     <td>
                       Re-generate Terminal Fingerprint Cookie?
                     </td>
@@ -1115,21 +1137,6 @@
                              value="<%= GlobalSetting::ORDER_RECEIPT_WIDTH_76MM %>" 
                              <%= @gs.parsed_value == GlobalSetting::ORDER_RECEIPT_WIDTH_76MM ? "checked" : "" %>/>
                       <div class="label">76mm</div>
-                      <div class="clear">&nbsp;</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Disable Advanced Touch?</td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @terminal_fingerprint, :user_agent => request.user_agent} %>
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
-                      <div class="label">Yes</div>
-                      <div class="clear">&nbsp;</div>
-
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
-                      <div class="label">No</div>
                       <div class="clear">&nbsp;</div>
                     </td>
                   </tr>
