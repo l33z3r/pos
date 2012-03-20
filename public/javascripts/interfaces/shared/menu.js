@@ -78,8 +78,6 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         renderReceipt(tableID);
     }
     
-    console.log("Got order, print? (this, last) = (" + lastSyncTableOrderTime + ", " + lastPrintCheckTime + ")");
-    
     if(lastSyncTableOrderTime > lastPrintCheckTime) {
         console.log("checking for items to print");
         checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);

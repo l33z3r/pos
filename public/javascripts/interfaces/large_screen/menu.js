@@ -1935,8 +1935,6 @@ function doReceiveOrderReady(employee_id, terminal_id, table_id, order_num, tabl
     
     hidePreviousOrderReadyPopup();
     
-    console.log("got order ready notification for " + employee_id + " for table " + table_label + " for terminal " + terminal_id);
-    
     if(terminal_id == terminalID) {
         //        ModalPopups.Confirm('niceAlertContainer',
         //            'Order Ready!', "<div id='nice_alert'>Order for table " + table_label + " is ready</div>",

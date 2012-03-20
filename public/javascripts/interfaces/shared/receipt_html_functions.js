@@ -41,7 +41,7 @@ function fetchLastRoomID(user_id) {
  
     if(lastRoomIDOBJ == null) {
         lastRoomID = $('.room_graphic').first().data('room_id');
-        storeLastRoom(lastRoomID)
+        storeLastRoom(user_id, lastRoomID);
     } else {
         lastRoomID = lastRoomIDOBJ.room_id;
     }

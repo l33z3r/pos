@@ -4,6 +4,11 @@ var orderNums = {};
 
 var kitchenOrders;
 
+//need to make sure to prune courseChecks, orderXClicked and orderNums for table 0 orders to stop memory leaks
+
+
+
+
 function initKitchen() {
     //hide the red x 
     $('#nav_save_button').hide();
@@ -44,7 +49,7 @@ function renderReceipt(tableID) {
             async: false,
             success: function(data) {
                 //put this order to the end of the active orders queue
-                $('#active_orders').append(data);
+                $('#empty_orders').append(data);
             }
         });    
     } else {
@@ -69,10 +74,11 @@ function renderReceipt(tableID) {
     stripProducts(nextKitchenOrder);
     
     //if all items were stripped out of this order, then we must not show it on the screen
-    if(nextKitchenOrder.items.length == 0) {
+    if(nextKitchenOrder.items.length == 0) {        
         //delete the html for that kitchen div if it is table 0
         if(table0Order) {
             $('#kitchen_receipt_container_' + tableID).remove();
+            localStorage.removeItem("kitchen_orders_saved_table_0_order_" + tableID);
         }
         
         return;
@@ -187,6 +193,8 @@ function renderReceipt(tableID) {
         movedToFilled = true;
     }
     
+    console.log("rendering receipt");
+    
     //check where we want to move this order to
     if(orderInEmptySection(tableID)) {
         console.log("IS IN EMPTY SECTION!!!");
@@ -249,7 +257,7 @@ function orderInEmptySection(tableID) {
     var isEmpty = false;
     
     $('#empty_orders>div').each(function() {
-        if(parseInt($(this).data("table_id")) == tableID) {
+        if($(this).data("table_id") == tableID.toString()) {
             isEmpty = true;
         }
     });
@@ -374,7 +382,13 @@ function hideTableOrder(tableID) {
     
     //remove it from saved table 0 orders
     if(tableID.startsWith("0_")) {
+        $('#kitchen_receipt_container_' + tableID).remove();
         localStorage.removeItem("kitchen_orders_saved_table_0_order_" + tableID);
+        
+        delete courseChecks[tableID];
+        delete orderXClicked[tableID];
+        
+        saveCourseChecks();
     }
 }
 
@@ -517,7 +531,7 @@ function stripProducts(order) {
         
         var itemScreens = nextItem.product.kitchen_screens;
             
-        if((typeof itemScreens != "undefined") && itemScreens.length > 0) {
+        if(false) {//(typeof itemScreens != "undefined") && itemScreens.length > 0) {
             var screensArray = itemScreens.split(",");
                 
             if($.inArray(terminalID.toLowerCase(), screensArray) != -1) {

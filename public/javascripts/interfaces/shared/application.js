@@ -64,8 +64,8 @@ function callHomePoll() {
     } else {
         //write it to cookie        
         //100 year expiry, but will really end up in year 2038 due to limitations in browser
-        var exdays = 365 * 100;
-        setRawCookie(lastReloadCookieName, lastInterfaceReloadTime, exdays);
+        var interfaceReloadTimeCookeExpDays = 365 * 100;
+        setRawCookie(lastReloadCookieName, lastInterfaceReloadTime, interfaceReloadTimeCookeExpDays);
     }
     
     //load/store the timestamp for print checks
@@ -80,13 +80,11 @@ function callHomePoll() {
         } else {
             lastPrintCheckTime = clueyTimestamp();
         }
-        
-        console.log("init print check to : " + lastPrintCheckTime);
     } else {
         //write it to cookie        
         //100 year expiry, but will really end up in year 2038 due to limitations in browser
-        var exdays = 365 * 100;
-        setRawCookie(lastPrintCheckCookieName, lastPrintCheckTime, exdays);
+        var printCookieExpDays = 365 * 100;
+        setRawCookie(lastPrintCheckCookieName, lastPrintCheckTime, printCookieExpDays);
     }
     
     callHomeURL = "/call_home.js"
