@@ -681,6 +681,7 @@ class HomeController < ApplicationController
     @global_settings_button = DisplayButton.find_by_perm_id(ButtonMapper::SYSTEM_BUTTON);
     @transfer_order_button = DisplayButton.find_by_perm_id(ButtonMapper::TRANSFER_ORDER_BUTTON);
     @toggle_menu_item_double_mode_button = DisplayButton.find_by_perm_id(ButtonMapper::TOGGLE_MENU_ITEM_DOUBLE_BUTTON);
+    @toggle_menu_item_half_mode_button = DisplayButton.find_by_perm_id(ButtonMapper::TOGGLE_MENU_ITEM_HALF_BUTTON);
     
     @display_buttons = []
 
@@ -690,7 +691,8 @@ class HomeController < ApplicationController
     
     @functions_display_buttons = []
     @functions_display_buttons << @remove_item_button 
-    @functions_display_buttons << @print_bill_button << @transfer_order_button << @toggle_menu_item_double_mode_button
+    @functions_display_buttons << @print_bill_button << @transfer_order_button
+    @functions_display_buttons << @toggle_menu_item_double_mode_button << @toggle_menu_item_half_mode_button
     
   end
   

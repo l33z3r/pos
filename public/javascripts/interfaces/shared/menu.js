@@ -3,6 +3,7 @@ var currentMenuPageId;
 var currentMenuSubPageId;
 
 var menuItemDoubleMode = false;
+var menuItemHalfMode = false;
 var productInfoPopupMode = false;
 var menuItemStandardPriceOverrideMode = false;
 var currentMenuItemQuantity = "";
@@ -154,11 +155,22 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         
         
         
-        //this is only untill we have the new code deployed for a while we can be sure that clientName will be present on newly created orders
+        //this is only untill we have the new code deployed for a while we can be sure that double_price will be present on newly created orders
         if(typeof(theItem.is_double) != 'undefined') {
             theItem.is_double = (theItem.is_double.toString() == "true" ? true : false);
         } else {
             theItem.is_double = false;
+        }
+        
+        
+        
+        
+        
+        //this is only untill we have the new code deployed for a while we can be sure that half_price will be present on newly created orders
+        if(typeof(theItem.is_half) != 'undefined') {
+            theItem.is_half = (theItem.is_half.toString() == "true" ? true : false);
+        } else {
+            theItem.is_half = false;
         }
         
         
@@ -588,11 +600,16 @@ function buildOrderItem(product, amount) {
     
     var productPrice = product.price;
     var isDouble = false;
+    var isHalf = false;
     
     if(menuItemDoubleMode) {
         productPrice = product.double_price;
         isDouble = true;
         setMenuItemDoubleMode(false);
+    } else if(menuItemHalfMode) {
+        productPrice = product.half_price;
+        isHalf = true;
+        setMenuItemHalfMode(false);
     } else if(menuItemStandardPriceOverrideMode) {
         productPrice = product.price;
         setMenuItemStandardPriceOverrideMode(false);
@@ -612,6 +629,7 @@ function buildOrderItem(product, amount) {
         'tax_rate':taxRate,
         'product_price':productPrice,
         'is_double':isDouble,
+        'is_half':isHalf,
         'total_price':totalProductPrice,
         'is_void':false
     }

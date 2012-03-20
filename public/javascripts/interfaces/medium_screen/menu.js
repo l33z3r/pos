@@ -127,6 +127,13 @@ function doSelectMenuItem(productId, element) {
         setMenuItemDoubleMode(false);
         return;
     }
+    
+    //if half and no price set
+    if (menuItemHalfMode && (product.half_price == 0)) {
+        niceAlert("Price has not been set for a half of this item.");
+        setMenuItemHalfMode(false);
+        return;
+    }
 
     if (currentMenuItemQuantity == "" || currentMenuItemQuantity == "0")
         currentMenuItemQuantity = "1";
@@ -872,6 +879,8 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
 
     if (orderItem.is_double) {
         orderHTML += "Double ";
+    } else if (orderItem.is_half) {
+        orderHTML += "Half ";
     }
 
     orderHTML += orderItem.product.name + "</div>";

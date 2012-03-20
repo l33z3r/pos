@@ -218,6 +218,8 @@ function menuScreenKeypadClickCancel() {
     } else {
         if(menuItemDoubleMode) {
             setMenuItemDoubleMode(false);
+        } else if(menuItemHalfMode) {
+            setMenuItemHalfMode(false);
         }
         
         if(menuItemStandardPriceOverrideMode) {
@@ -347,6 +349,13 @@ function doSelectMenuItem(productId, menuItemId, element) {
     if(menuItemDoubleMode && (product.double_price == 0)) {
         niceAlert("Price has not been set for a double of this item.");
         setMenuItemDoubleMode(false);
+        return;
+    }
+    
+    //if half and no price set
+    if (menuItemHalfMode && (product.half_price == 0)) {
+        niceAlert("Price has not been set for a half of this item.");
+        setMenuItemHalfMode(false);
         return;
     }
     
@@ -730,10 +739,12 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     
     orderHTML += "<div class='name' data-course_num='" + orderItem.product.course_num + "'>" + notSyncedMarker + " ";
 
-    if(orderItem.is_double) {
+    if (orderItem.is_double) {
         orderHTML += "Double ";
+    } else if (orderItem.is_half) {
+        orderHTML += "Half ";
     }
-        
+    
     orderHTML += orderItem.product.name + "</div>";
 
     orderItemTotalPriceText = number_to_currency(itemPriceWithoutModifier, {

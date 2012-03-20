@@ -70,6 +70,7 @@ class ButtonMapper
   PRODUCT_INFO_POPUP_BUTTON = 67
   MANAGE_CUSTOMERS_BUTTON = 68
   MANAGE_LOYALTY_CUSTOMERS_BUTTON = 69
+  TOGGLE_MENU_ITEM_HALF_BUTTON = 70
   
   RESTRICTED_BUTTON_IDS = [
     ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON,
@@ -220,6 +221,8 @@ class ButtonMapper
       @retval = "goTo('#{admin_customers_path}?show_normal_customers=true'); return false;"
     when MANAGE_LOYALTY_CUSTOMERS_BUTTON
       @retval = "goTo('#{admin_customers_path}?show_loyalty_customers=true'); return false;"
+    when TOGGLE_MENU_ITEM_HALF_BUTTON
+      @retval = si_check(TOGGLE_MENU_ITEM_HALF_BUTTON, ms_check("toggleMenuItemHalfMode();"))
     end
 
     @retval
