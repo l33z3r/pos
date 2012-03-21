@@ -4,6 +4,8 @@ var orderNums = {};
 
 var kitchenOrders;
 
+var table0TidPrefix = "0_";
+
 function initKitchen() {
     //hide the red x 
     $('#nav_save_button').hide();
@@ -103,6 +105,7 @@ function renderReceipt(tableID) {
     }
         
     console.log("There are " + numCourses + " courses in this table, we have " + courseChecks[tableID].length + " recorded");
+    
     //if there are no courses, then treat the whole order as one course
     if(numCourses == 0) {
         numCourses = 1;
@@ -132,7 +135,7 @@ function renderReceipt(tableID) {
     
     var loadingTableLabel;
     
-    if(tableID.toString().startsWith("0_")) {
+    if(tableID.toString().startsWith(table0TidPrefix)) {
         loadingTableLabel = "Order #" + tableID.split("_")[1];
     } else {
         loadingTableLabel = "Table " + tableID;
@@ -343,7 +346,7 @@ function sendCourseCheck(orderLine) {
     
     var theTableID = tableID;
     
-    if(tableID.toString().startsWith("0_")) {
+    if(tableID.toString().startsWith(table0TidPrefix)) {
         theTableID = tableID.split("_")[0];
     }
     
@@ -376,7 +379,7 @@ function hideTableOrder(tableID) {
     sendOrderToCompleted(tableID);
     
     //remove it from saved table 0 orders
-    if(tableID.startsWith("0_")) {
+    if(tableID.startsWith(table0TidPrefix)) {
         $('#kitchen_receipt_container_' + tableID).remove();
         localStorage.removeItem("kitchen_orders_saved_table_0_order_" + tableID);
         
@@ -574,7 +577,7 @@ function deleteTable0CourseChecks() {
     var tidKeys = [];
     
     for(tid in courseChecks) {
-        if(tid.toString().startsWith("0_")) {
+        if(tid.toString().startsWith(table0TidPrefix)) {
             tidKeys.push(tid); 
         }
     }
@@ -586,7 +589,7 @@ function deleteTable0CourseChecks() {
         tidKeys.splice(0, keepCount);
         
         for(tid in courseChecks) {
-            if(tid.toString().startsWith("0_")) {
+            if(tid.toString().startsWith(table0TidPrefix)) {
                 //if not it array, then delete
                 if($.inArray(tid, tidKeys) == -1) {
                     delete courseChecks[tid];

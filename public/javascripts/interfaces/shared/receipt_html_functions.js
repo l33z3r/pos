@@ -1,3 +1,5 @@
+var customFooterId = null;
+
 function storeLastReceipt(user_id, table_num) {
     if(user_id == null) {
         return;

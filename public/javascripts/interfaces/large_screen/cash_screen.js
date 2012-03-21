@@ -1,5 +1,4 @@
 var splitPayments;
-var customFooterId = null;
 
 function updateTotalTendered() {
     var totalCashTendered = getTotalTendered();
