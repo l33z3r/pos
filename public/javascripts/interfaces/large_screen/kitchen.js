@@ -383,9 +383,6 @@ function hideTableOrder(tableID) {
         //TODO: only delete enough to keep a certain amount in the buffer
         //the same amount that is kept on the server
         deleteTable0CourseChecks();
-        delete orderXClicked[tableID];
-        
-        saveCourseChecks();
     }
 }
 
@@ -573,7 +570,7 @@ function loadSavedTable0Orders() {
 }
 
 function deleteTable0CourseChecks() {
-    //keep 50 of the most frequent in memory
+    //keep 50 of the most frequent in memory for both courseChecks and orderXClicked
     var tidKeys = [];
     
     for(tid in courseChecks) {
@@ -593,9 +590,12 @@ function deleteTable0CourseChecks() {
                 //if not it array, then delete
                 if($.inArray(tid, tidKeys) == -1) {
                     delete courseChecks[tid];
+                    delete orderXClicked[tid];
                 }
             }
         }
     }
- 
+    
+    //and save
+    saveCourseChecks();
 }
