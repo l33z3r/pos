@@ -53,7 +53,8 @@ function getCurrentOrder() {
 }
 
 function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee, tableOrderDataJSON) {
-    if(lastSyncedOrder) {
+    if(lastSyncedOrder && lastSyncedOrder.table == tableLabel) {
+        console.log("Setting lastsynced order to " + tableOrderDataJSON.order_num);
         //set the order id on the lastSyncedOrder variable so that it prints on the login receipt
         lastSyncedOrder.order_num = tableOrderDataJSON.order_num;
     }
@@ -79,10 +80,7 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
     }
     
     if(lastSyncTableOrderTime > lastPrintCheckTime) {
-        console.log("checking for items to print");
         checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);
-    } else {
-        console.log("skipping check for print");
     }
     
     if(tableID != 0) {
@@ -458,7 +456,7 @@ function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCou
     
     //get rid of rounding errors
     targetOrderItem.total_price = roundNumber(parseFloat(targetOrderItem.total_price), 2);
-
+    
     applyExistingDiscountToOrderItem(order, itemNumber);
     calculateOrderTotal(order);
 
@@ -574,11 +572,11 @@ function buildOrderItem(product, amount) {
     } else if(menuItemStandardPriceOverrideMode) {
         productPrice = product.price;
         setMenuItemStandardPriceOverrideMode(false);
-    } else if(globalPriceLevel == 2) {
+    } else if(globalPriceLevel == 2 && product.price_2 != 0) {
         productPrice = product.price_2;
-    } else if(globalPriceLevel == 3) {
+    } else if(globalPriceLevel == 3 && product.price_3 != 0) {
         productPrice = product.price_3;
-    } else if(globalPriceLevel == 4) {
+    } else if(globalPriceLevel == 4 && product.price_4 != 0) {
         productPrice = product.price_4;
     }
     

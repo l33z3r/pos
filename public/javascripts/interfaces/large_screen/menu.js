@@ -1867,16 +1867,17 @@ function postDoSyncTableOrder() {
         
     setStatusMessage("Order Sent");
 
-    if(!order.order_num) {
-        setLoginReceipt("Last Order", "Loading...");
-        //call the finish function 1 second after the next call home
-        setTimeout(finishDoSyncTableOrder, pollingAmount + 1000);
-    } else {
-        finishDoSyncTableOrder();
-    }
+    setLoginReceipt("Last Order", "Loading Order...");
+    finishDoSyncTableOrder();
 }
 
 function finishDoSyncTableOrder() {
+    if(lastSyncedOrder.order_num == null) {
+        //call the finish function a few seconds after the next call home
+        setTimeout(finishDoSyncTableOrder, pollingAmount + 1000);
+        return;
+    }
+    
     orderReceiptHTML = fetchOrderReceiptHTML(lastSyncedOrder);
     setLoginReceipt("Last Order", orderReceiptHTML);
     loginRecptUpdate();

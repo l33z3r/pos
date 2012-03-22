@@ -37,7 +37,7 @@ function getTotalTendered() {
         totalTendered += splitPayments[pm];
     }
     
-    return totalTendered;
+    return roundNumber(totalTendered, 2);
 }
 
 function finishSale() {

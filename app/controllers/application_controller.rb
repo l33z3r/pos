@@ -106,39 +106,48 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  def do_request_sync_table_order terminal_id, table_order_data, table_id, employee_id
+  def do_request_sync_table_order terminal_id, table_order_data, table_id, employee_id, last_sync_time
+    TerminalSyncData.transaction do
+      @sync_table_order_times = TerminalSyncData.fetch_sync_table_order_times
+      @last_table_order_sync = @sync_table_order_times.last
       
-    if table_id != "0"
-      remove_previous_sync_for_table table_id, false
-    else
-      remove_old_table_0_orders
-    end
-      
-    #does this order have an order id? if not generate one
-    if !table_order_data[:orderData][:order_num] or table_order_data[:orderData][:order_num].blank?
-      table_order_data[:orderData][:order_num] = Order.next_order_num
-    end
-      
-    table_order_data = table_order_data.to_json
-      
-    @sync_data = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => employee_id}.to_yaml
-      
-    @time = now_millis
-      
-    #make sure the time is at least 2 milliseconds afte the last sync so that it gets picked up ok
-    @last_table_order_sync = TerminalSyncData.fetch_sync_table_order_times.last
-      
-    if @last_table_order_sync
-      @last_sync_time = @last_table_order_sync.time.to_i
-      
-      if (@last_sync_time + 2) > @time
-        @time = @last_sync_time + 2
+      #if we dont have the latest timestamp we must retry
+      logger.info "!!!!!!!!!!!!!!!!!!!!!!! DB:#{@last_table_order_sync.time.to_i} ME:#{last_sync_time.to_i} RTR:#{@last_table_order_sync.time.to_i > last_sync_time.to_i}"
+      if @last_table_order_sync.time.to_i > last_sync_time.to_i
+        return true
       end
-    end
       
-    TerminalSyncData.create!({:sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 
-        :time => @time, :data => @sync_data})
-    
+      if table_id != "0"
+        remove_previous_sync_for_table table_id, false
+      else
+        remove_old_table_0_orders
+      end
+      
+      #does this order have an order id? if not generate one
+      if !table_order_data[:orderData][:order_num] or table_order_data[:orderData][:order_num].blank?
+        table_order_data[:orderData][:order_num] = Order.next_order_num
+      end
+      
+      table_order_data = table_order_data.to_json
+      
+      @sync_data = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => employee_id}.to_yaml
+      
+      @time = now_millis
+      
+      #make sure the time is at least 2 milliseconds after the last sync so that it gets picked up ok
+      if @last_table_order_sync
+        @last_sync_time = @last_table_order_sync.time.to_i
+      
+        if (@last_sync_time + 2) > @time
+          @time = @last_sync_time + 2
+        end
+      end
+      
+      TerminalSyncData.create!({:sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 
+          :time => @time, :data => @sync_data})
+      
+      return false
+    end
   end
   
   def do_request_clear_table_order terminal_id, time, table_id, order_num, employee_id

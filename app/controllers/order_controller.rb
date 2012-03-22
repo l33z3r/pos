@@ -79,9 +79,11 @@ class OrderController < ApplicationController
     
     @employee = Employee.find_by_id(@employee_id)
     
+    @last_sync_time = params[:lastSyncTableOrderTime]
+    @retry = false
+    
     if @table and @employee
-      do_request_sync_table_order @terminal_id, @table_order_data, @table_id, @employee_id
-      render :json => {:success => true}.to_json
+      @retry = do_request_sync_table_order(@terminal_id, @table_order_data, @table_id, @employee_id, @last_sync_time)
     else
       render :json => {:success => false}.to_json
     end

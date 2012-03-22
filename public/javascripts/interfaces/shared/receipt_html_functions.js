@@ -314,7 +314,7 @@ function fetchFinalReceiptHeaderHTML() {
         headerHTML += "<div class='label'>Payment Method:</div><div class='data'>" + totalOrder.payment_method + "</div>" + clearHTML;
     }
     
-    orderNum = totalOrder.order_num;
+    var orderNum = totalOrder.order_num;
         
     if(typeof(orderNum) != 'undefined') {
         headerHTML += "<div class='label'>Order Number:</div><div class='data'>" + orderNum + "</div>" + clearHTML;

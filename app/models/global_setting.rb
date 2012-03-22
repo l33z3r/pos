@@ -498,15 +498,17 @@ class GlobalSetting < ActiveRecord::Base
   end
   
   def self.next_order_number
-    @gs = find_or_create_by_key(:key => LAST_ORDER_ID.to_s, :value => 0, :label_text => LABEL_MAP[LAST_ORDER_ID])
-    @gs.save!
+    GlobalSetting.transaction do
+      @gs = find_or_create_by_key(:key => LAST_ORDER_ID.to_s, :value => 0, :label_text => LABEL_MAP[LAST_ORDER_ID], :lock => true)
+      @gs.save!
     
-    @gs.reload
+      @gs.reload
     
-    @gs.value = @gs.value.to_i + 1
-    @gs.save!
+      @gs.value = @gs.value.to_i + 1
+      @gs.save!
     
-    @gs.value
+      return @gs.value
+    end
   end
   
   def self.course_vals

@@ -87,10 +87,10 @@ function doSyncTableOrder() {
         type: 'POST',
         url: '/sync_table_order',
         error: syncTableOrderFail,
-        success: finishSyncTableOrder,
         data: {
             tableOrderData : tableOrderData,
-            employee_id : userId
+            employee_id : userId,
+            lastSyncTableOrderTime : lastSyncTableOrderTime
         }
     });
 }
@@ -113,8 +113,12 @@ function finishSyncTableOrder() {
 
 function syncTableOrderFail() {
     orderInProcess = false;
-    
     niceAlert("Order not sent, no connection, please try again");
+}
+
+function retryTableOrder() {
+    orderInProcess = false;
+    niceAlert("An order was sent at the same time, you must try order again.");
 }
 
 function removeLastOrderItem() {
@@ -180,11 +184,6 @@ function startTransferOrderMode() {
         return;
     }
     
-//    if(selectedTable == -1) {
-//        setStatusMessage("Only valid for table orders!");
-//        return;
-//    }
-    
     var order = getCurrentOrder();
     
     if(order.items.length == 0) {
@@ -218,6 +217,14 @@ function startTransferOrderItemMode() {
         niceAlert("Downloading data from server, please wait.");
         return;
     }
+    
+    if(selectedTable == previousOrderTableNum) {
+        niceAlert("Not valid for reopened orders! You must transfer the whole order to a table.");
+        return;
+    } else if(selectedTable == tempSplitBillTableNum) {
+        niceAlert("Not valid for split orders! You must transfer the whole order to a table.");
+        return;
+    } 
     
     //only allow transfer if the item has already been orderd
     var itemNumber = currentSelectedReceiptItemEl.data("item_number");

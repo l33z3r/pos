@@ -24,8 +24,34 @@ var orderItems = new Array();
   //different at sale time
   orderItem.product_price = parseFloat(orderItem.total_price)/parseFloat(orderItem.amount);
   
-  orderItem.showServerAddedText = orderItem.show_server_added_text;
-  orderItem.serving_employee_id = orderItem.employee_id
+  if(orderItem.show_server_added_text != null) {
+      orderItem.showServerAddedText = orderItem.show_server_added_text;
+  } else {
+      delete orderItem['show_server_added_text'];
+  }
+  
+  orderItem.serving_employee_id = orderItem.employee_id;
+  
+  //delete null values
+  if(orderItem.discount_percent == null) {
+      delete orderItem['discount_percent'];
+  }
+  
+  if(orderItem.pre_discount_price == null) {
+      delete orderItem['pre_discount_price'];
+  }
+  
+  if(orderItem.modifier_name == null) {
+      delete orderItem['modifier_name'];
+  }
+  
+  if(orderItem.modifier_price == null) {
+      delete orderItem['modifier_price'];
+  }
+  
+  if(orderItem.oia_data == null) {
+      delete orderItem['oia_data'];
+  }
   
   orderItems.push(orderItem);
 <% end %>
