@@ -565,6 +565,21 @@ function buildOrderItem(product, amount) {
     var productPrice = product.price;
     var isDouble = false;
     
+    //    if(menuItemDoubleMode) {
+    //        productPrice = product.double_price;
+    //        isDouble = true;
+    //        setMenuItemDoubleMode(false);
+    //    } else if(menuItemStandardPriceOverrideMode) {
+    //        productPrice = product.price;
+    //        setMenuItemStandardPriceOverrideMode(false);
+    //    } else if(globalPriceLevel == 2 && product.price_2 != 0) {
+    //        productPrice = product.price_2;
+    //    } else if(globalPriceLevel == 3 && product.price_3 != 0) {
+    //        productPrice = product.price_3;
+    //    } else if(globalPriceLevel == 4 && product.price_4 != 0) {
+    //        productPrice = product.price_4;
+    //    }
+
     if(menuItemDoubleMode) {
         productPrice = product.double_price;
         isDouble = true;
@@ -572,11 +587,11 @@ function buildOrderItem(product, amount) {
     } else if(menuItemStandardPriceOverrideMode) {
         productPrice = product.price;
         setMenuItemStandardPriceOverrideMode(false);
-    } else if(globalPriceLevel == 2 && product.price_2 != 0) {
+    } else if(globalPriceLevel == 2) {
         productPrice = product.price_2;
-    } else if(globalPriceLevel == 3 && product.price_3 != 0) {
+    } else if(globalPriceLevel == 3) {
         productPrice = product.price_3;
-    } else if(globalPriceLevel == 4 && product.price_4 != 0) {
+    } else if(globalPriceLevel == 4) {
         productPrice = product.price_4;
     }
     
