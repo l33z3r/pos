@@ -907,13 +907,6 @@ div.receipt div.till_roll div.modifier_price {
     text-align: right;
 }
 
-div.receipt div.till_roll div.oia_add {
-    float: left;
-    width: 40px;
-    text-align: right;
-    font-size: 19px;
-}
-
 div.receipt div.till_roll div.oia_name {
     float: left;
     width: 150px;
@@ -1035,14 +1028,6 @@ div.receipt div.till_roll_small div.modifier_price {
     width: 0px;
     height: 0px;
     text-align: right;
-}
-
-div.receipt div.till_roll_small div.oia_add {
-    float: left;
-    width: 0px;
-    height: 0px;
-    text-align: right;
-    font-size: 19px;
 }
 
 div.receipt div.till_roll_small div.oia_name {

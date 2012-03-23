@@ -575,19 +575,15 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
             
             orderHTML += clearHTML + "<div class='oia " + (orderItem.oia_items[j].hide_on_receipt ? "hide_on_receipt" : "") + "'>";
             
+            orderHTML += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>";
+            
             if(!orderItem.oia_items[j].is_note) {
-                orderHTML += "<div class='oia_add'>";
-                
                 if(orderItem.oia_items[j].is_addable) {
-                    orderHTML += oia_is_add ? "Add" : "No";
-                } else {
-                    orderHTML += "&nbsp;";
+                    orderHTML += oia_is_add ? "Add " : "No ";
                 }
-                
-                orderHTML += "</div>";
             }
             
-            orderHTML += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>" + orderItem.oia_items[j].description + "</div>";
+            orderHTML += orderItem.oia_items[j].description + "</div>";
             
             if(orderItem.oia_items[j].abs_charge != 0) {
                 

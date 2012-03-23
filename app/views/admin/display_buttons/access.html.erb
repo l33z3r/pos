@@ -25,7 +25,7 @@ DisplayButtonRole.ensure_hidden_buttons_restricted
         <% DisplayButtonGroup.all_with_empty.each do |dbg| %>
 
           <div id="#<%= dbg.name.gsub(" ", "_") %>_options">
-            <div id="display_button_list_container_<%=dbg.id%>" class="display_button_list_container jscrollpane">
+            <div id="display_button_list_container_<%=dbg.id%>" class="display_button_list_container">
 
               <% if dbg.display_buttons.length == 0 %>
 

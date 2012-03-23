@@ -168,6 +168,9 @@ class CashTotal < ActiveRecord::Base
           @global_tax_rate = GlobalSetting.parsed_setting_for GlobalSetting::GLOBAL_TAX_RATE
             
           @sales_by_product[@product_name][:quantity] += order_item.quantity
+          
+          @sales_by_product[@product_name][:quantity] = sprintf("%.2g", @sales_by_product[@product_name][:quantity].to_f)
+          
           @sales_by_product[@product_name][:sales_total] += @order_item_price
           
           @sales_by_category[@category_name] += @order_item_price

@@ -565,21 +565,6 @@ function buildOrderItem(product, amount) {
     var productPrice = product.price;
     var isDouble = false;
     
-    //    if(menuItemDoubleMode) {
-    //        productPrice = product.double_price;
-    //        isDouble = true;
-    //        setMenuItemDoubleMode(false);
-    //    } else if(menuItemStandardPriceOverrideMode) {
-    //        productPrice = product.price;
-    //        setMenuItemStandardPriceOverrideMode(false);
-    //    } else if(globalPriceLevel == 2 && product.price_2 != 0) {
-    //        productPrice = product.price_2;
-    //    } else if(globalPriceLevel == 3 && product.price_3 != 0) {
-    //        productPrice = product.price_3;
-    //    } else if(globalPriceLevel == 4 && product.price_4 != 0) {
-    //        productPrice = product.price_4;
-    //    }
-
     if(menuItemDoubleMode) {
         productPrice = product.double_price;
         isDouble = true;
@@ -587,11 +572,11 @@ function buildOrderItem(product, amount) {
     } else if(menuItemStandardPriceOverrideMode) {
         productPrice = product.price;
         setMenuItemStandardPriceOverrideMode(false);
-    } else if(globalPriceLevel == 2) {
+    } else if(globalPriceLevel == 2 && product.price_2 != 0) {
         productPrice = product.price_2;
-    } else if(globalPriceLevel == 3) {
+    } else if(globalPriceLevel == 3 && product.price_3 != 0) {
         productPrice = product.price_3;
-    } else if(globalPriceLevel == 4) {
+    } else if(globalPriceLevel == 4 && product.price_4 != 0) {
         productPrice = product.price_4;
     }
     
@@ -861,33 +846,6 @@ function removeSelectedOrderItem() {
 }
 
 function doRemoveOrderItem(order, itemNumber) {
-    //WE HAVE A LOT OF LOGIC HERE TO DEAL WITH COURSES
-    
-    
-    //if this item marks the end of a course, 
-    //we must pass the line back to the previous menu item
-    //if the item number is only one, then this is the first 
-    //item in the receipt and we don't worry about it
-    //    var courseIndex = $.inArray(itemNumber, order.courses);
-    //    
-    //    if(courseIndex >= 0) {
-    //        //3 cases here, 
-    //        //1. this is a first item on the list (so delete the first entry which will be 1)
-    //        //2. the previous item is already a course
-    //        //3. we can pass back the course
-    //        if(itemNumber == 1) {
-    //            //remove this so it doesn't get decremented to 0
-    //            order.courses.splice(0, 1);
-    //        } else if(order.items[itemNumber-2].is_course) {
-    //            //remove this from the courses array as the previous item is a course
-    //            order.courses.splice(courseIndex, 1);
-    //        } else {
-    //            //pass back the course line
-    //            order.courses[courseIndex]--;
-    //            order.items[itemNumber-2].is_course = true;
-    //        }
-    //    }
-    
     order.items.splice(itemNumber-1, 1);
     
     //update the order items of following items

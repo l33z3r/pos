@@ -1852,21 +1852,14 @@ div.receipt div.till_roll div.modifier_price {
     text-align: right;
 }
 
-div.receipt div.till_roll div.oia_add {
-    float: left;
-    width: 40px;
-    text-align: right;
-}
-
 div.receipt div.till_roll div.oia_name {
     float: left;
     width: 148px;
-    margin-left: 10px;
+    margin-left: 50px;
     text-align: left;
 }
 
 div.receipt div.till_roll div.oia_name.note {
-    font-style: italic;
     width: 188px;
 }
 

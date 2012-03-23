@@ -80,14 +80,9 @@ function getLineItemHTMLForPrintedOrderReceipt(orderItem) {
             lineItemHTMLForOrder += clearHTML;
             
             if(!orderItem.oia_items[j].is_note) {
-                lineItemHTMLForOrder += "<div class='oia_add'>";
-                    
                 if(orderItem.oia_items[j].is_addable) {
-                    lineItemHTMLForOrder += oia_is_add ? "Add" : "No";
-                } else {
-                    lineItemHTMLForOrder += "&nbsp;";
+                    lineItemHTMLForOrder += oia_is_add ? "Add " : "No ";
                 }
-                lineItemHTMLForOrder += "</div>";
             }
             
             lineItemHTMLForOrder += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>" + orderItem.oia_items[j].description + "</div>";            

@@ -111,10 +111,11 @@ class ApplicationController < ActionController::Base
       @sync_table_order_times = TerminalSyncData.fetch_sync_table_order_times
       @last_table_order_sync = @sync_table_order_times.last
       
-      if @last_table_order_sync
-        #if we dont have the latest timestamp and we are syncing with the table that is the last order we must retry
-        logger.info "!!!!!!!!!!!!!!!!!!!!!!! DB:#{@last_table_order_sync.time.to_i} ME:#{last_sync_time.to_i} RTR:#{@last_table_order_sync.time.to_i > last_sync_time.to_i}"
-        if table_id == @last_table_order_sync.data[:table_id].to_s and @last_table_order_sync.time.to_i > last_sync_time.to_i
+      @sync_table_order_times_reversed = @sync_table_order_times.reverse
+      
+      @sync_table_order_times_reversed.each do |tsd|
+        #if we dont have the latest timestamp for this tables order we must retry
+        if tsd.data[:table_id].to_s == table_id.to_s and tsd.time.to_i > last_sync_time.to_i
           return true
         end
       end
