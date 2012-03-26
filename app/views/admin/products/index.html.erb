@@ -56,11 +56,6 @@
         <%= collection_select :category_id, :equals, Category.find(:all), :id, :name, options = {:include_blank => "Any", :selected => @session_category} %>
         <div class="clear">&nbsp;</div>
       </div>
-      <div class="field">
-        <div class="label">Menu</div>
-        <%= collection_select :menu_page_1_id, :equals, MenuPage.find(:all), :id, :name, options = {:include_blank => "Any", :selected => @session_menu} %>
-        <div class="clear">&nbsp;</div>
-      </div>
     </div>
 
     <div class="right_col">

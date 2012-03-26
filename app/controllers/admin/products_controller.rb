@@ -344,7 +344,6 @@ class Admin::ProductsController < Admin::AdminController
     @session_code_num_upc = session[:search1][:code_num_or_upc_equals]
     @session_name = session[:search1][:name_contains]
     @session_category = session[:search1][:category_id_equals]
-    @session_menu = session[:search1][:menu_page_1_id_equals]
     @session_all_fields = session[:search2]
     @session_is_specials = (session[:search1][:is_special_equals] == "true") ? true : false;
     @session_is_deleted = (session[:search1][:is_deleted_equals] == "true") ? true : false;

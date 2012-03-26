@@ -771,7 +771,7 @@ function showLoadingDiv() {
 
 function hideLoadingDiv() {
     if(inAndroidWrapper()) {
-        showSpinner();
+        hideSpinner();
     } else {
         hideNiceAlert();
     }

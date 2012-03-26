@@ -10,6 +10,10 @@ class Admin::PreviousCashTotalsController < Admin::AdminController
        @selected_to_date = params[:search][:created_at_lte]
        params[:search][:created_at_lte] = @selected_to_date.to_date.tomorrow.midnight
     end
+    
+    #omit the float cashtotal types
+    params[:search][:total_type_ne] = CashTotal::FLOAT
+    
     @order = (params[:order] and params[:order].eql?("DESC")) ? "DESC" : "ASC"
     @cash_total = CashTotal.search(params[:search]).order("created_at "+@order)
     @cash_total = @cash_total.paginate :page => params[:page], :per_page => 20
