@@ -283,9 +283,9 @@ function fetchBusinessInfoHeaderHTML() {
 }
 
 function fetchFinalReceiptHeaderHTML() {
-    headerHTML = "<div class='data_table'>";
+    var headerHTML = "<div class='data_table'>";
     
-    server = firstServerNickname(totalOrder);
+    var server = firstServerNickname(totalOrder);
     
     if(server) {
         headerHTML += "<div class='label'>Server:</div><div class='data'>" + server + "</div>" + clearHTML;
@@ -296,7 +296,7 @@ function fetchFinalReceiptHeaderHTML() {
         totalOrder.time = clueyTimestamp();
     }
     
-    timestamp = utilFormatDate(new Date(totalOrder.time));
+    var timestamp = utilFormatDate(new Date(totalOrder.time));
     
     headerHTML += "<div class='time label'>Time:</div><div class='time data'>" + timestamp + "</div>" + clearHTML;
     

@@ -8,7 +8,7 @@ function fetchOrderReceiptHTML(order) {
     
     orderReceiptHTML += clearHTML + allOrderItemsRecptHTML;
     
-    subTotal = currentOrder.total;
+    var subTotal = currentOrder.total;
     
     if(currentOrder.discount_percent) {
         //calculate the amount of discount
@@ -96,9 +96,9 @@ function getLineItemHTMLForPrintedOrderReceipt(orderItem) {
 }
 
 function getPrintedOrderReceiptHeader(serverNickname, terminalID, orderJSON) {
-    headerHTML = "<div id='order_receipt_header'>";
+    var headerHTML = "<div id='order_receipt_header'>";
     
-    orderNum = orderJSON.order_num;
+    var orderNum = orderJSON.order_num;
     
     if(typeof(orderNum) != 'undefined') {
         headerHTML += "<div class='order_num'>ORDER NO: " + orderNum + "</div>" + clearHTML;
@@ -106,14 +106,14 @@ function getPrintedOrderReceiptHeader(serverNickname, terminalID, orderJSON) {
     
     headerHTML += "<div class='data_table'>";
     
-    tableLabel = orderJSON.table;
+    var tableLabel = orderJSON.table;
     headerHTML += "<div class='label'>Table:</div><div class='data'>" + tableLabel + "</div>" + clearHTML;
     
     headerHTML += "<div class='label'>Order By:</div><div class='data'>" + serverNickname + "</div>" + clearHTML;
     
     headerHTML += "</div>" + clearHTML;
     
-    timestamp = utilFormatDate(new Date());
+    var timestamp = utilFormatDate(new Date(clueyTimestamp()));
     headerHTML += "<div class='time data'>" + timestamp + "</div>";
     
     headerHTML += "<div class='terminal'>" + terminalID + "</div>" + clearHTML;
@@ -124,7 +124,7 @@ function getPrintedOrderReceiptHeader(serverNickname, terminalID, orderJSON) {
 }
 
 function fetchCashScreenReceiptTotalsDataTable() {
-    cashScreenReceiptTotalsDataTableHTML = "<div class='data_table'>";
+    var cashScreenReceiptTotalsDataTableHTML = "<div class='data_table'>";
     
     if(totalOrder.discount_percent) {
         subTotal = parseFloat(totalOrder.pre_discount_price);
@@ -148,14 +148,14 @@ function fetchCashScreenReceiptTotalsDataTable() {
 }
 
 function fetchCashScreenReceiptHTML() {
-    cashScreenReceiptHTML = fetchCashScreenReceiptHeaderHTML() + clearHTML;
+    var cashScreenReceiptHTML = fetchCashScreenReceiptHeaderHTML() + clearHTML;
     cashScreenReceiptHTML += getAllOrderItemsReceiptHTML(totalOrder, false, false, true) + clearHTML;
     
     return cashScreenReceiptHTML;
 }
 
 function fetchCashScreenReceiptHeaderHTML() {
-    headerHTML = "<div class='data_table'>";
+    var headerHTML = "<div class='data_table'>";
     headerHTML += "<div class='label'>Server:</div><div class='data'>" + current_user_nickname + "</div>" + clearHTML;
     
     timestamp = utilFormatDate(new Date(parseInt(orderStartTime(totalOrder))));
@@ -166,7 +166,7 @@ function fetchCashScreenReceiptHeaderHTML() {
         headerHTML += "<div class='label'>Table:</div><div class='data'>" + selectedTableLabel + "</div>" + clearHTML;
     }
     
-    orderNum = totalOrder.order_num;
+    var orderNum = totalOrder.order_num;
     
     if(typeof(orderNum) != 'undefined') {
         headerHTML += "<div class='label'>Order Number:</div><div class='data'>" + orderNum + "</div>" + clearHTML;

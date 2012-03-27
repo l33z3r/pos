@@ -4,10 +4,102 @@ class HomeController < ApplicationController
   #main screen including the login overlay
   def index
     perform_interface_specific_actions
-    
+        
     #now the actions common to all interfaces
     do_common_interface_actions
-  end 
+  end
+  
+  # reports for cps
+  # 
+  # REPORT 1
+  # 
+  #  @sales = {}
+  #  @payment_methods = []
+  #    
+  #  Order.order("created_at").each do |order|
+  #    @date = order.created_at.strftime("%d/%m/%Y")
+  #      
+  #    @order_data = {}
+  #      
+  #    @item_count = order.order_items.length
+  #    @sales_total = order.total
+  #      
+  #    @split_payments = {}
+  #      
+  #    if !@sales[@date]
+  #      @sales[@date] = {:items_sold => 0, :sales_total => 0, :split_payments => {}}
+  #    end
+  #      
+  #    @sales[@date][:items_sold] += @item_count
+  #    @sales[@date][:sales_total] += @sales_total
+  #      
+  #    if order.split_payments
+  #      order.split_payments.each do |pt, am|
+  #        if !@sales[@date][:split_payments][pt]
+  #          @sales[@date][:split_payments][pt] = 0
+  #        end
+  #        
+  #        @payment_methods << pt
+  #        @payment_methods.uniq!
+  #        @payment_methods.sort!
+  #        
+  #        logger.info("pt: " + pt + " am:" + am)
+  #        @sales[@date][:split_payments][pt] += am.to_f
+  #      end
+  #    end
+  #      
+  #  end
+  #    
+  #  @csv_string = "Date,Items Sold,Sales Total"
+  #    
+  #  @payment_methods.each do |pm|
+  #    @csv_string += ",#{pm}"
+  #  end
+  #        
+  #  @csv_string += "\n"
+  #    
+  #  @sales.each do |day, sales_for_day|
+  #    @csv_string += "#{day},#{sales_for_day[:items_sold]},#{sales_for_day[:sales_total].to_f.round(2)}"
+  #          
+  #    @payment_methods.each do |pm|
+  #      @pm_amount = sales_for_day[:split_payments][pm]
+  #            
+  #      if !@pm_amount
+  #        @pm_amount = 0
+  #      end
+  #            
+  #      @csv_string += ",#{@pm_amount.to_f.round(2)}"
+  #    end
+  #        
+  #    @csv_string += "\n"
+  #  end
+  #  
+  #  
+  #  REPORT 2
+  #  
+  #  
+  #  @items = {}
+  #        
+  #  OrderItem.all.each do |oi|
+  #    if !@items[oi.product.name]
+  #      @items[oi.product.name] = {
+  #        :category => oi.product.category ? oi.product.category.name : "None",
+  #        :item_count => 0,
+  #        :sales_total => 0
+  #      }
+  #    end
+  #          
+  #    @items[oi.product.name][:item_count] += oi.quantity
+  #    @items[oi.product.name][:sales_total] += oi.total_price
+  #  end
+  #      
+  #  @csv_string = "Product,Category,Items Sold,Sales Total\n"
+  #        
+  #  @items = @items.sort
+  #        
+  #  @items.each do |pname, data|
+  #    @csv_string += "#{pname},#{data[:category]},#{data[:item_count]},#{data[:sales_total]}\n"
+  #  end
   
   def mobile_index
     @all_terminals = all_terminals

@@ -118,7 +118,7 @@ function syncTableOrderFail() {
 
 function retryTableOrder() {
     orderInProcess = false;
-    niceAlert("An order was sent at the same time, PLEASE SEND ORDER AGAIN.");
+    niceAlert("An order for this table was sent at the same time, PLEASE SEND ORDER AGAIN.");
 }
 
 function removeLastOrderItem() {

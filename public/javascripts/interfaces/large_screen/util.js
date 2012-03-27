@@ -692,6 +692,6 @@ function initModifierGrid() {
 
 function rollDate() {
     var dateFormat = "dd MMM";
-    var formattedDate = formatDate(new Date(), dateFormat);
+    var formattedDate = formatDate(new Date(clueyTimestamp()), dateFormat);
     $('#date').html(formattedDate);
 }

@@ -333,7 +333,7 @@ function moneySelected(amount) {
 
 function doChargeRoom(orderData) {
     //need to add some additional data to the order data to charge the room
-    orderData.datetime = formatDate(new Date(), "dd/MM/yyyy HH:mm:ss");
+    orderData.datetime = formatDate(new Date(clueyTimestamp()), "dd/MM/yyyy HH:mm:ss");
     orderData.location = business_name;
     
     if(paymentIntegrationId != 0) {
