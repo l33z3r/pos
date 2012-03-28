@@ -1,0 +1,33 @@
+  <div id="sales_items">
+    <table class="sales_items_table">
+      <tbody>
+          <tr>
+            <td class="header">Date</td>
+            <td class="header">Day</td>
+            <td class="header">Items Qty</td>
+            <td class="header">Gross Sales</td>
+            <td class="header">VAT</td>
+            <td class="header">NET Sales</td>
+          </tr>
+
+          <% @orders.each do |order| %>
+          <tr>
+              <td>
+              <%= order.created_at.to_date.strftime("%d %b %Y") %>
+              </td>
+              <td>
+              <%= Date::DAYNAMES[order.created_at.wday] %>
+              </td>
+              <td>
+              <%= @items_per_hour %>
+              </td>
+                <% @items_per_interval_hour.keys.sort.rotate(@elems_to_move).each do |key| %>
+                <td width="80" class="left"><%=key%>-<%=key+@h_interval%></td>
+                <% end %>
+          </tr>
+      <% end %>
+
+      </tbody>
+    </table>
+  </div>
+

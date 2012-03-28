@@ -3785,6 +3785,38 @@ div#reports_container table.items_table td.left{
     text-align: left;
 }
 
+/*div#reports_container #sales_items{*/
+    /*overflow: auto;*/
+    /*border:  3px solid black;*/
+/*}*/
+
+div#reports_container table.sales_items_table{
+    width: 100%;
+    margin-left: 10px;
+    margin-top: 5px;
+    font-size: 12px;
+    line-height: 10px;
+    /*border:  3px solid black;*/
+}
+
+div#reports_container table.sales_items_table tr{
+   border:  2px solid black;
+}
+
+div#reports_container table.sales_items_table td.header{
+    border:  2px solid black;
+    background: black;
+    font-weight: bold;
+    color: white;
+    min-width: 100px;
+}
+
+div#reports_container table.sales_items_table td{
+   border:  2px solid black;
+   width: 100px;
+}
+
+
 div#reports_container  div#at_a_glance_results_right div#graph_container{
     height: 300px;
 }
@@ -3799,6 +3831,79 @@ div#reports_container  div#at_a_glance_results{
     -moz-border-radius: 7px;
     border-radius: 7px;
 }
+
+
+
+
+
+div#reports_container  div#report_sales_filters {
+    float: left;
+    height: 120px;
+    width: 100%;
+    margin-right: 10px;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+
+
+div#reports_container  div#report_sales_filters div.dropdown_container{
+    float: left;
+    max-width: 110px;
+    text-align: left;
+    font-weight: bold;
+    margin-left: 15px;
+    margin-top: 5px;
+}
+
+div#reports_container  div#report_sales_filters #refine_container{
+    width: 600px;
+    float: left;
+}
+div#reports_container  div#report_sales_filters #date_select_container{
+    width: 600px;
+}
+
+div#reports_container  div#report_sales_filters div.dropdown_container .dropdown_sel{
+    width: 110px;
+
+}
+
+div#reports_container  div#report_sales_filters #refine_button{
+    margin-left: 160px;
+    margin-top: 20px;
+
+}
+
+div#reports_container  div#report_sales_filters div#days{
+    margin-left: 280px;
+}
+
+div#reports_container  div#report_sales_filters div#hours{
+    /*float: left;*/
+}
+
+div#reports_container  div#report_sales_filters div#hours div.dropdown_container{
+    width: 90px;
+}
+
+div#reports_container  div#report_sales_filters div.label,
+div#reports_container  div#report_sales_filters div.input_date{
+    text-align: left;
+}
+
+div#reports_container  div#report_sales_results_left,
+div#reports_container  div#report_sales_results_right{
+    float: left;
+    height: 650px;
+    width: 50%;
+}
+
+
+
 
 div#reports_container div#last_z_total_info {
     position: absolute;
