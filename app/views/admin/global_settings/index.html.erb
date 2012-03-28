@@ -936,7 +936,7 @@
                       Terminal Name
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::TERMINAL_ID, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.terminal_id_for @terminal_fingerprint %>
 
                       <div id="terminal_name_field_unique_error" style="display: none;">
                         This terminal name has already been taken, if you submit this, the old terminal name will be overwritten

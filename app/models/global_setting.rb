@@ -144,8 +144,15 @@ class GlobalSetting < ActiveRecord::Base
         @gs = nil
       else
         #the key will be the key for terminal id followed by the terminal fingerprint
-        @gs = find_or_create_by_key(:key => "#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :value => "NT##{Time.now.to_i.to_s[-4,4]}", :label_text => LABEL_MAP[TERMINAL_ID])
-        @gs.parsed_value = @gs.value
+        GlobalSetting.transaction do
+          @gs = find_by_key("#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :lock => true)
+          
+          if !@gs
+            @gs = create(:key => "#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :value => "NT##{Time.now.to_i.to_s[-4,4]}", :label_text => LABEL_MAP[TERMINAL_ID])
+          end
+          
+          @gs.parsed_value = @gs.value
+        end
       end
     when CURRENCY_SYMBOL
       @gs = find_or_create_by_key(:key => CURRENCY_SYMBOL.to_s, :value => "$", :label_text => LABEL_MAP[CURRENCY_SYMBOL])
@@ -531,6 +538,10 @@ class GlobalSetting < ActiveRecord::Base
   
   def self.now_millis
     (Time.now.to_f * 1000).to_i
+  end
+  
+  def self.terminal_id_for fingerprint
+    GlobalSetting.setting_for GlobalSetting::TERMINAL_ID, {:fingerprint => fingerprint}
   end
   
   #these properties are for particular properties in the db

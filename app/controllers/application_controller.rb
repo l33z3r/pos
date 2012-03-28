@@ -337,8 +337,8 @@ class ApplicationController < ActionController::Base
   def load_global_vars
     @terminal_fingerprint = request.cookies["terminal_fingerprint"]
     
-    if(request.cookies["terminal_fingerprint"])
-      @terminal_id_gs = GlobalSetting.setting_for GlobalSetting::TERMINAL_ID, {:fingerprint => @terminal_fingerprint}
+    if(@terminal_fingerprint)
+      @terminal_id_gs = GlobalSetting.terminal_id_for @terminal_fingerprint
       @terminal_id = @terminal_id_gs.parsed_value
     else
       @terminal_id = "Initializing"

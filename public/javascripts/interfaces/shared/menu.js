@@ -54,7 +54,6 @@ function getCurrentOrder() {
 
 function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee, tableOrderDataJSON) {
     if(lastSyncedOrder && lastSyncedOrder.table == tableLabel) {
-        console.log("Setting lastsynced order to " + tableOrderDataJSON.order_num);
         //set the order id on the lastSyncedOrder variable so that it prints on the login receipt
         lastSyncedOrder.order_num = tableOrderDataJSON.order_num;
     }
