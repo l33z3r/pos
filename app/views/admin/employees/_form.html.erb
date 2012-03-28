@@ -67,7 +67,7 @@
       <%= f.collection_select :role_id, Role.find(:all), :id, :name, :prompt => "Select a Role" %>
     </div>
     <div id="actions">
-      <button onclick="$('#employee_edit').submit()">Save</button>
+      <%= f.submit %>
       <%= link_to "Back", admin_employees_path %>
     </div>
   </div>
