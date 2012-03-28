@@ -63,12 +63,18 @@
   var RETAIL_MENU_SCREEN = <%= GlobalSetting::RETAIL_MENU_SCREEN %>;
   
   //this is for the order ready notifications on mobile
-  var lastOrderReadyNotificationTime = <%=Time.now.to_i%>;
+  var lastOrderReadyNotificationTime = <%= now_millis %>;
   
   var autoPrintReceipt = <%= @auto_print_receipt %>;
   
   var receiptMessage = "<%= raw escape_javascript((GlobalSetting.parsed_setting_for (GlobalSetting::RECEIPT_MESSAGE))) %>";
 
+  var customReceiptFooters = {};
+
+<% ReceiptFooter.all.each do |rf| %>
+    customReceiptFooters[<%=rf.id%>] = {"name" : "<%=rf.name%>", "content" : "<%= raw escape_javascript(rf.content) %>"};
+<% end %>
+      
   var businessInfoMessage = "<%= raw escape_javascript((GlobalSetting.parsed_setting_for (GlobalSetting::BUSINESS_INFO_MESSAGE))) %>";
 
   var defaultDiscountPercent = "<%=Discount.load_default.percent%>";
@@ -122,7 +128,7 @@
   var allDevicesOrderNotification = <%= GlobalSetting.parsed_setting_for GlobalSetting::All_DEVICES_ORDER_NOTIFICATION %>;
   
   //these variables are used to get a syncronised time on each device
-  var serverCounterStartTimeMillis = <%= Time.now.to_f * 1000 %>;
+  var serverCounterStartTimeMillis = <%= now_millis %>;
   var counterStartTimeMillis = new Date().getTime();
   
   //payment integration IDs

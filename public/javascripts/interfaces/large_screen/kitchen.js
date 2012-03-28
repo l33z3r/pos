@@ -4,6 +4,8 @@ var orderNums = {};
 
 var kitchenOrders;
 
+var table0TidPrefix = "0_";
+
 function initKitchen() {
     //hide the red x 
     $('#nav_save_button').hide();
@@ -44,7 +46,7 @@ function renderReceipt(tableID) {
             async: false,
             success: function(data) {
                 //put this order to the end of the active orders queue
-                $('#active_orders').append(data);
+                $('#empty_orders').append(data);
             }
         });    
     } else {
@@ -69,10 +71,11 @@ function renderReceipt(tableID) {
     stripProducts(nextKitchenOrder);
     
     //if all items were stripped out of this order, then we must not show it on the screen
-    if(nextKitchenOrder.items.length == 0) {
+    if(nextKitchenOrder.items.length == 0) {        
         //delete the html for that kitchen div if it is table 0
         if(table0Order) {
             $('#kitchen_receipt_container_' + tableID).remove();
+            localStorage.removeItem("kitchen_orders_saved_table_0_order_" + tableID);
         }
         
         return;
@@ -102,6 +105,7 @@ function renderReceipt(tableID) {
     }
         
     console.log("There are " + numCourses + " courses in this table, we have " + courseChecks[tableID].length + " recorded");
+    
     //if there are no courses, then treat the whole order as one course
     if(numCourses == 0) {
         numCourses = 1;
@@ -131,7 +135,7 @@ function renderReceipt(tableID) {
     
     var loadingTableLabel;
     
-    if(tableID.toString().startsWith("0_")) {
+    if(tableID.toString().startsWith(table0TidPrefix)) {
         loadingTableLabel = "Order #" + tableID.split("_")[1];
     } else {
         loadingTableLabel = "Table " + tableID;
@@ -147,11 +151,15 @@ function renderReceipt(tableID) {
      
     var nextKitchenOrderNum = nextKitchenOrder.order_num;
     
-    $('#kitchen_table_' + tableID + "_receipt_order_num").html("Order #" + nextKitchenOrderNum);
+    $('#kitchen_table_' + tableID + "_receipt_order_num").html("#" + nextKitchenOrderNum);
      
     var allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(nextKitchenOrder, false, false, false);
      
     $('#kitchen_table_' + tableID + '_till_roll').html($('#kitchen_table_' + tableID + '_till_roll').html() + allOrderItemsRecptHTML);
+    
+    //set the start time on the header
+    var startTime = utilFormatTime(new Date(parseInt(orderStartTime(nextKitchenOrder))));
+    $('#table_time_' + tableID).html("(" + startTime + ")");
     
     //apply the course checks
     applyCourseChecks(tableID);
@@ -182,6 +190,8 @@ function renderReceipt(tableID) {
         }
         movedToFilled = true;
     }
+    
+    console.log("rendering receipt");
     
     //check where we want to move this order to
     if(orderInEmptySection(tableID)) {
@@ -245,7 +255,7 @@ function orderInEmptySection(tableID) {
     var isEmpty = false;
     
     $('#empty_orders>div').each(function() {
-        if(parseInt($(this).data("table_id")) == tableID) {
+        if($(this).data("table_id") == tableID.toString()) {
             isEmpty = true;
         }
     });
@@ -336,7 +346,7 @@ function sendCourseCheck(orderLine) {
     
     var theTableID = tableID;
     
-    if(tableID.toString().startsWith("0_")) {
+    if(tableID.toString().startsWith(table0TidPrefix)) {
         theTableID = tableID.split("_")[0];
     }
     
@@ -369,8 +379,13 @@ function hideTableOrder(tableID) {
     sendOrderToCompleted(tableID);
     
     //remove it from saved table 0 orders
-    if(tableID.startsWith("0_")) {
+    if(tableID.startsWith(table0TidPrefix)) {
+        $('#kitchen_receipt_container_' + tableID).remove();
         localStorage.removeItem("kitchen_orders_saved_table_0_order_" + tableID);
+        
+        //TODO: only delete enough to keep a certain amount in the buffer
+        //the same amount that is kept on the server
+        deleteTable0CourseChecks();
     }
 }
 
@@ -555,4 +570,35 @@ function loadSavedTable0Orders() {
             renderReceipt(0);
         }
     });
+}
+
+function deleteTable0CourseChecks() {
+    //keep 50 of the most frequent in memory for both courseChecks and orderXClicked
+    var tidKeys = [];
+    
+    for(tid in courseChecks) {
+        if(tid.toString().startsWith(table0TidPrefix)) {
+            tidKeys.push(tid); 
+        }
+    }
+    
+    //keep the last 50 keys in that array
+    var keepCount = tidKeys.length - 50;
+    
+    if(keepCount > 0) {
+        tidKeys.splice(0, keepCount);
+        
+        for(tid in courseChecks) {
+            if(tid.toString().startsWith(table0TidPrefix)) {
+                //if not it array, then delete
+                if($.inArray(tid, tidKeys) == -1) {
+                    delete courseChecks[tid];
+                    delete orderXClicked[tid];
+                }
+            }
+        }
+    }
+    
+    //and save
+    saveCourseChecks();
 }

@@ -33,6 +33,11 @@ function doSyncTableOrder() {
             //dont need to check if empty as this will only ever be called after a sale
             lastOrderSaleText = "Last Sale";
             order = lastTableZeroOrder;
+            
+            //mark all the items as unsynced for table 0 so they get printed
+            for(var i=0; i<order.items.length; i++) {
+                order.items[i].synced = false;
+            }
         }
     } else {
         lastOrderSaleText = "Last Order";
@@ -55,7 +60,7 @@ function doSyncTableOrder() {
     //add the serverAddedText to the first non synced item
     var checkForShowServerAddedText = true;
     
-    //mark all items in this order as synced
+    //mark the item that we need to show the server added text for
     for(var i=0; i<order.items.length; i++) {
         if(checkForShowServerAddedText && !order.items[i].synced) {
             order.items[i].showServerAddedText = true;
@@ -82,10 +87,10 @@ function doSyncTableOrder() {
         type: 'POST',
         url: '/sync_table_order',
         error: syncTableOrderFail,
-        success: finishSyncTableOrder,
         data: {
             tableOrderData : tableOrderData,
-            employee_id : userId
+            employee_id : userId,
+            lastSyncTableOrderTime : lastSyncTableOrderTime
         }
     });
 }
@@ -108,8 +113,12 @@ function finishSyncTableOrder() {
 
 function syncTableOrderFail() {
     orderInProcess = false;
-    
     niceAlert("Order not sent, no connection, please try again");
+}
+
+function retryTableOrder() {
+    orderInProcess = false;
+    niceAlert("An order for this table was sent at the same time, PLEASE SEND ORDER AGAIN.");
 }
 
 function removeLastOrderItem() {
@@ -175,11 +184,6 @@ function startTransferOrderMode() {
         return;
     }
     
-    if(selectedTable == -1) {
-        setStatusMessage("Only valid for table orders!");
-        return;
-    }
-    
     var order = getCurrentOrder();
     
     if(order.items.length == 0) {
@@ -213,6 +217,14 @@ function startTransferOrderItemMode() {
         niceAlert("Downloading data from server, please wait.");
         return;
     }
+    
+    if(selectedTable == previousOrderTableNum) {
+        niceAlert("Not valid for reopened orders! You must transfer the whole order to a table.");
+        return;
+    } else if(selectedTable == tempSplitBillTableNum) {
+        niceAlert("Not valid for split orders! You must transfer the whole order to a table.");
+        return;
+    } 
     
     //only allow transfer if the item has already been orderd
     var itemNumber = currentSelectedReceiptItemEl.data("item_number");

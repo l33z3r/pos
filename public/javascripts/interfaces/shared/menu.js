@@ -53,7 +53,7 @@ function getCurrentOrder() {
 }
 
 function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee, tableOrderDataJSON) {
-    if(lastSyncedOrder) {
+    if(lastSyncedOrder && lastSyncedOrder.table == tableLabel) {
         //set the order id on the lastSyncedOrder variable so that it prints on the login receipt
         lastSyncedOrder.order_num = tableOrderDataJSON.order_num;
     }
@@ -78,7 +78,7 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         renderReceipt(tableID);
     }
     
-    if(callHomePollInitSequenceComplete) {
+    if(lastSyncTableOrderTime > lastPrintCheckTime) {
         checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);
     }
     
@@ -108,6 +108,10 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         //make sure the data types are converted correctly
         if(tableOrderDataJSON.items[itemKey].product.show_price_on_receipt) {
             tableOrderDataJSON.items[itemKey].product.show_price_on_receipt = (tableOrderDataJSON.items[itemKey].product.show_price_on_receipt.toString() == "true" ? true : false);   
+        }
+        
+        if(tableOrderDataJSON.items[itemKey].showServerAddedText) {
+            tableOrderDataJSON.items[itemKey].showServerAddedText = (tableOrderDataJSON.items[itemKey].showServerAddedText.toString() == "true" ? true : false);   
         }
         
         if(tableOrderDataJSON.items[itemKey].product.hide_on_printed_receipt) {
@@ -370,11 +374,6 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, orderNum, tableLabel
         doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployee, nextUserIDToSyncWith);
     }
     
-    //WE DONT AUTO CLEAR ANYMORE ON KITCHEN SCREEN
-    //    if(inKitchenContext()) {
-    //        tableCleared(tableID, orderNum);
-    //    }
-    
     //remove the table from the active table ids array
     removeActiveTable(tableID);
     renderActiveTables();
@@ -456,7 +455,7 @@ function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCou
     
     //get rid of rounding errors
     targetOrderItem.total_price = roundNumber(parseFloat(targetOrderItem.total_price), 2);
-
+    
     applyExistingDiscountToOrderItem(order, itemNumber);
     calculateOrderTotal(order);
 
@@ -500,14 +499,6 @@ function applyDiscountToOrderItem(order, itemNumber, amount) {
     //get rid of rounding errors
     orderItem['total_price'] = roundNumber(orderItem['total_price'], 2);
 
-    if(selectedTable == 0) {
-        //mark the item as synced as we are not on a table receipt
-        orderItem.synced = true;
-    } else {
-        //mark this item as unsynced
-        orderItem['synced'] = false;
-    }
-    
     calculateOrderTotal(order);
 }
 
@@ -580,11 +571,11 @@ function buildOrderItem(product, amount) {
     } else if(menuItemStandardPriceOverrideMode) {
         productPrice = product.price;
         setMenuItemStandardPriceOverrideMode(false);
-    } else if(globalPriceLevel == 2) {
+    } else if(globalPriceLevel == 2 && product.price_2 != 0) {
         productPrice = product.price_2;
-    } else if(globalPriceLevel == 3) {
+    } else if(globalPriceLevel == 3 && product.price_3 != 0) {
         productPrice = product.price_3;
-    } else if(globalPriceLevel == 4) {
+    } else if(globalPriceLevel == 4 && product.price_4 != 0) {
         productPrice = product.price_4;
     }
     
@@ -854,33 +845,6 @@ function removeSelectedOrderItem() {
 }
 
 function doRemoveOrderItem(order, itemNumber) {
-    //WE HAVE A LOT OF LOGIC HERE TO DEAL WITH COURSES
-    
-    
-    //if this item marks the end of a course, 
-    //we must pass the line back to the previous menu item
-    //if the item number is only one, then this is the first 
-    //item in the receipt and we don't worry about it
-    //    var courseIndex = $.inArray(itemNumber, order.courses);
-    //    
-    //    if(courseIndex >= 0) {
-    //        //3 cases here, 
-    //        //1. this is a first item on the list (so delete the first entry which will be 1)
-    //        //2. the previous item is already a course
-    //        //3. we can pass back the course
-    //        if(itemNumber == 1) {
-    //            //remove this so it doesn't get decremented to 0
-    //            order.courses.splice(0, 1);
-    //        } else if(order.items[itemNumber-2].is_course) {
-    //            //remove this from the courses array as the previous item is a course
-    //            order.courses.splice(courseIndex, 1);
-    //        } else {
-    //            //pass back the course line
-    //            order.courses[courseIndex]--;
-    //            order.items[itemNumber-2].is_course = true;
-    //        }
-    //    }
-    
     order.items.splice(itemNumber-1, 1);
     
     //update the order items of following items

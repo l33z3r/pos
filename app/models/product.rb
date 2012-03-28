@@ -199,9 +199,15 @@ class Product < ActiveRecord::Base
   end
   
   def decrement_stock quantity
-    logger.info "!!!! decrementing #{name} by #{quantity}"
-    @decrement_val = quantity/quantity_per_container
-    decrement!(:quantity_in_stock, @decrement_val)
+    @qpc = read_attribute("quantity_per_container")
+    
+    @qis = read_attribute("quantity_in_stock")
+    
+    if @qpc > 0 and @qis > 0
+      logger.info "!!!! decrementing #{name} by #{quantity} with qtypct: #{@qpc}"
+      @decrement_val = quantity/@qpc
+      decrement!(:quantity_in_stock, @decrement_val)
+    end
   end
   
   def last_stock_transaction
@@ -300,6 +306,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: products
@@ -309,11 +316,11 @@ end
 #  name                                     :string(255)
 #  category_id                              :integer(4)
 #  description                              :string(255)
-#  size                                     :float
+#  size                                     :float           default(1.0), not null
 #  unit                                     :string(255)
-#  items_per_unit                           :integer(4)
-#  sales_tax_rate                           :float
-#  price                                    :float
+#  items_per_unit                           :integer(4)      default(0), not null
+#  sales_tax_rate                           :float           default(0.0), not null
+#  price                                    :float           default(0.0), not null
 #  created_at                               :datetime
 #  updated_at                               :datetime
 #  product_image_file_name                  :string(255)
@@ -327,15 +334,15 @@ end
 #  quantity_in_stock                        :float           default(0.0)
 #  code_num                                 :integer(4)
 #  upc                                      :string(255)
-#  price_2                                  :float
-#  price_3                                  :float
-#  price_4                                  :float
-#  margin_percent                           :float
-#  cost_price                               :float
-#  shipping_cost                            :float
-#  commission_percent                       :float
+#  price_2                                  :float           default(0.0), not null
+#  price_3                                  :float           default(0.0), not null
+#  price_4                                  :float           default(0.0), not null
+#  margin_percent                           :float           default(0.0), not null
+#  cost_price                               :float           default(0.0), not null
+#  shipping_cost                            :float           default(0.0), not null
+#  commission_percent                       :float           default(0.0), not null
 #  container_type_id                        :integer(4)
-#  quantity_per_container                   :float           default(1.0)
+#  quantity_per_container                   :float           default(1.0), not null
 #  is_active                                :boolean(1)      default(TRUE)
 #  is_service                               :boolean(1)      default(FALSE)
 #  show_price_prompt                        :boolean(1)      default(FALSE)
@@ -369,12 +376,13 @@ end
 #  is_special                               :boolean(1)      default(FALSE)
 #  is_deleted                               :boolean(1)      default(FALSE)
 #  show_price_on_receipt                    :boolean(1)      default(TRUE)
-#  double_price                             :float           default(0.0)
+#  double_price                             :float           default(0.0), not null
 #  display_image                            :string(255)
 #  hide_on_printed_receipt                  :boolean(1)      default(FALSE)
 #  order_item_addition_grid_id              :integer(4)
 #  order_item_addition_grid_id_is_mandatory :boolean(1)      default(FALSE)
 #  course_num                               :integer(4)      default(0)
 #  is_stock_item                            :boolean(1)      default(TRUE)
+#  kitchen_screens                          :string(255)     default("")
 #
 

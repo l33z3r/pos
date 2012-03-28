@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   helper_method :e, :is_cluey_user?, :current_employee, :print_money
   helper_method :mobile_device?, :all_terminals, :all_servers, :current_interface
   helper_method :development_mode?, :production_mode?
-  helper_method :server_ip, :active_employee_ids
+  helper_method :server_ip, :active_employee_ids, :now_millis
   
   before_filter :load_global_vars
   
@@ -106,40 +106,51 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  def do_request_sync_table_order terminal_id, table_order_data, table_id, employee_id
-    
+  def do_request_sync_table_order terminal_id, table_order_data, table_id, employee_id, last_sync_time
+    TerminalSyncData.transaction do
+      @sync_table_order_times = TerminalSyncData.fetch_sync_table_order_times
+      @last_table_order_sync = @sync_table_order_times.last
       
-    if table_id != "0"
-      remove_previous_sync_for_table table_id, false
-    else
-      remove_old_table_0_orders
-    end
+      @sync_table_order_times_reversed = @sync_table_order_times.reverse
       
-    #does this order have an order id? if not generate one
-    if !table_order_data[:orderData][:order_num]
-      table_order_data[:orderData][:order_num] = Order.next_order_num
-    end
-      
-    table_order_data = table_order_data.to_json
-      
-    @sync_data = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => employee_id}.to_yaml
-      
-    @time = Time.now.to_i
-      
-    #make sure the time is at least 2 milliseconds afte the last sync so that it gets picked up ok
-    @last_table_order_sync = TerminalSyncData.fetch_sync_table_order_times.last
-      
-    if @last_table_order_sync
-      @last_sync_time = @last_table_order_sync.time.to_i
-      
-      if (@last_sync_time + 2) > @time
-        @time = @last_sync_time + 2
+      @sync_table_order_times_reversed.each do |tsd|
+        #if we dont have the latest timestamp for this tables order we must retry
+        if tsd.data[:table_id].to_s == table_id.to_s and tsd.time.to_i > last_sync_time.to_i
+          return true
+        end
       end
-    end
       
-    TerminalSyncData.create!({:sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 
-        :time => @time, :data => @sync_data})
-    
+      if table_id != "0"
+        remove_previous_sync_for_table table_id, false
+      else
+        remove_old_table_0_orders
+      end
+      
+      #does this order have an order id? if not generate one
+      if !table_order_data[:orderData][:order_num] or table_order_data[:orderData][:order_num].blank?
+        table_order_data[:orderData][:order_num] = Order.next_order_num
+      end
+      
+      table_order_data = table_order_data.to_json
+      
+      @sync_data = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => employee_id}.to_yaml
+      
+      @time = now_millis
+      
+      #make sure the time is at least 2 milliseconds after the last sync so that it gets picked up ok
+      if @last_table_order_sync
+        @last_sync_time = @last_table_order_sync.time.to_i
+      
+        if (@last_sync_time + 2) > @time
+          @time = @last_sync_time + 2
+        end
+      end
+      
+      TerminalSyncData.create!({:sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 
+          :time => @time, :data => @sync_data})
+      
+      return false
+    end
   end
   
   def do_request_clear_table_order terminal_id, time, table_id, order_num, employee_id
@@ -154,21 +165,32 @@ class ApplicationController < ActionController::Base
   end
   
   def remove_previous_sync_for_table table_id, delete_clear_table_order_syncs
-    TerminalSyncData.fetch_sync_table_order_times.each do |tsd|
+    #we keep the previous 5 orders for this table so that orders from
+    #multiple terminals at once do not overwrite eachother and they
+    #all get printed
+    @max_orders_kept = 5
+    @order_count = 0
+    
+    @tsds = TerminalSyncData.fetch_sync_table_order_times.reverse
+    
+    @tsds.each do |tsd|
       if tsd.data[:table_id].to_s == table_id.to_s
-        
         #don't delete the clear table order syncs as we need at least one there at all times
         if tsd.data[:clear_table_order] and !delete_clear_table_order_syncs
           next
         end
         
-        tsd.destroy
+        @order_count += 1
+        
+        #always keep @max_orders_kept orders, unless we are clearing the table
+        if delete_clear_table_order_syncs or (@order_count >= @max_orders_kept)
+          tsd.destroy
+        end
       end
     end
   end
   
   def remove_old_table_0_orders
-    
     @max_table_0_orders = 50
     @tsds_reversed = TerminalSyncData.fetch_sync_table_order_times.reverse
     
@@ -315,8 +337,8 @@ class ApplicationController < ActionController::Base
   def load_global_vars
     @terminal_fingerprint = request.cookies["terminal_fingerprint"]
     
-    if(request.cookies["terminal_fingerprint"])
-      @terminal_id_gs = GlobalSetting.setting_for GlobalSetting::TERMINAL_ID, {:fingerprint => @terminal_fingerprint}
+    if(@terminal_fingerprint)
+      @terminal_id_gs = GlobalSetting.terminal_id_for @terminal_fingerprint
       @terminal_id = @terminal_id_gs.parsed_value
     else
       @terminal_id = "Initializing"
@@ -380,6 +402,9 @@ class ApplicationController < ActionController::Base
     
     @windows_printer_margins = GlobalSetting.parsed_setting_for GlobalSetting::WINDOWS_PRINTER_MARGINS, {:fingerprint => @terminal_fingerprint}
     
+    #white space in menus
+    @use_whitespace_in_mobile_menus = GlobalSetting.parsed_setting_for GlobalSetting::USE_WHITE_SPACE_MOBILE_MENUS
+    @use_whitespace_in_desktop_menus = GlobalSetting.parsed_setting_for GlobalSetting::USE_WHITE_SPACE_DESKTOP_MENUS
   end
   
   def mobile_device?
@@ -398,6 +423,10 @@ class ApplicationController < ActionController::Base
     session[:active_employee_ids] ||= []
     
     session[:active_employee_ids]
+  end
+  
+  def now_millis
+    GlobalSetting.now_millis
   end
   
   def current_interface
@@ -509,7 +538,7 @@ class ApplicationController < ActionController::Base
   
   def update_html5_cache_timestamp 
     @timestamp_setting = GlobalSetting.setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP
-    @timestamp_setting.value = Time.now.to_i
+    @timestamp_setting.value = now_millis
     @timestamp_setting.save
   end
   

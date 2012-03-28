@@ -87,8 +87,41 @@ table.admin_table {
 }
 
 div.admin div.vtabs-content-panel {
-    overflow: hidden;
+    overflow: scroll;
     height: 800px;
+}
+
+div.admin div.vtabs-content-panel::-webkit-scrollbar:vertical {
+    width: 30px;
+}
+
+div.admin div.vtabs-content-panel::-webkit-scrollbar:horizontal {
+    height: 30px;
+}
+
+div.admin div.vtabs-content-panel::-webkit-scrollbar-button:start:decrement,
+div.admin div.vtabs-content-panel::-webkit-scrollbar-button:end:increment {
+    display: block;
+    height: 30px;
+    width: 30px;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1)); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+div.admin div.vtabs-content-panel::-webkit-scrollbar-button:vertical:increment{
+    background:no-repeat url("/images/arrow_down.png") 8px 6px;
+}
+
+div.admin div.vtabs-content-panel::-webkit-scrollbar-button:vertical:decrement{
+    background:no-repeat url("/images/arrow_up.png") 8px 6px;
+}
+
+div.admin div.vtabs-content-panel::-webkit-scrollbar-button:horizontal:increment{
+    background:no-repeat url("/images/arrow_right.png") 8px 6px;
+}
+
+div.admin div.vtabs-content-panel::-webkit-scrollbar-button:horizontal:decrement{
+    background:no-repeat url("/images/arrow_left.png") 8px 6px;
 }
 
 .vtabs-content-panel table.admin_table {
@@ -548,6 +581,7 @@ div.select_printers_dialog {
     padding: 10px;
     max-height: 300px;
     overflow-y: auto;
+    width: 250px;
 }
 
 div.select_printers_dialog div.header {
@@ -589,6 +623,7 @@ div.select_kitchen_screens_dialog {
     padding: 10px;
     max-height: 300px;
     overflow-y: auto;
+    width: 250px;
 }
 
 div.select_kitchen_screens_dialog div.header {
@@ -1589,6 +1624,16 @@ div#edit_global_settings table#global_settings_list td div.label {
     float: left;
     margin-top: 7px;
     font-weight: bold;
+}
+
+div#edit_global_settings table#global_settings_list td#dat_section div.controls {
+    float: left;
+}
+
+div#edit_global_settings table#global_settings_list td#dat_section div#actions {
+    float: left;
+    margin-top: 5px;
+    margin-left: 40px;
 }
 
 /* End Global Settings Page */

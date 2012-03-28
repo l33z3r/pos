@@ -1852,21 +1852,14 @@ div.receipt div.till_roll div.modifier_price {
     text-align: right;
 }
 
-div.receipt div.till_roll div.oia_add {
-    float: left;
-    width: 40px;
-    text-align: right;
-}
-
 div.receipt div.till_roll div.oia_name {
     float: left;
     width: 148px;
-    margin-left: 10px;
+    margin-left: 50px;
     text-align: left;
 }
 
 div.receipt div.till_roll div.oia_name.note {
-    font-style: italic;
     width: 188px;
 }
 
@@ -3517,11 +3510,9 @@ div.button div.icon img {
 div.button div.button_name {
     padding: 0px 3px;
     font-size: 12px;
-}
-
-div.button div.button_name {
     text-decoration: none;
     color: #333333;
+    max-height: 30px;
 }
 
 div.button.selected div.button_name {
@@ -3549,14 +3540,14 @@ div.button_small.pressed,
 #wrapper div#landing div#active_users_buttons_container div#active_users div.employee_box.pressed,
 #wrapper div.cancel_key.pressed {
     border: 1px solid #E36C0A; 
-    background: #eee;
+    background: #AAA;
     -moz-opacity: 90;
     filter:alpha(opacity: .90);
     opacity: .90;    
 }
 
 nav#main_nav div#nav_util_button.pressed {
-    background: #eee;
+    background: #AAA;
     -moz-opacity: 90;
     filter:alpha(opacity: .90);
     opacity: .90;
@@ -3573,7 +3564,7 @@ div.button_small.pressed *,
 #wrapper div.go_key.pressed *,
 #wrapper div#landing div#active_users_buttons_container div#active_users div.employee_box.pressed *,
 #wrapper div.cancel_key.pressed * {
-    background: #eee;
+    background: #AAA;
     -moz-opacity: 90;
     filter:alpha(opacity: .90);
     opacity: .90;    

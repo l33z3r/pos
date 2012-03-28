@@ -316,6 +316,15 @@ div#menu_screen div#menu_container div#menu_items_container div.item {
     cursor: pointer; background: #FFF;
 }
 
+div#menu_screen div#menu_container div#menu_items_container div.menu_item_spacer {
+    position: relative;
+    float: left;
+    margin: 2px;
+    height: 92px;
+    cursor: pointer;
+    background-color: transparent;
+}
+
 div#menu_screen div#menu_container div#menu_items_container div.item.inactive {
     text-decoration: line-through;
 }
@@ -898,13 +907,6 @@ div.receipt div.till_roll div.modifier_price {
     text-align: right;
 }
 
-div.receipt div.till_roll div.oia_add {
-    float: left;
-    width: 40px;
-    text-align: right;
-    font-size: 19px;
-}
-
 div.receipt div.till_roll div.oia_name {
     float: left;
     width: 150px;
@@ -1026,14 +1028,6 @@ div.receipt div.till_roll_small div.modifier_price {
     width: 0px;
     height: 0px;
     text-align: right;
-}
-
-div.receipt div.till_roll_small div.oia_add {
-    float: left;
-    width: 0px;
-    height: 0px;
-    text-align: right;
-    font-size: 19px;
 }
 
 div.receipt div.till_roll_small div.oia_name {
@@ -1729,7 +1723,7 @@ div.small_button.pressed,
 #wrapper div.go_key.pressed,
 #wrapper div.cancel_key.pressed {
     border: 1px solid #E36C0A;
-    background: #eee;
+    background: #AAA;
     -moz-opacity: 90;
     filter:alpha(opacity: .90);
     opacity: .90;
@@ -1745,7 +1739,7 @@ div.small_button.pressed *,
 #wrapper div.key.pressed *,
 #wrapper div.go_key.pressed *,
 #wrapper div.cancel_key.pressed * {
-    background: #eee;
+    background: #AAA;
     -moz-opacity: 90;
     filter:alpha(opacity: .90);
     opacity: .90;

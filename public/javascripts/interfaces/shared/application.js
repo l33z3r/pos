@@ -17,8 +17,9 @@ var lastSyncTableOrderTime = null;
 var lastSyncKey = "last_sync_table_order_time";
 
 var lastInterfaceReloadTime = null;
+var lastPrintCheckTime = null;
     
-//the following hack is due to eventX eventY being deprecated in new builds of chrome
+//the following hack is to get over eventX eventY being deprecated in new builds of chrome
 $.event.props = $.event.props.join('|').replace('layerX|layerY|', '').split('|');
 
 $(function() {
@@ -58,13 +59,32 @@ function callHomePoll() {
         if(lastReloadTime != null) {
             lastInterfaceReloadTime = parseFloat(lastReloadTime);
         } else {
-            lastInterfaceReloadTime = 0;
+            lastInterfaceReloadTime = clueyTimestamp();
         }
     } else {
         //write it to cookie        
         //100 year expiry, but will really end up in year 2038 due to limitations in browser
-        var exdays = 365 * 100;
-        setRawCookie(lastReloadCookieName, lastInterfaceReloadTime, exdays);
+        var interfaceReloadTimeCookeExpDays = 365 * 100;
+        setRawCookie(lastReloadCookieName, lastInterfaceReloadTime, interfaceReloadTimeCookeExpDays);
+    }
+    
+    //load/store the timestamp for print checks
+    //also copy this timestamp into a variable that says when we last checked an order for printed items
+    //this is to stop orders from re-printing once we reload the terminal
+    if(lastPrintCheckTime == null) {
+        //read it from cookie
+        var lastCheckTime = getRawCookie(lastPrintCheckCookieName);
+        
+        if(lastCheckTime != null) {
+            lastPrintCheckTime = parseFloat(lastCheckTime);
+        } else {
+            lastPrintCheckTime = clueyTimestamp();
+        }
+    } else {
+        //write it to cookie        
+        //100 year expiry, but will really end up in year 2038 due to limitations in browser
+        var printCookieExpDays = 365 * 100;
+        setRawCookie(lastPrintCheckCookieName, lastPrintCheckTime, printCookieExpDays);
     }
     
     callHomeURL = "/call_home.js"

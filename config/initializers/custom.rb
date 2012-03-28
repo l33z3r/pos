@@ -1,7 +1,8 @@
 #when sending a big order we get some error relating to too many key/value pairs being sent as params
 #this patch to rack solves the issue: http://stackoverflow.com/questions/9122411/rails-javascript-too-many-parameter-keys-whats-a-good-way-to-normalize-f
 if Rack::Utils.respond_to?("key_space_limit=")
-  Rack::Utils.key_space_limit = 262144 
+  #one hundred million
+  Rack::Utils.key_space_limit = 1000000000
 end
 
 @config_file_found = true

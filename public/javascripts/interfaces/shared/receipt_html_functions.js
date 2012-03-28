@@ -1,3 +1,5 @@
+var customFooterId = null;
+
 function storeLastReceipt(user_id, table_num) {
     if(user_id == null) {
         return;
@@ -41,11 +43,11 @@ function fetchLastRoomID(user_id) {
  
     if(lastRoomIDOBJ == null) {
         lastRoomID = $('.room_graphic').first().data('room_id');
-        storeLastRoom(lastRoomID)
+        storeLastRoom(user_id, lastRoomID);
     } else {
         lastRoomID = lastRoomIDOBJ.room_id;
     }
-    
+    //alert("last room id: " + lastRoomID);
     return lastRoomID;
 }
 
@@ -54,8 +56,15 @@ function printReceipt(content, printRecptMessage) {
         setStatusMessage("Printing Receipt");
     }
     
+    var footer = receiptMessage;
+    
+    //check if a custom footer should be used
+    if(customFooterId != null) {
+        footer = customReceiptFooters[customFooterId].content;
+    }
+    
     if(printRecptMessage) {
-        receiptMessageHTML = "<div id='receipt_message'>" + receiptMessage + "</div>";
+        receiptMessageHTML = "<div id='receipt_message'>" + footer + "</div>";
         content += clearHTML + receiptMessageHTML;
     }
     
@@ -72,6 +81,11 @@ function print(content) {
     + $('#printFrame').contents().find('html').html() + "</html>";
       
     var print_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/receipt_printer';
+    
+    //make sure the html content is compatible with the print service
+    
+    //replace <hr> with <hr></hr>
+    content_with_css = content_with_css.replace("<hr>", "<hr></hr>");
     
     $.ajax({
         type: 'POST',
@@ -269,9 +283,9 @@ function fetchBusinessInfoHeaderHTML() {
 }
 
 function fetchFinalReceiptHeaderHTML() {
-    headerHTML = "<div class='data_table'>";
+    var headerHTML = "<div class='data_table'>";
     
-    server = firstServerNickname(totalOrder);
+    var server = firstServerNickname(totalOrder);
     
     if(server) {
         headerHTML += "<div class='label'>Server:</div><div class='data'>" + server + "</div>" + clearHTML;
@@ -282,7 +296,7 @@ function fetchFinalReceiptHeaderHTML() {
         totalOrder.time = clueyTimestamp();
     }
     
-    timestamp = utilFormatDate(new Date(totalOrder.time));
+    var timestamp = utilFormatDate(new Date(totalOrder.time));
     
     headerHTML += "<div class='time label'>Time:</div><div class='time data'>" + timestamp + "</div>" + clearHTML;
     
@@ -300,7 +314,7 @@ function fetchFinalReceiptHeaderHTML() {
         headerHTML += "<div class='label'>Payment Method:</div><div class='data'>" + totalOrder.payment_method + "</div>" + clearHTML;
     }
     
-    orderNum = totalOrder.order_num;
+    var orderNum = totalOrder.order_num;
         
     if(typeof(orderNum) != 'undefined') {
         headerHTML += "<div class='label'>Order Number:</div><div class='data'>" + orderNum + "</div>" + clearHTML;

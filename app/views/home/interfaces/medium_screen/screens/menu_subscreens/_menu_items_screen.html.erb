@@ -20,7 +20,7 @@
         <div style="display: none;" id="menu_items_<%= page.page_num %>" class="items">
           <% if page.embedded_display %>
             <div id="pages" class="subpages embedded_pages_<%= page.page_num %>">
-                <% page.embedded_display.menu_pages.each do |embedded_page| %>
+              <% page.embedded_display.menu_pages.each do |embedded_page| %>
 
                 <div class="subpage page" id="sub_menu_page_<%=embedded_page.id%>"
                      onclick="doSubMenuPageSelect(<%= page.page_num %>, <%= embedded_page.id %>);">
@@ -45,6 +45,8 @@
                             <%= menu_item_name embedded_item %>
                           </div>
                         </div>
+                      <% elsif @use_whitespace_in_mobile_menus %>
+                        <div class="menu_item_spacer"></div>
                       <% end %>
                     <% end %>
                   </div>
@@ -68,6 +70,8 @@
                     <%= menu_item_name item %>
                   </div>
                 </div>
+              <% elsif @use_whitespace_in_mobile_menus %>
+                <div class="menu_item_spacer"></div>
               <% end %>
             <% end %>
           <% end %>

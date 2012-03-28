@@ -1,3 +1,7 @@
+$(function(){
+    initAdminScreen();
+});
+
 function initAdminScreen() {
     //hide the red x 
     $('#nav_save_button').hide();
@@ -14,13 +18,12 @@ function initAdminScreen() {
     
     //run deleted projects hook
     runDeletedProjectsHook();
-}
-
-$(function(){
-    initAdminScreen();
+    
     //key enter event in product list
     addEnterKeyEvents();
-});
+    
+    initTinyMCE();
+}
 
 function addModifierFields(link, content) {
     var new_id = clueyTimestamp();
@@ -126,10 +129,10 @@ function updateProductPrice(product_id, currentPrice) {
 }
 
 function loadCurrentImages(letter){
-        $("#container_images").hide()
-        $("#container_spinner").show()
-        jQuery.get('/admin/products/product_image_dialog?letter=' + letter, function(data) {})
-    }
+    $("#container_images").hide()
+    $("#container_spinner").show()
+    jQuery.get('/admin/products/product_image_dialog?letter=' + letter, function(data) {})
+}
 
 function newButtonGroup() {
     name = prompt("Button Group Name:");
@@ -451,7 +454,6 @@ function runSearch() {
                 "search1[name_contains]" : $("#name_contains").val(),
                 "search1[is_special_equals]" : is_special,
                 "search1[category_id_equals]" : $("#category_id_equals").val(),
-                "search1[menu_page_1_id_equals]" : $("#menu_page_1_id_equals").val(),
                 "search1[name_starts_with]" : letter,
                 "search1[name_starts_with_any]" : numbers,
                 "search1[is_deleted_equals]" : is_deleted,
@@ -470,7 +472,6 @@ function runSearch() {
                 "search1[name_contains]" : $("#name_contains").val(),
                 "search1[is_special_equals]" : is_special,
                 "search1[category_id_equals]" : $("#category_id_equals").val(),
-                "search1[menu_page_1_id_equals]" : $("#menu_page_1_id_equals").val(),
                 "search1[name_starts_with]" : letter,
                 "search1[name_starts_with_any]" : numbers,
                 "search1[is_deleted_equals]" : is_deleted
@@ -515,7 +516,6 @@ function disableSearchFields(){
     $("#code_num_equals").attr('disabled', 'disabled');
     $("#name_contains").attr('disabled', 'disabled');
     $("#category_id_equals").attr('disabled', 'disabled');
-    $("#menu_page_1_id_equals").attr('disabled', 'disabled');
     $("#all_fields").attr('disabled', 'disabled');
     $("#is_special_equals").attr('disabled', 'disabled');     
 }
@@ -524,7 +524,6 @@ function enableSearchFields(){
     $("#code_num_equals").removeAttr('disabled');
     $("#name_contains").removeAttr('disabled');
     $("#category_id_equals").removeAttr('disabled');
-    $("#menu_page_1_id_equals").removeAttr('disabled');
     $("#all_fields").removeAttr('disabled');
     $("#is_special_equals").removeAttr('disabled');
 }
@@ -551,5 +550,17 @@ function addEnterKeyEvents(){
         if(e.keyCode == 13) {
             runSearch();
         }
+    });
+}
+
+function initTinyMCE() {
+    tinyMCE.init({
+        mode : "specific_textareas",
+        mceEditor : "mceEditor",
+        theme : "advanced",
+        theme_advanced_resizing_max_width : 120,
+        theme_advanced_buttons1 : "|,fontsizeselect,|,bold,italic,underline,strikethrough,|",
+        theme_advanced_buttons2 : "|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,outdent,indent,blockquote,|sub,sup,|,charmap,|",
+        theme_advanced_buttons3 : ""
     });
 }

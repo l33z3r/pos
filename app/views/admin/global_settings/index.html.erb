@@ -25,6 +25,7 @@
           <li><a id="general_section_link" href="#general_section">General</a></li>
           <li><a id="business_info_section_link" href="#business_info_section">Business Info</a></li>
           <li><a id="payment_methods_section_link" href="#payment_methods_section">Accepted Payment Methods</a></li>
+          <li><a id="receipt_footers_section_link" href="#receipt_footers_section">Receipt Footers</a></li>
           <li><a id="tax_rates_section_link" href="#tax_rates_section">Sales Tax Rates</a></li>
           <li><a id="discounts_section_link" href="#discounts_section_section">Discounts</a></li>
           <li><a id="coursing_section_link" href="#coursing_section">Coursing</a></li>
@@ -40,7 +41,7 @@
       <div>
 
         <div class="container" id="#general_section">
-          <div class="jscrollpane">
+          <div>
 
             <%= form_tag admin_update_global_settings_path do %>
 
@@ -116,6 +117,36 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>Use Whitespace In Mobile Menus?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::USE_WHITE_SPACE_MOBILE_MENUS %>
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">Yes</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">No</div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Use Whitespace In Terminal Menus?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::USE_WHITE_SPACE_DESKTOP_MENUS %>
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">Yes</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">No</div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
                     <td>Bypass Pin Number?</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::BYPASS_PIN %>
@@ -164,7 +195,7 @@
         </div>
 
         <div class="container" id="#business_info_section">
-          <div class="jscrollpane">
+          <div>
             <%= form_tag admin_update_global_settings_path, :multipart => true do %>
 
               <div class="clear_top_margin_10">&nbsp;</div>
@@ -224,11 +255,11 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Business Information (200 Chars)</td>
+                    <td>Business Information</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::BUSINESS_INFO_MESSAGE %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.text_area :value, :class => "mceEditor", :id=>"textarea_0" %>
+                        <%= f.text_area :value, :class => "mceEditor" %>
                       <% end %>
                     </td>
                   </tr>
@@ -263,7 +294,7 @@
         </div>
 
         <div class="container payment_methods_section" id="#payment_methods_section">
-          <div class="jscrollpane">
+          <div>
             <h4>Current Payment Methods</h4>
 
             <%= form_tag update_multiple_admin_payment_methods_path, :multipart => true do %>
@@ -275,9 +306,10 @@
                   <tr>
                     <th width="230">Name</th>
                     <th width="350">Logo</th>
-                    <th width="100">Delete</th>
                     <th width="140">Set Default</th>
                     <th width="140">Integration</th>
+                    <th width="140">Receipt Footer</th>
+                    <th width="100">Delete</th>
                   </tr>
                 </thead>
 
@@ -294,7 +326,6 @@
                             <%= f.file_field :logo %>
                           </p>
                         </td>
-                        <td><%= link_to "Delete", admin_payment_method_path(pm), :method => :delete, :confirm => "Are You Sure?" %></td>
                         <td>
                           <%= radio_button_tag "set_default_payment_method", "#{pm.id}", pm.is_default, 
                             :onchange => "doSetDefaultPaymentMethod(this.value);" %>
@@ -302,6 +333,11 @@
                         <td>
                           <%= f.select :payment_integration_id, options_for_select(PaymentMethod.payment_integration_options_for_select, pm.payment_integration_id) %>
                         </td>
+                        <td>
+                          <%= f.collection_select :receipt_footer_id, ReceiptFooter.all, :id, :name, 
+                            :prompt => "Select a Footer", :include_blank => "None" %>
+                        </td>
+                        <td><%= link_to "Delete", admin_payment_method_path(pm), :method => :delete, :confirm => "Are You Sure?" %></td>
                       </tr>
                     <% end %>
                   <% end %>
@@ -332,7 +368,89 @@
                 <tbody>
                   <tr>
                     <td>
-                      <%= f.text_field :name %>
+                      <%= f.text_field :name, :size => 17 %>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Create" %>
+              </div>
+
+            <% end %>
+
+            <div class="clear">&nbsp;</div>
+          </div>
+        </div>
+
+        <div class="container receipt_footers_section" id="#receipt_footers_section">
+          <div>
+            <h4>Receipt Footers</h4>
+
+            <div class="clear">&nbsp;</div>
+            <h5>Be Careful when using html in footers as invalid html will break receipt printing</h5>
+
+            <div class="clear">&nbsp;</div>
+            <h5>If you experience problems printing receipts, please clear the footer content</h5>
+
+            <%= form_tag update_multiple_admin_receipt_footers_path, :multipart => true do %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="230">Name</th>
+                    <th width="330">Content</th>
+                    <th width="100">Delete</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <% ReceiptFooter.all(:order => :name).each do |rf| %>
+                    <%= fields_for "receipt_footers[]", rf do |f| %>
+                      <tr>
+                        <td><%= f.text_field :name, :size => 17 %></td>
+                        <td><%= f.text_area :content, :class => "mceEditor" %></td>
+                        <td><%= link_to "Delete", admin_receipt_footer_path(rf), :method => :delete, :confirm => "Are You Sure?" %></td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Save" %>
+              </div>
+
+            <% end %>
+
+            <h4>New Receipt Footer</h4>
+
+            <%= form_for [:admin, ReceiptFooter.new] do |f| %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="330">Name</th>
+                    <th width="330">Content</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>
+                      <%= f.text_field :name, :size => 17 %>
+                    </td>
+                    <td>
+                      <%= f.text_area :content, :class => "mceEditor" %>
                     </td>
                   </tr>
                 </tbody>
@@ -351,7 +469,7 @@
         </div>
 
         <div class="container" id="#tax_rates_section">
-          <div class="jscrollpane">
+          <div>
             <h4>Misc</h4>
 
             <%= form_tag admin_update_global_settings_path do %>
@@ -539,7 +657,7 @@
         </div>
 
         <div class="container" id="#discounts_section">
-          <div class="jscrollpane">
+          <div>
             <h4>Current Discounts</h4>
 
             <%= form_tag update_multiple_admin_discounts_path do %>
@@ -620,7 +738,7 @@
         </div>
 
         <div class="container" id="#coursing_section">
-          <div class="jscrollpane">
+          <div>
             <h4>Coursing Labels</h4>
 
             <%= form_tag admin_update_global_settings_path do %>
@@ -661,9 +779,9 @@
             <div class="clear">&nbsp;</div>
           </div>
         </div>
-        
+
         <div class="container" id="#price_level_labels_section">
-          <div class="jscrollpane">
+          <div>
             <h4>Price Level Labels</h4>
 
             <%= form_tag admin_update_global_settings_path do %>
@@ -706,7 +824,7 @@
         </div>
 
         <div class="container" id="#misc_section">
-          <div class="jscrollpane">
+          <div>
             <%= form_tag admin_update_global_settings_path do %>
 
               <div class="clear_top_margin_10">&nbsp;</div>
@@ -818,7 +936,7 @@
                       Terminal Name
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::TERMINAL_ID, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.terminal_id_for @terminal_fingerprint %>
 
                       <div id="terminal_name_field_unique_error" style="display: none;">
                         This terminal name has already been taken, if you submit this, the old terminal name will be overwritten
@@ -892,7 +1010,7 @@
         </div>
 
         <div class="container" id="#cluey_settings_section">
-          <div class="jscrollpane">
+          <div>
             <%= form_tag admin_update_global_settings_path do %>
 
               <div class="clear_top_margin_10">&nbsp;</div>
@@ -905,6 +1023,28 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <tr>
+                    <td>Disable Advanced Touch?</td>
+                    <td id="dat_section" class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @terminal_fingerprint, :user_agent => request.user_agent} %>
+                      <div class="controls">
+                        <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                               value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                        <div class="label">Yes</div>
+                        <div class="clear">&nbsp;</div>
+
+                        <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                               value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                        <div class="label">No</div>
+                      </div>
+
+                      <div id="actions">
+                        <%= submit_tag "Save" %>
+                      </div>
+
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
                   <tr>
                     <td>
                       Re-generate Terminal Fingerprint Cookie?
@@ -997,21 +1137,6 @@
                              value="<%= GlobalSetting::ORDER_RECEIPT_WIDTH_76MM %>" 
                              <%= @gs.parsed_value == GlobalSetting::ORDER_RECEIPT_WIDTH_76MM ? "checked" : "" %>/>
                       <div class="label">76mm</div>
-                      <div class="clear">&nbsp;</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Disable Advanced Touch?</td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @terminal_fingerprint, :user_agent => request.user_agent} %>
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
-                      <div class="label">Yes</div>
-                      <div class="clear">&nbsp;</div>
-
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
-                      <div class="label">No</div>
                       <div class="clear">&nbsp;</div>
                     </td>
                   </tr>

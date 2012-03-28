@@ -2,7 +2,7 @@
   var orderFrom;
 
   //is this coming from the no table or the split bill
-  if(<%= @table_from_id %> == 0 || <%= @table_from_id %> == -2) {
+  if(<%= @table_from_id %> == 0 || <%= @table_from_id %> == -1 || <%= @table_from_id %> == -2) {
   orderFrom = currentOrder;
 
   if(<%= @table_from_id %> == 0) {
@@ -10,6 +10,10 @@
   for(var i=0; i<orderFrom.items.length; i++) {
     orderFrom.items[i].synced = false;
     }
+  }
+  
+  if(<%= @table_from_id %> == -1) {
+    $('#previous_order_select_item').hide();
   }
 
     //clear the order

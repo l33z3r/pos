@@ -575,19 +575,15 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
             
             orderHTML += clearHTML + "<div class='oia " + (orderItem.oia_items[j].hide_on_receipt ? "hide_on_receipt" : "") + "'>";
             
+            orderHTML += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>";
+            
             if(!orderItem.oia_items[j].is_note) {
-                orderHTML += "<div class='oia_add'>";
-                
                 if(orderItem.oia_items[j].is_addable) {
-                    orderHTML += oia_is_add ? "Add" : "No";
-                } else {
-                    orderHTML += "&nbsp;";
+                    orderHTML += oia_is_add ? "Add " : "No ";
                 }
-                
-                orderHTML += "</div>";
             }
             
-            orderHTML += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>" + orderItem.oia_items[j].description + "</div>";
+            orderHTML += orderItem.oia_items[j].description + "</div>";
             
             if(orderItem.oia_items[j].abs_charge != 0) {
                 
@@ -1278,6 +1274,8 @@ function doTotalFinal() {
     if(autoPrintReceipt) {
         printReceipt(printReceiptHTML, true);
     }
+    
+    customFooterId = null;
 }
 
 function orderSentToServerCallback(orderData, errorOccured) {
@@ -1885,16 +1883,17 @@ function postDoSyncTableOrder() {
         
     setStatusMessage("Order Sent");
 
-    if(!order.order_num) {
-        setLoginReceipt("Last Order", "Loading...");
-        //call the finish function 1 second after the next call home
-        setTimeout(finishDoSyncTableOrder, pollingAmount + 1000);
-    } else {
-        finishDoSyncTableOrder();
-    }
+    setLoginReceipt("Last Order", "Loading Order...");
+    finishDoSyncTableOrder();
 }
 
 function finishDoSyncTableOrder() {
+    if(lastSyncedOrder.order_num == null) {
+        //call the finish function a few seconds after the next call home
+        setTimeout(finishDoSyncTableOrder, pollingAmount + 1000);
+        return;
+    }
+    
     orderReceiptHTML = fetchOrderReceiptHTML(lastSyncedOrder);
     setLoginReceipt("Last Order", orderReceiptHTML);
     loginRecptUpdate();
@@ -1952,8 +1951,6 @@ function doReceiveOrderReady(employee_id, terminal_id, table_id, order_num, tabl
     }
     
     hidePreviousOrderReadyPopup();
-    
-    console.log("got order ready notification for " + employee_id + " for table " + table_label + " for terminal " + terminal_id);
     
     if(terminal_id == terminalID) {
         //        ModalPopups.Confirm('niceAlertContainer',

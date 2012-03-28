@@ -4,19 +4,48 @@ class Admin::ProductsController < Admin::AdminController
   cache_sweeper :product_sweeper
 
   def index
-    if (session[:search1].nil? && session[:search2].nil? && session[:search3].nil?)
-      @selected_letter = "all"
-      @products = Product.where("is_deleted = ?", false).order("name")
-    else
-      search
-    end
-    query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from products group by substr(name,1,1)")
-    @letters = []
-    for element in query
-      if (!"0123456789".include?(element[0]))
-        element[0].upcase!
-        @letters += element
+    respond_to do |format|
+      
+      format.html do
+        if (session[:search1].nil? && session[:search2].nil? && session[:search3].nil?)
+          @selected_letter = "all"
+          @products = Product.non_deleted
+        else
+          search
+        end
+        query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from products group by substr(name,1,1)")
+        @letters = []
+        for element in query
+          if (!"0123456789".include?(element[0]))
+            element[0].upcase!
+            @letters += element
+          end
+        end
       end
+      
+      format.csv do 
+        @products = Product.non_deleted
+  
+        @csv_string = "Department,Category,Name,Brand,Description,Price,Double Price,Code Number,"
+        @csv_string += "UPC,Price 2,Price 3,Price 4,Margin Percent,Items Per Unit,Quantity Per Container,"
+        @csv_string += "Cost Price,Unit,Size,Sales Tax Percent\n"
+        
+        @products.each do |p|
+          @category = (p.category ? p.category.name : "none").gsub(",", "")
+          @department = ((p.category and p.category.parent_category) ? p.category.parent_category.name : "none").gsub(",", "")
+          
+          @name = p.name.gsub(",", "")
+          @brand = (p.brand ? p.brand : "").gsub(",", "")
+          @description = (p.description ? p.description : "").gsub(",", "")
+          
+          @csv_string += "#{@department},#{@category},#{@name},#{@brand},#{@description},#{p.price},"
+          @csv_string += "#{p.double_price},#{p.code_num},#{p.upc},#{p.price_2},#{p.price_3},#{p.price_4},"
+          @csv_string += "#{p.margin_percent},#{p.items_per_unit},#{p.quantity_per_container},#{p.cost_price},#{p.unit}, #{p.size},#{p.sales_tax_rate}\n"
+        end
+        
+        render :text => @csv_string
+      end
+      
     end
   end
 
@@ -315,7 +344,6 @@ class Admin::ProductsController < Admin::AdminController
     @session_code_num_upc = session[:search1][:code_num_or_upc_equals]
     @session_name = session[:search1][:name_contains]
     @session_category = session[:search1][:category_id_equals]
-    @session_menu = session[:search1][:menu_page_1_id_equals]
     @session_all_fields = session[:search2]
     @session_is_specials = (session[:search1][:is_special_equals] == "true") ? true : false;
     @session_is_deleted = (session[:search1][:is_deleted_equals] == "true") ? true : false;

@@ -15,6 +15,13 @@
     <div class="button_name">Import Products</div>
   </div>
 
+  <div class="button" data-onpress="window.location = '<%= admin_products_path(:format => :csv) %>';">
+    <div class="icon">
+      <%= image_tag "/images/button_logos/export_products_button.png" %>
+    </div>
+    <div class="button_name">Export Products</div>
+  </div>
+
 <% end %>
 
 <% if params[:show_specials_only] %>
@@ -47,11 +54,6 @@
       <div class="field">
         <div class="label">Category</div>
         <%= collection_select :category_id, :equals, Category.find(:all), :id, :name, options = {:include_blank => "Any", :selected => @session_category} %>
-        <div class="clear">&nbsp;</div>
-      </div>
-      <div class="field">
-        <div class="label">Menu</div>
-        <%= collection_select :menu_page_1_id, :equals, MenuPage.find(:all), :id, :name, options = {:include_blank => "Any", :selected => @session_menu} %>
         <div class="clear">&nbsp;</div>
       </div>
     </div>

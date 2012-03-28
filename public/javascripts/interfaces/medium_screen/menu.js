@@ -915,19 +915,15 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
 
             orderHTML += clearHTML + "<div class='oia " + (orderItem.oia_items[j].hide_on_receipt ? "hide_on_receipt" : "") + "'>";
 
+            orderHTML += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>";
+                
             if (!orderItem.oia_items[j].is_note) {
-                orderHTML += "<div class='oia_add'>";
-
                 if (orderItem.oia_items[j].is_addable) {
-                    orderHTML += oia_is_add ? "Add" : "No";
-                } else {
-                    orderHTML += "&nbsp;";
+                    orderHTML += oia_is_add ? "Add " : "No ";
                 }
-
-                orderHTML += "</div>";
             }
-
-            orderHTML += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>" + orderItem.oia_items[j].description + "</div>";
+            
+            orderHTML += orderItem.oia_items[j].description + "</div>";
 
             if (orderItem.oia_items[j].abs_charge != 0) {
 
@@ -1043,6 +1039,7 @@ function postDoSyncTableOrder() {
 
     //clean up after transfer order mode
     if (inTransferOrderMode) {
+        hideLoadingDiv();
         niceAlert("Order Transfered.");
         inTransferOrderMode = false;
         $('#table_num').val(tables[selectedTable].label);
@@ -1121,7 +1118,7 @@ function priceNumberSelectKeypadClick(val) {
     $('.new_price').val(newVal);
 
     var displayVal = $('.new_price').val();
-     displayVal = currency(parseInt(displayVal) / 100, false);
+    displayVal = currency(parseInt(displayVal) / 100, false);
 
     $('#price_number_show').html(displayVal.toString());
 }
@@ -1200,18 +1197,18 @@ function setInitScreen(value) {
 }
 
 function swipeToNote(){
-   if (selectedTable == 0)  {
+    if (selectedTable == 0)  {
         niceAlert("Please select a table first");
         return;
     }else{
-       setInitScreen('true');
-       $('#edit_price_screen').hide();
-       showAddNotePopup()
-   }
+        setInitScreen('true');
+        $('#edit_price_screen').hide();
+        showAddNotePopup()
+    }
 }
 
 function doSubmitTableNumber() {
-//    $('.table_tab_container').hide();
+    //    $('.table_tab_container').hide();
     if (!ensureLoggedIn()) {
         return;
     }

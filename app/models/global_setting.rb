@@ -74,6 +74,8 @@ class GlobalSetting < ActiveRecord::Base
   HTTP_AUTH_PASSWORD = 45
   CASH_DRAWER_IP_ADDRESS = 46
   PRICE_LEVEL_LABEL = 47
+  USE_WHITE_SPACE_MOBILE_MENUS = 48
+  USE_WHITE_SPACE_DESKTOP_MENUS = 49
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -122,7 +124,9 @@ class GlobalSetting < ActiveRecord::Base
     HTTP_AUTH_USERNAME => "HTTP Basic Auth Username",
     HTTP_AUTH_PASSWORD => "HTTP Basic Auth Password",
     CASH_DRAWER_IP_ADDRESS => "Cash Drawer Ip Address",
-    PRICE_LEVEL_LABEL => "Price Level Label"
+    PRICE_LEVEL_LABEL => "Price Level Label",
+    USE_WHITE_SPACE_MOBILE_MENUS => "Use White Space Mobile Menus",
+    USE_WHITE_SPACE_DESKTOP_MENUS => "Use White Space Mobile Menus",
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -140,8 +144,15 @@ class GlobalSetting < ActiveRecord::Base
         @gs = nil
       else
         #the key will be the key for terminal id followed by the terminal fingerprint
-        @gs = find_or_create_by_key(:key => "#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :value => "NT##{Time.now.to_i.to_s[-4,4]}", :label_text => LABEL_MAP[TERMINAL_ID])
-        @gs.parsed_value = @gs.value
+        GlobalSetting.transaction do
+          @gs = find_by_key("#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :lock => true)
+          
+          if !@gs
+            @gs = create(:key => "#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :value => "NT##{Time.now.to_i.to_s[-4,4]}", :label_text => LABEL_MAP[TERMINAL_ID])
+          end
+          
+          @gs.parsed_value = @gs.value
+        end
       end
     when CURRENCY_SYMBOL
       @gs = find_or_create_by_key(:key => CURRENCY_SYMBOL.to_s, :value => "$", :label_text => LABEL_MAP[CURRENCY_SYMBOL])
@@ -269,6 +280,12 @@ class GlobalSetting < ActiveRecord::Base
     when PRICE_LEVEL_LABEL
       @gs = find_or_create_by_key(:key => "#{PRICE_LEVEL_LABEL.to_s}_#{args[:price_level]}", :value => "Price #{args[:price_level]}", :label_text => LABEL_MAP[PRICE_LEVEL_LABEL])
       @gs.parsed_value = @gs.value
+    when USE_WHITE_SPACE_MOBILE_MENUS
+      @gs = find_or_create_by_key(:key => USE_WHITE_SPACE_MOBILE_MENUS.to_s, :value => "false", :label_text => LABEL_MAP[USE_WHITE_SPACE_MOBILE_MENUS])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when USE_WHITE_SPACE_DESKTOP_MENUS
+      @gs = find_or_create_by_key(:key => USE_WHITE_SPACE_DESKTOP_MENUS.to_s, :value => "true", :label_text => LABEL_MAP[USE_WHITE_SPACE_DESKTOP_MENUS])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -320,6 +337,12 @@ class GlobalSetting < ActiveRecord::Base
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     when All_DEVICES_ORDER_NOTIFICATION
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when USE_WHITE_SPACE_MOBILE_MENUS
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when USE_WHITE_SPACE_DESKTOP_MENUS
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     when DEFAULT_SERVICE_CHARGE_PERCENT
@@ -386,9 +409,9 @@ class GlobalSetting < ActiveRecord::Base
             @my_printer_left_margin_gs.save
             
             #disable advanced touch
-            @disable_advanced_touch_gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @old_fingerprint}
+            @disable_advanced_touch_gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @old_fingerprint, :user_agent => ""}
             
-            @my_disable_advanced_touch_gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @my_terminal_fingerprint}
+            @my_disable_advanced_touch_gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @my_terminal_fingerprint, :user_agent => ""}
             @my_disable_advanced_touch_gs.value = @disable_advanced_touch_gs.value
             @my_disable_advanced_touch_gs.save
             
@@ -482,15 +505,17 @@ class GlobalSetting < ActiveRecord::Base
   end
   
   def self.next_order_number
-    @gs = find_or_create_by_key(:key => LAST_ORDER_ID.to_s, :value => 0, :label_text => LABEL_MAP[LAST_ORDER_ID])
-    @gs.save!
+    GlobalSetting.transaction do
+      @gs = find_or_create_by_key(:key => LAST_ORDER_ID.to_s, :value => 0, :label_text => LABEL_MAP[LAST_ORDER_ID], :lock => true)
+      @gs.save!
     
-    @gs.reload
+      @gs.reload
     
-    @gs.value = @gs.value.to_i + 1
-    @gs.save!
+      @gs.value = @gs.value.to_i + 1
+      @gs.save!
     
-    @gs.value
+      return @gs.value
+    end
   end
   
   def self.course_vals
@@ -509,6 +534,14 @@ class GlobalSetting < ActiveRecord::Base
   
   def self.price_levels 
     return 2..4
+  end
+  
+  def self.now_millis
+    (Time.now.to_f * 1000).to_i
+  end
+  
+  def self.terminal_id_for fingerprint
+    GlobalSetting.setting_for GlobalSetting::TERMINAL_ID, {:fingerprint => fingerprint}
   end
   
   #these properties are for particular properties in the db

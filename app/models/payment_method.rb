@@ -1,7 +1,9 @@
 class PaymentMethod < ActiveRecord::Base
+  belongs_to :receipt_footer
+  
   validates :name, :presence => true
   validates :name, :uniqueness => true
-  
+ 
   PAYMENT_INTEGRATION_ZALION = 1
   
   PAYMENT_INTEGRATION_TYPES_MAP = {
@@ -46,6 +48,7 @@ class PaymentMethod < ActiveRecord::Base
   
 end
 
+
 # == Schema Information
 #
 # Table name: payment_methods
@@ -60,5 +63,6 @@ end
 #  created_at             :datetime
 #  updated_at             :datetime
 #  payment_integration_id :integer(4)      default(0)
+#  receipt_footer_id      :integer(4)
 #
 

@@ -2,7 +2,13 @@
 immediateCallHome = false;
 
 <% if @reload_app %>
-  lastInterfaceReloadTime = <%=@new_reload_app_update_time%>;
+  //update the timestamp and make sure the time is in the future
+  lastInterfaceReloadTime = clueyTimestamp();
+
+  if(lastInterfaceReloadTime <= <%=@reload_request_time%>) {
+  lastInterfaceReloadTime = <%=@reload_request_time%> + 1;
+  }
+
   alertReloadRequest("<%= @reload_request_terminal_id %>", <%=@reload_request_hard_reset %>);
 <% end %>
 
@@ -11,6 +17,12 @@ immediateCallHome = false;
   tableOrderDataJSON = <%= @sync_table_order_data[:orderData].to_json.html_safe %>;
   doReceiveTableOrderSync("<%= @sync_table_order_request_terminal_id %>", <%=@sync_table_order_data[:tableID]%>, 
   "<%=@table_label%>", "<%=@serving_employee_id%>", "<%=@terminal_employee%>", tableOrderDataJSON);
+  
+  //update the lastPrintCheckTime
+  if(lastSyncTableOrderTime >= lastPrintCheckTime) {
+    lastPrintCheckTime = lastSyncTableOrderTime;
+  }
+  
   immediateCallHome = true;
 <% end %>
 
@@ -18,6 +30,12 @@ immediateCallHome = false;
   lastSyncTableOrderTime = <%= @new_clear_table_order_time %>;
   doReceiveClearTableOrder("<%=@clear_table_order[:terminal_id]%>", <%=@clear_table_order[:table_id]%>, 
   <%= @order_num ? @order_num : -1 %>, "<%=@table_label%>", "<%=@serving_employee_id%>", "<%=@terminal_employee%>");
+  
+  //update the lastPrintCheckTime
+  if(lastSyncTableOrderTime >= lastPrintCheckTime) {
+    lastPrintCheckTime = lastSyncTableOrderTime;
+  }
+  
   immediateCallHome = true;
 <% end %>
 

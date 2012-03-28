@@ -133,6 +133,15 @@ Pos::Application.routes.draw do
       end
     end
     
+    resources :receipt_footers, :only => [:create, :destroy] do
+      member do
+        post 'default'
+      end
+      collection do
+        post 'update_multiple'
+      end
+    end
+    
     resources :discounts, :only => [:create, :destroy] do
       member do
         post 'default'
