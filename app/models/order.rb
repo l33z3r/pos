@@ -50,6 +50,23 @@ class Order < ActiveRecord::Base
   def is_replacement?
     void_order != nil
   end
+
+  def week
+    self.created_at.strftime('%W')
+  end
+
+  def day
+    self.created_at.strftime('%d')
+  end
+
+  def year
+    self.created_at.strftime('%y')
+  end
+
+  def month
+    self.created_at.strftime('%m')
+  end
+
 end
 
 
