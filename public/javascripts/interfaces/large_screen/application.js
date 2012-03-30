@@ -21,7 +21,7 @@ function doGlobalInit() {
             showLoadingDiv();
         }
     });
-    $('input[type=submit]').click(showLoadingDiv);
+    $('input[type=submit]').click(function() {showLoadingDiv() });
     
     if(inKioskMode()) {
         //to run chrome in kiosk mode, use this command in linux (google-chrome --kiosk http://localhost:3000)
@@ -162,7 +162,6 @@ function showInitialScreen() {
         
         if(current_user_nickname != null) $('#e_name').html(current_user_nickname);
     }
-    
 }
 
 var displayButtonForwardFunction;

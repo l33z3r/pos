@@ -42,6 +42,7 @@ div#room_builder div#options {
 div#room_builder div#main_builder_section {
     width: 1000px;
     height: 590px;
+    overflow-y: scroll;
 }
 
 div#room_builder div#main_builder_section div#loading_message {

@@ -42,6 +42,8 @@ var tempSplitBillTableNum = -2;
 var globalPriceLevel = null;
 var globalPriceLevelKey = "global_price_level";
 
+var lastOrderSentTime = null;
+
 function getCurrentOrder() {
     if(selectedTable == 0) {
         return currentOrder;
@@ -908,7 +910,7 @@ function doTransferTable(tableFrom, tableTo) {
         return;
     });
        
-    showLoadingDiv();
+    showLoadingDiv("Transfer in progress, Please wait...");
         
     $.ajax({
         type: 'POST',
@@ -968,7 +970,7 @@ function doTransferOrderItem(tableFrom, tableTo) {
     itemToTransfer['synced'] = true;
     storeTableOrderInStorage(current_user_id, selectedTable, tableOrders[selectedTable]);
     
-    showLoadingDiv();
+    showLoadingDiv("Transfer in progress, Please wait...");
     
     //select the original table for the sync
     doSelectTable(tableFrom);

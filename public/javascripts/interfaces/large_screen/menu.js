@@ -953,14 +953,14 @@ function loadReceipt(order, doScroll) {
 
 function storeDallasKeyVal(e) {
     if (e.keyCode == 13){
-      var newVal = $('#user_passcode').val().substring(3,15);
-      $('#user_passcode').val(newVal);
+        var newVal = $('#user_passcode').val().substring(3,15);
+        $('#user_passcode').val(newVal);
     }
     if (e.keyCode == 117){
-      $('#user_passcode').val("u");
+        $('#user_passcode').val("u");
     }
     if (e.keyCode == 97){
-      $('#user_passcode').val("a");
+        $('#user_passcode').val("a");
     }
 }
 
@@ -1108,6 +1108,17 @@ function doTotalFinal() {
         return;
     }
     
+    //check that we have not just made an order, if so, we must wait before cashing out as it causes problems
+    var now = clueyTimestamp();
+    
+    if(lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
+        showLoadingDiv("Cashing out after previous order complete, Please Wait...");
+        setTimeout(doTotalFinal, 1000);
+        return;
+    }
+    
+    hideLoadingDiv();
+    
     cashSaleInProcess = true;
     
     if(currentOrderEmpty()) {
@@ -1188,6 +1199,9 @@ function doTotalFinal() {
     }
     
     totalOrder.change = $('#totals_change_value').html();
+    
+    //need to set the split_payments on the order for the receipt
+    totalOrder.split_payments = splitPayments;
     
     //do up the subtotal and total and retrieve the receipt html for both the login screen and for print
     receiptHTML = fetchFinalReceiptHTML(false, true, false);
@@ -1300,8 +1314,8 @@ function doTotalFinal() {
         mandatoryFooterMessageHTML += "<div class='label'>Room Number:</div><div class='data'>" + selectedRoomNumber + "</div>" + clearHTML;
         mandatoryFooterMessageHTML += "<div class='label'>Client Name:</div><div class='data'>" + selectedFolioName + "</div>" + clearHTML;
         
-        mandatoryFooterMessageHTML += clear30HTML + "Signature:" + clearHTML;
-        mandatoryFooterMessageHTML += "  ___________________________________" + clearHTML;
+        mandatoryFooterMessageHTML += clear30HTML + "<div class='line'>Signature:</div>" + clearHTML;
+        mandatoryFooterMessageHTML += "<div class='line'>___________________________________________</div>" + clearHTML;
             
         mandatoryFooterMessageHTML += "</div>" + clear30HTML;
         

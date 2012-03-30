@@ -561,6 +561,8 @@ function initTinyMCE() {
         theme_advanced_resizing_max_width : 120,
         theme_advanced_buttons1 : "|,fontsizeselect,|,bold,italic,underline,strikethrough,|",
         theme_advanced_buttons2 : "|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,outdent,indent,blockquote,|sub,sup,|,charmap,|",
-        theme_advanced_buttons3 : ""
+        theme_advanced_buttons3 : "",
+        plugins : "maxlength",
+        maxlength: 220
     });
 }

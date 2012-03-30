@@ -1756,6 +1756,13 @@ div.receipt div.till_roll div.data_table {
     margin: 10px 0px;
 }
 
+div.receipt div.till_roll div.data_table div.header {
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
+    padding-left: 5px;
+}
+
 div.receipt div.till_roll div.data_table div.label,
 div.till_roll_discount div.data_table div.label,
 div.till_roll_service_charge div.data_table div.label{
@@ -3359,7 +3366,7 @@ div#nice_alert {
     text-align: center;
     margin-top: 20px;
     line-height: 32px;
-    color: #000;
+    color: #333;
 }
 
 input#niceAlertContainer_okButton,
@@ -3587,7 +3594,7 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 
 /* custom scrollbars in webkit */
 ::-webkit-scrollbar {
-    width: 20px;
+    width: 30px;
 }
 
 /* Track */
@@ -3611,25 +3618,25 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 ::-webkit-scrollbar-button:start:decrement,
 ::-webkit-scrollbar-button:end:increment {
     display: block;
-    height: 20px;
+    height: 30px;
     background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1)); 
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
 }
 
 ::-webkit-scrollbar-button:vertical:increment{
-    background:no-repeat url("/images/arrow_down.png") 2px 1px;
+    background:no-repeat url("/images/arrow_down.png") 6px 8px;
 }
 
 ::-webkit-scrollbar-button:vertical:decrement{
-    background:no-repeat url("/images/arrow_up.png") 3px 1px;
+    background:no-repeat url("/images/arrow_up.png") 6px 8px;
 }
 
 ::-webkit-scrollbar-button:horizontal:increment{
-    background:no-repeat url("/images/arrow_right.png") 2px 1px;
+    background:no-repeat url("/images/arrow_right.png") 6px 8px;
 }
 
 ::-webkit-scrollbar-button:horizontal:decrement{
-    background:no-repeat url("/images/arrow_left.png") 3px 1px;
+    background:no-repeat url("/images/arrow_left.png") 6px 8px;
 }
 
 /* End Generic Styles */
@@ -3786,8 +3793,8 @@ div#reports_container table.items_table td.left{
 }
 
 /*div#reports_container #sales_items{*/
-    /*overflow: auto;*/
-    /*border:  3px solid black;*/
+/*overflow: auto;*/
+/*border:  3px solid black;*/
 /*}*/
 
 div#reports_container table.sales_items_table{
@@ -3800,7 +3807,7 @@ div#reports_container table.sales_items_table{
 }
 
 div#reports_container table.sales_items_table tr{
-   border:  2px solid black;
+    border:  2px solid black;
 }
 
 div#reports_container table.sales_items_table td.header{
@@ -3812,8 +3819,8 @@ div#reports_container table.sales_items_table td.header{
 }
 
 div#reports_container table.sales_items_table td{
-   border:  2px solid black;
-   max-width: 80px;
+    border:  2px solid black;
+    max-width: 80px;
 }
 
 

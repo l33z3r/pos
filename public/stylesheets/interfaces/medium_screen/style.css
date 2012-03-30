@@ -1688,7 +1688,7 @@ div#nice_alert {
     text-align: center;
     margin-top: 20px;
     line-height: 32px;
-    color: #000;
+    color: #333;
 }
 
 input#niceAlertContainer_okButton,

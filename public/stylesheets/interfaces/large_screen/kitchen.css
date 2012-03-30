@@ -61,6 +61,7 @@ div#kitchen_screen div#header div#function_buttons {
 div#kitchen_screen div#receipts_container {
     height: 650px;
     display: none;
+    overflow-y: auto;
 }
 
 div#kitchen_screen div#receipts_container div#empty_orders,

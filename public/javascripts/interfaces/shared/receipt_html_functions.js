@@ -227,6 +227,20 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, incl
     
     finalReceiptHTML += "</div>" + clearHTML;
     
+    finalReceiptHTML += "<div class='data_table'>";
+    
+    if(typeof(totalOrder.split_payments) != 'undefined') {
+        finalReceiptHTML += "<div class='header'>Payment Breakdown:</div>" + clearHTML;
+        
+        for(var pm in totalOrder.split_payments) {
+            finalReceiptHTML += "<div class='label'>" + pm + ": </div><div class='data'>" + currency(totalOrder.split_payments[pm]) + "</div>" + clearHTML;
+        }
+        
+        finalReceiptHTML += clearHTML;
+    }
+    
+    finalReceiptHTML += "</div>" + clearHTML;
+    
     if(includeVatBreakdown) {
         
         if(taxChargable) {
@@ -314,10 +328,6 @@ function fetchFinalReceiptHeaderHTML() {
         headerHTML += "<div class='label'>Terminal:</div><div class='data'>" + totalOrder.terminal_id + "</div>" + clearHTML;   
     } else {
         headerHTML += "<div class='label'>Terminal:</div><div class='data'>" + terminalID + "</div>" + clearHTML;   
-    }
-    
-    if(typeof(totalOrder.payment_method) != 'undefined') {
-        headerHTML += "<div class='label'>Payment Method:</div><div class='data'>" + totalOrder.payment_method + "</div>" + clearHTML;
     }
     
     var orderNum = totalOrder.order_num;

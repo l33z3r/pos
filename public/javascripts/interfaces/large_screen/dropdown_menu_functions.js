@@ -12,7 +12,7 @@ function menuScreenDropdownItemSelected(index, name) {
     if(index.startsWith("1")) {
         var displayID = index.substring(2);
         
-        showLoadingDiv();
+        showLoadingDiv("Loading Menu...");
         
         //do ajax request and then reload   
         $.ajax({
@@ -76,7 +76,7 @@ function startPriceChangeMode() {
 }
 
 function finishPriceChangeMode() {
-    showLoadingDiv();
+    showLoadingDiv("Loading Prices...");
     
     //reload the products
     $.getScript('/javascripts/products.js', priceChangeModeComplete);

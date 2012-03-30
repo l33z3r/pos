@@ -557,11 +557,18 @@ function initUIElements() {
 }
 
 function initScrollPanes() {
-    //init all the scroll panes
-    $('.jscrollpane, .admin #content_container section:not(.no_scroll_pane)').jScrollPane({
-        showArrows: true,
-        autoReinitialise : true
-    });
+    if(isTouchDevice()) {
+        //init all the scroll panes
+        $('.jscrollpane, .admin #content_container section:not(.no_scroll_pane)').jScrollPane({
+            showArrows: true,
+            autoReinitialise : true
+        });
+        
+        //get rid of the webkit scrollbars
+        var sheet = document.createElement('style')
+        sheet.innerHTML = "::-webkit-scrollbar {display: none;}";
+        document.body.appendChild(sheet);
+    }
 }
 
 function initCheckboxes() {
@@ -765,19 +772,24 @@ function ensureLoggedIn() {
     return true;
 }
 
-function showLoadingDiv() {
+function showLoadingDiv(optionalText) {
+    if(typeof(optionalText) == "undefined") {
+        text = "Please Wait...";
+    } else {
+        text = optionalText;
+    }
+    
     if(inAndroidWrapper()) {
         showSpinner();
     } else {
         hideNiceAlert();
     
         ModalPopups.Indicator("niceAlertContainer",
-            "Loading",
-            "<div style='text-align: center; font-size: 24px;padding-top: 60px;'>\n\
-        Please Wait...</div>",
+            "Loading...",
+            "<div id='nice_alert' class='nice_alert'>" + text + "</div>",
             { 
-                width: 300,
-                height: 200
+                width: 360,
+                height: 280
             } );
     }
 }

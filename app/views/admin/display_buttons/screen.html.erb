@@ -22,46 +22,48 @@
         <% DisplayButtonGroup.all_with_empty.each do |dbg| %>
 
           <div id="#<%= dbg.name.gsub(" ", "_") %>_options">
-            <div id="display_button_list_container_<%=dbg.id%>" class="display_button_list_container">
+            <div class="jscrollpane">
+              <div id="display_button_list_container_<%=dbg.id%>" class="display_button_list_container">
 
-              <% if dbg.display_buttons.length == 0 %>
+                <% if dbg.display_buttons.length == 0 %>
 
-                <p>No Buttons Assigned To This Category!</p>
+                  <p>No Buttons Assigned To This Category!</p>
 
-              <% else %>
+                <% else %>
 
-                <table id="display_button_list" class="admin_table">
-                  <thead>
-                    <tr>
-                      <th width="100">Button</th>
-                      <% Role.find(:all, :order => :id).each do |role| %>
-                        <th width="70"><%=role.name%></th>
-                      <% end %>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <% dbg.display_buttons.each do |db| %>
-
-                      <% next if ButtonMapper::RESTRICTED_BUTTON_IDS.include?(db.id) %>
-
+                  <table id="display_button_list" class="admin_table">
+                    <thead>
                       <tr>
-                        <td><%= db.button_text %></td>
+                        <th width="100">Button</th>
                         <% Role.find(:all, :order => :id).each do |role| %>
-                          <td>
-                            <% dbr = DisplayButtonRole.find_or_create_by_display_button_id_and_role_id(db.id, role.id) %>
-                            <% next if role.id == Role::SUPER_USER_ROLE_ID && db.perm_id == ButtonMapper::MORE_OPTIONS_BUTTON %>
-                            <%= check_box_tag "#{db.button_text}_#{role.name}", dbr.show_on_sales_screen, dbr.show_on_sales_screen,
-                              :onchange => "displayButtonRoleSalesScreenSelect(#{dbr.id}, this.checked);" %>
-                          </td>
+                          <th width="70"><%=role.name%></th>
                         <% end %>
                       </tr>
-                    <% end %>
-                  </tbody>
-                </table>
+                    </thead>
 
-              <% end %>
+                    <tbody>
+                      <% dbg.display_buttons.each do |db| %>
 
+                        <% next if ButtonMapper::RESTRICTED_BUTTON_IDS.include?(db.id) %>
+
+                        <tr>
+                          <td><%= db.button_text %></td>
+                          <% Role.find(:all, :order => :id).each do |role| %>
+                            <td>
+                              <% dbr = DisplayButtonRole.find_or_create_by_display_button_id_and_role_id(db.id, role.id) %>
+                              <% next if role.id == Role::SUPER_USER_ROLE_ID && db.perm_id == ButtonMapper::MORE_OPTIONS_BUTTON %>
+                              <%= check_box_tag "#{db.button_text}_#{role.name}", dbr.show_on_sales_screen, dbr.show_on_sales_screen,
+                                :onchange => "displayButtonRoleSalesScreenSelect(#{dbr.id}, this.checked);" %>
+                            </td>
+                          <% end %>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+
+                <% end %>
+
+              </div>
             </div>
           </div>
 

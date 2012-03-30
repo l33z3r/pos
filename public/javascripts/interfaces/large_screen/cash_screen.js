@@ -151,7 +151,7 @@ function paymentMethodSelected(pm_id) {
             //we can retrieve the amount later that will be actually charged to the room
             currentZalionPaymentMethodName = paymentMethod;
             
-            showLoadingDiv();
+            showLoadingDiv("Loading Zalion Data...");
             
             //fire off request to get contents of ROOMFILE
             var zalion_roomfile_request_url = 'http://' + zalionChargeRoomServiceIP + ':8080/ClueyWebSocketServices/zalion_roomfile';

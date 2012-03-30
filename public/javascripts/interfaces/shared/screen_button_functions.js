@@ -96,6 +96,8 @@ function doSyncTableOrder() {
 }
 
 function finishSyncTableOrder() {
+    lastOrderSentTime = clueyTimestamp();
+    
     var order = lastSyncedOrder;
     
     //mark all items in this order as synced
