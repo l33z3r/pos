@@ -118,7 +118,7 @@ function paymentMethodSelected(pm_id) {
     //if the previously selected payment method had an integration, we want to popup a notice saying that it
     //must be the last payment method you select in order to actually do the integration
     if(paymentIntegrationId != 0 && splitPayments[paymentMethod] > 0) {
-        var warningMessage = "In order to use a payment integration it must be the last payment method that you select while doing split payments (Enter zero amount to cancel)!";
+        var warningMessage = paymentMethod + " must be the last payment method used if splitting a payment (Enter zero to cancel).";
         niceAlert(warningMessage);
         return;
     }
@@ -162,7 +162,7 @@ function paymentMethodSelected(pm_id) {
                 error: function() {
                     hideLoadingDiv();
                     setStatusMessage("Error Getting Zalion Data.", false, false);                   
-                    paymentMethodSelected(defaultPaymentMethod, 0);
+                    paymentMethodSelected(getPaymentMethodId(defaultPaymentMethod));
                     splitPayments = {};
                 },
                 data: {
