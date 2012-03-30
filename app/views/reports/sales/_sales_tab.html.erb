@@ -1,0 +1,53 @@
+  <div id="sales_items">
+    <table class="sales_items_table" style="overflow: scroll">
+      <tbody>
+          <tr>
+            <td class="header">Date</td>
+            <td class="header">Day</td>
+            <td class="header">Items Qty</td>
+            <td class="header">Gross Sales</td>
+            <td class="header">VAT</td>
+            <td class="header">NET Sales</td>
+          </tr>
+
+          <% @orders.group_by(&:month).sort.each do |week| %>
+            <% total_items = 0 %>
+            <% gross_sales = 0 %>
+            <% net_sales = 0 %>
+            <% vat = 0 %>
+            <% tax_rate = GlobalSetting::GLOBAL_TAX_RATE.to_i %>
+                 <% week[1].each do |order| %>
+                    <% total_items += order.order_items.count %>
+                    <% net_sales += order.total %>
+
+                 <% end %>
+          <% vat = net_sales * tax_rate / 100 %>
+          <% gross_sales = net_sales - vat %>
+          <tr>
+              <td>
+                  <%= week[0] %>
+              </td>
+
+              <td>
+              </td>
+              <td>
+                 <%= total_items %>
+              </td>
+              <td>
+                  <%= sprintf("%.2f", gross_sales) %>
+              </td>
+              <td>
+                 <%= sprintf("%.2f", vat) %>
+              </td>
+              <td>
+                 <%= sprintf("%.2f", net_sales) %>
+              </td>
+
+
+          </tr>
+          <% end %>
+
+      </tbody>
+    </table>
+  </div>
+

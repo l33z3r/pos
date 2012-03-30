@@ -146,6 +146,7 @@ function doSelectMenuItem(productId, element) {
     setModifierGridIdForProduct(product);
 
     if (orderItem.product.prompt_price) {
+//        removePriceBubble();
         showPricePopup();
     }
 
@@ -328,8 +329,10 @@ function saveDiscount() {
 function saveEditOrderItem() {
     //fetch the item number
     itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    newQuantity = 0;
 
-    popupId = currentTargetPopupAnchor.GetBubblePopupID();
+    if (currentTargetPopupAnchor != null) {
+        popupId = currentTargetPopupAnchor.GetBubblePopupID();
 
     //fetch the order from the order array and modify it
     //then modify the html in the receipt
@@ -337,10 +340,11 @@ function saveEditOrderItem() {
 
     newQuantity = parseFloat(targetInputQuantityEl.val());
 
+
+        }
     if (isNaN(newQuantity) || newQuantity == 0) {
         newQuantity = 1;
     }
-
     targetInputPricePerUnitEl = $('.new_price');
     newPricePerUnit = parseFloat(targetInputPricePerUnitEl.val());
 
@@ -363,16 +367,9 @@ function saveEditOrderItem() {
         storeOrderInStorage(current_user_id, order);
     }
 
-    if (isNaN(targetInputQuantityEl)) {
-        newQuantity = 1;
-    } else {
-        targetInputQuantityEl = currentVal + 1;
-    }
-
-    targetInputQuantityEl.val(newQuantity);
-
+     if (currentTargetPopupAnchor != null) {
     saveDiscount();
-
+     }
     //redraw the receipt
     loadReceipt(order, true);
     closeDiscountPopup();
@@ -1092,8 +1089,7 @@ function switchToModifyOrderItemSubscreen() {
             elastic: false,
             momentum: false
         };
-
-        $('#oia_tabs').touchScroll(oiaScrollerOpts);
+        setTimeout(function() {$('#oia_tabs').touchScroll(oiaScrollerOpts); return false;}, 300);
     }
 }
 

@@ -1,0 +1,127 @@
+<% @nav_title = "Reports" %>
+
+<div id="reports_container">
+
+    <div id="report_option_tabs" class="vtabs report_option_tabs">
+
+        <div>
+            <ul>
+                <li><a id="at_a_glance_section_link" href="#" onclick="window.location = '/reports/glances'">At a
+                    Glance</a></li>
+                <li><a id="sales_section_link" href="#">Sales</a></li>
+                <%#*<li><a id="cash_section_link" href="#cash_section">Cash</a></li>%>
+                <%#*<li><a id="payments_section_link" href="#payments_section">Payments</a></li>%>
+                <%#*<li><a id="customers_section_link" href="#customers_section">Customers</a></li>%>
+                <%#*<li><a id="suppliers_section_link" href="#suppliers_section">Suppliers</a></li>%>
+                <%#*<li><a id="stock_control_section_link" href="#stock_control_section">Stock</a></li>%>
+                <%#*<li><a id="staff_section_link" href="#staff_section">Staff</a></li>%>
+            </ul>
+        </div>
+
+        <div>
+
+            <div class="container" id="#at_a_glance_section">
+                <div id="report_sales_filters" class="popout_dialog">
+                    <div id="refine_container">
+                    <div id="date_select_container">
+                        <div class="dropdown_container">
+                            <div class="label">Report Type</div>
+                            <select onchange="addDateFilter($(this).val())">
+                                <option value="1">Sales by Day</option>
+                                <option value="2">Sales by Month</option>
+                                <option value="3">Sales by Year</option>
+                            </select>
+                        </div>
+                        <div class="dropdown_container">
+                            <div class="label">Terminal</div>
+                            <select onchange="addTerminalFilter($(this).val())">
+                                <option value="">All Terminals</option>
+                                <% @all_terminals.each do |terminal_id| %>
+                                    <option value="<%= terminal_id %>"><%= terminal_id %></option>
+                                <% end %>
+                            </select>
+                        </div>
+
+                        <div class="dropdown_container">
+                            <div class="label">Date</div>
+                            <select onchange="addDateFilter($(this).val())">
+                                <option value="1">Today</option>
+                                <option value="2">Yesterday</option>
+                                <option value="3">Last Week</option>
+                                <option value="4">Last Month</option>
+                                <option value="5">All Time</option>
+                            </select>
+                        </div>
+                        <div id="days">
+                            <div class="dropdown_container">
+                                <div class="label">Day From</div>
+                                <div class="input_date">
+                                    <input type="text" size="8" id="date_from" name="date_from"
+                                           value="<%= @selected_from_date.to_date.strftime("%d-%m-%Y") %>"/>
+                                </div>
+                            </div>
+                            <div class="dropdown_container">
+                                <div class="label">Day To</div>
+                                <div class="input_date">
+                                    <input type="text" size="8" id="date_to" name="date_to"
+                                           value="<%= @selected_to_date.to_date.strftime("%d-%m-%Y") %>"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clear">&nbsp;</div>
+                    </div>
+                    <div id="date_select_container">
+                        <div class="dropdown_container">
+                            <div class="label">Category</div>
+                            <%= collection_select :category_id, :equals, Category.find(:all), :id, :name, options = {:include_blank => "Any", :selected => @session_category}, {:class=>'dropdown_sel'} %>
+                            <div class="clear">&nbsp;</div>
+                        </div>
+                        <div class="dropdown_container">
+                            <div class="label">Product</div>
+                            <%= collection_select :product_id, :equals, Product.find(:all), :id, :name, options = {:include_blank => "Any", :selected => @session_category}, {:class=>'dropdown_sel'} %>
+                            <div class="clear">&nbsp;</div>
+                        </div>
+                        <div class="dropdown_container">
+                            <div class="label">Menu</div>
+                            <%= collection_select :menu_page_1_id, :equals, MenuPage.find(:all), :id, :name, options = {:include_blank => "Any", :selected => @session_menu}, {:class=>'dropdown_sel'} %>
+                            <div class="clear">&nbsp;</div>
+                        </div>
+                        <div id="hours">
+                            <div class="dropdown_container">
+                                <div class="label">Hour From</div>
+                                <select onchange="addHourFromFilter($(this).val())">
+                                    <% for h in 0..23 %>
+                                        <option value="<%= h %>" <%= (h==0) ? "selected" :"" %>><%= h %></option>
+                                    <% end %>
+                                </select>
+                            </div>
+                            <div class="dropdown_container">
+                                <div class="label">Hour To</div>
+                                <select onchange="addHourToFilter($(this).val())">
+                                    <% for h in 0..23 %>
+                                        <option value="<%= h %>" <%= (h==23) ? "selected" :"" %>><%= h %></option>
+                                    <% end %>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="clear">&nbsp;</div>
+
+                    </div>
+
+
+                    </div>
+                    <div id="refine_button"><div onclick="runSalesSearch()" class="wide_button">Refine</div></div>
+                </div>
+                <div id="report_sales_results">
+                    <%= render 'sales_tab' %>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>

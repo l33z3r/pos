@@ -8,21 +8,7 @@
 
     <%= form_tag admin_update_global_settings_path, :id => "settings_form" do %>
       <table id="global_settings_list" class="admin_table">
-        <tr>
-            <td class="label">Disable Touch?</td>
-            <td class="data text_align_left">
-              <% @gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @terminal_fingerprint, :user_agent => request.user_agent} %>
-              <input type="radio" name="global_settings[<%=@gs.id%>][value]"
-                     value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
-              <div class="label">Yes</div>
-              <div class="clear">&nbsp;</div>
 
-              <input type="radio" name="global_settings[<%=@gs.id%>][value]"
-                     value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
-              <div class="label">No</div>
-              <div class="clear">&nbsp;</div>
-            </td>
-          </tr>
         <thead>
           <tr>
             <th width="270">&nbsp;</th>

@@ -114,3 +114,18 @@ function runGlancesSearch(){
         }
     });
 }
+
+function runSalesSearch(){
+    $("#report_sales_results").html("Loading...");
+    $.ajax({
+        type: 'GET',
+        url: '/reports/sales/sales_search',
+        data: {
+             "search[created_at_gt]" : selectedFromDate,
+             "search[created_at_lt]" : selectedToDate,
+             "search[terminal_id_equals]" : terminalId,
+             "search2[hour_from]" : hour_from,
+             "search2[hour_to]" : hour_to
+        }
+    });
+}
