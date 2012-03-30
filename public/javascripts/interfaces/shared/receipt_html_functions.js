@@ -63,11 +63,17 @@ function printReceipt(content, printRecptMessage) {
         footer = customReceiptFooters[customFooterId].content;
     }
     
+    //you set mandatoryFooterMessageHTML before calling this and it will print it
+    //used for the likes of zalion
+    if(mandatoryFooterMessageHTML != null) {
+        content += clearHTML + mandatoryFooterMessageHTML;
+        mandatoryFooterMessageHTML = null;
+    }
+    
     if(printRecptMessage) {
         receiptMessageHTML = "<div id='receipt_message'>" + footer + "</div>";
         content += clearHTML + receiptMessageHTML;
     }
-    
     //add space and a dot so we print a bottom margin
     content += clear30HTML + "<div class='the_dots'>.  .  .</div>";
     

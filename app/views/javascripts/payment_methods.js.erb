@@ -1,0 +1,14 @@
+var paymentMethods = {};
+
+<% PaymentMethod.all.each do |pm|-%>
+  payment_method_info = {
+    id : '<%= pm.id %>',
+    name : '<%=pm.name%>', 
+    payment_integration_id : <%=pm.payment_integration_id%>, 
+    receipt_footer_id : <%=pm.receipt_footer ? pm.receipt_footer_id : "null"%>, 
+    open_cash_drawer : <%=pm.open_cash_drawer%>
+  }
+
+  paymentMethods[payment_method_info.id] = payment_method_info;
+
+<% end -%>

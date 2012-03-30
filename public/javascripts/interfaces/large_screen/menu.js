@@ -18,6 +18,8 @@ var splitBillTableNumber;
 
 var lastTableZeroOrder;
 
+var mandatoryFooterMessageHTML = null;
+
 //this function is called from application.js on page load
 function initMenu() {
     initMenuScreenType();
@@ -1059,7 +1061,9 @@ function doTotal(applyDefaultServiceCharge) {
     splitPayments = {};
     paymentIntegrationId = 0;
     
-    paymentMethodSelected(paymentMethod, 0);
+    var paymentMethodId = getPaymentMethodId(paymentMethod);
+    
+    paymentMethodSelected(paymentMethodId);
     
     //hide the dropdown menu
     $('#menu_screen_shortcut_dropdown_container').hide();
@@ -1169,9 +1173,27 @@ function doTotalFinal() {
     receiptHTML = fetchFinalReceiptHTML(false, true, false);
     printReceiptHTML = fetchFinalReceiptHTML(true, false, printVatReceipt);
         
-    //open cash drawer explicitly 
+    //open cash drawer explicitly if it is set to do 
+    //so on a payment method basis
     //as the printer will not trigger it here
-    openCashDrawer();
+    var doOpenCashDrawer = false;
+    
+    for(var pm in splitPayments) {
+        //make sure there is an amount in this payment type
+        if(splitPayments[pm] <= 0) {
+            continue;
+        }
+        
+        var pmId = getPaymentMethodId(pm);
+        
+        if(paymentMethods[pmId].open_cash_drawer){
+            doOpenCashDrawer = true;
+        }
+    }
+    
+    if(doOpenCashDrawer) {
+        openCashDrawer();
+    }
     
     setLoginReceipt("Last Sale", receiptHTML);
     
@@ -1251,7 +1273,20 @@ function doTotalFinal() {
     currentTotalFinal = 0;
 
     //now print the receipt
-    if(autoPrintReceipt) {
+    if(paymentIntegrationId == zalionPaymentIntegrationId && selectedRoomNumber != null && selectedFolioName != null) {
+        //always print
+        mandatoryFooterMessageHTML = clearHTML + "<div id='zalion_receipt_info'>";
+        
+        mandatoryFooterMessageHTML += "<div class='label'>Room Number:</div><div class='data'>" + selectedRoomNumber + "</div>" + clearHTML;
+        mandatoryFooterMessageHTML += "<div class='label'>Client Name:</div><div class='data'>" + selectedFolioName + "</div>" + clearHTML;
+        
+        mandatoryFooterMessageHTML += clear30HTML + "Signature:" + clearHTML;
+        mandatoryFooterMessageHTML += "  ___________________________________" + clearHTML;
+            
+        mandatoryFooterMessageHTML += "</div>" + clear30HTML;
+        
+        printReceipt(printReceiptHTML, true);
+    } else if(autoPrintReceipt) {
         printReceipt(printReceiptHTML, true);
     }
     
@@ -1261,7 +1296,7 @@ function doTotalFinal() {
 function orderSentToServerCallback(orderData, errorOccured) {
     if(!errorOccured) {
         //was this charged to a room?
-        if(selectedRoomNumber && selectedFolioNumber) {
+        if(paymentIntegrationId == zalionPaymentIntegrationId && selectedRoomNumber != null && selectedFolioNumber != null) {
             orderData['charged_room'] = {
                 selected_room_number : selectedRoomNumber,
                 selected_folio_number : selectedFolioNumber,

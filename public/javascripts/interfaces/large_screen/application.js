@@ -28,9 +28,10 @@ function doGlobalInit() {
         registerDisallowRightClick();
     } else {
         if(showPrintFrame) {
-            $('#wrapper').height(1270);
-            $('#body').height(1270);
-            $('#printFrame').width(300).height(300);
+            $('#wrapper').height(1770);
+            $('#body').height(1770);
+            $('#printFrame').width(300).height(800);
+            $('#printFrame').css("overflow", "scroll");
         }
         
         $('body').css("overflow", "scroll");

@@ -108,7 +108,13 @@ function cashOutCancel() {
 var paymentIntegrationId = 0;
 var currentZalionPaymentMethodName = null;
 
-function paymentMethodSelected(method, integration_id, custom_footer_id) {    
+function paymentMethodSelected(pm_id) { 
+    var pm_info = paymentMethods[pm_id];
+    
+    var method = pm_info.name;
+    var integration_id = pm_info.payment_integration_id
+    var custom_footer_id = pm_info.receipt_footer_id;
+    
     //if the previously selected payment method had an integration, we want to popup a notice saying that it
     //must be the last payment method you select in order to actually do the integration
     if(paymentIntegrationId != 0 && splitPayments[paymentMethod] > 0) {

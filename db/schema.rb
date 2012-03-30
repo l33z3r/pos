@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120312174903) do
+ActiveRecord::Schema.define(:version => 20120330094348) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -246,6 +246,7 @@ ActiveRecord::Schema.define(:version => 20120312174903) do
     t.datetime "updated_at"
     t.integer  "payment_integration_id", :default => 0
     t.integer  "receipt_footer_id"
+    t.boolean  "open_cash_drawer",       :default => true
   end
 
   create_table "products", :force => true do |t|

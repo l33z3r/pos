@@ -522,6 +522,19 @@ function getTableForLabel(table_label) {
     return table_info;
 }
 
+function getPaymentMethodId(paymentMethodName) {
+    var paymentMethodId = null;
+    
+    for(var id in paymentMethods) {
+        if(paymentMethods[id].name == paymentMethodName) {
+            paymentMethodId = id;
+            break;
+        }
+    }
+    
+    return paymentMethodId;
+}
+
 function initUIElements() {
     //initialize the tabs
     $(".vtabs").jVertTabs({

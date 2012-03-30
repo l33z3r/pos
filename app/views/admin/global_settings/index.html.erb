@@ -24,7 +24,7 @@
         <ul>
           <li><a id="general_section_link" href="#general_section">General</a></li>
           <li><a id="business_info_section_link" href="#business_info_section">Business Info</a></li>
-          <li><a id="payment_methods_section_link" href="#payment_methods_section">Accepted Payment Methods</a></li>
+          <li><a id="payment_methods_section_link" href="#payment_methods_section">Payment Methods</a></li>
           <li><a id="receipt_footers_section_link" href="#receipt_footers_section">Receipt Footers</a></li>
           <li><a id="tax_rates_section_link" href="#tax_rates_section">Sales Tax Rates</a></li>
           <li><a id="discounts_section_link" href="#discounts_section_section">Discounts</a></li>
@@ -309,6 +309,7 @@
                     <th width="140">Set Default</th>
                     <th width="140">Integration</th>
                     <th width="140">Receipt Footer</th>
+                    <th width="140">Open Cash Drawer</th>
                     <th width="100">Delete</th>
                   </tr>
                 </thead>
@@ -336,6 +337,9 @@
                         <td>
                           <%= f.collection_select :receipt_footer_id, ReceiptFooter.all, :id, :name, 
                             :prompt => "Select a Footer", :include_blank => "None" %>
+                        </td>
+                        <td>
+                          <%= f.check_box :open_cash_drawer %>
                         </td>
                         <td><%= link_to "Delete", admin_payment_method_path(pm), :method => :delete, :confirm => "Are You Sure?" %></td>
                       </tr>
