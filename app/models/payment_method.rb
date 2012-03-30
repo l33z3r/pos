@@ -49,6 +49,7 @@ class PaymentMethod < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: payment_methods
@@ -64,5 +65,6 @@ end
 #  updated_at             :datetime
 #  payment_integration_id :integer(4)      default(0)
 #  receipt_footer_id      :integer(4)
+#  open_cash_drawer       :boolean(1)      default(TRUE)
 #
 

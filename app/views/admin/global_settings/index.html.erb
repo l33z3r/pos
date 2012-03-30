@@ -318,7 +318,13 @@
                   <% PaymentMethod.all(:order => :name).each do |pm| %>
                     <%= fields_for "payment_methods[]", pm do |f| %>
                       <tr>
-                        <td><%= f.text_field :name, :size => 17 %></td>
+                        <td>
+                          <% if pm.name.downcase == "cash" %>
+                            <input type="text" disabled="true" value="Cash"/>
+                          <% else %>
+                            <%= f.text_field :name, :size => 17 %>
+                          <% end %>
+                        </td>
                         <td>
                           <div class="payment_method_logo">
                             <%= payment_method_logo_thumb pm, true %>
