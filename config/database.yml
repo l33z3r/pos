@@ -8,7 +8,7 @@
 development:
   adapter: mysql2
   encoding: utf8
-  reconnect: false
+  reconnect: true
   database: pos_development
   pool: 5
   username: pos
@@ -21,7 +21,7 @@ development:
 test:
   adapter: mysql2
   encoding: utf8
-  reconnect: false
+  reconnect: true
   database: Pos_test
   pool: 5
   username: root
@@ -31,7 +31,7 @@ test:
 production:
   adapter: mysql2
   encoding: utf8
-  reconnect: false
+  reconnect: true
   database: pos_production
   pool: 5
   username: pos
