@@ -524,7 +524,11 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     if(includeServerAddedText && orderItem.showServerAddedText) {
         var nickname = serverNickname(orderItem.serving_employee_id);
         var timeAdded = utilFormatTime(new Date(parseInt(orderItem.time_added)));
-        orderHTML += "<div class='server'>At " + timeAdded + " " + nickname + " added:</div>";
+        
+        //show a line above the last ordered, if this is not the first item in the order
+        var showAddedLine = (orderItem.itemNumber != 1);
+        
+        orderHTML += "<div class='server " + (showAddedLine ? "added_line" : "") + "'>At " + timeAdded + " " + nickname + " added:</div>";
     }
     
     orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
@@ -703,9 +707,39 @@ function doSelectReceiptItem(orderItemEl) {
     //save the currently opened dialog
     currentSelectedReceiptItemEl = orderItemEl;
     
-    //fetch the selected product and set its default oia grid
-    var selectedProduct = products[getCurrentOrder().items[parseInt(orderItemEl.data("item_number"))-1].product.id];    
-    setModifierGridIdForProduct(selectedProduct);
+    
+    
+    
+    
+    //we are having a problem with the items in a receipt not being ordered correctly sometimes
+    //it has to do with itemNumber not being set correctly. Cant figure out what is causing it, but
+    //this here will solve the problem for now, by reordering the receipt each time it is loaded
+    //this function is also in other places so if you are removing it make sure all calls to it are removed
+    try {
+        //fetch the selected product and set its default oia grid
+        var selectedProduct = products[getCurrentOrder().items[parseInt(orderItemEl.data("item_number"))-1].product.id];    
+        setModifierGridIdForProduct(selectedProduct);
+    } catch(e) {
+        console.log("Receipt Item selection problem automatically resolved");
+        
+        var messyOrder = getCurrentOrder();
+        
+        orderReceiptItems(messyOrder);
+        
+        if(selectedTable != 0) {
+            storeTableOrderInStorage(current_user_id, selectedTable, messyOrder);
+        }else {
+            storeOrderInStorage(current_user_id, messyOrder);
+        }
+        
+        loadReceipt(messyOrder);
+        
+        return;
+    }
+    
+    
+    
+    
     
     //keep the border
     orderItemEl.addClass("selected");
@@ -970,12 +1004,6 @@ function nullOnEnter(event){
         return;
     }
 }
-
-//function scrollMenuReceiptToSelected() {
-//    if(currentSelectedReceiptItemEl) {
-//        scrollReceiptToSelected("", currentSelectedReceiptItemEl);
-//    }
-//}
 
 function loginRecptScroll() {
     recptScroll("login_");

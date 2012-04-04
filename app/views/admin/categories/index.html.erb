@@ -1,18 +1,26 @@
+<% @nav_title = "Product Categories" %>
+
+<% content_for :admin_subnav_links_left do %>
+  <div class="button" data-onpress="goTo('<%= new_admin_category_path %>');">
+    <div class="icon">
+      <%= image_tag "/images/button_logos/new_category_button.png" %>
+    </div>
+    <div class="button_name">Add Category</div>
+  </div>
+<% end %>
+
 <div id="admin_category_list">
 
   <section id="categories">
-
-    <h3>Categories</h3>
 
     <div class="pagination_links">
       <div class="links">
         <%= will_paginate @products %>
       </div>
-      <div class="info">
-        <%= page_entries_info @posts %>
-      </div>
     </div>
 
+    <div class="clear_top_margin_20">&nbsp;</div>
+    
     <table id="category_list" class="admin_table">
       <thead>
         <tr>
@@ -46,10 +54,6 @@
       <div class="info">
         <%= page_entries_info @categories %>
       </div>
-    </div>
-
-    <div id="actions">
-      <%= button_to 'New Category', new_admin_category_path, :method => :get %>
     </div>
 
   </section>

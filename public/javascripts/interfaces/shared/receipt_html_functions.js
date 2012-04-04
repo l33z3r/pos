@@ -212,7 +212,13 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, incl
     
     cashTendered = totalOrder.cash_tendered;
     
-    if(cashTendered > 0) {
+    if(typeof(totalOrder.split_payments) != 'undefined') {
+        for(var pm in totalOrder.split_payments) {
+            finalReceiptHTML += "<div class='label'>Paid: " + pm + "</div><div class='data'>" + currency(totalOrder.split_payments[pm]) + "</div>" + clearHTML;
+        }
+        
+        finalReceiptHTML += clearHTML;
+    } else if(cashTendered > 0) {
         finalReceiptHTML += "<div class='label'>Paid:</div><div class='data'>" + currency(cashTendered) + "</div>" + clearHTML;
     }
     
@@ -222,21 +228,7 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, incl
     var changeWithCashback = parseFloat(change) + parseFloat(totalOrder.cashback);
 
     if(changeWithCashback > 0) {
-        finalReceiptHTML += "<div class='label'>Change:</div><div class='data'>" + currency(changeWithCashback) + "</div>" + clearHTML;
-    }
-    
-    finalReceiptHTML += "</div>" + clearHTML;
-    
-    finalReceiptHTML += "<div class='data_table'>";
-    
-    if(typeof(totalOrder.split_payments) != 'undefined') {
-        finalReceiptHTML += "<div class='header'>Payment Breakdown:</div>" + clearHTML;
-        
-        for(var pm in totalOrder.split_payments) {
-            finalReceiptHTML += "<div class='label'>" + pm + ": </div><div class='data'>" + currency(totalOrder.split_payments[pm]) + "</div>" + clearHTML;
-        }
-        
-        finalReceiptHTML += clearHTML;
+        finalReceiptHTML += "<div class='change_line_container'><div class='label'>Change:</div><div class='data'>" + currency(changeWithCashback) + "</div></div>" + clearHTML;
     }
     
     finalReceiptHTML += "</div>" + clearHTML;
@@ -244,7 +236,7 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, incl
     if(includeVatBreakdown) {
         
         if(taxChargable) {
-        //TODO
+            //TODO
         } else {
             finalReceiptHTML += "<div class='data_table vat_breakdown'>";
             finalReceiptHTML += "<div class='header'>" + taxLabel + " Breakdown</div>" + clearHTML;

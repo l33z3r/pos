@@ -2,6 +2,8 @@ var courseChecks = {};
 var orderXClicked = {};
 var orderNums = {};
 
+var orderHashes = {};
+
 var kitchenOrders;
 
 var table0TidPrefix = "0_";
@@ -85,7 +87,7 @@ function renderReceipt(tableID) {
     
     if(!courseChecks[tableID]) {
         courseChecks[tableID] = new Array();
-    } 
+    }
     
     if(!orderXClicked[tableID]) {
         orderXClicked[tableID] = false;
@@ -121,7 +123,7 @@ function renderReceipt(tableID) {
         
     var numNewCourses = numCourses - courseChecks[tableID].length;
     
-    if(numNewCourses>0) {
+    if(numNewCourses > 0) {
         console.log("Adding " + numNewCourses + " courses");
         for(var j=0; j<numNewCourses; j++) {
             courseChecks[tableID].push(false);
@@ -168,7 +170,8 @@ function renderReceipt(tableID) {
     var movedToFilled = false;
     
     if(orderComplete(tableID)) {
-        if(orderInFilledSection(tableID)) {
+        
+        if(orderInFilledSection(tableID) && orderChangedSinceHidden(tableID)) {
             //something must have changed in the order so put it back into the active orders
             console.log("something changed in order for tableID: " + tableID + " moving it back to the active orders");
             
@@ -188,6 +191,7 @@ function renderReceipt(tableID) {
                 $('#kitchen_receipt_container_' + tableID).appendTo('#filled_orders');
             }
         }
+        
         movedToFilled = true;
     }
     
@@ -287,6 +291,11 @@ function orderInFilledSection(tableID) {
     return isFilled;
 }
 
+function orderChangedSinceHidden(tableID) {
+    var newOrderHash = kitchenOrders[tableID].items.length;
+    return orderHashes[tableID] != newOrderHash;
+}
+
 function noActiveOrders() {
     return $('#active_orders>div').length == 0;
 }
@@ -334,7 +343,7 @@ function sendCourseCheck(orderLine) {
         if((i >= tableCourseChecks.length - 1) || tableCourseChecks.length == 1) {
             orderFilled = true;
         }
-    
+        
         applyCourseChecks(tableID);
     }
     
@@ -375,6 +384,9 @@ function sendCourseCheck(orderLine) {
 
 function hideTableOrder(tableID) {
     orderXClicked[tableID] = true;
+    
+    orderHashes[tableID] = kitchenOrders[tableID].items.length;
+    
     saveCourseChecks();
     sendOrderToCompleted(tableID);
     
@@ -413,7 +425,7 @@ function applyCourseChecks(tableID) {
     
     //mark the next course as checked
     for(var i=0; i<tableCourseChecks.length; i++) {
-        console.log("cousrse check = " + tableCourseChecks[i] + " " + (tableCourseChecks[i]==true));
+        console.log("course check = " + tableCourseChecks[i] + " " + (tableCourseChecks[i]==true));
         if(!tableCourseChecks[i]) {
             break;
         }
@@ -435,8 +447,8 @@ function applyCourseChecks(tableID) {
         }
         
         if(!finishedCheckingCourses) {
-            orderLine.addClass("course_checked");
-        
+                orderLine.addClass("course_checked");
+            
             if(orderLine.hasClass("course")) {
                 receiptCourseCount++;
             }
@@ -458,6 +470,7 @@ function saveCourseChecks() {
     //store the array into memory for reload on page reload
     storeKeyJSONValue("kitchen_course_checks", courseChecks);
     storeKeyJSONValue("kitchen_order_x_clicked", orderXClicked);
+    storeKeyJSONValue("kitchen_order_hashes", orderHashes);
     storeKeyJSONValue("order_nums", orderNums);
 }
 
@@ -465,6 +478,7 @@ function loadCourseChecks() {
     //load course checks from the web db
     courseChecks = retrieveStorageJSONValue("kitchen_course_checks");
     orderXClicked = retrieveStorageJSONValue("kitchen_order_x_clicked");
+    orderHashes = retrieveStorageJSONValue("kitchen_order_hashes");
     orderNums = retrieveStorageJSONValue("order_nums");
     
     if(!courseChecks) {
@@ -473,6 +487,10 @@ function loadCourseChecks() {
     
     if(!orderXClicked) {
         orderXClicked = {};
+    }
+    
+    if(!orderHashes) {
+        orderHashes = {};
     }
     
     if(!orderNums) {

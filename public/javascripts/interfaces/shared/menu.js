@@ -790,19 +790,6 @@ function doSelectTable(tableNum) {
     //this will fill the tableOrders[tableNum] variable
     getTableOrderFromStorage(current_user_id, selectedTable);
 
-
-
-
-    //we are having a problem with the items in a receipt not being ordered correctly sometimes
-    //it has to do with itemNumber not being set correctly. Cant figure out what is causing it, but
-    //this here will solve the problem for now, by reordering the receipt each time it is loaded
-    //this function is also in other places so if you are removing it make sure all calls to it are removed
-    orderReceiptItems(tableOrders[tableNum]);
-    
-    
-    
-    
-    
     //display the receipt for this table
     loadReceipt(tableOrders[tableNum], true);
     

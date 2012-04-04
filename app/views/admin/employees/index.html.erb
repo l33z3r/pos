@@ -1,15 +1,21 @@
+<% @nav_title = "Employees" %>
+
+<% content_for :admin_subnav_links_left do %>
+  <div class="button" data-onpress="goTo('<%= new_admin_employee_path %>');">
+    <div class="icon">
+      <%= image_tag "/images/button_logos/new_employee_button.png" %>
+    </div>
+    <div class="button_name">Add Employee</div>
+  </div>
+<% end %>
+
 <div id="admin_employee_list">
 
   <section id="employees">
 
-    <h3>System Users</h3>
-
     <div class="pagination_links">
       <div class="links">
         <%= will_paginate @employees %>
-      </div>
-      <div class="info">
-        <%= page_entries_info @employees %>
       </div>
     </div>
 
@@ -54,10 +60,6 @@
       <div class="info">
         <%= page_entries_info @employees %>
       </div>
-    </div>
-
-    <div id="actions">
-      <%= button_to 'New User', new_admin_employee_path, :method => :get %>
     </div>
 
   </section>

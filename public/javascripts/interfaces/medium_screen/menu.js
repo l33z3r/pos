@@ -811,10 +811,6 @@ function showEditPopupInit() {
     showEditPopup(receiptItem);
 }
 
-//function writeOrderItemToReceipt(orderItem) {
-//    setReceiptsHTML(getCurrentRecptHTML() + getOrderItemReceiptHTML(orderItem));
-//}
-
 function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
     allOrderItemsReceiptHTML = "";
 
@@ -825,7 +821,7 @@ function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnCl
 
     return allOrderItemsReceiptHTML;
 }
-//alert("APPLYING COURSE " + newCourseNum + " old: " + item.product.course_num);
+
 function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
     //default the args to true
     if (typeof includeNonSyncedStyling == "undefined") {
@@ -865,7 +861,10 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     if (includeServerAddedText && orderItem.showServerAddedText) {
         var nickname = serverNickname(orderItem.serving_employee_id);
         var timeAdded = utilFormatTime(new Date(parseInt(orderItem.time_added)));
-        orderHTML += "<div class='server'>At " + timeAdded + " " + nickname + " added:</div>";
+        //show a line above the last ordered, if this is not the first item in the order
+        var showAddedLine = (orderItem.itemNumber != 1);
+        
+        orderHTML += "<div class='server " + (showAddedLine ? "added_line" : "") + "'>At " + timeAdded + " " + nickname + " added:</div>";
     }
 
     orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
