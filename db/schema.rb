@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120330094348) do
+ActiveRecord::Schema.define(:version => 20120405125931) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -24,6 +24,10 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.integer  "report_num"
     t.text     "report_data"
   end
+
+  add_index "cash_totals", ["employee_id"], :name => "index_cash_totals_on_employee_id"
+  add_index "cash_totals", ["end_calc_order_id"], :name => "index_cash_totals_on_end_calc_order_id"
+  add_index "cash_totals", ["start_calc_order_id"], :name => "index_cash_totals_on_start_calc_order_id"
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -39,6 +43,10 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.string   "kitchen_screens",                          :default => ""
   end
 
+  add_index "categories", ["order_item_addition_grid_id"], :name => "index_categories_on_order_item_addition_grid_id"
+  add_index "categories", ["parent_category_id"], :name => "index_categories_on_parent_category_id"
+  add_index "categories", ["tax_rate_id"], :name => "index_categories_on_tax_rate_id"
+
   create_table "client_transactions", :force => true do |t|
     t.integer  "order_id"
     t.integer  "payment_integration_type_id"
@@ -47,6 +55,8 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "client_transactions", ["order_id"], :name => "index_client_transactions_on_order_id"
 
   create_table "discounts", :force => true do |t|
     t.string   "name"
@@ -72,6 +82,9 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.boolean  "passcode_required",    :default => false
   end
 
+  add_index "display_button_roles", ["display_button_id"], :name => "index_display_button_roles_on_display_button_id"
+  add_index "display_button_roles", ["role_id"], :name => "index_display_button_roles_on_role_id"
+
   create_table "display_buttons", :force => true do |t|
     t.string   "button_text"
     t.datetime "created_at"
@@ -79,6 +92,8 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.integer  "perm_id"
     t.integer  "display_button_group_id"
   end
+
+  add_index "display_buttons", ["display_button_group_id"], :name => "index_display_buttons_on_display_button_group_id"
 
   create_table "displays", :force => true do |t|
     t.string   "name"
@@ -110,9 +125,11 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.string   "clockin_code"
   end
 
+  add_index "employees", ["role_id"], :name => "index_employees_on_role_id"
+
   create_table "global_settings", :force => true do |t|
     t.string   "key"
-    t.string   "value"
+    t.text     "value"
     t.string   "label_text"
     t.string   "logo_file_name"
     t.string   "logo_content_type"
@@ -131,6 +148,9 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.datetime "updated_at"
   end
 
+  add_index "ingredients", ["ingredient_product_id"], :name => "index_ingredients_on_ingredient_product_id"
+  add_index "ingredients", ["product_id"], :name => "index_ingredients_on_product_id"
+
   create_table "menu_items", :force => true do |t|
     t.integer  "menu_page_id"
     t.integer  "product_id"
@@ -138,6 +158,11 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.datetime "updated_at"
     t.integer  "order_num",    :default => 0
   end
+
+  add_index "menu_items", ["menu_page_id", "product_id"], :name => "index_menu_items_on_menu_page_id_and_product_id"
+  add_index "menu_items", ["menu_page_id"], :name => "index_menu_items_on_menu_page_id"
+  add_index "menu_items", ["product_id", "menu_page_id"], :name => "index_menu_items_on_product_id_and_menu_page_id"
+  add_index "menu_items", ["product_id"], :name => "index_menu_items_on_product_id"
 
   create_table "menu_pages", :force => true do |t|
     t.string   "name"
@@ -147,6 +172,9 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.datetime "updated_at"
     t.integer  "embedded_display_id"
   end
+
+  add_index "menu_pages", ["display_id"], :name => "index_menu_pages_on_display_id"
+  add_index "menu_pages", ["embedded_display_id"], :name => "index_menu_pages_on_embedded_display_id"
 
   create_table "modifier_categories", :force => true do |t|
     t.string   "name"
@@ -161,6 +189,8 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "modifiers", ["modifier_category_id"], :name => "index_modifiers_on_modifier_category_id"
 
   create_table "order_item_addition_grids", :force => true do |t|
     t.string   "name"
@@ -190,6 +220,10 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.integer  "product_id"
   end
 
+  add_index "order_item_additions", ["follow_on_grid_id"], :name => "index_order_item_additions_on_follow_on_grid_id"
+  add_index "order_item_additions", ["order_item_addition_grid_id"], :name => "index_order_item_additions_on_order_item_addition_grid_id"
+  add_index "order_item_additions", ["product_id"], :name => "index_order_item_additions_on_product_id"
+
   create_table "order_items", :force => true do |t|
     t.integer  "order_id"
     t.integer  "employee_id"
@@ -210,6 +244,10 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.boolean  "is_double",                                    :default => false
     t.text     "oia_data",               :limit => 2147483647
   end
+
+  add_index "order_items", ["employee_id"], :name => "index_order_items_on_employee_id"
+  add_index "order_items", ["order_id"], :name => "index_order_items_on_order_id"
+  add_index "order_items", ["product_id"], :name => "index_order_items_on_product_id"
 
   create_table "orders", :force => true do |t|
     t.integer  "employee_id"
@@ -235,6 +273,10 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.text     "split_payments",        :limit => 2147483647
   end
 
+  add_index "orders", ["employee_id"], :name => "index_orders_on_employee_id"
+  add_index "orders", ["table_info_id"], :name => "index_orders_on_table_info_id"
+  add_index "orders", ["void_order_id"], :name => "index_orders_on_void_order_id"
+
   create_table "payment_methods", :force => true do |t|
     t.string   "name"
     t.boolean  "is_default"
@@ -248,6 +290,8 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.integer  "receipt_footer_id"
     t.boolean  "open_cash_drawer",       :default => true
   end
+
+  add_index "payment_methods", ["receipt_footer_id"], :name => "index_payment_methods_on_receipt_footer_id"
 
   create_table "products", :force => true do |t|
     t.string   "brand"
@@ -324,6 +368,13 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.string   "kitchen_screens",                          :default => ""
   end
 
+  add_index "products", ["category_id"], :name => "index_products_on_category_id"
+  add_index "products", ["menu_page_1_id"], :name => "index_products_on_menu_page_1_id"
+  add_index "products", ["menu_page_2_id"], :name => "index_products_on_menu_page_2_id"
+  add_index "products", ["modifier_category_id"], :name => "index_products_on_modifier_category_id"
+  add_index "products", ["order_item_addition_grid_id"], :name => "index_products_on_order_item_addition_grid_id"
+  add_index "products", ["tax_rate_id"], :name => "index_products_on_tax_rate_id"
+
   create_table "receipt_footers", :force => true do |t|
     t.string "name"
     t.text   "content"
@@ -348,6 +399,8 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "room_objects", ["room_id"], :name => "index_room_objects_on_room_id"
 
   create_table "rooms", :force => true do |t|
     t.string   "name"
@@ -381,6 +434,9 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.datetime "updated_at"
   end
 
+  add_index "stock_transactions", ["employee_id"], :name => "index_stock_transactions_on_employee_id"
+  add_index "stock_transactions", ["product_id"], :name => "index_stock_transactions_on_product_id"
+
   create_table "stored_receipt_htmls", :force => true do |t|
     t.string   "receipt_type"
     t.string   "receipt_key"
@@ -396,6 +452,8 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.datetime "updated_at"
   end
 
+  add_index "table_infos", ["room_object_id"], :name => "index_table_infos_on_room_object_id"
+
   create_table "tax_rates", :force => true do |t|
     t.string   "name"
     t.float    "rate"
@@ -410,6 +468,8 @@ ActiveRecord::Schema.define(:version => 20120330094348) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "terminal_display_links", ["display_id"], :name => "index_terminal_display_links_on_display_id"
 
   create_table "terminal_sync_data", :force => true do |t|
     t.integer  "sync_type"

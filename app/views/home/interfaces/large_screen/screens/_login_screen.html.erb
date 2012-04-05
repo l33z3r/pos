@@ -53,13 +53,19 @@
         </div>
         <div class="button_name">Clock Out</div>
       </div>
-      <% display_button = DisplayButton.find_by_perm_id ButtonMapper::PRINT_RECEIPT_BUTTON %>
-
-      <div id="login_screen_button_<%=display_button.id%>" class="button" onclick="printLastReceipt()">
+      
+      <div id="login_screen_button_receipt" class="button" data-onpress="printLastReceipt()">
         <div class="icon">
-          <%= button_icon display_button %>
+          <%= image_tag "/images/button_logos/print_receipt_button.png" %>
         </div>
-        <div class="button_name"><%=display_button.button_text%></div>
+        <div class="button_name">Print Receipt</div>
+      </div>
+      
+      <div id="login_screen_button_tax_receipt" class="button" data-onpress="printLastReceiptWithVat()">
+        <div class="icon">
+          <%= image_tag "/images/button_logos/print_receipt_button.png" %>
+        </div>
+        <div class="button_name">Print <%=@tax_label%> Receipt</div>
       </div>
     </div>
 

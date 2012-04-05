@@ -44,6 +44,8 @@ var globalPriceLevelKey = "global_price_level";
 
 var lastOrderSentTime = null;
 
+var lastSaleObj;
+
 function getCurrentOrder() {
     if(selectedTable == 0) {
         return currentOrder;

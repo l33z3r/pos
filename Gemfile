@@ -53,6 +53,8 @@ group :development, :test do
   gem "mongrel", '1.2.0.pre2'
   
   gem 'mysql2', '0.2.6'
+  
+  gem "rails_indexes", '1.1.2', :git => "https://github.com/warpc/rails_indexes"
 end
 
 group :production do

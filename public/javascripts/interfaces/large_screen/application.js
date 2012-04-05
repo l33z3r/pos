@@ -172,11 +172,13 @@ function doDisplayButtonPasscodePrompt(button_id, forwardFunction) {
     if(display_button_passcode_permissions[button_id]) {
         displayButtonForwardFunction = forwardFunction;
         
-        if(inAdminContext()) {
-            if(!currentScreenIsMenu()) {
-                setStatusMessage("Must be on menu screen for this function, as it requires a passcode prompt!");
-                return;
-            }
+        if(!inMenuContext()) {
+            //if we hit this we are in the admin shortcut screen, 
+            //the screen will reload itself and the button will be called again
+            forwardFunction.call();
+            
+            return;
+        } else if(inAdminContext()) {
             showAdminDisplayButtonPasscodePromptPopup(button_id, forwardFunction);
         } else {
             checkMenuScreenForFunction();
@@ -285,7 +287,8 @@ function initTableSelectScreen() {
         currentSelectedRoom = $('.room_graphic').first().data('room_id');
     }
     
-    $('#select_room_button_' + currentSelectedRoom).mousedown().mouseup();
+    doClickAButton($('#select_room_button_' + currentSelectedRoom));
+    
     setSelectedTable();
 }
 
@@ -366,6 +369,15 @@ function checkMenuScreenForFunction() {
     }
     
     return false;
+}
+
+function checkSalesInterfaceForFunction(button_id, forwardFunction) {
+    if(!inMenuContext()) {
+        setSalesScreenForwardFunction(button_id);
+        goTo('/#screen=more_options');
+    } else {
+        forwardFunction.call();
+    }
 }
 
 function initAdminTables() {

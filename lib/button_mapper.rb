@@ -74,9 +74,9 @@ class ButtonMapper
 
     case button.perm_id
     when X_TOTAL_BUTTON
-      @retval = wrap_with_menu_screen_function_check "prepareXTotal();"
+      @retval = si_check(X_TOTAL_BUTTON, ms_check("prepareXTotal();"))
     when Z_TOTAL_BUTTON
-      @retval = wrap_with_menu_screen_function_check "prepareZTotal();"
+      @retval = si_check(Z_TOTAL_BUTTON, ms_check("prepareZTotal();"))
     when X_REPORTS_BUTTON
       @retval = "goTo('#{admin_cash_total_options_path}?section=x'); return false;"
     when Z_REPORTS_BUTTON
@@ -100,49 +100,49 @@ class ButtonMapper
     when ROOM_BUILDER_BUTTON
       @retval = "goTo('#{admin_rooms_path}'); return false;"
     when TOTAL_BUTTON
-      @retval = "quickSale();"
+      @retval = si_check(TOTAL_BUTTON, "quickSale();")
     when SUBTOTAL_BUTTON
-      @retval = "totalPressed();"
+      @retval = si_check(SUBTOTAL_BUTTON, "totalPressed();")
     when SAVE_BUTTON
-      @retval = "saveButton();"
+      @retval = si_check(SAVE_BUTTON, "saveButton();")
     when MORE_OPTIONS_BUTTON
-      @retval = "showMoreOptionsScreen(); return false;"
+      @retval = si_check(MORE_OPTIONS_BUTTON, "showMoreOptionsScreen();")
     when BUTTON_CONFIG_BUTTON
       @retval = "goTo('#{edit_multiple_admin_display_buttons_path}'); return false;"
     when TABLES_BUTTON
-      @retval = "tablesButtonPressed(); return false;"
+      @retval = si_check(TABLES_BUTTON, "tablesButtonPressed();")
     when SYSTEM_BUTTON
-      @retval = "showGlobalSettingsPage();"
+      @retval = si_check(SYSTEM_BUTTON, ms_check("showGlobalSettingsPage();"))
     when THEMES_BUTTON
       @retval = "goTo('#{admin_custom_themes_path}'); return false;"
     when DISCOUNT_BUTTON
-      @retval = wrap_with_menu_screen_function_check "showDiscountPopup(null);"
+      @retval = si_check(DISCOUNT_BUTTON, ms_check("showDiscountPopup(null);"))
     when CLIENT_BUTTON
-      @retval = wrap_with_menu_screen_function_check "alert('client button clicked');"
+      @retval = ms_check "alert('client button clicked');"
     when WASTE_BUTTON
-      @retval = wrap_with_menu_screen_function_check "alert('waste button clicked');"
+      @retval = ms_check "alert('waste button clicked');"
     when COMPLIMENTARY_BUTTON
-      @retval = wrap_with_menu_screen_function_check "markFreeLastOrderItem();"
+      @retval = si_check(COMPLIMENTARY_BUTTON, ms_check("markFreeLastOrderItem();"))
     when CHANGE_PRICE_BUTTON
-      @retval = wrap_with_menu_screen_function_check "changePriceLastOrderItem();"
+      @retval = si_check(CHANGE_PRICE_BUTTON, ms_check("changePriceLastOrderItem();"))
     when FLOAT_BUTTON
-      @retval = "initFloatScreen();"
+      @retval = si_check(FLOAT_BUTTON, "initFloatScreen();")
     when NO_SALE_BUTTON
-      @retval = wrap_with_menu_screen_function_check "openCashDrawer();"
+      @retval = si_check(NO_SALE_BUTTON, ms_check("openCashDrawer();"))
     when REFUND_BUTTON
       @retval = "alert('refund button clicked');"
     when REMOVE_ITEM_BUTTON
-      @retval = wrap_with_menu_screen_function_check "removeLastOrderItem();"
+      @retval = si_check(REMOVE_ITEM_BUTTON, ms_check("removeLastOrderItem();"))
     when ADD_NOTE_BUTTON
-      @retval = wrap_with_menu_screen_function_check "showAddNoteToOrderItemScreen(); return false;"
+      @retval = si_check(ADD_NOTE_BUTTON, ms_check("showAddNoteToOrderItemScreen();"))
     when CHANGE_WAITER_BUTTON
       @retval = "alert('change waiter button clicked');"
     when PRINTERS_BUTTON
       @retval = "alert('printers button clicked');"
     when TRANSFER_ORDER_BUTTON
-      @retval = wrap_with_menu_screen_function_check "startTransferOrderMode();"
+      @retval = si_check(TRANSFER_ORDER_BUTTON, ms_check("startTransferOrderMode();"))
     when TOGGLE_MENU_ITEM_STANDARD_PRICE_OVERRIDE_BUTTON
-      @retval = wrap_with_menu_screen_function_check "toggleMenuItemStandardPriceOverrideMode(); return false;"
+      @retval = si_check(TOGGLE_MENU_ITEM_STANDARD_PRICE_OVERRIDE_BUTTON, ms_check("toggleMenuItemStandardPriceOverrideMode();"))
     when STOCK_TAKE_BUTTON
       @retval = "alert('stock take button clicked');"
     when DELIVERY_BUTTON
@@ -152,47 +152,47 @@ class ButtonMapper
     when RECEIPT_SETUP_BUTTON
       @retval = "alert('receipt setup button clicked');"
     when PAYMENT_METHODS_BUTTON
-      @retval = "goTo('#{admin_global_settings_path}?section=payment_methods'); return false;"
+      @retval = "goTo('#{admin_global_settings_path}?section=payment_methods');"
     when GIFT_VOUCHER_BUTTON
-      @retval = wrap_with_menu_screen_function_check "alert('gift voucher button clicked');"
+      @retval = ms_check "alert('gift voucher button clicked');"
     when ORDER_TYPES_BUTTON
       @retval = "alert('order types button clicked');"
     when DISCOUNTS_SURCHARGES_BUTTON
-      @retval = "goTo('#{admin_global_settings_path}?section=discounts'); return false;"
+      @retval = "goTo('#{admin_global_settings_path}?section=discounts');"
     when PRINT_RECEIPT_BUTTON
-      @retval = "printCurrentReceipt();"
+      @retval = si_check(PRINT_RECEIPT_BUTTON, "printCurrentReceipt();");
     when ORDER_BUTTON
-      @retval = "doSyncTableOrder()"
+      @retval = si_check(ORDER_BUTTON, "doSyncTableOrder();");
     when SERVICE_CHARGE_BUTTON
-      @retval = wrap_with_menu_screen_function_check "promptForServiceCharge()"
+      @retval = si_check(SERVICE_CHARGE_BUTTON, ms_check("promptForServiceCharge();"))
     when PREVIOUS_ORDERS_BUTTON
       @retval = "goTo('#{admin_orders_path}'); return false;"
     when MODIFY_ORDER_ITEM_BUTTON
-      @retval = wrap_with_menu_screen_function_check "toggleModifyOrderItemScreen(); return false;"
+      @retval = si_check(MODIFY_ORDER_ITEM_BUTTON, ms_check("toggleModifyOrderItemScreen();"))
     when MANAGE_ORDER_ITEM_ADDITION_GRIDS_BUTTON
-      @retval = "goTo('#{admin_order_item_addition_grids_path}'); return false;"
+      @retval = "goTo('#{admin_order_item_addition_grids_path}');"
     when CURRENT_ORDERS_BUTTON
-      @retval = "goTo('#{admin_orders_path}?section=open_orders'); return false;"
+      @retval = "goTo('#{admin_orders_path}?section=open_orders');"
     when MODIFY_TERMINALS_BUTTON
-      @retval = "goTo('#{admin_terminals_path}'); return false;"
+      @retval = "goTo('#{admin_terminals_path}');"
     when COURSE_BUTTON
-      @retval = wrap_with_menu_screen_function_check "changeCourseNum(); return false;";
+      @retval = si_check(COURSE_BUTTON, ms_check("changeCourseNum();"))
     when PRINT_BILL_BUTTON
-      @retval = "printBill();"
+      @retval = si_check(PRINT_BILL_BUTTON, "printBill();")
     when KITCHEN_SCREEN_BUTTON
-      @retval = "goTo('#{kitchen_path}'); return false;"
+      @retval = "goTo('#{kitchen_path}');"
     when PREVIOUS_CASH_TOTALS_BUTTON
-      @retval = "goTo('#{admin_previous_cash_totals_path}'); return false;"
+      @retval = "goTo('#{admin_previous_cash_totals_path}');"
     when TOGGLE_MENU_ITEM_DOUBLE_BUTTON
-      @retval = wrap_with_menu_screen_function_check "toggleMenuItemDoubleMode(); return false;"
+      @retval = si_check(TOGGLE_MENU_ITEM_DOUBLE_BUTTON, ms_check("toggleMenuItemDoubleMode();"))
     when ADD_NAME_TO_TABLE_BUTTON
-      @retval = wrap_with_menu_screen_function_check "promptAddNameToTable(); return false;"
+      @retval = si_check(ADD_NAME_TO_TABLE_BUTTON, ms_check("promptAddNameToTable();"))
     when REPORTS_BUTTON
-      @retval = "goTo('#{reports_glances_path}'); return false;"
+      @retval = "goTo('#{reports_glances_path}');"
     when SPLIT_BILL_BUTTON
-      @retval = wrap_with_menu_screen_function_check "startSplitBillMode();"
+      @retval = si_check(SPLIT_BILL_BUTTON, ms_check("startSplitBillMode();"))
     when EXIT_APP_BUTTON
-      @retval = "exitApp();"
+      @retval = si_check(EXIT_APP_BUTTON, "exitApp();")
     end
 
     @retval
@@ -200,8 +200,6 @@ class ButtonMapper
   
   def icon_path_for button
     ButtonMapper.constants.each do |constant_name|
-      #puts "#{constant_name.to_s} : #{eval(constant_name.to_s)}"
-    
       if button.perm_id.to_s == eval(constant_name.to_s).to_s
         return "#{constant_name.to_s.downcase}.png"
       end
@@ -210,13 +208,21 @@ class ButtonMapper
     return ""
   end
   
+  #CHECK ARE WE ON MENU SCREEN
   #if we switch to the menu screen, we hold off calling the function
   #so that all the widths etc have time to render on the menu screen
-  def wrap_with_menu_screen_function_check the_script
+  def ms_check the_script
     @js = "var switchHappened = checkMenuScreenForFunction();" 
     @js += "if(switchHappened) {timeout = 100;} else {timeout = 0;}"
     @js += "setTimeout(function() {#{the_script}}, timeout);"
     return @js
+  end
+  
+  #CHECK ARE WE IN SALES INTERFACE
+  #some buttons will not work on the admin functions shortcut screen, 
+  #so we perform a check and then forward the call to after we load the sales interface
+  def si_check button_id, the_script
+    return "checkSalesInterfaceForFunction(#{button_id}, function() {#{the_script}});"
   end
   
 end

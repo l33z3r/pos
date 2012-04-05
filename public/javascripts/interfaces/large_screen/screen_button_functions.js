@@ -33,9 +33,26 @@ function printCurrentReceipt() {
 }
 
 function printLastReceipt() {
-    lastSaleInfo = getLastSaleInfo();
-    content = fetchBusinessInfoHeaderHTML() + lastSaleInfo.contentHTML;
-    printReceipt(content, true);
+    doPrintLastReceipt(false);
+}
+
+function printLastReceiptWithVat() {
+    doPrintLastReceipt(true);
+}
+
+function doPrintLastReceipt(withVat) {
+    if(lastSaleObj != null) {
+        totalOrder = lastSaleObj;
+        
+        var includeBusinessInfo = true;
+        var includeServerAddedText = false;
+        
+        var content = fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, withVat);
+        
+        printReceipt(content, true);
+    } else {
+        niceAlert("No Last Sale Found.");
+    }  
 }
 
 function promptForServiceCharge() {

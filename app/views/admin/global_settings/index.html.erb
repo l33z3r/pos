@@ -11,6 +11,12 @@
 <% @nav_title = "System Settings" %>
 
 <% content_for :admin_subnav_links_right do %>
+  <div id="clear_all_fragment_caches_request_button" class="button" data-onpress="showLoadingDiv();$('form:visible').first().submit();">
+    <div class="icon">
+      <%= image_tag "/images/button_logos/save_settings_button.png" %>
+    </div>
+    <div class="button_name">Save</div>
+  </div>
   <%= render :partial => "/partials/interfaces/large_screen/clear_fragment_caches_request" %>
 <% end %>
 
@@ -304,12 +310,12 @@
               <table id="global_settings_list" class="admin_table">
                 <thead>
                   <tr>
-                    <th width="230">Name</th>
+                    <th width="200">Name</th>
                     <th width="350">Logo</th>
-                    <th width="140">Set Default</th>
+                    <th width="140">Default</th>
                     <th width="140">Integration</th>
                     <th width="140">Receipt Footer</th>
-                    <th width="140">Open Cash Drawer</th>
+                    <th width="170">Cash Drawer</th>
                     <th width="100">Delete</th>
                   </tr>
                 </thead>
@@ -361,6 +367,8 @@
               </div>
 
             <% end %>
+
+            <div class="clear_top_margin_10">&nbsp;</div>
 
             <h4>New Payment Method</h4>
 

@@ -30,6 +30,10 @@ function checkMenuScreenForFunction() {
     return true;
 }
 
+//this is only a skeleton method that is used on large interface
+function checkSalesInterfaceForFunction(button_id, forwardFunction) {
+    forwardFunction.call();
+}
 
 function renderActiveTables() {
     activeTableIDS = getActiveTableIDS();
@@ -146,7 +150,7 @@ function doSelectMenuItem(productId, element) {
     setModifierGridIdForProduct(product);
 
     if (orderItem.product.prompt_price) {
-//        removePriceBubble();
+        //        removePriceBubble();
         showPricePopup();
     }
 
@@ -334,14 +338,14 @@ function saveEditOrderItem() {
     if (currentTargetPopupAnchor != null) {
         popupId = currentTargetPopupAnchor.GetBubblePopupID();
 
-    //fetch the order from the order array and modify it
-    //then modify the html in the receipt
-    targetInputQuantityEl = $('#' + popupId).find('.quantity');
+        //fetch the order from the order array and modify it
+        //then modify the html in the receipt
+        targetInputQuantityEl = $('#' + popupId).find('.quantity');
 
-    newQuantity = parseFloat(targetInputQuantityEl.val());
+        newQuantity = parseFloat(targetInputQuantityEl.val());
 
 
-        }
+    }
     if (isNaN(newQuantity) || newQuantity == 0) {
         newQuantity = 1;
     }
@@ -367,9 +371,9 @@ function saveEditOrderItem() {
         storeOrderInStorage(current_user_id, order);
     }
 
-     if (currentTargetPopupAnchor != null) {
-    saveDiscount();
-     }
+    if (currentTargetPopupAnchor != null) {
+        saveDiscount();
+    }
     //redraw the receipt
     loadReceipt(order, true);
     closeDiscountPopup();
@@ -1088,7 +1092,10 @@ function switchToModifyOrderItemSubscreen() {
             elastic: false,
             momentum: false
         };
-        setTimeout(function() {$('#oia_tabs').touchScroll(oiaScrollerOpts); return false;}, 300);
+        setTimeout(function() {
+            $('#oia_tabs').touchScroll(oiaScrollerOpts);
+            return false;
+        }, 300);
     }
 }
 

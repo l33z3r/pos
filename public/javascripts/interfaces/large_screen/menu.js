@@ -48,6 +48,23 @@ function initMenu() {
     //hack to scroll the recpt a little after page has loaded as there 
     //were problems on touch interface with recpt getting stuck
     setTimeout("menuRecptScroll()", 1000);
+    
+    setTimeout(callForwardButtonFunction, 500);
+}
+
+function callForwardButtonFunction() {
+    //now if there is a forward function call from the admin function shortcut screen
+    var forwardFunctionButtonId = getRawCookie(salesInterfaceForwardFunctionCookieName);
+    
+    if(forwardFunctionButtonId != null) {
+        alert("Clicking button " + forwardFunctionButtonId);
+        
+        //call the function
+        doClickAButton($('#admin_screen_button_' + forwardFunctionButtonId));
+    
+        //delete the cookie
+        setRawCookie(salesInterfaceForwardFunctionCookieName, "", -365);
+    }
 }
 
 //this is to make sure that when all the images are loaded, that the ipad dislays them correctly
@@ -734,7 +751,7 @@ function doSelectReceiptItem(orderItemEl) {
         
         loadReceipt(messyOrder);
         
-        return;
+        return null;
     }
     
     
@@ -1307,6 +1324,10 @@ function doTotalFinal() {
     $('#till_roll_discount').html('');
     $('#sales_tax_total').html('');
     
+    //set the last sale obj so that we can print receipts from the login screen
+    var copiedLastOrder = {};
+    lastSaleObj = $.extend(true, copiedLastOrder, totalOrder);
+
     //pick up the default home screen and load it
     loadAfterSaleScreen();
 

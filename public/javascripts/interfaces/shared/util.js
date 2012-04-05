@@ -141,6 +141,7 @@ var terminalFingerPrintCookieName = "terminal_fingerprint";
 var sessionIdCookieName = "_session_id";
 var lastReloadCookieName = "last_reload_time";
 var lastPrintCheckCookieName = "last_print_check_time";
+var salesInterfaceForwardFunctionCookieName = "sales_interface_forward_function";
 
 //deletes everything but the fingerprint cookie
 function clearLocalStorageAndCookies() {
@@ -404,6 +405,11 @@ function removeActiveTable(tableID) {
     return newlyRemoved;
 }
 
+function setSalesScreenForwardFunction(button_id) {
+    var exdays = 365 * 100;
+    setRawCookie(salesInterfaceForwardFunctionCookieName, button_id, exdays);
+}
+
 function setRawCookie(c_name, value, expires) {
     var today = new Date();
     today.setTime( today.getTime() );
@@ -568,6 +574,9 @@ function initScrollPanes() {
         var sheet = document.createElement('style')
         sheet.innerHTML = "::-webkit-scrollbar {display: none;}";
         document.body.appendChild(sheet);
+    } else {
+        //remove all jscrollpane css classes
+        $('*').removeClass("jscrollpane");
     }
 }
 
@@ -811,3 +820,6 @@ function appOfflinePopup() {
     niceAlert("Server cannot be contacted. App will operate in restricted mode. Some features may not be available.");
 }
 
+function doClickAButton(el) {
+    el.mousedown().mouseup().click();
+}

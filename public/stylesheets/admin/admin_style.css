@@ -75,9 +75,8 @@ div#admin_subnav_left {
 }
 
 div#admin_subnav_right {
-    margin-top: 3px;
-    margin-right: 5px;
-    border-spacing: 7px;
+    padding: 2px;
+    border-spacing: 3px;
     float: right;
 }
 
@@ -142,6 +141,7 @@ table.admin_table thead tr th {
     margin-bottom: 2px;
     padding: 8px 4px;
     text-align: left;
+    font-weight: normal;
 }
 
 table.admin_table tbody tr td {
@@ -165,7 +165,6 @@ table.admin_table tbody tr td.last {
 
 table.admin_table tbody tr td.first {
     text-align: left;
-    font-weight: bold;
 }
 
 table.admin_table .odd {
@@ -1590,6 +1589,7 @@ div#edit_global_settings section#global_settings div.container div.jspContainer 
 
 div#edit_global_settings section#global_settings div.container h4 {
     float: left;
+    font-size: 15px;
 }
 
 div#edit_global_settings section#global_settings div.container div.business_logo div.label {
@@ -1627,7 +1627,6 @@ div#edit_global_settings table#global_settings_list td input[type=radio] {
 div#edit_global_settings table#global_settings_list td div.label {
     float: left;
     margin-top: 7px;
-    font-weight: bold;
 }
 
 div#edit_global_settings table#global_settings_list td#dat_section div.controls {
