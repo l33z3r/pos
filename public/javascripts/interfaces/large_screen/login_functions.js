@@ -43,10 +43,14 @@ function loginScreenKeypadClick(val) {
 function loginScreenKeyboardClick(e) {
 
     if (e.keyCode == 13) {
+        if ($('#num').val().substring(0, 2) == 'aa'){
         var newval = $('#num').val().substring(3, 15);
         $('#num').val(newval);
         $('#clockincode_show').html("**********");
         doLogin(newval);
+        }
+        else {$('#num').val("")
+              $('#clockincode_show').html("");  }
     } else if (e.keyCode == 117) {
         $('#num').val("u");
     }
@@ -135,6 +139,11 @@ function doLogout() {
         type: 'POST',
         url: '/logout'
     });
+    setTimeout(function(){
+
+            $('#num').focus();
+            scanFocusLoginPoll();
+        }, 1000);
 }
 
 function doClockin() {
@@ -321,3 +330,29 @@ function clearCode() {
     $('#num').val("");
     $('#clockincode_show').html("");
 }
+
+$(function () {
+    $("#num").select();
+    $("#num").focus();
+})
+
+
+$(document).bind('keypress', function(event) {
+    if( event.which == 117 ) {
+        if ($('#admin_content_screen').is(":visible") ){
+            setStatusMessage("Logging out... Please wait.");
+            doLogout();
+            window.location = "/home"
+        }else{
+            doLogout();
+        }
+
+    }
+});
+
+setTimeout(function(){
+
+            $('#num').focus();
+            scanFocusLoginPoll();
+        }, 1000);
+

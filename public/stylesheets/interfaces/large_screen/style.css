@@ -369,6 +369,14 @@ div#landing div#login_receipt_keypad_container div#entered_code_container div#cl
     background-color: #FFF;
 }
 
+#num {
+    /*margin-top: -50px;*/
+    width: 220px;
+    margin-top: 8px;
+    height: 20px;
+    text-align: center;
+}
+
 /* End Landing Page */
 
 /* Main Menu Screen */

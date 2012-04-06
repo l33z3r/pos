@@ -117,6 +117,26 @@ function scanFocusPoll() {
     }
 }
     
+function scanFocusLoginPoll() {
+    if (lastActiveElement.attr("id") == "num") {
+        $('#num').select();
+        sendCursorToEnd($('#num').val())
+        $('#num').focus();
+        setTimeout(scanFocusLoginPoll, 1000);
+        return;
+    }
+}
+
+function sendCursorToEnd(obj) {
+    var value = obj
+    var message = "";
+    if (value != "") {
+        message = value + "\n";
+    }
+    ;
+    $(obj).focus().val(message);
+}
+
 function initPreviousOrder() {
     if(havePreviousOrder(current_user_id)) {
         selectedTable = previousOrderTableNum;
