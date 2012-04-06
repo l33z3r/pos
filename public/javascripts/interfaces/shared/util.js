@@ -820,6 +820,7 @@ function appOfflinePopup() {
     niceAlert("Server cannot be contacted. App will operate in restricted mode. Some features may not be available.");
 }
 
+//function to force a button to be clicked that works with both advanced touch and non
 function doClickAButton(el) {
     el.mousedown().mouseup().click();
 }
