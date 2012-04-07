@@ -134,7 +134,9 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
             tableOrderDataJSON.items[itemKey].show_course_label = (tableOrderDataJSON.items[itemKey].show_course_label.toString() == "true" ? true : false);   
         }
         
-        
+        if(tableOrderDataJSON.items[itemKey].is_void) {
+            tableOrderDataJSON.items[itemKey].is_void = (tableOrderDataJSON.items[itemKey].is_void.toString() == "true" ? true : false);   
+        }
         
         
         
@@ -414,13 +416,19 @@ function applyExistingDiscountToOrderItem(order, itemNumber) {
     applyDiscountToOrderItem(order, itemNumber, -1);
 }
 
-function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum) {
+function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum, is_void) {
     targetOrderItem = order.items[itemNumber-1];
 
     targetOrderItem.amount = newQuantity;
     targetOrderItem.product_price = newPricePerUnit;
     targetOrderItem.product.course_num = newCourseNum;
-
+    
+    if(typeof(is_void) == 'undefined') {
+        is_void = false;
+    }
+    
+    targetOrderItem.is_void = is_void;
+    
     if(targetOrderItem.pre_discount_price) {
         targetOrderItem.pre_discount_price = newPricePerUnit * newQuantity;
     } else {
@@ -513,7 +521,10 @@ function calculateOrderTotal(order) {
 
     for(var i=0; i<order.items.length; i++) {
         item = order.items[i];
-        orderTotal += parseFloat(item['total_price']);
+        
+        if(!item.is_void) {
+            orderTotal += parseFloat(item['total_price']);
+        }
     }
 
     order['total'] = roundNumber(orderTotal, 2);
@@ -591,7 +602,8 @@ function buildOrderItem(product, amount) {
         'tax_rate':taxRate,
         'product_price':productPrice,
         'is_double':isDouble,
-        'total_price':totalProductPrice
+        'total_price':totalProductPrice,
+        'is_void':false
     }
     
     //fill in the category id of the product
@@ -811,28 +823,30 @@ function orderReceiptItems(order) {
 }
 
 function removeSelectedOrderItem() {
-
     //fetch the item number
     var itemNumber = currentSelectedReceiptItemEl.data("item_number");
 
+    order = getCurrentOrder();
+    var item = order.items[itemNumber - 1];
+
+    if(item.synced && selectedTable != 0) {
+        niceAlert("You cannot remove an item that has already been ordered. You must void this item.");
+        return;
+    }
+
     if(selectedTable != 0) {
-        order = tableOrders[selectedTable];
-        order = doRemoveOrderItem(order, itemNumber);
-    
+        doRemoveOrderItem(order, itemNumber);
         storeTableOrderInStorage(current_user_id, selectedTable, order);
-    }else {
-        order = currentOrder;
-        
-        order = doRemoveOrderItem(order, itemNumber);
-        
+    } else {
+        doRemoveOrderItem(order, itemNumber);
         storeOrderInStorage(current_user_id, order);
     }
+    
     currentSelectedReceiptItemEl.hide();
     loadReceipt(order, true);
     
     closeEditOrderItem();
     closeDiscountPopup();
-
 }
 
 function doRemoveOrderItem(order, itemNumber) {

@@ -327,6 +327,10 @@ div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_
     cursor: auto;
 }
 
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.order_line.void *:not(.clear) {
+    text-decoration: line-through;
+}
+
 div#landing div#login_receipt_keypad_container div#login_receipt div#receipt_message {
     margin-top: 50px;
     font-weight: bold;
@@ -1812,6 +1816,10 @@ div.receipt div.till_roll div.order_line {
     cursor: pointer;
 }
 
+div.receipt div.till_roll div.order_line.void *:not(.clear) {
+    text-decoration: line-through;
+}
+
 div.receipt div.till_roll div.order_line.course {
     border-bottom: 2px solid #4297D7;
 }
@@ -2128,6 +2136,20 @@ div#edit_receipt_item_popup_markup_container div#transfer_button {
 }
 
 div#edit_receipt_item_popup_markup_container div#course_button {
+    padding: 10px;
+    float: right;
+    cursor: pointer;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    height: 18px;
+    width: 100px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    margin: 3px 22px;
+}
+
+div#edit_receipt_item_popup_markup_container div#void_order_item_button {
     padding: 10px;
     float: right;
     cursor: pointer;
@@ -2555,6 +2577,10 @@ div#total_screen div#totals_receipt div#totals_till_roll {
 
 div#total_screen div#totals_receipt div#totals_till_roll div.order_line {
     cursor: auto;
+}
+
+div#total_screen div#totals_receipt div#totals_till_roll div.order_line.void *:not(.clear) {
+    text-decoration: line-through;
 }
 
 div#total_screen div#receipt_keypad_container div#total_container {

@@ -352,22 +352,20 @@ function saveEditOrderItem() {
     targetInputPricePerUnitEl = $('.new_price');
     newPricePerUnit = parseFloat(targetInputPricePerUnitEl.val());
 
-    var courseNum;
+    order = getCurrentOrder();
+
+    var courseNum = order.items[itemNumber - 1].product.course_num;
+    var is_void = order.items[itemNumber - 1].is_void;
 
     if (isNaN(newPricePerUnit)) {
         newPricePerUnit = currentPrice;
     }
+    
     if (selectedTable != 0) {
-        order = tableOrders[selectedTable];
-        courseNum = order.items[itemNumber - 1].product.course_num;
-        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum);
-
+        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum, is_void);
         storeTableOrderInStorage(current_user_id, selectedTable, order);
     } else {
-        order = currentOrder;
-        courseNum = order.items[itemNumber - 1].product.course_num;
-        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum);
-
+        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum, is_void);
         storeOrderInStorage(current_user_id, order);
     }
 
@@ -735,7 +733,6 @@ function showCourseMenuPopup() {
     }
 }
 
-
 function applyCourseFromPopup(courseVal) {
     $('#menuCourseAnchor').removeClass("selected");
     closeDiscountPopup();
@@ -747,19 +744,13 @@ function applyCourseFromPopup(courseVal) {
 
     item.show_course_label = true;
 
-    newCourseNum = courseVal
-
-    //alert("APPLYING COURSE " + newCourseNum + " old: " + item.product.course_num);
+    newCourseNum = courseVal;
 
     if (selectedTable != 0) {
-        order = tableOrders[selectedTable];
-        order = modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum);
-
+        modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum, item.is_void);
         storeTableOrderInStorage(current_user_id, selectedTable, order);
     } else {
-        order = currentOrder;
-        order = modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum);
-
+        modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum, item.is_void);
         storeOrderInStorage(current_user_id, order);
     }
 
@@ -860,7 +851,9 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
 
     var hideOnPrintedReceiptClass = orderItem.product.hide_on_printed_receipt ? "hide_on_printed_receipt" : "";
 
-    orderHTML = "<div class='order_line " + notSyncedClass + " " + hideOnPrintedReceiptClass + " " + courseLineClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
+    var voidClass = orderItem.is_void ? "void" : "";
+    
+    orderHTML = "<div class='order_line " + notSyncedClass + " " + voidClass + " " + hideOnPrintedReceiptClass + " " + courseLineClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
 
     if (includeServerAddedText && orderItem.showServerAddedText) {
         var nickname = serverNickname(orderItem.serving_employee_id);

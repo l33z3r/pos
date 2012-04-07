@@ -56,9 +56,9 @@ var orderItems = new Array();
   orderItems.push(orderItem);
 <% end %>
 
-//reset the total to be just the sum of all the order items, as the discounts and deductions will be worked out based on that
+//reset the total to be just the sum of all the order items (bar the voided ones), as the discounts and deductions will be worked out based on that
 oldTotal = previousOrderJSON.total;
-subTotal = <%= @order_items.sum(:total_price) %>;
+subTotal = <%= @order_items.where("is_void = ?", false).sum(:total_price) %>;
 previousOrderJSON.total = subTotal;
 
 //cash tendered and change and payment method and service charge

@@ -694,3 +694,15 @@ function unorderedItemsPopup(evalCode, doAutoLogin) {
         eval(evalCode);  
     }
 }
+
+function voidOrderItem() {
+    var receiptItem = getSelectedOrLastReceiptItem();
+ 
+    if(receiptItem) {
+        voidOrderItemFromEditDialog();
+    }
+}
+
+function voidAllOrderItems() {
+    
+}

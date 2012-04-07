@@ -167,10 +167,12 @@ class OrderController < ApplicationController
           @order_item.modifier_price = item[:modifier][:price]
         end
       
+        @order_item.is_void = item[:is_void] == "true"
+        
         #oias
         if item[:oia_items]
           item[:oia_items].each do |index, oia|
-            if oia[:product_id] != "-1" and !oia[:product_id].blank?
+            if !@order_item.is_void and oia[:product_id] != "-1" and !oia[:product_id].blank?
               #decrement stock for this oia product
               @oia_stock_usage = @order_item.quantity.to_f
       
@@ -212,14 +214,16 @@ class OrderController < ApplicationController
           @item_stock_usage *= 2
         end
       
-        #decrement the stock for this item
-        if @order_item.product.is_stock_item
-          @order_item.product.decrement_stock @item_stock_usage
-        else
-          #decrement the ingredient stock
-          @order_item.product.ingredients.each do |ingredient|
-            @ingredient_usage = ingredient.stock_usage
-            ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
+        if !@order_item.is_void
+          #decrement the stock for this item
+          if @order_item.product.is_stock_item
+            @order_item.product.decrement_stock @item_stock_usage
+          else
+            #decrement the ingredient stock
+            @order_item.product.ingredients.each do |ingredient|
+              @ingredient_usage = ingredient.stock_usage
+              ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
+            end
           end
         end
       end

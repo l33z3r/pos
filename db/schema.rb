@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120405125931) do
+ActiveRecord::Schema.define(:version => 20120407090936) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -243,6 +243,7 @@ ActiveRecord::Schema.define(:version => 20120405125931) do
     t.string   "product_name"
     t.boolean  "is_double",                                    :default => false
     t.text     "oia_data",               :limit => 2147483647
+    t.boolean  "is_void",                                      :default => false
   end
 
   add_index "order_items", ["employee_id"], :name => "index_order_items_on_employee_id"
