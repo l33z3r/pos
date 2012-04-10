@@ -189,6 +189,7 @@ function paymentMethodSelected(pm_id) {
 var selectedRoomNumber = null;
 var selectedFolioNumber = null;
 var selectedFolioName = null;
+var zalionChargedAmount = null;
 
 function doRoomNumberLookup() {
     clearSelectedFolio();

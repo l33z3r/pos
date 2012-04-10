@@ -8,6 +8,8 @@ var kitchenOrders;
 
 var table0TidPrefix = "0_";
 
+var operationInProgress = false;
+
 function initKitchen() {
     //hide the red x 
     $('#nav_save_button').hide();
@@ -24,6 +26,7 @@ function initKitchen() {
 }
 
 function renderReceipt(tableID) {
+    operationInProgress = true;
     
     var orderToCopy; 
     var table0Order = (tableID == 0);
@@ -227,6 +230,8 @@ function renderReceipt(tableID) {
             break;
         }
     }
+    
+    operationInProgress = false;
 }
 
 function finishedLoadingKitchenScreen() {
@@ -317,6 +322,13 @@ function orderComplete(tableID) {
 }
 
 function sendCourseCheck(orderLine) {
+    if(operationInProgress) {
+        niceAlert("Please wait, operation in progress!");
+        return;
+    }
+    
+    operationInProgress = true;
+    
     var tableID = orderLine.parents(".kitchen_receipt_container").data("table_id");
     
     console.log("sending course check for table " + tableID);
@@ -365,6 +377,9 @@ function sendCourseCheck(orderLine) {
         error: function() {
             setStatusMessage("Error sending notification to user");
         },
+        complete: function() {
+            operationInProgress = false;  
+        },
         data: {
             employee_id : employeeID,
             terminal_id : terminalID,
@@ -383,6 +398,13 @@ function sendCourseCheck(orderLine) {
 }
 
 function hideTableOrder(tableID) {
+    if(operationInProgress) {
+        niceAlert("Please wait, operation in progress!");
+        return;
+    }
+    
+    operationInProgressInProgress = true;
+    
     orderXClicked[tableID] = true;
     
     orderHashes[tableID] = kitchenOrders[tableID].items.length;
@@ -399,6 +421,8 @@ function hideTableOrder(tableID) {
         //the same amount that is kept on the server
         deleteTable0CourseChecks();
     }
+    
+    operationInProgress = false;
 }
 
 function sendOrderToCompleted(tableID) {
@@ -447,7 +471,7 @@ function applyCourseChecks(tableID) {
         }
         
         if(!finishedCheckingCourses) {
-                orderLine.addClass("course_checked");
+            orderLine.addClass("course_checked");
             
             if(orderLine.hasClass("course")) {
                 receiptCourseCount++;
