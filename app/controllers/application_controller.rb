@@ -37,6 +37,19 @@ class ApplicationController < ActionController::Base
     @e
   end
   
+  def do_login e_id
+    @employee = Employee.find(e_id  )
+
+    session[:current_employee_id] = @employee.id
+    session[:current_employee_nickname] = @employee.nickname
+    session[:current_employee_admin] = 1 if @employee.is_admin
+    session[:current_employee_role_id] = @employee.role.id
+    session[:current_employee_passcode] = @employee.passcode 
+    
+    @employee.last_login = Time.now
+    @employee.save!
+  end
+  
   def fetch_reload_app time
     #fetch the hash of reload_time => terminal_id
     @reload_interface_times = reload_interface_times
