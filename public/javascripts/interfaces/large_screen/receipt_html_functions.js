@@ -77,7 +77,7 @@ function getLineItemHTMLForPrintedOrderReceipt(orderItem) {
         for(var j=0; j<orderItem.oia_items.length; j++) {
             oia_is_add = orderItem.oia_items[j].is_add;
             
-            lineItemHTMLForOrder += clearHTML;
+            lineItemHTMLForOrder += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>";
             
             if(!orderItem.oia_items[j].is_note) {
                 if(orderItem.oia_items[j].is_addable) {
@@ -85,8 +85,7 @@ function getLineItemHTMLForPrintedOrderReceipt(orderItem) {
                 }
             }
             
-            lineItemHTMLForOrder += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>" + orderItem.oia_items[j].description + "</div>";            
-            lineItemHTMLForOrder += clearHTML;
+            lineItemHTMLForOrder += orderItem.oia_items[j].description + "</div>" + clearHTML;
         }
     }
     
