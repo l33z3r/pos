@@ -46,6 +46,8 @@ var lastOrderSentTime = null;
 
 var lastSaleObj;
 
+var mandatoryFooterMessageHTML = null;
+
 function getCurrentOrder() {
     if(selectedTable == 0) {
         return currentOrder;
