@@ -1266,18 +1266,16 @@ function doTotalFinal() {
     //need to set the split_payments on the order for the receipt
     totalOrder.split_payments = splitPayments;
     
-    //do up the subtotal and total and retrieve the receipt html for both the login screen and for print
-    receiptHTML = fetchFinalReceiptHTML(false, true, false);
-    printReceiptHTML = fetchFinalReceiptHTML(true, false, printVatReceipt);
-        
     //open cash drawer explicitly if it is set to do 
     //so on a payment method basis
     //as the printer will not trigger it here
+    //this loop will also purge 0 amounts from the splitPayments array
     var doOpenCashDrawer = false;
     
     for(var pm in splitPayments) {
         //make sure there is an amount in this payment type
-        if(splitPayments[pm] <= 0) {
+        if(parseFloat(splitPayments[pm]) <= 0) {
+            delete splitPayments[pm];
             continue;
         }
         
@@ -1292,6 +1290,10 @@ function doTotalFinal() {
         openCashDrawer();
     }
     
+    //do up the subtotal and total and retrieve the receipt html for both the login screen and for print
+    receiptHTML = fetchFinalReceiptHTML(false, true, false);
+    printReceiptHTML = fetchFinalReceiptHTML(true, false, printVatReceipt);
+        
     setLoginReceipt("Last Sale", receiptHTML);
     
     if(taxChargable) {
