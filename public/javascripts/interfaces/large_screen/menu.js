@@ -18,8 +18,6 @@ var splitBillTableNumber;
 
 var lastTableZeroOrder;
 
-var mandatoryFooterMessageHTML = null;
-
 //this function is called from application.js on page load
 function initMenu() {
     initMenuScreenType();
