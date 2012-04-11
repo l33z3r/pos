@@ -1782,15 +1782,15 @@ function applyCourseFromPopup(courseVal) {
 }
 
 function voidOrderItemFromEditDialog() {
-    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
-    order = getCurrentOrder();
-    
-    var item = order.items[itemNumber - 1];
-    
     if(selectedTable == 0) {
         niceAlert("You cannot void items that are not on a table");
         return;
     }
+    
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    order = getCurrentOrder();
+    
+    var item = order.items[itemNumber - 1];
     
     if(!item.synced) {
         niceAlert("You can only void ordered items, you can delete this item");
@@ -1803,19 +1803,38 @@ function voidOrderItemFromEditDialog() {
         makeVoid = true;
     }
     
-    if(selectedTable != 0) {
-        modifyOrderItem(order, itemNumber, item.amount, item.product_price, item.product.course_num, makeVoid);
-        storeTableOrderInStorage(current_user_id, selectedTable, order);
-    } else {
-        modifyOrderItem(order, itemNumber, item.amount, item.product_price, item.product.course_num, makeVoid);
-        storeOrderInStorage(current_user_id, order);
-    }
+    modifyOrderItem(order, itemNumber, item.amount, item.product_price, item.product.course_num, makeVoid);
+    storeTableOrderInStorage(current_user_id, selectedTable, order);
     
     order = getCurrentOrder();
     
     //redraw the receipt
     loadReceipt(order, true);
     closeEditOrderItem();
+}
+
+function voidAllOrderItems() {
+    if(selectedTable == 0) {
+        niceAlert("You cannot void items that are not on a table");
+        return;
+    }
+    
+    order = getCurrentOrder();
+    
+    for(var i=0; i<order.items.length; i++) {
+        var item = order.items[i];
+        item.is_void = true;
+        modifyOrderItem(order, i+1, item.amount, item.product_price, item.product.course_num, item.is_void);
+    }
+    
+    storeTableOrderInStorage(current_user_id, selectedTable, order);
+    
+    order = getCurrentOrder();
+    
+    //redraw the receipt
+    loadReceipt(order, true);
+    
+    quickSale();
 }
 
 function addDiscountToOrder(order, amount) {

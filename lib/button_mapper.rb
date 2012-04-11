@@ -198,7 +198,7 @@ class ButtonMapper
     when VOID_ORDER_ITEM_BUTTON
       @retval = si_check(VOID_ORDER_ITEM_BUTTON, ms_check("voidOrderItem();"))
     when VOID_ALL_ORDER_ITEMS_BUTTON
-      @retval = si_check(VOID_ALL_ORDER_ITEMS_BUTTON, ms_check("voidAllOrderItems();"))
+      @retval = si_check(VOID_ALL_ORDER_ITEMS_BUTTON, ms_check("promptVoidAllOrderItems();"))
     end
 
     @retval

@@ -689,7 +689,7 @@ function unorderedItemsPopup(evalCode, doAutoLogin) {
                 onNo: noCode,
                 width: 400,
                 height: 250
-            } );
+            });
     } else {
         eval(evalCode);  
     }
@@ -703,6 +703,20 @@ function voidOrderItem() {
     }
 }
 
-function voidAllOrderItems() {
+function promptVoidAllOrderItems() {
+    if(currentOrderEmpty()) {
+        setStatusMessage("No order present!", true, true);
+        return;
+    }
     
+    ModalPopups.Confirm('niceAlertContainer',
+        'Void All?', "<div id='nice_alert'>Are you sure you want to void all items and cash this order out?</div>",
+        {
+            yesButtonText: 'Yes',
+            noButtonText: 'No',
+            onYes: "voidAllOrderItems()",
+            onNo: "hideNiceAlert();",
+            width: 400,
+            height: 250
+        } );
 }
