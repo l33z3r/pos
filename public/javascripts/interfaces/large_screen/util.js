@@ -15,9 +15,8 @@ function showScreenFromHashParams() {
     
     if(hashParams) {
         if(hashParams.screen) {
-            //alert("Setting screen to " + hashParams.screen);
-            
-            if(hashParams.screen == 'login') {
+            //show login screen if no user logged in
+            if(hashParams.screen == 'login' || current_user_id == null) {
                 showLoginScreen();
             } else if(hashParams.screen == 'menu') {
                 showMenuScreen();

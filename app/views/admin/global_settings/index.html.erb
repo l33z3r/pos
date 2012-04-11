@@ -38,7 +38,7 @@
           <li><a id="price_level_labels_section_link" href="#coursing_section">Price Levels</a></li>
           <li><a id="misc_section_link" href="#misc_section">Misc</a></li>
 
-          <% if params[:cp] == "cluey100" or is_cluey_user? %>
+          <% if cluey_pw_used? or is_cluey_user? %>
             <li><a id="cluey_settings_section_link" href="#cluey_settings_section">Cluey Settings</a></li>
           <% end %>
         </ul>

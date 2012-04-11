@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :check_reset_cache_timestamp
   
-  helper_method :e, :is_cluey_user?, :current_employee, :print_money
+  helper_method :e, :is_cluey_user?, :cluey_pw_used?, :current_employee, :print_money
   helper_method :mobile_device?, :all_terminals, :all_servers, :current_interface
   helper_method :development_mode?, :production_mode?
   helper_method :server_ip, :active_employee_ids, :now_millis
@@ -25,6 +25,10 @@ class ApplicationController < ActionController::Base
   
   def is_cluey_user?
     Employee.is_cluey_user? e
+  end
+  
+  def cluey_pw_used?
+    params[:cp] == "cluey100"
   end
 
   def current_employee

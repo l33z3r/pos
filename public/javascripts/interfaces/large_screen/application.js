@@ -21,7 +21,10 @@ function doGlobalInit() {
             showLoadingDiv();
         }
     });
-    $('input[type=submit]').click(function() {showLoadingDiv() });
+    
+    $('input[type=submit]').click(function() {
+        showLoadingDiv()
+    });
     
     if(inKioskMode()) {
         //to run chrome in kiosk mode, use this command in linux (google-chrome --kiosk http://localhost:3000)
@@ -112,7 +115,7 @@ function doGlobalInit() {
         lastActiveElement.addClass("focus");
         
         var allowFocusElements = [
-            "scan_upc", "description_input", "price_change_new_price_input", "stock_take_new_amount_input", "room_number_input"
+        "scan_upc", "description_input", "price_change_new_price_input", "stock_take_new_amount_input", "room_number_input"
         ]
         
         var focusedElementId = lastActiveElement.attr("id");
@@ -138,7 +141,7 @@ function doGlobalInit() {
     
     clueyScheduler();
     
-    //enable this for html5 cache flushing
+//enable this for html5 cache flushing
 //    if(inProdMode()) {
 //        //start checking for cache updates
 //        cacheUpdateCheckPoll();
