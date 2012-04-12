@@ -89,6 +89,46 @@ class OrderController < ApplicationController
     end
   end
   
+#  def sync_table_order
+#    @error = false
+#    
+#    @error = true
+#    render and return
+#    1/0
+#    @table_order_data = params[:tableOrderData]
+#    @order_num = @table_order_data[:orderData][:order_num]
+#    
+#    @table_id = @table_order_data['tableID']
+#    
+#    #check if this order has been cashed out already but let the table 0 order through
+#    if @table_id != "0" and @order_num 
+#      if Order.find_by_order_num @order_num
+#        #this order has already been cashed, so do nothing...
+#        logger.info "Order has already been cashed. Ignoring..."
+#        @cashed_out_error = true
+#        render and return
+#      end
+#    end
+#    
+#    @employee_id = params[:employee_id]
+#    
+#    #make sure the table still exists in the system as it will cause a weird error if not
+#    @table = TableInfo.find_by_id(@table_id)
+#    
+#    @employee = Employee.find_by_id(@employee_id)
+#    
+#    @last_sync_time = params[:lastSyncTableOrderTime]
+#    @retry = false
+#    
+#    if @table and @employee
+#      @retry = do_request_sync_table_order(@terminal_id, @table_order_data, @table_id, @employee_id, @last_sync_time)
+#    else
+#      logger.info "Table (#{@table_id}) or employee (#{@employee_id}) do not exist"
+#      @error = true
+#      render and return
+#    end
+#  end
+  
   def transfer_order
     @error = false
     
