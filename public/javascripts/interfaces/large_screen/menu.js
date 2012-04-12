@@ -1803,6 +1803,9 @@ function voidOrderItemFromEditDialog() {
         makeVoid = true;
     }
     
+    //unsync the item so it gets sent to other terminals
+    item.synced = false;
+    
     modifyOrderItem(order, itemNumber, item.amount, item.product_price, item.product.course_num, makeVoid);
     storeTableOrderInStorage(current_user_id, selectedTable, order);
     

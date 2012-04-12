@@ -42,11 +42,12 @@ class CashTotal < ActiveRecord::Base
   RS_SALES_BY_CATEGORY = 7
   RS_SALES_BY_PRODUCT = 8
   RS_SERVICE_CHARGE_BY_PAYMENT_TYPE = 9
+  RS_VOIDS_BY_EMPLOYEE = 10
   
   REPORT_SECTIONS = [
     RS_SALES_BY_DEPARTMENT, RS_SALES_BY_PAYMENT_TYPE, RS_CASH_SUMMARY, RS_SALES_BY_SERVER, 
     RS_CASH_PAID_OUT, RS_SALES_TAX_SUMMARY, RS_SALES_BY_CATEGORY, RS_SALES_BY_PRODUCT,
-    RS_SERVICE_CHARGE_BY_PAYMENT_TYPE
+    RS_SERVICE_CHARGE_BY_PAYMENT_TYPE, RS_VOIDS_BY_EMPLOYEE
   ]
   
   validates :total_type, :presence => true, :inclusion => { :in => VALID_TOTAL_TYPES }
@@ -84,6 +85,7 @@ class CashTotal < ActiveRecord::Base
     @sales_by_department = {}
     @sales_by_server = {}
     @sales_by_payment_type = {}
+    @voids_by_employee = {}
     @service_charge_by_payment_type = {}
     @cash_summary = {}
     @taxes = {}
@@ -121,8 +123,38 @@ class CashTotal < ActiveRecord::Base
       @orders = Order.where("created_at >= ?", @first_order.created_at).where("created_at <= ?", @last_order.created_at).where("terminal_id = ?", terminal_id).where("is_void is false").lock(true)
        
       @orders.each do |order|
+        
+        @server_nickname = order.employee.nickname
+        
         order.order_items.each do |order_item|
             
+          @order_item_price = order_item.total_price
+            
+          #take away the whole order discount
+          if order.discount_percent and order.discount_percent > 0
+            @order_item_price -= ((order.discount_percent * @order_item_price)/100)
+          end
+          
+          if order_item.is_void
+            #initialise a hash for employee
+            if !@voids_by_employee[@server_nickname]
+              @voids_by_employee[@server_nickname] = {
+                :quantity => 0,
+                :sales_total => 0
+              }
+            end
+          
+            @product_voids_quantity = @voids_by_employee[@server_nickname][:quantity].to_f
+            @product_voids_quantity += order_item.quantity
+            @product_voids_quantity = sprintf("%.2g", @product_voids_quantity)
+            @voids_by_employee[@server_nickname][:quantity] = @product_voids_quantity
+          
+            @voids_by_employee[@server_nickname][:sales_total] += @order_item_price
+          
+            #now continue to next product so this one does not get included in sales totals
+            next
+          end
+          
           @product_name = order_item.product.name
           
           #sales by product
@@ -155,14 +187,6 @@ class CashTotal < ActiveRecord::Base
             @sales_by_department[@department_name] = 0
           end
             
-          logger.info "Increasing sales_by_category for category: #{@category_name} for product: #{order_item.product.name} by: #{order_item.total_price}"
-          @order_item_price = order_item.total_price
-            
-          #take away the whole order discount
-          if order.discount_percent and order.discount_percent > 0
-            @order_item_price -= ((order.discount_percent * @order_item_price)/100)
-          end
-          
           #now if tax chargable, add it on
           @tax_chargable = GlobalSetting.parsed_setting_for GlobalSetting::TAX_CHARGABLE
           @global_tax_rate = GlobalSetting.parsed_setting_for GlobalSetting::GLOBAL_TAX_RATE
@@ -217,9 +241,6 @@ class CashTotal < ActiveRecord::Base
             
         end
           
-        #sales by server
-        @server_nickname = order.employee.nickname
-            
         if !@sales_by_server[@server_nickname]
           @sales_by_server[@server_nickname] = 0
         end
@@ -295,8 +316,12 @@ class CashTotal < ActiveRecord::Base
           
     #sort sales_by_product alphabetically
     @sales_by_product = @sales_by_product.sort
-    
     @cash_total_data[:sales_by_product] = @sales_by_product
+    
+    #sort voids_by_employee alphabetically
+    @voids_by_employee = @voids_by_employee.sort
+    @cash_total_data[:voids_by_employee] = @voids_by_employee
+    
     @cash_total_data[:sales_by_category] = @sales_by_category
     @cash_total_data[:sales_by_department] = @sales_by_department
     @cash_total_data[:sales_by_server] = @sales_by_server

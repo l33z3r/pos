@@ -114,7 +114,7 @@ class ButtonMapper
     when TABLES_BUTTON
       @retval = si_check(TABLES_BUTTON, "tablesButtonPressed();")
     when SYSTEM_BUTTON
-      @retval = si_check(SYSTEM_BUTTON, ms_check("showGlobalSettingsPage();"))
+      @retval = si_check(SYSTEM_BUTTON, "showGlobalSettingsPage();")
     when THEMES_BUTTON
       @retval = "goTo('#{admin_custom_themes_path}'); return false;"
     when DISCOUNT_BUTTON

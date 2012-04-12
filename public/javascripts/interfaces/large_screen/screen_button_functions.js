@@ -704,6 +704,11 @@ function voidOrderItem() {
 }
 
 function promptVoidAllOrderItems() {
+    if(selectedTable == 0) {
+        niceAlert("You cannot void items that are not on a table");
+        return;
+    }
+    
     if(currentOrderEmpty()) {
         setStatusMessage("No order present!", true, true);
         return;

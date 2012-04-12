@@ -28,6 +28,9 @@
     defaultJSTimeFormat = "HH:mm";
   }
   
+  //licence expired screen?
+  var showLicenceExpiredScreen = <%= GlobalSetting.parsed_setting_for GlobalSetting::SHOW_LICENCE_EXPIRED_SCREEN %>;
+  
   //is tax chargable
   var taxChargable = <%= @tax_chargable %>;
    
