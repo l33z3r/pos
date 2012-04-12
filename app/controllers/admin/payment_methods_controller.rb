@@ -14,7 +14,19 @@ class Admin::PaymentMethodsController < Admin::AdminController
     @payment_methods = PaymentMethod.update(params[:payment_methods].keys, params[:payment_methods].values).reject { |p| p.errors.empty? }
     
     if @payment_methods.empty?
-      flash[:notice] = "Payment Methods Updated!"
+      #make sure that the default payment method is set within the bounds
+      @dpm = PaymentMethod.load_default
+      
+      if !@dpm.can_be_default?
+        @dpm.is_default = false
+        @dpm.save
+        PaymentMethod.load_default
+        
+        flash[:notice] = "Payment Methods Updated! Note that the default payment method has been set to cash as the one you chose is not eligible for default"
+      else 
+        flash[:notice] = "Payment Methods Updated!"
+      end
+      
       redirect_to admin_global_settings_path
     else
       render admin_global_settings_path

@@ -25,12 +25,12 @@
       </div>
       <div class="field">
         <div class="label">Current Balance</div>
-        <%= f.text_field :current_balance %>
+        <%= f.text_field :current_balance, :disabled => true %>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
         <div class="label">Credit available</div>
-        <%= f.text_field :credit_available %>
+        <%= f.text_field :credit_available, :disabled => true %>
         <div class="clear">&nbsp;</div>
       </div>
     </div>
@@ -44,11 +44,15 @@
       <div class="field">
         <div class="label">Customer Number</div>
         <%= f.text_field :customer_number %>
+        <input type="radio" id="generate_card_code" name="generate_card_code" checked="true"
+               value="customer_number" onclick="doToggleGenerateSwipeCardCode(this);"/>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
-        <div class="label">Swipe Card Code (Auto Generated)</div>
+        <div class="label">Swipe Card Code</div>
         <%= f.text_field :swipe_card_code, :disabled => true %>
+        <input type="radio" id="generate_card_code" name="generate_card_code" 
+               value="swipe_card" onclick="doToggleGenerateSwipeCardCode(this);"/>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">

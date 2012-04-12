@@ -95,6 +95,16 @@ function getCashTotalDataTableTotals(label, data) {
     return totals_html;
 }
 
+function getCashTotalTotal(data) {
+    var total = 0;
+    
+    for(var i=0; i<data.length; i++) {
+        total += parseFloat(data[i][1]);
+    }
+    
+    return total;
+}
+
 function getCashTotalTaxesDataTableTotals(label, data) {
     taxes_totals_html = "<div class='taxes_totals_data_table'>";
     taxes_totals_html += "<div class='taxes_totals_label'>" + label + "</div>";

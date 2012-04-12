@@ -62,8 +62,9 @@ end
 #
 #
 #Taxes and Payment Methods ETC
-@cash_payment_method = PaymentMethod.find_or_create_by_name(:name => "cash", :payment_integration_id => 0, :open_cash_drawer => true, :is_default => true)
-@loyalty_payment_method = PaymentMethod.find_or_create_by_name(:name => "loyalty", :payment_integration_id => 0, :open_cash_drawer => false, :is_default => false)
+@cash_payment_method = PaymentMethod.find_or_create_by_name(:name => PaymentMethod::CASH_PAYMENT_METHOD_NAME, :payment_integration_id => 0, :open_cash_drawer => true, :is_default => true)
+@loyalty_payment_method = PaymentMethod.find_or_create_by_name(:name => PaymentMethod::LOYALTY_PAYMENT_METHOD_NAME, :payment_integration_id => 0, :open_cash_drawer => false, :is_default => false)
+@account_payment_method = PaymentMethod.find_or_create_by_name(:name => PaymentMethod::ACCOUNT_PAYMENT_METHOD_NAME, :payment_integration_id => 0, :open_cash_drawer => false, :is_default => false)
 
 @default_tax_rate = TaxRate.find_or_create_by_name(:name => "default", :rate => 12, :is_default => true)
 
@@ -102,7 +103,7 @@ if !@default_display
   @default_display.is_default = true
       
   #build a modifier grid and set it as the default grid and link it to the above display
-  @default_grid = OrderItemAdditionGrid.create({:name => "Default", :grid_x_size => 8, :grid_y_size => 4})
+  @default_grid = OrderItemAdditionGrid.create({:name => "Default", :grid_x_size => 6, :grid_y_size => 6})
     
   @default_display.save!
 end

@@ -112,6 +112,24 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>Screen Resolution</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::SCREEN_RESOLUTION, {:fingerprint => @terminal_fingerprint} %>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="<%= GlobalSetting::SCREEN_RESOLUTION_NORMAL %>" 
+                             <%= @gs.parsed_value == GlobalSetting::SCREEN_RESOLUTION_NORMAL ? "checked" : "" %>/>
+                      <div class="label"><%= GlobalSetting::SCREEN_RESOLUTION_NORMAL %></div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="<%= GlobalSetting::SCREEN_RESOLUTION_1360x786 %>" 
+                             <%= @gs.parsed_value == GlobalSetting::SCREEN_RESOLUTION_1360x786 ? "checked" : "" %>/>
+                      <div class="label"><%= GlobalSetting::SCREEN_RESOLUTION_1360x786 %></div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
                     <td>Screen That Shows After Login</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_POST_LOGIN_SCREEN %>
@@ -310,6 +328,15 @@
           <div class="jscrollpane">
             <h4>Current Payment Methods</h4>
 
+            <div class="clear">&nbsp;</div>
+            <h5>System payment methods can not be modified or set as default, as they must be triggered manually</h5>
+
+            <div class="clear">&nbsp;</div>
+            <h5>
+              This also goes for payment methods that have an integration tied to them, 
+              as they to require manual triggering for the extra functionality to take place
+            </h5>
+
             <%= form_tag update_multiple_admin_payment_methods_path, :multipart => true do %>
 
               <div class="clear_top_margin_10">&nbsp;</div>
@@ -332,7 +359,7 @@
                     <%= fields_for "payment_methods[]", pm do |f| %>
                       <tr>
                         <td>
-                          <% if pm.is_cash? or pm.is_loyalty? %>
+                          <% if pm.is_system_pm? %>
                             <input type="text" disabled="true" value="<%= pm.name %>"/>
                           <% else %>
                             <%= f.text_field :name, :size => 17 %>
@@ -347,11 +374,13 @@
                           </p>
                         </td>
                         <td>
-                          <%= radio_button_tag "set_default_payment_method", "#{pm.id}", pm.is_default, 
-                            :onchange => "doSetDefaultPaymentMethod(this.value);" %>
+                          <% if pm.can_be_default? %>
+                            <%= radio_button_tag "set_default_payment_method", "#{pm.id}", pm.is_default, 
+                              :onchange => "doSetDefaultPaymentMethod(this.value);" %>
+                          <% end %>
                         </td>
                         <td>
-                          <% if !pm.is_loyalty? %>
+                          <% if pm.can_have_integration? %>
                             <%= f.select :payment_integration_id, options_for_select(PaymentMethod.payment_integration_options_for_select, pm.payment_integration_id) %>
                           <% end %>
                         </td>
@@ -363,7 +392,7 @@
                           <%= f.check_box :open_cash_drawer %>
                         </td>
                         <td>
-                          <% if !pm.is_cash? and !pm.is_loyalty? %>
+                          <% if !pm.is_system_pm? %>
                             <%= link_to "Delete", admin_payment_method_path(pm), :method => :delete, :confirm => "Are You Sure?" %>
                           <% end %>
                         </td>
@@ -1061,6 +1090,21 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>Show Charge Card Button?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::SHOW_CHARGE_CARD_BUTTON %>
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">Yes</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">No</div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
                     <td>All Mobile Devices Receive Order Notifications?</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::All_DEVICES_ORDER_NOTIFICATION %>
@@ -1160,6 +1204,15 @@
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::LATEST_CLOSING_HOUR %>
 
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>What Do You Want To Call A Half Measure?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::HALF_MEASURE_LABEL %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -1310,6 +1363,24 @@
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Allow Zalion Split Payments?
+                    </td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::ALLOW_ZALION_SPLIT_PAYMENTS %>
+                      <div class="controls">
+                        <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                               value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                        <div class="label">Yes</div>
+                        <div class="clear">&nbsp;</div>
+
+                        <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                               value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                        <div class="label">No</div>
+                      </div>
                     </td>
                   </tr>
                   <tr>

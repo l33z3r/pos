@@ -116,6 +116,36 @@ function doDallasLogin() {
     loginFailure();
 }
 
+
+function doCasioDallasLogin(){
+
+    if (current_user_id != null) {
+        //already logged in
+        displayError("You are already logged in. Please log out!");
+        return;
+    }
+    for (var i = 0; i < employees.length; i++) {
+        passcode = employees[i].dallas_code;
+
+        if (currentCasioCode == passcode) {
+            nickname = employees[i].nickname;
+
+            if (employees[i]['clocked_in']) {
+                id = employees[i].id
+                is_admin = employees[i].is_admin;
+                loginSuccess(id, nickname, is_admin, passcode);
+                return;
+            } else {
+                setStatusMessage("User " + nickname + " is not clocked in!", true, true);
+                clearClockinCode();
+                return;
+            }
+        }
+    }
+
+    loginFailure();
+}
+
 function doLogin() {
     entered_code = $('#num').val();
 

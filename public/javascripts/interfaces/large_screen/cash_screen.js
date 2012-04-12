@@ -1,4 +1,9 @@
+var currentCCReferenceNumber;
+
 var splitPayments;
+
+//if a card transasction goes through, you should not be able to cancel the sale
+var disallowCancelSaleCC = false;
 
 function updateTotalTendered() {
     var totalCashTendered = getTotalTendered();
@@ -9,6 +14,15 @@ function updateTotalTendered() {
         
     var formattedVal = currency(totalCashTendered, false);
     $('#totals_tendered_value').html(formattedVal);
+    
+    //make the text bigger if > 0 
+    if(totalCashTendered > 0) {
+        $('#totals_tendered_box').css("font-size", "15px");
+        $('#totals_tendered_box').css("font-weight", "bold");
+    } else {
+        $('#totals_tendered_box').css("font-size", "12px");
+        $('#totals_tendered_box').css("font-weight", "normal");
+    }
     
     totalAmountInclCashback = currentTotalFinal + cashback;
 
@@ -76,7 +90,7 @@ function finishSale() {
         var totalCashAmount = 0;
         
         for(pm in splitPayments) {
-            if(pm.toLowerCase() == "cash" && parseFloat(splitPayments[pm]) > 0) {
+            if(pm.toLowerCase() == cashPaymentMethodName && parseFloat(splitPayments[pm]) > 0) {
                 positiveCashAmount = true;
                 totalCashAmount = parseFloat(splitPayments[pm]);
                 break;
@@ -106,6 +120,11 @@ function resetTendered() {
 }
 
 function cashOutCancel() {
+    if(disallowCancelSaleCC) {
+        niceAlert("You cannot cancel this sale, as the card transaction has already been processed!");
+        return;
+    }
+    
     resetLoyaltyCustomer();
     resetTendered();
     showMenuScreen();
@@ -115,6 +134,7 @@ var paymentIntegrationId = 0;
 var currentZalionPaymentMethodName = null;
 
 var loyaltyPaymentMethodSelected = false;
+var accountPaymentMethodSelected = false;
 
 function paymentMethodSelected(pm_id) { 
     var pm_info = paymentMethods[pm_id];
@@ -125,13 +145,23 @@ function paymentMethodSelected(pm_id) {
     
     //if the previously selected payment method had an integration, we want to popup a notice saying that it
     //must be the last payment method you select in order to actually do the integration
+    //also check for other payment methods that do not allow for split payments
     if(paymentIntegrationId != 0 && splitPayments[paymentMethod] > 0) {
-        var warningMessage = paymentMethod + " must be the last payment method used if splitting a payment (Enter zero to cancel).";
-        niceAlert(warningMessage);
-        return;
+        if(!allowedZalionSplitPayments) {
+            splitPayments = {};
+        } else {
+            var warningMessage = paymentMethod + " must be the last payment method used if splitting a payment (Enter zero to cancel).";
+            niceAlert(warningMessage);
+            return;
+        }
+    } else if(accountPaymentMethodSelected && splitPayments[paymentMethod] > 0) {
+        //the accounts payment method cannot be used with split payments
+        splitPayments = {};
+        resetCustomerSelect();
     }
     
-    loyaltyPaymentMethodSelected = (method == "loyalty");
+    loyaltyPaymentMethodSelected = (method == loyaltyPaymentMethodName);
+    accountPaymentMethodSelected = (method == accountPaymentMethodName);
     
     if(loyaltyPaymentMethodSelected) {
         if(!totalOrder.loyalty) {
@@ -145,8 +175,8 @@ function paymentMethodSelected(pm_id) {
         var totalCashTendered = getTotalTendered();
         
         //take away the amount already paid in by this payment method
-        if(splitPayments["loyalty"]) {
-            totalCashTendered -= splitPayments["loyalty"];
+        if(splitPayments[loyaltyPaymentMethodName]) {
+            totalCashTendered -= splitPayments[loyaltyPaymentMethodName];
         }
         
         var amountOutstanding = totalAmountInclCashback - totalCashTendered;
@@ -175,8 +205,21 @@ function paymentMethodSelected(pm_id) {
         cashTenderedKeypadString = pointsUsedInCurrencyPennies;
         cashTendered = parseFloat(cashTenderedKeypadString/100.0);
     
-        splitPayments["loyalty"] = cashTendered;
+        splitPayments[loyaltyPaymentMethodName] = cashTendered;
         $('#tendered_value').html(currency(cashTenderedKeypadString/100.0));
+    } else if (accountPaymentMethodSelected) {
+        splitPayments = {};
+        
+        //workout the outstanding amount
+        //and prepopulate the box with that amount
+        totalAmountInclCashback = currentTotalFinal + cashback;        
+        cashTendered = totalAmountInclCashback;    
+        splitPayments[accountPaymentMethodName] = cashTendered;
+        
+        amountToChargeCustomer = totalAmountInclCashback;
+        
+        //show the accounts user selection box
+        showCustomerSearchScreen();
     }
     
     updateTotalTendered();
@@ -193,7 +236,7 @@ function paymentMethodSelected(pm_id) {
         $(this).removeClass('selected');
     });
     
-    $('#' + method.replace(/ /g,"_") + '_payment_method_button').addClass('selected');
+    $(".button[id='" + method.replace(/ /g,"_") + "_payment_method_button']").addClass('selected');
     
     paymentIntegrationId = integration_id;
     
@@ -203,6 +246,16 @@ function paymentMethodSelected(pm_id) {
         totalAmountInclCashback = currentTotalFinal + cashback;
         
         if(paymentIntegrationId == zalionPaymentIntegrationId) {
+            
+            if(!allowedZalionSplitPayments) {
+                //reset the payment methods array 
+                splitPayments = {};
+                splitPayments[paymentMethod] = 0;
+                
+                moneySelected(-1);
+                updateTotalTendered();
+            }
+            
             //we have to store the string that represents the current zalion payment method, so that
             //we can retrieve the amount later that will be actually charged to the room
             currentZalionPaymentMethodName = paymentMethod;
@@ -253,8 +306,6 @@ function doRoomNumberLookup() {
     var roomNumber = $('#room_number_input').val();
     
     roomNumber = parseInt(roomNumber);
-    
-    //alert("Looking up room: " + roomNumber);
     
     if(isNaN(roomNumber)) {
         niceAlert("Please enter a valid room number.");
@@ -336,7 +387,7 @@ var cashTenderedKeypadString = "";
 var roomNumberInputFocus = false;
 
 function totalsScreenKeypadClick(val) {
-    if(loyaltyPaymentMethodSelected) {
+    if(loyaltyPaymentMethodSelected || accountPaymentMethodSelected) {
         return;
     }
     
@@ -353,7 +404,7 @@ function totalsScreenKeypadClick(val) {
 }
 
 function totalsScreenKeypadClickCancel() {
-    if(loyaltyPaymentMethodSelected) {
+    if(loyaltyPaymentMethodSelected || accountPaymentMethodSelected) {
         return;
     }
     
@@ -368,7 +419,7 @@ function totalsScreenKeypadClickCancel() {
 }
 
 function moneySelected(amount) {
-    if(loyaltyPaymentMethodSelected) {
+    if(loyaltyPaymentMethodSelected || accountPaymentMethodSelected) {
         return;
     }
     
@@ -468,6 +519,11 @@ function chargeCreditCard(amount) {
         return;
     }
     
+    if(totalOrder.card_charge) {
+        niceAlert("You have already processed a card transaction for this sale!");
+        return;
+    }
+    
     if(typeof(amount) == 'undefined') {
         amount = cashTendered;
     }
@@ -486,8 +542,10 @@ function chargeCreditCard(amount) {
     
     currentCardChargeAmount = amount;
     
+    currentCCReferenceNumber = clueyTimestamp();
+    
     //This message will print on the cc receipt
-    var referenceMessage = business_name;
+    var referenceMessage = "TXN#: " + currentCCReferenceNumber;
     
     var creditCardChargeRequestURL = 'http://' + creditCardChargeServiceIP + ':8080/ClueyWebSocketServices/cc_txn';
     
@@ -510,7 +568,7 @@ function chargeCreditCard(amount) {
         error: function() {
             if (!userAbortedXHR(cc_txn_xhr)) {
                 hideNiceAlert();
-                setStatusMessage("Error charging card! Make sure card service is running and settings are correct.", false, false);
+                niceAlert("Error charging card! Make sure card service is running and settings are correct.", false, false);
             }
         },
         complete: function() {
@@ -545,8 +603,12 @@ function creditCardChargeCallback(creditCardChargeResponseCode) {
         //tag the card charge on to the order so we can create a record in cc_txn table
         totalOrder.card_charge = {
             paymentMethod : paymentMethod,
-            amount : currentCardChargeAmount
+            amount : currentCardChargeAmount,
+            reference_number : currentCCReferenceNumber
         }
+        
+        disallowCancelSaleCC = true;
+        paymentMethodSelected(getPaymentMethodId(defaultPaymentMethod));
     } else if(creditCardChargeResponseCode == 2) {
         message = "Charge has been declined.";
         niceAlert(message);
@@ -560,7 +622,7 @@ function creditCardChargeCallback(creditCardChargeResponseCode) {
         message = "Unknown response from card terminal.";
         niceAlert(message);
     } else if(creditCardChargeResponseCode == 6) {
-        message = "Commnunication Error, please make sure the credit card terminal is not in use and all settings are set correctly.";
+        message = "Communication Error, please make sure the credit card terminal is not in use and all settings are set correctly.";
         niceAlert(message);
     } else {
         //unknown error
@@ -638,6 +700,8 @@ function addLoyaltyCustomerToTotalOrder(customer) {
     
     totalOrder.loyalty = {
         customer_id : customer.id,
+        customer_name : customer.name,
+        customer_number : customer.number,
         points_earned : pointsEarned,
         points_available : loyaltyPointsAvailable
     }
@@ -646,9 +710,177 @@ function addLoyaltyCustomerToTotalOrder(customer) {
 function resetLoyaltyCustomer() {
     $('#loyalty_customer_section').hide();
     delete totalOrder['loyalty'];
-    delete splitPayments['loyalty'];
+    delete splitPayments[loyaltyPaymentMethodSelected];
     
     if(loyaltyPaymentMethodSelected) {
         paymentMethodSelected(getPaymentMethodId(defaultPaymentMethod));
     }
+}
+
+//client account shtuff
+function initCustomerSearchKeyboard() {
+    toggleKeyboardEnable = false;
+    
+    var keyboardPlaceHolderEl = $('#totals_screen_select_customer_container #customer_search_results_keyboard_container')
+    
+    var pos = keyboardPlaceHolderEl.offset();
+    
+    //show the menu directly over the placeholder
+    $("#util_keyboard_container").css( {
+        "position" : "absolute",
+        "width" : "688px",
+        "left": (pos.left) + "px", 
+        "top":pos.top + "px"
+    } );
+    
+    $('#close_keyboard_link').hide();
+
+    $("#util_keyboard_container").show();
+    
+    //we need to force the search function to rerun on input, but the util keyboard will not fire an event to cause it to happen
+    //so we tie a function to the callback when a key is pressed
+    setUtilKeyboardCallback(function(){
+        selectedCustomerSearchLetter = null;
+        updateCustomerSearchResults();
+    });
+}
+
+function showCustomerSearchScreen() {
+    $('#payment_options_money_info_container').hide();
+    $('#totals_screen_select_customer_container').show();
+    initCustomerSearchKeyboard();
+    
+    clearCustomerSearchInput();
+    $('#customer_search_input').focus();
+    updateCustomerSearchResults();
+}
+
+function clearCustomerSearchInput() {
+    $('#customer_search_input').val("");
+    updateCustomerSearchResults();
+}
+
+function resetCustomerSelect() {
+    delete totalOrder['customer'];
+    $('#client_customer_section').hide();
+    
+    $('#totals_screen_select_customer_container').hide();
+    $('#payment_options_money_info_container').show();
+    paymentMethodSelected(getPaymentMethodId(defaultPaymentMethod));
+    setUtilKeyboardCallback(null);
+    resetKeyboard();
+}
+
+var selectedCustomerSearchLetter = null;
+var amountToChargeCustomer = null;
+
+function searchBoxFocused() {
+    selectedCustomerSearchLetter = null;
+    $('#selection_letters .letter').removeClass("selected");
+    updateCustomerSearchResults();
+}
+
+function loadAllCustomers() {
+    selectedCustomerSearchLetter = null;
+    $('#selection_letters .letter').removeClass("selected");
+    $('#selection_letters #cs_button_all').addClass("selected");
+    clearCustomerSearchInput();
+}
+
+function loadSearchCustomersForLetter(letter) {
+    console.log("Get customers for letter: " + letter);
+    clearCustomerSearchInput();
+    $('#selection_letters .letter').removeClass("selected");
+    $('#selection_letters #cs_button_' + letter).addClass("selected");
+    selectedCustomerSearchLetter = letter;
+    updateCustomerSearchResults();
+}
+
+function updateCustomerSearchResults() {
+    var searchString = $('#customer_search_input').val().toLowerCase();
+    
+    console.log("Searching for customers using string: " + searchString);
+    
+    results = new Array();
+    
+    var nextCustomer = null;
+    
+    if(selectedCustomerSearchLetter != null) {        
+        for(customerId in creditCustomers) {
+            nextCustomer = creditCustomers[customerId];
+            //console.log(nextCustomer.name);
+            if(nextCustomer.name.toLowerCase().startsWith(selectedCustomerSearchLetter)) {
+                results.push(nextCustomer);
+            }
+        }
+    } else {
+        for(customerId in creditCustomers) {
+            nextCustomer = creditCustomers[customerId];
+            //console.log(nextCustomer.name);
+            if(nextCustomer.name.toLowerCase().contains(searchString)) {
+                results.push(nextCustomer);
+            }
+        }
+    }
+    
+    $('#search_results_scroller').html("");
+    
+    var resultHTML = "<div id='customer_list'>";
+    
+    if(results.length > 0) {
+        for(var i=0; i<results.length; i++) {
+            var c = results[i];
+            
+            var startIndex = c.name.toLowerCase().indexOf(searchString);
+            var endIndex = startIndex + searchString.length + 3;
+            
+            var customerName = c.name;
+            
+            if(searchString.length > 0) {
+                customerName = customerName.toLowerCase().splice(startIndex, 0, "<b>");
+                customerName = customerName.toLowerCase().splice(endIndex, 0, "</b>");
+            }
+            
+            resultHTML += "<div onclick='addCustomerToOrder(" + c.id + ")' class='customer'>" + customerName + "</div>";
+        }
+    } else {
+        resultHTML += "<div id='no_results'>No Customers Found!</div>";
+    }
+    
+    resultHTML += "</div>" + clearHTML;
+    
+    $('#search_results_scroller').html(resultHTML);
+}
+
+function addCustomerToOrder(c_id) {
+    var customer = creditCustomers[c_id];
+    var customerName = customer.name;
+    
+    //check the credit limit of this customer
+    var creditAvailable = customer.credit_available;
+    var customerCreditLimit = customer.credit_limit;
+    var customerCreditAvailable = customer.credit_available;
+    var customerCurrentBalance = customer.current_balance;
+    
+    if(amountToChargeCustomer > creditAvailable) {
+        niceAlert("This customers credit limit (" + currency(customerCreditLimit) + ") will not allow for this sale to finish. Credit Available: " + currency(customerCreditAvailable));
+        return;
+    }
+    
+    console.log("Adding customer " + customerName + " to order!");
+    
+    $('#totals_screen_select_customer_container').hide();
+    $('#payment_options_money_info_container').show();
+    setUtilKeyboardCallback(null);
+    resetKeyboard();
+    
+    totalOrder.customer = {
+        customer_id : customer.id
+    };
+    
+    //show some dialog saying that this customer is chosen
+    $('#client_customer_name').html(customerName);
+    $('#client_customer_credit_limit').html(currency(customerCreditLimit));
+    $('#client_customer_current_balance').html(currency(customerCurrentBalance));
+    $('#client_customer_section').show();
 }

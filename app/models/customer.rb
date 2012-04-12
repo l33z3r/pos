@@ -2,6 +2,8 @@ class Customer < ActiveRecord::Base
   has_many :customer_points
   belongs_to :loyalty_level
   
+  has_many :customer_transactions
+  
   NORMAL = "normal"
   LOYALTY = "loyalty"
   BOTH = "both"
@@ -44,6 +46,27 @@ class Customer < ActiveRecord::Base
     write_attribute("customer_number", c_num)
   end
   
+  def swipe_card_code=(card_code)
+    if card_code.blank?
+      @customer_number = nil
+    else
+      @swipe_card_prefix = GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_CARD_PREFIX
+    
+      @customer_number_prefix = "10000000"
+    
+      @start_index = @swipe_card_prefix.length + 1
+      @end_index = @start_index + @customer_number_prefix.length - 2
+      
+      @customer_number = card_code[@start_index..@end_index]
+    end
+    
+    write_attribute("swipe_card_code", card_code)
+    
+    if @customer_number
+      write_attribute("customer_number", @customer_number)
+    end
+  end
+  
   def is_loyalty_customer?
     customer_type == LOYALTY or customer_type == BOTH
   end
@@ -52,8 +75,30 @@ class Customer < ActiveRecord::Base
     customer_type == NORMAL or customer_type == BOTH
   end
   
+  def credit_limit=(c_limit)
+    @credit_available = c_limit.to_f - current_balance
+    write_attribute("credit_available", @credit_available)
+    write_attribute("credit_limit", c_limit)
+  end
+  
+  def current_balance=(c_balance)
+    @credit_available = credit_limit - c_balance.to_f
+    write_attribute("credit_available", @credit_available)
+    write_attribute("current_balance", c_balance)
+  end
+
   def self.all_active
     Customer.where("is_active = ?", true)
+  end
+  
+  ACCOUNT_NUMBER_BASE = 100000
+  
+  def account_number
+    ACCOUNT_NUMBER_BASE + id
+  end
+  
+  def validate
+    errors.add(:credit_limit, "cannot be set to a value lower than the users current balance outstanding") if credit_limit < current_balance
   end
 end
 

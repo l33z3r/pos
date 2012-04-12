@@ -513,6 +513,14 @@ String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
+String.prototype.contains = function(str){
+    return (this.indexOf(str) != -1);
+};
+
+String.prototype.splice = function( idx, rem, s ) {
+    return (this.slice(0,idx) + s + this.slice(idx + Math.abs(rem)));
+};
+
 function utilFormatDate(date) {
     return formatDate(date, defaultJSDateFormat);
 }

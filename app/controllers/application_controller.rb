@@ -451,6 +451,22 @@ class ApplicationController < ActionController::Base
     
     #menu screen type
     @menu_screen_type = GlobalSetting.parsed_setting_for GlobalSetting::MENU_SCREEN_TYPE, {:fingerprint => @terminal_fingerprint}
+    
+    @show_charge_card_button = GlobalSetting.parsed_setting_for GlobalSetting::SHOW_CHARGE_CARD_BUTTON
+    
+    @currentResolution = GlobalSetting.parsed_setting_for GlobalSetting::SCREEN_RESOLUTION, {:fingerprint => @terminal_fingerprint}
+    @normalResolution = GlobalSetting::SCREEN_RESOLUTION_NORMAL
+    @resolution1360x786 = GlobalSetting::SCREEN_RESOLUTION_1360x786
+  
+    #menu screen buttons etc
+    @menu_screen_buttons_per_row = 8
+    @admin_screen_buttons_per_row = 11
+    
+    if @currentResolution == @resolution1360x786
+      @menu_screen_buttons_per_row = 12
+      @admin_screen_buttons_per_row = 15
+    end
+    
   end
   
   def mobile_device?

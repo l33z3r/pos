@@ -147,3 +147,15 @@ function runCustomerSearch() {
     });
     
 }
+
+function doToggleGenerateSwipeCardCode(radioEl) {
+    var selectedVal = $(radioEl).val();
+    
+    if(selectedVal == "swipe_card") {
+        $('#customer_swipe_card_code').attr("disabled", false);
+        $('#customer_customer_number').attr("disabled", true);
+    } else {
+        $('#customer_swipe_card_code').attr("disabled", true);
+        $('#customer_customer_number').attr("disabled", false);
+    }
+}

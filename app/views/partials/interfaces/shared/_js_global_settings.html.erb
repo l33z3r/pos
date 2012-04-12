@@ -49,7 +49,11 @@
   var globalDefaultServiceChargePercent = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_SERVICE_CHARGE_PERCENT %>;
   
   //default payment method
-  var defaultPaymentMethod = "<%= PaymentMethod.load_default.name %>";
+  var defaultPaymentMethod = "<%= PaymentMethod.load_default.name.downcase %>";
+   
+  var cashPaymentMethodName = "<%= PaymentMethod::CASH_PAYMENT_METHOD_NAME %>";
+  var loyaltyPaymentMethodName = "<%= PaymentMethod::LOYALTY_PAYMENT_METHOD_NAME %>";
+  var accountPaymentMethodName = "<%= PaymentMethod::ACCOUNT_PAYMENT_METHOD_NAME %>";
    
   //load the dynamically set currency symbol
   var dynamicCurrencySymbol = "<%= @currency_symbol %>";
@@ -167,4 +171,12 @@
   var loyaltyCardPrefix = "<%= GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_CARD_PREFIX %>";
   var enableLoyaltyCardRedemption = <%= GlobalSetting.parsed_setting_for GlobalSetting::ENABLE_LOYALTY_REDEMPTION %>;
   var loyaltyPointsPerCurrencyUnit = <%= GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_POINTS_PER_CURRENCY_UNIT %>;
+  
+  var halfMeasureLabel = "<%= GlobalSetting.parsed_setting_for GlobalSetting::HALF_MEASURE_LABEL %>";
+  
+  var allowedZalionSplitPayments = <%= GlobalSetting.parsed_setting_for GlobalSetting::ALLOW_ZALION_SPLIT_PAYMENTS %>;
+  
+  var currentResolution = "<%= @currentResolution %>";
+  var normalResolution = "<%= @normalResolution %>";
+  var resolution1360x786 = "<%= @resolution1360x786 %>";
 </script>
