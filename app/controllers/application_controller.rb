@@ -417,6 +417,26 @@ class ApplicationController < ActionController::Base
     
     @zalion_charge_room_service_ip = @zalion_charge_room_service_ip_gs.value
     
+    @credit_card_charge_service_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_CHARGE_SERVICE_IP, {:fingerprint => @terminal_fingerprint}
+    
+    if @credit_card_charge_service_ip_gs.value.blank?
+      @credit_card_charge_service_ip_gs.value = request.remote_ip
+      @credit_card_charge_service_ip_gs.save
+      @credit_card_charge_service_ip_gs.reload
+    end
+    
+    @credit_card_charge_service_ip = @credit_card_charge_service_ip_gs.value
+    
+    @credit_card_terminal_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_IP, {:fingerprint => @terminal_fingerprint}
+    
+    if @credit_card_terminal_ip_gs.value.blank?
+      @credit_card_terminal_ip_gs.value = request.remote_ip
+      @credit_card_terminal_ip_gs.save
+      @credit_card_terminal_ip_gs.reload
+    end
+    
+    @credit_card_terminal_ip = @credit_card_terminal_ip_gs.value
+    
     @windows_printer_margins = GlobalSetting.parsed_setting_for GlobalSetting::WINDOWS_PRINTER_MARGINS, {:fingerprint => @terminal_fingerprint}
     
     #white space in menus

@@ -1,3 +1,55 @@
+
+
+//url to charge to credit card servlet
+//localhost:8080/ClueyWebSocketServices/cc_txn?credit_card_terminal_ip=192.168.1.15&credit_card_terminal_port=25000
+//&transaction_type=C&transaction_amount=.03&cashback_amount=0&reference_message=ClueySale&gratuity_amount=0
+
+
+function chargeCreditCard(amount) {
+    var referenceMessage = "Cluey Sale!";
+    
+    var creditCardChargeRequestURL = 'http://' + creditCardChargeServiceIP + ':8080/ClueyWebSocketServices/cc_txn';
+    
+    $.ajax({
+        type: 'POST',
+        url: '/forward_credit_card_charge_request',
+        error: function() {
+            setStatusMessage("Error Charging Credit Card", false, false);
+        },
+        success: function() {
+            setStatusMessage("Credit Card Charged.", false, false);                   
+        },
+        data: {
+            credit_card_charge_request_url : creditCardChargeRequestURL,
+            credit_card_terminal_ip : creditCardTerminalIP,
+            credit_card_terminal_port : creditCardTerminalPort,
+            transaction_type : "C",
+            transaction_amount : amount,
+            cashback_amount : "0",
+            reference_message : referenceMessage,
+            gratuity_amount : "0"
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var splitPayments;
 
 function updateTotalTendered() {

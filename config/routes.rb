@@ -8,6 +8,7 @@ Pos::Application.routes.draw do
   match 'forward_cash_drawer_request' => "home#forward_cash_drawer_request", :via => :post
   match 'forward_zalion_roomfile_request' => "home#forward_zalion_roomfile_request", :via => :get
   match 'forward_zalion_charge_request' => "home#forward_zalion_charge_request", :via => :post
+  match 'forward_credit_card_charge_request' => "home#forward_credit_card_charge_request", :via => :post
   
   #orders
   match 'order' => "order#create", :via => :post

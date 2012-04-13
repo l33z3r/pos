@@ -77,6 +77,9 @@ class GlobalSetting < ActiveRecord::Base
   USE_WHITE_SPACE_MOBILE_MENUS = 48
   USE_WHITE_SPACE_DESKTOP_MENUS = 49
   SHOW_LICENCE_EXPIRED_SCREEN = 50 
+  CREDIT_CARD_CHARGE_SERVICE_IP = 51
+  CREDIT_CARD_TERMINAL_IP = 52
+  CREDIT_CARD_TERMINAL_PORT = 53
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -128,7 +131,10 @@ class GlobalSetting < ActiveRecord::Base
     PRICE_LEVEL_LABEL => "Price Level Label",
     USE_WHITE_SPACE_MOBILE_MENUS => "Use White Space Mobile Menus",
     USE_WHITE_SPACE_DESKTOP_MENUS => "Use White Space Desktop Menus",
-    SHOW_LICENCE_EXPIRED_SCREEN => "Show Licence Expired Screen"
+    SHOW_LICENCE_EXPIRED_SCREEN => "Show Licence Expired Screen",
+    CREDIT_CARD_CHARGE_SERVICE_IP => "Credit Card Charge Service IP",
+    CREDIT_CARD_TERMINAL_IP => "Credit Card Terminal IP",
+    CREDIT_CARD_TERMINAL_PORT => "Credit Card Terminal Port"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -148,11 +154,11 @@ class GlobalSetting < ActiveRecord::Base
         #the key will be the key for terminal id followed by the terminal fingerprint
         GlobalSetting.transaction do
           @gs = find_by_key("#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :lock => true)
-          
+	  
           if !@gs
             @gs = create(:key => "#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :value => "NT##{Time.now.to_i.to_s[-4,4]}", :label_text => LABEL_MAP[TERMINAL_ID])
           end
-          
+	  
           @gs.parsed_value = @gs.value
         end
       end
@@ -291,6 +297,15 @@ class GlobalSetting < ActiveRecord::Base
     when SHOW_LICENCE_EXPIRED_SCREEN
       @gs = find_or_create_by_key(:key => SHOW_LICENCE_EXPIRED_SCREEN.to_s, :value => "false", :label_text => LABEL_MAP[SHOW_LICENCE_EXPIRED_SCREEN])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when CREDIT_CARD_CHARGE_SERVICE_IP
+      @gs = find_or_create_by_key(:key => "#{CREDIT_CARD_CHARGE_SERVICE_IP.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[CREDIT_CARD_CHARGE_SERVICE_IP])
+      @gs.parsed_value = @gs.value
+    when CREDIT_CARD_TERMINAL_IP
+      @gs = find_or_create_by_key(:key => "#{CREDIT_CARD_TERMINAL_IP.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[CREDIT_CARD_TERMINAL_IP])
+      @gs.parsed_value = @gs.value
+    when CREDIT_CARD_TERMINAL_PORT
+      @gs = find_or_create_by_key(:key => "#{CREDIT_CARD_TERMINAL_PORT.to_s}_#{args[:fingerprint]}", :value => "25000", :label_text => LABEL_MAP[CREDIT_CARD_TERMINAL_PORT])
+      @gs.parsed_value = @gs.value.to_i
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -369,6 +384,9 @@ class GlobalSetting < ActiveRecord::Base
     when PRINT_VAT_RECEIPT
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
+    when CREDIT_CARD_TERMINAL_PORT
+      new_value = value.to_i
+      write_attribute("value", new_value)
     else
       #catch the keys that are not only integers and wont get caught in the switch statement
       if key.starts_with? TERMINAL_ID.to_s
@@ -378,58 +396,79 @@ class GlobalSetting < ActiveRecord::Base
             #copy the settings over to the new fingerprint
             @old_terminal_gs = @res.first
             @old_fingerprint = @old_terminal_gs.key.split("_").last
-            
+	    
             #web socket ip
             @websocket_ip_gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, {:fingerprint => @old_fingerprint}
-            
+	    
             @my_terminal_fingerprint = key.split("_").last
-            
+	    
             @my_websocket_ip_gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, {:fingerprint => @my_terminal_fingerprint}
             @my_websocket_ip_gs.value = @websocket_ip_gs.value
             @my_websocket_ip_gs.save
 
             #cash drawer ip
             @cash_drawer_ip_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_IP_ADDRESS, {:fingerprint => @old_fingerprint}
-            
+	    
             @my_cash_drawer_ip_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_IP_ADDRESS, {:fingerprint => @my_terminal_fingerprint}
             @my_cash_drawer_ip_gs.value = @cash_drawer_ip_gs.value
             @my_cash_drawer_ip_gs.save
-              
+	      
             #order receipt width
             @order_reciept_width_gs = GlobalSetting.setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, {:fingerprint => @old_fingerprint}
-            
+	    
             @my_order_reciept_width_gs = GlobalSetting.setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, {:fingerprint => @my_terminal_fingerprint}
             @my_order_reciept_width_gs.value = @order_reciept_width_gs.value
             @my_order_reciept_width_gs.save
-            
+	    
             #menu screen type
             @menu_screen_type_gs = GlobalSetting.setting_for GlobalSetting::MENU_SCREEN_TYPE, {:fingerprint => @old_fingerprint}
-            
+	    
             @my_menu_screen_type_gs = GlobalSetting.setting_for GlobalSetting::MENU_SCREEN_TYPE, {:fingerprint => @my_terminal_fingerprint}
             @my_menu_screen_type_gs.value = @menu_screen_type_gs.value
             @my_menu_screen_type_gs.save
-            
+	    
             #printer left margin
             @printer_left_margin_gs = GlobalSetting.setting_for GlobalSetting::PRINTER_LEFT_MARGIN, {:fingerprint => @old_fingerprint}
-            
+	    
             @my_printer_left_margin_gs = GlobalSetting.setting_for GlobalSetting::PRINTER_LEFT_MARGIN, {:fingerprint => @my_terminal_fingerprint}
             @my_printer_left_margin_gs.value = @printer_left_margin_gs.value
             @my_printer_left_margin_gs.save
-            
+	    
             #disable advanced touch
             @disable_advanced_touch_gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @old_fingerprint, :user_agent => ""}
-            
+	    
             @my_disable_advanced_touch_gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @my_terminal_fingerprint, :user_agent => ""}
             @my_disable_advanced_touch_gs.value = @disable_advanced_touch_gs.value
             @my_disable_advanced_touch_gs.save
-            
+	    
             #home screen
             @home_screen_gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_HOME_SCREEN, {:fingerprint => @old_fingerprint}
-            
+	    
             @my_home_screen_gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_HOME_SCREEN, {:fingerprint => @my_terminal_fingerprint}
             @my_home_screen_gs.value = @home_screen_gs.value
             @my_home_screen_gs.save
-            
+	    
+            #cc charge service ip
+            @cc_charge_service_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_CHARGE_SERVICE_IP, {:fingerprint => @old_fingerprint}
+	    
+            @my_cc_charge_service_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_CHARGE_SERVICE_IP, {:fingerprint => @my_terminal_fingerprint}
+            @my_cc_charge_service_ip_gs.value = @cc_charge_service_ip_gs.value
+            @my_cc_charge_service_ip_gs.save
+	    
+            #cc terminal ip
+            @cc_terminal_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_IP, {:fingerprint => @old_fingerprint}
+	    
+            @my_cc_terminal_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_IP, {:fingerprint => @my_terminal_fingerprint}
+            @my_cc_terminal_ip_gs.value = @cc_terminal_ip_gs.value
+            @my_cc_terminal_ip_gs.save
+	    
+            #cc terminal port
+            @cc_terminal_port_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, {:fingerprint => @old_fingerprint}
+	    
+            @my_cc_terminal_port_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, {:fingerprint => @my_terminal_fingerprint}
+            @my_cc_terminal_port_gs.value = @cc_terminal_port_gs.value
+            @my_cc_terminal_port_gs.save
+	    
             #delete old gs objects
             @websocket_ip_gs.destroy
             @cash_drawer_ip_gs.destroy
@@ -439,6 +478,9 @@ class GlobalSetting < ActiveRecord::Base
             @printer_left_margin_gs.destroy
             @disable_advanced_touch_gs.destroy
             @home_screen_gs.destroy
+            @cc_charge_service_ip_gs.destroy
+            @cc_terminal_ip_gs.destroy
+            @cc_terminal_port_gs.destroy
           end
         end
         if value
@@ -459,7 +501,6 @@ class GlobalSetting < ActiveRecord::Base
         write_attribute("value", new_value)
       end
     end
-    
   end
   
   #this is just a shortcut method

@@ -126,7 +126,10 @@
   
   var webSocketServiceIP = "<%= @web_socket_service_ip %>";
   var cashDrawerServiceIP = "<%= @cash_drawer_service_ip %>";
-
+  var creditCardChargeServiceIP = "<%= @credit_card_charge_service_ip %>";
+  var creditCardTerminalIP = "<%= @credit_card_terminal_ip %>";
+  var creditCardTerminalPort = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, {:fingerprint => @terminal_fingerprint} %>";
+  
   var orderReceiptWidthSetting = "<%= @order_receipt_width_setting %>";
   
   var allDevicesOrderNotification = <%= GlobalSetting.parsed_setting_for GlobalSetting::All_DEVICES_ORDER_NOTIFICATION %>;
