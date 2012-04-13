@@ -1262,10 +1262,6 @@ function doTotalFinal() {
         totalOrder.cash_tendered = cashTendered;
     }
     
-    if($.isEmptyObject(splitPayments)) {
-        splitPayments[paymentMethod] = totalOrder.cash_tendered;
-    }
-    
     totalOrder.change = $('#totals_change_value').html();
     
     //need to set the split_payments on the order for the receipt
@@ -1277,17 +1273,21 @@ function doTotalFinal() {
     //this loop will also purge 0 amounts from the splitPayments array
     var doOpenCashDrawer = false;
     
-    for(var pm in splitPayments) {
-        //make sure there is an amount in this payment type
-        if(parseFloat(splitPayments[pm]) <= 0) {
-            delete splitPayments[pm];
-            continue;
-        }
+    if($.isEmptyObject(splitPayments)) {
+        splitPayments[paymentMethod] = totalOrder.cash_tendered;
+    } else {
+        for(var pm in splitPayments) {
+            //make sure there is an amount in this payment type
+            if(parseFloat(splitPayments[pm]) <= 0) {
+                delete splitPayments[pm];
+                continue;
+            }
         
-        var pmId = getPaymentMethodId(pm);
+            var pmId = getPaymentMethodId(pm);
         
-        if(paymentMethods[pmId].open_cash_drawer){
-            doOpenCashDrawer = true;
+            if(paymentMethods[pmId].open_cash_drawer){
+                doOpenCashDrawer = true;
+            }
         }
     }
     

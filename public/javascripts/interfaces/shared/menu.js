@@ -835,8 +835,13 @@ function removeSelectedOrderItem() {
     order = getCurrentOrder();
     var item = order.items[itemNumber - 1];
 
+    if(item.is_void) {
+        niceAlert("You cannot remove an item that is void.");
+        return;
+    }
+    
     if(item.synced && selectedTable != 0) {
-        niceAlert("You cannot remove an item that has already been ordered. You must void this item.");
+        niceAlert("You cannot remove an item that has already been ordered. You can only void this item.");
         return;
     }
 

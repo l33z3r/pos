@@ -62,7 +62,7 @@ function doSyncTableOrder() {
     
     //mark the item that we need to show the server added text for
     for(var i=0; i<order.items.length; i++) {
-        if(checkForShowServerAddedText && !order.items[i].synced) {
+        if(checkForShowServerAddedText && !order.items[i].synced && !order.items[i].is_void) {
             order.items[i].showServerAddedText = true;
             checkForShowServerAddedText = false;
         }
