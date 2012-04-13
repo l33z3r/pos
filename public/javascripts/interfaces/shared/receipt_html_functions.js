@@ -80,19 +80,22 @@ function printReceipt(content, printRecptMessage) {
     print(content);
 }
 
+
+
 function print(content) {
+    if (content != "report_print"){
     $('#printFrame').contents().find('#till_roll').html(content);
-    
-    var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>" 
+
+    var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>"
     + $('#printFrame').contents().find('html').html() + "</html>";
-      
+
     var print_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/receipt_printer';
-    
+
     //make sure the html content is compatible with the print service
-    
+
     //replace <hr> with <hr></hr>
     content_with_css = content_with_css.replace("<hr>", "<hr></hr>");
-    
+
     $.ajax({
         type: 'POST',
         url: '/forward_print_service_request',
@@ -104,68 +107,68 @@ function print(content) {
             html_data : content_with_css
         }
     });
-    
+
     return;
-     
-    
+
+
     //TODO: display an error if the service is not running...
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
     console.log("Websocket support? " + ("WebSocket" in window));
-    
+
     if ("WebSocket" in window) {
         //console.log("Sending receipt content over websocket: " + content_with_css);
-        
+
         // Let us open a web socket
         var ws = new WebSocket("ws://" + webSocketServiceIP + ":8080/ClueyWebSocketServices/receipt_printer");
-        
+
         ws.onopen = function()
         {
-            //there is a maximum limit on the size of the message we can send, 
+            //there is a maximum limit on the size of the message we can send,
             //so we split it into groups of 3072 chars (3kb of data)
             var charsPerGroup = 3072;
-            
+
             console.log("Breaking data up into " + Math.ceil(content_with_css.length/charsPerGroup) + " groups to send to print service");
             for(var i = 0; i < content_with_css.length; i+=charsPerGroup) {
                 var nextGroup = content_with_css.substring(i, i + charsPerGroup);
                 console.log("Sending group " + ((i/charsPerGroup) + 1));
                 ws.send(nextGroup);
             }
-            
+
             //ws.send(content_with_css);
-            
+
             ws.close();
         };
-        
-        ws.onmessage = function (evt) 
-        { 
+
+        ws.onmessage = function (evt)
+        {
             var received_msg = evt.data;
             console.log("Message received: " + received_msg);
         };
         ws.onclose = function()
-        { 
+        {
             // websocket is closed.
-            console.log("Connection closed!"); 
+            console.log("Connection closed!");
         };
     } else {
         // The browser doesn't support WebSocket
         alert("WebSocket NOT supported by your Browser!");
-    
+
     //DO IT THE OLD FASHIONED WAY
     //    $('#printFrame').contents().find('#till_roll').html(content);
-    //    
+    //
     //    printFrame.focus();
     //    printFrame.print();
     }
-    
+
 }
 
 function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, includeVatBreakdown) {

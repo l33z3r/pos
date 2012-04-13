@@ -1,0 +1,5 @@
+<div class="dropdown_container">
+    <div class="label">Category</div>
+    <%= collection_select :category_id, :equals, Category.find(:all), :id, :name, options = {:include_blank => "Any", :selected => @current_category}, {:onchange => "loadDropDown('category')"} %>
+    <div class="clear">&nbsp;</div>
+</div>

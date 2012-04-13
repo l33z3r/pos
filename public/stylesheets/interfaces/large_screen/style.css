@@ -3741,7 +3741,7 @@ div#reports_container  div.container h4 {
 div#reports_container  div#at_a_glance_filters {
     float: left;
     height: 50px;
-    width: 87%;
+    width: 100%;
     margin-right: 10px;
     border: 1px solid #777;
     -moz-border-radius: 7px;
@@ -3783,6 +3783,7 @@ div#reports_container  div#at_a_glance_results_right{
     float: left;
     height: 650px;
     width: 50%;
+    background-color: white;
 }
 
 div#reports_container table.items_table{
@@ -3803,10 +3804,25 @@ div#reports_container table.items_table td.left{
     text-align: left;
 }
 
-/*div#reports_container #sales_items{*/
-/*overflow: auto;*/
-/*border:  3px solid black;*/
-/*}*/
+div#reports_container #sales_items{
+overflow: auto;
+border:  1px solid black;
+    border-radius: 10px;
+width: 100%;
+    height: 520px;
+}
+
+#table-design thead {
+	width: 100%;
+}
+#table-design td {
+	padding: 5px 5px 5px 0;
+	vertical-align: top;
+}
+#table-design thead th {
+	padding-right: 10px;
+	text-align: left;
+}
 
 div#reports_container table.sales_items_table{
     width: 100%;
@@ -3841,9 +3857,9 @@ div#reports_container  div#at_a_glance_results_right div#graph_container{
 
 div#reports_container  div#at_a_glance_results{
     float: left;
-    height: 650px;
-    width: 87%;
-    margin-right: 10px;
+    /*height: 650px;*/
+    width: 100%;
+    /*margin-right: 10px;*/
     border: 1px solid #777;
     border: 1px solid #777;
     -moz-border-radius: 7px;
@@ -3885,14 +3901,16 @@ div#reports_container  div#report_sales_filters #date_select_container{
     width: 600px;
 }
 
-div#reports_container  div#report_sales_filters div.dropdown_container .dropdown_sel{
+div#reports_container  div#report_sales_filters div.dropdown_container #product_id_equals{
     width: 110px;
 
 }
 
 div#reports_container  div#report_sales_filters #refine_button{
-    margin-left: 160px;
     margin-top: 20px;
+    width: 103px;
+    height: 64px;
+    float: left
 
 }
 
@@ -3965,3 +3983,4 @@ div#reports_container  div.wide_button {
 }
 
 /* end styles carried over from scaffold css */
+

@@ -47,7 +47,7 @@ function loginScreenKeyboardClick(e) {
         var newval = $('#num').val().substring(3, 15);
         $('#num').val(newval);
         $('#clockincode_show').html("**********");
-        doLogin(newval);
+        doDallasLogin(newval);
         }
         else {$('#num').val("")
               $('#clockincode_show').html("");  }
@@ -81,6 +81,37 @@ function forceLogin(user_id) {
     var passcode = employees[user_index].passcode;
 
     loginSuccess(user_id, nickname, is_admin, passcode);
+}
+
+function doDallasLogin() {
+    entered_code = $('#num').val();
+
+    if (current_user_id != null) {
+        //already logged in
+        displayError("You are already logged in. Please log out!");
+        return;
+    }
+
+    for (var i = 0; i < employees.length; i++) {
+        passcode = employees[i].dallas_code;
+
+        if (entered_code == passcode) {
+            nickname = employees[i].nickname;
+
+            if (employees[i]['clocked_in']) {
+                id = employees[i].id
+                is_admin = employees[i].is_admin;
+                loginSuccess(id, nickname, is_admin, passcode);
+                return;
+            } else {
+                setStatusMessage("User " + nickname + " is not clocked in!", true, true);
+                clearCode();
+                return;
+            }
+        }
+    }
+
+    loginFailure();
 }
 
 function doLogin() {
@@ -331,28 +362,5 @@ function clearCode() {
     $('#clockincode_show').html("");
 }
 
-$(function () {
-    $("#num").select();
-    $("#num").focus();
-})
 
-
-$(document).bind('keypress', function(event) {
-    if( event.which == 117 ) {
-        if ($('#admin_content_screen').is(":visible") ){
-            setStatusMessage("Logging out... Please wait.");
-            doLogout();
-            window.location = "/home"
-        }else{
-            doLogout();
-        }
-
-    }
-});
-
-setTimeout(function(){
-
-            $('#num').focus();
-            scanFocusLoginPoll();
-        }, 1000);
 

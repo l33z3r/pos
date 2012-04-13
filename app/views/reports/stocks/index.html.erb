@@ -1,0 +1,109 @@
+<% @nav_title = "Reports" %>
+
+<div id="reports_container">
+
+    <div id="report_option_tabs" class="side-tabs report_option_tabs">
+
+       <div id="admin_subnav_left">
+            <%= render :partial => "/partials/interfaces/large_screen/menu_screen_options_screen_buttons" %>
+
+            <%= yield :admin_subnav_links_left %>
+
+        </div>
+
+        <div style="float: right">
+            <div class="button" onclick="window.location = '/reports/glances'">
+
+                <div class="button_name">At a Glance</div>
+            </div>
+            <div class="button" onclick="window.location = '/reports/sales'">
+
+                <div class="button_name">Sales Reports</div>
+            </div>
+            <div class="button selected" onclick="window.location = '/reports/stocks'">
+
+                <div class="button_name">Stock Reports</div>
+            </div>
+        </div>
+        <br>
+        <br>
+
+        <div>
+
+            <div class="container" id="#at_a_glance_section">
+                <div id="report_sales_filters" class="popout_dialog">
+                    <div id="refine_container">
+                    <div id="date_select_container">
+                        <div class="dropdown_container">
+                            <div class="label">Report Type</div>
+                            <select onchange="setSearchType($(this).val())">
+                                <option value="0">Stock by Product</option>
+                                <option value="1">Stock by Category</option>
+                            </select>
+                        </div>
+                        <div class="dropdown_container" style="margin-left: 40px;">
+                            <div class="label">Terminal</div>
+                            <select onchange="addTerminalFilter($(this).val())">
+                                <option value="">All Terminals</option>
+                                <% @all_terminals.each do |terminal_id| %>
+                                    <option value="<%= terminal_id %>"><%= terminal_id %></option>
+                                <% end %>
+                            </select>
+                        </div>
+
+                        <div class="dropdown_container">
+                            <div class="label">Date</div>
+                            <select onchange="addDateFilter($(this).val())">
+                                <option value="1">Today</option>
+                                <option value="2">Yesterday</option>
+                                <option value="3">Last Week</option>
+                                <option value="4">Last Month</option>
+                                <option value="5">All Time</option>
+                            </select>
+                        </div>
+                        <div id="days">
+                            <div class="dropdown_container">
+                                <div class="label">Day From</div>
+                                <div class="input_date">
+                                    <input type="text" size="8" id="date_from" name="date_from"
+                                           value="<%= @selected_from_date.to_date.strftime("%d-%m-%Y") %>"/>
+                                </div>
+                            </div>
+                            <div class="dropdown_container">
+                                <div class="label">Day To</div>
+                                <div class="input_date">
+                                    <input type="text" size="8" id="date_to" name="date_to"
+                                           value="<%= @selected_to_date.to_date.strftime("%d-%m-%Y") %>"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clear">&nbsp;</div>
+                    </div>
+                    <div id="date_select_container">
+
+                        <%= render 'category_dropdown' %>
+
+                        <div id="product_dropdown">
+                        <%= render 'product_dropdown' %>
+                        </div>
+                        <div class="clear">&nbsp;</div>
+                    </div>
+                    </div>
+                    <div id="refine_button"><div onclick="runStocksSearch()" class="wide_button">Refine</div></div>
+                    <div style="float: right;">
+                        <div style="margin: 5px; height: 40px;" onclick="runSalesSearch()" class="button">Export to PDF</div>
+                        <div style="margin: 5px; height: 40px;" onclick="runSalesSearch()" class="button">Print</div>
+                    </div>
+                </div>
+                <div id="report_stocks_results">
+                    <%= render 'stocks_tab' %>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>

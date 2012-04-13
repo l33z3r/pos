@@ -26,7 +26,11 @@
     </div>
     <div class="field">
       <%= f.label :passcode %><br />
-      <%= f.text_field :passcode, :onKeyPress=>"storeDallasKeyVal(event)", :id=>"user_passcode" %>
+      <%= f.text_field :passcode %>
+    </div>
+    <div class="field">
+      <%= f.label :dallas_code %><br />
+      <%= f.text_field :dallas_code, :onKeyPress=>"storeDallasKeyVal(event)", :id=>"user_passcode" %>
     </div>
     <div class="field">
       <%= f.label :clockin_code %><br />

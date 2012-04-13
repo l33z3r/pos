@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    Ascii85 (1.0.1)
     abstract (1.0.0)
     actionmailer (3.0.5)
       actionpack (= 3.0.5)
@@ -68,9 +69,18 @@ GEM
       daemons (~> 1.0.10)
       gem_plugin (~> 0.2.3)
     mysql2 (0.2.6)
+    pdf-reader (1.1.0)
+      Ascii85 (~> 1.0.0)
+      ruby-rc4
     pg (0.12.2)
     polyglot (0.3.3)
     populator (1.0.0)
+    prawn (0.12.0)
+      pdf-reader (>= 0.9.0)
+      ttfunk (~> 1.0.2)
+    prawnto (0.1.1)
+      prawn
+      rails (>= 2.1)
     rack (1.2.5)
     rack-mount (0.6.14)
       rack (>= 1.0.0)
@@ -111,6 +121,7 @@ GEM
       columnize (>= 0.3.1)
       linecache19 (>= 0.5.11)
       ruby-debug-base19 (>= 0.11.19)
+    ruby-rc4 (0.1.5)
     ruby_core_source (0.1.5)
       archive-tar-minitar (>= 0.5.2)
     smurf (1.0.8)
@@ -118,6 +129,7 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
+    ttfunk (1.0.3)
     tzinfo (0.3.31)
     will_paginate (3.0.pre2)
     xml-simple (1.1.1)
@@ -137,6 +149,8 @@ DEPENDENCIES
   mysql2 (= 0.2.6)
   pg
   populator
+  prawn
+  prawnto
   rails (= 3.0.5)
   rake (= 0.8.7)
   rspec-rails (= 2.6.1)
