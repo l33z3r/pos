@@ -42,6 +42,18 @@ function inKitchenContext() {
     return $('body div.kitchen').length > 0;
 }
 
+function inLargeInterface() {
+    return currentInterface == "large";
+}
+
+function inMediumInterface() {
+    return currentInterface == "medium";
+}
+
+function inAndroidWrapper() {
+    return (typeof clueyAndroidJSInterface != "undefined");
+}
+
 function currency(number, showUnit) {
     if(typeof showUnit == "undefined") {
         showUnit = true;
@@ -681,10 +693,6 @@ function initPressedCSS() {
             $(this).unbind(cancelEventName);
         });
     });
-}
-
-function inAndroidWrapper() {
-    return (typeof clueyAndroidJSInterface != "undefined");
 }
 
 function clueyTimestamp() {

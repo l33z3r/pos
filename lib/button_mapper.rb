@@ -63,6 +63,7 @@ class ButtonMapper
   EXIT_APP_BUTTON = 60
   VOID_ORDER_ITEM_BUTTON = 61
   VOID_ALL_ORDER_ITEMS_BUTTON = 62
+  PURGE_ORDER_BUTTON = 63
   
   RESTRICTED_BUTTON_IDS = [
     ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON,
@@ -199,6 +200,8 @@ class ButtonMapper
       @retval = si_check(VOID_ORDER_ITEM_BUTTON, ms_check("voidOrderItem();"))
     when VOID_ALL_ORDER_ITEMS_BUTTON
       @retval = si_check(VOID_ALL_ORDER_ITEMS_BUTTON, ms_check("promptVoidAllOrderItems();"))
+    when PURGE_ORDER_BUTTON
+      @retval = si_check(PURGE_ORDER_BUTTON, ms_check("purgeCurrentOrder();"))
     end
 
     @retval

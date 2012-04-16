@@ -1177,9 +1177,10 @@ function doTotalFinal() {
     }
     
     //check that we have not just made an order, if so, we must wait before cashing out as it causes problems
+    //but we allow table 0 orders to be cashed out regardless
     var now = clueyTimestamp();
     
-    if(lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
+    if(selectedTable != 0 && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
         showLoadingDiv("Cashing out after previous order complete, Please Wait...");
         setTimeout(doTotalFinal, 1000);
         return;
@@ -2066,12 +2067,6 @@ function postDoSyncTableOrder() {
 }
 
 function finishDoSyncTableOrder() {
-    if(lastSyncedOrder.order_num == null) {
-        //call the finish function a few seconds after the next call home
-        setTimeout(finishDoSyncTableOrder, pollingAmount + 1000);
-        return;
-    }
-    
     orderReceiptHTML = fetchOrderReceiptHTML(lastSyncedOrder);
     setLoginReceipt("Last Order", orderReceiptHTML);
     loginRecptUpdate();

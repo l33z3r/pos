@@ -32,7 +32,7 @@ window.onerror = function(error, url, lineNumber) {
         page_title : $('#nav_title').html()
     }
     
-    if(currentInterface == "large") {
+    if(inLargeInterface()) {
         var largeScreenInterfaceData = {
             is_kitchen_screen : ((typeof(inKitchenContext) == 'undefined') ? false : inKitchenContext()),
             current_screen_is_menu : ((typeof(currentScreenIsMenu) == 'undefined') ? false : currentScreenIsMenu()),
@@ -43,7 +43,7 @@ window.onerror = function(error, url, lineNumber) {
         }
             
         errorData = $.extend(commonData, largeScreenInterfaceData);
-    } else if(currentInterface == "medium") {
+    } else if(inMediumInterface()) {
         var mediumScreenInterfaceData = {
             current_screen_is_menu : ((typeof(currentScreenIsMenu) == 'undefined') ? false : currentScreenIsMenu),
             current_screen_is_receipt : ((typeof(currentScreenIsReceipt) == 'undefined') ? false : currentScreenIsReceipt),
