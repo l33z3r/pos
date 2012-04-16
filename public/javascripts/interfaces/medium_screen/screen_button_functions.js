@@ -47,3 +47,11 @@ function changeCourseNum() {
 function tablesButtonPressed() {
     showTablesScreen();
 }
+
+function voidOrderItem() {
+    
+}
+
+function voidAllOrderItems() {
+    
+}

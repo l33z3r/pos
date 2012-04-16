@@ -833,7 +833,6 @@ div#menu_screen div#add_charge_screen div#keypad_container div.keypad {
 
 }
 
-
 /* Menu Screen Receipt */
 
 div.receipt {
@@ -846,6 +845,10 @@ div.receipt div.till_roll div.order_line {
     cursor: pointer;
     padding-top: 4px;
     padding-bottom: 4px;
+}
+
+div.receipt div.till_roll div.order_line.void *:not(.clear) {
+    text-decoration: line-through;
 }
 
 div.receipt div.till_roll div.order_line.course {
@@ -967,11 +970,13 @@ div.receipt div.till_roll div.discount div.new_price {
     /*font-style: italic;*/
 }
 
-
-
 div.receipt div.till_roll_small div.order_line {
     margin: 0px 2px;
     cursor: pointer;
+}
+
+div.receipt div.till_roll_small div.order_line.void *:not(.clear) {
+    text-decoration: line-through;
 }
 
 div.receipt div.till_roll_small div.order_line.course {

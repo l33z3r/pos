@@ -307,17 +307,7 @@ class HomeController < ApplicationController
 
   #do login procedure
   def login
-    @employee = Employee.find(params[:id])
-
-    session[:current_employee_id] = @employee.id
-    session[:current_employee_nickname] = @employee.nickname
-    session[:current_employee_admin] = 1 if @employee.is_admin
-    session[:current_employee_role_id] = @employee.role.id
-    session[:current_employee_passcode] = @employee.passcode 
-    
-    @employee.last_login = Time.now
-    @employee.save!
-
+    do_login(params[:id])
     render :json => {:success => true}.to_json
   end
   

@@ -10,6 +10,23 @@ div#kitchen_screen div#header div#tabs {
     float: left;
 }
 
+div#kitchen_screen div#header div#show_all_orders_controls {
+    float: left;
+    width: 290px;
+    margin-top: 30px;
+    margin-left: 10px;
+}
+
+div#kitchen_screen div#header div#show_all_orders_controls input {
+    float: left;
+}
+
+div#kitchen_screen div#header div#show_all_orders_controls div.label {
+    float: left;
+    margin-top: 6px;
+    font-size: 13px;
+}
+
 div#kitchen_screen div#header div#kitchen_screen_status_message {
     float: left;
     border: 1px solid #000;
@@ -17,7 +34,6 @@ div#kitchen_screen div#header div#kitchen_screen_status_message {
     border-radius: 3px;
     background-color: white;
     margin-top: 30px;
-    margin-left: 10px;
     width: 400px;
     padding: 2px;
     display: none;

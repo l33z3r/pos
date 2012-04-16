@@ -18,8 +18,6 @@ var splitBillTableNumber;
 
 var lastTableZeroOrder;
 
-var mandatoryFooterMessageHTML = null;
-
 //this function is called from application.js on page load
 function initMenu() {
     initMenuScreenType();
@@ -57,7 +55,7 @@ function callForwardButtonFunction() {
     var forwardFunctionButtonId = getRawCookie(salesInterfaceForwardFunctionCookieName);
     
     if(forwardFunctionButtonId != null) {
-        alert("Clicking button " + forwardFunctionButtonId);
+        //alert("Clicking button " + forwardFunctionButtonId);
         
         //call the function
         doClickAButton($('#admin_screen_button_' + forwardFunctionButtonId));
@@ -505,6 +503,7 @@ function testForPricePrompt(orderItem) {
         popupEl.find('#transfer_button').hide();
         popupEl.find('#quantity_editor').hide();
         popupEl.find('#course_button').hide();
+        popupEl.find('#void_order_item_button').hide();
         popupEl.find('#header').html("Enter A Price");
         popupEl.find('#current_selected_receipt_item_price').focus();
         popupEl.find('#current_selected_receipt_item_price').val("");
@@ -556,7 +555,9 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     
     var hideOnPrintedReceiptClass = orderItem.product.hide_on_printed_receipt ? "hide_on_printed_receipt" : "";
     
-    orderHTML = "<div class='order_line " + notSyncedClass + " " + hideOnPrintedReceiptClass + " " + courseLineClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
+    var voidClass = orderItem.is_void ? "void" : "";
+    
+    orderHTML = "<div class='order_line " + notSyncedClass + " " + voidClass + " " + hideOnPrintedReceiptClass + " " + courseLineClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
     
     if(includeServerAddedText && orderItem.showServerAddedText) {
         var nickname = serverNickname(orderItem.serving_employee_id);
@@ -741,6 +742,14 @@ function doSelectReceiptItem(orderItemEl) {
         $('#course_button').hide();
     }
     
+    //are we allowed to view the void item controls
+    //we are if the button id is present in this array
+    if(typeof(display_button_passcode_permissions[parseInt(voidOrderItemButtonID)]) != 'undefined') {
+        $('#void_order_item_button').show();
+    } else {
+        $('#void_order_item_button').hide();
+    }
+    
     //save the currently opened dialog
     currentSelectedReceiptItemEl = orderItemEl;
     
@@ -915,22 +924,16 @@ function saveEditOrderItem() {
         newPricePerUnit = 0;
     }
     
-    var courseNum;
+    order = getCurrentOrder();
+    
+    var courseNum = order.items[itemNumber - 1].product.course_num;
+    var is_void = order.items[itemNumber - 1].is_void;
     
     if(selectedTable != 0) {
-        order = tableOrders[selectedTable];
-        
-        courseNum = order.items[itemNumber - 1].product.course_num;
-        
-        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum);
-    
+        modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum, is_void);
         storeTableOrderInStorage(current_user_id, selectedTable, order);
     } else {
-        order = currentOrder;
-        
-        courseNum = order.items[itemNumber - 1].product.course_num;
-        
-        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum);
+        modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum, is_void);
         
         storeOrderInStorage(current_user_id, order);
     }
@@ -1259,34 +1262,32 @@ function doTotalFinal() {
         totalOrder.cash_tendered = cashTendered;
     }
     
-    if($.isEmptyObject(splitPayments)) {
-        splitPayments[paymentMethod] = totalOrder.cash_tendered;
-    }
-    
     totalOrder.change = $('#totals_change_value').html();
     
     //need to set the split_payments on the order for the receipt
     totalOrder.split_payments = splitPayments;
     
-    //do up the subtotal and total and retrieve the receipt html for both the login screen and for print
-    receiptHTML = fetchFinalReceiptHTML(false, true, false);
-    printReceiptHTML = fetchFinalReceiptHTML(true, false, printVatReceipt);
-        
     //open cash drawer explicitly if it is set to do 
     //so on a payment method basis
     //as the printer will not trigger it here
+    //this loop will also purge 0 amounts from the splitPayments array
     var doOpenCashDrawer = false;
     
-    for(var pm in splitPayments) {
-        //make sure there is an amount in this payment type
-        if(splitPayments[pm] <= 0) {
-            continue;
-        }
+    if($.isEmptyObject(splitPayments)) {
+        splitPayments[paymentMethod] = totalOrder.cash_tendered;
+    } else {
+        for(var pm in splitPayments) {
+            //make sure there is an amount in this payment type
+            if(parseFloat(splitPayments[pm]) <= 0) {
+                delete splitPayments[pm];
+                continue;
+            }
         
-        var pmId = getPaymentMethodId(pm);
+            var pmId = getPaymentMethodId(pm);
         
-        if(paymentMethods[pmId].open_cash_drawer){
-            doOpenCashDrawer = true;
+            if(paymentMethods[pmId].open_cash_drawer){
+                doOpenCashDrawer = true;
+            }
         }
     }
     
@@ -1294,6 +1295,10 @@ function doTotalFinal() {
         openCashDrawer();
     }
     
+    //do up the subtotal and total and retrieve the receipt html for both the login screen and for print
+    receiptHTML = fetchFinalReceiptHTML(false, true, false);
+    printReceiptHTML = fetchFinalReceiptHTML(true, false, printVatReceipt);
+        
     setLoginReceipt("Last Sale", receiptHTML);
     
     if(taxChargable) {
@@ -1763,14 +1768,10 @@ function applyCourseFromPopup(courseVal) {
     item.show_course_label = true;
     
     if(selectedTable != 0) {
-        order = tableOrders[selectedTable];
-        order = modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum);
-    
+        modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum, item.is_void);
         storeTableOrderInStorage(current_user_id, selectedTable, order);
     } else {
-        order = currentOrder;
-        order = modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum);
-        
+        modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum, item.is_void);
         storeOrderInStorage(current_user_id, order);
     }
     
@@ -1778,6 +1779,65 @@ function applyCourseFromPopup(courseVal) {
     
     //redraw the receipt
     loadReceipt(order, true);
+}
+
+function voidOrderItemFromEditDialog() {
+    if(selectedTable == 0) {
+        niceAlert("You cannot void items that are not on a table");
+        return;
+    }
+    
+    var itemNumber = currentSelectedReceiptItemEl.data("item_number");
+    order = getCurrentOrder();
+    
+    var item = order.items[itemNumber - 1];
+    
+    if(!item.synced) {
+        niceAlert("You can only void ordered items, you can delete this item");
+        return;
+    }
+    
+    var makeVoid = false;
+    
+    if(!item.is_void) {
+        makeVoid = true;
+    }
+    
+    //unsync the item so it gets sent to other terminals
+    item.synced = false;
+    
+    modifyOrderItem(order, itemNumber, item.amount, item.product_price, item.product.course_num, makeVoid);
+    storeTableOrderInStorage(current_user_id, selectedTable, order);
+    
+    order = getCurrentOrder();
+    
+    //redraw the receipt
+    loadReceipt(order, true);
+    closeEditOrderItem();
+}
+
+function voidAllOrderItems() {
+    if(selectedTable == 0) {
+        niceAlert("You cannot void items that are not on a table");
+        return;
+    }
+    
+    order = getCurrentOrder();
+    
+    for(var i=0; i<order.items.length; i++) {
+        var item = order.items[i];
+        item.is_void = true;
+        modifyOrderItem(order, i+1, item.amount, item.product_price, item.product.course_num, item.is_void);
+    }
+    
+    storeTableOrderInStorage(current_user_id, selectedTable, order);
+    
+    order = getCurrentOrder();
+    
+    //redraw the receipt
+    loadReceipt(order, true);
+    
+    quickSale();
 }
 
 function addDiscountToOrder(order, amount) {
@@ -2220,7 +2280,7 @@ function doSplitOrderItem(orderLine, reverse) {
     
     //take it from the order
     if(theItem.amount - currentSplitBillItemQuantity > 0) {
-        modifyOrderItem(orderFrom, itemNumber, theItem.amount - currentSplitBillItemQuantity, theItem.product_price, theItem.product.course_num);
+        modifyOrderItem(orderFrom, itemNumber, theItem.amount - currentSplitBillItemQuantity, theItem.product_price, theItem.product.course_num, theItem.is_void);
     } else {
         currentSplitBillItemQuantity = theItem.amount;
         doRemoveOrderItem(orderFrom, itemNumber);
@@ -2235,7 +2295,7 @@ function doSplitOrderItem(orderLine, reverse) {
     //add this item to the order array
     orderTo.items.push(theCopiedOrderItem);
     
-    modifyOrderItem(orderTo, theCopiedOrderItem.itemNumber, currentSplitBillItemQuantity, theCopiedOrderItem.product_price, theCopiedOrderItem.product.course_num);
+    modifyOrderItem(orderTo, theCopiedOrderItem.itemNumber, currentSplitBillItemQuantity, theCopiedOrderItem.product_price, theCopiedOrderItem.product.course_num, theCopiedOrderItem.is_void);
     
     loadSplitBillReceipts();
     

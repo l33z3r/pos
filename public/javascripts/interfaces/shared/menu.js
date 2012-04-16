@@ -46,6 +46,8 @@ var lastOrderSentTime = null;
 
 var lastSaleObj;
 
+var mandatoryFooterMessageHTML = null;
+
 function getCurrentOrder() {
     if(selectedTable == 0) {
         return currentOrder;
@@ -109,41 +111,45 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     syncOrderItems = new Array();
     
     for(var itemKey in tableOrderDataJSON.items) {
+        var theItem = tableOrderDataJSON.items[itemKey];
+        
         //make sure the data types are converted correctly
-        if(tableOrderDataJSON.items[itemKey].product.show_price_on_receipt) {
-            tableOrderDataJSON.items[itemKey].product.show_price_on_receipt = (tableOrderDataJSON.items[itemKey].product.show_price_on_receipt.toString() == "true" ? true : false);   
+        if(theItem.product.show_price_on_receipt) {
+            theItem.product.show_price_on_receipt = (theItem.product.show_price_on_receipt.toString() == "true" ? true : false);   
         }
         
-        if(tableOrderDataJSON.items[itemKey].showServerAddedText) {
-            tableOrderDataJSON.items[itemKey].showServerAddedText = (tableOrderDataJSON.items[itemKey].showServerAddedText.toString() == "true" ? true : false);   
+        if(theItem.showServerAddedText) {
+            theItem.showServerAddedText = (theItem.showServerAddedText.toString() == "true" ? true : false);   
         }
         
-        if(tableOrderDataJSON.items[itemKey].product.hide_on_printed_receipt) {
-            tableOrderDataJSON.items[itemKey].product.hide_on_printed_receipt = (tableOrderDataJSON.items[itemKey].product.hide_on_printed_receipt.toString() == "true" ? true : false);   
+        if(theItem.product.hide_on_printed_receipt) {
+            theItem.product.hide_on_printed_receipt = (theItem.product.hide_on_printed_receipt.toString() == "true" ? true : false);   
         }
         
-        if(tableOrderDataJSON.items[itemKey].product.category_id == "null") {
-            tableOrderDataJSON.items[itemKey].product.category_id = null;
+        if(theItem.product.category_id == "null") {
+            theItem.product.category_id = null;
         }
         
-        if(tableOrderDataJSON.items[itemKey].is_course) {
-            tableOrderDataJSON.items[itemKey].is_course = (tableOrderDataJSON.items[itemKey].is_course.toString() == "true" ? true : false);   
+        if(theItem.is_course) {
+            theItem.is_course = (theItem.is_course.toString() == "true" ? true : false);   
         }
         
-        if(tableOrderDataJSON.items[itemKey].show_course_label) {
-            tableOrderDataJSON.items[itemKey].show_course_label = (tableOrderDataJSON.items[itemKey].show_course_label.toString() == "true" ? true : false);   
+        if(theItem.show_course_label) {
+            theItem.show_course_label = (theItem.show_course_label.toString() == "true" ? true : false);   
         }
         
-        
+        if(theItem.is_void) {
+            theItem.is_void = (theItem.is_void.toString() == "true" ? true : false);   
+        }
         
         
         
         
         //this is only untill we have the new code deployed for a while we can be sure that clientName will be present on newly created orders
-        if(typeof(tableOrderDataJSON.items[itemKey].is_double) != 'undefined') {
-            tableOrderDataJSON.items[itemKey].is_double = (tableOrderDataJSON.items[itemKey].is_double.toString() == "true" ? true : false);
+        if(typeof(theItem.is_double) != 'undefined') {
+            theItem.is_double = (theItem.is_double.toString() == "true" ? true : false);
         } else {
-            tableOrderDataJSON.items[itemKey].is_double = false;
+            theItem.is_double = false;
         }
         
         
@@ -160,14 +166,14 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         
         
         var copiedOrderItem = {};
-        //console.log("OIAITEMS: " + tableOrderDataJSON.items[itemKey].oia_items + " " + (tableOrderDataJSON.items[itemKey].oia_items.length>0));
+        //console.log("OIAITEMS: " + theItem.oia_items + " " + (theItem.oia_items.length>0));
         
-        if(typeof(tableOrderDataJSON.items[itemKey].oia_items) != "undefined") {
+        if(typeof(theItem.oia_items) != "undefined") {
             //we must convert the oia_items hash to an array (the server turned our array into some indexed hash)
             var newOIAItems = new Array();
         
-            for(var oiaItemKey in tableOrderDataJSON.items[itemKey].oia_items) {
-                var nextOIA = tableOrderDataJSON.items[itemKey].oia_items[oiaItemKey];
+            for(var oiaItemKey in theItem.oia_items) {
+                var nextOIA = theItem.oia_items[oiaItemKey];
                 
                 //console.log("copying oia " + oiaItemKey + " " + nextOIA);
                 //console.log(nextUserIDToSyncWith + " Is add " + nextOIA.description + " " + nextOIA.is_add.toString() + " " + (nextOIA.is_add.toString() == "true"));
@@ -184,10 +190,10 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
                 newOIAItems.push(nextOIA);
             }
         
-            tableOrderDataJSON.items[itemKey].oia_items = newOIAItems;
+            theItem.oia_items = newOIAItems;
         }
     
-        var copiedOrderItemForStore = $.extend(true, copiedOrderItem, tableOrderDataJSON.items[itemKey]);
+        var copiedOrderItemForStore = $.extend(true, copiedOrderItem, theItem);
         
         copiedOrderItemForStore.synced = "true";
         syncOrderItems.push(copiedOrderItemForStore);
@@ -324,21 +330,23 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
     var itemsToPrint = new Array();
     
     for(var itemKey in items) {
-        //we only want to print items from the order that are new i.e. not synced on the other terminal yet
-        var isItemSynced = (items[itemKey].synced === 'true');
+        var theItem = items[itemKey];
         
-        if(!isItemSynced) {
-            var itemPrinters = items[itemKey].product.printers;
+        //we only want to print items from the order that are new i.e. not synced on the other terminal yet
+        var isItemSynced = (theItem.synced === 'true');
+        
+        if(!isItemSynced && !theItem.is_void) {
+            var itemPrinters = theItem.product.printers;
             
             if((typeof itemPrinters != "undefined") && itemPrinters.length > 0) {
                 var printersArray = itemPrinters.split(",");
                 
                 if($.inArray(terminalID.toLowerCase(), printersArray) != -1) {
-                    itemsToPrint.push(items[itemKey]);
+                    itemsToPrint.push(theItem);
                 }
             } else {
                 //check category printers
-                var categoryId = items[itemKey].product.category_id;
+                var categoryId = theItem.product.category_id;
             
                 if(categoryId != null) {
                     var categoryPrinters = categories[categoryId].printers;
@@ -347,7 +355,7 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
                         var categoryPrintersArray = categoryPrinters.split(",");
                 
                         if($.inArray(terminalID.toLowerCase(), categoryPrintersArray) != -1) {
-                            itemsToPrint.push(items[itemKey]);
+                            itemsToPrint.push(theItem);
                         }
                     }
                 }
@@ -414,13 +422,19 @@ function applyExistingDiscountToOrderItem(order, itemNumber) {
     applyDiscountToOrderItem(order, itemNumber, -1);
 }
 
-function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum) {
+function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum, is_void) {
     targetOrderItem = order.items[itemNumber-1];
 
     targetOrderItem.amount = newQuantity;
     targetOrderItem.product_price = newPricePerUnit;
     targetOrderItem.product.course_num = newCourseNum;
-
+    
+    if(typeof(is_void) == 'undefined') {
+        is_void = false;
+    }
+    
+    targetOrderItem.is_void = is_void;
+    
     if(targetOrderItem.pre_discount_price) {
         targetOrderItem.pre_discount_price = newPricePerUnit * newQuantity;
     } else {
@@ -513,7 +527,10 @@ function calculateOrderTotal(order) {
 
     for(var i=0; i<order.items.length; i++) {
         item = order.items[i];
-        orderTotal += parseFloat(item['total_price']);
+        
+        if(!item.is_void) {
+            orderTotal += parseFloat(item['total_price']);
+        }
     }
 
     order['total'] = roundNumber(orderTotal, 2);
@@ -591,7 +608,8 @@ function buildOrderItem(product, amount) {
         'tax_rate':taxRate,
         'product_price':productPrice,
         'is_double':isDouble,
-        'total_price':totalProductPrice
+        'total_price':totalProductPrice,
+        'is_void':false
     }
     
     //fill in the category id of the product
@@ -811,28 +829,35 @@ function orderReceiptItems(order) {
 }
 
 function removeSelectedOrderItem() {
-
     //fetch the item number
     var itemNumber = currentSelectedReceiptItemEl.data("item_number");
 
-    if(selectedTable != 0) {
-        order = tableOrders[selectedTable];
-        order = doRemoveOrderItem(order, itemNumber);
+    order = getCurrentOrder();
+    var item = order.items[itemNumber - 1];
+
+    if(item.is_void) {
+        niceAlert("You cannot remove an item that is void.");
+        return;
+    }
     
+    if(item.synced && selectedTable != 0) {
+        niceAlert("You cannot remove an item that has already been ordered. You can only void this item.");
+        return;
+    }
+
+    if(selectedTable != 0) {
+        doRemoveOrderItem(order, itemNumber);
         storeTableOrderInStorage(current_user_id, selectedTable, order);
-    }else {
-        order = currentOrder;
-        
-        order = doRemoveOrderItem(order, itemNumber);
-        
+    } else {
+        doRemoveOrderItem(order, itemNumber);
         storeOrderInStorage(current_user_id, order);
     }
+    
     currentSelectedReceiptItemEl.hide();
     loadReceipt(order, true);
     
     closeEditOrderItem();
     closeDiscountPopup();
-
 }
 
 function doRemoveOrderItem(order, itemNumber) {

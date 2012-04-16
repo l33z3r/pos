@@ -89,6 +89,46 @@ class OrderController < ApplicationController
     end
   end
   
+#  def sync_table_order
+#    @error = false
+#    
+#    @error = true
+#    render and return
+#    1/0
+#    @table_order_data = params[:tableOrderData]
+#    @order_num = @table_order_data[:orderData][:order_num]
+#    
+#    @table_id = @table_order_data['tableID']
+#    
+#    #check if this order has been cashed out already but let the table 0 order through
+#    if @table_id != "0" and @order_num 
+#      if Order.find_by_order_num @order_num
+#        #this order has already been cashed, so do nothing...
+#        logger.info "Order has already been cashed. Ignoring..."
+#        @cashed_out_error = true
+#        render and return
+#      end
+#    end
+#    
+#    @employee_id = params[:employee_id]
+#    
+#    #make sure the table still exists in the system as it will cause a weird error if not
+#    @table = TableInfo.find_by_id(@table_id)
+#    
+#    @employee = Employee.find_by_id(@employee_id)
+#    
+#    @last_sync_time = params[:lastSyncTableOrderTime]
+#    @retry = false
+#    
+#    if @table and @employee
+#      @retry = do_request_sync_table_order(@terminal_id, @table_order_data, @table_id, @employee_id, @last_sync_time)
+#    else
+#      logger.info "Table (#{@table_id}) or employee (#{@employee_id}) do not exist"
+#      @error = true
+#      render and return
+#    end
+#  end
+  
   def transfer_order
     @error = false
     
@@ -167,10 +207,12 @@ class OrderController < ApplicationController
           @order_item.modifier_price = item[:modifier][:price]
         end
       
+        @order_item.is_void = item[:is_void] == "true"
+        
         #oias
         if item[:oia_items]
           item[:oia_items].each do |index, oia|
-            if oia[:product_id] != "-1" and !oia[:product_id].blank?
+            if !@order_item.is_void and oia[:product_id] != "-1" and !oia[:product_id].blank?
               #decrement stock for this oia product
               @oia_stock_usage = @order_item.quantity.to_f
       
@@ -212,14 +254,16 @@ class OrderController < ApplicationController
           @item_stock_usage *= 2
         end
       
-        #decrement the stock for this item
-        if @order_item.product.is_stock_item
-          @order_item.product.decrement_stock @item_stock_usage
-        else
-          #decrement the ingredient stock
-          @order_item.product.ingredients.each do |ingredient|
-            @ingredient_usage = ingredient.stock_usage
-            ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
+        if !@order_item.is_void
+          #decrement the stock for this item
+          if @order_item.product.is_stock_item
+            @order_item.product.decrement_stock @item_stock_usage
+          else
+            #decrement the ingredient stock
+            @order_item.product.ingredients.each do |ingredient|
+              @ingredient_usage = ingredient.stock_usage
+              ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
+            end
           end
         end
       end

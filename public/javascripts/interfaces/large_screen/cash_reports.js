@@ -42,6 +42,24 @@ function getCashTotalSalesByProductDataTable(products_data) {
     return cash_total_data_html;
 }
 
+function getCashTotalVoidsByEmployeeDataTable(employee_data) {
+    cash_total_data_html = "<div class='products_data_table'>";
+    
+    cash_total_data_html += "<div class='products_data_table_label_header'>Employee</div>";
+    cash_total_data_html += "<div class='products_data_table_header quantity'>Qty</div>";
+    cash_total_data_html += "<div class='products_data_table_header'>Total</div>" + clear10HTML;
+        
+    for(var i=0; i<employee_data.length; i++) {
+        cash_total_data_html += "<div class='products_label'>" + employee_data[i][0] + "</div>";
+        cash_total_data_html += "<div class='products_data quantity'>" + employee_data[i][1] + "</div>";
+        cash_total_data_html += "<div class='products_data'>" + currency(employee_data[i][2]) + "</div>" + clearHTML;
+    }
+    
+    cash_total_data_html += "</div>";
+    
+    return cash_total_data_html;
+}
+
 function getCashTotalTaxesDataTable(taxes_data) {
     cash_total_data_html = "<div class='taxes_data_table'>";
     

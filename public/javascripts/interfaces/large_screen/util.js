@@ -15,9 +15,8 @@ function showScreenFromHashParams() {
     
     if(hashParams) {
         if(hashParams.screen) {
-            //alert("Setting screen to " + hashParams.screen);
-            
-            if(hashParams.screen == 'login') {
+            //show login screen if no user logged in
+            if(hashParams.screen == 'login' || current_user_id == null) {
                 showLoginScreen();
             } else if(hashParams.screen == 'menu') {
                 showMenuScreen();
@@ -694,4 +693,49 @@ function rollDate() {
     var dateFormat = "dd MMM";
     var formattedDate = formatDate(new Date(clueyTimestamp()), dateFormat);
     $('#date').html(formattedDate);
+}
+
+var licenceExpiredScreenShownLastTime = 0;
+var fifteenMinsMillis = 15 * 60 * 1000;
+
+function testShowLicenceExpiredScreen() {
+    if(showLicenceExpiredScreen) {
+        var now = clueyTimestamp();
+        
+        if((now - licenceExpiredScreenShownLastTime) >= fifteenMinsMillis) {
+            licenceExpiredScreenShownLastTime = now;
+            doShowLicenceExpiredScreen();
+        }
+    }
+}
+
+function doShowLicenceExpiredScreen() {
+    hideLicenceExpiredScreen();
+    
+    var title = "Licence Expired!";
+    
+    var headerMessage = "Your system licence has expired or is not active. Please contact Cluey Systems as below to activate:";
+    
+    var numbersMessage = "<div id='numbers_message'><div>Cluey UK Tel:</br> +4420 8588 0600</div><div>Cluey Ireland Tel:</br> +353 1 489 3600</div></div>" + clearHTML;
+    
+    var ceaseMessage = "Your system will cease to function unless you contact us!";
+    
+    ModalPopups.Alert('licenceExpiredMessageContainer',
+        title, "<div id='nice_alert' class='licence_expired_header'>" + headerMessage + "</div>" + 
+            "<div id='numbers'>" + numbersMessage + "</div>" +
+            "<div id='cease_message'>" + ceaseMessage + "</div>",
+        {
+            width: 760,
+            height: 560,
+            okButtonText: 'Ok',
+            onOk: "hideLicenceExpiredScreen()"
+        });
+}
+
+function hideLicenceExpiredScreen() {
+    try {
+        ModalPopups.Close('licenceExpiredMessageContainer');
+    } catch (e) {
+        
+    }
 }

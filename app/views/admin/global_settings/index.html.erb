@@ -38,7 +38,7 @@
           <li><a id="price_level_labels_section_link" href="#coursing_section">Price Levels</a></li>
           <li><a id="misc_section_link" href="#misc_section">Misc</a></li>
 
-          <% if params[:cp] == "cluey100" or is_cluey_user? %>
+          <% if cluey_pw_used? or is_cluey_user? %>
             <li><a id="cluey_settings_section_link" href="#cluey_settings_section">Cluey Settings</a></li>
           <% end %>
         </ul>
@@ -1060,6 +1060,23 @@
                         <%= submit_tag "Save" %>
                       </div>
 
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Show Licence Expired Screen (Every 15 Mins)?</td>
+                    <td id="dat_section" class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::SHOW_LICENCE_EXPIRED_SCREEN %>
+                      <div class="controls">
+                        <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                               value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                        <div class="label">Yes</div>
+                        <div class="clear">&nbsp;</div>
+
+                        <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                               value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                        <div class="label">No</div>
+                      </div>
                       <div class="clear">&nbsp;</div>
                     </td>
                   </tr>

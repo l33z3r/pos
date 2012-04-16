@@ -61,6 +61,8 @@ class ButtonMapper
   REPORTS_BUTTON = 58
   SPLIT_BILL_BUTTON = 59
   EXIT_APP_BUTTON = 60
+  VOID_ORDER_ITEM_BUTTON = 61
+  VOID_ALL_ORDER_ITEMS_BUTTON = 62
   
   RESTRICTED_BUTTON_IDS = [
     ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON,
@@ -112,7 +114,7 @@ class ButtonMapper
     when TABLES_BUTTON
       @retval = si_check(TABLES_BUTTON, "tablesButtonPressed();")
     when SYSTEM_BUTTON
-      @retval = si_check(SYSTEM_BUTTON, ms_check("showGlobalSettingsPage();"))
+      @retval = si_check(SYSTEM_BUTTON, "showGlobalSettingsPage();")
     when THEMES_BUTTON
       @retval = "goTo('#{admin_custom_themes_path}'); return false;"
     when DISCOUNT_BUTTON
@@ -188,11 +190,15 @@ class ButtonMapper
     when ADD_NAME_TO_TABLE_BUTTON
       @retval = si_check(ADD_NAME_TO_TABLE_BUTTON, ms_check("promptAddNameToTable();"))
     when REPORTS_BUTTON
-      @retval = "goTo('#{reports_glances_path}');"
+      @retval = "goTo('#{reports_sales_path}');"
     when SPLIT_BILL_BUTTON
       @retval = si_check(SPLIT_BILL_BUTTON, ms_check("startSplitBillMode();"))
     when EXIT_APP_BUTTON
       @retval = si_check(EXIT_APP_BUTTON, "exitApp();")
+    when VOID_ORDER_ITEM_BUTTON
+      @retval = si_check(VOID_ORDER_ITEM_BUTTON, ms_check("voidOrderItem();"))
+    when VOID_ALL_ORDER_ITEMS_BUTTON
+      @retval = si_check(VOID_ALL_ORDER_ITEMS_BUTTON, ms_check("promptVoidAllOrderItems();"))
     end
 
     @retval

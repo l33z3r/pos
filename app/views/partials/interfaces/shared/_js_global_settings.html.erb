@@ -28,6 +28,9 @@
     defaultJSTimeFormat = "HH:mm";
   }
   
+  //licence expired screen?
+  var showLicenceExpiredScreen = <%= GlobalSetting.parsed_setting_for GlobalSetting::SHOW_LICENCE_EXPIRED_SCREEN %>;
+  
   //is tax chargable
   var taxChargable = <%= @tax_chargable %>;
    
@@ -116,6 +119,7 @@
   var toggleMenuItemStandardPriceOverrideModeButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::TOGGLE_MENU_ITEM_STANDARD_PRICE_OVERRIDE_BUTTON).id %>";
   var oiaButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::MODIFY_ORDER_ITEM_BUTTON).id %>";
   var courseNumButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::COURSE_BUTTON).id %>";
+  var voidOrderItemButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::VOID_ORDER_ITEM_BUTTON).id %>";
   
   var updateStockType = <%= StockTransaction::STOCK_UPDATE %>;
   var transferStockType = <%= StockTransaction::STOCK_TRANSFER %>;

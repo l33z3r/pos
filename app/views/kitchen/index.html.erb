@@ -4,12 +4,17 @@
 
 <div id="kitchen_screen" class="kitchen">
   <div id="header">
-    <div id="tabs">
+    <div id="show_all_orders_controls">
+      <% if cluey_pw_used? or is_cluey_user? %>
+        <input type="checkbox" id="show_all_orders_checkbox" onchange="toogleDoShowAllOrders();"/>
+        <div class="label">Show all kitchen orders?</div>
+        <div class="clear">&nbsp;</div>
 
+      <% end %>
     </div>
-    
+
     <div id="kitchen_screen_status_message">
-      
+
     </div>
 
     <div id="function_buttons">
@@ -47,6 +52,6 @@
     <div class="clear">&nbsp;</div>
 
   </div>
-  
+
   <!-- iframe to print in -->
   <%= render "/partials/interfaces/shared/print_frame" %>

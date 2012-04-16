@@ -689,8 +689,39 @@ function unorderedItemsPopup(evalCode, doAutoLogin) {
                 onNo: noCode,
                 width: 400,
                 height: 250
-            } );
+            });
     } else {
         eval(evalCode);  
     }
+}
+
+function voidOrderItem() {
+    var receiptItem = getSelectedOrLastReceiptItem();
+ 
+    if(receiptItem) {
+        voidOrderItemFromEditDialog();
+    }
+}
+
+function promptVoidAllOrderItems() {
+    if(selectedTable == 0) {
+        niceAlert("You cannot void items that are not on a table");
+        return;
+    }
+    
+    if(currentOrderEmpty()) {
+        setStatusMessage("No order present!", true, true);
+        return;
+    }
+    
+    ModalPopups.Confirm('niceAlertContainer',
+        'Void All?', "<div id='nice_alert'>Are you sure you want to void all items and cash this order out?</div>",
+        {
+            yesButtonText: 'Yes',
+            noButtonText: 'No',
+            onYes: "voidAllOrderItems()",
+            onNo: "hideNiceAlert();",
+            width: 400,
+            height: 250
+        } );
 }

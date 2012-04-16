@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :check_reset_cache_timestamp
   
-  helper_method :e, :is_cluey_user?, :current_employee, :print_money
+  helper_method :e, :is_cluey_user?, :cluey_pw_used?, :current_employee, :print_money
   helper_method :mobile_device?, :all_terminals, :all_servers, :current_interface
   helper_method :development_mode?, :production_mode?
   helper_method :server_ip, :active_employee_ids, :now_millis
@@ -26,6 +26,10 @@ class ApplicationController < ActionController::Base
   def is_cluey_user?
     Employee.is_cluey_user? e
   end
+  
+  def cluey_pw_used?
+    params[:cp] == "cluey100"
+  end
 
   def current_employee
     begin
@@ -35,6 +39,19 @@ class ApplicationController < ActionController::Base
     end
     
     @e
+  end
+  
+  def do_login e_id
+    @employee = Employee.find(e_id  )
+
+    session[:current_employee_id] = @employee.id
+    session[:current_employee_nickname] = @employee.nickname
+    session[:current_employee_admin] = 1 if @employee.is_admin
+    session[:current_employee_role_id] = @employee.role.id
+    session[:current_employee_passcode] = @employee.passcode 
+    
+    @employee.last_login = Time.now
+    @employee.save!
   end
   
   def fetch_reload_app time

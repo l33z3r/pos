@@ -168,6 +168,7 @@ function print(content) {
     //    printFrame.focus();
     //    printFrame.print();
     }
+    }
 
 }
 

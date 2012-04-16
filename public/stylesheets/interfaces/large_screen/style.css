@@ -327,6 +327,10 @@ div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_
     cursor: auto;
 }
 
+div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll div.order_line.void *:not(.clear) {
+    text-decoration: line-through;
+}
+
 div#landing div#login_receipt_keypad_container div#login_receipt div#receipt_message {
     margin-top: 50px;
     font-weight: bold;
@@ -1812,6 +1816,10 @@ div.receipt div.till_roll div.order_line {
     cursor: pointer;
 }
 
+div.receipt div.till_roll div.order_line.void *:not(.clear) {
+    text-decoration: line-through;
+}
+
 div.receipt div.till_roll div.order_line.course {
     border-bottom: 2px solid #4297D7;
 }
@@ -2128,6 +2136,20 @@ div#edit_receipt_item_popup_markup_container div#transfer_button {
 }
 
 div#edit_receipt_item_popup_markup_container div#course_button {
+    padding: 10px;
+    float: right;
+    cursor: pointer;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    height: 18px;
+    width: 100px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    margin: 3px 22px;
+}
+
+div#edit_receipt_item_popup_markup_container div#void_order_item_button {
     padding: 10px;
     float: right;
     cursor: pointer;
@@ -2555,6 +2577,10 @@ div#total_screen div#totals_receipt div#totals_till_roll {
 
 div#total_screen div#totals_receipt div#totals_till_roll div.order_line {
     cursor: auto;
+}
+
+div#total_screen div#totals_receipt div#totals_till_roll div.order_line.void *:not(.clear) {
+    text-decoration: line-through;
 }
 
 div#total_screen div#receipt_keypad_container div#total_container {
@@ -3402,6 +3428,55 @@ input#niceAlertContainer_noButton {
     float: left;
     width: 185px;
     max-width: 185px;
+}
+
+div#licence_expired_header {
+    font-size: 25px;
+    text-align: center;
+    margin-top: 20px;
+    line-height: 32px;
+    color: #333;
+}
+
+div#numbers_message {
+    text-align: center;
+    margin-top: 20px;
+    line-height: 32px;
+    margin-top: 100px;
+}
+
+div#numbers_message div {
+    font-weight: bold;
+    float: left;
+    width: 350px;
+    padding: 10px;
+    font-size: 25px;
+    text-align: center;
+    line-height: 32px;
+    text-align: center;
+}
+
+div#cease_message {
+    font-size: 25px;
+    text-align: center;
+    margin-top: 20px;
+    line-height: 32px;
+    color: #F00;
+    margin-top: 90px;
+}
+
+input#licenceExpiredMessageContainer_okButton {
+    font-size: 28px;
+    font-weight: bold;
+    width: 260px;
+    max-width: 260px;
+    height: 70px;
+    max-height: 40px;
+    background: -moz-linear-gradient(#FFF, #CCC) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#CCC));
+    border: 1px solid #000;
+    border-radius: 5px;
+    box-shadow: 0px 1px 1px 0px #777;
 }
 
 /* End Misc Styles */
