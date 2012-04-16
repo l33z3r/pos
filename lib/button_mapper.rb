@@ -191,7 +191,7 @@ class ButtonMapper
     when ADD_NAME_TO_TABLE_BUTTON
       @retval = si_check(ADD_NAME_TO_TABLE_BUTTON, ms_check("promptAddNameToTable();"))
     when REPORTS_BUTTON
-      @retval = "goTo('#{reports_glances_path}');"
+      @retval = "goTo('#{reports_sales_path}');"
     when SPLIT_BILL_BUTTON
       @retval = si_check(SPLIT_BILL_BUTTON, ms_check("startSplitBillMode();"))
     when EXIT_APP_BUTTON

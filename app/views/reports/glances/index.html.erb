@@ -2,24 +2,33 @@
 
 <div id="reports_container">
 
-    <div id="report_option_tabs" class="vtabs report_option_tabs">
+    <div>
 
-      <div>
-        <ul>
-          <li><a id="at_a_glance_section_link" href="#" onclick="window.location = '/reports/glances'">At a Glance</a></li>
-          <%#*<li><a id="sales_section_link" href="#" onclick="window.location = '/reports/sales'">Sales</a></li>%>
-          <%#*<li><a id="cash_section_link" href="#cash_section">Cash</a></li>%>
-          <%#*<li><a id="payments_section_link" href="#payments_section">Payments</a></li>%>
-          <%#*<li><a id="customers_section_link" href="#customers_section">Customers</a></li>%>
-          <%#*<li><a id="suppliers_section_link" href="#suppliers_section">Suppliers</a></li>%>
-          <%#*<li><a id="stock_control_section_link" href="#stock_control_section">Stock</a></li>%>
-          <%#*<li><a id="staff_section_link" href="#staff_section">Staff</a></li>%>
-        </ul>
-      </div>
+       <div id="admin_subnav_left">
+            <%= render :partial => "/partials/interfaces/large_screen/menu_screen_options_screen_buttons" %>
+
+            <%= yield :admin_subnav_links_left %>
+
+        </div>
+
+        <div style="float: right">
+            <div class="button selected" onclick="window.location = '/reports/glances'">
+
+                <div class="button_name">At a Glance</div>
+            </div>
+            <div class="button" onclick="window.location = '/reports/sales'">
+
+                <div class="button_name">Sales Reports</div>
+            </div>
+            <div class="button" onclick="window.location = '/reports/stocks'">
+
+                <div class="button_name">Stock Reports</div>
+            </div>
+        </div>
 
       <div>
         
-        <div class="container" id="#at_a_glance_section">
+        <div>
             
             <div id="at_a_glance_filters" class="popout_dialog">
                <div id="date_select_container">
@@ -85,106 +94,13 @@
                 <%= render 'glances_tab' %>
             </div>
 
-            <div id="right_buttons">
-              <div id="options_button" class="button" data-onpress="goTo('/home#screen=more_options');">
-                <div class="icon">
-                  <%= image_tag "/images/button_logos/more_options_button.png" %>
-                </div>
-                <div class="button_name">Functions</div>
-              </div>
-              <div class="summary_button" onclick="$('#sales_section_link').click()">
-                <div class="wide_button">Sales Summary Today</div>
-              </div>
-              <div class="summary_button" onclick="$('#cash_section_link').click()">
-                <div class="wide_button">Cash Summary Today</div>
-              </div>
-              <div class="summary_button" onclick="$('#payments_section_link').click()">
-                <div class="wide_button">Payments Summary Today</div>
-              </div>
-              <div class="summary_button" onclick="$('#stock_control_section_link').click()">
-                <div class="wide_button">Stock Control Summary Today</div>
-              </div>
-              <div class="summary_button" onclick="$('#staff_section_link').click()">
-                <div class="wide_button">Staff Summary Today</div>
-              </div>
-            </div>
 
-            <div id="last_z_total_info">
-              <% if !@last_z_total.nil? %>
-                <div class="label"><b>Last Z Total</b></div>
-                <div class="label"><b>By: </b><%= @last_z_total_by %></div>
-                <div class="label"><b>Date: </b><%= @last_z_total_date %></div>
-                <div class="label"><b>Time: </b><%= @last_z_total_time %></div>
-              <% end %>
-              <div class="previous_cash_totals_button" onclick="goTo('/admin/previous_cash_totals');">
-                <div class="wide_button">X/Z History</div>
-              </div>
-            </div>
+
+
 
         </div>
 
-        <div class="container" id="#sales_info_section">
-          <div class="jscrollpane">
 
-            <h3>Sales</h3>
-
-            <div class="clear">&nbsp;</div>
-          </div>
-        </div>
-
-        <div class="container" id="#cash_section">
-          <div class="jscrollpane">
-
-            <h3>Sales</h3>
-
-            <div class="clear">&nbsp;</div>
-          </div>
-        </div>
-
-        <div class="container" id="#payments_section">
-          <div class="jscrollpane">
-
-            <h3>Sales</h3>
-
-            <div class="clear">&nbsp;</div>
-          </div>
-        </div>
-
-        <div class="container" id="#customers_section">
-          <div class="jscrollpane">
-
-            <h3>Sales</h3>
-
-            <div class="clear">&nbsp;</div>
-          </div>
-        </div>
-
-        <div class="container" id="#suppliers_section">
-          <div class="jscrollpane">
-
-            <h3>Sales</h3>
-
-            <div class="clear">&nbsp;</div>
-          </div>
-        </div>
-
-        <div class="container" id="#stock_control_section">
-          <div class="jscrollpane">
-
-            <h3>Sales</h3>
-
-            <div class="clear">&nbsp;</div>
-          </div>
-        </div>
-
-        <div class="container" id="#staff_section">
-          <div class="jscrollpane">
-
-            <h3>Sales</h3>
-
-            <div class="clear">&nbsp;</div>
-          </div>
-        </div>
 
       </div>
     </div>

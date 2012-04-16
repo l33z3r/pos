@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120407090936) do
+ActiveRecord::Schema.define(:version => 20120413123340) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(:version => 20120407090936) do
     t.string   "printers",                                 :default => ""
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => 0
+    t.integer  "course_num",                               :default => -1
     t.string   "kitchen_screens",                          :default => ""
   end
 
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(:version => 20120407090936) do
     t.integer  "employee_image_file_size"
     t.datetime "employee_image_updated_at"
     t.string   "clockin_code"
+    t.string   "dallas_code"
   end
 
   add_index "employees", ["role_id"], :name => "index_employees_on_role_id"
@@ -364,7 +365,7 @@ ActiveRecord::Schema.define(:version => 20120407090936) do
     t.boolean  "hide_on_printed_receipt",                  :default => false
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => 0
+    t.integer  "course_num",                               :default => -1
     t.boolean  "is_stock_item",                            :default => true
     t.string   "kitchen_screens",                          :default => ""
   end

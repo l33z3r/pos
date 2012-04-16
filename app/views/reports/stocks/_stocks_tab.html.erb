@@ -1,0 +1,39 @@
+  <div id="sales_items">
+    <table id="product_list" class="admin_table" style="width: 100%">
+          <thead>
+            <th class="header">Name</th>
+            <th class="header">Category</th>
+            <th class="header">Current</th>
+            <th class="header">Sold</th>
+            <th class="header">Waste</th>
+            <th class="header">Total Qty</th>
+          </thead>
+          <% @products.each do |product| %>
+
+          <tbody>
+          <tr>
+              <td>
+                  <%= product.name %>
+              </td>
+
+              <td>
+              </td>
+              <td>
+                 <%= Category.find_by_id(product.category_id).name %>
+              </td>
+              <td>
+                  <%= product.quantity_in_stock %>
+              </td>
+              <td>
+              </td>
+              <td>
+              </td>
+
+
+          </tr>
+          <% end %>
+
+      </tbody>
+    </table>
+  </div>
+
