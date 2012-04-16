@@ -233,6 +233,7 @@ function doRoomNumberLookup() {
         $('#name_list').html(folioTableHTML);
     } else {
         niceAlert("Room " + roomNumber + " not found.");
+        totalsScreenKeypadClickCancel();
         return;
     }
 }
@@ -433,7 +434,7 @@ function chargeCreditCard(amount) {
         type: 'POST',
         url: '/forward_credit_card_charge_request',
         error: function() {
-            setStatusMessage("Card has not been charged!", false, false);
+            setStatusMessage("Card has not been charged! Make sure you cancel the request on the card terminal.", false, false);
         },
         complete: function() {
             cardChargeInProgress = false;
