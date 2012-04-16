@@ -1,21 +1,6 @@
-<% if @retry %>
-retryTableOrder();
-<% else %>
-finishSyncTableOrder();
-<% end %>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /*
-    <% if @error %>
+<% if @error %>
   orderInProcess = false;
-  niceAlert("Error sending order");
+  niceAlert("Error sending order! <%= @message %>");
 <% else %>
   <% if @retry %>
     retryTableOrder();
@@ -23,4 +8,3 @@ finishSyncTableOrder();
     finishSyncTableOrder();
   <% end %>
 <% end %>
-    */

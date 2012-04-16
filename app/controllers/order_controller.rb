@@ -63,12 +63,16 @@ class OrderController < ApplicationController
     
     @table_id = @table_order_data['tableID']
     
+    @error = false
+    
     #check if this order has been cashed out already but let the table 0 order through
     if @table_id != "0" and @order_num 
       if Order.find_by_order_num @order_num
         #this order has already been cashed, so do nothing...
         logger.info "Order has already been cashed. Ignoring..."
-        render :json => {:success => false}.to_json and return
+        @error = true
+        @message = "This order (##{@order_num}) has already been cashed"
+        render and return
       end
     end
     
@@ -85,49 +89,23 @@ class OrderController < ApplicationController
     if @table and @employee
       @retry = do_request_sync_table_order(@terminal_id, @table_order_data, @table_id, @employee_id, @last_sync_time)
     else
-      render :json => {:success => false}.to_json
+      @error = true
+      @message = "Table or employee does not exist"
+      render and return
     end
   end
   
-#  def sync_table_order
-#    @error = false
-#    
-#    @error = true
-#    render and return
-#    1/0
-#    @table_order_data = params[:tableOrderData]
-#    @order_num = @table_order_data[:orderData][:order_num]
-#    
-#    @table_id = @table_order_data['tableID']
-#    
-#    #check if this order has been cashed out already but let the table 0 order through
-#    if @table_id != "0" and @order_num 
-#      if Order.find_by_order_num @order_num
-#        #this order has already been cashed, so do nothing...
-#        logger.info "Order has already been cashed. Ignoring..."
-#        @cashed_out_error = true
-#        render and return
-#      end
-#    end
-#    
-#    @employee_id = params[:employee_id]
-#    
-#    #make sure the table still exists in the system as it will cause a weird error if not
-#    @table = TableInfo.find_by_id(@table_id)
-#    
-#    @employee = Employee.find_by_id(@employee_id)
-#    
-#    @last_sync_time = params[:lastSyncTableOrderTime]
-#    @retry = false
-#    
-#    if @table and @employee
-#      @retry = do_request_sync_table_order(@terminal_id, @table_order_data, @table_id, @employee_id, @last_sync_time)
-#    else
-#      logger.info "Table (#{@table_id}) or employee (#{@employee_id}) do not exist"
-#      @error = true
-#      render and return
-#    end
-#  end
+  def purge_table_order
+    @table_id = params[:table_id]
+    @table = TableInfo.find_by_id(@table_id)
+      
+    if @table
+      @order_num = params[:order_num]
+      do_request_clear_table_order @terminal_id, now_millis, @table_id, @order_num, e
+    end
+    
+    render :json => {:success => true}.to_json
+  end
   
   def transfer_order
     @error = false

@@ -272,3 +272,25 @@ function setMenuItemStandardPriceOverrideMode(turnOn) {
         $('.button[id=sales_button_' + toggleMenuItemStandardPriceOverrideModeButtonID + ']').removeClass("selected");
     }
 }
+
+function purgeCurrentOrder() {
+    var doIt = confirm("Are you sure you want to purge this order from the system?");
+    
+    if(doIt) {
+        var order_num = getCurrentOrder().order_num;
+        
+        clearOrder(selectedTable);
+        
+        $.ajax({
+        type: 'POST',
+        url: '/purge_table_order',
+        complete: function() {
+            niceAlert("Order has been purged from the system.");
+        },
+        data: {
+            table_id : selectedTable,
+            order_num : order_num
+        }
+    });
+    }
+}
