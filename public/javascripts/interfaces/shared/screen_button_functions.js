@@ -188,7 +188,7 @@ function startTransferOrderMode() {
     
     var order = getCurrentOrder();
     
-    if(order.items.length == 0) {
+    if(order == null || order.items.length == 0) {
         setStatusMessage("No items present in current table order.");
         return;
     }
