@@ -13,6 +13,7 @@ Pos::Application.routes.draw do
   #orders
   match 'order' => "order#create", :via => :post
   match 'sync_table_order' => "order#sync_table_order", :via => :post
+  match 'purge_table_order' => "order#purge_table_order", :via => :post
   match 'transfer_order' => "order#transfer_order", :via => :post
   match 'cash_total' => "order#cash_total", :via => :post
   match 'add_float' => "order#add_float", :via => :post
@@ -251,12 +252,17 @@ Pos::Application.routes.draw do
       collection do
         get 'glances_search'
         get 'sales_search'
-        get 'cash_search'
-        get 'payments_search'
-        get 'customers_search'
-        get 'suppliers_search'
-        get 'stock_search'
-        get 'staff_search'
+        get 'set_params'
+        get 'load_dropdown'
+        get 'sales_print'
+      end
+    end
+    resources :stocks, :only => [:index] do
+      collection do
+        get 'glances_search'
+        get 'stocks_search'
+        get 'set_params'
+        get 'load_dropdown'
       end
     end
   end

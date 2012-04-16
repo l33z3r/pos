@@ -67,6 +67,10 @@ class Order < ActiveRecord::Base
     self.created_at.strftime('%m')
   end
 
+  def best_sellers
+    self.total
+  end
+
 end
 
 

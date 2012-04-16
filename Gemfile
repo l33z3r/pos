@@ -24,8 +24,10 @@ gem 'aws-s3', '0.6.2'
 gem 'smurf', '1.0.8'
 
 # for building json
-gem 'jbuilder', '0.3.2' 
- 
+gem 'jbuilder', '0.3.2'
+
+gem 'prawn'
+gem "prawnto"
 # Use unicorn as the web server
 # gem 'unicorn'
 

@@ -6,6 +6,7 @@ var employees = new Array();
   nickname : '<%= escape_javascript raw(e.nickname) %>',
   passcode : '<%= e.passcode %>',
   clockin_code : '<%= e.clockin_code %>',
+  dallas_code : '<%= e.dallas_code %>',
   is_admin : <%= e.is_admin %>,
   role_id : <%= e.role.id %>,
   pin_required : <%= Role.find(e.role.id).pin_required ? "true" : "false" %>,

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120407090936) do
+ActiveRecord::Schema.define(:version => 20120413123340) do
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(:version => 20120407090936) do
     t.integer  "employee_image_file_size"
     t.datetime "employee_image_updated_at"
     t.string   "clockin_code"
+    t.string   "dallas_code"
   end
 
   add_index "employees", ["role_id"], :name => "index_employees_on_role_id"

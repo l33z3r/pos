@@ -59,11 +59,6 @@ function getCurrentOrder() {
 }
 
 function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee, tableOrderDataJSON) {
-    if(lastSyncedOrder && lastSyncedOrder.table == tableLabel) {
-        //set the order id on the lastSyncedOrder variable so that it prints on the login receipt
-        lastSyncedOrder.order_num = tableOrderDataJSON.order_num;
-    }
-    
     //save the current users table order to reload it after sync
     var savedTableID = selectedTable;
     var savedServiceCharge = serviceCharge;
@@ -369,7 +364,7 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
     
     doAutoCoursing(itemsToPrintOrder);
     
-    if(itemsToPrint.length > 0) {
+    if(itemsToPrint.length > 0 && inLargeInterface()) {
         printItemsFromOrder(serverNickname, recvdTerminalID, orderJSON, itemsToPrint);
     }
 }
@@ -690,7 +685,6 @@ function addItemToTableOrderAndSave(orderItem) {
 
 //load the current bar receipt order into memory
 function loadCurrentOrder() {
-    //retrieve the users current order from cookie
     currentOrder = getOrderFromStorage(current_user_id);
     
     if(currentOrder) {
@@ -749,14 +743,6 @@ function updateRecpt(targetPrefix) {
 function doSelectTable(tableNum) {
     selectedTable = tableNum;
     
-    
-    
-    
-    
-    
-    
-    
-    
     //write to storage that this user was last looking at this receipt
     storeLastReceipt(current_user_id, tableNum);
     
@@ -764,19 +750,6 @@ function doSelectTable(tableNum) {
         currentSelectedRoom = 0;
         
         loadCurrentOrder();
-        
-        
-        
-        
-        //we are having a problem with the items in a receipt not being ordered correctly sometimes
-        //it has to do with itemNumber not being set correctly. Cant figure out what is causing it, but
-        //this here will solve the problem for now, by reordering the receipt each time it is loaded
-        //this function is also in other places so if you are removing it make sure all calls to it are removed
-        orderReceiptItems(currentOrder);
-    
-    
-    
-    
         
         defaultServiceChargePercent = globalDefaultServiceChargePercent;
         
@@ -840,7 +813,7 @@ function removeSelectedOrderItem() {
         return;
     }
     
-    if(item.synced && selectedTable != 0) {
+    if(item.synced && selectedTable != 0 && !inTransferOrderItemMode) {
         niceAlert("You cannot remove an item that has already been ordered. You can only void this item.");
         return;
     }

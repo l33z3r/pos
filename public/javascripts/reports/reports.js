@@ -4,6 +4,7 @@ $(function() {
 
 var selectedFromDate;
 var selectedToDate;
+var search_type;
 var terminalId;
 var hour_from;
 var hour_to;
@@ -13,10 +14,13 @@ var hour_to;
  **/
 
 function setReportsDatePickers() {
-    $('#date_select_container').find('#date_from').datepicker({
-        dateFormat: 'dd-mm-yy',
-        defaultDate: selectedFromDate,
+    $('#date_select_container').find('#date_from').datetimepicker({
+        dateFormat: 'yy-mm-dd',
+        defaultDate: '01/01/01',
+        addSliderAccess: true,
+	    sliderAccessArgs: { touchonly: false },
         onSelect: function(dateText, inst) {
+            $('#date_preselect').attr('selectedIndex', 10);
             $('#date_select_container').find('#date_to').datepicker("option", "minDate", dateText);
             selectedFromDate = dateText;
             if($('#date_select_container').find('#date_to').val()!=""){
@@ -25,9 +29,11 @@ function setReportsDatePickers() {
         }
     });
 
-    $('#date_select_container').find('#date_to').datepicker({
-        dateFormat: 'dd-mm-yy',
-        defaultDate: selectedToDate,
+    $('#date_select_container').find('#date_to').datetimepicker({
+        dateFormat: 'yy-mm-dd',
+        defaultDate: '01/01/01',
+        addSliderAccess: true,
+	    sliderAccessArgs: { touchonly: false },
         onSelect: function(dateText, inst) {
             $('#date_select_container').find('#date_from').datepicker("option", "maxDate", dateText);
             selectedToDate = dateText;
@@ -57,6 +63,41 @@ function addHourFromFilter(hour) {
 function addHourToFilter(hour) {
     hour_to = hour;
     runGlancesSearch();
+}
+
+function printInvoice(url) {
+
+    var iframe = document.createElement('iframe'),
+        iframeDocument;
+
+    iframe.style.postion = 'absolute';
+    iframe.style.left = '-9999px';
+    iframe.src = url;
+    document.body.appendChild(iframe);
+
+    if ('contentWindow' in iframe) {
+       iframeDocument = iframe.contentWindow;
+    } else {
+       iframeDocument = iframe.contentDocument;
+    }
+
+    var script = iframeDocument.createElement('script');
+
+    script.type = 'text/javascript';
+
+    script.innerHTML = 'window.print();';
+
+    iframeDocument.getElementsByTagName('head')[0].appendChild(script);
+
+}
+
+function setDateParams(set_date){
+    $('#date_from').val(set_date.split(',')[0]);
+    $('#date_to').val(set_date.split(',')[1]);
+    selectedFromDate = set_date.split(',')[0];
+    selectedToDate = set_date.split(',')[1];
+
+    setReportParams();
 }
 
 function addDateFilter(interval_selected) {
@@ -128,4 +169,77 @@ function runSalesSearch(){
              "search2[hour_to]" : hour_to
         }
     });
+
+}
+
+function runStocksSearch(){
+    $("#report_stocks_results").html("Loading...");
+    $.ajax({
+        type: 'GET',
+        url: '/reports/stocks/stocks_search',
+        data: {
+             "search[created_at_gt]" : selectedFromDate,
+             "search[created_at_lt]" : selectedToDate,
+             "search[terminal_id_equals]" : terminalId,
+             "search2[hour_from]" : hour_from,
+             "search2[hour_to]" : hour_to
+        }
+    });
+}
+
+function setReportParams(){
+    $.ajax({
+        type: 'GET',
+        url: '/reports/sales/set_params',
+        data: {
+             "search[search_type]" : search_type,
+             "search[category]" : $('#category_id_equals').val(),
+             "search[product]" : $('#product_id_equals').val(),
+             "search[from_date]" : selectedFromDate,
+             "search[to_date]" : selectedToDate
+        }
+    });
+}
+
+function loadDropDown(drop_type){
+    var drop_val = "";
+    if (drop_type == 'category') {
+        drop_val = $('#category_id_equals').val()
+    }else{
+        drop_val = $('#product_id_equals').val()
+    }
+    $.ajax({
+        type: 'GET',
+        url: '/reports/sales/load_dropdown',
+        data: {
+             "search[dropdown_type]" : drop_type,
+             "search[dropdown_id]" : drop_val
+        }
+    });
+}
+
+function setSearchType(interval_selected) {
+    switch(interval_selected)
+        {
+        case '0':
+          search_type = 'best_seller';
+          break;
+        case '1':
+          search_type = 'worst_seller';
+          break;
+        case '2':
+          search_type = 'day';
+          break;
+        case '3':
+          search_type = 'week';
+          break;
+        case '4':
+          search_type = 'month';
+          break;
+        case '5':
+          search_type = 'year';
+          break;
+
+        }
+    setReportParams();
 }

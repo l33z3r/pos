@@ -42,6 +42,18 @@ function inKitchenContext() {
     return $('body div.kitchen').length > 0;
 }
 
+function inLargeInterface() {
+    return currentInterface == "large";
+}
+
+function inMediumInterface() {
+    return currentInterface == "medium";
+}
+
+function inAndroidWrapper() {
+    return (typeof clueyAndroidJSInterface != "undefined");
+}
+
 function currency(number, showUnit) {
     if(typeof showUnit == "undefined") {
         showUnit = true;
@@ -683,10 +695,6 @@ function initPressedCSS() {
     });
 }
 
-function inAndroidWrapper() {
-    return (typeof clueyAndroidJSInterface != "undefined");
-}
-
 function clueyTimestamp() {
     return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
 }
@@ -699,12 +707,14 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
     //hide any previous popups
     hideNiceAlert();
     
+    var timeoutSeconds = 5;
+    
     if(hardReload) {
-        message = "A hard reset has been requested by " + reloadTerminalId + ". Please click OK to reload.";
-        okFuncCall = "doClearAndReload();"
+        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
+        okFuncCall = "doClearAndReload();";
     } else {
-        message = "Settings have been changed by " + reloadTerminalId + ". Please click OK to reload.";
-        okFuncCall = "doReload(false);"
+        message = "Settings have been changed by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
+        okFuncCall = "doReload(false);";
     }
     
     ModalPopups.Alert('niceAlertContainer',
@@ -712,9 +722,11 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
         {
             width: 360,
             height: 280,
-            okButtonText: 'Ok',
+            okButtonText: 'Reload Now',
             onOk: okFuncCall
         });
+        
+    setTimeout(okFuncCall, timeoutSeconds * 1000);
 }
 
 function getURLHashParams() {
