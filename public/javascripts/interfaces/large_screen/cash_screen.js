@@ -1,55 +1,3 @@
-
-
-//url to charge to credit card servlet
-//localhost:8080/ClueyWebSocketServices/cc_txn?credit_card_terminal_ip=192.168.1.15&credit_card_terminal_port=25000
-//&transaction_type=C&transaction_amount=.03&cashback_amount=0&reference_message=ClueySale&gratuity_amount=0
-
-
-function chargeCreditCard(amount) {
-    var referenceMessage = "Cluey Sale!";
-    
-    var creditCardChargeRequestURL = 'http://' + creditCardChargeServiceIP + ':8080/ClueyWebSocketServices/cc_txn';
-    
-    $.ajax({
-        type: 'POST',
-        url: '/forward_credit_card_charge_request',
-        error: function() {
-            setStatusMessage("Error Charging Credit Card", false, false);
-        },
-        success: function() {
-            setStatusMessage("Credit Card Charged.", false, false);                   
-        },
-        data: {
-            credit_card_charge_request_url : creditCardChargeRequestURL,
-            credit_card_terminal_ip : creditCardTerminalIP,
-            credit_card_terminal_port : creditCardTerminalPort,
-            transaction_type : "C",
-            transaction_amount : amount,
-            cashback_amount : "0",
-            reference_message : referenceMessage,
-            gratuity_amount : "0"
-        }
-    });
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var splitPayments;
 
 function updateTotalTendered() {
@@ -439,4 +387,108 @@ function togglePrintReceipt() {
         type: 'POST',
         url: '/admin/toggle_print_receipt.js'
     });
+}
+
+var cardChargeInProgress = false;
+var cc_txn_xhr = null;
+
+function chargeCreditCard(amount) {
+    if(cardChargeInProgress) {
+        niceAlert("There is already a card charge in progress, please wait");
+        return;
+    }
+    
+    if(typeof(amount) == 'undefined') {
+        amount = cashTendered;
+    }
+    
+    if(amount == 0) {
+        moneySelected(-1);
+        amount = cashTendered;
+        
+        if(amount == 0) {
+            niceAlert("You cannot send a zero amount to card terminal");
+            return;
+        }
+    }
+    
+    cardChargeInProgress = true;
+    
+    var referenceMessage = "Cluey Sale!";
+    
+    var creditCardChargeRequestURL = 'http://' + creditCardChargeServiceIP + ':8080/ClueyWebSocketServices/cc_txn';
+    
+    var message = "Sending " + currency(amount) + " to card terminal.";
+    
+    ModalPopups.Alert('niceAlertContainer',
+        "Card Terminal Request In Progress...", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
+        {
+            width: 360,
+            height: 280,
+            okButtonText: 'Cancel',
+            onOk: "cancelChargeCreditCard();"
+        });
+    
+    cc_txn_xhr = $.ajax({
+        type: 'POST',
+        url: '/forward_credit_card_charge_request',
+        error: function() {
+            setStatusMessage("Card has not been charged!", false, false);
+        },
+        complete: function() {
+            cardChargeInProgress = false;
+        },
+        data: {
+            credit_card_charge_request_url : creditCardChargeRequestURL,
+            credit_card_terminal_ip : creditCardTerminalIP,
+            credit_card_terminal_port : creditCardTerminalPort,
+            transaction_type : "C",
+            transaction_amount : amount,
+            cashback_amount : "0",
+            reference_message : referenceMessage,
+            gratuity_amount : "0"
+        }
+    });
+}
+
+function creditCardChargeCallback(creditCardChargeResponseCode) {
+    //1 means success
+    //2 means declined
+    //3 means retrieval canceled
+    //4 means a timeout waiting for card
+    //5 is an unknown response
+    //6 means connection refused or other IO error
+    var message = "";
+    
+    if(creditCardChargeResponseCode == 1) {
+        message = "Card successfully charged!";
+        niceAlert(message);
+    } else if(creditCardChargeResponseCode == 2) {
+        message = "Charge has been declined.";
+        niceAlert(message);
+    } else if(creditCardChargeResponseCode == 3) {
+        message = "Card charge canceled.";
+        niceAlert(message);
+    } else if(creditCardChargeResponseCode == 4) {
+        message = "Request timed out. Please try again.";
+        niceAlert(message);
+    } else if(creditCardChargeResponseCode == 5) {
+        message = "Unknown response from card terminal.";
+        niceAlert(message);
+    } else if(creditCardChargeResponseCode == 6) {
+        message = "Commnunication Error, please make sure the credit card terminal is not in use and all settings are set correctly.";
+        niceAlert(message);
+    } else {
+        //unknown error
+        message = "An unknown error occured.";
+        niceAlert(message);
+    }
+}
+
+function cancelChargeCreditCard() {
+    hideNiceAlert();
+    cardChargeInProgress = false;
+    
+    //cancel the ajax request
+    cc_txn_xhr.abort();
 }

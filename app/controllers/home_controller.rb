@@ -548,8 +548,6 @@ class HomeController < ApplicationController
     end
 
     logger.info "Got response from credit card charge servlet: #{@forward_response.body}"
-    
-    render :json => {:success => true}.to_json
   end
   
   # Rails controller action for an HTML5 cache manifest file.
