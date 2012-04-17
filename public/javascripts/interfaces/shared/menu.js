@@ -3,6 +3,7 @@ var currentMenuPageId;
 var currentMenuSubPageId;
 
 var menuItemDoubleMode = false;
+var productInfoPopupMode = false;
 var menuItemStandardPriceOverrideMode = false;
 var currentMenuItemQuantity = "";
 

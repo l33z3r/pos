@@ -606,6 +606,7 @@ class GlobalSetting < ActiveRecord::Base
   #properties for menu screen type
   RESTAURANT_MENU_SCREEN = 1
   RETAIL_MENU_SCREEN = 2
+  CUSTOMER_MENU_SCREEN = 3
 end
 
 # == Schema Information

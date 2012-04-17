@@ -67,6 +67,7 @@ class ButtonMapper
   CHANGE_PRICES_BUTTON = 64
   CHARGE_CARD_BUTTON = 65
   COVERS_BUTTON = 66
+  PRODUCT_INFO_POPUP_BUTTON = 67
   
   RESTRICTED_BUTTON_IDS = [
     ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON,
@@ -211,6 +212,8 @@ class ButtonMapper
       @retval = si_check(CHARGE_CARD_BUTTON, "chargeCardShortcut();")
     when COVERS_BUTTON
       @retval = si_check(COVERS_BUTTON, ms_check("promptAddCovers();"))
+    when PRODUCT_INFO_POPUP_BUTTON
+      @retval = si_check(PRODUCT_INFO_POPUP_BUTTON, ms_check("toggleProductInfoPopup();"))
     end
 
     @retval

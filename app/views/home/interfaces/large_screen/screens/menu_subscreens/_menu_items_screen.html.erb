@@ -41,7 +41,8 @@
                             <%= product_image_thumb embedded_item.product if embedded_item.product.show_button_image %>
                           </div>
                           <div class="item_name" style="<%= menu_item_background_css embedded_item %><%= embedded_item.product.button_text_color.blank? ? "" : "color: #{embedded_item.product.button_text_color};" %>">
-                            <%= menu_item_name embedded_item %>
+                            <%= menu_item_name embedded_item %> -                            
+                            <%= print_money embedded_item.product.price if @menu_screen_type == GlobalSetting::CUSTOMER_MENU_SCREEN %>
                           </div>
                         </div>
                       <% elsif @use_whitespace_in_desktop_menus %>
@@ -73,7 +74,7 @@
                     <%= product_image_thumb item.product if item.product.show_button_image %>
                   </div>
                   <div class="item_name" style="<%= menu_item_background_css item %><%= item.product.button_text_color.blank? ? "" : "color: #{item.product.button_text_color};" %>">
-                    <%= menu_item_name item %>
+                    <%= menu_item_name item %> - <%= print_money item.product.price if @menu_screen_type == GlobalSetting::CUSTOMER_MENU_SCREEN %>
                   </div>
                 </div>
               <% elsif @use_whitespace_in_desktop_menus %>

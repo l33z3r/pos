@@ -75,7 +75,7 @@ function initMenuScreenType() {
         //everything is already set up
     } else if(menuScreenType == RETAIL_MENU_SCREEN) {
         //hide the table select box
-        $('#table_screen_button').add('#table_select_container').hide();
+        $('#table_screen_button, #table_select_container').hide();
         
         $('#upc_code_lookup_container').show();
         
@@ -89,6 +89,32 @@ function initMenuScreenType() {
             $('#scan_upc').focus();
             scanFocusPoll();
         }, 1000);
+    } else if(menuScreenType == CUSTOMER_MENU_SCREEN) {
+        //execute a bunch of css mods to change the menu interface
+        $('#till_keypad').hide();
+        
+        //resize menu items
+        $('#items .item').height(181);
+        $('#items .item').width(176);
+        $('#items .item').css("margin", "3px");
+        $('#items .item .item_pic').height(116);
+        $('#items .item .item_pic img').height(116);
+        $('#items .item .item_pic img').css("max-height", "116px");
+        $('#items .item .item_pic img').css("max-width", "172px");
+        $('#items .item .item_pic img').css("margin-top", "5px");
+        
+        $('#items .item .item_name').css("width", "172px");
+        $('#items .item .item_name').css("font-size", "16px");
+        $('#items .item .item_name').css("bottom", "7px");
+        
+        $('div#menu_screen div#menu_pages_container div#menu_container').height(631);
+        
+        //hide the table select box
+        $('#table_screen_button, #table_select_container').hide();
+        
+        $('#box_label_container').show();
+        
+        //show the product price beside the label
     }
 }
 
@@ -347,6 +373,9 @@ function doSelectMenuItem(productId, menuItemId, element) {
         return;
     } else if(inPriceChangeMode) {
         loadPriceChangeReceiptArea(productId, menuItemId);
+        return;
+    } else if (productInfoPopupMode) {
+        popupProductInfo(productId);
         return;
     }
     
@@ -1925,7 +1954,7 @@ function doSaveNote() {
         return false;
     }
     
-    currentSelectedReceiptItemEl = getLastReceiptItem();
+    currentSelectedReceiptItemEl = getSelectedOrLastReceiptItem();
     
     if(!currentSelectedReceiptItemEl) {
         setStatusMessage("There are no receipt items!");
@@ -2349,4 +2378,57 @@ function finishSplitBillMode() {
     doAutoLoginAfterSync = true;
     doSelectTable(splitBillTableNumber);
     doSyncTableOrder();    
+}
+
+var productInfoPopupEl;
+var productInfoPopupAnchor;
+
+function popupProductInfo(productId) {
+    var popupHTML = $("#product_info_popup_markup").html();
+        
+    productInfoPopupAnchor = $('#receipt');
+    
+    if(productInfoPopupAnchor.HasBubblePopup()) {
+        productInfoPopupAnchor.RemoveBubblePopup();
+    }
+    
+    productInfoPopupAnchor.CreateBubblePopup();
+    
+    productInfoPopupAnchor.ShowBubblePopup({
+        position: 'right',  
+        align: 'top',
+        tail	 : {
+            align: 'middle'
+        },
+        innerHtml: popupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+        
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false        
+    }, false);
+    
+    productInfoPopupAnchor.FreezeBubblePopup();
+         
+    var popupId = productInfoPopupAnchor.GetBubblePopupID();
+    
+    productInfoPopupEl = $('#' + popupId);
+    
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closeProductInfoPopup);
+    
+//    var tableOrder = getCurrentOrder();
+//    
+//    productInfoPopupEl.find('input').val(tableOrder.covers);
+//    
+//    productInfoPopupEl.find('input').focus();
+}
+
+function closeProductInfoPopup() {
+    if(productInfoPopupEl) {
+        hideBubblePopup(productInfoPopupAnchor);
+    }
 }

@@ -31,7 +31,7 @@
   [49, "Modifier Grids"], [50, "Current Orders"], [51, "Manage Terminals"], [52, "Print Bill"], [53, "Course"],
   [54, "Kitchen Screen"], [55, "X/Z History"], [56, "Double"], [57, "Table Name"], [58, "Reports"], 
   [59, "Split Bill"], [60, "Exit App"], [61, "Void Item"], [62, "Void All Items"], [63, "Delete Order"], 
-  [64, "Change Prices"], [65, "Charge Card"], [66, "Covers"]
+  [64, "Change Prices"], [65, "Charge Card"], [66, "Covers"], [67, "Product Info"]
 ]
 
 #now create the buttons and also init a button role for admin user

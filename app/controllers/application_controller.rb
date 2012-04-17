@@ -442,6 +442,9 @@ class ApplicationController < ActionController::Base
     #white space in menus
     @use_whitespace_in_mobile_menus = GlobalSetting.parsed_setting_for GlobalSetting::USE_WHITE_SPACE_MOBILE_MENUS
     @use_whitespace_in_desktop_menus = GlobalSetting.parsed_setting_for GlobalSetting::USE_WHITE_SPACE_DESKTOP_MENUS
+    
+    #menu screen type
+    @menu_screen_type = GlobalSetting.parsed_setting_for GlobalSetting::MENU_SCREEN_TYPE, {:fingerprint => @terminal_fingerprint}
   end
   
   def mobile_device?

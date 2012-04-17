@@ -312,3 +312,17 @@ function chargeCardShortcut() {
     doTotal();    
     chargeCreditCard();
 }
+
+function toggleProductInfoPopup() {
+    setProductInfoPopup(!productInfoPopupMode);
+}
+
+function setProductInfoPopup(turnOn) {
+    if(turnOn) {
+        productInfoPopupMode = true;
+        $('.button[id=sales_button_' + toggleProductInfoButtonID + ']').addClass("selected");
+    } else {
+        productInfoPopupMode = false;
+        $('.button[id=sales_button_' + toggleProductInfoButtonID + ']').removeClass("selected");
+    }
+}

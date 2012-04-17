@@ -102,6 +102,12 @@
                              <%= @gs.parsed_value == GlobalSetting::RETAIL_MENU_SCREEN ? "checked" : "" %>/>
                       <div class="label">Retail</div>
                       <div class="clear">&nbsp;</div>
+                      
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="<%= GlobalSetting::CUSTOMER_MENU_SCREEN %>" 
+                             <%= @gs.parsed_value == GlobalSetting::CUSTOMER_MENU_SCREEN ? "checked" : "" %>/>
+                      <div class="label">Customer</div>
+                      <div class="clear">&nbsp;</div>
                     </td>
                   </tr>
                   <tr>

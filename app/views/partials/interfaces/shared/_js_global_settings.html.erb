@@ -61,9 +61,10 @@
   var MENU_SCREEN = <%= GlobalSetting::MENU_SCREEN %>;
   var TABLES_SCREEN = <%= GlobalSetting::TABLES_SCREEN %>;
   
-  var menuScreenType = <%= GlobalSetting.parsed_setting_for GlobalSetting::MENU_SCREEN_TYPE, {:fingerprint => @terminal_fingerprint} %>;
+  var menuScreenType = <%= @menu_screen_type %>;
   var RESTAURANT_MENU_SCREEN = <%= GlobalSetting::RESTAURANT_MENU_SCREEN %>;
   var RETAIL_MENU_SCREEN = <%= GlobalSetting::RETAIL_MENU_SCREEN %>;
+  var CUSTOMER_MENU_SCREEN = <%= GlobalSetting::CUSTOMER_MENU_SCREEN %>;
   
   //this is for the order ready notifications on mobile
   var lastOrderReadyNotificationTime = <%= now_millis %>;
@@ -121,6 +122,7 @@
   var courseNumButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::COURSE_BUTTON).id %>";
   var voidOrderItemButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::VOID_ORDER_ITEM_BUTTON).id %>";
   var priceChangeButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::CHANGE_PRICES_BUTTON).id %>";
+  var toggleProductInfoButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::PRODUCT_INFO_POPUP_BUTTON).id %>";
   
   var updateStockType = <%= StockTransaction::STOCK_UPDATE %>;
   var transferStockType = <%= StockTransaction::STOCK_TRANSFER %>;
