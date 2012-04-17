@@ -76,6 +76,12 @@ orderDateString = "<%= @order.created_at %>";
 x = orderDateString.match(/(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}):(\d{2})/);
 previousOrderJSON.time = new Date(x[1],x[2]-1,x[3],x[4],x[5]);
 
+//covers 
+previousOrderJSON.covers = previousOrderJSON.num_persons;
+
+//client name
+previousOrderJSON.client_name = previousOrderJSON.client_name;
+
 <% if @order.is_table_order %>
   previousOrderJSON.table = "<%= @order.table_info_label %>";
   previousOrderJSON.tableInfoId = <%= @order.table_info_id %>;

@@ -10,6 +10,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: orders
@@ -36,5 +38,6 @@ end
 #  is_void               :boolean(1)      default(FALSE)
 #  order_num             :integer(8)
 #  split_payments        :text(2147483647
+#  client_name           :string(255)     default(""), not null
 #
 

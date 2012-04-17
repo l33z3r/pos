@@ -2467,6 +2467,43 @@ div#name_table_popup_markup_container div#table_name_input_container input {
 
 /* End Name Table Popup Markup */
 
+/* Covers Popup Markup */
+
+div#add_covers_popup_markup {
+    display: none;
+}
+
+div#add_covers_popup_markup_container {
+    width: 240px;
+    height: 180px;
+}
+
+div#add_covers_popup_markup_container div#header {
+    float: left;
+    margin: 5px;
+    margin-top: 16px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+div#add_covers_popup_markup_container div#add_covers_input_container {
+    margin: 10px 0px;
+}
+
+div#add_covers_popup_markup_container div#add_covers_input_container div#add_covers_input_label {
+    font-weight: bold;
+    width: 50px;
+    float: left;
+    margin: 5px 6px 1px 10px;
+    font-size: 12px;
+}
+
+div#add_covers_popup_markup_container div#add_covers_input_container input {
+    float: left;
+}
+
+/* End Covers Popup Markup */
+
 /* Generic Popup Styling */
 
 div.jquerybubblepopup table td.jquerybubblepopup-top-middle {

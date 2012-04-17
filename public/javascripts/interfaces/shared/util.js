@@ -280,6 +280,9 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
         
         tableOrders[tableNum].client_name = currentTableOrderJSON.client_name;
         
+        //covers
+        tableOrders[tableNum].covers = currentTableOrderJSON.covers;
+        
         //load the cashback
         tableOrders[tableNum].cashback = currentTableOrderJSON.cashback;
                 
@@ -339,8 +342,9 @@ function buildInitialOrder() {
     var initOrder = {
         'items': new Array(),
         'courses' : new Array(),
-        'total':0,
-        'client_name' : ""
+        'total': 0,
+        'client_name' : "",
+        'covers' : 0
     };
     
     return initOrder;

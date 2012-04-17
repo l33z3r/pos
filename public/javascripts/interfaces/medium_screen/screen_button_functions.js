@@ -27,7 +27,7 @@ function saveServiceCharge(performTotal) {
 }
 
 function promptAddNameToTable() {
-    
+    alert("Implement Me!");
 }
 
 function changeCourseNum() {
@@ -49,13 +49,13 @@ function tablesButtonPressed() {
 }
 
 function voidOrderItem() {
-    
+    alert("Implement Me!");
 }
 
 function voidAllOrderItems() {
-    
+    alert("Implement Me!");
 }
 
-function coversPrompt() {
-    
+function promptAddCovers() {
+    alert("Implement Me!");
 }

@@ -726,6 +726,100 @@ function promptVoidAllOrderItems() {
         } );
 }
 
-function coversPrompt() {
+var addCoversPopupEl;
+var addCoversPopupAnchor;
+
+function promptAddCovers() {
+    if(!callHomePollInitSequenceComplete) {
+        niceAlert("Downloading data from server, please wait.");
+        return;
+    }    
     
+    if(selectedTable == 0 || selectedTable == -1) {
+        setStatusMessage("Only valid for table orders!");
+        return;
+    }
+    
+    var popupHTML = $("#add_covers_popup_markup").html();
+        
+    addCoversPopupAnchor = $('#receipt');
+    
+    if(addCoversPopupAnchor.HasBubblePopup()) {
+        addCoversPopupAnchor.RemoveBubblePopup();
+    }
+    
+    addCoversPopupAnchor.CreateBubblePopup();
+    
+    addCoversPopupAnchor.ShowBubblePopup({
+        position: 'right',  
+        align: 'top',
+        tail	 : {
+            align: 'middle'
+        },
+        innerHtml: popupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+        
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false        
+    }, false);
+    
+    addCoversPopupAnchor.FreezeBubblePopup();
+         
+    var popupId = addCoversPopupAnchor.GetBubblePopupID();
+    
+    addCoversPopupEl = $('#' + popupId);
+    
+    var tableOrder = getCurrentOrder();
+    
+    addCoversPopupEl.find('input').val(tableOrder.covers);
+    
+    addCoversPopupEl.find('input').focus();
+    
+    //show the keyboard
+    $('#util_keyboard_container').slideDown(300);
+}
+
+function closePromptAddCovers() {
+    if(addCoversPopupEl) {
+        hideBubblePopup(addCoversPopupAnchor);
+    }
+    
+    //hide the keyboard
+    $('#util_keyboard_container').slideUp(300);
+}
+
+function saveAddCovers() {
+    //do nothing if not table order
+    if(selectedTable == 0 || selectedTable == -1) {
+        closePromptAddCovers();
+        return;
+    }
+    
+    var tableOrder = getCurrentOrder();
+    
+    var covers = addCoversPopupEl.find("#add_covers_input").val();
+    
+    //make sure its an integer
+    covers = parseInt(covers);
+    
+    if(isNaN(covers)) {
+        covers = 0;
+    }
+    
+    tableOrder.covers = covers;
+    
+    closePromptAddCovers();
+    
+    storeTableOrderInStorage(current_user_id, selectedTable, tableOrder);
+    
+    if(!currentOrderEmpty()) {
+        doAutoLoginAfterSync = true;
+        doSyncTableOrder();
+    } 
+    
+    setStatusMessage("Covers added to table");
 }

@@ -210,7 +210,7 @@ class ButtonMapper
     when CHARGE_CARD_BUTTON
       @retval = si_check(CHARGE_CARD_BUTTON, "chargeCardShortcut();")
     when COVERS_BUTTON
-      @retval = si_check(COVERS_BUTTON, ms_check("coversPrompt();"))
+      @retval = si_check(COVERS_BUTTON, ms_check("promptAddCovers();"))
     end
 
     @retval

@@ -1239,7 +1239,7 @@ function doTotalFinal() {
         }
 
         //TODO: pick up num persons
-        numPersons = 4;
+        numPersons = totalOrder.covers;
     }
 
     if(!paymentMethod) {
@@ -1318,26 +1318,27 @@ function doTotalFinal() {
     order_num = totalOrder.order_num
     
     orderData = {
-        'order_num': order_num,
-        'employee_id':current_user_id,
-        'total':orderTotal,
-        'tax_chargable':taxChargable,
-        'global_sales_tax_rate':orderSalesTaxRate,
-        'service_charge':serviceCharge,
-        'cashback':cashback,
-        'payment_type':paymentMethod,
-        'amount_tendered':cashTendered,
-        'num_persons':numPersons,
-        'is_table_order':isTableOrder,
-        'table_info_id':tableInfoId,
-        'table_info_label':tableInfoLabel,
-        'discount_percent':discountPercent,
-        'pre_discount_price':preDiscountPrice,
-        'order_details':totalOrder,
-        'terminal_id':terminalID,
-        'void_order_id': totalOrder.void_order_id,
-        'is_split_bill': isSplitBill,
-        'split_payments': splitPayments
+        'order_num' : order_num,
+        'employee_id' : current_user_id,
+        'total' : orderTotal,
+        'tax_chargable' : taxChargable,
+        'global_sales_tax_rate' : orderSalesTaxRate,
+        'service_charge' : serviceCharge,
+        'cashback' : cashback,
+        'payment_type' : paymentMethod,
+        'amount_tendered' : cashTendered,
+        'num_persons' : numPersons,
+        'client_name' : totalOrder.client_name,
+        'is_table_order' : isTableOrder,
+        'table_info_id' : tableInfoId,
+        'table_info_label' : tableInfoLabel,
+        'discount_percent' : discountPercent,
+        'pre_discount_price' : preDiscountPrice,
+        'order_details' : totalOrder,
+        'terminal_id' : terminalID,
+        'void_order_id' : totalOrder.void_order_id,
+        'is_split_bill' : isSplitBill,
+        'split_payments' : splitPayments
     }
     
     sendOrderToServer(orderData);
@@ -2031,6 +2032,7 @@ function postDoSyncTableOrder() {
     
     //clean up after transfer order mode
     if(inTransferOrderMode) {
+        hideNiceAlert();
         setStatusMessage("Order Transfered.");
         $('#tables_screen_status_message').hide();
         inTransferOrderMode = false;
