@@ -88,7 +88,7 @@
   
   var using_mobile = <%= mobile_device? ? "true" : "false" %>;
   
-  var doBeep = <%= GlobalSetting.parsed_setting_for GlobalSetting::DO_BEEP %>;
+  var doBeep = <%= GlobalSetting.parsed_setting_for GlobalSetting::DO_BEEP, {:fingerprint => @terminal_fingerprint} %>;
   
   var railsEnvironment = "<%= ENV['RAILS_ENV'] %>";
   
@@ -120,6 +120,7 @@
   var oiaButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::MODIFY_ORDER_ITEM_BUTTON).id %>";
   var courseNumButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::COURSE_BUTTON).id %>";
   var voidOrderItemButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::VOID_ORDER_ITEM_BUTTON).id %>";
+  var priceChangeButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::CHANGE_PRICES_BUTTON).id %>";
   
   var updateStockType = <%= StockTransaction::STOCK_UPDATE %>;
   var transferStockType = <%= StockTransaction::STOCK_TRANSFER %>;

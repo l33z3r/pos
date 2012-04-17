@@ -725,3 +725,7 @@ function promptVoidAllOrderItems() {
             height: 250
         } );
 }
+
+function coversPrompt() {
+    
+}

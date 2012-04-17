@@ -1,20 +1,3 @@
-# == Schema Information
-# Schema version: 20110526094125
-#
-# Table name: global_settings
-#
-#  id                :integer(4)      not null, primary key
-#  key               :string(255)
-#  value             :string(255)
-#  label_text        :string(255)
-#  logo_file_name    :string(255)
-#  logo_content_type :string(255)
-#  logo_file_size    :integer(4)
-#  logo_updated_at   :datetime
-#  created_at        :datetime
-#  updated_at        :datetime
-#
-
 class GlobalSetting < ActiveRecord::Base
   
   before_save :prepare_value_for_save
@@ -200,7 +183,7 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_key(:key => TAX_LABEL.to_s, :value => "Tax", :label_text => LABEL_MAP[TAX_LABEL])
       @gs.parsed_value = @gs.value
     when DO_BEEP
-      @gs = find_or_create_by_key(:key => DO_BEEP.to_s, :value => "false", :label_text => LABEL_MAP[DO_BEEP])
+      @gs = find_or_create_by_key(:key => "#{DO_BEEP.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[DO_BEEP])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when RELOAD_HTML5_CACHE_TIMESTAMP
       @gs = find_or_create_by_key(:key => RELOAD_HTML5_CACHE_TIMESTAMP.to_s, :value => 0, :label_text => LABEL_MAP[RELOAD_HTML5_CACHE_TIMESTAMP])
@@ -338,9 +321,6 @@ class GlobalSetting < ActiveRecord::Base
     when CASH_TOTAL_OPTION
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
-    when DO_BEEP
-      new_value = (value == "true" ? "yes" : "no")
-      write_attribute("value", new_value)
     when RELOAD_HTML5_CACHE_TIMESTAMP
       new_value = value.to_i
       write_attribute("value", new_value)
@@ -469,6 +449,13 @@ class GlobalSetting < ActiveRecord::Base
             @my_cc_terminal_port_gs.value = @cc_terminal_port_gs.value
             @my_cc_terminal_port_gs.save
 	    
+            #perform beep on click?
+            @do_beep_gs = GlobalSetting.setting_for GlobalSetting::DO_BEEP, {:fingerprint => @old_fingerprint}
+	    
+            @my_do_beep_gs = GlobalSetting.setting_for GlobalSetting::DO_BEEP, {:fingerprint => @my_terminal_fingerprint}
+            @my_do_beep_gs.value = @do_beep_gs.value
+            @my_do_beep_gs.save
+	    
             #delete old gs objects
             @websocket_ip_gs.destroy
             @cash_drawer_ip_gs.destroy
@@ -481,6 +468,7 @@ class GlobalSetting < ActiveRecord::Base
             @cc_charge_service_ip_gs.destroy
             @cc_terminal_ip_gs.destroy
             @cc_terminal_port_gs.destroy
+            @do_beep_gs.destroy
           end
         end
         if value
@@ -497,6 +485,9 @@ class GlobalSetting < ActiveRecord::Base
         new_value = value.to_i
         write_attribute("value", new_value)
       elsif key.starts_with? DISABLE_ADVANCED_TOUCH.to_s
+        new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
+      elsif key.starts_with? DO_BEEP.to_s
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
       end
@@ -616,3 +607,20 @@ class GlobalSetting < ActiveRecord::Base
   RESTAURANT_MENU_SCREEN = 1
   RETAIL_MENU_SCREEN = 2
 end
+
+# == Schema Information
+#
+# Table name: global_settings
+#
+#  id                :integer(4)      not null, primary key
+#  key               :string(255)
+#  value             :text
+#  label_text        :string(255)
+#  logo_file_name    :string(255)
+#  logo_content_type :string(255)
+#  logo_file_size    :integer(4)
+#  logo_updated_at   :datetime
+#  created_at        :datetime
+#  updated_at        :datetime
+#
+

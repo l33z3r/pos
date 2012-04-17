@@ -937,7 +937,7 @@
                       Enable On Screen Beep?
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::DO_BEEP %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::DO_BEEP, {:fingerprint => @terminal_fingerprint} %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>

@@ -35,7 +35,13 @@ function menuScreenDropdownItemSelected(index, name) {
         setShortcutDropdownDefaultText();
         return;
     } else if(index == 3) {
-        startPriceChangeMode();
+        //make sure this user has permissions for this
+        if(typeof(display_button_passcode_permissions[parseInt(priceChangeButtonID)]) != 'undefined') {
+            startPriceChangeMode();
+        } else {
+            niceAlert("You do not have permission to change prices!");
+        }
+        
         return;
     } else if(index == 4) {
         startStockTakeMode();
@@ -76,7 +82,7 @@ function startPriceChangeMode() {
 }
 
 function finishPriceChangeMode() {
-    showLoadingDiv("Loading Prices...");
+    showLoadingDiv("Loading new prices...");
     
     //reload the products
     $.getScript('/javascripts/products.js', priceChangeModeComplete);

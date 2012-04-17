@@ -55,3 +55,7 @@ function voidOrderItem() {
 function voidAllOrderItems() {
     
 }
+
+function coversPrompt() {
+    
+}

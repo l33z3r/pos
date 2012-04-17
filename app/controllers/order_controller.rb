@@ -95,7 +95,7 @@ class OrderController < ApplicationController
     end
   end
   
-  def purge_table_order
+  def delete_table_order
     @table_id = params[:table_id]
     @table = TableInfo.find_by_id(@table_id)
       
@@ -138,6 +138,8 @@ class OrderController < ApplicationController
       @order_params = order_params
 
       @order_details = @order_params.delete(:order_details)
+      
+      @card_charge_details = @order_details.delete(:card_charge)
     
       @is_split_bill_order_param = @order_params.delete(:is_split_bill)
     
@@ -244,6 +246,17 @@ class OrderController < ApplicationController
             end
           end
         end
+      end
+      
+      #record a card charge if there was one
+      if @card_charge_details
+        @card_charge_payment_method = @card_charge_details[:paymentMethod]
+        @card_charge_amount = @card_charge_details[:amount]
+        
+        CardTransaction.create({
+            :order_id => @order.id, 
+            :payment_method => @card_charge_payment_method, 
+            :amount => @card_charge_amount})
       end
     
       @table_info = TableInfo.find_by_id(@order.table_info_id)

@@ -392,6 +392,7 @@ function togglePrintReceipt() {
 
 var cardChargeInProgress = false;
 var cc_txn_xhr = null;
+var currentCardChargeAmount = 0;
 
 function chargeCreditCard(amount) {
     if(cardChargeInProgress) {
@@ -415,7 +416,10 @@ function chargeCreditCard(amount) {
     
     cardChargeInProgress = true;
     
-    var referenceMessage = "Cluey Sale!";
+    currentCardChargeAmount = amount;
+    
+    //This message will print on the cc receipt
+    var referenceMessage = business_name;
     
     var creditCardChargeRequestURL = 'http://' + creditCardChargeServiceIP + ':8080/ClueyWebSocketServices/cc_txn';
     
@@ -434,7 +438,9 @@ function chargeCreditCard(amount) {
         type: 'POST',
         url: '/forward_credit_card_charge_request',
         error: function() {
-            setStatusMessage("Card has not been charged! Make sure you cancel the request on the card terminal.", false, false);
+            if (!userAbortedXHR(cc_txn_xhr)) {
+                setStatusMessage("Error charging card! Make sure card service is running and settings are correct.", false, false);
+            }
         },
         complete: function() {
             cardChargeInProgress = false;
@@ -462,8 +468,14 @@ function creditCardChargeCallback(creditCardChargeResponseCode) {
     var message = "";
     
     if(creditCardChargeResponseCode == 1) {
-        message = "Card successfully charged!";
+        message = "Card successfully charged for " + currency(currentCardChargeAmount);
         niceAlert(message);
+        
+        //tag the card charge on to the order so we can create a record in cc_txn table
+        totalOrder.card_charge = {
+            paymentMethod : paymentMethod,
+            amount : currentCardChargeAmount
+        }
     } else if(creditCardChargeResponseCode == 2) {
         message = "Charge has been declined.";
         niceAlert(message);

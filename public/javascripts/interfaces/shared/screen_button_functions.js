@@ -4,6 +4,8 @@ var orderInProcess = false;
 var isTableZeroOrder = false;
 
 function doSyncTableOrder() {
+    var order = null;
+    
     if(!isTableZeroOrder && !ensureLoggedIn()) {
         return;
     }
@@ -273,8 +275,8 @@ function setMenuItemStandardPriceOverrideMode(turnOn) {
     }
 }
 
-function purgeCurrentOrder() {
-    var doIt = confirm("Are you sure you want to purge this order from the system?");
+function deleteCurrentOrder() {
+    var doIt = confirm("Are you sure you want to delete this order from the system?");
     
     if(doIt) {
         var order_num = getCurrentOrder().order_num;
@@ -283,9 +285,9 @@ function purgeCurrentOrder() {
         
         $.ajax({
         type: 'POST',
-        url: '/purge_table_order',
+        url: '/delete_table_order',
         complete: function() {
-            niceAlert("Order has been purged from the system.");
+            niceAlert("Order has been deleted from the system.");
         },
         data: {
             table_id : selectedTable,
@@ -293,4 +295,9 @@ function purgeCurrentOrder() {
         }
     });
     }
+}
+
+function chargeCardShortcut() {
+    doTotal();    
+    chargeCreditCard();
 }

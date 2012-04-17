@@ -1363,6 +1363,7 @@ function doTotalFinal() {
     serviceCharge = 0;
     cashback = 0;
     paymentMethod = null;
+    currentCardChargeAmount = 0;
     
     //do we need to clear the previous order from the receipt dropdown selection?
     if(selectedTable == previousOrderTableNum) {

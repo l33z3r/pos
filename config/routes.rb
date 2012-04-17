@@ -13,7 +13,7 @@ Pos::Application.routes.draw do
   #orders
   match 'order' => "order#create", :via => :post
   match 'sync_table_order' => "order#sync_table_order", :via => :post
-  match 'purge_table_order' => "order#purge_table_order", :via => :post
+  match 'delete_table_order' => "order#delete_table_order", :via => :post
   match 'transfer_order' => "order#transfer_order", :via => :post
   match 'cash_total' => "order#cash_total", :via => :post
   match 'add_float' => "order#add_float", :via => :post

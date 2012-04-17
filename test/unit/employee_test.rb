@@ -8,6 +8,7 @@ class EmployeeTest < ActiveSupport::TestCase
 end
 
 
+
 # == Schema Information
 #
 # Table name: employees
@@ -32,5 +33,6 @@ end
 #  employee_image_file_size    :integer(4)
 #  employee_image_updated_at   :datetime
 #  clockin_code                :string(255)
+#  dallas_code                 :string(255)
 #
 
