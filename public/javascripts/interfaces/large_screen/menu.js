@@ -2031,7 +2031,7 @@ function postDoSyncTableOrder() {
     
     //clean up after transfer order mode
     if(inTransferOrderMode) {
-        niceAlert("Order Transfered.");
+        setStatusMessage("Order Transfered.");
         $('#tables_screen_status_message').hide();
         inTransferOrderMode = false;
         tableScreenSelectTable(selectedTable);

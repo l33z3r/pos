@@ -276,6 +276,17 @@ function setMenuItemStandardPriceOverrideMode(turnOn) {
 }
 
 function deleteCurrentOrder() {
+    if(selectedTable == previousOrderTableNum) {
+        setStatusMessage("Not valid for reopened orders!");
+        return;
+    } else if(selectedTable == tempSplitBillTableNum) {
+        setStatusMessage("Not valid for split orders!");
+        return;
+    } else if(selectedTable == 0) {
+        setStatusMessage("Only valid for table orders!");
+        return;
+    }
+    
     var doIt = confirm("Are you sure you want to delete this order from the system?");
     
     if(doIt) {
@@ -284,16 +295,16 @@ function deleteCurrentOrder() {
         clearOrder(selectedTable);
         
         $.ajax({
-        type: 'POST',
-        url: '/delete_table_order',
-        complete: function() {
-            niceAlert("Order has been deleted from the system.");
-        },
-        data: {
-            table_id : selectedTable,
-            order_num : order_num
-        }
-    });
+            type: 'POST',
+            url: '/delete_table_order',
+            complete: function() {
+                niceAlert("Order has been deleted from the system.");
+            },
+            data: {
+                table_id : selectedTable,
+                order_num : order_num
+            }
+        });
     }
 }
 

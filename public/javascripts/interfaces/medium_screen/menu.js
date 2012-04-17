@@ -1036,7 +1036,7 @@ function postDoSyncTableOrder() {
     //clean up after transfer order mode
     if (inTransferOrderMode) {
         hideLoadingDiv();
-        niceAlert("Order Transfered.");
+        setStatusMessage("Order Transfered.");
         inTransferOrderMode = false;
         $('#table_num').val(tables[selectedTable].label);
         doSubmitTableNumber();
