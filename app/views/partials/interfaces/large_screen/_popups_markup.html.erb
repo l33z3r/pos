@@ -337,10 +337,46 @@
 <div id="product_info_popup_markup">
   <div id="product_info_popup_markup_container" class="popup_container">
 
-    <div id="header">Product Info</div>
+    <div id="header">
+      <img src="images/info_icon.png" class='info_icon'/>
+      
+      <div id="product_image"></div>
+      
+      <div id="product_info">
+        <div id="product_name"></div>
+        
+        <div class="clear">&nbsp;</div>
+        
+        <div id="product_price_label">Price:</div>        
+        <div id="product_price"></div>
+      </div>
+    </div>
 
     <div class="clear">&nbsp;</div>
     
-    STUFF
+    <div id="description_container">
+      <div class="header">Description:</div>
+      <div id="description"></div>
+    </div>
+    
+    <div class="clear">&nbsp;</div>
+    
+    <div class="action_buttons_container">
+      <div class="action_buttons">
+        <div id="cancel_button" class="button" data-onpress="closeProductInfoPopup();">
+          <div class="icon">
+            <%= image_tag "button_logos/cancel_button.png"%>
+          </div>
+          <div class="button_name">Close</div>
+        </div>
+        <div id="save_button" class="button" data-onpress="productInfoAddItemToOrder()">
+          <div class="icon">
+            <%= image_tag "button_logos/ok_button.png"%>
+          </div>
+          <div class="button_name">Add To Order</div>
+        </div>
+        <div class="clear">&nbsp;</div>
+      </div>
+    </div>
   </div>
 </div>

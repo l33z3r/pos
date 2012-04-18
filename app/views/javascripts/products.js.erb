@@ -5,6 +5,8 @@ var products_by_upc = new Array();
 
   var nextProduct = {
   'id':'<%= p.id %>', 'name':'<%= escape_javascript raw(p.name) %>', 
+  'description':'<%= escape_javascript raw(p.description) %>', 
+  'img_url' : '<%= product_image_url p %>',
   'price':<%= p.price %>, 'tax_rate':<%=p.sales_tax_rate%>,
   'price_2':<%= p.price_2 %>, 'price_3':<%= p.price_3 %>, 'price_4':<%= p.price_4 %>,
   'double_price' : <%=p.double_price%>,

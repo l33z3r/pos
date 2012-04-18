@@ -91,15 +91,14 @@ function initMenuScreenType() {
         }, 1000);
     } else if(menuScreenType == CUSTOMER_MENU_SCREEN) {
         //execute a bunch of css mods to change the menu interface
-        $('#till_keypad').hide();
         
         //resize menu items
-        $('#items .item').height(181);
+        $('#items .item').height(133);
         $('#items .item').width(176);
         $('#items .item').css("margin", "3px");
         $('#items .item .item_pic').height(116);
-        $('#items .item .item_pic img').height(116);
-        $('#items .item .item_pic img').css("max-height", "116px");
+        $('#items .item .item_pic img').height(90);
+        $('#items .item .item_pic img').css("max-height", "90px");
         $('#items .item .item_pic img').css("max-width", "172px");
         $('#items .item .item_pic img').css("margin-top", "5px");
         
@@ -108,6 +107,9 @@ function initMenuScreenType() {
         $('#items .item .item_name').css("bottom", "7px");
         
         $('div#menu_screen div#menu_pages_container div#menu_container').height(631);
+        $('div#menu_screen div#order_item_additions').height(631);
+        $('div#menu_screen div#order_item_additions div.oia_container').height(558);
+        $('div#menu_screen div#menu_buttons').height(79);
         
         //hide the table select box
         $('#table_screen_button, #table_select_container').hide();
@@ -722,7 +724,12 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     return orderHTML;
 }
 
-function doSelectReceiptItem(orderItemEl) { 
+function doSelectReceiptItem(orderItemEl) {
+    //do nothing if we are in the customer interface
+    if(menuScreenType == CUSTOMER_MENU_SCREEN) {
+        return null;
+    }
+    
     orderItemEl = $(orderItemEl);
     
     //close any open popup
@@ -2382,8 +2389,11 @@ function finishSplitBillMode() {
 
 var productInfoPopupEl;
 var productInfoPopupAnchor;
+var currentProductInfoPopupProductId;
 
 function popupProductInfo(productId) {
+    currentProductInfoPopupProductId = productId;
+    
     var popupHTML = $("#product_info_popup_markup").html();
         
     productInfoPopupAnchor = $('#receipt');
@@ -2418,17 +2428,41 @@ function popupProductInfo(productId) {
     productInfoPopupEl = $('#' + popupId);
     
     //register the click handler to hide the popup when outside clicked
-    registerPopupClickHandler($('#' + popupId), closeProductInfoPopup);
+    //registerPopupClickHandler($('#' + popupId), closeProductInfoPopup);
     
-//    var tableOrder = getCurrentOrder();
-//    
-//    productInfoPopupEl.find('input').val(tableOrder.covers);
-//    
-//    productInfoPopupEl.find('input').focus();
+    var product = products[productId];
+    
+    //product image
+    var productImageURL = product.img_url;
+    
+    //must prepend the image with the images directory path if it is not a paperclip image
+    if(!productImageURL.startsWith("/system/")) {
+        productImageURL = "/images/" + productImageURL;
+    }
+    
+    productInfoPopupEl.find('#product_image').html("<img src=\"" + productImageURL + "\"/>");
+    
+    //product name
+    var productName = product.name;
+    productInfoPopupEl.find('#product_name').html(productName);
+    
+    //product price
+    var productPrice = product.price;    
+    productInfoPopupEl.find('#product_price').html(currency(productPrice));
+    
+    //product description
+    var productDescription = product.description;    
+    productInfoPopupEl.find('#description').html(productDescription);
 }
 
 function closeProductInfoPopup() {
     if(productInfoPopupEl) {
         hideBubblePopup(productInfoPopupAnchor);
     }
+}
+
+function productInfoAddItemToOrder() {
+    setProductInfoPopup(false);
+    doSelectMenuItem(currentProductInfoPopupProductId, null, null);
+    closeProductInfoPopup();
 }

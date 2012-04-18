@@ -32,7 +32,7 @@ previous_cash_totals_data_html = "";
 <% end %>
 
 <% if @previous_floats.empty? and !@last_z_total and @previous_x_totals.empty? %>
-  previous_cash_totals_data_html += "<div>No Data!</div>";
+  previous_cash_totals_data_html += "<div>No Historical Data!</div>";
 <% end %>
 
 $('#reports_left_till_roll').html(previous_cash_totals_data_html);
