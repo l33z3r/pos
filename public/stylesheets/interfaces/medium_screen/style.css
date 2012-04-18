@@ -1327,7 +1327,7 @@ div#functions_screen div#functions_buttons_container div.button {
 /* Settings Screen */
 
 div#settings_screen {
-
+    line-height: 100%;
 }
 
 div#settings_screen div#header {
@@ -1336,6 +1336,7 @@ div#settings_screen div#header {
 
 div#settings_screen div#header div#back_button {
     float: left;
+    color: #333;
     width: 125px;
     max-width: 125px;
 }
@@ -1361,6 +1362,17 @@ div#settings_screen div#settings_container {
 
 div#settings_screen div#settings_container form table td.data input {
     width: 205px;
+}
+
+div#settings_screen div#settings_container form table td.data input[type=radio] {
+    float: left;
+    width: auto;
+    margin: 12px;
+}
+
+div#settings_screen div#settings_container form table td.data div.label {
+    float: left;
+    padding: 9px;
 }
 
 div#settings_screen div#settings_container div#update_app_link {

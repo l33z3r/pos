@@ -65,7 +65,7 @@ DisplayButtonRole.ensure_hidden_buttons_restricted
 
                       <% dbg.display_buttons.each do |db| %>
 
-                        <% next if ButtonMapper::RESTRICTED_BUTTON_IDS.include?(db.id) %>
+                        <% next if ButtonMapper::RESTRICTED_BUTTON_IDS.include?(db.perm_id) %>
 
                         <tr>
                           <td><%= db.button_text %></td>

@@ -5,9 +5,10 @@ class Role < ActiveRecord::Base
   validates :name, :presence => true
   
   before_save :prevent_rename_super_user_role
+  before_save :prevent_rename_employee_role
 
-  #TODO: load from config file
   SUPER_USER_ROLE_ID = find_by_name("Administrator").try(:id)
+  EMPLOYEE_ROLE_ID = find_by_name("Employee").try(:id)
   
   def prevent_rename_super_user_role
     @editing_super_user = (SUPER_USER_ROLE_ID == id)
@@ -15,6 +16,15 @@ class Role < ActiveRecord::Base
     if @editing_super_user
       #make sure we are not changing the name "Administrator"
       write_attribute("name", "Administrator")
+    end
+  end
+  
+  def prevent_rename_employee_role
+    @editing_employee = (EMPLOYEE_ROLE_ID == id)
+    
+    if @editing_employee
+      #make sure we are not changing the name "Employee"
+      write_attribute("name", "Employee")
     end
   end
   

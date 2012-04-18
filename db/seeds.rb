@@ -8,6 +8,11 @@
     :passcode => "999", :clockin_code => "999", :address => "cluey", :telephone => "cluey",
     :hourly_rate => "1", :overtime_rate => "1", :role_id => @super_user_role.id})
 
+@employee_role = Role.find_or_create_by_name({:name => "Employee"})
+
+@admin_employee = Employee.find_or_create_by_nickname({:nickname => "chef", :staff_id => "-2", :name => "chef", 
+    :passcode => "1010", :clockin_code => "1010", :address => "chef address", :telephone => "chef telephone",
+    :hourly_rate => "1", :overtime_rate => "1", :role_id => @employee_role.id})
 #
 #
 #
@@ -41,7 +46,7 @@
 end
 
 #set the functions button to be visible on the menu screen
-DisplayButton.find(17).display_button_roles.each do |dbr|
+DisplayButton.find_by_perm_id(17).display_button_roles.each do |dbr|
   dbr.show_on_sales_screen = true
   dbr.save!
 end
