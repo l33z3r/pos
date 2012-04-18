@@ -55,7 +55,7 @@ function callForwardButtonFunction() {
     var forwardFunctionButtonId = getRawCookie(salesInterfaceForwardFunctionCookieName);
     
     if(forwardFunctionButtonId != null) {
-        alert("Clicking button " + forwardFunctionButtonId);
+        //alert("Clicking button " + forwardFunctionButtonId);
         
         //call the function
         doClickAButton($('#admin_screen_button_' + forwardFunctionButtonId));
