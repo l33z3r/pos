@@ -1,1 +1,9 @@
 $("#report_sales_results").html("<%= escape_javascript(render("sales_tab")) %>");
+
+if ($('#graph_view').hasClass('selected')) {
+    $('#sales_items_graph').show();
+    $('#sales_items').hide();
+} else {
+    $('#sales_items_graph').hide();
+    $('#sales_items').show();
+}

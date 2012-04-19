@@ -5,25 +5,30 @@
     <div>
 
        <div id="admin_subnav_left">
-            <%= render :partial => "/partials/interfaces/large_screen/menu_screen_options_screen_buttons" %>
+            <div class="button" data-onpress="goTo('<%= home_path %>#screen=menu');">
+                <div class="icon">
+                    <%= image_tag "/images/button_logos/manage_sales_screen_button.png" %>
+                </div>
+                <div class="button_name">Sales Screen</div>
+            </div>
 
-            <%= yield :admin_subnav_links_left %>
+            <div class="button" data-onpress="goTo('/home#screen=more_options');">
+                <div class="icon">
+                    <%= image_tag "/images/button_logos/more_options_button.png" %>
+                </div>
+                <div class="button_name">Functions</div>
+            </div>
 
         </div>
 
         <div style="float: right">
             <div class="button selected" onclick="window.location = '/reports/glances'">
-
                 <div class="button_name">At a Glance</div>
             </div>
             <div class="button" onclick="window.location = '/reports/sales'">
-
                 <div class="button_name">Sales Reports</div>
             </div>
-            <div class="button" onclick="window.location = '/reports/stocks'">
 
-                <div class="button_name">Stock Reports</div>
-            </div>
         </div>
 
       <div>

@@ -52,7 +52,7 @@ var ALL_TIME = "5"
 
 function addTerminalFilter(terminal_id) {
     terminalId = terminal_id;
-    runGlancesSearch();
+    setReportParams();
 }
 
 function addHourFromFilter(hour) {
@@ -170,6 +170,8 @@ function runSalesSearch(){
         }
     });
 
+
+
 }
 
 function runStocksSearch(){
@@ -196,7 +198,23 @@ function setReportParams(){
              "search[category]" : $('#category_id_equals').val(),
              "search[product]" : $('#product_id_equals').val(),
              "search[from_date]" : selectedFromDate,
-             "search[to_date]" : selectedToDate
+             "search[to_date]" : selectedToDate,
+             "search[terminal]" : terminalId
+        }
+    });
+}
+
+function setHighChart(){
+    $.ajax({
+        type: 'GET',
+        url: '/reports/sales/render_graph',
+        data: {
+             "search[search_type]" : search_type,
+             "search[category]" : $('#category_id_equals').val(),
+             "search[product]" : $('#product_id_equals').val(),
+             "search[from_date]" : selectedFromDate,
+             "search[to_date]" : selectedToDate,
+             "search[terminal]" : terminalId
         }
     });
 }
@@ -216,6 +234,23 @@ function loadDropDown(drop_type){
              "search[dropdown_id]" : drop_val
         }
     });
+}
+
+function switchView(view_type){
+     if (view_type == "table"){
+         $("#graph_view").removeClass("selected");
+         $("#table_view").addClass("selected");
+         $('#sales_items_graph').hide();
+         $('#sales_items').show();
+     }
+
+     if (view_type == "graph"){
+         $("#graph_view").addClass("selected");
+         $("#table_view").removeClass("selected");
+         $('#sales_items_graph').show();
+         $('#sales_items').hide();
+
+     }
 }
 
 function setSearchType(interval_selected) {

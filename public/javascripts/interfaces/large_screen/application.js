@@ -73,8 +73,8 @@ function doGlobalInit() {
     if (inMenuContext()) {
         initMenu();
 
-        $(document).bind('keypress', function(event) {
-            if (event.which == 117 && event.which == 34) {
+        jwerty.key('0,0,0', function () {
+//            if (event.which == 117 && event.which == 34) {
                 if ($('#admin_content_screen').is(":visible")) {
                     setStatusMessage("Logging out... Please wait.");
                     doLogout();
@@ -83,7 +83,7 @@ function doGlobalInit() {
                     doLogout();
                 }
 
-            }
+//            }
         });
 
         setTimeout(function() {
