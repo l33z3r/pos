@@ -425,6 +425,8 @@ function chargeCreditCard(amount) {
     
     var message = "Sending " + currency(amount) + " to card terminal.";
     
+    hideNiceAlert();
+    
     ModalPopups.Alert('niceAlertContainer',
         "Card Terminal Request In Progress...", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
         {
@@ -439,6 +441,7 @@ function chargeCreditCard(amount) {
         url: '/forward_credit_card_charge_request',
         error: function() {
             if (!userAbortedXHR(cc_txn_xhr)) {
+                hideNiceAlert();
                 setStatusMessage("Error charging card! Make sure card service is running and settings are correct.", false, false);
             }
         },
@@ -499,9 +502,11 @@ function creditCardChargeCallback(creditCardChargeResponseCode) {
 }
 
 function cancelChargeCreditCard() {
-    hideNiceAlert();
     cardChargeInProgress = false;
     
     //cancel the ajax request
     cc_txn_xhr.abort();
+    
+    hideNiceAlert();
+    niceAlert("Card charge canceled. Make sure to cancel the transaction on the terminal also.");
 }

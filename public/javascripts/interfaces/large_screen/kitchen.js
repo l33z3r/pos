@@ -165,7 +165,10 @@ function renderReceipt(tableID) {
      
     var allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(nextKitchenOrder, false, false, false);
      
-    $('#kitchen_table_' + tableID + '_till_roll').html($('#kitchen_table_' + tableID + '_till_roll').html() + allOrderItemsRecptHTML);
+    $('#kitchen_table_' + tableID + '_till_roll').html(allOrderItemsRecptHTML);
+    
+    //add a 50px height to the last item so it is easier to touch
+    $('#kitchen_table_' + tableID + '_till_roll .order_line:last').css("height", "50px");
     
     //set the start time on the header
     var startTime = utilFormatTime(new Date(parseInt(orderStartTime(nextKitchenOrder))));
