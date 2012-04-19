@@ -7,13 +7,14 @@ class GlobalSettingTest < ActiveSupport::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: global_settings
 #
 #  id                :integer(4)      not null, primary key
 #  key               :string(255)
-#  value             :string(255)
+#  value             :text
 #  label_text        :string(255)
 #  logo_file_name    :string(255)
 #  logo_content_type :string(255)

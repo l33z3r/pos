@@ -10,7 +10,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120413123340) do
+ActiveRecord::Schema.define(:version => 20120417143247) do
+
+  create_table "card_transactions", :force => true do |t|
+    t.integer  "order_id"
+    t.string   "payment_method"
+    t.float    "amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -39,7 +47,7 @@ ActiveRecord::Schema.define(:version => 20120413123340) do
     t.string   "printers",                                 :default => ""
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => -1
+    t.integer  "course_num",                               :default => 0
     t.string   "kitchen_screens",                          :default => ""
   end
 
@@ -273,6 +281,7 @@ ActiveRecord::Schema.define(:version => 20120413123340) do
     t.boolean  "is_void",                                     :default => false
     t.integer  "order_num",             :limit => 8
     t.text     "split_payments",        :limit => 2147483647
+    t.string   "client_name",                                 :default => "",    :null => false
   end
 
   add_index "orders", ["employee_id"], :name => "index_orders_on_employee_id"
@@ -365,7 +374,7 @@ ActiveRecord::Schema.define(:version => 20120413123340) do
     t.boolean  "hide_on_printed_receipt",                  :default => false
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => -1
+    t.integer  "course_num",                               :default => 0
     t.boolean  "is_stock_item",                            :default => true
     t.string   "kitchen_screens",                          :default => ""
   end

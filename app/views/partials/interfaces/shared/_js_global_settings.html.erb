@@ -61,9 +61,10 @@
   var MENU_SCREEN = <%= GlobalSetting::MENU_SCREEN %>;
   var TABLES_SCREEN = <%= GlobalSetting::TABLES_SCREEN %>;
   
-  var menuScreenType = <%= GlobalSetting.parsed_setting_for GlobalSetting::MENU_SCREEN_TYPE, {:fingerprint => @terminal_fingerprint} %>;
+  var menuScreenType = <%= @menu_screen_type %>;
   var RESTAURANT_MENU_SCREEN = <%= GlobalSetting::RESTAURANT_MENU_SCREEN %>;
   var RETAIL_MENU_SCREEN = <%= GlobalSetting::RETAIL_MENU_SCREEN %>;
+  var CUSTOMER_MENU_SCREEN = <%= GlobalSetting::CUSTOMER_MENU_SCREEN %>;
   
   //this is for the order ready notifications on mobile
   var lastOrderReadyNotificationTime = <%= now_millis %>;
@@ -88,7 +89,7 @@
   
   var using_mobile = <%= mobile_device? ? "true" : "false" %>;
   
-  var doBeep = <%= GlobalSetting.parsed_setting_for GlobalSetting::DO_BEEP %>;
+  var doBeep = <%= GlobalSetting.parsed_setting_for GlobalSetting::DO_BEEP, {:fingerprint => @terminal_fingerprint} %>;
   
   var railsEnvironment = "<%= ENV['RAILS_ENV'] %>";
   
@@ -120,13 +121,18 @@
   var oiaButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::MODIFY_ORDER_ITEM_BUTTON).id %>";
   var courseNumButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::COURSE_BUTTON).id %>";
   var voidOrderItemButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::VOID_ORDER_ITEM_BUTTON).id %>";
+  var priceChangeButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::CHANGE_PRICES_BUTTON).id %>";
+  var toggleProductInfoButtonID = "<%= DisplayButton.find_by_perm_id(ButtonMapper::PRODUCT_INFO_POPUP_BUTTON).id %>";
   
   var updateStockType = <%= StockTransaction::STOCK_UPDATE %>;
   var transferStockType = <%= StockTransaction::STOCK_TRANSFER %>;
   
   var webSocketServiceIP = "<%= @web_socket_service_ip %>";
   var cashDrawerServiceIP = "<%= @cash_drawer_service_ip %>";
-
+  var creditCardChargeServiceIP = "<%= @credit_card_charge_service_ip %>";
+  var creditCardTerminalIP = "<%= @credit_card_terminal_ip %>";
+  var creditCardTerminalPort = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, {:fingerprint => @terminal_fingerprint} %>";
+  
   var orderReceiptWidthSetting = "<%= @order_receipt_width_setting %>";
   
   var allDevicesOrderNotification = <%= GlobalSetting.parsed_setting_for GlobalSetting::All_DEVICES_ORDER_NOTIFICATION %>;

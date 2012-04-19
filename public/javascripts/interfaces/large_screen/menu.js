@@ -72,10 +72,10 @@ $(window).load(function(){
 
 function initMenuScreenType() {
     if(menuScreenType == RESTAURANT_MENU_SCREEN) {
-    //everything is already set up
+        //everything is already set up
     } else if(menuScreenType == RETAIL_MENU_SCREEN) {
         //hide the table select box
-        $('#table_screen_button').add('#table_select_container').hide();
+        $('#table_screen_button, #table_select_container').hide();
         
         $('#upc_code_lookup_container').show();
         
@@ -89,6 +89,34 @@ function initMenuScreenType() {
             $('#scan_upc').focus();
             scanFocusPoll();
         }, 1000);
+    } else if(menuScreenType == CUSTOMER_MENU_SCREEN) {
+        //execute a bunch of css mods to change the menu interface
+        
+        //resize menu items
+        $('#items .item').height(133);
+        $('#items .item').width(176);
+        $('#items .item').css("margin", "3px");
+        $('#items .item .item_pic').height(116);
+        $('#items .item .item_pic img').height(90);
+        $('#items .item .item_pic img').css("max-height", "90px");
+        $('#items .item .item_pic img').css("max-width", "172px");
+        $('#items .item .item_pic img').css("margin-top", "5px");
+        
+        $('#items .item .item_name').css("width", "172px");
+        $('#items .item .item_name').css("font-size", "16px");
+        $('#items .item .item_name').css("bottom", "7px");
+        
+        $('div#menu_screen div#menu_pages_container div#menu_container').height(631);
+        $('div#menu_screen div#order_item_additions').height(631);
+        $('div#menu_screen div#order_item_additions div.oia_container').height(558);
+        $('div#menu_screen div#menu_buttons').height(79);
+        
+        //hide the table select box
+        $('#table_screen_button, #table_select_container').hide();
+        
+        $('#box_label_container').show();
+        
+        //show the product price beside the label
     }
 }
 
@@ -347,6 +375,9 @@ function doSelectMenuItem(productId, menuItemId, element) {
         return;
     } else if(inPriceChangeMode) {
         loadPriceChangeReceiptArea(productId, menuItemId);
+        return;
+    } else if (productInfoPopupMode) {
+        popupProductInfo(productId);
         return;
     }
     
@@ -693,7 +724,12 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     return orderHTML;
 }
 
-function doSelectReceiptItem(orderItemEl) { 
+function doSelectReceiptItem(orderItemEl) {
+    //do nothing if we are in the customer interface
+    if(menuScreenType == CUSTOMER_MENU_SCREEN) {
+        return null;
+    }
+    
     orderItemEl = $(orderItemEl);
     
     //close any open popup
@@ -1239,7 +1275,7 @@ function doTotalFinal() {
         }
 
         //TODO: pick up num persons
-        numPersons = 4;
+        numPersons = totalOrder.covers;
     }
 
     if(!paymentMethod) {
@@ -1318,26 +1354,27 @@ function doTotalFinal() {
     order_num = totalOrder.order_num
     
     orderData = {
-        'order_num': order_num,
-        'employee_id':current_user_id,
-        'total':orderTotal,
-        'tax_chargable':taxChargable,
-        'global_sales_tax_rate':orderSalesTaxRate,
-        'service_charge':serviceCharge,
-        'cashback':cashback,
-        'payment_type':paymentMethod,
-        'amount_tendered':cashTendered,
-        'num_persons':numPersons,
-        'is_table_order':isTableOrder,
-        'table_info_id':tableInfoId,
-        'table_info_label':tableInfoLabel,
-        'discount_percent':discountPercent,
-        'pre_discount_price':preDiscountPrice,
-        'order_details':totalOrder,
-        'terminal_id':terminalID,
-        'void_order_id': totalOrder.void_order_id,
-        'is_split_bill': isSplitBill,
-        'split_payments': splitPayments
+        'order_num' : order_num,
+        'employee_id' : current_user_id,
+        'total' : orderTotal,
+        'tax_chargable' : taxChargable,
+        'global_sales_tax_rate' : orderSalesTaxRate,
+        'service_charge' : serviceCharge,
+        'cashback' : cashback,
+        'payment_type' : paymentMethod,
+        'amount_tendered' : cashTendered,
+        'num_persons' : numPersons,
+        'client_name' : totalOrder.client_name,
+        'is_table_order' : isTableOrder,
+        'table_info_id' : tableInfoId,
+        'table_info_label' : tableInfoLabel,
+        'discount_percent' : discountPercent,
+        'pre_discount_price' : preDiscountPrice,
+        'order_details' : totalOrder,
+        'terminal_id' : terminalID,
+        'void_order_id' : totalOrder.void_order_id,
+        'is_split_bill' : isSplitBill,
+        'split_payments' : splitPayments
     }
     
     sendOrderToServer(orderData);
@@ -1363,6 +1400,7 @@ function doTotalFinal() {
     serviceCharge = 0;
     cashback = 0;
     paymentMethod = null;
+    currentCardChargeAmount = 0;
     
     //do we need to clear the previous order from the receipt dropdown selection?
     if(selectedTable == previousOrderTableNum) {
@@ -1923,7 +1961,7 @@ function doSaveNote() {
         return false;
     }
     
-    currentSelectedReceiptItemEl = getLastReceiptItem();
+    currentSelectedReceiptItemEl = getSelectedOrLastReceiptItem();
     
     if(!currentSelectedReceiptItemEl) {
         setStatusMessage("There are no receipt items!");
@@ -2030,7 +2068,8 @@ function postDoSyncTableOrder() {
     
     //clean up after transfer order mode
     if(inTransferOrderMode) {
-        niceAlert("Order Transfered.");
+        hideNiceAlert();
+        setStatusMessage("Order Transfered.");
         $('#tables_screen_status_message').hide();
         inTransferOrderMode = false;
         tableScreenSelectTable(selectedTable);
@@ -2346,4 +2385,84 @@ function finishSplitBillMode() {
     doAutoLoginAfterSync = true;
     doSelectTable(splitBillTableNumber);
     doSyncTableOrder();    
+}
+
+var productInfoPopupEl;
+var productInfoPopupAnchor;
+var currentProductInfoPopupProductId;
+
+function popupProductInfo(productId) {
+    currentProductInfoPopupProductId = productId;
+    
+    var popupHTML = $("#product_info_popup_markup").html();
+        
+    productInfoPopupAnchor = $('#receipt');
+    
+    if(productInfoPopupAnchor.HasBubblePopup()) {
+        productInfoPopupAnchor.RemoveBubblePopup();
+    }
+    
+    productInfoPopupAnchor.CreateBubblePopup();
+    
+    productInfoPopupAnchor.ShowBubblePopup({
+        position: 'right',  
+        align: 'top',
+        tail	 : {
+            align: 'middle'
+        },
+        innerHtml: popupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+        
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false        
+    }, false);
+    
+    productInfoPopupAnchor.FreezeBubblePopup();
+         
+    var popupId = productInfoPopupAnchor.GetBubblePopupID();
+    
+    productInfoPopupEl = $('#' + popupId);
+    
+    //register the click handler to hide the popup when outside clicked
+    //registerPopupClickHandler($('#' + popupId), closeProductInfoPopup);
+    
+    var product = products[productId];
+    
+    //product image
+    var productImageURL = product.img_url;
+    
+    //must prepend the image with the images directory path if it is not a paperclip image
+    if(!productImageURL.startsWith("/system/")) {
+        productImageURL = "/images/" + productImageURL;
+    }
+    
+    productInfoPopupEl.find('#product_image').html("<img src=\"" + productImageURL + "\"/>");
+    
+    //product name
+    var productName = product.name;
+    productInfoPopupEl.find('#product_name').html(productName);
+    
+    //product price
+    var productPrice = product.price;    
+    productInfoPopupEl.find('#product_price').html(currency(productPrice));
+    
+    //product description
+    var productDescription = product.description;    
+    productInfoPopupEl.find('#description').html(productDescription);
+}
+
+function closeProductInfoPopup() {
+    if(productInfoPopupEl) {
+        hideBubblePopup(productInfoPopupAnchor);
+    }
+}
+
+function productInfoAddItemToOrder() {
+    setProductInfoPopup(false);
+    doSelectMenuItem(currentProductInfoPopupProductId, null, null);
+    closeProductInfoPopup();
 }

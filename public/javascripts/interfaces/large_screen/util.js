@@ -453,39 +453,6 @@ function clearNavTitle() {
     $('#nav_title').hide();
 }
 
-function initBeep() {
-    $("#js_player").jPlayer( {
-        ready: function () {
-            $(this).jPlayer("setMedia", {
-                mp3: "/sounds/beep.mp3"
-            });
-        },
-        swfPath: "/swf"
-    });
-
-    $('.button').live("click", function() {
-        playButtonClickSound();
-    });
-    
-    $(".li").each(function() {
-        $(this).click(function() {
-            playButtonClickSound();
-        });
-    });
-    
-    $('.item').live("click", function() {
-        playButtonClickSound();
-    });
-    
-    $('.key').live("click", function() {
-        playButtonClickSound();
-    });
-}
-
-function playButtonClickSound() { 
-    $("#js_player").jPlayer("play");
-}
-
 function inAdminContext() {
     return $('body div.admin').length > 0;
 }
@@ -722,8 +689,8 @@ function doShowLicenceExpiredScreen() {
     
     ModalPopups.Alert('licenceExpiredMessageContainer',
         title, "<div id='nice_alert' class='licence_expired_header'>" + headerMessage + "</div>" + 
-            "<div id='numbers'>" + numbersMessage + "</div>" +
-            "<div id='cease_message'>" + ceaseMessage + "</div>",
+        "<div id='numbers'>" + numbersMessage + "</div>" +
+        "<div id='cease_message'>" + ceaseMessage + "</div>",
         {
             width: 760,
             height: 560,

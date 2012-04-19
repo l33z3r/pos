@@ -96,6 +96,7 @@ class CashTotal < ActiveRecord::Base
     @cash_back_total = 0
        
     @total_discounts = 0
+    @total_covers = 0
     
     #load the first order, based on the last z total or the very first if none exists
     @last_performed_non_zero_z_total = where("total_type = ?", Z_TOTAL).where("end_calc_order_id is not ?", nil).where("terminal_id = ?", terminal_id).order("created_at").lock(true).last
@@ -248,6 +249,9 @@ class CashTotal < ActiveRecord::Base
         logger.info "Increasing sales_by_server for server: #{@server_name} by: #{order.total}"
         @sales_by_server[@server_nickname] += order.total
         
+        #increase covers 
+        @total_covers += order.num_persons
+        
         #sales by payment type calculated from split payments array
         @payment_types = order.split_payments
         
@@ -331,6 +335,7 @@ class CashTotal < ActiveRecord::Base
     @cash_total_data[:total_with_service_charge] = @service_charge_total + @overall_total
     @cash_total_data[:total_discounts] = @total_discounts
     @cash_total_data[:taxes] = @taxes
+    @cash_total_data[:total_covers] = @total_covers
     @cash_total_data[:cash_summary] = @cash_summary
     
     return @overall_total, @cash_total_data

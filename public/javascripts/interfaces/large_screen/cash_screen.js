@@ -233,6 +233,7 @@ function doRoomNumberLookup() {
         $('#name_list').html(folioTableHTML);
     } else {
         niceAlert("Room " + roomNumber + " not found.");
+        totalsScreenKeypadClickCancel();
         return;
     }
 }
@@ -387,4 +388,120 @@ function togglePrintReceipt() {
         type: 'POST',
         url: '/admin/toggle_print_receipt.js'
     });
+}
+
+var cardChargeInProgress = false;
+var cc_txn_xhr = null;
+var currentCardChargeAmount = 0;
+
+function chargeCreditCard(amount) {
+    if(cardChargeInProgress) {
+        niceAlert("There is already a card charge in progress, please wait");
+        return;
+    }
+    
+    if(typeof(amount) == 'undefined') {
+        amount = cashTendered;
+    }
+    
+    if(amount == 0) {
+        moneySelected(-1);
+        amount = cashTendered;
+        
+        if(amount == 0) {
+            niceAlert("You cannot send a zero amount to card terminal");
+            return;
+        }
+    }
+    
+    cardChargeInProgress = true;
+    
+    currentCardChargeAmount = amount;
+    
+    //This message will print on the cc receipt
+    var referenceMessage = business_name;
+    
+    var creditCardChargeRequestURL = 'http://' + creditCardChargeServiceIP + ':8080/ClueyWebSocketServices/cc_txn';
+    
+    var message = "Sending " + currency(amount) + " to card terminal.";
+    
+    ModalPopups.Alert('niceAlertContainer',
+        "Card Terminal Request In Progress...", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
+        {
+            width: 360,
+            height: 280,
+            okButtonText: 'Cancel',
+            onOk: "cancelChargeCreditCard();"
+        });
+    
+    cc_txn_xhr = $.ajax({
+        type: 'POST',
+        url: '/forward_credit_card_charge_request',
+        error: function() {
+            if (!userAbortedXHR(cc_txn_xhr)) {
+                setStatusMessage("Error charging card! Make sure card service is running and settings are correct.", false, false);
+            }
+        },
+        complete: function() {
+            cardChargeInProgress = false;
+        },
+        data: {
+            credit_card_charge_request_url : creditCardChargeRequestURL,
+            credit_card_terminal_ip : creditCardTerminalIP,
+            credit_card_terminal_port : creditCardTerminalPort,
+            transaction_type : "C",
+            transaction_amount : amount,
+            cashback_amount : "0",
+            reference_message : referenceMessage,
+            gratuity_amount : "0"
+        }
+    });
+}
+
+function creditCardChargeCallback(creditCardChargeResponseCode) {
+    //1 means success
+    //2 means declined
+    //3 means retrieval canceled
+    //4 means a timeout waiting for card
+    //5 is an unknown response
+    //6 means connection refused or other IO error
+    var message = "";
+    
+    if(creditCardChargeResponseCode == 1) {
+        message = "Card successfully charged for " + currency(currentCardChargeAmount);
+        niceAlert(message);
+        
+        //tag the card charge on to the order so we can create a record in cc_txn table
+        totalOrder.card_charge = {
+            paymentMethod : paymentMethod,
+            amount : currentCardChargeAmount
+        }
+    } else if(creditCardChargeResponseCode == 2) {
+        message = "Charge has been declined.";
+        niceAlert(message);
+    } else if(creditCardChargeResponseCode == 3) {
+        message = "Card charge canceled.";
+        niceAlert(message);
+    } else if(creditCardChargeResponseCode == 4) {
+        message = "Request timed out. Please try again.";
+        niceAlert(message);
+    } else if(creditCardChargeResponseCode == 5) {
+        message = "Unknown response from card terminal.";
+        niceAlert(message);
+    } else if(creditCardChargeResponseCode == 6) {
+        message = "Commnunication Error, please make sure the credit card terminal is not in use and all settings are set correctly.";
+        niceAlert(message);
+    } else {
+        //unknown error
+        message = "An unknown error occured.";
+        niceAlert(message);
+    }
+}
+
+function cancelChargeCreditCard() {
+    hideNiceAlert();
+    cardChargeInProgress = false;
+    
+    //cancel the ajax request
+    cc_txn_xhr.abort();
 }

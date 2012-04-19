@@ -18,6 +18,7 @@ class Employee < ActiveRecord::Base
   validates :role_id, :presence => true
   
   CLUEY_USER_STAFF_ID = -1
+  CHEF_USER_STAFF_ID = -2
   
   #for will_paginate
   cattr_reader :per_page
@@ -32,14 +33,25 @@ class Employee < ActiveRecord::Base
   end
   
   def self.all_except_cluey
-    where("staff_id != ?", CLUEY_USER_STAFF_ID)
+    #don't return the cluey user, or the chef user
+    where("staff_id != ?", CLUEY_USER_STAFF_ID).where("staff_id != ?", CHEF_USER_STAFF_ID)
   end
   
   def self.is_cluey_user? id
     @employee = find_by_id(id)
     @employee and (@employee.staff_id.to_i == CLUEY_USER_STAFF_ID)
   end
+  
+  def self.is_chef_user? id
+    @employee = find_by_id(id)
+    @employee and (@employee.staff_id.to_i == CHEF_USER_STAFF_ID)
+  end
+  
+  def self.chef_user
+    find_by_staff_id CHEF_USER_STAFF_ID
+  end
 end
+
 
 
 # == Schema Information
@@ -66,5 +78,6 @@ end
 #  employee_image_file_size    :integer(4)
 #  employee_image_updated_at   :datetime
 #  clockin_code                :string(255)
+#  dallas_code                 :string(255)
 #
 

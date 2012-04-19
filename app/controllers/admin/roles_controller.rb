@@ -1,6 +1,7 @@
 class Admin::RolesController < Admin::AdminController
   cache_sweeper :display_button_sweeper
   before_filter :disallow_edit_super_user_role, :only => [:edit, :update]
+  before_filter :disallow_edit_employee_role, :only => [:edit, :update]
   
   def index
     @roles = Role.all
@@ -43,13 +44,6 @@ class Admin::RolesController < Admin::AdminController
     
     render :json => {:success => true}.to_json
   end
-
-  def destroy
-    @role = Role.find(params[:id])
-    @role.destroy
-
-    redirect_to(admin_roles_url)
-  end
   
   private
   
@@ -60,6 +54,16 @@ class Admin::RolesController < Admin::AdminController
     
     if @editing_super_user
       redirect_to([:admin, @role], :flash => {:error => "You cannot edit the Administrator Role!"}) and return
+    end
+  end
+  
+  def disallow_edit_employee_role
+    @role = Role.find(params[:id])
+    
+    @editing_employee = (Role::EMPLOYEE_ROLE_ID == @role.id)
+    
+    if @editing_employee
+      redirect_to([:admin, @role], :flash => {:error => "You cannot edit the Employee Role!"}) and return
     end
   end
   

@@ -133,7 +133,7 @@ function doGlobalInit() {
         lastActiveElement.addClass("focus");
 
         var allowFocusElements = [
-            "scan_upc", "description_input", "price_change_new_price_input", "stock_take_new_amount_input", "room_number_input"
+            "num", "scan_upc", "description_input", "price_change_new_price_input", "stock_take_new_amount_input", "room_number_input"
         ]
 
         var focusedElementId = lastActiveElement.attr("id");
@@ -429,6 +429,7 @@ function cacheUpdateCheckPoll() {
 function doScheduledTasks() {
     //this is called on at regular intervals
     rollDate();
+    testShowLicenceExpiredScreen();
     trySendOutstandingOrdersToServer();
     pingHome();
 }

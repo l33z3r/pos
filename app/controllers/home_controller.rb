@@ -382,10 +382,10 @@ class HomeController < ApplicationController
     logger.info "Forwarding a print service request to #{@url}"
 
     url = URI.parse(@url)
-    params = {"content_to_print" => @html_data}
+    the_params = {"content_to_print" => @html_data}
     
     req = Net::HTTP::Post.new(url.path)
-    req.form_data = params
+    req.form_data = the_params
   
     @http = Net::HTTP.new(url.host, url.port)
     
@@ -411,10 +411,10 @@ class HomeController < ApplicationController
     logger.info "Forwarding a cash drawer request to #{@url}"
     
     url = URI.parse(@url)
-    params = {"message" => @message}
+    the_params = {"message" => @message}
     
     req = Net::HTTP::Post.new(url.path)
-    req.form_data = params
+    req.form_data = the_params
   
     @http = Net::HTTP.new(url.host, url.port)
     
@@ -439,10 +439,10 @@ class HomeController < ApplicationController
     logger.info "Forwarding a zalion roomfile request to #{@url}"
 
     url = URI.parse(@url)
-    params = {"message" => "gimme the roomfile"}
+    the_params = {"message" => "gimme the roomfile"}
     
     req = Net::HTTP::Post.new(url.path)
-    req.form_data = params
+    req.form_data = the_params
   
     @http = Net::HTTP.new(url.host, url.port)
     
@@ -468,13 +468,13 @@ class HomeController < ApplicationController
 
     url = URI.parse(@url)
     
-    params = {
+    the_params = {
       "message" => "charge this room",
       "order_data" => @order_data_json_string
     }
     
     req = Net::HTTP::Post.new(url.path)
-    req.form_data = params
+    req.form_data = the_params
   
     @http = Net::HTTP.new(url.host, url.port)
     
@@ -510,6 +510,44 @@ class HomeController < ApplicationController
     logger.info "Got response from room charge servlet: #{@forward_response.body}"
     
     render :json => {:success => true}.to_json
+  end
+  
+  def forward_credit_card_charge_request
+    @url = params[:credit_card_charge_request_url]
+    
+    @order_data_json_string = params[:order_data_json_string]
+    @order_data = params[:order_data]
+    
+    logger.info "Forwarding a credit card charge request to #{@url}"
+
+    url = URI.parse(@url)
+    
+    the_params = {
+      "credit_card_terminal_ip" => params[:credit_card_terminal_ip],
+      "credit_card_terminal_port" => params[:credit_card_terminal_port],
+      "transaction_type" => params[:transaction_type],
+      "transaction_amount" => params[:transaction_amount],
+      "cashback_amount" => params[:cashback_amount],
+      "reference_message" => params[:reference_message],
+      "gratuity_amount" => params[:gratuity_amount]
+    }
+    
+    req = Net::HTTP::Post.new(url.path)
+    req.form_data = the_params
+  
+    @http = Net::HTTP.new(url.host, url.port)
+    
+    @http.open_timeout = 5
+    
+    begin
+      @forward_response = @http.start {|http|
+        http.request(req)
+      }
+    rescue
+      render :status => 503, :inline => "Cannot reach credit card service" and return
+    end
+
+    logger.info "Got response from credit card charge servlet: #{@forward_response.body}"
   end
   
   # Rails controller action for an HTML5 cache manifest file.

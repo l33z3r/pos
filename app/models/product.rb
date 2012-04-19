@@ -203,7 +203,7 @@ class Product < ActiveRecord::Base
     
     @qis = read_attribute("quantity_in_stock")
     
-    if @qpc > 0 and @qis > 0
+    if @qpc > 0
       logger.info "!!!! decrementing #{name} by #{quantity} with qtypct: #{@qpc}"
       @decrement_val = quantity/@qpc
       decrement!(:quantity_in_stock, @decrement_val)

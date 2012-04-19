@@ -3,6 +3,7 @@ var currentMenuPageId;
 var currentMenuSubPageId;
 
 var menuItemDoubleMode = false;
+var productInfoPopupMode = false;
 var menuItemStandardPriceOverrideMode = false;
 var currentMenuItemQuantity = "";
 
@@ -253,36 +254,16 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     //copy over the client name
     var clientName = tableOrderDataJSON.client_name;
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //this is only untill we have the new code deployed for a while we can be sure that clientName will be present on newly created orders
-    if(typeof(clientName) == 'undefined') {
-        clientName = "";
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     tableOrders[tableID].client_name = clientName;
     
     //set the client name on the tables screen if there is one present
     if(clientName.length > 0) {
         $('#table_label_' + tableID).html(tables[tableID].label + " (" + clientName + ")");
     }
+    
+    //copy over the covers
+    var covers = tableOrderDataJSON.covers;
+    tableOrders[tableID].covers = covers;
     
     //copy over the discount
     tableOrders[tableID].discount_percent = tableOrderDataJSON.discount_percent;
@@ -678,9 +659,6 @@ function addItemToTableOrderAndSave(orderItem) {
     calculateOrderTotal(currentTableOrder);
 
     storeTableOrderInStorage(current_user_id, selectedTable, currentTableOrder);
-    
-//add a line to the receipt
-//writeOrderItemToReceipt(orderItem);
 }
 
 //load the current bar receipt order into memory
@@ -1011,7 +989,8 @@ function finishTransferOrderItem() {
     tableScreenSelectTable(savedTableTo);
     doAutoLoginAfterSync = true;
     doSyncTableOrder();
-    niceAlert("Order Item Transfered.");
+    hideNiceAlert();
+    setStatusMessage("Order Item Transfered.");
 }
 
 function testForMandatoryModifier(product) {

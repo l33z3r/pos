@@ -10,6 +10,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: order_items
@@ -33,5 +34,6 @@ end
 #  product_name           :string(255)
 #  is_double              :boolean(1)      default(FALSE)
 #  oia_data               :text(2147483647
+#  is_void                :boolean(1)      default(FALSE)
 #
 

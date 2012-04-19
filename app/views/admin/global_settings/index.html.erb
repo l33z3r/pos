@@ -102,6 +102,12 @@
                              <%= @gs.parsed_value == GlobalSetting::RETAIL_MENU_SCREEN ? "checked" : "" %>/>
                       <div class="label">Retail</div>
                       <div class="clear">&nbsp;</div>
+                      
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="<%= GlobalSetting::CUSTOMER_MENU_SCREEN %>" 
+                             <%= @gs.parsed_value == GlobalSetting::CUSTOMER_MENU_SCREEN ? "checked" : "" %>/>
+                      <div class="label">Customer</div>
+                      <div class="clear">&nbsp;</div>
                     </td>
                   </tr>
                   <tr>
@@ -937,7 +943,7 @@
                       Enable On Screen Beep?
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::DO_BEEP %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::DO_BEEP, {:fingerprint => @terminal_fingerprint} %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -1118,6 +1124,39 @@
                     </td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::ZALION_ROOM_CHARGE_SERVICE_IP %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Credit Card Charge Service IP Address
+                    </td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_CHARGE_SERVICE_IP, {:fingerprint => @terminal_fingerprint} %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Credit Card Terminal IP Address
+                    </td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_IP, {:fingerprint => @terminal_fingerprint} %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Credit Card Terminal Port
+                    </td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, {:fingerprint => @terminal_fingerprint} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>

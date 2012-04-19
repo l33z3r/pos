@@ -8,11 +8,12 @@ Pos::Application.routes.draw do
   match 'forward_cash_drawer_request' => "home#forward_cash_drawer_request", :via => :post
   match 'forward_zalion_roomfile_request' => "home#forward_zalion_roomfile_request", :via => :get
   match 'forward_zalion_charge_request' => "home#forward_zalion_charge_request", :via => :post
+  match 'forward_credit_card_charge_request' => "home#forward_credit_card_charge_request", :via => :post
   
   #orders
   match 'order' => "order#create", :via => :post
   match 'sync_table_order' => "order#sync_table_order", :via => :post
-  match 'purge_table_order' => "order#purge_table_order", :via => :post
+  match 'delete_table_order' => "order#delete_table_order", :via => :post
   match 'transfer_order' => "order#transfer_order", :via => :post
   match 'cash_total' => "order#cash_total", :via => :post
   match 'add_float' => "order#add_float", :via => :post

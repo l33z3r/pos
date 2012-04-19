@@ -4,6 +4,8 @@ var orderInProcess = false;
 var isTableZeroOrder = false;
 
 function doSyncTableOrder() {
+    var order = null;
+    
     if(!isTableZeroOrder && !ensureLoggedIn()) {
         return;
     }
@@ -188,7 +190,7 @@ function startTransferOrderMode() {
     
     var order = getCurrentOrder();
     
-    if(order.items.length == 0) {
+    if(order == null || order.items.length == 0) {
         setStatusMessage("No items present in current table order.");
         return;
     }
@@ -273,8 +275,19 @@ function setMenuItemStandardPriceOverrideMode(turnOn) {
     }
 }
 
-function purgeCurrentOrder() {
-    var doIt = confirm("Are you sure you want to purge this order from the system?");
+function deleteCurrentOrder() {
+    if(selectedTable == previousOrderTableNum) {
+        setStatusMessage("Not valid for reopened orders!");
+        return;
+    } else if(selectedTable == tempSplitBillTableNum) {
+        setStatusMessage("Not valid for split orders!");
+        return;
+    } else if(selectedTable == 0) {
+        setStatusMessage("Only valid for table orders!");
+        return;
+    }
+    
+    var doIt = confirm("Are you sure you want to delete this order from the system?");
     
     if(doIt) {
         var order_num = getCurrentOrder().order_num;
@@ -282,15 +295,34 @@ function purgeCurrentOrder() {
         clearOrder(selectedTable);
         
         $.ajax({
-        type: 'POST',
-        url: '/purge_table_order',
-        complete: function() {
-            niceAlert("Order has been purged from the system.");
-        },
-        data: {
-            table_id : selectedTable,
-            order_num : order_num
-        }
-    });
+            type: 'POST',
+            url: '/delete_table_order',
+            complete: function() {
+                niceAlert("Order has been deleted from the system.");
+            },
+            data: {
+                table_id : selectedTable,
+                order_num : order_num
+            }
+        });
+    }
+}
+
+function chargeCardShortcut() {
+    doTotal();    
+    chargeCreditCard();
+}
+
+function toggleProductInfoPopup() {
+    setProductInfoPopup(!productInfoPopupMode);
+}
+
+function setProductInfoPopup(turnOn) {
+    if(turnOn) {
+        productInfoPopupMode = true;
+        $('.button[id=sales_button_' + toggleProductInfoButtonID + ']').addClass("selected");
+    } else {
+        productInfoPopupMode = false;
+        $('.button[id=sales_button_' + toggleProductInfoButtonID + ']').removeClass("selected");
     }
 }

@@ -739,6 +739,25 @@ div#receipt_keypad_container div#top_buttons div#upc_code_lookup_container div.b
     margin-top: -1px;
 }
 
+div#receipt_keypad_container div#top_buttons div#box_label_container {
+    display: none;
+    height: 28px;
+    padding: 5px;
+}
+
+div#receipt_keypad_container div#top_buttons div#box_label_container div.label {
+    float: left;
+    margin: 7px;
+    font-size: 14px;
+}
+
+div#receipt_keypad_container div#top_buttons div#box_label_container div.data {
+    float: left;
+    margin: 7px;
+    margin-left: 40px;
+    font-size: 14px;
+}
+
 div#receipt_keypad_container div#top_buttons div#price_change_header {
     display: none;
     background: #E36C0A;
@@ -2467,6 +2486,137 @@ div#name_table_popup_markup_container div#table_name_input_container input {
 
 /* End Name Table Popup Markup */
 
+/* Covers Popup Markup */
+
+div#add_covers_popup_markup {
+    display: none;
+}
+
+div#add_covers_popup_markup_container {
+    width: 240px;
+    height: 180px;
+}
+
+div#add_covers_popup_markup_container div#header {
+    float: left;
+    margin: 5px;
+    margin-top: 16px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+div#add_covers_popup_markup_container div#add_covers_input_container {
+    margin: 10px 0px;
+}
+
+div#add_covers_popup_markup_container div#add_covers_input_container div#add_covers_input_label {
+    font-weight: bold;
+    width: 50px;
+    float: left;
+    margin: 5px 6px 1px 10px;
+    font-size: 12px;
+}
+
+div#add_covers_popup_markup_container div#add_covers_input_container input {
+    float: left;
+}
+
+/* End Covers Popup Markup */
+
+/* Product Info Popup Markup */
+
+div#product_info_popup_markup {
+    display: none;
+}
+
+div#product_info_popup_markup_container {
+    width: 440px;
+    height: 380px;
+    font-size: 18px;
+}
+
+div#product_info_popup_markup_container div#header {
+    float: left;
+    margin: 5px;
+    margin-top: 16px;
+    font-weight: bold;
+}
+
+div#product_info_popup_markup_container div#header img.info_icon {
+    float: left;
+    margin-left: 20px;
+    width: 40px;
+    height: 40px;
+}
+
+div#product_info_popup_markup_container div#header div#product_image {
+    float: left;
+    margin-left: 80px;
+    width: 70px;
+}
+
+div#product_info_popup_markup_container div#header div#product_image img {
+    height: 100px;
+}
+
+div#product_info_popup_markup_container div#header div#product_info {
+    float: left;
+    width: 160px;
+    text-align: center;
+    margin-left: 50px;
+}
+
+div#product_info_popup_markup_container div#header div#product_info div#product_name {
+    font-weight: bold;
+    padding: 4px;
+    margin-bottom: 10px;
+}
+
+div#product_info_popup_markup_container div#header div#product_info div#product_price_label {
+    float: left;
+    padding: 5px;
+    font-size: 15px;
+    margin-left: 25px;
+    font-weight: normal;
+}
+
+div#product_info_popup_markup_container div#header div#product_info div#product_price {
+    font-weight: bold;
+    float: left;
+    padding: 5px;
+    font-size: 15px;
+    margin-left: 10px;
+    font-weight: normal;
+}
+
+div#product_info_popup_markup_container div#description_container {
+    height: 100px;
+    margin-top: 10px;
+    margin-bottom: 60px;
+}
+
+div#product_info_popup_markup_container div#description_container div#description {
+    padding: 7px;
+    margin-top: 20px;
+    font-size: 13px;
+}
+
+div#product_info_popup_markup_container div#description_container div.header {
+    font-weight: bold;
+    text-align: left;
+}
+
+div#product_info_popup_markup_container div.action_buttons_container div.action_buttons {
+    width: 341px;
+}
+
+div#product_info_popup_markup_container div.action_buttons_container div.button {
+    width: 150px;
+    max-width: 150px;
+}
+
+/* End Product Info Popup Markup */
+
 /* Generic Popup Styling */
 
 div.jquerybubblepopup table td.jquerybubblepopup-top-middle {
@@ -2859,7 +3009,7 @@ div#total_screen div#payment_options_money_info_container div#totals_screen_misc
 div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons_container div#totals_screen_misc_buttons_left {
     border-spacing: 7px;
     float: left;
-    padding-left: 85px;
+    padding-left: 30px;
 }
 
 div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons_container div#totals_screen_misc_buttons_left div.button {
@@ -3897,15 +4047,15 @@ div#reports_container #sales_items_graph{
 }
 
 #table-design thead {
-	width: 100%;
+    width: 100%;
 }
 #table-design td {
-	padding: 5px 5px 5px 0;
-	vertical-align: top;
+    padding: 5px 5px 5px 0;
+    vertical-align: top;
 }
 #table-design thead th {
-	padding-right: 10px;
-	text-align: left;
+    padding-right: 10px;
+    text-align: left;
 }
 
 div#reports_container table.sales_items_table{

@@ -18,8 +18,6 @@ class Admin::GlobalSettingsController < Admin::AdminController
     @global_settings = GlobalSetting.update(params[:global_settings].keys, params[:global_settings].values).reject { |p| p.errors.empty? }
     
     if @global_settings.empty?
-      flash[:notice] = "Settings Updated. A reload request has been sent to all terminals."
-      
       #have to manually set the service charge button label to the global value
       @service_charge_button = DisplayButton.find_by_perm_id(ButtonMapper::SERVICE_CHARGE_BUTTON)
       @service_charge_button.button_text = GlobalSetting.parsed_setting_for GlobalSetting::SERVICE_CHARGE_LABEL

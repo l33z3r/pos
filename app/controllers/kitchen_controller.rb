@@ -2,7 +2,7 @@ class KitchenController < ApplicationController
   def index
     #auto log in as the first user in the db so that you can go steaight to the kitchen screen without loging in
     if !current_employee
-      @emp = Employee.where("staff_id != ?", Employee::CLUEY_USER_STAFF_ID).first
+      @emp = Employee.chef_user
       do_login(@emp.id)
     end
   end

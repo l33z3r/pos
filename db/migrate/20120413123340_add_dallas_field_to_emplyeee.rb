@@ -4,6 +4,6 @@ class AddDallasFieldToEmplyeee < ActiveRecord::Migration
   end
 
   def self.down
-    remove_column :employees, :dallas_code, :string
+    remove_column :employees, :dallas_code
   end
 end

@@ -280,6 +280,9 @@ function parseAndFillTableOrderJSON(currentTableOrderJSON) {
         
         tableOrders[tableNum].client_name = currentTableOrderJSON.client_name;
         
+        //covers
+        tableOrders[tableNum].covers = currentTableOrderJSON.covers;
+        
         //load the cashback
         tableOrders[tableNum].cashback = currentTableOrderJSON.cashback;
                 
@@ -339,8 +342,9 @@ function buildInitialOrder() {
     var initOrder = {
         'items': new Array(),
         'courses' : new Array(),
-        'total':0,
-        'client_name' : ""
+        'total': 0,
+        'client_name' : "",
+        'covers' : 0
     };
     
     return initOrder;
@@ -707,12 +711,14 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
     //hide any previous popups
     hideNiceAlert();
     
+    var timeoutSeconds = 5;
+    
     if(hardReload) {
-        message = "A hard reset has been requested by " + reloadTerminalId + ". Please click OK to reload.";
-        okFuncCall = "doClearAndReload();"
+        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
+        okFuncCall = "doClearAndReload();";
     } else {
-        message = "Settings have been changed by " + reloadTerminalId + ". Please click OK to reload.";
-        okFuncCall = "doReload(false);"
+        message = "Settings have been changed by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
+        okFuncCall = "doReload(false);";
     }
     
     ModalPopups.Alert('niceAlertContainer',
@@ -720,9 +726,11 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
         {
             width: 360,
             height: 280,
-            okButtonText: 'Ok',
+            okButtonText: 'Reload Now',
             onOk: okFuncCall
         });
+        
+    setTimeout(okFuncCall, timeoutSeconds * 1000);
 }
 
 function getURLHashParams() {
@@ -831,4 +839,45 @@ function appOfflinePopup() {
 //function to force a button to be clicked that works with both advanced touch and non
 function doClickAButton(el) {
     el.mousedown().mouseup().click();
+}
+
+function userAbortedXHR(xhr) {
+    return !xhr.getAllResponseHeaders();
+}
+
+//HTML5 AUDIO BEEP
+var playHTML5Audio = false;
+ 
+function initBeep() {
+    playHTML5Audio = isHTML5AudioSupported();
+    
+    var els = $("div.button, div.small_button, div.item, div.key, div.go_key, div.cancel_key, div.employee_box, \n\
+        div.mobile_button, div.page, #table_screen_button, div#nav_util_button, input[type='submit']");
+    
+    els.live("click", doBeepSound);
+}
+
+function isHTML5AudioSupported() {
+    var a = document.createElement('audio');
+    return !!(a.canPlayType && a.canPlayType('audio/mpeg;').replace(/no/, ''));
+}
+
+function doBeepSound() {
+    playSound('/sounds/beep.mp3');
+}
+
+function playSound(url) {
+    if(playHTML5Audio) {
+        var snd = new Audio(url);
+        snd.load();
+        snd.play();
+    } else {
+        $("#sound").remove();
+        var sound = $("<embed id='sound' type='audio/mpeg' />");
+        sound.attr('src', url);
+        sound.attr('loop', false);
+        sound.attr('hidden', true);
+        sound.attr('autostart', true);
+        $('body').append(sound);
+    }
 }
