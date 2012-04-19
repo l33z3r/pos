@@ -2531,7 +2531,7 @@ div#product_info_popup_markup {
 
 div#product_info_popup_markup_container {
     width: 440px;
-    height: 380px;
+    height: 360px;
     font-size: 18px;
 }
 
@@ -2557,6 +2557,7 @@ div#product_info_popup_markup_container div#header div#product_image {
 
 div#product_info_popup_markup_container div#header div#product_image img {
     height: 100px;
+    border: 1px solid #333;
 }
 
 div#product_info_popup_markup_container div#header div#product_info {
@@ -2592,7 +2593,8 @@ div#product_info_popup_markup_container div#header div#product_info div#product_
 div#product_info_popup_markup_container div#description_container {
     height: 100px;
     margin-top: 10px;
-    margin-bottom: 60px;
+    margin-bottom: 30px;
+    padding: 0px 10px;
 }
 
 div#product_info_popup_markup_container div#description_container div#description {
@@ -2607,7 +2609,7 @@ div#product_info_popup_markup_container div#description_container div.header {
 }
 
 div#product_info_popup_markup_container div.action_buttons_container div.action_buttons {
-    width: 341px;
+    width: 325px;
 }
 
 div#product_info_popup_markup_container div.action_buttons_container div.button {

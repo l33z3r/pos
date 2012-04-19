@@ -309,6 +309,11 @@ function deleteCurrentOrder() {
 }
 
 function chargeCardShortcut() {
+    if(currentOrderEmpty()) {
+        setStatusMessage("No order present!", true, true);
+        return;
+    }
+    
     doTotal();    
     chargeCreditCard();
 }

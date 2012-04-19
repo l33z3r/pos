@@ -223,6 +223,8 @@ function showMenuScreen() {
 }
 
 function showTablesScreen() {
+    
+    
     setNavTitle("Table Selection");
     
     $('#nav_back_link').unbind();
