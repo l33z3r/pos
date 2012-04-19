@@ -1,11 +1,18 @@
 
-<div id="sales_items">
+<div id="sales_items_graph">
+    <div id="spacer" style="height:70px;"></div>
+    <%= high_chart("graph_container_sales", @h) %>
+</div>
+
+
+<div id="sales_items" style="display: none">
     <% if params[:action] == "sales_print" %>
         <h2>Sales Report <%= Time.now.strftime("%B %d, %Y") %></h2>
     <% end %>
+
 <% if @orders != nil %>
 <% if (@s_type == :best_seller) || (@s_type == :worst_seller) %>
-    <table id="product_list" class="admin_table" style="width: 100%; height: 500px">
+              <table id="product_list" class="admin_table" style="width: 100%;">
           <thead>
             <th class="header">Product</th>
             <th class="header">Category</th>
@@ -15,6 +22,7 @@
             <th class="header">NET Sales</th>
           </thead>
           <% @orders.each do |week| %>
+
             <% total_items = week.quantity %>
             <% gross_sales = 0 %>
             <% net_sales = week.total_price %>
@@ -33,16 +41,16 @@
               <td>
                   <%= Category.find_by_id(product.category_id).name %>
               </td>
-              <td>
-                 <%= total_items %>
+              <td style="text-align: right">
+                 <%= "%g" % total_items %>
               </td>
-              <td>
+              <td style="text-align: right">
                   <%= sprintf("%.2f", gross_sales) %>
               </td>
-              <td>
+              <td style="text-align: right">
                  <%= sprintf("%.2f", vat) %>
               </td>
-              <td>
+              <td style="text-align: right">
                  <%= sprintf("%.2f", net_sales) %>
               </td>
 
@@ -51,8 +59,8 @@
           <% end %>
 
       </tbody>
-    </table>
-  </div>
+              </table>
+
 <% else %>
 
     <table id="product_list" class="admin_table" style="width: 100%">
@@ -126,3 +134,4 @@
 <% else %>
     <h2>No Results Found</h2>
 <% end %>
+

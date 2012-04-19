@@ -77,13 +77,12 @@ function printReceipt(content, printRecptMessage) {
     //add space and a dot so we print a bottom margin
     content += clear30HTML + "<div class='the_dots'>.  .  .</div>";
     
-    print(content);
+    printContent(content);
 }
 
 
 
-function print(content) {
-    if (content != "report_print"){
+function printContent(content) {
     $('#printFrame').contents().find('#till_roll').html(content);
 
     var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>"
@@ -112,15 +111,6 @@ function print(content) {
 
 
     //TODO: display an error if the service is not running...
-
-
-
-
-
-
-
-
-
 
     console.log("Websocket support? " + ("WebSocket" in window));
 
@@ -168,7 +158,7 @@ function print(content) {
     //    printFrame.focus();
     //    printFrame.print();
     }
-    }
+
 
 }
 

@@ -340,14 +340,14 @@ function saveEditOrderItem() {
 
         //fetch the order from the order array and modify it
         //then modify the html in the receipt
-        targetInputQuantityEl = $('#' + popupId).find('.quantity');
+        targetInputQuantityEl = $('#' + popupId).find('.quantity')
+
 
         newQuantity = parseFloat(targetInputQuantityEl.val());
 
-
     }
     if (isNaN(newQuantity) || newQuantity == 0) {
-        newQuantity = 1;
+        newQuantity = currentQuantity;
     }
     targetInputPricePerUnitEl = $('.new_price');
     newPricePerUnit = parseFloat(targetInputPricePerUnitEl.val());
@@ -443,9 +443,12 @@ function showPricePopup() {
 function showAddNotePopup() {
     swipeToMenu();
     hideAllMenuSubScreens();
-    $('.note_input').focus();
+
     showAndroidKeyboard();
     $('#add_note_screen').show();
+
+    $('.note_input').select();
+    $('.note_input').focus();
 
 //    window.setTimeout($('.note_input').focus(),2000);
 }
