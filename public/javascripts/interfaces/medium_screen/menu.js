@@ -356,7 +356,7 @@ function saveEditOrderItem() {
 
     var courseNum = order.items[itemNumber - 1].product.course_num;
     var is_void = order.items[itemNumber - 1].is_void;
-
+    $('.new_price').val(null);
     if (isNaN(newPricePerUnit)) {
         newPricePerUnit = currentPrice;
     }
@@ -444,11 +444,11 @@ function showAddNotePopup() {
     swipeToMenu();
     hideAllMenuSubScreens();
 
-    showAndroidKeyboard();
     $('#add_note_screen').show();
-
+    showAndroidKeyboard();
     $('.note_input').select();
     $('.note_input').focus();
+
 
 //    window.setTimeout($('.note_input').focus(),2000);
 }
@@ -620,10 +620,9 @@ function showQuantityPopup() {
     }, false);
 
     currentTargetPopupAnchor.FreezeBubblePopup();
-
     popupId = currentTargetPopupAnchor.GetBubblePopupID();
     $('#' + popupId).find('.quantity').focus();
-    $('#' + popupId).find('.new_price').val(currentPrice);
+//    $('#' + popupId).find('.new_price').val(currentPrice);
     $('#' + popupId).find('.quantity').val(currentQuantity);
 
     //register the click handler to hide the popup when outside clicked
