@@ -77,7 +77,7 @@
       <file leaf-file-name="database.yml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/config/database.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="63" selection-start="63" selection-end="63" vertical-scroll-proportion="0.083179295">
+            <state line="35" column="59" selection-start="796" selection-end="796" vertical-scroll-proportion="0.7227357">
               <folding />
             </state>
           </provider>
@@ -95,7 +95,7 @@
       <file leaf-file-name="sales_search.js.erb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/reports/sales/sales_search.js.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="4" selection-start="207" selection-end="268" vertical-scroll-proportion="0.0">
+            <state line="8" column="97" selection-start="270" selection-end="270" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -104,7 +104,7 @@
       <file leaf-file-name="sales_print.html.erb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/reports/sales/sales_print.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="43" selection-start="442" selection-end="442" vertical-scroll-proportion="-6.25">
+            <state line="8" column="56" selection-start="366" selection-end="393" vertical-scroll-proportion="-5.0">
               <folding />
             </state>
           </provider>
@@ -1208,30 +1208,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/sales/sales_search.js.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="4" selection-start="207" selection-end="268" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/sales/sales_print.js.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="84" selection-start="81" selection-end="81" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="9" column="76" selection-start="297" selection-end="297" vertical-scroll-proportion="-5.625">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/sales/sales_print.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="43" selection-start="442" selection-end="442" vertical-scroll-proportion="-6.25">
           <folding />
         </state>
       </provider>
@@ -1257,9 +1236,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/reports/sales/sales_print.js.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="84" selection-start="81" selection-end="81" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/reports/sales/sales_print.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="56" selection-start="366" selection-end="393" vertical-scroll-proportion="-5.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/reports/sales/sales_search.js.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="97" selection-start="270" selection-end="270" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/config/database.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="63" selection-start="63" selection-end="63" vertical-scroll-proportion="0.083179295">
+        <state line="35" column="59" selection-start="796" selection-end="796" vertical-scroll-proportion="0.7227357">
           <folding />
         </state>
       </provider>
