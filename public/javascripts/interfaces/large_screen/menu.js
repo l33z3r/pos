@@ -72,7 +72,8 @@ $(window).load(function(){
 
 function initMenuScreenType() {
     if(menuScreenType == RESTAURANT_MENU_SCREEN) {
-        //everything is already set up
+        //show the shortcut dropdown
+        $('#menu_screen_shortcut_dropdown_container').show();    
     } else if(menuScreenType == RETAIL_MENU_SCREEN) {
         //hide the table select box
         $('#table_screen_button, #table_select_container').hide();
@@ -107,6 +108,7 @@ function initMenuScreenType() {
         $('#items .item .item_name').css("bottom", "7px");
         
         $('div#menu_screen div#menu_pages_container div#menu_container').height(631);
+        $('div#menu_screen div#menu_items_container').height(563);
         $('div#menu_screen div#order_item_additions').height(631);
         $('div#menu_screen div#order_item_additions div.oia_container').height(558);
         $('div#menu_screen div#menu_buttons').height(79);
@@ -116,7 +118,8 @@ function initMenuScreenType() {
         
         $('#box_label_container').show();
         
-        //show the product price beside the label
+        //hide the shortcut dropdown
+        $('#menu_screen_shortcut_dropdown_container').hide();
     }
 }
 

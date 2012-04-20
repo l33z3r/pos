@@ -87,7 +87,6 @@ function doGlobalInit() {
         });
 
         setTimeout(function() {
-
             $('#num').focus();
             scanFocusLoginPoll();
         }, 1000);
@@ -106,9 +105,9 @@ function doGlobalInit() {
         if (lastSaleInfo) {
             setLoginReceipt(lastSaleInfo.title, lastSaleInfo.contentHTML)
         }
-
+alert("hid2");
         showInitialScreen();
-
+alert("hid3");
         showScreenFromHashParams();
     } else if (inKitchenContext()) {
         initKitchen();
