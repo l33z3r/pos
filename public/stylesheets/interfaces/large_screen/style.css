@@ -836,6 +836,7 @@ div#menu_screen div#menu_pages_container div#menu_items_container {
     padding-left: 2px;
     padding-top: 4px;
     background-color: #E0E0E0;
+    overflow-y: hidden;
 }
 
 div#menu_screen div#menu_pages_container div.sub_menu_items_container {

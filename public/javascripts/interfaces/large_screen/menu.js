@@ -2427,9 +2427,6 @@ function popupProductInfo(productId) {
     
     productInfoPopupEl = $('#' + popupId);
     
-    //register the click handler to hide the popup when outside clicked
-    //registerPopupClickHandler($('#' + popupId), closeProductInfoPopup);
-    
     var product = products[productId];
     
     //product image
