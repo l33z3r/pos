@@ -2462,6 +2462,8 @@ function closeProductInfoPopup() {
 }
 
 function productInfoAddItemToOrder() {
+    setProductInfoPopup(false);
     doSelectMenuItem(currentProductInfoPopupProductId, null, null);
+    setProductInfoPopup(true);
     closeProductInfoPopup();
 }
