@@ -105,9 +105,9 @@ function doGlobalInit() {
         if (lastSaleInfo) {
             setLoginReceipt(lastSaleInfo.title, lastSaleInfo.contentHTML)
         }
-alert("hid2");
+
         showInitialScreen();
-alert("hid3");
+
         showScreenFromHashParams();
     } else if (inKitchenContext()) {
         initKitchen();
