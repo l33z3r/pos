@@ -103,6 +103,10 @@ function initMenuScreenType() {
         $('#items .item .item_pic img').css("max-width", "172px");
         $('#items .item .item_pic img').css("margin-top", "5px");
         
+        $('#items .menu_item_spacer').height(135);
+        $('#items .menu_item_spacer').width(178);
+        $('#items .menu_item_spacer').css("margin", "3px");
+        
         $('#items .item .item_name').css("width", "172px");
         $('#items .item .item_name').css("font-size", "16px");
         $('#items .item .item_name').css("bottom", "7px");

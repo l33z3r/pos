@@ -41,20 +41,18 @@
                             <%= product_image_thumb embedded_item.product if embedded_item.product.show_button_image %>
                           </div>
                           <div class="item_name" style="<%= menu_item_background_css embedded_item %><%= embedded_item.product.button_text_color.blank? ? "" : "color: #{embedded_item.product.button_text_color};" %>">
-                            <%= menu_item_name embedded_item %> -                            
-                            <%= "- #{print_money embedded_item.product.price}" if @menu_screen_type == GlobalSetting::CUSTOMER_MENU_SCREEN %>
+                            <%= menu_item_name embedded_item %> <%= "- #{print_money embedded_item.product.price}" if @menu_screen_type == GlobalSetting::CUSTOMER_MENU_SCREEN %>
                           </div>
                         </div>
                       <% elsif @use_whitespace_in_desktop_menus %>
                         <div class="menu_item_spacer"></div>
                       <% end %>
-
-                      <div class="clear">&nbsp;</div>
-
                     <% end %>
+                        
+                    <div class="clear">&nbsp;</div>
+
                   </div>
                 </div>
-
               <% end %>
             </div>
 
