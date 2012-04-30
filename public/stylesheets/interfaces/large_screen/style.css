@@ -836,6 +836,7 @@ div#menu_screen div#menu_pages_container div#menu_items_container {
     padding-left: 2px;
     padding-top: 4px;
     background-color: #E0E0E0;
+    overflow-y: hidden;
 }
 
 div#menu_screen div#menu_pages_container div.sub_menu_items_container {
@@ -2533,12 +2534,14 @@ div#product_info_popup_markup_container {
     width: 440px;
     height: 360px;
     font-size: 18px;
+    background-color: #F0F0F0;
+    line-height: 110%;
 }
 
 div#product_info_popup_markup_container div#header {
     float: left;
     margin: 5px;
-    margin-top: 16px;
+    margin-top: 25px;
     font-weight: bold;
 }
 
@@ -2551,20 +2554,21 @@ div#product_info_popup_markup_container div#header img.info_icon {
 
 div#product_info_popup_markup_container div#header div#product_image {
     float: left;
-    margin-left: 80px;
-    width: 70px;
+    margin-left: 40px;
+    width: 100px;
 }
 
 div#product_info_popup_markup_container div#header div#product_image img {
     height: 100px;
+    max-width: 110px;
     border: 1px solid #333;
 }
 
 div#product_info_popup_markup_container div#header div#product_info {
     float: left;
-    width: 160px;
+    width: 200px;
     text-align: center;
-    margin-left: 50px;
+    margin-left: 25px;
 }
 
 div#product_info_popup_markup_container div#header div#product_info div#product_name {
@@ -2599,13 +2603,13 @@ div#product_info_popup_markup_container div#description_container {
 
 div#product_info_popup_markup_container div#description_container div#description {
     padding: 7px;
-    margin-top: 20px;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 div#product_info_popup_markup_container div#description_container div.header {
     font-weight: bold;
     text-align: left;
+    font-size: 18px;
 }
 
 div#product_info_popup_markup_container div.action_buttons_container div.action_buttons {

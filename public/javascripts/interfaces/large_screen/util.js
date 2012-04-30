@@ -213,9 +213,6 @@ function showMenuScreen() {
     //show the menu screen as default subscreen
     showMenuItemsSubscreen();
     
-    //show the shortcut dropdown
-    $('#menu_screen_shortcut_dropdown_container').show();
-    
     $('#menu_screen').show();
     $('#scan_upc').focus();
     

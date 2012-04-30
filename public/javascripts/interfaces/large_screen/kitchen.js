@@ -59,8 +59,10 @@ function renderReceipt(tableID) {
     } else {
         orderToCopy = tableOrders[tableID];
         
-        //clear the previous tables order when a new one is started      
-        if(kitchenOrders[tableID] != null && orderNums[tableID] && (orderNums[tableID] != orderToCopy.order_num)) {
+        //clear the previous tables order when a new one is started  
+        console.log("Comparing order numbers for clearing table " + orderNums[tableID] + " " + orderToCopy.order_num);
+        
+        if(orderNums[tableID] && (orderNums[tableID] != orderToCopy.order_num)) {
             tableCleared(tableID, orderNums[tableID]);
         }
     }

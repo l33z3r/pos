@@ -74,20 +74,19 @@ function doGlobalInit() {
         initMenu();
 
         jwerty.key('0,0,0', function () {
-//            if (event.which == 117 && event.which == 34) {
-                if ($('#admin_content_screen').is(":visible")) {
-                    setStatusMessage("Logging out... Please wait.");
-                    doLogout();
-                    window.location = "/home"
-                } else {
-                    doLogout();
-                }
+            //            if (event.which == 117 && event.which == 34) {
+            if ($('#admin_content_screen').is(":visible")) {
+                setStatusMessage("Logging out... Please wait.");
+                doLogout();
+                window.location = "/home"
+            } else {
+                doLogout();
+            }
 
-//            }
+        //            }
         });
 
         setTimeout(function() {
-
             $('#num').focus();
             scanFocusLoginPoll();
         }, 1000);
@@ -133,7 +132,7 @@ function doGlobalInit() {
         lastActiveElement.addClass("focus");
 
         var allowFocusElements = [
-            "num", "scan_upc", "description_input", "price_change_new_price_input", "stock_take_new_amount_input", "room_number_input"
+        "num", "scan_upc", "description_input", "price_change_new_price_input", "stock_take_new_amount_input", "room_number_input"
         ]
 
         var focusedElementId = lastActiveElement.attr("id");
@@ -159,7 +158,7 @@ function doGlobalInit() {
 
     clueyScheduler();
 
-    //enable this for html5 cache flushing
+//enable this for html5 cache flushing
 //    if(inProdMode()) {
 //        //start checking for cache updates
 //        cacheUpdateCheckPoll();
@@ -221,9 +220,9 @@ function showAdminDisplayButtonPasscodePromptPopup(button_id, forwardFunction) {
     $('#menu_buttons_popup_anchor').ShowBubblePopup({
         align: 'center',
         innerHtml: "<div id='display_button_passcode_popup'><div id='header'>Enter Pass Code:</div>" +
-            "<input type='text' id='display_button_passcode'/>" + clearHTML +
-            "<div id='display_button_submit_passcode' class='button' onclick='displayButtonPasscodeEntered()'>Submit</div>" +
-            "<div id='cancel_display_button_passcode_prompt' class='button' onclick='cancelDisplayButtonPasscodePromptPopup();return false;'>Cancel</div></div>",
+        "<input type='text' id='display_button_passcode'/>" + clearHTML +
+        "<div id='display_button_submit_passcode' class='button' onclick='displayButtonPasscodeEntered()'>Submit</div>" +
+        "<div id='cancel_display_button_passcode_prompt' class='button' onclick='cancelDisplayButtonPasscodePromptPopup();return false;'>Cancel</div></div>",
 
         innerHtmlStyle:{
             'text-align':'left'
@@ -270,9 +269,9 @@ function showDisplayButtonPasscodePromptPopup() {
     $('#menu_buttons_popup_anchor').ShowBubblePopup({
         align: 'center',
         innerHtml: "<div id='display_button_passcode_popup'><div id='header'>Enter Pass Code:</div>" +
-            "<div id='display_button_passcode_show'></div>" +
-            "<div id='display_button_submit_passcode' class='button' onclick='displayButtonPasscodeEntered()'>Submit</div>" +
-            "<div id='cancel_display_button_passcode_prompt' class='button' onclick='cancelDisplayButtonPasscodePromptPopup();return false;'>Cancel</div></div>",
+        "<div id='display_button_passcode_show'></div>" +
+        "<div id='display_button_submit_passcode' class='button' onclick='displayButtonPasscodeEntered()'>Submit</div>" +
+        "<div id='cancel_display_button_passcode_prompt' class='button' onclick='cancelDisplayButtonPasscodePromptPopup();return false;'>Cancel</div></div>",
 
         innerHtmlStyle:{
             'text-align':'left'
