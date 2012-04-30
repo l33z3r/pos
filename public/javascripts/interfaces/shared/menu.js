@@ -49,6 +49,9 @@ var lastSaleObj;
 
 var mandatoryFooterMessageHTML = null;
 
+//this is used to hold the master 
+var masterOrdersUserId = -1;
+
 function getCurrentOrder() {
     if(selectedTable == 0) {
         return currentOrder;
@@ -73,8 +76,15 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         //            continue;
         //        }
         
+        if(!userHasUniqueTableOrder(nextUserIDToSyncWith, tableID)) {
+            continue;
+        }
+        
         doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith);
     }
+    
+    //sync the master orders array
+    doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, masterOrdersUserId);
     
     if(inKitchenContext()) {
         renderReceipt(tableID);
@@ -359,8 +369,20 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, orderNum, tableLabel
     for (var i = 0; i < employees.length; i++){
         nextUserIDToSyncWith = employees[i].id;
         
+        //skip if terminal and user same
+        //        if(recvdTerminalID == terminalID && terminalEmployeeID == nextUserIDToSyncWith) {
+        //            continue;
+        //        }
+        
+        if(!userHasUniqueTableOrder(nextUserIDToSyncWith, tableID)) {
+            continue;
+        }
+        
         doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployee, nextUserIDToSyncWith);
     }
+    
+    //clear the master orders array
+    doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployee, masterOrdersUserId);
     
     //remove the table from the active table ids array
     removeActiveTable(tableID);
