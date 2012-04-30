@@ -3,21 +3,7 @@
 <div id="reports_container">
 
     <div>
-        <div id="admin_subnav_left">
-            <div class="button" data-onpress="goTo('<%= home_path %>#screen=menu');">
-                <div class="icon">
-                    <%= image_tag "/images/button_logos/manage_sales_screen_button.png" %>
-                </div>
-                <div class="button_name">Sales Screen</div>
-            </div>
 
-            <div class="button" data-onpress="goTo('/home#screen=more_options');">
-                <div class="icon">
-                    <%= image_tag "/images/button_logos/more_options_button.png" %>
-                </div>
-                <div class="button_name">Functions</div>
-            </div>
-        </div>
 
 
         <div style="float: right">
@@ -27,7 +13,9 @@
             <div class="button selected" onclick="window.location = '/reports/sales'">
                 <div class="button_name">Sales Reports</div>
             </div>
-
+            <div class="button" onclick="window.location = '/reports/stocks'">
+                <div class="button_name">Stock Reports</div>
+            </div>
         </div>
         <br>
         <br>
@@ -40,7 +28,7 @@
                         <div id="date_select_container">
                             <div class="dropdown_container">
                                 <div class="label">Report Type</div>
-                                <select onchange="setSearchType($(this).val())">
+                                <select id="search_type_select" onchange="setSearchType($(this).val())">
                                     <option value="0">Best Sellers</option>
                                     <option value="1">Worst Sellers</option>
                                     <option value="2">Sales by Day</option>
@@ -64,10 +52,10 @@
                             <% lastmonth = Time.now - 1.month %>
                             <div class="dropdown_container">
                                 <div class="label">Date</div>
-                                <select id="date_preselect" onchange="setDateParams($(this).val())" style="width: 120px">
+                                <select id="date_preselect" onchange="setDateParams($(this).val(), true)" style="width: 120px">
                                     <option value="<%= Time.now.beginning_of_day %>,<%= Time.now.end_of_day %>">Today</option>
                                     <option value="<%= yesterday.beginning_of_day %>,<%= yesterday.end_of_day %>">Yesterday</option>
-                                    <option value="<%= Time.now.beginning_of_week %>,<%= Time.now %>">This Weak</option>
+                                    <option value="<%= Time.now.beginning_of_week %>,<%= Time.now %>">This Week</option>
                                     <option value="<%= Time.now.beginning_of_month %>,<%= Time.now %>">This Month
                                     </option>
                                     <option value="<%= Time.now.beginning_of_year %>,<%= Time.now %>">This Year to Date
@@ -84,20 +72,20 @@
                                     <option value="<%= lastyear.beginning_of_day %>,<%= lastyear.end_of_day %>">This Day
                                         Last Year
                                     </option>
-                                    <option value="<%= Time.now - 2.years %>,<%= Time.now %>">All Time</option>
+                                    <option value="<%= Time.now.beginning_of_year - 2.years %>,<%= Time.now %>">All Time</option>
                                     <option value=""></option>
                                 </select>
                             </div>
                             <div id="days">
                                 <div class="dropdown_container">
-                                    <div class="label">Day From</div>
+                                    <div class="label">Date From</div>
                                     <div class="input_date">
                                         <input type="text" size="14" id="date_from" name="date_from"
                                                value="<%= @selected_from_date.to_date.strftime("%d-%m-%Y") %>"/>
                                     </div>
                                 </div>
                                 <div class="dropdown_container">
-                                    <div class="label">Day To</div>
+                                    <div class="label">Date To</div>
                                     <div class="input_date">
                                         <input type="text" size="14" id="date_to" name="date_to"
                                                value="<%= @selected_to_date.to_date.strftime("%d-%m-%Y") %>"/>
@@ -110,25 +98,33 @@
 
                             <%= render 'category_dropdown' %>
 
-                            <div id="product_dropdown">
+                            <div id="product_dropdown" style="display: none">
                                 <%= render 'product_dropdown' %>
                             </div>
+                            <div class="dropdown_container" id="string_search_box" style="display: none">
+                                 <div class="label">Product/Code</div>
+                                 <div class="input_search">
+                                        <input type="text" size="12" id="product_search" onchange="setSearchTerm($(this).val())"
+                                               value=""/>
+                                    </div>
+                                    </div>
                             <div class="clear">&nbsp;</div>
                         </div>
                     </div>
                     <div id="refine_button">
-                        <div onclick="runSalesSearch()" class="wide_button">Refine</div>
+                        <div onclick="runSalesSearch()" class="wide_button">Update</div>
                     </div>
                     <div style="float: right; margin: 6px;">
                         <div style="margin: 5px; height: 40px;" onclick="switchView('graph')" id="graph_view" class="button selected">Graph View</div>
                     </div>
-                     <div style="float: right; margin: 6px;">
-                        <div style="margin: 5px; height: 40px;" onclick="window.location = '/reports/sales/sales_print'" class="button">Print</div>
+                    <div style="float: right; margin: 6px;">
+                        <div style="margin: 5px; height: 40px;" onclick="setSearchSelect(-1)" class="button">Reset</div>
                     </div>
                     <div style="float: right; margin: 6px;">
                         <div style="margin: 5px; height: 40px;" onclick="switchView('table')" id="table_view" class="button">Table View</div>
                     </div>
                 </div>
+
                 <div id="report_sales_results">
                     <%= render 'sales_tab' %>
                 </div>

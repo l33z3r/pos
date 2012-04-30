@@ -255,6 +255,7 @@ Pos::Application.routes.draw do
         get 'set_params'
         get 'load_dropdown'
         get 'sales_print'
+        get 'export_excel'
       end
     end
     resources :stocks, :only => [:index] do
@@ -263,6 +264,8 @@ Pos::Application.routes.draw do
         get 'stocks_search'
         get 'set_params'
         get 'load_dropdown'
+        get 'stocks_print'
+        get 'export_excel'
       end
     end
   end

@@ -1,0 +1,13 @@
+<div id="back_button" style="float: right;margin-bottom: 10px;margin-right: 10px; "><div style="margin: 5px; height: 40px;" onclick="window.location = '/reports/stocks'" class="button">Back</div></div>
+<div id="report_stocks_results">
+<%= render 'stocks_tab' %>
+</div>
+
+<script type="text/javascript">
+//     $('#sales_items_graph').show();
+    $('#sales_items').show();
+    $('#main_nav').hide();
+    $('#back_button').hide();
+    window.print();
+    $('#back_button').show();
+</script>

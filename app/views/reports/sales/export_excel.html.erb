@@ -1,24 +1,13 @@
-
-
-
-<% if session[:preselect] != -1 %>
-<% unless params[:action] == "sales_print" %>
-<div id="options_menu">
-                   <div style="margin-top:3px; margin-left: 10px; cursor: pointer; float: left" onclick="setSearchSelect(-1)" class="print_box"> <img src="/images/button_logos/home.png" alt="Print" width="24" height="24" /><span style="font-weight: bold; margin-top: -3px;"> Home |</span></div>
-                   <div style="margin-top:3px;margin-left: 10px; cursor: pointer; float: left" onclick="window.location = '/reports/sales/sales_print'" class="print_box"> <img src="/images/button_logos/print.png" alt="Print" width="24" height="24" /><span style="font-weight: bold; margin-bottom: 10px;"> Print |</span></div>
-                   <div style="margin-top:3px;margin-left: 10px; cursor: pointer; float: left" onclick="window.location = '/reports/sales/export_excel'" class="excel_box"><img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24" /><span style="font-weight: bold; margin-bottom: 10px;"> Excel</span></div>
-                </div>
-<% end %>
-<div id="sales_items_graph">
-    <div id="spacer" style="height:70px;"></div>
-    <%= high_chart("graph_container_sales", @h) %>
-</div>
-
+<script type="text/javascript">
+    $('#menu_screen_shortcut_dropdown_container').html("");
+</script>
 
 <div id="sales_items" style="display: none">
     <% if params[:action] == "sales_print" %>
-        <h3>Sales Report <%= Time.now.strftime("%B %d, %Y") %></h3>
+        <h2>Sales Report <%= Time.now.strftime("%B %d, %Y") %></h2>
     <% end %>
+
+<% if @orders != nil %>
 <% if (@s_type == :best_seller) || (@s_type == :worst_seller) %>
               <table id="product_list" class="admin_table" style="width: 100%;">
           <thead>
@@ -41,24 +30,24 @@
           <% net_sales = gross_sales - vat %>
           <tbody>
           <tr>
-              <td>
+              <td style="width: auto">
                   <% product = Product.find_by_id(week.product_id) %>
                   <%= product.name %>
               </td>
 
-              <td>
+              <td style="width: auto">
                   <%= Category.find_by_id(product.category_id).name %>
               </td>
-              <td style="text-align: right">
+              <td style="width: auto">
                  <%= "%g" % total_items %>
               </td>
-              <td style="text-align: right">
+              <td style="text-align: right; width: auto">
                   <%= sprintf("%.2f", gross_sales) %>
               </td>
-              <td style="text-align: right">
+              <td style="text-align: right; width: auto">
                  <%= sprintf("%.2f", vat) %>
               </td>
-              <td style="text-align: right">
+              <td style="text-align: right; width: auto">
                  <%= sprintf("%.2f", net_sales) %>
               </td>
 
@@ -80,24 +69,21 @@
             <th class="header">VAT</th>
             <th class="header">NET Sales</th>
           </thead>
-        <% total_items = 0 %>
           <% @orders.group_by(&@s_type).sort.each do |week| %>
-
+            <% total_items = 0 %>
             <% gross_sales = 0 %>
             <% net_sales = 0 %>
             <% vat = 0 %>
             <% tax_rate = GlobalSetting::GLOBAL_TAX_RATE.to_i %>
                  <% week[1].each do |order| %>
-                    <% order.order_items.each do |eitem| %>
-                    <% total_items += eitem.quantity %>
-                    <% end %>
+                    <% total_items += order.order_items.count %>
                     <% gross_sales += order.total %>
                  <% end %>
           <% vat = gross_sales * tax_rate / 100 %>
           <% net_sales = gross_sales - vat %>
           <tbody>
           <tr>
-              <td>
+              <td style="width: auto; height: auto">
                   <% if @s_type == :day %>
                   <%= week[1][0].created_at.strftime("%B %d, %Y") %>
                   <% end %>
@@ -112,7 +98,7 @@
                   <% end %>
               </td>
 
-              <td>
+              <td style="width: auto; height: auto">
                    <% if @s_type == :day %>
                   <%= DAYS_OF_THE_WEEK[week[1][0].created_at.wday.to_i] %>
                    <% end %>
@@ -120,16 +106,16 @@
                   Monday
                   <% end %>
               </td>
-              <td>
-                 <%= sprintf("%.0f", total_items) %>
+              <td style="width: auto; height: auto">
+                 <%= total_items %>
               </td>
-              <td>
+              <td style="width: auto; height: auto">
                   <%= sprintf("%.2f", gross_sales) %>
               </td>
-              <td>
+              <td style="width: auto; height: auto">
                  <%= sprintf("%.2f", vat) %>
               </td>
-              <td>
+              <td style="width: auto; height: auto">
                  <%= sprintf("%.2f", net_sales) %>
               </td>
 
@@ -143,19 +129,5 @@
 
 <% end %>
 <% else %>
-    <div id="saved_items">
-        <div class="preselect_button">
-                        <div onclick="setSearchSelect(0)" style="height: 130px;width: 300px;" class="wide_button"><b>Sales by Day This Week</b></div>
-                    </div>
-        <div class="preselect_button">
-                        <div onclick="setSearchSelect(1)" style="height: 130px;width: 300px;" class="wide_button"><b>This Months Best Sales</b></div>
-                    </div>
-        <div class="preselect_button">
-                        <div onclick="setSearchSelect(2)" style="height: 130px;width: 300px;" class="wide_button"><b>Sales by Month This Year</b></div>
-                    </div>
-        <div class="preselect_button">
-                        <div onclick="setSearchSelect(3)" style="height: 130px;width: 300px;" class="wide_button"><b>Sales by Product This Week</b></div>
-                    </div>
-    </div>
+    <h2>No Results Found</h2>
 <% end %>
-

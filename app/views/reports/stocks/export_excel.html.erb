@@ -1,11 +1,4 @@
 <% if session[:preselect] != -1 %>
-<% unless params[:action] == "stocks_print" %>
-<div id="options_menu">
-                   <div style="margin-top:3px; margin-left: 10px; cursor: pointer; float: left" onclick="setStockSelect(-1)" class="print_box"> <img src="/images/button_logos/home.png" alt="Print" width="24" height="24" /><span style="font-weight: bold; margin-top: -3px;">Home</span></div>
-                   <div style="margin-top:3px;margin-left: 10px; cursor: pointer; float: left" onclick="window.location = '/reports/stocks/stocks_print'" class="print_box"> <img src="/images/button_logos/print.png" alt="Print" width="24" height="24" /><span style="font-weight: bold; margin-bottom: 10px;">Print</span></div>
-                   <div style="margin-top:3px;margin-left: 10px; cursor: pointer; float: left" onclick="window.location = '/reports/stocks/export_excel'" class="excel_box"><img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24" /><span style="font-weight: bold; margin-bottom: 10px;">Excel</span></div>
-                </div>
-<% end %>
   <div id="sales_items">
     <% if session[:show_zeros] %>
     <table id="product_list" class="admin_table" style="width: 100%">
@@ -17,7 +10,6 @@
             <th class="header">Total Qty</th>
             <th class="header">Cost ea</th>
             <th class="header">Cost Total</th>
-            <th class="header">Revenue</th>
             <th class="header">Code Num</th>
           </thead>
           <% @products.each do |product| %>
@@ -52,9 +44,6 @@
                  <% end %>
               </td>
               <td>
-                  <%= sprintf("%.2f", OrderItem.sum(:total_price, :conditions =>["product_id = ?", product.id])) %>
-              </td>
-              <td>
                   <%= product.code_num %>
               </td>
 
@@ -75,7 +64,6 @@
             <th class="header">Total Qty</th>
             <th class="header">Cost ea</th>
             <th class="header">Cost Total</th>
-            <th class="header">Revenue</th>
             <th class="header">Code Num</th>
           </thead>
           <% @products.each do |product| %>
@@ -97,7 +85,7 @@
                    <%= OrderItem.find(:all, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date]).count %>
               </td>
               <td>
-                  <%= sprintf("%.0f",OrderItem.sum(:quantity, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date]))  %>
+                  <%= OrderItem.find(:all, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date]).count %>
               </td>
               <td>
                   <% unless OrderItem.find_by_product_id(prod.id) == nil %>
@@ -110,9 +98,6 @@
                  <% end %>
               </td>
               <td>
-                  <%= sprintf("%.2f", OrderItem.sum(:total_price, :conditions =>["product_id = ?", prod.id])) %>
-              </td>
-              <td>
                   <%= prod.code_num %>
               </td>
           </tr>
@@ -123,18 +108,5 @@
     <% end %>
   </div>
 <% else %>
-    <div id="saved_items">
-        <div class="preselect_button">
-                        <div onclick="setStockSelect(0)" style="height: 130px;width: 300px;" class="wide_button"><b>Stocks by Product This Week</b></div>
-                    </div>
-        <div class="preselect_button">
-                        <div onclick="setStockSelect(1)" style="height: 130px;width: 300px;" class="wide_button"><b>Stocks by Product This Months</b></div>
-                    </div>
-        <div class="preselect_button">
-                        <div onclick="setStockSelect(2)" style="height: 130px;width: 300px;" class="wide_button"><b>Stocks by Product This Year</b></div>
-                    </div>
-        <div class="preselect_button">
-                        <div onclick="setStockSelect(3)" style="height: 130px;width: 300px;" class="wide_button"><b>Stocks by Category This Week</b></div>
-                    </div>
-    </div>
+    <span>No Report Results Found</span>
 <% end %>

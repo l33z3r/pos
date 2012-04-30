@@ -4036,7 +4036,28 @@ div#reports_container #sales_items{
     border:  1px solid black;
     border-radius: 10px;
     width: 100%;
-    height: 520px;
+    height: 490px;
+}
+
+div#reports_container #options_menu{
+    overflow: auto;
+    padding-left:  20px;
+    border:  1px solid black;
+    border-radius: 10px;
+    width: 970px;
+    height: 30px;
+    float: left
+}
+
+div#reports_container #saved_items{
+    overflow: auto;
+    padding-left:  180px;
+    padding-top:  40px;
+    border:  1px solid black;
+    border-radius: 10px;
+    width: 810px;
+    height: 490px;
+    float: left
 }
 
 div#reports_container #sales_items_graph{
@@ -4044,7 +4065,7 @@ div#reports_container #sales_items_graph{
     border:  1px solid black;
     border-radius: 10px;
     width: 100%;
-    height: 530px;
+    height: 490px;
     background-color: white;
 }
 
@@ -4152,6 +4173,23 @@ div#reports_container  div#report_sales_filters #refine_button{
     float: left;
     margin-left: 50px;
 }
+
+div#reports_container .preselect_button{
+    margin-top: 20px;
+    width: auto;
+    height: 64px;
+    float: left;
+    margin-left: 50px;
+}
+
+div#reports_container  div#report_sales_filters #refine_button_stock{
+    margin-top: 20px;
+    width: 103px;
+    height: 64px;
+    float: left;
+    margin-left: 70px;
+}
+
 
 div#reports_container  div#report_sales_filters div#days{
     margin-left: 280px;
