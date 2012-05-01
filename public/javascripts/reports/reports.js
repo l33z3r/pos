@@ -204,7 +204,8 @@ function runSalesSearch() {
             "search[product]" : $('#product_id_equals').val(),
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
-            "search[terminal]" : terminalId
+            "search[terminal]" : terminalId,
+            "search[select_type]" : select_type
         }
     }).done(function() {
         $.ajax({
@@ -254,6 +255,9 @@ function runStocksSearch() {
 }
 
 function setReportParams() {
+
+    select_type = ''
+
     $.ajax({
         type: 'GET',
         url: '/reports/sales/set_params',
@@ -264,6 +268,7 @@ function setReportParams() {
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
             "search[terminal]" : terminalId
+
         }
     });
 }
@@ -424,30 +429,35 @@ function setSearchSelect(set_type){
       $('#product_id_equals').attr('selectedIndex', 0);
       search_type = 'best_seller';
       setDateParams($('#date_preselect').val(), false);
+      select_type = set_type
     }
     if (set_type == 0){
       $('#search_type_select').attr('selectedIndex', 2);
       $('#date_preselect').attr('selectedIndex', 2);
       search_type = 'day';
       setDateParams($('#date_preselect').val(), false);
+      select_type = set_type
     }
     if (set_type == 1){
       $('#search_type_select').attr('selectedIndex', 0);
       $('#date_preselect').attr('selectedIndex', 3);
       search_type = 'best_seller';
       setDateParams($('#date_preselect').val(), false);
+      select_type = set_type
     }
     if (set_type == 2){
       $('#search_type_select').attr('selectedIndex', 4);
       $('#date_preselect').attr('selectedIndex', 4);
       search_type = 'month';
       setDateParams($('#date_preselect').val(), false);
+      select_type = set_type
     }
     if (set_type == 3){
       $('#search_type_select').attr('selectedIndex', 0);
       $('#date_preselect').attr('selectedIndex', 2);
       search_type = 'best_seller';
       setDateParams($('#date_preselect').val(), false);
+      select_type = set_type
     }
      $.ajax({
         type: 'GET',
@@ -459,7 +469,7 @@ function setSearchSelect(set_type){
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
             "search[terminal]" : terminalId,
-            "search[select_type]" : set_type
+            "search[select_type]" : select_type
         }
     }).done(function() {
       runSalesSearch();
@@ -498,9 +508,9 @@ function setStockSelect(set_type){
       setDateParams($('#date_preselect').val(), false);
     }
     if (set_type == 3){
-      $('#search_type_select').attr('selectedIndex', 1);
-      $('#date_preselect').attr('selectedIndex', 2);
-      search_type = 'by_category';
+      $('#search_type_select').attr('selectedIndex', 0);
+      $('#date_preselect').attr('selectedIndex', 9);
+      search_type = 'by_product';
       setDateParams($('#date_preselect').val(), false);
     }
      $.ajax({

@@ -4,6 +4,7 @@ class Reports::SalesController < Admin::AdminController
 
   layout 'reports'
 
+
   def index
     session[:search_type] = :best_seller
     session[:search_type_label] = "Best Seller"
@@ -67,10 +68,11 @@ class Reports::SalesController < Admin::AdminController
         @chartdata4 = []
         xitems = []
         @orders[0..18].each do |order|
+          product = Product.find_by_id(order.product_id)
           gross_sales = order.total_price
           vat = gross_sales * tax_rate / 100
           net_sales = gross_sales - vat
-          product = Product.find_by_id(order.product_id)
+
           @chartdata << order.quantity
           @chartdata2 << net_sales
           @chartdata3 << vat
@@ -100,9 +102,13 @@ class Reports::SalesController < Admin::AdminController
           gross_sales = 0
           week[1].each do |order|
             gross_sales += order.total
+            product = Product.find_by_id(order.order_items.first.product_id)
+            tax_rate = product.sales_tax_rate
           end
-          vat = gross_sales * tax_rate / 100
-          net_sales = gross_sales - vat
+
+          vat = vat_rate(tax_rate, gross_sales)
+          net_sales = net_result(gross_sales, vat)
+
           @chartdata << net_sales
           @chartdata3 << vat
           @chartdata4 << gross_sales
@@ -161,11 +167,11 @@ class Reports::SalesController < Admin::AdminController
   end
 
   def set_params
-    if params[:search][:select_type]
+    if params[:search][:select_type] != ''
     session[:preselect] = params[:search][:select_type].to_i
     else
      session[:preselect] = 0
-     end
+    end
 
     if params[:search][:search_type] == 'day'
       session[:search_type] = :day
@@ -200,12 +206,6 @@ class Reports::SalesController < Admin::AdminController
     render :nothing => true
   end
 
-  def load_preselect
-    session[:preselect] = params[:search][:select_type]
-    if session[:preselect] == 0
-
-    end
-  end
 
   def get_sales_data
 

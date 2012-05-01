@@ -20,14 +20,15 @@
           </thead>
           <% @orders.each do |week| %>
 
+            <% product = Product.find_by_id(week.product_id) %>
             <% total_items = week.quantity %>
             <% gross_sales = 0 %>
             <% gross_sales = week.total_price %>
             <% vat = 0 %>
-            <% tax_rate = GlobalSetting::GLOBAL_TAX_RATE.to_i %>
 
-          <% vat = gross_sales * tax_rate / 100 %>
-          <% net_sales = gross_sales - vat %>
+          <% tax_rate = product.sales_tax_rate %>
+          <% vat = vat_rate(tax_rate, gross_sales) %>
+          <% net_sales = net_result(gross_sales, vat) %>
           <tbody>
           <tr>
               <td style="width: auto">
@@ -74,13 +75,16 @@
             <% gross_sales = 0 %>
             <% net_sales = 0 %>
             <% vat = 0 %>
-            <% tax_rate = GlobalSetting::GLOBAL_TAX_RATE.to_i %>
-                 <% week[1].each do |order| %>
-                    <% total_items += order.order_items.count %>
+            <% week[1].each do |order| %>
+                    <% order.order_items.each do |eitem| %>
+                    <% total_items += eitem.quantity %>
+                    <% end %>
                     <% gross_sales += order.total %>
+                    <% product = Product.find_by_id(order.order_items.first.product_id) %>
+                    <% tax_rate = product.sales_tax_rate %>
                  <% end %>
-          <% vat = gross_sales * tax_rate / 100 %>
-          <% net_sales = gross_sales - vat %>
+          <% vat = vat_rate(tax_rate, gross_sales) %>
+          <% net_sales = net_result(gross_sales, vat) %>
           <tbody>
           <tr>
               <td style="width: auto; height: auto">

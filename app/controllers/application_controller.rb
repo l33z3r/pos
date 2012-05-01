@@ -603,4 +603,12 @@ class ApplicationController < ActionController::Base
     Socket.do_not_reverse_lookup = orig
   end
 
+  def vat_rate(tax, gross)
+    gross * tax / 100
+  end
+
+  def net_result(gross, vat)
+    gross - vat
+  end
+
 end

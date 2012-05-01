@@ -115,7 +115,7 @@ class Reports::StocksController < Admin::AdminController
       session[:search] = 'init'
     else
 
-      where = "select oi.* from order_items oi inner join products p on p.id = oi.product_id inner join categories c on c.id = p.category_id"
+      where = "select oi.*, c.id from order_items oi inner join products p on p.id = oi.product_id inner join categories c on c.id = p.category_id"
 
 
 

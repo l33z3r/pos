@@ -94,14 +94,14 @@
                   <%= prod.quantity_in_stock %>
               </td>
               <td>
-                   <%= OrderItem.find(:all, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date]).count %>
+                   <%= sprintf("%.0f",OrderItem.sum(:quantity, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date]))  %>
               </td>
               <td>
                   <%= sprintf("%.0f",OrderItem.sum(:quantity, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date]))  %>
               </td>
               <td>
                   <% unless OrderItem.find_by_product_id(prod.id) == nil %>
-                 <%= sprintf("%.2f",OrderItem.find_by_product_id(prod.id).total_price) %>
+                 <%= sprintf("%.2f", prod.price) %>
                  <% end %>
               </td>
               <td>
@@ -128,13 +128,13 @@
                         <div onclick="setStockSelect(0)" style="height: 130px;width: 300px;" class="wide_button"><b>Stocks by Product This Week</b></div>
                     </div>
         <div class="preselect_button">
-                        <div onclick="setStockSelect(1)" style="height: 130px;width: 300px;" class="wide_button"><b>Stocks by Product This Months</b></div>
+                        <div onclick="setStockSelect(1)" style="height: 130px;width: 300px;" class="wide_button"><b>Stocks by Product This Month</b></div>
                     </div>
         <div class="preselect_button">
                         <div onclick="setStockSelect(2)" style="height: 130px;width: 300px;" class="wide_button"><b>Stocks by Product This Year</b></div>
                     </div>
         <div class="preselect_button">
-                        <div onclick="setStockSelect(3)" style="height: 130px;width: 300px;" class="wide_button"><b>Stocks by Category This Week</b></div>
+                        <div onclick="setStockSelect(3)" style="height: 130px;width: 300px;" class="wide_button"><b>Stocks by Product All Time</b></div>
                     </div>
     </div>
 <% end %>

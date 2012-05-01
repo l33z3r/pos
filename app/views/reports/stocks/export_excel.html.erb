@@ -1,7 +1,7 @@
 <% if session[:preselect] != -1 %>
   <div id="sales_items">
     <% if session[:show_zeros] %>
-    <table id="product_list" class="admin_table" style="width: 100%">
+    <table id="product_list" class="admin_table">
           <thead>
             <th class="header">Name</th>
             <th class="header">Category</th>
@@ -64,6 +64,7 @@
             <th class="header">Total Qty</th>
             <th class="header">Cost ea</th>
             <th class="header">Cost Total</th>
+            <th class="header">Revenue</th>
             <th class="header">Code Num</th>
           </thead>
           <% @products.each do |product| %>
@@ -81,21 +82,31 @@
               <td>
                   <%= prod.quantity_in_stock %>
               </td>
+              <% if session[:search_type] == :by_category %>
               <td>
-                   <%= OrderItem.find(:all, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date]).count %>
+                  <%= sprintf("%.0f",OrderItem.sum(:quantity, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date]))  %>
               </td>
+              <% else %>
               <td>
-                  <%= OrderItem.find(:all, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date]).count %>
+                  <%= sprintf("%.0f",OrderItem.sum(:quantity, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date]))  %>
+              </td>
+              <% end %>
+
+              <td>
+                   <%= sprintf("%.0f",OrderItem.sum(:quantity, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date]))  %>
               </td>
               <td>
                   <% unless OrderItem.find_by_product_id(prod.id) == nil %>
-                 <%= sprintf("%.2f",OrderItem.find_by_product_id(prod.id).total_price) %>
+                      <%= sprintf("%.2f", prod.price) %>
                  <% end %>
               </td>
               <td>
                   <% unless OrderItem.find_by_product_id(prod.id) == nil %>
                  <%= sprintf("%.2f",OrderItem.sum(:total_price, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date]))  %>
                  <% end %>
+              </td>
+              <td>
+                  <%= sprintf("%.2f", OrderItem.sum(:total_price, :conditions =>["product_id = ?", prod.id])) %>
               </td>
               <td>
                   <%= prod.code_num %>
