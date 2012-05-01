@@ -9,7 +9,7 @@
 
 <% if @orders != nil %>
 <% if (@s_type == :best_seller) || (@s_type == :worst_seller) %>
-              <table id="product_list" class="admin_table" style="width: 100%;">
+              <table id="product_list" class="admin_table">
           <thead>
             <th class="header">Product</th>
             <th class="header">Category</th>
@@ -61,7 +61,7 @@
 
 <% else %>
 
-    <table id="product_list" class="admin_table" style="width: 100%">
+    <table id="product_list" class="admin_table">
           <thead>
             <th class="header">Date</th>
             <th class="header">Day</th>
@@ -82,9 +82,11 @@
                     <% gross_sales += order.total %>
                     <% product = Product.find_by_id(order.order_items.first.product_id) %>
                     <% tax_rate = product.sales_tax_rate %>
+                    <% tempvat = vat_rate(tax_rate, gross_sales) %>
+                    <% vat += vat_rate(tax_rate, gross_sales) %>
+                    <% net_sales += net_result(gross_sales, tempvat) %>
                  <% end %>
-          <% vat = vat_rate(tax_rate, gross_sales) %>
-          <% net_sales = net_result(gross_sales, vat) %>
+
           <tbody>
           <tr>
               <td style="width: auto; height: auto">

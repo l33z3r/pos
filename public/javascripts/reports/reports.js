@@ -237,7 +237,8 @@ function runStocksSearch() {
             "search[product]" : $('#product_id_equals').val(),
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
-            "search[terminal]" : terminalId
+            "search[terminal]" : terminalId,
+            "search[select_type]" : select_type
         }
     }).done(function() {
     $.ajax({
@@ -274,6 +275,9 @@ function setReportParams() {
 }
 
 function setStockParams() {
+
+    select_type = ''
+
     $.ajax({
         type: 'GET',
         url: '/reports/stocks/set_params',
@@ -488,30 +492,35 @@ function setStockSelect(set_type){
       $('#product_id_equals').attr('selectedIndex', 0);
       search_type = 'best_seller';
       setDateParams($('#date_preselect').val(), false);
+      select_type = set_type
     }
     if (set_type == 0){
       $('#search_type_select').attr('selectedIndex', 0);
       $('#date_preselect').attr('selectedIndex', 2);
       search_type = 'by_product';
       setDateParams($('#date_preselect').val(), false);
+      select_type = set_type
     }
     if (set_type == 1){
       $('#search_type_select').attr('selectedIndex', 0);
       $('#date_preselect').attr('selectedIndex', 3);
       search_type = 'by_product';
       setDateParams($('#date_preselect').val(), false);
+      select_type = set_type
     }
     if (set_type == 2){
       $('#search_type_select').attr('selectedIndex', 0);
       $('#date_preselect').attr('selectedIndex', 4);
       search_type = 'by_product';
       setDateParams($('#date_preselect').val(), false);
+      select_type = set_type
     }
     if (set_type == 3){
       $('#search_type_select').attr('selectedIndex', 0);
       $('#date_preselect').attr('selectedIndex', 9);
       search_type = 'by_product';
       setDateParams($('#date_preselect').val(), false);
+      select_type = set_type
     }
      $.ajax({
         type: 'GET',
@@ -523,7 +532,7 @@ function setStockSelect(set_type){
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
             "search[terminal]" : terminalId,
-            "search[select_type]" : set_type
+            "search[select_type]" : select_type
         }
     }).done(function() {
       runStocksSearch();

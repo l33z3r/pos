@@ -1,9 +1,22 @@
 class Reports::SalesController < Admin::AdminController
 
+  helper_method :vat_rate, :net_result , :per_profit
+
   Mime::Type.register "application/pdf", :pdf
 
   layout 'reports'
 
+  def vat_rate(tax, gross)
+    gross * tax / 100
+  end
+
+  def net_result(gross, vat)
+    gross - vat
+  end
+
+  def per_profit(revenue, total_price)
+    (revenue.to_d/total_price.to_d)*100
+  end
 
   def index
     session[:search_type] = :best_seller

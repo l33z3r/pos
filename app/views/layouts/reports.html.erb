@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <% unless params[:action] == "export_excel" %>
     <%= render :partial => "/partials/interfaces/large_screen/common_head" %>
     <%= javascript_include_tag "rails", "reports/reports.js", :cache => "cache/reports" %>
     <%= javascript_include_tag :high_charts %>
   </head>
+  <% end %>
   <body>
     <div id="wrapper" class="wrapper admin large_interface">
       <div id="body">
@@ -12,7 +14,7 @@
 
 
 
-
+<% unless params[:action] == "export_excel" %>
           <nav id="main_nav">
 
   <div id="nav_back_link" style="display: none;">< Back</div>
@@ -37,7 +39,7 @@
   <div id="nav_save_button" onclick="goTo('/home#screen=more_options');">
     <%= image_tag "exit.gif" %>
   </div>
-
+<% end %>
 
 
 

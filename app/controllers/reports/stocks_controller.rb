@@ -1,6 +1,22 @@
 class Reports::StocksController < Admin::AdminController
 
+  helper_method :vat_rate, :net_result , :per_profit
+
   layout 'reports'
+
+
+  def vat_rate(tax, gross)
+    gross * tax / 100
+  end
+
+  def net_result(gross, vat)
+    gross - vat
+  end
+
+  def per_profit(revenue, total_price)
+     (revenue.to_d - total_price.to_d)/(revenue.to_d) * 100
+    #(revenue.to_d/total_price.to_d)*100
+  end
 
   def index
     session[:search_type] = :product
@@ -73,7 +89,7 @@ class Reports::StocksController < Admin::AdminController
 
   def set_params
 
-    if params[:search][:select_type]
+    unless params[:search][:select_type] == ""
       session[:preselect] = params[:search][:select_type].to_i
     else
      session[:preselect] = 0
