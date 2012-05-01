@@ -291,9 +291,9 @@ class Product < ActiveRecord::Base
   end
   
   def strip_whitespace
-    self.name = self.name ? self.name.strip : nil
-    self.brand = self.brand ? self.brand.strip : nil
-    self.description = self.description ? self.description.strip : nil
+    self.name = self.name ? self.name.strip.gsub(/\s+/, ' ') : nil
+    self.brand = self.brand ? self.brand.strip.gsub(/\s+/, ' ') : nil
+    self.description = self.description ? self.description.strip.gsub(/\s+/, ' ') : nil
   end
   
 end
