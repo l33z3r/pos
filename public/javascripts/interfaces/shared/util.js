@@ -54,6 +54,14 @@ function inAndroidWrapper() {
     return (typeof clueyAndroidJSInterface != "undefined");
 }
 
+function currencyBalance(balance) {
+    if(balance < 0) {
+        return currency(Math.abs(balance)) + "CR";
+    } else {
+        return currency(balance);
+    }
+}
+
 function currency(number, showUnit) {
     if(typeof showUnit == "undefined") {
         showUnit = true;
@@ -154,6 +162,7 @@ var sessionIdCookieName = "_session_id";
 var lastReloadCookieName = "last_reload_time";
 var lastPrintCheckCookieName = "last_print_check_time";
 var salesInterfaceForwardFunctionCookieName = "sales_interface_forward_function";
+var salesInterfaceForwardJSExecuteCookieName = "sales_interface_forward_js_execute";
 
 //deletes everything but the fingerprint cookie
 function clearLocalStorageAndCookies() {
@@ -939,4 +948,13 @@ function playSound(url) {
         sound.attr('autostart', true);
         $('body').append(sound);
     }
+}
+
+function setEventyKeyCode(e, code) {
+    e.keyCode = code;
+}
+
+function getEventKeyCode(e) {
+    //console.log("KC: " + e.keyCode + " - " + e.charCode + " : " + (e.charCode || e.keyCode));
+    return e.charCode || e.keyCode;
 }

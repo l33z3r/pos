@@ -298,7 +298,7 @@ class OrderController < ApplicationController
         
         CustomerTransaction.create({:transaction_type => CustomerTransaction::CHARGE,
             :order_id => @order.id, :customer_id => @customer.id,
-            :abs_amount => @order.total, :actual_amount => @order.total, :is_credit => false
+            :abs_amount => @order.total, :actual_amount => -@order.total, :is_credit => false
           })
         
         @customer.current_balance = @customer.current_balance + @order.total 

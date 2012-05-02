@@ -360,73 +360,137 @@ function showGlobalSettingsPage() {
     goTo('/admin/global_settings');
 }
 
+var usingPrintService = true;
+
 function openCashDrawer() {
-    if(using_wss_cash_drawer) {
-        if ("WebSocket" in window) {
-            console.log("Sending cash drawer message");
+    console.log("open cash drawer");
+    
+    if(usingPrintService) {
+        if(using_wss_cash_drawer) {
+            if ("WebSocket" in window) {
+                console.log("Sending cash drawer message");
         
-            // Let us open a web socket
-            var ws = new WebSocket("ws://" + cashDrawerServiceIP + ":8080/ClueyWebSocketServices/cash_drawer_controller_ws");
+                // Let us open a web socket
+                var ws = new WebSocket("ws://" + cashDrawerServiceIP + ":8080/ClueyWebSocketServices/cash_drawer_controller_ws");
         
-            ws.onopen = function() {
-                // Web Socket is connected, send data using send()
-                ws.send("open cash drawer!");
-                console.log("Cash Drawer message sent");
-                ws.close();
-            };
+                ws.onopen = function() {
+                    //Web Socket is connected, send data using send()
+                    ws.send("open cash drawer!");
+                    console.log("Cash Drawer message sent");
+                    ws.close();
+                };
         
-            ws.onmessage = function (evt) { 
-                var received_msg = evt.data;
-                console.log("Message received: " + received_msg);
-            };
+                ws.onmessage = function (evt) { 
+                    var received_msg = evt.data;
+                    console.log("Message received: " + received_msg);
+                };
             
-            ws.onclose = function() { 
-                // websocket is closed.
-                console.log("Connection closed!"); 
-            };
+                ws.onclose = function() { 
+                    // websocket is closed.
+                    console.log("Connection closed!"); 
+                };
+            } else {
+                // The browser doesn't support WebSocket
+                alert("WebSocket NOT supported by your browser, Please disable web sockets!");
+            }
         } else {
-            // The browser doesn't support WebSocket
-            alert("WebSocket NOT supported by your browser, Please disable web sockets!");
+            var cash_drawer_service_url = 'http://' + cashDrawerServiceIP + ':8080/ClueyWebSocketServices/cash_drawer_controller';
+    
+            $.ajax({
+                type: 'POST',
+                url: '/forward_cash_drawer_request',
+                error: function() {
+                    setStatusMessage("Cash drawer service cannot be reached.", false, false);
+                },
+                data: {
+                    cash_drawer_service_url : cash_drawer_service_url,
+                    message : "open cash drawer"
+                }
+            });
         }
     } else {
-        var cash_drawer_service_url = 'http://' + cashDrawerServiceIP + ':8080/ClueyWebSocketServices/cash_drawer_controller';
+        //Printing Directly only works on firefox/windows
+       
+        //search for "signed.applets.codebase_principal_support" 
+        //in this list and toggle its value to "true"
+        try {
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        } catch (e) {
+            niceAlert("You must allow certain privileges ");
+            return;
+        }
     
-        $.ajax({
-            type: 'POST',
-            url: '/forward_cash_drawer_request',
-            error: function() {
-                setStatusMessage("Cash drawer service cannot be reached.", false, false);
-            },
-            data: {
-                cash_drawer_service_url : cash_drawer_service_url,
-                message : "open cash drawer"
-            }
-        });
+        var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+        .getService(Components.interfaces.nsIPrefBranch);
+        prefs.setBoolPref("signed.applets.codebase_principal_support", true);
+    
+        var dirService = Components.classes["@mozilla.org/file/directory_service;1"].
+        getService(Components.interfaces.nsIProperties); 
+    
+        var homeDirFile = dirService.get("Home", Components.interfaces.nsIFile); // returns an nsIFile object
+        var homeDir = homeDirFile.path;
+
+        console.log("Users home dir: " + homeDir);
+
+        //create cash drawer code file
+        var cdcFilePath = homeDir + "/cdc.txt";
+    
+        var cdcFile = Components.classes["@mozilla.org/file/local;1"]
+        .createInstance(Components.interfaces.nsILocalFile);
+        cdcFile.initWithPath(cdcFilePath);
+    
+        if (!cdcFile.exists()) {
+            console.log("Creating CDC file...");
+        
+            cdcFile.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0777);
+        
+            var cdcOutputStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+            .createInstance(Components.interfaces.nsIFileOutputStream );
+
+            cdcOutputStream.init(cdcFile, 0x04 | 0x08 | 0x20, 402, 0777);
+            var cdcOutput = ' p0 ';
+            var cdcOutputResult = cdcOutputStream.write(cdcOutput, cdcOutput.length);
+        
+            console.log(cdcOutputResult);
+            cdcOutputStream.close();
+        }
+    
+        //create the script
+        var ocdScriptFilePath = homeDir + "/ocd.sh";
+    
+        var ocdScriptFile = Components.classes["@mozilla.org/file/local;1"]
+        .createInstance(Components.interfaces.nsILocalFile);
+        ocdScriptFile.initWithPath(ocdScriptFilePath);
+    
+        if (!ocdScriptFile.exists()) {
+            console.log("Creating OCD Script...");
+        
+            ocdScriptFile.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0777);
+        
+            var ocdScriptOutputStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+            .createInstance(Components.interfaces.nsIFileOutputStream );
+
+            ocdScriptOutputStream.init(ocdScriptFile, 0x04 | 0x08 | 0x20, 0777, 0);
+            var ocdScriptOutput = '#!/bin/sh \ncat ' + cdcFilePath + ' > /dev/usb/lp0';
+            var ocdScriptOutputResult = ocdScriptOutputStream.write(ocdScriptOutput, ocdScriptOutput.length);
+        
+            console.log(ocdScriptOutputResult);
+            ocdScriptOutputStream.close();
+        }
+
+        // create an nsIProcess
+        var process = Components.classes["@mozilla.org/process/util;1"]
+        .createInstance(Components.interfaces.nsIProcess);
+        process.init(ocdScriptFile);
+
+        // Run the process.
+        // If first param is true, calling thread will be blocked until
+        // called process terminates.
+        // Second and third params are used to pass command-line arguments
+        // to the process.
+        var args = [];
+        process.run(false, args, args.length);
     }
-    
-//DO IT THE OLD FASHIONED WAY (only works with firefox)
-    
-//    //search for "signed.applets.codebase_principal_support" 
-//    //in this list and toggle its value to "true"
-//    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-//
-//    // create an nsILocalFile for the executable
-//    var file = Components.classes["@mozilla.org/file/local;1"]
-//    .createInstance(Components.interfaces.nsILocalFile);
-//    file.initWithPath("c:\\open_cash_drawer.bat");
-//
-//    // create an nsIProcess
-//    var process = Components.classes["@mozilla.org/process/util;1"]
-//    .createInstance(Components.interfaces.nsIProcess);
-//    process.init(file);
-//
-//    // Run the process.
-//    // If first param is true, calling thread will be blocked until
-//    // called process terminates.
-//    // Second and third params are used to pass command-line arguments
-//    // to the process.
-//    var args = [];
-//    process.run(false, args, args.length);
 }
 
 var addTableNamePopupEl;

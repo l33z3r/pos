@@ -56,7 +56,7 @@ cash_totals_data_html = "<div id='cash_totals_data_table'>";
 
     var sales_by_department_addendum = new Array();
 
-    sales_by_department_addendum.push(new Array('Open Orders Total', getOpenOrdersTotal()));
+    sales_by_department_addendum.push(new Array('Open Orders Total', currency(getOpenOrdersTotal())));
     sales_by_department_addendum.push(new Array('Total Covers', '<%=@cash_total_data[:total_covers]%>'));
     cash_totals_data_html += getCashTotalDataTable(sales_by_department_addendum, false) + clearHTML;
 

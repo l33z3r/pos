@@ -1,4 +1,4 @@
-desc "Delete orders, order_items, terminal_sync_data, cash_totals, terminal_ids, stored_receipt_htmls"
+desc "Delete orders, order_items, terminal_sync_data, cash_totals, terminal_ids, stored_receipt_htmls, client_transactions, card_transactions, customer_transactions, payments"
 task :delete_historical_data => :environment do
   puts "Deleting historical data!"
   
@@ -25,6 +25,22 @@ task :delete_historical_data => :environment do
   @client_transactions = ClientTransaction.all
   puts "Deleting #{@client_transactions.length} client_transactions"
   @client_transactions.each(&:destroy) 
+  
+  @card_transactions = CardTransaction.all
+  puts "Deleting #{@card_transactions.length} card_transactions"
+  @card_transactions.each(&:destroy) 
+  
+  @customer_transactions = CustomerTransaction.all
+  puts "Deleting #{@customer_transactions.length} customer_transactions"
+  @customer_transactions.each(&:destroy) 
+  
+  @payments = Payment.all
+  puts "Deleting #{@payments.length} payments"
+  @payments.each(&:destroy) 
+    
+  @stock_transactions = StockTransaction.all
+  puts "Deleting #{@stock_transactions.length} stock_transactions"
+  @stock_transactions.each(&:destroy)
   
   puts "Issuing a reset of all terminals"
   TerminalSyncData.request_hard_reload_app "Master Terminal"
@@ -69,4 +85,12 @@ task :clear_dup_keys_gs => :environment do
       end
     end
   end
+end
+
+desc "Issues a hard reset of each terminal"
+task :issue_reset => :environment do
+  puts "Issuing a reset of all terminals"
+  TerminalSyncData.request_hard_reload_app "Master Terminal"
+  
+  puts "Done!"
 end

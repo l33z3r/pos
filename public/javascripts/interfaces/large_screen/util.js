@@ -230,8 +230,6 @@ function showMenuScreen() {
 }
 
 function showTablesScreen() {
-    
-    
     setNavTitle("Table Selection");
     
     $('#nav_back_link').unbind();
@@ -251,6 +249,25 @@ function showTablesScreen() {
         
     $('#table_select_screen').show();
     initTableSelectScreen();
+}
+
+function showUtilPaymentScreen() {
+    setNavTitle("Make Payment");
+    
+    $('#nav_back_link').unbind();
+    
+    showNavBackLinkMenuScreen();
+    
+    $('#nav_back_link').click(function() {
+        cancelUtilPayment();
+    });
+    
+    hideAllScreens();
+    
+    //hide the dropdown menu
+    $('#menu_screen_shortcut_dropdown_container').hide();
+        
+    $('#util_payment_screen').show();
 }
 
 function showSplitBillScreen() {
@@ -314,6 +331,7 @@ function hideAllScreens() {
     $('#menu_screen').hide();
     $('#table_select_screen').hide();
     $('#total_screen').hide();
+    $('#util_payment_screen').hide();
     $('#more_options').hide();
     $('#cash_reports_screen').hide();
     $('#float_screen').hide();
@@ -333,6 +351,10 @@ function currentScreenIsLogin() {
 
 function currentScreenIsTotals() {
     return $('#total_screen').is(":visible");
+}
+
+function currentScreenIsFloat() {
+    return $('#util_payment_screen').is(":visible");
 }
 
 function currentScreenIsCashReports() {

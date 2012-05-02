@@ -1692,12 +1692,12 @@ div#edit_theme_settings section#theme_settings div#global_font_color_container i
 /* Previous Cash Totals */
 
 /* previous cash totals table */
-div#cash_reports_screen div#search_previous_cash_totals_container{
+div#cash_reports_screen div#search_previous_cash_totals_container {
     width: 645px;
     float: left;
 }
 
-div#cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog{
+div#cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog {
     width: auto;
 }
 
@@ -1763,6 +1763,10 @@ div#cash_reports_screen div#search_previous_cash_totals_container div#search_pop
 div#cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog div.clear_top_margin_10 {
     height: 5px;
     clear: both;
+}
+
+div#cash_reports_screen div#search_previous_cash_totals_container table#cash_total_list {
+    min-width: 640px;
 }
 
 div#cash_reports_screen div#search_previous_cash_totals_container div#results_table {
@@ -1973,6 +1977,11 @@ div#admin_customer_list section#customers {
 }
 
 div#admin_customer_list section#customers div#customers_container {
+    height: 500px;
+    overflow-y: auto;
+}
+
+div#admin_customer_list section#customers div#customers_container div.make_payment_button {
     height: 500px;
     overflow-y: auto;
 }

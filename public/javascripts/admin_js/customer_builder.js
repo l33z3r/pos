@@ -159,3 +159,17 @@ function doToggleGenerateSwipeCardCode(radioEl) {
         $('#customer_customer_number').attr("disabled", false);
     }
 }
+
+function makeCustomerPaymentAdminShortcut(customerId) {
+    if(!appOnline) {
+        niceAlert("Cannot contact server to make payment");
+        return;
+    }
+    
+    var codeToExecute = "makeCustomerPayment(" + customerId + ");";
+    
+    var exdays = 365 * 100;
+    setRawCookie(salesInterfaceForwardJSExecuteCookieName, codeToExecute, exdays);
+    
+    goTo('/');
+}

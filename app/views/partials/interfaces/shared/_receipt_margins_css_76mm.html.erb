@@ -1,3 +1,3 @@
 <% if @windows_printer_margins %>
-  margin-left: 34px;
+  margin-left: <%= @printer_left_margin.to_i + 34 %>px;
 <% end %>

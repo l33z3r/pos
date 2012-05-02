@@ -83,62 +83,116 @@ function printReceipt(content, printRecptMessage) {
 
 function printContent(content) {
     $('#printFrame').contents().find('#till_roll').html(content);
+    
+    if(usingPrintService) {
+        var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>"
+        + $('#printFrame').contents().find('html').html() + "</html>";
 
-    var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>"
-    + $('#printFrame').contents().find('html').html() + "</html>";
+        //make sure the html content is compatible with the print service
+        //replace <hr> with <hr></hr>
+        content_with_css = content_with_css.replace("<hr>", "<hr></hr>");
 
-    //make sure the html content is compatible with the print service
-    //replace <hr> with <hr></hr>
-    content_with_css = content_with_css.replace("<hr>", "<hr></hr>");
+        if(using_wss_receipt_printer) {
+            if ("WebSocket" in window) {
+                var ws = new WebSocket("ws://" + webSocketServiceIP + ":8080/ClueyWebSocketServices/receipt_printer_ws");
 
-    if(using_wss_receipt_printer) {
-        if ("WebSocket" in window) {
-            var ws = new WebSocket("ws://" + webSocketServiceIP + ":8080/ClueyWebSocketServices/receipt_printer_ws");
+                ws.onopen = function()
+                {
+                    //there is a maximum limit on the size of the message we can send,
+                    //so we split it into groups of 3072 chars (3kb of data)
+                    var charsPerGroup = 3072;
 
-            ws.onopen = function()
-            {
-                //there is a maximum limit on the size of the message we can send,
-                //so we split it into groups of 3072 chars (3kb of data)
-                var charsPerGroup = 3072;
+                    console.log("Breaking data up into " + Math.ceil(content_with_css.length/charsPerGroup) + " groups to send to print service");
+                    for(var i = 0; i < content_with_css.length; i+=charsPerGroup) {
+                        var nextGroup = content_with_css.substring(i, i + charsPerGroup);
+                        console.log("Sending group " + ((i/charsPerGroup) + 1));
+                        ws.send(nextGroup);
+                    }
 
-                console.log("Breaking data up into " + Math.ceil(content_with_css.length/charsPerGroup) + " groups to send to print service");
-                for(var i = 0; i < content_with_css.length; i+=charsPerGroup) {
-                    var nextGroup = content_with_css.substring(i, i + charsPerGroup);
-                    console.log("Sending group " + ((i/charsPerGroup) + 1));
-                    ws.send(nextGroup);
-                }
+                    ws.close();
+                };
 
-                ws.close();
-            };
-
-            ws.onmessage = function (evt)
-            {
-                var received_msg = evt.data;
-                console.log("Message received: " + received_msg);
-            };
-            ws.onclose = function()
-            {
-                // websocket is closed.
-                console.log("Connection closed!");
-            };
+                ws.onmessage = function (evt)
+                {
+                    var received_msg = evt.data;
+                    console.log("Message received: " + received_msg);
+                };
+                ws.onclose = function()
+                {
+                    // websocket is closed.
+                    console.log("Connection closed!");
+                };
+            } else {
+                // The browser doesn't support WebSocket
+                alert("WebSocket NOT supported by your browser, Please disable web sockets!");
+            }
         } else {
-            // The browser doesn't support WebSocket
-            alert("WebSocket NOT supported by your browser, Please disable web sockets!");
+            var print_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/receipt_printer';
+
+            $.ajax({
+                type: 'POST',
+                url: '/forward_print_service_request',
+                error: function() {
+                    setStatusMessage("Printer service cannot be reached.", false, false);
+                },
+                data: {
+                    print_service_url : print_service_url,
+                    html_data : content_with_css
+                }
+            });
         }
     } else {
-        var print_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/receipt_printer';
-
-        $.ajax({
-            type: 'POST',
-            url: '/forward_print_service_request',
-            error: function() {
-                setStatusMessage("Printer service cannot be reached.", false, false);
-            },
-            data: {
-                print_service_url : print_service_url,
-                html_data : content_with_css
-            }
-        });
+        //Printing Directly only works on firefox/windows
+       
+        //using the jsprint library
+        //http://jsprintsetup.mozdev.org/reference.html
+        if(!jsPrintSetup) {
+            niceAlert("Please install the jsPrint Firefox Add-On <a href='https://www.mozdev.org/projects/overview/jsprintsetup' target='_blank'></a>");
+            return;
+        }
+        
+        //need to zoon the receipt a bit
+        //$('#printFrame').contents().find('body *').css("-moz-transform", "scale(1.3)");
+        
+        jsPrintSetup.refreshOptions();
+        
+        //set the printer to be the default one
+        var firstPrinter = jsPrintSetup.getPrintersList().split(",")[0];
+        
+        if(!firstPrinter) {
+            niceAlert("No default printer found");
+            return;
+        }
+        
+        // set top margins in millimeters
+        jsPrintSetup.setOption('marginTop', 0);
+        jsPrintSetup.setOption('marginBottom', 0);
+        jsPrintSetup.setOption('marginLeft', 0);
+        jsPrintSetup.setOption('marginRight', 0);
+        // set page header
+        jsPrintSetup.setOption('headerStrLeft', '');
+        jsPrintSetup.setOption('headerStrCenter', '');
+        jsPrintSetup.setOption('headerStrRight', '');
+        // set empty page footer
+        jsPrintSetup.setOption('footerStrLeft', '');
+        jsPrintSetup.setOption('footerStrCenter', '');
+        jsPrintSetup.setOption('footerStrRight', '');
+   
+        jsPrintSetup.setPrinter(firstPrinter);
+        
+        // clears user preferences always silent print value
+        // to enable using 'printSilent' option
+        jsPrintSetup.clearSilentPrint();
+        
+        // Suppress print dialog (for this context only)
+        jsPrintSetup.setOption('printSilent', 1);
+        jsPrintSetup.setShowPrintProgress(false);
+        
+        jsPrintSetup.saveOptions(jsPrintSetup.kSaveAll);
+        jsPrintSetup.saveGlobalOptions(jsPrintSetup.kSaveAll);
+        
+        // Do Print 
+        jsPrintSetup.printWindow(printFrame);
     }
 
 //DO IT THE OLD FASHIONED WAY (firefox)
