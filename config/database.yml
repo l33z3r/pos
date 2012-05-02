@@ -47,3 +47,13 @@ production_heroku:
   username: pos
   password: pospos1
   host: localhost
+  
+production_aws:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: pos_production
+  pool: 5
+  username: cluey
+  password: clu3ypos
+  host: cluey-db.csyrmiuamiel.us-east-1.rds.amazonaws.com
