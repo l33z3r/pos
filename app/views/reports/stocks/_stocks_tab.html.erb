@@ -26,7 +26,6 @@
             <th class="header">Code Num</th>
           </thead>
           <% @products.each do |product| %>
-
           <tbody>
           <tr>
               <td>
@@ -99,7 +98,7 @@
                   <%= Category.find_by_id(product.category_id).name %>
               </td>
               <td>
-                  <%= product.quantity_in_stock %>
+                  <%= product.quantity_in_stock / product.quantity_per_container %>
               </td>
               <td>
                    <% quantity_sold = sprintf("%.0f", item.quantity)  %>

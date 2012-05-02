@@ -31,8 +31,11 @@ class Reports::StocksController < Admin::AdminController
     @current_product = nil
     @products_drop = Product.all
 
-    @selected_from_date = session[:from_date]
-    @selected_to_date = session[:to_date]
+    @opening_time = GlobalSetting.parsed_setting_for GlobalSetting::EARLIEST_OPENING_HOUR
+
+
+    @selected_from_date = Time.now
+    @selected_to_date = Time.now
     @all_terminals = all_terminals
 
     session[:preselect] = -1

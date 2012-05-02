@@ -423,6 +423,11 @@ function setSearchType(interval_selected) {
             $('#product_dropdown').show();
             $('#string_search_box').show();
             break;
+        case '6':
+            search_type = 'by_product';
+            $('#product_dropdown').show();
+            $('#string_search_box').show();
+            break;
 
     }
     setReportParams();
