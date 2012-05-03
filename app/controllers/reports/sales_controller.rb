@@ -1,8 +1,22 @@
 class Reports::SalesController < Admin::AdminController
 
+  helper_method :vat_rate, :net_result , :per_profit
+
   Mime::Type.register "application/pdf", :pdf
 
   layout 'reports'
+
+  def vat_rate(tax, gross)
+    gross * tax / 100
+  end
+
+  def net_result(gross, vat)
+    gross - vat
+  end
+
+  def per_profit(revenue, total_price)
+    (revenue.to_d/total_price.to_d)*100
+  end
 
   def index
     session[:search_type] = :best_seller
@@ -10,23 +24,25 @@ class Reports::SalesController < Admin::AdminController
     session[:category] = ''
     session[:product] = ''
     session[:terminal] = ''
+    session[:search_product] = ''
     session[:from_date] = Time.now - 30.days
     session[:to_date] = Time.now
+    session[:terminal] = ''
+
+    session[:preselect] = -1
+
+    @selected_from_date = session[:from_date]
+    @selected_to_date = session[:to_date]
+
     @current_category = nil
     @current_product = nil
-    sales_search
-    @products = Product.all
+    @all_terminals = all_terminals
+    #sales_search
+    @products = Product.all.sort_by{|p| p.name.downcase}
 
   end
 
   def sales_print
-    #session[:search_type] = :best_seller
-    #session[:category] = ''
-    #session[:product] = ''
-    #session[:from_date] = Time.now - 6.months
-    #session[:to_date] = Time.now
-    #@current_category = nil
-    #@current_product = nil
     sales_search
     @products = Product.all
 
@@ -37,19 +53,19 @@ class Reports::SalesController < Admin::AdminController
 
   end
 
+  def export_excel
+    headers['Content-Type'] = "application/vnd.ms-excel"
+    headers['Content-Disposition'] = 'attachment; filename="Report-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
+    headers['Cache-Control'] = ''
+    sales_search
+    @products = Product.all
+  end
+
 
   def sales_search
-    @opening_time = GlobalSetting.parsed_setting_for GlobalSetting::EARLIEST_OPENING_HOUR
-    @closing_time = GlobalSetting.parsed_setting_for GlobalSetting::LATEST_CLOSING_HOUR
-    @selected_from_date = Date.today.midnight + @opening_time.hours
-    @selected_to_date = Date.tomorrow.midnight + @closing_time.hours
-    @all_terminals = all_terminals
-      # get_sales_data
     @orders = get_sales_data
     @s_type = session[:search_type]
     render_graph
-
-
   end
 
   def render_graph
@@ -65,18 +81,19 @@ class Reports::SalesController < Admin::AdminController
         @chartdata4 = []
         xitems = []
         @orders[0..18].each do |order|
-          net_sales = order.total_price
-          vat = net_sales * tax_rate / 100
-          gross_sales = net_sales - vat
           product = Product.find_by_id(order.product_id)
+          gross_sales = order.total_price
+          vat = gross_sales * tax_rate / 100
+          net_sales = gross_sales - vat
+
           @chartdata << order.quantity
-          @chartdata2 << order.total_price
+          @chartdata2 << net_sales
           @chartdata3 << vat
           @chartdata4 << gross_sales
           xitems << product.name
         end
-        f.series(:name=> 'NET Sales', :data=>@chartdata2)
-        f.series(:name=> 'VAT', :data=>@chartdata3)
+        #f.series(:name=> 'NET Sales', :data=>@chartdata2)
+        #f.series(:name=> 'VAT', :data=>@chartdata3)
         f.series(:name=> 'Gross Sales', :data=>@chartdata4)
         f.options[:xAxis][:categories] = xitems
         #f.options[:xAxis][:labels] = {:enabled=> true, :rotation=>-35}
@@ -95,11 +112,16 @@ class Reports::SalesController < Admin::AdminController
 
         @orders.group_by(&@s_type).sort.each do |week|
           net_sales = 0
+          gross_sales = 0
           week[1].each do |order|
-            net_sales += order.total
+            gross_sales += order.total
+            product = Product.find_by_id(order.order_items.first.product_id)
+            tax_rate = product.sales_tax_rate
           end
-          vat = net_sales * tax_rate / 100
-          gross_sales = net_sales - vat
+
+          vat = vat_rate(tax_rate, gross_sales)
+          net_sales = net_result(gross_sales, vat)
+
           @chartdata << net_sales
           @chartdata3 << vat
           @chartdata4 << gross_sales
@@ -116,8 +138,8 @@ class Reports::SalesController < Admin::AdminController
             @chartdata2 << week[1][0].created_at.strftime("%Y")
           end
         end
-        f.series(:name=> 'NET Sales', :data=>@chartdata)
-        f.series(:name=> 'VAT', :data=>@chartdata3)
+        #f.series(:name=> 'NET Sales', :data=>@chartdata)
+        #f.series(:name=> 'VAT', :data=>@chartdata3)
         f.series(:name=> 'Gross Sales', :data=>@chartdata4)
         f.options[:xAxis][:categories] = @chartdata2
         #f.options[:yAxis][:title] = "Price"
@@ -127,29 +149,43 @@ class Reports::SalesController < Admin::AdminController
 
 
   def load_dropdown
+
+    session[:preselect] = 0
+
+    if params[:search][:search_product] != ''
+       session[:search_product] = params[:search][:search_product]
+    else
+       session[:search_product] = ''
+    end
     if params[:search][:dropdown_type] == 'category' && params[:search][:dropdown_id] != ''
       @products = Product.find_all_by_category_id(params[:search][:dropdown_id])
       session[:category] = params[:search][:dropdown_id]
       session[:product] = ''
     elsif params[:search][:dropdown_type] == 'product' && params[:search][:dropdown_id] != ''
       if session[:category] == ''
-        @products = Product.all
+        @products = Product.all.sort_by{|p| p.name.downcase}
       else
-        @products = Product.find_all_by_category_id(session[:category])
+        @products = Product.find_all_by_category_id(session[:category]).sort_by{|p| p.name.downcase}
       end
       session[:product] = params[:search][:dropdown_id]
       @current_product = session[:product]
     elsif params[:search][:dropdown_type] == 'category' && params[:search][:dropdown_id] == ''
       session[:category] = ''
       session[:product] = ''
-      @products = Product.all
+      @products = Product.all.sort_by{|p| p.name.downcase}
     else
       session[:product] = ''
-      @products = Product.all
+      @products = Product.all.sort_by{|p| p.name.downcase}
     end
   end
 
   def set_params
+    if params[:search][:select_type] != ''
+    session[:preselect] = params[:search][:select_type].to_i
+    else
+     session[:preselect] = 0
+    end
+
     if params[:search][:search_type] == 'day'
       session[:search_type] = :day
       session[:search_type_label] = 'Day'
@@ -180,9 +216,9 @@ class Reports::SalesController < Admin::AdminController
     if params[:search][:terminal]
       session[:terminal] = params[:search][:terminal]
     end
-
     render :nothing => true
   end
+
 
   def get_sales_data
 
@@ -202,6 +238,10 @@ class Reports::SalesController < Admin::AdminController
         where << " and oi.terminal_id = '#{session[:terminal]}'"
       end
 
+      if session[:category] == '' && session[:product] == '' && session[:search_product] != ''
+        where << " inner join products p on oi.product_id = p.id"
+      end
+
       if session[:category] != '' && session[:product] == ''
         where << " inner join products p on oi.product_id = p.id and p.category_id = #{session[:category]}"
       end
@@ -213,8 +253,17 @@ class Reports::SalesController < Admin::AdminController
       if session[:category] == '' && session[:product] != ''
         where << " and oi.product_id = #{session[:product]}"
       end
-
+      if session[:terminal] != ''
+      where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and oi.terminal_id = '#{session[:terminal]}'"
+      else
       where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}'"
+      end
+
+      if session[:category] == '' && session[:product] == '' && session[:search_product] != ''
+        where << " and p.name like '%#{session[:search_product]}%' or p.code_num like '%#{session[:search_product]}%'"
+      end
+
+      where << " order by o.created_at asc"
 
       query = Order.find_by_sql(where)
 
@@ -226,7 +275,7 @@ class Reports::SalesController < Admin::AdminController
         end
 
         if session[:terminal] != ''
-          where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and oi.terminal_id = '#{session[:terminal]}'"
+          where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
         else
           where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}'"
         end
@@ -244,7 +293,7 @@ class Reports::SalesController < Admin::AdminController
         end
 
         if session[:terminal] != ''
-          where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and oi.terminal_id = '#{session[:terminal]}'"
+          where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
         else
           where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}'"
         end

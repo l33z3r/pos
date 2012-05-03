@@ -1,0 +1,139 @@
+<script type="text/javascript">
+    $('#menu_screen_shortcut_dropdown_container').html("");
+</script>
+
+<div id="sales_items" style="display: none">
+    <% if params[:action] == "sales_print" %>
+        <h2>Sales Report <%= Time.now.strftime("%B %d, %Y") %></h2>
+    <% end %>
+
+<% if @orders != nil %>
+<% if (@s_type == :best_seller) || (@s_type == :worst_seller) %>
+              <table id="product_list" class="admin_table">
+          <thead>
+            <th class="header">Product</th>
+            <th class="header">Category</th>
+            <th class="header">Items Qty</th>
+            <th class="header">Gross Sales</th>
+            <th class="header">VAT</th>
+            <th class="header">NET Sales</th>
+          </thead>
+          <% @orders.each do |week| %>
+
+            <% product = Product.find_by_id(week.product_id) %>
+            <% total_items = week.quantity %>
+            <% gross_sales = 0 %>
+            <% gross_sales = week.total_price %>
+            <% vat = 0 %>
+
+          <% tax_rate = product.sales_tax_rate %>
+          <% vat = vat_rate(tax_rate, gross_sales) %>
+          <% net_sales = net_result(gross_sales, vat) %>
+          <tbody>
+          <tr>
+              <td style="width: auto">
+                  <% product = Product.find_by_id(week.product_id) %>
+                  <%= product.name %>
+              </td>
+
+              <td style="width: auto">
+                  <%= Category.find_by_id(product.category_id).name %>
+              </td>
+              <td style="width: auto">
+                 <%= "%g" % total_items %>
+              </td>
+              <td style="text-align: right; width: auto">
+                  <%= sprintf("%.2f", gross_sales) %>
+              </td>
+              <td style="text-align: right; width: auto">
+                 <%= sprintf("%.2f", vat) %>
+              </td>
+              <td style="text-align: right; width: auto">
+                 <%= sprintf("%.2f", net_sales) %>
+              </td>
+
+
+          </tr>
+          <% end %>
+
+      </tbody>
+              </table>
+
+<% else %>
+
+    <table id="product_list" class="admin_table">
+          <thead>
+            <th class="header">Date</th>
+            <th class="header">Day</th>
+            <th class="header">Items Qty</th>
+            <th class="header">Gross Sales</th>
+            <th class="header">VAT</th>
+            <th class="header">NET Sales</th>
+          </thead>
+          <% @orders.group_by(&@s_type).sort.each do |week| %>
+            <% total_items = 0 %>
+            <% gross_sales = 0 %>
+            <% net_sales = 0 %>
+            <% vat = 0 %>
+            <% week[1].each do |order| %>
+                    <% order.order_items.each do |eitem| %>
+                    <% total_items += eitem.quantity %>
+                    <% end %>
+                    <% gross_sales += order.total %>
+                    <% product = Product.find_by_id(order.order_items.first.product_id) %>
+                    <% tax_rate = product.sales_tax_rate %>
+                    <% tempvat = vat_rate(tax_rate, gross_sales) %>
+                    <% vat += vat_rate(tax_rate, gross_sales) %>
+                    <% net_sales += net_result(gross_sales, tempvat) %>
+                 <% end %>
+
+          <tbody>
+          <tr>
+              <td style="width: auto; height: auto">
+                  <% if @s_type == :day %>
+                  <%= week[1][0].created_at.strftime("%B %d, %Y") %>
+                  <% end %>
+                  <% if @s_type == :week %>
+                  Week starting <%= week[1][0].created_at.beginning_of_week.strftime("%B %d, %Y") %>
+                  <% end %>
+                  <% if @s_type == :month %>
+                  <%= week[1][0].created_at.strftime("%B, %Y") %>
+                  <% end %>
+                  <% if @s_type == :year %>
+                  <%= week[1][0].created_at.strftime("%Y") %>
+                  <% end %>
+              </td>
+
+              <td style="width: auto; height: auto">
+                   <% if @s_type == :day %>
+                  <%= DAYS_OF_THE_WEEK[week[1][0].created_at.wday.to_i] %>
+                   <% end %>
+                  <% if @s_type == :week %>
+                  Monday
+                  <% end %>
+              </td>
+              <td style="width: auto; height: auto">
+                 <%= total_items %>
+              </td>
+              <td style="width: auto; height: auto">
+                  <%= sprintf("%.2f", gross_sales) %>
+              </td>
+              <td style="width: auto; height: auto">
+                 <%= sprintf("%.2f", vat) %>
+              </td>
+              <td style="width: auto; height: auto">
+                 <%= sprintf("%.2f", net_sales) %>
+              </td>
+
+
+          </tr>
+          <% end %>
+
+      </tbody>
+    </table>
+  </div>
+
+<% end %>
+<% else %>
+    <h2>No Results Found</h2>
+<% end %>

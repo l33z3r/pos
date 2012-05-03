@@ -1319,6 +1319,8 @@ function doTotalFinal() {
     
     if($.isEmptyObject(splitPayments)) {
         splitPayments[paymentMethod] = totalOrder.cash_tendered;
+        
+        doOpenCashDrawer = paymentMethods[getPaymentMethodId(paymentMethod)].open_cash_drawer;
     } else {
         for(var pm in splitPayments) {
             //make sure there is an amount in this payment type
@@ -1334,6 +1336,8 @@ function doTotalFinal() {
             }
         }
     }
+    
+    console.log("opening cash drawer: " + doOpenCashDrawer);
     
     if(doOpenCashDrawer) {
         openCashDrawer();

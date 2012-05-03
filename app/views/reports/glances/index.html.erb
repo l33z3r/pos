@@ -4,22 +4,7 @@
 
     <div>
 
-       <div id="admin_subnav_left">
-            <div class="button" data-onpress="goTo('<%= home_path %>#screen=menu');">
-                <div class="icon">
-                    <%= image_tag "/images/button_logos/manage_sales_screen_button.png" %>
-                </div>
-                <div class="button_name">Sales Screen</div>
-            </div>
 
-            <div class="button" data-onpress="goTo('/home#screen=more_options');">
-                <div class="icon">
-                    <%= image_tag "/images/button_logos/more_options_button.png" %>
-                </div>
-                <div class="button_name">Functions</div>
-            </div>
-
-        </div>
 
         <div style="float: right">
             <div class="button selected" onclick="window.location = '/reports/glances'">
@@ -27,6 +12,9 @@
             </div>
             <div class="button" onclick="window.location = '/reports/sales'">
                 <div class="button_name">Sales Reports</div>
+            </div>
+            <div class="button" onclick="window.location = '/reports/stocks'">
+                <div class="button_name">Stock Reports</div>
             </div>
 
         </div>
@@ -59,38 +47,21 @@
                   </div>
                  <div id="days">
                    <div class="dropdown_container">
-                     <div class="label">Day From</div>
+                     <div class="label">Date From</div>
                      <div class="input_date">
-                       <input type="text" size="8" id="date_from" name="date_from"
+                       <input type="text" size="14" id="date_from" name="date_from"
                               value="<%=@selected_from_date.to_date.strftime("%d-%m-%Y")%>"/>
                      </div>
                    </div>
                    <div class="dropdown_container">
-                     <div class="label">Day To</div>
+                     <div class="label">Date To</div>
                      <div class="input_date">
-                       <input type="text" size="8" id="date_to" name="date_to"
+                       <input type="text" size="14" id="date_to" name="date_to"
                               value="<%=@selected_to_date.to_date.strftime("%d-%m-%Y")%>"/>
                      </div>
                    </div>
                  </div>
-                 <div id="hours">
-                   <div class="dropdown_container">
-                     <div class="label">Hour From</div>
-                     <select onchange="addHourFromFilter($(this).val())">
-                       <% for h in 0..23 %>
-                         <option value="<%=h%>" <%= (h==0) ?"selected":"" %>><%=h%></option>
-                       <% end %>
-                     </select> 
-                   </div>
-                   <div class="dropdown_container">
-                     <div class="label">Hour To</div>
-                     <select onchange="addHourToFilter($(this).val())">
-                       <% for h in 0..23 %>
-                         <option value="<%=h%>" <%= (h==23) ?"selected":"" %>><%=h%></option>
-                       <% end %>
-                     </select>
-                   </div>
-                 </div>
+
                   <div class="clear">&nbsp;</div>
                 </div>
             </div>

@@ -1,0 +1,125 @@
+<% if session[:preselect] != -1 %>
+  <div id="sales_items">
+    <% if session[:show_zeros] %>
+    <table id="product_list" class="admin_table">
+          <thead>
+            <th class="header">Name</th>
+            <th class="header">Category</th>
+            <th class="header">Current</th>
+            <th class="header">Sold</th>
+            <th class="header">Total Qty</th>
+            <th class="header">Cost ea</th>
+            <th class="header">Cost Total</th>
+            <th class="header">Code Num</th>
+          </thead>
+          <% @products.each do |product| %>
+
+          <tbody>
+          <tr>
+              <td>
+                  <%= product.name %>
+              </td>
+
+              <td>
+                  <%= Category.find_by_id(product.category_id).name %>
+              </td>
+              <td>
+                  <%= product.quantity_in_stock %>
+              </td>
+              <td>
+                  <%= OrderItem.find_all_by_product_id(product.id).count %>
+              </td>
+
+              <td>
+                 <%= OrderItem.find_all_by_product_id(product.id).count %>
+              </td>
+              <td>
+                 <% unless OrderItem.find_by_product_id(product.id) == nil %>
+                 <%= sprintf("%.2f",OrderItem.find_by_product_id(product.id).total_price) %>
+                 <% end %>
+              </td>
+              <td>
+                 <% unless OrderItem.find_by_product_id(product.id) == nil %>
+                 <%= sprintf("%.2f", OrderItem.sum(:total_price, :conditions =>["product_id = ?", product.id])) %>
+                 <% end %>
+              </td>
+              <td>
+                  <%= product.code_num %>
+              </td>
+
+          </tr>
+          <% end %>
+
+      </tbody>
+    </table>
+    <% else %>
+    <table id="product_list" class="admin_table">
+          <thead>
+          <% unless session[:search_type] == :by_category %>
+            <th class="header">Name</th>
+          <% end %>
+            <th class="header">Category</th>
+            <th class="header">Current</th>
+            <th class="header">Sold</th>
+            <th class="header">Total Qty</th>
+            <th class="header">Cost ea</th>
+            <th class="header">Cost Total</th>
+            <th class="header">Revenue</th>
+            <th class="header">Code Num</th>
+          </thead>
+          <% @products.each do |product| %>
+          <% prod = Product.find_by_id(product.product_id) %>
+          <tbody>
+          <tr>
+              <% unless session[:search_type] == :by_category %>
+              <td>
+                  <%= prod.name %>
+              </td>
+              <% end %>
+              <td>
+                  <%= Category.find_by_id(prod.category_id).name %>
+              </td>
+              <td>
+                  <%= prod.quantity_in_stock %>
+              </td>
+              <td>
+                   <% quantity_sold = sprintf("%.0f",OrderItem.sum(:quantity, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date]))  %>
+                   <%= quantity_sold %>
+              </td>
+              <td>
+                  <%= sprintf("%.0f",OrderItem.sum(:quantity, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date]))  %>
+              </td>
+              <td>
+
+                 <% if prod.cost_price == 0 %>
+                 <% price = sprintf("%.2f", prod.price) %>
+                 <% else %>
+                 <% price = sprintf("%.2f", prod.cost_price) %>
+                 <% end %>
+                 <%= price %>
+              </td>
+              <td>
+                  <% total_price = sprintf("%.2f",price.to_d * quantity_sold.to_i) %>
+                  <%= total_price %>
+              </td>
+              <td>
+                  <% revenue = sprintf("%.2f", OrderItem.sum(:total_price, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date])) %>
+                  <%= revenue %>
+              </td>
+              <td>
+                  <%= sprintf("%.0f", per_profit(revenue, total_price)) %>%
+
+              </td>
+              <td>
+                  <%= prod.code_num %>
+              </td>
+          </tr>
+          <% end %>
+
+      </tbody>
+    </table>
+    <% end %>
+  </div>
+<% else %>
+    <span>No Report Results Found</span>
+<% end %>
