@@ -72,8 +72,7 @@ $(window).load(function(){
 
 function initMenuScreenType() {
     if(menuScreenType == RESTAURANT_MENU_SCREEN) {
-        //show the shortcut dropdown
-        $('#menu_screen_shortcut_dropdown_container').show();    
+        //nothing needed here    
     } else if(menuScreenType == RETAIL_MENU_SCREEN) {
         //hide the table select box
         $('#table_screen_button, #table_select_container').hide();
@@ -1319,6 +1318,8 @@ function doTotalFinal() {
     
     if($.isEmptyObject(splitPayments)) {
         splitPayments[paymentMethod] = totalOrder.cash_tendered;
+        
+        doOpenCashDrawer = paymentMethods[getPaymentMethodId(paymentMethod)].open_cash_drawer;
     } else {
         for(var pm in splitPayments) {
             //make sure there is an amount in this payment type
@@ -1334,6 +1335,8 @@ function doTotalFinal() {
             }
         }
     }
+    
+    console.log("opening cash drawer: " + doOpenCashDrawer);
     
     if(doOpenCashDrawer) {
         openCashDrawer();

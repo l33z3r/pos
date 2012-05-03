@@ -214,7 +214,15 @@ function showMenuScreen() {
     showMenuItemsSubscreen();
     
     $('#menu_screen').show();
-    $('#scan_upc').focus();
+    
+    if(menuScreenType == RESTAURANT_MENU_SCREEN) {
+        //show the shortcut dropdown
+        $('#menu_screen_shortcut_dropdown_container').show();   
+    } else if(menuScreenType == RETAIL_MENU_SCREEN) {
+        //show the shortcut dropdown
+        $('#menu_screen_shortcut_dropdown_container').show();   
+        $('#scan_upc').focus();
+    }
     
     hideStatusMessage();
 }

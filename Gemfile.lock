@@ -72,7 +72,6 @@ GEM
     pdf-reader (1.1.0)
       Ascii85 (~> 1.0.0)
       ruby-rc4
-    pg (0.12.2)
     polyglot (0.3.3)
     populator (1.0.0)
     prawn (0.12.0)
@@ -147,7 +146,6 @@ DEPENDENCIES
   meta_search (= 1.0.5)
   mongrel (= 1.2.0.pre2)
   mysql2 (= 0.2.6)
-  pg
   populator
   prawn (= 0.12.0)
   prawnto (= 0.1.1)

@@ -21,11 +21,3 @@ production:
   s3_secret_access_key: 5y2c5V9P5dRcMTXdKzvDJcCNpzY9FjcfDJ35vLDs
   google_translate_api_key: AIzaSyBTUOHzAlYtVL8xP9NHh9WsQmMijzws2x4
   in_kiosk_mode: true
-  
-production_heroku:
-  use_s3: true
-  s3_bucket_name: clueypos_production_heroku
-  s3_access_key_id: AKIAIY5ORKJHOQ7C5ZHA
-  s3_secret_access_key: 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
-  google_translate_api_key: AIzaSyBTUOHzAlYtVL8xP9NHh9WsQmMijzws2x4
-  in_kiosk_mode: true

@@ -2,11 +2,7 @@ class AddOrderNumberToOrders < ActiveRecord::Migration
   def self.up
     add_column :orders, :order_num, :integer
     
-    if Rails.env.production_heroku?
-      execute("ALTER TABLE orders ALTER COLUMN order_num TYPE BIGINT")
-    else
-      execute("ALTER TABLE orders MODIFY column order_num BIGINT")
-    end
+    execute("ALTER TABLE orders MODIFY column order_num BIGINT")
   end
 
   def self.down
