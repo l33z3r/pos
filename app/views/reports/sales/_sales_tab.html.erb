@@ -4,9 +4,9 @@
 <% if session[:preselect] != -1 %>
 <% unless params[:action] == "sales_print" %>
 <div id="options_menu">
-                   <div style="margin-top:3px; margin-left: 10px; cursor: pointer; float: left" onclick="setSearchSelect(-1)" class="print_box"> <img src="/images/button_logos/home.png" alt="Print" width="24" height="24" /><span style="font-weight: bold; margin-top: -3px;"> Home |</span></div>
-                   <div style="margin-top:3px;margin-left: 10px; cursor: pointer; float: left" onclick="window.location = '/reports/sales/sales_print'" class="print_box"> <img src="/images/button_logos/print.png" alt="Print" width="24" height="24" /><span style="font-weight: bold; margin-bottom: 10px;"> Print |</span></div>
-                   <div style="margin-top:3px;margin-left: 10px; cursor: pointer; float: left" onclick="window.location = '/reports/sales/export_excel'" class="excel_box"><img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24" /><span style="font-weight: bold; margin-bottom: 10px;"> Excel</span></div>
+                   <div class="option" onclick="setSearchSelect(-1)" class="print_box"> <div style="float: left;"><img src="/images/button_logos/home.png" alt="Print" width="24" height="24" /></div><div style="float: left; margin-top: 6px;margin-left: 2px"><span style="font-weight: bold; margin-top: -3px;">  Home  |</span></div></div>
+                   <div class="option" onclick="window.location = '/reports/sales/sales_print'" class="print_box"><div style="float: left;"> <img src="/images/button_logos/print.png" alt="Print" width="24" height="24" /></div><div style="float: left; margin-top: 6px;margin-left: 2px"><span style="font-weight: bold; margin-top: -3px;">  Print  |</span></div></div>
+                   <div class="option" onclick="window.location = '/reports/sales/export_excel'" class="excel_box"><div style="float: left;"><img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24" /></div><div style="float: left; margin-top: 6px;margin-left: 2px"><span style="font-weight: bold; margin-top: -3px;">  Excel </span></div></div>
                 </div>
 <% end %>
 <div id="sales_items_graph">
@@ -36,8 +36,11 @@
             <% gross_sales = 0 %>
             <% gross_sales = week.total_price %>
             <% vat = 0 %>
-
+          <% if Category.find_by_id(product.category_id) %>
           <% tax_rate = product.sales_tax_rate %>
+          <% else %>
+          <% tax_rate = 20 %>
+          <% end %>
           <% vat = vat_rate(tax_rate, gross_sales) %>
           <% net_sales = net_result(gross_sales, vat) %>
           <tbody>
@@ -48,7 +51,9 @@
               </td>
 
               <td>
+                  <% if Category.find_by_id(product.category_id) %>
                   <%= Category.find_by_id(product.category_id).name %>
+                  <% end %>
               </td>
               <td style="text-align: right">
                  <%= "%g" % total_items %>
@@ -127,7 +132,7 @@
                  <%= sprintf("%.0f", total_items) %>
               </td>
               <td>
-                  <%= sprintf("%.2f", gross_sales) %>
+                  <%= sprintf("%.2f", gross_sales ) %>
               </td>
               <td>
                  <%= sprintf("%.2f", vat) %>
@@ -147,18 +152,12 @@
 <% end %>
 <% else %>
     <div id="saved_items">
-        <div class="preselect_button">
-                        <div onclick="setSearchSelect(0)" style="height: 130px;width: 300px;" class="wide_button"><b>Sales by Day This Week</b></div>
-                    </div>
-        <div class="preselect_button">
-                        <div onclick="setSearchSelect(1)" style="height: 130px;width: 300px;" class="wide_button"><b>This Months Best Sales</b></div>
-                    </div>
-        <div class="preselect_button">
-                        <div onclick="setSearchSelect(2)" style="height: 130px;width: 300px;" class="wide_button"><b>Sales by Month This Year</b></div>
-                    </div>
-        <div class="preselect_button">
-                        <div onclick="setSearchSelect(3)" style="height: 130px;width: 300px;" class="wide_button"><b>Sales by Product This Week</b></div>
-                    </div>
+    <div id="saved_items_container">
+                        <div onclick="setSearchSelect(0)" class="saved_report_button"><div class="b_text"> <b>Sales by Day This Week</b></div></div>
+                        <div onclick="setSearchSelect(1)"  class="saved_report_button"><div class="b_text"><b>This Months Best Sales</b></div></div>
+                        <div onclick="setSearchSelect(2)"  class="saved_report_button"><div class="b_text"><b>Sales by Month This Year</b></div></div>
+                        <div onclick="setSearchSelect(3)"  class="saved_report_button"><div class="b_text"><b>Sales by Product This Week</b></div></div>
+    </div>
     </div>
 <% end %>
 

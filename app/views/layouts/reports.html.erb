@@ -8,11 +8,8 @@
   </head>
   <% end %>
   <body>
-    <div id="wrapper" class="wrapper admin large_interface">
+    <div id="reports_wrapper" class="wrapper admin large_interface">
       <div id="body">
-
-
-
 
 <% unless params[:action] == "export_excel" %>
           <nav id="main_nav">
@@ -40,18 +37,8 @@
     <%= image_tag "exit.gif" %>
   </div>
 <% end %>
-
-
-
-
-
   <div class="clear">&nbsp;</div>
 </nav>
-
-
-
-
-
         <script type="text/javascript">
           $(function() {
             <% [:notice, :warning, :error].collect do |key| %>

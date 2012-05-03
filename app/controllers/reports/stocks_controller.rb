@@ -6,16 +6,16 @@ class Reports::StocksController < Admin::AdminController
 
 
   def vat_rate(tax, gross)
-    gross * tax / 100
+    (gross-(gross/(1+(tax/100))))
   end
 
-  def net_result(gross, vat)
-    gross - vat
+  def net_result(gross, vat_rate)
+    gross - vat_rate
   end
 
   def per_profit(revenue, total_price)
-     (revenue.to_d - total_price.to_d)/(revenue.to_d) * 100
-    #(revenue.to_d/total_price.to_d)*100
+     #(revenue.to_d - total_price.to_d)/(revenue.to_d) * 100
+    (revenue.to_d/total_price.to_d)*100
   end
 
   def index
@@ -41,6 +41,7 @@ class Reports::StocksController < Admin::AdminController
   def stocks_search
     @products = get_stocks_data
     @s_type = session[:search_type]
+    render_graph
 
   end
 
@@ -96,13 +97,16 @@ class Reports::StocksController < Admin::AdminController
     end
     if params[:search][:search_type] == 'by_product'
       session[:search_type] = :by_product
+      session[:search_type_label] = 'product'
       session[:show_zeros] = false
     elsif params[:search][:search_type] == 'by_category'
       session[:search_type] = :by_category
       session[:show_zeros] = false
+      session[:search_type_label] = 'category'
     elsif params[:search][:search_type] == 'all'
       session[:search_type] = :by_category
       session[:show_zeros] = true
+      session[:search_type_label] = 'category'
     end
     session[:category] = params[:search][:category]
     session[:product] = params[:search][:product]
@@ -119,6 +123,34 @@ class Reports::StocksController < Admin::AdminController
     render :nothing => true
   end
 
+  def render_graph
+      @h = LazyHighCharts::HighChart.new('graph') do |f|
+        f.options[:chart][:defaultSeriesType] = "column"
+        f.options[:chart][:margin] = [50, 50, 100, 80]
+        f.options[:title][:text] = "Stock By " + session[:search_type_label]
+        @chartdata = []
+        @chartdata2 = []
+        @chartdata3 = []
+        @chartdata4 = []
+        xitems = []
+        @products[0..14].each do |item|
+          product = Product.find_by_id(item.product_id)
+          unless session[:search_type] == :by_category
+                 xitems << product.name
+          else
+               xitems << Category.find_by_id(product.category_id).name
+          end
+          quantity_sold = sprintf("%.0f", item.quantity)
+
+          @chartdata << product.quantity_in_stock
+          @chartdata2 << quantity_sold
+        end
+        f.series(:name=> 'Quantity', :data=>@chartdata)
+        f.series(:name=> 'Quantity in Stock', :data=>@chartdata2)
+        f.options[:xAxis][:categories] = xitems
+      end
+  end
+
 
 
   def get_stocks_data
@@ -131,9 +163,7 @@ class Reports::StocksController < Admin::AdminController
       session[:search] = 'init'
     else
 
-      where = "select oi.*, c.id from order_items oi inner join products p on p.id = oi.product_id inner join categories c on c.id = p.category_id"
-
-
+      where = "select oi.product_id, p.category_id, p.quantity_in_stock, p.cost_price, p.code_num, SUM(oi.total_price) AS total_price, SUM(oi.quantity) AS quantity from order_items oi inner join products p on p.id = oi.product_id inner join categories c on c.id = p.category_id"
 
       if session[:terminal] != ''
         where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and oi.terminal_id = '#{session[:terminal]}'"
