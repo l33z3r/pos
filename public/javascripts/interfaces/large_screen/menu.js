@@ -72,8 +72,7 @@ $(window).load(function(){
 
 function initMenuScreenType() {
     if(menuScreenType == RESTAURANT_MENU_SCREEN) {
-        //show the shortcut dropdown
-        $('#menu_screen_shortcut_dropdown_container').show();    
+        //nothing needed here    
     } else if(menuScreenType == RETAIL_MENU_SCREEN) {
         //hide the table select box
         $('#table_screen_button, #table_select_container').hide();
