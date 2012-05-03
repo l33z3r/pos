@@ -8,11 +8,7 @@ class CreateClientTransactions < ActiveRecord::Migration
       t.timestamps
     end
     
-    if Rails.env.production_heroku?
-      execute("ALTER TABLE client_transactions ALTER COLUMN transaction_data TYPE TEXT")
-    else
-      change_column :client_transactions, :transaction_data, :longtext
-    end
+    change_column :client_transactions, :transaction_data, :longtext
   end
 
   def self.down
