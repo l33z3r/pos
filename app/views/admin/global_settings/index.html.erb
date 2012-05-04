@@ -1245,7 +1245,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>App HTTP Authentication Username?</td>
+                    <td>App HTTP Authentication Username</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::HTTP_AUTH_USERNAME %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
@@ -1254,9 +1254,33 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>App HTTP Authentication Password?</td>
+                    <td>App HTTP Authentication Password</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::HTTP_AUTH_PASSWORD %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Process Cash Sales As Orders?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PROCESS_TABLE_0_ORDERS %>
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">Yes</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">No</div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Polling Interval (In seconds (1-5))</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::POLLING_INTERVAL_SECONDS %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>

@@ -81,11 +81,11 @@
       
   var businessInfoMessage = "<%= raw escape_javascript((GlobalSetting.parsed_setting_for (GlobalSetting::BUSINESS_INFO_MESSAGE))) %>";
 
-  var defaultDiscountPercent = "<%=Discount.load_default.percent%>";
+  var defaultDiscountPercent = "<%= Discount.load_default.percent %>";
   
   var terminalID = "<%=@terminal_id%>";
   
-  var pollingAmount = <%= development_mode? ? "1000" : "1000" %>;
+  var pollingAmount = <%= GlobalSetting.parsed_setting_for GlobalSetting::POLLING_INTERVAL_SECONDS %> * 1000;
   
   var using_mobile = <%= mobile_device? ? "true" : "false" %>;
   
@@ -155,4 +155,6 @@
     courseLabels[<%=course_val%>] = "<%=label%>";
 <% end %>
     
+  var isProcessingTable0Orders = <%= GlobalSetting.parsed_setting_for GlobalSetting::PROCESS_TABLE_0_ORDERS %>;
+  
 </script>
