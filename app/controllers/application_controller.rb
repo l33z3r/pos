@@ -130,10 +130,12 @@ class ApplicationController < ActionController::Base
       
       @sync_table_order_times_reversed = @sync_table_order_times.reverse
       
-      @sync_table_order_times_reversed.each do |tsd|
-        #if we dont have the latest timestamp for this tables order we must retry
-        if tsd.data[:table_id].to_s == table_id.to_s and tsd.time.to_i > last_sync_time.to_i
-          return true
+      #if we dont have the latest timestamp for this tables order we must retry
+      if table_id != "0"
+        @sync_table_order_times_reversed.each do |tsd|
+          if tsd.data[:table_id].to_s == table_id.to_s and tsd.time.to_i > last_sync_time.to_i
+            return true
+          end
         end
       end
       
