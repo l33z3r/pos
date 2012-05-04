@@ -72,7 +72,7 @@ $(window).load(function(){
 
 function initMenuScreenType() {
     if(menuScreenType == RESTAURANT_MENU_SCREEN) {
-        //nothing needed here    
+    //nothing needed here    
     } else if(menuScreenType == RETAIL_MENU_SCREEN) {
         //hide the table select box
         $('#table_screen_button, #table_select_container').hide();
@@ -1222,7 +1222,8 @@ function doTotalFinal() {
     //but we allow table 0 orders to be cashed out regardless
     var now = clueyTimestamp();
     
-    if(selectedTable != 0 && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
+    //if we are on table 0 and we are not processing table 0 orders, then we can skip this check
+    if((selectedTable != 0 || isProcessingTable0Orders) && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
         showLoadingDiv("Cashing out after previous order complete, Please Wait...");
         setTimeout(doTotalFinal, 1000);
         return;
@@ -1245,13 +1246,17 @@ function doTotalFinal() {
     
     numPersons = 0
 
+    isTableZeroOrder = false;
+
     if(selectedTable == 0) {
         totalOrder = currentOrder;
         tableInfoId = null;
         tableInfoLabel = "None";
         isTableOrder = false;
         
-        isTableZeroOrder = true;
+        if(isProcessingTable0Orders) {
+            isTableZeroOrder = true;
+        }
             
         //copy the order to distribute through system after processing
         var copiedLastTableZeroOrder = {};
