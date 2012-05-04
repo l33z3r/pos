@@ -83,8 +83,10 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith);
     }
     
-    //sync the master orders array
-    doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, masterOrdersUserId);
+    //sync the master orders array if its not a table 0 order
+    if(tableID != 0) {
+        doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, masterOrdersUserId);
+    }
     
     if(inKitchenContext()) {
         renderReceipt(tableID);
@@ -381,8 +383,10 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, orderNum, tableLabel
         doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployee, nextUserIDToSyncWith);
     }
     
-    //clear the master orders array
-    doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployee, masterOrdersUserId);
+    //clear the master orders array if its not table 0
+    if(tableID != 0) {
+        doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployee, masterOrdersUserId);
+    }
     
     //remove the table from the active table ids array
     removeActiveTable(tableID);

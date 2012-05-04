@@ -44,13 +44,15 @@ function loginScreenKeyboardClick(e) {
 
     if (e.keyCode == 13) {
         if ($('#num').val().substring(0, 2) == 'aa'){
-        var newval = $('#num').val().substring(3, 15);
-        $('#num').val(newval);
-        $('#clockincode_show').html("**********");
-        doDallasLogin(newval);
+            var newval = $('#num').val().substring(3, 15);
+            $('#num').val(newval);
+            $('#clockincode_show').html("**********");
+            doDallasLogin(newval);
         }
-        else {$('#num').val("")
-              $('#clockincode_show').html("");  }
+        else {
+            $('#num').val("")
+            $('#clockincode_show').html("");
+        }
     } else if (e.keyCode == 117) {
         $('#num').val("u");
     }
@@ -105,7 +107,7 @@ function doDallasLogin() {
                 return;
             } else {
                 setStatusMessage("User " + nickname + " is not clocked in!", true, true);
-                clearCode();
+                clearClockinCode();
                 return;
             }
         }
@@ -136,7 +138,7 @@ function doLogin() {
                 return;
             } else {
                 setStatusMessage("User " + nickname + " is not clocked in!", true, true);
-                clearCode();
+                clearClockinCode();
                 return;
             }
         }
@@ -155,7 +157,8 @@ function doLogout() {
 
     showLoginScreen();
 
-    clearCode();
+    clearClockinCode();
+    clearMenuScreenInput();
 
     //hide the red x 
     $('#nav_save_button').hide();
@@ -172,9 +175,9 @@ function doLogout() {
     });
     setTimeout(function(){
 
-            $('#num').focus();
-            scanFocusLoginPoll();
-        }, 1000);
+        $('#num').focus();
+        scanFocusLoginPoll();
+    }, 1000);
 }
 
 function doClockin() {
@@ -196,7 +199,7 @@ function doClockin() {
         if (entered_code == clockinCode) {
             if (employees[i]['clocked_in']) {
                 setStatusMessage(nickname + " is already clocked in!");
-                clearCode();
+                clearClockinCode();
                 return;
             }
 
@@ -240,7 +243,7 @@ function doClockout() {
 }
 
 function clockinSuccess(id, nickname) {
-    clearCode();
+    clearClockinCode();
 
     setStatusMessage(nickname + " clocked in successfully!");
 
@@ -255,7 +258,7 @@ function clockinSuccess(id, nickname) {
 }
 
 function clockoutSuccess(id, nickname) {
-    clearCode();
+    clearClockinCode();
 
     setStatusMessage(nickname + " clocked out successfully!");
 
@@ -319,7 +322,7 @@ function loginSuccess(id, nickname, is_admin, passcode) {
         showTablesScreen();
     }
 
-    clearCode();
+    clearClockinCode();
 
     //dont show the previous order dropdown if there is none in memory
     if (havePreviousOrder(current_user_id)) {
@@ -340,24 +343,24 @@ function clockinFailure() {
     //set an error message in the flash area
     setStatusMessage("Wrong clock in code!", true, true);
 
-    clearCode();
+    clearClockinCode();
 }
 
 function clockoutFailure() {
     //set an error message in the flash area
     setStatusMessage("You are either not clocked in, or entered the wrong code!", true, true);
 
-    clearCode();
+    clearClockinCode();
 }
 
 function loginFailure() {
     //set an error message in the flash area
     setStatusMessage("Wrong pass code!", true, true);
 
-    clearCode();
+    clearClockinCode();
 }
 
-function clearCode() {
+function clearClockinCode() {
     $('#num').val("");
     $('#clockincode_show').html("");
 }

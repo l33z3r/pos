@@ -405,8 +405,7 @@ function doSelectMenuItem(productId, menuItemId, element) {
     amount = currentMenuItemQuantity;
     
     //reset the quantity
-    currentMenuItemQuantity = "";
-    $('#menu_screen_input_show').html("");
+    clearMenuScreenInput();
 
     buildOrderItem(product, amount);
     setModifierGridIdForProduct(product);
@@ -2478,4 +2477,9 @@ function productInfoAddItemToOrder() {
     doSelectMenuItem(currentProductInfoPopupProductId, null, null);
     setProductInfoPopup(true);
     closeProductInfoPopup();
+}
+
+function clearMenuScreenInput() {
+    currentMenuItemQuantity = "";
+    $('#menu_screen_input_show').html("");
 }
