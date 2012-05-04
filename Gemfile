@@ -26,8 +26,8 @@ gem 'smurf', '1.0.8'
 # for building json
 gem 'jbuilder', '0.3.2'
 
-gem 'prawn'
-gem "prawnto"
+gem 'prawn', '0.12.0'
+gem 'prawnto' , '0.1.1'
 # Use unicorn as the web server
 # gem 'unicorn'
 

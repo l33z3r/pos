@@ -7,7 +7,7 @@ class Reports::SalesController < Admin::AdminController
   layout 'reports'
 
   def vat_rate(tax, gross)
-    gross * tax / 100
+    (gross-(gross/(1+(tax/100))))
   end
 
   def net_result(gross, vat)

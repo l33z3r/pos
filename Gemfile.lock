@@ -147,8 +147,8 @@ DEPENDENCIES
   mongrel (= 1.2.0.pre2)
   mysql2 (= 0.2.6)
   populator
-  prawn
-  prawnto
+  prawn (= 0.12.0)
+  prawnto (= 0.1.1)
   rails (= 3.0.5)
   rake (= 0.8.7)
   rspec-rails (= 2.6.1)
