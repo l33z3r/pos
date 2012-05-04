@@ -525,7 +525,7 @@ function applyDiscountToOrderItem(order, itemNumber, amount) {
 function calculateOrderTotal(order) {
     if(!order) return;
     
-    orderTotal = 0;
+    var orderTotal = 0;
 
     for(var i=0; i<order.items.length; i++) {
         item = order.items[i];

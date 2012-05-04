@@ -20,6 +20,8 @@ var lastTableZeroOrder;
 
 //this function is called from application.js on page load
 function initMenu() {
+    aaa = "hi";
+    
     initMenuScreenType();
     
     loadFirstMenuPage();
@@ -1045,7 +1047,7 @@ function loadReceipt(order, doScroll) {
         return;
     }
 
-    orderTotal = order.total;
+    var orderTotal = order.total;
     orderItems = order.items;
 
     allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(order);
@@ -1301,6 +1303,8 @@ function doTotalFinal() {
     
     discountPercent = totalOrder.discount_percent;
     preDiscountPrice = totalOrder.pre_discount_price;
+    
+    var orderTotal = order.total;
     
     if(parseFloat(cashTendered) == 0.0) {
         cashTendered = orderTotal + serviceCharge;
