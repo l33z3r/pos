@@ -982,7 +982,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
 
     orderHTML += clearHTML + "</div>" + clearHTML;
 
-    var orderTotal = order.total;
+    var orderTotal = getCurrentOrder().total;
 
     $('#cash_screen_sub_total_value').html(currency(orderTotal));
 
