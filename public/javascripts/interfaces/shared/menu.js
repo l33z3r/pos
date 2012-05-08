@@ -104,6 +104,7 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
     if(current_user_id) {
         //now load back up the current users order
         getTableOrderFromStorage(current_user_id, savedTableID);
+        doSelectTable(savedTableID);
     }
     
     //restore vars
@@ -395,6 +396,7 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, orderNum, tableLabel
     if(current_user_id) {
         //now load back up the current users order
         getTableOrderFromStorage(current_user_id, savedTableID);
+        doSelectTable(savedTableID);
     }
     
     //restore vars

@@ -20,8 +20,6 @@ var lastTableZeroOrder;
 
 //this function is called from application.js on page load
 function initMenu() {
-    aaa = "hi";
-    
     initMenuScreenType();
     
     loadFirstMenuPage();
@@ -93,38 +91,7 @@ function initMenuScreenType() {
         }, 1000);
     } else if(menuScreenType == CUSTOMER_MENU_SCREEN) {
         //execute a bunch of css mods to change the menu interface
-        
-        //resize menu items
-        $('#items .item').height(133);
-        $('#items .item').width(176);
-        $('#items .item').css("margin", "3px");
-        $('#items .item .item_pic').height(116);
-        $('#items .item .item_pic img').height(90);
-        $('#items .item .item_pic img').css("max-height", "90px");
-        $('#items .item .item_pic img').css("max-width", "172px");
-        $('#items .item .item_pic img').css("margin-top", "5px");
-        
-        $('#items .menu_item_spacer').height(135);
-        $('#items .menu_item_spacer').width(178);
-        $('#items .menu_item_spacer').css("margin", "3px");
-        
-        $('#items .item .item_name').css("width", "172px");
-        $('#items .item .item_name').css("font-size", "16px");
-        $('#items .item .item_name').css("bottom", "7px");
-        
-        $('div#menu_screen div#menu_pages_container div#menu_container').height(631);
-        $('div#menu_screen div#menu_items_container').height(563);
-        $('div#menu_screen div#order_item_additions').height(631);
-        $('div#menu_screen div#order_item_additions div.oia_container').height(558);
-        $('div#menu_screen div#menu_buttons').height(79);
-        
-        //hide the table select box
-        $('#table_screen_button, #table_select_container').hide();
-        
-        $('#box_label_container').show();
-        
-        //hide the shortcut dropdown
-        $('#menu_screen_shortcut_dropdown_container').hide();
+        performCustomerScreenCSSMods();
     }
 }
 
@@ -2486,4 +2453,38 @@ function productInfoAddItemToOrder() {
 function clearMenuScreenInput() {
     currentMenuItemQuantity = "";
     $('#menu_screen_input_show').html("");
+}
+
+function performCustomerScreenCSSMods() {
+    //resize menu items
+        $('#items .item').height(133);
+        $('#items .item').width(176);
+        $('#items .item').css("margin", "3px");
+        $('#items .item .item_pic').height(116);
+        $('#items .item .item_pic img').height(90);
+        $('#items .item .item_pic img').css("max-height", "90px");
+        $('#items .item .item_pic img').css("max-width", "172px");
+        $('#items .item .item_pic img').css("margin-top", "5px");
+        
+        $('#items .menu_item_spacer').height(135);
+        $('#items .menu_item_spacer').width(178);
+        $('#items .menu_item_spacer').css("margin", "3px");
+        
+        $('#items .item .item_name').css("width", "172px");
+        $('#items .item .item_name').css("font-size", "16px");
+        $('#items .item .item_name').css("bottom", "7px");
+        
+        $('div#menu_screen div#menu_pages_container div#menu_container').height(631);
+        $('div#menu_screen div#menu_items_container').height(563);
+        $('div#menu_screen div#order_item_additions').height(631);
+        $('div#menu_screen div#order_item_additions div.oia_container').height(558);
+        $('div#menu_screen div#menu_buttons').height(79);
+        
+        //hide the table select box
+        $('#table_screen_button, #table_select_container').hide();
+        
+        $('#box_label_container').show();
+        
+        //hide the shortcut dropdown
+        $('#menu_screen_shortcut_dropdown_container').hide();
 }
