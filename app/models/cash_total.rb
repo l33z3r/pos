@@ -147,7 +147,7 @@ class CashTotal < ActiveRecord::Base
           
             @product_voids_quantity = @voids_by_employee[@server_nickname][:quantity].to_f
             @product_voids_quantity += order_item.quantity
-            @product_voids_quantity = sprintf("%.2f", @product_voids_quantity)
+            @product_voids_quantity = sprintf("%g", @product_voids_quantity)
             @voids_by_employee[@server_nickname][:quantity] = @product_voids_quantity
           
             @voids_by_employee[@server_nickname][:sales_total] += @order_item_price
@@ -194,7 +194,7 @@ class CashTotal < ActiveRecord::Base
             
           @product_sales_quantity = @sales_by_product[@product_name][:quantity].to_f
           @product_sales_quantity += order_item.quantity
-          @product_sales_quantity = sprintf("%.2f", @product_sales_quantity)
+          @product_sales_quantity = sprintf("%g", @product_sales_quantity)
           @sales_by_product[@product_name][:quantity] = @product_sales_quantity
           
           @sales_by_product[@product_name][:sales_total] += @order_item_price
