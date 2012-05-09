@@ -80,85 +80,71 @@ function printReceipt(content, printRecptMessage) {
     printContent(content);
 }
 
-
-
 function printContent(content) {
     $('#printFrame').contents().find('#till_roll').html(content);
 
     var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>"
     + $('#printFrame').contents().find('html').html() + "</html>";
 
-    var print_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/receipt_printer';
-
     //make sure the html content is compatible with the print service
-
     //replace <hr> with <hr></hr>
     content_with_css = content_with_css.replace("<hr>", "<hr></hr>");
 
-    $.ajax({
-        type: 'POST',
-        url: '/forward_print_service_request',
-        error: function() {
-            setStatusMessage("Printer service cannot be reached.", false, false);
-        },
-        data: {
-            print_service_url : print_service_url,
-            html_data : content_with_css
+    if(using_wss_receipt_printer) {
+        if ("WebSocket" in window) {
+            var ws = new WebSocket("ws://" + webSocketServiceIP + ":8080/ClueyWebSocketServices/receipt_printer_ws");
+
+            ws.onopen = function()
+            {
+                //there is a maximum limit on the size of the message we can send,
+                //so we split it into groups of 3072 chars (3kb of data)
+                var charsPerGroup = 3072;
+
+                console.log("Breaking data up into " + Math.ceil(content_with_css.length/charsPerGroup) + " groups to send to print service");
+                for(var i = 0; i < content_with_css.length; i+=charsPerGroup) {
+                    var nextGroup = content_with_css.substring(i, i + charsPerGroup);
+                    console.log("Sending group " + ((i/charsPerGroup) + 1));
+                    ws.send(nextGroup);
+                }
+
+                ws.close();
+            };
+
+            ws.onmessage = function (evt)
+            {
+                var received_msg = evt.data;
+                console.log("Message received: " + received_msg);
+            };
+            ws.onclose = function()
+            {
+                // websocket is closed.
+                console.log("Connection closed!");
+            };
+        } else {
+            // The browser doesn't support WebSocket
+            alert("WebSocket NOT supported by your browser, Please disable web sockets!");
         }
-    });
-
-    return;
-
-
-    //TODO: display an error if the service is not running...
-
-    console.log("Websocket support? " + ("WebSocket" in window));
-
-    if ("WebSocket" in window) {
-        //console.log("Sending receipt content over websocket: " + content_with_css);
-
-        // Let us open a web socket
-        var ws = new WebSocket("ws://" + webSocketServiceIP + ":8080/ClueyWebSocketServices/receipt_printer");
-
-        ws.onopen = function()
-        {
-            //there is a maximum limit on the size of the message we can send,
-            //so we split it into groups of 3072 chars (3kb of data)
-            var charsPerGroup = 3072;
-
-            console.log("Breaking data up into " + Math.ceil(content_with_css.length/charsPerGroup) + " groups to send to print service");
-            for(var i = 0; i < content_with_css.length; i+=charsPerGroup) {
-                var nextGroup = content_with_css.substring(i, i + charsPerGroup);
-                console.log("Sending group " + ((i/charsPerGroup) + 1));
-                ws.send(nextGroup);
-            }
-
-            //ws.send(content_with_css);
-
-            ws.close();
-        };
-
-        ws.onmessage = function (evt)
-        {
-            var received_msg = evt.data;
-            console.log("Message received: " + received_msg);
-        };
-        ws.onclose = function()
-        {
-            // websocket is closed.
-            console.log("Connection closed!");
-        };
     } else {
-        // The browser doesn't support WebSocket
-        alert("WebSocket NOT supported by your Browser!");
+        var print_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/receipt_printer';
 
-    //DO IT THE OLD FASHIONED WAY
-    //    $('#printFrame').contents().find('#till_roll').html(content);
-    //
-    //    printFrame.focus();
-    //    printFrame.print();
+        $.ajax({
+            type: 'POST',
+            url: '/forward_print_service_request',
+            error: function() {
+                setStatusMessage("Printer service cannot be reached.", false, false);
+            },
+            data: {
+                print_service_url : print_service_url,
+                html_data : content_with_css
+            }
+        });
     }
 
+//DO IT THE OLD FASHIONED WAY (firefox)
+//    $('#printFrame').contents().find('#till_roll').html(content);
+//
+//    printFrame.focus();
+//    printFrame.print();
 
 }
 
@@ -230,7 +216,7 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, incl
     if(includeVatBreakdown) {
         
         if(taxChargable) {
-            //TODO
+        //TODO
         } else {
             finalReceiptHTML += "<div class='data_table vat_breakdown'>";
             finalReceiptHTML += "<div class='header'>" + taxLabel + " Breakdown</div>" + clearHTML;

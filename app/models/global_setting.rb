@@ -34,7 +34,10 @@ class GlobalSetting < ActiveRecord::Base
   DO_BEEP = 22
   LAST_ORDER_ID = 23
   RELOAD_HTML5_CACHE_TIMESTAMP = 24
+  
+  #this is the printer ip
   WEBSOCKET_IP = 25
+  
   CURRENCY_NOTES_IMAGES = 26
   ORDER_RECEIPT_WIDTH = 27
   AUTHENTICATION_REQUIRED = 28
@@ -65,6 +68,8 @@ class GlobalSetting < ActiveRecord::Base
   CREDIT_CARD_TERMINAL_PORT = 53
   POLLING_INTERVAL_SECONDS = 54
   PROCESS_TABLE_0_ORDERS = 55
+  USE_WSS_CASH_DRAWER = 56
+  USE_WSS_RECEIPT_PRINTER = 57
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -121,7 +126,9 @@ class GlobalSetting < ActiveRecord::Base
     CREDIT_CARD_TERMINAL_IP => "Credit Card Terminal IP",
     CREDIT_CARD_TERMINAL_PORT => "Credit Card Terminal Port",
     POLLING_INTERVAL_SECONDS => "Polling Amount Seconds",
-    PROCESS_TABLE_0_ORDERS => "Process Table 0 Orders"
+    PROCESS_TABLE_0_ORDERS => "Process Table 0 Orders",
+    USE_WSS_CASH_DRAWER => "Use Web Sockets For Cash Drawer",
+    USE_WSS_RECEIPT_PRINTER => "Use Web Sockets For Receipt Printing"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -298,6 +305,12 @@ class GlobalSetting < ActiveRecord::Base
       @gs.parsed_value = @gs.value.to_i
     when PROCESS_TABLE_0_ORDERS
       @gs = find_or_create_by_key(:key => PROCESS_TABLE_0_ORDERS.to_s, :value => "true", :label_text => LABEL_MAP[PROCESS_TABLE_0_ORDERS])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when USE_WSS_CASH_DRAWER
+      @gs = find_or_create_by_key(:key => "#{USE_WSS_CASH_DRAWER.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[USE_WSS_CASH_DRAWER])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when USE_WSS_RECEIPT_PRINTER
+      @gs = find_or_create_by_key(:key => "#{USE_WSS_RECEIPT_PRINTER.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[USE_WSS_RECEIPT_PRINTER])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
@@ -482,6 +495,20 @@ class GlobalSetting < ActiveRecord::Base
             @my_do_beep_gs.value = @do_beep_gs.value
             @my_do_beep_gs.save
 	    
+            #use wss for cash drawer?
+            @wss_cash_drawer_gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_CASH_DRAWER, {:fingerprint => @old_fingerprint}
+	    
+            @my_wss_cash_drawer_gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_CASH_DRAWER, {:fingerprint => @my_terminal_fingerprint}
+            @my_wss_cash_drawer_gs.value = @wss_cash_drawer_gs.value
+            @my_wss_cash_drawer_gs.save
+	    
+            #use wss for receipt printer?
+            @wss_receipt_printer_gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_RECEIPT_PRINTER, {:fingerprint => @old_fingerprint}
+	    
+            @my_wss_receipt_printer_gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_RECEIPT_PRINTER, {:fingerprint => @my_terminal_fingerprint}
+            @my_wss_receipt_printer_gs.value = @wss_receipt_printer_gs.value
+            @my_wss_receipt_printer_gs.save
+	    
             #delete old gs objects
             @websocket_ip_gs.destroy
             @cash_drawer_ip_gs.destroy
@@ -495,6 +522,8 @@ class GlobalSetting < ActiveRecord::Base
             @cc_terminal_ip_gs.destroy
             @cc_terminal_port_gs.destroy
             @do_beep_gs.destroy
+            @wss_cash_drawer_gs.destroy
+            @wss_receipt_printer_gs.destroy
           end
         end
         if value
@@ -514,6 +543,12 @@ class GlobalSetting < ActiveRecord::Base
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
       elsif key.starts_with? DO_BEEP.to_s
+        new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
+      elsif key.starts_with? USE_WSS_CASH_DRAWER.to_s
+        new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
+      elsif key.starts_with? USE_WSS_RECEIPT_PRINTER.to_s
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
       end
