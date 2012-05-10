@@ -29,11 +29,7 @@
                     <% gross_sales = 0 %>
                     <% gross_sales = week.total_price %>
                     <% vat = 0 %>
-                    <% if Category.find_by_id(product.category_id) %>
-                        <% tax_rate = product.sales_tax_rate %>
-                    <% else %>
-                        <% tax_rate = 20 %>
-                    <% end %>
+                    <% tax_rate = week.tax_rate %>
                     <% vat = vat_rate(tax_rate, gross_sales) %>
                     <% net_sales = net_result(gross_sales, vat) %>
                     <tbody>
@@ -89,7 +85,7 @@
                     <% total_items = week[1][0].quantity %>
                     <% gross_sales = week[1][0].total_price %>
                     <% product = Product.find_by_id(week[1][0].product_id) %>
-                    <% new_tax_rate = product.sales_tax_rate %>
+                    <% new_tax_rate = week[1][0].tax_rate %>
                     <% vat = vat_rate(new_tax_rate, gross_sales) %>
                     <% net_sales = net_result(gross_sales, vat) %>
                     <tbody>
@@ -118,7 +114,7 @@
                             <% end %>
                         </td>
                         <td>
-                            <%= sprintf("%.0f", total_items) %>
+                            <%= sprintf("%.0f", total_items) %>  
                         </td>
                         <td>
                             <%= sprintf("%.2f", gross_sales) %>

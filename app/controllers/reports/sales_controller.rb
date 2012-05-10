@@ -230,7 +230,7 @@ class Reports::SalesController < Admin::AdminController
     else
       #query = Order.find_by_sql("select * from orders o inner join order_items oi on o.id = oi.order_id")
       #query = Order.find_by_sql("select * from orders o inner join order_items oi on o.id = oi.order_id inner join products p on p.category_id = 1 group by o.id")
-    if (session[:search_type] == :day || :month || :year)
+    if (session[:search_type] == :day || :month || :year || :week)
       where = 'select o.id, o.tax_rate, o.product_id, o.created_at, SUM(total_price) total_price, SUM(quantity) quantity from order_items o'
 
       if session[:terminal] != ''
