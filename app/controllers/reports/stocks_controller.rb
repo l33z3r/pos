@@ -27,6 +27,7 @@ class Reports::StocksController < Admin::AdminController
     session[:from_date] = Time.now - 30.days
     session[:to_date] = Time.now
     session[:terminal] = ''
+    session[:search_type_label] = 'Product'
     @current_category = nil
     @current_product = nil
     @products_drop = Product.all
@@ -97,16 +98,16 @@ class Reports::StocksController < Admin::AdminController
     end
     if params[:search][:search_type] == 'by_product'
       session[:search_type] = :by_product
-      session[:search_type_label] = 'product'
+      session[:search_type_label] = 'Product'
       session[:show_zeros] = false
     elsif params[:search][:search_type] == 'by_category'
       session[:search_type] = :by_category
       session[:show_zeros] = false
-      session[:search_type_label] = 'category'
+      session[:search_type_label] = 'Category'
     elsif params[:search][:search_type] == 'all'
       session[:search_type] = :by_category
       session[:show_zeros] = true
-      session[:search_type_label] = 'category'
+      session[:search_type_label] = 'Category'
     end
     session[:category] = params[:search][:category]
     session[:product] = params[:search][:product]
@@ -140,13 +141,12 @@ class Reports::StocksController < Admin::AdminController
           else
                xitems << Category.find_by_id(product.category_id).name
           end
-          quantity_sold = sprintf("%.0f", item.quantity)
+          quantity_sold = item.quantity
 
-          @chartdata << product.quantity_in_stock
-          @chartdata2 << quantity_sold
+          #@chartdata << product.quantity_in_stock
+          @chartdata << quantity_sold
         end
-        f.series(:name=> 'Quantity', :data=>@chartdata)
-        f.series(:name=> 'Quantity in Stock', :data=>@chartdata2)
+        f.series(:name=> 'Quantity in Stock', :data => @chartdata)
         f.options[:xAxis][:categories] = xitems
       end
   end

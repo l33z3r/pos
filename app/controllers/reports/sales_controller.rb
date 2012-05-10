@@ -113,11 +113,10 @@ class Reports::SalesController < Admin::AdminController
         @orders.group_by(&@s_type).sort.each do |week|
           net_sales = 0
           gross_sales = 0
-          week[1].each do |order|
-            gross_sales += order.total
-            product = Product.find_by_id(order.order_items.first.product_id)
-            tax_rate = product.sales_tax_rate
-          end
+
+          total_items = week[1][0].quantity
+          gross_sales = week[1][0].total_price
+          product = Product.find_by_id(week[1][0].product_id)
 
           vat = vat_rate(tax_rate, gross_sales)
           net_sales = net_result(gross_sales, vat)
@@ -226,35 +225,35 @@ class Reports::SalesController < Admin::AdminController
     @selected_to_date = session[:to_date].to_s
 
     if !session[:search]
-      query = OrderItem.find_by_sql("select o.id, o.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items o where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' group by o.product_id order by total_price desc")
+      query = OrderItem.find_by_sql("select o.id, o.tax_rate, o.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items o where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' group by o.product_id order by total_price desc")
       session[:search] = 'init'
     else
       #query = Order.find_by_sql("select * from orders o inner join order_items oi on o.id = oi.order_id")
       #query = Order.find_by_sql("select * from orders o inner join order_items oi on o.id = oi.order_id inner join products p on p.category_id = 1 group by o.id")
-
-      where = 'select DISTINCT o.* from orders o inner join order_items oi on oi.order_id = o.id'
+    if (session[:search_type] == :day || :month || :year)
+      where = 'select o.id, o.tax_rate, o.product_id, o.created_at, SUM(total_price) total_price, SUM(quantity) quantity from order_items o'
 
       if session[:terminal] != ''
-        where << " and oi.terminal_id = '#{session[:terminal]}'"
+        where << " and o.terminal_id = '#{session[:terminal]}'"
       end
 
       if session[:category] == '' && session[:product] == '' && session[:search_product] != ''
-        where << " inner join products p on oi.product_id = p.id"
+        where << " inner join products p on o.product_id = p.id"
       end
 
       if session[:category] != '' && session[:product] == ''
-        where << " inner join products p on oi.product_id = p.id and p.category_id = #{session[:category]}"
+        where << " inner join products p on o.product_id = p.id and p.category_id = #{session[:category]}"
       end
 
       if session[:category] != '' && session[:product] != ''
-        where << " and oi.product_id = #{session[:product]}"
+        where << " and o.product_id = #{session[:product]}"
       end
 
       if session[:category] == '' && session[:product] != ''
-        where << " and oi.product_id = #{session[:product]}"
+        where << " and o.product_id = #{session[:product]}"
       end
       if session[:terminal] != ''
-      where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and oi.terminal_id = '#{session[:terminal]}'"
+      where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
       else
       where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}'"
       end
@@ -265,10 +264,13 @@ class Reports::SalesController < Admin::AdminController
 
       where << " order by o.created_at asc"
 
-      query = Order.find_by_sql(where)
+      logger.debug "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss     #{where}"
+
+      query = OrderItem.find_by_sql(where)
+    end
 
       if session[:search_type] == :worst_seller
-        where = "select o.id, o.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items o"
+        where = "select o.id, o.tax_rate, o.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items o"
 
         if session[:category] != ''
           where << " inner join products p on o.product_id = p.id and p.category_id = #{session[:category]}"
@@ -286,7 +288,7 @@ class Reports::SalesController < Admin::AdminController
       end
 
       if session[:search_type] == :best_seller
-        where = "select o.id, o.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items o"
+        where = "select o.id, o.tax_rate, o.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items o"
 
         if session[:category] != ''
           where << " inner join products p on o.product_id = p.id and p.category_id = #{session[:category]}"
