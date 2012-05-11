@@ -49,6 +49,9 @@ var lastSaleObj;
 
 var mandatoryFooterMessageHTML = null;
 
+//this is used to hold the master 
+var masterOrdersUserId = -1;
+
 function getCurrentOrder() {
     if(selectedTable == 0) {
         return currentOrder;
@@ -73,7 +76,16 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         //            continue;
         //        }
         
+        if(!userHasUniqueTableOrder(nextUserIDToSyncWith, tableID)) {
+            continue;
+        }
+        
         doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith);
+    }
+    
+    //sync the master orders array if its not a table 0 order
+    if(tableID != 0) {
+        doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, masterOrdersUserId);
     }
     
     if(inKitchenContext()) {
@@ -92,6 +104,7 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
     if(current_user_id) {
         //now load back up the current users order
         getTableOrderFromStorage(current_user_id, savedTableID);
+        doSelectTable(savedTableID);
     }
     
     //restore vars
@@ -359,7 +372,21 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, orderNum, tableLabel
     for (var i = 0; i < employees.length; i++){
         nextUserIDToSyncWith = employees[i].id;
         
+        //skip if terminal and user same
+        //        if(recvdTerminalID == terminalID && terminalEmployeeID == nextUserIDToSyncWith) {
+        //            continue;
+        //        }
+        
+        if(!userHasUniqueTableOrder(nextUserIDToSyncWith, tableID)) {
+            continue;
+        }
+        
         doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployee, nextUserIDToSyncWith);
+    }
+    
+    //clear the master orders array if its not table 0
+    if(tableID != 0) {
+        doClearTableOrder(recvdTerminalID, tableID, tableLabel, terminalEmployee, masterOrdersUserId);
     }
     
     //remove the table from the active table ids array
@@ -369,6 +396,7 @@ function doReceiveClearTableOrder(recvdTerminalID, tableID, orderNum, tableLabel
     if(current_user_id) {
         //now load back up the current users order
         getTableOrderFromStorage(current_user_id, savedTableID);
+        doSelectTable(savedTableID);
     }
     
     //restore vars
@@ -499,7 +527,7 @@ function applyDiscountToOrderItem(order, itemNumber, amount) {
 function calculateOrderTotal(order) {
     if(!order) return;
     
-    orderTotal = 0;
+    var orderTotal = 0;
 
     for(var i=0; i<order.items.length; i++) {
         item = order.items[i];

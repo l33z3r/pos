@@ -284,8 +284,8 @@ function getOpenOrdersTotal() {
     }
     
     for(var u = 0; u < tableIDS.length; u++) {
-        var orderTotal = tableOrders[parseInt(tableIDS[u])].total;
-        total += orderTotal;
+        var thisOrderTotal = tableOrders[parseInt(tableIDS[u])].total;
+        total += thisOrderTotal;
     }
     
     //now load back up the current users order it its not his personal receipt

@@ -622,7 +622,7 @@ function showQuantityPopup() {
     currentTargetPopupAnchor.FreezeBubblePopup();
     popupId = currentTargetPopupAnchor.GetBubblePopupID();
     $('#' + popupId).find('.quantity').focus();
-//    $('#' + popupId).find('.new_price').val(currentPrice);
+    //    $('#' + popupId).find('.new_price').val(currentPrice);
     $('#' + popupId).find('.quantity').val(currentQuantity);
 
     //register the click handler to hide the popup when outside clicked
@@ -982,6 +982,8 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
 
     orderHTML += clearHTML + "</div>" + clearHTML;
 
+    var orderTotal = getCurrentOrder().total;
+
     $('#cash_screen_sub_total_value').html(currency(orderTotal));
 
     if ($('#menu_screen').is(":visible")) {
@@ -1005,7 +1007,7 @@ function loadReceipt(order, doScroll) {
         return;
     }
 
-    orderTotal = order.total;
+    var orderTotal = order.total;
     orderItems = order.items;
 
     allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(order);

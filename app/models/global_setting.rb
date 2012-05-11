@@ -63,6 +63,8 @@ class GlobalSetting < ActiveRecord::Base
   CREDIT_CARD_CHARGE_SERVICE_IP = 51
   CREDIT_CARD_TERMINAL_IP = 52
   CREDIT_CARD_TERMINAL_PORT = 53
+  POLLING_INTERVAL_SECONDS = 54
+  PROCESS_TABLE_0_ORDERS = 55
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -117,7 +119,9 @@ class GlobalSetting < ActiveRecord::Base
     SHOW_LICENCE_EXPIRED_SCREEN => "Show Licence Expired Screen",
     CREDIT_CARD_CHARGE_SERVICE_IP => "Credit Card Charge Service IP",
     CREDIT_CARD_TERMINAL_IP => "Credit Card Terminal IP",
-    CREDIT_CARD_TERMINAL_PORT => "Credit Card Terminal Port"
+    CREDIT_CARD_TERMINAL_PORT => "Credit Card Terminal Port",
+    POLLING_INTERVAL_SECONDS => "Polling Amount Seconds",
+    PROCESS_TABLE_0_ORDERS => "Process Table 0 Orders"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -289,6 +293,12 @@ class GlobalSetting < ActiveRecord::Base
     when CREDIT_CARD_TERMINAL_PORT
       @gs = find_or_create_by_key(:key => "#{CREDIT_CARD_TERMINAL_PORT.to_s}_#{args[:fingerprint]}", :value => "25000", :label_text => LABEL_MAP[CREDIT_CARD_TERMINAL_PORT])
       @gs.parsed_value = @gs.value.to_i
+    when POLLING_INTERVAL_SECONDS
+      @gs = find_or_create_by_key(:key => "#{POLLING_INTERVAL_SECONDS.to_s}", :value => 1, :label_text => LABEL_MAP[POLLING_INTERVAL_SECONDS])
+      @gs.parsed_value = @gs.value.to_i
+    when PROCESS_TABLE_0_ORDERS
+      @gs = find_or_create_by_key(:key => PROCESS_TABLE_0_ORDERS.to_s, :value => "true", :label_text => LABEL_MAP[PROCESS_TABLE_0_ORDERS])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -366,6 +376,22 @@ class GlobalSetting < ActiveRecord::Base
       write_attribute("value", new_value)
     when CREDIT_CARD_TERMINAL_PORT
       new_value = value.to_i
+      write_attribute("value", new_value)
+    when POLLING_INTERVAL_SECONDS
+      #make sure it is a number between POLLING_MIN_SECONDS and POLLING_MAX_SECONDS
+      value_as_num = value.to_i
+      
+      if value_as_num > POLLING_MAX_SECONDS
+        new_value = POLLING_MAX_SECONDS
+      elsif value_as_num < POLLING_MIN_SECONDS
+        new_value = POLLING_MIN_SECONDS
+      else
+        new_value = value_as_num
+      end
+      
+      write_attribute("value", new_value)
+    when PROCESS_TABLE_0_ORDERS
+      new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     else
       #catch the keys that are not only integers and wont get caught in the switch statement
@@ -607,6 +633,10 @@ class GlobalSetting < ActiveRecord::Base
   RESTAURANT_MENU_SCREEN = 1
   RETAIL_MENU_SCREEN = 2
   CUSTOMER_MENU_SCREEN = 3
+  
+  #min and max values for polling in seconds
+  POLLING_MIN_SECONDS = 1
+  POLLING_MAX_SECONDS = 5
 end
 
 # == Schema Information

@@ -233,8 +233,26 @@ function clearOrderInStorage(current_user_id) {
 function storeTableOrderInStorage(current_user_id, table_num, order_to_store) {
     key = "user_" + current_user_id + "_table_" + table_num + "_current_order";
     value = JSON.stringify(order_to_store);
+    
+    if(current_user_id != masterOrdersUserId) {
+        //if value same as master, dont store it
+        var masterOrderKey = "user_" + masterOrdersUserId + "_table_" + table_num + "_current_order";
+    
+        if(retrieveStorageValue(masterOrderKey) == value) {
+            deleteStorageValue(key);
+            return null;
+        }
+    }
+    
     return storeKeyValue(key, value);
 }
+
+// OLD VERSION THAT KEEPS COPY OF ORDERS PER USER (KEEP FOR REVERT)
+//function storeTableOrderInStorage(current_user_id, table_num, order_to_store) {
+//    key = "user_" + current_user_id + "_table_" + table_num + "_current_order";
+//    value = JSON.stringify(order_to_store);
+//    return storeKeyValue(key, value);
+//}
 
 function getTableOrderFromStorage(current_user_id, selectedTable) {
     key = "user_" + current_user_id + "_table_" + selectedTable + "_current_order";
@@ -244,10 +262,41 @@ function getTableOrderFromStorage(current_user_id, selectedTable) {
     
     if(storageData != null) {
         tableOrderDataJSON = JSON.parse(storageData);
+    } else {
+        if(current_user_id != masterOrdersUserId) {
+            //try fetch the master order
+            var masterOrderKey = "user_" + masterOrdersUserId + "_table_" + selectedTable + "_current_order";
+        
+            storageData = retrieveStorageValue(masterOrderKey);
+        
+            if(storageData != null) {
+                tableOrderDataJSON = JSON.parse(storageData);
+            }
+        }
     }
     
     tableNum = selectedTable;
     parseAndFillTableOrderJSON(tableOrderDataJSON);
+}
+
+// OLD VERSION THAT KEEPS COPY OF ORDERS PER USER (KEEP FOR REVERT)
+//function getTableOrderFromStorage(current_user_id, selectedTable) {
+//    key = "user_" + current_user_id + "_table_" + selectedTable + "_current_order";
+//    storageData = retrieveStorageValue(key);
+//    
+//    tableOrderDataJSON = null;
+//    
+//    if(storageData != null) {
+//        tableOrderDataJSON = JSON.parse(storageData);
+//    }
+//    
+//    tableNum = selectedTable;
+//    parseAndFillTableOrderJSON(tableOrderDataJSON);
+//}
+
+function userHasUniqueTableOrder(userID, tableID) {
+    var key = "user_" + userID + "_table_" + tableID + "_current_order";
+    return localStorage.getItem(key) != null;
 }
 
 function clearTableOrderInStorage(current_user_id, selectedTable) {

@@ -338,14 +338,18 @@ function switchView(view_type) {
         $("#graph_view").removeClass("selected");
         $("#table_view").addClass("selected");
         $('#sales_items_graph').hide();
+        $('#stocks_items_graph').hide();
         $('#sales_items').show();
+        $('#stock_items').show();
     }
 
     if (view_type == "graph") {
         $("#graph_view").addClass("selected");
         $("#table_view").removeClass("selected");
         $('#sales_items_graph').show();
+        $('#stocks_items_graph').show();
         $('#sales_items').hide();
+        $('#stock_items').hide();
 
     }
 }

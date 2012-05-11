@@ -1,12 +1,17 @@
 <% if session[:preselect] != -1 %>
 <% unless params[:action] == "stocks_print" %>
+
 <div id="options_menu">
-                   <div style="margin-top:3px; margin-left: 10px; cursor: pointer; float: left" onclick="setStockSelect(-1)" class="print_box"> <img src="/images/button_logos/home.png" alt="Print" width="24" height="24" /><span style="font-weight: bold; margin-top: -3px;">Home</span></div>
-                   <div style="margin-top:3px;margin-left: 10px; cursor: pointer; float: left" onclick="window.location = '/reports/stocks/stocks_print'" class="print_box"> <img src="/images/button_logos/print.png" alt="Print" width="24" height="24" /><span style="font-weight: bold; margin-bottom: 10px;">Print</span></div>
-                   <div style="margin-top:3px;margin-left: 10px; cursor: pointer; float: left" onclick="window.location = '/reports/stocks/export_excel'" class="excel_box"><img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24" /><span style="font-weight: bold; margin-bottom: 10px;">Excel</span></div>
+                   <div class="option" onclick="setStockSelect(-1)" class="print_box"> <div style="float: left;"><img src="/images/button_logos/home.png" alt="Print" width="24" height="24" /></div><div style="float: left; margin-top: 6px;margin-left: 2px"><span style="font-weight: bold; margin-top: -3px;">  Home  |</span></div></div>
+                   <div class="option" onclick="window.location = '/reports/stocks/stocks_print'" class="print_box"><div style="float: left;"> <img src="/images/button_logos/print.png" alt="Print" width="24" height="24" /></div><div style="float: left; margin-top: 6px;margin-left: 2px"><span style="font-weight: bold; margin-top: -3px;">  Print  |</span></div></div>
+                   <div class="option" onclick="window.location = '/reports/stocks/export_excel'" class="excel_box"><div style="float: left;"><img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24" /></div><div style="float: left; margin-top: 6px;margin-left: 2px"><span style="font-weight: bold; margin-top: -3px;">  Excel </span></div></div>
                 </div>
 <% end %>
-  <div id="sales_items">
+  <div id="stocks_items_graph">
+    <div id="spacer" style="height:70px;"></div>
+    <%= high_chart("graph_container_sales", @h) %>
+</div>
+  <div id="stock_items" style="display: none">
     <% if session[:show_zeros] %>
     <table id="product_list" class="admin_table" style="width: 100%">
           <thead>
@@ -64,6 +69,7 @@
       </tbody>
     </table>
     <% else %>
+
     <table id="product_list" class="admin_table" style="width: 100%">
           <thead>
           <% unless session[:search_type] == :by_category %>
@@ -76,39 +82,34 @@
             <th class="header">Cost ea</th>
             <th class="header">Cost Total</th>
             <th class="header">Revenue</th>
-            <th class="header">Profit</th>
+            <th class="header">Margin</th>
             <th class="header">Code Num</th>
           </thead>
-          <% @products.each do |product| %>
-          <% prod = Product.find_by_id(product.product_id) %>
+          <% @products.each do |item| %>
+          <% product = Product.find_by_id(item.product_id) %>
           <% price = 0 %>
           <tbody>
           <tr>
               <% unless session[:search_type] == :by_category %>
               <td>
-                  <%= prod.name %>
+                  <%= product.name %>
               </td>
               <% end %>
               <td>
-                  <%= Category.find_by_id(prod.category_id).name %>
+                  <%= Category.find_by_id(product.category_id).name %>
               </td>
               <td>
-                  <%= prod.quantity_in_stock %>
+                  <%= product.quantity_in_stock %>
               </td>
               <td>
-                   <% quantity_sold = sprintf("%.0f",OrderItem.sum(:quantity, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date]))  %>
+                   <% quantity_sold = sprintf("%.0f", item.quantity)  %>
                    <%= quantity_sold %>
               </td>
               <td>
-                  <%= sprintf("%.0f",OrderItem.sum(:quantity, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date]))  %>
+                  <%= quantity_sold %>
               </td>
               <td>
-
-                 <% if prod.cost_price == 0 %>
-                 <% price = sprintf("%.2f", prod.price) %>
-                 <% else %>
-                 <% price = sprintf("%.2f", prod.cost_price) %>
-                 <% end %>
+                 <% price = sprintf("%.2f", product.cost_price) %>
                  <%= price %>
               </td>
               <td>
@@ -116,15 +117,16 @@
                   <%= total_price %>
               </td>
               <td>
-                  <% revenue = sprintf("%.2f", OrderItem.sum(:total_price, :conditions =>["product_id = ? and created_at >= ? and created_at <= ?", prod.id, @selected_from_date, @selected_to_date])) %>
+                  <% revenue = sprintf("%.2f",item.total_price.to_d) %>
                   <%= revenue %>
               </td>
               <td>
+                  <% unless product.cost_price == 0 %>
                   <%= sprintf("%.0f", per_profit(revenue, total_price)) %>%
-
+                  <% end %>
               </td>
               <td>
-                  <%= prod.code_num %>
+                  <%= product.code_num %>
               </td>
           </tr>
           <% end %>
@@ -135,17 +137,11 @@
   </div>
 <% else %>
     <div id="saved_items">
-        <div class="preselect_button">
-                        <div onclick="setStockSelect(0)" style="height: 130px;width: 300px;" class="wide_button"><b>Stocks by Product This Week</b></div>
-                    </div>
-        <div class="preselect_button">
-                        <div onclick="setStockSelect(1)" style="height: 130px;width: 300px;" class="wide_button"><b>Stocks by Product This Month</b></div>
-                    </div>
-        <div class="preselect_button">
-                        <div onclick="setStockSelect(2)" style="height: 130px;width: 300px;" class="wide_button"><b>Stocks by Product This Year</b></div>
-                    </div>
-        <div class="preselect_button">
-                        <div onclick="setStockSelect(3)" style="height: 130px;width: 300px;" class="wide_button"><b>Stocks by Product All Time</b></div>
-                    </div>
+    <div id="saved_items_container">
+                        <div onclick="setStockSelect(0)" class="saved_report_button"><div class="b_text"> <b>Stocks by Product This Week</b></div></div>
+                        <div onclick="setStockSelect(1)"  class="saved_report_button"><div class="b_text"><b>Stocks by Product This Month</b></div></div>
+                        <div onclick="setStockSelect(2)"  class="saved_report_button"><div class="b_text"><b>Stocks by Product This Year</b></div></div>
+                        <div onclick="setStockSelect(3)"  class="saved_report_button"><div class="b_text"><b>Stocks by Product All Time</b></div></div>
+    </div>
     </div>
 <% end %>

@@ -52,3 +52,21 @@ task :delete_recpt_data => :environment do
   
   puts "Done!"
 end
+
+desc "Clear duplicate keys in global settings"
+task :clear_dup_keys_gs => :environment do
+  GlobalSetting.all.group_by(&:key).each do |gs_key, gs_set|
+    if gs_set.size > 1
+      #we have duplicates
+      @del_count = gs_set.size - 1
+      
+      puts "Found #{gs_set.size} duplicate keys for Key: #{gs_key} Label: '#{gs_set.first.label_text}'. Removing #{@del_count} duplicates!"
+      
+      gs_set.each do |gs|
+        break if @del_count == 0
+        gs.destroy
+        @del_count -= 1
+      end
+    end
+  end
+end

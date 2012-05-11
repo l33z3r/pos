@@ -72,7 +72,7 @@ $(window).load(function(){
 
 function initMenuScreenType() {
     if(menuScreenType == RESTAURANT_MENU_SCREEN) {
-        //nothing needed here    
+    //nothing needed here    
     } else if(menuScreenType == RETAIL_MENU_SCREEN) {
         //hide the table select box
         $('#table_screen_button, #table_select_container').hide();
@@ -91,38 +91,7 @@ function initMenuScreenType() {
         }, 1000);
     } else if(menuScreenType == CUSTOMER_MENU_SCREEN) {
         //execute a bunch of css mods to change the menu interface
-        
-        //resize menu items
-        $('#items .item').height(133);
-        $('#items .item').width(176);
-        $('#items .item').css("margin", "3px");
-        $('#items .item .item_pic').height(116);
-        $('#items .item .item_pic img').height(90);
-        $('#items .item .item_pic img').css("max-height", "90px");
-        $('#items .item .item_pic img').css("max-width", "172px");
-        $('#items .item .item_pic img').css("margin-top", "5px");
-        
-        $('#items .menu_item_spacer').height(135);
-        $('#items .menu_item_spacer').width(178);
-        $('#items .menu_item_spacer').css("margin", "3px");
-        
-        $('#items .item .item_name').css("width", "172px");
-        $('#items .item .item_name').css("font-size", "16px");
-        $('#items .item .item_name').css("bottom", "7px");
-        
-        $('div#menu_screen div#menu_pages_container div#menu_container').height(631);
-        $('div#menu_screen div#menu_items_container').height(563);
-        $('div#menu_screen div#order_item_additions').height(631);
-        $('div#menu_screen div#order_item_additions div.oia_container').height(558);
-        $('div#menu_screen div#menu_buttons').height(79);
-        
-        //hide the table select box
-        $('#table_screen_button, #table_select_container').hide();
-        
-        $('#box_label_container').show();
-        
-        //hide the shortcut dropdown
-        $('#menu_screen_shortcut_dropdown_container').hide();
+        performCustomerScreenCSSMods();
     }
 }
 
@@ -405,8 +374,7 @@ function doSelectMenuItem(productId, menuItemId, element) {
     amount = currentMenuItemQuantity;
     
     //reset the quantity
-    currentMenuItemQuantity = "";
-    $('#menu_screen_input_show').html("");
+    clearMenuScreenInput();
 
     buildOrderItem(product, amount);
     setModifierGridIdForProduct(product);
@@ -1046,7 +1014,7 @@ function loadReceipt(order, doScroll) {
         return;
     }
 
-    orderTotal = order.total;
+    var orderTotal = order.total;
     orderItems = order.items;
 
     allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(order);
@@ -1222,8 +1190,9 @@ function doTotalFinal() {
     //but we allow table 0 orders to be cashed out regardless
     var now = clueyTimestamp();
     
-    if(selectedTable != 0 && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
-        showLoadingDiv("Cashing out after previous order complete, Please Wait...");
+    //if we are on table 0 and we are not processing table 0 orders, then we can skip this check
+    if((selectedTable != 0 || isProcessingTable0Orders) && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
+        showLoadingDiv("Waiting on previous sale to finish processing...");
         setTimeout(doTotalFinal, 1000);
         return;
     }
@@ -1245,13 +1214,17 @@ function doTotalFinal() {
     
     numPersons = 0
 
+    isTableZeroOrder = false;
+
     if(selectedTable == 0) {
         totalOrder = currentOrder;
         tableInfoId = null;
         tableInfoLabel = "None";
         isTableOrder = false;
         
-        isTableZeroOrder = true;
+        if(isProcessingTable0Orders) {
+            isTableZeroOrder = true;
+        }
             
         //copy the order to distribute through system after processing
         var copiedLastTableZeroOrder = {};
@@ -1297,6 +1270,8 @@ function doTotalFinal() {
     
     discountPercent = totalOrder.discount_percent;
     preDiscountPrice = totalOrder.pre_discount_price;
+    
+    var orderTotal = order.total;
     
     if(parseFloat(cashTendered) == 0.0) {
         cashTendered = orderTotal + serviceCharge;
@@ -2473,4 +2448,43 @@ function productInfoAddItemToOrder() {
     doSelectMenuItem(currentProductInfoPopupProductId, null, null);
     setProductInfoPopup(true);
     closeProductInfoPopup();
+}
+
+function clearMenuScreenInput() {
+    currentMenuItemQuantity = "";
+    $('#menu_screen_input_show').html("");
+}
+
+function performCustomerScreenCSSMods() {
+    //resize menu items
+        $('#items .item').height(133);
+        $('#items .item').width(176);
+        $('#items .item').css("margin", "3px");
+        $('#items .item .item_pic').height(116);
+        $('#items .item .item_pic img').height(90);
+        $('#items .item .item_pic img').css("max-height", "90px");
+        $('#items .item .item_pic img').css("max-width", "172px");
+        $('#items .item .item_pic img').css("margin-top", "5px");
+        
+        $('#items .menu_item_spacer').height(135);
+        $('#items .menu_item_spacer').width(178);
+        $('#items .menu_item_spacer').css("margin", "3px");
+        
+        $('#items .item .item_name').css("width", "172px");
+        $('#items .item .item_name').css("font-size", "16px");
+        $('#items .item .item_name').css("bottom", "7px");
+        
+        $('div#menu_screen div#menu_pages_container div#menu_container').height(631);
+        $('div#menu_screen div#menu_items_container').height(563);
+        $('div#menu_screen div#order_item_additions').height(631);
+        $('div#menu_screen div#order_item_additions div.oia_container').height(558);
+        $('div#menu_screen div#menu_buttons').height(79);
+        
+        //hide the table select box
+        $('#table_screen_button, #table_select_container').hide();
+        
+        $('#box_label_container').show();
+        
+        //hide the shortcut dropdown
+        $('#menu_screen_shortcut_dropdown_container').hide();
 }
