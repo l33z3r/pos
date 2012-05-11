@@ -233,9 +233,7 @@ class Reports::SalesController < Admin::AdminController
     if (session[:search_type] == :day || :month || :year || :week)
       where = 'select o.id, o.tax_rate, o.product_id, o.created_at, SUM(total_price) total_price, SUM(quantity) quantity from order_items o'
 
-      if session[:terminal] != ''
-        where << " and o.terminal_id = '#{session[:terminal]}'"
-      end
+
 
       if session[:category] == '' && session[:product] == '' && session[:search_product] != ''
         where << " inner join products p on o.product_id = p.id"
@@ -262,9 +260,12 @@ class Reports::SalesController < Admin::AdminController
         where << " and p.name like '%#{session[:search_product]}%' or p.code_num like '%#{session[:search_product]}%'"
       end
 
-      where << " order by o.created_at asc"
+      if session[:terminal] != ''
+        where << " and o.terminal_id = '#{session[:terminal]}'"
+      end
 
-      logger.debug "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss     #{where}"
+      where << " group by o.product_id order by o.created_at asc"
+
 
       query = OrderItem.find_by_sql(where)
     end
@@ -302,6 +303,8 @@ class Reports::SalesController < Admin::AdminController
 
         where << " group by o.product_id order by total_price desc"
         query = OrderItem.find_by_sql(where)
+        logger.debug "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss     #{where}"
+
       end
 
     #end
