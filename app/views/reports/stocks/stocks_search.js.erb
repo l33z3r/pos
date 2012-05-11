@@ -1,1 +1,9 @@
 $("#report_stocks_results").html("<%= escape_javascript(render("stocks_tab")) %>");
+
+if ($('#graph_view').hasClass('selected')) {
+    $('#stocks_items_graph').show();
+    $('#stock_items').hide();
+} else {
+    $('#stocks_items_graph').hide();
+    $('#stock_items').show();
+}

@@ -1,163 +1,175 @@
-
-
-
 <% if session[:preselect] != -1 %>
-<% unless params[:action] == "sales_print" %>
-<div id="options_menu">
-                   <div class="option" onclick="setSearchSelect(-1)" class="print_box"> <div style="float: left;"><img src="/images/button_logos/home.png" alt="Print" width="24" height="24" /></div><div style="float: left; margin-top: 6px;margin-left: 2px"><span style="font-weight: bold; margin-top: -3px;">  Home  |</span></div></div>
-                   <div class="option" onclick="window.location = '/reports/sales/sales_print'" class="print_box"><div style="float: left;"> <img src="/images/button_logos/print.png" alt="Print" width="24" height="24" /></div><div style="float: left; margin-top: 6px;margin-left: 2px"><span style="font-weight: bold; margin-top: -3px;">  Print  |</span></div></div>
-                   <div class="option" onclick="window.location = '/reports/sales/export_excel'" class="excel_box"><div style="float: left;"><img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24" /></div><div style="float: left; margin-top: 6px;margin-left: 2px"><span style="font-weight: bold; margin-top: -3px;">  Excel </span></div></div>
+    <% unless params[:action] == "sales_print" %>
+        <div id="options_menu">
+            <div class="option" onclick="setSearchSelect(-1)" class="print_box">
+                <div style="float: left;"><img src="/images/button_logos/home.png" alt="Print" width="24" height="24"/>
                 </div>
-<% end %>
-<div id="sales_items_graph">
-    <div id="spacer" style="height:70px;"></div>
-    <%= high_chart("graph_container_sales", @h) %>
-</div>
-
-
-<div id="sales_items" style="display: none">
-    <% if params[:action] == "sales_print" %>
-        <h3>Sales Report <%= Time.now.strftime("%B %d, %Y") %></h3>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Home  |</span></div>
+            </div>
+            <div class="option" onclick="window.location = '/reports/sales/sales_print'" class="print_box">
+                <div style="float: left;"><img src="/images/button_logos/print.png" alt="Print" width="24" height="24"/>
+                </div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Print  |</span></div>
+            </div>
+            <div class="option" onclick="window.location = '/reports/sales/export_excel'" class="excel_box">
+                <div style="float: left;">
+                    <img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24"/></div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Excel </span></div>
+            </div>
+        </div>
     <% end %>
-
-<% if (@s_type == :best_seller) || (@s_type == :worst_seller) %>
-              <table id="product_list" class="admin_table" style="width: 100%;">
-          <thead>
-            <th class="header">Product</th>
-            <th class="header">Category</th>
-            <th class="header">Items Qty</th>
-            <th class="header">Gross Sales</th>
-            <th class="header">VAT</th>
-            <th class="header">NET Sales</th>
-          </thead>
-          <% @orders.each do |week| %>
-            <% product = Product.find_by_id(week.product_id) %>
-            <% total_items = week.quantity %>
-            <% gross_sales = 0 %>
-            <% gross_sales = week.total_price %>
-            <% vat = 0 %>
-          <% if Category.find_by_id(product.category_id) %>
-          <% tax_rate = product.sales_tax_rate %>
-          <% else %>
-          <% tax_rate = 20 %>
-          <% end %>
-          <% vat = vat_rate(tax_rate, gross_sales) %>
-          <% net_sales = net_result(gross_sales, vat) %>
-          <tbody>
-          <tr>
-              <td>
-
-                  <%= product.name %>
-              </td>
-
-              <td>
-                  <% if Category.find_by_id(product.category_id) %>
-                  <%= Category.find_by_id(product.category_id).name %>
-                  <% end %>
-              </td>
-              <td style="text-align: right">
-                 <%= "%g" % total_items %>
-              </td>
-              <td style="text-align: right">
-                  <%= sprintf("%.2f", gross_sales) %>
-              </td>
-              <td style="text-align: right">
-                 <%= sprintf("%.2f", vat) %>
-              </td>
-              <td style="text-align: right">
-                 <%= sprintf("%.2f", net_sales) %>
-              </td>
+    <div id="sales_items_graph">
+        <div id="spacer" style="height:70px;"></div>
+        <%= high_chart("graph_container_sales", @h) %>
+    </div>
 
 
-          </tr>
-          <% end %>
+    <div id="sales_items" style="display: none">
+        <% if params[:action] == "sales_print" %>
+            <h3>Sales Report <%= Time.now.strftime("%B %d, %Y") %></h3>
+        <% end %>
 
-      </tbody>
-              </table>
+        <% if (@s_type == :best_seller) || (@s_type == :worst_seller) %>
+            <table id="product_list" class="admin_table" style="width: 100%;">
+                <thead>
+                <th class="header">Product</th>
+                <th class="header">Category</th>
+                <th class="header">Items Qty</th>
+                <th class="header">Gross Sales</th>
+                <th class="header">VAT</th>
+                <th class="header">NET Sales</th>
+                </thead>
+                <% @orders.each do |week| %>
+                    <% product = Product.find_by_id(week.product_id) %>
+                    <% total_items = week.quantity %>
+                    <% gross_sales = 0 %>
+                    <% gross_sales = week.total_price %>
+                    <% vat = 0 %>
+                    <% tax_rate = week.tax_rate %>
+                    <% vat = vat_rate(tax_rate, gross_sales) %>
+                    <% net_sales = net_result(gross_sales, vat) %>
+                    <tbody>
+                    <tr>
+                        <td>
 
-<% else %>
+                            <%= product.name %>
+                        </td>
 
-    <table id="product_list" class="admin_table" style="width: 100%">
-          <thead>
-            <th class="header">Date</th>
-            <th class="header">Day</th>
-            <th class="header">Items Qty</th>
-            <th class="header">Gross Sales</th>
-            <th class="header">VAT</th>
-            <th class="header">NET Sales</th>
-          </thead>
-        <% total_items = 0 %>
-          <% @orders.group_by(&@s_type).sort.each do |week| %>
-
-            <% gross_sales = 0 %>
-            <% net_sales = 0 %>
-            <% vat = 0 %>
-            <% new_tax_rate = 0 %>
-                 <% week[1].each do |order| %>
-                    <% order.order_items.each do |eitem| %>
-                    <% total_items += eitem.quantity %>
-                    <% end %>
-                    <% gross_sales += order.total %>
-                    <% product = Product.find_by_id(order.order_items.first.product_id) %>
-                    <% new_tax_rate = product.sales_tax_rate %>
-                 <% end %>
-          <% vat = vat_rate(new_tax_rate, gross_sales) %>
-          <% net_sales = net_result(gross_sales, vat) %>
-          <tbody>
-          <tr>
-              <td>
-                  <% if @s_type == :day %>
-                  <%= week[1][0].created_at.strftime("%B %d, %Y") %>
-                  <% end %>
-                  <% if @s_type == :week %>
-                  Week starting <%= week[1][0].created_at.beginning_of_week.strftime("%B %d, %Y") %>
-                  <% end %>
-                  <% if @s_type == :month %>
-                  <%= week[1][0].created_at.strftime("%B, %Y") %>
-                  <% end %>
-                  <% if @s_type == :year %>
-                  <%= week[1][0].created_at.strftime("%Y") %>
-                  <% end %>
-              </td>
-
-              <td>
-                   <% if @s_type == :day %>
-                  <%= DAYS_OF_THE_WEEK[week[1][0].created_at.wday.to_i] %>
-                   <% end %>
-                  <% if @s_type == :week %>
-                  Monday
-                  <% end %>
-              </td>
-              <td>
-                 <%= sprintf("%.0f", total_items) %>
-              </td>
-              <td>
-                  <%= sprintf("%.2f", gross_sales ) %>
-              </td>
-              <td>
-                 <%= sprintf("%.2f", vat) %>
-              </td>
-              <td>
-                 <%= sprintf("%.2f", net_sales) %>
-              </td>
+                        <td>
+                            <% if Category.find_by_id(product.category_id) %>
+                                <%= Category.find_by_id(product.category_id).name %>
+                            <% end %>
+                        </td>
+                        <td style="text-align: right">
+                            <%= "%g" % total_items %>
+                        </td>
+                        <td style="text-align: right">
+                            <%= sprintf("%.2f", gross_sales) %>
+                        </td>
+                        <td style="text-align: right">
+                            <%= sprintf("%.2f", vat) %>
+                        </td>
+                        <td style="text-align: right">
+                            <%= sprintf("%.2f", net_sales) %>
+                        </td>
 
 
-          </tr>
-          <% end %>
+                    </tr>
+                <% end %>
 
-      </tbody>
-    </table>
-  </div>
+                </tbody>
+            </table>
 
-<% end %>
+        <% else %>
+
+            <table id="product_list" class="admin_table" style="width: 100%">
+                <thead>
+                <th class="header">Date</th>
+                <th class="header">Day</th>
+                <th class="header">Items Qty</th>
+                <th class="header">Gross Sales</th>
+                <th class="header">VAT</th>
+                <th class="header">NET Sales</th>
+                </thead>
+                <% total_items = 0 %>
+                <% @orders.group_by(&@s_type).sort.each do |week| %>
+
+                    <% gross_sales = 0 %>
+                    <% net_sales = 0 %>
+                    <% vat = 0 %>
+                    <% new_tax_rate = 0 %>
+                    <% total_items = week[1][0].quantity %>
+                    <% gross_sales = week[1][0].total_price %>
+                    <% product = Product.find_by_id(week[1][0].product_id) %>
+                    <% new_tax_rate = week[1][0].tax_rate %>
+                    <% vat = vat_rate(new_tax_rate, gross_sales) %>
+                    <% net_sales = net_result(gross_sales, vat) %>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <% if @s_type == :day %>
+                                <%= week[1][0].created_at.strftime("%B %d, %Y") %>
+                            <% end %>
+                            <% if @s_type == :week %>
+                                Week starting <%= week[1][0].created_at.beginning_of_week.strftime("%B %d, %Y") %>
+                            <% end %>
+                            <% if @s_type == :month %>
+                                <%= week[1][0].created_at.strftime("%B, %Y") %>
+                            <% end %>
+                            <% if @s_type == :year %>
+                                <%= week[1][0].created_at.strftime("%Y") %>
+                            <% end %>
+                        </td>
+
+                        <td>
+                            <% if @s_type == :day %>
+                                <%= DAYS_OF_THE_WEEK[week[1][0].created_at.wday.to_i] %>
+                            <% end %>
+                            <% if @s_type == :week %>
+                                Monday
+                            <% end %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.0f", total_items) %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.2f", gross_sales) %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.2f", vat) %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.2f", net_sales) %>
+                        </td>
+
+
+                    </tr>
+                <% end %>
+
+                </tbody>
+            </table>
+            </div>
+
+        <% end %>
 <% else %>
     <div id="saved_items">
-    <div id="saved_items_container">
-                        <div onclick="setSearchSelect(0)" class="saved_report_button"><div class="b_text"> <b>Sales by Day This Week</b></div></div>
-                        <div onclick="setSearchSelect(1)"  class="saved_report_button"><div class="b_text"><b>This Months Best Sales</b></div></div>
-                        <div onclick="setSearchSelect(2)"  class="saved_report_button"><div class="b_text"><b>Sales by Month This Year</b></div></div>
-                        <div onclick="setSearchSelect(3)"  class="saved_report_button"><div class="b_text"><b>Sales by Product This Week</b></div></div>
-    </div>
+        <div id="saved_items_container">
+            <div onclick="setSearchSelect(0)" class="saved_report_button">
+                <div class="b_text"><b>Sales by Day This Week</b></div>
+            </div>
+            <div onclick="setSearchSelect(1)" class="saved_report_button">
+                <div class="b_text"><b>This Months Best Sales</b></div>
+            </div>
+            <div onclick="setSearchSelect(2)" class="saved_report_button">
+                <div class="b_text"><b>Sales by Month This Year</b></div>
+            </div>
+            <div onclick="setSearchSelect(3)" class="saved_report_button">
+                <div class="b_text"><b>Sales by Product This Week</b></div>
+            </div>
+        </div>
     </div>
 <% end %>
 

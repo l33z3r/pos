@@ -4,6 +4,28 @@ class OrderItem < ActiveRecord::Base
   belongs_to :order
   belongs_to :employee
   belongs_to :product
+
+  def week
+    self.created_at.strftime('%W')
+  end
+
+  def day
+    self.created_at.strftime('%d')
+  end
+
+  def year
+    self.created_at.strftime('%y')
+  end
+
+  def month
+    self.created_at.strftime('%m')
+  end
+
+  def best_sellers
+    self.total
+  end
+
+
 end
 
 
