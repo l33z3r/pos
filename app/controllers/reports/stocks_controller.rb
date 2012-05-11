@@ -158,10 +158,7 @@ class Reports::StocksController < Admin::AdminController
     @selected_from_date = session[:from_date].to_s
     @selected_to_date = session[:to_date].to_s
 
-    if session[:show_zeros]
-      query = Product.all
-      session[:search] = 'init'
-    else
+
 
       where = "select oi.product_id, p.category_id, p.quantity_in_stock, p.cost_price, p.code_num, SUM(oi.total_price) AS total_price, SUM(oi.quantity) AS quantity from order_items oi inner join products p on p.id = oi.product_id inner join categories c on c.id = p.category_id"
 
@@ -196,7 +193,6 @@ class Reports::StocksController < Admin::AdminController
       logger.debug "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss     #{where}"
 
 
-    end
 
     return query
   end
