@@ -16,3 +16,16 @@ class LoyaltyLevel < ActiveRecord::Base
     loyalty_level
   end
 end
+
+# == Schema Information
+#
+# Table name: loyalty_levels
+#
+#  id         :integer(4)      not null, primary key
+#  label      :string(255)
+#  percent    :float
+#  is_default :boolean(1)      default(FALSE)
+#  created_at :datetime
+#  updated_at :datetime
+#
+

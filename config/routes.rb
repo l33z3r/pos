@@ -166,6 +166,12 @@ Pos::Application.routes.draw do
         get 'current_product_images'
       end
     end
+    
+    resources :customers do
+      collection do
+        get 'search'
+      end
+    end
 
     resources :previous_cash_totals, :only => [:index] do
       collection do

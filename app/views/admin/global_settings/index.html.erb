@@ -526,6 +526,16 @@
                   </tr>
 
                   <tr>
+                    <td>Tax Chargable Sales Tax Rate</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::GLOBAL_TAX_RATE %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
+
+                  <tr>
                     <td>What Do You Want To Call Sales Tax(Tax/Vat etc)?</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::TAX_LABEL %>
@@ -558,16 +568,6 @@
                              value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">No</div>
                       <div class="clear">&nbsp;</div>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>Enter Default Sales Tax Rate</td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::GLOBAL_TAX_RATE %>
-                      <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.text_field :value %>
-                      <% end %>
                     </td>
                   </tr>
 

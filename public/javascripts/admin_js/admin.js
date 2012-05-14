@@ -556,7 +556,7 @@ function addEnterKeyEvents(){
 function initTinyMCE() {
     tinyMCE.init({
         mode : "specific_textareas",
-        mceEditor : "mceEditor",
+        editor_selector : "mceEditor",
         theme : "advanced",
         theme_advanced_resizing_max_width : 120,
         theme_advanced_buttons1 : "|,fontsizeselect,|,bold,italic,underline,strikethrough,|",

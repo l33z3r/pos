@@ -1,0 +1,46 @@
+<% @nav_title = "Customers" %>
+
+<% content_for :admin_subnav_links_left do %>
+  <div class="button" data-onpress="goTo('<%= new_admin_customer_path %>');">
+    <div class="icon">
+      <%= image_tag "/images/button_logos/create_customer_button.png" %>
+    </div>
+    <div class="button_name">Add Customer</div>
+  </div>
+
+<% end %>
+
+<div id="admin_customer_list">
+
+  <section id="customers" class="no_scroll_pane">
+
+    <div class="pagination_links">
+      <div class="links">
+        <div class="pagination">
+          <a href="#" onclick="loadCustomersForPreviousLetter();"><%= image_tag("prev.gif", :border=>0) %></a>
+          <a href="#" onclick="loadCustomersForAllLetters();" id="button_all">All</a>
+          <% @letters.each do |letter|%>
+            <a href="#" onclick="loadCustomersForLetter('<%= letter %>');" id="button_<%= letter %>">
+              <%= letter %>
+            </a>
+            <script type="text/javascript">if(barLetters.indexOf('<%= letter %>')==-1){barLetters.push('<%= letter %>')};</script>
+          <% end %>
+          <a href="#" onclick="loadCustomersForNumber();" id="button_hash">#</a>
+          <a href="#" onclick="loadCustomersForNextLetter();"><%= image_tag("next.gif", :border=>0) %></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="clear_top_margin_20">&nbsp;</div>    
+
+    <div id="customers_container" class="jscrollpane">
+      <div id="customers_ajax">
+        <%= render 'customers' %>
+      </div>
+    </div>
+
+    <div class="clear_top_margin_20">&nbsp;</div>
+
+</div>
+
+</section>

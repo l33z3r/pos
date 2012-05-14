@@ -35,7 +35,7 @@ class Order < ActiveRecord::Base
   
   has_one :client_transaction
   
-  has_one :customer_point
+  has_one :customer_points_allocation
   
   #for will_paginate
   cattr_reader :per_page

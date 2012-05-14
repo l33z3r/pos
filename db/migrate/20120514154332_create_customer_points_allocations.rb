@@ -1,6 +1,6 @@
-class CreateCustomerPoints < ActiveRecord::Migration
+class CreateCustomerPointsAllocations < ActiveRecord::Migration
   def self.up
-    create_table :customer_points do |t|
+    create_table :customer_points_allocations do |t|
       t.integer :customer_id
       t.integer :order_id
       
@@ -12,6 +12,6 @@ class CreateCustomerPoints < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :customer_points
+    drop_table :customer_points_allocations
   end
 end
