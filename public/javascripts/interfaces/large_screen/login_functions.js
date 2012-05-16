@@ -131,10 +131,16 @@ function doLogin() {
         if (entered_code == passcode) {
             nickname = employees[i].nickname;
 
+
             if (employees[i]['clocked_in']) {
-                id = employees[i].id
-                is_admin = employees[i].is_admin;
-                loginSuccess(id, nickname, is_admin, passcode);
+                if (employees[i].dallas_code == ""){
+                    id = employees[i].id
+                    is_admin = employees[i].is_admin;
+                    loginSuccess(id, nickname, is_admin, passcode);
+                }else {
+                    setStatusMessage("Not Allowed! Please use iButton", true, true);
+                    clearClockinCode();
+                }
                 return;
             } else {
                 setStatusMessage("User " + nickname + " is not clocked in!", true, true);
