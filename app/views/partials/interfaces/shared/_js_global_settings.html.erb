@@ -86,6 +86,8 @@
   var terminalID = "<%=@terminal_id%>";
   
   var pollingAmount = <%= GlobalSetting.parsed_setting_for GlobalSetting::POLLING_INTERVAL_SECONDS %> * 1000;
+  var pollingMinSeconds = <%= GlobalSetting::POLLING_MIN_SECONDS %>;
+  var pollingMaxSeconds = <%= GlobalSetting::POLLING_MAX_SECONDS %>;
   
   var using_mobile = <%= mobile_device? ? "true" : "false" %>;
   

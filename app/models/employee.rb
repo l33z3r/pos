@@ -1,4 +1,4 @@
-class Employee < ActiveRecord::Base
+ class Employee < ActiveRecord::Base
 
   has_attached_file :employee_image, PAPERCLIP_STORAGE_OPTIONS.merge(:styles => { :medium => "300x300>", :thumb => "115x115>" })
 

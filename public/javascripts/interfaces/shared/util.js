@@ -760,7 +760,9 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
     //hide any previous popups
     hideNiceAlert();
     
-    var timeoutSeconds = 5;
+    //the timeout must be 2 seconds over the pollingAmount so that it has a chance to save the timestamp
+    //preventing the reload request from reappearing
+    var timeoutSeconds = pollingMaxSeconds + 2;
     
     if(hardReload) {
         message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
