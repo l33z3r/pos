@@ -210,7 +210,7 @@ class ApplicationController < ActionController::Base
   end
   
   def remove_old_table_0_orders
-    @max_table_0_orders = 50
+    @max_table_0_orders = 30
     @tsds_reversed = TerminalSyncData.fetch_sync_table_order_times.reverse
     
     #remove table orders
