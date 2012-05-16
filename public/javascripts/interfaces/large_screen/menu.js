@@ -1271,7 +1271,7 @@ function doTotalFinal() {
     discountPercent = totalOrder.discount_percent;
     preDiscountPrice = totalOrder.pre_discount_price;
     
-    var orderTotal = order.total;
+    var orderTotal = totalOrder.total;
     
     if(parseFloat(cashTendered) == 0.0) {
         cashTendered = orderTotal + serviceCharge;
@@ -2301,6 +2301,12 @@ function doSplitOrderItem(orderLine, reverse) {
     if(theItem.amount - currentSplitBillItemQuantity > 0) {
         modifyOrderItem(orderFrom, itemNumber, theItem.amount - currentSplitBillItemQuantity, theItem.product_price, theItem.product.course_num, theItem.is_void);
     } else {
+        //we are removing an item, so make sure that it is not the last one on the original order
+        if(!reverse && orderFrom.items.length == 1) {
+            niceAlert("You cannot remove the last item from the original order!");
+            return;
+        }
+        
         currentSplitBillItemQuantity = theItem.amount;
         doRemoveOrderItem(orderFrom, itemNumber);
     }
