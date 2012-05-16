@@ -18,6 +18,7 @@ class Admin::CustomersController < Admin::AdminController
   def new
     @hide_admin_header = true
     @customer = Customer.new
+    @customer.loyalty_level_id = LoyaltyLevel.load_default.id
   end
 
   def edit
@@ -39,7 +40,7 @@ class Admin::CustomersController < Admin::AdminController
     @customer = Customer.find(params[:id])
 
     if @customer.update_attributes(params[:customer])
-      redirect_to(admin_products_url, :notice => 'Customer was successfully updated.')
+      redirect_to(admin_customers_url, :notice => 'Customer was successfully updated.')
     else
       @hide_admin_header = true
       render :action => "edit"

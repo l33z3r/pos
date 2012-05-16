@@ -1174,6 +1174,8 @@ function doTotal(applyDefaultServiceCharge) {
     updateTotalTendered();
     
     $('#totals_tendered_box').addClass("selected");
+    
+    $('#loyalty_customer_section').hide();
 }
 
 var cashSaleInProcess = false;

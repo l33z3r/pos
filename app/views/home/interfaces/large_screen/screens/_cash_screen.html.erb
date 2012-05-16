@@ -85,6 +85,8 @@
               </div>
             </div>
 
+            <div class="clear_top_margin_20">&nbsp;</div>
+
             <div id="tendered_data_tables_container">
 
               <div id="totals_data_table"></div>
@@ -113,7 +115,7 @@
                 <div class="clear">&nbsp;</div>
               </div>
               <div class="clear">&nbsp;</div>
-              
+
               <div class="data_table" id="totals_balance_container">
                 <div class="bold label">Balance Due:</div>
                 <div class="bold data">
@@ -123,7 +125,7 @@
                 </div>
                 <div class="clear">&nbsp;</div>
               </div>
-              
+
               <div class="data_table" id="totals_change_container">
                 <div class="bold label">Change Due:</div>
                 <div class="bold data">
@@ -133,6 +135,25 @@
                 </div>
                 <div class="clear">&nbsp;</div>
               </div>
+
+              <div class="clear_top_margin_20">&nbsp;</div>
+
+              <div id="loyalty_customer_section" class="data_table">
+                <div class="bold label">Customer Name:</div>
+                <div id="loyalty_customer_name" class="data"></div>
+                <div class="clear">&nbsp;</div>
+
+                <div class="bold label">Loyalty Level %:</div>
+                <div id="loyalty_level_percent" class="data"></div>
+                <div class="clear">&nbsp;</div>
+
+                <div class="bold label">Points Earned:</div>
+                <div id="loyalty_points_earned" class="data"></div>
+                <div class="clear">&nbsp;</div>
+              </div>
+
+              <div class="clear_top_margin_20">&nbsp;</div>
+
             </div>
 
             <div class="action_buttons">
@@ -191,7 +212,7 @@
           </div>
           <div class="button_name">Charge Card</div>
         </div>
-        
+
         <div class="button" data-onpress="doLogout()">
           <div class="icon">
             <%= image_tag "button_logos/save_button.png" %>

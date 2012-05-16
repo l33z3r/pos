@@ -105,3 +105,7 @@ if !@default_display
     
   @default_display.save!
 end
+
+
+#Loyalty
+LoyaltyLevel.create({:label => "Default", :percent => 10, :is_default => true})

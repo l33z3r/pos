@@ -33,6 +33,7 @@
           <li><a id="payment_methods_section_link" href="#payment_methods_section">Payment Methods</a></li>
           <li><a id="receipt_footers_section_link" href="#receipt_footers_section">Receipt Footers</a></li>
           <li><a id="tax_rates_section_link" href="#tax_rates_section">Sales Tax Rates</a></li>
+          <li><a id="loyalty_levels_section_link" href="#loyalty_levels_section">Loyalty Levels</a></li>
           <li><a id="discounts_section_link" href="#discounts_section_section">Discounts</a></li>
           <li><a id="coursing_section_link" href="#coursing_section">Coursing</a></li>
           <li><a id="price_level_labels_section_link" href="#coursing_section">Price Levels</a></li>
@@ -663,6 +664,122 @@
                     </td>
                     <td>
                       <%= f.text_field :rate, :size => 4 %>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Create" %>
+              </div>
+
+            <% end %>
+
+            <div class="clear">&nbsp;</div>
+          </div>
+        </div>
+
+        <div class="container" id="#loyalty_levels_section">
+          <div class="jscrollpane">
+            <h4>Misc</h4>
+
+            <%= form_tag admin_update_global_settings_path do %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="330">Setting</th>
+                    <th width="320">Value</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>Loyalty Level Card Prefix (e.g. %ICR)</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::LOYALTY_CARD_PREFIX %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Save" %>
+              </div>
+
+            <% end %>
+              
+              <h4>Current Loyalty Levels</h4>
+
+            <%= form_tag update_multiple_admin_loyalty_levels_path do %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="330">Label</th>
+                    <th width="70">Rate</th>
+                    <th width="150">Delete</th>
+                    <th width="150">Set Default</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <% LoyaltyLevel.all(:order => :label).each do |tr| %>
+                    <%= fields_for "loyalty_levels[]", tr do |f| %>
+                      <tr>
+                        <td><%= f.text_field :label %></td>
+                        <td><%= f.text_field :percent, :size => 4 %></td>
+                        <td><%= link_to "Delete", admin_loyalty_level_path(tr), :method => :delete, :confirm => "Are You Sure?" %></td>
+                        <td>
+                          <%= radio_button_tag "set_default_loyalty_level", "#{tr.id}", tr.is_default, 
+                            :onchange => "doSetDefaultLoyaltyLevel(this.value);" %>
+                        </td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Save" %>
+              </div>
+
+            <% end %>
+
+            <h4>New Loyalty Level</h4>
+
+            <%= form_for [:admin, LoyaltyLevel.new] do |f| %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="330">Label</th>
+                    <th width="320">Rate</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>
+                      <%= f.text_field :label %>
+                    </td>
+                    <td>
+                      <%= f.text_field :percent, :size => 4 %>
                     </td>
                   </tr>
                 </tbody>

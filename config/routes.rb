@@ -126,6 +126,15 @@ Pos::Application.routes.draw do
       end
     end
     
+    resources :loyalty_levels, :only => [:create, :destroy] do
+      member do
+        post 'default'
+      end
+      collection do
+        post 'update_multiple'
+      end
+    end
+    
     resources :payment_methods, :only => [:create, :destroy] do
       member do
         post 'default'

@@ -65,6 +65,7 @@ class GlobalSetting < ActiveRecord::Base
   CREDIT_CARD_TERMINAL_PORT = 53
   POLLING_INTERVAL_SECONDS = 54
   PROCESS_TABLE_0_ORDERS = 55
+  LOYALTY_CARD_PREFIX = 56
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -121,7 +122,8 @@ class GlobalSetting < ActiveRecord::Base
     CREDIT_CARD_TERMINAL_IP => "Credit Card Terminal IP",
     CREDIT_CARD_TERMINAL_PORT => "Credit Card Terminal Port",
     POLLING_INTERVAL_SECONDS => "Polling Amount Seconds",
-    PROCESS_TABLE_0_ORDERS => "Process Table 0 Orders"
+    PROCESS_TABLE_0_ORDERS => "Process Table 0 Orders",
+    LOYALTY_CARD_PREFIX => "Loyalty Card Prefix"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -299,6 +301,9 @@ class GlobalSetting < ActiveRecord::Base
     when PROCESS_TABLE_0_ORDERS
       @gs = find_or_create_by_key(:key => PROCESS_TABLE_0_ORDERS.to_s, :value => "true", :label_text => LABEL_MAP[PROCESS_TABLE_0_ORDERS])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when LOYALTY_CARD_PREFIX
+      @gs = find_or_create_by_key(:key => LOYALTY_CARD_PREFIX.to_s, :value => "%ICR", :label_text => LABEL_MAP[LOYALTY_CARD_PREFIX])
+      @gs.parsed_value = @gs.value
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value

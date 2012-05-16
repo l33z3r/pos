@@ -22,6 +22,13 @@ class Admin::TaxRatesController < Admin::AdminController
   end
 
   def destroy
+    #Don't allow deleting of last one
+    if TaxRate.all.size == 1
+      flash[:notice] = "You must have at least one tax rate!"
+      redirect_to admin_global_settings_path
+      return
+    end
+    
     @tax_rate = TaxRate.find(params[:id])
     @tax_rate.destroy
 

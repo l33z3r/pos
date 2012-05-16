@@ -2,7 +2,7 @@ class CreateLoyaltyLevels < ActiveRecord::Migration
   def self.up
     create_table :loyalty_levels do |t|
       t.string :label
-      t.float :percent
+      t.float :percent, :default => 10, :null => false
       t.boolean :is_default, :default => false
       
       t.timestamps

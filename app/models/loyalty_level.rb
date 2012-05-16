@@ -1,5 +1,5 @@
 class LoyaltyLevel < ActiveRecord::Base
-  validates :name, :presence => true
+  validates :label, :presence => true
   validates :percent, :presence => true, :numericality => {:greater_than_or_equal_to => 0, :less_than_or_equal_to => 100}
   
   has_many :customers
@@ -17,13 +17,14 @@ class LoyaltyLevel < ActiveRecord::Base
   end
 end
 
+
 # == Schema Information
 #
 # Table name: loyalty_levels
 #
 #  id         :integer(4)      not null, primary key
 #  label      :string(255)
-#  percent    :float
+#  percent    :float           default(10.0), not null
 #  is_default :boolean(1)      default(FALSE)
 #  created_at :datetime
 #  updated_at :datetime

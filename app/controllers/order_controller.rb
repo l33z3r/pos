@@ -142,6 +142,8 @@ class OrderController < ApplicationController
       @card_charge_details = @order_details.delete(:card_charge)
     
       @is_split_bill_order_param = @order_params.delete(:is_split_bill)
+      
+      @loyalty_details = @order_details.delete(:loyalty)
     
       @is_split_bill_order = @is_split_bill_order_param == "true"
     
@@ -257,6 +259,19 @@ class OrderController < ApplicationController
             :order_id => @order.id, 
             :payment_method => @card_charge_payment_method, 
             :amount => @card_charge_amount})
+      end
+      
+      #was the loyalty system used
+      if @loyalty_details
+        @loyalty_customer = Customer.find_by_id(@loyalty_details[:customer_id])
+        
+        if @loyalty_customer
+          @points_earned = @loyalty_details[:points_earned]
+          CustomerPointsAllocation.create({:customer_id => @loyalty_customer.id, :order_id => @order.id, 
+              :amount => @points_earned, :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
+          
+          @loyalty_customer.increment!(:available_points, @points_earned.to_f)
+        end
       end
     
       @table_info = TableInfo.find_by_id(@order.table_info_id)

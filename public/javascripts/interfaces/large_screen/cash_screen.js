@@ -510,3 +510,20 @@ function cancelChargeCreditCard() {
     hideNiceAlert();
     niceAlert("Card charge canceled. Make sure to cancel the transaction on the terminal also.");
 }
+
+function addLoyaltyCustomerToTotalOrder(customer) {
+    $('#loyalty_customer_name').html(customer.name);
+    
+    var loyaltyLevelPercent = loyaltyLevels[customer.loyalty_level_id].percent;
+    $('#loyalty_level_percent').html(loyaltyLevelPercent);
+
+    var pointsEarned = (loyaltyLevelPercent/100) * (totalOrder.total * 100);
+    $('#loyalty_points_earned').html(pointsEarned);
+
+    $('#loyalty_customer_section').show();
+    
+    totalOrder.loyalty = {
+        customer_id : customer.id,
+        points_earned : pointsEarned
+    }
+}

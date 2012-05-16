@@ -1,3 +1,13 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "admin_js/customer_builder" %>
+
+  <script type="text/javascript">
+    $(function() {
+      initCustomerFormBuilder();
+    });
+  </script>
+<% end %>
+
 <%= form_for([:admin, @customer], :html => { :multipart => true, :id => "customer_builder_form" }) do |f| %>
   <div id="customer_builder">
 
@@ -75,7 +85,7 @@
         </div>
         <div class="field">
           <div class="label">DOB</div>
-          <%= f.text_area :DOB, :rows => 3 %>
+          <%= f.text_field :dob, :id => "customer_dob" %>
           <div class="clear">&nbsp;</div>
         </div>
       </div>

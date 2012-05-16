@@ -1,5 +1,9 @@
 <% @nav_title = "Customers" %>
 
+<% content_for :head do %>
+  <%= javascript_include_tag "admin_js/customers" %>
+<% end %>
+
 <% content_for :admin_subnav_links_left do %>
   <div class="button" data-onpress="goTo('<%= new_admin_customer_path %>');">
     <div class="icon">

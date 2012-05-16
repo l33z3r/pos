@@ -1,16 +1,16 @@
 
 <div class="extra_options">
   <div id="extra_options_tabs" class="text_only_tabs">
-    <div class="text_only_tab" id="extra_options_tab_general" onclick="extraOptionsGeneralSelected();">
+    <div class="text_only_tab" id="extra_options_tab_general" onclick="customerBuilderExtraOptionsGeneralSelected();">
       <div class="label">General</div>
     </div>
-    <div class="text_only_tab" id="extra_options_tab_loyalty" onclick="extraOptionsLoyaltySelected();">
+    <div class="text_only_tab" id="extra_options_tab_loyalty" onclick="customerBuilderExtraOptionsLoyaltySelected();">
       <div class="label">Loyalty</div>
     </div>
-    <div class="text_only_tab" id="extra_options_tab_history" onclick="extraOptionsHistorySelected();">
+    <div class="text_only_tab" id="extra_options_tab_history" onclick="customerBuilderExtraOptionsHistorySelected();">
       <div class="label">History</div>
     </div>
-    <div class="text_only_tab" id="extra_options_tab_options" onclick="extraOptionsOptionsSelected();">
+    <div class="text_only_tab" id="extra_options_tab_options" onclick="customerBuilderExtraOptionsOptionsSelected();">
       <div class="label">Options</div>
     </div>
     <div class="clear">&nbsp;</div>
@@ -53,7 +53,7 @@
       </div>
       <div class="field">
         <div class="label">Loyalty Level</div>
-        <%= f.collection_select :loyalty_level_id, LoyaltyLevel.all, :id, :name, 
+        <%= f.collection_select :loyalty_level_id, LoyaltyLevel.all, :id, :label, 
             :prompt => "Select a Loyalty Level" %>
         <div class="clear">&nbsp;</div>
       </div>

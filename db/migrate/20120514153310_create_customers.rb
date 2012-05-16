@@ -3,6 +3,7 @@ class CreateCustomers < ActiveRecord::Migration
     create_table :customers do |t|
       t.string :name
       t.string :contact_name
+      t.date :dob
       
       t.string :address
       t.string :postal_address
@@ -12,12 +13,12 @@ class CreateCustomers < ActiveRecord::Migration
       t.string :fax
       t.string :email
 
-      t.float :credit_limit
-      t.float :current_balance
-      t.float :credit_available
+      t.float :credit_limit, :default => 0, :null => false
+      t.float :current_balance, :default => 0, :null => false
+      t.float :credit_available, :default => 0, :null => false
 
       t.integer :loyalty_level_id
-      t.integer :available_points
+      t.integer :available_points, :default => 0, :null => false
       t.string :swipe_card_code
       
       t.timestamps
