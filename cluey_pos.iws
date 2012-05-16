@@ -16,6 +16,7 @@
   <component name="ChangeListManager">
     <list default="true" id="54a8a260-c178-4ce3-883c-3e317bc82f2c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/database.yml" afterPath="$PROJECT_DIR$/config/database.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/login_functions.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/login_functions.js" />
     </list>
     <ignored path="cluey_pos.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -74,64 +75,37 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="_sales_tab.html.erb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="32" selection-start="2008" selection-end="2008" vertical-scroll-proportion="-13.75">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="reports.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/javascripts/reports/reports.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="463" column="33" selection-start="13081" selection-end="13081" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_login_screen.html.erb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/large_screen/screens/_login_screen.html.erb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="38" selection-start="754" selection-end="754" vertical-scroll-proportion="-13.125">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="login_functions.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="login_functions.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/login_functions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="47" selection-start="1031" selection-end="1031" vertical-scroll-proportion="0.0">
+            <state line="145" column="35" selection-start="4117" selection-end="4117" vertical-scroll-proportion="0.35470086">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="database.yml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="database.yml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config/database.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="45" selection-start="364" selection-end="364" vertical-scroll-proportion="0.329429">
+            <state line="15" column="30" selection-start="324" selection-end="324" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="export_excel.html.erb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/reports/sales/export_excel.html.erb">
+      <file leaf-file-name="application.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/application.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="86" column="22" selection-start="3558" selection-end="3558" vertical-scroll-proportion="0.0">
+            <state line="72" column="49" selection-start="2209" selection-end="2209" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sales_controller.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/reports/sales_controller.rb">
+      <file leaf-file-name="jwerty.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/javascripts/plugins/jwerty.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="235" column="19" selection-start="8194" selection-end="8194" vertical-scroll-proportion="0.0">
+            <state line="21" column="79" selection-start="614" selection-end="614" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -154,6 +128,7 @@
         <option value="$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/sales/export_excel.html.erb" />
         <option value="$PROJECT_DIR$/config/database.yml" />
+        <option value="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/login_functions.js" />
       </list>
     </option>
   </component>
@@ -583,16 +558,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/login_functions.js">
+    <entry file="file://$PROJECT_DIR$/public/javascripts/plugins/jwerty.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="47" selection-start="1031" selection-end="1031" vertical-scroll-proportion="0.0">
+        <state line="21" column="79" selection-start="614" selection-end="614" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/application.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="72" column="49" selection-start="2209" selection-end="2209" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/config/database.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="45" selection-start="364" selection-end="364" vertical-scroll-proportion="0.329429">
+        <state line="15" column="30" selection-start="324" selection-end="324" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/login_functions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="145" column="35" selection-start="4117" selection-end="4117" vertical-scroll-proportion="0.35470086">
           <folding />
         </state>
       </provider>
