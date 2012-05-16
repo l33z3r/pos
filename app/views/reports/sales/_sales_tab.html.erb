@@ -42,6 +42,9 @@
                 <th class="header">VAT</th>
                 <th class="header">NET Sales</th>
                 </thead>
+                <% total_gross = 0 %>
+                <% total_vat = 0 %>
+                <% total_net = 0 %>
                 <% @orders.each do |week| %>
                     <% product = Product.find_by_id(week.product_id) %>
                     <% total_items = week.quantity %>
@@ -51,13 +54,15 @@
                     <% tax_rate = week.tax_rate %>
                     <% vat = vat_rate(tax_rate, gross_sales) %>
                     <% net_sales = net_result(gross_sales, vat) %>
+
+                    <% total_gross += gross_sales %>
+                    <% total_vat += vat %>
+                    <% total_net += net_sales %>
                     <tbody>
                     <tr>
                         <td>
-
                             <%= product.name %>
                         </td>
-
                         <td>
                             <% if Category.find_by_id(product.category_id) %>
                                 <%= Category.find_by_id(product.category_id).name %>
@@ -76,10 +81,29 @@
                             <%= sprintf("%.2f", net_sales) %>
                         </td>
 
-
                     </tr>
                 <% end %>
+                    <tr>
+                        <td style="text-align: left; border-top: 2px solid">
+                            <b>Total:</b>
+                        </td>
+                        <td style="text-align: right; border-top: 2px solid">
+                        </td>
+                        <td style="text-align: left; border-top: 2px solid; ">
 
+                        </td>
+                        <td style="text-align: right; border-top: 2px solid;">
+                            <%= sprintf("%.2f", total_gross) %>
+                        </td>
+                        <td style="text-align: right; border-top: 2px solid;">
+                            <%= sprintf("%.2f", total_vat) %>
+                        </td>
+                        <td style="text-align: right; border-top: 2px solid">
+                            <%= sprintf("%.2f", total_net) %>
+                        </td>
+
+
+                    </tr>
                 </tbody>
             </table>
 
@@ -95,38 +119,37 @@
                 <th class="header">NET Sales</th>
                 </thead>
                 <% total_items = 0 %>
-                <% @orders.group_by(&@s_type).sort.each do |week| %>
+                <% @orders.each do |week| %>
 
                     <% gross_sales = 0 %>
                     <% net_sales = 0 %>
                     <% vat = 0 %>
                     <% new_tax_rate = 0 %>
-                    <% total_items = week[1][0].quantity %>
-                    <% gross_sales = week[1][0].total_price %>
-                    <% product = Product.find_by_id(week[1][0].product_id) %>
-                    <% new_tax_rate = week[1][0].tax_rate %>
-                    <% vat = vat_rate(new_tax_rate, gross_sales) %>
+                    <% total_items = week.quantity %>
+                    <% gross_sales = week.total_price %>
+                    <% product = Product.find_by_id(week.product_id) %>
+                    <% vat = week.tax_rate %>
                     <% net_sales = net_result(gross_sales, vat) %>
                     <tbody>
                     <tr>
                         <td>
                             <% if @s_type == :day %>
-                                <%= week[1][0].created_at.strftime("%B %d, %Y") %>
+                                <%= week.created_at.strftime("%B %d, %Y") %>
                             <% end %>
                             <% if @s_type == :week %>
-                                Week starting <%= week[1][0].created_at.beginning_of_week.strftime("%B %d, %Y") %>
+                                Week starting <%= week.created_at.beginning_of_week.strftime("%B %d, %Y") %>
                             <% end %>
                             <% if @s_type == :month %>
-                                <%= week[1][0].created_at.strftime("%B, %Y") %>
+                                <%= week.created_at.strftime("%B, %Y") %>
                             <% end %>
                             <% if @s_type == :year %>
-                                <%= week[1][0].created_at.strftime("%Y") %>
+                                <%= week.created_at.strftime("%Y") %>
                             <% end %>
                         </td>
 
                         <td>
                             <% if @s_type == :day %>
-                                <%= DAYS_OF_THE_WEEK[week[1][0].created_at.wday.to_i] %>
+                                <%= DAYS_OF_THE_WEEK[week.created_at.wday.to_i] %>
                             <% end %>
                             <% if @s_type == :week %>
                                 Monday
