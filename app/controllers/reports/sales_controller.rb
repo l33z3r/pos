@@ -110,13 +110,13 @@ class Reports::SalesController < Admin::AdminController
         @chartdata4 = []
         xitems = []
 
-        @orders.group_by(&@s_type).sort.each do |week|
+        @orders.each do |week|
           net_sales = 0
           gross_sales = 0
 
-          total_items = week[1][0].quantity
-          gross_sales = week[1][0].total_price
-          product = Product.find_by_id(week[1][0].product_id)
+          total_items = week.quantity
+          gross_sales = week.total_price
+          product = Product.find_by_id(week.product_id)
 
           vat = vat_rate(tax_rate, gross_sales)
           net_sales = net_result(gross_sales, vat)
@@ -125,16 +125,16 @@ class Reports::SalesController < Admin::AdminController
           @chartdata3 << vat
           @chartdata4 << gross_sales
           if @s_type == :day
-            @chartdata2 << week[1][0].created_at.strftime("%B %d, %Y")
+            @chartdata2 << week.created_at.strftime("%B %d, %Y")
           end
           if @s_type == :week
-            @chartdata2 << week[1][0].created_at.beginning_of_week.strftime("%B %d, %Y")
+            @chartdata2 << week.created_at.beginning_of_week.strftime("%B %d, %Y")
           end
           if @s_type == :month
-            @chartdata2 << week[1][0].created_at.strftime("%B, %Y")
+            @chartdata2 << week.created_at.strftime("%B, %Y")
           end
           if @s_type == :year
-            @chartdata2 << week[1][0].created_at.strftime("%Y")
+            @chartdata2 << week.created_at.strftime("%Y")
           end
         end
         #f.series(:name=> 'NET Sales', :data=>@chartdata)
@@ -230,12 +230,10 @@ class Reports::SalesController < Admin::AdminController
     #else
       #query = Order.find_by_sql("select * from orders o inner join order_items oi on o.id = oi.order_id")
       #query = Order.find_by_sql("select * from orders o inner join order_items oi on o.id = oi.order_id inner join products p on p.category_id = 1 group by o.id")
-    if (session[:search_type] == :day || :month || :year || :week)
-      where = 'select o.id, o.tax_rate, o.product_id, o.created_at, SUM(total_price) total_price, SUM(quantity) quantity from order_items o'
+    if (session[:search_type] == :day || session[:search_type] == :month || session[:search_type] == :year || session[:search_type] == :week)
+      where = "select o.id, o.created_at, o.product_id, SUM((o.total_price-(o.total_price/(1+(o.tax_rate/100))))) as tax_rate, #{session[:search_type]}(o.created_at), SUM(total_price) total_price, SUM(quantity) quantity from order_items o"
 
-      if session[:terminal] != ''
-        where << " and o.terminal_id = '#{session[:terminal]}'"
-      end
+
 
       if session[:category] == '' && session[:product] == '' && session[:search_product] != ''
         where << " inner join products p on o.product_id = p.id"
@@ -262,10 +260,7 @@ class Reports::SalesController < Admin::AdminController
         where << " and p.name like '%#{session[:search_product]}%' or p.code_num like '%#{session[:search_product]}%'"
       end
 
-      where << " order by o.created_at asc"
-
-      logger.debug "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss     #{where}"
-
+      where << " group by #{session[:search_type]}(o.created_at) order by o.created_at asc"
       query = OrderItem.find_by_sql(where)
     end
 
@@ -302,6 +297,8 @@ class Reports::SalesController < Admin::AdminController
 
         where << " group by o.product_id order by total_price desc"
         query = OrderItem.find_by_sql(where)
+        logger.debug "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss     #{where}"
+
       end
 
     #end
