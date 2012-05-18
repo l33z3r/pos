@@ -101,6 +101,7 @@ function resetTendered() {
 }
 
 function cashOutCancel() {
+    resetLoyaltyCustomer();
     resetTendered();
     showMenuScreen();
 }
@@ -511,14 +512,59 @@ function cancelChargeCreditCard() {
     niceAlert("Card charge canceled. Make sure to cancel the transaction on the terminal also.");
 }
 
+//this gets executed when a loyalty card is used
+var loyaltyCardListenerHandler = function(event) {
+    if(event.keyCode == 13) {
+                    
+        $(window).unbind('keypress', loyaltyCardListenerHandler);
+                    
+        if(current_user_id == null) {
+            setStatusMessage("You are not logged in!", true, true);
+            return;
+        }
+    
+        //have to check this as the card can be swiped on menu screen
+        if(currentOrderEmpty()) {
+            setStatusMessage("No order present!", true, true);
+            return;
+        }
+                    
+        //strip off the ending question mark
+        loyaltyCardCode = loyaltyCardCode.substring(0, loyaltyCardCode.length - 1);
+                        
+        var fullLoyaltyCardCode = loyaltyCardPrefix + loyaltyCardCode;
+        
+        console.log("Looking up loyalty card code: " + fullLoyaltyCardCode);
+        
+        if(loyaltyCustomersByCode[fullLoyaltyCardCode]) {
+            if (!currentScreenIsTotals()) {
+                doTotal();
+            }
+                        
+            addLoyaltyCustomerToTotalOrder(loyaltyCustomersByCode[fullLoyaltyCardCode]);                        
+        } else {
+            niceAlert("Customer Not Found!");
+        }
+        
+        loyaltyCardCode = "";
+        return;
+    }
+                       
+    loyaltyCardCode += String.fromCharCode(event.keyCode);
+}
+
 function addLoyaltyCustomerToTotalOrder(customer) {
     $('#loyalty_customer_name').html(customer.name);
     
     var loyaltyLevelPercent = loyaltyLevels[customer.loyalty_level_id].percent;
-    $('#loyalty_level_percent').html(loyaltyLevelPercent);
+    $('#loyalty_level_percent').html(loyaltyLevelPercent + "%");
 
-    var pointsEarned = (loyaltyLevelPercent/100) * (totalOrder.total * 100);
+    //make sure no decimals in the points
+    var pointsEarned = roundNumber(((loyaltyLevelPercent/100) * (totalOrder.total * 100)), 0);
     $('#loyalty_points_earned').html(pointsEarned);
+
+    var loyaltyPointsAvailable = customer.available_points;
+    $('#loyalty_points_available').html(loyaltyPointsAvailable);
 
     $('#loyalty_customer_section').show();
     
@@ -526,4 +572,9 @@ function addLoyaltyCustomerToTotalOrder(customer) {
         customer_id : customer.id,
         points_earned : pointsEarned
     }
+}
+
+function resetLoyaltyCustomer() {
+    $('#loyalty_customer_section').hide();
+    delete totalOrder['loyalty'];
 }

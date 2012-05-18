@@ -88,37 +88,11 @@ function doGlobalInit() {
         
         //listener for the loyalty card swipe
         $(window).keySequenceDetector(loyaltyCardPrefix, function() {
-            if (currentScreenIsTotals()) {
-                //reset the code
-                loyaltyCardCode = "";
+            
+            //reset the code
+            loyaltyCardCode = "";
                 
-                loyaltyCardListenerHandler = function(event) {
-                    if(event.keyCode == 13) {
-                        //strip off the ending question mark
-                        loyaltyCardCode = loyaltyCardCode.substring(0, loyaltyCardCode.length - 1);
-                        
-                        var fullLoyaltyCardCode = loyaltyCardPrefix + loyaltyCardCode;
-        
-                        console.log("Looking up loyalty card code: " + fullLoyaltyCardCode);
-        
-                        if(loyaltyCustomersByCode[fullLoyaltyCardCode]) {
-                            addLoyaltyCustomerToTotalOrder(loyaltyCustomersByCode[fullLoyaltyCardCode]);
-                        } else {
-                            niceAlert("Customer Not Found!");
-                        }
-        
-                        $(window).unbind('keypress', loyaltyCardListenerHandler);
-                        loyaltyCardCode = "";
-                        return;
-                    }
-                       
-                    loyaltyCardCode += String.fromCharCode(event.keyCode);
-                }
-
-                $(window).bind('keypress', loyaltyCardListenerHandler);
-            } else {
-                console.log("Loyalty Card Swipe outside totals page");
-            }
+            $(window).bind('keypress', loyaltyCardListenerHandler);
         });
 
         setTimeout(function() {

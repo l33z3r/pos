@@ -1175,7 +1175,7 @@ function doTotal(applyDefaultServiceCharge) {
     
     $('#totals_tendered_box').addClass("selected");
     
-    $('#loyalty_customer_section').hide();
+    resetLoyaltyCustomer();
 }
 
 var cashSaleInProcess = false;
@@ -1446,6 +1446,9 @@ function orderSentToServerCallback(orderData, errorOccured) {
         if(isTableZeroOrder) {
             doSyncTableOrder();
         }
+        
+        //reload the customers as their points/credit may need updating
+        $.getScript('/javascripts/customers.js');
     } else {
         niceAlert("There was an error cashing out the last order, the server could not process it. It will automatically resend itself, please do not cash out on another terminal!");
     }
