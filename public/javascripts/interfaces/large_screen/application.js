@@ -77,9 +77,10 @@ function doGlobalInit() {
 
         $(window).keySequenceDetector('u"', function() {
             if ($('#admin_content_screen').is(":visible")) {
-                setStatusMessage("Logging out... Please wait.");
-                doLogout();
-                window.location = "/home"
+//                setStatusMessage("Logging out... Please wait.");
+//                doLogout();
+//                window.location = "/home"
+                return;
             } else {
                 doLogout();
             }
