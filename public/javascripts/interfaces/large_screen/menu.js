@@ -43,6 +43,11 @@ function initMenu() {
     
     setGlobalPriceLevel(storedGlobalPriceLevel);
     
+    if(!enableLoyaltyCardRedemption) {
+        //hide that payment method
+        $("#loyalty_payment_method_button").hide();
+    }
+    
     //hack to scroll the recpt a little after page has loaded as there 
     //were problems on touch interface with recpt getting stuck
     setTimeout("menuRecptScroll()", 1000);

@@ -58,6 +58,11 @@ function finishSale() {
     totalAmountInclCashback = roundNumber(currentTotalFinal + cashback, 2);
 
     if(cashTendered < totalAmountInclCashback) {
+        if(loyaltyPaymentMethodSelected) {
+            niceAlert("Not have enough loyalty points to cover the whole sale! Other payment methods must be used to cover the difference.");
+            return;
+        }
+        
         //auto fill to exact amount 
         moneySelected(-1);
         finishSale();
@@ -109,6 +114,8 @@ function cashOutCancel() {
 var paymentIntegrationId = 0;
 var currentZalionPaymentMethodName = null;
 
+var loyaltyPaymentMethodSelected = false;
+
 function paymentMethodSelected(pm_id) { 
     var pm_info = paymentMethods[pm_id];
     
@@ -122,6 +129,52 @@ function paymentMethodSelected(pm_id) {
         var warningMessage = paymentMethod + " must be the last payment method used if splitting a payment (Enter zero to cancel).";
         niceAlert(warningMessage);
         return;
+    }
+    
+    loyaltyPaymentMethodSelected = (method == "loyalty");
+    
+    if(loyaltyPaymentMethodSelected) {
+        if(!totalOrder.loyalty) {
+            niceAlert("Please swipe the customers loyalty card first!");
+            return;
+        }
+            
+        //workout the outstanding amount
+        totalAmountInclCashback = currentTotalFinal + cashback;
+        var totalCashTendered = getTotalTendered();
+        
+        //take away the amount already paid in by this payment method
+        if(splitPayments["loyalty"]) {
+            totalCashTendered -= splitPayments["loyalty"];
+        }
+        
+        var amountOutstanding = totalAmountInclCashback - totalCashTendered;
+        
+        var availablePoints = totalOrder.loyalty.points_available;
+        
+        var amountOutstandingInPoints = roundNumber(amountOutstanding * loyaltyPointsPerCurrencyUnit, 2);
+        
+        var pointsUsedInCurrencyPennies = 0;
+        
+        if(availablePoints <=0) {
+            niceAlert("This customer has no available loyalty points!");
+            return;
+        } else if(availablePoints < amountOutstandingInPoints) {
+            niceAlert("Not have enough loyalty points to cover the whole sale!" + 
+                " (" + amountOutstandingInPoints + ") points needed. Other payment methods must be used to cover the difference");
+            var pointsUsed = availablePoints;
+            pointsUsedInCurrencyPennies = (pointsUsed/loyaltyPointsPerCurrencyUnit) * 100;
+        } else {
+            niceAlert(amountOutstandingInPoints + " of this customers loyalty points will be used to cover this sale!");
+            pointsUsedInCurrencyPennies = (amountOutstandingInPoints/loyaltyPointsPerCurrencyUnit) * 100;
+        }
+        
+        //prepopulate the box with the amount of points and show an alert
+        cashTenderedKeypadString = pointsUsedInCurrencyPennies;
+        cashTendered = parseFloat(cashTenderedKeypadString/100.0);
+    
+        splitPayments["loyalty"] = cashTendered;
+        $('#tendered_value').html(currency(cashTenderedKeypadString/100.0));
     }
     
     updateTotalTendered();
@@ -162,7 +215,7 @@ function paymentMethodSelected(pm_id) {
                 url: '/forward_zalion_roomfile_request',
                 error: function() {
                     hideLoadingDiv();
-                    setStatusMessage("Error Getting Zalion Data.", false, false);                   
+                    niceAlert("Error Getting Zalion Data.", false, false);                   
                     paymentMethodSelected(getPaymentMethodId(defaultPaymentMethod));
                     splitPayments = {};
                 },
@@ -281,6 +334,10 @@ var cashTenderedKeypadString = "";
 var roomNumberInputFocus = false;
 
 function totalsScreenKeypadClick(val) {
+    if(loyaltyPaymentMethodSelected) {
+        return;
+    }
+    
     if(roomNumberInputFocus) {
         $('#room_number_input').val($('#room_number_input').val() + val);
         return;
@@ -294,6 +351,10 @@ function totalsScreenKeypadClick(val) {
 }
 
 function totalsScreenKeypadClickCancel() {
+    if(loyaltyPaymentMethodSelected) {
+        return;
+    }
+    
     if(roomNumberInputFocus) {
         $('#room_number_input').val("");
         return;
@@ -305,6 +366,10 @@ function totalsScreenKeypadClickCancel() {
 }
 
 function moneySelected(amount) {
+    if(loyaltyPaymentMethodSelected) {
+        return;
+    }
+    
     if(amount == -1) {
         totalAmountInclCashback = currentTotalFinal + cashback;
         
@@ -530,7 +595,7 @@ var loyaltyCardListenerHandler = function(event) {
         }
                     
         //strip off the ending question mark
-        loyaltyCardCode = loyaltyCardCode.substring(0, loyaltyCardCode.length - 1);
+        loyaltyCardCode = loyaltyCardCode.substring(0, 8);
                         
         var fullLoyaltyCardCode = loyaltyCardPrefix + loyaltyCardCode;
         
@@ -565,16 +630,22 @@ function addLoyaltyCustomerToTotalOrder(customer) {
 
     var loyaltyPointsAvailable = customer.available_points;
     $('#loyalty_points_available').html(loyaltyPointsAvailable);
-
+    
     $('#loyalty_customer_section').show();
     
     totalOrder.loyalty = {
         customer_id : customer.id,
-        points_earned : pointsEarned
+        points_earned : pointsEarned,
+        points_available : loyaltyPointsAvailable
     }
 }
 
 function resetLoyaltyCustomer() {
     $('#loyalty_customer_section').hide();
     delete totalOrder['loyalty'];
+    delete splitPayments['loyalty'];
+    
+    if(loyaltyPaymentMethodSelected) {
+        paymentMethodSelected(getPaymentMethodId(defaultPaymentMethod));
+    }
 }

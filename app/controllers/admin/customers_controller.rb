@@ -14,6 +14,32 @@ class Admin::CustomersController < Admin::AdminController
       end
     end
   end
+  
+  #code to import customers from csv
+  #require 'csv'
+#  if params[:gen]
+#      CSV.foreach('/home/lee/Downloads/customers.csv') do |row|
+#        logger.info row
+#        @name = row[1]
+#        @contact_name = @name
+#        @dob = row[7]
+#        @address = "#{row[2]}, #{row[3]}, #{row[4]}, #{row[5]}, #{row[6]}"
+#        @postal_address = @address
+#        @telephone = row[8]
+#        @mobile = @telephone
+#        @email = row[10]
+#        @available_points = row[12]
+#        @swipe_card_code = row[11]
+#      
+#        Customer.create({
+#            :name => @name, :contact_name => @contact_name,
+#            :dob => @dob, :address => @address, :postal_address => @postal_address,
+#            :telephone => @telephone, :mobile => @mobile, :email => @email,
+#            :available_points => @available_points, :swipe_card_code => @swipe_card_code
+#          })
+#      end
+#    end
+#    render :text => "Done"
 
   def new
     @hide_admin_header = true

@@ -66,6 +66,8 @@ class GlobalSetting < ActiveRecord::Base
   POLLING_INTERVAL_SECONDS = 54
   PROCESS_TABLE_0_ORDERS = 55
   LOYALTY_CARD_PREFIX = 56
+  ENABLE_LOYALTY_REDEMPTION = 57
+  LOYALTY_POINTS_PER_CURRENCY_UNIT = 58
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -123,7 +125,9 @@ class GlobalSetting < ActiveRecord::Base
     CREDIT_CARD_TERMINAL_PORT => "Credit Card Terminal Port",
     POLLING_INTERVAL_SECONDS => "Polling Amount Seconds",
     PROCESS_TABLE_0_ORDERS => "Process Table 0 Orders",
-    LOYALTY_CARD_PREFIX => "Loyalty Card Prefix"
+    LOYALTY_CARD_PREFIX => "Loyalty Card Prefix",
+    ENABLE_LOYALTY_REDEMPTION => "Enable Loyalty Redemption",
+    LOYALTY_POINTS_PER_CURRENCY_UNIT => "Loyalty Points Per Currency Unit"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -304,6 +308,12 @@ class GlobalSetting < ActiveRecord::Base
     when LOYALTY_CARD_PREFIX
       @gs = find_or_create_by_key(:key => LOYALTY_CARD_PREFIX.to_s, :value => "%ICR", :label_text => LABEL_MAP[LOYALTY_CARD_PREFIX])
       @gs.parsed_value = @gs.value
+    when ENABLE_LOYALTY_REDEMPTION
+      @gs = find_or_create_by_key(:key => ENABLE_LOYALTY_REDEMPTION.to_s, :value => "true", :label_text => LABEL_MAP[ENABLE_LOYALTY_REDEMPTION])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when LOYALTY_POINTS_PER_CURRENCY_UNIT
+      @gs = find_or_create_by_key(:key => "#{LOYALTY_POINTS_PER_CURRENCY_UNIT.to_s}", :value => 100, :label_text => LABEL_MAP[LOYALTY_POINTS_PER_CURRENCY_UNIT])
+      @gs.parsed_value = @gs.value.to_i
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -397,6 +407,20 @@ class GlobalSetting < ActiveRecord::Base
       write_attribute("value", new_value)
     when PROCESS_TABLE_0_ORDERS
       new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when ENABLE_LOYALTY_REDEMPTION
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when LOYALTY_POINTS_PER_CURRENCY_UNIT
+      #make sure it is a number bigger than 0
+      value_as_num = value.to_i
+      
+      if value_as_num < 1
+        new_value = 1
+      else
+        new_value = value_as_num
+      end
+      
       write_attribute("value", new_value)
     else
       #catch the keys that are not only integers and wont get caught in the switch statement

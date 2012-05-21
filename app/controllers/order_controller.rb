@@ -266,6 +266,16 @@ class OrderController < ApplicationController
         @loyalty_customer = Customer.find_by_id(@loyalty_details[:customer_id])
         
         if @loyalty_customer
+          if @order_details[:split_payments][:loyalty]
+            @points_per_currency_unit = GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_POINTS_PER_CURRENCY_UNIT
+            @points_used_this_sale = @order_details[:split_payments][:loyalty].to_f * @points_per_currency_unit
+            logger.info("!!!!!!!!!!!!!!!!!!!!!!!Decrementing points by #{@points_used_this_sale}")
+            @loyalty_customer.decrement!(:available_points, @points_used_this_sale.to_f)
+            
+            CustomerPointsAllocation.create({:customer_id => @loyalty_customer.id, :order_id => @order.id, 
+              :amount => @points_used_this_sale * -1, :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
+          end
+          
           @points_earned = @loyalty_details[:points_earned]
           CustomerPointsAllocation.create({:customer_id => @loyalty_customer.id, :order_id => @order.id, 
               :amount => @points_earned, :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})

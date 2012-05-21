@@ -1,4 +1,4 @@
-var customers = new Array();
+  var customers = new Array();
 
 var creditCustomers = {};
 var loyaltyCustomers = {};
@@ -22,7 +22,7 @@ var loyaltyCustomersByCode = {};
   if(customer_info.is_loyalty_customer) {
     loyaltyCustomers[customer_info.id] = customer_info;
     
-    var loyaltyCardCodeStripped = customer_info.swipe_card_code.substring(0, customer_info.swipe_card_code.length - 1);
+    var loyaltyCardCodeStripped = customer_info.swipe_card_code.substring(0, 12);
     
     loyaltyCustomersByCode[loyaltyCardCodeStripped] = customer_info;
   } else {

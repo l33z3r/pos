@@ -103,7 +103,7 @@
                              <%= @gs.parsed_value == GlobalSetting::RETAIL_MENU_SCREEN ? "checked" : "" %>/>
                       <div class="label">Retail</div>
                       <div class="clear">&nbsp;</div>
-                      
+
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::CUSTOMER_MENU_SCREEN %>" 
                              <%= @gs.parsed_value == GlobalSetting::CUSTOMER_MENU_SCREEN ? "checked" : "" %>/>
@@ -332,8 +332,8 @@
                     <%= fields_for "payment_methods[]", pm do |f| %>
                       <tr>
                         <td>
-                          <% if pm.name.downcase == "cash" %>
-                            <input type="text" disabled="true" value="Cash"/>
+                          <% if pm.is_cash? or pm.is_loyalty? %>
+                            <input type="text" disabled="true" value="<%= pm.name %>"/>
                           <% else %>
                             <%= f.text_field :name, :size => 17 %>
                           <% end %>
@@ -351,7 +351,9 @@
                             :onchange => "doSetDefaultPaymentMethod(this.value);" %>
                         </td>
                         <td>
-                          <%= f.select :payment_integration_id, options_for_select(PaymentMethod.payment_integration_options_for_select, pm.payment_integration_id) %>
+                          <% if !pm.is_loyalty? %>
+                            <%= f.select :payment_integration_id, options_for_select(PaymentMethod.payment_integration_options_for_select, pm.payment_integration_id) %>
+                          <% end %>
                         </td>
                         <td>
                           <%= f.collection_select :receipt_footer_id, ReceiptFooter.all, :id, :name, 
@@ -360,7 +362,11 @@
                         <td>
                           <%= f.check_box :open_cash_drawer %>
                         </td>
-                        <td><%= link_to "Delete", admin_payment_method_path(pm), :method => :delete, :confirm => "Are You Sure?" %></td>
+                        <td>
+                          <% if !pm.is_cash? and !pm.is_loyalty? %>
+                            <%= link_to "Delete", admin_payment_method_path(pm), :method => :delete, :confirm => "Are You Sure?" %>
+                          <% end %>
+                        </td>
                       </tr>
                     <% end %>
                   <% end %>
@@ -699,9 +705,33 @@
 
                 <tbody>
                   <tr>
+                    <td>Enable Loyalty Redemption?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::ENABLE_LOYALTY_REDEMPTION %>
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">Yes</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">No</div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
                     <td>Loyalty Level Card Prefix (e.g. %ICR)</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::LOYALTY_CARD_PREFIX %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Loyalty Points Per <%= GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL %>1</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::LOYALTY_POINTS_PER_CURRENCY_UNIT %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -717,8 +747,8 @@
               </div>
 
             <% end %>
-              
-              <h4>Current Loyalty Levels</h4>
+
+            <h4>Current Loyalty Levels</h4>
 
             <%= form_tag update_multiple_admin_loyalty_levels_path do %>
 
