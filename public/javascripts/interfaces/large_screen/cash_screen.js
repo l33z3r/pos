@@ -136,6 +136,7 @@ function paymentMethodSelected(pm_id) {
     if(loyaltyPaymentMethodSelected) {
         if(!totalOrder.loyalty) {
             niceAlert("Please swipe the customers loyalty card first!");
+            loyaltyPaymentMethodSelected = false;
             return;
         }
             
