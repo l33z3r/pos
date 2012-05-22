@@ -130,7 +130,11 @@
   var transferStockType = <%= StockTransaction::STOCK_TRANSFER %>;
   
   var webSocketServiceIP = "<%= @web_socket_service_ip %>";
+  var using_wss_receipt_printer = <%= @use_wss_receipt_printer %>;
+  
   var cashDrawerServiceIP = "<%= @cash_drawer_service_ip %>";
+  var using_wss_cash_drawer = <%= @use_wss_cash_drawer %>;
+  
   var creditCardChargeServiceIP = "<%= @credit_card_charge_service_ip %>";
   var creditCardTerminalIP = "<%= @credit_card_terminal_ip %>";
   var creditCardTerminalPort = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, {:fingerprint => @terminal_fingerprint} %>";

@@ -34,7 +34,10 @@ class GlobalSetting < ActiveRecord::Base
   DO_BEEP = 22
   LAST_ORDER_ID = 23
   RELOAD_HTML5_CACHE_TIMESTAMP = 24
+  
+  #this is the printer ip
   WEBSOCKET_IP = 25
+  
   CURRENCY_NOTES_IMAGES = 26
   ORDER_RECEIPT_WIDTH = 27
   AUTHENTICATION_REQUIRED = 28
@@ -68,6 +71,8 @@ class GlobalSetting < ActiveRecord::Base
   LOYALTY_CARD_PREFIX = 56
   ENABLE_LOYALTY_REDEMPTION = 57
   LOYALTY_POINTS_PER_CURRENCY_UNIT = 58
+  USE_WSS_CASH_DRAWER = 59
+  USE_WSS_RECEIPT_PRINTER = 60
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -127,7 +132,9 @@ class GlobalSetting < ActiveRecord::Base
     PROCESS_TABLE_0_ORDERS => "Process Table 0 Orders",
     LOYALTY_CARD_PREFIX => "Loyalty Card Prefix",
     ENABLE_LOYALTY_REDEMPTION => "Enable Loyalty Redemption",
-    LOYALTY_POINTS_PER_CURRENCY_UNIT => "Loyalty Points Per Currency Unit"
+    LOYALTY_POINTS_PER_CURRENCY_UNIT => "Loyalty Points Per Currency Unit",
+    USE_WSS_CASH_DRAWER => "Use Web Sockets For Cash Drawer",
+    USE_WSS_RECEIPT_PRINTER => "Use Web Sockets For Receipt Printing"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -314,6 +321,12 @@ class GlobalSetting < ActiveRecord::Base
     when LOYALTY_POINTS_PER_CURRENCY_UNIT
       @gs = find_or_create_by_key(:key => "#{LOYALTY_POINTS_PER_CURRENCY_UNIT.to_s}", :value => 100, :label_text => LABEL_MAP[LOYALTY_POINTS_PER_CURRENCY_UNIT])
       @gs.parsed_value = @gs.value.to_i
+    when USE_WSS_CASH_DRAWER
+      @gs = find_or_create_by_key(:key => "#{USE_WSS_CASH_DRAWER.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[USE_WSS_CASH_DRAWER])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when USE_WSS_RECEIPT_PRINTER
+      @gs = find_or_create_by_key(:key => "#{USE_WSS_RECEIPT_PRINTER.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[USE_WSS_RECEIPT_PRINTER])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -511,6 +524,20 @@ class GlobalSetting < ActiveRecord::Base
             @my_do_beep_gs.value = @do_beep_gs.value
             @my_do_beep_gs.save
 	    
+            #use wss for cash drawer?
+            @wss_cash_drawer_gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_CASH_DRAWER, {:fingerprint => @old_fingerprint}
+	    
+            @my_wss_cash_drawer_gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_CASH_DRAWER, {:fingerprint => @my_terminal_fingerprint}
+            @my_wss_cash_drawer_gs.value = @wss_cash_drawer_gs.value
+            @my_wss_cash_drawer_gs.save
+	    
+            #use wss for receipt printer?
+            @wss_receipt_printer_gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_RECEIPT_PRINTER, {:fingerprint => @old_fingerprint}
+	    
+            @my_wss_receipt_printer_gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_RECEIPT_PRINTER, {:fingerprint => @my_terminal_fingerprint}
+            @my_wss_receipt_printer_gs.value = @wss_receipt_printer_gs.value
+            @my_wss_receipt_printer_gs.save
+	    
             #delete old gs objects
             @websocket_ip_gs.destroy
             @cash_drawer_ip_gs.destroy
@@ -524,6 +551,8 @@ class GlobalSetting < ActiveRecord::Base
             @cc_terminal_ip_gs.destroy
             @cc_terminal_port_gs.destroy
             @do_beep_gs.destroy
+            @wss_cash_drawer_gs.destroy
+            @wss_receipt_printer_gs.destroy
           end
         end
         if value
@@ -543,6 +572,12 @@ class GlobalSetting < ActiveRecord::Base
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
       elsif key.starts_with? DO_BEEP.to_s
+        new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
+      elsif key.starts_with? USE_WSS_CASH_DRAWER.to_s
+        new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
+      elsif key.starts_with? USE_WSS_RECEIPT_PRINTER.to_s
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
       end
