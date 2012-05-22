@@ -59,7 +59,7 @@ function finishSale() {
 
     if(cashTendered < totalAmountInclCashback) {
         if(loyaltyPaymentMethodSelected) {
-            niceAlert("Not have enough loyalty points to cover the whole sale! Other payment methods must be used to cover the difference.");
+            niceAlert("Not enough loyalty points to cover the whole sale! Other payment methods must be used to cover the difference.");
             return;
         }
         
@@ -158,10 +158,11 @@ function paymentMethodSelected(pm_id) {
         
         if(availablePoints <=0) {
             niceAlert("This customer has no available loyalty points!");
+            loyaltyPaymentMethodSelected = false;
             return;
         } else if(availablePoints < amountOutstandingInPoints) {
             niceAlert("Not have enough loyalty points to cover the whole sale!" + 
-                " (" + amountOutstandingInPoints + ") points needed. Other payment methods must be used to cover the difference");
+                " <b>" + amountOutstandingInPoints + "</b> points needed. Other payment methods must be used to cover the difference");
             var pointsUsed = availablePoints;
             pointsUsedInCurrencyPennies = (pointsUsed/loyaltyPointsPerCurrencyUnit) * 100;
         } else {
@@ -620,6 +621,7 @@ var loyaltyCardListenerHandler = function(event) {
 
 function addLoyaltyCustomerToTotalOrder(customer) {
     $('#loyalty_customer_name').html(customer.name);
+    $('#loyalty_customer_number').html(customer.customer_number);
     
     var loyaltyLevelPercent = loyaltyLevels[customer.loyalty_level_id].percent;
     $('#loyalty_level_percent').html(loyaltyLevelPercent + "%");

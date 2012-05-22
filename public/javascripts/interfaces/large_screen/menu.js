@@ -1123,6 +1123,11 @@ function clearOrder(selectedTable) {
 }
 
 function doTotal(applyDefaultServiceCharge) {
+    if(!callHomePollInitSequenceComplete) {
+        niceAlert("Downloading data from server, please wait.");
+        return;
+    }
+    
     if(currentOrderEmpty()) {
         setStatusMessage("No order present to sub-total!", true, true);
         return;
