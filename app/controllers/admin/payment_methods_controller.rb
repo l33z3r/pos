@@ -22,6 +22,13 @@ class Admin::PaymentMethodsController < Admin::AdminController
   end
 
   def destroy
+    #Don't allow deleting of last one
+    if PaymentMethod.all.size == 1
+      flash[:notice] = "You must have at least one payment method!"
+      redirect_to admin_global_settings_path
+      return
+    end
+    
     @payment_method = PaymentMethod.find(params[:id])
     @payment_method.destroy
 

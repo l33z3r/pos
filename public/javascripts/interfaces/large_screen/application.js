@@ -7,6 +7,8 @@ var all_display_button_permissions;
 //passcode prompt when a screen button is pressed
 var display_button_passcode_permissions;
 
+var loyaltyCardCode = "";
+
 $(function() {
     doGlobalInit();
 });
@@ -73,7 +75,7 @@ function doGlobalInit() {
     if (inMenuContext()) {
         initMenu();
 
-        $(window).keySequenceDetector('u"', function(){
+        $(window).keySequenceDetector('u"', function() {
             if ($('#admin_content_screen').is(":visible")) {
 //                setStatusMessage("Logging out... Please wait.");
 //                doLogout();
@@ -83,6 +85,15 @@ function doGlobalInit() {
                 doLogout();
             }
 
+        });
+        
+        //listener for the loyalty card swipe
+        $(window).keySequenceDetector(loyaltyCardPrefix, function() {
+            
+            //reset the code
+            loyaltyCardCode = "";
+                
+            $(window).bind('keypress', loyaltyCardListenerHandler);
         });
 
         setTimeout(function() {

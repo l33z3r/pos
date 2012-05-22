@@ -67,7 +67,7 @@ function doSetPublicDisplay(displayId) {
 }
 
 function doSetDefaultTaxRate(taxRateId) {
-    //send an update to display controller
+    //send an update to tax rates controller
     $.ajax({
         type: 'POST',
         url: '/admin/tax_rates/' + taxRateId + '/default'
@@ -75,15 +75,23 @@ function doSetDefaultTaxRate(taxRateId) {
 }
 
 function doSetDefaultPaymentMethod(paymentMethodId) {
-    //send an update to display controller
+    //send an update to payment methods controller
     $.ajax({
         type: 'POST',
         url: '/admin/payment_methods/' + paymentMethodId + '/default'
     });
 }
 
+function doSetDefaultLoyaltyLevel(loyaltyLevelId) {
+    //send an update to loyalty levels controller
+    $.ajax({
+        type: 'POST',
+        url: '/admin/loyalty_levels/' + loyaltyLevelId + '/default'
+    });
+}
+
 function doSetDefaultDiscount(discountId) {
-    //send an update to display controller
+    //send an update to discounts controller
     $.ajax({
         type: 'POST',
         url: '/admin/discounts/' + discountId + '/default'
@@ -556,7 +564,7 @@ function addEnterKeyEvents(){
 function initTinyMCE() {
     tinyMCE.init({
         mode : "specific_textareas",
-        mceEditor : "mceEditor",
+        editor_selector : "mceEditor",
         theme : "advanced",
         theme_advanced_resizing_max_width : 120,
         theme_advanced_buttons1 : "|,fontsizeselect,|,bold,italic,underline,strikethrough,|",

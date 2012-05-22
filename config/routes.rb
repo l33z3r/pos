@@ -126,6 +126,15 @@ Pos::Application.routes.draw do
       end
     end
     
+    resources :loyalty_levels, :only => [:create, :destroy] do
+      member do
+        post 'default'
+      end
+      collection do
+        post 'update_multiple'
+      end
+    end
+    
     resources :payment_methods, :only => [:create, :destroy] do
       member do
         post 'default'
@@ -164,6 +173,12 @@ Pos::Application.routes.draw do
         get 'csv_import'
         post 'csv_upload'
         get 'current_product_images'
+      end
+    end
+    
+    resources :customers do
+      collection do
+        get 'search'
       end
     end
 

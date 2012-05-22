@@ -361,84 +361,72 @@ function showGlobalSettingsPage() {
 }
 
 function openCashDrawer() {
-    var cash_drawer_service_url = 'http://' + cashDrawerServiceIP + ':8080/ClueyWebSocketServices/cash_drawer_controller';
-    
-    $.ajax({
-        type: 'POST',
-        url: '/forward_cash_drawer_request',
-        error: function() {
-            setStatusMessage("Cash drawer service cannot be reached.", false, false);
-        },
-        data: {
-            cash_drawer_service_url : cash_drawer_service_url,
-            message : "open cash drawer"
+    if(using_wss_cash_drawer) {
+        if ("WebSocket" in window) {
+            console.log("Sending cash drawer message");
+        
+            // Let us open a web socket
+            var ws = new WebSocket("ws://" + cashDrawerServiceIP + ":8080/ClueyWebSocketServices/cash_drawer_controller_ws");
+        
+            ws.onopen = function() {
+                // Web Socket is connected, send data using send()
+                ws.send("open cash drawer!");
+                console.log("Cash Drawer message sent");
+                ws.close();
+            };
+        
+            ws.onmessage = function (evt) { 
+                var received_msg = evt.data;
+                console.log("Message received: " + received_msg);
+            };
+            
+            ws.onclose = function() { 
+                // websocket is closed.
+                console.log("Connection closed!"); 
+            };
+        } else {
+            // The browser doesn't support WebSocket
+            alert("WebSocket NOT supported by your browser, Please disable web sockets!");
         }
-    });
-    
-    return;
-    
-    //TODO: display an error if the service is not running...
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    if ("WebSocket" in window) {
-        console.log("Sending cash drawer message");
-        
-        // Let us open a web socket
-        var ws = new WebSocket("ws://" + cashDrawerServiceIP + ":8080/ClueyWebSocketServices/cash_drawer_controller");
-        
-        ws.onopen = function()
-        {
-            // Web Socket is connected, send data using send()
-            ws.send("open cash drawer!");
-            console.log("Cash Drawer message sent");
-            ws.close();
-        };
-        
-        ws.onmessage = function (evt) 
-        { 
-            var received_msg = evt.data;
-            console.log("Message received: " + received_msg);
-        };
-        ws.onclose = function()
-        { 
-            // websocket is closed.
-            console.log("Connection closed!"); 
-        };
     } else {
-        // The browser doesn't support WebSocket
-        alert("WebSocket NOT supported by your Browser!");
+        var cash_drawer_service_url = 'http://' + cashDrawerServiceIP + ':8080/ClueyWebSocketServices/cash_drawer_controller';
     
-    //DO IT THE OLD FASHIONED WAY
-    
-    //    //search for "signed.applets.codebase_principal_support" 
-    //    //in this list and toggle its value to "true"
-    //    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-    //
-    //    // create an nsILocalFile for the executable
-    //    var file = Components.classes["@mozilla.org/file/local;1"]
-    //    .createInstance(Components.interfaces.nsILocalFile);
-    //    file.initWithPath("c:\\open_cash_drawer.bat");
-    //
-    //    // create an nsIProcess
-    //    var process = Components.classes["@mozilla.org/process/util;1"]
-    //    .createInstance(Components.interfaces.nsIProcess);
-    //    process.init(file);
-    //
-    //    // Run the process.
-    //    // If first param is true, calling thread will be blocked until
-    //    // called process terminates.
-    //    // Second and third params are used to pass command-line arguments
-    //    // to the process.
-    //    var args = [];
-    //    process.run(false, args, args.length);
+        $.ajax({
+            type: 'POST',
+            url: '/forward_cash_drawer_request',
+            error: function() {
+                setStatusMessage("Cash drawer service cannot be reached.", false, false);
+            },
+            data: {
+                cash_drawer_service_url : cash_drawer_service_url,
+                message : "open cash drawer"
+            }
+        });
     }
+    
+//DO IT THE OLD FASHIONED WAY (only works with firefox)
+    
+//    //search for "signed.applets.codebase_principal_support" 
+//    //in this list and toggle its value to "true"
+//    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+//
+//    // create an nsILocalFile for the executable
+//    var file = Components.classes["@mozilla.org/file/local;1"]
+//    .createInstance(Components.interfaces.nsILocalFile);
+//    file.initWithPath("c:\\open_cash_drawer.bat");
+//
+//    // create an nsIProcess
+//    var process = Components.classes["@mozilla.org/process/util;1"]
+//    .createInstance(Components.interfaces.nsIProcess);
+//    process.init(file);
+//
+//    // Run the process.
+//    // If first param is true, calling thread will be blocked until
+//    // called process terminates.
+//    // Second and third params are used to pass command-line arguments
+//    // to the process.
+//    var args = [];
+//    process.run(false, args, args.length);
 }
 
 var addTableNamePopupEl;

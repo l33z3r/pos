@@ -86,6 +86,8 @@
   var terminalID = "<%=@terminal_id%>";
   
   var pollingAmount = <%= GlobalSetting.parsed_setting_for GlobalSetting::POLLING_INTERVAL_SECONDS %> * 1000;
+  var pollingMinSeconds = <%= GlobalSetting::POLLING_MIN_SECONDS %>;
+  var pollingMaxSeconds = <%= GlobalSetting::POLLING_MAX_SECONDS %>;
   
   var using_mobile = <%= mobile_device? ? "true" : "false" %>;
   
@@ -128,7 +130,11 @@
   var transferStockType = <%= StockTransaction::STOCK_TRANSFER %>;
   
   var webSocketServiceIP = "<%= @web_socket_service_ip %>";
+  var using_wss_receipt_printer = <%= @use_wss_receipt_printer %>;
+  
   var cashDrawerServiceIP = "<%= @cash_drawer_service_ip %>";
+  var using_wss_cash_drawer = <%= @use_wss_cash_drawer %>;
+  
   var creditCardChargeServiceIP = "<%= @credit_card_charge_service_ip %>";
   var creditCardTerminalIP = "<%= @credit_card_terminal_ip %>";
   var creditCardTerminalPort = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, {:fingerprint => @terminal_fingerprint} %>";
@@ -157,4 +163,7 @@
     
   var isProcessingTable0Orders = <%= GlobalSetting.parsed_setting_for GlobalSetting::PROCESS_TABLE_0_ORDERS %>;
   
+  var loyaltyCardPrefix = "<%= GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_CARD_PREFIX %>";
+  var enableLoyaltyCardRedemption = <%= GlobalSetting.parsed_setting_for GlobalSetting::ENABLE_LOYALTY_REDEMPTION %>;
+  var loyaltyPointsPerCurrencyUnit = <%= GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_POINTS_PER_CURRENCY_UNIT %>;
 </script>

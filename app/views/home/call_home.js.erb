@@ -4,7 +4,7 @@ immediateCallHome = false;
 <% if @reload_app %>
   //update the timestamp and make sure the time is in the future
   lastInterfaceReloadTime = clueyTimestamp();
-
+  
   if(lastInterfaceReloadTime <= <%=@reload_request_time%>) {
   lastInterfaceReloadTime = <%=@reload_request_time%> + 1;
   }

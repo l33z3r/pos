@@ -2784,7 +2784,6 @@ div#total_screen div#payment_options_money_info_container div#payment_options_se
     border: 1px solid #CCC;
     -moz-border-radius: 7px;
     border-radius: 7px;
-    margin-bottom: 10px;
 }
 
 div#total_screen div#payment_options_money_info_container div#payment_options_section div#payment_options div.button {
@@ -2792,9 +2791,12 @@ div#total_screen div#payment_options_money_info_container div#payment_options_se
     max-width: 95px;
 }
 
+div#total_screen div#payment_options_money_info_container div#totals_screen_status_message_wrapper {
+    height: 23px;
+}
+
 div#total_screen div#payment_options_money_info_container div#tender_section {
-    margin-bottom: 10px;
-    height: 531px;
+    height: 520px;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_outer_container {
@@ -2805,7 +2807,7 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
     display: table-cell;
     text-align: center;
     vertical-align: middle;
-    height: 530px;
+    height: 527px;
     width: 585px;
 }  
 
@@ -2881,6 +2883,44 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
     text-align: left;
     padding-left: 10px;
     border-left: 1px solid #E0E0E0;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout  div#tendered_data_tables_container div#loyalty_customer_section {
+    border: 1px solid #CCC;
+    background-color: #FFF;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    -moz-border-top-left-radius: 7px;
+    -moz-border-top-right-radius: 7px;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout  div#tendered_data_tables_container div#loyalty_customer_section div.label {
+    padding: 2px;
+    width: 65%;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout  div#tendered_data_tables_container div#loyalty_customer_section div.data {
+    padding: 2px;
+    width: 31%;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout  div#tendered_data_tables_container div#loyalty_customer_section div.header {
+    background: -moz-linear-gradient(#AAA, #CCC) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#AAA), to(#CCC));
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    -moz-border-top-left-radius: 7px;
+    -moz-border-top-right-radius: 7px;
+    color: #000;
+    font-size: 14px;
+    padding: 10px;
+    margin-bottom: 5px;
+}
+
+div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout  div#tendered_data_tables_container div#loyalty_customer_section div.header div.remove_link {
+    float: right;
+    margin-top: -7px;
+    cursor: pointer;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div.action_buttons {
@@ -3971,7 +4011,7 @@ div.report_tab.selected {
     background: -moz-linear-gradient(#C1C1C1, #101010) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#C1C1C1), to(#101010));
     color: #FFF;
-    }
+}
 
 div.report_tab div.tab_name {
     text-decoration: none;

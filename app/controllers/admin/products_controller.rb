@@ -176,10 +176,6 @@ class Admin::ProductsController < Admin::AdminController
 
   end
 
-  def show
-    @product = Product.find(params[:id])
-  end
-
   def new
     @hide_admin_header = true
     @product = Product.new

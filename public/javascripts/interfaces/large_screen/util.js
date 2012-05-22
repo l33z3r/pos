@@ -143,6 +143,8 @@ function setStatusMessage(message, hide, shake) {
         statusEl = $('#menu_screen_status_message');
     } else if(currentScreenIsTables()) {
         statusEl = $('#tables_screen_status_message');
+    } else if(currentScreenIsTotals()) {
+        statusEl = $('#totals_screen_status_message');
     } else if(inKitchenContext()) {
         statusEl = $('#kitchen_screen_status_message');
     } else {
