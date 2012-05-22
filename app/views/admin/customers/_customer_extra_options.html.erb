@@ -42,8 +42,13 @@
   <div id="loyalty_tab_content" class="tab_content" style="display: none;">
     <div class="left_col">
       <div class="field">
-        <div class="label">Swipe Card Code</div>
-        <%= f.text_field :swipe_card_code %>
+        <div class="label">Customer Number</div>
+        <%= f.text_field :customer_number %>
+        <div class="clear">&nbsp;</div>
+      </div>
+      <div class="field">
+        <div class="label">Swipe Card Code (Auto Generated)</div>
+        <%= f.text_field :swipe_card_code, :disabled => true %>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
