@@ -7,7 +7,11 @@
 <% content_for :admin_subnav_links_left do %>
   <div class="button" data-onpress="goTo('<%= new_admin_customer_path %>');">
     <div class="icon">
-      <%= image_tag "/images/button_logos/create_customer_button.png" %>
+      <% if @show_normal_customers %>
+        <%= image_tag "/images/button_logos/add_customer_button.png" %>
+      <% else %>
+        <%= image_tag "/images/button_logos/add_loyalty_customer_button.png" %>
+      <% end %>
     </div>
     <div class="button_name">Add Customer</div>
   </div>

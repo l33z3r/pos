@@ -69,6 +69,16 @@
           <div class="clear">&nbsp;</div>
         </div>
         <div class="field">
+          <div class="label">Active</div>
+          <%= f.check_box :is_active %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Customer Type</div>
+          <%= f.select :customer_type, options_for_select(Customer.customer_type_options_for_select, @customer.customer_type) %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
           <div class="label">Contact Name</div>
           <%= f.text_field :contact_name %>
           <div class="clear">&nbsp;</div>

@@ -1,8 +1,18 @@
 class Admin::CustomersController < Admin::AdminController
   
   def index
+    @show_loyalty_customers = params[:show_loyalty_customers]
+    @show_normal_customers = params[:show_normal_customers]
+    
+    #ensure only one filter is selected
+    if !@show_loyalty_customers and !@show_normal_customers
+      @show_normal_customers = true
+    elsif @show_loyalty_customers and @show_normal_customers
+      @show_loyalty_customers = false
+    end
+    
     @selected_letter = "all"
-    @customers = Customer.all
+    @customers = Customer.all_active
       
     query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from customers group by substr(name,1,1)")
     @letters = []

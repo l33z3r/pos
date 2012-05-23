@@ -217,9 +217,9 @@ class ButtonMapper
     when PRODUCT_INFO_POPUP_BUTTON
       @retval = si_check(PRODUCT_INFO_POPUP_BUTTON, ms_check("toggleProductInfoPopup();"))
     when MANAGE_CUSTOMERS_BUTTON
-      @retval = "goTo('#{admin_customers_path}'); return false;"
+      @retval = "goTo('#{admin_customers_path}?show_normal_customers=true'); return false;"
     when MANAGE_LOYALTY_CUSTOMERS_BUTTON
-      @retval = "goTo('#{admin_customers_path}'); return false;"
+      @retval = "goTo('#{admin_customers_path}?show_loyalty_customers=true'); return false;"
     end
 
     @retval
