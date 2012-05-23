@@ -2099,7 +2099,7 @@ div#customer_builder div#builder_fields_container div.extra_options div.field in
 div#customer_builder div#builder_fields_container div.extra_options div.field select,
 div#customer_builder div#builder_fields_container div.extra_options div.field textarea {
     float: left;
-    width: 90px;
+    width: 95px;
 }
 
 div#customer_builder div#builder_fields_container div.extra_options div.tab_content {

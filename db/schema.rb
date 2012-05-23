@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120514154332) do
+ActiveRecord::Schema.define(:version => 20120522141440) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(:version => 20120514154332) do
     t.string   "swipe_card_code"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "customer_number"
   end
 
   create_table "discounts", :force => true do |t|
