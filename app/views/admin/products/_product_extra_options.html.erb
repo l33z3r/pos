@@ -27,6 +27,11 @@
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
+        <div class="label">Half Price</div>
+        <%= f.text_field :half_price %>
+        <div class="clear">&nbsp;</div>
+      </div>
+      <div class="field">
         <div class="label">
           <%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, {:price_level => 2} %>
         </div>

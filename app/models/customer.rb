@@ -30,6 +30,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: customers
@@ -52,5 +53,6 @@ end
 #  swipe_card_code  :string(255)
 #  created_at       :datetime
 #  updated_at       :datetime
+#  customer_number  :integer(4)
 #
 

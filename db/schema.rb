@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120522141440) do
+ActiveRecord::Schema.define(:version => 20120523152341) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -291,6 +291,7 @@ ActiveRecord::Schema.define(:version => 20120522141440) do
     t.boolean  "is_double",                                    :default => false
     t.text     "oia_data",               :limit => 2147483647
     t.boolean  "is_void",                                      :default => false
+    t.boolean  "is_half",                                      :default => false
   end
 
   add_index "order_items", ["employee_id"], :name => "index_order_items_on_employee_id"
@@ -415,6 +416,7 @@ ActiveRecord::Schema.define(:version => 20120522141440) do
     t.integer  "course_num",                               :default => 0
     t.boolean  "is_stock_item",                            :default => true
     t.string   "kitchen_screens",                          :default => ""
+    t.float    "half_price",                               :default => 0.0
   end
 
   add_index "products", ["category_id"], :name => "index_products_on_category_id"

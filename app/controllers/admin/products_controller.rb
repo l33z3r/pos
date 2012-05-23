@@ -26,7 +26,7 @@ class Admin::ProductsController < Admin::AdminController
       format.csv do 
         @products = Product.non_deleted
   
-        @csv_string = "Department,Category,Name,Brand,Description,Price,Double Price,Code Number,"
+        @csv_string = "Department,Category,Name,Brand,Description,Price,Double Price, Half Price,Code Number,"
         @csv_string += "UPC,Price 2,Price 3,Price 4,Margin Percent,Items Per Unit,Quantity Per Container,"
         @csv_string += "Cost Price,Unit,Size,Sales Tax Percent\n"
         
@@ -39,7 +39,7 @@ class Admin::ProductsController < Admin::AdminController
           @description = (p.description ? p.description : "").gsub(",", "")
           
           @csv_string += "#{@department},#{@category},#{@name},#{@brand},#{@description},#{p.price},"
-          @csv_string += "#{p.double_price},#{p.code_num},#{p.upc},#{p.price_2},#{p.price_3},#{p.price_4},"
+          @csv_string += "#{p.double_price},#{p.half_price},#{p.code_num},#{p.upc},#{p.price_2},#{p.price_3},#{p.price_4},"
           @csv_string += "#{p.margin_percent},#{p.items_per_unit},#{p.quantity_per_container},#{p.cost_price},#{p.unit}, #{p.size},#{p.sales_tax_rate}\n"
         end
         

@@ -253,11 +253,31 @@ function toggleMenuItemDoubleMode() {
 
 function setMenuItemDoubleMode(turnOn) {
     if(turnOn) {
+        //ensure half mode is not enabled
+        setMenuItemHalfMode(false);
+        
         menuItemDoubleMode = true;
         $('.button[id=sales_button_' + toggleMenuItemDoubleModeButtonID + ']').addClass("selected");
     } else {
         menuItemDoubleMode = false;
         $('.button[id=sales_button_' + toggleMenuItemDoubleModeButtonID + ']').removeClass("selected");
+    }
+}
+
+function toggleMenuItemHalfMode() {
+    setMenuItemHalfMode(!menuItemHalfMode);
+}
+
+function setMenuItemHalfMode(turnOn) {
+    if(turnOn) {
+        //ensure double mode is not enabled
+        setMenuItemDoubleMode(false);
+        
+        menuItemHalfMode = true;
+        $('.button[id=sales_button_' + toggleMenuItemHalfModeButtonID + ']').addClass("selected");
+    } else {
+        menuItemHalfMode = false;
+        $('.button[id=sales_button_' + toggleMenuItemHalfModeButtonID + ']').removeClass("selected");
     }
 }
 
