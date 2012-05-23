@@ -12,7 +12,7 @@ class Admin::CustomersController < Admin::AdminController
     end
     
     @selected_letter = "all"
-    @customers = Customer.all_active
+    @customers = Customer.all
       
     query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from customers group by substr(name,1,1)")
     @letters = []
