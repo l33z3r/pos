@@ -3,7 +3,6 @@ class Customer < ActiveRecord::Base
   has_many :customer_points
   
   validates :name, :presence => true
-  validates :contact_name, :presence => true
   validates :swipe_card_code, :uniqueness => true
   validates :customer_number, :uniqueness => true
   validates :customer_number, :numericality => {:less_than_or_equal_to => 9999999}, :allow_blank => true

@@ -163,7 +163,7 @@ function paymentMethodSelected(pm_id) {
             return;
         } else if(availablePoints < amountOutstandingInPoints) {
             niceAlert("Not have enough loyalty points to cover the whole sale!" + 
-                " <b>" + amountOutstandingInPoints + "</b> points needed. Other payment methods must be used to cover the difference");
+                " " + amountOutstandingInPoints + " points needed. Other payment methods must be used to cover the difference");
             var pointsUsed = availablePoints;
             pointsUsedInCurrencyPennies = (pointsUsed/loyaltyPointsPerCurrencyUnit) * 100;
         } else {
