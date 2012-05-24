@@ -24,11 +24,15 @@
 
 <% end %>
 
-<% if params[:show_specials_only] %>
+<% content_for :head do %>
   <script type="text/javascript">
     $(function() {
-      $('#is_special_equals').attr("checked", true);
-      $('#submit_search_button').click();
+      <% if params[:show_specials_only] %>
+        $('#is_special_equals').attr("checked", true);
+        doClickAButton($('#submit_search_button'));
+      <% end %>
+  
+      settingStateFields();
     });
   </script>
 <% end %>
@@ -85,12 +89,6 @@
 
     <div class="clear">&nbsp;</div>
   </div>
-
-  <script type="text/javascript">
-    $(function() {
-      settingStateFields();
-    });
-  </script>
 
   <section id="products" class="no_scroll_pane">
 

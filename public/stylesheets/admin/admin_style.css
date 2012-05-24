@@ -1962,6 +1962,116 @@ div#new_order_item_addition_grid div#fields {
 
 /* Customers */
 
+div#admin_customer_list section#customers {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#admin_customer_list section#customers {
+    height: 560px;
+}
+
+div#admin_customer_list section#customers div#customers_container {
+    height: 500px;
+    overflow-y: auto;
+}
+
+div#admin_customer_list div#search_fields_container {
+    width: 940px;
+    margin: auto;
+}
+
+div#admin_customer_list div#search_fields_container div.left_col,
+div#admin_customer_list div#search_fields_container div.center_col,
+div#admin_customer_list div#search_fields_container div.right_col{
+    float: left;
+    margin: 0px 5px;
+}
+
+div#admin_customer_list div#search_fields_container div.left_col div.field,
+div#admin_customer_list div#search_fields_container div.center_col div.field,
+div#admin_customer_list div#search_fields_container div.right_col div.field {
+    height: 30px;
+}
+
+div#admin_customer_list div#search_fields_container div.right_col div.field input {
+    float: left;
+}
+
+div#admin_customer_list div#search_fields_container div.right_col div.field input[type="checkbox"] {
+    margin-top: -2px;
+}
+
+div#admin_customer_list div#search_fields_container div.button_col{
+    float: right;
+    margin-left: 10px;
+}
+
+div#admin_customer_list div#search_fields_container div.button_col div.button{
+    float: right;
+    padding-top: 2px;
+    height: 56px;
+    width: 150px;
+}
+
+div#admin_customer_list div#search_fields_container div.left_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 140px;
+}
+
+div#admin_customer_list div#search_fields_container div.center_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 140px;
+}
+
+div#admin_customer_list div#search_fields_container div.center_col div.field select {
+    float: left;
+    width: 130px;
+}
+
+div#admin_customer_list div#search_fields_container div.right_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-right: 10px;
+    width: auto;
+}
+div#admin_customer_list div#search_fields_container div.right_col div.field div#deleted {
+    float: right;
+}
+
+div#admin_customer_list div.left_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 110px;
+}
+
+div#admin_customer_list div.center_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 110px;
+}
+
+div#admin_customer_list div.right_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 120px;
+}
+
 div#customer_builder div.action_buttons {
     border-spacing: 7px;
     padding-left: 12px;
