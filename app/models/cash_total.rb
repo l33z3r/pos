@@ -16,6 +16,13 @@
 #  report_data         :text
 #
 
+# Notes on Cash Totals:
+# Voided items and orders do not count toward totals
+# Totals by product may not add up as the prices may have changed for a product over the course of a working day
+# 
+# Loyalty Points do not count towards VAT
+# 
+
 class CashTotal < ActiveRecord::Base
   
   serialize :report_data

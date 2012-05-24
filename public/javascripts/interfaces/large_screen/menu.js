@@ -43,6 +43,11 @@ function initMenu() {
     
     setGlobalPriceLevel(storedGlobalPriceLevel);
     
+    if(!enableLoyaltyCardRedemption) {
+        //hide that payment method
+        $("#loyalty_payment_method_button").hide();
+    }
+    
     //hack to scroll the recpt a little after page has loaded as there 
     //were problems on touch interface with recpt getting stuck
     setTimeout("menuRecptScroll()", 1000);
@@ -1118,6 +1123,11 @@ function clearOrder(selectedTable) {
 }
 
 function doTotal(applyDefaultServiceCharge) {
+    if(!callHomePollInitSequenceComplete) {
+        niceAlert("Downloading data from server, please wait.");
+        return;
+    }
+    
     if(currentOrderEmpty()) {
         setStatusMessage("No order present to sub-total!", true, true);
         return;
@@ -1174,6 +1184,8 @@ function doTotal(applyDefaultServiceCharge) {
     updateTotalTendered();
     
     $('#totals_tendered_box').addClass("selected");
+    
+    resetLoyaltyCustomer();
 }
 
 var cashSaleInProcess = false;
@@ -1444,6 +1456,9 @@ function orderSentToServerCallback(orderData, errorOccured) {
         if(isTableZeroOrder) {
             doSyncTableOrder();
         }
+        
+        //reload the customers as their points/credit may need updating
+        $.getScript('/javascripts/customers.js');
     } else {
         niceAlert("There was an error cashing out the last order, the server could not process it. It will automatically resend itself, please do not cash out on another terminal!");
     }

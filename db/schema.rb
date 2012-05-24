@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120417143247) do
+ActiveRecord::Schema.define(:version => 20120523174012) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(:version => 20120417143247) do
     t.string   "printers",                                 :default => ""
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => -1
+    t.integer  "course_num",                               :default => 0
     t.string   "kitchen_screens",                          :default => ""
   end
 
@@ -65,6 +65,38 @@ ActiveRecord::Schema.define(:version => 20120417143247) do
   end
 
   add_index "client_transactions", ["order_id"], :name => "index_client_transactions_on_order_id"
+
+  create_table "customer_points_allocations", :force => true do |t|
+    t.integer  "customer_id"
+    t.integer  "order_id"
+    t.integer  "amount"
+    t.float    "loyalty_level_percent"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "customers", :force => true do |t|
+    t.string   "name"
+    t.string   "contact_name"
+    t.date     "dob"
+    t.string   "address"
+    t.string   "postal_address"
+    t.string   "telephone"
+    t.string   "mobile"
+    t.string   "fax"
+    t.string   "email"
+    t.float    "credit_limit",     :default => 0.0,  :null => false
+    t.float    "current_balance",  :default => 0.0,  :null => false
+    t.float    "credit_available", :default => 0.0,  :null => false
+    t.integer  "loyalty_level_id"
+    t.integer  "available_points", :default => 0,    :null => false
+    t.string   "swipe_card_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "customer_number"
+    t.string   "customer_type"
+    t.boolean  "is_active",        :default => true
+  end
 
   create_table "discounts", :force => true do |t|
     t.string   "name"
@@ -160,6 +192,14 @@ ActiveRecord::Schema.define(:version => 20120417143247) do
   add_index "ingredients", ["ingredient_product_id"], :name => "index_ingredients_on_ingredient_product_id"
   add_index "ingredients", ["product_id"], :name => "index_ingredients_on_product_id"
 
+  create_table "loyalty_levels", :force => true do |t|
+    t.string   "label"
+    t.float    "percent",    :default => 10.0,  :null => false
+    t.boolean  "is_default", :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "menu_items", :force => true do |t|
     t.integer  "menu_page_id"
     t.integer  "product_id"
@@ -253,6 +293,7 @@ ActiveRecord::Schema.define(:version => 20120417143247) do
     t.boolean  "is_double",                                    :default => false
     t.text     "oia_data",               :limit => 2147483647
     t.boolean  "is_void",                                      :default => false
+    t.boolean  "is_half",                                      :default => false
   end
 
   add_index "order_items", ["employee_id"], :name => "index_order_items_on_employee_id"
@@ -374,9 +415,10 @@ ActiveRecord::Schema.define(:version => 20120417143247) do
     t.boolean  "hide_on_printed_receipt",                  :default => false
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => -1
+    t.integer  "course_num",                               :default => 0
     t.boolean  "is_stock_item",                            :default => true
     t.string   "kitchen_screens",                          :default => ""
+    t.float    "half_price",                               :default => 0.0
   end
 
   add_index "products", ["category_id"], :name => "index_products_on_category_id"

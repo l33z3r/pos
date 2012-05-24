@@ -1959,3 +1959,157 @@ div#new_order_item_addition_grid div#fields {
 }
 
 /* End OIAGs */
+
+/* Customers */
+
+div#customer_builder div.action_buttons {
+    border-spacing: 7px;
+    padding-left: 12px;
+    width: 100px;
+    float: left;
+}
+
+div#customer_builder div.action_buttons div#button_resizer {
+    width: 75px;
+    height: 106px;
+    background-color: #555;
+    padding: 3px;
+    text-align: center;
+    margin-top: 15px;
+}
+
+div#customer_builder div.action_buttons div#button_resizer * {
+    color: #FFF;
+    font-weight: bold;
+}
+
+div#customer_builder div.action_buttons div#button_resizer input {
+    float: left;
+    color: #333;
+    font-weight: normal;
+}
+
+div#customer_builder div.action_buttons div#button_resizer div.top_label {
+    padding: 4px;
+    margin-bottom: 5px;
+}
+
+div#customer_builder div.action_buttons div#button_resizer div#width {
+    margin-bottom: 5px;
+}
+
+div#customer_builder div.action_buttons div#button_resizer div.label {
+    margin-top: 5px;
+    margin-left: 3px;
+    float: left;
+}
+
+div#customer_builder div#builder_fields_container {
+    margin-top: 3px;
+    padding-top: 3px;
+    width: 900px;
+    height: 727px;
+    float: left;
+    background-color: #AAA;
+}
+
+div#customer_builder div#builder_fields_container div.left_col {
+    float: left;
+    width: 320px;    
+}
+
+div#customer_builder div#builder_fields_container div.extra_options {
+    float: left;
+    width: 577px;
+}
+
+div#customer_builder div#builder_fields_container div.extra_options div.tab_content {
+    height: 350px;
+}
+
+div#customer_builder div#builder_fields_container div.extra_options div.left_col {
+    float: left;
+    width: 280px;    
+}
+
+div#customer_builder div#builder_fields_container div.extra_options div.right_col {
+    float: left;
+    width: 280px;
+}
+
+div#customer_builder div#keyboard {
+    height: 270px;
+    margin-left: 100px;
+    margin-top: 5px;
+    width: 688px;
+}
+
+div#customer_builder div#builder_fields_container div.field {
+    margin: 2px 0px;
+}
+
+div#customer_builder div#builder_fields_container div.left_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 100px;
+}
+
+div#customer_builder div#builder_fields_container div.right_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 120px;
+}
+
+div#customer_builder div#builder_fields_container div.extra_options div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 30px;
+    margin-left: 10px;
+    width: 130px;
+}
+
+div#customer_builder div#builder_fields_container div.left_col div.field input,
+div#customer_builder div#builder_fields_container div.left_col div.field select,
+div#customer_builder div#builder_fields_container div.left_col div.field textarea {
+    float: left;
+    width: 190px;
+    margin-right: 10px;
+}
+
+div#customer_builder div#builder_fields_container div.right_col div.field input,
+div#customer_builder div#builder_fields_container div.right_col div.field select,
+div#customer_builder div#builder_fields_container div.right_col div.field textarea {
+    float: left;
+    width: 90px;
+}
+
+div#customer_builder div#builder_fields_container div.extra_options div.field input,
+div#customer_builder div#builder_fields_container div.extra_options div.field select,
+div#customer_builder div#builder_fields_container div.extra_options div.field textarea {
+    float: left;
+    width: 90px;
+}
+
+div#customer_builder div#builder_fields_container div.extra_options div.field input,
+div#customer_builder div#builder_fields_container div.extra_options div.field select,
+div#customer_builder div#builder_fields_container div.extra_options div.field textarea {
+    float: left;
+    width: 95px;
+}
+
+div#customer_builder div#builder_fields_container div.extra_options div.tab_content {
+    background-color: #E0E0E0;
+    padding: 10px 0px;
+    height: 355px;
+}
+
+div#customer_builder div#builder_fields_container div.extra_options div#options_tab_content div.field {
+    height: 30px;
+}
+
+/* End Customers */

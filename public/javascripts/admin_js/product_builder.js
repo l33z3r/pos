@@ -7,6 +7,12 @@ $(function() {
     $('#product_name').focus();
 });
 
+function productBuilderShowMoreOptionsShortcut() {
+    toggleKeyboardEnable = true;
+    toggleUtilKeyboard();
+    adminShowMoreOptions();
+}
+
 function productBuilderOkClicked() {
     showSpinner();
     $('#product_builder_form').submit();
@@ -347,12 +353,6 @@ function kitchenScreenSwitchToggle(switchEl) {
     var terminalName = switchEl.data("terminal_name");
    
     $('#choose_kitchen_screen_checkbox_' + terminalName).attr("checked", is_selected);
-}
-
-function productBuilderShowMoreOptionsShortcut() {
-    toggleKeyboardEnable = true;
-    toggleUtilKeyboard();
-    adminShowMoreOptions();
 }
 
 var chooseProductImageDialogPopupEl;

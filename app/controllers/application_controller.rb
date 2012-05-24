@@ -210,7 +210,7 @@ class ApplicationController < ActionController::Base
   end
   
   def remove_old_table_0_orders
-    @max_table_0_orders = 50
+    @max_table_0_orders = 30
     @tsds_reversed = TerminalSyncData.fetch_sync_table_order_times.reverse
     
     #remove table orders
@@ -398,6 +398,8 @@ class ApplicationController < ActionController::Base
     
     @cash_drawer_service_ip_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_IP_ADDRESS, {:fingerprint => @terminal_fingerprint}
     
+    @use_wss_receipt_printer = GlobalSetting.parsed_setting_for GlobalSetting::USE_WSS_RECEIPT_PRINTER, {:fingerprint => @terminal_fingerprint}
+    
     #if this isn't set, copy the value from the printer ip
     if @cash_drawer_service_ip_gs.value.blank?
       @cash_drawer_service_ip_gs.value = @web_socket_service_ip
@@ -406,6 +408,8 @@ class ApplicationController < ActionController::Base
     end
     
     @cash_drawer_service_ip = @cash_drawer_service_ip_gs.value
+    
+    @use_wss_cash_drawer = GlobalSetting.parsed_setting_for GlobalSetting::USE_WSS_CASH_DRAWER, {:fingerprint => @terminal_fingerprint}
     
     @printer_left_margin = GlobalSetting.parsed_setting_for GlobalSetting::PRINTER_LEFT_MARGIN, {:fingerprint => @terminal_fingerprint}
     

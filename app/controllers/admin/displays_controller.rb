@@ -68,6 +68,13 @@ class Admin::DisplaysController < Admin::AdminController
   end
 
   def destroy
+    #Don't allow deleting of last one
+    if Display.all.size == 1
+      flash[:notice] = "You must have at least one display!"
+      redirect_to admin_displays_url
+      return
+    end
+    
     @display = Display.find(params[:id])
     @display.destroy
 

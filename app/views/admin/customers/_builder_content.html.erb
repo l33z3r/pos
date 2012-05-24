@@ -1,0 +1,135 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "admin_js/customer_builder" %>
+
+  <script type="text/javascript">
+    $(function() {
+      initCustomerFormBuilder();
+    });
+  </script>
+<% end %>
+
+<%= form_for([:admin, @customer], :html => { :multipart => true, :id => "customer_builder_form" }) do |f| %>
+  <div id="customer_builder">
+
+    <% if @customer.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@customer.errors.count, "error") %> prohibited this customer from being saved:</h2>
+
+        <ul>
+          <% @customer.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="action_buttons">
+      <div class="button" data-onpress="goTo('<%=home_path%>#screen=menu');">
+        <div class="icon">
+          <%= image_tag "/images/button_logos/manage_sales_screen_button.png" %>
+        </div>
+        <div class="button_name">Sales Screen</div>
+      </div>
+
+      <div class="clear">&nbsp;</div>
+
+      <div class="button" data-onpress="customerBuilderShowMoreOptionsShortcut();">
+        <div class="icon">
+          <%= image_tag "/images/button_logos/more_options_button.png" %>
+        </div>
+        <div class="button_name">Functions</div>
+      </div>
+
+      <div class="clear">&nbsp;</div>
+
+      <div class="button" data-onpress="customerBuilderCancelClicked()">
+        <div class="icon">
+          <%= image_tag "/images/button_logos/cancel_button.png" %>
+        </div>
+        <div class="button_name">Cancel</div>
+      </div>
+
+      <div class="clear">&nbsp;</div>
+
+      <div class="button" data-onpress="customerBuilderOkClicked()">
+        <div class="icon">
+          <%= image_tag "/images/button_logos/ok_button.png" %>
+        </div>
+        <div class="button_name">Ok</div>
+      </div>
+
+      <div class="clear">&nbsp;</div>
+    </div>
+
+    <div id="builder_fields_container">
+      <div class="left_col">
+        <div class="field">
+          <div class="label">Name</div>
+          <%= f.text_field :name %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Active</div>
+          <%= f.check_box :is_active %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Customer Type</div>
+          <%= f.select :customer_type, options_for_select(Customer.customer_type_options_for_select, @customer.customer_type) %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Contact Name</div>
+          <%= f.text_field :contact_name %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Address</div>
+          <%= f.text_area :address, :rows => 3 %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Postal Address</div>
+          <%= f.text_area :postal_address, :rows => 3 %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">DOB</div>
+          <%= f.text_field :dob, :id => "customer_dob" %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Email Address</div>
+          <%= f.text_field :email %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Telephone</div>
+          <%= f.text_field :telephone %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Mobile</div>
+          <%= f.text_field :mobile %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Fax</div>
+          <%= f.text_field :fax %>
+          <div class="clear">&nbsp;</div>
+        </div>
+      </div>
+
+      <div class="right_col"></div>
+
+      <%= render 'customer_extra_options', :f => f %>
+
+      <div class="clear">&nbsp;</div>
+
+      <div id="keyboard"></div>
+
+    </div>
+  </div>
+
+  </div>
+<% end %>

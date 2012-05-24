@@ -11,7 +11,7 @@
   "plugins/md5", "plugins/Math.uuid", :cache => "cache/plugin_libs_2" %>
 
 <!--cant cache the following scripts as they are erb templates -->
-<%= javascript_include_tag "init", "employees", "products", "tables", "payment_methods" %>
+<%= javascript_include_tag "init", "employees", "customers", "products", "tables", "payment_methods" %>
 
 <!-- js shared between interfaces -->
 <%= javascript_includes "interfaces/shared/", :recursive => true, :cache => "cache/shared" %>

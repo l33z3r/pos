@@ -16,6 +16,14 @@ class PaymentMethod < ActiveRecord::Base
   
   has_attached_file :logo, PAPERCLIP_STORAGE_OPTIONS.merge(:styles => { :medium => "300x300>", :thumb => "115x115>" })
   
+  def is_cash?
+    self.name.downcase == "cash"
+  end
+  
+  def is_loyalty?
+    self.name.downcase == "loyalty"
+  end
+  
   def self.payment_integration_options_for_select
     @options = []
     

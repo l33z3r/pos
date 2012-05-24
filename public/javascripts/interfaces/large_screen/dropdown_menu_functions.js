@@ -55,6 +55,9 @@ function menuScreenDropdownItemSelected(index, name) {
     } else if(index == 7) {
         goToCurrentOrders();
         return;
+    } else if(index == 8) {
+        goToAddCustomer();
+        return;
     }
     
     setShortcutDropdownDefaultText();
@@ -284,4 +287,8 @@ function goToAddProduct() {
 
 function goToCurrentOrders() {
     goTo("/admin/orders?section=open_orders");
+}
+
+function goToAddCustomer() {
+    goTo("/admin/customers/new");
 }

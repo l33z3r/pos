@@ -10,7 +10,7 @@
 
 @employee_role = Role.find_or_create_by_name({:name => "Employee"})
 
-@admin_employee = Employee.find_or_create_by_nickname({:nickname => "chef", :staff_id => "-2", :name => "chef", 
+@chef_employee = Employee.find_or_create_by_nickname({:nickname => "chef", :staff_id => "-2", :name => "chef", 
     :passcode => "1010", :clockin_code => "1010", :address => "chef address", :telephone => "chef telephone",
     :hourly_rate => "1", :overtime_rate => "1", :role_id => @employee_role.id})
 #
@@ -36,7 +36,8 @@
   [49, "Modifier Grids"], [50, "Current Orders"], [51, "Manage Terminals"], [52, "Print Bill"], [53, "Course"],
   [54, "Kitchen Screen"], [55, "X/Z History"], [56, "Double"], [57, "Table Name"], [58, "Reports"], 
   [59, "Split Bill"], [60, "Exit App"], [61, "Void Item"], [62, "Void All Items"], [63, "Delete Order"], 
-  [64, "Change Prices"], [65, "Charge Card"], [66, "Covers"], [67, "Product Info"]
+  [64, "Change Prices"], [65, "Charge Card"], [66, "Covers"], [67, "Product Info"], 
+  [68, "Customers"], [69, "Loyalty Customers"]
 ]
 
 #now create the buttons and also init a button role for admin user
@@ -61,7 +62,8 @@ end
 #
 #
 #Taxes and Payment Methods ETC
-@default_payment_method = PaymentMethod.find_or_create_by_name(:name => "cash", :payment_integration_id => 0, :is_default => true)
+@cash_payment_method = PaymentMethod.find_or_create_by_name(:name => "cash", :payment_integration_id => 0, :open_cash_drawer => true, :is_default => true)
+@loyalty_payment_method = PaymentMethod.find_or_create_by_name(:name => "loyalty", :payment_integration_id => 0, :open_cash_drawer => false, :is_default => false)
 
 @default_tax_rate = TaxRate.find_or_create_by_name(:name => "default", :rate => 12, :is_default => true)
 
@@ -104,3 +106,7 @@ if !@default_display
     
   @default_display.save!
 end
+
+
+#Loyalty
+LoyaltyLevel.create({:label => "Default", :percent => 10, :is_default => true})
