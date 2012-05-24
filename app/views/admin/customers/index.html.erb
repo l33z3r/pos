@@ -1,7 +1,7 @@
 <% @nav_title = "Customers" %>
 
 <% content_for :head do %>
-  <%= javascript_include_tag "admin_js/customers" %>
+  <%= javascript_include_tag "admin_js/customer_builder" %>
 <% end %>
 
 <% content_for :admin_subnav_links_left do %>
@@ -15,11 +15,67 @@
     </div>
     <div class="button_name">Add Customer</div>
   </div>
+<% end %>
 
+<% content_for :head do %>
+  <script type="text/javascript">
+    $(function() {
+  <% if @show_normal_customers %>
+      $('#customer_type_equals').val("<%= Customer::NORMAL %>");
+  <% else %>
+      $('#customer_type_equals').val("<%= Customer::LOYALTY %>");
+  <% end %>
+        
+    doClickAButton($('#submit_customer_search_button'));
+    
+    //set the selected button
+    changeStyleButton($("#current_letter").val());
+  });
+  </script>
 <% end %>
 
 <div id="admin_customer_list">
 
+  <%= hidden_field_tag 'current_letter', @selected_letter %>
+
+  <div id="search_fields_container">
+    <div class="left_col">
+      <div class="field">
+        <div class="label">Customer Name:</div>
+        <%= text_field_tag :name_contains %>
+        <div class="clear">&nbsp;</div>
+      </div>
+      <div class="field">
+        <div class="label">Customer Number:</div>
+        <%= text_field_tag :customer_number_equals %>
+        <div class="clear">&nbsp;</div>
+      </div>
+    </div>
+    <div class="center_col">
+      <div class="field">
+        <div class="label">Is Active?</div>
+        <%= check_box_tag  :is_active_equals, "is_active_equals", true %>
+        <div class="clear">&nbsp;</div>
+      </div>
+      <div class="field">
+        <div class="label">Customer Type</div>
+        <%= select_tag :customer_type_equals, options_for_select(Customer.customer_type_options_for_select) %>
+        <div class="clear">&nbsp;</div>
+      </div>
+    </div>
+
+    <div class="button_col">
+      <div class="button" id="submit_customer_search_button" data-onpress="runCustomerSearch();">
+        <div class="icon">
+          <%= image_tag "/images/search.png" %>
+        </div>
+        <div class="button_name">Search</div>
+      </div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+  </div>
+  
   <section id="customers" class="no_scroll_pane">
 
     <div class="pagination_links">

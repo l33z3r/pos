@@ -15,6 +15,9 @@ class Customer < ActiveRecord::Base
   
   validates :customer_type, :presence => true, :inclusion => { :in => VALID_CUSTOMER_TYPES }
   
+  attr_accessor :is_loyalty_customer
+  attr_accessor :is_normal_customer
+  
   def self.customer_type_options_for_select
     @options = []
     
@@ -57,6 +60,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: customers
@@ -81,5 +85,6 @@ end
 #  updated_at       :datetime
 #  customer_number  :integer(4)
 #  customer_type    :string(255)
+#  is_active        :boolean(1)      default(TRUE)
 #
 

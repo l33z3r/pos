@@ -84,32 +84,8 @@ class Admin::CustomersController < Admin::AdminController
   end
 
   def search
-    #get parameters from request or session
-    if (!params[:search1].nil? || !params[:search2].nil? || !params[:search3].nil?)
-      @param1 = params[:search1]
-      @param2 = params[:search2]
-      @param3 = params[:search3]
-      save_params(@param1, @param2, @param3)
-    else
-      @param1 = session[:search1]
-      @param2 = session[:search2]
-      @param3 = session[:search3]
-      get_session_parameters_to_fields
-    end
-    #search
-    @search1 = Product.search(@param1).order('name')
-    @products1 = @search1.all
-    if (!@param2.nil? && !@param3.nil?)
-      @search2 = Product.where("(code_num = ? OR upc = ? OR price = ? OR price_2 = ? OR price_3 = ? OR price_4) AND is_deleted = false", @param2, @param2, @param2, @param2, @param2).order('name')
-      @search3 = Product.search(@param3).order('name')
-      @products2 = @search2.all
-      @products3 = @search3.all
-      @merge1 = @products2 | @products3
-      @intersection = @merge1 & @products1
-      @products = @intersection.sort! { |a, b| a.name <=> b.name }
-    else
-      @products = @products1.sort! { |a, b| a.name <=> b.name }
-    end
+    @search = Customer.search(params[:search]).order('name') 
+    @customers = @search.all
   end
 
 end
