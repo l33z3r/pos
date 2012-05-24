@@ -122,7 +122,7 @@
               </td>
               <td>
                   <% unless product.cost_price == 0 %>
-                  <%= sprintf("%.0f", per_profit(revenue, total_price)) %>%
+                  <%= sprintf("%.0f", per_profit(revenue, total_price, product.sales_tax_rate)) %>%
                   <% end %>
               </td>
               <td>

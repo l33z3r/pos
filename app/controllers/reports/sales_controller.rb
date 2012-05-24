@@ -14,9 +14,7 @@ class Reports::SalesController < Admin::AdminController
     gross - vat
   end
 
-  def per_profit(revenue, total_price)
-    (revenue.to_d/total_price.to_d)*100
-  end
+
 
   def index
     session[:search_type] = :best_seller

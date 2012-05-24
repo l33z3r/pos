@@ -18,6 +18,8 @@ body {
     overflow: hidden;
     line-height: 15px;
 
+    zoom: .78;
+
     /* disable text selection */
     -webkit-user-select: none;
     -khtml-user-select: none;

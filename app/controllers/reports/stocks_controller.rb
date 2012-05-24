@@ -13,9 +13,8 @@ class Reports::StocksController < Admin::AdminController
     gross - vat_rate
   end
 
-  def per_profit(revenue, total_price)
-     #(revenue.to_d - total_price.to_d)/(revenue.to_d) * 100
-    (revenue.to_d/total_price.to_d)*100
+  def per_profit(sales_price, cost_price, vat)
+    ((sales_price.to_d - vat - cost_price.to_d)/sales_price.to_d)*100
   end
 
   def index

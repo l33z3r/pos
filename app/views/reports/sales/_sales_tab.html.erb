@@ -58,14 +58,19 @@
                     <% total_gross += gross_sales %>
                     <% total_vat += vat %>
                     <% total_net += net_sales %>
+                    <% if product %>
                     <tbody>
                     <tr>
                         <td>
+                            <% if nil != product.name %>
                             <%= product.name %>
+                            <% end %>
                         </td>
                         <td>
                             <% if Category.find_by_id(product.category_id) %>
+                                <% if Category.find_by_id(product.category_id).name %>
                                 <%= Category.find_by_id(product.category_id).name %>
+                                <% end %>
                             <% end %>
                         </td>
                         <td style="text-align: right">
@@ -105,6 +110,7 @@
 
                     </tr>
                 </tbody>
+                <% end %>
             </table>
 
         <% else %>
