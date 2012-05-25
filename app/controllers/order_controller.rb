@@ -198,8 +198,10 @@ class OrderController < ApplicationController
               #decrement stock for this oia product
               @oia_stock_usage = @order_item.quantity.to_f
       
-              if(@order_item.is_double)
+              if @order_item.is_double
                 @oia_stock_usage *= 2
+              elsif @order_item.is_half
+                @oia_stock_usage /= 2
               end
       
               Product.find_by_id(oia[:product_id]).decrement_stock @oia_stock_usage
@@ -226,14 +228,17 @@ class OrderController < ApplicationController
         @order_item.show_server_added_text = item[:showServerAddedText]
       
         @order_item.is_double = item[:is_double]
+        @order_item.is_half = item[:is_half]
       
         #this happens for every item
         @order_item_saved = @order_item_saved and @order_item.save
       
         @item_stock_usage = @order_item.quantity.to_f
       
-        if(@order_item.is_double)
+        if @order_item.is_double
           @item_stock_usage *= 2
+        elsif @order_item.is_half
+          @item_stock_usage /= 2
         end
       
         if !@order_item.is_void
