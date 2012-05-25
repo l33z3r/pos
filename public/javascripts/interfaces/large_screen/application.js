@@ -49,13 +49,13 @@ function doGlobalInit() {
 
     if (true) {
 
+        alert("is true here " + isTouchDevice())
         //init touch if were not in mobile as that uses jqt
         if (!inMobileContext()) {
             initTouch();
         }
 
         initTouchRecpts();
-
         $('div.item, div.page, div.button, div.employee_box, div.key, div.go_key, div.cancel_key, div.util_keypadkey, div.tab, div.grid_item, div.room_object').live('click', function() {
             eval($(this).data('onpress'));
         });
