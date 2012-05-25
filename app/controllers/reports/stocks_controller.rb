@@ -14,7 +14,7 @@ class Reports::StocksController < Admin::AdminController
   end
 
   def per_profit(sales_price, cost_price, vat)
-    ((sales_price.to_d - vat - cost_price.to_d)/sales_price.to_d)*100
+    (((sales_price.to_d/(1+(vat/100)))-cost_price.to_d)/(sales_price.to_d/(1+(vat/100))))*100
   end
 
   def index
