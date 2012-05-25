@@ -136,8 +136,6 @@ function removeLastOrderItem() {
 }
 
 function quickSale() {
-//    openCasioDrawer();
-//    printCasioReceipt();
     unorderedItemsPopup('doQuickSale()', true);
 }
 

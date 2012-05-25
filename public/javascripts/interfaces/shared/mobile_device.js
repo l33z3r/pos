@@ -46,18 +46,6 @@ function showAndroidKeyboard() {
     }
 }
 
-function openCasioDrawer() {
-    if(inAndroidWrapper()) {
-        clueyAndroidJSInterface.openDrawer();
-    }
-}
-
-function printCasioReceipt() {
-    if(inAndroidWrapper()) {
-        clueyAndroidJSInterface.printCasioReceipt();
-    }
-}
-
 function hideAndroidKeyboard() {
     if(inAndroidWrapper()) {
         clueyAndroidJSInterface.hideKeyboard();
