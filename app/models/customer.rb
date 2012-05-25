@@ -80,10 +80,7 @@ end
 #  created_at       :datetime
 #  updated_at       :datetime
 #  customer_number  :integer(4)
-<<<<<<< HEAD
 #  customer_type    :string(255)
 #  is_active        :boolean(1)      default(TRUE)
-=======
->>>>>>> half_measure_button
 #
 
