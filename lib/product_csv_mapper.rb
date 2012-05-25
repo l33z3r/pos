@@ -7,17 +7,18 @@ class ProductCSVMapper
   DESCRIPTION_INDEX = 4
   PRICE_INDEX = 5
   DOUBLE_PRICE_INDEX = 6
-  CODE_NUM_INDEX = 7
-  UPC_INDEX = 8
-  PRICE_2_INDEX = 9
-  PRICE_3_INDEX = 10
-  PRICE_4_INDEX = 11
-  MARGIN_PERCENT_INDEX = 12
-  ITEMS_PER_UNIT_INDEX = 13
-  QUANTITY_PER_CONTAINER_INDEX = 14
-  COST_PRICE_INDEX = 15
-  UNIT_INDEX = 16
-  SIZE_INDEX = 17
+  HALF_PRICE_INDEX = 7
+  CODE_NUM_INDEX = 8
+  UPC_INDEX = 9
+  PRICE_2_INDEX = 10
+  PRICE_3_INDEX = 11
+  PRICE_4_INDEX = 12
+  MARGIN_PERCENT_INDEX = 13
+  ITEMS_PER_UNIT_INDEX = 14
+  QUANTITY_PER_CONTAINER_INDEX = 15
+  COST_PRICE_INDEX = 16
+  UNIT_INDEX = 17
+  SIZE_INDEX = 18
   
   def self.product_from_row row
     @new_product = Product.new
@@ -28,6 +29,7 @@ class ProductCSVMapper
       
     @new_product.price = price_from_row row
     @new_product.double_price = double_price_from_row row
+    @new_product.half_price = half_price_from_row row
       
     @new_product.code_num = code_num_from_row row
     @new_product.upc = upc_from_row row
@@ -83,6 +85,16 @@ class ProductCSVMapper
     end
     
     return double_price
+  end
+  
+  def self.half_price_from_row row
+    half_price = get_index row, HALF_PRICE_INDEX
+    
+    if half_price.blank?
+      half_price = 0
+    end
+    
+    return half_price
   end
   
   def self.code_num_from_row row

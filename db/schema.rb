@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(:version => 20120523174012) do
     t.string   "printers",                                 :default => ""
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => -1
+    t.integer  "course_num",                               :default => 0
     t.string   "kitchen_screens",                          :default => ""
   end
 
@@ -293,6 +293,7 @@ ActiveRecord::Schema.define(:version => 20120523174012) do
     t.boolean  "is_double",                                    :default => false
     t.text     "oia_data",               :limit => 2147483647
     t.boolean  "is_void",                                      :default => false
+    t.boolean  "is_half",                                      :default => false
   end
 
   add_index "order_items", ["employee_id"], :name => "index_order_items_on_employee_id"
@@ -414,9 +415,10 @@ ActiveRecord::Schema.define(:version => 20120523174012) do
     t.boolean  "hide_on_printed_receipt",                  :default => false
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => -1
+    t.integer  "course_num",                               :default => 0
     t.boolean  "is_stock_item",                            :default => true
     t.string   "kitchen_screens",                          :default => ""
+    t.float    "half_price",                               :default => 0.0
   end
 
   add_index "products", ["category_id"], :name => "index_products_on_category_id"
