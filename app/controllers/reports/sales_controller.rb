@@ -15,7 +15,6 @@ class Reports::SalesController < Admin::AdminController
   end
 
 
-
   def index
     session[:search_type] = :best_seller
     session[:search_type_label] = "Best Seller"

@@ -9,12 +9,12 @@ class Reports::StocksController < Admin::AdminController
     (gross-(gross/(1+(tax/100))))
   end
 
-  def net_result(gross, vat_rate)
-    gross - vat_rate
+  def net_result(gross, vat)
+    gross - vat
   end
 
   def per_profit(sales_price, cost_price, vat)
-    ((sales_price.to_d - vat - cost_price.to_d)/sales_price.to_d)*100
+    (((sales_price.to_d/(1+(vat/100)))-cost_price.to_d)/(sales_price.to_d/(1+(vat/100))))*100
   end
 
   def index
