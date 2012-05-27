@@ -110,18 +110,24 @@ function openEditNameTextBox(pageId) {
 
     $('#edit_page_name_' + pageId).keypress(function(e){
         if(e.which == 13){
-            $('#page_name_' + pageId).html($('#edit_page_name_' + pageId).val());
-            $('#edit_page_name_' + pageId).hide();
-            $('#page_name_' + pageId).show();
+            submitPageRename(pageId);
+        }
+    });
+    
+    $('#edit_page_name_' + pageId).blur(function() {submitPageRename(pageId);});
+}
+
+function submitPageRename(pageId) {
+    $('#page_name_' + pageId).html($('#edit_page_name_' + pageId).val());
+    $('#edit_page_name_' + pageId).hide();
+    $('#page_name_' + pageId).show();
         
-            $.ajax({
-                type: 'POST',
-                url: 'rename_menu_page',
-                data: {
-                    menu_page_id : pageId,
-                    new_name : $('#edit_page_name_' + pageId).val()
-                }
-            });
+    $.ajax({
+        type: 'POST',
+        url: 'rename_menu_page',
+        data: {
+            menu_page_id : pageId,
+            new_name : $('#edit_page_name_' + pageId).val()
         }
     });
 }

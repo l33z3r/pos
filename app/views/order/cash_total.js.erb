@@ -58,7 +58,7 @@ cash_totals_data_html = "<div id='cash_totals_data_table'>";
     //construct the payment type data table
     sales_by_payment_type_data = new Array();
     <% @cash_total_data[:sales_by_payment_type].each do |payment_type, amount| %>
-      sales_by_payment_type_data.push(new Array('<%=payment_type%>', '<%=amount%>'));
+      sales_by_payment_type_data.push(new Array('<%=payment_type.titleize%>', '<%=amount%>'));
     <% end %>
     cash_totals_data_html += "<div class='data_table_header'>Sales By Payment Type</div>";
     cash_totals_data_html += getCashTotalDataTable(sales_by_payment_type_data) + clearHTML;
@@ -123,7 +123,7 @@ cash_totals_data_html = "<div id='cash_totals_data_table'>";
     //construct the service charge by payment type data table
     service_charge_by_payment_type_data = new Array();
     <% @cash_total_data[:service_charge_by_payment_type].each do |payment_type, amount| %>
-      service_charge_by_payment_type_data.push(new Array('<%=payment_type%>', '<%=amount%>'));
+      service_charge_by_payment_type_data.push(new Array('<%=payment_type.titleize%>', '<%=amount%>'));
     <% end %>
     cash_totals_data_html += "<div class='data_table_header'><%= @service_charge_label %> Collected</div>";
     cash_totals_data_html += getCashTotalDataTable(service_charge_by_payment_type_data) + clearHTML;

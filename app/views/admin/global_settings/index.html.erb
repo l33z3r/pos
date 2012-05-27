@@ -1165,6 +1165,15 @@
                       <% end %>
                     </td>
                   </tr>
+                  <tr>
+                    <td>What Do You Want To Call A Half Measure?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::HALF_MEASURE_LABEL %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
 

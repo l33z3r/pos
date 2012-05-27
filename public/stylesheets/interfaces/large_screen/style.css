@@ -3796,13 +3796,11 @@ div.popup_button {
     background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
 }
 
-div.button.selected {
+div.button.selectedf {
     background: -moz-linear-gradient(#C1C1C1, #101010) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#C1C1C1), to(#101010));
     color: #FFF;
 }
-
-
 
 div.button div.icon {
     height: 36px;
@@ -3812,7 +3810,7 @@ div.button div.icon {
 
 div.button div.icon img {
     max-height: 36px;
-    max-width: 36px;
+    max-width: 55px;
 }
 
 div.button div.button_name {

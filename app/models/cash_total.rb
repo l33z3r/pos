@@ -137,11 +137,6 @@ class CashTotal < ActiveRecord::Base
         order.order_items.each do |order_item|
             
           @order_item_price = order_item.total_price
-            
-          #take away the whole order discount
-          if order.discount_percent and order.discount_percent > 0
-            @order_item_price -= ((order.discount_percent * @order_item_price)/100)
-          end
           
           if order_item.is_void
             #initialise a hash for employee
@@ -209,7 +204,19 @@ class CashTotal < ActiveRecord::Base
           @sales_by_category[@category_name] += @order_item_price
           @sales_by_department[@department_name] += @order_item_price
           
-          @order_item_total_discount = order_item.total_price - @order_item_price
+          if order_item.pre_discount_price
+            @order_item_price_including_item_discount = order_item.pre_discount_price
+            @order_item_total_discount = order_item.pre_discount_price - order_item.total_price
+          else 
+            @order_item_price_including_item_discount = order_item.total_price
+            @order_item_total_discount = 0
+          end
+          
+          #add on whole order discount
+          if order.discount_percent and order.discount_percent > 0
+            @order_item_total_discount += (order.discount_percent * @order_item_price_including_item_discount)/100
+          end
+          
           @total_discounts += @order_item_total_discount
             
           if @tax_chargable
@@ -270,7 +277,7 @@ class CashTotal < ActiveRecord::Base
            
             #if the amount tendered was bigger than the total, we have to subtract from the cash payment for reporting
             if pt == "cash" and order.amount_tendered > order.total
-              amount -= (order.amount_tendered - order.total)
+              amount -= (order.amount_tendered - (order.total + order.service_charge))
             end
           
             if !@sales_by_payment_type[pt]
@@ -287,8 +294,11 @@ class CashTotal < ActiveRecord::Base
             @service_charge_by_payment_type[@first_pt] = 0
           end
         
-          logger.info "Increasing service_charge_by_payment_type for payment_type: #{@first_pt} by: #{order.service_charge}"
+          logger.info "Increasing service_charge_by_payment_type for payment_type: #{@first_pt} by: #{order.service_charge} #{@sales_by_payment_type[@first_pt]} #{@cash_sales_total}"
           @service_charge_by_payment_type[@first_pt] += order.service_charge
+          #now deduct that service charge from that payment types entry in @sales_by_payment_type
+          @sales_by_payment_type[@first_pt] -= order.service_charge
+          
         end
         
         #overall total

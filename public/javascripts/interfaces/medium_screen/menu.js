@@ -880,7 +880,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     if (orderItem.is_double) {
         orderHTML += "Double ";
     } else if (orderItem.is_half) {
-        orderHTML += "Half ";
+        orderHTML += halfMeasureLabel + " ";
     }
 
     orderHTML += orderItem.product.name + "</div>";

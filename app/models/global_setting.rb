@@ -73,6 +73,7 @@ class GlobalSetting < ActiveRecord::Base
   LOYALTY_POINTS_PER_CURRENCY_UNIT = 58
   USE_WSS_CASH_DRAWER = 59
   USE_WSS_RECEIPT_PRINTER = 60
+  HALF_MEASURE_LABEL = 61
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -134,7 +135,8 @@ class GlobalSetting < ActiveRecord::Base
     ENABLE_LOYALTY_REDEMPTION => "Enable Loyalty Redemption",
     LOYALTY_POINTS_PER_CURRENCY_UNIT => "Loyalty Points Per Currency Unit",
     USE_WSS_CASH_DRAWER => "Use Web Sockets For Cash Drawer",
-    USE_WSS_RECEIPT_PRINTER => "Use Web Sockets For Receipt Printing"
+    USE_WSS_RECEIPT_PRINTER => "Use Web Sockets For Receipt Printing",
+    HALF_MEASURE_LABEL => "Half Measure Label"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -327,6 +329,9 @@ class GlobalSetting < ActiveRecord::Base
     when USE_WSS_RECEIPT_PRINTER
       @gs = find_or_create_by_key(:key => "#{USE_WSS_RECEIPT_PRINTER.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[USE_WSS_RECEIPT_PRINTER])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when HALF_MEASURE_LABEL
+      @gs = find_or_create_by_key(:key => HALF_MEASURE_LABEL.to_s, :value => "Half", :label_text => LABEL_MAP[HALF_MEASURE_LABEL])
+      @gs.parsed_value = @gs.value
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
