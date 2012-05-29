@@ -2289,8 +2289,9 @@ div#discounts_popup_markup_container div#apply_discount_to {
 }
 
 div#discounts_popup_markup_container div#apply_discount_to input[type=radio] {
-    height: 20px;
-    margin-left: 90px;
+    height: 40px;
+    width: 70px;
+    margin-left: 10px;
     float: left;
 }
 
@@ -2303,7 +2304,7 @@ div#discounts_popup_markup_container div#apply_discount_to div.header_label {
 
 div#discounts_popup_markup_container div#apply_discount_to div.label {
     float: left;
-    margin-top: 2px;
+    margin-top: 12px;
     font-size: 12px;
 }
 

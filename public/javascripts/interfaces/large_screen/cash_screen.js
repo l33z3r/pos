@@ -15,6 +15,15 @@ function updateTotalTendered() {
     var formattedVal = currency(totalCashTendered, false);
     $('#totals_tendered_value').html(formattedVal);
     
+    //make the text bigger if > 0 
+    if(totalCashTendered > 0) {
+        $('#totals_tendered_box').css("font-size", "15px");
+        $('#totals_tendered_box').css("font-weight", "bold");
+    } else {
+        $('#totals_tendered_box').css("font-size", "12px");
+        $('#totals_tendered_box').css("font-weight", "normal");
+    }
+    
     totalAmountInclCashback = currentTotalFinal + cashback;
 
     //calculate change and show the finish sale button
