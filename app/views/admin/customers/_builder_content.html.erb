@@ -84,6 +84,11 @@
           <div class="clear">&nbsp;</div>
         </div>
         <div class="field">
+          <div class="label">DOB</div>
+          <%= f.text_field :dob, :id => "customer_dob" %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
           <div class="label">Address</div>
           <%= f.text_area :address, :rows => 3 %>
           <div class="clear">&nbsp;</div>
@@ -91,11 +96,6 @@
         <div class="field">
           <div class="label">Postal Address</div>
           <%= f.text_area :postal_address, :rows => 3 %>
-          <div class="clear">&nbsp;</div>
-        </div>
-        <div class="field">
-          <div class="label">DOB</div>
-          <%= f.text_field :dob, :id => "customer_dob" %>
           <div class="clear">&nbsp;</div>
         </div>
         <div class="field">

@@ -259,11 +259,13 @@ class OrderController < ApplicationController
       if @card_charge_details
         @card_charge_payment_method = @card_charge_details[:paymentMethod]
         @card_charge_amount = @card_charge_details[:amount]
+        @card_charge_reference_number = @card_charge_details[:reference_number]
         
         CardTransaction.create({
             :order_id => @order.id, 
             :payment_method => @card_charge_payment_method, 
-            :amount => @card_charge_amount})
+            :amount => @card_charge_amount,
+            :reference_number => @card_charge_reference_number})
       end
       
       #was the loyalty system used
@@ -278,7 +280,7 @@ class OrderController < ApplicationController
             @loyalty_customer.decrement!(:available_points, @points_used_this_sale.to_f)
             
             CustomerPointsAllocation.create({:customer_id => @loyalty_customer.id, :order_id => @order.id, 
-              :amount => @points_used_this_sale * -1, :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
+                :amount => @points_used_this_sale * -1, :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
           end
           
           @points_earned = @loyalty_details[:points_earned]

@@ -44,6 +44,27 @@ class Customer < ActiveRecord::Base
     write_attribute("customer_number", c_num)
   end
   
+  def swipe_card_code=(card_code)
+    if card_code.blank?
+      @customer_number = nil
+    else
+      @swipe_card_prefix = GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_CARD_PREFIX
+    
+      @customer_number_prefix = "10000000"
+    
+      @start_index = @swipe_card_prefix.length + 1
+      @end_index = @start_index + @customer_number_prefix.length - 2
+      
+      @customer_number = card_code[@start_index..@end_index]
+    end
+    
+    write_attribute("swipe_card_code", card_code)
+    
+    if @customer_number
+      write_attribute("customer_number", @customer_number)
+    end
+  end
+  
   def is_loyalty_customer?
     customer_type == LOYALTY or customer_type == BOTH
   end

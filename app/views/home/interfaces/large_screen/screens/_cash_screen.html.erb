@@ -45,7 +45,7 @@
     <div id="payment_options_section">
       <div id="payment_options">
         <% PaymentMethod.all.each do |pm| %>
-          <div id="<%=pm.name.gsub(" ", "_")%>_payment_method_button" class="button payment_method_button" data-onpress="paymentMethodSelected('<%=pm.id%>')">
+          <div id="<%=pm.name.gsub(" ", "_").downcase%>_payment_method_button" class="button payment_method_button" data-onpress="paymentMethodSelected('<%=pm.id%>')">
             <div class="icon">
               <%= payment_method_logo_thumb pm, true %>
             </div>

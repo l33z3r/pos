@@ -1,4 +1,9 @@
+var currentCCReferenceNumber;
+
 var splitPayments;
+
+//if a card transasction goes through, you should not be able to cancel the sale
+var disallowCancelSaleCC = false;
 
 function updateTotalTendered() {
     var totalCashTendered = getTotalTendered();
@@ -106,6 +111,11 @@ function resetTendered() {
 }
 
 function cashOutCancel() {
+    if(disallowCancelSaleCC) {
+        niceAlert("You cannot cancel this sale, as the card transaction has already been processed!");
+        return;
+    }
+    
     resetLoyaltyCustomer();
     resetTendered();
     showMenuScreen();
@@ -193,7 +203,7 @@ function paymentMethodSelected(pm_id) {
         $(this).removeClass('selected');
     });
     
-    $('#' + method.replace(/ /g,"_") + '_payment_method_button').addClass('selected');
+    $(".button[id='" + method.replace(/ /g,"_") + "_payment_method_button']").addClass('selected');
     
     paymentIntegrationId = integration_id;
     
@@ -468,6 +478,11 @@ function chargeCreditCard(amount) {
         return;
     }
     
+    if(totalOrder.card_charge) {
+        niceAlert("You have already processed a card transaction for this sale!");
+        return;
+    }
+    
     if(typeof(amount) == 'undefined') {
         amount = cashTendered;
     }
@@ -486,8 +501,10 @@ function chargeCreditCard(amount) {
     
     currentCardChargeAmount = amount;
     
+    currentCCReferenceNumber = clueyTimestamp();
+    
     //This message will print on the cc receipt
-    var referenceMessage = business_name;
+    var referenceMessage = "TXN#: " + currentCCReferenceNumber;
     
     var creditCardChargeRequestURL = 'http://' + creditCardChargeServiceIP + ':8080/ClueyWebSocketServices/cc_txn';
     
@@ -510,7 +527,7 @@ function chargeCreditCard(amount) {
         error: function() {
             if (!userAbortedXHR(cc_txn_xhr)) {
                 hideNiceAlert();
-                setStatusMessage("Error charging card! Make sure card service is running and settings are correct.", false, false);
+                niceAlert("Error charging card! Make sure card service is running and settings are correct.", false, false);
             }
         },
         complete: function() {
@@ -545,8 +562,12 @@ function creditCardChargeCallback(creditCardChargeResponseCode) {
         //tag the card charge on to the order so we can create a record in cc_txn table
         totalOrder.card_charge = {
             paymentMethod : paymentMethod,
-            amount : currentCardChargeAmount
+            amount : currentCardChargeAmount,
+            reference_number : currentCCReferenceNumber
         }
+        
+        disallowCancelSaleCC = true;
+        paymentMethodSelected(getPaymentMethodId(defaultPaymentMethod));
     } else if(creditCardChargeResponseCode == 2) {
         message = "Charge has been declined.";
         niceAlert(message);
@@ -560,7 +581,7 @@ function creditCardChargeCallback(creditCardChargeResponseCode) {
         message = "Unknown response from card terminal.";
         niceAlert(message);
     } else if(creditCardChargeResponseCode == 6) {
-        message = "Commnunication Error, please make sure the credit card terminal is not in use and all settings are set correctly.";
+        message = "Communication Error, please make sure the credit card terminal is not in use and all settings are set correctly.";
         niceAlert(message);
     } else {
         //unknown error
@@ -638,6 +659,8 @@ function addLoyaltyCustomerToTotalOrder(customer) {
     
     totalOrder.loyalty = {
         customer_id : customer.id,
+        customer_name : customer.name,
+        customer_number : customer.number,
         points_earned : pointsEarned,
         points_available : loyaltyPointsAvailable
     }

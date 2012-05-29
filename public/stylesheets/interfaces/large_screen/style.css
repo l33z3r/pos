@@ -3796,7 +3796,7 @@ div.popup_button {
     background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
 }
 
-div.button.selectedf {
+div.button.selected {
     background: -moz-linear-gradient(#C1C1C1, #101010) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#C1C1C1), to(#101010));
     color: #FFF;
@@ -3937,6 +3937,7 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 .field_with_errors {
     background-color: red;
     display: table;
+    float: left;
 }
 
 #error_explanation {
