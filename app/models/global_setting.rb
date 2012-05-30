@@ -75,6 +75,7 @@ class GlobalSetting < ActiveRecord::Base
   USE_WSS_RECEIPT_PRINTER = 60
   HALF_MEASURE_LABEL = 61
   SHOW_CHARGE_CARD_BUTTON = 62
+  ALLOW_ZALION_SPLIT_PAYMENTS = 63
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -138,7 +139,8 @@ class GlobalSetting < ActiveRecord::Base
     USE_WSS_CASH_DRAWER => "Use Web Sockets For Cash Drawer",
     USE_WSS_RECEIPT_PRINTER => "Use Web Sockets For Receipt Printing",
     HALF_MEASURE_LABEL => "Half Measure Label",
-    SHOW_CHARGE_CARD_BUTTON => "Show Charge Card"
+    SHOW_CHARGE_CARD_BUTTON => "Show Charge Card",
+    ALLOW_ZALION_SPLIT_PAYMENTS => "Allow Zalion Split Payments"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -337,6 +339,9 @@ class GlobalSetting < ActiveRecord::Base
     when SHOW_CHARGE_CARD_BUTTON
       @gs = find_or_create_by_key(:key => SHOW_CHARGE_CARD_BUTTON.to_s, :value => "true", :label_text => LABEL_MAP[SHOW_CHARGE_CARD_BUTTON])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when ALLOW_ZALION_SPLIT_PAYMENTS
+      @gs = find_or_create_by_key(:key => ALLOW_ZALION_SPLIT_PAYMENTS.to_s, :value => "false", :label_text => LABEL_MAP[ALLOW_ZALION_SPLIT_PAYMENTS])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -446,6 +451,9 @@ class GlobalSetting < ActiveRecord::Base
       
       write_attribute("value", new_value)
     when SHOW_CHARGE_CARD_BUTTON
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when ALLOW_ZALION_SPLIT_PAYMENTS
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     else

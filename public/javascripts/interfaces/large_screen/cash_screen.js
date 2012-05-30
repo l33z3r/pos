@@ -145,9 +145,13 @@ function paymentMethodSelected(pm_id) {
     //if the previously selected payment method had an integration, we want to popup a notice saying that it
     //must be the last payment method you select in order to actually do the integration
     if(paymentIntegrationId != 0 && splitPayments[paymentMethod] > 0) {
-        var warningMessage = paymentMethod + " must be the last payment method used if splitting a payment (Enter zero to cancel).";
-        niceAlert(warningMessage);
-        return;
+        if(!allowedZalionSplitPayments) {
+            splitPayments = {};
+        } else {
+            var warningMessage = paymentMethod + " must be the last payment method used if splitting a payment (Enter zero to cancel).";
+            niceAlert(warningMessage);
+            return;
+        }
     }
     
     loyaltyPaymentMethodSelected = (method == "loyalty");
@@ -222,6 +226,16 @@ function paymentMethodSelected(pm_id) {
         totalAmountInclCashback = currentTotalFinal + cashback;
         
         if(paymentIntegrationId == zalionPaymentIntegrationId) {
+            
+            if(!allowedZalionSplitPayments) {
+                //reset the payment methods array 
+                splitPayments = {};
+                splitPayments[paymentMethod] = 0;
+                
+                moneySelected(-1);
+                updateTotalTendered();
+            }
+            
             //we have to store the string that represents the current zalion payment method, so that
             //we can retrieve the amount later that will be actually charged to the room
             currentZalionPaymentMethodName = paymentMethod;
@@ -272,8 +286,6 @@ function doRoomNumberLookup() {
     var roomNumber = $('#room_number_input').val();
     
     roomNumber = parseInt(roomNumber);
-    
-    //alert("Looking up room: " + roomNumber);
     
     if(isNaN(roomNumber)) {
         niceAlert("Please enter a valid room number.");
