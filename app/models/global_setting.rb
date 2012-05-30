@@ -74,6 +74,7 @@ class GlobalSetting < ActiveRecord::Base
   USE_WSS_CASH_DRAWER = 59
   USE_WSS_RECEIPT_PRINTER = 60
   HALF_MEASURE_LABEL = 61
+  SHOW_CHARGE_CARD_BUTTON = 62
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -136,7 +137,8 @@ class GlobalSetting < ActiveRecord::Base
     LOYALTY_POINTS_PER_CURRENCY_UNIT => "Loyalty Points Per Currency Unit",
     USE_WSS_CASH_DRAWER => "Use Web Sockets For Cash Drawer",
     USE_WSS_RECEIPT_PRINTER => "Use Web Sockets For Receipt Printing",
-    HALF_MEASURE_LABEL => "Half Measure Label"
+    HALF_MEASURE_LABEL => "Half Measure Label",
+    SHOW_CHARGE_CARD_BUTTON => "Show Charge Card"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -332,6 +334,9 @@ class GlobalSetting < ActiveRecord::Base
     when HALF_MEASURE_LABEL
       @gs = find_or_create_by_key(:key => HALF_MEASURE_LABEL.to_s, :value => "Half", :label_text => LABEL_MAP[HALF_MEASURE_LABEL])
       @gs.parsed_value = @gs.value
+    when SHOW_CHARGE_CARD_BUTTON
+      @gs = find_or_create_by_key(:key => SHOW_CHARGE_CARD_BUTTON.to_s, :value => "true", :label_text => LABEL_MAP[SHOW_CHARGE_CARD_BUTTON])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -439,6 +444,9 @@ class GlobalSetting < ActiveRecord::Base
         new_value = value_as_num
       end
       
+      write_attribute("value", new_value)
+    when SHOW_CHARGE_CARD_BUTTON
+      new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     else
       #catch the keys that are not only integers and wont get caught in the switch statement

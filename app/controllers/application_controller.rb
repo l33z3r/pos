@@ -451,6 +451,8 @@ class ApplicationController < ActionController::Base
     
     #menu screen type
     @menu_screen_type = GlobalSetting.parsed_setting_for GlobalSetting::MENU_SCREEN_TYPE, {:fingerprint => @terminal_fingerprint}
+    
+    @show_charge_card_button = GlobalSetting.parsed_setting_for GlobalSetting::SHOW_CHARGE_CARD_BUTTON
   end
   
   def mobile_device?

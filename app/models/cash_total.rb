@@ -104,6 +104,7 @@ class CashTotal < ActiveRecord::Base
        
     @total_discounts = 0
     @total_covers = 0
+    @loyalty_points_redeemed = 0
     
     #load the first order, based on the last z total or the very first if none exists
     @last_performed_non_zero_z_total = where("total_type = ?", Z_TOTAL).where("end_calc_order_id is not ?", nil).where("terminal_id = ?", terminal_id).order("created_at").lock(true).last
@@ -307,8 +308,11 @@ class CashTotal < ActiveRecord::Base
         @service_charge_total += order.service_charge
       end
     
-      #total of all cash sales (include the service charge)
+      #total of all cash sales (including the service charge)
       @cash_sales_total += @sales_by_payment_type["cash"] if @sales_by_payment_type["cash"]
+      
+      #total of all loyalty points redeemed (including the service charge)
+      @loyalty_points_redeemed += @sales_by_payment_type["loyalty"] if @sales_by_payment_type["loyalty"]
       
       #total of all cash back
       @cash_back_total += Order.where("created_at >= ?", @first_order.created_at)
@@ -344,6 +348,10 @@ class CashTotal < ActiveRecord::Base
     @cash_total_data[:voids_by_employee] = @voids_by_employee
     
     @cash_total_data[:sales_by_category] = @sales_by_category
+    
+    #put the discounts in as the last item in sales by department
+    @sales_by_department["Discounts"] = @total_discounts
+    
     @cash_total_data[:sales_by_department] = @sales_by_department
     @cash_total_data[:sales_by_server] = @sales_by_server
     @cash_total_data[:sales_by_payment_type] = @sales_by_payment_type
@@ -351,6 +359,7 @@ class CashTotal < ActiveRecord::Base
     @cash_total_data[:service_charge_total] = @service_charge_total
     @cash_total_data[:total_with_service_charge] = @service_charge_total + @overall_total
     @cash_total_data[:total_discounts] = @total_discounts
+    @cash_total_data[:loyalty_redeemed] = @loyalty_points_redeemed
     @cash_total_data[:taxes] = @taxes
     @cash_total_data[:total_covers] = @total_covers
     @cash_total_data[:cash_summary] = @cash_summary

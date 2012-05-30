@@ -227,12 +227,14 @@
 
     <div id="totals_screen_misc_buttons_container">
       <div id="totals_screen_misc_buttons_left">
-        <div class="button" data-onpress="chargeCreditCard()">
-          <div class="icon">
-            <%= image_tag "button_logos/charge_card_button.png" %>
+        <% if @show_charge_card_button %>
+          <div class="button" data-onpress="chargeCreditCard()">
+            <div class="icon">
+              <%= image_tag "button_logos/charge_card_button.png" %>
+            </div>
+            <div class="button_name">Charge Card</div>
           </div>
-          <div class="button_name">Charge Card</div>
-        </div>
+        <% end %>
 
         <div class="button" data-onpress="doLogout()">
           <div class="icon">

@@ -102,7 +102,7 @@ if !@default_display
   @default_display.is_default = true
       
   #build a modifier grid and set it as the default grid and link it to the above display
-  @default_grid = OrderItemAdditionGrid.create({:name => "Default", :grid_x_size => 8, :grid_y_size => 4})
+  @default_grid = OrderItemAdditionGrid.create({:name => "Default", :grid_x_size => 6, :grid_y_size => 6})
     
   @default_display.save!
 end
