@@ -297,7 +297,12 @@ class CashTotal < ActiveRecord::Base
         
           logger.info "Increasing service_charge_by_payment_type for payment_type: #{@first_pt} by: #{order.service_charge} #{@sales_by_payment_type[@first_pt]} #{@cash_sales_total}"
           @service_charge_by_payment_type[@first_pt] += order.service_charge
+          
           #now deduct that service charge from that payment types entry in @sales_by_payment_type
+          if !@sales_by_payment_type[@first_pt]
+            @sales_by_payment_type[@first_pt] = 0
+          end
+        
           @sales_by_payment_type[@first_pt] -= order.service_charge
           
         end
