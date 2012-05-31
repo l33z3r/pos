@@ -64,6 +64,7 @@ end
 #Taxes and Payment Methods ETC
 @cash_payment_method = PaymentMethod.find_or_create_by_name(:name => "cash", :payment_integration_id => 0, :open_cash_drawer => true, :is_default => true)
 @loyalty_payment_method = PaymentMethod.find_or_create_by_name(:name => "loyalty", :payment_integration_id => 0, :open_cash_drawer => false, :is_default => false)
+@account_payment_method = PaymentMethod.find_or_create_by_name(:name => "account", :payment_integration_id => 0, :open_cash_drawer => false, :is_default => false)
 
 @default_tax_rate = TaxRate.find_or_create_by_name(:name => "default", :rate => 12, :is_default => true)
 
