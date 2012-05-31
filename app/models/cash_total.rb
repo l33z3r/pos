@@ -289,7 +289,7 @@ class CashTotal < ActiveRecord::Base
             @sales_by_payment_type[pt] += amount
           end
           
-          @first_pt = @payment_types.keys[0]
+          @first_pt = @payment_types.keys[0].downcase
           
           if !@service_charge_by_payment_type[@first_pt]
             @service_charge_by_payment_type[@first_pt] = 0
