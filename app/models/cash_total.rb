@@ -137,7 +137,14 @@ class CashTotal < ActiveRecord::Base
         
         order.order_items.each do |order_item|
             
+          #the @order_item_price variable will be the total price for that item 
+          #including discounts at both the order level and the order item level
           @order_item_price = order_item.total_price
+          
+          #take away the whole order discount
+          if order.discount_percent and order.discount_percent > 0
+            @order_item_price -= ((order.discount_percent * @order_item_price)/100)
+          end
           
           if order_item.is_void
             #initialise a hash for employee
