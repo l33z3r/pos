@@ -49,7 +49,7 @@
   var globalDefaultServiceChargePercent = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_SERVICE_CHARGE_PERCENT %>;
   
   //default payment method
-  var defaultPaymentMethod = "<%= PaymentMethod.load_default.name %>";
+  var defaultPaymentMethod = "<%= PaymentMethod.load_default.name.downcase %>";
    
   //load the dynamically set currency symbol
   var dynamicCurrencySymbol = "<%= @currency_symbol %>";
