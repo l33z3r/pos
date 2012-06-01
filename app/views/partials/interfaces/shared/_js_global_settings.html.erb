@@ -51,6 +51,10 @@
   //default payment method
   var defaultPaymentMethod = "<%= PaymentMethod.load_default.name.downcase %>";
    
+  var cashPaymentMethodName = "<%= PaymentMethod::CASH_PAYMENT_METHOD_NAME %>";
+  var loyaltyPaymentMethodName = "<%= PaymentMethod::LOYALTY_PAYMENT_METHOD_NAME %>";
+  var accountPaymentMethodName = "<%= PaymentMethod::ACCOUNT_PAYMENT_METHOD_NAME %>";
+   
   //load the dynamically set currency symbol
   var dynamicCurrencySymbol = "<%= @currency_symbol %>";
   

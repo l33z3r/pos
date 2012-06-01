@@ -1197,6 +1197,7 @@ function doTotal(applyDefaultServiceCharge) {
     $('#totals_tendered_box').addClass("selected");
     
     resetLoyaltyCustomer();
+    resetCustomerSelect();
 }
 
 var cashSaleInProcess = false;

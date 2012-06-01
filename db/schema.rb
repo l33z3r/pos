@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120529130920) do
+ActiveRecord::Schema.define(:version => 20120531093052) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -72,6 +72,19 @@ ActiveRecord::Schema.define(:version => 20120529130920) do
     t.integer  "order_id"
     t.integer  "amount"
     t.float    "loyalty_level_percent"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "customer_transactions", :force => true do |t|
+    t.integer  "customer_id"
+    t.string   "transaction_type"
+    t.integer  "order_id"
+    t.boolean  "is_credit",        :default => true, :null => false
+    t.float    "abs_amount",       :default => 0.0,  :null => false
+    t.float    "actual_amount",    :default => 0.0,  :null => false
+    t.float    "amount_tendered",  :default => 0.0,  :null => false
+    t.string   "payment_method"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

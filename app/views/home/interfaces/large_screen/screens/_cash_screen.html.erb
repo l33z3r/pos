@@ -175,6 +175,23 @@
                 <div class="clear_top_margin_10">&nbsp;</div>
               </div>
 
+              <div id="client_customer_section" class="data_table">
+                <div class="header">
+                  Charge Customer
+                  <div class="remove_link" onclick="resetCustomerSelect();">
+                    <%= image_tag "red_x.gif" %>
+                  </div>
+                </div>
+
+                <div class="clear">&nbsp;</div>
+
+                <div class="bold label">Customer Name:</div>
+                <div id="client_customer_name" class="data"></div>
+                <div class="clear">&nbsp;</div>
+
+                <div class="clear_top_margin_10">&nbsp;</div>
+              </div>
+
             </div>
 
             <div class="action_buttons">
@@ -276,6 +293,47 @@
       </div>
 
       <div class="clear">&nbsp;</div>
+    </div>
+  </div>
+
+  <div id="totals_screen_select_customer_container">
+    <div id="search_controls">
+      <div id="search_box">
+        <div class="label">Customer Search:</div>
+        <input id="customer_search_input" type="text" onkeyup="updateCustomerSearchResults();" onfocus="searchBoxFocused();"/>
+        <div id="clear_button" class="button" onclick="clearCustomerSearchInput();">Clear</div>
+      </div>
+
+      <div id="extra_buttons">
+        <div class="button" onclick="goTo('/admin/customers/new');">New</div>
+        <div class="cancel_link" onclick="resetCustomerSelect();">
+          <%= image_tag "red_x.gif" %>
+        </div>
+      </div>
+
+      <div class="clear">&nbsp;</div>
+
+      <div id="selection_letters">
+        <div class="letter button" onclick="loadAllCustomers();" id="cs_button_all">
+          All
+        </div>
+        <% @customer_letters.each do |letter|%>
+          <div class="letter button" onclick="loadSearchCustomersForLetter('<%= letter %>');" id="cs_button_<%= letter %>">
+            <%= letter %>
+          </div>
+        <% end %>
+        <div class="clear">&nbsp;</div>
+      </div>
+    </div>
+
+    <div id="search_results_container">
+      <div id="search_results_scroller">
+
+      </div>
+    </div>
+
+    <div id="customer_search_results_keyboard_container">
+
     </div>
   </div>
 </div>

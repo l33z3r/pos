@@ -310,6 +310,15 @@
           <div class="jscrollpane">
             <h4>Current Payment Methods</h4>
 
+            <div class="clear">&nbsp;</div>
+            <h5>System payment methods can not be modified or set as default, as they must be triggered manually</h5>
+
+            <div class="clear">&nbsp;</div>
+            <h5>
+              This also goes for payment methods that have an integration tied to them, 
+              as they to require manual triggering for the extra functionality to take place
+            </h5>
+
             <%= form_tag update_multiple_admin_payment_methods_path, :multipart => true do %>
 
               <div class="clear_top_margin_10">&nbsp;</div>
@@ -332,7 +341,7 @@
                     <%= fields_for "payment_methods[]", pm do |f| %>
                       <tr>
                         <td>
-                          <% if pm.is_cash? or pm.is_loyalty? %>
+                          <% if pm.is_system_pm? %>
                             <input type="text" disabled="true" value="<%= pm.name %>"/>
                           <% else %>
                             <%= f.text_field :name, :size => 17 %>
@@ -347,11 +356,13 @@
                           </p>
                         </td>
                         <td>
-                          <%= radio_button_tag "set_default_payment_method", "#{pm.id}", pm.is_default, 
-                            :onchange => "doSetDefaultPaymentMethod(this.value);" %>
+                          <% if pm.can_be_default? %>
+                            <%= radio_button_tag "set_default_payment_method", "#{pm.id}", pm.is_default, 
+                              :onchange => "doSetDefaultPaymentMethod(this.value);" %>
+                          <% end %>
                         </td>
                         <td>
-                          <% if !pm.is_loyalty? %>
+                          <% if pm.can_have_integration? %>
                             <%= f.select :payment_integration_id, options_for_select(PaymentMethod.payment_integration_options_for_select, pm.payment_integration_id) %>
                           <% end %>
                         </td>
@@ -363,7 +374,7 @@
                           <%= f.check_box :open_cash_drawer %>
                         </td>
                         <td>
-                          <% if !pm.is_cash? and !pm.is_loyalty? %>
+                          <% if !pm.is_system_pm? %>
                             <%= link_to "Delete", admin_payment_method_path(pm), :method => :delete, :confirm => "Are You Sure?" %>
                           <% end %>
                         </td>

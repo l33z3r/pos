@@ -284,7 +284,7 @@ class CashTotal < ActiveRecord::Base
             pt = pt.downcase
            
             #if the amount tendered was bigger than the total, we have to subtract from the cash payment for reporting
-            if pt == "cash" and order.amount_tendered > order.total
+            if pt == PaymentMethod::CASH_PAYMENT_METHOD_NAME and order.amount_tendered > order.total
               amount -= (order.amount_tendered - (order.total + order.service_charge))
             end
           
@@ -321,10 +321,10 @@ class CashTotal < ActiveRecord::Base
       end
     
       #total of all cash sales (including the service charge)
-      @cash_sales_total += @sales_by_payment_type["cash"] if @sales_by_payment_type["cash"]
+      @cash_sales_total += @sales_by_payment_type[PaymentMethod::CASH_PAYMENT_METHOD_NAME] if @sales_by_payment_type[PaymentMethod::CASH_PAYMENT_METHOD_NAME]
       
       #total of all loyalty points redeemed (including the service charge)
-      @loyalty_points_redeemed += @sales_by_payment_type["loyalty"] if @sales_by_payment_type["loyalty"]
+      @loyalty_points_redeemed += @sales_by_payment_type[PaymentMethod::LOYALTY_PAYMENT_METHOD_NAME] if @sales_by_payment_type[PaymentMethod::LOYALTY_PAYMENT_METHOD_NAME]
       
       #total of all cash back
       @cash_back_total += Order.where("created_at >= ?", @first_order.created_at)
