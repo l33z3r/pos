@@ -4,8 +4,9 @@
       <tr>
         <th width="160">Customer Name</th>
         <th width="160">Customer Number</th>
+        <th width="160">Credit Limit</th>
         <th width="130">Balance</th>
-        <th width="130">Points</th>
+        <th width="130">LoyaltyPoints</th>
       </tr>
     </thead>
     <tbody>
@@ -13,6 +14,7 @@
         <tr id="customer_id_<%=customer.id%>">
           <td><%= link_to customer.name, edit_admin_customer_path(customer) %></td>
           <td><%= customer.customer_number %></td>
+          <td><%= print_money customer.credit_limit %></td>
           <td><%= print_money customer.current_balance %></td>
           <td><%= customer.available_points %></td>
         </tr>

@@ -216,6 +216,8 @@ function paymentMethodSelected(pm_id) {
         cashTendered = totalAmountInclCashback;    
         splitPayments[accountPaymentMethodName] = cashTendered;
         
+        amountToChargeCustomer = totalAmountInclCashback;
+        
         //show the accounts user selection box
         showCustomerSearchScreen();
     }
@@ -770,6 +772,7 @@ function resetCustomerSelect() {
 }
 
 var selectedCustomerSearchLetter = null;
+var amountToChargeCustomer = null;
 
 function searchBoxFocused() {
     selectedCustomerSearchLetter = null;
@@ -794,7 +797,7 @@ function loadSearchCustomersForLetter(letter) {
 }
 
 function updateCustomerSearchResults() {
-    var searchString = $('#customer_search_input').val();
+    var searchString = $('#customer_search_input').val().toLowerCase();
     
     console.log("Searching for customers using string: " + searchString);
     
@@ -806,7 +809,7 @@ function updateCustomerSearchResults() {
         for(customerId in creditCustomers) {
             nextCustomer = creditCustomers[customerId];
             //console.log(nextCustomer.name);
-            if(nextCustomer.name.startsWith(selectedCustomerSearchLetter)) {
+            if(nextCustomer.name.toLowerCase().startsWith(selectedCustomerSearchLetter)) {
                 results.push(nextCustomer);
             }
         }
@@ -814,7 +817,7 @@ function updateCustomerSearchResults() {
         for(customerId in creditCustomers) {
             nextCustomer = creditCustomers[customerId];
             //console.log(nextCustomer.name);
-            if(nextCustomer.name.contains(searchString)) {
+            if(nextCustomer.name.toLowerCase().contains(searchString)) {
                 results.push(nextCustomer);
             }
         }
@@ -828,14 +831,14 @@ function updateCustomerSearchResults() {
         for(var i=0; i<results.length; i++) {
             var c = results[i];
             
-            var startIndex = c.name.indexOf(searchString);
+            var startIndex = c.name.toLowerCase().indexOf(searchString);
             var endIndex = startIndex + searchString.length + 3;
             
             var customerName = c.name;
             
             if(searchString.length > 0) {
-                customerName = customerName.splice(startIndex, 0, "<b>");
-                customerName = customerName.splice(endIndex, 0, "</b>");
+                customerName = customerName.toLowerCase().splice(startIndex, 0, "<b>");
+                customerName = customerName.toLowerCase().splice(endIndex, 0, "</b>");
             }
             
             resultHTML += "<div onclick='addCustomerToOrder(" + c.id + ")' class='customer'>" + customerName + "</div>";
@@ -853,6 +856,16 @@ function addCustomerToOrder(c_id) {
     var customer = creditCustomers[c_id];
     var customerName = customer.name;
     
+    //check the credit limit of this customer
+    var creditAvailable = customer.credit_available;
+    var customerCreditLimit = customer.credit_limit;
+    var customerCreditAvailable = customer.credit_available;
+    
+    if(amountToChargeCustomer > creditAvailable) {
+        niceAlert("This customers credit limit (" + currency(customerCreditLimit) + ") will not allow for this sale to finish. Credit Available: " + currency(customerCreditAvailable));
+        return;
+    }
+    
     console.log("Adding customer " + customerName + " to order!");
     
     $('#totals_screen_select_customer_container').hide();
@@ -860,14 +873,13 @@ function addCustomerToOrder(c_id) {
     setUtilKeyboardCallback(null);
     resetKeyboard();
     
-    //check the credit limit of this customer
-    
-    
     totalOrder.customer = {
         customer_id : customer.id
-    }
+    };
     
     //show some dialog saying that this customer is chosen
-    $('#client_customer_name').html(customerName);    
+    $('#client_customer_name').html(customerName);
+    $('#client_customer_credit_limit').html(currency(customerCreditLimit));
+    $('#client_customer_credit_available').html(currency(customerCreditAvailable));
     $('#client_customer_section').show();
 }

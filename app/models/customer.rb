@@ -2,6 +2,8 @@ class Customer < ActiveRecord::Base
   has_many :customer_points
   belongs_to :loyalty_level
   
+  has_many :customer_transactions
+  
   NORMAL = "normal"
   LOYALTY = "loyalty"
   BOTH = "both"
@@ -73,8 +75,24 @@ class Customer < ActiveRecord::Base
     customer_type == NORMAL or customer_type == BOTH
   end
   
+  def credit_limit=(c_limit)
+    @credit_available = c_limit.to_f - current_balance
+    write_attribute("credit_available", @credit_available)
+    write_attribute("credit_limit", c_limit)
+  end
+  
+  def current_balance=(c_balance)
+    @credit_available = credit_limit - c_balance.to_f
+    write_attribute("credit_available", @credit_available)
+    write_attribute("current_balance", c_balance)
+  end
+
   def self.all_active
     Customer.where("is_active = ?", true)
+  end
+  
+  def validate
+    errors.add(:credit_limit, "cannot be set to a value lower than the users current balance outstanding") if credit_limit < current_balance
   end
 end
 
