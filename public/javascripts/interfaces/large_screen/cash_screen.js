@@ -860,6 +860,7 @@ function addCustomerToOrder(c_id) {
     var creditAvailable = customer.credit_available;
     var customerCreditLimit = customer.credit_limit;
     var customerCreditAvailable = customer.credit_available;
+    var customerCurrentBalance = customer.current_balance;
     
     if(amountToChargeCustomer > creditAvailable) {
         niceAlert("This customers credit limit (" + currency(customerCreditLimit) + ") will not allow for this sale to finish. Credit Available: " + currency(customerCreditAvailable));
@@ -880,6 +881,6 @@ function addCustomerToOrder(c_id) {
     //show some dialog saying that this customer is chosen
     $('#client_customer_name').html(customerName);
     $('#client_customer_credit_limit').html(currency(customerCreditLimit));
-    $('#client_customer_credit_available').html(currency(customerCreditAvailable));
+    $('#client_customer_current_balance').html(currency(customerCurrentBalance));
     $('#client_customer_section').show();
 }

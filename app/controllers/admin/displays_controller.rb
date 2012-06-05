@@ -165,7 +165,11 @@ class Admin::DisplaysController < Admin::AdminController
   def create_menu_page
     @display = Display.find(params[:id])
 
-    @next_page_num = @display.menu_pages.last.page_num + 1
+    if @display.menu_pages.length > 0
+      @next_page_num = @display.menu_pages.last.page_num + 1
+    else 
+      @next_page_num = 1
+    end
     
     @new_page = @display.menu_pages.build({:name => "Page #{@next_page_num}", :page_num => @next_page_num})
     @new_page.save!

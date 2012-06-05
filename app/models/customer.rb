@@ -91,6 +91,12 @@ class Customer < ActiveRecord::Base
     Customer.where("is_active = ?", true)
   end
   
+  ACCOUNT_NUMBER_BASE = 100000
+  
+  def account_number
+    ACCOUNT_NUMBER_BASE + id
+  end
+  
   def validate
     errors.add(:credit_limit, "cannot be set to a value lower than the users current balance outstanding") if credit_limit < current_balance
   end

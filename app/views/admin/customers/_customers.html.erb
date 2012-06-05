@@ -2,6 +2,7 @@
   <table id="customer_list" class="admin_table">
     <thead>
       <tr>
+        <th width="160">Account No.</th>
         <th width="160">Customer Name</th>
         <th width="160">Customer Number</th>
         <th width="160">Credit Limit</th>
@@ -12,6 +13,7 @@
     <tbody>
       <% @customers.each do |customer| %>
         <tr id="customer_id_<%=customer.id%>">
+          <td><%= link_to customer.account_number, edit_admin_customer_path(customer) %></td>
           <td><%= link_to customer.name, edit_admin_customer_path(customer) %></td>
           <td><%= customer.customer_number %></td>
           <td><%= print_money customer.credit_limit %></td>

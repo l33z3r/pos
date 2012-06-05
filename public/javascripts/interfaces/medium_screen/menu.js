@@ -483,8 +483,6 @@ function doSaveNote() {
         $('.note_charge').val('');
         $('.display_charge').val('');
     } else {
-
-
         if ($('.note_charge').val() != "") {
             var charge = $('.note_charge').val();
         } else {
@@ -533,8 +531,8 @@ function doSaveNote() {
         $('.note_charge').val('');
         $('.display_charge').val('');
     }
+    
     return true;
-
 }
 
 function doCancelNote() {

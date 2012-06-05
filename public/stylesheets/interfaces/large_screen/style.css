@@ -3147,12 +3147,12 @@ div#total_screen div#payment_options_money_info_container div#tender_section div
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div#tendered_data_tables_container div#client_customer_section div.label {
     padding: 2px;
-    width: 65%;
+    width: 57%;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div#tendered_data_tables_container div#client_customer_section div.data {
     padding: 2px;
-    width: 31%;
+    width: 40%;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div#tendered_data_tables_container div#client_customer_section div.header {

@@ -78,6 +78,13 @@
           <%= f.select :customer_type, options_for_select(Customer.customer_type_options_for_select, @customer.customer_type) %>
           <div class="clear">&nbsp;</div>
         </div>
+        <% if !@customer.new_record? %>
+          <div class="field">
+            <div class="label">Account No.</div>
+            <%= f.text_field :account_number, :disabled => true %>
+            <div class="clear">&nbsp;</div>
+          </div>
+        <% end %>
         <div class="field">
           <div class="label">Contact Name</div>
           <%= f.text_field :contact_name %>
