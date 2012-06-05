@@ -210,6 +210,8 @@ function paymentMethodSelected(pm_id) {
     } else if (accountPaymentMethodSelected) {
         splitPayments = {};
         
+        resetLoyaltyCustomer();
+        
         //workout the outstanding amount
         //and prepopulate the box with that amount
         totalAmountInclCashback = currentTotalFinal + cashback;        
@@ -704,7 +706,7 @@ function addLoyaltyCustomerToTotalOrder(customer) {
         customer_number : customer.number,
         points_earned : pointsEarned,
         points_available : loyaltyPointsAvailable
-    }
+    };
 }
 
 function resetLoyaltyCustomer() {
@@ -883,4 +885,13 @@ function addCustomerToOrder(c_id) {
     $('#client_customer_credit_limit').html(currency(customerCreditLimit));
     $('#client_customer_current_balance').html(currency(customerCurrentBalance));
     $('#client_customer_section').show();
+    
+    if(customer.is_loyalty_customer) {
+        addLoyaltyCustomerToTotalOrder(customer);
+        $('#client_customer_points_earned').html($('#loyalty_points_earned').html());
+        $('#client_customer_points_earned_container').show();
+        $('#loyalty_customer_section').hide();
+    } else {
+        $('#client_customer_points_earned_container').hide();
+    }
 }
