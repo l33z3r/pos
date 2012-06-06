@@ -82,6 +82,16 @@ class HomeController < ApplicationController
     
   end
   
+  def customer_payment
+    @customer = Customer.find_by_id(params[:customer_id])
+    @amount = params[:amount].to_f
+    @amount_tendered = params[:amount_tendered].to_f
+    
+#    Payment.create()
+#    CustomerTransaction.create()
+    
+  end
+  
   def ping
     render :json => {:success => true}.to_json
   end

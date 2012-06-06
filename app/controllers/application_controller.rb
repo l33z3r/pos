@@ -463,8 +463,8 @@ class ApplicationController < ActionController::Base
     @admin_screen_buttons_per_row = 11
     
     if @currentResolution == @resolution1360x786
-      @menu_screen_buttons_per_row = 12
-      @admin_screen_buttons_per_row = 15
+      @menu_screen_buttons_per_row = 11
+      @admin_screen_buttons_per_row = 14
     end
     
   end

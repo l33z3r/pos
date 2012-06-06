@@ -3332,6 +3332,89 @@ div#total_screen div#totals_screen_select_customer_container div#search_results_
 
 /* End Totals Screen */
 
+/* Util Payment Screen */
+
+div#util_payment_screen div#content_container {
+    width: 730px;
+    margin-top: 100px;
+}
+
+div#util_payment_screen div#util_payment_options_section {
+    border-spacing: 7px;
+    border: 1px solid #CCC;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    margin: 0px 10px;
+}
+
+div#util_payment_screen div#util_payment_options_section div#util_payment_options div.button {
+    width: 95px;
+    max-width: 95px;
+}
+
+div#util_payment_screen div#util_payment_keypad_container {
+    float: left;
+    border: 1px solid #CCC;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    margin: 10px;
+}
+
+div#util_payment_screen div#action_buttons_info_container {
+    float: left;
+    margin: 0px 10px;
+    width: 420px;
+}
+
+div#util_payment_screen div#util_payment_content_container {
+    border: 1px solid #CCC;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    margin: 10px;
+    min-height: 68px;
+}
+
+div#util_payment_screen div#action_buttons_info_container div#util_payment_buttons_container {
+    border: 1px solid #CCC;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    margin-top: 10px;
+}
+
+div#util_payment_screen div#action_buttons_info_container div#util_payment_buttons_container div.action_buttons {
+    width: 340px;
+    margin: 0px;
+    padding: 0px;
+}
+
+div#util_payment_screen div#action_buttons_info_container div.data_table {
+    text-align: left;
+    margin: 5px 17px;
+    line-height: 16px;
+}
+
+div#util_payment_screen  div#action_buttons_info_container div.data_table div.label {
+    float: left;
+    text-align: left;
+    width: 70%;
+}
+
+div#util_payment_screen  div#action_buttons_info_container div.data_table div.data {
+    float: left;
+    text-align: right;
+    width: 30%;
+}
+
+div#util_payment_screen  div#action_buttons_info_container div.data_table div.label.bold {
+    font-weight: bold;
+}
+
+div#util_payment_screen  div#action_buttons_info_container div.data_table div.data.bold {
+    font-weight: bold;
+}
+
+/* End Util Payment Screen */
+
 /* X/Z Reports Screen */
 
 div#edit_cash_total_options section#cash_total_options {

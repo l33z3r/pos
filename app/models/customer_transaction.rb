@@ -2,6 +2,8 @@ class CustomerTransaction < ActiveRecord::Base
   belongs_to :order
   belongs_to :customer
   
+  belongs_to :payment
+  
   SETTLEMENT = "settlement"
   CHARGE = "charge"
   MISC_CREDIT = "misc_credit"

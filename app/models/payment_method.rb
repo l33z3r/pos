@@ -57,6 +57,12 @@ class PaymentMethod < ActiveRecord::Base
     @options
   end
   
+  #only return payment options that don't have an integration
+  #or are not the account payment method or loyalty payment method
+  def self.for_util_payment
+    where("payment_integration_id = 0 and name != '#{LOYALTY_PAYMENT_METHOD_NAME}' and name != '#{ACCOUNT_PAYMENT_METHOD_NAME}'")
+  end
+  
   def self.load_default
     payment_method = find_by_is_default(true)
     

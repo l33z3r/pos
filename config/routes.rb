@@ -10,6 +10,9 @@ Pos::Application.routes.draw do
   match 'forward_zalion_charge_request' => "home#forward_zalion_charge_request", :via => :post
   match 'forward_credit_card_charge_request' => "home#forward_credit_card_charge_request", :via => :post
   
+  #customer payment
+  match 'customer_payment' => "home#customer_payment", :via => :post
+  
   #orders
   match 'order' => "order#create", :via => :post
   match 'sync_table_order' => "order#sync_table_order", :via => :post
