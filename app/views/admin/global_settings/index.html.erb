@@ -112,6 +112,24 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>Screen Resolution</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::SCREEN_RESOLUTION, {:fingerprint => @terminal_fingerprint} %>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="<%= GlobalSetting::SCREEN_RESOLUTION_NORMAL %>" 
+                             <%= @gs.parsed_value == GlobalSetting::SCREEN_RESOLUTION_NORMAL ? "checked" : "" %>/>
+                      <div class="label"><%= GlobalSetting::SCREEN_RESOLUTION_NORMAL %></div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="<%= GlobalSetting::SCREEN_RESOLUTION_1360x786 %>" 
+                             <%= @gs.parsed_value == GlobalSetting::SCREEN_RESOLUTION_1360x786 ? "checked" : "" %>/>
+                      <div class="label"><%= GlobalSetting::SCREEN_RESOLUTION_1360x786 %></div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
                     <td>Screen That Shows After Login</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_POST_LOGIN_SCREEN %>
