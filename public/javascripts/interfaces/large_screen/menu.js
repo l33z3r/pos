@@ -77,7 +77,7 @@ $(window).load(function(){
 
 function initMenuScreenType() {
     if(menuScreenType == RESTAURANT_MENU_SCREEN) {
-    //nothing needed here    
+        performScreenResolutionCSSMods();    
     } else if(menuScreenType == RETAIL_MENU_SCREEN) {
         //hide the table select box
         $('#table_screen_button, #table_select_container').hide();
@@ -2542,4 +2542,14 @@ function performCustomerScreenCSSMods() {
         
     //hide the shortcut dropdown
     $('#menu_screen_shortcut_dropdown_container').hide();
+}
+
+function performScreenResolutionCSSMods() {
+    //set resolutions
+    if(currentResolution == normalResolution) {
+    //normal screen, nothing to do
+    } else if (currentResolution == resolution1360x786) {
+        $('#wrapper').css("width", "1366px");
+        $('#menu_screen #menu_pages_container').css("width", "1090px");
+    }
 }
