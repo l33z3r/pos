@@ -198,23 +198,19 @@ function setGridScrollerWidth(grid_x) {
     $('.grid_row').css("width", newWidth + "px");
 }
 
-//function updateGridSize() {
-//    var newWidth = $('#grid_width_input').val();
-//    var newHeight = $('#grid_height_input').val();
-//    
-//    if(isNaN(newWidth) || isNaN(newHeight)) {
-//        setStatusMessage("Please enter a number for width/height");
-//    }
-//    
-//    $.ajax({
-//        type: 'POST',
-//        url: '/admin/order_item_addition_grids/' + grid_id + '/resize' ,
-//        data: {
-//            width : newWidth,
-//            height : newHeight
-//        }
-//    });
-//}
+function updateGridSize(size) {
+    var newWidth = size;
+    var newHeight = size;
+    
+    $.ajax({
+        type: 'POST',
+        url: '/admin/order_item_addition_grids/' + grid_id + '/resize' ,
+        data: {
+            width : newWidth,
+            height : newHeight
+        }
+    });
+}
 
 function updateSelectedGridItem() {
     if(current_grid_x == null) {

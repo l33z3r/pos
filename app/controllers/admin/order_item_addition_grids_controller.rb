@@ -26,6 +26,13 @@ class Admin::OrderItemAdditionGridsController < Admin::AdminController
   end
   
   def destroy
+    #Don't allow deleting of last one
+    if OrderItemAdditionGrid.all.size == 1
+      flash[:notice] = "You must have at least one modifier grid!"
+      redirect_to admin_order_item_addition_grids_url
+      return
+    end
+    
     @oiag = OrderItemAdditionGrid.find(params[:id])
     @oiag.destroy
 
@@ -44,16 +51,25 @@ class Admin::OrderItemAdditionGridsController < Admin::AdminController
     render :json => {:success => true}.to_json
   end
   
-#  def resize
-#    @oiag = OrderItemAdditionGrid.find(params[:id])
-#    new_width = params[:width]
-#    new_height = params[:height]
-#    
-#    @oiag.grid_x_size = new_width
-#    @oiag.grid_y_size = new_height
-#    
-#    @oiag.save!
-#  end
+  def resize
+    @oiag = OrderItemAdditionGrid.find(params[:id])
+    
+    new_width = params[:width].to_i
+    new_height = params[:height].to_i
+    
+    if new_width != 4 and new_width != 6
+      new_width = 4
+    end
+    
+    if new_height != 4 and new_height != 6
+      new_height = 4
+    end
+    
+    @oiag.grid_x_size = new_width
+    @oiag.grid_y_size = new_height
+    
+    @oiag.save!
+  end
   
   def rename
     @oiag = OrderItemAdditionGrid.find(params[:id])
