@@ -83,13 +83,38 @@ class HomeController < ApplicationController
   end
   
   def customer_payment
-    @customer = Customer.find_by_id(params[:customer_id])
-    @amount = params[:amount].to_f
-    @amount_tendered = params[:amount_tendered].to_f
+    CustomerTransaction.transaction do
+      @customer = Customer.find_by_id(params[:customer_id])
+      @amount = params[:amount].to_f
+      @amount_tendered = params[:amount_tendered].to_f
+      @payment_method = params[:payment_method]
+      
+      @payment = Payment.create({:transaction_type => Payment::CUSTOMER_PAYMENT,
+          :employee_id => e, :amount => @amount, :amount_tendered => @amount_tendered,
+          :payment_method => @payment_method})
     
-#    Payment.create()
-#    CustomerTransaction.create()
+      CustomerTransaction.create({:customer_id => @customer.id,
+          :transaction_type => CustomerTransaction::SETTLEMENT, :is_credit => true,
+          :abs_amount => @amount, :actual_amount => @amount, :payment_id => @payment.id})
     
+      #deduct the customers balance
+      @customer.current_balance = @customer.current_balance - @amount
+      @customer.save
+      
+      @card_charged = params[:card_charged].to_s == "true"
+      
+      if @card_charged
+        @reference_number = params[:reference_number]
+        
+        @card_transaction = CardTransaction.create({:payment_method => @payment_method,
+            :amount => @amount, :reference_number => @reference_number
+          })
+        
+        @payment.card_transaction_id = @card_transaction.id
+        @payment.save
+      end
+    end
+    render :json => {:success => true}.to_json
   end
   
   def ping
@@ -427,15 +452,15 @@ class HomeController < ApplicationController
     
     @http.open_timeout = 5
     
-    begin
-      @forward_response = @http.start {|http|
-        http.request(req)
-      }
-    rescue
-      render :status => 503, :inline => "Cannot reach credit card service" and return
-    end
-
-    logger.info "Got response from credit card charge servlet: #{@forward_response.body}"
+    #    begin
+    #      @forward_response = @http.start {|http|
+    #        http.request(req)
+    #      }
+    #    rescue
+    #      render :status => 503, :inline => "Cannot reach credit card service" and return
+    #    end
+    #
+    #    logger.info "Got response from credit card charge servlet: #{@forward_response.body}"
   end
   
   # Rails controller action for an HTML5 cache manifest file.

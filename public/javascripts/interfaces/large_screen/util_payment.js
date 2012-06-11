@@ -1,15 +1,26 @@
 var currentPaymentCustomerId = null;
 
 function makeCustomerPayment(customerId) {
-    currentPaymentCustomerId = customerId;
+    var customer = creditCustomers[customerId];
     
-    var customer = customers[customerId];
+    if(!customer) {
+        niceAlert("This customer is not registered for accounts!");
+        return;
+    }
     
     var currentBalance = customer.current_balance;
+    
+    if(currentBalance == 0) {
+        niceAlert("This customer has no outstanding balance and cannot make a payment!");
+        return;
+    }
+    
+    currentPaymentCustomerId = customerId;
     
     var callback = function() {
         var paymentAmount = utilPaymentResponse.amount;
         var amountTendered = utilPaymentResponse.amount_tendered;
+        var cardCharged = utilPaymentResponse.card_charged;
         
         console.log("Processed payment for " + currency(paymentAmount));
         
@@ -20,12 +31,19 @@ function makeCustomerPayment(customerId) {
                 setStatusMessage("Error Sending Payment To Server", false, false);
             },
             success: function() {
-                setStatusMessage("Payment successfully recorded.", false, false);                   
+                setStatusMessage("Payment successfully recorded.", false, false);
+                showMenuScreen();
+                
+                //reload the customers as their points/credit may need updating
+                $.getScript('/javascripts/customers.js');
             },
             data: {
                 customer_id : currentPaymentCustomerId,
                 amount : paymentAmount,
-                amount_tendered : amountTendered
+                amount_tendered : amountTendered,
+                payment_method : utilScreenPaymentMethod,
+                card_charged : cardCharged,
+                reference_number : currentCCReferenceNumber
             }
         });
         
@@ -46,6 +64,7 @@ var utilPaymentMinAmount = 0;
 var utilPaymentMaxAmount = 0;
 var utilPaymentResponse = null;
 var utilScreenPaymentMethod = null;
+var utilPaymentCardCharged = false;
 
 function startUtilPayment(amount, minAmount, maxAmount, callback) {
     utilPaymentAmount = amount;
@@ -54,6 +73,8 @@ function startUtilPayment(amount, minAmount, maxAmount, callback) {
     utilPaymentProcessedCallback = callback;
     
     utilPaymentResponse = {};
+    utilPaymentCardCharged = false;
+    currentCCReferenceNumber = null;
     
     utilScreenPaymentMethod = defaultPaymentMethod;
     utilPaymentScreenPaymentMethodSelected(getPaymentMethodId(defaultPaymentMethod));
@@ -78,10 +99,11 @@ function finishUtilPayment() {
         utilPaymentExactAmountSelected();
     }
     
+    utilPaymentResponse.card_charged = utilPaymentCardCharged;
     utilPaymentResponse.amount_tendered = utilPaymentCashTendered;
     
     if(utilPaymentCashTendered < utilPaymentAmount) {
-        paymentResponse.amount = utilPaymentCashTendered;
+        utilPaymentResponse.amount = utilPaymentCashTendered;
     } else {
         utilPaymentResponse.amount = utilPaymentAmount;
     }
@@ -142,4 +164,72 @@ function utilPaymentScreenPaymentMethodSelected(pm_id) {
     $(".button[id='" + method.replace(/ /g,"_") + "_util_payment_method_button']").addClass('selected');
     
     customFooterId = custom_footer_id;
+}
+
+function utilPaymentScreenChargeCreditCard() {
+    creditCardChargeCallback = utilPaymentScreenCreditCardChargeCallback;
+    
+    if(cardChargeInProgress) {
+        niceAlert("There is already a card charge in progress, please wait");
+        return;
+    }
+    
+    var amount = utilPaymentCashTendered;
+    
+    if(amount == 0) {
+        utilPaymentExactAmountSelected()
+        amount = utilPaymentCashTendered;
+        
+        if(amount == 0) {
+            niceAlert("You cannot send a zero amount to card terminal");
+            return;
+        }
+    }
+    
+    cardChargeInProgress = true;
+    
+    chargeCreditCard(amount);
+}
+
+function utilPaymentScreenCreditCardChargeCallback(creditCardChargeResponseCode) {
+    //1 means success
+    //2 means declined
+    //3 means retrieval canceled
+    //4 means a timeout waiting for card
+    //5 is an unknown response
+    //6 means connection refused or other IO error
+    
+    var message = "";
+    
+    if(creditCardChargeResponseCode == 1) {
+        message = "Card successfully charged for " + currency(utilPaymentCashTendered);
+        niceAlert(message);
+        
+        //tag the card charge on to the order so we can create a record in cc_txn table
+        utilPaymentCardCharged = true;
+        
+        finishUtilPayment();
+    } else if(creditCardChargeResponseCode == 2) {
+        message = "Charge has been declined.";
+        niceAlert(message);
+    } else if(creditCardChargeResponseCode == 3) {
+        message = "Card charge canceled.";
+        niceAlert(message);
+    } else if(creditCardChargeResponseCode == 4) {
+        message = "Request timed out. Please try again.";
+        niceAlert(message);
+    } else if(creditCardChargeResponseCode == 5) {
+        message = "Unknown response from card terminal.";
+        niceAlert(message);
+    } else if(creditCardChargeResponseCode == 6) {
+        message = "Communication Error, please make sure the credit card terminal is not in use and all settings are set correctly.";
+        niceAlert(message);
+    } else {
+        //unknown error
+        message = "An unknown error occured.";
+        niceAlert(message);
+    }
+    
+    //reset callback
+    creditCardChargeCallback = null;
 }

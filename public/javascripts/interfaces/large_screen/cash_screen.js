@@ -515,7 +515,9 @@ var cardChargeInProgress = false;
 var cc_txn_xhr = null;
 var currentCardChargeAmount = 0;
 
-function chargeCreditCard(amount) {
+function cashScreenChargeCreditCard(amount) {
+    creditCardChargeCallback = cashScreenCreditCardChargeCallback;
+    
     if(cardChargeInProgress) {
         niceAlert("There is already a card charge in progress, please wait");
         return;
@@ -542,6 +544,10 @@ function chargeCreditCard(amount) {
     
     cardChargeInProgress = true;
     
+    chargeCreditCard(amount);
+}
+
+function chargeCreditCard(amount) {
     currentCardChargeAmount = amount;
     
     currentCCReferenceNumber = clueyTimestamp();
@@ -589,7 +595,7 @@ function chargeCreditCard(amount) {
     });
 }
 
-function creditCardChargeCallback(creditCardChargeResponseCode) {
+function cashScreenCreditCardChargeCallback(creditCardChargeResponseCode) {
     //1 means success
     //2 means declined
     //3 means retrieval canceled
@@ -631,6 +637,9 @@ function creditCardChargeCallback(creditCardChargeResponseCode) {
         message = "An unknown error occured.";
         niceAlert(message);
     }
+    
+    //reset callback
+    creditCardChargeCallback = null;
 }
 
 function cancelChargeCreditCard() {

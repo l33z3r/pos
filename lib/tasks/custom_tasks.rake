@@ -70,3 +70,11 @@ task :clear_dup_keys_gs => :environment do
     end
   end
 end
+
+desc "Issues a hard reset of each terminal"
+task :issue_reset => :environment do
+  puts "Issuing a reset of all terminals"
+  TerminalSyncData.request_hard_reload_app "Master Terminal"
+  
+  puts "Done!"
+end

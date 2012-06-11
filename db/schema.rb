@@ -83,10 +83,9 @@ ActiveRecord::Schema.define(:version => 20120606172941) do
     t.boolean  "is_credit",        :default => true, :null => false
     t.float    "abs_amount",       :default => 0.0,  :null => false
     t.float    "actual_amount",    :default => 0.0,  :null => false
-    t.float    "amount_tendered",  :default => 0.0,  :null => false
-    t.string   "payment_method"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "payment_id"
   end
 
   create_table "customers", :force => true do |t|
@@ -362,8 +361,9 @@ ActiveRecord::Schema.define(:version => 20120606172941) do
   create_table "payments", :force => true do |t|
     t.string   "transaction_type"
     t.integer  "employee_id"
-    t.float    "amount",           :default => 0.0, :null => false
-    t.float    "amount_tendered",  :default => 0.0, :null => false
+    t.integer  "card_transaction_id"
+    t.float    "amount",              :default => 0.0, :null => false
+    t.float    "amount_tendered",     :default => 0.0, :null => false
     t.string   "payment_method"
     t.datetime "created_at"
     t.datetime "updated_at"

@@ -15,6 +15,7 @@ class CustomerTransaction < ActiveRecord::Base
   
 end
 
+
 # == Schema Information
 #
 # Table name: customer_transactions
@@ -26,9 +27,8 @@ end
 #  is_credit        :boolean(1)      default(TRUE), not null
 #  abs_amount       :float           default(0.0), not null
 #  actual_amount    :float           default(0.0), not null
-#  amount_tendered  :float           default(0.0), not null
-#  payment_method   :string(255)
 #  created_at       :datetime
 #  updated_at       :datetime
+#  payment_id       :integer(4)
 #
 

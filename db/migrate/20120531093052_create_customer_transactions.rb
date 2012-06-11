@@ -10,7 +10,8 @@ class CreateCustomerTransactions < ActiveRecord::Migration
       t.float :abs_amount, :default => 0, :null => false
       t.float :actual_amount, :default => 0, :null => false
       
-      t.integer :payment_id
+      t.float :amount_tendered, :default => 0, :null => false
+      t.string :payment_method
       
       t.timestamps
     end
