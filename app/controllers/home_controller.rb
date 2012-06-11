@@ -452,15 +452,15 @@ class HomeController < ApplicationController
     
     @http.open_timeout = 5
     
-    #    begin
-    #      @forward_response = @http.start {|http|
-    #        http.request(req)
-    #      }
-    #    rescue
-    #      render :status => 503, :inline => "Cannot reach credit card service" and return
-    #    end
-    #
-    #    logger.info "Got response from credit card charge servlet: #{@forward_response.body}"
+    begin
+      @forward_response = @http.start {|http|
+        http.request(req)
+      }
+    rescue
+      render :status => 503, :inline => "Cannot reach credit card service" and return
+    end
+    
+    logger.info "Got response from credit card charge servlet: #{@forward_response.body}"
   end
   
   # Rails controller action for an HTML5 cache manifest file.
@@ -577,7 +577,7 @@ class HomeController < ApplicationController
       @options_screen_buttons_map[role.id] = DisplayButtonRole.admin_screen_buttons_for_role(role.id)
     end 
     
-    query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from customers where customer_type in ('#{Customer::NORMAL}', '#{Customer::NORMAL}') group by substr(name,1,1)")
+    query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from customers where customer_type in ('#{Customer::NORMAL}', '#{Customer::BOTH}') group by substr(name,1,1)")
 
     @customer_letters = []
     

@@ -154,6 +154,7 @@ var sessionIdCookieName = "_session_id";
 var lastReloadCookieName = "last_reload_time";
 var lastPrintCheckCookieName = "last_print_check_time";
 var salesInterfaceForwardFunctionCookieName = "sales_interface_forward_function";
+var salesInterfaceForwardJSExecuteCookieName = "sales_interface_forward_js_execute";
 
 //deletes everything but the fingerprint cookie
 function clearLocalStorageAndCookies() {

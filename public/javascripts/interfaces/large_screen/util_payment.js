@@ -1,3 +1,5 @@
+var utilPaymentInProgress = false;
+
 var currentPaymentCustomerId = null;
 
 function makeCustomerPayment(customerId) {
@@ -37,6 +39,9 @@ function makeCustomerPayment(customerId) {
                 //reload the customers as their points/credit may need updating
                 $.getScript('/javascripts/customers.js');
             },
+            complete : function() {
+                utilPaymentInProgress = false;
+            },
             data: {
                 customer_id : currentPaymentCustomerId,
                 amount : paymentAmount,
@@ -55,7 +60,23 @@ function makeCustomerPayment(customerId) {
     var minAmount = 0;
     var maxAmount = currentBalance;
     
-    startUtilPayment(amount, minAmount, maxAmount, callback);
+    $('#util_payment_header').html("Customer Payment");
+    
+    var customerName = customer.name;
+    
+    var customerHTMLContent = "<div id='cutomer_payment_info_table'><div class='data_table'>";
+    
+    customerHTMLContent += "<div class='header'>Customer</div>" + clearHTML;
+    
+    customerHTMLContent += "<div class='label bold'>Customer:</div>";
+    customerHTMLContent += "<div class='data'>" + customerName + "</div>" + clearHTML;
+    
+    customerHTMLContent += "<div class='label bold'>Balance Outstanding:</div>";
+    customerHTMLContent += "<div class='data'>" + currency(currentBalance) + "</div>" + clearHTML;
+    
+    customerHTMLContent += "</div></div>" + clearHTML;
+    
+    startUtilPayment(amount, minAmount, maxAmount, callback, customerHTMLContent);
 }
 
 var utilPaymentProcessedCallback = null;
@@ -66,7 +87,7 @@ var utilPaymentResponse = null;
 var utilScreenPaymentMethod = null;
 var utilPaymentCardCharged = false;
 
-function startUtilPayment(amount, minAmount, maxAmount, callback) {
+function startUtilPayment(amount, minAmount, maxAmount, callback, htmlContent) {
     utilPaymentAmount = amount;
     utilPaymentMinAmount = minAmount;
     utilPaymentMaxAmount = maxAmount;
@@ -86,6 +107,8 @@ function startUtilPayment(amount, minAmount, maxAmount, callback) {
     $('#util_payment_tendered_value').html(currency(0));
     $('#util_payment_balance_value').html(currency(utilPaymentAmount));
     
+    $('#util_payment_content_container').html(htmlContent);
+    
     showUtilPaymentScreen();
 }
 
@@ -95,6 +118,13 @@ function cancelUtilPayment() {
 }
 
 function finishUtilPayment() {
+    if(utilPaymentInProgress) {
+        niceAlert("There is a payment in progress, please wait!");
+        return;
+    }
+    
+    utilPaymentInProgress = true;
+    
     if(utilPaymentCashTendered == 0) {
         utilPaymentExactAmountSelected();
     }
@@ -106,6 +136,12 @@ function finishUtilPayment() {
         utilPaymentResponse.amount = utilPaymentCashTendered;
     } else {
         utilPaymentResponse.amount = utilPaymentAmount;
+    }
+    
+    var doOpenCashDrawer = paymentMethods[getPaymentMethodId(utilScreenPaymentMethod)].open_cash_drawer;
+    
+    if(doOpenCashDrawer) {
+        openCashDrawer();
     }
     
     if(utilPaymentProcessedCallback) {

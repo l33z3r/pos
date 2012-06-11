@@ -69,6 +69,14 @@ function callForwardButtonFunction() {
     
         //delete the cookie
         setRawCookie(salesInterfaceForwardFunctionCookieName, "", -365);
+    } else {
+        //you can also execute arbitrary code
+        var codeToExecute = getRawCookie(salesInterfaceForwardJSExecuteCookieName);
+    
+        eval(codeToExecute);
+        
+        //delete the cookie
+        setRawCookie(salesInterfaceForwardJSExecuteCookieName, "", -365);
     }
 }
 

@@ -155,6 +155,11 @@ function paymentMethodSelected(pm_id) {
             return;
         }
     } else if(accountPaymentMethodSelected && splitPayments[paymentMethod] > 0) {
+        if(disallowCancelSaleCC) {
+            niceAlert("You cannot charge to an account, as a card transaction has already been processed!");
+            return;
+        }
+        
         //the accounts payment method cannot be used with split payments
         splitPayments = {};
         resetCustomerSelect();

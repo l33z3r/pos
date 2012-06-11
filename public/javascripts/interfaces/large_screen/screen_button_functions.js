@@ -363,6 +363,8 @@ function showGlobalSettingsPage() {
 var usingPrintService = true;
 
 function openCashDrawer() {
+    console.log("open cash drawer");
+    
     if(usingPrintService) {
         if(using_wss_cash_drawer) {
             if ("WebSocket" in window) {

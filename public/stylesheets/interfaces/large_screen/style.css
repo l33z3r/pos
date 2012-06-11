@@ -3367,11 +3367,23 @@ div#util_payment_screen div#action_buttons_info_container {
 }
 
 div#util_payment_screen div#util_payment_content_container {
-    border: 1px solid #CCC;
     -moz-border-radius: 7px;
     border-radius: 7px;
     margin: 10px;
     min-height: 68px;
+}
+
+div#util_payment_screen div#util_payment_content_container div#cutomer_payment_info_table {
+
+}
+
+div#util_payment_screen div#util_payment_content_container div#cutomer_payment_info_table div.data_table {
+    border: 1px solid #CCC;
+    background-color: #FFF;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    -moz-border-top-left-radius: 7px;
+    -moz-border-top-right-radius: 7px;
 }
 
 div#util_payment_screen div#action_buttons_info_container div#util_payment_buttons_container {
@@ -3382,9 +3394,14 @@ div#util_payment_screen div#action_buttons_info_container div#util_payment_butto
 }
 
 div#util_payment_screen div#action_buttons_info_container div#util_payment_buttons_container div.action_buttons {
-    width: 340px;
+    width: 100%;
     margin: 0px;
     padding: 0px;
+}
+
+div#util_payment_screen div#action_buttons_info_container div#util_payment_buttons_container div.action_buttons div.button {
+    width: 95px;
+    max-width: 95px;
 }
 
 div#util_payment_screen div#action_buttons_info_container div.data_table {
@@ -4090,6 +4107,23 @@ div.button {
     max-width: 73px;
     height: 71px;
     max-height: 71px;
+    overflow: hidden;
+    vertical-align: middle;
+    display: table-cell;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #777;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0px 1px 0px #777;
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+
+div.button_small {
+    padding: 3px;
+    height: 36px;
+    max-height: 36px;
     overflow: hidden;
     vertical-align: middle;
     display: table-cell;

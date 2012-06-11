@@ -33,6 +33,11 @@
         <%= f.text_field :credit_available, :disabled => true %>
         <div class="clear">&nbsp;</div>
       </div>
+      <div class="field">
+        <div class="label">Make Payment</div>
+        <div class="button_small" data-onpress="makeCustomerPaymentAdminShortcut(<%= @customer.id %>)">Make Payment</div>
+        <div class="clear">&nbsp;</div>
+      </div>
     </div>
     <div class="right_col">
       
