@@ -33,17 +33,19 @@
         <%= f.text_field :credit_available, :disabled => true %>
         <div class="clear">&nbsp;</div>
       </div>
-      <div class="field">
-        <div class="label">Make Payment</div>
-        <div class="button_small" data-onpress="makeCustomerPaymentAdminShortcut(<%= @customer.id %>)">Make Payment</div>
-        <div class="clear">&nbsp;</div>
+      <% if @customer.is_normal_customer? %>
+        <div class="field">
+          <div class="label">Make Payment</div>
+          <div class="button_small" data-onpress="makeCustomerPaymentAdminShortcut(<%= @customer.id %>)">Make Payment</div>
+          <div class="clear">&nbsp;</div>
+        </div>
       </div>
-    </div>
+    <% end %>
     <div class="right_col">
-      
+
     </div>
   </div>
-  
+
   <div id="loyalty_tab_content" class="tab_content" style="display: none;">
     <div class="left_col">
       <div class="field">
@@ -68,31 +70,31 @@
       <div class="field">
         <div class="label">Loyalty Level</div>
         <%= f.collection_select :loyalty_level_id, LoyaltyLevel.all, :id, :label, 
-            :prompt => "Select a Loyalty Level" %>
+          :prompt => "Select a Loyalty Level" %>
         <div class="clear">&nbsp;</div>
       </div>
     </div>
     <div class="right_col">
-      
+
     </div>
   </div>
-  
+
   <div id="history_tab_content" class="tab_content" style="display: none;">
     <div class="left_col">
-      
+
     </div>
     <div class="right_col">
-      
+
     </div>
   </div>
-  
+
   <div id="options_tab_content" class="tab_content" style="display: none;">
     <div class="left_col">
-      
+
     </div>
     <div class="right_col">
-      
+
     </div>
   </div>
-  
+
 </div>

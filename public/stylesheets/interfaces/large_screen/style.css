@@ -3357,12 +3357,12 @@ div#util_payment_screen div#util_payment_keypad_container {
     border: 1px solid #CCC;
     -moz-border-radius: 7px;
     border-radius: 7px;
-    margin: 10px;
+    margin: 30px 10px 10px 10px;
 }
 
 div#util_payment_screen div#action_buttons_info_container {
     float: left;
-    margin: 0px 10px;
+    margin: 10px;
     width: 420px;
 }
 
@@ -3378,7 +3378,7 @@ div#util_payment_screen div#util_payment_content_container div#cutomer_payment_i
 }
 
 div#util_payment_screen div#util_payment_content_container div#cutomer_payment_info_table div.data_table {
-    border: 1px solid #CCC;
+    border: 1px solid #000;
     background-color: #FFF;
     border-top-left-radius: 7px;
     border-top-right-radius: 7px;
@@ -3408,6 +3408,13 @@ div#util_payment_screen div#action_buttons_info_container div.data_table {
     text-align: left;
     margin: 5px 17px;
     line-height: 16px;
+}
+
+div#util_payment_screen div#action_buttons_info_container div#util_payment_tendered_amount {
+    background-color: #FFF;
+    border: 1px solid #000;
+    -moz-border-radius: 7px;
+    padding: 10px;
 }
 
 div#util_payment_screen  div#action_buttons_info_container div.data_table div.label {
@@ -4121,9 +4128,9 @@ div.button {
 }
 
 div.button_small {
-    padding: 3px;
-    height: 36px;
-    max-height: 36px;
+    padding: 5px;
+    height: 23px;
+    max-height: 23px;
     overflow: hidden;
     vertical-align: middle;
     display: table-cell;
