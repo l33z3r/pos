@@ -25,18 +25,18 @@
       </div>
       <div class="field">
         <div class="label">Current Balance</div>
-        <%= f.text_field :current_balance, :disabled => true %>
+        <%= f.text_field :current_balance, :value => print_credit_balance(@customer.current_balance), :disabled => true %>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
         <div class="label">Credit available</div>
-        <%= f.text_field :credit_available, :disabled => true %>
+        <%= f.text_field :credit_available, :value => print_money(@customer.credit_available), :disabled => true %>
         <div class="clear">&nbsp;</div>
       </div>
       <% if @customer.is_normal_customer? %>
         <div class="field">
           <div class="label">Make Payment</div>
-          <div class="button_small" data-onpress="makeCustomerPaymentAdminShortcut(<%= @customer.id %>)">Make Payment</div>
+          <div class="small_button" data-onpress="makeCustomerPaymentAdminShortcut(<%= @customer.id %>)">Make Payment</div>
           <div class="clear">&nbsp;</div>
         </div>
       </div>

@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :check_reset_cache_timestamp
   
-  helper_method :e, :is_cluey_user?, :cluey_pw_used?, :current_employee, :print_money
+  helper_method :e, :is_cluey_user?, :cluey_pw_used?, :current_employee, :print_money, :print_credit_balance
   helper_method :mobile_device?, :all_terminals, :all_servers, :current_interface
   helper_method :development_mode?, :production_mode?
   helper_method :server_ip, :active_employee_ids, :now_millis
@@ -256,6 +256,10 @@ class ApplicationController < ActionController::Base
     number_to_currency value, :precision => 2, :unit => @currency_symbol
   end
   
+  def print_credit_balance value
+    value < 0 ? "#{print_money(value.abs)}CR" : print_money(value)
+  end
+
   def development_mode?
     Rails.env == "development"
   end

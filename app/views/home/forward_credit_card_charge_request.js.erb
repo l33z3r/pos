@@ -1,4 +1,14 @@
-<%=raw @forward_response.body%>
+<% if @error %>
 
-//deal with the response creditCardChargeResponseCode json
-creditCardChargeCallback(creditCardChargeResponseCode);
+  var errorMessage = "<%= @reason %>";
+  creditCardChargeResponseCode = 7;
+  creditCardChargeCallback(creditCardChargeResponseCode, errorMessage);
+
+<% else %>
+
+  <%= raw @forward_response.body %>
+
+  //deal with the response creditCardChargeResponseCode json
+  creditCardChargeCallback(creditCardChargeResponseCode, null);
+
+<% end %>

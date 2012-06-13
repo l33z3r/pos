@@ -3,6 +3,11 @@ var utilPaymentInProgress = false;
 var currentPaymentCustomerId = null;
 
 function makeCustomerPayment(customerId) {
+    if(!appOnline) {
+        niceAlert("Cannot contact server to make payment");
+        return;
+    }
+    
     var customer = creditCustomers[customerId];
     
     if(!customer) {
@@ -11,11 +16,6 @@ function makeCustomerPayment(customerId) {
     }
     
     var currentBalance = customer.current_balance;
-    
-    if(currentBalance == 0) {
-        niceAlert("This customer has no outstanding balance and cannot make a payment!");
-        return;
-    }
     
     currentPaymentCustomerId = customerId;
     
@@ -57,8 +57,12 @@ function makeCustomerPayment(customerId) {
     
     var amount = currentBalance;
     
+    if(amount < 0) {
+        amount = 0;
+    }
+    
     var minAmount = 0;
-    var maxAmount = currentBalance;
+    var maxAmount = -1;
     
     $('#util_payment_header').html("Customer Payment");
     
@@ -71,8 +75,8 @@ function makeCustomerPayment(customerId) {
     customerHTMLContent += "<div class='label bold'>Customer:</div>";
     customerHTMLContent += "<div class='data'>" + customerName + "</div>" + clearHTML;
     
-    customerHTMLContent += "<div class='label bold'>Balance Outstanding:</div>";
-    customerHTMLContent += "<div class='data'>" + currency(currentBalance) + "</div>" + clearHTML;
+    customerHTMLContent += "<div class='label bold'>Balance:</div>";
+    customerHTMLContent += "<div class='data'>" + currencyBalance(currentBalance) + "</div>" + clearHTML;
     
     customerHTMLContent += "</div></div>" + clearHTML;
     
@@ -132,11 +136,7 @@ function finishUtilPayment() {
     utilPaymentResponse.card_charged = utilPaymentCardCharged;
     utilPaymentResponse.amount_tendered = utilPaymentCashTendered;
     
-    if(utilPaymentCashTendered < utilPaymentAmount) {
-        utilPaymentResponse.amount = utilPaymentCashTendered;
-    } else {
-        utilPaymentResponse.amount = utilPaymentAmount;
-    }
+    utilPaymentResponse.amount = utilPaymentCashTendered;
     
     var doOpenCashDrawer = paymentMethods[getPaymentMethodId(utilScreenPaymentMethod)].open_cash_drawer;
     
@@ -156,7 +156,7 @@ function utilPaymentScreenKeypadClick(val) {
     utilPaymentCashTenderedKeypadString += val;
     utilPaymentCashTendered = parseFloat(utilPaymentCashTenderedKeypadString/100.0);
     
-    if(utilPaymentCashTendered > utilPaymentMaxAmount) {
+    if((utilPaymentCashTendered > utilPaymentMaxAmount) && utilPaymentMaxAmount != -1) {
         niceAlert("The maximum amount allowed for this payment is " + currency(utilPaymentMaxAmount));
         utilPaymentCashTendered = utilPaymentMaxAmount;
     }
@@ -227,14 +227,14 @@ function utilPaymentScreenChargeCreditCard() {
     chargeCreditCard(amount);
 }
 
-function utilPaymentScreenCreditCardChargeCallback(creditCardChargeResponseCode) {
+function utilPaymentScreenCreditCardChargeCallback(creditCardChargeResponseCode, errorMessage) {
     //1 means success
     //2 means declined
     //3 means retrieval canceled
     //4 means a timeout waiting for card
     //5 is an unknown response
     //6 means connection refused or other IO error
-    
+    //7 is a general error
     var message = "";
     
     if(creditCardChargeResponseCode == 1) {
@@ -262,7 +262,12 @@ function utilPaymentScreenCreditCardChargeCallback(creditCardChargeResponseCode)
         niceAlert(message);
     } else {
         //unknown error
-        message = "An unknown error occured.";
+        if(errorMessage != null) {
+            message = "Error: " + errorMessage;
+        } else {
+            message = "An unknown error occured.";
+        }
+        
         niceAlert(message);
     }
     

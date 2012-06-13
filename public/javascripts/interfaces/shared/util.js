@@ -54,6 +54,14 @@ function inAndroidWrapper() {
     return (typeof clueyAndroidJSInterface != "undefined");
 }
 
+function currencyBalance(balance) {
+    if(balance < 0) {
+        return currency(Math.abs(balance)) + "CR";
+    } else {
+        return currency(balance);
+    }
+}
+
 function currency(number, showUnit) {
     if(typeof showUnit == "undefined") {
         showUnit = true;

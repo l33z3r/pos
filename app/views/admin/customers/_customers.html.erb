@@ -18,11 +18,11 @@
           <td><%= link_to customer.account_number, edit_admin_customer_path(customer) %></td>
           <td><%= link_to customer.name, edit_admin_customer_path(customer) %></td>
           <td><%= print_money customer.credit_limit %></td>
-          <td><%= print_money customer.current_balance %></td>
+          <td><%= print_credit_balance customer.current_balance %></td>
           <td><%= customer.available_points %></td>
           <% if !params[:search][:customer_type_in].include?(Customer::LOYALTY) %>
             <td>
-              <div class="button_small" data-onpress="makeCustomerPaymentAdminShortcut(<%= customer.id %>)">Make Payment</div>
+              <div class="small_button" data-onpress="makeCustomerPaymentAdminShortcut(<%= customer.id %>)">Make Payment</div>
             </td>
           <% end %>
         </tr>
