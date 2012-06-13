@@ -447,7 +447,7 @@ function openCashDrawer() {
         //        binOutStream.close();
         //        outStream.close();
         
-        var path = "C:\\COM7";
+        var path = "C:\\COM1";
         var f = 
         Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
         f.initWithPath(path);
@@ -466,6 +466,17 @@ function openCashDrawer() {
         var t2Char = String.fromCharCode(48);
             
         var cdcOutput = escChar + pChar + zeroChar + t1Char + t2Char;//'p000';
+        
+        //directly (MK-410 DRAWER)
+        //        The CR-Port is a subdevice of COM1
+        //to test a Cashdrawer on the TP CR-Port you have to:
+        //mode com1:96,n,8,1
+        //3) If the Cash Drawer is wired for the first CR-Port you send use the ^G-code ('07'
+        //hexadecimal / '07' decimal / 'BEL' ASCII) or if it is
+        //wired for the second CR-Port you must use the ^W-Code ('17' hexadecimal / '23'
+        //decimal / 'ETB' ASCII) to open the Cash Drawer.
+        
+        //cdcOutput = String.fromCharCode(7);//'bell';
 
         var binOutStream = Components.classes["@mozilla.org/binaryoutputstream;1"].createInstance(Components.interfaces.nsIBinaryOutputStream);
         binOutStream.setOutputStream(fs);
