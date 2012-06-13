@@ -1,4 +1,4 @@
-desc "Delete orders, order_items, terminal_sync_data, cash_totals, terminal_ids, stored_receipt_htmls"
+desc "Delete orders, order_items, terminal_sync_data, cash_totals, terminal_ids, stored_receipt_htmls, client_transactions, card_transactions, customer_transactions, payments"
 task :delete_historical_data => :environment do
   puts "Deleting historical data!"
   
@@ -26,6 +26,18 @@ task :delete_historical_data => :environment do
   puts "Deleting #{@client_transactions.length} client_transactions"
   @client_transactions.each(&:destroy) 
   
+  @card_transactions = CardTransaction.all
+  puts "Deleting #{@card_transactions.length} card_transactions"
+  @card_transactions.each(&:destroy) 
+  
+  @customer_transactions = CustomerTransaction.all
+  puts "Deleting #{@customer_transactions.length} customer_transactions"
+  @customer_transactions.each(&:destroy) 
+  
+  @payments = Payment.all
+  puts "Deleting #{@payments.length} payments"
+  @payments.each(&:destroy) 
+    
   puts "Issuing a reset of all terminals"
   TerminalSyncData.request_hard_reload_app "Master Terminal"
   
