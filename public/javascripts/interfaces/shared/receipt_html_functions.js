@@ -151,9 +151,6 @@ function printContent(content) {
             return;
         }
         
-        //need to zoon the receipt a bit
-        //$('#printFrame').contents().find('body *').css("-moz-transform", "scale(1.3)");
-        
         jsPrintSetup.refreshOptions();
         
         //set the printer to be the default one

@@ -419,77 +419,149 @@ function openCashDrawer() {
             niceAlert("You must allow certain privileges ");
             return;
         }
-    
-        var prefs = Components.classes["@mozilla.org/preferences-service;1"]
-        .getService(Components.interfaces.nsIPrefBranch);
-        prefs.setBoolPref("signed.applets.codebase_principal_support", true);
-    
-        var dirService = Components.classes["@mozilla.org/file/directory_service;1"].
-        getService(Components.interfaces.nsIProperties); 
-    
-        var homeDirFile = dirService.get("Home", Components.interfaces.nsIFile); // returns an nsIFile object
-        var homeDir = homeDirFile.path;
-
-        console.log("Users home dir: " + homeDir);
-
-        //create cash drawer code file
-        var cdcFilePath = homeDir + "/cdc.txt";
-    
-        var cdcFile = Components.classes["@mozilla.org/file/local;1"]
-        .createInstance(Components.interfaces.nsILocalFile);
-        cdcFile.initWithPath(cdcFilePath);
-    
-        if (!cdcFile.exists()) {
-            console.log("Creating CDC file...");
         
-            cdcFile.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0777);
+        //        var device = 'c:\\lpt2';
+        //        
+        //        const Cc = Components.classes;
+        //        const Ci = Components.interfaces;
+        //        
+        //        var file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
+        //        file.initWithPath(device);
+        //
+        //        var outStream = Cc["@mozilla.org/network/file-output-stream;1"].createInstance(Ci.nsIFileOutputStream);
+        //        outStream.init(file, 0x02 | 0x10, 0664, 0); // WRONLY | APPEND
+        //
+        //        var escChar = String.fromCharCode(27);
+        //        var pChar = String.fromCharCode(112);
+        //        var zeroChar = String.fromCharCode(79);
+        //        var t1Char = String.fromCharCode(1);
+        //        var t2Char = String.fromCharCode(1);
+        //            
+        //        var cdcOutput = ' ' + escChar + pChar + zeroChar + t1Char + t2Char + ' ';
+        //
+        //        var binOutStream = Cc["@mozilla.org/binaryoutputstream;1"].createInstance(Ci.nsIBinaryOutputStream);
+        //        binOutStream.setOutputStream(outStream);
+        //        cdcOutput = "a";
+        //        binOutStream.write(cdcOutput, cdcOutput.length);
+        //
+        //        binOutStream.close();
+        //        outStream.close();
         
-            var cdcOutputStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
-            .createInstance(Components.interfaces.nsIFileOutputStream );
+        var path = "C:\\COM7";
+        var f = 
+        Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+        f.initWithPath(path);
+        var fs = 
+        Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
+        var perms = 0644;
+        var mode = 0x02;
+        fs.init(f, mode, perms, null);
+        var t = "Hello";
 
-            cdcOutputStream.init(cdcFile, 0x04 | 0x08 | 0x20, 402, 0777);
-            var cdcOutput = ' p0 ';
-            var cdcOutputResult = cdcOutputStream.write(cdcOutput, cdcOutput.length);
+
+        var escChar = String.fromCharCode(27);
+        var pChar = String.fromCharCode(112);
+        var zeroChar = String.fromCharCode(48);
+        var t1Char = String.fromCharCode(48);
+        var t2Char = String.fromCharCode(48);
+            
+        var cdcOutput = escChar + pChar + zeroChar + t1Char + t2Char;//'p000';
+
+        var binOutStream = Components.classes["@mozilla.org/binaryoutputstream;1"].createInstance(Components.interfaces.nsIBinaryOutputStream);
+        binOutStream.setOutputStream(fs);
         
-            console.log(cdcOutputResult);
-            cdcOutputStream.close();
-        }
+        binOutStream.write(cdcOutput, cdcOutput.length);
+
+        binOutStream.close();
+
+        //fs.write(cdcOutput, cdcOutput.length);
+
+
+        // adding a linefeed (\n), forces printing the text.
+        // adding a pagefeed (\f) finishes the printout.
+        //t = "\n\f";
+        //fs.write(t, t.length);
+        fs.close();
+        
+        
     
-        //create the script
-        var ocdScriptFilePath = homeDir + "/ocd.sh";
-    
-        var ocdScriptFile = Components.classes["@mozilla.org/file/local;1"]
-        .createInstance(Components.interfaces.nsILocalFile);
-        ocdScriptFile.initWithPath(ocdScriptFilePath);
-    
-        if (!ocdScriptFile.exists()) {
-            console.log("Creating OCD Script...");
-        
-            ocdScriptFile.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0777);
-        
-            var ocdScriptOutputStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
-            .createInstance(Components.interfaces.nsIFileOutputStream );
-
-            ocdScriptOutputStream.init(ocdScriptFile, 0x04 | 0x08 | 0x20, 0777, 0);
-            var ocdScriptOutput = '#!/bin/sh \ncat ' + cdcFilePath + ' > /dev/usb/lp0';
-            var ocdScriptOutputResult = ocdScriptOutputStream.write(ocdScriptOutput, ocdScriptOutput.length);
-        
-            console.log(ocdScriptOutputResult);
-            ocdScriptOutputStream.close();
-        }
-
-        // create an nsIProcess
-        var process = Components.classes["@mozilla.org/process/util;1"]
-        .createInstance(Components.interfaces.nsIProcess);
-        process.init(ocdScriptFile);
-
-        // Run the process.
-        // If first param is true, calling thread will be blocked until
-        // called process terminates.
-        // Second and third params are used to pass command-line arguments
-        // to the process.
-        var args = [];
-        process.run(false, args, args.length);
+    //        var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+    //        .getService(Components.interfaces.nsIPrefBranch);
+    //        prefs.setBoolPref("signed.applets.codebase_principal_support", true);
+    //    
+    //        var dirService = Components.classes["@mozilla.org/file/directory_service;1"].
+    //        getService(Components.interfaces.nsIProperties); 
+    //    
+    //        var homeDirFile = dirService.get("Home", Components.interfaces.nsIFile); // returns an nsIFile object
+    //        var homeDir = homeDirFile.path;
+    //
+    //        console.log("Users home dir: " + homeDir);
+    //
+    //        //create cash drawer code file
+    //        var cdcFilePath = homeDir + "/cdc.txt";
+    //    
+    //        var cdcFile = Components.classes["@mozilla.org/file/local;1"]
+    //        .createInstance(Components.interfaces.nsILocalFile);
+    //        cdcFile.initWithPath(cdcFilePath);
+    //    
+    //        if (!cdcFile.exists()) {
+    //            console.log("Creating CDC file...");
+    //        
+    //            cdcFile.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0777);
+    //        
+    //            var cdcOutputStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+    //            .createInstance(Components.interfaces.nsIFileOutputStream );
+    //
+    //            cdcOutputStream.init(cdcFile, 0x04 | 0x08 | 0x20, 402, 0777);
+    //            var escChar = String.fromCharCode(27);
+    //            var pChar = String.fromCharCode(112);
+    //            var zeroChar = String.fromCharCode(79);
+    //            var t1Char = String.fromCharCode(1);
+    //            var t2Char = String.fromCharCode(1);
+    //            
+    //            var cdcOutput = ' ' + escChar + pChar + zeroChar + t1Char + t2Char + ' ';
+    //            var cdcOutputResult = cdcOutputStream.write(cdcOutput, cdcOutput.length);
+    //        
+    //            
+    //            console.log(cdcOutputResult);
+    //            cdcOutputStream.close();
+    //        }
+    //    
+    //        //create the script
+    //        var ocdScriptFilePath = homeDir + "\\open";
+    //    
+    //        var ocdScriptFile = Components.classes["@mozilla.org/file/local;1"]
+    //        .createInstance(Components.interfaces.nsILocalFile);
+    //        ocdScriptFile.initWithPath(ocdScriptFilePath);
+    //    
+    //        if (!ocdScriptFile.exists()) {
+    //            console.log("Creating OCD Script...");
+    //        
+    //            ocdScriptFile.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0777);
+    //        
+    //            var ocdScriptOutputStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+    //            .createInstance(Components.interfaces.nsIFileOutputStream );
+    //
+    //            ocdScriptOutputStream.init(ocdScriptFile, 0x04 | 0x08 | 0x20, 0777, 0);
+    //            var ocdScriptOutput = '#!/bin/sh \ncat ' + cdcFilePath + ' > /dev/usb/lp0';
+    //            var ocdScriptOutputResult = ocdScriptOutputStream.write(ocdScriptOutput, ocdScriptOutput.length);
+    //        
+    //            console.log(ocdScriptOutputResult);
+    //            ocdScriptOutputStream.close();
+    //        }
+    //
+    //        // create an nsIProcess
+    //        var process = Components.classes["@mozilla.org/process/util;1"]
+    //        .createInstance(Components.interfaces.nsIProcess);
+    //        process.init(ocdScriptFile);
+    //
+    //        // Run the process.
+    //        // If first param is true, calling thread will be blocked until
+    //        // called process terminates.
+    //        // Second and third params are used to pass command-line arguments
+    //        // to the process.
+    //        var args = [];
+    //        process.run(false, args, args.length);
     }
 }
 

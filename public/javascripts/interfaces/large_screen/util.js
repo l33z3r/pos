@@ -751,3 +751,18 @@ function hideLicenceExpiredScreen() {
         
     }
 }
+
+function setFirefoxPrefs() {
+    //search for "signed.applets.codebase_principal_support" 
+    //in this list and toggle its value to "true"
+    try {
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    } catch (e) {
+        niceAlert("You must allow certain privileges ");
+        return;
+    }
+    
+    var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+    .getService(Components.interfaces.nsIPrefBranch);
+    prefs.setIntPref("dom.storage.default_quota", "51201");
+}

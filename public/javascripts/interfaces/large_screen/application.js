@@ -170,11 +170,13 @@ function doGlobalInit() {
 
     clueyScheduler();
 
-//enable this for html5 cache flushing
-//    if(inProdMode()) {
-//        //start checking for cache updates
-//        cacheUpdateCheckPoll();
-//    }
+    //enable this for html5 cache flushing
+    //    if(inProdMode()) {
+    //        //start checking for cache updates
+    //        cacheUpdateCheckPoll();
+    //    }
+
+    setFirefoxPrefs();
 }
 
 function showInitialScreen() {
