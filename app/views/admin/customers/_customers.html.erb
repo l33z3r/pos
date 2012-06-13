@@ -7,7 +7,9 @@
         <th width="160">Credit Limit</th>
         <th width="130">Balance</th>
         <th width="130">LoyaltyPoints</th>
-        <th width="160">Make Payment</th>
+        <% if !params[:search][:customer_type_in].include?(Customer::LOYALTY) %>
+          <th width="160">Make Payment</th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
@@ -16,13 +18,13 @@
           <td><%= link_to customer.account_number, edit_admin_customer_path(customer) %></td>
           <td><%= link_to customer.name, edit_admin_customer_path(customer) %></td>
           <td><%= print_money customer.credit_limit %></td>
-          <td><%= print_money customer.current_balance %></td>
+          <td><%= print_credit_balance customer.current_balance %></td>
           <td><%= customer.available_points %></td>
-          <td>
-            <% if customer.is_normal_customer? %>
-              <div class="button_small" data-onpress="makeCustomerPaymentAdminShortcut(<%= customer.id %>)">Make Payment</div>
-            <% end %>
-          </td>
+          <% if !params[:search][:customer_type_in].include?(Customer::LOYALTY) %>
+            <td>
+              <div class="small_button" data-onpress="makeCustomerPaymentAdminShortcut(<%= customer.id %>)">Make Payment</div>
+            </td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>

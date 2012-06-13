@@ -4,6 +4,11 @@ var orderInProcess = false;
 var isTableZeroOrder = false;
 
 function doSyncTableOrder() {
+    if(!appOnline) {
+        niceAlert("Cannot contact server, ordering is disabled until connection re-established!");
+        return;
+    }
+    
     var order = null;
     
     if(!isTableZeroOrder && !ensureLoggedIn()) {

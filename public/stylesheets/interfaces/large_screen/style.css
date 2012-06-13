@@ -3357,19 +3357,18 @@ div#util_payment_screen div#util_payment_keypad_container {
     border: 1px solid #CCC;
     -moz-border-radius: 7px;
     border-radius: 7px;
-    margin: 10px;
+    margin: 30px 10px 35px 10px;
 }
 
 div#util_payment_screen div#action_buttons_info_container {
     float: left;
-    margin: 0px 10px;
+    margin: 20px 10px 10px 10px;
     width: 420px;
 }
 
 div#util_payment_screen div#util_payment_content_container {
     -moz-border-radius: 7px;
     border-radius: 7px;
-    margin: 10px;
     min-height: 68px;
 }
 
@@ -3408,6 +3407,13 @@ div#util_payment_screen div#action_buttons_info_container div.data_table {
     text-align: left;
     margin: 5px 17px;
     line-height: 16px;
+}
+
+div#util_payment_screen div#action_buttons_info_container div#util_payment_tendered_amount {
+    background-color: #FFF;
+    border: 1px solid #000;
+    -moz-border-radius: 7px;
+    padding: 10px;
 }
 
 div#util_payment_screen  div#action_buttons_info_container div.data_table div.label {
@@ -4120,10 +4126,10 @@ div.button {
     background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
 }
 
-div.button_small {
-    padding: 3px;
-    height: 36px;
-    max-height: 36px;
+div.small_button {
+    padding: 5px;
+    height: 23px;
+    max-height: 23px;
     overflow: hidden;
     vertical-align: middle;
     display: table-cell;
@@ -4198,8 +4204,8 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 div#menu_screen div#menu_pages_container div#menu_container div#pages div.page.pressed,
 div#receipt_keypad_container div#table_screen_button.pressed,
 div.button.pressed,
-div.button_small.pressed,
-#wrapper div.button_small.pressed,
+div.small_button.pressed,
+#wrapper div.small_button.pressed,
 #wrapper input[type="submit"].pressed,
 #wrapper div.button.pressed,
 #wrapper div.key.pressed,
@@ -4224,8 +4230,8 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 div#menu_screen div#menu_pages_container div#menu_container div#pages div.page.pressed *,
 div.button.pressed *,
 #wrapper div.button.pressed *,
-div.button_small.pressed *,
-#wrapper div.button_small.pressed *,
+div.small_button.pressed *,
+#wrapper div.small_button.pressed *,
 #wrapper input[type="submit"].pressed *,
 #wrapper div.key.pressed *,
 #wrapper div.go_key.pressed *,

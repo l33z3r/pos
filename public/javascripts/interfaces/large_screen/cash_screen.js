@@ -600,13 +600,14 @@ function chargeCreditCard(amount) {
     });
 }
 
-function cashScreenCreditCardChargeCallback(creditCardChargeResponseCode) {
+function cashScreenCreditCardChargeCallback(creditCardChargeResponseCode, errorMessage) {
     //1 means success
     //2 means declined
     //3 means retrieval canceled
     //4 means a timeout waiting for card
     //5 is an unknown response
     //6 means connection refused or other IO error
+    //7 means a general error
     var message = "";
     
     if(creditCardChargeResponseCode == 1) {
@@ -639,7 +640,12 @@ function cashScreenCreditCardChargeCallback(creditCardChargeResponseCode) {
         niceAlert(message);
     } else {
         //unknown error
-        message = "An unknown error occured.";
+        if(errorMessage != null) {
+            message = "Error: " + errorMessage;
+        } else {
+            message = "An unknown error occured.";
+        }
+        
         niceAlert(message);
     }
     
@@ -897,7 +903,7 @@ function addCustomerToOrder(c_id) {
     //show some dialog saying that this customer is chosen
     $('#client_customer_name').html(customerName);
     $('#client_customer_credit_limit').html(currency(customerCreditLimit));
-    $('#client_customer_current_balance').html(currency(customerCurrentBalance));
+    $('#client_customer_current_balance').html(currencyBalance(customerCurrentBalance));
     $('#client_customer_section').show();
     
     if(customer.is_loyalty_customer) {

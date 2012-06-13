@@ -452,15 +452,27 @@ class HomeController < ApplicationController
     
     @http.open_timeout = 5
     
+    @cc_timeout_mins = 20
+    @timeout_seconds = @cc_timeout_mins * 60
+    
+    #timeout to wait for card to be charged
+    @http.read_timeout = @timeout_seconds
+    
+    @error = false
+    
     begin
       @forward_response = @http.start {|http|
         http.request(req)
       }
-    rescue
-      render :status => 503, :inline => "Cannot reach credit card service" and return
+      
+      logger.info "Got response from credit card charge servlet: #{@forward_response.body}."
+    rescue Timeout::Error => error
+      @error = true
+      @reason = "Timeout error. Transaction took longer than #{@cc_timeout_mins} minutes."
+    rescue Exception => error
+      @error = true
+      @reason = "Problem with credit card service #{error.to_s}."
     end
-    
-    logger.info "Got response from credit card charge servlet: #{@forward_response.body}"
   end
   
   # Rails controller action for an HTML5 cache manifest file.

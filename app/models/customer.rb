@@ -86,7 +86,7 @@ class Customer < ActiveRecord::Base
     write_attribute("credit_available", @credit_available)
     write_attribute("current_balance", c_balance)
   end
-
+  
   def self.all_active
     Customer.where("is_active = ?", true)
   end

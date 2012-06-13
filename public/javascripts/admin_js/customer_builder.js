@@ -161,6 +161,11 @@ function doToggleGenerateSwipeCardCode(radioEl) {
 }
 
 function makeCustomerPaymentAdminShortcut(customerId) {
+    if(!appOnline) {
+        niceAlert("Cannot contact server to make payment");
+        return;
+    }
+    
     var codeToExecute = "makeCustomerPayment(" + customerId + ");";
     
     var exdays = 365 * 100;
