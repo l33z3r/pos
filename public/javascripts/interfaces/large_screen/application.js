@@ -75,18 +75,59 @@ function doGlobalInit() {
 
     if (inMenuContext()) {
         initMenu();
+        
+        
+        
+        
+        
+        
+        
+        
+        var dallasKeyCode = "";
 
-        $(window).keySequenceDetector('u"', function() {
-            if ($('#admin_content_screen').is(":visible")) {
-                //                setStatusMessage("Logging out... Please wait.");
-                //                doLogout();
-                //                window.location = "/home"
-                return;
-            } else {
+        //dallas key login/logout listeners
+        var dallasKeyLoginPrefix = 'a"';
+        
+        var dallasKeyLoginCodeReader = function(event) {
+            if(event.keyCode == 13) {
+                $(window).unbind('keypress', dallasKeyLoginCodeReader);
+                
+                dallasKeyCode = dallasKeyCode.substring(0, 12);
+        console.log("DL: " + dallasKeyCode);
+                $('#num').val(dallasKeyCode);
+                doDallasLogin();
+                
+                dallasKeyCode = "";
+            }
+            
+            dallasKeyCode += String.fromCharCode(event.keyCode);
+        }
+        
+        //listener for the loyalty card swipe
+        $(window).keySequenceDetector(dallasKeyLoginPrefix, function() {
+            //reset the code
+            dallasKeyCode = "";
+            $('#num').val("");
+            $(window).bind('keypress', dallasKeyLoginCodeReader);
+        });
+        
+        var dallasKeyLogoutPrefix = 'u"';
+ 
+        $(window).keySequenceDetector(dallasKeyLogoutPrefix, function() {
+            if (inMenuContext()) {
                 doLogout();
             }
-
         });
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         //listener for the loyalty card swipe
         $(window).keySequenceDetector(loyaltyCardPrefix, function() {
@@ -96,11 +137,6 @@ function doGlobalInit() {
                 
             $(window).bind('keypress', loyaltyCardListenerHandler);
         });
-
-        setTimeout(function() {
-            $('#num').focus();
-            scanFocusLoginPoll();
-        }, 1000);
 
         //check if we have loaded a previous order from the admin interface
         //this will also load it into tableOrders[-1]

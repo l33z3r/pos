@@ -133,15 +133,15 @@ function scanFocusPoll() {
     }
 }
     
-function scanFocusLoginPoll() {
-    if (lastActiveElement.attr("id") == "num") {
-        $('#num').select();
-        sendCursorToEnd($('#num').val())
-        $('#num').focus();
-        setTimeout(scanFocusLoginPoll, 1000);
-        return;
-    }
-}
+//function scanFocusLoginPoll() {
+//    if (lastActiveElement.attr("id") == "num") {
+//        $('#num').select();
+//        sendCursorToEnd($('#num').val())
+//        $('#num').focus();
+//        setTimeout(scanFocusLoginPoll, 1000);
+//        return;
+//    }
+//}
 
 function sendCursorToEnd(obj) {
     var value = obj
