@@ -95,7 +95,7 @@ function initMenuScreenType() {
         $('#upc_code_lookup_container').show();
         
         $('#scan_upc').keyup(function(e) {
-            if(e.keyCode == 13) {
+            if(getEventKeyCode(e) == 13) {
                 productScanned();
             }
         });
@@ -1062,21 +1062,21 @@ function loadReceipt(order, doScroll) {
 }
 
 function storeDallasKeyVal(e) {
-    if (e.keyCode == 13){
+    if (getEventKeyCode(e) == 13){
         var newVal = $('#user_passcode').val().substring(3,15);
         $('#user_passcode').val(newVal);
     }
-    if (e.keyCode == 117){
+    if (getEventKeyCode(e) == 117){
         $('#user_passcode').val("u");
     }
-    if (e.keyCode == 97){
+    if (getEventKeyCode(e) == 97){
         $('#user_passcode').val("a");
     }
 }
 
 function nullOnEnter(event){
-    if(event.keyCode==13){
-        event.keyCode = null;
+    if(getEventKeyCode(event) == 13){
+        setEventKeyCode(event, null);
         return;
     }
 }

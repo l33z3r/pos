@@ -89,7 +89,7 @@ function doGlobalInit() {
         var dallasKeyLoginPrefix = 'a"';
         
         var dallasKeyLoginCodeReader = function(event) {
-            if(event.keyCode == 13) {
+            if(getEventKeyCode(event) == 13) {
                 $(window).unbind('keypress', dallasKeyLoginCodeReader);
                 
                 dallasKeyCode = dallasKeyCode.substring(0, 12);
@@ -99,8 +99,8 @@ function doGlobalInit() {
                 
                 dallasKeyCode = "";
             }
-            
-            dallasKeyCode += String.fromCharCode(event.keyCode);
+            console.log(String.fromCharCode(getEventKeyCode(event)) + String.fromCharCode(33))
+            dallasKeyCode += String.fromCharCode(getEventKeyCode(event));
         }
         
         //listener for the loyalty card swipe

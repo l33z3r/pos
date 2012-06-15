@@ -38,6 +38,10 @@ task :delete_historical_data => :environment do
   puts "Deleting #{@payments.length} payments"
   @payments.each(&:destroy) 
     
+  @stock_transactions = StockTransaction.all
+  puts "Deleting #{@stock_transactions.length} stock_transactions"
+  @stock_transactions.each(&:destroy)
+  
   puts "Issuing a reset of all terminals"
   TerminalSyncData.request_hard_reload_app "Master Terminal"
   

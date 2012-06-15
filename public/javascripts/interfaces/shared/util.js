@@ -949,3 +949,12 @@ function playSound(url) {
         $('body').append(sound);
     }
 }
+
+function setEventyKeyCode(e, code) {
+    e.keyCode = code;
+}
+
+function getEventKeyCode(e) {
+    //console.log("KC: " + e.keyCode + " - " + e.charCode + " : " + (e.charCode || e.keyCode));
+    return e.charCode || e.keyCode;
+}

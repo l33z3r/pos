@@ -701,7 +701,7 @@ var loyaltyCardListenerHandler = function(event) {
         return;
     }
                        
-    loyaltyCardCode += String.fromCharCode(event.keyCode);
+    loyaltyCardCode += String.fromCharCode(getEventKeyCode(event));
 }
 
 function addLoyaltyCustomerToTotalOrder(customer) {

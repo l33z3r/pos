@@ -149,6 +149,8 @@ function doLogout() {
     $('#menu_screen_shortcut_dropdown_container').hide();
 
     $('#e_name').hide();
+    
+    $('#num').blur();
 
     //send ajax logout
     $.ajax({
