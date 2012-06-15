@@ -32,7 +32,7 @@
             <h3>Sales Report <%= Time.now.strftime("%B %d, %Y") %></h3>
         <% end %>
 
-        <% if (@s_type == :best_seller) || (@s_type == :worst_seller) %>
+        <% if (@s_type == :best_seller) || (@s_type == :worst_seller) || (@s_type == :by_product) %>
             <table id="product_list" class="admin_table" style="width: 100%;">
                 <thead>
                 <th class="header">Product</th>
@@ -85,7 +85,6 @@
                         <td style="text-align: right">
                             <%= sprintf("%.2f", net_sales) %>
                         </td>
-
                     </tr>
                 <% end %>
                 <% end %>
@@ -107,8 +106,6 @@
                         <td style="text-align: right; border-top: 2px solid">
                             <%= sprintf("%.2f", total_net) %>
                         </td>
-
-
                     </tr>
                 </tbody>
             </table>
