@@ -342,7 +342,18 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
             if((typeof itemPrinters != "undefined") && itemPrinters.length > 0) {
                 var printersArray = itemPrinters.split(",");
                 
-                if($.inArray(terminalID.toLowerCase(), printersArray) != -1) {
+                var inPrinterArray = $.inArray(terminalID.toLowerCase(), printersArray) != -1;
+                
+                var blockedPrinter = false;
+                var itemBlockedPrinters = theItem.product.blocked_printers;
+                
+                if((typeof itemBlockedPrinters != "undefined") && itemBlockedPrinters.length > 0) {
+                    var blockedPrintersArray = itemBlockedPrinters.split(",");
+                
+                    blockedPrinter = $.inArray(recvdTerminalID.toLowerCase(), blockedPrintersArray) != -1;
+                }
+                
+                if(inPrinterArray && !blockedPrinter) {
                     itemsToPrint.push(theItem);
                 }
             } else {
@@ -355,7 +366,18 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
                     if((typeof categoryPrinters != "undefined") && categoryPrinters.length > 0) {
                         var categoryPrintersArray = categoryPrinters.split(",");
                 
-                        if($.inArray(terminalID.toLowerCase(), categoryPrintersArray) != -1) {
+                        var inCategoryPrinterArray = $.inArray(terminalID.toLowerCase(), categoryPrintersArray) != -1;
+                
+                        var blockedCategoryPrinter = false;
+                        var categoryBlockedPrinters = categories[categoryId].blocked_printers;
+                
+                        if((typeof categoryBlockedPrinters != "undefined") && categoryBlockedPrinters.length > 0) {
+                            var blockedCategoryPrintersArray = categoryBlockedPrinters.split(",");
+                
+                            blockedCategoryPrinter = $.inArray(recvdTerminalID.toLowerCase(), blockedCategoryPrintersArray) != -1;
+                        }
+                
+                        if(inCategoryPrinterArray && !blockedCategoryPrinter) {
                             itemsToPrint.push(theItem);
                         }
                     }

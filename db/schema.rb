@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120606172941) do
+ActiveRecord::Schema.define(:version => 20120615170743) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(:version => 20120606172941) do
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
     t.integer  "course_num",                               :default => 0
     t.string   "kitchen_screens",                          :default => ""
+    t.string   "blocked_printers"
   end
 
   add_index "categories", ["order_item_addition_grid_id"], :name => "index_categories_on_order_item_addition_grid_id"
@@ -443,6 +444,7 @@ ActiveRecord::Schema.define(:version => 20120606172941) do
     t.boolean  "is_stock_item",                            :default => true
     t.string   "kitchen_screens",                          :default => ""
     t.float    "half_price",                               :default => 0.0
+    t.string   "blocked_printers"
   end
 
   add_index "products", ["category_id"], :name => "index_products_on_category_id"
