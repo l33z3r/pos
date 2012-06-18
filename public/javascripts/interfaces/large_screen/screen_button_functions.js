@@ -878,6 +878,13 @@ function saveAddCovers() {
 
 function pmShortcut(shortcutNum) {
     var shortcutPaymentMethod = paymentMethods[pmShortcutMap[shortcutNum]];
+    
+    applyDefaultServiceChargePercent();
+    
+    cashTendered = 0;
+    splitPayments = {};
+    
     paymentMethod = shortcutPaymentMethod.name;
+    
     doTotalFinal();
 }

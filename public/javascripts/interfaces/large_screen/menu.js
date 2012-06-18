@@ -1233,8 +1233,6 @@ function doTotalFinal() {
     
     hideLoadingDiv();
     
-    cashSaleInProcess = true;
-    
     if(currentOrderEmpty()) {
         setStatusMessage("No order present to total!", true, true);
         return;
@@ -1243,6 +1241,8 @@ function doTotalFinal() {
     if(!ensureLoggedIn()) {
         return;
     }
+    
+    cashSaleInProcess = true;
     
     var isSplitBill = false;
     
