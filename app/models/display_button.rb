@@ -17,4 +17,6 @@ class DisplayButton < ActiveRecord::Base
   
   validates :button_text, :presence => true, :length => { :minimum => 1 }
   validates :perm_id, :presence => true
+  
+  
 end

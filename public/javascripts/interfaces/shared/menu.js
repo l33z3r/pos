@@ -125,72 +125,8 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     for(var itemKey in tableOrderDataJSON.items) {
         var theItem = tableOrderDataJSON.items[itemKey];
-        
-//        //make sure the data types are converted correctly
-//        if(theItem.product.show_price_on_receipt) {
-//            theItem.product.show_price_on_receipt = (theItem.product.show_price_on_receipt.toString() == "true" ? true : false);   
-//        }
-//        
-//        if(theItem.showServerAddedText) {
-//            theItem.showServerAddedText = (theItem.showServerAddedText.toString() == "true" ? true : false);   
-//        }
-//        
-//        if(theItem.product.hide_on_printed_receipt) {
-//            theItem.product.hide_on_printed_receipt = (theItem.product.hide_on_printed_receipt.toString() == "true" ? true : false);   
-//        }
-//        
-//        if(theItem.product.category_id == "null") {
-//            theItem.product.category_id = null;
-//        }
-//        
-//        if(theItem.is_course) {
-//            theItem.is_course = (theItem.is_course.toString() == "true" ? true : false);   
-//        }
-//        
-//        if(theItem.show_course_label) {
-//            theItem.show_course_label = (theItem.show_course_label.toString() == "true" ? true : false);   
-//        }
-//        
-//        if(theItem.is_void) {
-//            theItem.is_void = (theItem.is_void.toString() == "true" ? true : false);   
-//        }
-//        
-//        
-//        
-//        
-//        //this is only untill we have the new code deployed for a while we can be sure that double_price will be present on newly created orders
-//        if(typeof(theItem.is_double) != 'undefined') {
-//            theItem.is_double = (theItem.is_double.toString() == "true" ? true : false);
-//        } else {
-//            theItem.is_double = false;
-//        }
-//        
-//        
-//        
-//        
-//        
-//        //this is only untill we have the new code deployed for a while we can be sure that half_price will be present on newly created orders
-//        if(typeof(theItem.is_half) != 'undefined') {
-//            theItem.is_half = (theItem.is_half.toString() == "true" ? true : false);
-//        } else {
-//            theItem.is_half = false;
-//        }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
         var copiedOrderItem = {};
-        //console.log("OIAITEMS: " + theItem.oia_items + " " + (theItem.oia_items.length>0));
         
         if(typeof(theItem.oia_items) != "undefined") {
             //we must convert the oia_items hash to an array (the server turned our array into some indexed hash)
@@ -198,9 +134,6 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         
             for(var oiaItemKey in theItem.oia_items) {
                 var nextOIA = theItem.oia_items[oiaItemKey];
-                
-                //console.log("copying oia " + oiaItemKey + " " + nextOIA);
-                //console.log(nextUserIDToSyncWith + " Is add " + nextOIA.description + " " + nextOIA.is_add.toString() + " " + (nextOIA.is_add.toString() == "true"));
                 
                 //make sure the data types are converted correctly
                 nextOIA.is_add = (nextOIA.is_add.toString() == "true" ? true : false);
@@ -210,7 +143,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
                 nextOIA.is_addable = (nextOIA.is_addable.toString() == "true" ? true : false);
                 
                 nextOIA.abs_charge = parseFloat(nextOIA.abs_charge);
-                //console.log("converted abs_charge: " + nextOIA.abs_charge);
+                
                 newOIAItems.push(nextOIA);
             }
         
@@ -223,8 +156,6 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         syncOrderItems.push(copiedOrderItemForStore);
     }
     
-    //    alert("Order for sync has " + syncOrderItems.length + " items. About to sync with existing " + tableOrders[tableID].items.length + " items");
-    
     getTableOrderFromStorage(nextUserIDToSyncWith, tableID);
     
     //delete all items that have been synced already
@@ -232,7 +163,6 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     for(var i=0;i<existingOrderItems.length;i++) {
         if(existingOrderItems[i].synced) {
-            //            alert("deleting already synced item " + i + " " + existingOrderItems[i].synced);
             existingOrderItems.splice(i, 1);
             i--;
         }

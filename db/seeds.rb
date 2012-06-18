@@ -37,7 +37,8 @@
   [54, "Kitchen Screen"], [55, "X/Z History"], [56, "Double"], [57, "Table Name"], [58, "Reports"], 
   [59, "Split Bill"], [60, "Exit App"], [61, "Void Item"], [62, "Void All Items"], [63, "Delete Order"], 
   [64, "Change Prices"], [65, "Charge Card"], [66, "Covers"], [67, "Product Info"], 
-  [68, "Customers"], [69, "Loyalty Customers"], [70, "Half"]
+  [68, "Customers"], [69, "Loyalty Customers"], [70, "Half"], [71, "PM_SHORTCUT_1_BUTTON"], 
+  [72, "PM_SHORTCUT_2_BUTTON"], [73, "PM_SHORTCUT_3_BUTTON"]
 ]
 
 #now create the buttons and also init a button role for admin user
