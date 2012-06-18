@@ -64,6 +64,9 @@ function getCurrentOrder() {
 }
 
 function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee, tableOrderDataJSON) {
+    //data types need to be cast
+    convertOrderItemStringsToBooleans(tableOrderDataJSON);
+    
     //save the current users table order to reload it after sync
     var savedTableID = selectedTable;
     var savedServiceCharge = serviceCharge;
@@ -123,55 +126,55 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     for(var itemKey in tableOrderDataJSON.items) {
         var theItem = tableOrderDataJSON.items[itemKey];
         
-        //make sure the data types are converted correctly
-        if(theItem.product.show_price_on_receipt) {
-            theItem.product.show_price_on_receipt = (theItem.product.show_price_on_receipt.toString() == "true" ? true : false);   
-        }
-        
-        if(theItem.showServerAddedText) {
-            theItem.showServerAddedText = (theItem.showServerAddedText.toString() == "true" ? true : false);   
-        }
-        
-        if(theItem.product.hide_on_printed_receipt) {
-            theItem.product.hide_on_printed_receipt = (theItem.product.hide_on_printed_receipt.toString() == "true" ? true : false);   
-        }
-        
-        if(theItem.product.category_id == "null") {
-            theItem.product.category_id = null;
-        }
-        
-        if(theItem.is_course) {
-            theItem.is_course = (theItem.is_course.toString() == "true" ? true : false);   
-        }
-        
-        if(theItem.show_course_label) {
-            theItem.show_course_label = (theItem.show_course_label.toString() == "true" ? true : false);   
-        }
-        
-        if(theItem.is_void) {
-            theItem.is_void = (theItem.is_void.toString() == "true" ? true : false);   
-        }
-        
-        
-        
-        
-        //this is only untill we have the new code deployed for a while we can be sure that double_price will be present on newly created orders
-        if(typeof(theItem.is_double) != 'undefined') {
-            theItem.is_double = (theItem.is_double.toString() == "true" ? true : false);
-        } else {
-            theItem.is_double = false;
-        }
-        
-        
-        
-        
-        
-        //this is only untill we have the new code deployed for a while we can be sure that half_price will be present on newly created orders
-        if(typeof(theItem.is_half) != 'undefined') {
-            theItem.is_half = (theItem.is_half.toString() == "true" ? true : false);
-        } else {
-            theItem.is_half = false;
-        }
+//        //make sure the data types are converted correctly
+//        if(theItem.product.show_price_on_receipt) {
+//            theItem.product.show_price_on_receipt = (theItem.product.show_price_on_receipt.toString() == "true" ? true : false);   
+//        }
+//        
+//        if(theItem.showServerAddedText) {
+//            theItem.showServerAddedText = (theItem.showServerAddedText.toString() == "true" ? true : false);   
+//        }
+//        
+//        if(theItem.product.hide_on_printed_receipt) {
+//            theItem.product.hide_on_printed_receipt = (theItem.product.hide_on_printed_receipt.toString() == "true" ? true : false);   
+//        }
+//        
+//        if(theItem.product.category_id == "null") {
+//            theItem.product.category_id = null;
+//        }
+//        
+//        if(theItem.is_course) {
+//            theItem.is_course = (theItem.is_course.toString() == "true" ? true : false);   
+//        }
+//        
+//        if(theItem.show_course_label) {
+//            theItem.show_course_label = (theItem.show_course_label.toString() == "true" ? true : false);   
+//        }
+//        
+//        if(theItem.is_void) {
+//            theItem.is_void = (theItem.is_void.toString() == "true" ? true : false);   
+//        }
+//        
+//        
+//        
+//        
+//        //this is only untill we have the new code deployed for a while we can be sure that double_price will be present on newly created orders
+//        if(typeof(theItem.is_double) != 'undefined') {
+//            theItem.is_double = (theItem.is_double.toString() == "true" ? true : false);
+//        } else {
+//            theItem.is_double = false;
+//        }
+//        
+//        
+//        
+//        
+//        
+//        //this is only untill we have the new code deployed for a while we can be sure that half_price will be present on newly created orders
+//        if(typeof(theItem.is_half) != 'undefined') {
+//            theItem.is_half = (theItem.is_half.toString() == "true" ? true : false);
+//        } else {
+//            theItem.is_half = false;
+//        }
         
         
         
@@ -335,8 +338,9 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
         
         //we only want to print items from the order that are new i.e. not synced on the other terminal yet
         var isItemSynced = (theItem.synced === 'true');
+        var isItemVoid = (theItem.is_void === 'true');
         
-        if(!isItemSynced && !theItem.is_void) {
+        if(!isItemSynced && !isItemVoid) {
             var itemPrinters = theItem.product.printers;
             
             if((typeof itemPrinters != "undefined") && itemPrinters.length > 0) {
@@ -394,6 +398,55 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
     
     if(itemsToPrint.length > 0 && inLargeInterface()) {
         printItemsFromOrder(serverNickname, recvdTerminalID, orderJSON, itemsToPrint);
+    }
+}
+
+function convertOrderItemStringsToBooleans(tableOrderDataJSON) {
+    for(var itemKey in tableOrderDataJSON.items) {
+        var theItem = tableOrderDataJSON.items[itemKey];
+        
+        //make sure the data types are converted correctly
+        if(theItem.product.show_price_on_receipt) {
+            theItem.product.show_price_on_receipt = (theItem.product.show_price_on_receipt.toString() == "true" ? true : false);   
+        }
+        
+        if(theItem.showServerAddedText) {
+            theItem.showServerAddedText = (theItem.showServerAddedText.toString() == "true" ? true : false);   
+        }
+        console.log("converting");
+        if(theItem.product.hide_on_printed_receipt) {
+            theItem.product.hide_on_printed_receipt = (theItem.product.hide_on_printed_receipt.toString() == "true" ? true : false);   
+        }
+        
+        if(theItem.product.category_id == "null") {
+            theItem.product.category_id = null;
+        }
+        
+        if(theItem.is_course) {
+            theItem.is_course = (theItem.is_course.toString() == "true" ? true : false);   
+        }
+        
+        if(theItem.show_course_label) {
+            theItem.show_course_label = (theItem.show_course_label.toString() == "true" ? true : false);   
+        }
+        
+        if(theItem.is_void) {
+            theItem.is_void = (theItem.is_void.toString() == "true" ? true : false);   
+        }
+        
+        //this is only untill we have the new code deployed for a while we can be sure that double_price will be present on newly created orders
+        if(typeof(theItem.is_double) != 'undefined') {
+            theItem.is_double = (theItem.is_double.toString() == "true" ? true : false);
+        } else {
+            theItem.is_double = false;
+        }
+        
+        //this is only untill we have the new code deployed for a while we can be sure that half_price will be present on newly created orders
+        if(typeof(theItem.is_half) != 'undefined') {
+            theItem.is_half = (theItem.is_half.toString() == "true" ? true : false);
+        } else {
+            theItem.is_half = false;
+        }
     }
 }
 

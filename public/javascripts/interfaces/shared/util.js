@@ -769,7 +769,13 @@ function clueyTimestamp() {
     return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
 }
 
+var ignoreReloadRequest = false;
+
 function alertReloadRequest(reloadTerminalId, hardReload) {
+    if(ignoreReloadRequest) {
+        return;
+    }
+    
     if(reloadTerminalId == terminalID) {
         return;
     }
