@@ -337,8 +337,8 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
         var theItem = items[itemKey];
         
         //we only want to print items from the order that are new i.e. not synced on the other terminal yet
-        var isItemSynced = (theItem.synced === 'true');
-        var isItemVoid = (theItem.is_void === 'true');
+        var isItemSynced = theItem.synced;
+        var isItemVoid = theItem.is_void;
         
         if(!isItemSynced && !isItemVoid) {
             var itemPrinters = theItem.product.printers;
@@ -405,6 +405,10 @@ function convertOrderItemStringsToBooleans(tableOrderDataJSON) {
     for(var itemKey in tableOrderDataJSON.items) {
         var theItem = tableOrderDataJSON.items[itemKey];
         
+        if(theItem.synced) {
+            theItem.synced = (theItem.synced.toString() == "true" ? true : false);   
+        }
+        
         //make sure the data types are converted correctly
         if(theItem.product.show_price_on_receipt) {
             theItem.product.show_price_on_receipt = (theItem.product.show_price_on_receipt.toString() == "true" ? true : false);   
@@ -413,7 +417,7 @@ function convertOrderItemStringsToBooleans(tableOrderDataJSON) {
         if(theItem.showServerAddedText) {
             theItem.showServerAddedText = (theItem.showServerAddedText.toString() == "true" ? true : false);   
         }
-        console.log("converting");
+        
         if(theItem.product.hide_on_printed_receipt) {
             theItem.product.hide_on_printed_receipt = (theItem.product.hide_on_printed_receipt.toString() == "true" ? true : false);   
         }
