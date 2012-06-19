@@ -44,6 +44,10 @@ class PaymentMethod < ActiveRecord::Base
     !self.is_system_pm?
   end
   
+  def can_be_shortcut?
+    self.is_cash? or (!self.is_system_pm? and (self.payment_integration_id == 0))
+  end
+  
   def self.options_for_select
     @options = []
     
