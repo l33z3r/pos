@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120615170743) do
+ActiveRecord::Schema.define(:version => 20120619165719) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(:version => 20120615170743) do
     t.string   "printers",                                 :default => ""
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => -1
+    t.integer  "course_num",                               :default => 0
     t.string   "kitchen_screens",                          :default => ""
     t.string   "blocked_printers"
   end
@@ -277,8 +277,8 @@ ActiveRecord::Schema.define(:version => 20120615170743) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "background_color_2"
-    t.boolean  "hide_on_receipt",             :default => false
-    t.boolean  "is_addable",                  :default => true
+    t.boolean  "hide_on_receipt",             :default => true
+    t.boolean  "is_addable",                  :default => false
     t.integer  "follow_on_grid_id"
     t.integer  "product_id"
   end
@@ -440,7 +440,7 @@ ActiveRecord::Schema.define(:version => 20120615170743) do
     t.boolean  "hide_on_printed_receipt",                  :default => false
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => -1
+    t.integer  "course_num",                               :default => 0
     t.boolean  "is_stock_item",                            :default => true
     t.string   "kitchen_screens",                          :default => ""
     t.float    "half_price",                               :default => 0.0

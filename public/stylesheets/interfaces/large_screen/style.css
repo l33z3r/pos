@@ -3373,16 +3373,13 @@ div#util_payment_screen div#util_payment_content_container {
 }
 
 div#util_payment_screen div#util_payment_content_container div#cutomer_payment_info_table {
-
+    border: 1px solid #CCC;
+    min-height: 70px;
+    padding-top: 24px;
 }
 
 div#util_payment_screen div#util_payment_content_container div#cutomer_payment_info_table div.data_table {
-    border: 1px solid #CCC;
-    background-color: #FFF;
-    border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
-    -moz-border-top-left-radius: 7px;
-    -moz-border-top-right-radius: 7px;
+
 }
 
 div#util_payment_screen div#action_buttons_info_container div#util_payment_buttons_container {

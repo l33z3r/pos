@@ -16,7 +16,8 @@ var loyaltyCustomersByCode = {};
     credit_limit : <%= c.credit_limit %>,
     current_balance : <%= c.current_balance %>,
     credit_available : <%= c.credit_available %>,
-    customer_number : <%= c.customer_number.blank? ? -1 : c.customer_number %>
+    customer_number : <%= c.customer_number.blank? ? -1 : c.customer_number %>,
+    account_number : <%= c.account_number %>
   };
 
   customers.push(customer_info);

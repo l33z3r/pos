@@ -678,6 +678,8 @@ function initRadioButtons() {
     });
 }
 
+var hideNiceAlertListener = null;
+
 function niceAlert(message, title) {
     //hide previous ones
     hideNiceAlert();
@@ -694,10 +696,19 @@ function niceAlert(message, title) {
             okButtonText: 'Ok',
             onOk: "hideNiceAlert()"
         });
+        
+        hideNiceAlertListener = function(event) {
+            if(getEventKeyCode(event) == 13) {
+                hideNiceAlert();
+            }
+        };
+        
+        $(window).bind('keypress', hideNiceAlertListener);
 }
 
 function hideNiceAlert() {
     try {
+        $(window).unbind('keypress', hideNiceAlertListener);
         ModalPopups.Close('niceAlertContainer');
     } catch (e) {
         
