@@ -40,30 +40,6 @@ function loginScreenKeypadClick(val) {
     $('#num').val(newVal);
 }
 
-function loginScreenKeyboardClick(e) {
-
-    if (e.keyCode == 13) {
-        if ($('#num').val().substring(0, 2) == 'aa'){
-            var newval = $('#num').val().substring(3, 15);
-            $('#num').val(newval);
-            $('#clockincode_show').html("**********");
-            doDallasLogin(newval);
-        }
-        else {
-            $('#num').val("")
-            $('#clockincode_show').html("");
-        }
-    } else if (e.keyCode == 117) {
-        $('#num').val("u");
-    }
-    else if (e.keyCode == 97) {
-        $('#num').val("a");
-    } else {
-        var newVal = $('#num').val().toString() + String.fromCharCode(e.keyCode);
-        $('#clockincode_show').html($('#clockincode_show').html() + "*");
-    }
-}
-
 function doCancelLoginKeypad() {
     $('#clockincode_show').html("");
     $('#num').val("");
@@ -131,8 +107,8 @@ function doLogin() {
         if (entered_code == passcode) {
             nickname = employees[i].nickname;
 
-
             if (employees[i]['clocked_in']) {
+                //only allow dallas code login if it is set
                 if (employees[i].dallas_code == ""){
                     id = employees[i].id
                     is_admin = employees[i].is_admin;
@@ -173,17 +149,14 @@ function doLogout() {
     $('#menu_screen_shortcut_dropdown_container').hide();
 
     $('#e_name').hide();
+    
+    $('#num').blur();
 
     //send ajax logout
     $.ajax({
         type: 'POST',
         url: '/logout'
     });
-    setTimeout(function(){
-
-        $('#num').focus();
-        scanFocusLoginPoll();
-    }, 1000);
 }
 
 function doClockin() {

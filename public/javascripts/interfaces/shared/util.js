@@ -769,7 +769,13 @@ function clueyTimestamp() {
     return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
 }
 
+var ignoreReloadRequest = false;
+
 function alertReloadRequest(reloadTerminalId, hardReload) {
+    if(ignoreReloadRequest) {
+        return;
+    }
+    
     if(reloadTerminalId == terminalID) {
         return;
     }
@@ -948,4 +954,13 @@ function playSound(url) {
         sound.attr('autostart', true);
         $('body').append(sound);
     }
+}
+
+function setEventyKeyCode(e, code) {
+    e.keyCode = code;
+}
+
+function getEventKeyCode(e) {
+    //console.log("KC: " + e.keyCode + " - " + e.charCode + " : " + (e.charCode || e.keyCode));
+    return e.charCode || e.keyCode;
 }

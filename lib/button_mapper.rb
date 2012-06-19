@@ -71,6 +71,9 @@ class ButtonMapper
   MANAGE_CUSTOMERS_BUTTON = 68
   MANAGE_LOYALTY_CUSTOMERS_BUTTON = 69
   TOGGLE_MENU_ITEM_HALF_BUTTON = 70
+  PM_SHORTCUT_1_BUTTON = 71
+  PM_SHORTCUT_2_BUTTON = 72
+  PM_SHORTCUT_3_BUTTON = 73
   
   RESTRICTED_BUTTON_IDS = [
     ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON,
@@ -223,6 +226,12 @@ class ButtonMapper
       @retval = "goTo('#{admin_customers_path}?show_loyalty_customers=true'); return false;"
     when TOGGLE_MENU_ITEM_HALF_BUTTON
       @retval = si_check(TOGGLE_MENU_ITEM_HALF_BUTTON, ms_check("toggleMenuItemHalfMode();"))
+    when PM_SHORTCUT_1_BUTTON
+      @retval = si_check(PM_SHORTCUT_1_BUTTON, ms_check("pmShortcut(1);"))
+    when PM_SHORTCUT_2_BUTTON
+      @retval = si_check(PM_SHORTCUT_2_BUTTON, ms_check("pmShortcut(2);"))
+    when PM_SHORTCUT_3_BUTTON
+      @retval = si_check(PM_SHORTCUT_3_BUTTON, ms_check("pmShortcut(3);"))
     end
 
     @retval
@@ -236,6 +245,14 @@ class ButtonMapper
     end
     
     return ""
+  end
+  
+  def self.uneditable_buttons
+    [SERVICE_CHARGE_BUTTON, PM_SHORTCUT_1_BUTTON, PM_SHORTCUT_2_BUTTON, PM_SHORTCUT_3_BUTTON]
+  end
+  
+  def self.pm_shortcut_buttons
+    [PM_SHORTCUT_1_BUTTON, PM_SHORTCUT_2_BUTTON, PM_SHORTCUT_3_BUTTON]
   end
   
   #CHECK ARE WE ON MENU SCREEN

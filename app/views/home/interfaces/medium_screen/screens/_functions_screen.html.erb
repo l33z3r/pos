@@ -43,7 +43,7 @@
         <div class="icon">
           <%= button_icon db %>
         </div>
-        <div class="button_name"><%=db.button_text%></div>
+        <div class="button_name"><%=  button_text db %></div>
       </div>
     <% end %>
 
@@ -60,7 +60,7 @@
       <div class="icon">
         <%= button_icon @global_settings_button %>
       </div>
-      <div class="button_name"><%=@global_settings_button.button_text%></div>
+      <div class="button_name"><%= button_text @global_settings_button %></div>
     </div>
 
     <div class="clear">&nbsp;</div>

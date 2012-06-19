@@ -622,6 +622,48 @@ div.select_printers_dialog div.ok_button {
     float: right;
 }
 
+div.select_blocked_printers_dialog {
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    width: 250px;
+}
+
+div.select_blocked_printers_dialog div.header {
+    font-size: 16px;
+    color: #000;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+div.select_blocked_printers_dialog div.terminal_switches {
+
+}
+
+div.select_blocked_printers_dialog div.terminal_switches div.terminal_switch div.label {
+    float: left;
+    margin-left: 10px;
+    margin-top: 4px;
+    font-size: 14px;
+    color: #000;
+    width: 100px;
+}
+
+div.select_blocked_printers_dialog div.terminal_switches div.terminal_switch {
+    margin-bottom: 5px;
+}
+
+div.select_blocked_printers_dialog div.ok_button {
+    height: 30px;
+    display: block;
+    padding-top: 15px;
+    color: #000;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 5px 0px;
+    float: right;
+}
+
 div.select_kitchen_screens_dialog {
     padding: 10px;
     max-height: 300px;
@@ -974,7 +1016,7 @@ div#edit_modifier_category section#form_container form div#actions input {
 /* Admin Categories Page */
 
 div#admin_category_list section#categories {
-    width: 640px;
+    width: 820px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -1058,6 +1100,10 @@ div#edit_category section#form_container form div#actions input {
 }
 
 div#edit_category section#form_container input#select_printers_button {
+    width: 220px;
+}
+
+div#edit_category section#form_container input#select_blocked_printers_button {
     width: 220px;
 }
 

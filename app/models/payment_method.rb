@@ -44,6 +44,16 @@ class PaymentMethod < ActiveRecord::Base
     !self.is_system_pm?
   end
   
+  def self.options_for_select
+    @options = []
+    
+    PaymentMethod.for_util_payment.each do |pm|
+      @options << [pm.name, pm.id]
+    end
+    
+    @options
+  end
+  
   def self.payment_integration_options_for_select
     @options = []
     

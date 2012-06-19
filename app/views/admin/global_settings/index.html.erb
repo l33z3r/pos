@@ -443,6 +443,61 @@
             <% end %>
 
             <div class="clear">&nbsp;</div>
+
+            <h4>Payment Method Shortcut Buttons</h4>
+
+            <%= form_tag admin_update_global_settings_path do %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="330">Shortcut Button Number</th>
+                    <th width="330">Payment Method</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>Button 1</td>
+                    <td>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => 1} %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.select :value, options_for_select(PaymentMethod.options_for_select, @gs.parsed_value) %>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Button 2</td>
+                    <td>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => 2} %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.select :value, options_for_select(PaymentMethod.options_for_select, @gs.parsed_value) %>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Button 3</td>
+                    <td>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => 3} %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.select :value, options_for_select(PaymentMethod.options_for_select, @gs.parsed_value) %>
+                      <% end %>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Save" %>
+              </div>
+
+            <% end %>
+
+            <div class="clear">&nbsp;</div>
           </div>
         </div>
 

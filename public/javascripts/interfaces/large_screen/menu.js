@@ -95,7 +95,7 @@ function initMenuScreenType() {
         $('#upc_code_lookup_container').show();
         
         $('#scan_upc').keyup(function(e) {
-            if(e.keyCode == 13) {
+            if(getEventKeyCode(e) == 13) {
                 productScanned();
             }
         });
@@ -133,15 +133,15 @@ function scanFocusPoll() {
     }
 }
     
-function scanFocusLoginPoll() {
-    if (lastActiveElement.attr("id") == "num") {
-        $('#num').select();
-        sendCursorToEnd($('#num').val())
-        $('#num').focus();
-        setTimeout(scanFocusLoginPoll, 1000);
-        return;
-    }
-}
+//function scanFocusLoginPoll() {
+//    if (lastActiveElement.attr("id") == "num") {
+//        $('#num').select();
+//        sendCursorToEnd($('#num').val())
+//        $('#num').focus();
+//        setTimeout(scanFocusLoginPoll, 1000);
+//        return;
+//    }
+//}
 
 function sendCursorToEnd(obj) {
     var value = obj
@@ -1062,21 +1062,21 @@ function loadReceipt(order, doScroll) {
 }
 
 function storeDallasKeyVal(e) {
-    if (e.keyCode == 13){
+    if (getEventKeyCode(e) == 13){
         var newVal = $('#user_passcode').val().substring(3,15);
         $('#user_passcode').val(newVal);
     }
-    if (e.keyCode == 117){
+    if (getEventKeyCode(e) == 117){
         $('#user_passcode').val("u");
     }
-    if (e.keyCode == 97){
+    if (getEventKeyCode(e) == 97){
         $('#user_passcode').val("a");
     }
 }
 
 function nullOnEnter(event){
-    if(event.keyCode==13){
-        event.keyCode = null;
+    if(getEventKeyCode(event) == 13){
+        setEventKeyCode(event, null);
         return;
     }
 }
@@ -1233,8 +1233,6 @@ function doTotalFinal() {
     
     hideLoadingDiv();
     
-    cashSaleInProcess = true;
-    
     if(currentOrderEmpty()) {
         setStatusMessage("No order present to total!", true, true);
         return;
@@ -1243,6 +1241,8 @@ function doTotalFinal() {
     if(!ensureLoggedIn()) {
         return;
     }
+    
+    cashSaleInProcess = true;
     
     var isSplitBill = false;
     

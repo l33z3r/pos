@@ -29,8 +29,11 @@ class Reports::SalesController < Admin::AdminController
 
     session[:preselect] = -1
 
-    @selected_from_date = session[:from_date]
-    @selected_to_date = session[:to_date]
+    @opening_time = GlobalSetting.parsed_setting_for GlobalSetting::EARLIEST_OPENING_HOUR
+    @closing_time = GlobalSetting.parsed_setting_for GlobalSetting::LATEST_CLOSING_HOUR
+
+    @selected_from_date = Time.now
+    @selected_to_date = Time.now
 
     @current_category = nil
     @current_product = nil
@@ -201,6 +204,9 @@ class Reports::SalesController < Admin::AdminController
     elsif params[:search][:search_type] == 'worst_seller'
       session[:search_type] = :worst_seller
       session[:search_type_label] = 'Worst Seller'
+    elsif params[:search][:search_type] == 'by_product'
+      session[:search_type] = :by_product
+      session[:search_type_label] = 'By Product'
     end
     session[:category] = params[:search][:category]
     session[:product] = params[:search][:product]
@@ -295,7 +301,24 @@ class Reports::SalesController < Admin::AdminController
 
         where << " group by o.product_id order by total_price desc"
         query = OrderItem.find_by_sql(where)
-        logger.debug "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss     #{where}"
+
+      end
+
+      if session[:search_type] == :by_product
+        where = "select o.id, o.tax_rate, o.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items o inner join products p on o.product_id = p.id"
+
+        if session[:category] != ''
+          where << " and p.category_id = #{session[:category]}"
+        end
+
+        if session[:terminal] != ''
+          where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
+        else
+          where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}'"
+        end
+
+        where << " group by o.product_id order by p.name asc"
+        query = OrderItem.find_by_sql(where)
 
       end
 

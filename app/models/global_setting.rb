@@ -77,6 +77,7 @@ class GlobalSetting < ActiveRecord::Base
   SHOW_CHARGE_CARD_BUTTON = 62
   ALLOW_ZALION_SPLIT_PAYMENTS = 63
   SCREEN_RESOLUTION = 64
+  PM_SHORTCUT_ID = 65
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -142,7 +143,8 @@ class GlobalSetting < ActiveRecord::Base
     HALF_MEASURE_LABEL => "Half Measure Label",
     SHOW_CHARGE_CARD_BUTTON => "Show Charge Card",
     ALLOW_ZALION_SPLIT_PAYMENTS => "Allow Zalion Split Payments",
-    SCREEN_RESOLUTION => "Screen Resolution"
+    SCREEN_RESOLUTION => "Screen Resolution",
+    PM_SHORTCUT_ID => "Payment Method Shortcut ID"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -347,6 +349,9 @@ class GlobalSetting < ActiveRecord::Base
     when SCREEN_RESOLUTION
       @gs = find_or_create_by_key(:key => "#{SCREEN_RESOLUTION.to_s}_#{args[:fingerprint]}", :value => SCREEN_RESOLUTION_NORMAL, :label_text => LABEL_MAP[SCREEN_RESOLUTION])
       @gs.parsed_value = @gs.value
+    when PM_SHORTCUT_ID
+      @gs = find_or_create_by_key(:key => "#{PM_SHORTCUT_ID.to_s}_#{args[:shortcut_num]}", :value => PaymentMethod.load_default.id, :label_text => LABEL_MAP[PM_SHORTCUT_ID])
+      @gs.parsed_value = @gs.value.to_i
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -460,6 +465,9 @@ class GlobalSetting < ActiveRecord::Base
       write_attribute("value", new_value)
     when ALLOW_ZALION_SPLIT_PAYMENTS
       new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when RELOAD_HTML5_CACHE_TIMESTAMP
+      new_value = value.to_i
       write_attribute("value", new_value)
     else
       #catch the keys that are not only integers and wont get caught in the switch statement
