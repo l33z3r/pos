@@ -20,11 +20,23 @@ class Admin::PaymentMethodsController < Admin::AdminController
       if !@dpm.can_be_default?
         @dpm.is_default = false
         @dpm.save
-        PaymentMethod.load_default
+        @dpm = PaymentMethod.load_default
         
         flash[:notice] = "Payment Methods Updated! Note that the default payment method has been set to cash as the one you chose is not eligible for default"
       else 
         flash[:notice] = "Payment Methods Updated!"
+      end
+      
+      #make sure that the payment methods that are used in shortcut buttons are still eligable
+      (1..3).each do |shortcut_num|
+        @pmShortcutIDGS = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => shortcut_num} 
+        @pmShortcutID = @pmShortcutIDGS.parsed_value
+        @pmShortcut = PaymentMethod.find_by_id @pmShortcutID
+      
+        if !@pmShortcut.can_be_shortcut?
+          @pmShortcutIDGS.value = @dpm.id
+          @pmShortcutIDGS.save
+        end
       end
       
       redirect_to admin_global_settings_path
@@ -41,8 +53,22 @@ class Admin::PaymentMethodsController < Admin::AdminController
       return
     end
     
-    @payment_method = PaymentMethod.find(params[:id])
+    @pm_id = params[:id]
+    @payment_method = PaymentMethod.find(@pm_id)    
     @payment_method.destroy
+    
+    @dpm = PaymentMethod.load_default
+    
+    #make sure that the payment methods that are used in shortcut buttons are still alive
+    (1..3).each do |shortcut_num|
+      @pmShortcutIDGS = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => shortcut_num} 
+      @pmShortcutID = @pmShortcutIDGS.parsed_value
+        
+      if @pmShortcutID = @pm_id
+        @pmShortcutIDGS.value = @dpm.id
+        @pmShortcutIDGS.save
+      end
+    end
 
     flash[:notice] = "Payment Method Deleted!"
     redirect_to admin_global_settings_path

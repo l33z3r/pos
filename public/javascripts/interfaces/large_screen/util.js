@@ -353,7 +353,7 @@ function currentScreenIsTotals() {
     return $('#total_screen').is(":visible");
 }
 
-function currentScreenIsFloat() {
+function currentScreenIsUtilPayment() {
     return $('#util_payment_screen').is(":visible");
 }
 

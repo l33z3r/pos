@@ -135,6 +135,7 @@ var currentZalionPaymentMethodName = null;
 
 var loyaltyPaymentMethodSelected = false;
 var accountPaymentMethodSelected = false;
+var cashPaymentMethodSelected = false;
 
 function paymentMethodSelected(pm_id) { 
     var pm_info = paymentMethods[pm_id];
@@ -167,6 +168,7 @@ function paymentMethodSelected(pm_id) {
     
     loyaltyPaymentMethodSelected = (method == loyaltyPaymentMethodName);
     accountPaymentMethodSelected = (method == accountPaymentMethodName);
+    cashPaymentMethodSelected = (method == cashPaymentMethodName);
     
     if(loyaltyPaymentMethodSelected) {
         if(!totalOrder.loyalty) {
@@ -521,6 +523,12 @@ var cc_txn_xhr = null;
 var currentCardChargeAmount = 0;
 
 function cashScreenChargeCreditCard(amount) {
+    //make sure none of the system payment methods are selected 
+    if(cashPaymentMethodSelected || accountPaymentMethodSelected || loyaltyPaymentMethodSelected) {
+        niceAlert("You must select an appropriate payment method first, in order to perform a transaction");
+        return;
+    }
+    
     creditCardChargeCallback = cashScreenCreditCardChargeCallback;
     
     if(cardChargeInProgress) {
@@ -731,8 +739,8 @@ function addLoyaltyCustomerToTotalOrder(customer) {
 
 function resetLoyaltyCustomer() {
     $('#loyalty_customer_section').hide();
-    delete totalOrder['loyalty'];
-    delete splitPayments[loyaltyPaymentMethodSelected];
+    delete totalOrder[loyaltyPaymentMethodName];
+    delete splitPayments[loyaltyPaymentMethodName];
     
     if(loyaltyPaymentMethodSelected) {
         paymentMethodSelected(getPaymentMethodId(defaultPaymentMethod));

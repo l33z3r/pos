@@ -159,6 +159,8 @@ function doQuickSale() {
     cashTendered = 0;
     splitPayments = {};
     
+    paymentMethod = cashPaymentMethodName;
+    
     doTotalFinal();
 }
 

@@ -198,6 +198,34 @@ class Product < ActiveRecord::Base
     write_attribute("kitchen_screens", kitchen_screens_val)
   end
   
+  def blocked_printing_to_terminal? id_safe_terminal_name
+    @blocked_printers_string = read_attribute("blocked_printers")
+    
+    if @blocked_printers_string
+      @blocked_printers_string.split(",").each do |terminal_name|
+        return true if id_safe_terminal_name == terminal_name
+      end
+    end
+    
+    return false
+  end
+  
+  def blocked_printers=(blocked_printers_array)
+    
+    #remove any empty strings from the selected_printers_array
+    blocked_printers_array.delete("")
+    
+    if blocked_printers_array.size == 0
+      blocked_printers_val = ""
+    elsif blocked_printers_array.size == 1
+      blocked_printers_val = blocked_printers_array[0].to_s
+    else
+      blocked_printers_val = blocked_printers_array.join(",")
+    end
+    
+    write_attribute("blocked_printers", blocked_printers_val)
+  end
+  
   def decrement_stock quantity
     @qpc = read_attribute("quantity_per_container")
     
@@ -308,6 +336,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: products
@@ -386,5 +415,6 @@ end
 #  is_stock_item                            :boolean(1)      default(TRUE)
 #  kitchen_screens                          :string(255)     default("")
 #  half_price                               :float           default(0.0)
+#  blocked_printers                         :string(255)
 #
 

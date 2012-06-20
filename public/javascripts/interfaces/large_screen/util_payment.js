@@ -1,6 +1,7 @@
 var utilPaymentInProgress = false;
 
 var currentPaymentCustomerId = null;
+var currentPaymentReceiptHTML = null;
 
 function makeCustomerPayment(customerId) {
     if(!appOnline) {
@@ -26,6 +27,36 @@ function makeCustomerPayment(customerId) {
         
         console.log("Processed payment for " + currency(paymentAmount));
         
+        //build receipt
+        currentPaymentReceiptHTML = "";
+        currentPaymentReceiptHTML += fetchBusinessInfoHeaderHTML() + clear10HTML;
+        
+        currentPaymentReceiptHTML += "<div class='data_table_header'>ACCOUNT PAYMENT</div>" + clear10HTML;
+        
+        currentPaymentReceiptHTML += "<div class='data_table'>";
+        
+        var timestamp = utilFormatDate(new Date(clueyTimestamp()));
+        currentPaymentReceiptHTML += "<div class='label'>Date:</div><div class='data'>" + timestamp + "</div>" + clearHTML;
+    
+        currentPaymentReceiptHTML += "<div class='label'>Terminal:</div><div class='data'>" + terminalID + "</div>" + clearHTML;
+    
+        currentPaymentReceiptHTML += "<div class='label'>Served By:</div><div class='data'>" + current_user_nickname + "</div>" + clearHTML;
+    
+        var accountNo = creditCustomers[currentPaymentCustomerId].account_number;
+        currentPaymentReceiptHTML += "<div class='label'>Account No:</div><div class='data'>" + accountNo + "</div>" + clearHTML;
+        
+        currentPaymentReceiptHTML += "</div>" + clearHTML;
+    
+        currentPaymentReceiptHTML += "<div class='data_table'>";
+        
+        var previousBalance = currentBalance;
+        var newBalance = previousBalance - paymentAmount;
+        
+        currentPaymentReceiptHTML += "<div class='label'>Previous Balance:</div><div class='data'>" + currencyBalance(previousBalance) + "</div>" + clearHTML;
+        currentPaymentReceiptHTML += "<div class='label bold'>Paid " + utilScreenPaymentMethod + ":</div><div class='data bold'>" + currency(paymentAmount) + "</div>" + clearHTML;
+        currentPaymentReceiptHTML += "<div class='label'>Outstanding:</div><div class='data'>" + currencyBalance(newBalance) + "</div>" + clearHTML;
+        currentPaymentReceiptHTML += "</div>" + clearHTML;
+    
         $.ajax({
             type: 'POST',
             url: '/customer_payment',
@@ -35,6 +66,9 @@ function makeCustomerPayment(customerId) {
             success: function() {
                 setStatusMessage("Payment successfully recorded.", false, false);
                 showMenuScreen();
+                
+                printReceipt(currentPaymentReceiptHTML, true);
+                currentPaymentReceiptHTML = "";
                 
                 //reload the customers as their points/credit may need updating
                 $.getScript('/javascripts/customers.js');
@@ -69,8 +103,6 @@ function makeCustomerPayment(customerId) {
     var customerName = customer.name;
     
     var customerHTMLContent = "<div id='cutomer_payment_info_table'><div class='data_table'>";
-    
-    customerHTMLContent += "<div class='header'>Customer</div>" + clearHTML;
     
     customerHTMLContent += "<div class='label bold'>Customer:</div>";
     customerHTMLContent += "<div class='data'>" + customerName + "</div>" + clearHTML;
@@ -128,6 +160,7 @@ function finishUtilPayment() {
     }
     
     utilPaymentInProgress = true;
+    niceAlert("Processing... Please Wait!");
     
     if(utilPaymentCashTendered == 0) {
         utilPaymentExactAmountSelected();

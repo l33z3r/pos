@@ -53,18 +53,60 @@ module ApplicationHelper
   end
   
   def button_icon button
-    @icon_path = ButtonMapper.new.icon_path_for button
+    #payment method shortcut buttons
+    @pm_shortcut_buttons = ButtonMapper.pm_shortcut_buttons
     
-    if @icon_path
-      @rel_image_path = "button_logos/#{@icon_path}"
+    if @pm_shortcut_buttons.include?(button.perm_id.to_i)
       
-      if FileTest.exists?(RAILS_ROOT + "/public/images/#{@rel_image_path}")
-        return image_tag @rel_image_path, :alt => nil
-      else 
+      if button.perm_id.to_i == ButtonMapper::PM_SHORTCUT_1_BUTTON
+        @shortcut_num = 1
+      elsif button.perm_id.to_i == ButtonMapper::PM_SHORTCUT_2_BUTTON
+        @shortcut_num = 2
+      elsif button.perm_id.to_i == ButtonMapper::PM_SHORTCUT_3_BUTTON
+        @shortcut_num = 3
+      end
+    
+      @pm_shortcut_id = GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => @shortcut_num}
+      @shortcut_payment_method = PaymentMethod.find_by_id(@pm_shortcut_id)
+      
+      return payment_method_logo_thumb(@shortcut_payment_method, true)
+    else
+      @icon_path = ButtonMapper.new.icon_path_for button
+    
+      if @icon_path
+        @rel_image_path = "button_logos/#{@icon_path}"
+      
+        if FileTest.exists?(RAILS_ROOT + "/public/images/#{@rel_image_path}")
+          return image_tag @rel_image_path, :alt => nil
+        else 
+          return nil
+        end
+      else
         return nil
       end
+    end
+  end
+  
+  def button_text button
+    #payment method shortcut buttons
+    @pm_shortcut_buttons = ButtonMapper.pm_shortcut_buttons
+    
+    if @pm_shortcut_buttons.include?(button.perm_id.to_i)
+      
+      if button.perm_id.to_i == ButtonMapper::PM_SHORTCUT_1_BUTTON
+        @shortcut_num = 1
+      elsif button.perm_id.to_i == ButtonMapper::PM_SHORTCUT_2_BUTTON
+        @shortcut_num = 2
+      elsif button.perm_id.to_i == ButtonMapper::PM_SHORTCUT_3_BUTTON
+        @shortcut_num = 3
+      end
+    
+      @pm_shortcut_id = GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => @shortcut_num}
+      @shortcut_payment_method = PaymentMethod.find_by_id(@pm_shortcut_id)
+      
+      return @shortcut_payment_method.name
     else
-      return nil
+      return button.button_text
     end
   end
 

@@ -25,6 +25,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: products
@@ -103,5 +104,6 @@ end
 #  is_stock_item                            :boolean(1)      default(TRUE)
 #  kitchen_screens                          :string(255)     default("")
 #  half_price                               :float           default(0.0)
+#  blocked_printers                         :string(255)
 #
 

@@ -875,3 +875,16 @@ function saveAddCovers() {
     
     setStatusMessage("Covers added to table");
 }
+
+function pmShortcut(shortcutNum) {
+    var shortcutPaymentMethod = paymentMethods[pmShortcutMap[shortcutNum]];
+    
+    applyDefaultServiceChargePercent();
+    
+    cashTendered = 0;
+    splitPayments = {};
+    
+    paymentMethod = shortcutPaymentMethod.name;
+    
+    doTotalFinal();
+}

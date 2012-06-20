@@ -1233,8 +1233,6 @@ function doTotalFinal() {
     
     hideLoadingDiv();
     
-    cashSaleInProcess = true;
-    
     if(currentOrderEmpty()) {
         setStatusMessage("No order present to total!", true, true);
         return;
@@ -1243,6 +1241,8 @@ function doTotalFinal() {
     if(!ensureLoggedIn()) {
         return;
     }
+    
+    cashSaleInProcess = true;
     
     var isSplitBill = false;
     
@@ -1332,14 +1332,15 @@ function doTotalFinal() {
     } else {
         for(var pm in splitPayments) {
             //make sure there is an amount in this payment type
-            if(parseFloat(splitPayments[pm]) <= 0) {
+            //unless it is the last payment type in the array as we must have at least one entry in this array
+            if((parseFloat(splitPayments[pm]) <= 0) && (sizeOfHash(splitPayments) > 1)) {
                 delete splitPayments[pm];
                 continue;
             }
         
             var pmId = getPaymentMethodId(pm);
         
-            if(paymentMethods[pmId].open_cash_drawer){
+            if(paymentMethods[pmId].open_cash_drawer) {
                 doOpenCashDrawer = true;
             }
         }

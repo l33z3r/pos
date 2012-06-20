@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120606172941) do
+ActiveRecord::Schema.define(:version => 20120620101031) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -48,8 +48,9 @@ ActiveRecord::Schema.define(:version => 20120606172941) do
     t.string   "printers",                                 :default => ""
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => -1
+    t.integer  "course_num",                               :default => 0
     t.string   "kitchen_screens",                          :default => ""
+    t.string   "blocked_printers"
   end
 
   add_index "categories", ["order_item_addition_grid_id"], :name => "index_categories_on_order_item_addition_grid_id"
@@ -276,8 +277,8 @@ ActiveRecord::Schema.define(:version => 20120606172941) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "background_color_2"
-    t.boolean  "hide_on_receipt",             :default => false
-    t.boolean  "is_addable",                  :default => true
+    t.boolean  "hide_on_receipt",             :default => true
+    t.boolean  "is_addable",                  :default => false
     t.integer  "follow_on_grid_id"
     t.integer  "product_id"
   end
@@ -354,6 +355,7 @@ ActiveRecord::Schema.define(:version => 20120606172941) do
     t.integer  "payment_integration_id", :default => 0
     t.integer  "receipt_footer_id"
     t.boolean  "open_cash_drawer",       :default => true
+    t.boolean  "is_active",              :default => true
   end
 
   add_index "payment_methods", ["receipt_footer_id"], :name => "index_payment_methods_on_receipt_footer_id"
@@ -439,10 +441,11 @@ ActiveRecord::Schema.define(:version => 20120606172941) do
     t.boolean  "hide_on_printed_receipt",                  :default => false
     t.integer  "order_item_addition_grid_id"
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => -1
+    t.integer  "course_num",                               :default => 0
     t.boolean  "is_stock_item",                            :default => true
     t.string   "kitchen_screens",                          :default => ""
     t.float    "half_price",                               :default => 0.0
+    t.string   "blocked_printers"
   end
 
   add_index "products", ["category_id"], :name => "index_products_on_category_id"

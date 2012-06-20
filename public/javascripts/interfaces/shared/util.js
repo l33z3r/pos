@@ -678,6 +678,8 @@ function initRadioButtons() {
     });
 }
 
+var hideNiceAlertListener = null;
+
 function niceAlert(message, title) {
     //hide previous ones
     hideNiceAlert();
@@ -694,10 +696,19 @@ function niceAlert(message, title) {
             okButtonText: 'Ok',
             onOk: "hideNiceAlert()"
         });
+        
+        hideNiceAlertListener = function(event) {
+            if(getEventKeyCode(event) == 13) {
+                hideNiceAlert();
+            }
+        };
+        
+        $(window).bind('keypress', hideNiceAlertListener);
 }
 
 function hideNiceAlert() {
     try {
+        $(window).unbind('keypress', hideNiceAlertListener);
         ModalPopups.Close('niceAlertContainer');
     } catch (e) {
         
@@ -769,7 +780,13 @@ function clueyTimestamp() {
     return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
 }
 
+var ignoreReloadRequest = false;
+
 function alertReloadRequest(reloadTerminalId, hardReload) {
+    if(ignoreReloadRequest) {
+        return;
+    }
+    
     if(reloadTerminalId == terminalID) {
         return;
     }
@@ -957,4 +974,8 @@ function setEventyKeyCode(e, code) {
 function getEventKeyCode(e) {
     //console.log("KC: " + e.keyCode + " - " + e.charCode + " : " + (e.charCode || e.keyCode));
     return e.charCode || e.keyCode;
+}
+
+function sizeOfHash(theHash) {
+    return Object.keys(theHash).length
 }
