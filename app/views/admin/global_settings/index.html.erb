@@ -350,6 +350,7 @@
                     <th width="140">Integration</th>
                     <th width="140">Receipt Footer</th>
                     <th width="170">Cash Drawer</th>
+                    <th width="150">Enabled?</td>
                     <th width="100">Delete</th>
                   </tr>
                 </thead>
@@ -390,6 +391,11 @@
                         </td>
                         <td>
                           <%= f.check_box :open_cash_drawer %>
+                        </td>
+                        <td>
+                          <% if pm.can_be_disabled? %>
+                            <%= f.check_box :is_active %>
+                          <% end %>
                         </td>
                         <td>
                           <% if !pm.is_system_pm? %>

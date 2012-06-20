@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120619165719) do
+ActiveRecord::Schema.define(:version => 20120620101031) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -355,6 +355,7 @@ ActiveRecord::Schema.define(:version => 20120619165719) do
     t.integer  "payment_integration_id", :default => 0
     t.integer  "receipt_footer_id"
     t.boolean  "open_cash_drawer",       :default => true
+    t.boolean  "is_active",              :default => true
   end
 
   add_index "payment_methods", ["receipt_footer_id"], :name => "index_payment_methods_on_receipt_footer_id"
