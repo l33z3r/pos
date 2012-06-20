@@ -10,7 +10,7 @@ var hour_from;
 var hour_to;
 var drop_val;
 var discounts_only = false;
-var set_type;
+var drop_set_type;
 
 /**
  *  Reports
@@ -86,19 +86,17 @@ function runPaymentsSearch() {
             "search[terminal]" : terminalId,
             "search[select_type]" : select_type,
             "search[discounts_only]" : discounts_only
-        }
+        }}).done(
+        function() {
+            $.ajax({
+                type: 'GET',
+                url: '/reports/payments/load_dropdown',
+                data: {
+                    "search[dropdown_type]" : drop_set_type,
+                    "search[dropdown_id]" : discounts_only
+                }
+            });
         }).done(function() {
-        $.ajax({
-        type: 'GET',
-        url: '/reports/payments/load_dropdown',
-        data: {
-            "search[dropdown_type]" : set_type,
-            "search[dropdown_id]" : discounts_only
-        }
-    });
-
-
-    }).done(function() {
             $.ajax({
                 type: 'GET',
                 url: '/reports/payments/payments_search',
@@ -133,7 +131,7 @@ function setPaymentReportParams() {
 
 function loadPaymentDropDown(drop_type) {
     drop_val = "";
-    set_type = drop_type;
+    drop_set_type = drop_type;
     if (drop_type == 'payment_type') {
         drop_val = $('#payment_method_id_equals').val()
     }
@@ -150,7 +148,7 @@ function loadPaymentDropDown(drop_type) {
         type: 'GET',
         url: '/reports/payments/load_dropdown',
         data: {
-            "search[dropdown_type]" : set_type,
+            "search[dropdown_type]" : drop_set_type,
             "search[dropdown_id]" : drop_val
         }
     });
@@ -227,7 +225,10 @@ function setPaymentSelect(set_type) {
         $('#date_preselect').attr('selectedIndex', 5);
         $('#discounts_checked').attr('checked', 'checked')
         search_type = 'transaction_list';
-        discounts_only = "true"
+        discounts_only = true
+        drop_set_type = "discounts_only"
+
+
         setDateParams($('#date_preselect').val(), false);
         select_type = set_type
     }
@@ -252,6 +253,14 @@ function setPaymentSelect(set_type) {
     }
     $.ajax({
         type: 'GET',
+        url: '/reports/payments/load_dropdown',
+        data: {
+            "search[dropdown_type]" : drop_set_type,
+            "search[dropdown_id]" : discounts_only
+        }
+    }).done(function() {
+    $.ajax({
+        type: 'GET',
         url: '/reports/payments/set_params',
         data: {
             "search[search_type]" : search_type,
@@ -260,7 +269,7 @@ function setPaymentSelect(set_type) {
             "search[terminal]" : terminalId,
             "search[select_type]" : select_type
         }
-    }).done(function() {
+    }) }).done(function() {
             runPaymentsSearch();
         });
 
