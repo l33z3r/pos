@@ -86,16 +86,8 @@ function runPaymentsSearch() {
             "search[terminal]" : terminalId,
             "search[select_type]" : select_type,
             "search[discounts_only]" : discounts_only
-        }}).done(
-        function() {
-            $.ajax({
-                type: 'GET',
-                url: '/reports/payments/load_dropdown',
-                data: {
-                    "search[dropdown_type]" : drop_set_type,
-                    "search[dropdown_id]" : discounts_only
-                }
-            });
+
+            }
         }).done(function() {
             $.ajax({
                 type: 'GET',
@@ -204,7 +196,6 @@ function setPaymentSelect(set_type) {
         $('#category_id_equals').attr('selectedIndex', 0);
         $('#product_id_equals').attr('selectedIndex', 0);
         search_type = 'transaction_list';
-        discounts_only = "false"
         $('#discounts_checked').removeAttr('checked')
 
         setDateParams($('#date_preselect').val(), false);
@@ -214,7 +205,6 @@ function setPaymentSelect(set_type) {
         $('#search_type_select').attr('selectedIndex', 0);
         $('#date_preselect').attr('selectedIndex', 2);
         search_type = 'transaction_list';
-        discounts_only = "false"
         $('#discounts_checked').removeAttr('checked')
 
         setDateParams($('#date_preselect').val(), false);
@@ -236,7 +226,6 @@ function setPaymentSelect(set_type) {
         $('#search_type_select').attr('selectedIndex', 3);
         $('#date_preselect').attr('selectedIndex', 4);
         search_type = 'month';
-        discounts_only = "false"
         $('#discounts_checked').removeAttr('checked')
 
         setDateParams($('#date_preselect').val(), false);
@@ -245,7 +234,6 @@ function setPaymentSelect(set_type) {
     if (set_type == 3) {
         $('#search_type_select').attr('selectedIndex', 1);
         $('#date_preselect').attr('selectedIndex', 4);
-        discounts_only = "false"
         search_type = 'day';
         $('#discounts_checked').removeAttr('checked')
         setDateParams($('#date_preselect').val(), false);
@@ -271,6 +259,7 @@ function setPaymentSelect(set_type) {
         }
     }) }).done(function() {
             runPaymentsSearch();
+            discounts_only = '';
         });
 
 
