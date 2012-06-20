@@ -149,11 +149,11 @@ class Reports::GlancesController < Admin::AdminController
     end
   end
 
-  #def calculate_discount_by_item order_item
-  #  if !order_item.pre_discount_price.nil? and order_item.discount_percent > 0
-  #    @total_discount += order_item.pre_discount_price - order_item.total_price
-  #  end
-  #end
+  def calculate_discount_by_item order_item
+    if !order_item.pre_discount_price.nil? and order_item.discount_percent > 0
+      @total_discount += order_item.pre_discount_price - order_item.total_price
+    end
+  end
 
   def calculate_top_selling_items order_item
     @top_selling_items[order_item.product_id][0] = order_item.product_name
