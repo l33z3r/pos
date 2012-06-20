@@ -15,15 +15,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e646dee2-e269-4160-8f2c-811321f2083d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/reports/glances_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/reports/glances_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/reports/payments_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/reports/payments_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/reports/sales_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/reports/sales_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/glances/index.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/glances/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/payments/_payment_type_dropdown.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/payments/_payment_type_dropdown.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/payments/_payments_tab.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/payments/_payments_tab.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/payments/index.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/payments/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/payments/payments_print.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/payments/payments_print.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/sales/sales_search.js.erb" afterPath="$PROJECT_DIR$/app/views/reports/sales/sales_search.js.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/database.yml" afterPath="$PROJECT_DIR$/config/database.yml" />
     </list>
     <ignored path="cluey_pos.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -109,10 +101,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="payments_controller.rb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="payments_controller.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/reports/payments_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="227" column="59" selection-start="7503" selection-end="7503" vertical-scroll-proportion="0.51355207">
+            <state line="213" column="113" selection-start="7016" selection-end="7016" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="database.yml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/config/database.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="100" selection-start="364" selection-end="364" vertical-scroll-proportion="0.32097003">
               <folding />
             </state>
           </provider>
@@ -159,7 +160,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/stocks/index.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/payments/_employee_dropdown.html.erb" />
@@ -175,6 +175,7 @@
         <option value="$PROJECT_DIR$/app/controllers/reports/glances_controller.rb" />
         <option value="$PROJECT_DIR$/app/views/reports/payments/_payments_tab.html.erb" />
         <option value="$PROJECT_DIR$/app/controllers/reports/payments_controller.rb" />
+        <option value="$PROJECT_DIR$/config/database.yml" />
       </list>
     </option>
   </component>
@@ -825,16 +826,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="52" selection-start="1271" selection-end="1271" vertical-scroll-proportion="-5.625" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/index.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="12" selection-start="473" selection-end="588" vertical-scroll-proportion="-6.875" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/reports/payments/_employee_dropdown.html.erb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="3" column="124" selection-start="386" selection-end="386" vertical-scroll-proportion="-1.875" />
@@ -924,9 +915,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/plugins/thoughtbot-paperclip/test/database.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/reports/payments_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="227" column="59" selection-start="7503" selection-end="7503" vertical-scroll-proportion="0.51355207">
+        <state line="213" column="113" selection-start="7016" selection-end="7016" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/database.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="100" selection-start="364" selection-end="364" vertical-scroll-proportion="0.32097003">
           <folding />
         </state>
       </provider>
