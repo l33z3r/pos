@@ -7,7 +7,7 @@
                 <div style="float: left; margin-top: 6px;margin-left: 2px">
                     <span style="font-weight: bold; margin-top: -3px;">  Home  |</span></div>
             </div>
-            <div class="option" onclick="window.location = '/reports/sales/sales_print'" class="print_box">
+            <div class="option" onclick="window.location = '/reports/payments/payments_print'" class="print_box">
                 <div style="float: left;"><img src="/images/button_logos/print.png" alt="Print" width="24" height="24"/>
                 </div>
                 <div style="float: left; margin-top: 6px;margin-left: 2px">
@@ -115,15 +115,18 @@
                 </thead>
                 <% total_items = 0 %>
                 <% total_net = 0 %>
+                <% total_discount = 0 %>
+                <% total_gross = 0 %>
                 <% @orders.each do |week| %>
                 <% total_net += week.total %>
-
+                <% if week.discount_percent != nil %>
+                <% total_discount += week.pre_discount_price-week.total %>
+                <% end %>
                     <tbody>
                     <tr>
                         <td>
                             <%= week.created_at.to_datetime.strftime "%a, %d %b %Y" %>
                         </td>
-
                         <td>
                             <%= week.created_at.to_datetime.strftime "%l:%M%P" %>
                         </td>
@@ -140,14 +143,16 @@
                             <%= week.payment_type %>
                         </td>
                         <td>
-                            <% if week.discount_percent != nil %>
+                            <% if week.pre_discount_price != nil %>
                             <%= sprintf("%.2f", week.pre_discount_price) %>
+                            <% total_gross += week.pre_discount_price  %>
                             <% else %>
                             <%= sprintf("%.2f", week.total) %>
+                            <% total_gross += week.total %>
                             <% end %>
                         </td>
                         <td>
-                            <% if week.discount_percent != nil %>
+                            <% if week.pre_discount_price != nil %>
                             <%= sprintf("%.2f",  week.pre_discount_price-week.total) %>
                             <% end %>
                         </td>
@@ -173,9 +178,11 @@
                         </td>
                      <td style="text-align: right; border-top: 2px solid;">
                         </td>
-                     <td style="text-align: right; border-top: 2px solid;">
+                     <td style="text-align: left; border-top: 2px solid;">
+                         <%= sprintf("%.2f", total_gross) %>
                         </td>
-                     <td style="text-align: right; border-top: 2px solid;">
+                     <td style="text-align: left; border-top: 2px solid;">
+                         <%= sprintf("%.2f", total_discount) %>
                         </td>
                         <td style="text-align: left; border-top: 2px solid">
                             <%= sprintf("%.2f", total_net) %>

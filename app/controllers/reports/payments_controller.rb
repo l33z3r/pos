@@ -44,8 +44,7 @@ class Reports::PaymentsController < Admin::AdminController
   end
 
   def payments_print
-    sales_search
-    @products = Product.all
+    payments_search
 
     respond_to do |format|
       format.html # show.html.erb
@@ -203,8 +202,12 @@ class Reports::PaymentsController < Admin::AdminController
     @selected_to_date = session[:to_date].to_s
 
     if (session[:search_type] == :day || session[:search_type] == :month || session[:search_type] == :year || session[:search_type] == :week)
-      where = "select o.id, o.created_at, o.discount_percent, sum(o.pre_discount_price-o.total) pre_discount_price, sum(total) total from orders o"
 
+      if session[:search_type] == :day
+      where = "select o.id, o.created_at, DATE_FORMAT(o.created_at,'%Y-%m-%d') as created_day, o.discount_percent, sum(o.pre_discount_price-o.total) pre_discount_price, sum(total) total from orders o"
+      else
+      where = "select o.id, o.created_at, o.discount_percent, sum(o.pre_discount_price-o.total) pre_discount_price, sum(total) total from orders o"
+      end
       if session[:terminal] != ''
         where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
       else
@@ -220,9 +223,12 @@ class Reports::PaymentsController < Admin::AdminController
       if session[:discounts_only] == "true"
         where << " and o.discount_percent IS NOT NULL"
       end
-
+      if session[:search_type] == :day
       where << " group by #{session[:search_type]}(o.created_at) order by o.created_at asc"
-
+      else
+      where << " group by #{session[:search_type]}(o.created_at) order by o.created_at asc"
+      end
+      logger.debug(where)
       query = Order.find_by_sql(where)
     end
 
