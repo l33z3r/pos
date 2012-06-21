@@ -50,7 +50,7 @@ function makeCustomerPayment(customerId) {
         currentPaymentReceiptHTML += "<div class='data_table'>";
         
         var previousBalance = currentBalance;
-        var newBalance = previousBalance + paymentAmount;
+        var newBalance = previousBalance - paymentAmount;
         
         currentPaymentReceiptHTML += "<div class='label'>Previous Balance:</div><div class='data'>" + currencyBalance(previousBalance) + "</div>" + clearHTML;
         currentPaymentReceiptHTML += "<div class='label bold'>Paid " + utilScreenPaymentMethod + ":</div><div class='data bold'>" + currency(paymentAmount) + "</div>" + clearHTML;

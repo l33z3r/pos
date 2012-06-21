@@ -975,3 +975,7 @@ function getEventKeyCode(e) {
     //console.log("KC: " + e.keyCode + " - " + e.charCode + " : " + (e.charCode || e.keyCode));
     return e.charCode || e.keyCode;
 }
+
+function sizeOfHash(theHash) {
+    return Object.keys(theHash).length
+}
