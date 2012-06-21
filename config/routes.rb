@@ -286,6 +286,15 @@ Pos::Application.routes.draw do
         get 'export_excel'
       end
     end
+    resources :payments, :only => [:index] do
+      collection do
+        get 'payments_search'
+        get 'set_params'
+        get 'load_dropdown'
+        get 'payments_print'
+        get 'export_excel'
+      end
+    end
   end
 
   namespace :api do 

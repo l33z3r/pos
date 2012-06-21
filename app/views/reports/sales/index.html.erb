@@ -8,6 +8,9 @@
             </div> <br>
             <div class="report_tab" onclick="window.location = '/reports/stocks'">
                 Stock
+            </div><br>
+            <div class="report_tab" onclick="window.location = '/reports/payments'">
+               Payments
             </div>
 </div>
 <div id="reports_container">
@@ -111,11 +114,12 @@
                         <div onclick="setReportParams();runSalesSearch()" class="button">Update</div>
                     </div>
                     <div style="float: right; margin-top: 10px; margin-right: 10px;">
-                        <div style="margin: 5px; height: 40px;" onclick="switchView('graph')" id="graph_view" class="button selected">Graph View</div>
+                        <div style="margin: 5px; height: 40px;" onclick="switchView('table')" id="table_view" class="button selected">Table View</div>
                     </div>
                     <div style="float: right; margin-top: 10px; margin-right: 10px;">
-                        <div style="margin: 5px; height: 40px;" onclick="switchView('table')" id="table_view" class="button">Table View</div>
+                        <div style="margin: 5px; height: 40px;" onclick="switchView('graph')" id="graph_view" class="button">Graph View</div>
                     </div>
+
                 </div>
 
                 <div id="report_sales_results">
