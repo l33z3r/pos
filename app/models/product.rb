@@ -260,7 +260,6 @@ class Product < ActiveRecord::Base
   
   def set_image
     @product_name_normalised = self.name.downcase.gsub(" ", "-")
-    @product_name_parts = self.name.downcase.split(" ")
     
     @found_image = false
     
