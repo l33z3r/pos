@@ -356,7 +356,7 @@
                 </thead>
 
                 <tbody>
-                  <% PaymentMethod.all(:order => :name).each do |pm| %>
+                  <% PaymentMethod.all_for_settings_page.each do |pm| %>
                     <%= fields_for "payment_methods[]", pm do |f| %>
                       <tr>
                         <td>

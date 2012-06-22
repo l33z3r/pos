@@ -2,9 +2,6 @@ var currentCCReferenceNumber;
 
 var splitPayments;
 
-//if a card transasction goes through, you should not be able to cancel the sale
-var disallowCancelSaleCC = false;
-
 function updateTotalTendered() {
     var totalCashTendered = getTotalTendered();
 
@@ -120,11 +117,6 @@ function resetTendered() {
 }
 
 function cashOutCancel() {
-    if(disallowCancelSaleCC) {
-        niceAlert("You cannot cancel this sale, as the card transaction has already been processed!");
-        return;
-    }
-    
     resetLoyaltyCustomer();
     resetTendered();
     showMenuScreen();
@@ -156,11 +148,6 @@ function paymentMethodSelected(pm_id) {
             return;
         }
     } else if(accountPaymentMethodSelected && splitPayments[paymentMethod] > 0) {
-        if(disallowCancelSaleCC) {
-            niceAlert("You cannot charge to an account, as a card transaction has already been processed!");
-            return;
-        }
-        
         //the accounts payment method cannot be used with split payments
         splitPayments = {};
         resetCustomerSelect();
@@ -523,36 +510,27 @@ var cc_txn_xhr = null;
 var currentCardChargeAmount = 0;
 
 function cashScreenChargeCreditCard(amount) {
-    //make sure none of the system payment methods are selected 
-    if(cashPaymentMethodSelected || accountPaymentMethodSelected || loyaltyPaymentMethodSelected) {
-        niceAlert("You must select an appropriate payment method first, in order to perform a transaction");
+    //select the int-card payment method
+    paymentMethodSelected(getPaymentMethodId(intCardPaymentMethodName));
+    
+    moneySelected(-1);
+    amount = cashTendered;
+        
+    if(amount == 0) {
+        niceAlert("You cannot send a zero amount to card terminal");
         return;
     }
-    
+        
     creditCardChargeCallback = cashScreenCreditCardChargeCallback;
     
     if(cardChargeInProgress) {
-        niceAlert("There is already a card charge in progress, please wait");
+        niceAlert("There is already a transaction in progress, please wait");
         return;
     }
     
     if(totalOrder.card_charge) {
         niceAlert("You have already processed a card transaction for this sale!");
         return;
-    }
-    
-    if(typeof(amount) == 'undefined') {
-        amount = cashTendered;
-    }
-    
-    if(amount == 0) {
-        moneySelected(-1);
-        amount = cashTendered;
-        
-        if(amount == 0) {
-            niceAlert("You cannot send a zero amount to card terminal");
-            return;
-        }
     }
     
     cardChargeInProgress = true;
@@ -608,7 +586,9 @@ function chargeCreditCard(amount) {
     });
 }
 
-function cashScreenCreditCardChargeCallback(creditCardChargeResponseCode, errorMessage) {
+function cashScreenCreditCardChargeCallback(creditCardChargeResponseCode, errorMessage, terminalMessage) {
+    var transactionFailed = true;
+    
     //1 means success
     //2 means declined
     //3 means retrieval canceled
@@ -629,33 +609,36 @@ function cashScreenCreditCardChargeCallback(creditCardChargeResponseCode, errorM
             reference_number : currentCCReferenceNumber
         }
         
-        disallowCancelSaleCC = true;
-        paymentMethodSelected(getPaymentMethodId(defaultPaymentMethod));
+        transactionFailed = false;
+        
+        //finish the sale
+        finishSale();
+        
     } else if(creditCardChargeResponseCode == 2) {
-        message = "Charge has been declined.";
-        niceAlert(message);
+        message = "Transaction has been declined.";
     } else if(creditCardChargeResponseCode == 3) {
-        message = "Card charge canceled.";
-        niceAlert(message);
+        message = "Transaction canceled.";
     } else if(creditCardChargeResponseCode == 4) {
         message = "Request timed out. Please try again.";
-        niceAlert(message);
     } else if(creditCardChargeResponseCode == 5) {
         message = "Unknown response from card terminal.";
-        niceAlert(message);
     } else if(creditCardChargeResponseCode == 6) {
         message = "Communication Error, please make sure the credit card terminal is not in use and all settings are set correctly.";
-        niceAlert(message);
     } else {
-        //unknown error
-        if(errorMessage != null) {
-            message = "Error: " + errorMessage;
-        } else {
-            message = "An unknown error occured.";
-        }
-        
-        niceAlert(message);
+        message = "An unknown error occured: " + errorMessage;
     }
+    
+    if(transactionFailed) {
+        totalsScreenKeypadClickCancel();
+        paymentMethodSelected(getPaymentMethodId(defaultPaymentMethod));
+    }
+        
+    //unknown error
+    if(terminalMessage.length > 0) {
+        message += " Terminal Response: \"" + terminalMessage + "\"";
+    }
+        
+    niceAlert(message);
     
     //reset callback
     creditCardChargeCallback = null;
@@ -668,7 +651,10 @@ function cancelChargeCreditCard() {
     cc_txn_xhr.abort();
     
     hideNiceAlert();
-    niceAlert("Card charge canceled. Make sure to cancel the transaction on the terminal also.");
+    niceAlert("Transaction canceled. Make sure to cancel the transaction on the terminal also.");
+    
+    totalsScreenKeypadClickCancel();
+    paymentMethodSelected(getPaymentMethodId(defaultPaymentMethod));
 }
 
 //this gets executed when a loyalty card is used

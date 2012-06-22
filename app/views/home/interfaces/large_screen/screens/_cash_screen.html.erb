@@ -52,6 +52,16 @@
             <div class="button_name"><%=pm.name.titleize%></div>
           </div>
         <% end %>
+
+        <% if @show_charge_card_button %>
+          <div class="button" data-onpress="cashScreenChargeCreditCard()">
+            <div class="icon">
+              <%= image_tag "button_logos/charge_card_button.png" %>
+            </div>
+            <div class="button_name">Charge Card</div>
+          </div>
+        <% end %>
+
       </div>
     </div>
 
@@ -220,7 +230,7 @@
                 <div class="icon">
                   <%= image_tag "button_logos/final_sale.png" %>
                 </div>
-                <div class="button_name">Finish Sale</div>
+                <div class="button_name">OK</div>
               </div>
             </div>
           </div>
@@ -258,15 +268,6 @@
 
     <div id="totals_screen_misc_buttons_container">
       <div id="totals_screen_misc_buttons_left">
-        <% if @show_charge_card_button %>
-          <div class="button" data-onpress="cashScreenChargeCreditCard()">
-            <div class="icon">
-              <%= image_tag "button_logos/charge_card_button.png" %>
-            </div>
-            <div class="button_name">Charge Card</div>
-          </div>
-        <% end %>
-
         <div class="button" data-onpress="doLogout()">
           <div class="icon">
             <%= image_tag "button_logos/save_button.png" %>

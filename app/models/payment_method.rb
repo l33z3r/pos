@@ -17,11 +17,16 @@ class PaymentMethod < ActiveRecord::Base
   CASH_PAYMENT_METHOD_NAME = "cash"
   LOYALTY_PAYMENT_METHOD_NAME = "loyalty"
   ACCOUNT_PAYMENT_METHOD_NAME = "account"
+  INT_CARD_PAYMENT_METHOD_NAME = "int-card"
   
   has_attached_file :logo, PAPERCLIP_STORAGE_OPTIONS.merge(:styles => { :medium => "300x300>", :thumb => "115x115>" })
   
   def self.all_active
-    where("is_active = ?", true)
+    where("is_active = ?", true).where("name != '#{INT_CARD_PAYMENT_METHOD_NAME}'")
+  end
+  
+  def self.all_for_settings_page
+    where("name != '#{INT_CARD_PAYMENT_METHOD_NAME}'").order(:name)
   end
   
   def is_cash?
@@ -36,8 +41,12 @@ class PaymentMethod < ActiveRecord::Base
     self.name.downcase == ACCOUNT_PAYMENT_METHOD_NAME
   end
   
+  def is_int_card?
+    self.name.downcase == INT_CARD_PAYMENT_METHOD_NAME
+  end
+  
   def is_system_pm?
-    self.is_cash? or self.is_loyalty? or self.is_account?
+    self.is_cash? or self.is_loyalty? or self.is_account? or self.is_int_card?
   end
   
   def can_be_default?
@@ -53,7 +62,7 @@ class PaymentMethod < ActiveRecord::Base
   end
   
   def can_be_disabled?
-    !self.is_cash?
+    !self.is_cash? and !self.is_int_card?
   end
   
   def self.options_for_select
@@ -82,7 +91,7 @@ class PaymentMethod < ActiveRecord::Base
   #only return payment options that don't have an integration
   #or are not the account payment method or loyalty payment method
   def self.for_util_payment
-    where("payment_integration_id = 0 and name != '#{LOYALTY_PAYMENT_METHOD_NAME}' and name != '#{ACCOUNT_PAYMENT_METHOD_NAME}'")
+    where("payment_integration_id = 0 and name != '#{LOYALTY_PAYMENT_METHOD_NAME}' and name != '#{ACCOUNT_PAYMENT_METHOD_NAME}' and name != '#{INT_CARD_PAYMENT_METHOD_NAME}'")
   end
   
   def self.load_default
