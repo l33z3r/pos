@@ -325,17 +325,6 @@ class Product < ActiveRecord::Base
   
 end
 
-
-
-
-
-
-
-
-
-
-
-
 # == Schema Information
 #
 # Table name: products
