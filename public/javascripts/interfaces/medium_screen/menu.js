@@ -353,7 +353,11 @@ function saveEditOrderItem() {
         newQuantity = parseFloat(targetInputQuantityEl.val());
 
     }
+    
+    var order = getCurrentOrder();
+    
     if (isNaN(newQuantity) || newQuantity == 0) {
+        currentQuantity = order.items[itemNumber - 1].amount;
         newQuantity = currentQuantity;
     }
     targetInputPricePerUnitEl = $('.new_price');
