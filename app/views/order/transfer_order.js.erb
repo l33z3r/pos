@@ -28,6 +28,9 @@
       
       orderFrom.items = tableOrderItemsToMerge.concat(orderFrom.items);
       
+      //re-number the items
+      orderReceiptItems(orderFrom);
+      
       tableOrderItemsToMerge = null;
     }
     
