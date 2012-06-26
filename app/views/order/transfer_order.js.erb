@@ -10,11 +10,11 @@
   for(var i=0; i<orderFrom.items.length; i++) {
     orderFrom.items[i].synced = false;
     }
-  }
-  
-  if(<%= @table_from_id %> == -1) {
+    }
+
+    if(<%= @table_from_id %> == -1) {
     $('#previous_order_select_item').hide();
-  }
+    }
 
     //clear the order
     clearOrder(<%= @table_from_id %>);
@@ -22,6 +22,15 @@
     orderFrom = tableOrders[<%= @table_from_id %>];
     }
 
+    //was this a result of a merge? If so, merge the items
+    if(tableOrderItemsToMerge != null) {
+      console.log("merging " + tableOrderItemsToMerge.length + " items");
+      
+      orderFrom.items = tableOrderItemsToMerge.concat(orderFrom.items);
+      
+      tableOrderItemsToMerge = null;
+    }
+    
     storeTableOrderInStorage(current_user_id, <%= @table_to_id %>, orderFrom);
 
     doSelectTable(<%= @table_to_id %>);
