@@ -697,18 +697,21 @@ function niceAlert(message, title) {
             onOk: "hideNiceAlert()"
         });
         
-        hideNiceAlertListener = function(event) {
-            if(getEventKeyCode(event) == 13) {
-                hideNiceAlert();
-            }
-        };
+    hideNiceAlertListener = function(event) {
+        if(getEventKeyCode(event) == 13) {
+            hideNiceAlert();
+        }
+    };
         
-        $(window).bind('keypress', hideNiceAlertListener);
+    $(window).bind('keypress', hideNiceAlertListener);
 }
 
 function hideNiceAlert() {
     try {
-        $(window).unbind('keypress', hideNiceAlertListener);
+        if(hideNiceAlertListener != null) {
+            $(window).unbind('keypress', hideNiceAlertListener);
+        }
+        
         ModalPopups.Close('niceAlertContainer');
     } catch (e) {
         
