@@ -1,0 +1,9 @@
+$("#report_payments_results").html("<%= escape_javascript(render("payments_tab")) %>");
+
+if ($('#graph_view').hasClass('selected')) {
+    $('#payments_items_graph').show();
+    $('#payments_items').hide();
+} else {
+    $('#payments_items_graph').hide();
+    $('#payments_items').show();
+}

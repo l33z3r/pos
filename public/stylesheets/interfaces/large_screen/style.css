@@ -4462,6 +4462,14 @@ div#reports_container #stock_items{
     height: 553px;
 }
 
+div#reports_container #payments_items{
+    overflow: auto;
+    border:  1px solid black;
+    border-radius: 10px;
+    width: 100%;
+    height: 553px;
+}
+
 div#reports_container #options_menu{
     overflow: auto;
     /*padding-left:  20px;*/
@@ -4587,6 +4595,15 @@ div#reports_container  div#report_sales_filters div.dropdown_container{
     margin-top: 5px;
 }
 
+div#reports_container  div#report_sales_filters div.discount_dropdown_container{
+    float: left;
+    max-width: 160px;
+    /*text-align: left;*/
+    font-weight: bold;
+    margin-left: 5px;
+    margin-top: 22px;
+}
+
 div#reports_container  div#report_sales_filters #refine_container{
     width: 600px;
     float: left;
@@ -4604,7 +4621,7 @@ div#reports_container  div#report_sales_filters #refine_button{
     width: 103px;
     height: 64px;
     float: left;
-    margin-left: 50px;
+    margin-left: 80px;
 }
 
 div#reports_container .preselect_button{

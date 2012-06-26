@@ -235,9 +235,12 @@ class Reports::SalesController < Admin::AdminController
       #query = Order.find_by_sql("select * from orders o inner join order_items oi on o.id = oi.order_id")
       #query = Order.find_by_sql("select * from orders o inner join order_items oi on o.id = oi.order_id inner join products p on p.category_id = 1 group by o.id")
     if (session[:search_type] == :day || session[:search_type] == :month || session[:search_type] == :year || session[:search_type] == :week)
+
+      if session[:search_type] == :day
+      where = "select o.id, o.created_at, DATE_FORMAT(o.created_at,'%Y-%m-%d') as created_day, o.product_id, SUM((o.total_price-(o.total_price/(1+(o.tax_rate/100))))) as tax_rate, #{session[:search_type]}(o.created_at), SUM(total_price) total_price, SUM(quantity) quantity from order_items o"
+      else
       where = "select o.id, o.created_at, o.product_id, SUM((o.total_price-(o.total_price/(1+(o.tax_rate/100))))) as tax_rate, #{session[:search_type]}(o.created_at), SUM(total_price) total_price, SUM(quantity) quantity from order_items o"
-
-
+      end
 
       if session[:category] == '' && session[:product] == '' && session[:search_product] != ''
         where << " inner join products p on o.product_id = p.id"
@@ -264,7 +267,12 @@ class Reports::SalesController < Admin::AdminController
         where << " and p.name like '%#{session[:search_product]}%' or p.code_num like '%#{session[:search_product]}%'"
       end
 
+      if session[:search_type] == :day
+      where << " group by created_day order by o.created_at asc"
+      else
       where << " group by #{session[:search_type]}(o.created_at) order by o.created_at asc"
+      end
+
       query = OrderItem.find_by_sql(where)
     end
 
