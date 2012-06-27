@@ -110,8 +110,9 @@ function doGlobalInit() {
 
     //start the clock in the nav bar
     $("div#clock").clock({
-        "calendar":"false",
-        "format": clockFormat
+        "calendar" : "false",
+        "format" : clockFormat,
+        "timestamp" : clueyTimestamp()
     });
 
     //any input that gains focus will call this function
