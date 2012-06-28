@@ -982,3 +982,13 @@ function getEventKeyCode(e) {
 function sizeOfHash(theHash) {
     return Object.keys(theHash).length
 }
+
+function sizeOfObjectInBytes(value) {
+    return lengthInUtf8Bytes(JSON.stringify(value));
+}
+
+function lengthInUtf8Bytes(str) {
+  // Matches only the 10.. bytes that are non-initial characters in a multi-byte sequence.
+  var m = encodeURIComponent(str).match(/%[89ABab]/g);
+  return str.length + (m ? m.length : 0);
+}

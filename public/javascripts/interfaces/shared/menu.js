@@ -55,6 +55,8 @@ var masterOrdersUserId = -1;
 
 var tableOrderItemsToMerge = null;
 
+var sendOrderAfterCovers = false;
+
 function getCurrentOrder() {
     if(selectedTable == 0) {
         return currentOrder;

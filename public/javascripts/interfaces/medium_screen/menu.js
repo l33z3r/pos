@@ -1401,12 +1401,15 @@ function displayDropdownSelected(selectedDisplayId) {
 }
 
 function doMobileLogout() {
-
-
     //send ajax logout
     $.ajax({
         type: 'POST',
         url: '/logout'
     });
     goToMainMenu();
+}
+
+function doAutoCovers() {
+    //when you save the covers, you should auto send the order all the time. See how it is done in the large screen interface
+    promptAddCovers();
 }

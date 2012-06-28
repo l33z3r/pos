@@ -59,6 +59,7 @@ var categories = new Array();
   'modifier_grid_id' : <%= c.order_item_addition_grid ? c.order_item_addition_grid.id : "null" %>,
   'modifier_grid_id_mandatory' : <%= c.order_item_addition_grid_id_is_mandatory %>, 
   'parent_category_id' : <%= c.parent_category ? c.parent_category_id : "null" %>,
-  'course_num' : <%= c.course_num %>
+  'course_num' : <%= c.course_num %>,
+  'prompt_for_covers' : <%= c.prompt_for_covers %>
   };
 <% end %>

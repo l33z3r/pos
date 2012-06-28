@@ -738,6 +738,16 @@ function doSelectReceiptItem(orderItemEl) {
     //make sure the modifier grids are closed
     switchToMenuItemsSubscreen();
     
+    
+    //TODO: refactor the following to remove duplication:
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
     //are we allowed to view the discount button
     //we are if the button id is present in this array
     if(typeof(display_button_passcode_permissions[parseInt(discountButtonID)]) != 'undefined') {
@@ -2563,4 +2573,8 @@ function performScreenResolutionCSSMods() {
         $('#wrapper').css("width", "1366px");
         $('#menu_screen #menu_pages_container').css("width", "1090px");
     }
+}
+
+function doAutoCovers() {
+    promptAddCovers();
 }

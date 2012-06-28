@@ -175,7 +175,7 @@ class ButtonMapper
     when PRINT_RECEIPT_BUTTON
       @retval = si_check(PRINT_RECEIPT_BUTTON, "printCurrentReceipt();");
     when ORDER_BUTTON
-      @retval = si_check(ORDER_BUTTON, "doSyncTableOrder();");
+      @retval = si_check(ORDER_BUTTON, "orderButtonPressed();");
     when SERVICE_CHARGE_BUTTON
       @retval = si_check(SERVICE_CHARGE_BUTTON, ms_check("promptForServiceCharge();"))
     when PREVIOUS_ORDERS_BUTTON

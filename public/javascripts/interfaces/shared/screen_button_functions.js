@@ -3,6 +3,49 @@ var orderInProcess = false;
 
 var isTableZeroOrder = false;
 
+function orderButtonPressed() {
+    var order = getCurrentOrder();
+        
+    //make sure all items in this order are not synced
+    var freshOrder = true;
+    
+    for(var i=0; i<order.items.length; i++) {
+        if(order.items[i].synced) {
+            freshOrder = false;
+            break;
+        }
+    }
+    
+    var autoCovers = false;
+    
+    if(freshOrder) {
+        if(globalAutoPromptForCovers) {
+            doAutoCovers();
+            return;
+        }
+    
+        //iterate through all the categories of this order to check for auto covers set
+        for(var j=0; j<order.items.length; j++) {
+            var item = order.items[j];
+        
+            var categoryId = item.product.category_id;
+            
+            if(categoryId != null) {
+                if(categories[categoryId].prompt_for_covers) {
+                    autoCovers = true;
+                    break;
+                }
+            }
+        }
+    }
+    
+    if(autoCovers) {
+        doAutoCovers();
+    } else {
+        doSyncTableOrder();
+    }
+}
+
 function doSyncTableOrder() {
     if(!appOnline) {
         niceAlert("Cannot contact server, ordering is disabled until connection re-established!");

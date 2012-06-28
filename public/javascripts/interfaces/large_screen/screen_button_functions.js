@@ -827,21 +827,40 @@ function promptAddCovers() {
     
     var tableOrder = getCurrentOrder();
     
-    addCoversPopupEl.find('input').val(tableOrder.covers);
+    var covers = parseInt(tableOrder.covers);
+    
+    if(covers == 0) {
+        addCoversPopupEl.find('input').val("");
+    } else {
+        addCoversPopupEl.find('input').val(tableOrder.covers);   
+    }    
     
     addCoversPopupEl.find('input').focus();
     
-    //show the keyboard
-    $('#util_keyboard_container').slideDown(300);
+    keypadPosition = $('#' + popupId).find('.add_covers_popup_keypad_container');
+    
+    clickFunction = function(val) {
+        currentVal = addCoversPopupEl.find('input').val();
+        newVal = currentVal.toString() + val;
+        addCoversPopupEl.find('input').val(newVal);
+    };
+    
+    cancelFunction = function() {
+        oldVal = addCoversPopupEl.find('input').val();
+        newVal = oldVal.substring(0, oldVal.length - 1);
+        addCoversPopupEl.find('input').val(newVal);
+    };
+    
+    setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
+
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closePromptAddCovers);
 }
 
 function closePromptAddCovers() {
     if(addCoversPopupEl) {
         hideBubblePopup(addCoversPopupAnchor);
     }
-    
-    //hide the keyboard
-    $('#util_keyboard_container').slideUp(300);
 }
 
 function saveAddCovers() {

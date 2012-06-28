@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120620101031) do
+ActiveRecord::Schema.define(:version => 20120628055945) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(:version => 20120620101031) do
     t.integer  "course_num",                               :default => -1
     t.string   "kitchen_screens",                          :default => ""
     t.string   "blocked_printers"
+    t.boolean  "prompt_for_covers",                        :default => false
   end
 
   add_index "categories", ["order_item_addition_grid_id"], :name => "index_categories_on_order_item_addition_grid_id"
