@@ -740,63 +740,16 @@ function doSelectReceiptItem(orderItemEl) {
     //make sure the modifier grids are closed
     switchToMenuItemsSubscreen();
     
+    var buttons = [
+    [discountButtonID, $('#discount_button')], 
+    [changePriceButtonID, $('#price_editor')],
+    [removeItemButtonID, $('#delete_button')],
+    [oiaButtonID, $('#oia_button')],
+    [courseNumButtonID, $('#course_button')],
+    [voidOrderItemButtonID, $('#void_order_item_button')],
+    ];
     
-    //TODO: refactor the following to remove duplication:
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //are we allowed to view the discount button
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(discountButtonID)]) != 'undefined') {
-        $('#discount_button').show();
-    } else {
-        $('#discount_button').hide();
-    }
-    
-    //are we allowed to view the change price controls
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(changePriceButtonID)]) != 'undefined') {
-        $('#price_editor').show();
-    } else {
-        $('#price_editor').hide();
-    }
-    
-    //are we allowed to delete an item
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(removeItemButtonID)]) != 'undefined') {
-        $('#delete_button').show();
-    } else {
-        $('#delete_button').hide();
-    }
-    
-    //are we allowed to oia an item
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(oiaButtonID)]) != 'undefined') {
-        $('#oia_button').show();
-    } else {
-        $('#oia_button').hide();
-    }
-    
-    //are we allowed to view the course num controls
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(courseNumButtonID)]) != 'undefined') {
-        $('#course_button').show();
-    } else {
-        $('#course_button').hide();
-    }
-    
-    //are we allowed to view the void item controls
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(voidOrderItemButtonID)]) != 'undefined') {
-        $('#void_order_item_button').show();
-    } else {
-        $('#void_order_item_button').hide();
-    }
+    hideRestrictedButtons(buttons);
     
     //save the currently opened dialog
     currentSelectedReceiptItemEl = orderItemEl;
@@ -877,20 +830,16 @@ function doSelectReceiptItem(orderItemEl) {
     currentQuantity = orderItemEl.children('.amount').html();
     $('#' + popupId).find('.quantity').val(currentQuantity);
     
-    $('#' + popupId).find('.quantity').focus();
+    $('#' + popupId).find('.quantity').focus().select();
     
     keypadPosition = $('#' + popupId).find('.edit_order_item_popup_keypad_container');
     
     clickFunction = function(val) {
-        currentVal = lastActiveElement.val();
-        newVal = currentVal.toString() + val;
-        lastActiveElement.val(newVal);
+        doKeyboardInput(lastActiveElement, val);
     };
     
     cancelFunction = function() {
-        oldVal = lastActiveElement.val();
-        newVal = oldVal.substring(0, oldVal.length - 1);
-        lastActiveElement.val(newVal);
+        doKeyboardInputCancel(lastActiveElement);
     };
     
     setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
@@ -899,6 +848,19 @@ function doSelectReceiptItem(orderItemEl) {
     registerPopupClickHandler($('#' + popupId), closeEditOrderItem);
     
     return $('#' + popupId);
+}
+
+function hideRestrictedButtons(buttons) {
+    for(var i = 0; i < buttons.length; i++) {
+        var buttonId = parseInt(buttons[i][0]);
+        var buttonEl = buttons[i][1];
+        
+        if(typeof(display_button_passcode_permissions[buttonId]) != 'undefined') {
+            buttonEl.show();
+        } else {
+            buttonEl.hide();
+        }
+    }
 }
 
 function editOrderItemIncreaseQuantity() {
@@ -1720,16 +1682,13 @@ function showDiscountPopup(receiptItem) {
     keypadPosition = $('#' + popupId).find('.discount_popup_keypad_container');
     
     clickFunction = function(val) {
-        currentVal = $('#' + popupId).find('#discount_percent_input').val();
-        if(currentVal == 0) currentVal = "";
-        newVal = currentVal.toString() + val;
-        $('#' + popupId).find('#discount_percent_input').val(newVal);
+        var inputEl = $('#' + popupId).find('#discount_percent_input');
+        doKeyboardInput(inputEl, val);
     };
     
     cancelFunction = function() {
-        oldVal = $('#' + popupId).find('#discount_percent_input').val();
-        newVal = oldVal.substring(0, oldVal.length - 1);
-        $('#' + popupId).find('#discount_percent_input').val(newVal);
+        var inputEl = $('#' + popupId).find('#discount_percent_input');
+        doKeyboardInputCancel(inputEl);
     };
     
     setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
@@ -2103,8 +2062,15 @@ function renderActiveTables() {
             
                     //mark the tables screen also
                     $('#table_label_' + nextTableID).addClass("active");
+                
+                    getTableOrderFromStorage(clueyUserId, nextTableID);
+                
+                    var tableOrder = tableOrders[nextTableID];
+                    
+                    if(tableOrder.client_name.length > 0) {
+                        $('#table_label_' + nextTableID).html(tables[nextTableID].label + " (" + tableOrder.client_name + ")");
+                    }
                 } else {
-            
                     $(element).removeClass("active");
                     $('#table_label_' + nextTableID).removeClass("active");
                 }

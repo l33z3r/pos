@@ -24,8 +24,6 @@
 
     //was this a result of a merge? If so, merge the items
     if(tableOrderItemsToMerge != null) {
-      console.log("merging " + tableOrderItemsToMerge.length + " items");
-      
       orderFrom.items = tableOrderItemsToMerge.concat(orderFrom.items);
       
       //re-number the items

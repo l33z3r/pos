@@ -920,7 +920,6 @@ function doTransferTable(tableFrom, tableTo) {
     }
         
     if($.inArray(tableTo.toString(), activeTableIDS) != -1) {
-        console.log("doing a table merge");
         getTableOrderFromStorage(current_user_id, tableTo);
         
         //copy the array (http://www.xenoveritas.org/blog/xeno/the-correct-way-to-clone-javascript-arrays)

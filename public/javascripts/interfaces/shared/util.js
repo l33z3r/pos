@@ -992,3 +992,51 @@ function lengthInUtf8Bytes(str) {
     var m = encodeURIComponent(str).match(/%[89ABab]/g);
     return str.length + (m ? m.length : 0);
 }
+
+function doKeyboardInput(input, val) {
+    var caretStart = input.caret().start;
+    var caretEnd = input.caret().end;
+        
+    var newStartVal = input.val().substring(0, caretStart);
+    var newEndVal = input.val().substring(caretEnd);
+        
+    input.val(newStartVal + val + newEndVal);
+    input.caret({
+        start : caretStart + 1, 
+        end : caretStart + 1
+    });
+}
+
+function doKeyboardInputCancel(input) {
+    var caretStart = input.caret().start;
+    var caretEnd = input.caret().end;
+        
+    var newStartVal;
+    var newEndVal;
+        
+    if(caretEnd > caretStart) {
+        newStartVal = input.val().substring(0, caretStart);
+        newEndVal = input.val().substring(caretEnd);
+        input.val(newStartVal + newEndVal);
+        input.caret({
+            start : caretStart, 
+            end : caretStart
+        });
+    } else {
+        newStartVal = input.val().substring(0, caretStart - 1);
+        newEndVal = input.val().substring(caretEnd);
+        input.val(newStartVal + newEndVal);
+        input.caret({
+            start : caretStart - 1, 
+            end : caretStart - 1
+        });
+    }
+}
+
+function focusSelectInput(inputEl) {
+    addTableNamePopupEl.find('input').focus();
+    addTableNamePopupEl.find('input').caret({
+        start : 0, 
+        end : 0
+    });
+}

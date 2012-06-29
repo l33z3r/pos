@@ -444,7 +444,7 @@ function setUtilKeyboardCallback(callbackFunction) {
 
 function doWriteToLastActiveInput(val) {
     if(lastActiveElement) {
-        lastActiveElement.val(lastActiveElement.val() + val);
+        doKeyboardInput(lastActiveElement, val);
         
         if(lastActiveElementInputCallback) {
             lastActiveElementInputCallback.call();
@@ -459,13 +459,12 @@ function doTabLastActiveInput() {
 }
 
 function doDeleteCharLastActiveInput() {
-    oldVal = lastActiveElement.val();
-    newVal = oldVal.substring(0, oldVal.length - 1);
-    
-    lastActiveElement.val(newVal);
-    
-    if(lastActiveElementInputCallback) {
-        lastActiveElementInputCallback.call();
+    if(lastActiveElement) {
+        doKeyboardInputCancel(lastActiveElement);
+        
+        if(lastActiveElementInputCallback) {
+            lastActiveElementInputCallback.call();
+        }
     }
 }
 

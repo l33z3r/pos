@@ -829,8 +829,6 @@ function loadSearchCustomersForLetter(letter) {
 function updateCustomerSearchResults() {
     var searchString = $('#customer_search_input').val().toLowerCase();
     
-    console.log("Searching for customers using string: " + searchString);
-    
     results = new Array();
     
     var nextCustomer = null;

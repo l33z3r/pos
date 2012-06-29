@@ -329,7 +329,7 @@ function changePriceLastOrderItem() {
         //must set a timeout here so that if we are on the more 
         //options screen, the widths have time to calculate correctly
         var popup = doSelectReceiptItem(currentSelectedReceiptItemEl);
-        popup.find('.price').focus();
+        popup.find('.price').focus().select();
     }
 }
 
@@ -546,10 +546,10 @@ function promptAddNameToTable() {
         addTableNamePopupEl.find('input').val(tableOrder.client_name);
     }
     
-    addTableNamePopupEl.find('input').focus();
+    addTableNamePopupEl.find('input').focus().select();
     
-    //show the keyboard
-    $('#util_keyboard_container').slideDown(300);
+//show the keyboard
+$('#util_keyboard_container').slideDown(300);
 }
 
 function closePromptAddNameToTable() {
@@ -829,7 +829,7 @@ function promptAddCovers() {
     
     var covers = parseInt(tableOrder.covers);
     
-    if(covers == 0) {
+    if(covers == -1) {
         addCoversPopupEl.find('input').val("");
     } else {
         addCoversPopupEl.find('input').val(tableOrder.covers);   
@@ -841,46 +841,12 @@ function promptAddCovers() {
     
     clickFunction = function(val) {
         var input = addCoversPopupEl.find('input');
-        
-        var caretStart = input.caret().start;
-        var caretEnd = input.caret().end;
-        
-        var newStartVal = input.val().substring(0, caretStart);
-        var newEndVal = input.val().substring(caretEnd);
-        
-        input.val(newStartVal + val + newEndVal);
-        input.caret({
-            start : caretStart + 1, 
-            end : caretStart + 1
-        });
+        doKeyboardInput(input, val);
     };
     
     cancelFunction = function() {
         var input = addCoversPopupEl.find('input');
-        
-        var caretStart = input.caret().start;
-        var caretEnd = input.caret().end;
-        
-        var newStartVal;
-        var newEndVal;
-        
-        if(caretEnd > caretStart) {
-            newStartVal = input.val().substring(0, caretStart);
-            newEndVal = input.val().substring(caretEnd);
-            input.val(newStartVal + newEndVal);
-            input.caret({
-                start : caretStart, 
-                end : caretStart
-            });
-        } else {
-            newStartVal = input.val().substring(0, caretStart - 1);
-            newEndVal = input.val().substring(caretEnd);
-            input.val(newStartVal + newEndVal);
-            input.caret({
-                start : caretStart - 1, 
-                end : caretStart - 1
-            });
-        }
+        doKeyboardInputCancel(input);
     };
     
     setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
@@ -909,7 +875,7 @@ function saveAddCovers() {
     //make sure its an integer
     covers = parseInt(covers);
     
-    if(isNaN(covers)) {
+    if(isNaN(covers) || covers < 0) {
         covers = 0;
     }
     
