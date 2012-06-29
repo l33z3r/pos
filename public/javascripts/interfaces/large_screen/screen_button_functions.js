@@ -922,7 +922,6 @@ function saveAddCovers() {
     }
     
     if(!currentOrderEmpty()) {
-        doAutoLoginAfterSync = true;
         doSyncTableOrder();
     }
 }
