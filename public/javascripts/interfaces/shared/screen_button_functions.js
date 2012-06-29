@@ -30,7 +30,7 @@ function orderButtonPressed() {
         }
     }
     
-    if(autoCovers && order.covers == -1) {
+    if(autoCovers && parseInt(order.covers) == -1) {
         order.covers = 0;
         doAutoCovers();
     } else {
