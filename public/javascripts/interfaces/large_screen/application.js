@@ -129,7 +129,7 @@ function doGlobalInit() {
 
         var allowFocusElements = [
         "num", "scan_upc", "description_input", "price_change_new_price_input", 
-        "stock_take_new_amount_input", "room_number_input", "customer_search_input"
+        "stock_take_new_amount_input", "room_number_input", "customer_search_input", add_covers_input
         ];
 
         var focusedElementId = lastActiveElement.attr("id");

@@ -787,7 +787,7 @@ function promptAddCovers() {
         return;
     }    
     
-    if(selectedTable == 0 || selectedTable == -1) {
+    if(selectedTable == -1) {
         setStatusMessage("Only valid for table orders!");
         return;
     }
@@ -835,14 +835,21 @@ function promptAddCovers() {
         addCoversPopupEl.find('input').val(tableOrder.covers);   
     }    
     
-    addCoversPopupEl.find('input').focus();
+    addCoversPopupEl.find('input').focus().select();
     
     keypadPosition = $('#' + popupId).find('.add_covers_popup_keypad_container');
     
     clickFunction = function(val) {
-        currentVal = addCoversPopupEl.find('input').val();
-        newVal = currentVal.toString() + val;
-        addCoversPopupEl.find('input').val(newVal);
+        var input = addCoversPopupEl.find('input');
+        
+        var caretStart = input.caret().start;
+        var caretEnd = input.caret().end;
+        
+        var newStartVal = input.val().substring(0, caretStart);
+        var newEndVal = input.val().substring(caretEnd);
+        
+        input.val(newStartVal + val + newEndVal);
+        input.caret({start : caretStart + 1, end : caretStart + 1})
     };
     
     cancelFunction = function() {
@@ -865,7 +872,7 @@ function closePromptAddCovers() {
 
 function saveAddCovers() {
     //do nothing if not table order
-    if(selectedTable == 0 || selectedTable == -1) {
+    if(selectedTable == -1) {
         closePromptAddCovers();
         return;
     }
@@ -885,14 +892,14 @@ function saveAddCovers() {
     
     closePromptAddCovers();
     
-    storeTableOrderInStorage(current_user_id, selectedTable, tableOrder);
+    if(selectedTable == 0) {
+        storeTableOrderInStorage(current_user_id, selectedTable, tableOrder);
+    }
     
     if(!currentOrderEmpty()) {
         doAutoLoginAfterSync = true;
         doSyncTableOrder();
-    } 
-    
-    setStatusMessage("Covers added to table");
+    }
 }
 
 function pmShortcut(shortcutNum) {

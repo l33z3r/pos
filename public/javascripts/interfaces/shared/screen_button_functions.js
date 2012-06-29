@@ -18,7 +18,7 @@ function orderButtonPressed() {
     
     var autoCovers = false;
     
-    if(freshOrder) {
+    if(freshOrder || selectedTable == 0) {
         if(globalAutoPromptForCovers) {
             doAutoCovers();
             return;
@@ -76,6 +76,7 @@ function doSyncTableOrder() {
         return;
     } else if(selectedTable == 0) {
         if(!isTableZeroOrder) {
+            setStatusMessage("You must move this order to a table");
             startTransferOrderMode();
             return;
         } else {
