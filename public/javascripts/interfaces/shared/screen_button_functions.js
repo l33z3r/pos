@@ -32,6 +32,8 @@ function orderButtonPressed() {
     
     if(autoCovers && parseInt(order.covers) == -1) {
         order.covers = 0;
+        
+        autoCoversPrompt = true;
         doAutoCovers();
     } else {
         doSyncTableOrder();

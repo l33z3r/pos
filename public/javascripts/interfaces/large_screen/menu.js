@@ -20,6 +20,8 @@ var lastTableZeroOrder;
 
 var creditCardChargeCallback = null;
 
+var autoCoversPrompt = false;
+
 //this function is called from application.js on page load
 function initMenu() {
     initMenuScreenType();
