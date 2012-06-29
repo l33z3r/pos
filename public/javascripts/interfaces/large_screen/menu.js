@@ -1297,8 +1297,12 @@ function doTotalFinal() {
             tableInfoLabel = tables[tableInfoId].label;
         }
 
-        //TODO: pick up num persons
-        numPersons = totalOrder.covers;
+        numPersons = parseInt(totalOrder.covers);
+        
+        //make sure it has not got its initial -1 value, or a negative value
+        if(numPersons < 0) {
+            numPersons = 0;
+        }
     }
 
     if(!paymentMethod) {
@@ -2123,12 +2127,12 @@ function postDoSyncTableOrder() {
     
     //clean up after transfer order mode
     if(inTransferOrderMode) {
-        hideNiceAlert();
-        setStatusMessage("Order Transfered.");
+        hideNiceAlert();        
         $('#tables_screen_status_message').hide();
         inTransferOrderMode = false;
         tableScreenSelectTable(selectedTable);
-        showMenuScreen();
+        loadAfterSaleScreen();
+        setStatusMessage("Order Transfered.");
         return;
     } else if(inTransferOrderItemMode) {
         finishTransferOrderItem();

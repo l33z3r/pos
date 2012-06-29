@@ -402,7 +402,7 @@ function buildInitialOrder() {
         'courses' : new Array(),
         'total': 0,
         'client_name' : "",
-        'covers' : 0
+        'covers' : -1
     };
     
     return initOrder;

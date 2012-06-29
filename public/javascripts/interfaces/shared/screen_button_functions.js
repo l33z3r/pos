@@ -6,27 +6,18 @@ var isTableZeroOrder = false;
 function orderButtonPressed() {
     var order = getCurrentOrder();
         
-    //make sure all items in this order are not synced
-    var freshOrder = true;
-    
-    for(var i=0; i<order.items.length; i++) {
-        if(order.items[i].synced) {
-            freshOrder = false;
-            break;
-        }
-    }
-    
     var autoCovers = false;
     
-    if(freshOrder || selectedTable == 0) {
-        if(globalAutoPromptForCovers) {
-            doAutoCovers();
-            return;
-        }
-    
+    if(globalAutoPromptForCovers) {
+        autoCovers = true;
+    } else {
         //iterate through all the categories of this order to check for auto covers set
         for(var j=0; j<order.items.length; j++) {
             var item = order.items[j];
+        
+            if(order.items[j].synced && selectedTable != 0) {
+                continue;
+            }
         
             var categoryId = item.product.category_id;
             
@@ -39,7 +30,8 @@ function orderButtonPressed() {
         }
     }
     
-    if(autoCovers) {
+    if(autoCovers && order.covers == -1) {
+        order.covers = 0;
         doAutoCovers();
     } else {
         doSyncTableOrder();

@@ -849,13 +849,38 @@ function promptAddCovers() {
         var newEndVal = input.val().substring(caretEnd);
         
         input.val(newStartVal + val + newEndVal);
-        input.caret({start : caretStart + 1, end : caretStart + 1})
+        input.caret({
+            start : caretStart + 1, 
+            end : caretStart + 1
+        });
     };
     
     cancelFunction = function() {
-        oldVal = addCoversPopupEl.find('input').val();
-        newVal = oldVal.substring(0, oldVal.length - 1);
-        addCoversPopupEl.find('input').val(newVal);
+        var input = addCoversPopupEl.find('input');
+        
+        var caretStart = input.caret().start;
+        var caretEnd = input.caret().end;
+        
+        var newStartVal;
+        var newEndVal;
+        
+        if(caretEnd > caretStart) {
+            newStartVal = input.val().substring(0, caretStart);
+            newEndVal = input.val().substring(caretEnd);
+            input.val(newStartVal + newEndVal);
+            input.caret({
+                start : caretStart, 
+                end : caretStart
+            });
+        } else {
+            newStartVal = input.val().substring(0, caretStart - 1);
+            newEndVal = input.val().substring(caretEnd);
+            input.val(newStartVal + newEndVal);
+            input.caret({
+                start : caretStart - 1, 
+                end : caretStart - 1
+            });
+        }
     };
     
     setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
