@@ -353,7 +353,11 @@ function saveEditOrderItem() {
         newQuantity = parseFloat(targetInputQuantityEl.val());
 
     }
+    
+    var order = getCurrentOrder();
+    
     if (isNaN(newQuantity) || newQuantity == 0) {
+        currentQuantity = order.items[itemNumber - 1].amount;
         newQuantity = currentQuantity;
     }
     targetInputPricePerUnitEl = $('.new_price');
@@ -1397,12 +1401,15 @@ function displayDropdownSelected(selectedDisplayId) {
 }
 
 function doMobileLogout() {
-
-
     //send ajax logout
     $.ajax({
         type: 'POST',
         url: '/logout'
     });
     goToMainMenu();
+}
+
+function doAutoCovers() {
+    //when you save the covers, you should auto send the order all the time. See how it is done in the large screen interface
+    promptAddCovers();
 }

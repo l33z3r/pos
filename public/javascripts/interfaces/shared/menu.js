@@ -53,6 +53,10 @@ var mandatoryFooterMessageHTML = null;
 //this is used to hold the master 
 var masterOrdersUserId = -1;
 
+var tableOrderItemsToMerge = null;
+
+var sendOrderAfterCovers = false;
+
 function getCurrentOrder() {
     if(selectedTable == 0) {
         return currentOrder;
@@ -916,8 +920,10 @@ function doTransferTable(tableFrom, tableTo) {
     }
         
     if($.inArray(tableTo.toString(), activeTableIDS) != -1) {
-        niceAlert("This table is occupied, please choose another.");
-        return;
+        getTableOrderFromStorage(current_user_id, tableTo);
+        
+        //copy the array (http://www.xenoveritas.org/blog/xeno/the-correct-way-to-clone-javascript-arrays)
+        tableOrderItemsToMerge = tableOrders[tableTo].items.slice(0);
     }
         
     transferOrderInProgress = true;

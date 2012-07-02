@@ -402,7 +402,7 @@ function buildInitialOrder() {
         'courses' : new Array(),
         'total': 0,
         'client_name' : "",
-        'covers' : 0
+        'covers' : -1
     };
     
     return initOrder;
@@ -697,18 +697,21 @@ function niceAlert(message, title) {
             onOk: "hideNiceAlert()"
         });
         
-        hideNiceAlertListener = function(event) {
-            if(getEventKeyCode(event) == 13) {
-                hideNiceAlert();
-            }
-        };
+    hideNiceAlertListener = function(event) {
+        if(getEventKeyCode(event) == 13) {
+            hideNiceAlert();
+        }
+    };
         
-        $(window).bind('keypress', hideNiceAlertListener);
+    $(window).bind('keypress', hideNiceAlertListener);
 }
 
 function hideNiceAlert() {
     try {
-        $(window).unbind('keypress', hideNiceAlertListener);
+        if(hideNiceAlertListener != null) {
+            $(window).unbind('keypress', hideNiceAlertListener);
+        }
+        
         ModalPopups.Close('niceAlertContainer');
     } catch (e) {
         
@@ -978,4 +981,62 @@ function getEventKeyCode(e) {
 
 function sizeOfHash(theHash) {
     return Object.keys(theHash).length
+}
+
+function sizeOfObjectInBytes(value) {
+    return lengthInUtf8Bytes(JSON.stringify(value));
+}
+
+function lengthInUtf8Bytes(str) {
+    // Matches only the 10.. bytes that are non-initial characters in a multi-byte sequence.
+    var m = encodeURIComponent(str).match(/%[89ABab]/g);
+    return str.length + (m ? m.length : 0);
+}
+
+function doKeyboardInput(input, val) {
+    var caretStart = input.caret().start;
+    var caretEnd = input.caret().end;
+        
+    var newStartVal = input.val().substring(0, caretStart);
+    var newEndVal = input.val().substring(caretEnd);
+        
+    input.val(newStartVal + val + newEndVal);
+    input.caret({
+        start : caretStart + 1, 
+        end : caretStart + 1
+    });
+}
+
+function doKeyboardInputCancel(input) {
+    var caretStart = input.caret().start;
+    var caretEnd = input.caret().end;
+        
+    var newStartVal;
+    var newEndVal;
+        
+    if(caretEnd > caretStart) {
+        newStartVal = input.val().substring(0, caretStart);
+        newEndVal = input.val().substring(caretEnd);
+        input.val(newStartVal + newEndVal);
+        input.caret({
+            start : caretStart, 
+            end : caretStart
+        });
+    } else {
+        newStartVal = input.val().substring(0, caretStart - 1);
+        newEndVal = input.val().substring(caretEnd);
+        input.val(newStartVal + newEndVal);
+        input.caret({
+            start : caretStart - 1, 
+            end : caretStart - 1
+        });
+    }
+}
+
+function focusSelectInput(inputEl) {
+    addTableNamePopupEl.find('input').focus();
+    addTableNamePopupEl.find('input').caret({
+        start : 0, 
+        end : 0
+    });
 }
