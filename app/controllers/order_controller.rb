@@ -136,8 +136,17 @@ class OrderController < ApplicationController
   def create_order order_params
     Order.transaction do
       @order_params = order_params
-
       @order_details = @order_params.delete(:order_details)
+    
+      #make sure we have not already cashed this order out. 
+      #We use a combination of terminal ID and time started to uniquely identify orders
+      @existing_order = Order.where("terminal_id = ?", @terminal_id).where("time_started = ?", order_params["time_started"])
+      
+      if !@existing_order.empty?
+        #simply ignore the order
+        logger.info "Ignoring existing order"
+        return true
+      end
       
       @card_charge_details = @order_details.delete(:card_charge)
     

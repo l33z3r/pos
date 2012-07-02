@@ -1273,7 +1273,13 @@ function doTotalFinal() {
         paymentMethod = defaultPaymentMethod;
     }
     
-    totalOrder.time = clueyTimestamp();
+    if(typeof(totalOrder.time) == 'undefined') {
+        totalOrder.time = clueyTimestamp();
+    }
+    
+    //need to copy time into time_started var
+    var orderStartTime = totalOrder.time;
+        
     totalOrder.payment_method = paymentMethod;
     
     //set the service charge again in case it was changed on the totals screen
@@ -1350,7 +1356,9 @@ function doTotalFinal() {
     order_num = totalOrder.order_num
     
     orderData = {
+        'order_details' : totalOrder,
         'order_num' : order_num,
+        'time_started' : orderStartTime,
         'employee_id' : current_user_id,
         'total' : orderTotal,
         'tax_chargable' : taxChargable,
@@ -1366,7 +1374,6 @@ function doTotalFinal() {
         'table_info_label' : tableInfoLabel,
         'discount_percent' : discountPercent,
         'pre_discount_price' : preDiscountPrice,
-        'order_details' : totalOrder,
         'terminal_id' : terminalID,
         'void_order_id' : totalOrder.void_order_id,
         'is_split_bill' : isSplitBill,
@@ -1504,11 +1511,19 @@ function loadAfterSaleScreen() {
     }
 }
 
+var send_order_xhr = null;
+var sendOrderToServerTimeoutSeconds = 5;
+
 function sendOrderToServer(orderData) {
-    $.ajax({
+    var timeoutMillis = sendOrderToServerTimeoutSeconds * 1000;
+    
+    send_order_xhr = $.ajax({
         type: 'POST',
         url: '/order',
+        timeout: timeoutMillis,
         error: function() {
+//            !userAbortedXHR(send_order_xhr)
+
             storeOrderForLaterSend(orderData);
             orderSentToServerCallback(orderData, true);
         },

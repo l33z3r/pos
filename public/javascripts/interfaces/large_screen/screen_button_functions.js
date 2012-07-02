@@ -363,8 +363,6 @@ function showGlobalSettingsPage() {
 var usingPrintService = true;
 
 function openCashDrawer() {
-    console.log("open cash drawer");
-    
     if(usingPrintService) {
         if(using_wss_cash_drawer) {
             if ("WebSocket" in window) {
@@ -376,18 +374,15 @@ function openCashDrawer() {
                 ws.onopen = function() {
                     //Web Socket is connected, send data using send()
                     ws.send("open cash drawer!");
-                    console.log("Cash Drawer message sent");
                     ws.close();
                 };
         
                 ws.onmessage = function (evt) { 
                     var received_msg = evt.data;
-                    console.log("Message received: " + received_msg);
                 };
             
                 ws.onclose = function() { 
-                    // websocket is closed.
-                    console.log("Connection closed!"); 
+                    // websocket is closed. 
                 };
             } else {
                 // The browser doesn't support WebSocket
