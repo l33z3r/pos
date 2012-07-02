@@ -159,6 +159,7 @@ function finishStockTakeMode() {
         
     //hide stock take divs
     $('#menu_items_container .stock_count').hide();
+    $('#stock_take_new_amount_input').attr("disabled", true);
     
     setShortcutDropdownDefaultText();
 }
@@ -220,6 +221,7 @@ function loadStockTakeReceiptArea(productId, menuItemId) {
     currentStockMenuItemId = menuItemId;
     
     $('#stock_take_new_amount_input').attr("disabled", false);
+    $('#stock_take_new_amount_input').val("");
     
     currentStockTakeProductId = productId;
     

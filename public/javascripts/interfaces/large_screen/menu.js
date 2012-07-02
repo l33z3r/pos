@@ -22,6 +22,8 @@ var creditCardChargeCallback = null;
 
 var manualCoversPrompt = true;
 
+var inTrainingMode = false;
+
 //this function is called from application.js on page load
 function initMenu() {
     initMenuScreenType();
@@ -1377,7 +1379,8 @@ function doTotalFinal() {
         'terminal_id' : terminalID,
         'void_order_id' : totalOrder.void_order_id,
         'is_split_bill' : isSplitBill,
-        'split_payments' : splitPayments
+        'split_payments' : splitPayments,
+        'is_training_mode_sale' : inTrainingMode
     }
     
     sendOrderToServer(orderData);
@@ -1512,7 +1515,7 @@ function loadAfterSaleScreen() {
 }
 
 var send_order_xhr = null;
-var sendOrderToServerTimeoutSeconds = 5;
+var sendOrderToServerTimeoutSeconds = 8;
 
 function sendOrderToServer(orderData) {
     var timeoutMillis = sendOrderToServerTimeoutSeconds * 1000;

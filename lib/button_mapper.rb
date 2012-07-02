@@ -74,6 +74,7 @@ class ButtonMapper
   PM_SHORTCUT_1_BUTTON = 71
   PM_SHORTCUT_2_BUTTON = 72
   PM_SHORTCUT_3_BUTTON = 73
+  TRAINING_MODE_TOGGLE_BUTTON =  74
   
   RESTRICTED_BUTTON_IDS = [
     ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON,
@@ -232,6 +233,8 @@ class ButtonMapper
       @retval = si_check(PM_SHORTCUT_2_BUTTON, ms_check("pmShortcut(2);"))
     when PM_SHORTCUT_3_BUTTON
       @retval = si_check(PM_SHORTCUT_3_BUTTON, ms_check("pmShortcut(3);"))
+    when TRAINING_MODE_TOGGLE_BUTTON
+      @retval = si_check(TRAINING_MODE_TOGGLE_BUTTON, ms_check("toggleTrainingMode();"))
     end
 
     @retval

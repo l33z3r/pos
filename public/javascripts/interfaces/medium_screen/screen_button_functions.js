@@ -59,3 +59,7 @@ function voidAllOrderItems() {
 function promptAddCovers() {
     alert("Implement Me!");
 }
+
+function toggleTrainingMode() {
+    
+}

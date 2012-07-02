@@ -79,6 +79,7 @@ class GlobalSetting < ActiveRecord::Base
   SCREEN_RESOLUTION = 64
   PM_SHORTCUT_ID = 65
   PROMPT_FOR_COVERS = 66
+  DEDUCT_STOCK_DURING_TRAINING_MODE = 67
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -146,7 +147,8 @@ class GlobalSetting < ActiveRecord::Base
     ALLOW_ZALION_SPLIT_PAYMENTS => "Allow Zalion Split Payments",
     SCREEN_RESOLUTION => "Screen Resolution",
     PM_SHORTCUT_ID => "Payment Method Shortcut ID",
-    PROMPT_FOR_COVERS => "Prompt For Covers"
+    PROMPT_FOR_COVERS => "Prompt For Covers",
+    DEDUCT_STOCK_DURING_TRAINING_MODE => "Deduct Stock In Training Mode"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -357,6 +359,9 @@ class GlobalSetting < ActiveRecord::Base
     when PROMPT_FOR_COVERS
       @gs = find_or_create_by_key(:key => PROMPT_FOR_COVERS.to_s, :value => "false", :label_text => LABEL_MAP[PROMPT_FOR_COVERS])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when DEDUCT_STOCK_DURING_TRAINING_MODE
+      @gs = find_or_create_by_key(:key => DEDUCT_STOCK_DURING_TRAINING_MODE.to_s, :value => "false", :label_text => LABEL_MAP[DEDUCT_STOCK_DURING_TRAINING_MODE])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -475,6 +480,9 @@ class GlobalSetting < ActiveRecord::Base
       new_value = value.to_i
       write_attribute("value", new_value)
     when PROMPT_FOR_COVERS
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when DEDUCT_STOCK_DURING_TRAINING_MODE
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     else

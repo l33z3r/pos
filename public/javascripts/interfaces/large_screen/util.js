@@ -750,3 +750,13 @@ function hideLicenceExpiredScreen() {
         
     }
 }
+
+function initTrainingModeFromCookie() {
+    if(getRawCookie(inTrainingModeCookieName) == null) {
+        var exdays = 365 * 100;
+        setRawCookie(inTrainingModeCookieName, false, exdays);
+    }
+    
+    var turnOn = getRawCookie(inTrainingModeCookieName) === "true";
+    setTrainingMode(turnOn);
+}
