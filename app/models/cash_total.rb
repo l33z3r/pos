@@ -129,7 +129,7 @@ class CashTotal < ActiveRecord::Base
       @service_charge_total = 0
         
       #here are all the orders for this terminal since the last z total
-      @orders = Order.where("created_at >= ?", @first_order.created_at).where("created_at <= ?", @last_order.created_at).where("terminal_id = ?", terminal_id).where("is_void is false").lock(true)
+      @orders = Order.where("created_at >= ?", @first_order.created_at).where("created_at <= ?", @last_order.created_at).where("terminal_id = ?", terminal_id).where("training_mode_sale is false").where("is_void is false").lock(true)
        
       @orders.each do |order|
         

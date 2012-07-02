@@ -905,3 +905,24 @@ function pmShortcut(shortcutNum) {
     
     doTotalFinal();
 }
+
+function toggleTrainingMode() {
+    setTrainingMode(!inTrainingMode);
+}
+
+function setTrainingMode(turnOn) {
+    inTrainingMode = turnOn;
+    
+    var exdays = 365 * 100;
+    setRawCookie(inTrainingModeCookieName, inTrainingMode, exdays);
+    
+    if(inTrainingMode) {
+        $('.button[id=sales_button_' + toggleTrainingModeButtonID + ']').addClass("selected");
+        $('.button[id=admin_screen_button_' + toggleTrainingModeButtonID + ']').addClass("selected");
+        $('nav#main_nav').addClass("training_mode");
+    } else {
+        $('.button[id=sales_button_' + toggleTrainingModeButtonID + ']').removeClass("selected");
+        $('.button[id=admin_screen_button_' + toggleTrainingModeButtonID + ']').removeClass("selected");
+        $('nav#main_nav').removeClass("training_mode");
+    }
+}

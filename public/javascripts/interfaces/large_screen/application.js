@@ -154,6 +154,8 @@ function doGlobalInit() {
     callHomePoll();
 
     clueyScheduler();
+    
+    initTrainingModeFromCookie();
 
 //enable this for html5 cache flushing
 //    if(inProdMode()) {

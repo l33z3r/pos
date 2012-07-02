@@ -451,6 +451,12 @@ nav#main_nav {
     margin-bottom: 2px;
 }
 
+nav#main_nav.training_mode {
+    background-color: #E36C0A;
+    background: -moz-linear-gradient(#E36C0A, #000000) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E36C0A), to(#000));
+}
+
 nav#main_nav div#nav_back_link,
 nav#main_nav div#admin_nav_back_link,
 nav#main_nav div#business_name,
