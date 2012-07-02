@@ -28,7 +28,7 @@ function setReportsDatePickers() {
             setStockParams();
 
             if ($('#date_select_container').find('#date_to').val() != "") {
-                runGlancesSearch();
+//                runGlancesSearch();
             }
         }
     });
@@ -47,7 +47,7 @@ function setReportsDatePickers() {
             setReportParams();
             setStockParams();
             if ($('#date_select_container').find('#date_from').val() != "") {
-                runGlancesSearch();
+//                runGlancesSearch();
             }
         }
     });
@@ -67,12 +67,12 @@ function addTerminalFilter(terminal_id) {
 
 function addHourFromFilter(hour) {
     hour_from = hour;
-    runGlancesSearch();
+//    runGlancesSearch();
 }
 
 function addHourToFilter(hour) {
     hour_to = hour;
-    runGlancesSearch();
+//    runGlancesSearch();
 }
 
 function printInvoice(url) {
@@ -150,7 +150,7 @@ function addDateFilter(interval_selected) {
         selectedFromDate = "";
         selectedToDate = "";
     }
-    runGlancesSearch();
+//    runGlancesSearch();
 }
 
 function runGlancesSearch() {

@@ -251,11 +251,11 @@ class Reports::SalesController < Admin::AdminController
       end
 
       if session[:category] != '' && session[:product] != ''
-        where << " and o.product_id = #{session[:product]}"
+        where << " inner join products p on o.product_id = p.id and o.product_id = #{session[:product]}"
       end
 
       if session[:category] == '' && session[:product] != ''
-        where << " and o.product_id = #{session[:product]}"
+        where << " inner join products p on o.product_id = p.id and o.product_id = #{session[:product]}"
       end
       if session[:terminal] != ''
       where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"

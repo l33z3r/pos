@@ -130,7 +130,6 @@
                     <% new_tax_rate = 0 %>
                     <% total_items = week.quantity %>
                     <% gross_sales = week.total_price %>
-                    <% product = Product.find_by_id(week.product_id) %>
                     <% vat = week.tax_rate %>
                     <% net_sales = net_result(gross_sales, vat) %>
                     <tbody>
