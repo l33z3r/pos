@@ -102,7 +102,7 @@
               </td>
               <td>
                    <% quantity_sold = sprintf("%.0f", item.quantity)  %>
-                   <%= quantity_sold %>
+                   <%= sprintf("%.0f", quantity_sold.to_d/product.quantity_per_container.to_d) %>
               </td>
               <td>
                   <%= quantity_sold %>
