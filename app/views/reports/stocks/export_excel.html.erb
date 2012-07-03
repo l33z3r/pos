@@ -3,11 +3,10 @@
 
 
 <% end %>
-  <div id="stocks_items_graph">
+  <div id="stocks_items_graph" style="display: none">
     <div id="spacer" style="height:70px;"></div>
-    <%= high_chart("graph_container_sales", @h) %>
 </div>
-  <div id="stock_items" style="display: none">
+  <div id="stock_items">
     <% if session[:show_zeros] %>
     <table id="product_list" class="admin_table" style="width: 100%">
           <thead>
@@ -22,7 +21,6 @@
             <th class="header">Code Num</th>
           </thead>
           <% @products.each do |product| %>
-
           <tbody>
           <tr>
               <td>
@@ -95,11 +93,11 @@
                   <%= Category.find_by_id(product.category_id).name %>
               </td>
               <td>
-                  <%= product.quantity_in_stock %>
+                  <%= product.quantity_in_stock / product.quantity_per_container %>
               </td>
               <td>
                    <% quantity_sold = sprintf("%.0f", item.quantity)  %>
-                   <%= quantity_sold %>
+                   <%= sprintf("%.0f", quantity_sold.to_d/product.quantity_per_container.to_d) %>
               </td>
               <td>
                   <%= quantity_sold %>
@@ -132,12 +130,5 @@
     <% end %>
   </div>
 <% else %>
-    <div id="saved_items">
-    <div id="saved_items_container">
-                        <div onclick="setStockSelect(0)" class="saved_report_button"><div class="b_text"> <b>Stocks by Product This Week</b></div></div>
-                        <div onclick="setStockSelect(1)"  class="saved_report_button"><div class="b_text"><b>Stocks by Product This Month</b></div></div>
-                        <div onclick="setStockSelect(2)"  class="saved_report_button"><div class="b_text"><b>Stocks by Product This Year</b></div></div>
-                        <div onclick="setStockSelect(3)"  class="saved_report_button"><div class="b_text"><b>Stocks by Product All Time</b></div></div>
-    </div>
-    </div>
+
 <% end %>

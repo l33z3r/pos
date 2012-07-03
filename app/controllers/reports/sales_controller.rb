@@ -25,6 +25,7 @@ class Reports::SalesController < Admin::AdminController
     session[:from_date] = Time.now - 30.days
     session[:to_date] = Time.now
     session[:terminal] = ''
+    session[:training_mode] = false
 
     session[:preselect] = -1
 
@@ -184,8 +185,7 @@ class Reports::SalesController < Admin::AdminController
     else
       session[:preselect] = 0
     end
-
-    if params[:search][:training_mode]
+    if params[:search][:training_mode] == true
       session[:training_mode] = true
     else
       session[:training_mode] = false
@@ -272,7 +272,7 @@ class Reports::SalesController < Admin::AdminController
         where << " and p.name like '%#{session[:search_product]}%' or p.code_num like '%#{session[:search_product]}%'"
       end
 
-      if session[:training_mode]
+      if session[:training_mode] == true
         where << " and o.training_mode_sale = 1"
       else
         where << " and o.training_mode_sale = 0"
@@ -288,67 +288,73 @@ class Reports::SalesController < Admin::AdminController
     end
 
     if session[:search_type] == :worst_seller
-      where = "select o.id, o.tax_rate, o.product_id, SUM(total_price) total_price, SUM(quantity) quantity from orders or inner join order_items o on or.id = o.order_id"
+      where = "select oi.id, oi.tax_rate, oi.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id"
 
       if session[:category] != ''
-        where << " inner join products p on o.product_id = p.id and p.category_id = #{session[:category]}"
+        where << " inner join products p on oi.product_id = p.id and p.category_id = #{session[:category]}"
       end
 
       if session[:terminal] != ''
-        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and oi.terminal_id = '#{session[:terminal]}'"
       else
-        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}'"
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}'"
       end
 
       if session[:training_mode]
-        where << " and or.training_mode_sale = 1"
+        where << " and o.training_mode_sale = 1"
       else
-        where << " and or.training_mode_sale = 0"
+        where << " and o.training_mode_sale = 0"
       end
 
-      where << " group by o.product_id order by total_price asc"
+      where << " group by oi.product_id order by total_price asc"
       query = OrderItem.find_by_sql(where)
 
     end
 
     if session[:search_type] == :best_seller
-      where = "select o.id, o.tax_rate, o.product_id, SUM(total_price) total_price, SUM(quantity) quantity from orders or inner join order_items o on or.id = o.order_id"
+      where = "select oi.id, oi.tax_rate, oi.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id"
 
       if session[:category] != ''
-        where << " inner join products p on o.product_id = p.id and p.category_id = #{session[:category]}"
+        where << " inner join products p on oi.product_id = p.id and p.category_id = #{session[:category]}"
       end
 
       if session[:terminal] != ''
-        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and oi.terminal_id = '#{session[:terminal]}'"
       else
-        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}'"
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}'"
       end
 
       if session[:training_mode]
-        where << " and or.training_mode_sale = 1"
+        where << " and o.training_mode_sale = 1"
       else
-        where << " and or.training_mode_sale = 0"
+        where << " and o.training_mode_sale = 0"
       end
 
-      where << " group by o.product_id order by total_price desc"
+      where << " group by oi.product_id order by total_price desc"
       query = OrderItem.find_by_sql(where)
 
     end
 
     if session[:search_type] == :by_product
-      where = "select o.id, o.tax_rate, o.product_id, SUM(total_price) total_price, SUM(quantity) quantity from orders or inner join order_items o on or.id = o.order_id"
+      where = "select oi.id, oi.tax_rate, oi.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id inner join products p on oi.product_id = p.id"
 
       if session[:category] != ''
         where << " and p.category_id = #{session[:category]}"
       end
 
       if session[:terminal] != ''
-        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and oi.terminal_id = '#{session[:terminal]}'"
       else
-        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}'"
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}'"
       end
 
-      where << " group by o.product_id order by p.name asc"
+      if session[:training_mode]
+        where << " and o.training_mode_sale = 1"
+      else
+        where << " and o.training_mode_sale = 0"
+      end
+
+      where << " group by oi.product_id order by p.name asc"
       query = OrderItem.find_by_sql(where)
 
     end

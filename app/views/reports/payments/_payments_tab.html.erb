@@ -81,18 +81,18 @@
                         </td>
                         <td>
                             <% if week.pre_discount_price != nil %>
-                                <%= sprintf("%.2f", week.total + week.pre_discount_price) %>
+                                <%= print_money(week.total + week.pre_discount_price) %>
                             <% else %>
-                                <%= sprintf("%.2f", week.total) %>
+                                <%= print_money(week.total) %>
                             <% end %>
                         </td>
                         <td>
                             <% if week.pre_discount_price != nil %>
-                                <%= sprintf("%.2f",  week.pre_discount_price) %>
+                                <%= print_money( week.pre_discount_price) %>
                             <% end %>
                         </td>
                         <td>
-                            <%= sprintf("%.2f",  week.total) %>
+                            <%= print_money( week.total) %>
                         </td>
                     </tr>
                 <% end %>
@@ -144,20 +144,20 @@
                         </td>
                         <td>
                             <% if week.pre_discount_price != nil %>
-                            <%= sprintf("%.2f", week.pre_discount_price) %>
+                            <%= print_money(week.pre_discount_price) %>
                             <% total_gross += week.pre_discount_price  %>
                             <% else %>
-                            <%= sprintf("%.2f", week.total) %>
+                            <%= print_money(week.total) %>
                             <% total_gross += week.total %>
                             <% end %>
                         </td>
                         <td>
                             <% if week.pre_discount_price != nil %>
-                            <%= sprintf("%.2f",  week.pre_discount_price-week.total) %>
+                            <%= print_money( week.pre_discount_price-week.total) %>
                             <% end %>
                         </td>
                         <td>
-                            <%= sprintf("%.2f",  week.total) %>
+                            <%= print_money( week.total) %>
                         </td>
 
 
@@ -179,13 +179,13 @@
                      <td style="text-align: right; border-top: 2px solid;">
                         </td>
                      <td style="text-align: left; border-top: 2px solid;">
-                         <%= sprintf("%.2f", total_gross) %>
+                         <%= print_money(total_gross) %>
                         </td>
                      <td style="text-align: left; border-top: 2px solid;">
-                         <%= sprintf("%.2f", total_discount) %>
+                         <%= print_money(total_discount) %>
                         </td>
                         <td style="text-align: left; border-top: 2px solid">
-                            <%= sprintf("%.2f", total_net) %>
+                            <%= print_money(total_net) %>
                         </td>
                     </tr>
                 </tbody>

@@ -430,8 +430,9 @@ function setSearchType(interval_selected) {
             break;
         case '6':
             search_type = 'by_product';
-            $('#product_dropdown').show();
-            $('#string_search_box').show();
+            $('#product_dropdown').hide();
+            $('#product_search').val('');
+            $('#string_search_box').hide();
             break;
 
     }

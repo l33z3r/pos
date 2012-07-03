@@ -27,6 +27,7 @@ class Reports::StocksController < Admin::AdminController
     session[:to_date] = Time.now
     session[:terminal] = ''
     session[:search_type_label] = 'Product'
+    session[:training_mode] = false
     @current_category = nil
     @current_product = nil
     @products_drop = Product.all
@@ -98,6 +99,13 @@ class Reports::StocksController < Admin::AdminController
     else
      session[:preselect] = 0
     end
+
+    if params[:search][:training_mode] == true
+      session[:training_mode] = true
+    else
+      session[:training_mode] = false
+    end
+
     if params[:search][:search_type] == 'by_product'
       session[:search_type] = :by_product
       session[:search_type_label] = 'Product'
@@ -162,7 +170,7 @@ class Reports::StocksController < Admin::AdminController
 
 
 
-      where = "select oi.product_id, p.category_id, p.quantity_in_stock, p.cost_price, p.code_num, SUM(oi.total_price) AS total_price, SUM(oi.quantity) AS quantity from order_items oi inner join products p on p.id = oi.product_id inner join categories c on c.id = p.category_id"
+      where = "select oi.product_id, p.category_id, p.quantity_in_stock, p.cost_price, p.code_num, SUM(oi.total_price) AS total_price, SUM(oi.quantity) AS quantity from order_items oi inner join products p on p.id = oi.product_id inner join categories c on c.id = p.category_id inner join orders o on oi.order_id = o.id"
 
       if session[:terminal] != ''
         where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and oi.terminal_id = '#{session[:terminal]}'"
@@ -182,6 +190,12 @@ class Reports::StocksController < Admin::AdminController
         where << " and p.id = #{session[:product]}"
       end
 
+      if session[:training_mode] == true
+        where << " and o.training_mode_sale = 1"
+      else
+        where << " and o.training_mode_sale = 0"
+      end
+
       if session[:search_type] == :by_category
         where << " group by c.id"
       end
@@ -189,6 +203,8 @@ class Reports::StocksController < Admin::AdminController
       if session[:search_type] == :by_product
         where << " group by p.id"
       end
+
+
 
       query = OrderItem.find_by_sql(where)
 
