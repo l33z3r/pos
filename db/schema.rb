@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120703100443) do
+ActiveRecord::Schema.define(:version => 20120703164356) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -309,6 +309,7 @@ ActiveRecord::Schema.define(:version => 20120703100443) do
     t.text     "oia_data",               :limit => 2147483647
     t.boolean  "is_void",                                      :default => false
     t.boolean  "is_half",                                      :default => false
+    t.integer  "void_employee_id"
   end
 
   add_index "order_items", ["employee_id"], :name => "index_order_items_on_employee_id"

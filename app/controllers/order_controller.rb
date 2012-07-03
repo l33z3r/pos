@@ -208,6 +208,10 @@ class OrderController < ApplicationController
       
         @order_item.is_void = item[:is_void] == "true"
         
+        if @order_item.is_void
+          @order_item.void_employee_id = item[:void_employee_id]
+        end
+        
         #oias
         if item[:oia_items]
           item[:oia_items].each do |index, oia|
