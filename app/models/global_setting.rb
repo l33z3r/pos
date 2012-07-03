@@ -588,7 +588,7 @@ class GlobalSetting < ActiveRecord::Base
             @my_wss_receipt_printer_gs.value = @wss_receipt_printer_gs.value
             @my_wss_receipt_printer_gs.save
 	    
-	    #screen resolution
+            #screen resolution
             @screen_resolution_gs = GlobalSetting.setting_for GlobalSetting::SCREEN_RESOLUTION, {:fingerprint => @old_fingerprint}
 	    
             @my_screen_resolution_gs = GlobalSetting.setting_for GlobalSetting::SCREEN_RESOLUTION, {:fingerprint => @my_terminal_fingerprint}
@@ -610,7 +610,7 @@ class GlobalSetting < ActiveRecord::Base
             @do_beep_gs.destroy
             @wss_cash_drawer_gs.destroy
             @wss_receipt_printer_gs.destroy
-	    @screen_resolution_gs.destroy
+            @screen_resolution_gs.destroy
           end
         end
         if value
@@ -730,6 +730,23 @@ class GlobalSetting < ActiveRecord::Base
   
   def self.terminal_id_for fingerprint
     GlobalSetting.setting_for GlobalSetting::TERMINAL_ID, {:fingerprint => fingerprint}
+  end
+  
+  def self.clear_dup_keys_gs
+    GlobalSetting.order("created_at desc, id desc").group_by(&:key).each do |gs_key, gs_set|
+      if gs_set.size > 1
+        #we have duplicates
+        @del_count = gs_set.size - 1
+	
+        puts "Found #{gs_set.size} duplicate keys for Key: #{gs_key} Label: '#{gs_set.first.label_text}'. Removing #{@del_count} duplicates!"
+	
+        gs_set.each do |gs|
+          break if @del_count == 0
+          gs.destroy
+          @del_count -= 1
+        end
+      end
+    end
   end
   
   #these properties are for particular properties in the db
