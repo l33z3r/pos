@@ -55,8 +55,8 @@ function setExtraOptionsSelectedTab(tab_el_name, tab_content_el_name) {
 }
 
 function updateStockCalculation(index) {
-    var numerator = parseInt($('#quantity_numerator_' + index).val());
-    var denominator = parseInt($('#quantity_denominator_' + index).val());
+    var numerator = parseFloat($('#quantity_numerator_' + index).val());
+    var denominator = parseFloat($('#quantity_denominator_' + index).val());
     
     if(isNaN(numerator) || numerator <=0) {
         numerator = 1;
