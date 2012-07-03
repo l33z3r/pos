@@ -205,8 +205,8 @@ class Reports::PaymentsController < Admin::AdminController
 
   def get_payments_data
 
-    @selected_from_date = session[:from_date].to_s
-    @selected_to_date = session[:to_date].to_s
+    @selected_from_date = DateTime.parse(session[:from_date].to_s).new_offset('-01:00')
+    @selected_to_date = DateTime.parse(session[:to_date].to_s).new_offset('-01:00')
 
     if (session[:search_type] == :day || session[:search_type] == :month || session[:search_type] == :year || session[:search_type] == :week)
 

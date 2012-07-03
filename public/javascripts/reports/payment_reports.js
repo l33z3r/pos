@@ -11,6 +11,7 @@ var hour_to;
 var drop_val;
 var discounts_only = false;
 var drop_set_type;
+var select_type = '';
 
 /**
  *  Reports
@@ -84,7 +85,7 @@ function runPaymentsSearch() {
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
             "search[terminal]" : terminalId,
-            "search[select_type]" : select_typet,
+            "search[select_type]" : select_type,
             "search[discounts_only]" : discounts_only,
             "search[training_mode]" : inTrainingMode
 
