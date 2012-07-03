@@ -147,20 +147,24 @@ class CashTotal < ActiveRecord::Base
           end
           
           if order_item.is_void
+            
+            @void_employee = Employee.find_by_id(order_item.void_employee_id)
+            @void_employee_nickname = @void_employee.nickname
+            
             #initialise a hash for employee
-            if !@voids_by_employee[@server_nickname]
-              @voids_by_employee[@server_nickname] = {
+            if !@voids_by_employee[@void_employee_nickname]
+              @voids_by_employee[@void_employee_nickname] = {
                 :quantity => 0,
                 :sales_total => 0
               }
             end
           
-            @product_voids_quantity = @voids_by_employee[@server_nickname][:quantity].to_f
+            @product_voids_quantity = @voids_by_employee[@void_employee_nickname][:quantity].to_f
             @product_voids_quantity += order_item.quantity
             @product_voids_quantity = sprintf("%g", @product_voids_quantity)
-            @voids_by_employee[@server_nickname][:quantity] = @product_voids_quantity
+            @voids_by_employee[@void_employee_nickname][:quantity] = @product_voids_quantity
           
-            @voids_by_employee[@server_nickname][:sales_total] += @order_item_price
+            @voids_by_employee[@void_employee_nickname][:sales_total] += @order_item_price
           
             #now continue to next product so this one does not get included in sales totals
             next

@@ -464,6 +464,11 @@ function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCou
     
     targetOrderItem.is_void = is_void;
     
+    //add the employee who voided the item
+    if(targetOrderItem.is_void) {
+        targetOrderItem.void_employee_id = current_user_id;
+    }
+    
     if(targetOrderItem.pre_discount_price) {
         targetOrderItem.pre_discount_price = newPricePerUnit * newQuantity;
     } else {

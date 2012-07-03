@@ -31,6 +31,9 @@ class Admin::PaymentMethodsController < Admin::AdminController
       (1..3).each do |shortcut_num|
         @pmShortcutIDGS = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => shortcut_num} 
         @pmShortcutID = @pmShortcutIDGS.parsed_value
+        
+        next if @pmShortcutID == -1
+        
         @pmShortcut = PaymentMethod.find_by_id @pmShortcutID
       
         if !@pmShortcut.can_be_shortcut?

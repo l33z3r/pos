@@ -3,6 +3,9 @@ class OrderItem < ActiveRecord::Base
   
   belongs_to :order
   belongs_to :employee
+  
+  has_one :void_employee, :class_name => "Employee", :foreign_key => "void_employee_id"
+  
   belongs_to :product
 
   def week
