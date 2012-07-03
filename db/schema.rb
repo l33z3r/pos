@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120702140853) do
+ActiveRecord::Schema.define(:version => 20120703100443) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -198,8 +198,8 @@ ActiveRecord::Schema.define(:version => 20120702140853) do
   create_table "ingredients", :force => true do |t|
     t.integer  "product_id"
     t.integer  "ingredient_product_id"
-    t.integer  "quantity_numerator",    :default => 1
-    t.integer  "quantity_denominator",  :default => 1
+    t.float    "quantity_numerator",    :default => 1.0
+    t.float    "quantity_denominator",  :default => 1.0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
