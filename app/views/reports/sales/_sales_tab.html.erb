@@ -77,13 +77,13 @@
                             <%= "%g" % total_items %>
                         </td>
                         <td style="text-align: right">
-                            <%= sprintf("%.2f", gross_sales) %>
+                            <%= print_money(gross_sales) %>
                         </td>
                         <td style="text-align: right">
-                            <%= sprintf("%.2f", vat) %>
+                            <%= print_money(vat) %>
                         </td>
                         <td style="text-align: right">
-                            <%= sprintf("%.2f", net_sales) %>
+                            <%= print_money(net_sales) %>
                         </td>
                     </tr>
                 <% end %>
@@ -98,13 +98,13 @@
 
                         </td>
                         <td style="text-align: right; border-top: 2px solid;">
-                            <%= sprintf("%.2f", total_gross) %>
+                            <%= print_money(total_gross) %>
                         </td>
                         <td style="text-align: right; border-top: 2px solid;">
-                            <%= sprintf("%.2f", total_vat) %>
+                            <%= print_money(total_vat) %>
                         </td>
                         <td style="text-align: right; border-top: 2px solid">
-                            <%= sprintf("%.2f", total_net) %>
+                            <%= print_money(total_net) %>
                         </td>
                     </tr>
                 </tbody>
@@ -161,13 +161,13 @@
                             <%= sprintf("%.0f", total_items) %>
                         </td>
                         <td>
-                            <%= sprintf("%.2f", gross_sales) %>
+                            <%= print_money(gross_sales) %>
                         </td>
                         <td>
-                            <%= sprintf("%.2f", vat) %>
+                            <%= print_money(vat) %>
                         </td>
                         <td>
-                            <%= sprintf("%.2f", net_sales) %>
+                            <%= print_money(net_sales) %>
                         </td>
 
 

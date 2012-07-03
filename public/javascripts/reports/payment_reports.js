@@ -84,8 +84,9 @@ function runPaymentsSearch() {
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
             "search[terminal]" : terminalId,
-            "search[select_type]" : select_type,
-            "search[discounts_only]" : discounts_only
+            "search[select_type]" : select_typet,
+            "search[discounts_only]" : discounts_only,
+            "search[training_mode]" : inTrainingMode
 
             }
         }).done(function() {
@@ -114,7 +115,8 @@ function setPaymentReportParams() {
             "search[search_type]" : search_type,
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
-            "search[terminal]" : terminalId
+            "search[terminal]" : terminalId,
+            "search[training_mode]" : inTrainingMode
 
         }
     });
@@ -255,7 +257,8 @@ function setPaymentSelect(set_type) {
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
             "search[terminal]" : terminalId,
-            "search[select_type]" : select_type
+            "search[select_type]" : select_type,
+            "search[training_mode]" : inTrainingMode
         }
     }) }).done(function() {
             runPaymentsSearch();

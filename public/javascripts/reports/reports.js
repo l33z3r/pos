@@ -8,6 +8,7 @@ var search_type;
 var terminalId;
 var hour_from;
 var hour_to;
+var select_type = '';
 
 /**
  *  Reports
@@ -205,7 +206,8 @@ function runSalesSearch() {
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
             "search[terminal]" : terminalId,
-            "search[select_type]" : select_type
+            "search[select_type]" : select_type,
+            "search[training_mode]" : inTrainingMode
         }
     }).done(function() {
         $.ajax({
@@ -238,7 +240,8 @@ function runStocksSearch() {
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
             "search[terminal]" : terminalId,
-            "search[select_type]" : select_type
+            "search[select_type]" : select_type,
+            "search[training_mode]" : inTrainingMode
         }
     }).done(function() {
     $.ajax({
@@ -268,7 +271,8 @@ function setReportParams() {
             "search[product]" : $('#product_id_equals').val(),
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
-            "search[terminal]" : terminalId
+            "search[terminal]" : terminalId,
+            "search[training_mode]" : inTrainingMode
 
         }
     });
@@ -287,7 +291,8 @@ function setStockParams() {
             "search[product]" : $('#product_id_equals').val(),
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
-            "search[terminal]" : terminalId
+            "search[terminal]" : terminalId,
+            "search[training_mode]" : inTrainingMode
         }
     });
 }
@@ -425,8 +430,9 @@ function setSearchType(interval_selected) {
             break;
         case '6':
             search_type = 'by_product';
-            $('#product_dropdown').show();
-            $('#string_search_box').show();
+            $('#product_dropdown').hide();
+            $('#product_search').val('');
+            $('#string_search_box').hide();
             break;
 
     }
@@ -482,7 +488,8 @@ function setSearchSelect(set_type){
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
             "search[terminal]" : terminalId,
-            "search[select_type]" : select_type
+            "search[select_type]" : select_type,
+            "search[training_mode]" : inTrainingMode
         }
     }).done(function() {
       runSalesSearch();
@@ -541,7 +548,8 @@ function setStockSelect(set_type){
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
             "search[terminal]" : terminalId,
-            "search[select_type]" : select_type
+            "search[select_type]" : select_type,
+            "search[training_mode]" : inTrainingMode
         }
     }).done(function() {
       runStocksSearch();

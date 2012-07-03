@@ -26,6 +26,7 @@ class Reports::PaymentsController < Admin::AdminController
     session[:terminal] = ''
     session[:employee] = ''
     session[:discounts_only] = false
+    session[:training_mode] = false
 
     session[:preselect] = -1
 
@@ -164,6 +165,12 @@ class Reports::PaymentsController < Admin::AdminController
       session[:preselect] = 0
     end
 
+    if params[:search][:training_mode]
+      session[:training_mode] = true
+    else
+      session[:training_mode] = false
+    end
+
     if params[:search][:search_type] == 'day'
       session[:search_type] = :day
       session[:search_type_label] = 'Day'
@@ -223,6 +230,11 @@ class Reports::PaymentsController < Admin::AdminController
       if session[:discounts_only] == "true"
         where << " and o.discount_percent IS NOT NULL"
       end
+      if session[:training_mode]
+        where << " and o.training_mode_sale = 1"
+      else
+        where << " and o.training_mode_sale = 0"
+      end
       if session[:search_type] == :day
       where << " group by #{session[:search_type]}(o.created_at) order by o.created_at asc"
       else
@@ -240,6 +252,7 @@ class Reports::PaymentsController < Admin::AdminController
       else
         where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}'"
       end
+
       if session[:payment_type] != ''
         where << " and o.payment_type = '#{session[:payment_type]}'"
       end
@@ -248,6 +261,11 @@ class Reports::PaymentsController < Admin::AdminController
       end
       if session[:discounts_only] == "true"
         where << " and o.discount_percent IS NOT NULL"
+      end
+      if session[:training_mode]
+        where << " and o.training_mode_sale = 1"
+      else
+        where << " and o.training_mode_sale = 0"
       end
 
       query = Order.find_by_sql(where)
