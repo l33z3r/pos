@@ -230,7 +230,7 @@ class Reports::PaymentsController < Admin::AdminController
       if session[:discounts_only] == "true"
         where << " and o.discount_percent IS NOT NULL"
       end
-      if session[:training_mode] == true
+      if session[:training_mode] == truel
         where << " and o.training_mode_sale = 1"
       else
         where << " and o.training_mode_sale = 0"
