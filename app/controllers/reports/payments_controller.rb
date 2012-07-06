@@ -165,7 +165,7 @@ class Reports::PaymentsController < Admin::AdminController
       session[:preselect] = 0
     end
 
-    if params[:search][:training_mode]
+    if params[:search][:training_mode] == true
       session[:training_mode] = true
     else
       session[:training_mode] = false
@@ -205,8 +205,8 @@ class Reports::PaymentsController < Admin::AdminController
 
   def get_payments_data
 
-    @selected_from_date = session[:from_date].to_s
-    @selected_to_date = session[:to_date].to_s
+    @selected_from_date = DateTime.parse(session[:from_date].to_s).new_offset('-01:00')
+    @selected_to_date = DateTime.parse(session[:to_date].to_s).new_offset('-01:00')
 
     if (session[:search_type] == :day || session[:search_type] == :month || session[:search_type] == :year || session[:search_type] == :week)
 
@@ -230,7 +230,7 @@ class Reports::PaymentsController < Admin::AdminController
       if session[:discounts_only] == "true"
         where << " and o.discount_percent IS NOT NULL"
       end
-      if session[:training_mode]
+      if session[:training_mode] == truel
         where << " and o.training_mode_sale = 1"
       else
         where << " and o.training_mode_sale = 0"
@@ -262,7 +262,7 @@ class Reports::PaymentsController < Admin::AdminController
       if session[:discounts_only] == "true"
         where << " and o.discount_percent IS NOT NULL"
       end
-      if session[:training_mode]
+      if session[:training_mode] == true
         where << " and o.training_mode_sale = 1"
       else
         where << " and o.training_mode_sale = 0"

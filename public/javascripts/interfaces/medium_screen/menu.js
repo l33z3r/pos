@@ -1120,10 +1120,30 @@ function showTablesSubscreen() {
     $('#table_screen').show();
 }
 
+function showCoversSubscreen() {
+    hideAllMenuSubScreens();
+
+//    blank the function buttons
+    if (initScreenDefault == "false") {
+        $('#menu_screen #buttons_container').hide();
+        $('#menu_screen #cluey_logo').show();
+        initScreenDefault = "true";
+    }
+    $('.button[id=sales_button_' + tablesButtonID + ']').addClass("selected");
+    $('#table_screen').hide();
+    $('#covers_screen').show();
+}
+
 function tableNumberSelectKeypadClick(val) {
     var newVal = $('#table_num').val().toString() + val;
     $('#table_number_show').html(newVal);
     $('#table_num').val(newVal);
+}
+
+function coverNumberSelectKeypadClick(val) {
+    var newVal = $('#covers_num').val().toString() + val;
+    $('#cover_number_show').html(newVal);
+    $('#covers_num').val(newVal);
 }
 
 function priceNumberSelectKeypadClick(val) {
@@ -1156,6 +1176,15 @@ function doCanceltableNumberSelectKeypad() {
     $('#table_number_show').html(newVal);
     $('#table_num').val(newVal);
     $('.new_price').val(newVal);
+}
+
+function doCancelcoverNumberSelectKeypad() {
+    oldVal = $('#covers_num').val().toString();
+    newVal = oldVal.substring(0, oldVal.length - 1);
+    newVal = oldVal.substring(0, oldVal.length - 1);
+    $('#cover_number_show').html(newVal);
+    $('#covers_num').val(newVal);
+//    $('.new_price').val(newVal);
 }
 
 function doCancelpriceNumberSelectKeypad() {
@@ -1227,6 +1256,12 @@ function doSubmitTableNumber() {
         return;
     }
 
+//    if ($("#covers_num").val() != ''){
+//       var tableOrder = getCurrentOrder();
+//       tableOrder.covers = $("#covers_num").val();
+//       $("#covers_num").val('');
+//    }
+
     var table_label = $('#table_num').val().toString();
 
     //check table exists
@@ -1262,6 +1297,7 @@ function doSubmitTableNumber() {
         swipeToReceipt();
         menuScreenDefault = "true"
     }
+
 
 }
 
