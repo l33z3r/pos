@@ -257,13 +257,6 @@ function storeTableOrderInStorage(current_user_id, table_num, order_to_store) {
     return storeKeyValue(key, value);
 }
 
-// OLD VERSION THAT KEEPS COPY OF ORDERS PER USER (KEEP FOR REVERT)
-//function storeTableOrderInStorage(current_user_id, table_num, order_to_store) {
-//    key = "user_" + current_user_id + "_table_" + table_num + "_current_order";
-//    value = JSON.stringify(order_to_store);
-//    return storeKeyValue(key, value);
-//}
-
 function getTableOrderFromStorage(current_user_id, selectedTable) {
     key = "user_" + current_user_id + "_table_" + selectedTable + "_current_order";
     storageData = retrieveStorageValue(key);

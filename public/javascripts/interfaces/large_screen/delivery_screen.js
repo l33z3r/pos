@@ -1,6 +1,18 @@
 var currentDeliveryItemQuantity = "";
+var currentDelivery = null;
+
+var currentDeliveryStorageKey = "current_delivery";
 
 function initDeliveryScreen() {
+    currentDelivery = retrieveStorageJSONValue(currentDeliveryStorageKey);
+    
+    if(!currentDelivery) {
+        currentDelivery = {
+            'items': new Array(),
+            'total': 0
+        };
+    }
+    
     showDeliveryScreen();
     currentDeliveryItemQuantity = "";
     
@@ -8,6 +20,13 @@ function initDeliveryScreen() {
     clearDeliveryProductsSearchInput();
     $('#product_search_input').focus();
     updateDeliveryProductsSearchResults();
+    
+    redrawDeliveryReceipt();
+}
+
+function resetDeliveryProductSelect() {
+    resetKeyboard();
+    showMenuScreen();
 }
 
 function initDeliveryProductSearchKeyboard() {
@@ -110,16 +129,16 @@ function updateDeliveryProductsSearchResults() {
     var nextProduct = null;
     
     if(selectedProductSearchLetter != null) {        
-        for(productId in products) {
-            nextProduct = products[productId];
+        for(productId in non_deleted_products) {
+            nextProduct = non_deleted_products[productId];
             
             if(nextProduct.name.toLowerCase().startsWith(selectedProductSearchLetter)) {
                 results.push(nextProduct);
             }
         }
     } else {
-        for(productId in products) {
-            nextProduct = products[productId];
+        for(productId in non_deleted_products) {
+            nextProduct = non_deleted_products[productId];
             
             if(nextProduct.name.toLowerCase().contains(searchString)) {
                 results.push(nextProduct);
@@ -132,6 +151,12 @@ function updateDeliveryProductsSearchResults() {
     var resultHTML = "<div id='product_list'>";
     
     if(results.length > 0) {
+        var alphaSort = function(a, b) {
+            return a.name.localeCompare(b.name);
+        };
+        
+        results = results.sort(alphaSort);
+        
         for(var i=0; i<results.length; i++) {
             var p = results[i];
             
@@ -145,7 +170,13 @@ function updateDeliveryProductsSearchResults() {
                 productName = productName.toLowerCase().splice(endIndex, 0, "</b>");
             }
             
-            resultHTML += "<div onclick='addProductToDelivery(" + p.id + ")' class='product'>" + productName + "</div>";
+            var unitString = "";
+            
+            if(p.unit.length > 0) {
+                unitString = " (" +  p.unit + ")";
+            }
+            
+            resultHTML += "<div onclick='addProductToDelivery(" + p.id + ")' class='product'>" + productName + unitString +  "</div>";
         }
     } else {
         resultHTML += "<div id='no_results'>No Products Found!</div>";
@@ -154,4 +185,165 @@ function updateDeliveryProductsSearchResults() {
     resultHTML += "</div>" + clearHTML;
     
     $('#product_search_results_scroller').html(resultHTML);
+}
+
+function addProductToDelivery(productId) {
+    //fetch this product from the products js array and COPY It into the deliver
+    var productToCopy = products[productId];
+    
+    var copiedProduct = {};
+    
+    var product = $.extend(true, copiedProduct, productToCopy);
+    
+    if(currentDeliveryItemQuantity == "" || currentDeliveryItemQuantity == "0")
+        currentDeliveryItemQuantity = "1";
+
+    if(currentDeliveryItemQuantity.indexOf(".") != -1) {
+        if(currentDeliveryItemQuantity.length - currentDeliveryItemQuantity.indexOf(".") == 1) {
+            currentDeliveryItemQuantity = "1";
+        }
+    }
+    
+    var deliveryItemQuantity = parseFloat(currentDeliveryItemQuantity);
+    
+    var deliveryItem = {
+        'product' : product,
+        'amount' : deliveryItemQuantity
+    }
+    
+    currentDeliveryItemQuantity = "";
+    
+    currentDelivery.items.push(deliveryItem);
+    
+    calculateDeliveryTotal();
+    
+    storeDelivery();
+    
+    redrawDeliveryReceipt();
+}
+
+function redrawDeliveryReceipt() {
+    $('#delivery_till_roll').html(getAllDeliveryItemsReceiptHTML());
+    deliveryRecptScroll();
+    
+    $('#delivery_screen_sub_total_value').html(currency(currentDelivery.total));
+}
+
+function getAllDeliveryItemsReceiptHTML() {
+    allDeliveryItemsReceiptHTML = "";
+
+    for(var i=0; i<currentDelivery.items.length; i++) {
+        item = currentDelivery.items[i];
+        allDeliveryItemsReceiptHTML += getDeliveryItemReceiptHTML(currentDelivery.items[i]);
+    }
+    
+    return allDeliveryItemsReceiptHTML;
+}
+    
+//TODO: replace with jquery template => http://api.jquery.com/jQuery.template/
+function getDeliveryItemReceiptHTML(deliveryItem) {
+    deliveryItemHTML = "<div class='delivery_line'>"
+    deliveryItemHTML += "<div class='amount'>" + deliveryItem.amount + "</div>";
+    deliveryItemHTML += "<div class='product_name'>" + deliveryItem.product.name + "</div>";
+    
+    var costPrice = "";
+    
+    if(deliveryItem.product.cost_price > 0) {
+        costPrice = currency(deliveryItem.product.cost_price * deliveryItem.amount);
+    }
+    
+    deliveryItemHTML += "<div class='cost_price'>" + costPrice + "</div>";
+    deliveryItemHTML += "</div>" + clearHTML;
+    
+    return deliveryItemHTML;
+}
+
+function storeDelivery() {
+    storeKeyJSONValue(currentDeliveryStorageKey, currentDelivery);
+}
+
+function finishDelivery() {
+    if(currentDelivery.items.length == 0) {
+        doCancelDelivery();
+        return;
+    }
+    
+    var timeoutMillis = sendOrderToServerTimeoutSeconds * 1000;
+    
+    currentDelivery.employee_id = current_user_id;
+    storeDelivery();
+    
+    //send to server
+    $.ajax({
+        type: 'POST',
+        url: '/delivery',
+        timeout: timeoutMillis,
+        error: function() {
+            niceAlert("Error finishing delivery!");
+        },
+        success: function() {
+            deliverySentToServerCallback();
+        },
+        data: {
+            delivery : currentDelivery
+        }
+    });
+}
+
+function deliverySentToServerCallback() {
+    //print receipt
+    var deliveryReceiptContent = getAllDeliveryItemsReceiptHTML();    
+    printReceipt(deliveryReceiptContent, false);
+    
+    //finish up
+    currentDelivery = null;
+    storeDelivery();
+    $('#delivery_till_roll').html("");
+    
+    resetDeliveryProductSelect();
+    niceAlert("Delivery Complete!");
+}
+
+function promptCancelDelivery() {
+    ModalPopups.Confirm('niceAlertContainer',
+        'Cancel Delivery', "<div id='nice_alert'>Are you sure you want to cancel and clear this delivery?</div>",
+        {
+            yesButtonText: 'Yes',
+            noButtonText: 'No',
+            onYes: "doCancelDelivery()",
+            onNo: "hideNiceAlert();",
+            width: 400,
+            height: 250
+        } );
+}
+
+function doCancelDelivery() {
+    currentDelivery = null;
+    storeDelivery();
+    resetDeliveryProductSelect();
+    niceAlert("Delivery Canceled!");
+}
+
+function deleteLastDeliveryItem() {
+    if(currentDelivery.items.length == 0) {
+        niceAlert("No Delivery Items Present!");
+        return;
+    }
+    
+    currentDelivery.items.pop();
+    calculateDeliveryTotal()
+    
+    storeDelivery();
+    redrawDeliveryReceipt();
+}
+
+function calculateDeliveryTotal() {
+    var total = 0;
+    
+    for(var i=0; i<currentDelivery.items.length; i++) {
+        item = currentDelivery.items[i];
+        total += (item.product.cost_price * item.amount);
+    }
+    
+    currentDelivery.total = total;
 }

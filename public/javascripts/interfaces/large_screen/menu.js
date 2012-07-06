@@ -1073,6 +1073,10 @@ function totalsRecptScroll() {
     recptScroll("totals_");
 }
 
+function deliveryRecptScroll() {
+    recptScroll("delivery_");
+}
+
 function reportsRecptScroll() {
     recptScroll("reports_center_");
 }

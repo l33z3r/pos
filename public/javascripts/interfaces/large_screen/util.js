@@ -365,7 +365,7 @@ function currentScreenIsTotals() {
     return $('#total_screen').is(":visible");
 }
 
-function currentScreenIsTotals() {
+function currentScreenIsDelivery() {
     return $('#delivery_screen').is(":visible");
 }
 

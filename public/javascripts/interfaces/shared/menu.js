@@ -594,6 +594,7 @@ function initTouchRecpts() {
     $('.large_interface #till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #login_till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #totals_till_roll').touchScroll(receiptScrollerOpts);
+    $('.large_interface #delivery_till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #reports_center_till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #reports_left_till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #float_till_roll').touchScroll(receiptScrollerOpts);

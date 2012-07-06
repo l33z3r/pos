@@ -24,6 +24,9 @@ Pos::Application.routes.draw do
   match 'cash_total_history' => "order#cash_total_history", :via => :get
   match 'outstanding_orders' => "order#create_outstanding", :via => :post
 
+  #delivery
+  match 'delivery' => "delivery#receive", :via => :post
+  
   #routes for screens to login etc
   match 'home' => "home#index"
   get "home/active_employees"

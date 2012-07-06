@@ -829,7 +829,7 @@ function loadSearchCustomersForLetter(letter) {
 function updateCustomerSearchResults() {
     var searchString = $('#customer_search_input').val().toLowerCase();
     
-    results = new Array();
+   var results = new Array();
     
     var nextCustomer = null;
     
@@ -856,6 +856,12 @@ function updateCustomerSearchResults() {
     var resultHTML = "<div id='customer_list'>";
     
     if(results.length > 0) {
+        var alphaSort = function(a, b) {
+            return a.name.localeCompare(b.name);
+        };
+        
+        results = results.sort(alphaSort);
+        
         for(var i=0; i<results.length; i++) {
             var c = results[i];
             

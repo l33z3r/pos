@@ -9,8 +9,6 @@
         <div id="delivery_till_roll" class="till_roll"></div>
         <div class="clear">&nbsp;</div>
       </div>
-
-      <div id="delivery_till_roll_discount" class="till_roll_discount"></div>
     </div>
 
     <div class="clear">&nbsp;</div>
@@ -18,7 +16,7 @@
     <div id="total_container">
 
       <div id="label">Total:</div>
-      <div id="cash_screen_sub_total_value"></div>
+      <div id="delivery_screen_sub_total_value"></div>
 
       <div class="clear">&nbsp;</div>
 
@@ -50,7 +48,7 @@
       </div>
 
       <div id="extra_buttons">
-        <div class="cancel_link" onclick="resetProductSelect();">
+        <div class="cancel_link" onclick="resetDeliveryProductSelect();">
           <%= image_tag "red_x.gif" %>
         </div>
       </div>
@@ -93,6 +91,41 @@
           <%= image_tag "button_logos/save_button.png" %>
         </div>
         <div class="button_name">Wait</div>
+      </div>
+
+      <div class="button" data-onpress="addDeliveryItemNote()">
+        <div class="icon">
+          <%= image_tag "button_logos/add_note_button.png" %>
+        </div>
+        <div class="button_name">Add Note</div>
+      </div>
+
+      <div class="button" data-onpress="toggleReturnDeliveryItem()">
+        <div class="icon">
+          <%= image_tag "button_logos/return_delivery_item.png" %>
+        </div>
+        <div class="button_name">Return</div>
+      </div>
+
+      <div class="button" data-onpress="deleteLastDeliveryItem()">
+        <div class="icon">
+          <%= image_tag "button_logos/remove_item_button.png" %>
+        </div>
+        <div class="button_name">Remove Last Item</div>
+      </div>
+
+      <div class="button" data-onpress="promptCancelDelivery()">
+        <div class="icon">
+          <%= image_tag "button_logos/cancel_button.png" %>
+        </div>
+        <div class="button_name">Cancel</div>
+      </div>
+
+      <div class="button" data-onpress="finishDelivery()">
+        <div class="icon">
+          <%= image_tag "button_logos/finish_delivery.png" %>
+        </div>
+        <div class="button_name">Finish</div>
       </div>
 
       <div class="clear">&nbsp;</div>
