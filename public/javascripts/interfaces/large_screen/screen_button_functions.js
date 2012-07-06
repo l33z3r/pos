@@ -926,3 +926,7 @@ function setTrainingMode(turnOn) {
         $('nav#main_nav').removeClass("training_mode");
     }
 }
+
+function startDeliveryMode() {
+    initDeliveryScreen();
+}

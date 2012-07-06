@@ -143,6 +143,8 @@ function setStatusMessage(message, hide, shake) {
         statusEl = $('#menu_screen_status_message');
     } else if(currentScreenIsTables()) {
         statusEl = $('#tables_screen_status_message');
+    } else if(currentScreenIsDelivery()) {
+        statusEl = $('#delivery_screen_status_message');
     } else if(currentScreenIsTotals()) {
         statusEl = $('#totals_screen_status_message');
     } else if(inKitchenContext()) {
@@ -188,6 +190,10 @@ function hideStatusMessage() {
         statusEl = $('#menu_screen_status_message');
     } else if(currentScreenIsTables()) {
         statusEl = $('#tables_screen_status_message');
+    } else if(currentScreenIsDelivery()) {
+        statusEl = $('#delivery_screen_status_message');
+    } else if(currentScreenIsTotals()) {
+        statusEl = $('#totals_screen_status_message');
     } else if(inKitchenContext()) {
         statusEl = $('#kitchen_screen_status_message');
     } else {
@@ -296,6 +302,12 @@ function showTotalsScreen() {
     $('#total_screen').show();
 }
 
+function showDeliveryScreen() {
+    setNavTitle("Receive Delivery");
+    hideAllScreens();
+    $('#delivery_screen').show();
+}
+
 function showMoreOptionsScreen() {
     hideAllScreens();
     hideUtilKeyboard();
@@ -331,6 +343,7 @@ function hideAllScreens() {
     $('#menu_screen').hide();
     $('#table_select_screen').hide();
     $('#total_screen').hide();
+    $('#delivery_screen').hide();
     $('#util_payment_screen').hide();
     $('#more_options').hide();
     $('#cash_reports_screen').hide();
@@ -338,7 +351,6 @@ function hideAllScreens() {
     $('#mobile_screen').hide();
     $('#previous_cash_reports_screen').hide();
     $('#split_bill_screen').hide();
-
 }
 
 function currentScreenIsMenu() {
@@ -351,6 +363,10 @@ function currentScreenIsLogin() {
 
 function currentScreenIsTotals() {
     return $('#total_screen').is(":visible");
+}
+
+function currentScreenIsTotals() {
+    return $('#delivery_screen').is(":visible");
 }
 
 function currentScreenIsUtilPayment() {

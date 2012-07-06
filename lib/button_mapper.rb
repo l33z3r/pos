@@ -76,9 +76,10 @@ class ButtonMapper
   PM_SHORTCUT_3_BUTTON = 73
   TRAINING_MODE_TOGGLE_BUTTON =  74
   
+  
   RESTRICTED_BUTTON_IDS = [
     ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON,
-    CASH_OUT_BUTTON, DELIVERY_BUTTON, STOCK_TAKE_BUTTON,
+    CASH_OUT_BUTTON, STOCK_TAKE_BUTTON,
     PRINTERS_BUTTON, CHANGE_WAITER_BUTTON, REFUND_BUTTON, WASTE_BUTTON, CLIENT_BUTTON, THEMES_BUTTON
   ]
   
@@ -160,7 +161,7 @@ class ButtonMapper
     when STOCK_TAKE_BUTTON
       @retval = "alert('stock take button clicked');"
     when DELIVERY_BUTTON
-      @retval = "alert('delivery button clicked');"
+      @retval = "startDeliveryMode();"
     when CASH_OUT_BUTTON
       @retval = "alert('cash out button clicked');"
     when RECEIPT_SETUP_BUTTON

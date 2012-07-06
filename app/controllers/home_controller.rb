@@ -589,13 +589,24 @@ class HomeController < ApplicationController
       @options_screen_buttons_map[role.id] = DisplayButtonRole.admin_screen_buttons_for_role(role.id)
     end 
     
-    query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from customers where customer_type in ('#{Customer::NORMAL}', '#{Customer::BOTH}') group by substr(name,1,1)")
+    @customer_letter_query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from customers where customer_type in ('#{Customer::NORMAL}', '#{Customer::BOTH}') group by substr(name,1,1)")
 
     @customer_letters = []
     
-    for element in query
+    for element in @customer_letter_query
       element[0].downcase!
       @customer_letters += element
+    end
+    
+    @product_letter_query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from products group by substr(name,1,1)")
+
+    @product_letters = []
+    
+    for element in @product_letter_query
+      if (!"0123456789".include?(element[0]))
+        element[0].downcase!
+        @product_letters += element
+      end
     end
      
   end
