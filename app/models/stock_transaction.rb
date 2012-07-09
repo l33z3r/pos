@@ -26,6 +26,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: stock_transactions
@@ -36,8 +37,10 @@ end
 #  old_amount       :float
 #  change_amount    :float
 #  transaction_type :integer(4)
-#  note             :string(255)
 #  created_at       :datetime
 #  updated_at       :datetime
+#  delivery_id      :integer(4)
+#  is_return        :boolean(1)      default(FALSE)
+#  note             :string(255)
 #
 

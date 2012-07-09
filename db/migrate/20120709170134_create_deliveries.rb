@@ -8,11 +8,9 @@ class CreateDeliveries < ActiveRecord::Migration
     
     add_column :stock_transactions, :delivery_id, :integer
     add_column :stock_transactions, :is_return, :boolean, :default => false
-    add_column :stock_transactions, :note, :string
   end
 
   def self.down
-    remove_column :stock_transactions, :note
     remove_column :stock_transactions, :is_return
     remove_column :stock_transactions, :delivery_id
     
