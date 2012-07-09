@@ -1,6 +1,7 @@
 var products = new Array();
 var products_by_upc = new Array();
 var non_deleted_products = new Array();
+var stock_products = new Array();
 
 <% Product.all.each do |p|%>  
 
@@ -42,6 +43,10 @@ var non_deleted_products = new Array();
 
   if(!nextProduct.deleted) {
     non_deleted_products[<%= p.id %>] = nextProduct;
+    
+    if(nextProduct.is_stock_item) {
+      stock_products[<%= p.id %>] = nextProduct;
+    }
   }
 <% end %>
 

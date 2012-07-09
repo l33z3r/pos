@@ -161,7 +161,7 @@ class ButtonMapper
     when STOCK_TAKE_BUTTON
       @retval = "alert('stock take button clicked');"
     when DELIVERY_BUTTON
-      @retval = "startDeliveryMode();"
+      @retval = si_check(DELIVERY_BUTTON, "startDeliveryMode();")
     when CASH_OUT_BUTTON
       @retval = "alert('cash out button clicked');"
     when RECEIPT_SETUP_BUTTON

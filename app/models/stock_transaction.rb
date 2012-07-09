@@ -4,8 +4,9 @@ class StockTransaction < ActiveRecord::Base
   
   STOCK_UPDATE = 1
   STOCK_TRANSFER = 2
+  DELIVERY = 3
   
-  VALID_TRANSACTION_TYPES = [STOCK_UPDATE, STOCK_TRANSFER]
+  VALID_TRANSACTION_TYPES = [STOCK_UPDATE, STOCK_TRANSFER, DELIVERY]
   
   validates :product_id, :numericality => true, :presence => true
   validates :employee_id, :numericality => true, :presence => true

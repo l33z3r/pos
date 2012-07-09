@@ -339,6 +339,10 @@ function hideAllScreens() {
     //make sure the keyboard from the add note screen is hidden
     resetKeyboard();
     
+    //make sure dropdowns get closed
+    menuScreenShortcutSelectMenu.closeMenu();
+    tableSelectMenu.closeMenu();
+    
     $('#landing').hide();
     $('#menu_screen').hide();
     $('#table_select_screen').hide();

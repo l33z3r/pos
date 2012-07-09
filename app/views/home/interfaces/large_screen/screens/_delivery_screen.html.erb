@@ -113,6 +113,13 @@
         </div>
         <div class="button_name">Remove Last Item</div>
       </div>
+      
+      <div class="button" data-onpress="showMoreOptionsScreen()">
+        <div class="icon">
+          <%= image_tag "button_logos/more_options_button.png" %>
+        </div>
+        <div class="button_name">Functions</div>
+      </div>
 
       <div class="button" data-onpress="promptCancelDelivery()">
         <div class="icon">
@@ -121,7 +128,7 @@
         <div class="button_name">Cancel</div>
       </div>
 
-      <div class="button" data-onpress="finishDelivery()">
+      <div class="button" data-onpress="promptFinishDelivery()">
         <div class="icon">
           <%= image_tag "button_logos/finish_delivery.png" %>
         </div>

@@ -89,6 +89,7 @@ function deliveryScreenKeypadClickCancel() {
 
 function clearDeliveryProductsSearchInput() {
     $('#product_search_input').val("");
+    selectedProductSearchLetter = null;
     updateDeliveryProductsSearchResults();
 }
 
@@ -129,16 +130,16 @@ function updateDeliveryProductsSearchResults() {
     var nextProduct = null;
     
     if(selectedProductSearchLetter != null) {        
-        for(productId in non_deleted_products) {
-            nextProduct = non_deleted_products[productId];
+        for(productId in stock_products) {
+            nextProduct = stock_products[productId];
             
             if(nextProduct.name.toLowerCase().startsWith(selectedProductSearchLetter)) {
                 results.push(nextProduct);
             }
         }
     } else {
-        for(productId in non_deleted_products) {
-            nextProduct = non_deleted_products[productId];
+        for(productId in stock_products) {
+            nextProduct = stock_products[productId];
             
             if(nextProduct.name.toLowerCase().contains(searchString)) {
                 results.push(nextProduct);
@@ -208,7 +209,8 @@ function addProductToDelivery(productId) {
     
     var deliveryItem = {
         'product' : product,
-        'amount' : deliveryItemQuantity
+        'amount' : deliveryItemQuantity,
+        'is_return' : false
     }
     
     currentDeliveryItemQuantity = "";
@@ -244,7 +246,14 @@ function getAllDeliveryItemsReceiptHTML() {
 function getDeliveryItemReceiptHTML(deliveryItem) {
     deliveryItemHTML = "<div class='delivery_line'>"
     deliveryItemHTML += "<div class='amount'>" + deliveryItem.amount + "</div>";
-    deliveryItemHTML += "<div class='product_name'>" + deliveryItem.product.name + "</div>";
+    
+    var unitString = "";
+            
+    if(deliveryItem.product.unit.length > 0) {
+        unitString = " (" +  deliveryItem.product.unit + ")";
+    }
+            
+    deliveryItemHTML += "<div class='product_name'>" + deliveryItem.product.name + unitString + "</div>";
     
     var costPrice = "";
     
@@ -262,7 +271,20 @@ function storeDelivery() {
     storeKeyJSONValue(currentDeliveryStorageKey, currentDelivery);
 }
 
-function finishDelivery() {
+function promptFinishDelivery() {
+    ModalPopups.Confirm('niceAlertContainer',
+        'Cancel Delivery', "<div id='nice_alert'>Are you sure you want to finish this delivery?</div>",
+        {
+            yesButtonText: 'Yes',
+            noButtonText: 'No',
+            onYes: "doFinishDelivery()",
+            onNo: "hideNiceAlert();",
+            width: 400,
+            height: 250
+        } );
+}
+
+function doFinishDelivery() {
     if(currentDelivery.items.length == 0) {
         doCancelDelivery();
         return;

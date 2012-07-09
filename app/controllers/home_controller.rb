@@ -603,10 +603,8 @@ class HomeController < ApplicationController
     @product_letters = []
     
     for element in @product_letter_query
-      if (!"0123456789".include?(element[0]))
-        element[0].downcase!
-        @product_letters += element
-      end
+      element[0].downcase!
+      @product_letters += element
     end
      
   end
