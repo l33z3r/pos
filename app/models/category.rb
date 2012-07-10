@@ -97,6 +97,18 @@ class Category < ActiveRecord::Base
     write_attribute("blocked_printers", blocked_printers_val)
   end
   
+  def self.options_for_select
+    @options = []
+    
+    @options << ["Any", -1]
+    
+    all.each do |c|
+      @options << [c.name, c.id]
+    end
+    
+    @options
+  end
+  
 end
 
 

@@ -22,6 +22,12 @@
 
     </div>
 
+    <div class="clear">&nbsp;</div>
+
+    <div id="delivery_screen_keypad_input">
+      <div id="delivery_screen_input_show"></div>
+    </div>
+
     <div id="delivery_keypad" class="keypad">
       <div id="keys" class="keys">
         <% [[7,9],[4,6],[1,3]].each do |x,y| %>
@@ -42,8 +48,15 @@
   <div id="delivery_screen_select_product_container">
     <div id="search_controls">
       <div id="search_box">
-        <div class="label">Product Search:</div>
+        <div class="label">UPC:</div>
+        <input id="product_search_input_upc" type="text" onkeyup="updateDeliveryProductsSearchResults();" onfocus="deliveryProductsUPCBoxFocused();"/>
+
+        <div class="label">Name:</div>
         <input id="product_search_input" type="text" onkeyup="updateDeliveryProductsSearchResults();" onfocus="deliveryProductsSearchBoxFocused();"/>
+
+        <div class="label">Category:</div>
+        <%= select_tag :product_search_category_id, options_for_select(Category.options_for_select), :onclick => "searchCategorySelected();" %>
+
         <div id="clear_button" class="button" onclick="clearDeliveryProductsSearchInput();">Clear</div>
       </div>
 
@@ -100,7 +113,7 @@
         <div class="button_name">Add Note</div>
       </div>
 
-      <div class="button" data-onpress="toggleReturnDeliveryItem()">
+      <div class="button" id="return_delivery_item_toggle_button" data-onpress="toggleReturnDeliveryItem()">
         <div class="icon">
           <%= image_tag "button_logos/return_delivery_item_button.png" %>
         </div>
@@ -113,12 +126,19 @@
         </div>
         <div class="button_name">Remove Last Item</div>
       </div>
-      
+
       <div class="button" data-onpress="showMoreOptionsScreen()">
         <div class="icon">
           <%= image_tag "button_logos/more_options_button.png" %>
         </div>
         <div class="button_name">Functions</div>
+      </div>
+
+      <div class="button" data-onpress="changeDeliveryItemCostPrice()">
+        <div class="icon">
+          <%= image_tag "button_logos/change_delivery_item_cost_price_button.png" %>
+        </div>
+        <div class="button_name">Change Cost Price</div>
       </div>
 
       <div class="button" data-onpress="promptCancelDelivery()">

@@ -522,9 +522,9 @@ ActiveRecord::Schema.define(:version => 20120709170134) do
     t.integer  "transaction_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "note"
     t.integer  "delivery_id"
     t.boolean  "is_return",        :default => false
-    t.string   "note"
   end
 
   add_index "stock_transactions", ["employee_id"], :name => "index_stock_transactions_on_employee_id"

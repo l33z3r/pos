@@ -3,6 +3,10 @@ var currentDelivery = null;
 
 var currentDeliveryStorageKey = "current_delivery";
 
+var deliveryItemReturnMode = false;
+
+var receiveDeliveryInProcess = false;
+
 function initDeliveryScreen() {
     currentDelivery = retrieveStorageJSONValue(currentDeliveryStorageKey);
     
@@ -15,11 +19,14 @@ function initDeliveryScreen() {
     
     showDeliveryScreen();
     currentDeliveryItemQuantity = "";
+    $('#delivery_screen_input_show').html("");
     
     initDeliveryProductSearchKeyboard();
     clearDeliveryProductsSearchInput();
     $('#product_search_input').focus();
     updateDeliveryProductsSearchResults();
+    
+    setReturnDeliveryItem(false);
     
     redrawDeliveryReceipt();
 }
@@ -71,7 +78,7 @@ function deliveryScreenKeypadClick(val) {
         currentDeliveryItemQuantity += val;
     }
     
-    $('#deliver_item_quantity_input_show').html(currentDeliveryItemQuantity);
+    $('#delivery_screen_input_show').html(currentDeliveryItemQuantity);
 }
 
 function deliveryScreenKeypadClickDecimal() {
@@ -79,16 +86,18 @@ function deliveryScreenKeypadClickDecimal() {
         currentDeliveryItemQuantity += ".";
     }
     
-    $('#deliver_item_quantity_input_show').html(currentDeliveryItemQuantity);
+    $('#delivery_screen_input_show').html(currentDeliveryItemQuantity);
 }
 
 function deliveryScreenKeypadClickCancel() {
     currentDeliveryItemQuantity = "";
-    $('#deliver_item_quantity_input_show').html(currentDeliveryItemQuantity);
+    $('#delivery_screen_input_show').html(currentDeliveryItemQuantity);
 }
 
 function clearDeliveryProductsSearchInput() {
     $('#product_search_input').val("");
+    $('#product_search_input_upc').val("");
+    $('#product_search_category_id').val(-1)
     selectedProductSearchLetter = null;
     updateDeliveryProductsSearchResults();
 }
@@ -98,9 +107,22 @@ function resetDeliveryProductsSelect() {
     resetKeyboard();
 }
 
+function searchCategorySelected() {
+    $('#product_search_input_upc').val("");
+    updateDeliveryProductsSearchResults();
+}
+
 var selectedProductSearchLetter = null;
 
 function deliveryProductsSearchBoxFocused() {
+    $('#product_search_input_upc').val("");
+    selectedCustomerSearchLetter = null;
+    $('#selection_letters .letter').removeClass("selected");
+    updateCustomerSearchResults();
+}
+
+function deliveryProductsUPCBoxFocused() {
+    $('#product_search_input').val("");
     selectedCustomerSearchLetter = null;
     $('#selection_letters .letter').removeClass("selected");
     updateCustomerSearchResults();
@@ -114,7 +136,6 @@ function loadAllDeliveryProducts() {
 }
 
 function loadSearchProductsForLetter(letter) {
-    console.log("Get products for letter: " + letter);
     clearDeliveryProductsSearchInput();
     $('#delivery_screen_select_product_container #selection_letters .letter').removeClass("selected");
     $('#delivery_screen_select_product_container #selection_letters #cs_button_' + letter).addClass("selected");
@@ -123,26 +144,43 @@ function loadSearchProductsForLetter(letter) {
 }
 
 function updateDeliveryProductsSearchResults() {
+    var searchStringUPC = $('#product_search_input_upc').val();
     var searchString = $('#product_search_input').val().toLowerCase();
+    var productSearchCategoryId = parseInt($('#product_search_category_id').val());
     
     var results = new Array();
     
     var nextProduct = null;
     
-    if(selectedProductSearchLetter != null) {        
+    //UPC overrides all search
+    if(searchStringUPC.length > 0) {
         for(productId in stock_products) {
             nextProduct = stock_products[productId];
             
-            if(nextProduct.name.toLowerCase().startsWith(selectedProductSearchLetter)) {
+            if(nextProduct.upc.toLowerCase().contains(searchStringUPC)) {
                 results.push(nextProduct);
             }
         }
     } else {
-        for(productId in stock_products) {
-            nextProduct = stock_products[productId];
+        if(selectedProductSearchLetter != null) {
+            for(productId in stock_products) {
+                nextProduct = stock_products[productId];
             
-            if(nextProduct.name.toLowerCase().contains(searchString)) {
-                results.push(nextProduct);
+                if(nextProduct.name.toLowerCase().startsWith(selectedProductSearchLetter)) {
+                    results.push(nextProduct);
+                }
+            }
+        } else {
+            for(productId in stock_products) {
+                nextProduct = stock_products[productId];
+            
+                if(nextProduct.name.toLowerCase().contains(searchString)) {
+                    if(productSearchCategoryId != -1 && (nextProduct.category_id != productSearchCategoryId)) {
+                        continue;
+                    }
+                
+                    results.push(nextProduct);
+                }
             }
         }
     }
@@ -204,16 +242,24 @@ function addProductToDelivery(productId) {
             currentDeliveryItemQuantity = "1";
         }
     }
+    var isReturn = false;
     
     var deliveryItemQuantity = parseFloat(currentDeliveryItemQuantity);
+    
+    if(deliveryItemReturnMode) {
+        deliveryItemQuantity *= -1;
+        isReturn = true;
+        setReturnDeliveryItem(false);
+    }
     
     var deliveryItem = {
         'product' : product,
         'amount' : deliveryItemQuantity,
-        'is_return' : false
+        'is_return' : isReturn
     }
     
     currentDeliveryItemQuantity = "";
+    $('#delivery_screen_input_show').html("");
     
     currentDelivery.items.push(deliveryItem);
     
@@ -225,14 +271,56 @@ function addProductToDelivery(productId) {
 }
 
 function redrawDeliveryReceipt() {
-    $('#delivery_till_roll').html(getAllDeliveryItemsReceiptHTML());
+    var deliveryTillRollHTML = getDeliveryTillRollHTML(false);
+    $('#delivery_till_roll').html(deliveryTillRollHTML);
     deliveryRecptScroll();
     
     $('#delivery_screen_sub_total_value').html(currency(currentDelivery.total));
 }
 
+function getDeliveryTillRollHTML(includeHeading, includeTotal) {
+    if(typeof includeHeading == "undefined") {
+        includeHeading = false;
+    }
+    
+    if(typeof includeTotal == "undefined") {
+        includeTotal = false;
+    }
+    
+    var deliveryTillRollHTML = "<div class='delivery_till_roll'>";
+    
+    if(includeHeading) {
+        deliveryTillRollHTML += fetchBusinessInfoHeaderHTML() + clearHTML; 
+        deliveryTillRollHTML += "<div class='delivery_till_roll_heading'>Delivery Received</div>" + clearHTML;
+    }
+    
+    deliveryTillRollHTML += "<div class='delivery_till_roll_header'>";
+    
+    deliveryTillRollHTML += "<div class='nickname'>" + current_user_nickname + "</div>";
+    
+    var timestamp = utilFormatDate(new Date(clueyTimestamp()));
+    
+    deliveryTillRollHTML += "<div class='timestamp'>" + timestamp + "</div>" + clearHTML;
+    
+    deliveryTillRollHTML += "<div class='amount_header'>Qty</div>";
+    deliveryTillRollHTML += "<div class='product_header'>Product</div>";
+    deliveryTillRollHTML += "<div class='cost_header'>Cost</div>";
+    
+    deliveryTillRollHTML += "</div>" + clearHTML;
+    
+    deliveryTillRollHTML += getAllDeliveryItemsReceiptHTML();
+    
+    if(includeTotal) {
+        deliveryTillRollHTML += "<div class='total_label'>Total</div><div class='total_value'>" + currency(currentDelivery.total) + "</div>" + clearHTML;
+    }
+    
+    deliveryTillRollHTML += "</div>" + clearHTML;
+    
+    return deliveryTillRollHTML;
+}
+
 function getAllDeliveryItemsReceiptHTML() {
-    allDeliveryItemsReceiptHTML = "";
+    var allDeliveryItemsReceiptHTML = "";
 
     for(var i=0; i<currentDelivery.items.length; i++) {
         item = currentDelivery.items[i];
@@ -244,7 +332,15 @@ function getAllDeliveryItemsReceiptHTML() {
     
 //TODO: replace with jquery template => http://api.jquery.com/jQuery.template/
 function getDeliveryItemReceiptHTML(deliveryItem) {
-    deliveryItemHTML = "<div class='delivery_line'>"
+    var returnItemClass = "";
+    var returnItemHTML = "";
+    
+    if(deliveryItem.is_return) {
+        returnItemClass = "return";
+        returnItemHTML = "<div class='return_word'>Return</div>" + clearHTML;
+    }
+    
+    deliveryItemHTML = "<div class='delivery_line " + returnItemClass + "'>" + returnItemHTML;
     deliveryItemHTML += "<div class='amount'>" + deliveryItem.amount + "</div>";
     
     var unitString = "";
@@ -258,7 +354,7 @@ function getDeliveryItemReceiptHTML(deliveryItem) {
     var costPrice = "";
     
     if(deliveryItem.product.cost_price > 0) {
-        costPrice = currency(deliveryItem.product.cost_price * deliveryItem.amount);
+        costPrice = currency(deliveryItem.product.cost_price * deliveryItem.amount, false);
     }
     
     deliveryItemHTML += "<div class='cost_price'>" + costPrice + "</div>";
@@ -290,6 +386,14 @@ function doFinishDelivery() {
         return;
     }
     
+    if(receiveDeliveryInProcess) {
+        niceAlert("Processing, please wait!");
+        return;
+    }
+    
+    receiveDeliveryInProcess = true;
+    showLoadingDiv("Processing...");
+    
     var timeoutMillis = sendOrderToServerTimeoutSeconds * 1000;
     
     currentDelivery.employee_id = current_user_id;
@@ -306,6 +410,9 @@ function doFinishDelivery() {
         success: function() {
             deliverySentToServerCallback();
         },
+        complete: function() {
+            hideLoadingDiv();
+        },
         data: {
             delivery : currentDelivery
         }
@@ -314,7 +421,7 @@ function doFinishDelivery() {
 
 function deliverySentToServerCallback() {
     //print receipt
-    var deliveryReceiptContent = getAllDeliveryItemsReceiptHTML();    
+    var deliveryReceiptContent = getDeliveryTillRollHTML(true, true);
     printReceipt(deliveryReceiptContent, false);
     
     //finish up
@@ -324,6 +431,8 @@ function deliverySentToServerCallback() {
     
     resetDeliveryProductSelect();
     niceAlert("Delivery Complete!");
+    
+    receiveDeliveryInProcess = false;
 }
 
 function promptCancelDelivery() {
@@ -368,4 +477,18 @@ function calculateDeliveryTotal() {
     }
     
     currentDelivery.total = total;
+}
+
+function toggleReturnDeliveryItem() {
+    setReturnDeliveryItem(!deliveryItemReturnMode);
+}
+
+function setReturnDeliveryItem(turnOn) {
+    if(turnOn) {
+        deliveryItemReturnMode = true;
+        $('.button[id=return_delivery_item_toggle_button]').addClass("selected");
+    } else {
+        deliveryItemReturnMode = false;
+        $('.button[id=return_delivery_item_toggle_button]').removeClass("selected");
+    }
 }

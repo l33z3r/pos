@@ -4748,7 +4748,7 @@ div#delivery_screen div#delivery_screen_select_product_container {
 }
 
 div#delivery_screen div#delivery_receipt {
-    height: 351px;
+    height: 375px;
     background-color: white;
     overflow-y: auto;
     display: block;
@@ -4765,14 +4765,20 @@ div#delivery_screen div#receipt_keypad_container div#delivery_receipt_header {
 }
 
 div#delivery_screen div#delivery_receipt_container {
-    height: 398px;
+    height: 375px;
     background-color: #FFF;
 }
 
 div#delivery_screen div#delivery_receipt div#delivery_till_roll {
-    height: 260px;
+    height: 240px;
     display: block;
     background-color: #FFF;
+}
+
+div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_till_roll_header div.amount_header, 
+div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_till_roll_header div.product_header,
+div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_till_roll_header div.cost_header {
+    font-weight: bold;
 }
 
 div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_line {
@@ -4780,17 +4786,53 @@ div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_lin
     cursor: pointer;
 }
 
+div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_line.return {
+    color: red;
+    margin: 0px 2px;
+    cursor: pointer;
+}
+
+div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_line.return div.return_word {
+    margin-top: 2px;
+    float: left;
+    font-weight: bold;
+}
+
+div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_till_roll_header {
+    margin-bottom: 2px;
+}
+
+div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_till_roll_header div.nickname {
+    margin-left: 3px;
+    float: left;
+    font-weight: bold;
+    text-align: left;
+    width: 100px;
+}
+
+div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_till_roll_header div.timestamp {
+    float: left;
+    font-weight: bold;
+    text-align: right;
+    width: 140px;
+}
+
+div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_till_roll_header div.amount_header,
 div#delivery_screen div#delivery_receipt div#delivery_till_roll div.amount {
     width: 35px;
     float: left;
+    text-align: left;
+    margin-left: 3px;
 }
 
+div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_till_roll_header div.product_header,
 div#delivery_screen div#delivery_receipt div#delivery_till_roll div.product_name {
     width: 160px;
     text-align: left;
     float: left;
 }
 
+div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_till_roll_header div.cost_header,
 div#delivery_screen div#delivery_receipt div#delivery_till_roll div.cost_price {
     float: left;
     width: 40px;
@@ -4830,6 +4872,32 @@ div#delivery_screen div#receipt_keypad_container div#total_container div#total_v
     text-align: right;
     font-weight: bold;
     color: #FFF;
+}
+
+div#delivery_screen div#receipt_keypad_container div#delivery_screen_keypad_input {
+    height: 27px;
+    clear: both;
+    width: 100%;
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+}
+
+div#delivery_screen div#receipt_keypad_container div#delivery_screen_input_show {
+    border: 1px solid #DDD;
+    width: 258px;
+    height: 17px;
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 2px;
+    float: left;
+    border: 1px solid #CCC;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 0px 1px 1px 0px #777;
+    margin-left: 2px;
+    margin-top: 2px;
+    margin-right: 20px;
+    background-color: white;
 }
 
 div#delivery_screen div#delivery_screen_select_product_container div#product_search_results_scroller::-webkit-scrollbar {
@@ -4906,9 +4974,11 @@ div#delivery_screen div#delivery_screen_select_product_container div#search_cont
     font-size: 14px;
 }
 
-div#delivery_screen div#delivery_screen_select_product_container div#search_controls div#search_box input {
+div#delivery_screen div#delivery_screen_select_product_container div#search_controls div#search_box input,
+div#delivery_screen div#delivery_screen_select_product_container div#search_controls div#search_box select {
     float: left;
     margin: 5px 10px;
+    width: 100px;
 }
 
 div#delivery_screen div#delivery_screen_select_product_container div#search_controls div.button {
@@ -4945,7 +5015,7 @@ div#delivery_screen div#delivery_screen_select_product_container div#product_sea
 }
 
 div#delivery_screen div#delivery_screen_select_product_container div#delivery_screen_misc_buttons_container {
-    border-spacing: 3px;
+    border-spacing: 13px 3px;
 }
 
 div#delivery_screen div#delivery_screen_select_product_container div#product_search_results_container div#product_search_results_scroller {
