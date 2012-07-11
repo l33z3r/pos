@@ -100,7 +100,7 @@ class Reports::StocksController < Admin::AdminController
      session[:preselect] = 0
     end
 
-    if params[:search][:training_mode] == true
+    if params[:search][:training_mode] == 'true'
       session[:training_mode] = true
     else
       session[:training_mode] = false

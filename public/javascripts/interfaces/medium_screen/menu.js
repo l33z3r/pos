@@ -1158,8 +1158,9 @@ function showCoversSubscreen() {
                     }
                 }
             }
-            $("#covers_num").val(tableOrderDataJSON.covers);
-            $("#covers_num").addClass('highlighted');
+//            $("#covers_num").val(tableOrderDataJSON.covers);
+//            $("#covers_num").addClass('highlighted');
+            checkForCovers();
             if (initScreenDefault == "false") {
                 $('#menu_screen #buttons_container').hide();
                 $('#menu_screen #cluey_logo').show();
