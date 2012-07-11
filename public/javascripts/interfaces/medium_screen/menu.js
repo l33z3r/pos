@@ -5,7 +5,6 @@ var menuKeypadShowing = false;
 var roomSelectMenu = null;
 var menuSelectMenu = null;
 
-var setforcovers = false;
 
 var highlightedCover = true;
 
@@ -1062,10 +1061,7 @@ function postDoSyncTableOrder() {
         return;
     }
 
-    if (!setforcovers) {
         setStatusMessage("Order Sent");
-    }
-    setforcovers = false;
     //vibrate!
     vibrate();
 

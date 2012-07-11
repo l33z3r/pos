@@ -88,7 +88,6 @@ function saveAddCovers() {
         if(manualCoversPrompt) {
             doAutoLoginAfterSync = true;
         }
-        setforcovers = true;
         manualCoversPrompt = true;
         doSyncTableOrder();
         $("#covers_num").val('');
@@ -97,7 +96,6 @@ function saveAddCovers() {
     tableScreenBack();
     }else{
         tableOrder.covers = covers;
-        setforcovers = true;
         manualCoversPrompt = true;
         storeTableOrderInStorage(current_user_id, selectedTable, tableOrder);
         doSyncTableOrder();
