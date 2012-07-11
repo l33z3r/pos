@@ -57,11 +57,15 @@ function voidAllOrderItems() {
 }
 
 function promptAddCovers() {
+    checkForCovers();
     showCoversSubscreen();
 }
 
 function saveAddCovers() {
     //do nothing if not table order
+    if($('#table_num').val().toString() != ''){
+        doSubmitTableNumber()
+    }
     if(selectedTable == -1) {
         showTablesSubscreen();
         return;
@@ -84,35 +88,46 @@ function saveAddCovers() {
         if(manualCoversPrompt) {
             doAutoLoginAfterSync = true;
         }
+        setforcovers = true;
         manualCoversPrompt = true;
         doSyncTableOrder();
         $("#covers_num").val('');
-        $('#cover_number_show').html('');
-//        checkForCovers();
+
     }
     tableScreenBack();
     }else{
         tableOrder.covers = covers;
-        tableScreenBack();
+        setforcovers = true;
+        manualCoversPrompt = true;
+        storeTableOrderInStorage(current_user_id, selectedTable, tableOrder);
+        doSyncTableOrder();
         $("#covers_num").val('');
-        $('#cover_number_show').html('');
-//        checkForCovers();
+        tableScreenBack();
     }
     }else{
        tableScreenBack();
        $("#covers_num").val('');
-       $('#cover_number_show').html('');
-//       checkForCovers();
     }
 
 }
 
 function checkForCovers(){
     var tableOrder = getCurrentOrder();
-    if (parseInt(tableOrder.covers) != 0){
+    if (parseInt(tableOrder.covers) != 0 || parseInt(tableOrder.covers) != -1){
        $("#covers_num").val(tableOrder.covers);
-       $('#cover_number_show').html(tableOrder.covers);
+       $("#covers_num").addClass('highlighted');
     }
+    if (parseInt(tableOrder.covers) == -1 || parseInt(tableOrder.covers) == 0 || parseInt(tableOrder.covers) == '0'){
+      $("#covers_num").val('');
+      $("#covers_num").removeClass('highlighted');
+    }
+    if(selectedTable == 0){
+      $("#covers_num").removeClass('highlighted');
+    }
+
+//    $("#covers_num").select();
+    highlightedCover = true;
+
 }
 
 function toggleTrainingMode() {

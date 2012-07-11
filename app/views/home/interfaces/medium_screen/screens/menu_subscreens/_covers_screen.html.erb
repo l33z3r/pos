@@ -20,8 +20,7 @@
     <div class="clear">&nbsp;</div>
     
     <div id="entered_table_number_container">
-      <div id="cover_number_show"></div>
-      <%= hidden_field_tag :covers_num, nil, :id => :covers_num, :size => "18" %>
+      <div id="cover_number_show"><%= text_field_tag :covers_num, nil, :id => :covers_num, :size => "18" %></div>
     </div>
 
     <div id="keypad" class="keypad">

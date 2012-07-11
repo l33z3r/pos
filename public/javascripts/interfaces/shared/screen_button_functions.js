@@ -92,8 +92,9 @@ function doSyncTableOrder() {
             return;
         }
     }
-    
-    setStatusMessage("Sending Order.");
+    if (!setforcovers){
+        setStatusMessage("Sending Order.");
+    }
     
     orderInProcess = true;
     
