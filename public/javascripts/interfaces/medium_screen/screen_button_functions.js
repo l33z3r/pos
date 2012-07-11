@@ -115,7 +115,7 @@ function checkForCovers(){
        $("#covers_num").val(tableOrder.covers);
        $("#covers_num").addClass('highlighted');
     }
-    if (parseInt(tableOrder.covers) == -1 || parseInt(tableOrder.covers) == 0 || parseInt(tableOrder.covers) == '0'){
+    if (parseInt(tableOrder.covers) == -1 || parseInt(tableOrder.covers) == 0 || parseInt(tableOrder.covers) == '0' || tableOrder.covers == '-1'){
       $("#covers_num").val('');
       $("#covers_num").removeClass('highlighted');
     }

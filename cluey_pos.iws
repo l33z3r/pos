@@ -15,10 +15,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e646dee2-e269-4160-8f2c-811321f2083d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cluey_pos.iws" afterPath="$PROJECT_DIR$/cluey_pos.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/screen_button_functions.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/screen_button_functions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/shared/screen_button_functions.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/shared/screen_button_functions.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/database.yml" afterPath="$PROJECT_DIR$/config/database.yml" />
     </list>
     <ignored path="cluey_pos.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -77,64 +74,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="_functions_screen.html.erb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_functions_screen.html.erb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="83" column="55" selection-start="2731" selection-end="2731" vertical-scroll-proportion="-2.9591837">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="style.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/stylesheets/interfaces/medium_screen/style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1640" column="53" selection-start="36644" selection-end="36644" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="menu.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1064" column="0" selection-start="31035" selection-end="31035" vertical-scroll-proportion="-5.36">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="database.yml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/config/database.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="11" selection-start="694" selection-end="694" vertical-scroll-proportion="0.4787234">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="screen_button_functions.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/screen_button_functions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="98" column="0" selection-start="2264" selection-end="2264" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="screen_button_functions.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/screen_button_functions.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="78" column="61" selection-start="2241" selection-end="2241" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="menu.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/menu.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="62" column="62" selection-start="1306" selection-end="1306" vertical-scroll-proportion="0.0">
+            <state line="111" column="9" selection-start="2561" selection-end="2561" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -143,7 +86,61 @@
       <file leaf-file-name="_covers_screen.html.erb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_covers_screen.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="79" selection-start="233" selection-end="233" vertical-scroll-proportion="-2.5">
+            <state line="11" column="86" selection-start="418" selection-end="418" vertical-scroll-proportion="-6.875">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="database.yml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/config/database.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="18" selection-start="276" selection-end="276" vertical-scroll-proportion="0.0955414">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="menu.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1162" column="22" selection-start="34339" selection-end="34339" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sales_controller.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/reports/sales_controller.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="270" column="26" selection-start="10192" selection-end="10192" vertical-scroll-proportion="-6.36">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="stocks_controller.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="102" column="48" selection-start="2872" selection-end="2872" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="payments_controller.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/reports/payments_controller.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="232" column="40" selection-start="7654" selection-end="7654" vertical-scroll-proportion="-14.32">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="reports.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/javascripts/reports/reports.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="558" column="40" selection-start="16649" selection-end="16659" vertical-scroll-proportion="-13.04">
               <folding />
             </state>
           </provider>
@@ -163,10 +160,7 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb" />
-        <option value="$PROJECT_DIR$/app/views/reports/payments/index.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/stocks/index.html.erb" />
-        <option value="$PROJECT_DIR$/app/controllers/reports/payments_controller.rb" />
         <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_menu_screen.html.erb" />
         <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_covers_screen.html.erb" />
         <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_table_screen.html.erb" />
@@ -175,9 +169,12 @@
         <option value="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js" />
         <option value="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_functions_screen.html.erb" />
         <option value="$PROJECT_DIR$/public/stylesheets/interfaces/medium_screen/style.css" />
-        <option value="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" />
-        <option value="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/screen_button_functions.js" />
         <option value="$PROJECT_DIR$/public/javascripts/interfaces/shared/screen_button_functions.js" />
+        <option value="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/screen_button_functions.js" />
+        <option value="$PROJECT_DIR$/app/controllers/reports/sales_controller.rb" />
+        <option value="$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb" />
+        <option value="$PROJECT_DIR$/app/controllers/reports/payments_controller.rb" />
+        <option value="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" />
         <option value="$PROJECT_DIR$/config/database.yml" />
       </list>
     </option>
@@ -724,16 +721,16 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.029126214" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41574585" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41574585" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2845304" sideWeight="0.0" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2845304" sideWeight="0.0" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24951644" sideWeight="0.58425415" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24951644" sideWeight="0.7154696" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -820,37 +817,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/large_screen/screens/_tables_screen.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="72" selection-start="366" selection-end="366" vertical-scroll-proportion="0.5070422" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/partials/interfaces/large_screen/_popups_markup.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="327" column="72" selection-start="11278" selection-end="11291" vertical-scroll-proportion="-15.958333" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/application.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="89" column="62" selection-start="2003" selection-end="2003" vertical-scroll-proportion="1.971935">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/screen_button_functions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="882" column="47" selection-start="25597" selection-end="25597" vertical-scroll-proportion="0.28106508">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/util.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="272" column="4" selection-start="7581" selection-end="8088" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="2149" column="0" selection-start="65811" selection-end="65811" vertical-scroll-proportion="0.0">
@@ -879,37 +845,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_covers_screen.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="79" selection-start="233" selection-end="233" vertical-scroll-proportion="-2.5">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_functions_screen.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="55" selection-start="2731" selection-end="2731" vertical-scroll-proportion="-2.9591837">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/menu.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="62" column="62" selection-start="1306" selection-end="1306" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1064" column="0" selection-start="31035" selection-end="31035" vertical-scroll-proportion="-5.36">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/screen_button_functions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="98" column="0" selection-start="2264" selection-end="2264" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -921,9 +859,72 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/layouts/interfaces/_medium_screen.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="42" selection-start="302" selection-end="302" vertical-scroll-proportion="0.55397725">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_functions_screen.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="98" column="69" selection-start="3134" selection-end="3134" vertical-scroll-proportion="-12.708333">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/javascripts/reports/reports.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="558" column="40" selection-start="16649" selection-end="16659" vertical-scroll-proportion="-13.04">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/reports/payments_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="232" column="40" selection-start="7654" selection-end="7654" vertical-scroll-proportion="-14.32">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="102" column="48" selection-start="2872" selection-end="2872" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/reports/sales_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="270" column="26" selection-start="10192" selection-end="10192" vertical-scroll-proportion="-6.36">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1162" column="22" selection-start="34339" selection-end="34339" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/screen_button_functions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="111" column="9" selection-start="2561" selection-end="2561" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_covers_screen.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="86" selection-start="418" selection-end="418" vertical-scroll-proportion="-6.875">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/config/database.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="11" selection-start="694" selection-end="694" vertical-scroll-proportion="0.4787234">
+        <state line="10" column="18" selection-start="276" selection-end="276" vertical-scroll-proportion="0.0955414">
           <folding />
         </state>
       </provider>

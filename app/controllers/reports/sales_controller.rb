@@ -185,11 +185,12 @@ class Reports::SalesController < Admin::AdminController
     else
       session[:preselect] = 0
     end
-    if params[:search][:training_mode] == true
+    if params[:search][:training_mode] == 'true'
       session[:training_mode] = true
     else
       session[:training_mode] = false
     end
+
 
     if params[:search][:search_type] == 'day'
       session[:search_type] = :day

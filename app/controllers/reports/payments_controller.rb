@@ -165,7 +165,7 @@ class Reports::PaymentsController < Admin::AdminController
       session[:preselect] = 0
     end
 
-    if params[:search][:training_mode] == true
+    if params[:search][:training_mode] == 'true'
       session[:training_mode] = true
     else
       session[:training_mode] = false
@@ -230,7 +230,7 @@ class Reports::PaymentsController < Admin::AdminController
       if session[:discounts_only] == "true"
         where << " and o.discount_percent IS NOT NULL"
       end
-      if session[:training_mode] == truel
+      if session[:training_mode] == true
         where << " and o.training_mode_sale = 1"
       else
         where << " and o.training_mode_sale = 0"
