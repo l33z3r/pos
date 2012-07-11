@@ -22,13 +22,18 @@ class DeliveryController < ApplicationController
         @product.save
         
         @is_return = delivery_item[:is_return]
-      
+        @note = delivery_item[:note]
+        
         @st = StockTransaction.create(
           :delivery_id => @delivery.id, :product_id => @product.id, :is_return => @is_return, :employee_id => @employee_id,
-          :old_amount => @old_amount, :change_amount => @change_amount, :transaction_type => StockTransaction::DELIVERY)
+          :old_amount => @old_amount, :change_amount => @change_amount, 
+          :note => @note, :transaction_type => StockTransaction::DELIVERY)
       end
     
       if @success
+        #send a reload request to other terminals
+        request_reload_app @terminal_id
+      
         render :json => {:success => true}.to_json
       else
         render :json => {:success => false}.to_json
