@@ -5,6 +5,9 @@ var menuKeypadShowing = false;
 var roomSelectMenu = null;
 var menuSelectMenu = null;
 
+
+var highlightedCover = true;
+
 function initMenu() {
     //click the 1st menu page
     $('#menu_pages_container .page').first().click();
@@ -127,7 +130,7 @@ function doSelectMenuItem(productId, element) {
         setMenuItemDoubleMode(false);
         return;
     }
-    
+
     //if half and no price set
     if (menuItemHalfMode && (product.half_price == 0)) {
         niceAlert("Price has not been set for a half of this item.");
@@ -353,9 +356,9 @@ function saveEditOrderItem() {
         newQuantity = parseFloat(targetInputQuantityEl.val());
 
     }
-    
+
     var order = getCurrentOrder();
-    
+
     if (isNaN(newQuantity) || newQuantity == 0) {
         currentQuantity = order.items[itemNumber - 1].amount;
         newQuantity = currentQuantity;
@@ -371,7 +374,7 @@ function saveEditOrderItem() {
     if (isNaN(newPricePerUnit)) {
         newPricePerUnit = currentPrice;
     }
-    
+
     if (selectedTable != 0) {
         order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum, is_void);
         storeTableOrderInStorage(current_user_id, selectedTable, order);
@@ -535,7 +538,7 @@ function doSaveNote() {
         $('.note_charge').val('');
         $('.display_charge').val('');
     }
-    
+
     return true;
 }
 
@@ -863,7 +866,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     var hideOnPrintedReceiptClass = orderItem.product.hide_on_printed_receipt ? "hide_on_printed_receipt" : "";
 
     var voidClass = orderItem.is_void ? "void" : "";
-    
+
     orderHTML = "<div class='order_line " + notSyncedClass + " " + voidClass + " " + hideOnPrintedReceiptClass + " " + courseLineClass + "' data-item_number='" + orderItem.itemNumber + "' " + onclickMarkup + ">";
 
     if (includeServerAddedText && orderItem.showServerAddedText) {
@@ -871,7 +874,7 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         var timeAdded = utilFormatTime(new Date(parseInt(orderItem.time_added)));
         //show a line above the last ordered, if this is not the first item in the order
         var showAddedLine = (orderItem.itemNumber != 1);
-        
+
         orderHTML += "<div class='server " + (showAddedLine ? "added_line" : "") + "'>At " + timeAdded + " " + nickname + " added:</div>";
     }
 
@@ -925,13 +928,13 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
             orderHTML += clearHTML + "<div class='oia " + (orderItem.oia_items[j].hide_on_receipt ? "hide_on_receipt" : "") + "'>";
 
             orderHTML += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>";
-                
+
             if (!orderItem.oia_items[j].is_note) {
                 if (orderItem.oia_items[j].is_addable) {
                     orderHTML += oia_is_add ? "Add " : "No ";
                 }
             }
-            
+
             orderHTML += orderItem.oia_items[j].description + "</div>";
 
             if (orderItem.oia_items[j].abs_charge != 0) {
@@ -1058,12 +1061,12 @@ function postDoSyncTableOrder() {
         return;
     }
 
-    setStatusMessage("Order Sent");
-
+        setStatusMessage("Order Sent");
     //vibrate!
     vibrate();
 
-    showTablesSubscreen();
+//    showTablesSubscreen();
+    tableScreenBack();
 }
 
 function showModifyOrderItemScreen() {
@@ -1122,16 +1125,58 @@ function showTablesSubscreen() {
 
 function showCoversSubscreen() {
     hideAllMenuSubScreens();
+    if ($('#table_num').val().toString() == '' || $('#table_num').val().toString() == 0 || $('#table_num').val().toString() == -1) {
 
-//    blank the function buttons
-    if (initScreenDefault == "false") {
-        $('#menu_screen #buttons_container').hide();
-        $('#menu_screen #cluey_logo').show();
-        initScreenDefault = "true";
+        if (initScreenDefault == "false") {
+            $('#menu_screen #buttons_container').hide();
+            $('#menu_screen #cluey_logo').show();
+            initScreenDefault = "true";
+        }
+        $('.button[id=sales_button_' + tablesButtonID + ']').addClass("selected");
+        checkForCovers();
+        $('#table_screen').hide();
+        $('#covers_screen').show();
+    } else {
+        var table_label = $('#table_num').val().toString();
+        table_info = getTableForLabel(table_label);
+        if (table_info) {
+
+            key = "user_" + current_user_id + "_table_" + table_info.id + "_current_order";
+            storageData = retrieveStorageValue(key);
+            tableOrderDataJSON = null;
+            if (storageData != null) {
+                tableOrderDataJSON = JSON.parse(storageData);
+            } else {
+                if (current_user_id != masterOrdersUserId) {
+                    //try fetch the master order
+                    var masterOrderKey = "user_" + masterOrdersUserId + "_table_" + table_info.id + "_current_order";
+
+                    storageData = retrieveStorageValue(masterOrderKey);
+
+                    if (storageData != null) {
+                        tableOrderDataJSON = JSON.parse(storageData);
+                    }
+                }
+            }
+            $("#covers_num").val(tableOrderDataJSON.covers);
+            $("#covers_num").addClass('highlighted');
+            if (initScreenDefault == "false") {
+                $('#menu_screen #buttons_container').hide();
+                $('#menu_screen #cluey_logo').show();
+                initScreenDefault = "true";
+            }
+            $('.button[id=sales_button_' + tablesButtonID + ']').addClass("selected");
+            $('#table_screen').hide();
+            $('#covers_screen').show();
+        } else {
+            $('#table_number_show').html("No Such Table!");
+            $('#table_num').val('')
+            $('#table_screen').show();
+            $('#covers_screen').hide();
+        }
+
     }
-    $('.button[id=sales_button_' + tablesButtonID + ']').addClass("selected");
-    $('#table_screen').hide();
-    $('#covers_screen').show();
+
 }
 
 function tableNumberSelectKeypadClick(val) {
@@ -1141,9 +1186,14 @@ function tableNumberSelectKeypadClick(val) {
 }
 
 function coverNumberSelectKeypadClick(val) {
-    var newVal = $('#covers_num').val().toString() + val;
-    $('#cover_number_show').html(newVal);
-    $('#covers_num').val(newVal);
+    $("#covers_num").removeClass('highlighted');
+    if (highlightedCover) {
+        $('#covers_num').val(val);
+    } else {
+        var newVal = $('#covers_num').val().toString() + val;
+        $('#covers_num').val(newVal);
+    }
+    highlightedCover = false;
 }
 
 function priceNumberSelectKeypadClick(val) {
@@ -1179,10 +1229,11 @@ function doCanceltableNumberSelectKeypad() {
 }
 
 function doCancelcoverNumberSelectKeypad() {
+    $("#covers_num").removeClass('highlighted');
     oldVal = $('#covers_num').val().toString();
     newVal = oldVal.substring(0, oldVal.length - 1);
     newVal = oldVal.substring(0, oldVal.length - 1);
-    $('#cover_number_show').html(newVal);
+//    $('#cover_number_show').html(newVal);
     $('#covers_num').val(newVal);
 //    $('.new_price').val(newVal);
 }
@@ -1239,14 +1290,25 @@ function setInitScreen(value) {
     initScreenDefault = value;
 }
 
-function swipeToNote(){
-    if (selectedTable == 0)  {
+function swipeToNote() {
+    if (selectedTable == 0) {
         niceAlert("Please select a table first");
         return;
-    }else{
+    } else {
         setInitScreen('true');
         $('#edit_price_screen').hide();
         showAddNotePopup()
+    }
+}
+
+function swipeToCovers() {
+    if (selectedTable == 0) {
+        niceAlert("Please select a table first");
+        return;
+    } else {
+        swipeToMenu();
+        hideAllMenuSubScreens();
+        showCoversSubscreen();
     }
 }
 
@@ -1256,21 +1318,16 @@ function doSubmitTableNumber() {
         return;
     }
 
-//    if ($("#covers_num").val() != ''){
-//       var tableOrder = getCurrentOrder();
-//       tableOrder.covers = $("#covers_num").val();
-//       $("#covers_num").val('');
-//    }
-
     var table_label = $('#table_num').val().toString();
 
     //check table exists
     table_info = getTableForLabel(table_label);
 
-    clearTableNumberEntered();
+//    clearTableNumberEntered();
 
     if (!table_info) {
         $('#table_number_show').html("No Such Table!");
+        $('#table_num').val('')
         return;
     }
 
@@ -1281,15 +1338,18 @@ function doSubmitTableNumber() {
         }
 
         doTransferTable(selectedTable, table_info.id);
-
+        clearTableNumberEntered()
         return;
     }
 
     current_table_label = table_label;
 
+
     doSelectTable(table_info.id);
 
+
     clearTableNumberEntered();
+
     if (menuScreenDefault == "true") {
         showMenuItemsSubscreen();
     } else {
@@ -1297,7 +1357,6 @@ function doSubmitTableNumber() {
         swipeToReceipt();
         menuScreenDefault = "true"
     }
-
 
 }
 

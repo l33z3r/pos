@@ -24,6 +24,8 @@ var manualCoversPrompt = true;
 
 var inTrainingMode = false;
 
+var highlightedCover = true;
+
 //this function is called from application.js on page load
 function initMenu() {
     initMenuScreenType();

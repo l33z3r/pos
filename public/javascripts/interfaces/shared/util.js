@@ -260,7 +260,7 @@ function storeTableOrderInStorage(current_user_id, table_num, order_to_store) {
 function getTableOrderFromStorage(current_user_id, selectedTable) {
     key = "user_" + current_user_id + "_table_" + selectedTable + "_current_order";
     storageData = retrieveStorageValue(key);
-    
+
     tableOrderDataJSON = null;
     
     if(storageData != null) {
@@ -277,7 +277,7 @@ function getTableOrderFromStorage(current_user_id, selectedTable) {
             }
         }
     }
-    
+
     tableNum = selectedTable;
     parseAndFillTableOrderJSON(tableOrderDataJSON);
 }
