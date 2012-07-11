@@ -67,6 +67,7 @@ Pos::Application.routes.draw do
   match 'load_price_for_menu_page' => "home#load_price_for_menu_page", :via => :get
   match 'load_price_receipt_for_product' => "home#load_price_receipt_for_product", :via => :get
   match 'update_price' => "home#update_price", :via => :post
+  match 'update_cost_price' => "home#update_cost_price", :via => :post
   
   #init the sales screen buttons based on role permissions
   match 'init_sales_screen_buttons' => "home#init_sales_screen_buttons"

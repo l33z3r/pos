@@ -796,10 +796,10 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
     var timeoutSeconds = pollingMaxSeconds + 2;
     
     if(hardReload) {
-        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
+        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in in a couple of seconds.";
         okFuncCall = "doClearAndReload();";
     } else {
-        message = "Settings have been changed by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
+        message = "Settings have been changed by " + reloadTerminalId + ". Screen will reload in a couple of seconds.";
         okFuncCall = "doReload(false);";
     }
     
@@ -1033,4 +1033,12 @@ function focusSelectInput(inputEl) {
         start : 0, 
         end : 0
     });
+}
+
+function reloadProducts(callback) {
+    $.getScript('/javascripts/products.js', callback);
+}
+
+function reloadCustomers(callback) {
+    $.getScript('/javascripts/customers.js', callback);
 }

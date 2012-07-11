@@ -4798,6 +4798,13 @@ div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_lin
     font-weight: bold;
 }
 
+div#delivery_screen div#delivery_receipt div#delivery_till_roll div.note {
+    text-align: left;
+    width: 200px;
+    margin-left: 40px;
+    font-weight: bold;
+}
+
 div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_till_roll_header {
     margin-bottom: 2px;
 }
@@ -5056,3 +5063,79 @@ div#delivery_screen div#delivery_screen_select_product_container div#product_sea
 }
 
 /* End Delivery Screen */
+
+/* Delivery Cost Price Popup Markup */
+
+div#delivery_cost_price_popup_markup {
+    display: none;
+}
+
+div#delivery_cost_price_popup_markup_container {
+    width: 290px;
+    height: 470px;
+}
+
+div#delivery_cost_price_popup_markup_container div#header {
+    float: left;
+    margin: 5px;
+    margin-top: 16px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+div#delivery_cost_price_popup_markup_container div#delivery_cost_price_input_container {
+    margin: 10px 0px;
+}
+
+div#delivery_cost_price_popup_markup_container div#delivery_cost_price_input_container div#delivery_cost_price_input_label {
+    font-weight: bold;
+    width: 85px;
+    float: left;
+    margin: 5px 6px 1px 10px;
+    font-size: 12px;
+}
+
+div#delivery_cost_price_popup_markup_container div#delivery_cost_price_input_container input {
+    float: left;
+}
+
+/* End Delivery Cost Price Popup Markup */
+
+/* Delivery Note Popup Markup */
+
+div#delivery_note_popup_markup {
+    display: none;
+}
+
+div#delivery_note_popup_markup_container {
+    width: 340px;
+    height: 310px;
+}
+
+div#delivery_note_popup_markup_container div#header {
+    float: left;
+    margin: 5px;
+    margin-top: 16px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+div#delivery_note_popup_markup_container div#delivery_note_input_container {
+    margin: 10px 0px;
+}
+
+div#delivery_note_popup_markup_container div#delivery_note_input_container div#delivery_note_input_label {
+    font-weight: bold;
+    width: 40px;
+    float: left;
+    margin: 5px 6px 1px 10px;
+    font-size: 12px;
+}
+
+div#delivery_note_popup_markup_container div#delivery_note_input_container textarea {
+    float: left;
+    width: 240px;
+    height: 150px;
+}
+
+/* End Delivery Note Popup Markup */

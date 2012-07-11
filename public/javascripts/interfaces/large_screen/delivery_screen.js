@@ -32,6 +32,7 @@ function initDeliveryScreen() {
 }
 
 function resetDeliveryProductSelect() {
+    setShortcutDropdownDefaultText();
     resetKeyboard();
     showMenuScreen();
 }
@@ -97,7 +98,7 @@ function deliveryScreenKeypadClickCancel() {
 function clearDeliveryProductsSearchInput() {
     $('#product_search_input').val("");
     $('#product_search_input_upc').val("");
-    $('#product_search_category_id').val(-1)
+    $('#product_search_category_id').val(-1);
     selectedProductSearchLetter = null;
     updateDeliveryProductsSearchResults();
 }
@@ -116,16 +117,18 @@ var selectedProductSearchLetter = null;
 
 function deliveryProductsSearchBoxFocused() {
     $('#product_search_input_upc').val("");
-    selectedCustomerSearchLetter = null;
-    $('#selection_letters .letter').removeClass("selected");
+    selectedProductSearchLetter = null;
+    updateDeliveryProductsSearchResults();
     updateCustomerSearchResults();
+    $('#selection_letters .letter').removeClass("selected");
 }
 
 function deliveryProductsUPCBoxFocused() {
     $('#product_search_input').val("");
-    selectedCustomerSearchLetter = null;
+    $('#product_search_category_id').val(-1);
+    selectedProductSearchLetter = null;
+    updateDeliveryProductsSearchResults();
     $('#selection_letters .letter').removeClass("selected");
-    updateCustomerSearchResults();
 }
 
 function loadAllDeliveryProducts() {
@@ -255,7 +258,8 @@ function addProductToDelivery(productId) {
     var deliveryItem = {
         'product' : product,
         'amount' : deliveryItemQuantity,
-        'is_return' : isReturn
+        'is_return' : isReturn,
+        'note' : ""
     }
     
     currentDeliveryItemQuantity = "";
@@ -324,7 +328,7 @@ function getAllDeliveryItemsReceiptHTML() {
 
     for(var i=0; i<currentDelivery.items.length; i++) {
         item = currentDelivery.items[i];
-        allDeliveryItemsReceiptHTML += getDeliveryItemReceiptHTML(currentDelivery.items[i]);
+        allDeliveryItemsReceiptHTML += getDeliveryItemReceiptHTML(item);
     }
     
     return allDeliveryItemsReceiptHTML;
@@ -359,6 +363,10 @@ function getDeliveryItemReceiptHTML(deliveryItem) {
     
     deliveryItemHTML += "<div class='cost_price'>" + costPrice + "</div>";
     deliveryItemHTML += "</div>" + clearHTML;
+    
+    if(deliveryItem.note.length > 0) {
+        deliveryItemHTML += "<div class='note'>" + deliveryItem.note + "</div>" + clearHTML;
+    }
     
     return deliveryItemHTML;
 }
@@ -491,4 +499,189 @@ function setReturnDeliveryItem(turnOn) {
         deliveryItemReturnMode = false;
         $('.button[id=return_delivery_item_toggle_button]').removeClass("selected");
     }
+}
+
+var changeDeliveryItemCostPricePopupEl;
+var changeDeliveryItemCostPricePopupAnchor;
+
+function promptChangeDeliveryItemCostPrice() {
+    if(currentDelivery.items.length == 0) {
+        niceAlert("No Delivery Items Present!");
+        return;
+    }
+    
+    var popupHTML = $("#delivery_cost_price_popup_markup").html();
+        
+    changeDeliveryItemCostPricePopupAnchor = $('#delivery_receipt');
+    
+    if(changeDeliveryItemCostPricePopupAnchor.HasBubblePopup()) {
+        changeDeliveryItemCostPricePopupAnchor.RemoveBubblePopup();
+    }
+    
+    changeDeliveryItemCostPricePopupAnchor.CreateBubblePopup();
+    
+    changeDeliveryItemCostPricePopupAnchor.ShowBubblePopup({
+        position: 'right',  
+        align: 'top',
+        tail	 : {
+            align: 'middle'
+        },
+        innerHtml: popupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+        
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false        
+    }, false);
+    
+    changeDeliveryItemCostPricePopupAnchor.FreezeBubblePopup();
+         
+    var popupId = changeDeliveryItemCostPricePopupAnchor.GetBubblePopupID();
+    
+    changeDeliveryItemCostPricePopupEl = $('#' + popupId);
+    
+    var lastItem = currentDelivery.items[currentDelivery.items.length - 1];
+    
+    var product = lastItem.product;
+    var costPrice = product.cost_price;
+    
+    changeDeliveryItemCostPricePopupEl.find('input').val(costPrice);
+    changeDeliveryItemCostPricePopupEl.find('input').focus().select();
+    
+    keypadPosition = $('#' + popupId).find('.delivery_cost_price_popup_keypad_container');
+    
+    clickFunction = function(val) {
+        var input = changeDeliveryItemCostPricePopupEl.find('input');
+        doKeyboardInput(input, val);
+    };
+    
+    cancelFunction = function() {
+        var input = changeDeliveryItemCostPricePopupEl.find('input');
+        doKeyboardInputCancel(input);
+    };
+    
+    setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
+
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closePromptChangeDeliveryItemCostPrice);
+}
+
+function closePromptChangeDeliveryItemCostPrice() {
+    if(changeDeliveryItemCostPricePopupEl) {
+        hideBubblePopup(changeDeliveryItemCostPricePopupAnchor);
+    }
+}
+
+function saveChangeDeliveryItemCostPrice() {
+    closePromptChangeDeliveryItemCostPrice();
+    
+    var newCostPrice = changeDeliveryItemCostPricePopupEl.find("input").val();
+    
+    //make sure its an integer
+    newCostPrice = parseFloat(newCostPrice);
+    
+    if(isNaN(newCostPrice) || newCostPrice < 0) {
+        newCostPrice = 0;
+    }
+    
+    var lastItem = currentDelivery.items[currentDelivery.items.length - 1];
+    
+    lastItem.product.cost_price = newCostPrice;
+    products[lastItem.product.id].cost_price = newCostPrice;
+    
+    for(var i=0; i<currentDelivery.items.length; i++) {
+        item = currentDelivery.items[i];
+        
+        if(item.product.id == lastItem.product.id) {
+            item.product.cost_price = newCostPrice;
+        }
+    }
+    
+    //must send an ajax update to server for new cost price
+    $.ajax({
+        url: '/update_cost_price',
+        type: "POST",
+        data: {
+            product_id : lastItem.product.id,
+            new_cost_price : newCostPrice
+        }
+    });
+    
+    calculateDeliveryTotal();
+    storeDelivery();
+    redrawDeliveryReceipt();
+}
+
+var addDeliveryItemNotePopupEl;
+var addDeliveryItemNotePopupAnchor;
+
+function promptAddDeliveryItemNote() {
+    if(currentDelivery.items.length == 0) {
+        niceAlert("No Delivery Items Present!");
+        return;
+    }
+    
+    var popupHTML = $("#delivery_note_popup_markup").html();
+        
+    addDeliveryItemNotePopupAnchor = $('#delivery_receipt');
+    
+    if(addDeliveryItemNotePopupAnchor.HasBubblePopup()) {
+        addDeliveryItemNotePopupAnchor.RemoveBubblePopup();
+    }
+    
+    addDeliveryItemNotePopupAnchor.CreateBubblePopup();
+    
+    addDeliveryItemNotePopupAnchor.ShowBubblePopup({
+        position: 'right',  
+        align: 'top',
+        tail	 : {
+            align: 'middle'
+        },
+        innerHtml: popupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+        
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false        
+    }, false);
+    
+    addDeliveryItemNotePopupAnchor.FreezeBubblePopup();
+         
+    var popupId = addDeliveryItemNotePopupAnchor.GetBubblePopupID();
+    
+    addDeliveryItemNotePopupEl = $('#' + popupId);
+    
+    var lastItem = currentDelivery.items[currentDelivery.items.length - 1];
+    
+    var itemNote = lastItem.note;
+    
+    addDeliveryItemNotePopupEl.find('textarea').val(itemNote);
+    addDeliveryItemNotePopupEl.find('textarea').focus().select();
+    
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId).add('#util_keyboard_container'), closePromptAddDeliveryItemNote);
+}
+
+function closePromptAddDeliveryItemNote() {
+    if(addDeliveryItemNotePopupEl) {
+        hideBubblePopup(addDeliveryItemNotePopupAnchor);
+    }
+}
+
+function saveAddDeliveryItemNote() {
+    closePromptAddDeliveryItemNote();
+    
+    var newNote = addDeliveryItemNotePopupEl.find("textarea").val();
+    
+    var lastItem = currentDelivery.items[currentDelivery.items.length - 1];
+    
+    lastItem.note = newNote;
+    storeDelivery();
+    redrawDeliveryReceipt();
 }

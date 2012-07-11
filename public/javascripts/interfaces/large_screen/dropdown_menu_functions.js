@@ -102,7 +102,7 @@ function finishPriceChangeMode() {
     showLoadingDiv("Loading new prices...");
     
     //reload the products
-    $.getScript('/javascripts/products.js', priceChangeModeComplete);
+    reloadProducts(priceChangeModeComplete);
 }
 
 function priceChangeModeComplete() {   

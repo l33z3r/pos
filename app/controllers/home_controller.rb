@@ -158,6 +158,16 @@ class HomeController < ApplicationController
     @product.save!
   end
   
+  def update_cost_price
+    @product = Product.find(params[:product_id])
+    @new_cost_price = params[:new_cost_price].to_f
+    
+    @product.cost_price = @new_cost_price
+    @product.save!
+    
+    render :json => {:success => true}.to_json
+  end
+  
   def load_stock_for_menu_page    
     @page_num = params[:page_num].to_i
     @sub_page_id = params[:sub_page_id].to_i
