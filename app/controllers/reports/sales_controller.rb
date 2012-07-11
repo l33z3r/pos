@@ -264,7 +264,7 @@ class Reports::SalesController < Admin::AdminController
         where << " inner join products p on oi.product_id = p.id and oi.product_id = #{session[:product]}"
       end
       if session[:terminal] != ''
-        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and oi.terminal_id = '#{session[:terminal]}'"
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
       else
         where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}'"
       end
@@ -296,7 +296,7 @@ class Reports::SalesController < Admin::AdminController
       end
 
       if session[:terminal] != ''
-        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and oi.terminal_id = '#{session[:terminal]}'"
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
       else
         where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}'"
       end
@@ -320,7 +320,7 @@ class Reports::SalesController < Admin::AdminController
       end
 
       if session[:terminal] != ''
-        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and oi.terminal_id = '#{session[:terminal]}'"
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
       else
         where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}'"
       end
@@ -344,7 +344,7 @@ class Reports::SalesController < Admin::AdminController
       end
 
       if session[:terminal] != ''
-        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and oi.terminal_id = '#{session[:terminal]}'"
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
       else
         where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}'"
       end
