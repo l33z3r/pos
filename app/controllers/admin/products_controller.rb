@@ -1,5 +1,3 @@
-require 'csv'
-
 class Admin::ProductsController < Admin::AdminController
   cache_sweeper :product_sweeper
 

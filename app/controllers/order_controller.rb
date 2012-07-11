@@ -269,9 +269,11 @@ class OrderController < ApplicationController
             #decrement the stock for this item
             if @order_item.product.is_stock_item
               @order_item.product.decrement_stock @item_stock_usage
-            else
-              #decrement the ingredient stock
-              @order_item.product.ingredients.each do |ingredient|
+            end
+            
+            #decrement the ingredient stock
+            @order_item.product.ingredients.each do |ingredient|
+              if ingredient.product.is_stock_item
                 @ingredient_usage = ingredient.stock_usage
                 ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
               end

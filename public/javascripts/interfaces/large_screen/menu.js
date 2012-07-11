@@ -1075,6 +1075,10 @@ function totalsRecptScroll() {
     recptScroll("totals_");
 }
 
+function deliveryRecptScroll() {
+    recptScroll("delivery_");
+}
+
 function reportsRecptScroll() {
     recptScroll("reports_center_");
 }
@@ -1492,7 +1496,7 @@ function orderSentToServerCallback(orderData, errorOccured) {
         }
         
         //reload the customers as their points/credit may need updating
-        $.getScript('/javascripts/customers.js');
+        reloadCustomers();
     } else {
         niceAlert("There was an error cashing out the last order, the server could not process it. It will automatically resend itself, please do not cash out on another terminal!");
     }

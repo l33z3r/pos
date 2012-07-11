@@ -71,7 +71,7 @@ function makeCustomerPayment(customerId) {
                 currentPaymentReceiptHTML = "";
                 
                 //reload the customers as their points/credit may need updating
-                $.getScript('/javascripts/customers.js');
+                reloadCustomers();
             },
             complete : function() {
                 utilPaymentInProgress = false;

@@ -4,8 +4,9 @@ class StockTransaction < ActiveRecord::Base
   
   STOCK_UPDATE = 1
   STOCK_TRANSFER = 2
+  DELIVERY = 3
   
-  VALID_TRANSACTION_TYPES = [STOCK_UPDATE, STOCK_TRANSFER]
+  VALID_TRANSACTION_TYPES = [STOCK_UPDATE, STOCK_TRANSFER, DELIVERY]
   
   validates :product_id, :numericality => true, :presence => true
   validates :employee_id, :numericality => true, :presence => true
@@ -25,6 +26,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: stock_transactions
@@ -35,8 +37,10 @@ end
 #  old_amount       :float
 #  change_amount    :float
 #  transaction_type :integer(4)
-#  note             :string(255)
 #  created_at       :datetime
 #  updated_at       :datetime
+#  delivery_id      :integer(4)
+#  is_return        :boolean(1)      default(FALSE)
+#  note             :string(255)
 #
 

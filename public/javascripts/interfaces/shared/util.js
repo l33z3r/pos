@@ -257,13 +257,6 @@ function storeTableOrderInStorage(current_user_id, table_num, order_to_store) {
     return storeKeyValue(key, value);
 }
 
-// OLD VERSION THAT KEEPS COPY OF ORDERS PER USER (KEEP FOR REVERT)
-//function storeTableOrderInStorage(current_user_id, table_num, order_to_store) {
-//    key = "user_" + current_user_id + "_table_" + table_num + "_current_order";
-//    value = JSON.stringify(order_to_store);
-//    return storeKeyValue(key, value);
-//}
-
 function getTableOrderFromStorage(current_user_id, selectedTable) {
     key = "user_" + current_user_id + "_table_" + selectedTable + "_current_order";
     storageData = retrieveStorageValue(key);
@@ -803,10 +796,10 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
     var timeoutSeconds = pollingMaxSeconds + 2;
     
     if(hardReload) {
-        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
+        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in in a couple of seconds.";
         okFuncCall = "doClearAndReload();";
     } else {
-        message = "Settings have been changed by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
+        message = "Settings have been changed by " + reloadTerminalId + ". Screen will reload in a couple of seconds.";
         okFuncCall = "doReload(false);";
     }
     
@@ -1040,4 +1033,12 @@ function focusSelectInput(inputEl) {
         start : 0, 
         end : 0
     });
+}
+
+function reloadProducts(callback) {
+    $.getScript('/javascripts/products.js', callback);
+}
+
+function reloadCustomers(callback) {
+    $.getScript('/javascripts/customers.js', callback);
 }

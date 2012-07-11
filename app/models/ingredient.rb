@@ -8,6 +8,7 @@ class Ingredient < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: ingredients
@@ -15,8 +16,8 @@ end
 #  id                    :integer(4)      not null, primary key
 #  product_id            :integer(4)
 #  ingredient_product_id :integer(4)
-#  quantity_numerator    :integer(4)      default(1)
-#  quantity_denominator  :integer(4)      default(1)
+#  quantity_numerator    :float           default(1.0)
+#  quantity_denominator  :float           default(1.0)
 #  created_at            :datetime
 #  updated_at            :datetime
 #
