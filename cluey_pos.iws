@@ -15,7 +15,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e646dee2-e269-4160-8f2c-811321f2083d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/database.yml" afterPath="$PROJECT_DIR$/config/database.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/reports/sales_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/reports/sales_controller.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cluey_pos.iws" afterPath="$PROJECT_DIR$/cluey_pos.iws" />
     </list>
     <ignored path="cluey_pos.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -86,16 +87,7 @@
       <file leaf-file-name="_covers_screen.html.erb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_covers_screen.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="86" selection-start="418" selection-end="418" vertical-scroll-proportion="-6.875">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="database.yml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/config/database.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="18" selection-start="276" selection-end="276" vertical-scroll-proportion="0.0955414">
+            <state line="12" column="66" selection-start="485" selection-end="485" vertical-scroll-proportion="-7.5">
               <folding />
             </state>
           </provider>
@@ -113,7 +105,16 @@
       <file leaf-file-name="sales_controller.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/reports/sales_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="270" column="26" selection-start="10192" selection-end="10192" vertical-scroll-proportion="-6.36">
+            <state line="240" column="75" selection-start="8047" selection-end="8047" vertical-scroll-proportion="-4.8">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="database.yml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/config/database.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="20" column="45" selection-start="562" selection-end="562" vertical-scroll-proportion="0.41401273">
               <folding />
             </state>
           </provider>
@@ -122,7 +123,7 @@
       <file leaf-file-name="stocks_controller.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="102" column="48" selection-start="2872" selection-end="2872" vertical-scroll-proportion="0.0">
+            <state line="175" column="129" selection-start="5565" selection-end="5565" vertical-scroll-proportion="-3.06">
               <folding />
             </state>
           </provider>
@@ -131,7 +132,7 @@
       <file leaf-file-name="payments_controller.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/reports/payments_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="232" column="40" selection-start="7654" selection-end="7654" vertical-scroll-proportion="-14.32">
+            <state line="216" column="85" selection-start="6959" selection-end="6959" vertical-scroll-proportion="-4.82">
               <folding />
             </state>
           </provider>
@@ -171,10 +172,10 @@
         <option value="$PROJECT_DIR$/public/stylesheets/interfaces/medium_screen/style.css" />
         <option value="$PROJECT_DIR$/public/javascripts/interfaces/shared/screen_button_functions.js" />
         <option value="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/screen_button_functions.js" />
-        <option value="$PROJECT_DIR$/app/controllers/reports/sales_controller.rb" />
-        <option value="$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb" />
         <option value="$PROJECT_DIR$/app/controllers/reports/payments_controller.rb" />
         <option value="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" />
+        <option value="$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb" />
+        <option value="$PROJECT_DIR$/app/controllers/reports/sales_controller.rb" />
         <option value="$PROJECT_DIR$/config/database.yml" />
       </list>
     </option>
@@ -880,27 +881,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/reports/payments_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="232" column="40" selection-start="7654" selection-end="7654" vertical-scroll-proportion="-14.32">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="102" column="48" selection-start="2872" selection-end="2872" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/reports/sales_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="270" column="26" selection-start="10192" selection-end="10192" vertical-scroll-proportion="-6.36">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1162" column="22" selection-start="34339" selection-end="34339" vertical-scroll-proportion="0.0">
@@ -915,16 +895,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="175" column="129" selection-start="5565" selection-end="5565" vertical-scroll-proportion="-3.06">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/reports/payments_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="216" column="85" selection-start="6959" selection-end="6959" vertical-scroll-proportion="-4.82">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_covers_screen.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="86" selection-start="418" selection-end="418" vertical-scroll-proportion="-6.875">
+        <state line="12" column="66" selection-start="485" selection-end="485" vertical-scroll-proportion="-7.5">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/reports/sales_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="240" column="75" selection-start="8047" selection-end="8047" vertical-scroll-proportion="-4.8">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/config/database.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="18" selection-start="276" selection-end="276" vertical-scroll-proportion="0.0955414">
+        <state line="20" column="45" selection-start="562" selection-end="562" vertical-scroll-proportion="0.41401273">
           <folding />
         </state>
       </provider>
