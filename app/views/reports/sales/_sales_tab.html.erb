@@ -33,6 +33,7 @@
         <% end %>
 
         <% if (@s_type == :best_seller) || (@s_type == :worst_seller) || (@s_type == :by_product) %>
+
             <table id="product_list" class="admin_table" style="width: 100%;">
                 <thead>
                 <th class="header">Product</th>
@@ -59,54 +60,54 @@
                     <% total_vat += vat %>
                     <% total_net += net_sales %>
                     <% if product %>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <% if nil != product.name %>
-                            <%= product.name %>
-                            <% end %>
-                        </td>
-                        <td>
-                            <% if Category.find_by_id(product.category_id) %>
-                                <% if Category.find_by_id(product.category_id).name %>
-                                <%= Category.find_by_id(product.category_id).name %>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <% if nil != product.name %>
+                                    <%= product.name %>
                                 <% end %>
-                            <% end %>
-                        </td>
-                        <td style="text-align: right">
-                            <%= "%g" % total_items %>
-                        </td>
-                        <td style="text-align: right">
-                            <%= print_money(gross_sales) %>
-                        </td>
-                        <td style="text-align: right">
-                            <%= print_money(vat) %>
-                        </td>
-                        <td style="text-align: right">
-                            <%= print_money(net_sales) %>
-                        </td>
-                    </tr>
+                            </td>
+                            <td>
+                                <% if Category.find_by_id(product.category_id) %>
+                                    <% if Category.find_by_id(product.category_id).name %>
+                                        <%= Category.find_by_id(product.category_id).name %>
+                                    <% end %>
+                                <% end %>
+                            </td>
+                            <td style="text-align: right">
+                                <%= "%g" % total_items %>
+                            </td>
+                            <td style="text-align: right">
+                                <%= print_money(gross_sales) %>
+                            </td>
+                            <td style="text-align: right">
+                                <%= print_money(vat) %>
+                            </td>
+                            <td style="text-align: right">
+                                <%= print_money(net_sales) %>
+                            </td>
+                        </tr>
+                    <% end %>
                 <% end %>
-                <% end %>
-                    <tr>
-                        <td style="text-align: left; border-top: 2px solid">
-                            <b>Total:</b>
-                        </td>
-                        <td style="text-align: right; border-top: 2px solid">
-                        </td>
-                        <td style="text-align: left; border-top: 2px solid; ">
+                <tr>
+                    <td style="text-align: left; border-top: 2px solid">
+                        <b>Total:</b>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid">
+                    </td>
+                    <td style="text-align: left; border-top: 2px solid; ">
 
-                        </td>
-                        <td style="text-align: right; border-top: 2px solid;">
-                            <%= print_money(total_gross) %>
-                        </td>
-                        <td style="text-align: right; border-top: 2px solid;">
-                            <%= print_money(total_vat) %>
-                        </td>
-                        <td style="text-align: right; border-top: 2px solid">
-                            <%= print_money(total_net) %>
-                        </td>
-                    </tr>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid;">
+                        <%= print_money(total_gross) %>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid;">
+                        <%= print_money(total_vat) %>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid">
+                        <%= print_money(total_net) %>
+                    </td>
+                </tr>
                 </tbody>
             </table>
 
@@ -197,4 +198,6 @@
         </div>
     </div>
 <% end %>
-
+<script type="text/javascript">
+    $('#refine_button').removeClass("selected");
+</script>

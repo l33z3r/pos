@@ -186,8 +186,9 @@ function runGlancesSearch() {
 }
 
 function runSalesSearch() {
+    if (!$('#refine_button').is('.selected')) {
     $("#report_sales_results").html("Loading...");
-
+    $('#refine_button').addClass("selected");
     if ($('#product_search').val() != '') {
         $.ajax({
             type: 'GET',
@@ -239,13 +240,16 @@ function runSalesSearch() {
                 });
             });
     }
+    }
+
 
 
 }
 
 function runStocksSearch() {
+    if (!$('#refine_button_stock').is('.selected')) {
     $("#report_stocks_results").html("Loading...");
-
+    $('#refine_button_stock').addClass("selected");
     $.ajax({
         type: 'GET',
         url: '/reports/stocks/set_params',
@@ -272,6 +276,7 @@ function runStocksSearch() {
                 }
             });
         });
+    }
 }
 
 function setReportParams() {

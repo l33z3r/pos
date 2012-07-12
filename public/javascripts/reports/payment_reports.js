@@ -75,7 +75,9 @@ function setPaymentDateParams(set_date, isManual) {
 
 
 function runPaymentsSearch() {
+    if (!$('#refine_button').is('.selected')) {
     $("#report_payments_results").html("Loading...");
+    $('#refine_button').addClass("selected");
 
     $.ajax({
         type: 'GET',
@@ -103,6 +105,7 @@ function runPaymentsSearch() {
                 }
             });
         });
+}
 }
 
 function setPaymentReportParams() {

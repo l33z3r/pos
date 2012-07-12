@@ -196,6 +196,10 @@ div#reports_wrapper {
     overflow: hidden;
 }
 
+div#pag_container{
+    padding: 5px;
+}
+
 div.wrapper div {
     text-align: center;
 }
@@ -4630,6 +4634,11 @@ div#reports_container  div#report_sales_filters #refine_button{
     margin-left: 80px;
 }
 
+div#reports_container  div#report_sales_filters #refine_button.selected{
+    cursor: progress;
+    color: graytext;
+}
+
 div#reports_container .preselect_button{
     margin-top: 20px;
     width: auto;
@@ -4644,6 +4653,11 @@ div#reports_container  div#report_sales_filters #refine_button_stock{
     height: 64px;
     float: left;
     margin-left: 70px;
+}
+
+div#reports_container  div#report_sales_filters #refine_button_stock.selected{
+    cursor: progress;
+    color: graytext;
 }
 
 

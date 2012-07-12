@@ -33,6 +33,7 @@
         <% end %>
 
         <% if (@s_type == :day) || (@s_type == :month) || (@s_type == :week) || (@s_type == :year) %>
+
             <table id="product_list" class="admin_table" style="width: 100%">
                 <thead>
                 <th class="header">Date</th>
@@ -100,7 +101,18 @@
             </table>
 
         <% else %>
-
+           <div id="pag_container">
+            <%= will_paginate(@orders) %>
+           </div>
+            <script type="text/javascript">
+                $(function () {
+                    $('.pagination a').click(function () {
+                        $("#report_payments_results").html("Loading...");
+                        $.get(this.href, null, null, 'script');
+                        return false;
+                    });
+                });
+            </script>
             <table id="product_list" class="admin_table" style="width: 100%">
                 <thead>
                 <th class="header">Date</th>
@@ -163,31 +175,7 @@
 
                     </tr>
                 <% end %>
-                 <tr>
-                        <td style="text-align: left; border-top: 2px solid">
-                            <b>Total:</b>
-                        </td>
-                        <td style="text-align: right; border-top: 2px solid">
-                        </td>
-                        <td style="text-align: left; border-top: 2px solid; ">
 
-                        </td>
-                        <td style="text-align: right; border-top: 2px solid;">
-                        </td>
-                        <td style="text-align: right; border-top: 2px solid;">
-                        </td>
-                     <td style="text-align: right; border-top: 2px solid;">
-                        </td>
-                     <td style="text-align: left; border-top: 2px solid;">
-                         <%= print_money(total_gross) %>
-                        </td>
-                     <td style="text-align: left; border-top: 2px solid;">
-                         <%= print_money(total_discount) %>
-                        </td>
-                        <td style="text-align: left; border-top: 2px solid">
-                            <%= print_money(total_net) %>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
             </div>
@@ -211,4 +199,7 @@
         </div>
     </div>
 <% end %>
+<script type="text/javascript">
+    $('#refine_button').removeClass("selected");
+</script>
 

@@ -30,6 +30,8 @@ class Reports::PaymentsController < Admin::AdminController
 
     session[:preselect] = -1
 
+    session[:current_page] = 1
+
     @opening_time = GlobalSetting.parsed_setting_for GlobalSetting::EARLIEST_OPENING_HOUR
     @closing_time = GlobalSetting.parsed_setting_for GlobalSetting::LATEST_CLOSING_HOUR
 
@@ -63,6 +65,9 @@ class Reports::PaymentsController < Admin::AdminController
 
 
   def payments_search
+    if params[:page] != nil
+      session[:current_page] = params[:page].to_i
+    end
     @orders = get_payments_data
     @s_type = session[:search_type]
     render_graph
@@ -159,6 +164,7 @@ class Reports::PaymentsController < Admin::AdminController
 
 
   def set_params
+    session[:current_page] = 1
     if params[:search][:select_type] != ''
       session[:preselect] = params[:search][:select_type].to_i
     else
@@ -205,8 +211,8 @@ class Reports::PaymentsController < Admin::AdminController
 
   def get_payments_data
 
-    @selected_from_date = DateTime.parse(session[:from_date].to_s).new_offset('-01:00')
-    @selected_to_date = DateTime.parse(session[:to_date].to_s).new_offset('-01:00')
+    @selected_from_date = session[:from_date].to_s
+    @selected_to_date = session[:to_date].to_s
 
     if (session[:search_type] == :day || session[:search_type] == :month || session[:search_type] == :year || session[:search_type] == :week)
 
@@ -268,7 +274,7 @@ class Reports::PaymentsController < Admin::AdminController
         where << " and o.training_mode_sale = 0"
       end
 
-      query = Order.find_by_sql(where)
+      query = Order.paginate_by_sql(where, :page=>session[:current_page], :per_page=> 100)
 
     end
    return query
