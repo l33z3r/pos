@@ -231,8 +231,8 @@ class Reports::SalesController < Admin::AdminController
 
   def get_sales_data
 
-    @selected_from_date = DateTime.parse(session[:from_date].to_s).new_offset('-01:00')
-    @selected_to_date = DateTime.parse(session[:to_date].to_s).new_offset('-01:00')
+    @selected_from_date = session[:from_date].to_s
+    @selected_to_date = session[:to_date].to_s
 
       #if !session[:search]
       #  query = OrderItem.find_by_sql("select o.id, o.tax_rate, o.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items o where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' group by o.product_id order by total_price desc")
