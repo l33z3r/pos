@@ -325,7 +325,7 @@ div#menu_screen div#menu_container div#menu_items_container div.menu_item_spacer
     background-color: transparent;
 }
 
-div#menu_screen div#menu_container div#menu_items_container div.item.inactive {
+div#menu_screen div#menu_container div#menu_items_container div.item.inactive div.item_name {
     text-decoration: line-through;
 }
 

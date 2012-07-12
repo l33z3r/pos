@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120709170134) do
+ActiveRecord::Schema.define(:version => 20120712122428) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -520,9 +520,9 @@ ActiveRecord::Schema.define(:version => 20120709170134) do
     t.float    "old_amount"
     t.float    "change_amount"
     t.integer  "transaction_type"
+    t.string   "note"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "note"
     t.integer  "delivery_id"
     t.boolean  "is_return",        :default => false
   end
