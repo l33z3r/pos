@@ -1007,7 +1007,7 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
     background-color: transparent;
 }
 
-div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item.inactive {
+div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item.inactive div.item_name {
     text-decoration: line-through;
 }
 
