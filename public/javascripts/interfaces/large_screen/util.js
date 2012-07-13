@@ -143,6 +143,8 @@ function setStatusMessage(message, hide, shake) {
         statusEl = $('#menu_screen_status_message');
     } else if(currentScreenIsTables()) {
         statusEl = $('#tables_screen_status_message');
+    } else if(currentScreenIsDelivery()) {
+        statusEl = $('#delivery_screen_status_message');
     } else if(currentScreenIsTotals()) {
         statusEl = $('#totals_screen_status_message');
     } else if(inKitchenContext()) {
@@ -188,6 +190,10 @@ function hideStatusMessage() {
         statusEl = $('#menu_screen_status_message');
     } else if(currentScreenIsTables()) {
         statusEl = $('#tables_screen_status_message');
+    } else if(currentScreenIsDelivery()) {
+        statusEl = $('#delivery_screen_status_message');
+    } else if(currentScreenIsTotals()) {
+        statusEl = $('#totals_screen_status_message');
     } else if(inKitchenContext()) {
         statusEl = $('#kitchen_screen_status_message');
     } else {
@@ -296,6 +302,12 @@ function showTotalsScreen() {
     $('#total_screen').show();
 }
 
+function showDeliveryScreen() {
+    setNavTitle("Receive Delivery");
+    hideAllScreens();
+    $('#delivery_screen').show();
+}
+
 function showMoreOptionsScreen() {
     hideAllScreens();
     hideUtilKeyboard();
@@ -327,10 +339,15 @@ function hideAllScreens() {
     //make sure the keyboard from the add note screen is hidden
     resetKeyboard();
     
+    //make sure dropdowns get closed
+    menuScreenShortcutSelectMenu.closeMenu();
+    tableSelectMenu.closeMenu();
+    
     $('#landing').hide();
     $('#menu_screen').hide();
     $('#table_select_screen').hide();
     $('#total_screen').hide();
+    $('#delivery_screen').hide();
     $('#util_payment_screen').hide();
     $('#more_options').hide();
     $('#cash_reports_screen').hide();
@@ -338,7 +355,6 @@ function hideAllScreens() {
     $('#mobile_screen').hide();
     $('#previous_cash_reports_screen').hide();
     $('#split_bill_screen').hide();
-
 }
 
 function currentScreenIsMenu() {
@@ -351,6 +367,10 @@ function currentScreenIsLogin() {
 
 function currentScreenIsTotals() {
     return $('#total_screen').is(":visible");
+}
+
+function currentScreenIsDelivery() {
+    return $('#delivery_screen').is(":visible");
 }
 
 function currentScreenIsUtilPayment() {
@@ -444,7 +464,7 @@ function setUtilKeyboardCallback(callbackFunction) {
 
 function doWriteToLastActiveInput(val) {
     if(lastActiveElement) {
-        lastActiveElement.val(lastActiveElement.val() + val);
+        doKeyboardInput(lastActiveElement, val);
         
         if(lastActiveElementInputCallback) {
             lastActiveElementInputCallback.call();
@@ -459,13 +479,12 @@ function doTabLastActiveInput() {
 }
 
 function doDeleteCharLastActiveInput() {
-    oldVal = lastActiveElement.val();
-    newVal = oldVal.substring(0, oldVal.length - 1);
-    
-    lastActiveElement.val(newVal);
-    
-    if(lastActiveElementInputCallback) {
-        lastActiveElementInputCallback.call();
+    if(lastActiveElement) {
+        doKeyboardInputCancel(lastActiveElement);
+        
+        if(lastActiveElementInputCallback) {
+            lastActiveElementInputCallback.call();
+        }
     }
 }
 
@@ -750,4 +769,14 @@ function hideLicenceExpiredScreen() {
     } catch (e) {
         
     }
+}
+
+function initTrainingModeFromCookie() {
+    if(getRawCookie(inTrainingModeCookieName) == null) {
+        var exdays = 365 * 100;
+        setRawCookie(inTrainingModeCookieName, false, exdays);
+    }
+    
+    var turnOn = getRawCookie(inTrainingModeCookieName) === "true";
+    setTrainingMode(turnOn);
 }

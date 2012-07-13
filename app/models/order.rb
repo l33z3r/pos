@@ -54,6 +54,8 @@ class Order < ActiveRecord::Base
   end
 end
 
+
+
 # == Schema Information
 #
 # Table name: orders
@@ -81,5 +83,7 @@ end
 #  order_num             :integer(8)
 #  split_payments        :text(2147483647
 #  client_name           :string(255)     default(""), not null
+#  time_started          :string(255)
+#  training_mode_sale    :boolean(1)      default(FALSE)
 #
 

@@ -1,13 +1,14 @@
 <% @nav_title = "Reports - Sales" %>
 <div id="reports_nav">
-            <div class="report_tab" onclick="window.location = '/reports/glances'">
-                At A Glance
-            </div> <br>
+
             <div class="report_tab selected" onclick="window.location = '/reports/sales'">
                Sales
             </div> <br>
             <div class="report_tab" onclick="window.location = '/reports/stocks'">
                 Stock
+            </div><br>
+            <div class="report_tab" onclick="window.location = '/reports/payments'">
+               Payments
             </div>
 </div>
 <div id="reports_container">
@@ -76,14 +77,14 @@
                                 <div class="dropdown_container">
                                     <div class="label">Date From</div>
                                     <div class="input_date">
-                                        <input type="text" size="13" id="date_from" name="date_from"
+                                        <input type="text" size="13" readonly="readonly" id="date_from" name="date_from"
                                                value="<%= @selected_from_date.to_date.strftime("%Y-%m-%d %H:%M") %>"/>
                                     </div>
                                 </div>
                                 <div class="dropdown_container">
                                     <div class="label">Date To</div>
                                     <div class="input_date">
-                                        <input type="text" size="13" id="date_to" name="date_to"
+                                        <input type="text" size="13" readonly="readonly" id="date_to" name="date_to"
                                                value="<%= @selected_to_date.to_date.strftime("%Y-%m-%d %H:%M") %>"/>
                                     </div>
                                 </div>
@@ -111,11 +112,12 @@
                         <div onclick="setReportParams();runSalesSearch()" class="button">Update</div>
                     </div>
                     <div style="float: right; margin-top: 10px; margin-right: 10px;">
-                        <div style="margin: 5px; height: 40px;" onclick="switchView('graph')" id="graph_view" class="button selected">Graph View</div>
+                        <div style="margin: 5px; height: 40px;" onclick="switchView('table')" id="table_view" class="button selected">Table View</div>
                     </div>
                     <div style="float: right; margin-top: 10px; margin-right: 10px;">
-                        <div style="margin: 5px; height: 40px;" onclick="switchView('table')" id="table_view" class="button">Table View</div>
+                        <div style="margin: 5px; height: 40px;" onclick="switchView('graph')" id="graph_view" class="button">Graph View</div>
                     </div>
+
                 </div>
 
                 <div id="report_sales_results">

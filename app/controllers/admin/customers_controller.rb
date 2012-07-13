@@ -26,7 +26,6 @@ class Admin::CustomersController < Admin::AdminController
   end  
   
   #code to import customers from csv
-#    require 'csv'
 #    if params[:gen]
 #      @resp = ""
 #      

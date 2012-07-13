@@ -65,6 +65,10 @@ class PaymentMethod < ActiveRecord::Base
     !self.is_cash? and !self.is_int_card?
   end
   
+  def self.options_for_shortcut_linking
+    options_for_select << ["None", -1]
+  end
+  
   def self.options_for_select
     @options = []
     

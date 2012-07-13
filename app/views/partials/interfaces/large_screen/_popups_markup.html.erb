@@ -187,7 +187,7 @@
 
     <div class="clear_top_margin_10">&nbsp;</div>
 
-    <div class="service_charge_popup_keypad_container">Keypad gets put here dynamically</div>
+    <div class="service_charge_popup_keypad_container"></div>
 
     <div class="clear">&nbsp;</div>
 
@@ -233,7 +233,7 @@
 
     <div class="clear_top_margin_10">&nbsp;</div>
 
-    <div class="cashback_popup_keypad_container">Keypad gets put here dynamically</div>
+    <div class="cashback_popup_keypad_container"></div>
 
     <div class="clear">&nbsp;</div>
 
@@ -304,7 +304,7 @@
     <div class="clear">&nbsp;</div>
 
     <div id="add_covers_input_container">
-      <div id="add_covers_input_label">Name:</div>
+      <div id="add_covers_input_label">Covers:</div>
       <input type="text" size="20" id="add_covers_input"/>
       <div class="clear">&nbsp;</div>
     </div>
@@ -312,6 +312,10 @@
     <div class="clear">&nbsp;</div>
 
     <div class="clear_top_margin_10">&nbsp;</div>
+
+    <div class="add_covers_popup_keypad_container">Keypad gets put here dynamically</div>
+
+    <div class="clear">&nbsp;</div>
 
     <div class="action_buttons_container">
       <div class="action_buttons">
@@ -373,6 +377,82 @@
             <%= image_tag "button_logos/ok_button.png"%>
           </div>
           <div class="button_name">Add To Order</div>
+        </div>
+        <div class="clear">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="delivery_cost_price_popup_markup">
+  <div id="delivery_cost_price_popup_markup_container" class="popup_container">
+
+    <div id="header">Enter New Cost Price</div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div id="delivery_cost_price_input_container">
+      <div id="delivery_cost_price_input_label">Cost Price:</div>
+      <input type="text" size="20" id="delivery_cost_price_input"/>
+      <div class="clear">&nbsp;</div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div class="clear_top_margin_10">&nbsp;</div>
+
+    <div class="delivery_cost_price_popup_keypad_container"></div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div class="action_buttons_container">
+      <div class="action_buttons">
+        <div id="cancel_button" class="button" data-onpress="closePromptChangeDeliveryItemCostPrice();">
+          <div class="icon">
+            <%= image_tag "button_logos/cancel_button.png"%>
+          </div>
+          <div class="button_name">Cancel</div>
+        </div>
+        <div id="save_button" class="button" data-onpress="saveChangeDeliveryItemCostPrice();">
+          <div class="icon">
+            <%= image_tag "button_logos/ok_button.png"%>
+          </div>
+          <div class="button_name">OK</div>
+        </div>
+        <div class="clear">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="delivery_note_popup_markup">
+  <div id="delivery_note_popup_markup_container" class="popup_container">
+
+    <div id="header">Enter Note</div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div id="delivery_note_input_container">
+      <div id="delivery_note_input_label">Note:</div>
+      <textarea id="delivery_note_input"></textarea>
+      <div class="clear">&nbsp;</div>
+    </div>
+
+    <div class="clear_top_margin_10">&nbsp;</div>
+
+    <div class="action_buttons_container">
+      <div class="action_buttons">
+        <div id="cancel_button" class="button" data-onpress="closePromptAddDeliveryItemNote();">
+          <div class="icon">
+            <%= image_tag "button_logos/cancel_button.png"%>
+          </div>
+          <div class="button_name">Cancel</div>
+        </div>
+        <div id="save_button" class="button" data-onpress="saveAddDeliveryItemNote();">
+          <div class="icon">
+            <%= image_tag "button_logos/ok_button.png"%>
+          </div>
+          <div class="button_name">OK</div>
         </div>
         <div class="clear">&nbsp;</div>
       </div>

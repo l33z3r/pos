@@ -8,7 +8,7 @@
   <% end %>
 <% end %>
 
-<% @nav_title = "System Settings" %>
+<% @nav_title = @printer_left_margin %>
 
 <% content_for :admin_subnav_links_right do %>
   <div id="clear_all_fragment_caches_request_button" class="button" data-onpress="showLoadingDiv();$('form:visible').first().submit();">
@@ -207,6 +207,21 @@
                              value="<%= GlobalSetting::CLOCK_FORMAT_24 %>" 
                              <%= @gs.parsed_value == GlobalSetting::CLOCK_FORMAT_24 ? "checked" : "" %>/>
                       <div class="label">24HR</div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Auto Prompt For Covers?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PROMPT_FOR_COVERS %>
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">Yes</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">No</div>
                       <div class="clear">&nbsp;</div>
                     </td>
                   </tr>
@@ -470,7 +485,7 @@
                     <td>
                       <% @gs = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => 1} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.select :value, options_for_select(PaymentMethod.options_for_select, @gs.parsed_value) %>
+                        <%= f.select :value, options_for_select(PaymentMethod.options_for_shortcut_linking, @gs.parsed_value) %>
                       <% end %>
                     </td>
                   </tr>
@@ -479,7 +494,7 @@
                     <td>
                       <% @gs = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => 2} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.select :value, options_for_select(PaymentMethod.options_for_select, @gs.parsed_value) %>
+                        <%= f.select :value, options_for_select(PaymentMethod.options_for_shortcut_linking, @gs.parsed_value) %>
                       <% end %>
                     </td>
                   </tr>
@@ -488,7 +503,7 @@
                     <td>
                       <% @gs = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => 3} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.select :value, options_for_select(PaymentMethod.options_for_select, @gs.parsed_value) %>
+                        <%= f.select :value, options_for_select(PaymentMethod.options_for_shortcut_linking, @gs.parsed_value) %>
                       <% end %>
                     </td>
                   </tr>
@@ -1277,6 +1292,21 @@
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Deduct Stock In Training Mode?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::DEDUCT_STOCK_DURING_TRAINING_MODE %>
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">Yes</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">No</div>
+                      <div class="clear">&nbsp;</div>
                     </td>
                   </tr>
                 </tbody>

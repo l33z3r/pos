@@ -611,8 +611,6 @@ class ApplicationController < ActionController::Base
   ###
   ### CODE TO GET SERVER IP
   ###
-  require 'socket'
-
   def server_ip
     begin
       orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true  # turn off reverse DNS resolution temporarily

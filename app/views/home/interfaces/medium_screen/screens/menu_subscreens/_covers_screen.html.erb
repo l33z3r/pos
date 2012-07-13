@@ -1,0 +1,40 @@
+
+<div id="covers_screen">
+<div class="table_tab_container">
+<div id="number_tab" class="table_tab_selected" onclick="showTablesSubscreen();">Tables</div>
+<div id="cover_tab" class="table_tab_selected selected" onclick="showCoversSubscreen();">Covers</div>
+</div>
+  <div id="header">
+
+    <div id="back_button" class="small_button" onclick="tableScreenBack();">Back</div>
+
+    <div class="title">Enter Covers</div>
+    
+    <div id="options_button" class="small_button" onclick="swipeToFunctions();">Options</div>
+
+    <div class="clear">&nbsp;</div>
+  </div>
+
+  <div id="keypad_container">
+    
+    <div class="clear">&nbsp;</div>
+    
+    <div id="entered_table_number_container">
+      <div id="cover_number_show"><%= text_field_tag :covers_num, nil, :id => :covers_num, :size => "18" %></div>
+    </div>
+
+    <div id="keypad" class="keypad">
+      <div id="keys" class="keys">
+        <% [[7,9],[4,6],[1,3]].each do |x,y| %>
+          <% (x..y).each do |num| %>
+            <div id="num_<%= num %>" class="key" onclick="coverNumberSelectKeypadClick(<%=num%>)"><%= num %></div>
+          <% end %>
+        <% end %>
+
+        <div class="cancel_key" class="key" onclick="doCancelcoverNumberSelectKeypad()">C</div>
+        <div id="num_0" class="key" onclick="coverNumberSelectKeypadClick(0)">0</div>
+        <div class="go_key" class="key" onclick="saveAddCovers();">OK</div>
+      </div>
+    </div>
+  </div>
+</div>

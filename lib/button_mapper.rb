@@ -74,10 +74,12 @@ class ButtonMapper
   PM_SHORTCUT_1_BUTTON = 71
   PM_SHORTCUT_2_BUTTON = 72
   PM_SHORTCUT_3_BUTTON = 73
+  TRAINING_MODE_TOGGLE_BUTTON =  74
+  
   
   RESTRICTED_BUTTON_IDS = [
     ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON,
-    CASH_OUT_BUTTON, DELIVERY_BUTTON, STOCK_TAKE_BUTTON,
+    CASH_OUT_BUTTON, STOCK_TAKE_BUTTON,
     PRINTERS_BUTTON, CHANGE_WAITER_BUTTON, REFUND_BUTTON, WASTE_BUTTON, CLIENT_BUTTON, THEMES_BUTTON
   ]
   
@@ -159,7 +161,7 @@ class ButtonMapper
     when STOCK_TAKE_BUTTON
       @retval = "alert('stock take button clicked');"
     when DELIVERY_BUTTON
-      @retval = "alert('delivery button clicked');"
+      @retval = si_check(DELIVERY_BUTTON, "startDeliveryMode();")
     when CASH_OUT_BUTTON
       @retval = "alert('cash out button clicked');"
     when RECEIPT_SETUP_BUTTON
@@ -175,7 +177,7 @@ class ButtonMapper
     when PRINT_RECEIPT_BUTTON
       @retval = si_check(PRINT_RECEIPT_BUTTON, "printCurrentReceipt();");
     when ORDER_BUTTON
-      @retval = si_check(ORDER_BUTTON, "doSyncTableOrder();");
+      @retval = si_check(ORDER_BUTTON, "orderButtonPressed();");
     when SERVICE_CHARGE_BUTTON
       @retval = si_check(SERVICE_CHARGE_BUTTON, ms_check("promptForServiceCharge();"))
     when PREVIOUS_ORDERS_BUTTON
@@ -201,7 +203,7 @@ class ButtonMapper
     when ADD_NAME_TO_TABLE_BUTTON
       @retval = si_check(ADD_NAME_TO_TABLE_BUTTON, ms_check("promptAddNameToTable();"))
     when REPORTS_BUTTON
-      @retval = "goTo('#{reports_glances_path}');"
+      @retval = "goTo('#{reports_sales_path}');"
     when SPLIT_BILL_BUTTON
       @retval = si_check(SPLIT_BILL_BUTTON, ms_check("startSplitBillMode();"))
     when EXIT_APP_BUTTON
@@ -232,6 +234,8 @@ class ButtonMapper
       @retval = si_check(PM_SHORTCUT_2_BUTTON, ms_check("pmShortcut(2);"))
     when PM_SHORTCUT_3_BUTTON
       @retval = si_check(PM_SHORTCUT_3_BUTTON, ms_check("pmShortcut(3);"))
+    when TRAINING_MODE_TOGGLE_BUTTON
+      @retval = si_check(TRAINING_MODE_TOGGLE_BUTTON, ms_check("toggleTrainingMode();"))
     end
 
     @retval

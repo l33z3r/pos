@@ -329,7 +329,7 @@ function changePriceLastOrderItem() {
         //must set a timeout here so that if we are on the more 
         //options screen, the widths have time to calculate correctly
         var popup = doSelectReceiptItem(currentSelectedReceiptItemEl);
-        popup.find('.price').focus();
+        popup.find('.price').focus().select();
     }
 }
 
@@ -363,8 +363,6 @@ function showGlobalSettingsPage() {
 var usingPrintService = true;
 
 function openCashDrawer() {
-    console.log("open cash drawer");
-    
     if(usingPrintService) {
         if(using_wss_cash_drawer) {
             if ("WebSocket" in window) {
@@ -376,18 +374,15 @@ function openCashDrawer() {
                 ws.onopen = function() {
                     //Web Socket is connected, send data using send()
                     ws.send("open cash drawer!");
-                    console.log("Cash Drawer message sent");
                     ws.close();
                 };
         
                 ws.onmessage = function (evt) { 
                     var received_msg = evt.data;
-                    console.log("Message received: " + received_msg);
                 };
             
                 ws.onclose = function() { 
-                    // websocket is closed.
-                    console.log("Connection closed!"); 
+                    // websocket is closed. 
                 };
             } else {
                 // The browser doesn't support WebSocket
@@ -546,10 +541,10 @@ function promptAddNameToTable() {
         addTableNamePopupEl.find('input').val(tableOrder.client_name);
     }
     
-    addTableNamePopupEl.find('input').focus();
+    addTableNamePopupEl.find('input').focus().select();
     
-    //show the keyboard
-    $('#util_keyboard_container').slideDown(300);
+//show the keyboard
+$('#util_keyboard_container').slideDown(300);
 }
 
 function closePromptAddNameToTable() {
@@ -787,7 +782,7 @@ function promptAddCovers() {
         return;
     }    
     
-    if(selectedTable == 0 || selectedTable == -1) {
+    if(selectedTable == -1) {
         setStatusMessage("Only valid for table orders!");
         return;
     }
@@ -827,26 +822,43 @@ function promptAddCovers() {
     
     var tableOrder = getCurrentOrder();
     
-    addCoversPopupEl.find('input').val(tableOrder.covers);
+    var covers = parseInt(tableOrder.covers);
     
-    addCoversPopupEl.find('input').focus();
+    if(covers == -1) {
+        addCoversPopupEl.find('input').val("");
+    } else {
+        addCoversPopupEl.find('input').val(tableOrder.covers);   
+    }    
     
-    //show the keyboard
-    $('#util_keyboard_container').slideDown(300);
+    addCoversPopupEl.find('input').focus().select();
+    
+    keypadPosition = $('#' + popupId).find('.add_covers_popup_keypad_container');
+    
+    clickFunction = function(val) {
+        var input = addCoversPopupEl.find('input');
+        doKeyboardInput(input, val);
+    };
+    
+    cancelFunction = function() {
+        var input = addCoversPopupEl.find('input');
+        doKeyboardInputCancel(input);
+    };
+    
+    setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
+
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closePromptAddCovers);
 }
 
 function closePromptAddCovers() {
     if(addCoversPopupEl) {
         hideBubblePopup(addCoversPopupAnchor);
     }
-    
-    //hide the keyboard
-    $('#util_keyboard_container').slideUp(300);
 }
 
 function saveAddCovers() {
     //do nothing if not table order
-    if(selectedTable == 0 || selectedTable == -1) {
+    if(selectedTable == -1) {
         closePromptAddCovers();
         return;
     }
@@ -858,7 +870,7 @@ function saveAddCovers() {
     //make sure its an integer
     covers = parseInt(covers);
     
-    if(isNaN(covers)) {
+    if(isNaN(covers) || covers < 0) {
         covers = 0;
     }
     
@@ -866,14 +878,19 @@ function saveAddCovers() {
     
     closePromptAddCovers();
     
-    storeTableOrderInStorage(current_user_id, selectedTable, tableOrder);
+    if(selectedTable == 0) {
+        storeTableOrderInStorage(current_user_id, selectedTable, tableOrder);
+    }
     
     if(!currentOrderEmpty()) {
-        doAutoLoginAfterSync = true;
+        if(manualCoversPrompt) {
+            doAutoLoginAfterSync = true;
+        }
+        
+        manualCoversPrompt = true;
+        
         doSyncTableOrder();
-    } 
-    
-    setStatusMessage("Covers added to table");
+    }
 }
 
 function pmShortcut(shortcutNum) {
@@ -887,4 +904,29 @@ function pmShortcut(shortcutNum) {
     paymentMethod = shortcutPaymentMethod.name;
     
     doTotalFinal();
+}
+
+function toggleTrainingMode() {
+    setTrainingMode(!inTrainingMode);
+}
+
+function setTrainingMode(turnOn) {
+    inTrainingMode = turnOn;
+    
+    var exdays = 365 * 100;
+    setRawCookie(inTrainingModeCookieName, inTrainingMode, exdays);
+    
+    if(inTrainingMode) {
+        $('.button[id=sales_button_' + toggleTrainingModeButtonID + ']').addClass("selected");
+        $('.button[id=admin_screen_button_' + toggleTrainingModeButtonID + ']').addClass("selected");
+        $('nav#main_nav').addClass("training_mode");
+    } else {
+        $('.button[id=sales_button_' + toggleTrainingModeButtonID + ']').removeClass("selected");
+        $('.button[id=admin_screen_button_' + toggleTrainingModeButtonID + ']').removeClass("selected");
+        $('nav#main_nav').removeClass("training_mode");
+    }
+}
+
+function startDeliveryMode() {
+    initDeliveryScreen();
 }

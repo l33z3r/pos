@@ -163,6 +163,7 @@ var lastReloadCookieName = "last_reload_time";
 var lastPrintCheckCookieName = "last_print_check_time";
 var salesInterfaceForwardFunctionCookieName = "sales_interface_forward_function";
 var salesInterfaceForwardJSExecuteCookieName = "sales_interface_forward_js_execute";
+var inTrainingModeCookieName = "in_training_mode";
 
 //deletes everything but the fingerprint cookie
 function clearLocalStorageAndCookies() {
@@ -256,17 +257,10 @@ function storeTableOrderInStorage(current_user_id, table_num, order_to_store) {
     return storeKeyValue(key, value);
 }
 
-// OLD VERSION THAT KEEPS COPY OF ORDERS PER USER (KEEP FOR REVERT)
-//function storeTableOrderInStorage(current_user_id, table_num, order_to_store) {
-//    key = "user_" + current_user_id + "_table_" + table_num + "_current_order";
-//    value = JSON.stringify(order_to_store);
-//    return storeKeyValue(key, value);
-//}
-
 function getTableOrderFromStorage(current_user_id, selectedTable) {
     key = "user_" + current_user_id + "_table_" + selectedTable + "_current_order";
     storageData = retrieveStorageValue(key);
-    
+
     tableOrderDataJSON = null;
     
     if(storageData != null) {
@@ -283,7 +277,7 @@ function getTableOrderFromStorage(current_user_id, selectedTable) {
             }
         }
     }
-    
+
     tableNum = selectedTable;
     parseAndFillTableOrderJSON(tableOrderDataJSON);
 }
@@ -402,7 +396,7 @@ function buildInitialOrder() {
         'courses' : new Array(),
         'total': 0,
         'client_name' : "",
-        'covers' : 0
+        'covers' : -1
     };
     
     return initOrder;
@@ -697,18 +691,21 @@ function niceAlert(message, title) {
             onOk: "hideNiceAlert()"
         });
         
-        hideNiceAlertListener = function(event) {
-            if(getEventKeyCode(event) == 13) {
-                hideNiceAlert();
-            }
-        };
+    hideNiceAlertListener = function(event) {
+        if(getEventKeyCode(event) == 13) {
+            hideNiceAlert();
+        }
+    };
         
-        $(window).bind('keypress', hideNiceAlertListener);
+    $(window).bind('keypress', hideNiceAlertListener);
 }
 
 function hideNiceAlert() {
     try {
-        $(window).unbind('keypress', hideNiceAlertListener);
+        if(hideNiceAlertListener != null) {
+            $(window).unbind('keypress', hideNiceAlertListener);
+        }
+        
         ModalPopups.Close('niceAlertContainer');
     } catch (e) {
         
@@ -799,10 +796,10 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
     var timeoutSeconds = pollingMaxSeconds + 2;
     
     if(hardReload) {
-        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
+        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in in a couple of seconds.";
         okFuncCall = "doClearAndReload();";
     } else {
-        message = "Settings have been changed by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
+        message = "Settings have been changed by " + reloadTerminalId + ". Screen will reload in a couple of seconds.";
         okFuncCall = "doReload(false);";
     }
     
@@ -978,4 +975,70 @@ function getEventKeyCode(e) {
 
 function sizeOfHash(theHash) {
     return Object.keys(theHash).length
+}
+
+function sizeOfObjectInBytes(value) {
+    return lengthInUtf8Bytes(JSON.stringify(value));
+}
+
+function lengthInUtf8Bytes(str) {
+    // Matches only the 10.. bytes that are non-initial characters in a multi-byte sequence.
+    var m = encodeURIComponent(str).match(/%[89ABab]/g);
+    return str.length + (m ? m.length : 0);
+}
+
+function doKeyboardInput(input, val) {
+    var caretStart = input.caret().start;
+    var caretEnd = input.caret().end;
+        
+    var newStartVal = input.val().substring(0, caretStart);
+    var newEndVal = input.val().substring(caretEnd);
+        
+    input.val(newStartVal + val + newEndVal);
+    input.caret({
+        start : caretStart + 1, 
+        end : caretStart + 1
+    });
+}
+
+function doKeyboardInputCancel(input) {
+    var caretStart = input.caret().start;
+    var caretEnd = input.caret().end;
+        
+    var newStartVal;
+    var newEndVal;
+        
+    if(caretEnd > caretStart) {
+        newStartVal = input.val().substring(0, caretStart);
+        newEndVal = input.val().substring(caretEnd);
+        input.val(newStartVal + newEndVal);
+        input.caret({
+            start : caretStart, 
+            end : caretStart
+        });
+    } else {
+        newStartVal = input.val().substring(0, caretStart - 1);
+        newEndVal = input.val().substring(caretEnd);
+        input.val(newStartVal + newEndVal);
+        input.caret({
+            start : caretStart - 1, 
+            end : caretStart - 1
+        });
+    }
+}
+
+function focusSelectInput(inputEl) {
+    addTableNamePopupEl.find('input').focus();
+    addTableNamePopupEl.find('input').caret({
+        start : 0, 
+        end : 0
+    });
+}
+
+function reloadProducts(callback) {
+    $.getScript('/javascripts/products.js', callback);
+}
+
+function reloadCustomers(callback) {
+    $.getScript('/javascripts/customers.js', callback);
 }

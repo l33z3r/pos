@@ -42,6 +42,10 @@
     @employee and (@employee.staff_id.to_i == CLUEY_USER_STAFF_ID)
   end
   
+  def self.cluey_user
+    find_by_staff_id CLUEY_USER_STAFF_ID
+  end
+  
   def self.is_chef_user? id
     @employee = find_by_id(id)
     @employee and (@employee.staff_id.to_i == CHEF_USER_STAFF_ID)

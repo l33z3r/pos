@@ -3,36 +3,73 @@ var orderInProcess = false;
 
 var isTableZeroOrder = false;
 
+function orderButtonPressed() {
+    var order = getCurrentOrder();
+
+    var autoCovers = false;
+
+    if (globalAutoPromptForCovers) {
+        autoCovers = true;
+    } else {
+        //iterate through all the categories of this order to check for auto covers set
+        for (var j = 0; j < order.items.length; j++) {
+            var item = order.items[j];
+
+            if (order.items[j].synced && selectedTable != 0) {
+                continue;
+            }
+
+            var categoryId = item.product.category_id;
+
+            if (categoryId != null) {
+                if (categories[categoryId].prompt_for_covers) {
+                    autoCovers = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    if (autoCovers && parseInt(order.covers) == -1) {
+        order.covers = 0;
+        manualCoversPrompt = false;
+        doAutoCovers();
+    } else {
+        doSyncTableOrder();
+    }
+}
+
 function doSyncTableOrder() {
-    if(!appOnline) {
+    if (!appOnline) {
         niceAlert("Cannot contact server, ordering is disabled until connection re-established!");
         return;
     }
-    
+
     var order = null;
-    
-    if(!isTableZeroOrder && !ensureLoggedIn()) {
+
+    if (!isTableZeroOrder && !ensureLoggedIn()) {
         return;
     }
-    
-    if(!callHomePollInitSequenceComplete) {
+
+    if (!callHomePollInitSequenceComplete) {
         niceAlert("Downloading data from server, please wait.");
         return;
     }
-    
-    if(orderInProcess) {
+
+    if (orderInProcess) {
         niceAlert("There is an order being processed, please wait.");
         return;
     }
-    
-    if(selectedTable == previousOrderTableNum) {
+
+    if (selectedTable == previousOrderTableNum) {
         setStatusMessage("Not valid for reopened orders!");
         return;
-    } else if(selectedTable == tempSplitBillTableNum) {
+    } else if (selectedTable == tempSplitBillTableNum) {
         setStatusMessage("Not valid for split orders!");
         return;
-    } else if(selectedTable == 0) {
-        if(!isTableZeroOrder) {
+    } else if (selectedTable == 0) {
+        if (!isTableZeroOrder) {
+            setStatusMessage("You must move this order to a table");
             startTransferOrderMode();
             return;
         } else {
@@ -40,53 +77,52 @@ function doSyncTableOrder() {
             //dont need to check if empty as this will only ever be called after a sale
             lastOrderSaleText = "Last Sale";
             order = lastTableZeroOrder;
-            
+
             //mark all the items as unsynced for table 0 so they get printed
-            for(var i=0; i<order.items.length; i++) {
+            for (var i = 0; i < order.items.length; i++) {
                 order.items[i].synced = false;
             }
         }
     } else {
         lastOrderSaleText = "Last Order";
-        
+
         order = tableOrders[selectedTable];
-        if(order.items.length == 0) {
+        if (order.items.length == 0) {
             setStatusMessage("No items present in current table order.");
             return;
         }
     }
-    
     setStatusMessage("Sending Order.");
-    
+
     orderInProcess = true;
-    
+
     lastSyncedOrder = order;
-    
+
     order.table = tables[selectedTable].label;
-    
+
     //add the serverAddedText to the first non synced item
     var checkForShowServerAddedText = true;
-    
+
     //mark the item that we need to show the server added text for
-    for(var i=0; i<order.items.length; i++) {
-        if(checkForShowServerAddedText && !order.items[i].synced && !order.items[i].is_void) {
+    for (var i = 0; i < order.items.length; i++) {
+        if (checkForShowServerAddedText && !order.items[i].synced && !order.items[i].is_void) {
             order.items[i].showServerAddedText = true;
             checkForShowServerAddedText = false;
         }
     }
-    
+
     var copiedOrder = {};
-    
+
     var copiedOrderForSend = $.extend(true, copiedOrder, order);
 
     tableOrderData = {
         tableID : selectedTable,
         orderData : copiedOrderForSend
     }
-    
+
     var userId = current_user_id;
-    
-    if(isTableZeroOrder) {
+
+    if (isTableZeroOrder) {
         userId = last_user_id;
     }
 
@@ -104,19 +140,19 @@ function doSyncTableOrder() {
 
 function finishSyncTableOrder() {
     lastOrderSentTime = clueyTimestamp();
-    
+
     var order = lastSyncedOrder;
-    
+
     //mark all items in this order as synced
-    for(var i=0; i<order.items.length; i++) {
+    for (var i = 0; i < order.items.length; i++) {
         order.items[i]['synced'] = true;
     }
-    
+
     //store the order in the cookie
     storeTableOrderInStorage(current_user_id, selectedTable, order);
-    
+
     orderInProcess = false;
-    
+
     postDoSyncTableOrder();
 }
 
@@ -132,11 +168,11 @@ function retryTableOrder() {
 
 function removeLastOrderItem() {
     currentSelectedReceiptItemEl = getSelectedOrLastReceiptItem();
-    
-    if(currentSelectedReceiptItemEl) {
+
+    if (currentSelectedReceiptItemEl) {
         removeSelectedOrderItem();
     }
-    
+
     currentSelectedReceiptItemEl = null;
 }
 
@@ -145,22 +181,22 @@ function quickSale() {
 }
 
 function doQuickSale() {
-    if(currentOrderEmpty()) {
+    if (currentOrderEmpty()) {
         setStatusMessage("No order present to total!", true, true);
         return;
     }
-    
-    if(!ensureLoggedIn()) {
+
+    if (!ensureLoggedIn()) {
         return;
     }
-    
+
     applyDefaultServiceChargePercent();
-    
+
     cashTendered = 0;
     splitPayments = {};
-    
+
     paymentMethod = cashPaymentMethodName;
-    
+
     doTotalFinal();
 }
 
@@ -170,85 +206,85 @@ function totalPressed() {
 
 function printBill() {
     applyDefaultServiceChargePercent();
-    
+
     totalOrder = getCurrentOrder();
-    
-    if(orderEmpty(totalOrder)) {
+
+    if (orderEmpty(totalOrder)) {
         setStatusMessage("No order present");
         return;
     }
-    
+
     //don't print vat on this receipt
     var printVat = false;
-    
+
     printReceipt(fetchFinalReceiptHTML(true, false, printVat), true);
 }
 
 function applyDefaultServiceChargePercent() {
-    serviceCharge = (defaultServiceChargePercent * parseFloat(getCurrentOrder().total))/100;
+    serviceCharge = (defaultServiceChargePercent * parseFloat(getCurrentOrder().total)) / 100;
     saveServiceCharge(false);
 }
 
 function startTransferOrderMode() {
-    if(!callHomePollInitSequenceComplete) {
+    if (!callHomePollInitSequenceComplete) {
         niceAlert("Downloading data from server, please wait.");
         return;
     }
-    
+
     var order = getCurrentOrder();
-    
-    if(order == null || order.items.length == 0) {
+
+    if (order == null || order.items.length == 0) {
         setStatusMessage("No items present in current table order.");
         return;
     }
-    
+
     //make sure all items in this order have already been ordered
     var orderSynced = true;
-    
-    for(var i=0; i<order.items.length; i++) {
-        if(!order.items[i].synced) {
+
+    for (var i = 0; i < order.items.length; i++) {
+        if (!order.items[i].synced) {
             orderSynced = false;
             break;
         }
     }
-    
-    if(!orderSynced && selectedTable != 0) {
+
+    if (!orderSynced && selectedTable != 0) {
         niceAlert("All items in the order must be ordered before you can transfer. You can also delete un-ordered items.");
         return;
     }
-    
+
     inTransferOrderMode = true;
-    
+
     showTablesScreen();
     setStatusMessage("Please choose a free table to transfer this order to.", false, false);
 }
 
 function startTransferOrderItemMode() {
-    if(!callHomePollInitSequenceComplete) {
+    if (!callHomePollInitSequenceComplete) {
         niceAlert("Downloading data from server, please wait.");
         return;
     }
-    
-    if(selectedTable == previousOrderTableNum) {
+
+    if (selectedTable == previousOrderTableNum) {
         niceAlert("Not valid for reopened orders! You must transfer the whole order to a table.");
         return;
-    } else if(selectedTable == tempSplitBillTableNum) {
+    } else if (selectedTable == tempSplitBillTableNum) {
         niceAlert("Not valid for split orders! You must transfer the whole order to a table.");
         return;
-    } 
-    
+    }
+
     //only allow transfer if the item has already been orderd
     var itemNumber = currentSelectedReceiptItemEl.data("item_number");
-      
+
     var order = getCurrentOrder();
 
-    if(!order.items[itemNumber-1]['synced']) {
+    if (!order.items[itemNumber - 1]['synced']) {
         niceAlert("Only ordered items can be transfered.");
         return;
     }
-    
+
     inTransferOrderItemMode = true;
-    
+
     hideBubblePopup(editItemPopupAnchor);
     showTablesScreen();
     setStatusMessage("Please choose a table to transfer this order item to.", false, false);
@@ -259,10 +295,10 @@ function toggleMenuItemDoubleMode() {
 }
 
 function setMenuItemDoubleMode(turnOn) {
-    if(turnOn) {
+    if (turnOn) {
         //ensure half mode is not enabled
         setMenuItemHalfMode(false);
-        
+
         menuItemDoubleMode = true;
         $('.button[id=sales_button_' + toggleMenuItemDoubleModeButtonID + ']').addClass("selected");
     } else {
@@ -276,10 +312,10 @@ function toggleMenuItemHalfMode() {
 }
 
 function setMenuItemHalfMode(turnOn) {
-    if(turnOn) {
+    if (turnOn) {
         //ensure double mode is not enabled
         setMenuItemDoubleMode(false);
-        
+
         menuItemHalfMode = true;
         $('.button[id=sales_button_' + toggleMenuItemHalfModeButtonID + ']').addClass("selected");
     } else {
@@ -293,7 +329,7 @@ function toggleMenuItemStandardPriceOverrideMode() {
 }
 
 function setMenuItemStandardPriceOverrideMode(turnOn) {
-    if(turnOn) {
+    if (turnOn) {
         menuItemStandardPriceOverrideMode = true;
         $('.button[id=sales_button_' + toggleMenuItemStandardPriceOverrideModeButtonID + ']').addClass("selected");
     } else {
@@ -303,24 +339,24 @@ function setMenuItemStandardPriceOverrideMode(turnOn) {
 }
 
 function deleteCurrentOrder() {
-    if(selectedTable == previousOrderTableNum) {
+    if (selectedTable == previousOrderTableNum) {
         setStatusMessage("Not valid for reopened orders!");
         return;
-    } else if(selectedTable == tempSplitBillTableNum) {
+    } else if (selectedTable == tempSplitBillTableNum) {
         setStatusMessage("Not valid for split orders!");
         return;
-    } else if(selectedTable == 0) {
+    } else if (selectedTable == 0) {
         setStatusMessage("Only valid for table orders!");
         return;
     }
-    
+
     var doIt = confirm("Are you sure you want to delete this order from the system?");
-    
-    if(doIt) {
+
+    if (doIt) {
         var order_num = getCurrentOrder().order_num;
-        
+
         clearOrder(selectedTable);
-        
+
         $.ajax({
             type: 'POST',
             url: '/delete_table_order',
@@ -336,12 +372,12 @@ function deleteCurrentOrder() {
 }
 
 function chargeCardShortcut() {
-    if(currentOrderEmpty()) {
+    if (currentOrderEmpty()) {
         setStatusMessage("No order present!", true, true);
         return;
     }
-    
-    doTotal();    
+
+    doTotal();
     chargeCreditCard();
 }
 
@@ -350,7 +386,7 @@ function toggleProductInfoPopup() {
 }
 
 function setProductInfoPopup(turnOn) {
-    if(turnOn) {
+    if (turnOn) {
         productInfoPopupMode = true;
         $('.button[id=sales_button_' + toggleProductInfoButtonID + ']').addClass("selected");
     } else {

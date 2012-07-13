@@ -8,6 +8,7 @@ var search_type;
 var terminalId;
 var hour_from;
 var hour_to;
+var select_type = '';
 
 /**
  *  Reports
@@ -17,7 +18,9 @@ function setReportsDatePickers() {
     $('#date_select_container').find('#date_from').datetimepicker({
         dateFormat: 'yy-mm-dd',
         defaultDate: '01/01/01',
-        timeFormat: 'h:m',
+        timeFormat: 'hh:mm',
+//        showTimezone: true,
+//        timezone: "+0100",
         addSliderAccess: true,
         sliderAccessArgs: { touchonly: false },
         onSelect: function(dateText, inst) {
@@ -28,15 +31,18 @@ function setReportsDatePickers() {
             setStockParams();
 
             if ($('#date_select_container').find('#date_to').val() != "") {
-                runGlancesSearch();
+//                runGlancesSearch();
             }
         }
+
     });
 
     $('#date_select_container').find('#date_to').datetimepicker({
         dateFormat: 'yy-mm-dd',
         defaultDate: '01/01/01',
-        timeFormat: 'h:m',
+        timeFormat: 'hh:mm z',
+//        showTimezone: true,
+        timezone: "+0100",
         addSliderAccess: true,
         sliderAccessArgs: { touchonly: false },
         onSelect: function(dateText, inst) {
@@ -47,7 +53,7 @@ function setReportsDatePickers() {
             setReportParams();
             setStockParams();
             if ($('#date_select_container').find('#date_from').val() != "") {
-                runGlancesSearch();
+//                runGlancesSearch();
             }
         }
     });
@@ -67,12 +73,12 @@ function addTerminalFilter(terminal_id) {
 
 function addHourFromFilter(hour) {
     hour_from = hour;
-    runGlancesSearch();
+//    runGlancesSearch();
 }
 
 function addHourToFilter(hour) {
     hour_to = hour;
-    runGlancesSearch();
+//    runGlancesSearch();
 }
 
 function printInvoice(url) {
@@ -106,10 +112,21 @@ function setDateParams(set_date, isManual) {
     $('#date_to').val(set_date.split(',')[1]);
     selectedFromDate = set_date.split(',')[0];
     selectedToDate = set_date.split(',')[1];
-    if (isManual){
-           setReportParams();
-           setStockParams();
+    if (isManual) {
+        setReportParams();
+        setStockParams();
     }
+
+}
+
+function updateDateParams(set_date, date_type) {
+    if (date_type == 'from') {
+        selectedFromDate = set_date;
+    } else {
+        selectedToDate = set_date;
+    }
+        setReportParams();
+        setStockParams();
 
 }
 
@@ -150,7 +167,7 @@ function addDateFilter(interval_selected) {
         selectedFromDate = "";
         selectedToDate = "";
     }
-    runGlancesSearch();
+//    runGlancesSearch();
 }
 
 function runGlancesSearch() {
@@ -169,8 +186,9 @@ function runGlancesSearch() {
 }
 
 function runSalesSearch() {
+    if (!$('#refine_button').is('.selected')) {
     $("#report_sales_results").html("Loading...");
-
+    $('#refine_button').addClass("selected");
     if ($('#product_search').val() != '') {
         $.ajax({
             type: 'GET',
@@ -196,38 +214,42 @@ function runSalesSearch() {
     } else {
 
         $.ajax({
-        type: 'GET',
-        url: '/reports/sales/set_params',
-        data: {
-            "search[search_type]" : search_type,
-            "search[category]" : $('#category_id_equals').val(),
-            "search[product]" : $('#product_id_equals').val(),
-            "search[from_date]" : selectedFromDate,
-            "search[to_date]" : selectedToDate,
-            "search[terminal]" : terminalId,
-            "search[select_type]" : select_type
-        }
-    }).done(function() {
-        $.ajax({
             type: 'GET',
-            url: '/reports/sales/sales_search',
+            url: '/reports/sales/set_params',
             data: {
-                "search[created_at_gt]" : selectedFromDate,
-                "search[created_at_lt]" : selectedToDate,
-                "search[terminal_id_equals]" : terminalId,
-                "search2[hour_from]" : hour_from,
-                "search2[hour_to]" : hour_to
+                "search[search_type]" : search_type,
+                "search[category]" : $('#category_id_equals').val(),
+                "search[product]" : $('#product_id_equals').val(),
+                "search[from_date]" : selectedFromDate,
+                "search[to_date]" : selectedToDate,
+                "search[terminal]" : terminalId,
+                "search[select_type]" : select_type,
+                "search[training_mode]" : inTrainingMode
             }
-        });
-        });
+        }).done(function() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/reports/sales/sales_search',
+                    data: {
+                        "search[created_at_gt]" : selectedFromDate,
+                        "search[created_at_lt]" : selectedToDate,
+                        "search[terminal_id_equals]" : terminalId,
+                        "search2[hour_from]" : hour_from,
+                        "search2[hour_to]" : hour_to
+                    }
+                });
+            });
     }
+    }
+
 
 
 }
 
 function runStocksSearch() {
+    if (!$('#refine_button_stock').is('.selected')) {
     $("#report_stocks_results").html("Loading...");
-
+    $('#refine_button_stock').addClass("selected");
     $.ajax({
         type: 'GET',
         url: '/reports/stocks/set_params',
@@ -238,21 +260,23 @@ function runStocksSearch() {
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
             "search[terminal]" : terminalId,
-            "search[select_type]" : select_type
+            "search[select_type]" : select_type,
+            "search[training_mode]" : inTrainingMode
         }
     }).done(function() {
-    $.ajax({
-        type: 'GET',
-        url: '/reports/stocks/stocks_search',
-        data: {
-            "search[created_at_gt]" : selectedFromDate,
-            "search[created_at_lt]" : selectedToDate,
-            "search[terminal_id_equals]" : terminalId,
-            "search2[hour_from]" : hour_from,
-            "search2[hour_to]" : hour_to
-        }
-    });
-    });
+            $.ajax({
+                type: 'GET',
+                url: '/reports/stocks/stocks_search',
+                data: {
+                    "search[created_at_gt]" : selectedFromDate,
+                    "search[created_at_lt]" : selectedToDate,
+                    "search[terminal_id_equals]" : terminalId,
+                    "search2[hour_from]" : hour_from,
+                    "search2[hour_to]" : hour_to
+                }
+            });
+        });
+    }
 }
 
 function setReportParams() {
@@ -268,7 +292,8 @@ function setReportParams() {
             "search[product]" : $('#product_id_equals').val(),
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
-            "search[terminal]" : terminalId
+            "search[terminal]" : terminalId,
+            "search[training_mode]" : inTrainingMode
 
         }
     });
@@ -287,7 +312,8 @@ function setStockParams() {
             "search[product]" : $('#product_id_equals').val(),
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
-            "search[terminal]" : terminalId
+            "search[terminal]" : terminalId,
+            "search[training_mode]" : inTrainingMode
         }
     });
 }
@@ -425,54 +451,55 @@ function setSearchType(interval_selected) {
             break;
         case '6':
             search_type = 'by_product';
-            $('#product_dropdown').show();
-            $('#string_search_box').show();
+            $('#product_dropdown').hide();
+            $('#product_search').val('');
+            $('#string_search_box').hide();
             break;
 
     }
     setReportParams();
 }
 
-function setSearchSelect(set_type){
-    if (set_type == -1){
-      $('#sales_items_graph').hide();
-      $('#search_type_select').attr('selectedIndex', 0);
-      $('#date_preselect').attr('selectedIndex', 10);
-      $('#category_id_equals').attr('selectedIndex', 0);
-      $('#product_id_equals').attr('selectedIndex', 0);
-      search_type = 'best_seller';
-      setDateParams($('#date_preselect').val(), false);
-      select_type = set_type
+function setSearchSelect(set_type) {
+    if (set_type == -1) {
+        $('#sales_items_graph').hide();
+        $('#search_type_select').attr('selectedIndex', 0);
+        $('#date_preselect').attr('selectedIndex', 10);
+        $('#category_id_equals').attr('selectedIndex', 0);
+        $('#product_id_equals').attr('selectedIndex', 0);
+        search_type = 'best_seller';
+        setDateParams($('#date_preselect').val(), false);
+        select_type = set_type
     }
-    if (set_type == 0){
-      $('#search_type_select').attr('selectedIndex', 2);
-      $('#date_preselect').attr('selectedIndex', 2);
-      search_type = 'day';
-      setDateParams($('#date_preselect').val(), false);
-      select_type = set_type
+    if (set_type == 0) {
+        $('#search_type_select').attr('selectedIndex', 2);
+        $('#date_preselect').attr('selectedIndex', 2);
+        search_type = 'day';
+        setDateParams($('#date_preselect').val(), false);
+        select_type = set_type
     }
-    if (set_type == 1){
-      $('#search_type_select').attr('selectedIndex', 0);
-      $('#date_preselect').attr('selectedIndex', 3);
-      search_type = 'best_seller';
-      setDateParams($('#date_preselect').val(), false);
-      select_type = set_type
+    if (set_type == 1) {
+        $('#search_type_select').attr('selectedIndex', 0);
+        $('#date_preselect').attr('selectedIndex', 3);
+        search_type = 'best_seller';
+        setDateParams($('#date_preselect').val(), false);
+        select_type = set_type
     }
-    if (set_type == 2){
-      $('#search_type_select').attr('selectedIndex', 4);
-      $('#date_preselect').attr('selectedIndex', 4);
-      search_type = 'month';
-      setDateParams($('#date_preselect').val(), false);
-      select_type = set_type
+    if (set_type == 2) {
+        $('#search_type_select').attr('selectedIndex', 4);
+        $('#date_preselect').attr('selectedIndex', 4);
+        search_type = 'month';
+        setDateParams($('#date_preselect').val(), false);
+        select_type = set_type
     }
-    if (set_type == 3){
-      $('#search_type_select').attr('selectedIndex', 0);
-      $('#date_preselect').attr('selectedIndex', 2);
-      search_type = 'best_seller';
-      setDateParams($('#date_preselect').val(), false);
-      select_type = set_type
+    if (set_type == 3) {
+        $('#search_type_select').attr('selectedIndex', 0);
+        $('#date_preselect').attr('selectedIndex', 2);
+        search_type = 'best_seller';
+        setDateParams($('#date_preselect').val(), false);
+        select_type = set_type
     }
-     $.ajax({
+    $.ajax({
         type: 'GET',
         url: '/reports/sales/set_params',
         data: {
@@ -482,56 +509,57 @@ function setSearchSelect(set_type){
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
             "search[terminal]" : terminalId,
-            "search[select_type]" : select_type
+            "search[select_type]" : select_type,
+            "search[training_mode]" : inTrainingMode
         }
     }).done(function() {
-      runSalesSearch();
-      });
+            runSalesSearch();
+        });
 
 
 }
 
-function setStockSelect(set_type){
-    if (set_type == -1){
-      $('#sales_items_graph').hide();
-      $('#search_type_select').attr('selectedIndex', 0);
-      $('#date_preselect').attr('selectedIndex', 10);
-      $('#category_id_equals').attr('selectedIndex', 0);
-      $('#category_id_equals').attr('selectedIndex', 0);
-      $('#product_id_equals').attr('selectedIndex', 0);
-      search_type = 'best_seller';
-      setDateParams($('#date_preselect').val(), false);
-      select_type = set_type
+function setStockSelect(set_type) {
+    if (set_type == -1) {
+        $('#sales_items_graph').hide();
+        $('#search_type_select').attr('selectedIndex', 0);
+        $('#date_preselect').attr('selectedIndex', 10);
+        $('#category_id_equals').attr('selectedIndex', 0);
+        $('#category_id_equals').attr('selectedIndex', 0);
+        $('#product_id_equals').attr('selectedIndex', 0);
+        search_type = 'best_seller';
+        setDateParams($('#date_preselect').val(), false);
+        select_type = set_type
     }
-    if (set_type == 0){
-      $('#search_type_select').attr('selectedIndex', 0);
-      $('#date_preselect').attr('selectedIndex', 2);
-      search_type = 'by_product';
-      setDateParams($('#date_preselect').val(), false);
-      select_type = set_type
+    if (set_type == 0) {
+        $('#search_type_select').attr('selectedIndex', 0);
+        $('#date_preselect').attr('selectedIndex', 2);
+        search_type = 'by_product';
+        setDateParams($('#date_preselect').val(), false);
+        select_type = set_type
     }
-    if (set_type == 1){
-      $('#search_type_select').attr('selectedIndex', 0);
-      $('#date_preselect').attr('selectedIndex', 3);
-      search_type = 'by_product';
-      setDateParams($('#date_preselect').val(), false);
-      select_type = set_type
+    if (set_type == 1) {
+        $('#search_type_select').attr('selectedIndex', 0);
+        $('#date_preselect').attr('selectedIndex', 3);
+        search_type = 'by_product';
+        setDateParams($('#date_preselect').val(), false);
+        select_type = set_type
     }
-    if (set_type == 2){
-      $('#search_type_select').attr('selectedIndex', 0);
-      $('#date_preselect').attr('selectedIndex', 4);
-      search_type = 'by_product';
-      setDateParams($('#date_preselect').val(), false);
-      select_type = set_type
+    if (set_type == 2) {
+        $('#search_type_select').attr('selectedIndex', 0);
+        $('#date_preselect').attr('selectedIndex', 4);
+        search_type = 'by_product';
+        setDateParams($('#date_preselect').val(), false);
+        select_type = set_type
     }
-    if (set_type == 3){
-      $('#search_type_select').attr('selectedIndex', 0);
-      $('#date_preselect').attr('selectedIndex', 9);
-      search_type = 'by_product';
-      setDateParams($('#date_preselect').val(), false);
-      select_type = set_type
+    if (set_type == 3) {
+        $('#search_type_select').attr('selectedIndex', 0);
+        $('#date_preselect').attr('selectedIndex', 9);
+        search_type = 'by_product';
+        setDateParams($('#date_preselect').val(), false);
+        select_type = set_type
     }
-     $.ajax({
+    $.ajax({
         type: 'GET',
         url: '/reports/stocks/set_params',
         data: {
@@ -541,11 +569,12 @@ function setStockSelect(set_type){
             "search[from_date]" : selectedFromDate,
             "search[to_date]" : selectedToDate,
             "search[terminal]" : terminalId,
-            "search[select_type]" : select_type
+            "search[select_type]" : select_type,
+            "search[training_mode]" : inTrainingMode
         }
     }).done(function() {
-      runStocksSearch();
-      });
+            runStocksSearch();
+        });
 
 
 }
