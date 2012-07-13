@@ -42,6 +42,9 @@ task :delete_historical_data => :environment do
   puts "Deleting #{@stock_transactions.length} stock_transactions"
   @stock_transactions.each(&:destroy)
   
+  puts "Clearing duplicate global_settings keys"
+  GlobalSetting.clear_dup_keys_gs
+  
   puts "Issuing a reset of all terminals"
   TerminalSyncData.request_hard_reload_app "Master Terminal"
   
@@ -54,6 +57,17 @@ task :delete_sync_data => :environment do
   puts "Deleting #{@terminal_sync_datas.length} terminal_sync_datas"
   @terminal_sync_datas.each(&:destroy)
   
+  puts "Clearing duplicate global_settings keys"
+  GlobalSetting.clear_dup_keys_gs
+  
+  puts "Issuing a reset of all terminals"
+  TerminalSyncData.request_hard_reload_app "Master Terminal"
+  
+  puts "Done!"
+end
+
+desc "Sends hard reset to all terminals without deleting orders"
+task :hard_reset => :environment do
   puts "Issuing a reset of all terminals"
   TerminalSyncData.request_hard_reload_app "Master Terminal"
   
@@ -71,20 +85,7 @@ end
 
 desc "Clear duplicate keys in global settings"
 task :clear_dup_keys_gs => :environment do
-  GlobalSetting.all.group_by(&:key).each do |gs_key, gs_set|
-    if gs_set.size > 1
-      #we have duplicates
-      @del_count = gs_set.size - 1
-      
-      puts "Found #{gs_set.size} duplicate keys for Key: #{gs_key} Label: '#{gs_set.first.label_text}'. Removing #{@del_count} duplicates!"
-      
-      gs_set.each do |gs|
-        break if @del_count == 0
-        gs.destroy
-        @del_count -= 1
-      end
-    end
-  end
+  GlobalSetting.clear_dup_keys_gs
 end
 
 desc "Issues a hard reset of each terminal"

@@ -97,7 +97,21 @@ class Category < ActiveRecord::Base
     write_attribute("blocked_printers", blocked_printers_val)
   end
   
+  def self.options_for_select
+    @options = []
+    
+    @options << ["Any", -1]
+    
+    all.each do |c|
+      @options << [c.name, c.id]
+    end
+    
+    @options
+  end
+  
 end
+
+
 
 
 
@@ -118,7 +132,9 @@ end
 #  printers                                 :string(255)     default("")
 #  order_item_addition_grid_id              :integer(4)
 #  order_item_addition_grid_id_is_mandatory :boolean(1)      default(FALSE)
-#  course_num                               :integer(4)      default(0)
+#  course_num                               :integer(4)      default(-1)
 #  kitchen_screens                          :string(255)     default("")
+#  blocked_printers                         :string(255)
+#  prompt_for_covers                        :boolean(1)      default(FALSE)
 #
 

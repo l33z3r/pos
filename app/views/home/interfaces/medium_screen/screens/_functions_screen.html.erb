@@ -80,6 +80,14 @@
       <div class="button_name">Add Note</div>
     </div>
 
+    <div id="main_menu_button"
+         class="button" onclick="swipeToCovers();">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/covers_button.png" %>
+      </div>
+      <div class="button_name">Covers</div>
+    </div>
+
     <div class="button" onclick="refreshClicked();">
       <div class="icon">
         <%= image_tag "/images/button_logos/reload.png" %>
@@ -87,14 +95,14 @@
       <div class="button_name">Reload</div>
     </div>
 
+    <div class="clear">&nbsp;</div>
+
     <div class="button" onclick="exitAndroidApp();">
       <div class="icon">
         <%= image_tag "/images/button_logos/exit.png" %>
       </div>
       <div class="button_name">Exit</div>
     </div>
-    
-    <div class="clear">&nbsp;</div>
 
     <div class="button" onclick="doMobileLogout();">
       <div class="icon">

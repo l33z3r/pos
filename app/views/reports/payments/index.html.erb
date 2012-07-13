@@ -1,0 +1,139 @@
+<% @nav_title = "Reports - Payments" %>
+<div id="reports_nav">
+
+
+    <div class="report_tab" onclick="window.location = '/reports/sales'">
+        Sales
+    </div>
+    <br>
+
+    <div class="report_tab" onclick="window.location = '/reports/stocks'">
+        Stock
+    </div>
+    <br>
+
+    <div class="report_tab selected" onclick="window.location = '/reports/payments'">
+        Payments
+    </div>
+</div>
+<div id="reports_container">
+    <div>
+        <div>
+            <div class="container" id="#at_a_glance_section">
+                <div id="report_sales_filters" class="popout_dialog">
+                    <div id="refine_container">
+                        <div id="date_select_container">
+                            <div class="dropdown_container">
+                                <div class="label">Report Type</div>
+                                <select id="search_type_select" onchange="setPaymentSearchType($(this).val())">
+                                    <option value="0">Transaction List</option>
+                                    <option value="1">Payments by Day</option>
+                                    <option value="2">Payments by Week</option>
+                                    <option value="3">Payments by Month</option>
+                                    <option value="4">Payments by Year</option>
+                                </select>
+                            </div>
+                            <div class="dropdown_container" style="margin-left: 50px;">
+                                <div class="label">Terminal</div>
+                                <select onchange="addPaymentTerminalFilter($(this).val())">
+                                    <option value="">All Terminals</option>
+                                    <% @all_terminals.each do |terminal_id| %>
+                                        <option value="<%= terminal_id %>"><%= terminal_id %></option>
+                                    <% end %>
+                                </select>
+                            </div>
+                            <% currtime = Time.now.beginning_of_day + 5.hours %>
+                            <% lastyear = Time.now - 1.year %>
+                            <% yesterday = Time.now - 1.day %>
+                            <% lastweek = Time.now - 7.days %>
+                            <% lastmonth = Time.now - 1.month %>
+                            <div class="dropdown_container">
+                                <div class="label">Date</div>
+                                <select id="date_preselect" onchange="setPaymentDateParams($(this).val(), true)" style="width: 120px">
+                                    <option value="<%= Time.now.beginning_of_day + @opening_time.hours %>,<%= Time.now.end_of_day + @opening_time.hours %>">Today</option>
+                                    <option value="<%= yesterday.beginning_of_day + @opening_time.hours %>,<%= yesterday.end_of_day + @opening_time.hours %>">Yesterday</option>
+                                    <option value="<%= Time.now.beginning_of_week + @opening_time.hours %>,<%= Time.now %>">This
+                                        Week
+                                    </option>
+                                    <option value="<%= Time.now.beginning_of_month + @opening_time.hours %>,<%= Time.now %>">This
+                                        Month
+                                    </option>
+                                    <option value="<%= Time.now.beginning_of_year + @opening_time.hours %>,<%= Time.now %>">This
+                                        Year to Date
+                                    </option>
+                                    <option value="<%= lastweek.beginning_of_week + @opening_time.hours %>,<%= yesterday.end_of_week + @opening_time.hours %>">Last
+                                        Week
+                                    </option>
+                                    <option selected="yes" value="<%= Time.now - 30.days %>,<%= Time.now %>">Last 30
+                                        Days
+                                    </option>
+                                    <option value="<%= lastmonth.beginning_of_month + @opening_time.hours %>,<%= lastmonth.end_of_month + @opening_time.hours %>">Last
+                                        Month
+                                    </option>
+                                    <option value="<%= lastyear.beginning_of_day + @opening_time.hours %>,<%= lastyear.end_of_day + @opening_time.hours %>">This
+                                        Day
+                                        Last Year
+                                    </option>
+                                    <option value="<%= Time.now.beginning_of_year - 2.years + @opening_time.hours %>,<%= Time.now %>">All
+                                        Time
+                                    </option>
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            <div id="days">
+                                <div class="dropdown_container">
+                                    <div class="label">Date From</div>
+                                    <div class="input_date">
+                                        <input type="text" size="13" readonly="readonly" id="date_from" name="date_from"
+                                               value="<%= @selected_from_date.to_date.strftime("%Y-%m-%d %H:%M") %>"/>
+                                    </div>
+                                </div>
+                                <div class="dropdown_container">
+                                    <div class="label">Date To</div>
+                                    <div class="input_date">
+                                        <input type="text" size="13" readonly="readonly" id="date_to" name="date_to"
+                                               value="<%= @selected_to_date.to_date.strftime("%Y-%m-%d %H:%M") %>"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clear">&nbsp;</div>
+                        </div>
+                        <div id="date_select_container">
+
+                            <%= render 'payment_type_dropdown' %>
+                            <%= render 'employee_dropdown' %>
+                            <div class="discount_dropdown_container">
+                                <input type="checkbox" id="discounts_checked" onchange="loadPaymentDropDown('discounts_only')"  style="width: 25px; height: 10px;" />Discounts Only
+                                <div class="clear">&nbsp;</div>
+                            </div>
+                            <div class="clear">&nbsp;</div>
+                        </div>
+                    </div>
+                    <div id="refine_button">
+                        <div onclick="setPaymentReportParams();runPaymentsSearch()" class="button">Update</div>
+                    </div>
+                    <div style="float: right; margin-top: 10px; margin-right: 10px;">
+                        <div style="margin: 5px; height: 40px;" onclick="switchPaymentView('table')" id="table_view" class="button selected">Table
+                            View
+                        </div>
+                    </div>
+                    <div style="float: right; margin-top: 10px; margin-right: 10px;">
+                        <div style="margin: 5px; height: 40px;" onclick="switchPaymentView('graph')" id="graph_view" class="button">Graph
+                            View
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="report_payments_results">
+                    <%= render 'payments_tab' %>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>

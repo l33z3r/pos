@@ -76,62 +76,10 @@ function doGlobalInit() {
     if (inMenuContext()) {
         initMenu();
         
-        
-        
-        
-        
-        
-        
-        
-        var dallasKeyCode = "";
-
-        //dallas key login/logout listeners
-        var dallasKeyLoginPrefix = 'a"';
-        
-        var dallasKeyLoginCodeReader = function(event) {
-            if(getEventKeyCode(event) == 13) {
-                $(window).unbind('keypress', dallasKeyLoginCodeReader);
-                
-                dallasKeyCode = dallasKeyCode.substring(0, 12);
-        console.log("DL: " + dallasKeyCode);
-                $('#num').val(dallasKeyCode);
-                doDallasLogin();
-                
-                dallasKeyCode = "";
-            }
-            console.log(String.fromCharCode(getEventKeyCode(event)) + String.fromCharCode(33))
-            dallasKeyCode += String.fromCharCode(getEventKeyCode(event));
-        }
-        
-        //listener for the loyalty card swipe
-        $(window).keySequenceDetector(dallasKeyLoginPrefix, function() {
-            //reset the code
-            dallasKeyCode = "";
-            $('#num').val("");
-            $(window).bind('keypress', dallasKeyLoginCodeReader);
-        });
-        
-        var dallasKeyLogoutPrefix = 'u"';
- 
-        $(window).keySequenceDetector(dallasKeyLogoutPrefix, function() {
-            if (inMenuContext()) {
-                doLogout();
-            }
-        });
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        initDallasKeyListeners();
         
         //listener for the loyalty card swipe
         $(window).keySequenceDetector(loyaltyCardPrefix, function() {
-            
             //reset the code
             loyaltyCardCode = "";
                 
@@ -162,8 +110,9 @@ function doGlobalInit() {
 
     //start the clock in the nav bar
     $("div#clock").clock({
-        "calendar":"false",
-        "format": clockFormat
+        "calendar" : "false",
+        "format" : clockFormat,
+        "timestamp" : clueyTimestamp()
     });
 
     //any input that gains focus will call this function
@@ -205,6 +154,8 @@ function doGlobalInit() {
     callHomePoll();
 
     clueyScheduler();
+    
+    initTrainingModeFromCookie();
 
     //enable this for html5 cache flushing
     //    if(inProdMode()) {

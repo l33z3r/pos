@@ -10,9 +10,15 @@ class Customer < ActiveRecord::Base
   
   VALID_CUSTOMER_TYPES = [NORMAL, LOYALTY, BOTH]
   
+  CUSTOMER_TYPE_LABELS = {
+    "normal" => "Account", 
+    "loyalty" => "Loyalty", 
+    "both" => "Both"
+  }
+  
   validates :name, :presence => true
-  validates :swipe_card_code, :uniqueness => true
-  validates :customer_number, :uniqueness => true
+  validates :swipe_card_code, :uniqueness => true, :allow_blank => true
+  validates :customer_number, :uniqueness => true, :allow_blank => true
   validates :customer_number, :numericality => {:less_than_or_equal_to => 9999999}, :allow_blank => true
   
   validates :customer_type, :presence => true, :inclusion => { :in => VALID_CUSTOMER_TYPES }
@@ -24,7 +30,7 @@ class Customer < ActiveRecord::Base
     @options = []
     
     VALID_CUSTOMER_TYPES.each do |ct|
-      @options << [ct.titleize, ct]
+      @options << [CUSTOMER_TYPE_LABELS[ct], ct]
     end
     
     @options
@@ -99,6 +105,7 @@ class Customer < ActiveRecord::Base
   
   def validate
     errors.add(:credit_limit, "cannot be set to a value lower than the users current balance outstanding") if credit_limit < current_balance
+    errors.add(:customer_number, " not valid. You must enter either a swipe card code or a customer number if this customer is a loyalty customer") if is_loyalty_customer?
   end
 end
 

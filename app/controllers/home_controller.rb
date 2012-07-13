@@ -158,6 +158,16 @@ class HomeController < ApplicationController
     @product.save!
   end
   
+  def update_cost_price
+    @product = Product.find(params[:product_id])
+    @new_cost_price = params[:new_cost_price].to_f
+    
+    @product.cost_price = @new_cost_price
+    @product.save!
+    
+    render :json => {:success => true}.to_json
+  end
+  
   def load_stock_for_menu_page    
     @page_num = params[:page_num].to_i
     @sub_page_id = params[:sub_page_id].to_i
@@ -589,13 +599,22 @@ class HomeController < ApplicationController
       @options_screen_buttons_map[role.id] = DisplayButtonRole.admin_screen_buttons_for_role(role.id)
     end 
     
-    query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from customers where customer_type in ('#{Customer::NORMAL}', '#{Customer::BOTH}') group by substr(name,1,1)")
+    @customer_letter_query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from customers where customer_type in ('#{Customer::NORMAL}', '#{Customer::BOTH}') and is_active = true group by substr(name,1,1)")
 
     @customer_letters = []
     
-    for element in query
+    for element in @customer_letter_query
       element[0].downcase!
       @customer_letters += element
+    end
+    
+    @product_letter_query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from products where products.is_stock_item = true group by substr(name,1,1)")
+
+    @product_letters = []
+    
+    for element in @product_letter_query
+      element[0].downcase!
+      @product_letters += element
     end
      
   end

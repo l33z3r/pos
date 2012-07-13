@@ -20,6 +20,12 @@ var lastTableZeroOrder;
 
 var creditCardChargeCallback = null;
 
+var manualCoversPrompt = true;
+
+var inTrainingMode = false;
+
+var highlightedCover = true;
+
 //this function is called from application.js on page load
 function initMenu() {
     initMenuScreenType();
@@ -738,53 +744,16 @@ function doSelectReceiptItem(orderItemEl) {
     //make sure the modifier grids are closed
     switchToMenuItemsSubscreen();
     
-    //are we allowed to view the discount button
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(discountButtonID)]) != 'undefined') {
-        $('#discount_button').show();
-    } else {
-        $('#discount_button').hide();
-    }
+    var buttons = [
+    [discountButtonID, $('#discount_button')], 
+    [changePriceButtonID, $('#price_editor')],
+    [removeItemButtonID, $('#delete_button')],
+    [oiaButtonID, $('#oia_button')],
+    [courseNumButtonID, $('#course_button')],
+    [voidOrderItemButtonID, $('#void_order_item_button')],
+    ];
     
-    //are we allowed to view the change price controls
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(changePriceButtonID)]) != 'undefined') {
-        $('#price_editor').show();
-    } else {
-        $('#price_editor').hide();
-    }
-    
-    //are we allowed to delete an item
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(removeItemButtonID)]) != 'undefined') {
-        $('#delete_button').show();
-    } else {
-        $('#delete_button').hide();
-    }
-    
-    //are we allowed to oia an item
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(oiaButtonID)]) != 'undefined') {
-        $('#oia_button').show();
-    } else {
-        $('#oia_button').hide();
-    }
-    
-    //are we allowed to view the course num controls
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(courseNumButtonID)]) != 'undefined') {
-        $('#course_button').show();
-    } else {
-        $('#course_button').hide();
-    }
-    
-    //are we allowed to view the void item controls
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(voidOrderItemButtonID)]) != 'undefined') {
-        $('#void_order_item_button').show();
-    } else {
-        $('#void_order_item_button').hide();
-    }
+    hideRestrictedButtons(buttons);
     
     //save the currently opened dialog
     currentSelectedReceiptItemEl = orderItemEl;
@@ -865,20 +834,16 @@ function doSelectReceiptItem(orderItemEl) {
     currentQuantity = orderItemEl.children('.amount').html();
     $('#' + popupId).find('.quantity').val(currentQuantity);
     
-    $('#' + popupId).find('.quantity').focus();
+    $('#' + popupId).find('.quantity').focus().select();
     
     keypadPosition = $('#' + popupId).find('.edit_order_item_popup_keypad_container');
     
     clickFunction = function(val) {
-        currentVal = lastActiveElement.val();
-        newVal = currentVal.toString() + val;
-        lastActiveElement.val(newVal);
+        doKeyboardInput(lastActiveElement, val);
     };
     
     cancelFunction = function() {
-        oldVal = lastActiveElement.val();
-        newVal = oldVal.substring(0, oldVal.length - 1);
-        lastActiveElement.val(newVal);
+        doKeyboardInputCancel(lastActiveElement);
     };
     
     setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
@@ -887,6 +852,19 @@ function doSelectReceiptItem(orderItemEl) {
     registerPopupClickHandler($('#' + popupId), closeEditOrderItem);
     
     return $('#' + popupId);
+}
+
+function hideRestrictedButtons(buttons) {
+    for(var i = 0; i < buttons.length; i++) {
+        var buttonId = parseInt(buttons[i][0]);
+        var buttonEl = buttons[i][1];
+        
+        if(typeof(display_button_passcode_permissions[buttonId]) != 'undefined') {
+            buttonEl.show();
+        } else {
+            buttonEl.hide();
+        }
+    }
 }
 
 function editOrderItemIncreaseQuantity() {
@@ -1097,6 +1075,10 @@ function totalsRecptScroll() {
     recptScroll("totals_");
 }
 
+function deliveryRecptScroll() {
+    recptScroll("delivery_");
+}
+
 function reportsRecptScroll() {
     recptScroll("reports_center_");
 }
@@ -1287,15 +1269,25 @@ function doTotalFinal() {
             tableInfoLabel = tables[tableInfoId].label;
         }
 
-        //TODO: pick up num persons
-        numPersons = totalOrder.covers;
+        numPersons = parseInt(totalOrder.covers);
+        
+        //make sure it has not got its initial -1 value, or a negative value
+        if(numPersons < 0) {
+            numPersons = 0;
+        }
     }
 
     if(!paymentMethod) {
         paymentMethod = defaultPaymentMethod;
     }
     
-    totalOrder.time = clueyTimestamp();
+    if(typeof(totalOrder.time) == 'undefined') {
+        totalOrder.time = clueyTimestamp();
+    }
+    
+    //need to copy time into time_started var
+    var orderStartTime = totalOrder.time;
+        
     totalOrder.payment_method = paymentMethod;
     
     //set the service charge again in case it was changed on the totals screen
@@ -1332,14 +1324,15 @@ function doTotalFinal() {
     } else {
         for(var pm in splitPayments) {
             //make sure there is an amount in this payment type
-            if(parseFloat(splitPayments[pm]) <= 0) {
+            //unless it is the last payment type in the array as we must have at least one entry in this array
+            if((parseFloat(splitPayments[pm]) <= 0) && (sizeOfHash(splitPayments) > 1)) {
                 delete splitPayments[pm];
                 continue;
             }
         
             var pmId = getPaymentMethodId(pm);
         
-            if(paymentMethods[pmId].open_cash_drawer){
+            if(paymentMethods[pmId].open_cash_drawer) {
                 doOpenCashDrawer = true;
             }
         }
@@ -1371,7 +1364,9 @@ function doTotalFinal() {
     order_num = totalOrder.order_num
     
     orderData = {
+        'order_details' : totalOrder,
         'order_num' : order_num,
+        'time_started' : orderStartTime,
         'employee_id' : current_user_id,
         'total' : orderTotal,
         'tax_chargable' : taxChargable,
@@ -1387,11 +1382,11 @@ function doTotalFinal() {
         'table_info_label' : tableInfoLabel,
         'discount_percent' : discountPercent,
         'pre_discount_price' : preDiscountPrice,
-        'order_details' : totalOrder,
         'terminal_id' : terminalID,
         'void_order_id' : totalOrder.void_order_id,
         'is_split_bill' : isSplitBill,
-        'split_payments' : splitPayments
+        'split_payments' : splitPayments,
+        'is_training_mode_sale' : inTrainingMode
     }
     
     sendOrderToServer(orderData);
@@ -1501,7 +1496,7 @@ function orderSentToServerCallback(orderData, errorOccured) {
         }
         
         //reload the customers as their points/credit may need updating
-        $.getScript('/javascripts/customers.js');
+        reloadCustomers();
     } else {
         niceAlert("There was an error cashing out the last order, the server could not process it. It will automatically resend itself, please do not cash out on another terminal!");
     }
@@ -1525,11 +1520,19 @@ function loadAfterSaleScreen() {
     }
 }
 
+var send_order_xhr = null;
+var sendOrderToServerTimeoutSeconds = 8;
+
 function sendOrderToServer(orderData) {
-    $.ajax({
+    var timeoutMillis = sendOrderToServerTimeoutSeconds * 1000;
+    
+    send_order_xhr = $.ajax({
         type: 'POST',
         url: '/order',
+        timeout: timeoutMillis,
         error: function() {
+//            !userAbortedXHR(send_order_xhr)
+
             storeOrderForLaterSend(orderData);
             orderSentToServerCallback(orderData, true);
         },
@@ -1703,16 +1706,13 @@ function showDiscountPopup(receiptItem) {
     keypadPosition = $('#' + popupId).find('.discount_popup_keypad_container');
     
     clickFunction = function(val) {
-        currentVal = $('#' + popupId).find('#discount_percent_input').val();
-        if(currentVal == 0) currentVal = "";
-        newVal = currentVal.toString() + val;
-        $('#' + popupId).find('#discount_percent_input').val(newVal);
+        var inputEl = $('#' + popupId).find('#discount_percent_input');
+        doKeyboardInput(inputEl, val);
     };
     
     cancelFunction = function() {
-        oldVal = $('#' + popupId).find('#discount_percent_input').val();
-        newVal = oldVal.substring(0, oldVal.length - 1);
-        $('#' + popupId).find('#discount_percent_input').val(newVal);
+        var inputEl = $('#' + popupId).find('#discount_percent_input');
+        doKeyboardInputCancel(inputEl);
     };
     
     setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
@@ -2086,8 +2086,15 @@ function renderActiveTables() {
             
                     //mark the tables screen also
                     $('#table_label_' + nextTableID).addClass("active");
+                
+                    getTableOrderFromStorage(clueyUserId, nextTableID);
+                
+                    var tableOrder = tableOrders[nextTableID];
+                    
+                    if(tableOrder.client_name.length > 0) {
+                        $('#table_label_' + nextTableID).html(tables[nextTableID].label + " (" + tableOrder.client_name + ")");
+                    }
                 } else {
-            
                     $(element).removeClass("active");
                     $('#table_label_' + nextTableID).removeClass("active");
                 }
@@ -2112,12 +2119,12 @@ function postDoSyncTableOrder() {
     
     //clean up after transfer order mode
     if(inTransferOrderMode) {
-        hideNiceAlert();
-        setStatusMessage("Order Transfered.");
+        hideNiceAlert();        
         $('#tables_screen_status_message').hide();
         inTransferOrderMode = false;
         tableScreenSelectTable(selectedTable);
-        showMenuScreen();
+        loadAfterSaleScreen();
+        setStatusMessage("Order Transfered.");
         return;
     } else if(inTransferOrderItemMode) {
         finishTransferOrderItem();
@@ -2562,4 +2569,8 @@ function performScreenResolutionCSSMods() {
         $('#wrapper').css("width", "1366px");
         $('#menu_screen #menu_pages_container').css("width", "1090px");
     }
+}
+
+function doAutoCovers() {
+    promptAddCovers();
 }

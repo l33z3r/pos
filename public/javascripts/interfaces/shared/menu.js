@@ -53,6 +53,10 @@ var mandatoryFooterMessageHTML = null;
 //this is used to hold the master 
 var masterOrdersUserId = -1;
 
+var tableOrderItemsToMerge = null;
+
+var sendOrderAfterCovers = false;
+
 function getCurrentOrder() {
     if(selectedTable == 0) {
         return currentOrder;
@@ -460,6 +464,11 @@ function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCou
     
     targetOrderItem.is_void = is_void;
     
+    //add the employee who voided the item
+    if(targetOrderItem.is_void) {
+        targetOrderItem.void_employee_id = current_user_id;
+    }
+    
     if(targetOrderItem.pre_discount_price) {
         targetOrderItem.pre_discount_price = newPricePerUnit * newQuantity;
     } else {
@@ -585,6 +594,7 @@ function initTouchRecpts() {
     $('.large_interface #till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #login_till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #totals_till_roll').touchScroll(receiptScrollerOpts);
+    $('.large_interface #delivery_till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #reports_center_till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #reports_left_till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #float_till_roll').touchScroll(receiptScrollerOpts);
@@ -916,8 +926,10 @@ function doTransferTable(tableFrom, tableTo) {
     }
         
     if($.inArray(tableTo.toString(), activeTableIDS) != -1) {
-        niceAlert("This table is occupied, please choose another.");
-        return;
+        getTableOrderFromStorage(current_user_id, tableTo);
+        
+        //copy the array (http://www.xenoveritas.org/blog/xeno/the-correct-way-to-clone-javascript-arrays)
+        tableOrderItemsToMerge = tableOrders[tableTo].items.slice(0);
     }
         
     transferOrderInProgress = true;

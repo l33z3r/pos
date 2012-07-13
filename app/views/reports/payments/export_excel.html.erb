@@ -1,0 +1,179 @@
+<% if session[:preselect] != -1 %>
+    <% unless params[:action] == "payments_print" %>
+
+    <% end %>
+    <div id="payments_items_graph">
+        <div id="spacer" style="height:70px;"></div>
+        <%= high_chart("graph_container_sales", @h) %>
+    </div>
+
+
+    <div id="payments_items" style="display: none">
+        <% if params[:action] == "payments_print" %>
+            <h3>Payments Report <%= Time.now.strftime("%B %d, %Y") %></h3>
+        <% end %>
+
+        <% if (@s_type == :day) || (@s_type == :month) || (@s_type == :week) || (@s_type == :year) %>
+            <table id="product_list" class="admin_table" style="width: 100%">
+                <thead>
+                <th class="header">Date</th>
+                <th class="header">Day</th>
+                <th class="header"></th>
+                <th class="header"></th>
+                <th class="header"></th>
+                <th class="header">Amount Paid</th>
+                </thead>
+                <% total_items = 0 %>
+                <% @orders.each do |week| %>
+
+
+                    <tbody>
+                    <tr>
+                        <td>
+                           <% if @s_type == :day %>
+                                <%= week.created_at.strftime("%B %d, %Y") %>
+                            <% end %>
+                            <% if @s_type == :week %>
+                                Week starting <%= week.created_at.beginning_of_week.strftime("%B %d, %Y") %>
+                            <% end %>
+                            <% if @s_type == :month %>
+                                <%= week.created_at.strftime("%B, %Y") %>
+                            <% end %>
+                            <% if @s_type == :year %>
+                                <%= week.created_at.strftime("%Y") %>
+                            <% end %>
+                        </td>
+
+                        <td>
+                           <% if @s_type == :day %>
+                                <%= DAYS_OF_THE_WEEK[week.created_at.wday.to_i] %>
+                            <% end %>
+                            <% if @s_type == :week %>
+                                Monday
+                            <% end %>
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+                            <%= sprintf("%.2f", week.total) %>
+                        </td>
+
+
+                    </tr>
+                <% end %>
+                </tbody>
+            </table>
+
+        <% else %>
+
+            <table id="product_list" class="admin_table" style="width: 100%">
+                <thead>
+                <th class="header">Date</th>
+                <th class="header">Time</th>
+                <th class="header">Order Id</th>
+                <th class="header">Terminal</th>
+                <th class="header">Employees</th>
+                <th class="header">Type</th>
+                <th class="header">Total</th>
+                <th class="header">Discount</th>
+                <th class="header">Amount Paid</th>
+                </thead>
+                <% total_items = 0 %>
+                <% total_net = 0 %>
+                <% @orders.each do |week| %>
+                <% total_net += week.total %>
+
+                    <tbody>
+                    <tr>
+                        <td>
+                            <%= week.created_at.to_datetime.strftime "%a, %d %b %Y" %>
+                        </td>
+
+                        <td>
+                            <%= week.created_at.to_datetime.strftime "%l:%M%P" %>
+                        </td>
+                        <td>
+                            <%= week.id %>
+                        </td>
+                        <td>
+                            <%= week.terminal_id %>
+                        </td>
+                        <td>
+                            <%= Employee.find_by_id(week.employee_id).name %>
+                        </td>
+                        <td>
+                            <%= week.payment_type %>
+                        </td>
+                        <td>
+                            <% if week.discount_percent != nil %>
+                            <%= sprintf("%.2f", week.pre_discount_price) %>
+                            <% else %>
+                            <%= sprintf("%.2f", week.total) %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <% if week.discount_percent != nil %>
+                            <%= sprintf("%.2f",  week.pre_discount_price-week.total) %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.2f",  week.total) %>
+                        </td>
+
+
+                    </tr>
+                <% end %>
+                 <tr>
+                        <td style="text-align: left; border-top: 2px solid">
+                            <b>Total:</b>
+                        </td>
+                        <td style="text-align: right; border-top: 2px solid">
+                        </td>
+                        <td style="text-align: left; border-top: 2px solid; ">
+
+                        </td>
+                        <td style="text-align: right; border-top: 2px solid;">
+                        </td>
+                        <td style="text-align: right; border-top: 2px solid;">
+                        </td>
+                     <td style="text-align: right; border-top: 2px solid;">
+                        </td>
+                     <td style="text-align: right; border-top: 2px solid;">
+                        </td>
+                     <td style="text-align: right; border-top: 2px solid;">
+                        </td>
+                        <td style="text-align: left; border-top: 2px solid">
+                            <%= sprintf("%.2f", total_net) %>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+
+        <% end %>
+<% else %>
+    <div id="saved_items">
+        <div id="saved_items_container">
+            <div onclick="setPaymentSelect(0)" class="saved_report_button">
+                <div class="b_text"><b>Payments by Transaction This Week</b></div>
+            </div>
+            <div onclick="setPaymentSelect(1)" class="saved_report_button">
+                <div class="b_text"><b>Payments by Transaction This Month</b></div>
+            </div>
+            <div onclick="setPaymentSelect(2)" class="saved_report_button">
+                <div class="b_text"><b>Payments by Month This Year</b></div>
+            </div>
+            <div onclick="setPaymentSelect(3)" class="saved_report_button">
+                <div class="b_text"><b>Payments by Day This Year</b></div>
+            </div>
+        </div>
+    </div>
+<% end %>
+

@@ -117,8 +117,7 @@ function printCashTotal(){
     if ($('#cash_totals_data_table').length == 0){
         setStatusMessage("No cash total present");
         return;
-    }
-    else{
+    } else {
         printCash($('#reports_center_receipt').html(),true);
     }
 }
@@ -134,7 +133,7 @@ function printCash(content, printRecptMessage) {
     //add space and a dot so we print a bottom margin
     content += clear30HTML + "<div class='the_dots'>.  .  .</div>";
 
-    print(content);
+    printContent(content);
 }
 
 function switchColorRow(id) {
