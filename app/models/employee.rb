@@ -1,4 +1,4 @@
- class Employee < ActiveRecord::Base
+class Employee < ActiveRecord::Base
 
   has_attached_file :employee_image, PAPERCLIP_STORAGE_OPTIONS.merge(:styles => { :medium => "300x300>", :thumb => "115x115>" })
 
@@ -6,6 +6,8 @@
 
   has_many :stock_transactions
   
+  has_many :shift_timestamps
+   
   belongs_to :role
   
   validates :staff_id, :presence => true, :uniqueness => true

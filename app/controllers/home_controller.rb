@@ -228,12 +228,6 @@ class HomeController < ApplicationController
     load_active_employees
   end
 
-  #do login procedure
-  def login
-    do_login(params[:id])
-    render :json => {:success => true}.to_json
-  end
-  
   def clockin
     @employee = Employee.find(params[:id])
     
@@ -244,6 +238,9 @@ class HomeController < ApplicationController
 
     update_last_active @employee
 
+    #add an entry to the shift timestamps table
+    ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_IN)
+    
     load_active_employees
 
     render :action => :active_employees
@@ -262,11 +259,20 @@ class HomeController < ApplicationController
 
     update_last_active @employee
 
+    #add an entry to the shift timestamps table
+    ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_OUT)
+    
     load_active_employees
 
     render :action => :active_employees
   end
 
+  #do login procedure
+  def login
+    do_login(params[:id])
+    render :json => {:success => true}.to_json
+  end
+  
   def logout
     @employee = Employee.find(e)
     @employee.last_logout = Time.now
@@ -277,6 +283,41 @@ class HomeController < ApplicationController
     clear_session
 
     render :json => {:success => true}.to_json
+  end
+  
+  def break_in
+    @employee = Employee.find(params[:id])
+
+    redirect_to :back, :flash => {:error => "Employee not found."} and return if @employee.nil?
+
+    update_last_active @employee
+
+    #add an entry to the shift timestamps table
+    ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_IN)
+    
+    render :json => {:success => true}.to_json
+  end
+  
+  def break_out
+    @employee = Employee.find(params[:id])
+
+    redirect_to :back, :flash => {:error => "Employee not found."} and return if @employee.nil?
+
+    update_last_active @employee
+
+    #add an entry to the shift timestamps table
+    ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_OUT)
+    
+    render :json => {:success => true}.to_json
+  end
+  
+  def print_work_report
+    @employee = Employee.find(params[:id])
+    
+    @last_clockin = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::CLOCK_IN}").order("created_at desc").first
+    @last_clockout = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::CLOCK_OUT}").order("created_at desc").first
+    
+    @breaks = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::BREAK_IN} or timestamp_type = #{ShiftTimestamp::BREAK_OUT}").where("created_at >= ?", @last_clockin.created_at).where("created_at <= ?", @last_clockout.created_at)
   end
   
   def blank_receipt_for_print

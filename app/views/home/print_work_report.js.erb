@@ -1,0 +1,31 @@
+var workReportHTML = fetchBusinessInfoHeaderHTML();
+
+workReportHTML += "<%= @employee.nickname %>";
+
+
+workReportHTML += "Clocked In: <%= @last_clockin.created_at %>";
+
+<% 
+@break_time_seconds = 0 
+@break_start = 0
+%>
+
+<% @breaks.each do |b| %>
+  <% if(b.timestamp_type == ShiftTimestamp::BREAK_IN) %>
+    <% @break_start = b.created_at %>
+    workReportHTML += "Break In: <%= b.created_at %>";
+  <% else %>
+    <% @break_time_seconds += (b.created_at - @break_start) %>
+    workReportHTML += "Break Out: <%= b.created_at %>";
+  <% end %>
+<% end %>
+
+workReportHTML += "Clocked Out: <%= @last_clockout.created_at %>";
+
+<% @shift_seconds = (@last_clockout.created_at - @last_clockin.created_at) %>
+
+workReportHTML += "Shift Seconds: <%= @shift_seconds %>";
+workReportHTML += "Break Seconds: <%= @break_time_seconds %>";
+workReportHTML += "Seconds Worked: <%= @shift_seconds - @break_time_seconds %>";
+
+printReceipt(workReportHTML);

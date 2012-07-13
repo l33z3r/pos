@@ -156,6 +156,8 @@ function doGlobalInit() {
     clueyScheduler();
     
     initTrainingModeFromCookie();
+    
+    initBreakUsers();
 
 //enable this for html5 cache flushing
 //    if(inProdMode()) {

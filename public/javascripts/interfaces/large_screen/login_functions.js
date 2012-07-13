@@ -1,3 +1,10 @@
+var breakUsers = null;
+
+function initBreakUsers() {
+    //TODO: save load from memory
+    breakUsers = new Array();
+}
+
 function doQuickLogin(user_id) {
 
     //load the users index in the array
@@ -77,7 +84,14 @@ function doDallasLogin() {
             nickname = employees[i].nickname;
 
             if (employees[i]['clocked_in']) {
-                id = employees[i].id
+                id = employees[i].id;                
+                
+                if(userOnBreak(id)) {
+                    setStatusMessage("User is on break!");
+                    clearClockinCode();
+                    return;
+                }
+    
                 is_admin = employees[i].is_admin;
                 loginSuccess(id, nickname, is_admin, passcode);
                 return;
@@ -92,7 +106,7 @@ function doDallasLogin() {
     loginFailure();
 }
 
-function doLogin() {
+function doLogin() {        
     entered_code = $('#num').val();
 
     if (current_user_id != null) {
@@ -110,7 +124,14 @@ function doLogin() {
             if (employees[i]['clocked_in']) {
                 //only allow dallas code login if it is set
                 if (employees[i].dallas_code == ""){
-                    id = employees[i].id
+                    id = employees[i].id;
+                    
+                    if(userOnBreak(id)) {
+                        setStatusMessage("User is on break!");
+                        clearClockinCode();
+                        return;
+                    }
+    
                     is_admin = employees[i].is_admin;
                     loginSuccess(id, nickname, is_admin, passcode);
                 }else {
@@ -210,6 +231,12 @@ function doClockout() {
                 return;
             }
 
+            if(userOnBreak(id)) {
+                setStatusMessage("User is on break!");
+                clearClockinCode();
+                return;
+            }
+    
             //mark the user as clocked out
             employees[i]['clocked_in'] = false;
 
@@ -249,6 +276,8 @@ function clockoutSuccess(id, nickname) {
             id : id
         }
     });
+    
+    printWorkReport(id);
 }
 
 function loginSuccess(id, nickname, is_admin, passcode) {
@@ -344,5 +373,102 @@ function clearClockinCode() {
     $('#clockincode_show').html("");
 }
 
+function doBreak() {
+    entered_code = $('#num').val();
 
+    if (current_user_id != null) {
+        //already logged in
+        displayError("You are already logged in. Please log out!");
+        return;
+    }
 
+    for (var i = 0; i < employees.length; i++) {
+        passcode = employees[i].passcode;
+
+        if (entered_code == passcode) {
+            nickname = employees[i].nickname;
+
+            if (employees[i]['clocked_in']) {                
+                id = employees[i].id;
+                
+                if(userOnBreak(id)) {
+                    breakOutSuccess(id, nickname);
+                } else {
+                    breakInSuccess(id, nickname);
+                }
+                
+                return;
+            } else {
+                setStatusMessage("User " + nickname + " is not clocked in!", true, true);
+                clearClockinCode();
+                return;
+            }
+        }
+    }
+
+    doBreakFailure();
+}
+
+function breakInSuccess(id, nickname) {
+    clearClockinCode();
+
+    setStatusMessage(nickname + " started break!");
+
+    //send ajax logout
+    $.ajax({
+        type: 'POST',
+        url: '/break_in',
+        data: {
+            id : id
+        }
+    });
+    
+    breakUsers.push(id.toString());
+}
+
+function breakOutSuccess(id, nickname) {
+    clearClockinCode();
+
+    setStatusMessage(nickname + " finished break!");
+
+    //send ajax clockout
+    $.ajax({
+        type: 'POST',
+        url: '/break_out',
+        data: {
+            id : id
+        }
+    });
+    
+    var idPos = 0
+    
+    for(i=0; i<breakUsers.length; i++) {
+        if(breakUsers[i] == id.toString()) {
+            idPos = i;
+            break;
+        }
+    }
+    
+    breakUsers.splice(idPos, 1);
+}
+
+function doBreakFailure() {
+    //set an error message in the flash area
+    setStatusMessage("Wrong pass code!", true, true);
+
+    clearClockinCode();
+}
+
+function userOnBreak(userId) {
+    return $.inArray(userId.toString(), breakUsers) != -1;
+}
+
+function printWorkReport(userId) {
+    $.ajax({
+        type: 'POST',
+        url: '/print_work_report',
+        data: {
+            id : userId
+        }
+    });
+}
