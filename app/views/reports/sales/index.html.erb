@@ -77,14 +77,14 @@
                                 <div class="dropdown_container">
                                     <div class="label">Date From</div>
                                     <div class="input_date">
-                                        <input type="text" size="13" readonly="readonly" id="date_from" name="date_from"
+                                        <input type="text" size="13" onchange="updateDateParams($(this).val(), 'from')" readonly="readonly" id="date_from" name="date_from"
                                                value="<%= @selected_from_date.to_date.strftime("%Y-%m-%d %H:%M") %>"/>
                                     </div>
                                 </div>
                                 <div class="dropdown_container">
                                     <div class="label">Date To</div>
                                     <div class="input_date">
-                                        <input type="text" size="13" readonly="readonly" id="date_to" name="date_to"
+                                        <input type="text" size="13" onchange="updateDateParams($(this).val(), 'to')" readonly="readonly" id="date_to" name="date_to"
                                                value="<%= @selected_to_date.to_date.strftime("%Y-%m-%d %H:%M") %>"/>
                                     </div>
                                 </div>
