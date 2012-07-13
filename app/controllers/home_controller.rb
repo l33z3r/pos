@@ -1,4 +1,5 @@
 class HomeController < ApplicationController
+  skip_before_filter :set_current_employee, :only => [:login, :logout, :clockin, :clockout]
   cache_sweeper :product_sweeper  
   
   #main screen including the login overlay
@@ -223,64 +224,49 @@ class HomeController < ApplicationController
     clear_caches
     redirect_to home_path
   end
-  
-  def active_employees
-    load_active_employees
-  end
 
   def clockin
-    @employee = Employee.find(params[:id])
+    @employee_id = params[:employee_id]
+    @employee = Employee.find(@employee_id)
     
-    if !active_employee_ids.include? @employee.id
-      #add this employee to the active users list
-      active_employee_ids << @employee.id
-    end
-
-    update_last_active @employee
-
     #add an entry to the shift timestamps table
     ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_IN)
     
-    load_active_employees
+    update_last_active @employee
 
-    render :action => :active_employees
+    render :json => {:success => true}.to_json
   end
 
   def clockout
-    @employee = Employee.find(params[:id])
-
-    redirect_to :back, :flash => {:error => "Employee not found."} and return if @employee.nil?
-
-    #remove the user from active employee list and refetch the list
-    @active_employee_ids = active_employee_ids
-    @active_employee_ids.delete @employee.id
-
-    clear_session
-
-    update_last_active @employee
-
+    @employee_id = params[:employee_id]
+    @employee = Employee.find(@employee_id)
+    
     #add an entry to the shift timestamps table
     ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_OUT)
     
-    load_active_employees
+    update_last_active @employee
 
-    render :action => :active_employees
+    render :json => {:success => true}.to_json
   end
 
-  #do login procedure
   def login
-    do_login(params[:id])
+    @employee_id = params[:employee_id]
+    @employee = Employee.find(@employee_id)
+    
+    @employee.last_logout = Time.now
+    
+    update_last_active @employee
+
     render :json => {:success => true}.to_json
   end
   
   def logout
-    @employee = Employee.find(e)
+    @employee_id = params[:employee_id]
+    @employee = Employee.find(@employee_id)
+    
     @employee.last_logout = Time.now
-    @employee.save!
-
+    
     update_last_active @employee
-
-    clear_session
 
     render :json => {:success => true}.to_json
   end
@@ -563,7 +549,6 @@ class HomeController < ApplicationController
       
     end
     
-    @files << "/javascripts/init.js"
     @files << "/javascripts/tables.js"
     @files << "/javascripts/employees.js"
     @files << "/javascripts/products.js"
@@ -614,8 +599,7 @@ class HomeController < ApplicationController
   private
 
   def do_common_interface_actions
-    load_active_employees
-    
+    @employees = Employee.all_active
     @display = TerminalDisplayLink.load_display_for_terminal @terminal_id
     @rooms = Room.all
   end
@@ -661,12 +645,6 @@ class HomeController < ApplicationController
   end
   
   def do_medium_interface_actions
-    
-    #make sure we have an active session, otherwise, redirect to the mobile interface and force login
-    if !current_employee
-      redirect_to mbl_path and return
-    end
-    
     @tables_button = DisplayButton.find_by_perm_id(ButtonMapper::TABLES_BUTTON) 
     @order_button = DisplayButton.find_by_perm_id(ButtonMapper::ORDER_BUTTON) 
     @modify_button = DisplayButton.find_by_perm_id(ButtonMapper::MODIFY_ORDER_ITEM_BUTTON)
@@ -691,23 +669,9 @@ class HomeController < ApplicationController
     
   end
   
-  def clear_session
-    session[:current_employee_id] = nil
-    session[:current_employee_nickname] = nil
-    session[:current_employee_admin] = nil
-    session[:current_employee_role_id] = nil
-    session[:current_employee_passcode] = nil
-  end
-  
   def update_last_active employee
     employee.last_active = Time.now
     employee.save!
-  end
-
-  def load_active_employees
-    @ids = active_employee_ids
-    @active_employees ||= []
-    @active_employees = Employee.find(@ids, :order => :last_active) if @ids
   end
   
   def store_receipt_html

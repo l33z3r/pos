@@ -19,10 +19,29 @@ var lastSyncKey = "last_sync_table_order_time";
 var lastInterfaceReloadTime = null;
 var lastPrintCheckTime = null;
     
+var scheduledTasksIntervalSeconds = 10;
+    
 //the following hack is to get over eventX eventY being deprecated in new builds of chrome
 $.event.props = $.event.props.join('|').replace('layerX|layerY|', '').split('|');
 
 $(function() {
+    current_user_id = fetchActiveUserID();
+    
+    //init some user vars
+    if(current_user_id) { 
+        for (var i = 0; i < employees.length; i++) {
+            var nextId = employees[i].id;
+        
+            if(nextId.toString() == current_user_id) {
+                last_user_id = current_user_id;
+                current_user_nickname = employees[i].nickname;
+                current_user_is_admin = employees[i].is_admin;
+                current_user_passcode = employees[i].passcode;
+                current_user_role_id = employees[i].role_id;
+            }
+        }
+    }
+    
     //disable image drag
     $('img').live("mousedown", preventImageDrag);
     
@@ -153,8 +172,7 @@ function callHomePollInitSequenceCompleteHook() {
 function clueyScheduler() {
     doScheduledTasks();
     
-    var numSeconds = 10;
-    setTimeout(clueyScheduler, numSeconds * 1000);
+    setTimeout(clueyScheduler, scheduledTasksIntervalSeconds * 1000);
 }
 
 function preventImageDrag(event) {
@@ -184,5 +202,4 @@ function pingHome() {
             setConnectionStatus(false);
         }
     });
-    
 }

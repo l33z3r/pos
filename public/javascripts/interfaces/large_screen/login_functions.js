@@ -1,8 +1,35 @@
-var breakUsers = null;
+var breakUserIDS = null;
+var clockedInUserIDS = null;
+
+function initUsers() {
+    initClockedInUsers();
+    initBreakUsers();
+}
+
+function initClockedInUsers() {
+    clockedInUserIDS = getClockedInUsersIDS();
+
+    for (var i = 0; i < employees.length; i++) {
+        var currentEmployee = employees[i]
+        
+        if(($.inArray(currentEmployee.id.toString(), clockedInUserIDS) != -1)) {
+            currentEmployee.clocked_in = true;            
+            $('#employee_box_' + currentEmployee.id).show();
+        } 
+    }
+}
 
 function initBreakUsers() {
-    //TODO: save load from memory
-    breakUsers = new Array();
+    breakUserIDS = getBreakUsersIDS();
+    
+    //TODO: grey out users icons
+    for (var i = 0; i < employees.length; i++) {
+        var currentEmployee = employees[i]
+        
+        if(($.inArray(currentEmployee.id.toString(), breakUserIDS) != -1)) {
+            $('#employee_box_' + currentEmployee.id).addClass("on_break");
+        } 
+    }
 }
 
 function doQuickLogin(user_id) {
@@ -156,7 +183,11 @@ function doLogout() {
         return;
     }
 
+    var id_for_logout = current_user_id;
+
     current_user_id = null;
+
+    storeActiveUserID(null);
 
     showLoginScreen();
 
@@ -176,7 +207,10 @@ function doLogout() {
     //send ajax logout
     $.ajax({
         type: 'POST',
-        url: '/logout'
+        url: '/logout',
+        data: {
+            employee_id : id_for_logout
+        }
     });
 }
 
@@ -251,6 +285,9 @@ function doClockout() {
 function clockinSuccess(id, nickname) {
     clearClockinCode();
 
+    addClockedInUser(id);
+    $('#employee_box_' + id).show();
+
     setStatusMessage(nickname + " clocked in successfully!");
 
     //send ajax logout
@@ -258,7 +295,7 @@ function clockinSuccess(id, nickname) {
         type: 'POST',
         url: '/clockin',
         data: {
-            id : id
+            employee_id : id
         }
     });
 }
@@ -266,6 +303,9 @@ function clockinSuccess(id, nickname) {
 function clockoutSuccess(id, nickname) {
     clearClockinCode();
 
+    removeClockedInUser(id);
+    $('#employee_box_' + id).hide();
+    
     setStatusMessage(nickname + " clocked out successfully!");
 
     //send ajax clockout
@@ -273,7 +313,7 @@ function clockoutSuccess(id, nickname) {
         type: 'POST',
         url: '/clockout',
         data: {
-            id : id
+            employee_id : id
         }
     });
     
@@ -281,22 +321,24 @@ function clockoutSuccess(id, nickname) {
 }
 
 function loginSuccess(id, nickname, is_admin, passcode) {
-    //send ajax login
-    $.ajax({
-        type: 'POST',
-        url: '/login',
-        data: {
-            id : id
-        }
-    });
-
-    showingPassCodeDialog = false;
-
     current_user_id = id;
     last_user_id = current_user_id;
     current_user_nickname = nickname;
     current_user_is_admin = is_admin;
     current_user_passcode = passcode;
+    
+    storeActiveUserID(current_user_id);
+    
+    //send ajax login
+    $.ajax({
+        type: 'POST',
+        url: '/login',
+        data: {
+            employee_id : id
+        }
+    });
+
+    showingPassCodeDialog = false;
 
     //set the username in the menu
     $('#e_name').html(nickname);
@@ -423,7 +465,10 @@ function breakInSuccess(id, nickname) {
         }
     });
     
-    breakUsers.push(id.toString());
+    addBreakUser(id);
+    
+    //grey out their name
+    $('#employee_box_' + id).addClass("on_break");
 }
 
 function breakOutSuccess(id, nickname) {
@@ -440,16 +485,10 @@ function breakOutSuccess(id, nickname) {
         }
     });
     
-    var idPos = 0
+    removeBreakUser(id);
     
-    for(i=0; i<breakUsers.length; i++) {
-        if(breakUsers[i] == id.toString()) {
-            idPos = i;
-            break;
-        }
-    }
-    
-    breakUsers.splice(idPos, 1);
+    //ungrey their name
+    $('#employee_box_' + id).removeClass("on_break");
 }
 
 function doBreakFailure() {
@@ -460,7 +499,8 @@ function doBreakFailure() {
 }
 
 function userOnBreak(userId) {
-    return $.inArray(userId.toString(), breakUsers) != -1;
+    var breakUserIDS = getBreakUsersIDS();
+    return $.inArray(userId.toString(), breakUserIDS) != -1;
 }
 
 function printWorkReport(userId) {

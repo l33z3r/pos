@@ -22,6 +22,12 @@ $(function(){
 });
     
 function doGlobalInit() {
+    //if no user is set, fo to main login screen
+    if(!current_user_id) {
+        goToMainMenu();
+        return;
+    }
+    
     //allow scroll for dev
     if(inDevMode()) {
         $('body').css("overflow", "scroll");

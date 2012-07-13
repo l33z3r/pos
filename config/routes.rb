@@ -29,7 +29,6 @@ Pos::Application.routes.draw do
   
   #routes for screens to login etc
   match 'home' => "home#index"
-  get "home/active_employees"
   get 'blank_receipt_for_print' => "home#blank_receipt_for_print"
   
   #kitchen screen

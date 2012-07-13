@@ -56,6 +56,10 @@ class Employee < ActiveRecord::Base
   def self.chef_user
     find_by_staff_id CHEF_USER_STAFF_ID
   end
+  
+  def self.all_active
+    Employee.all
+  end
 end
 
 

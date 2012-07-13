@@ -5,6 +5,12 @@ var clear10BottomBorderHTML = "<div class='clear_top_margin_10_bottom_border'>&n
 
 var appOnline = true;
 
+var activeTableIDSStorageKey = "active_table_ids";
+var breakUserIDSSStorageKey = "break_user_ids";
+var clockedInUserIDSSStorageKey = "clocked_in_user_ids";
+
+var activeUserIDCookieName = "current_user_id";
+
 function isTouchDevice() {
     return !disableAdvancedTouch;
 }
@@ -429,7 +435,7 @@ function deleteStorageValue(key) {
 }
 
 function getActiveTableIDS() {
-    activeTableIDSString = retrieveStorageValue("active_table_ids");
+    activeTableIDSString = retrieveStorageValue(activeTableIDSStorageKey);
     
     //alert("got active table ids " + activeTableIDSString);
     
@@ -443,7 +449,7 @@ function getActiveTableIDS() {
 function storeActiveTableIDS(activeTableIDS) {
     activeTableIDSString = activeTableIDS.join(",");
     //alert("Storing active table ids " + activeTableIDSString);
-    storeKeyValue("active_table_ids", activeTableIDSString);
+    storeKeyValue(activeTableIDSStorageKey, activeTableIDSString);
 }
 
 function addActiveTable(tableID) {
@@ -469,6 +475,90 @@ function removeActiveTable(tableID) {
     });
 
     storeActiveTableIDS(activeTableIDS);
+    
+    return newlyRemoved;
+}
+
+function getBreakUsersIDS() {
+    var breakUserIDSString = retrieveStorageValue(breakUserIDSSStorageKey);
+    
+    if(breakUserIDSString) {
+        return breakUserIDSString.split(",");
+    } else {
+        return new Array();
+    }
+}
+
+function storeBreakUsersIDS(breakUserIDS) {
+    var breakUserIDSString = breakUserIDS.join(",");
+    storeKeyValue(breakUserIDSSStorageKey, breakUserIDSString);
+}
+
+function addBreakUser(userID) {
+    var breakUsersIDS = getBreakUsersIDS();
+    
+    var newlyAdded = ($.inArray(userID.toString(), breakUsersIDS) == -1);
+    
+    if(newlyAdded) {
+        breakUsersIDS.push(userID);
+        storeBreakUsersIDS(breakUsersIDS);
+    }
+    
+    return newlyAdded;
+}
+
+function removeBreakUser(userID) {
+    var breakUsersIDS = getBreakUsersIDS();
+    
+    var newlyRemoved = ($.inArray(userID.toString(), breakUsersIDS) != -1);
+    
+    breakUsersIDS = $.grep(breakUsersIDS, function(val) {
+        return val.toString() != userID.toString();
+    });
+
+    storeBreakUsersIDS(breakUsersIDS);
+    
+    return newlyRemoved;
+}
+
+function getClockedInUsersIDS() {
+    var clockedInUserIDSString = retrieveStorageValue(clockedInUserIDSSStorageKey);
+    
+    if(clockedInUserIDSString) {
+        return clockedInUserIDSString.split(",");
+    } else {
+        return new Array();
+    }
+}
+
+function storeClockedInUsersIDS(clockedInUserIDS) {
+    var clockedInUserIDSString = clockedInUserIDS.join(",");
+    storeKeyValue(clockedInUserIDSSStorageKey, clockedInUserIDSString);
+}
+
+function addClockedInUser(userID) {
+    var clockedInUsersIDS = getClockedInUsersIDS();
+    
+    var newlyAdded = ($.inArray(userID.toString(), clockedInUsersIDS) == -1);
+    
+    if(newlyAdded) {
+        clockedInUsersIDS.push(userID);
+        storeClockedInUsersIDS(clockedInUsersIDS);
+    }
+    
+    return newlyAdded;
+}
+
+function removeClockedInUser(userID) {
+    var clockedInUsersIDS = getClockedInUsersIDS();
+    
+    var newlyRemoved = ($.inArray(userID.toString(), clockedInUsersIDS) != -1);
+    
+    clockedInUsersIDS = $.grep(clockedInUsersIDS, function(val) {
+        return val.toString() != userID.toString();
+    });
+
+    storeClockedInUsersIDS(clockedInUsersIDS);
     
     return newlyRemoved;
 }
@@ -506,6 +596,11 @@ function getRawCookie(c_name) {
     }
 
     return null;
+}
+
+function deleteRawCookie(c_name) {
+    var exdays = -1 * 365 * 100;
+    setRawCookie(c_name, null, exdays);
 }
 
 String.prototype.startsWith = function(str){
@@ -1041,4 +1136,18 @@ function reloadProducts(callback) {
 
 function reloadCustomers(callback) {
     $.getScript('/javascripts/customers.js', callback);
+}
+
+function storeActiveUserID(userID) {
+    if(userID == null) {
+        deleteRawCookie(activeUserIDCookieName);
+        return;
+    }
+    
+    var exdays = 365 * 100;
+    setRawCookie(activeUserIDCookieName, userID, exdays);
+}
+
+function fetchActiveUserID() {
+    return getRawCookie(activeUserIDCookieName);
 }
