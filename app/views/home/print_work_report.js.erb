@@ -1,31 +1,58 @@
-var workReportHTML = fetchBusinessInfoHeaderHTML();
+var work_report_html = "<div id='work_report_data_table'>";
 
-workReportHTML += "<%= @employee.nickname %>";
+  work_report_html += fetchBusinessInfoHeaderHTML();
 
+  work_report_html += "<div class='data_table_header'>WORK RECORD</div>" + clearHTML;
 
-workReportHTML += "Clocked In: <%= @last_clockin.created_at %>";
+  work_report_html += "<div class='data_table_header'>User: <%= @employee.nickname %></div>" + clearHTML;
 
-<% 
-@break_time_seconds = 0 
-@break_start = 0
+  var work_report_data = new Array();
+  work_report_data.push(new Array('Clocked In:', '<%= @last_clockin.created_at.strftime(@defaultDateFormat) %>', false));
+
+  <% 
+  @break_time_seconds = 0 
+  @break_start = 0
 %>
 
-<% @breaks.each do |b| %>
-  <% if(b.timestamp_type == ShiftTimestamp::BREAK_IN) %>
-    <% @break_start = b.created_at %>
-    workReportHTML += "Break In: <%= b.created_at %>";
-  <% else %>
-    <% @break_time_seconds += (b.created_at - @break_start) %>
-    workReportHTML += "Break Out: <%= b.created_at %>";
+  <% @breaks.each do |b| %>
+    <% if(b.timestamp_type == ShiftTimestamp::BREAK_IN) %>
+      <% @break_start = b.created_at %>
+      work_report_data.push(new Array('Break In:', '<%= b.created_at.strftime(@defaultDateFormat) %>', false));
+    <% else %>
+      <% @break_time_seconds += (b.created_at - @break_start) %>
+      work_report_data.push(new Array('Break Out:', '<%= b.created_at.strftime(@defaultDateFormat) %>', false));
+    <% end %>
   <% end %>
-<% end %>
 
-workReportHTML += "Clocked Out: <%= @last_clockout.created_at %>";
+  work_report_data.push(new Array('Clocked Out:', '<%= @last_clockout.created_at.strftime(@defaultDateFormat) %>', false));
+  work_report_html += getWorkReportDataTable(work_report_data) + clearHTML;
 
-<% @shift_seconds = (@last_clockout.created_at - @last_clockin.created_at) %>
+  <% @shift_seconds = (@last_clockout.created_at - @last_clockin.created_at) %>
+  
+  work_report_data = new Array();
+  work_report_data.push(new Array('Hours Worked:', '<%= hours_mins_for_seconds @shift_seconds %>', false));
+  work_report_data.push(new Array('Less Breaks:', '<%= hours_mins_for_seconds @break_time_seconds %>', false));
+  work_report_data.push(new Array('Net Hours:', '<%= hours_mins_for_seconds (@shift_seconds - @break_time_seconds) %>', false));
+  work_report_html += getWorkReportDataTable(work_report_data) + clearHTML;
 
-workReportHTML += "Shift Seconds: <%= @shift_seconds %>";
-workReportHTML += "Break Seconds: <%= @break_time_seconds %>";
-workReportHTML += "Seconds Worked: <%= @shift_seconds - @break_time_seconds %>";
+  work_report_data = new Array();
+  work_report_data.push(new Array('Total Items Ordered', '<%= @report_data[:all_order_items_ordered_quantity] %>', false));
+  work_report_data.push(new Array('Total Items Sold', '<%= @report_data[:all_order_items_sold_quantity] %>', false));
+  work_report_data.push(new Array('Voided Items Quantity', '<%= @report_data[:void_order_items_quantity] %>', false));
+  work_report_data.push(new Array('Voided Items Amount', '<%= @report_data[:void_order_items_amount] %>', true));
+  work_report_data.push(new Array('Total Orders Amount', '<%= @report_data[:all_order_items_ordered_amount] %>', true));
+  work_report_data.push(new Array('Discounts Given', '<%= @report_data[:total_discounts] %>', true));
+  work_report_data.push(new Array('Average Order Price', '<%= @report_data[:all_order_items_ordered_avg] %>', true));
+  work_report_data.push(new Array('Average Sale Price', '<%= @report_data[:all_order_items_sold_avg] %>', true));
+  work_report_html += getWorkReportDataTable(work_report_data) + clearHTML;
 
-printReceipt(workReportHTML);
+  work_report_data = new Array();
+  work_report_data.push(new Array('Total Cash Entered', '<%= @report_data[:total_cash] %>', true));
+  work_report_data.push(new Array('Total Payments Entered', '<%= @report_data[:total_payments] %>', true));
+  work_report_html += getWorkReportDataTable(work_report_data) + clearHTML;
+
+  work_report_html += "Printed By <%= @employee.nickname %>" + clearHTML;
+
+  work_report_html += "<%= @custom_work_report_footer %>";
+
+  printReceipt(work_report_html);

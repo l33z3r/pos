@@ -213,6 +213,16 @@ module ApplicationHelper
     @html
   end
 
-
+  def hours_mins_for_seconds num_seconds
+    @num_seconds_in_minute = 60
+    @num_seconds_in_hour = 3600
+  
+    @complete_hours = (num_seconds/@num_seconds_in_hour).to_i
+    @hours_rounded = (num_seconds/@num_seconds_in_hour).round(2)
+  
+    @complete_mins = ((num_seconds % @num_seconds_in_hour)/@num_seconds_in_minute).to_i
+  
+    return "#{@complete_hours}h #{@complete_mins}m (#{@hours_rounded}hrs)"
+  end
 
 end

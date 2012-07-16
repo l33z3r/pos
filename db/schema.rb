@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120712170047) do
+ActiveRecord::Schema.define(:version => 20120716135342) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -575,6 +575,13 @@ ActiveRecord::Schema.define(:version => 20120712170047) do
     t.integer  "sync_type"
     t.string   "time"
     t.text     "data",       :limit => 2147483647
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "work_reports", :force => true do |t|
+    t.integer  "employee_id"
+    t.text     "report_data"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

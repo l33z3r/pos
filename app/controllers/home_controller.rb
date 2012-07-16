@@ -242,11 +242,87 @@ class HomeController < ApplicationController
     @employee = Employee.find(@employee_id)
     
     #add an entry to the shift timestamps table
-    ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_OUT)
+    @last_clockout = ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_OUT)
     
     update_last_active @employee
-
-    render :json => {:success => true}.to_json
+    
+    @print_work_report = true
+    
+    if @print_work_report
+      @last_clockin = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::CLOCK_IN}").order("created_at desc").first
+      
+      @breaks = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::BREAK_IN} or timestamp_type = #{ShiftTimestamp::BREAK_OUT}").where("created_at >= ?", @last_clockin.created_at).where("created_at <= ?", @last_clockout.created_at)
+    
+      @report_data = {}
+    
+      @all_orders = @employee.orders.where("created_at >= ?", @last_clockin.created_at)
+      
+      @all_order_items_ordered = @employee.order_items.where("created_at >= ?", @last_clockin.created_at)
+      @all_order_items_ordered_quantity = @all_order_items_ordered.count
+      @all_order_items_ordered_amount = @all_order_items_ordered.sum("total_price")
+      
+      @all_order_items_ordered_avg = @all_order_items_ordered_amount / @all_order_items_ordered_quantity
+    
+      @void_order_items = @employee.void_order_items.where("created_at >= ?", @last_clockin.created_at)
+      @void_order_items_quantity = @void_order_items.count
+      @void_order_items_amount = @void_order_items.sum("total_price")
+    
+      @total_discounts = 0
+    
+      @total_cash = 0
+    
+      @all_order_items_sold_quantity = 0
+      @all_order_items_sold_amount = 0
+      
+      @all_orders.each do |order|
+        
+        @all_order_items_sold_quantity += order.order_items.length
+        @all_order_items_sold_amount += order.total
+          
+        @payment_types = order.split_payments
+        
+        if @payment_types and @payment_types.length > 0
+          @payment_types.each do |pt, amount|
+            amount = amount.to_f
+            
+            pt = pt.downcase
+           
+            if pt == PaymentMethod::CASH_PAYMENT_METHOD_NAME
+              @total_cash += amount
+            end
+          end
+        end
+      end
+      
+      @all_order_items_sold_avg = @all_order_items_sold_amount / @all_order_items_sold_quantity
+      
+      @report_data[:all_order_items_ordered_quantity] = @all_order_items_ordered_quantity
+      @report_data[:all_order_items_sold_quantity] = @all_order_items_sold_quantity
+    
+      @report_data[:void_order_items_quantity] = @void_order_items_quantity
+      @report_data[:void_order_items_amount] = @void_order_items_amount
+      
+      @report_data[:all_order_items_ordered_amount] = @all_order_items_ordered_amount
+      
+      @report_data[:total_discounts] = @total_discounts
+    
+      @report_data[:all_order_items_ordered_avg] = @all_order_items_ordered_avg
+      @report_data[:all_order_items_sold_avg] = @all_order_items_sold_avg
+      
+      @report_data[:total_cash] = @total_cash
+      
+      @total_payments = @all_order_items_sold_amount
+      @report_data[:total_payments] = @total_payments
+      
+      @wr = WorkReport.create(:employee_id => @employee.id, :report_data => @report_data)
+    
+      @custom_work_report_footer = "Please Retain For Records Or Disputes"
+      
+      render :template => "/home/print_work_report"
+      
+    else
+      render :json => {:success => true}.to_json
+    end
   end
 
   def login
@@ -295,15 +371,6 @@ class HomeController < ApplicationController
     ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_OUT)
     
     render :json => {:success => true}.to_json
-  end
-  
-  def print_work_report
-    @employee = Employee.find(params[:id])
-    
-    @last_clockin = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::CLOCK_IN}").order("created_at desc").first
-    @last_clockout = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::CLOCK_OUT}").order("created_at desc").first
-    
-    @breaks = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::BREAK_IN} or timestamp_type = #{ShiftTimestamp::BREAK_OUT}").where("created_at >= ?", @last_clockin.created_at).where("created_at <= ?", @last_clockout.created_at)
   end
   
   def blank_receipt_for_print

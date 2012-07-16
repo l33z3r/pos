@@ -316,8 +316,6 @@ function clockoutSuccess(id, nickname) {
             employee_id : id
         }
     });
-    
-    printWorkReport(id);
 }
 
 function loginSuccess(id, nickname, is_admin, passcode) {
@@ -503,12 +501,16 @@ function userOnBreak(userId) {
     return $.inArray(userId.toString(), breakUserIDS) != -1;
 }
 
-function printWorkReport(userId) {
-    $.ajax({
-        type: 'POST',
-        url: '/print_work_report',
-        data: {
-            id : userId
-        }
-    });
+function getWorkReportDataTable(work_report_data) {
+    var work_report_data_html = "<div class='data_table'>";
+    
+    for(var i=0; i<work_report_data.length; i++) {
+        var show_currency = work_report_data[i][2]
+        work_report_data_html += "<div class='label'>" + work_report_data[i][0] + "</div>";
+        work_report_data_html += "<div class='data'>" + (show_currency && (!isNaN( parseFloat(work_report_data[i][1]))) ? currency(work_report_data[i][1]) : work_report_data[i][1]) + "</div>" + clearHTML;
+    }
+    
+    work_report_data_html += "</div>";
+    
+    return work_report_data_html;
 }

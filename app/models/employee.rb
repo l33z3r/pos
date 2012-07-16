@@ -3,10 +3,13 @@ class Employee < ActiveRecord::Base
   has_attached_file :employee_image, PAPERCLIP_STORAGE_OPTIONS.merge(:styles => { :medium => "300x300>", :thumb => "115x115>" })
 
   has_many :orders
-
+  has_many :order_items
+  has_many :void_order_items, :class_name => "OrderItem", :foreign_key => "void_employee_id"
+  
   has_many :stock_transactions
   
   has_many :shift_timestamps
+  has_many :work_reports
    
   belongs_to :role
   
