@@ -15,324 +15,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e646dee2-e269-4160-8f2c-811321f2083d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/button_logos/cancel_util_payment.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/button_logos/change_delivery_item_cost_price_button.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/button_logos/finish_delivery.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/button_logos/finish_util_payment.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/button_logos/return_delivery_item_button.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/button_logos/training_mode_toggle_button.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/money_bg.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/AWP-Income.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Americano-T-A-Large (1).jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Americano-T-A-Large.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Antipasti-Sharing-Platter.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Breakfast-Bars.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Breakfast-Pastries.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Breakfast-Special.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Caesar-with-grilled-Chicken.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Cans-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Cans-T-A-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Cans.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Cappuccino-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Cappuccino-T-A-Large.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Cappuccino-T-A-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Cheese-Board--Shared-x-3-or-4.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Cheese-Board-Single.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Choc-Bars.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Clasic-caesar---anchoivie-or-bacon.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Clonakilty-Pudding.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Coffee-Filter-Large.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Coffee-Filter-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Coffee-Filter-T-A-Large.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Coffee-Filter-T-A-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Coffee-filter.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Cookies-T-A.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Cookies.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Copy of white-wine.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/CrabLinguine.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Crispy-Bacon-x-2.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Croque-Monsieur.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Dessert.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Eggs-Benedict.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Espresso-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Espresso-T-A-Large.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Espresso-T-A-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Florentine-T-A.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Florentine.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Frappacinio.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Frappuccino-Large.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Frappuccino-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Frappuccino-T-A-Large.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Frappuccino-T-A-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Free-range-eggs.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Fresh-Orange-Juice-T-A-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Fresh-Orange-Juice-reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Fresh-Pork-Sausages-x2jpg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Grilled-Tomato.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Hake-Salad.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Hearty-Soup.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Herbal-Tea-Large.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Herbal-Tea-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Herbal-Tea-T-A-Large.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Herbal-Tea-T-A-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Hot-Chocolate-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Hot-Chocolate-T-A-Large.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Hot-Chocolate-T-A-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Iced-tea-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Iced-tea-T-A-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Iced-tea.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Jukebox-Income.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Late.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Latte-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Latte-T-A-Large.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Latte-T-A-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Lime-&amp;-Chilli-Beef-Salad.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Mocha-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Mocha-T-A-Large.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Mocha-T-A-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Mushroom-Rarebit.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Nuts.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Nuts2.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Pancakes-with-bacon.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Pasta-Special.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Penne-with-Chicken-&amp;-Tomato.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Penne-with-Tomato.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Pipers-Crisps.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Pool-Income.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Popcorn.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Processco.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Red-1-Bottle.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Red-1-Glass.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Red-2-Bottle.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Red-2-Glass.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Red-3-Bottle.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Red-3-Glass.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Rice-Noodle-Salad.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Ryvita.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Salad-Nicoise.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Salmon-Salad.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Salt-&amp;-Pepper-Calamari-large.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Salt-&amp;-Pepper-Calamari-small.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Sandwich-of-the-day.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Sauteed-Mushrooms.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Savory-Tart-with-Soup-or-Fries.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Savoury-tart-with-Salad.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Sceambled-Eggs.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Seafood-chowder.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Side-Fries.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Side-Salad.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Soup &amp;-Sandwich.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Soup-of-the-Day-Small.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Soup-of-the-day-Large.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Spaghetti-Beef-&amp;-Chorizo.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Sparkling-Water-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Sparkling-Water-T-A-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Steak-Sandwich.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Still-Water-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Still-Water-T-A-REG.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Sunday-1-Course.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Sunday-2-Course.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Sunday-Lunch-1.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Sunday-Lunch.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Sweet-corn-cake-(V).jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Sweet-corn-cake.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Sweetcorn-cake-(V).jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Sweetcorn-cake.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/T-A-Salad.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/T-A-Sandwich.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Tapas-Plate.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Taxi-Contributions.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Tea-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Tea-T-A-Large.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Tea-T-A-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Tea-and-Toast-Special.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/The-Club-Sandwich.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Toast-Brown-white.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Toast-with-Jam.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Tray-Bakes-T-A.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Tray-Bakes.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Vit-Hit-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Vit-Hit-T-A-Reg.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Vit-Hit.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/White-1-Bottle.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/White-1-Glass.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/White-2-Bottle.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/White-2-Glass.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/White-3-Bottle.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/White-3-Glass.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/Yoghurt.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/champagne.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/cuppacinio.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/fish-special.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/fruit-Salad.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/pancakes.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/red-1.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/red-2.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/images/product_images/red-3.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/controllers/delivery_controller.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/controllers/reports/payments_controller.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/models/delivery.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/models/payment.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/home/interfaces/large_screen/screens/_delivery_screen.html.erb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/home/interfaces/large_screen/screens/_util_payment_screen.html.erb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_covers_screen.html.erb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/partials/interfaces/large_screen/_delivery_receipt_css.html.erb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/reports/payments/_employee_dropdown.html.erb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/reports/payments/_menu_dropdown.html.erb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/reports/payments/_payment_type_dropdown.html.erb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/reports/payments/_payments_tab.html.erb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/reports/payments/export_excel.html.erb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/reports/payments/index.html.erb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/reports/payments/payments_print.html.erb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/reports/payments/payments_print.js.erb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/reports/payments/payments_search.js.erb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/migrate/20120606172941_create_payments.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/migrate/20120615170743_add_blocked_printers_to_products.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/migrate/20120619165719_change_oia_defaults.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/migrate/20120620101031_add_is_active_to_payment_methods.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/migrate/20120628055945_add_prompt_for_covers_to_categories.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/migrate/20120702110013_add_time_started_to_orders.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/migrate/20120702140853_add_is_training_mode_to_orders.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/migrate/20120703100443_change_ingredient_fraction_to_float.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/migrate/20120703164356_add_void_employee_id_to_order_items.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/migrate/20120709170134_create_deliveries.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/migrate/20120712122428_order_data_migrate.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/files/firefox_privileges_instructions.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/dallas_key.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/delivery_screen.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/util_payment.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/plugins/jquery.caret.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/reports/payment_reports.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/spec/models/delivery_spec.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/spec/models/payment_spec.rb" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/images/product_images/salmon-salad.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/images/product_images/side-salad.jpg" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/images/product_images/J2O-Apple-Mango.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/J2O-APPLE-MANGO.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/images/product_images/SOURZ -APPLE.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/SOURZ-APPLE.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/images/product_images/Tuna-mayo.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/TUNA-MAYO.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/images/product_images/americano.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/Americano-reg.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/images/product_images/crisps.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/Crisps.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/images/product_images/dry- Roasted-Nuts.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/dry-Roasted-Nuts.jpg" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/images/product_images/fruit-shoots.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/FRUIT-SHOOTS.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/product_images/Coke.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/Coke.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/product_images/Miller-pint.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/Miller-pint.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/product_images/Mini-Rolls.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/Mini-Rolls.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/product_images/OharasIrishStout.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/OharasIrishStout.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/product_images/Prawn-Jacket.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/Prawn-Jacket.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/product_images/Salad-Caprese.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/Salad-Caprese.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/product_images/Sausage-and-Bacon-Muffin.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/Sausage-and-Bacon-Muffin.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/product_images/Speciality-Tea.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/Speciality-Tea.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/product_images/Speciality-tea-large.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/Speciality-tea-large.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/product_images/Thai-Chicken-Curry.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/Thai-Chicken-Curry.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/images/product_images/coca-cola.jpg" afterPath="$PROJECT_DIR$/public/images/product_images/coca-cola.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile.lock" afterPath="$PROJECT_DIR$/Gemfile.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/admin/customers_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/admin/customers_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/admin/payment_methods_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/admin/payment_methods_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/admin/products_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/admin/products_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/application_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/application_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/home_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/home_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/order_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/order_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/reports/sales_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/reports/sales_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/helpers/application_helper.rb" afterPath="$PROJECT_DIR$/app/helpers/application_helper.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/cash_total.rb" afterPath="$PROJECT_DIR$/app/models/cash_total.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/category.rb" afterPath="$PROJECT_DIR$/app/models/category.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/customer.rb" afterPath="$PROJECT_DIR$/app/models/customer.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/customer_transaction.rb" afterPath="$PROJECT_DIR$/app/models/customer_transaction.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/display_button.rb" afterPath="$PROJECT_DIR$/app/models/display_button.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/display_button_role.rb" afterPath="$PROJECT_DIR$/app/models/display_button_role.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/employee.rb" afterPath="$PROJECT_DIR$/app/models/employee.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/global_setting.rb" afterPath="$PROJECT_DIR$/app/models/global_setting.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/ingredient.rb" afterPath="$PROJECT_DIR$/app/models/ingredient.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/order.rb" afterPath="$PROJECT_DIR$/app/models/order.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/order_item.rb" afterPath="$PROJECT_DIR$/app/models/order_item.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/order_item_addition.rb" afterPath="$PROJECT_DIR$/app/models/order_item_addition.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/payment_method.rb" afterPath="$PROJECT_DIR$/app/models/payment_method.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/product.rb" afterPath="$PROJECT_DIR$/app/models/product.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/stock_transaction.rb" afterPath="$PROJECT_DIR$/app/models/stock_transaction.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/admin/categories/_form.html.erb" afterPath="$PROJECT_DIR$/app/views/admin/categories/_form.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/admin/customers/_customer_extra_options.html.erb" afterPath="$PROJECT_DIR$/app/views/admin/customers/_customer_extra_options.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/admin/customers/_customers.html.erb" afterPath="$PROJECT_DIR$/app/views/admin/customers/_customers.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/admin/customers/index.html.erb" afterPath="$PROJECT_DIR$/app/views/admin/customers/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/admin/customers/search.js.erb" afterPath="$PROJECT_DIR$/app/views/admin/customers/search.js.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/admin/display_buttons/access.html.erb" afterPath="$PROJECT_DIR$/app/views/admin/display_buttons/access.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/admin/display_buttons/edit_multiple.html.erb" afterPath="$PROJECT_DIR$/app/views/admin/display_buttons/edit_multiple.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/admin/global_settings/index.html.erb" afterPath="$PROJECT_DIR$/app/views/admin/global_settings/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/admin/products/_builder_content.html.erb" afterPath="$PROJECT_DIR$/app/views/admin/products/_builder_content.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/admin/products/search.js.erb" afterPath="$PROJECT_DIR$/app/views/admin/products/search.js.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/blank_receipt_for_print.html.erb" afterPath="$PROJECT_DIR$/app/views/home/blank_receipt_for_print.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/forward_credit_card_charge_request.js.erb" afterPath="$PROJECT_DIR$/app/views/home/forward_credit_card_charge_request.js.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/large_screen/_main.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/large_screen/_main.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/large_screen/_more_options_screen_buttons.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/large_screen/_more_options_screen_buttons.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/large_screen/_screen_buttons.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/large_screen/_screen_buttons.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/large_screen/screens/_admin_shortcut_more_options_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/large_screen/screens/_admin_shortcut_more_options_screen.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/large_screen/screens/_cash_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/large_screen/screens/_cash_screen.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/large_screen/screens/_login_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/large_screen/screens/_login_screen.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_functions_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_functions_screen.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_menu_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_menu_screen.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_receipt_screen.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_table_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_table_screen.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/javascripts/customers.js.erb" afterPath="$PROJECT_DIR$/app/views/javascripts/customers.js.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/javascripts/products.js.erb" afterPath="$PROJECT_DIR$/app/views/javascripts/products.js.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/layouts/reports.html.erb" afterPath="$PROJECT_DIR$/app/views/layouts/reports.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/order/cash_total.js.erb" afterPath="$PROJECT_DIR$/app/views/order/cash_total.js.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/order/transfer_order.js.erb" afterPath="$PROJECT_DIR$/app/views/order/transfer_order.js.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/partials/interfaces/large_screen/_common_head.html.erb" afterPath="$PROJECT_DIR$/app/views/partials/interfaces/large_screen/_common_head.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/partials/interfaces/large_screen/_nav.html.erb" afterPath="$PROJECT_DIR$/app/views/partials/interfaces/large_screen/_nav.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/partials/interfaces/large_screen/_popups_markup.html.erb" afterPath="$PROJECT_DIR$/app/views/partials/interfaces/large_screen/_popups_markup.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/partials/interfaces/shared/_js_global_settings.html.erb" afterPath="$PROJECT_DIR$/app/views/partials/interfaces/shared/_js_global_settings.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/partials/interfaces/shared/_receipt_margins_css_76mm.html.erb" afterPath="$PROJECT_DIR$/app/views/partials/interfaces/shared/_receipt_margins_css_76mm.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/partials/interfaces/shared/_receipt_margins_css_80mm.html.erb" afterPath="$PROJECT_DIR$/app/views/partials/interfaces/shared/_receipt_margins_css_80mm.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/partials/interfaces/shared/_shared_js_includes.html.erb" afterPath="$PROJECT_DIR$/app/views/partials/interfaces/shared/_shared_js_includes.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/glances/index.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/glances/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/sales/export_excel.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/sales/export_excel.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/sales/index.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/sales/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/sales/sales_search.js.erb" afterPath="$PROJECT_DIR$/app/views/reports/sales/sales_search.js.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/stocks/export_excel.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/stocks/export_excel.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/stocks/index.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/stocks/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cluey_pos.iws" afterPath="$PROJECT_DIR$/cluey_pos.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/application.rb" afterPath="$PROJECT_DIR$/config/application.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/boot.rb" afterPath="$PROJECT_DIR$/config/boot.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/routes.rb" afterPath="$PROJECT_DIR$/config/routes.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20120531093052_create_customer_transactions.rb" afterPath="$PROJECT_DIR$/db/migrate/20120531093052_create_customer_transactions.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/schema.rb" afterPath="$PROJECT_DIR$/db/schema.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/seeds.rb" afterPath="$PROJECT_DIR$/db/seeds.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/button_mapper.rb" afterPath="$PROJECT_DIR$/lib/button_mapper.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/tasks/custom_tasks.rake" afterPath="$PROJECT_DIR$/lib/tasks/custom_tasks.rake" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/admin_js/category.js" afterPath="$PROJECT_DIR$/public/javascripts/admin_js/category.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/admin_js/customer_builder.js" afterPath="$PROJECT_DIR$/public/javascripts/admin_js/customer_builder.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/admin_js/previous_cash_totals.js" afterPath="$PROJECT_DIR$/public/javascripts/admin_js/previous_cash_totals.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/admin_js/product_builder.js" afterPath="$PROJECT_DIR$/public/javascripts/admin_js/product_builder.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/application.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/application.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/cash_reports.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/cash_reports.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/cash_screen.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/cash_screen.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/dropdown_menu_functions.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/dropdown_menu_functions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/login_functions.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/login_functions.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/database.yml" afterPath="$PROJECT_DIR$/config/database.yml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/screen_button_functions.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/screen_button_functions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/util.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/util.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/screen_button_functions.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/screen_button_functions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/shared/menu.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/shared/menu.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/shared/screen_button_functions.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/shared/screen_button_functions.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/shared/util.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/shared/util.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/reports/reports.js" afterPath="$PROJECT_DIR$/public/javascripts/reports/reports.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/stylesheets/admin/admin_style.css" afterPath="$PROJECT_DIR$/public/stylesheets/admin/admin_style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/stylesheets/interfaces/large_screen/style.css" afterPath="$PROJECT_DIR$/public/stylesheets/interfaces/large_screen/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/stylesheets/interfaces/medium_screen/style.css" afterPath="$PROJECT_DIR$/public/stylesheets/interfaces/medium_screen/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/spec/models/customer_transaction_spec.rb" afterPath="$PROJECT_DIR$/spec/models/customer_transaction_spec.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/fixtures/categories.yml" afterPath="$PROJECT_DIR$/test/fixtures/categories.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/fixtures/order_items.yml" afterPath="$PROJECT_DIR$/test/fixtures/order_items.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/fixtures/orders.yml" afterPath="$PROJECT_DIR$/test/fixtures/orders.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/fixtures/payment_methods.yml" afterPath="$PROJECT_DIR$/test/fixtures/payment_methods.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/fixtures/products.yml" afterPath="$PROJECT_DIR$/test/fixtures/products.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unit/category_test.rb" afterPath="$PROJECT_DIR$/test/unit/category_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unit/order_item_test.rb" afterPath="$PROJECT_DIR$/test/unit/order_item_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unit/order_test.rb" afterPath="$PROJECT_DIR$/test/unit/order_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unit/payment_method_test.rb" afterPath="$PROJECT_DIR$/test/unit/payment_method_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unit/product_test.rb" afterPath="$PROJECT_DIR$/test/unit/product_test.rb" />
     </list>
     <ignored path="cluey_pos.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -391,28 +76,37 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="stocks_controller.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb">
+      <file leaf-file-name="screen_button_functions.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/screen_button_functions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="177" column="147" selection-start="5703" selection-end="5703" vertical-scroll-proportion="0.0">
+            <state line="11" column="36" selection-start="242" selection-end="242" vertical-scroll-proportion="-4.84">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="payments_controller.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/reports/payments_controller.rb">
+      <file leaf-file-name="menu.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="226" column="47" selection-start="7299" selection-end="7299" vertical-scroll-proportion="0.0">
+            <state line="538" column="37" selection-start="16079" selection-end="16079" vertical-scroll-proportion="0.37564766">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="database.yml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/database.yml">
+      <file leaf-file-name="receipt_html_functions.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/receipt_html_functions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="98" selection-start="241" selection-end="241" vertical-scroll-proportion="0.0">
+            <state line="130" column="16" selection-start="4843" selection-end="4851" vertical-scroll-proportion="-4.8">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_cash_screen.html.erb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/large_screen/screens/_cash_screen.html.erb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="26" column="45" selection-start="687" selection-end="687" vertical-scroll-proportion="30.625">
               <folding />
             </state>
           </provider>
@@ -421,43 +115,7 @@
       <file leaf-file-name="screen_button_functions.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/screen_button_functions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="1.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="screen_button_functions.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/screen_button_functions.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="67" selection-start="688" selection-end="688" vertical-scroll-proportion="-14.6">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="menu.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1532" column="34" selection-start="48570" selection-end="48570" vertical-scroll-proportion="-7.16">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="receipt_html_functions.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/receipt_html_functions.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="92" column="71" selection-start="2565" selection-end="2565" vertical-scroll-proportion="0.5539112">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sales_controller.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/reports/sales_controller.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="269" column="127" selection-start="10190" selection-end="10190" vertical-scroll-proportion="0.0">
+            <state line="162" column="43" selection-start="4209" selection-end="4209" vertical-scroll-proportion="-43.32">
               <folding />
             </state>
           </provider>
@@ -477,7 +135,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" />
         <option value="$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/payments/_payments_tab.html.erb" />
         <option value="$PROJECT_DIR$/public/stylesheets/interfaces/large_screen/style.css" />
@@ -490,9 +147,10 @@
         <option value="$PROJECT_DIR$/app/controllers/reports/sales_controller.rb" />
         <option value="$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb" />
         <option value="$PROJECT_DIR$/app/controllers/reports/payments_controller.rb" />
-        <option value="$PROJECT_DIR$/config/database.yml" />
-        <option value="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js" />
         <option value="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/screen_button_functions.js" />
+        <option value="$PROJECT_DIR$/config/database.yml" />
+        <option value="$PROJECT_DIR$/public/javascripts/interfaces/shared/screen_button_functions.js" />
+        <option value="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js" />
       </list>
     </option>
   </component>
@@ -956,9 +614,10 @@
     <frame x="-1" y="24" width="1602" height="853" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.269863" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.269863" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4150685" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -967,12 +626,11 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946485" sideWeight="0.7154696" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23597679" sideWeight="0.730137" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23597679" sideWeight="0.5849315" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41574585" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1055,26 +713,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="148" column="27" selection-start="6372" selection-end="6372" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/reports/reports.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="120" column="0" selection-start="3010" selection-end="3431" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/sales/index.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="74" column="91" selection-start="4919" selection-end="4919" vertical-scroll-proportion="-6.2083335" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/payments/index.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="92" column="52" selection-start="5851" selection-end="5851" vertical-scroll-proportion="-12.5" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/index.html.erb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="76" column="74" selection-start="5293" selection-end="5293" vertical-scroll-proportion="-15.625" />
@@ -1106,34 +744,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/database.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="98" selection-start="241" selection-end="241" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/screen_button_functions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="1.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/screen_button_functions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="67" selection-start="688" selection-end="688" vertical-scroll-proportion="-14.6">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1532" column="34" selection-start="48570" selection-end="48570" vertical-scroll-proportion="-7.16">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavascriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/DHTML.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1099" column="7" selection-start="14801" selection-end="14801" vertical-scroll-proportion="0.33333334">
@@ -1148,9 +758,65 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/public/stylesheets/interfaces/large_screen/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="74" selection-start="197" selection-end="197" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/database.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="98" selection-start="29" selection-end="29" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/screen_button_functions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="162" column="43" selection-start="4209" selection-end="4209" vertical-scroll-proportion="-43.32">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/menu.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="14" selection-start="363" selection-end="373" vertical-scroll-proportion="0.28362572">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/screen_button_functions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="36" selection-start="242" selection-end="242" vertical-scroll-proportion="-4.84">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/home/interfaces/large_screen/screens/_cash_screen.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="45" selection-start="687" selection-end="687" vertical-scroll-proportion="30.625">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/receipt_html_functions.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="92" column="71" selection-start="2565" selection-end="2565" vertical-scroll-proportion="0.5539112">
+        <state line="231" column="8" selection-start="6888" selection-end="6888" vertical-scroll-proportion="0.33240998">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/receipt_html_functions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="130" column="16" selection-start="4843" selection-end="4851" vertical-scroll-proportion="-4.8">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="538" column="37" selection-start="16079" selection-end="16079" vertical-scroll-proportion="0.37564766">
           <folding />
         </state>
       </provider>
