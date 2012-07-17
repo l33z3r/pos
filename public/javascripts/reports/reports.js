@@ -9,6 +9,7 @@ var terminalId;
 var hour_from;
 var hour_to;
 var select_type = '';
+var inTrainingMode = false;
 
 /**
  *  Reports

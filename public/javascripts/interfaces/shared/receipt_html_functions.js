@@ -85,6 +85,7 @@ function printReceipt(content, printRecptMessage) {
 }
 
 function printCasioContent(content) {
+//    alert(fetchCasioBusinessInfoHeaderHTML())
 //    initCasioPrint();
     showCasioLineDisplay("Sub-Total: " + currency(subTotal, false), "")
     printCasioReceipt(content);
