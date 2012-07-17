@@ -540,7 +540,7 @@ function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnCl
         allOrderItemsReceiptHTML += getOrderItemReceiptHTML(order.items[i], includeNonSyncedStyling, includeOnClick, includeServerAddedText);
     }
     if (0 != subTotal) {
-        showCasioLineDisplay(order.items[order.items.length - 1].product.name + "   " + currency(order.items[order.items.length - 1].product_price, false), "Sub-Total: " + currency(subTotal, false))
+        showCasioLineDisplay(order.items[order.items.length - 1].product.name, currency(order.items[order.items.length - 1].product_price, false))
     }
     return allOrderItemsReceiptHTML;
 }
