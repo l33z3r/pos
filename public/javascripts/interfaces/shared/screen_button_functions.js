@@ -3,7 +3,48 @@ var orderInProcess = false;
 
 var isTableZeroOrder = false;
 
+function orderButtonPressed() {
+    var order = getCurrentOrder();
+
+    var autoCovers = false;
+
+    if (globalAutoPromptForCovers) {
+        autoCovers = true;
+    } else {
+        //iterate through all the categories of this order to check for auto covers set
+        for (var j = 0; j < order.items.length; j++) {
+            var item = order.items[j];
+
+            if (order.items[j].synced && selectedTable != 0) {
+                continue;
+            }
+
+            var categoryId = item.product.category_id;
+
+            if (categoryId != null) {
+                if (categories[categoryId].prompt_for_covers) {
+                    autoCovers = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    if (autoCovers && parseInt(order.covers) == -1) {
+        order.covers = 0;
+        manualCoversPrompt = false;
+        doAutoCovers();
+    } else {
+        doSyncTableOrder();
+    }
+}
+
 function doSyncTableOrder() {
+    if (!appOnline) {
+        niceAlert("Cannot contact server, ordering is disabled until connection re-established!");
+        return;
+    }
+
     var order = null;
     
     if(!isTableZeroOrder && !ensureLoggedIn()) {
