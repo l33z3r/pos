@@ -1,13 +1,14 @@
 <% @nav_title = "Reports - Stock" %>
 <div id="reports_nav">
-            <div class="report_tab" onclick="window.location = '/reports/glances'">
-                At A Glance
-            </div> <br>
+
             <div class="report_tab" onclick="window.location = '/reports/sales'">
                Sales
             </div> <br>
             <div class="report_tab selected" onclick="window.location = '/reports/stocks'">
                 Stock
+            </div> <br>
+            <div class="report_tab" onclick="window.location = '/reports/payments'">
+               Payments
             </div>
 </div>
 <div id="reports_container">
@@ -42,26 +43,26 @@
                             <div class="dropdown_container">
                                 <div class="label">Date</div>
                                 <select id="date_preselect" onchange="setDateParams($(this).val(), true)" style="width: 120px">
-                                    <option value="<%= Time.now.beginning_of_day.strftime("%Y-%m-%d %H:%M") %>,<%= Time.now.end_of_day.strftime("%Y-%m-%d %H:%M") %>">Today</option>
-                                    <option value="<%= yesterday.beginning_of_day.strftime("%Y-%m-%d %H:%M") %>,<%= yesterday.end_of_day.strftime("%Y-%m-%d %H:%M") %>">Yesterday</option>
-                                    <option value="<%= Time.now.beginning_of_week.strftime("%Y-%m-%d %H:%M") %>,<%= Time.now.strftime("%Y-%m-%d %H:%M") %>">This Week</option>
-                                    <option value="<%= Time.now.beginning_of_month.strftime("%Y-%m-%d %H:%M") %>,<%= Time.now.strftime("%Y-%m-%d %H:%M") %>">This Month
+                                    <option value="<%= Time.now.beginning_of_day + @opening_time.hours %>,<%= Time.now.end_of_day + @opening_time.hours %>">Today</option>
+                                    <option value="<%= yesterday.beginning_of_day + @opening_time.hours %>,<%= yesterday.end_of_day + @opening_time.hours %>">Yesterday</option>
+                                    <option value="<%= Time.now.beginning_of_week + @opening_time.hours %>,<%= Time.now %>">This Week</option>
+                                    <option value="<%= Time.now.beginning_of_month + @opening_time.hours %>,<%= Time.now %>">This Month
                                     </option>
-                                    <option value="<%= Time.now.beginning_of_year.strftime("%Y-%m-%d %H:%M") %>,<%= Time.now.strftime("%Y-%m-%d %H:%M") %>">This Year to Date
+                                    <option value="<%= Time.now.beginning_of_year + @opening_time.hours  %>,<%= Time.now %>">This Year to Date
                                     </option>
-                                    <option value="<%= lastweek.beginning_of_week.strftime("%Y-%m-%d %H:%M") %>,<%= yesterday.end_of_week.strftime("%Y-%m-%d %H:%M") %>">Last
+                                    <option value="<%= lastweek.beginning_of_week + @opening_time.hours %>,<%= yesterday.end_of_week + @opening_time.hours %>">Last
                                         Week
                                     </option>
-                                    <option selected="yes" value="<%= thirtydays.strftime("%Y-%m-%d %H:%M") %>,<%= Time.now.strftime("%Y-%m-%d %H:%M") %>">Last 30
+                                    <option selected="yes" value="<%= Time.now - 30.days %>,<%= Time.now %>">Last 30
                                         Days
                                     </option>
-                                    <option value="<%= lastmonth.beginning_of_month.strftime("%Y-%m-%d %H:%M") %>,<%= lastmonth.end_of_month.strftime("%Y-%m-%d %H:%M") %>">Last
+                                    <option value="<%= lastmonth.beginning_of_month + @opening_time.hours %>,<%= lastmonth.end_of_month + @opening_time.hours %>">Last
                                         Month
                                     </option>
-                                    <option value="<%= lastyear.beginning_of_day.strftime("%Y-%m-%d %H:%M") %>,<%= lastyear.end_of_day.strftime("%Y-%m-%d %H:%M") %>">This Day
+                                    <option value="<%= lastyear.beginning_of_day + @opening_time.hours %>,<%= lastyear.end_of_day + @opening_time.hours %>">This Day
                                         Last Year
                                     </option>
-                                    <option value="<%= twoyears.beginning_of_day.strftime("%Y-%m-%d %H:%M") %>,<%= Time.now.beginning_of_day.strftime("%Y-%m-%d %H:%M") %>">All Time</option>
+                                    <option value="<%= Time.now.beginning_of_year - 2.years + @opening_time.hours %>,<%= Time.now %>">All Time</option>
                                     <option value=""></option>
                                 </select>
                             </div>
@@ -69,15 +70,15 @@
                                 <div class="dropdown_container">
                                     <div class="label">Date From</div>
                                     <div class="input_date">
-                                        <input type="text" size="13" id="date_from" name="date_from"
-                                               value="<%= @selected_from_date.to_date.strftime("%d-%m-%Y") %>"/>
+                                        <input type="text" size="13" onchange="updateDateParams($(this).val(), 'from')" readonly="readonly" id="date_from" name="date_from"
+                                               value="<%= @selected_from_date.to_date.strftime("%Y-%m-%d %H:%M") %>"/>
                                     </div>
                                 </div>
                                 <div class="dropdown_container">
                                     <div class="label">Date To</div>
                                     <div class="input_date">
-                                        <input type="text" size="13" id="date_to" name="date_to"
-                                               value="<%= @selected_to_date.to_date.strftime("%d-%m-%Y") %>"/>
+                                        <input type="text" size="13" onchange="updateDateParams($(this).val(), 'to')" readonly="readonly" id="date_to" name="date_to"
+                                               value="<%= @selected_to_date.to_date.strftime("%Y-%m-%d %H:%M") %>"/>
                                     </div>
                                 </div>
                             </div>
@@ -97,11 +98,12 @@
                         <div onclick="runStocksSearch()" class="wide_button">Update</div>
                     </div>
                     <div style="float: right; margin-top: 10px; margin-right: 10px;">
-                        <div style="margin: 5px; height: 40px;" onclick="switchView('graph')" id="graph_view" class="button selected">Graph View</div>
+                        <div style="margin: 5px; height: 40px;" onclick="switchView('table')" id="table_view" class="button selected">Table View</div>
                     </div>
                     <div style="float: right; margin-top: 10px; margin-right: 10px;">
-                        <div style="margin: 5px; height: 40px;" onclick="switchView('table')" id="table_view" class="button">Table View</div>
+                        <div style="margin: 5px; height: 40px;" onclick="switchView('graph')" id="graph_view" class="button">Graph View</div>
                     </div>
+
                 </div>
                 <div id="report_stocks_results">
                     <%= render 'stocks_tab' %>

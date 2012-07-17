@@ -16,6 +16,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: order_item_additions
@@ -34,8 +35,8 @@ end
 #  created_at                  :datetime
 #  updated_at                  :datetime
 #  background_color_2          :string(255)
-#  hide_on_receipt             :boolean(1)      default(FALSE)
-#  is_addable                  :boolean(1)      default(TRUE)
+#  hide_on_receipt             :boolean(1)      default(TRUE)
+#  is_addable                  :boolean(1)      default(FALSE)
 #  follow_on_grid_id           :integer(4)
 #  product_id                  :integer(4)
 #

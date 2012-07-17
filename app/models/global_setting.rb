@@ -77,6 +77,9 @@ class GlobalSetting < ActiveRecord::Base
   SHOW_CHARGE_CARD_BUTTON = 62
   ALLOW_ZALION_SPLIT_PAYMENTS = 63
   SCREEN_RESOLUTION = 64
+  PM_SHORTCUT_ID = 65
+  PROMPT_FOR_COVERS = 66
+  DEDUCT_STOCK_DURING_TRAINING_MODE = 67
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -142,7 +145,10 @@ class GlobalSetting < ActiveRecord::Base
     HALF_MEASURE_LABEL => "Half Measure Label",
     SHOW_CHARGE_CARD_BUTTON => "Show Charge Card",
     ALLOW_ZALION_SPLIT_PAYMENTS => "Allow Zalion Split Payments",
-    SCREEN_RESOLUTION => "Screen Resolution"
+    SCREEN_RESOLUTION => "Screen Resolution",
+    PM_SHORTCUT_ID => "Payment Method Shortcut ID",
+    PROMPT_FOR_COVERS => "Prompt For Covers",
+    DEDUCT_STOCK_DURING_TRAINING_MODE => "Deduct Stock In Training Mode"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -347,6 +353,15 @@ class GlobalSetting < ActiveRecord::Base
     when SCREEN_RESOLUTION
       @gs = find_or_create_by_key(:key => "#{SCREEN_RESOLUTION.to_s}_#{args[:fingerprint]}", :value => SCREEN_RESOLUTION_NORMAL, :label_text => LABEL_MAP[SCREEN_RESOLUTION])
       @gs.parsed_value = @gs.value
+    when PM_SHORTCUT_ID
+      @gs = find_or_create_by_key(:key => "#{PM_SHORTCUT_ID.to_s}_#{args[:shortcut_num]}", :value => PaymentMethod.load_default.id, :label_text => LABEL_MAP[PM_SHORTCUT_ID])
+      @gs.parsed_value = @gs.value.to_i
+    when PROMPT_FOR_COVERS
+      @gs = find_or_create_by_key(:key => PROMPT_FOR_COVERS.to_s, :value => "false", :label_text => LABEL_MAP[PROMPT_FOR_COVERS])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when DEDUCT_STOCK_DURING_TRAINING_MODE
+      @gs = find_or_create_by_key(:key => DEDUCT_STOCK_DURING_TRAINING_MODE.to_s, :value => "false", :label_text => LABEL_MAP[DEDUCT_STOCK_DURING_TRAINING_MODE])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -461,6 +476,15 @@ class GlobalSetting < ActiveRecord::Base
     when ALLOW_ZALION_SPLIT_PAYMENTS
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
+    when RELOAD_HTML5_CACHE_TIMESTAMP
+      new_value = value.to_i
+      write_attribute("value", new_value)
+    when PROMPT_FOR_COVERS
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when DEDUCT_STOCK_DURING_TRAINING_MODE
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
     else
       #catch the keys that are not only integers and wont get caught in the switch statement
       if key.starts_with? TERMINAL_ID.to_s
@@ -564,7 +588,7 @@ class GlobalSetting < ActiveRecord::Base
             @my_wss_receipt_printer_gs.value = @wss_receipt_printer_gs.value
             @my_wss_receipt_printer_gs.save
 	    
-	    #screen resolution
+            #screen resolution
             @screen_resolution_gs = GlobalSetting.setting_for GlobalSetting::SCREEN_RESOLUTION, {:fingerprint => @old_fingerprint}
 	    
             @my_screen_resolution_gs = GlobalSetting.setting_for GlobalSetting::SCREEN_RESOLUTION, {:fingerprint => @my_terminal_fingerprint}
@@ -586,7 +610,7 @@ class GlobalSetting < ActiveRecord::Base
             @do_beep_gs.destroy
             @wss_cash_drawer_gs.destroy
             @wss_receipt_printer_gs.destroy
-	    @screen_resolution_gs.destroy
+            @screen_resolution_gs.destroy
           end
         end
         if value
@@ -706,6 +730,23 @@ class GlobalSetting < ActiveRecord::Base
   
   def self.terminal_id_for fingerprint
     GlobalSetting.setting_for GlobalSetting::TERMINAL_ID, {:fingerprint => fingerprint}
+  end
+  
+  def self.clear_dup_keys_gs
+    GlobalSetting.order("created_at desc, id desc").group_by(&:key).each do |gs_key, gs_set|
+      if gs_set.size > 1
+        #we have duplicates
+        @del_count = gs_set.size - 1
+	
+        puts "Found #{gs_set.size} duplicate keys for Key: #{gs_key} Label: '#{gs_set.first.label_text}'. Removing #{@del_count} duplicates!"
+	
+        gs_set.each do |gs|
+          break if @del_count == 0
+          gs.destroy
+          @del_count -= 1
+        end
+      end
+    end
   end
   
   #these properties are for particular properties in the db

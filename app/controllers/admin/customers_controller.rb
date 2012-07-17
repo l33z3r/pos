@@ -23,33 +23,61 @@ class Admin::CustomersController < Admin::AdminController
         @letters += element
       end
     end
-  end
+  end  
   
   #code to import customers from csv
-  #require 'csv'
-#  if params[:gen]
-#      CSV.foreach('/home/lee/Downloads/customers.csv') do |row|
-#        logger.info row
-#        @name = row[1]
-#        @contact_name = @name
-#        @dob = row[7]
-#        @address = "#{row[2]}, #{row[3]}, #{row[4]}, #{row[5]}, #{row[6]}"
-#        @postal_address = @address
-#        @telephone = row[8]
-#        @mobile = @telephone
-#        @email = row[10]
-#        @available_points = row[12]
-#        @swipe_card_code = row[11]
+#    if params[:gen]
+#      @resp = ""
 #      
-#        Customer.create({
-#            :name => @name, :contact_name => @contact_name,
-#            :dob => @dob, :address => @address, :postal_address => @postal_address,
-#            :telephone => @telephone, :mobile => @mobile, :email => @email,
-#            :available_points => @available_points, :swipe_card_code => @swipe_card_code
-#          })
+#      @row_count = 0
+#      
+#      CSV.foreach('/home/lee/Downloads/customers.csv') do |row|
+#        @row_count += 1
+#        next if @row_count == 1
+#        
+#        #logger.info row
+#        @name = row[1]
+#        #logger.info "!!!!!!!!!!!!!!!!!!!looking up name #{@name}"
+#        @customer = Customer.find_by_name @name
+#      
+#        @resp += @customer.name
+#      
+#        @new_dob = row[7]
+#        
+#        if !@new_dob.blank?
+#          logger.info "!!!!!!!!!!!Changing DOB for #{@customer.name} from #{@customer.dob} to #{@new_dob}"
+#          @new_date = Date.strptime(@new_dob, '%m-%d-%Y')
+#          logger.info "Parsed: #{@new_date}"
+#          @customer.dob = @new_date
+#          @customer.save
+#        end
+#        
+#        #        @contact_name = @name
+#        #        @dob = row[7]
+#        #        @address = "#{row[2]}, #{row[3]}, #{row[4]}, #{row[5]}, #{row[6]}"
+#        #        @postal_address = @address
+#        #        @telephone = row[8]
+#        #        @mobile = @telephone
+#        #        @email = row[10]
+#        #        @available_points = row[12]
+#        #        @swipe_card_code = row[11]
+#        #           
+#        #        @customer = Customer.new({
+#        #            :name => @name, :contact_name => @contact_name, :customer_type => "loyalty",
+#        #            :dob => @dob, :address => @address, :postal_address => @postal_address,
+#        #            :telephone => @telephone, :mobile => @mobile, :email => @email,
+#        #            :available_points => @available_points, :swipe_card_code => @swipe_card_code
+#        #          })
+#        #        
+#        #        if !@customer.valid?
+#        #          logger.info "!!!!!!!!!!!!!!!!!!!!!!!!Valid #{@customer.name} #{@customer.errors}"
+#        #        else 
+#        #          @customer.save
+#        #        end
 #      end
+#      render :text => "Done #{@resp}"
+#      return
 #    end
-#    render :text => "Done"
 
   def new
     @hide_admin_header = true

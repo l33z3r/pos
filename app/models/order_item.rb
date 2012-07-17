@@ -3,6 +3,9 @@ class OrderItem < ActiveRecord::Base
   
   belongs_to :order
   belongs_to :employee
+  
+  has_one :void_employee, :class_name => "Employee", :foreign_key => "void_employee_id"
+  
   belongs_to :product
 
   def week
@@ -27,6 +30,7 @@ class OrderItem < ActiveRecord::Base
 
 
 end
+
 
 
 
@@ -59,5 +63,6 @@ end
 #  oia_data               :text(2147483647
 #  is_void                :boolean(1)      default(FALSE)
 #  is_half                :boolean(1)      default(FALSE)
+#  void_employee_id       :integer(4)
 #
 

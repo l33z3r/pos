@@ -2,6 +2,8 @@ class CustomerTransaction < ActiveRecord::Base
   belongs_to :order
   belongs_to :customer
   
+  belongs_to :payment
+  
   SETTLEMENT = "settlement"
   CHARGE = "charge"
   MISC_CREDIT = "misc_credit"
@@ -12,6 +14,7 @@ class CustomerTransaction < ActiveRecord::Base
   validates :transaction_type, :presence => true, :inclusion => { :in => VALID_TRANSACTION_TYPES }
   
 end
+
 
 # == Schema Information
 #
@@ -24,9 +27,8 @@ end
 #  is_credit        :boolean(1)      default(TRUE), not null
 #  abs_amount       :float           default(0.0), not null
 #  actual_amount    :float           default(0.0), not null
-#  amount_tendered  :float           default(0.0), not null
-#  payment_method   :string(255)
 #  created_at       :datetime
 #  updated_at       :datetime
+#  payment_id       :integer(4)
 #
 

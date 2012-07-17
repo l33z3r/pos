@@ -642,9 +642,6 @@ function saveButton() {
 }
 
 function unorderedItemsPopup(evalCode, doAutoLogin) {
-
-
-
     if(currentOrderEmpty()) {
         eval(evalCode);
         return;

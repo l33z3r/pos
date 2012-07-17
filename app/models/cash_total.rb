@@ -129,7 +129,7 @@ class CashTotal < ActiveRecord::Base
       @service_charge_total = 0
         
       #here are all the orders for this terminal since the last z total
-      @orders = Order.where("created_at >= ?", @first_order.created_at).where("created_at <= ?", @last_order.created_at).where("terminal_id = ?", terminal_id).where("is_void is false").lock(true)
+      @orders = Order.where("created_at >= ?", @first_order.created_at).where("created_at <= ?", @last_order.created_at).where("terminal_id = ?", terminal_id).where("training_mode_sale is false").where("is_void is false").lock(true)
        
       @orders.each do |order|
         
@@ -147,20 +147,24 @@ class CashTotal < ActiveRecord::Base
           end
           
           if order_item.is_void
+            
+            @void_employee = Employee.find_by_id(order_item.void_employee_id)
+            @void_employee_nickname = @void_employee.nickname
+            
             #initialise a hash for employee
-            if !@voids_by_employee[@server_nickname]
-              @voids_by_employee[@server_nickname] = {
+            if !@voids_by_employee[@void_employee_nickname]
+              @voids_by_employee[@void_employee_nickname] = {
                 :quantity => 0,
                 :sales_total => 0
               }
             end
           
-            @product_voids_quantity = @voids_by_employee[@server_nickname][:quantity].to_f
+            @product_voids_quantity = @voids_by_employee[@void_employee_nickname][:quantity].to_f
             @product_voids_quantity += order_item.quantity
             @product_voids_quantity = sprintf("%g", @product_voids_quantity)
-            @voids_by_employee[@server_nickname][:quantity] = @product_voids_quantity
+            @voids_by_employee[@void_employee_nickname][:quantity] = @product_voids_quantity
           
-            @voids_by_employee[@server_nickname][:sales_total] += @order_item_price
+            @voids_by_employee[@void_employee_nickname][:sales_total] += @order_item_price
           
             #now continue to next product so this one does not get included in sales totals
             next

@@ -53,6 +53,10 @@ var mandatoryFooterMessageHTML = null;
 //this is used to hold the master 
 var masterOrdersUserId = -1;
 
+var tableOrderItemsToMerge = null;
+
+var sendOrderAfterCovers = false;
+
 function getCurrentOrder() {
     if(selectedTable == 0) {
         return currentOrder;
@@ -64,6 +68,9 @@ function getCurrentOrder() {
 }
 
 function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee, tableOrderDataJSON) {
+    //data types need to be cast
+    convertOrderItemStringsToBooleans(tableOrderDataJSON);
+    
     //save the current users table order to reload it after sync
     var savedTableID = selectedTable;
     var savedServiceCharge = serviceCharge;
@@ -122,72 +129,8 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     for(var itemKey in tableOrderDataJSON.items) {
         var theItem = tableOrderDataJSON.items[itemKey];
-        
-        //make sure the data types are converted correctly
-        if(theItem.product.show_price_on_receipt) {
-            theItem.product.show_price_on_receipt = (theItem.product.show_price_on_receipt.toString() == "true" ? true : false);   
-        }
-        
-        if(theItem.showServerAddedText) {
-            theItem.showServerAddedText = (theItem.showServerAddedText.toString() == "true" ? true : false);   
-        }
-        
-        if(theItem.product.hide_on_printed_receipt) {
-            theItem.product.hide_on_printed_receipt = (theItem.product.hide_on_printed_receipt.toString() == "true" ? true : false);   
-        }
-        
-        if(theItem.product.category_id == "null") {
-            theItem.product.category_id = null;
-        }
-        
-        if(theItem.is_course) {
-            theItem.is_course = (theItem.is_course.toString() == "true" ? true : false);   
-        }
-        
-        if(theItem.show_course_label) {
-            theItem.show_course_label = (theItem.show_course_label.toString() == "true" ? true : false);   
-        }
-        
-        if(theItem.is_void) {
-            theItem.is_void = (theItem.is_void.toString() == "true" ? true : false);   
-        }
-        
-        
-        
-        
-        //this is only untill we have the new code deployed for a while we can be sure that double_price will be present on newly created orders
-        if(typeof(theItem.is_double) != 'undefined') {
-            theItem.is_double = (theItem.is_double.toString() == "true" ? true : false);
-        } else {
-            theItem.is_double = false;
-        }
-        
-        
-        
-        
-        
-        //this is only untill we have the new code deployed for a while we can be sure that half_price will be present on newly created orders
-        if(typeof(theItem.is_half) != 'undefined') {
-            theItem.is_half = (theItem.is_half.toString() == "true" ? true : false);
-        } else {
-            theItem.is_half = false;
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
         var copiedOrderItem = {};
-        //console.log("OIAITEMS: " + theItem.oia_items + " " + (theItem.oia_items.length>0));
         
         if(typeof(theItem.oia_items) != "undefined") {
             //we must convert the oia_items hash to an array (the server turned our array into some indexed hash)
@@ -195,9 +138,6 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         
             for(var oiaItemKey in theItem.oia_items) {
                 var nextOIA = theItem.oia_items[oiaItemKey];
-                
-                //console.log("copying oia " + oiaItemKey + " " + nextOIA);
-                //console.log(nextUserIDToSyncWith + " Is add " + nextOIA.description + " " + nextOIA.is_add.toString() + " " + (nextOIA.is_add.toString() == "true"));
                 
                 //make sure the data types are converted correctly
                 nextOIA.is_add = (nextOIA.is_add.toString() == "true" ? true : false);
@@ -207,7 +147,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
                 nextOIA.is_addable = (nextOIA.is_addable.toString() == "true" ? true : false);
                 
                 nextOIA.abs_charge = parseFloat(nextOIA.abs_charge);
-                //console.log("converted abs_charge: " + nextOIA.abs_charge);
+                
                 newOIAItems.push(nextOIA);
             }
         
@@ -220,8 +160,6 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         syncOrderItems.push(copiedOrderItemForStore);
     }
     
-    //    alert("Order for sync has " + syncOrderItems.length + " items. About to sync with existing " + tableOrders[tableID].items.length + " items");
-    
     getTableOrderFromStorage(nextUserIDToSyncWith, tableID);
     
     //delete all items that have been synced already
@@ -229,7 +167,6 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     for(var i=0;i<existingOrderItems.length;i++) {
         if(existingOrderItems[i].synced) {
-            //            alert("deleting already synced item " + i + " " + existingOrderItems[i].synced);
             existingOrderItems.splice(i, 1);
             i--;
         }
@@ -334,15 +271,27 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
         var theItem = items[itemKey];
         
         //we only want to print items from the order that are new i.e. not synced on the other terminal yet
-        var isItemSynced = (theItem.synced === 'true');
+        var isItemSynced = theItem.synced;
+        var isItemVoid = theItem.is_void;
         
-        if(!isItemSynced && !theItem.is_void) {
+        if(!isItemSynced && !isItemVoid) {
             var itemPrinters = theItem.product.printers;
             
             if((typeof itemPrinters != "undefined") && itemPrinters.length > 0) {
                 var printersArray = itemPrinters.split(",");
                 
-                if($.inArray(terminalID.toLowerCase(), printersArray) != -1) {
+                var inPrinterArray = $.inArray(terminalID.toLowerCase(), printersArray) != -1;
+                
+                var blockedPrinter = false;
+                var itemBlockedPrinters = theItem.product.blocked_printers;
+                
+                if((typeof itemBlockedPrinters != "undefined") && itemBlockedPrinters.length > 0) {
+                    var blockedPrintersArray = itemBlockedPrinters.split(",");
+                
+                    blockedPrinter = $.inArray(recvdTerminalID.toLowerCase(), blockedPrintersArray) != -1;
+                }
+                
+                if(inPrinterArray && !blockedPrinter) {
                     itemsToPrint.push(theItem);
                 }
             } else {
@@ -355,7 +304,18 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
                     if((typeof categoryPrinters != "undefined") && categoryPrinters.length > 0) {
                         var categoryPrintersArray = categoryPrinters.split(",");
                 
-                        if($.inArray(terminalID.toLowerCase(), categoryPrintersArray) != -1) {
+                        var inCategoryPrinterArray = $.inArray(terminalID.toLowerCase(), categoryPrintersArray) != -1;
+                
+                        var blockedCategoryPrinter = false;
+                        var categoryBlockedPrinters = categories[categoryId].blocked_printers;
+                
+                        if((typeof categoryBlockedPrinters != "undefined") && categoryBlockedPrinters.length > 0) {
+                            var blockedCategoryPrintersArray = categoryBlockedPrinters.split(",");
+                
+                            blockedCategoryPrinter = $.inArray(recvdTerminalID.toLowerCase(), blockedCategoryPrintersArray) != -1;
+                        }
+                
+                        if(inCategoryPrinterArray && !blockedCategoryPrinter) {
                             itemsToPrint.push(theItem);
                         }
                     }
@@ -372,6 +332,59 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
     
     if(itemsToPrint.length > 0 && inLargeInterface()) {
         printItemsFromOrder(serverNickname, recvdTerminalID, orderJSON, itemsToPrint);
+    }
+}
+
+function convertOrderItemStringsToBooleans(tableOrderDataJSON) {
+    for(var itemKey in tableOrderDataJSON.items) {
+        var theItem = tableOrderDataJSON.items[itemKey];
+        
+        if(theItem.synced) {
+            theItem.synced = (theItem.synced.toString() == "true" ? true : false);   
+        }
+        
+        //make sure the data types are converted correctly
+        if(theItem.product.show_price_on_receipt) {
+            theItem.product.show_price_on_receipt = (theItem.product.show_price_on_receipt.toString() == "true" ? true : false);   
+        }
+        
+        if(theItem.showServerAddedText) {
+            theItem.showServerAddedText = (theItem.showServerAddedText.toString() == "true" ? true : false);   
+        }
+        
+        if(theItem.product.hide_on_printed_receipt) {
+            theItem.product.hide_on_printed_receipt = (theItem.product.hide_on_printed_receipt.toString() == "true" ? true : false);   
+        }
+        
+        if(theItem.product.category_id == "null") {
+            theItem.product.category_id = null;
+        }
+        
+        if(theItem.is_course) {
+            theItem.is_course = (theItem.is_course.toString() == "true" ? true : false);   
+        }
+        
+        if(theItem.show_course_label) {
+            theItem.show_course_label = (theItem.show_course_label.toString() == "true" ? true : false);   
+        }
+        
+        if(theItem.is_void) {
+            theItem.is_void = (theItem.is_void.toString() == "true" ? true : false);   
+        }
+        
+        //this is only untill we have the new code deployed for a while we can be sure that double_price will be present on newly created orders
+        if(typeof(theItem.is_double) != 'undefined') {
+            theItem.is_double = (theItem.is_double.toString() == "true" ? true : false);
+        } else {
+            theItem.is_double = false;
+        }
+        
+        //this is only untill we have the new code deployed for a while we can be sure that half_price will be present on newly created orders
+        if(typeof(theItem.is_half) != 'undefined') {
+            theItem.is_half = (theItem.is_half.toString() == "true" ? true : false);
+        } else {
+            theItem.is_half = false;
+        }
     }
 }
 
@@ -450,6 +463,11 @@ function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCou
     }
     
     targetOrderItem.is_void = is_void;
+    
+    //add the employee who voided the item
+    if(targetOrderItem.is_void) {
+        targetOrderItem.void_employee_id = current_user_id;
+    }
     
     if(targetOrderItem.pre_discount_price) {
         targetOrderItem.pre_discount_price = newPricePerUnit * newQuantity;
@@ -576,6 +594,7 @@ function initTouchRecpts() {
     $('.large_interface #till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #login_till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #totals_till_roll').touchScroll(receiptScrollerOpts);
+    $('.large_interface #delivery_till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #reports_center_till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #reports_left_till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #float_till_roll').touchScroll(receiptScrollerOpts);
@@ -907,8 +926,10 @@ function doTransferTable(tableFrom, tableTo) {
     }
         
     if($.inArray(tableTo.toString(), activeTableIDS) != -1) {
-        niceAlert("This table is occupied, please choose another.");
-        return;
+        getTableOrderFromStorage(current_user_id, tableTo);
+        
+        //copy the array (http://www.xenoveritas.org/blog/xeno/the-correct-way-to-clone-javascript-arrays)
+        tableOrderItemsToMerge = tableOrders[tableTo].items.slice(0);
     }
         
     transferOrderInProgress = true;

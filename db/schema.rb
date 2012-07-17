@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120531093052) do
+ActiveRecord::Schema.define(:version => 20120712122428) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -50,6 +50,8 @@ ActiveRecord::Schema.define(:version => 20120531093052) do
     t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
     t.integer  "course_num",                               :default => -1
     t.string   "kitchen_screens",                          :default => ""
+    t.string   "blocked_printers"
+    t.boolean  "prompt_for_covers",                        :default => false
   end
 
   add_index "categories", ["order_item_addition_grid_id"], :name => "index_categories_on_order_item_addition_grid_id"
@@ -83,10 +85,9 @@ ActiveRecord::Schema.define(:version => 20120531093052) do
     t.boolean  "is_credit",        :default => true, :null => false
     t.float    "abs_amount",       :default => 0.0,  :null => false
     t.float    "actual_amount",    :default => 0.0,  :null => false
-    t.float    "amount_tendered",  :default => 0.0,  :null => false
-    t.string   "payment_method"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "payment_id"
   end
 
   create_table "customers", :force => true do |t|
@@ -110,6 +111,13 @@ ActiveRecord::Schema.define(:version => 20120531093052) do
     t.integer  "customer_number"
     t.string   "customer_type"
     t.boolean  "is_active",        :default => true
+  end
+
+  create_table "deliveries", :force => true do |t|
+    t.integer  "employee_id"
+    t.float    "total"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "discounts", :force => true do |t|
@@ -197,8 +205,8 @@ ActiveRecord::Schema.define(:version => 20120531093052) do
   create_table "ingredients", :force => true do |t|
     t.integer  "product_id"
     t.integer  "ingredient_product_id"
-    t.integer  "quantity_numerator",    :default => 1
-    t.integer  "quantity_denominator",  :default => 1
+    t.float    "quantity_numerator",    :default => 1.0
+    t.float    "quantity_denominator",  :default => 1.0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -277,8 +285,8 @@ ActiveRecord::Schema.define(:version => 20120531093052) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "background_color_2"
-    t.boolean  "hide_on_receipt",             :default => false
-    t.boolean  "is_addable",                  :default => true
+    t.boolean  "hide_on_receipt",             :default => true
+    t.boolean  "is_addable",                  :default => false
     t.integer  "follow_on_grid_id"
     t.integer  "product_id"
   end
@@ -308,6 +316,7 @@ ActiveRecord::Schema.define(:version => 20120531093052) do
     t.text     "oia_data",               :limit => 2147483647
     t.boolean  "is_void",                                      :default => false
     t.boolean  "is_half",                                      :default => false
+    t.integer  "void_employee_id"
   end
 
   add_index "order_items", ["employee_id"], :name => "index_order_items_on_employee_id"
@@ -337,6 +346,8 @@ ActiveRecord::Schema.define(:version => 20120531093052) do
     t.integer  "order_num",             :limit => 8
     t.text     "split_payments",        :limit => 2147483647
     t.string   "client_name",                                 :default => "",    :null => false
+    t.string   "time_started"
+    t.boolean  "training_mode_sale",                          :default => false
   end
 
   add_index "orders", ["employee_id"], :name => "index_orders_on_employee_id"
@@ -355,9 +366,21 @@ ActiveRecord::Schema.define(:version => 20120531093052) do
     t.integer  "payment_integration_id", :default => 0
     t.integer  "receipt_footer_id"
     t.boolean  "open_cash_drawer",       :default => true
+    t.boolean  "is_active",              :default => true
   end
 
   add_index "payment_methods", ["receipt_footer_id"], :name => "index_payment_methods_on_receipt_footer_id"
+
+  create_table "payments", :force => true do |t|
+    t.string   "transaction_type"
+    t.integer  "employee_id"
+    t.integer  "card_transaction_id"
+    t.float    "amount",              :default => 0.0, :null => false
+    t.float    "amount_tendered",     :default => 0.0, :null => false
+    t.string   "payment_method"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "products", :force => true do |t|
     t.string   "brand"
@@ -433,6 +456,7 @@ ActiveRecord::Schema.define(:version => 20120531093052) do
     t.boolean  "is_stock_item",                            :default => true
     t.string   "kitchen_screens",                          :default => ""
     t.float    "half_price",                               :default => 0.0
+    t.string   "blocked_printers"
   end
 
   add_index "products", ["category_id"], :name => "index_products_on_category_id"
@@ -499,6 +523,8 @@ ActiveRecord::Schema.define(:version => 20120531093052) do
     t.string   "note"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "delivery_id"
+    t.boolean  "is_return",        :default => false
   end
 
   add_index "stock_transactions", ["employee_id"], :name => "index_stock_transactions_on_employee_id"

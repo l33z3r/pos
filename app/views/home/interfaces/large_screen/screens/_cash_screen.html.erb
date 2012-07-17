@@ -44,7 +44,7 @@
   <div id="payment_options_money_info_container">
     <div id="payment_options_section">
       <div id="payment_options">
-        <% PaymentMethod.all.each do |pm| %>
+        <% PaymentMethod.all_active.each do |pm| %>
           <div id="<%=pm.name.gsub(" ", "_").downcase%>_payment_method_button" class="button payment_method_button" data-onpress="paymentMethodSelected('<%=pm.id%>')">
             <div class="icon">
               <%= payment_method_logo_thumb pm, true %>
@@ -197,6 +197,12 @@
                 <div id="client_customer_current_balance" class="data"></div>
                 <div class="clear">&nbsp;</div>
 
+                <div id="client_customer_points_earned_container">
+                  <div class="bold label">Points Earned:</div>
+                  <div id="client_customer_points_earned" class="data"></div>
+                  <div class="clear">&nbsp;</div>
+                </div>
+
                 <div class="clear_top_margin_10">&nbsp;</div>
               </div>
 
@@ -253,7 +259,7 @@
     <div id="totals_screen_misc_buttons_container">
       <div id="totals_screen_misc_buttons_left">
         <% if @show_charge_card_button %>
-          <div class="button" data-onpress="chargeCreditCard()">
+          <div class="button" data-onpress="cashScreenChargeCreditCard()">
             <div class="icon">
               <%= image_tag "button_logos/charge_card_button.png" %>
             </div>

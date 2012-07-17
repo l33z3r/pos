@@ -136,20 +136,36 @@ class OrderController < ApplicationController
   def create_order order_params
     Order.transaction do
       @order_params = order_params
-
       @order_details = @order_params.delete(:order_details)
+    
+      #make sure we have not already cashed this order out. 
+      #We use a combination of terminal ID and time started to uniquely identify orders
+      @existing_order = Order.where("terminal_id = ?", @terminal_id).where("time_started = ?", order_params["time_started"])
+      
+      if !@existing_order.empty?
+        #simply ignore the order
+        logger.info "Ignoring existing order"
+        return true
+      end
       
       @card_charge_details = @order_details.delete(:card_charge)
     
       @is_split_bill_order_param = @order_params.delete(:is_split_bill)
+      @is_training_mode_sale_order_param = @order_params.delete(:is_training_mode_sale)
       
       @loyalty_details = @order_details.delete(:loyalty)
       @customer_details = @order_details.delete(:customer)
     
-      @is_split_bill_order = @is_split_bill_order_param == "true"
+      @is_split_bill_order = @is_split_bill_order_param == "true"      
     
       @order = Order.new(@order_params)
     
+      #pick up if this is a training mode sale or not      
+      @is_training_mode_sale = @is_training_mode_sale_order_param == "true"
+      @order.training_mode_sale = @is_training_mode_sale
+      
+      @deduct_stock_during_training_mode = GlobalSetting.parsed_setting_for GlobalSetting::DEDUCT_STOCK_DURING_TRAINING_MODE
+      
       if(!Employee.find_by_id(@order.employee_id))
         #employee id not set correctly, so just grab the last active employee
         @order.employee_id = Employee.order("last_active desc").first
@@ -192,20 +208,26 @@ class OrderController < ApplicationController
       
         @order_item.is_void = item[:is_void] == "true"
         
+        if @order_item.is_void
+          @order_item.void_employee_id = item[:void_employee_id]
+        end
+        
         #oias
         if item[:oia_items]
           item[:oia_items].each do |index, oia|
-            if !@order_item.is_void and oia[:product_id] != "-1" and !oia[:product_id].blank?
-              #decrement stock for this oia product
-              @oia_stock_usage = @order_item.quantity.to_f
+            if !@is_training_mode_sale or @deduct_stock_during_training_mode
+              if !@order_item.is_void and oia[:product_id] != "-1" and !oia[:product_id].blank?
+                #decrement stock for this oia product
+                @oia_stock_usage = @order_item.quantity.to_f
       
-              if @order_item.is_double
-                @oia_stock_usage *= 2
-              elsif @order_item.is_half
-                @oia_stock_usage /= 2
+                if @order_item.is_double
+                  @oia_stock_usage *= 2
+                elsif @order_item.is_half
+                  @oia_stock_usage /= 2
+                end
+      
+                Product.find_by_id(oia[:product_id]).decrement_stock @oia_stock_usage
               end
-      
-              Product.find_by_id(oia[:product_id]).decrement_stock @oia_stock_usage
             end
           end
         
@@ -242,15 +264,19 @@ class OrderController < ApplicationController
           @item_stock_usage /= 2
         end
       
-        if !@order_item.is_void
-          #decrement the stock for this item
-          if @order_item.product.is_stock_item
-            @order_item.product.decrement_stock @item_stock_usage
-          else
+        if !@is_training_mode_sale or @deduct_stock_during_training_mode
+          if !@order_item.is_void
+            #decrement the stock for this item
+            if @order_item.product.is_stock_item
+              @order_item.product.decrement_stock @item_stock_usage
+            end
+            
             #decrement the ingredient stock
             @order_item.product.ingredients.each do |ingredient|
-              @ingredient_usage = ingredient.stock_usage
-              ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
+              if ingredient.product.is_stock_item
+                @ingredient_usage = ingredient.stock_usage
+                ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
+              end
             end
           end
         end
@@ -298,7 +324,7 @@ class OrderController < ApplicationController
         
         CustomerTransaction.create({:transaction_type => CustomerTransaction::CHARGE,
             :order_id => @order.id, :customer_id => @customer.id,
-            :abs_amount => @order.total, :actual_amount => @order.total, :is_credit => false
+            :abs_amount => @order.total, :actual_amount => -@order.total, :is_credit => false
           })
         
         @customer.current_balance = @customer.current_balance + @order.total 

@@ -69,7 +69,49 @@ class Category < ActiveRecord::Base
     write_attribute("kitchen_screens", kitchen_screens_val)
   end
   
+  def blocked_printing_to_terminal? id_safe_terminal_name
+    @blocked_printers_string = read_attribute("blocked_printers")
+    
+    if @blocked_printers_string
+      @blocked_printers_string.split(",").each do |terminal_name|
+        return true if id_safe_terminal_name == terminal_name
+      end
+    end
+    
+    return false
+  end
+  
+  def blocked_printers=(blocked_printers_array)
+    
+    #remove any empty strings from the selected_printers_array
+    blocked_printers_array.delete("")
+    
+    if blocked_printers_array.size == 0
+      blocked_printers_val = ""
+    elsif blocked_printers_array.size == 1
+      blocked_printers_val = blocked_printers_array[0].to_s
+    else
+      blocked_printers_val = blocked_printers_array.join(",")
+    end
+    
+    write_attribute("blocked_printers", blocked_printers_val)
+  end
+  
+  def self.options_for_select
+    @options = []
+    
+    @options << ["Any", -1]
+    
+    all.each do |c|
+      @options << [c.name, c.id]
+    end
+    
+    @options
+  end
+  
 end
+
+
 
 
 
@@ -90,7 +132,9 @@ end
 #  printers                                 :string(255)     default("")
 #  order_item_addition_grid_id              :integer(4)
 #  order_item_addition_grid_id_is_mandatory :boolean(1)      default(FALSE)
-#  course_num                               :integer(4)      default(0)
+#  course_num                               :integer(4)      default(-1)
 #  kitchen_screens                          :string(255)     default("")
+#  blocked_printers                         :string(255)
+#  prompt_for_covers                        :boolean(1)      default(FALSE)
 #
 

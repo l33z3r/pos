@@ -58,6 +58,15 @@ function menuScreenDropdownItemSelected(index, name) {
     } else if(index == 8) {
         goToAddCustomer();
         return;
+    } else if(index == 9) {
+        //make sure this user has permissions for this
+        if(typeof(display_button_passcode_permissions[parseInt(deliveryButtonID)]) != 'undefined') {
+            startDeliveryMode();
+        } else {
+            niceAlert("You do not have permission to take a delivery!");
+        }
+        
+        return;
     }
     
     setShortcutDropdownDefaultText();
@@ -68,6 +77,11 @@ function setShortcutDropdownDefaultText() {
 }
 
 function startPriceChangeMode() {
+    if(inStockTakeMode) {
+        niceAlert("Please finish checking stock first!");
+        return;
+    }
+    
     //change the screen to stocktake mode
     inPriceChangeMode = true;
         
@@ -88,7 +102,7 @@ function finishPriceChangeMode() {
     showLoadingDiv("Loading new prices...");
     
     //reload the products
-    $.getScript('/javascripts/products.js', priceChangeModeComplete);
+    reloadProducts(priceChangeModeComplete);
 }
 
 function priceChangeModeComplete() {   
@@ -131,6 +145,11 @@ function loadPriceChangeReceiptArea(productId, menuItemId) {
 }
 
 function startStockTakeMode() {
+    if(inPriceChangeMode) {
+        niceAlert("Please finish changing prices first!");
+        return;
+    }
+    
     //change the screen to stocktake mode
     inStockTakeMode = true;
         
@@ -159,6 +178,7 @@ function finishStockTakeMode() {
         
     //hide stock take divs
     $('#menu_items_container .stock_count').hide();
+    $('#stock_take_new_amount_input').attr("disabled", true);
     
     setShortcutDropdownDefaultText();
 }
@@ -220,6 +240,7 @@ function loadStockTakeReceiptArea(productId, menuItemId) {
     currentStockMenuItemId = menuItemId;
     
     $('#stock_take_new_amount_input').attr("disabled", false);
+    $('#stock_take_new_amount_input').val("");
     
     currentStockTakeProductId = productId;
     

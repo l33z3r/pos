@@ -8,7 +8,7 @@
   <% end %>
 <% end %>
 
-<% @nav_title = "System Settings" %>
+<% @nav_title = @printer_left_margin %>
 
 <% content_for :admin_subnav_links_right do %>
   <div id="clear_all_fragment_caches_request_button" class="button" data-onpress="showLoadingDiv();$('form:visible').first().submit();">
@@ -210,6 +210,21 @@
                       <div class="clear">&nbsp;</div>
                     </td>
                   </tr>
+                  <tr>
+                    <td>Auto Prompt For Covers?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PROMPT_FOR_COVERS %>
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">Yes</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">No</div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
 
@@ -350,6 +365,7 @@
                     <th width="140">Integration</th>
                     <th width="140">Receipt Footer</th>
                     <th width="170">Cash Drawer</th>
+                    <th width="150">Enabled?</td>
                     <th width="100">Delete</th>
                   </tr>
                 </thead>
@@ -390,6 +406,11 @@
                         </td>
                         <td>
                           <%= f.check_box :open_cash_drawer %>
+                        </td>
+                        <td>
+                          <% if pm.can_be_disabled? %>
+                            <%= f.check_box :is_active %>
+                          <% end %>
                         </td>
                         <td>
                           <% if !pm.is_system_pm? %>
@@ -438,6 +459,61 @@
 
               <div id="actions">
                 <%= submit_tag "Create" %>
+              </div>
+
+            <% end %>
+
+            <div class="clear">&nbsp;</div>
+
+            <h4>Payment Method Shortcut Buttons</h4>
+
+            <%= form_tag admin_update_global_settings_path do %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="330">Shortcut Button Number</th>
+                    <th width="330">Payment Method</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>Button 1</td>
+                    <td>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => 1} %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.select :value, options_for_select(PaymentMethod.options_for_shortcut_linking, @gs.parsed_value) %>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Button 2</td>
+                    <td>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => 2} %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.select :value, options_for_select(PaymentMethod.options_for_shortcut_linking, @gs.parsed_value) %>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Button 3</td>
+                    <td>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => 3} %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.select :value, options_for_select(PaymentMethod.options_for_shortcut_linking, @gs.parsed_value) %>
+                      <% end %>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Save" %>
               </div>
 
             <% end %>
@@ -1216,6 +1292,21 @@
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Deduct Stock In Training Mode?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::DEDUCT_STOCK_DURING_TRAINING_MODE %>
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">Yes</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">No</div>
+                      <div class="clear">&nbsp;</div>
                     </td>
                   </tr>
                 </tbody>

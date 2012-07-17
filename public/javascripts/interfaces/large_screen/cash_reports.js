@@ -294,7 +294,8 @@ function getOpenOrdersTotal() {
     }
     
     for(var u = 0; u < tableIDS.length; u++) {
-        var thisOrderTotal = tableOrders[parseInt(tableIDS[u])].total;
+        var thisOrderTotal = roundNumber(parseFloat(tableOrders[parseInt(tableIDS[u])].total), 2);
+        
         total += thisOrderTotal;
     }
     

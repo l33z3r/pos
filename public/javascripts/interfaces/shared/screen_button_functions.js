@@ -174,7 +174,7 @@ function printBill() {
     //don't print vat on this receipt
     var printVat = false;
     
-    printReceipt(fetchCasioFinalReceiptHTML(true, false, printVat), true);
+    printReceipt(fetchFinalReceiptHTML(true, false, printVat), true);
 }
 
 function applyDefaultServiceChargePercent() {

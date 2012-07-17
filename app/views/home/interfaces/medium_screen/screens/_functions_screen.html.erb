@@ -43,7 +43,7 @@
         <div class="icon">
           <%= button_icon db %>
         </div>
-        <div class="button_name"><%=db.button_text%></div>
+        <div class="button_name"><%=  button_text db %></div>
       </div>
     <% end %>
 
@@ -60,7 +60,7 @@
       <div class="icon">
         <%= button_icon @global_settings_button %>
       </div>
-      <div class="button_name"><%=@global_settings_button.button_text%></div>
+      <div class="button_name"><%= button_text @global_settings_button %></div>
     </div>
 
     <div class="clear">&nbsp;</div>
@@ -80,6 +80,14 @@
       <div class="button_name">Add Note</div>
     </div>
 
+    <div id="main_menu_button"
+         class="button" onclick="swipeToCovers();">
+      <div class="icon">
+        <%= image_tag "/images/button_logos/covers_button.png" %>
+      </div>
+      <div class="button_name">Covers</div>
+    </div>
+
     <div class="button" onclick="refreshClicked();">
       <div class="icon">
         <%= image_tag "/images/button_logos/reload.png" %>
@@ -87,14 +95,14 @@
       <div class="button_name">Reload</div>
     </div>
 
+    <div class="clear">&nbsp;</div>
+
     <div class="button" onclick="exitAndroidApp();">
       <div class="icon">
         <%= image_tag "/images/button_logos/exit.png" %>
       </div>
       <div class="button_name">Exit</div>
     </div>
-    
-    <div class="clear">&nbsp;</div>
 
     <div class="button" onclick="doMobileLogout();">
       <div class="icon">

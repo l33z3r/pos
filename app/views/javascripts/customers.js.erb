@@ -1,4 +1,4 @@
-  var customers = new Array();
+var customers = new Array();
 
 var creditCustomers = {};
 var loyaltyCustomers = {};
@@ -8,6 +8,7 @@ var loyaltyCustomersByCode = {};
   customer_info = {
     id : '<%= c.id %>',
     name : '<%= escape_javascript raw(c.name) %>',
+    is_normal_customer : <%= c.is_normal_customer? ? "true" : "false" %>,
     is_loyalty_customer : <%= c.is_loyalty_customer? ? "true" : "false" %>,
     loyalty_level_id : <%= c.loyalty_level_id %>,
     available_points : <%= c.available_points %>,
@@ -15,8 +16,9 @@ var loyaltyCustomersByCode = {};
     credit_limit : <%= c.credit_limit %>,
     current_balance : <%= c.current_balance %>,
     credit_available : <%= c.credit_available %>,
-    customer_number : <%= c.customer_number.blank? ? -1 : c.customer_number %>
-  }
+    customer_number : <%= c.customer_number.blank? ? -1 : c.customer_number %>,
+    account_number : <%= c.account_number %>
+  };
 
   customers.push(customer_info);
   
@@ -26,7 +28,9 @@ var loyaltyCustomersByCode = {};
     var loyaltyCardCodeStripped = customer_info.swipe_card_code.substring(0, 12);
     
     loyaltyCustomersByCode[loyaltyCardCodeStripped] = customer_info;
-  } else {
+  }
+  
+  if(customer_info.is_normal_customer) {
     creditCustomers[customer_info.id] = customer_info;
   }
 <% end -%>
@@ -37,7 +41,7 @@ var loyaltyLevels = {};
     loyalty_level_info = {
     label : '<%= escape_javascript raw(ll.label) %>',
     percent : <%= ll.percent %>
-  }
+  };
 
   loyaltyLevels[<%= ll.id %>] = loyalty_level_info;
 <% end %>    

@@ -622,6 +622,48 @@ div.select_printers_dialog div.ok_button {
     float: right;
 }
 
+div.select_blocked_printers_dialog {
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    width: 250px;
+}
+
+div.select_blocked_printers_dialog div.header {
+    font-size: 16px;
+    color: #000;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+div.select_blocked_printers_dialog div.terminal_switches {
+
+}
+
+div.select_blocked_printers_dialog div.terminal_switches div.terminal_switch div.label {
+    float: left;
+    margin-left: 10px;
+    margin-top: 4px;
+    font-size: 14px;
+    color: #000;
+    width: 100px;
+}
+
+div.select_blocked_printers_dialog div.terminal_switches div.terminal_switch {
+    margin-bottom: 5px;
+}
+
+div.select_blocked_printers_dialog div.ok_button {
+    height: 30px;
+    display: block;
+    padding-top: 15px;
+    color: #000;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 5px 0px;
+    float: right;
+}
+
 div.select_kitchen_screens_dialog {
     padding: 10px;
     max-height: 300px;
@@ -974,7 +1016,7 @@ div#edit_modifier_category section#form_container form div#actions input {
 /* Admin Categories Page */
 
 div#admin_category_list section#categories {
-    width: 640px;
+    width: 820px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -1058,6 +1100,10 @@ div#edit_category section#form_container form div#actions input {
 }
 
 div#edit_category section#form_container input#select_printers_button {
+    width: 220px;
+}
+
+div#edit_category section#form_container input#select_blocked_printers_button {
     width: 220px;
 }
 
@@ -1692,12 +1738,12 @@ div#edit_theme_settings section#theme_settings div#global_font_color_container i
 /* Previous Cash Totals */
 
 /* previous cash totals table */
-div#cash_reports_screen div#search_previous_cash_totals_container{
+div#cash_reports_screen div#search_previous_cash_totals_container {
     width: 645px;
     float: left;
 }
 
-div#cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog{
+div#cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog {
     width: auto;
 }
 
@@ -1763,6 +1809,10 @@ div#cash_reports_screen div#search_previous_cash_totals_container div#search_pop
 div#cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog div.clear_top_margin_10 {
     height: 5px;
     clear: both;
+}
+
+div#cash_reports_screen div#search_previous_cash_totals_container table#cash_total_list {
+    min-width: 640px;
 }
 
 div#cash_reports_screen div#search_previous_cash_totals_container div#results_table {
@@ -1973,6 +2023,11 @@ div#admin_customer_list section#customers {
 }
 
 div#admin_customer_list section#customers div#customers_container {
+    height: 500px;
+    overflow-y: auto;
+}
+
+div#admin_customer_list section#customers div#customers_container div.make_payment_button {
     height: 500px;
     overflow-y: auto;
 }

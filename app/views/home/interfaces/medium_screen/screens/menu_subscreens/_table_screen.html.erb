@@ -1,7 +1,8 @@
 
 <div id="table_screen">
 <div class="table_tab_container">
-<div id="number_tab" class="table_tab_selected" onclick="doSubmitTableNumber($('#table_num').val());">Number</div>
+<div id="number_tab" class="table_tab_selected selected" onclick="showTablesSubscreen();">Tables</div>
+<div id="cover_tab" class="table_tab_selected" onclick="showCoversSubscreen();">Covers</div>
 </div>
   <div id="header">
 
@@ -30,7 +31,6 @@
             <div id="num_<%= num %>" class="key" onclick="tableNumberSelectKeypadClick(<%=num%>)"><%= num %></div>
           <% end %>
         <% end %>
-
         <div class="cancel_key" class="key" onclick="doCanceltableNumberSelectKeypad()">C</div>
         <div id="num_0" class="key" onclick="tableNumberSelectKeypadClick(0)">0</div>
         <div class="go_key" class="key" onclick="doSubmitTableNumber($('#table_num').val());">OK</div>

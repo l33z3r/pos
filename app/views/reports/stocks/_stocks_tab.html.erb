@@ -7,11 +7,11 @@
                    <div class="option" onclick="window.location = '/reports/stocks/export_excel'" class="excel_box"><div style="float: left;"><img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24" /></div><div style="float: left; margin-top: 6px;margin-left: 2px"><span style="font-weight: bold; margin-top: -3px;">  Excel </span></div></div>
                 </div>
 <% end %>
-  <div id="stocks_items_graph">
+  <div id="stocks_items_graph" style="display: none">
     <div id="spacer" style="height:70px;"></div>
     <%= high_chart("graph_container_sales", @h) %>
 </div>
-  <div id="stock_items" style="display: none">
+  <div id="stock_items">
     <% if session[:show_zeros] %>
     <table id="product_list" class="admin_table" style="width: 100%">
           <thead>
@@ -26,7 +26,6 @@
             <th class="header">Code Num</th>
           </thead>
           <% @products.each do |product| %>
-
           <tbody>
           <tr>
               <td>
@@ -48,16 +47,16 @@
               </td>
               <td>
                  <% unless OrderItem.find_by_product_id(product.id) == nil %>
-                 <%= sprintf("%.2f",OrderItem.find_by_product_id(product.id).total_price) %>
+                 <%= print_money(OrderItem.find_by_product_id(product.id).total_price) %>
                  <% end %>
               </td>
               <td>
                  <% unless OrderItem.find_by_product_id(product.id) == nil %>
-                 <%= sprintf("%.2f", OrderItem.sum(:total_price, :conditions =>["product_id = ?", product.id])) %>
+                 <%= print_money(OrderItem.sum(:total_price, :conditions =>["product_id = ?", product.id])) %>
                  <% end %>
               </td>
               <td>
-                  <%= sprintf("%.2f", OrderItem.sum(:total_price, :conditions =>["product_id = ?", product.id])) %>
+                  <%= print_money(OrderItem.sum(:total_price, :conditions =>["product_id = ?", product.id])) %>
               </td>
               <td>
                   <%= product.code_num %>
@@ -99,30 +98,30 @@
                   <%= Category.find_by_id(product.category_id).name %>
               </td>
               <td>
-                  <%= product.quantity_in_stock %>
+                  <%= product.quantity_in_stock / product.quantity_per_container %>
               </td>
               <td>
-                   <% quantity_sold = sprintf("%.0f", item.quantity)  %>
-                   <%= quantity_sold %>
+                   <% quantity_sold = item.quantity  %>
+                   <%= quantity_sold.to_d/product.quantity_per_container.to_d %>
               </td>
               <td>
                   <%= quantity_sold %>
               </td>
               <td>
-                 <% price = sprintf("%.2f", product.cost_price) %>
+                 <% price = print_money(product.cost_price) %>
                  <%= price %>
               </td>
               <td>
-                  <% total_price = sprintf("%.2f",price.to_d * quantity_sold.to_i) %>
+                  <% total_price = print_money(price.to_d * quantity_sold.to_i) %>
                   <%= total_price %>
               </td>
               <td>
-                  <% revenue = sprintf("%.2f",item.total_price.to_d) %>
+                  <% revenue = print_money(item.total_price.to_d) %>
                   <%= revenue %>
               </td>
               <td>
                   <% unless product.cost_price == 0 %>
-                  <%= sprintf("%.2f", per_profit(revenue, total_price, product.sales_tax_rate)) %>%
+                  <%= print_money(per_profit(revenue, total_price, product.sales_tax_rate)) %>%
                   <% end %>
               </td>
               <td>
@@ -145,3 +144,7 @@
     </div>
     </div>
 <% end %>
+
+<script type="text/javascript">
+    $('#refine_button_stock').removeClass("selected");
+</script>

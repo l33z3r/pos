@@ -537,12 +537,11 @@ function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnCl
     for(var i=0; i<order.items.length; i++) {
         item = order.items[i];
         allOrderItemsReceiptHTML += getOrderItemReceiptHTML(order.items[i], includeNonSyncedStyling, includeOnClick, includeServerAddedText);
-
     }
     showCasioLineDisplay(order.items[order.items.length-1].product.name + "   " + currency(order.items[order.items.length-1].product_price,false), "Sub-Total: ")
     return allOrderItemsReceiptHTML;
 }
-
+    
 function getCasioOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
     casioOrderItemsReceiptHTML = "";
 
@@ -718,7 +717,7 @@ function getCasioOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includ
     return orderCasioHTML;
 }
 
-    
+
 //TODO: replace with jquery template => http://api.jquery.com/jQuery.template/
 function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
     //default the args to true
@@ -768,8 +767,6 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     }
     
     orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
-
-
     
     orderHTML += "<div class='name' data-course_num='" + orderItem.product.course_num + "'>" + notSyncedMarker + " ";
 
@@ -1507,7 +1504,7 @@ function doTotalFinal() {
     //so on a payment method basis
     //as the printer will not trigger it here
     //this loop will also purge 0 amounts from the splitPayments array
-//    var doOpenCashDrawer = false;
+    var doOpenCashDrawer = false;
 //
 //    if($.isEmptyObject(splitPayments)) {
 //        splitPayments[paymentMethod] = totalOrder.cash_tendered;
@@ -1530,7 +1527,7 @@ function doTotalFinal() {
 //    }
 //
     openCasioDrawer();
-    
+
     //do up the subtotal and total and retrieve the receipt html for both the login screen and for print
     receiptHTML = fetchFinalReceiptHTML(false, true, false);
     receiptCasioHTML = fetchCasioFinalReceiptHTML(false, true, false);

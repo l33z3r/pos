@@ -82,6 +82,41 @@ class HomeController < ApplicationController
     
   end
   
+  def customer_payment
+    CustomerTransaction.transaction do
+      @customer = Customer.find_by_id(params[:customer_id])
+      @amount = params[:amount].to_f
+      @amount_tendered = params[:amount_tendered].to_f
+      @payment_method = params[:payment_method]
+      
+      @payment = Payment.create({:transaction_type => Payment::CUSTOMER_PAYMENT,
+          :employee_id => e, :amount => @amount, :amount_tendered => @amount_tendered,
+          :payment_method => @payment_method})
+    
+      CustomerTransaction.create({:customer_id => @customer.id,
+          :transaction_type => CustomerTransaction::SETTLEMENT, :is_credit => true,
+          :abs_amount => @amount, :actual_amount => @amount, :payment_id => @payment.id})
+    
+      #deduct the customers balance
+      @customer.current_balance = @customer.current_balance - @amount
+      @customer.save
+      
+      @card_charged = params[:card_charged].to_s == "true"
+      
+      if @card_charged
+        @reference_number = params[:reference_number]
+        
+        @card_transaction = CardTransaction.create({:payment_method => @payment_method,
+            :amount => @amount, :reference_number => @reference_number
+          })
+        
+        @payment.card_transaction_id = @card_transaction.id
+        @payment.save
+      end
+    end
+    render :json => {:success => true}.to_json
+  end
+  
   def ping
     render :json => {:success => true}.to_json
   end
@@ -121,6 +156,16 @@ class HomeController < ApplicationController
     
     @product.price = @new_price
     @product.save!
+  end
+  
+  def update_cost_price
+    @product = Product.find(params[:product_id])
+    @new_cost_price = params[:new_cost_price].to_f
+    
+    @product.cost_price = @new_cost_price
+    @product.save!
+    
+    render :json => {:success => true}.to_json
   end
   
   def load_stock_for_menu_page    
@@ -417,15 +462,27 @@ class HomeController < ApplicationController
     
     @http.open_timeout = 5
     
+    @cc_timeout_mins = 20
+    @timeout_seconds = @cc_timeout_mins * 60
+    
+    #timeout to wait for card to be charged
+    @http.read_timeout = @timeout_seconds
+    
+    @error = false
+    
     begin
       @forward_response = @http.start {|http|
         http.request(req)
       }
-    rescue
-      render :status => 503, :inline => "Cannot reach credit card service" and return
+      
+      logger.info "Got response from credit card charge servlet: #{@forward_response.body}."
+    rescue Timeout::Error => error
+      @error = true
+      @reason = "Timeout error. Transaction took longer than #{@cc_timeout_mins} minutes."
+    rescue Exception => error
+      @error = true
+      @reason = "Problem with credit card service #{error.to_s}."
     end
-
-    logger.info "Got response from credit card charge servlet: #{@forward_response.body}"
   end
   
   # Rails controller action for an HTML5 cache manifest file.
@@ -542,13 +599,22 @@ class HomeController < ApplicationController
       @options_screen_buttons_map[role.id] = DisplayButtonRole.admin_screen_buttons_for_role(role.id)
     end 
     
-    query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from customers where customer_type in ('#{Customer::NORMAL}', '#{Customer::NORMAL}') group by substr(name,1,1)")
+    @customer_letter_query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from customers where customer_type in ('#{Customer::NORMAL}', '#{Customer::BOTH}') and is_active = true group by substr(name,1,1)")
 
     @customer_letters = []
     
-    for element in query
+    for element in @customer_letter_query
       element[0].downcase!
       @customer_letters += element
+    end
+    
+    @product_letter_query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from products where products.is_stock_item = true group by substr(name,1,1)")
+
+    @product_letters = []
+    
+    for element in @product_letter_query
+      element[0].downcase!
+      @product_letters += element
     end
      
   end

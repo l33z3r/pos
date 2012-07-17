@@ -20,6 +20,10 @@ class PaymentMethod < ActiveRecord::Base
   
   has_attached_file :logo, PAPERCLIP_STORAGE_OPTIONS.merge(:styles => { :medium => "300x300>", :thumb => "115x115>" })
   
+  def self.all_active
+    where("is_active = ?", true)
+  end
+  
   def is_cash?
     self.name.downcase == CASH_PAYMENT_METHOD_NAME
   end
@@ -44,6 +48,28 @@ class PaymentMethod < ActiveRecord::Base
     !self.is_system_pm?
   end
   
+  def can_be_shortcut?
+    self.is_cash? or (!self.is_system_pm? and (self.payment_integration_id == 0))
+  end
+  
+  def can_be_disabled?
+    !self.is_cash?
+  end
+  
+  def self.options_for_shortcut_linking
+    options_for_select << ["None", -1]
+  end
+  
+  def self.options_for_select
+    @options = []
+    
+    PaymentMethod.for_util_payment.each do |pm|
+      @options << [pm.name, pm.id]
+    end
+    
+    @options
+  end
+  
   def self.payment_integration_options_for_select
     @options = []
     
@@ -55,6 +81,12 @@ class PaymentMethod < ActiveRecord::Base
     @options << ["None", 0]
     
     @options
+  end
+  
+  #only return payment options that don't have an integration
+  #or are not the account payment method or loyalty payment method
+  def self.for_util_payment
+    where("payment_integration_id = 0 and name != '#{LOYALTY_PAYMENT_METHOD_NAME}' and name != '#{ACCOUNT_PAYMENT_METHOD_NAME}'")
   end
   
   def self.load_default
@@ -78,6 +110,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: payment_methods
@@ -94,5 +127,6 @@ end
 #  payment_integration_id :integer(4)      default(0)
 #  receipt_footer_id      :integer(4)
 #  open_cash_drawer       :boolean(1)      default(TRUE)
+#  is_active              :boolean(1)      default(TRUE)
 #
 

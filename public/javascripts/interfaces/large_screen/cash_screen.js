@@ -135,6 +135,7 @@ var currentZalionPaymentMethodName = null;
 
 var loyaltyPaymentMethodSelected = false;
 var accountPaymentMethodSelected = false;
+var cashPaymentMethodSelected = false;
 
 function paymentMethodSelected(pm_id) { 
     var pm_info = paymentMethods[pm_id];
@@ -155,6 +156,11 @@ function paymentMethodSelected(pm_id) {
             return;
         }
     } else if(accountPaymentMethodSelected && splitPayments[paymentMethod] > 0) {
+        if(disallowCancelSaleCC) {
+            niceAlert("You cannot charge to an account, as a card transaction has already been processed!");
+            return;
+        }
+        
         //the accounts payment method cannot be used with split payments
         splitPayments = {};
         resetCustomerSelect();
@@ -162,6 +168,7 @@ function paymentMethodSelected(pm_id) {
     
     loyaltyPaymentMethodSelected = (method == loyaltyPaymentMethodName);
     accountPaymentMethodSelected = (method == accountPaymentMethodName);
+    cashPaymentMethodSelected = (method == cashPaymentMethodName);
     
     if(loyaltyPaymentMethodSelected) {
         if(!totalOrder.loyalty) {
@@ -209,6 +216,8 @@ function paymentMethodSelected(pm_id) {
         $('#tendered_value').html(currency(cashTenderedKeypadString/100.0));
     } else if (accountPaymentMethodSelected) {
         splitPayments = {};
+        
+        resetLoyaltyCustomer();
         
         //workout the outstanding amount
         //and prepopulate the box with that amount
@@ -513,7 +522,15 @@ var cardChargeInProgress = false;
 var cc_txn_xhr = null;
 var currentCardChargeAmount = 0;
 
-function chargeCreditCard(amount) {
+function cashScreenChargeCreditCard(amount) {
+    //make sure none of the system payment methods are selected 
+    if(cashPaymentMethodSelected || accountPaymentMethodSelected || loyaltyPaymentMethodSelected) {
+        niceAlert("You must select an appropriate payment method first, in order to perform a transaction");
+        return;
+    }
+    
+    creditCardChargeCallback = cashScreenCreditCardChargeCallback;
+    
     if(cardChargeInProgress) {
         niceAlert("There is already a card charge in progress, please wait");
         return;
@@ -540,6 +557,10 @@ function chargeCreditCard(amount) {
     
     cardChargeInProgress = true;
     
+    chargeCreditCard(amount);
+}
+
+function chargeCreditCard(amount) {
     currentCardChargeAmount = amount;
     
     currentCCReferenceNumber = clueyTimestamp();
@@ -587,13 +608,14 @@ function chargeCreditCard(amount) {
     });
 }
 
-function creditCardChargeCallback(creditCardChargeResponseCode) {
+function cashScreenCreditCardChargeCallback(creditCardChargeResponseCode, errorMessage) {
     //1 means success
     //2 means declined
     //3 means retrieval canceled
     //4 means a timeout waiting for card
     //5 is an unknown response
     //6 means connection refused or other IO error
+    //7 means a general error
     var message = "";
     
     if(creditCardChargeResponseCode == 1) {
@@ -626,9 +648,17 @@ function creditCardChargeCallback(creditCardChargeResponseCode) {
         niceAlert(message);
     } else {
         //unknown error
-        message = "An unknown error occured.";
+        if(errorMessage != null) {
+            message = "Error: " + errorMessage;
+        } else {
+            message = "An unknown error occured.";
+        }
+        
         niceAlert(message);
     }
+    
+    //reset callback
+    creditCardChargeCallback = null;
 }
 
 function cancelChargeCreditCard() {
@@ -679,7 +709,7 @@ var loyaltyCardListenerHandler = function(event) {
         return;
     }
                        
-    loyaltyCardCode += String.fromCharCode(event.keyCode);
+    loyaltyCardCode += String.fromCharCode(getEventKeyCode(event));
 }
 
 function addLoyaltyCustomerToTotalOrder(customer) {
@@ -704,13 +734,13 @@ function addLoyaltyCustomerToTotalOrder(customer) {
         customer_number : customer.number,
         points_earned : pointsEarned,
         points_available : loyaltyPointsAvailable
-    }
+    };
 }
 
 function resetLoyaltyCustomer() {
     $('#loyalty_customer_section').hide();
-    delete totalOrder['loyalty'];
-    delete splitPayments[loyaltyPaymentMethodSelected];
+    delete totalOrder[loyaltyPaymentMethodName];
+    delete splitPayments[loyaltyPaymentMethodName];
     
     if(loyaltyPaymentMethodSelected) {
         paymentMethodSelected(getPaymentMethodId(defaultPaymentMethod));
@@ -799,9 +829,7 @@ function loadSearchCustomersForLetter(letter) {
 function updateCustomerSearchResults() {
     var searchString = $('#customer_search_input').val().toLowerCase();
     
-    console.log("Searching for customers using string: " + searchString);
-    
-    results = new Array();
+   var results = new Array();
     
     var nextCustomer = null;
     
@@ -828,6 +856,12 @@ function updateCustomerSearchResults() {
     var resultHTML = "<div id='customer_list'>";
     
     if(results.length > 0) {
+        var alphaSort = function(a, b) {
+            return a.name.localeCompare(b.name);
+        };
+        
+        results = results.sort(alphaSort);
+        
         for(var i=0; i<results.length; i++) {
             var c = results[i];
             
@@ -881,6 +915,15 @@ function addCustomerToOrder(c_id) {
     //show some dialog saying that this customer is chosen
     $('#client_customer_name').html(customerName);
     $('#client_customer_credit_limit').html(currency(customerCreditLimit));
-    $('#client_customer_current_balance').html(currency(customerCurrentBalance));
+    $('#client_customer_current_balance').html(currencyBalance(customerCurrentBalance));
     $('#client_customer_section').show();
+    
+    if(customer.is_loyalty_customer) {
+        addLoyaltyCustomerToTotalOrder(customer);
+        $('#client_customer_points_earned').html($('#loyalty_points_earned').html());
+        $('#client_customer_points_earned_container').show();
+        $('#loyalty_customer_section').hide();
+    } else {
+        $('#client_customer_points_earned_container').hide();
+    }
 }

@@ -1,29 +1,34 @@
 var products = new Array();
 var products_by_upc = new Array();
+var non_deleted_products = new Array();
+var stock_products = new Array();
 
 <% Product.all.each do |p|%>  
 
   var nextProduct = {
-  'id':'<%= p.id %>', 'name':'<%= escape_javascript raw(p.name) %>', 
-  'description':'<%= escape_javascript raw(p.description) %>', 
-  'img_url' : '<%= product_image_url p %>',
-  'price':<%= p.price %>, 'tax_rate':<%=p.sales_tax_rate%>,
-  'price_2':<%= p.price_2 %>, 'price_3':<%= p.price_3 %>, 'price_4':<%= p.price_4 %>,
-  'double_price' : <%=p.double_price%>,
-  'half_price' : <%=p.half_price%>,
-  'hide_on_printed_receipt' : <%=p.hide_on_printed_receipt%>,
-  'show_price_on_receipt' : <%=p.show_price_on_receipt%>,
-  'prompt_price' : <%=p.show_price_prompt%>,
-  'is_stock_item' : <%=p.is_stock_item%>,
-  'printers' : "<%= p.printers %>",
-  'kitchen_screens' : "<%=p.kitchen_screens%>",
-  'deleted' : <%= p.is_deleted %>,
-  'category_id' : <%= p.category ? p.category.id : "null" %>,
-  'upc' : '<%= p.upc %>',
-  'code_num' : '<%= p.code_num %>',
-  'modifier_grid_id' : <%= p.order_item_addition_grid ? p.order_item_addition_grid.id : "null" %>,
-  'modifier_grid_id_mandatory' : <%= p.order_item_addition_grid_id_is_mandatory %>,
-  'course_num' : <%= p.calc_course_num %>
+    'id':'<%= p.id %>', 'name':'<%= escape_javascript raw(p.name) %>', 
+    'description':'<%= escape_javascript raw(p.description) %>', 
+    'img_url' : '<%= product_image_url p %>',
+    'price':<%= p.price %>, 'tax_rate':<%=p.sales_tax_rate%>,
+    'price_2':<%= p.price_2 %>, 'price_3':<%= p.price_3 %>, 'price_4':<%= p.price_4 %>,
+    'double_price' : <%=p.double_price%>,
+    'half_price' : <%=p.half_price%>,
+    'cost_price' : <%=p.cost_price%>,
+    'hide_on_printed_receipt' : <%=p.hide_on_printed_receipt%>,
+    'show_price_on_receipt' : <%=p.show_price_on_receipt%>,
+    'prompt_price' : <%=p.show_price_prompt%>,
+    'is_stock_item' : <%=p.is_stock_item%>,
+    'printers' : "<%= p.printers %>",
+    'blocked_printers' : "<%= p.blocked_printers %>",
+    'kitchen_screens' : "<%=p.kitchen_screens%>",
+    'deleted' : <%= p.is_deleted %>,
+    'category_id' : <%= p.category ? p.category.id : "null" %>,
+    'upc' : '<%= p.upc %>',
+    'code_num' : '<%= p.code_num %>',
+    'modifier_grid_id' : <%= p.order_item_addition_grid ? p.order_item_addition_grid.id : "null" %>,
+    'modifier_grid_id_mandatory' : <%= p.order_item_addition_grid_id_is_mandatory %>,
+    'course_num' : <%= p.calc_course_num %>,
+    'unit' : '<%= p.unit %>'
   };
 
   products[<%= p.id %>] = nextProduct;
@@ -35,6 +40,14 @@ var products_by_upc = new Array();
   <% if p.modifier_category_id %>
     products[<%= p.id %>]['modifier_category_id'] = <%=p.modifier_category_id%>;
   <% end %>
+
+  if(!nextProduct.deleted) {
+    non_deleted_products[<%= p.id %>] = nextProduct;
+    
+    if(nextProduct.is_stock_item) {
+      stock_products[<%= p.id %>] = nextProduct;
+    }
+  }
 <% end %>
 
 var modifier_categories = new Array();
@@ -51,12 +64,14 @@ var categories = new Array();
 
 <% Category.all.each do |c|%>    
   categories[<%= c.id %>] = {
-  'id':'<%= c.id %>', 'name':'<%= escape_javascript raw(c.name) %>', 
-  'printers': "<%= c.printers %>",
-  'kitchen_screens' : "<%=c.kitchen_screens%>",
-  'modifier_grid_id' : <%= c.order_item_addition_grid ? c.order_item_addition_grid.id : "null" %>,
-  'modifier_grid_id_mandatory' : <%= c.order_item_addition_grid_id_is_mandatory %>, 
-  'parent_category_id' : <%= c.parent_category ? c.parent_category_id : "null" %>,
-  'course_num' : <%= c.course_num %>
+    'id':'<%= c.id %>', 'name':'<%= escape_javascript raw(c.name) %>', 
+    'printers': "<%= c.printers %>",
+    'blocked_printers' : "<%= c.blocked_printers %>",
+    'kitchen_screens' : "<%=c.kitchen_screens%>",
+    'modifier_grid_id' : <%= c.order_item_addition_grid ? c.order_item_addition_grid.id : "null" %>,
+    'modifier_grid_id_mandatory' : <%= c.order_item_addition_grid_id_is_mandatory %>, 
+    'parent_category_id' : <%= c.parent_category ? c.parent_category_id : "null" %>,
+    'course_num' : <%= c.course_num %>,
+    'prompt_for_covers' : <%= c.prompt_for_covers %>
   };
 <% end %>

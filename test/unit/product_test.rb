@@ -25,6 +25,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: products
@@ -99,9 +101,10 @@ end
 #  hide_on_printed_receipt                  :boolean(1)      default(FALSE)
 #  order_item_addition_grid_id              :integer(4)
 #  order_item_addition_grid_id_is_mandatory :boolean(1)      default(FALSE)
-#  course_num                               :integer(4)      default(0)
+#  course_num                               :integer(4)      default(-1)
 #  is_stock_item                            :boolean(1)      default(TRUE)
 #  kitchen_screens                          :string(255)     default("")
 #  half_price                               :float           default(0.0)
+#  blocked_printers                         :string(255)
 #
 

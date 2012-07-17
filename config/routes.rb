@@ -10,6 +10,9 @@ Pos::Application.routes.draw do
   match 'forward_zalion_charge_request' => "home#forward_zalion_charge_request", :via => :post
   match 'forward_credit_card_charge_request' => "home#forward_credit_card_charge_request", :via => :post
   
+  #customer payment
+  match 'customer_payment' => "home#customer_payment", :via => :post
+  
   #orders
   match 'order' => "order#create", :via => :post
   match 'sync_table_order' => "order#sync_table_order", :via => :post
@@ -21,6 +24,9 @@ Pos::Application.routes.draw do
   match 'cash_total_history' => "order#cash_total_history", :via => :get
   match 'outstanding_orders' => "order#create_outstanding", :via => :post
 
+  #delivery
+  match 'delivery' => "delivery#receive", :via => :post
+  
   #routes for screens to login etc
   match 'home' => "home#index"
   get "home/active_employees"
@@ -61,6 +67,7 @@ Pos::Application.routes.draw do
   match 'load_price_for_menu_page' => "home#load_price_for_menu_page", :via => :get
   match 'load_price_receipt_for_product' => "home#load_price_receipt_for_product", :via => :get
   match 'update_price' => "home#update_price", :via => :post
+  match 'update_cost_price' => "home#update_cost_price", :via => :post
   
   #init the sales screen buttons based on role permissions
   match 'init_sales_screen_buttons' => "home#init_sales_screen_buttons"
@@ -280,6 +287,15 @@ Pos::Application.routes.draw do
         get 'set_params'
         get 'load_dropdown'
         get 'stocks_print'
+        get 'export_excel'
+      end
+    end
+    resources :payments, :only => [:index] do
+      collection do
+        get 'payments_search'
+        get 'set_params'
+        get 'load_dropdown'
+        get 'payments_print'
         get 'export_excel'
       end
     end
