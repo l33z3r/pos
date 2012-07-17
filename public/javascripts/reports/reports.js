@@ -22,40 +22,39 @@ function setReportsDatePickers() {
 //        showTimezone: true,
 //        timezone: "+0100",
         addSliderAccess: true,
-        sliderAccessArgs: { touchonly: false },
-        onSelect: function(dateText, inst) {
-            $('#date_preselect').attr('selectedIndex', 10);
-            $('#date_select_container').find('#date_to').datepicker("option", "minDate", dateText);
-            selectedFromDate = dateText;
-            setReportParams();
-            setStockParams();
-
-            if ($('#date_select_container').find('#date_to').val() != "") {
-//                runGlancesSearch();
-            }
-        }
+        sliderAccessArgs: { touchonly: false }
+//        onSelect: function(dateText, inst) {
+//            $('#date_preselect').attr('selectedIndex', 10);
+//            $('#date_select_container').find('#date_to').datepicker("option", "minDate", dateText);
+//            selectedFromDate = dateText;
+//            setReportParams();
+//            setStockParams();
+//
+//            if ($('#date_select_container').find('#date_to').val() != "") {
+////                runGlancesSearch();
+//            }
+//        }
 
     });
 
     $('#date_select_container').find('#date_to').datetimepicker({
         dateFormat: 'yy-mm-dd',
         defaultDate: '01/01/01',
-        timeFormat: 'hh:mm z',
+        timeFormat: 'hh:mm',
 //        showTimezone: true,
-        timezone: "+0100",
         addSliderAccess: true,
-        sliderAccessArgs: { touchonly: false },
-        onSelect: function(dateText, inst) {
-
-            $('#date_select_container').find('#date_from').datepicker("option", "maxDate", dateText);
-
-            selectedToDate = dateText;
-            setReportParams();
-            setStockParams();
-            if ($('#date_select_container').find('#date_from').val() != "") {
-//                runGlancesSearch();
-            }
-        }
+        sliderAccessArgs: { touchonly: false }
+//        onSelect: function(dateText, inst) {
+//
+//            $('#date_select_container').find('#date_from').datepicker("option", "maxDate", dateText);
+//
+//            selectedToDate = dateText;
+//            setReportParams();
+//            setStockParams();
+//            if ($('#date_select_container').find('#date_from').val() != "") {
+////                runGlancesSearch();
+//            }
+//        }
     });
 }
 
@@ -120,13 +119,15 @@ function setDateParams(set_date, isManual) {
 }
 
 function updateDateParams(set_date, date_type) {
+    var olddate = new Date(set_date);
+    var subbed = new Date(olddate - 1*60*60*1000);
+    var newtime = subbed.getFullYear() + "-" + (parseInt(subbed.getMonth()) + 1) + "-" + subbed.getDate() + " " + subbed.getHours() + ":" + subbed.getMinutes()
     if (date_type == 'from') {
-        selectedFromDate = set_date;
+        selectedFromDate = newtime;
     } else {
-        selectedToDate = set_date;
+        selectedToDate = newtime;
     }
-        setReportParams();
-        setStockParams();
+
 
 }
 
