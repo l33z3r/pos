@@ -229,8 +229,10 @@ class HomeController < ApplicationController
     @employee_id = params[:employee_id]
     @employee = Employee.find(@employee_id)
     
-    #add an entry to the shift timestamps table
-    ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_IN)
+    if @timekeeping_terminal == @terminal_id
+      #add an entry to the shift timestamps table
+      ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_IN)
+    end
     
     update_last_active @employee
 
@@ -241,14 +243,16 @@ class HomeController < ApplicationController
     @employee_id = params[:employee_id]
     @employee = Employee.find(@employee_id)
     
-    #add an entry to the shift timestamps table
-    @last_clockout = ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_OUT)
-    
     update_last_active @employee
     
-    @print_work_report = true
+    if @timekeeping_terminal == @terminal_id
+      #add an entry to the shift timestamps table
+      @last_clockout = ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_OUT)
+    end
     
-    if @print_work_report
+    @print_work_report = GlobalSetting.parsed_setting_for GlobalSetting::PRINT_WORK_REPORT
+    
+    if @timekeeping_terminal == @terminal_id and @print_work_report
       @last_clockin = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::CLOCK_IN}").order("created_at desc").first
       
       @breaks = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::BREAK_IN} or timestamp_type = #{ShiftTimestamp::BREAK_OUT}").where("created_at >= ?", @last_clockin.created_at).where("created_at <= ?", @last_clockout.created_at)
@@ -261,8 +265,12 @@ class HomeController < ApplicationController
       @all_order_items_ordered_quantity = @all_order_items_ordered.count
       @all_order_items_ordered_amount = @all_order_items_ordered.sum("total_price")
       
-      @all_order_items_ordered_avg = @all_order_items_ordered_amount / @all_order_items_ordered_quantity
-    
+      if @all_order_items_ordered_quantity != 0
+        @all_order_items_ordered_avg = @all_order_items_ordered_amount / @all_order_items_ordered_quantity
+      else 
+        @all_order_items_ordered_avg = 0
+      end
+      
       @void_order_items = @employee.void_order_items.where("created_at >= ?", @last_clockin.created_at)
       @void_order_items_quantity = @void_order_items.count
       @void_order_items_amount = @void_order_items.sum("total_price")
@@ -283,18 +291,45 @@ class HomeController < ApplicationController
         
         if @payment_types and @payment_types.length > 0
           @payment_types.each do |pt, amount|
-            amount = amount.to_f
+            @amount = amount.to_f
             
             pt = pt.downcase
            
             if pt == PaymentMethod::CASH_PAYMENT_METHOD_NAME
-              @total_cash += amount
+              #don't count the change
+              if order.amount_tendered > order.total
+                @amount -= (order.amount_tendered - (order.total + order.service_charge))
+              end
+              
+              @total_cash += @amount
             end
           end
         end
+        
+        #calculate total discounts
+        order.order_items.each do |order_item|
+          if order_item.pre_discount_price
+            @order_item_price_including_item_discount = order_item.pre_discount_price
+            @order_item_total_discount = order_item.pre_discount_price - order_item.total_price
+          else 
+            @order_item_price_including_item_discount = order_item.total_price
+            @order_item_total_discount = 0
+          end
+          
+          #add on whole order discount
+          if order.discount_percent and order.discount_percent > 0
+            @order_item_total_discount += (order.discount_percent * @order_item_price_including_item_discount)/100
+          end
+          
+          @total_discounts += @order_item_total_discount
+        end
       end
       
-      @all_order_items_sold_avg = @all_order_items_sold_amount / @all_order_items_sold_quantity
+      if @all_order_items_sold_quantity != 0
+        @all_order_items_sold_avg = @all_order_items_sold_amount / @all_order_items_sold_quantity
+      else 
+        @all_order_items_sold_avg = 0
+      end
       
       @report_data[:all_order_items_ordered_quantity] = @all_order_items_ordered_quantity
       @report_data[:all_order_items_sold_quantity] = @all_order_items_sold_quantity
@@ -316,7 +351,7 @@ class HomeController < ApplicationController
       
       @wr = WorkReport.create(:employee_id => @employee.id, :report_data => @report_data)
     
-      @custom_work_report_footer = "Please Retain For Records Or Disputes"
+      @custom_work_report_footer = GlobalSetting.parsed_setting_for GlobalSetting::WORK_REPORT_FOOTER_TEXT
       
       render :template => "/home/print_work_report"
       
@@ -354,8 +389,10 @@ class HomeController < ApplicationController
 
     update_last_active @employee
 
-    #add an entry to the shift timestamps table
-    ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_IN)
+    if @timekeeping_terminal == @terminal_id
+      #add an entry to the shift timestamps table
+      ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_IN)
+    end
     
     render :json => {:success => true}.to_json
   end
@@ -367,8 +404,10 @@ class HomeController < ApplicationController
 
     update_last_active @employee
 
-    #add an entry to the shift timestamps table
-    ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_OUT)
+    if @timekeeping_terminal == @terminal_id
+      #add an entry to the shift timestamps table
+      ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_OUT)
+    end
     
     render :json => {:success => true}.to_json
   end

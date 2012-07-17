@@ -174,12 +174,22 @@ var inTrainingModeCookieName = "in_training_mode";
 //deletes everything but the fingerprint cookie
 function clearLocalStorageAndCookies() {
     //clear the local and session web storage
-    localStorage.clear();
+    var nextKey = null;
+    
+    for (var i = 0; i < localStorage.length; i++){
+        nextKey = localStorage.key(i);
+
+        if(nextKey == breakUserIDSSStorageKey || nextKey == clockedInUserIDSSStorageKey) {
+            continue;
+        }
+        
+        localStorage.removeItem(nextKey);
+    }
     
     //now clear cookies
     var c = document.cookie.split(";");
         
-    for(var i=0;i<c.length;i++) {
+    for(i=0;i<c.length;i++) {
         var e = c[i].indexOf("=");
         var cname = c[i].substr(0,e);
         
@@ -891,10 +901,10 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
     var timeoutSeconds = pollingMaxSeconds + 2;
     
     if(hardReload) {
-        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in in a couple of seconds.";
+        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in in a few seconds.";
         okFuncCall = "doClearAndReload();";
     } else {
-        message = "Settings have been changed by " + reloadTerminalId + ". Screen will reload in a couple of seconds.";
+        message = "Settings have been changed by " + reloadTerminalId + ". Screen will reload in a few seconds.";
         okFuncCall = "doReload(false);";
     }
     

@@ -1,6 +1,8 @@
 var breakUserIDS = null;
 var clockedInUserIDS = null;
 
+var loginActionInProcess = false;
+
 function initUsers() {
     initClockedInUsers();
     initBreakUsers();
@@ -505,9 +507,13 @@ function getWorkReportDataTable(work_report_data) {
     var work_report_data_html = "<div class='data_table'>";
     
     for(var i=0; i<work_report_data.length; i++) {
-        var show_currency = work_report_data[i][2]
-        work_report_data_html += "<div class='label'>" + work_report_data[i][0] + "</div>";
-        work_report_data_html += "<div class='data'>" + (show_currency && (!isNaN( parseFloat(work_report_data[i][1]))) ? currency(work_report_data[i][1]) : work_report_data[i][1]) + "</div>" + clearHTML;
+        var show_currency = work_report_data[i][2];
+        
+        var wider_date_column = work_report_data[i][3];
+        var widerDateColumnClass = wider_date_column ? " date" : ""
+        
+        work_report_data_html += "<div class='label" + widerDateColumnClass + "'>" + work_report_data[i][0] + "</div>";
+        work_report_data_html += "<div class='data" + widerDateColumnClass + "'>" + (show_currency && (!isNaN( parseFloat(work_report_data[i][1]))) ? currency(work_report_data[i][1]) : work_report_data[i][1]) + "</div>" + clearHTML;
     }
     
     work_report_data_html += "</div>";

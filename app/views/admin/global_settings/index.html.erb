@@ -8,7 +8,7 @@
   <% end %>
 <% end %>
 
-<% @nav_title = @printer_left_margin %>
+<% @nav_title = "Settings" %>
 
 <% content_for :admin_subnav_links_right do %>
   <div id="clear_all_fragment_caches_request_button" class="button" data-onpress="showLoadingDiv();$('form:visible').first().submit();">
@@ -37,6 +37,7 @@
           <li><a id="discounts_section_link" href="#discounts_section_section">Discounts</a></li>
           <li><a id="coursing_section_link" href="#coursing_section">Coursing</a></li>
           <li><a id="price_level_labels_section_link" href="#coursing_section">Price Levels</a></li>
+          <li><a id="staff_section_link" href="#staff_section">Staff</a></li>
           <li><a id="misc_section_link" href="#misc_section">Misc</a></li>
 
           <% if cluey_pw_used? or is_cluey_user? %>
@@ -1081,6 +1082,117 @@
                         <%= fields_for "global_settings[]", @gs do |f| %>
                           <%= f.text_field :value %>
                         <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Save" %>
+              </div>
+
+            <% end %>
+
+            <div class="clear">&nbsp;</div>
+          </div>
+        </div>
+
+        <div class="container" id="#staff_section">
+          <div class="jscrollpane">
+            <%= form_tag admin_update_global_settings_path do %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="330">Setting</th>
+                    <th width="320">Value</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>Print Work Reports?</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PRINT_WORK_REPORT %>
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">Yes</div>
+                      <div class="clear">&nbsp;</div>
+
+                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                      <div class="label">No</div>
+                      <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Main Timekeeping Terminal</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::TIMEKEEPING_TERMINAL %>
+
+                      <select name="global_settings[<%=@gs.id%>][value]" id="terminal_dropdown">
+                        <% all_terminals.each do |terminal_id|%>
+                          <option value="<%= terminal_id %>" <%= @gs.parsed_value == terminal_id ? 'selected' : '' %>><%= terminal_id %></option>
+                        <% end %>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Work Report Footer Text</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_FOOTER_TEXT %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value %>
+                      <% end %>
+                    </td>
+                  </tr>                  
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Save" %>
+              </div>
+
+            <% end %>
+
+            <div class="clear">&nbsp;</div>
+
+            <h4>Work Report Sections</h4>
+
+            <%= form_tag admin_update_global_settings_path do %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="330">Section</th>
+                    <th width="70">Show/Hide</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <% WorkReport::report_sections.each do |rs| %>
+                    <tr>
+                      <td><%= WorkReport.report_section_name rs %></td>
+                      <td>
+                        <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, {:report_section => rs} %>
+                        <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                               value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                        <div class="label">Show</div>
+                        <div class="clear">&nbsp;</div>
+
+                        <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                               value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                        <div class="label">Hide</div>
+                        <div class="clear">&nbsp;</div>
                       </td>
                     </tr>
                   <% end %>

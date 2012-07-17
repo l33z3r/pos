@@ -462,6 +462,7 @@ class ApplicationController < ActionController::Base
       @admin_screen_buttons_per_row = 14
     end
     
+    @timekeeping_terminal = GlobalSetting.parsed_setting_for GlobalSetting::TIMEKEEPING_TERMINAL
   end
   
   def mobile_device?

@@ -304,7 +304,6 @@ class OrderController < ApplicationController
             @points_per_currency_unit = GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_POINTS_PER_CURRENCY_UNIT
             @points_used_this_sale = @order_details[:split_payments][:loyalty].to_f * @points_per_currency_unit
             
-            logger.info("!!!!!!!!!!!!!!!!!!!!!!!Decrementing points by #{@points_used_this_sale}")
             @loyalty_customer.decrement!(:available_points, @points_used_this_sale.to_f)
             
             CustomerPointsAllocation.create({:customer_id => @loyalty_customer.id, :order_id => @order.id, 

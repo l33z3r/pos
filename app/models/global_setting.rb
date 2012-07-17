@@ -80,6 +80,10 @@ class GlobalSetting < ActiveRecord::Base
   PM_SHORTCUT_ID = 65
   PROMPT_FOR_COVERS = 66
   DEDUCT_STOCK_DURING_TRAINING_MODE = 67
+  WORK_REPORT_OPTION = 68
+  WORK_REPORT_FOOTER_TEXT = 69
+  PRINT_WORK_REPORT = 70
+  TIMEKEEPING_TERMINAL = 71
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -148,7 +152,11 @@ class GlobalSetting < ActiveRecord::Base
     SCREEN_RESOLUTION => "Screen Resolution",
     PM_SHORTCUT_ID => "Payment Method Shortcut ID",
     PROMPT_FOR_COVERS => "Prompt For Covers",
-    DEDUCT_STOCK_DURING_TRAINING_MODE => "Deduct Stock In Training Mode"
+    DEDUCT_STOCK_DURING_TRAINING_MODE => "Deduct Stock In Training Mode",
+    WORK_REPORT_OPTION => "Work Report Option",
+    WORK_REPORT_FOOTER_TEXT => "Work Report Footer Text",
+    PRINT_WORK_REPORT => "Print Work Report",
+    TIMEKEEPING_TERMINAL => "Timekeeping Terminal"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -362,6 +370,25 @@ class GlobalSetting < ActiveRecord::Base
     when DEDUCT_STOCK_DURING_TRAINING_MODE
       @gs = find_or_create_by_key(:key => DEDUCT_STOCK_DURING_TRAINING_MODE.to_s, :value => "false", :label_text => LABEL_MAP[DEDUCT_STOCK_DURING_TRAINING_MODE])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when WORK_REPORT_OPTION
+      @gs = find_or_create_by_key(:key => "#{WORK_REPORT_OPTION.to_s}_#{args[:report_section]}", :value => "true", :label_text => LABEL_MAP[WORK_REPORT_OPTION])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when WORK_REPORT_FOOTER_TEXT
+      @gs = find_or_create_by_key(:key => WORK_REPORT_FOOTER_TEXT.to_s, :value => "Please Retain For Records Or Disputes", :label_text => LABEL_MAP[WORK_REPORT_FOOTER_TEXT])
+      @gs.parsed_value = @gs.value
+    when PRINT_WORK_REPORT
+      @gs = find_or_create_by_key(:key => PRINT_WORK_REPORT.to_s, :value => "false", :label_text => LABEL_MAP[PRINT_WORK_REPORT])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)    
+    when TIMEKEEPING_TERMINAL
+      
+      if GlobalSetting.all_terminals.length > 0
+	@timekeeping_terminal = GlobalSetting.all_terminals.first
+      else 
+	@timekeeping_terminal = ""
+      end
+      
+      @gs = find_or_create_by_key(:key => TIMEKEEPING_TERMINAL.to_s, :value => @timekeeping_terminal, :label_text => LABEL_MAP[TIMEKEEPING_TERMINAL])
+      @gs.parsed_value = @gs.value
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -390,9 +417,6 @@ class GlobalSetting < ActiveRecord::Base
       write_attribute("value", new_value)
     when GLOBAL_TAX_RATE
       new_value = value.to_f
-      write_attribute("value", new_value)
-    when CASH_TOTAL_OPTION
-      new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     when RELOAD_HTML5_CACHE_TIMESTAMP
       new_value = value.to_i
@@ -483,6 +507,9 @@ class GlobalSetting < ActiveRecord::Base
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     when DEDUCT_STOCK_DURING_TRAINING_MODE
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when PRINT_WORK_REPORT
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     else
@@ -635,10 +662,14 @@ class GlobalSetting < ActiveRecord::Base
       elsif key.starts_with? USE_WSS_CASH_DRAWER.to_s
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
-      elsif key.starts_with? USE_WSS_RECEIPT_PRINTER.to_s
+      elsif key.starts_with? CASH_TOTAL_OPTION.to_s
+        new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
+      elsif key.starts_with? WORK_REPORT_OPTION.to_s
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
       end
+    
     end
   end
   
