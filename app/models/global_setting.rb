@@ -522,7 +522,7 @@ class GlobalSetting < ActiveRecord::Base
       write_attribute("value", new_value)
     else
       #catch the keys that are not only integers and wont get caught in the switch statement
-      if key.starts_with? TERMINAL_ID.to_s
+      if key.starts_with? "#{TERMINAL_ID.to_s}_"
         if value_changed?
           @res = GlobalSetting.where("global_settings.key != ?", key).where("global_settings.value = ?", value)
           if @res.size > 0
@@ -652,28 +652,28 @@ class GlobalSetting < ActiveRecord::Base
           new_value = (value ? value.gsub(" ", "").gsub("'", "").gsub("\"", "") : nil)
           write_attribute("value", new_value)
         end
-      elsif key.starts_with? WINDOWS_PRINTER_MARGINS.to_s
+      elsif key.starts_with?  "#{WINDOWS_PRINTER_MARGINS.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
-      elsif key.starts_with? BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL.to_s
+      elsif key.starts_with? "#{BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
-      elsif key.starts_with? PRINTER_LEFT_MARGIN.to_s
+      elsif key.starts_with? "#{PRINTER_LEFT_MARGIN.to_s}_"
         new_value = value.to_i
         write_attribute("value", new_value)
-      elsif key.starts_with? DISABLE_ADVANCED_TOUCH.to_s
+      elsif key.starts_with? "#{DISABLE_ADVANCED_TOUCH.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
-      elsif key.starts_with? DO_BEEP.to_s
+      elsif key.starts_with? "#{DO_BEEP.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
-      elsif key.starts_with? USE_WSS_CASH_DRAWER.to_s
+      elsif key.starts_with? "#{USE_WSS_CASH_DRAWER.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
-      elsif key.starts_with? CASH_TOTAL_OPTION.to_s
+      elsif key.starts_with? "#{CASH_TOTAL_OPTION.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
-      elsif key.starts_with? WORK_REPORT_OPTION.to_s
+      elsif key.starts_with? "#{WORK_REPORT_OPTION.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
       end
