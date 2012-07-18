@@ -84,6 +84,7 @@ class GlobalSetting < ActiveRecord::Base
   WORK_REPORT_FOOTER_TEXT = 69
   PRINT_WORK_REPORT = 70
   TIMEKEEPING_TERMINAL = 71
+  ALLOW_REOPEN_ORDER_AFTER_Z = 72
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -156,7 +157,8 @@ class GlobalSetting < ActiveRecord::Base
     WORK_REPORT_OPTION => "Work Report Option",
     WORK_REPORT_FOOTER_TEXT => "Work Report Footer Text",
     PRINT_WORK_REPORT => "Print Work Report",
-    TIMEKEEPING_TERMINAL => "Timekeeping Terminal"
+    TIMEKEEPING_TERMINAL => "Timekeeping Terminal",
+    ALLOW_REOPEN_ORDER_AFTER_Z => "Allow Reopening Of Orders After a Z Total"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -389,6 +391,9 @@ class GlobalSetting < ActiveRecord::Base
       
       @gs = find_or_create_by_key(:key => TIMEKEEPING_TERMINAL.to_s, :value => @timekeeping_terminal, :label_text => LABEL_MAP[TIMEKEEPING_TERMINAL])
       @gs.parsed_value = @gs.value
+    when ALLOW_REOPEN_ORDER_AFTER_Z
+      @gs = find_or_create_by_key(:key => ALLOW_REOPEN_ORDER_AFTER_Z.to_s, :value => "false", :label_text => LABEL_MAP[ALLOW_REOPEN_ORDER_AFTER_Z])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
       @gs.parsed_value = @gs.value
@@ -510,6 +515,9 @@ class GlobalSetting < ActiveRecord::Base
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     when PRINT_WORK_REPORT
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when ALLOW_REOPEN_ORDER_AFTER_Z
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     else

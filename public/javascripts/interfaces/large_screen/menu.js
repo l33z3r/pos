@@ -1504,7 +1504,7 @@ function orderSentToServerCallback(orderData, errorOccured) {
         reloadCustomers();
     } else {
         if(!isTableZeroOrder) {
-            niceAlert("There was an error cashing out the last order, the server could not process it. It will automatically resend itself, please do not cash out on another terminal!");
+            niceAlert("There was an error cashing out the last order, the server could not process it, or could not be reached. It will automatically resend itself, please do not cash out on another terminal!");
         }
     }
     
