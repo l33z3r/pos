@@ -329,13 +329,14 @@ div#landing div#active_users_buttons_container div#active_users {
 }
 
 div#landing div#active_users_buttons_container div#active_users div.employee_box {
+    display: none;
     width: 95px;
     font-size: 15px;
     height: 83px;
     font-weight: bold;
     padding: 7px;
     border: 2px outset #000;
-    margin: 10px;
+    margin: 6px;
     cursor: pointer;
     float: left;
     border: 1px solid #AAAAAA;
@@ -344,8 +345,16 @@ div#landing div#active_users_buttons_container div#active_users div.employee_box
     background-color: #FFF;
 }
 
+div#landing div#active_users_buttons_container div#active_users div.employee_box.on_break {
+    background-color: #CCC;
+}
+
 div#landing div#active_users_buttons_container div#active_users div.employee_box div.nickname {
     margin-top: 5px;
+}
+
+div#landing div#active_users_buttons_container div#active_users div.employee_box.on_break div.nickname {
+    text-decoration: line-through;
 }
 
 div#landing div#active_users_buttons_container div#active_users div.employee_box div.avatar img {

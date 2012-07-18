@@ -15,22 +15,29 @@
     </div>
     <div class="button_name">Add Customer</div>
   </div>
+
+  <div class="button" data-onpress="window.location = '<%= admin_customers_path(:format => :csv) %>';">
+    <div class="icon">
+      <%= image_tag "/images/button_logos/export_customers_button.png" %>
+    </div>
+    <div class="button_name">Export All Customers</div>
+  </div>
 <% end %>
 
 <% content_for :head do %>
   <script type="text/javascript">
     $(function() {
   <% if @show_normal_customers %>
-      $('#customer_type_equals').val("<%= Customer::NORMAL %>");
+        $('#customer_type_equals').val("<%= Customer::NORMAL %>");
   <% else %>
-      $('#customer_type_equals').val("<%= Customer::LOYALTY %>");
+        $('#customer_type_equals').val("<%= Customer::LOYALTY %>");
   <% end %>
         
-    doClickAButton($('#submit_customer_search_button'));
+      doClickAButton($('#submit_customer_search_button'));
     
-    //set the selected button
-    changeStyleButton($("#current_letter").val());
-  });
+      //set the selected button
+      changeStyleButton($("#current_letter").val());
+    });
   </script>
 <% end %>
 
@@ -75,7 +82,7 @@
 
     <div class="clear">&nbsp;</div>
   </div>
-  
+
   <section id="customers" class="no_scroll_pane">
 
     <div class="pagination_links">
@@ -99,7 +106,7 @@
 
     <div id="customers_container" class="jscrollpane">
       <div id="customers_ajax">
-        
+
       </div>
     </div>
 

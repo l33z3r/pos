@@ -14,6 +14,7 @@ $(function() {
 });
 
 function doGlobalInit() {
+    initUsers();
 
     //whenever a link is clicked, we show a loading div
     $('a:not(.no_loading_div)').live("click", function() {
@@ -155,7 +156,7 @@ function doGlobalInit() {
 
     clueyScheduler();
     
-    initTrainingModeFromCookie();
+    initTrainingModeFromCookie();        
 
 //enable this for html5 cache flushing
 //    if(inProdMode()) {
@@ -179,7 +180,10 @@ function showInitialScreen() {
         //show the red x 
         $('#nav_save_button').show();
 
-        if (current_user_nickname != null) $('#e_name').html(current_user_nickname);
+        if (current_user_nickname != null) {
+            $('#e_name').html(current_user_nickname);
+            $('#e_name').show();
+        }
     }
 }
 

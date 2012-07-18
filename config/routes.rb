@@ -29,7 +29,6 @@ Pos::Application.routes.draw do
   
   #routes for screens to login etc
   match 'home' => "home#index"
-  get "home/active_employees"
   get 'blank_receipt_for_print' => "home#blank_receipt_for_print"
   
   #kitchen screen
@@ -72,11 +71,14 @@ Pos::Application.routes.draw do
   #init the sales screen buttons based on role permissions
   match 'init_sales_screen_buttons' => "home#init_sales_screen_buttons"
 
-  match 'login' => "home#login", :via => :post
-  match 'logout' => "home#logout", :via => :post
   match 'clockin' => "home#clockin", :via => :post
   match 'clockout' => "home#clockout", :via => :post
-
+  match 'login' => "home#login", :via => :post
+  match 'logout' => "home#logout", :via => :post
+  match 'break_in' => "home#break_in", :via => :post
+  match 'break_out' => "home#break_out", :via => :post
+  match 'print_work_report' => "home#print_work_report", :via => :post
+  
   #sync info page
   get 'sync_info' => "admin/home#sync_info"
   

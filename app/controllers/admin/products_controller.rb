@@ -29,12 +29,12 @@ class Admin::ProductsController < Admin::AdminController
         @csv_string += "Cost Price,Unit,Size,Sales Tax Percent\n"
         
         @products.each do |p|
-          @category = (p.category ? p.category.name : "none").gsub(",", "")
-          @department = ((p.category and p.category.parent_category) ? p.category.parent_category.name : "none").gsub(",", "")
+          @category = (p.category ? p.category.name : "none").gsub(",", "").gsub("\r", "").gsub("\n", "")
+          @department = ((p.category and p.category.parent_category) ? p.category.parent_category.name : "none").gsub(",", "").gsub("\r", "").gsub("\n", "")
           
-          @name = p.name.gsub(",", "")
-          @brand = (p.brand ? p.brand : "").gsub(",", "")
-          @description = (p.description ? p.description : "").gsub(",", "")
+          @name = p.name.gsub(",", "").gsub("\r", "").gsub("\n", "")
+          @brand = (p.brand ? p.brand : "").gsub(",", "").gsub("\r", "").gsub("\n", "")
+          @description = (p.description ? p.description : "").gsub(",", "").gsub("\r", "").gsub("\n", "")
           
           @csv_string += "#{@department},#{@category},#{@name},#{@brand},#{@description},#{p.price},"
           @csv_string += "#{p.double_price},#{p.half_price},#{p.code_num},#{p.upc},#{p.price_2},#{p.price_3},#{p.price_4},"
