@@ -154,4 +154,5 @@ DEPENDENCIES
   rspec-rails (= 2.6.1)
   ruby-debug19
   smurf (= 1.0.8)
+  tzinfo (= 0.3.33)
   will_paginate (= 3.0.pre2)
