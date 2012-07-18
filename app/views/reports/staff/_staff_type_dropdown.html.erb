@@ -1,5 +1,5 @@
-<div class="dropdown_container">
-    <div class="label" style="width: 150px;">Payment Types</div>
-    <%= collection_select :payment_method_id, :equals, PaymentMethod.find(:all).sort_by{|p| p.name.downcase}, :name, :name, options = {:include_blank => "Any", :selected => @current_method}, {:onchange => "loadPaymentDropDown('payment_type')", :style=>'width:155px'} %>
+<div class="dropdown_container" style="margin-left: 50px;">
+    <div class="label">View</div>
+    <%= collection_select :employee_id, :equals, Employee.find(:all).sort_by{|p| p.name.downcase}, :id, :name, options = {:include_blank => "Any", :selected => @current_method}, {:onchange => "loadPaymentDropDown('employee')", :style=>'width:105px'} %>
     <div class="clear">&nbsp;</div>
 </div>

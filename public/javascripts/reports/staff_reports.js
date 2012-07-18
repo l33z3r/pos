@@ -159,19 +159,17 @@ function switchStaffView(view_type) {
 
 function setStaffSearchType(interval_selected) {
     switch (interval_selected) {
+
         case '0':
-            search_type = 'transaction_list';
-            break;
-        case '1':
             search_type = 'day';
             break;
-        case '2':
+        case '1':
             search_type = 'week';
             break;
-        case '3':
+        case '2':
             search_type = 'month';
             break;
-        case '4':
+        case '3':
             search_type = 'year';
             break;
 
