@@ -1,134 +1,143 @@
 <% if session[:preselect] != -1 %>
-<% unless params[:action] == "stocks_print" %>
+    <% unless params[:action] == "stocks_print" %>
 
 
-<% end %>
-  <div id="stocks_items_graph" style="display: none">
-    <div id="spacer" style="height:70px;"></div>
-</div>
-  <div id="stock_items">
-    <% if session[:show_zeros] %>
-    <table id="product_list" class="admin_table" style="width: 100%">
-          <thead>
-            <th class="header">Name</th>
-            <th class="header">Category</th>
-            <th class="header">Current</th>
-            <th class="header">Sold</th>
-            <th class="header">Total Qty</th>
-            <th class="header">Cost ea</th>
-            <th class="header">Cost Total</th>
-            <th class="header">Revenue</th>
-            <th class="header">Code Num</th>
-          </thead>
-          <% @products.each do |product| %>
-          <tbody>
-          <tr>
-              <td>
-                  <%= product.name %>
-              </td>
-
-              <td>
-                  <%= Category.find_by_id(product.category_id).name %>
-              </td>
-              <td>
-                  <%= product.quantity_in_stock %>
-              </td>
-              <td>
-                  <%= OrderItem.find_all_by_product_id(product.id).count %>
-              </td>
-
-              <td>
-                 <%= OrderItem.find_all_by_product_id(product.id).count %>
-              </td>
-              <td>
-                 <% unless OrderItem.find_by_product_id(product.id) == nil %>
-                 <%= sprintf("%.2f",OrderItem.find_by_product_id(product.id).total_price) %>
-                 <% end %>
-              </td>
-              <td>
-                 <% unless OrderItem.find_by_product_id(product.id) == nil %>
-                 <%= sprintf("%.2f", OrderItem.sum(:total_price, :conditions =>["product_id = ?", product.id])) %>
-                 <% end %>
-              </td>
-              <td>
-                  <%= sprintf("%.2f", OrderItem.sum(:total_price, :conditions =>["product_id = ?", product.id])) %>
-              </td>
-              <td>
-                  <%= product.code_num %>
-              </td>
-
-          </tr>
-          <% end %>
-
-      </tbody>
-    </table>
-    <% else %>
-
-    <table id="product_list" class="admin_table" style="width: 100%">
-          <thead>
-          <% unless session[:search_type] == :by_category %>
-            <th class="header">Name</th>
-          <% end %>
-            <th class="header">Category</th>
-            <th class="header">Current</th>
-            <th class="header">Sold</th>
-            <th class="header">Total Qty</th>
-            <th class="header">Cost ea</th>
-            <th class="header">Cost Total</th>
-            <th class="header">Revenue</th>
-            <th class="header">Margin</th>
-            <th class="header">Code Num</th>
-          </thead>
-          <% @products.each do |item| %>
-          <% product = Product.find_by_id(item.product_id) %>
-          <% price = 0 %>
-          <tbody>
-          <tr>
-              <% unless session[:search_type] == :by_category %>
-              <td>
-                  <%= product.name %>
-              </td>
-              <% end %>
-              <td>
-                  <%= Category.find_by_id(product.category_id).name %>
-              </td>
-              <td>
-                  <%= product.quantity_in_stock / product.quantity_per_container %>
-              </td>
-              <td>
-                   <% quantity_sold = sprintf("%.0f", item.quantity)  %>
-                   <%= sprintf("%.0f", quantity_sold.to_d/product.quantity_per_container.to_d) %>
-              </td>
-              <td>
-                  <%= quantity_sold %>
-              </td>
-              <td>
-                 <% price = sprintf("%.2f", product.cost_price) %>
-                 <%= price %>
-              </td>
-              <td>
-                  <% total_price = sprintf("%.2f",price.to_d * quantity_sold.to_i) %>
-                  <%= total_price %>
-              </td>
-              <td>
-                  <% revenue = sprintf("%.2f",item.total_price.to_d) %>
-                  <%= revenue %>
-              </td>
-              <td>
-                  <% unless product.cost_price == 0 %>
-                  <%= sprintf("%.0f", per_profit(revenue, total_price, product.sales_tax_rate)) %>%
-                  <% end %>
-              </td>
-              <td>
-                  <%= product.code_num %>
-              </td>
-          </tr>
-          <% end %>
-
-      </tbody>
-    </table>
     <% end %>
-  </div>
+    <div id="stocks_items_graph" style="display: none">
+        <div id="spacer" style="height:70px;"></div>
+        <%= high_chart("graph_container_sales", @h) %>
+    </div>
+    <div id="stock_items">
+        <% if session[:show_zeros] %>
+            <table id="product_list" class="admin_table" style="width: 100%">
+                <thead>
+                <th class="header">Name</th>
+                <th class="header">Category</th>
+                <th class="header">Current</th>
+                <th class="header">Sold</th>
+                <th class="header">Total Qty</th>
+                <th class="header">Cost ea</th>
+                <th class="header">Cost Total</th>
+                <th class="header">Revenue</th>
+                <th class="header">Code Num</th>
+                </thead>
+                <% @products.each do |product| %>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <%= product.name %>
+                        </td>
+                        <td>
+                            <%= Category.find_by_id(product.category_id).name %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.0f", product.quantity_in_stock) %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.0f", OrderItem.find_all_by_product_id(product.id).count) %>
+                        </td>
+
+                        <td>
+                            <%= OrderItem.find_all_by_product_id(product.id).count %>
+                        </td>
+                        <td>
+                            <% unless OrderItem.find_by_product_id(product.id) == nil %>
+                                <%= sprintf("%.2f",(OrderItem.find_by_product_id(product.id).total_price)) %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <% unless OrderItem.find_by_product_id(product.id) == nil %>
+                                <%= sprintf("%.2f",(OrderItem.sum(:total_price, :conditions =>["product_id = ?", product.id]))) %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.2f",(OrderItem.sum(:total_price, :conditions =>["product_id = ?", product.id]))) %>
+                        </td>
+                        <td>
+                            <%= product.code_num %>
+                        </td>
+                    </tr>
+                <% end %>
+                </tbody>
+            </table>
+        <% else %>
+
+            <table id="product_list" class="admin_table" style="width: 100%">
+                <thead>
+                <% unless session[:search_type] == :by_category %>
+                    <th class="header">Name</th>
+                <% end %>
+                <th class="header">Category</th>
+                <th class="header">Current</th>
+                <th class="header">Sold</th>
+                <th class="header">Total Qty</th>
+                <th class="header">Cost ea</th>
+                <th class="header">Cost Total</th>
+                <th class="header">Revenue</th>
+                <th class="header">Margin</th>
+                <th class="header">Code Num</th>
+                </thead>
+                <% @products.each do |item| %>
+                    <% product = Product.find_by_id(item.product_id) %>
+                    <% price = 0 %>
+                    <tbody>
+                    <tr>
+                        <% unless session[:search_type] == :by_category %>
+                            <td style="text-align: left">
+                                <%= product.name %>
+                            </td>
+                        <% end %>
+                        <td style="text-align: left">
+                            <%= Category.find_by_id(product.category_id).name %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.0f", product.quantity_in_stock / product.quantity_per_container) %>
+                        </td>
+                        <td>
+                            <% quantity_sold = item.quantity %>
+                            <%= sprintf("%.0f", quantity_sold.to_d/product.quantity_per_container.to_d) %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.0f", quantity_sold) %>
+                        </td>
+                        <td>
+                            <% unless product.cost_price == 0 %>
+                                <% price = sprintf("%.2f",(product.cost_price)) %>
+                                <%= price %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <% total_price = product.cost_price * quantity_sold.to_i %>
+                            <% unless product.cost_price == 0 %>
+                                <%= sprintf("%.2f",(total_price)) %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <% revenue = item.total_price.to_d %>
+                            <%= sprintf("%.2f",(revenue)) %>
+                        </td>
+                        <td>
+                            <% unless product.cost_price == 0 %>
+                                <% margin = per_profit(revenue, total_price, product.sales_tax_rate) %>
+                                <% unless (margin == nil) %>
+                                    <%= sprintf("%.0f", margin) %>%
+                                <% end %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <%= product.code_num %>
+                        </td>
+                    </tr>
+                <% end %>
+
+                </tbody>
+            </table>
+        <% end %>
+    </div>
 <% else %>
 
 <% end %>
+
+<script type="text/javascript">
+    $('#refine_button_stock').removeClass("selected");
+</script>

@@ -1674,6 +1674,18 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
     width: 30px;
 }
 
+table#product_list {
+    background-color:#FFFFFF;
+ }
+
+ table#product_list td {
+    padding: 5px;
+    border-right: solid #000 1px;
+    text-align: right;
+ }
+
+
+
 /* End Cash Reports Screen */
 
 /* Float Screen */

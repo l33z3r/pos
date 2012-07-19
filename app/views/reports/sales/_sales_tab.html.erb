@@ -41,11 +41,12 @@
                 <th class="header">Items Qty</th>
                 <th class="header">Gross Sales</th>
                 <th class="header">VAT</th>
-                <th class="header">NET Sales</th>
+                <th class="header">Net Sales</th>
                 </thead>
                 <% total_gross = 0 %>
                 <% total_vat = 0 %>
                 <% total_net = 0 %>
+                <% total_item_count = 0 %>
                 <% @orders.each do |week| %>
                     <% product = Product.find_by_id(week.product_id) %>
                     <% total_items = week.quantity %>
@@ -59,15 +60,16 @@
                     <% total_gross += gross_sales %>
                     <% total_vat += vat %>
                     <% total_net += net_sales %>
+                    <% total_item_count += total_items %>
                     <% if product %>
                         <tbody>
                         <tr>
-                            <td>
+                            <td style="text-align: left">
                                 <% if nil != product.name %>
                                     <%= product.name %>
                                 <% end %>
                             </td>
-                            <td>
+                            <td style="text-align: left">
                                 <% if Category.find_by_id(product.category_id) %>
                                     <% if Category.find_by_id(product.category_id).name %>
                                         <%= Category.find_by_id(product.category_id).name %>
@@ -95,8 +97,8 @@
                     </td>
                     <td style="text-align: right; border-top: 2px solid">
                     </td>
-                    <td style="text-align: left; border-top: 2px solid; ">
-
+                    <td style="text-align: right; border-top: 2px solid; ">
+                        <%= sprintf("%.0f", total_item_count) %>
                     </td>
                     <td style="text-align: right; border-top: 2px solid;">
                         <%= print_money(total_gross) %>
@@ -122,6 +124,10 @@
                 <th class="header">VAT</th>
                 <th class="header">NET Sales</th>
                 </thead>
+                <% total_gross = 0 %>
+                <% total_vat = 0 %>
+                <% total_net = 0 %>
+                <% total_item_count = 0 %>
                 <% total_items = 0 %>
                 <% @orders.each do |week| %>
 
@@ -133,9 +139,14 @@
                     <% gross_sales = week.total_price %>
                     <% vat = week.tax_rate %>
                     <% net_sales = net_result(gross_sales, vat) %>
+
+                    <% total_gross += gross_sales %>
+                    <% total_vat += vat %>
+                    <% total_net += net_sales %>
+                    <% total_item_count += total_items %>
                     <tbody>
                     <tr>
-                        <td>
+                        <td style="text-align: left">
                             <% if @s_type == :day %>
                                 <%= week.created_at.strftime("%B %d, %Y") %>
                             <% end %>
@@ -150,7 +161,7 @@
                             <% end %>
                         </td>
 
-                        <td>
+                        <td style="text-align: left">
                             <% if @s_type == :day %>
                                 <%= DAYS_OF_THE_WEEK[week.created_at.wday.to_i] %>
                             <% end %>
@@ -174,7 +185,25 @@
 
                     </tr>
                 <% end %>
-
+                    <tr>
+                    <td style="text-align: left; border-top: 2px solid">
+                        <b>Total:</b>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid">
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid; ">
+                        <%= sprintf("%.0f", total_item_count) %>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid;">
+                        <%= print_money(total_gross) %>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid;">
+                        <%= print_money(total_vat) %>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid">
+                        <%= print_money(total_net) %>
+                    </td>
+                </tr>
                 </tbody>
             </table>
             </div>
