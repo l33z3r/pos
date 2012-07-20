@@ -1238,9 +1238,9 @@ function doTotalFinal() {
         tableInfoLabel = "None";
         isTableOrder = false;
         
-        if(isProcessingTable0Orders) {
-            isTableZeroOrder = true;
+        isTableZeroOrder = true;
             
+        if(isProcessingTable0Orders) {
             //we need to show a loading div while we process the table 0 order as we 
             //cannot allow the user to switch to a different table or the doSyncTable() will never be called for this table 0 order
             showLoadingDiv("Sending Order...");
@@ -1495,7 +1495,7 @@ function orderSentToServerCallback(orderData, errorOccured) {
         
         //first see if its table 0 and send into system orders
         //a null test is to see if table 0
-        if(isTableZeroOrder) {
+        if(isTableZeroOrder && isProcessingTable0Orders) {
             doSyncTableOrder();
             hideLoadingDiv();
         }

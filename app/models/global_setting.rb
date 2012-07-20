@@ -683,6 +683,9 @@ class GlobalSetting < ActiveRecord::Base
       elsif key.starts_with? "#{USE_WSS_CASH_DRAWER.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
+      elsif key.starts_with? "#{USE_WSS_RECEIPT_PRINTER.to_s}_"
+        new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
       elsif key.starts_with? "#{CASH_TOTAL_OPTION.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
