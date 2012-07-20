@@ -52,6 +52,21 @@ function fetchLastRoomID(user_id) {
 }
 
 function printReceipt(content, printRecptMessage) {
+    var receiptContent = receiptContentSetup(content, printRecptMessage);
+    printContent(receiptContent);
+}
+
+//this causes a local print resulting in a popup
+function printLocalReceipt(content, printRecptMessage) {
+    var receiptContent = receiptContentSetup(content, printRecptMessage);
+    
+    $('#printFrame').contents().find('#till_roll').html(receiptContent);
+
+    printFrame.focus();
+    printFrame.print();
+}
+
+function receiptContentSetup(content, printRecptMessage) {
     if(!inKitchenContext()) {
         setStatusMessage("Printing Receipt");
     }
@@ -78,7 +93,7 @@ function printReceipt(content, printRecptMessage) {
     //add space and a dot so we print a bottom margin
     content += clear30HTML + "<div class='the_dots'>.  .  .</div>";
     
-    printContent(content);
+    return content;
 }
 
 function printContent(content) {

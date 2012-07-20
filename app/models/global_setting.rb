@@ -85,6 +85,7 @@ class GlobalSetting < ActiveRecord::Base
   PRINT_WORK_REPORT = 70
   TIMEKEEPING_TERMINAL = 71
   ALLOW_REOPEN_ORDER_AFTER_Z = 72
+  PRINT_LOCAL_RECIEVE_DELIVERY = 73
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -158,7 +159,8 @@ class GlobalSetting < ActiveRecord::Base
     WORK_REPORT_FOOTER_TEXT => "Work Report Footer Text",
     PRINT_WORK_REPORT => "Print Work Report",
     TIMEKEEPING_TERMINAL => "Timekeeping Terminal",
-    ALLOW_REOPEN_ORDER_AFTER_Z => "Allow Reopening Of Orders After a Z Total"
+    ALLOW_REOPEN_ORDER_AFTER_Z => "Allow Reopening Of Orders After a Z Total", 
+    PRINT_LOCAL_RECIEVE_DELIVERY => "Print Delivery Receipts Locally on Terminal Rather Than to Print Service"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -393,6 +395,9 @@ class GlobalSetting < ActiveRecord::Base
       @gs.parsed_value = @gs.value
     when ALLOW_REOPEN_ORDER_AFTER_Z
       @gs = find_or_create_by_key(:key => ALLOW_REOPEN_ORDER_AFTER_Z.to_s, :value => "false", :label_text => LABEL_MAP[ALLOW_REOPEN_ORDER_AFTER_Z])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when PRINT_LOCAL_RECIEVE_DELIVERY
+      @gs = find_or_create_by_key(:key => "#{PRINT_LOCAL_RECIEVE_DELIVERY.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[PRINT_LOCAL_RECIEVE_DELIVERY])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property
@@ -630,6 +635,13 @@ class GlobalSetting < ActiveRecord::Base
             @my_screen_resolution_gs.value = @screen_resolution_gs.value
             @my_screen_resolution_gs.save
 	    
+	    #print local receive deliver
+            @print_local_receive_delivery_gs = GlobalSetting.setting_for GlobalSetting::PRINT_LOCAL_RECIEVE_DELIVERY, {:fingerprint => @old_fingerprint}
+	    
+            @my_print_local_receive_delivery_gs = GlobalSetting.setting_for GlobalSetting::PRINT_LOCAL_RECIEVE_DELIVERY, {:fingerprint => @my_terminal_fingerprint}
+            @my_print_local_receive_delivery_gs.value = @print_local_receive_delivery_gs.value
+            @my_print_local_receive_delivery_gs.save
+	    
             #delete old gs objects
             @websocket_ip_gs.destroy
             @cash_drawer_ip_gs.destroy
@@ -646,6 +658,7 @@ class GlobalSetting < ActiveRecord::Base
             @wss_cash_drawer_gs.destroy
             @wss_receipt_printer_gs.destroy
             @screen_resolution_gs.destroy
+	    @print_local_receive_delivery_gs.destroy
           end
         end
         if value
@@ -674,6 +687,9 @@ class GlobalSetting < ActiveRecord::Base
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
       elsif key.starts_with? "#{WORK_REPORT_OPTION.to_s}_"
+        new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
+      elsif key.starts_with? "#{PRINT_LOCAL_RECIEVE_DELIVERY.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
       end
