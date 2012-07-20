@@ -430,7 +430,12 @@ function doFinishDelivery() {
 function deliverySentToServerCallback() {
     //print receipt
     var deliveryReceiptContent = getDeliveryTillRollHTML(true, true);
-    printReceipt(deliveryReceiptContent, false);
+    
+    if(printLocalDeliveryReceipts) {
+        printLocalReceipt(deliveryReceiptContent, false);
+    } else {
+        printReceipt(deliveryReceiptContent, false);
+    }
     
     //finish up
     currentDelivery = null;

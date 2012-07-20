@@ -9,17 +9,11 @@ var work_report_html = "<div id='work_report_data_table'>";
   var work_report_data = new Array();
   work_report_data.push(new Array('Clocked In:', '<%= @last_clockin.created_at.strftime(@defaultDateFormat) %>', false, true));
 
-  <% 
-  @break_time_seconds = 0 
-  @break_start = 0
-%>
-
+  
   <% @breaks.each do |b| %>
     <% if(b.timestamp_type == ShiftTimestamp::BREAK_IN) %>
-      <% @break_start = b.created_at %>
       work_report_data.push(new Array('Started Break:', '<%= b.created_at.strftime(@defaultDateFormat) %>', false, true));
     <% else %>
-      <% @break_time_seconds += (b.created_at - @break_start) %>
       work_report_data.push(new Array('Finished Break:', '<%= b.created_at.strftime(@defaultDateFormat) %>', false, true));
     <% end %>
   <% end %>
@@ -27,12 +21,10 @@ var work_report_html = "<div id='work_report_data_table'>";
   work_report_data.push(new Array('Clocked Out:', '<%= @last_clockout.created_at.strftime(@defaultDateFormat) %>', false, true));
   work_report_html += getWorkReportDataTable(work_report_data) + clearHTML;
 
-  <% @shift_seconds = (@last_clockout.created_at - @last_clockin.created_at) %>
-
   work_report_data = new Array();
   work_report_data.push(new Array('Hours Worked:', '<%= hours_mins_for_seconds @shift_seconds %>', false, true));
   work_report_data.push(new Array('Less Breaks:', '<%= hours_mins_for_seconds @break_time_seconds %>', false, true));
-  work_report_data.push(new Array('Net Hours:', '<%= hours_mins_for_seconds (@shift_seconds - @break_time_seconds) %>', false, true));
+  work_report_data.push(new Array('Net Hours:', '<%= hours_mins_for_seconds (@payable_seconds) %>', false, true));
   work_report_html += getWorkReportDataTable(work_report_data) + clearHTML;
 
   work_report_data = new Array();
