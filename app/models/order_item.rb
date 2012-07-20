@@ -8,6 +8,8 @@ class OrderItem < ActiveRecord::Base
   
   belongs_to :product
 
+  has_many :stock_transactions
+  
   def week
     self.created_at.strftime('%W')
   end

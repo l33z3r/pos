@@ -1,7 +1,8 @@
 class StockTransaction < ActiveRecord::Base
   belongs_to :product
   belongs_to :employee
-  
+  belongs_to :order_item
+
   STOCK_UPDATE = 1
   STOCK_TRANSFER = 2
   DELIVERY = 3
