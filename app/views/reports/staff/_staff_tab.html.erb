@@ -35,10 +35,8 @@
 
             <table id="product_list" class="admin_table" style="width: 100%">
                 <thead>
-                <th class="header">Name</th>
-                <th class="header">ID</th>
-                <th class="header">Start Date</th>
-                <th class="header">Finish Date</th>
+
+                <th class="header">Date</th>
                 <th class="header">Total Hours</th>
                 <th class="header">Breaks</th>
                 <th class="header">Hours Payable</th>
@@ -49,36 +47,34 @@
                 <% @orders.each do |week| %>
 
                     <% @work_data = week[:report_data] %>
-                    <% @employee = Employeee.find_by_id(week.employee_id) %>
                     <tbody>
                     <tr>
                         <td>
-                          <%= @employee.name %>
-                        </td>
-
-                        <td>
-                           <%= @employee.id %>
-                        </td>
-                        <td>
-                           <%= @work_data[:clockin_time] %>
-                        </td>
-                        <td>
-                            <%= @work_data[:clockout_time] %>
-                        </td>
-                        <td>
-                             <%= @work_data[:shift_seconds] %>
+                         <% if @s_type == :day %>
+                                <%= week.created_at.strftime("%B %d, %Y") %>
+                            <% end %>
+                            <% if @s_type == :week %>
+                                Week starting <%= week.created_at.beginning_of_week.strftime("%B %d, %Y") %>
+                            <% end %>
+                            <% if @s_type == :month %>
+                                <%= week.created_at.strftime("%B, %Y") %>
+                            <% end %>
+                            <% if @s_type == :year %>
+                                <%= week.created_at.strftime("%Y") %>
+                            <% end %>
                         </td>
                         <td>
-                           <%= @work_data[:break_seconds] %>
+                           <%= hours_mins_for_seconds week.shift_seconds %>
                         </td>
                         <td>
-                            <%= @work_data[:payable_seconds] %>
+                           <%= hours_mins_for_seconds week.break_seconds %>
                         </td>
                         <td>
-                            <%= @work_data[:hourly_rate] %>
+                            <%= hours_mins_for_seconds week.payable_seconds %>
                         </td>
                         <td>
-                            <%= @work_data[:cost] %>
+                        </td>
+                        <td>
                         </td>
                     </tr>
                 <% end %>
@@ -114,12 +110,11 @@
                 <% @orders.each do |week| %>
 
                     <% @work_data = week[:report_data] %>
-                    <% @work_data = week[:report_data] %>
                     <% @employee = Employee.find_by_id(week.employee_id) %>
 
                     <% total_cost += @work_data[:cost] %>
-                    <% total_hours_payable += @work_data[:payable_seconds] %>
-                    <% total_hours += @work_data[:shift_seconds] %>
+                    <% total_hours_payable += week.payable_seconds %>
+                    <% total_hours += week.shift_seconds %>
                     <tbody>
                     <tr>
                         <td>
@@ -130,19 +125,19 @@
                            <%= @employee.id %>
                         </td>
                         <td>
-                           <%= @work_data[:clockin_time].to_datetime.strftime "%a, %d %b %Y, %l:%M%P" %>
+                           <%= week.clockin_time.to_datetime.strftime "%a, %d %b %Y, %l:%M%P" %>
                         </td>
                         <td>
-                            <%= @work_data[:clockout_time].to_datetime.strftime "%a, %d %b %Y, %l:%M%P" %>
+                            <%= week.clockout_time.to_datetime.strftime "%a, %d %b %Y, %l:%M%P" %>
                         </td>
                         <td>
-                             <%= hours_mins_for_seconds @work_data[:shift_seconds] %>
+                             <%= hours_mins_for_seconds week.shift_seconds %>
                         </td>
                         <td>
-                           <%= hours_mins_for_seconds @work_data[:break_seconds] %>
+                           <%= hours_mins_for_seconds week.break_seconds %>
                         </td>
                         <td>
-                            <%= hours_mins_for_seconds @work_data[:payable_seconds] %>
+                            <%= hours_mins_for_seconds week.payable_seconds %>
                         </td>
                         <td>
                             <%= @work_data[:hourly_rate] %>
@@ -183,18 +178,15 @@
         <% end %>
 <% else %>
     <div id="saved_items">
-        <div id="saved_items_container">
+        <div id="saved_items_container" style="margin-left: 200px;">
             <div onclick="setStaffSelect(0)" class="saved_report_button">
-                <div class="b_text" style="margin-top: 12px"><b>Staffs by Transaction This Week</b></div>
+                <div class="b_text" style="margin-top: 12px"><b>Times By Employee This Week</b></div>
             </div>
             <div onclick="setStaffSelect(1)" class="saved_report_button">
-                <div class="b_text" style="margin-top: 12px"><b>Discounted Transactions From Last Week</b></div>
+                <div class="b_text" style="margin-top: 12px"><b>Times By Employee From Last Week</b></div>
             </div>
             <div onclick="setStaffSelect(2)" class="saved_report_button">
-                <div class="b_text"><b>Staffs by Month This Year</b></div>
-            </div>
-            <div onclick="setStaffSelect(3)" class="saved_report_button">
-                <div class="b_text"><b>Staffs by Day This Year</b></div>
+                <div class="b_text"><b>Times By Employee This Year</b></div>
             </div>
         </div>
     </div>

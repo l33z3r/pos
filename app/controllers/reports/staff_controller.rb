@@ -189,9 +189,9 @@ class Reports::StaffController < Admin::AdminController
     elsif params[:search][:search_type] == 'year'
       session[:search_type] = :year
       session[:search_type_label] = 'Year'
-    elsif params[:search][:search_type] == 'transaction_list'
-      session[:search_type] = :transaction_list
-      session[:search_type_label] = 'Transaction List'
+    elsif params[:search][:search_type] == 'employee'
+      session[:search_type] = :employee
+      session[:search_type_label] = 'employee'
     end
     if params[:search][:from_date]
       session[:from_date] = params[:search][:from_date]

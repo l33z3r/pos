@@ -60,6 +60,17 @@ function setPaymentDateParams(set_date, isManual) {
 
 }
 
+function setStaffDateParams(set_date, isManual) {
+    $('#date_from').val(set_date.split(',')[0]);
+    $('#date_to').val(set_date.split(',')[1]);
+    selectedFromDate = set_date.split(',')[0];
+    selectedToDate = set_date.split(',')[1];
+    if (isManual) {
+        setStaffReportParams();
+    }
+
+}
+
 
 function runStaffSearch() {
     if (!$('#refine_button').is('.selected')) {
@@ -184,23 +195,19 @@ function setStaffSearchType(interval_selected) {
 
 function setStaffSelect(set_type) {
     if (set_type == -1) {
-        $('#staff_items_graph').hide();
-        $('#search_type_select').attr('selectedIndex', 0);
         $('#date_preselect').attr('selectedIndex', 10);
-        $('#category_id_equals').attr('selectedIndex', 0);
-        $('#category_id_equals').attr('selectedIndex', 0);
-        $('#product_id_equals').attr('selectedIndex', 0);
-        search_type = 'transaction_list';
-        $('#discounts_checked').removeAttr('checked')
+
+        search_type = 'employee';
 
         setDateParams($('#date_preselect').val(), false);
         select_type = set_type
     }
     if (set_type == 0) {
+        $('#staff_items_graph').hide();
         $('#search_type_select').attr('selectedIndex', 0);
         $('#date_preselect').attr('selectedIndex', 2);
-        search_type = 'transaction_list';
-        $('#discounts_checked').removeAttr('checked')
+
+        search_type = 'employee';
 
         setDateParams($('#date_preselect').val(), false);
         select_type = set_type
@@ -208,32 +215,23 @@ function setStaffSelect(set_type) {
     if (set_type == 1) {
         $('#search_type_select').attr('selectedIndex', 0);
         $('#date_preselect').attr('selectedIndex', 5);
-        $('#discounts_checked').attr('checked', 'checked')
-        search_type = 'transaction_list';
-        discounts_only = true
-        drop_set_type = "discounts_only"
 
+        search_type = 'employee';
 
         setDateParams($('#date_preselect').val(), false);
         select_type = set_type
     }
     if (set_type == 2) {
-        $('#search_type_select').attr('selectedIndex', 3);
+        $('#staff_items_graph').hide();
+        $('#search_type_select').attr('selectedIndex', 0);
         $('#date_preselect').attr('selectedIndex', 4);
-        search_type = 'month';
-        $('#discounts_checked').removeAttr('checked')
+
+        search_type = 'employee';
 
         setDateParams($('#date_preselect').val(), false);
         select_type = set_type
     }
-    if (set_type == 3) {
-        $('#search_type_select').attr('selectedIndex', 1);
-        $('#date_preselect').attr('selectedIndex', 4);
-        search_type = 'day';
-        $('#discounts_checked').removeAttr('checked')
-        setDateParams($('#date_preselect').val(), false);
-        select_type = set_type
-    }
+
     $.ajax({
         type: 'GET',
         url: '/reports/staff/load_dropdown',
