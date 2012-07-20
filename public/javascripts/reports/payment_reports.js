@@ -23,14 +23,8 @@ function setPaymentReportsDatePickers() {
         defaultDate: '01/01/01',
         timeFormat: 'h:m',
         addSliderAccess: true,
-        sliderAccessArgs: { touchonly: false },
-        onSelect: function(dateText, inst) {
-            $('#date_preselect').attr('selectedIndex', 10);
-            $('#date_select_container').find('#date_to').datepicker("option", "minDate", dateText);
-            selectedFromDate = dateText;
-            setPaymentReportParams();
+        sliderAccessArgs: { touchonly: false }
 
-        }
     });
 
     $('#date_select_container').find('#date_to').datetimepicker({
@@ -38,15 +32,8 @@ function setPaymentReportsDatePickers() {
         defaultDate: '01/01/01',
         timeFormat: 'h:m',
         addSliderAccess: true,
-        sliderAccessArgs: { touchonly: false },
-        onSelect: function(dateText, inst) {
+        sliderAccessArgs: { touchonly: false }
 
-            $('#date_select_container').find('#date_from').datepicker("option", "maxDate", dateText);
-
-            selectedToDate = dateText;
-            setPaymentReportParams();
-
-        }
     });
 }
 
@@ -268,6 +255,19 @@ function setPaymentSelect(set_type) {
             runPaymentsSearch();
             discounts_only = '';
         });
+
+
+}
+
+function updatePaymentDateParams(set_date, date_type) {
+    var olddate = new Date(set_date);
+    var subbed = new Date(olddate - 1*60*60*1000);
+    var newtime = subbed.getFullYear() + "-" + (parseInt(subbed.getMonth()) + 1) + "-" + subbed.getDate() + " " + subbed.getHours() + ":" + subbed.getMinutes()
+    if (date_type == 'from') {
+        selectedFromDate = newtime;
+    } else {
+        selectedToDate = newtime;
+    }
 
 
 }

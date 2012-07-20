@@ -18,6 +18,15 @@
 # Remember that products can be stored as order_item_additions and will not have a line in order_item to represent the sale of that item
 #
 #
+# VOIDS:
+# The is_void column in the order model is used when the order is replaced by another one. 
+# The void_order_id of the order that replaced it points back to the original order that is marked as is_void.
+# This is_void on order model is not used when you void items on the till roll. 
+# There is an is_void on the order_item that is used for this purpose. 
+# If all items are voided on an order, the is_void column will still be true, unless that order is reopened and replaced by another. 
+# Basically, the is_void in here is not used for voided items, but for re-opened ones.
+# 
+#
 
 
 class Order < ActiveRecord::Base

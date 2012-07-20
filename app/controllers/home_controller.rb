@@ -1,4 +1,5 @@
 class HomeController < ApplicationController
+  skip_before_filter :set_current_employee, :only => [:login, :logout, :clockin, :clockout]
   cache_sweeper :product_sweeper  
   
   #main screen including the login overlay
@@ -223,59 +224,191 @@ class HomeController < ApplicationController
     clear_caches
     redirect_to home_path
   end
-  
-  def active_employees
-    load_active_employees
-  end
 
-  #do login procedure
-  def login
-    do_login(params[:id])
-    render :json => {:success => true}.to_json
-  end
-  
   def clockin
-    @employee = Employee.find(params[:id])
+    @employee_id = params[:employee_id]
+    @employee = Employee.find(@employee_id)
     
-    if !active_employee_ids.include? @employee.id
-      #add this employee to the active users list
-      active_employee_ids << @employee.id
+    if @timekeeping_terminal == @terminal_id
+      #add an entry to the shift timestamps table
+      ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_IN)
     end
-
+    
     update_last_active @employee
 
-    load_active_employees
-
-    render :action => :active_employees
+    render :json => {:success => true}.to_json
   end
 
   def clockout
+    @employee_id = params[:employee_id]
+    @employee = Employee.find(@employee_id)
+    
+    update_last_active @employee
+    
+    if @timekeeping_terminal == @terminal_id
+      #add an entry to the shift timestamps table
+      @last_clockout = ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_OUT)
+    end
+    
+    @print_work_report = GlobalSetting.parsed_setting_for GlobalSetting::PRINT_WORK_REPORT
+    
+    if @timekeeping_terminal == @terminal_id and @print_work_report
+      @last_clockin = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::CLOCK_IN}").order("created_at desc").first
+      
+      @breaks = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::BREAK_IN} or timestamp_type = #{ShiftTimestamp::BREAK_OUT}").where("created_at >= ?", @last_clockin.created_at).where("created_at <= ?", @last_clockout.created_at)
+    
+      @report_data = {}
+    
+      @all_orders = @employee.orders.where("created_at >= ?", @last_clockin.created_at)
+      
+      @all_order_items_ordered = @employee.order_items.where("created_at >= ?", @last_clockin.created_at)
+      @all_order_items_ordered_quantity = @all_order_items_ordered.count
+      @all_order_items_ordered_amount = @all_order_items_ordered.sum("total_price")
+      
+      if @all_order_items_ordered_quantity != 0
+        @all_order_items_ordered_avg = @all_order_items_ordered_amount / @all_order_items_ordered_quantity
+      else 
+        @all_order_items_ordered_avg = 0
+      end
+      
+      @void_order_items = @employee.void_order_items.where("created_at >= ?", @last_clockin.created_at)
+      @void_order_items_quantity = @void_order_items.count
+      @void_order_items_amount = @void_order_items.sum("total_price")
+    
+      @total_discounts = 0
+    
+      @total_cash = 0
+    
+      @all_order_items_sold_quantity = 0
+      @all_order_items_sold_amount = 0
+      
+      @all_orders.each do |order|
+        
+        @all_order_items_sold_quantity += order.order_items.length
+        @all_order_items_sold_amount += order.total
+          
+        @payment_types = order.split_payments
+        
+        if @payment_types and @payment_types.length > 0
+          @payment_types.each do |pt, amount|
+            @amount = amount.to_f
+            
+            pt = pt.downcase
+           
+            if pt == PaymentMethod::CASH_PAYMENT_METHOD_NAME
+              #don't count the change
+              if order.amount_tendered > order.total
+                @amount -= (order.amount_tendered - (order.total + order.service_charge))
+              end
+              
+              @total_cash += @amount
+            end
+          end
+        end
+        
+        #calculate total discounts
+        order.order_items.each do |order_item|
+          if order_item.pre_discount_price
+            @order_item_price_including_item_discount = order_item.pre_discount_price
+            @order_item_total_discount = order_item.pre_discount_price - order_item.total_price
+          else 
+            @order_item_price_including_item_discount = order_item.total_price
+            @order_item_total_discount = 0
+          end
+          
+          #add on whole order discount
+          if order.discount_percent and order.discount_percent > 0
+            @order_item_total_discount += (order.discount_percent * @order_item_price_including_item_discount)/100
+          end
+          
+          @total_discounts += @order_item_total_discount
+        end
+      end
+      
+      if @all_order_items_sold_quantity != 0
+        @all_order_items_sold_avg = @all_order_items_sold_amount / @all_order_items_sold_quantity
+      else 
+        @all_order_items_sold_avg = 0
+      end
+      
+      @report_data[:all_order_items_ordered_quantity] = @all_order_items_ordered_quantity
+      @report_data[:all_order_items_sold_quantity] = @all_order_items_sold_quantity
+    
+      @report_data[:void_order_items_quantity] = @void_order_items_quantity
+      @report_data[:void_order_items_amount] = @void_order_items_amount
+      
+      @report_data[:all_order_items_ordered_amount] = @all_order_items_ordered_amount
+      
+      @report_data[:total_discounts] = @total_discounts
+    
+      @report_data[:all_order_items_ordered_avg] = @all_order_items_ordered_avg
+      @report_data[:all_order_items_sold_avg] = @all_order_items_sold_avg
+      
+      @report_data[:total_cash] = @total_cash
+      
+      @total_payments = @all_order_items_sold_amount
+      @report_data[:total_payments] = @total_payments
+      
+      @wr = WorkReport.create(:employee_id => @employee.id, :report_data => @report_data)
+    
+      @custom_work_report_footer = GlobalSetting.parsed_setting_for GlobalSetting::WORK_REPORT_FOOTER_TEXT
+      
+      render :template => "/home/print_work_report"
+      
+    else
+      render :json => {:success => true}.to_json
+    end
+  end
+
+  def login
+    @employee_id = params[:employee_id]
+    @employee = Employee.find(@employee_id)
+    
+    @employee.last_logout = Time.now
+    
+    update_last_active @employee
+
+    render :json => {:success => true}.to_json
+  end
+  
+  def logout
+    @employee_id = params[:employee_id]
+    @employee = Employee.find(@employee_id)
+    
+    @employee.last_logout = Time.now
+    
+    update_last_active @employee
+
+    render :json => {:success => true}.to_json
+  end
+  
+  def break_in
     @employee = Employee.find(params[:id])
 
     redirect_to :back, :flash => {:error => "Employee not found."} and return if @employee.nil?
 
-    #remove the user from active employee list and refetch the list
-    @active_employee_ids = active_employee_ids
-    @active_employee_ids.delete @employee.id
-
-    clear_session
-
     update_last_active @employee
 
-    load_active_employees
-
-    render :action => :active_employees
+    if @timekeeping_terminal == @terminal_id
+      #add an entry to the shift timestamps table
+      ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_IN)
+    end
+    
+    render :json => {:success => true}.to_json
   end
+  
+  def break_out
+    @employee = Employee.find(params[:id])
 
-  def logout
-    @employee = Employee.find(e)
-    @employee.last_logout = Time.now
-    @employee.save!
+    redirect_to :back, :flash => {:error => "Employee not found."} and return if @employee.nil?
 
     update_last_active @employee
 
-    clear_session
-
+    if @timekeeping_terminal == @terminal_id
+      #add an entry to the shift timestamps table
+      ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_OUT)
+    end
+    
     render :json => {:success => true}.to_json
   end
   
@@ -522,7 +655,6 @@ class HomeController < ApplicationController
       
     end
     
-    @files << "/javascripts/init.js"
     @files << "/javascripts/tables.js"
     @files << "/javascripts/employees.js"
     @files << "/javascripts/products.js"
@@ -573,8 +705,7 @@ class HomeController < ApplicationController
   private
 
   def do_common_interface_actions
-    load_active_employees
-    
+    @employees = Employee.all_active
     @display = TerminalDisplayLink.load_display_for_terminal @terminal_id
     @rooms = Room.all
   end
@@ -620,12 +751,6 @@ class HomeController < ApplicationController
   end
   
   def do_medium_interface_actions
-    
-    #make sure we have an active session, otherwise, redirect to the mobile interface and force login
-    if !current_employee
-      redirect_to mbl_path and return
-    end
-    
     @tables_button = DisplayButton.find_by_perm_id(ButtonMapper::TABLES_BUTTON) 
     @order_button = DisplayButton.find_by_perm_id(ButtonMapper::ORDER_BUTTON) 
     @modify_button = DisplayButton.find_by_perm_id(ButtonMapper::MODIFY_ORDER_ITEM_BUTTON)
@@ -650,23 +775,9 @@ class HomeController < ApplicationController
     
   end
   
-  def clear_session
-    session[:current_employee_id] = nil
-    session[:current_employee_nickname] = nil
-    session[:current_employee_admin] = nil
-    session[:current_employee_role_id] = nil
-    session[:current_employee_passcode] = nil
-  end
-  
   def update_last_active employee
     employee.last_active = Time.now
     employee.save!
-  end
-
-  def load_active_employees
-    @ids = active_employee_ids
-    @active_employees ||= []
-    @active_employees = Employee.find(@ids, :order => :last_active) if @ids
   end
   
   def store_receipt_html

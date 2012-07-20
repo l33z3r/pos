@@ -64,12 +64,12 @@ GEM
       activerecord (~> 3.0.2)
       activesupport (~> 3.0.2)
       arel (~> 2.0.2)
-    mime-types (1.17.2)
+    mime-types (1.19)
     mongrel (1.2.0.pre2)
       daemons (~> 1.0.10)
       gem_plugin (~> 0.2.3)
     mysql2 (0.2.6)
-    pdf-reader (1.1.0)
+    pdf-reader (1.1.1)
       Ascii85 (~> 1.0.0)
       ruby-rc4
     polyglot (0.3.3)
@@ -129,7 +129,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     ttfunk (1.0.3)
-    tzinfo (0.3.31)
+    tzinfo (0.3.33)
     will_paginate (3.0.pre2)
     xml-simple (1.1.1)
 
@@ -154,4 +154,5 @@ DEPENDENCIES
   rspec-rails (= 2.6.1)
   ruby-debug19
   smurf (= 1.0.8)
+  tzinfo (= 0.3.33)
   will_paginate (= 3.0.pre2)

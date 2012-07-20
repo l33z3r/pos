@@ -10,7 +10,7 @@ var employees = new Array();
   is_admin : <%= e.is_admin %>,
   role_id : <%= e.role.id %>,
   pin_required : <%= Role.find(e.role.id).pin_required ? "true" : "false" %>,
-  clocked_in : <%= active_employee_ids.include?(e.id) ? "true" : "false" %>
+  clocked_in : false
   }
 
   employees.push(employee_info);

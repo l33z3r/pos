@@ -105,7 +105,7 @@ class Customer < ActiveRecord::Base
   
   def validate
     errors.add(:credit_limit, "cannot be set to a value lower than the users current balance outstanding") if credit_limit < current_balance
-    errors.add(:customer_number, " not valid. You must enter either a swipe card code or a customer number if this customer is a loyalty customer") if is_loyalty_customer?
+    errors.add(:customer_number, " not valid. You must enter either a swipe card code or a customer number if this customer is a loyalty customer") if is_loyalty_customer? and (swipe_card_code.blank? and customer_number.blank?)
   end
 end
 

@@ -1240,6 +1240,10 @@ function doTotalFinal() {
         
         if(isProcessingTable0Orders) {
             isTableZeroOrder = true;
+            
+            //we need to show a loading div while we process the table 0 order as we 
+            //cannot allow the user to switch to a different table or the doSyncTable() will never be called for this table 0 order
+            showLoadingDiv("Sending Order...");
         }
             
         //copy the order to distribute through system after processing
@@ -1493,12 +1497,15 @@ function orderSentToServerCallback(orderData, errorOccured) {
         //a null test is to see if table 0
         if(isTableZeroOrder) {
             doSyncTableOrder();
+            hideLoadingDiv();
         }
         
         //reload the customers as their points/credit may need updating
         reloadCustomers();
     } else {
-        niceAlert("There was an error cashing out the last order, the server could not process it. It will automatically resend itself, please do not cash out on another terminal!");
+        if(!isTableZeroOrder) {
+            niceAlert("There was an error cashing out the last order, the server could not process it, or could not be reached. It will automatically resend itself, please do not cash out on another terminal!");
+        }
     }
     
     cashSaleInProcess = false;
@@ -1531,7 +1538,7 @@ function sendOrderToServer(orderData) {
         url: '/order',
         timeout: timeoutMillis,
         error: function() {
-//            !userAbortedXHR(send_order_xhr)
+            //            !userAbortedXHR(send_order_xhr)
 
             storeOrderForLaterSend(orderData);
             orderSentToServerCallback(orderData, true);

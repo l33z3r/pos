@@ -91,10 +91,8 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith);
     }
     
-    //sync the master orders array if its not a table 0 order
-    if(tableID != 0) {
-        doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, masterOrdersUserId);
-    }
+    //sync the master orders array 
+    doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, masterOrdersUserId);
     
     if(inKitchenContext()) {
         renderReceipt(tableID);
