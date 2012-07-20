@@ -234,7 +234,7 @@ class OrderController < ApplicationController
                 #build a stock_transaction
                 @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
                   :employee_id => @order_item.employee_id, :product_id => @oia_product,
-                  :old_amount => @old_stock_amount, :change_amount => @actual_stock_usage)
+                  :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
               
                 @st.save
               end
@@ -281,7 +281,7 @@ class OrderController < ApplicationController
               #build a stock_transaction
               @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
                 :employee_id => @order_item.employee_id, :product_id => @order_item.product.id,
-                :old_amount => @old_stock_amount, :change_amount => @actual_stock_usage)
+                :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
               
               @st.save
             end
@@ -297,7 +297,7 @@ class OrderController < ApplicationController
                 #build a stock_transaction
                 @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
                   :employee_id => @order_item.employee_id, :product_id => ingredient.product.id,
-                  :old_amount => @old_stock_amount, :change_amount => @actual_stock_usage)
+                  :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
               
                 @st.save
               end
