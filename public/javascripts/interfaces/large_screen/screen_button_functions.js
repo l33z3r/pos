@@ -761,6 +761,22 @@ function promptVoidAllOrderItems() {
         return;
     }
     
+    var order = getCurrentOrder();
+    var allItemsSynced = true;
+    
+    for(var i=0; i<order.items.length; i++) {
+        var item = order.items[i];
+        if(!item.synced) {
+            allItemsSynced = false;
+            break;
+        }
+    }
+    
+    if(!allItemsSynced) {
+        niceAlert("You can only void all items after they have been order. You can delete unordered items.");
+        return;        
+    }
+    
     ModalPopups.Confirm('niceAlertContainer',
         'Void All?', "<div id='nice_alert'>Are you sure you want to void all items and cash this order out?</div>",
         {
@@ -785,6 +801,11 @@ function promptAddCovers() {
     if(selectedTable == -1) {
         setStatusMessage("Only valid for table orders!");
         return;
+    }
+    
+    //if we are on table 0 and no order items have been added, then there is no order object
+    if(currentOrder == null) {
+        currentOrder = buildInitialOrder();
     }
     
     var popupHTML = $("#add_covers_popup_markup").html();
