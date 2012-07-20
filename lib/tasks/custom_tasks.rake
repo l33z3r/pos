@@ -91,7 +91,7 @@ end
 desc "Issues a soft reset of each terminal"
 task :issue_soft_reset => :environment do
   puts "Issuing a soft reset of all terminals"
-  TerminalSyncData.request_hard_reload_app "Cluey Support"
+  TerminalSyncData.request_reload_app "Cluey Support"
   
   puts "Done!"
 end
@@ -99,7 +99,7 @@ end
 desc "Issues a hard reset of each terminal"
 task :issue_hard_reset => :environment do
   puts "Issuing a hard reset of all terminals"
-  TerminalSyncData.request_reload_app "Cluey Support"
+  TerminalSyncData.request_hard_reload_app "Cluey Support"
   
   puts "Done!"
 end
