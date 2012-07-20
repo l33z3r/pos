@@ -108,11 +108,18 @@
                 <th class="header">Rate</th>
                 <th class="header">Cost</th>
                 </thead>
-                <% total_items = 0 %>
+                <% total_cost = 0 %>
+                <% total_hours_payable = 0 %>
+                <% total_hours = 0 %>
                 <% @orders.each do |week| %>
 
                     <% @work_data = week[:report_data] %>
+                    <% @work_data = week[:report_data] %>
                     <% @employee = Employee.find_by_id(week.employee_id) %>
+
+                    <% total_cost += @work_data[:cost] %>
+                    <% total_hours_payable += @work_data[:payable_seconds] %>
+                    <% total_hours += @work_data[:shift_seconds] %>
                     <tbody>
                     <tr>
                         <td>
@@ -145,6 +152,30 @@
                         </td>
                     </tr>
                 <% end %>
+                  <tr>
+                    <td style="text-align: left; border-top: 2px solid">
+                        <b>Total:</b>
+                    </td>
+                      <td style="text-align: right; border-top: 2px solid;">
+                    </td>
+                      <td style="text-align: right; border-top: 2px solid;">
+                    </td>
+                      <td style="text-align: right; border-top: 2px solid;">
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid">
+                        <%= hours_mins_for_seconds total_hours %>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid; ">
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid;">
+                        <%= hours_mins_for_seconds total_hours_payable %>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid;">
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid">
+                        <%= print_money(total_cost) %>
+                    </td>
+                </tr>
                 </tbody>
             </table>
             </div>

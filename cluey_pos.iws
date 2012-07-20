@@ -15,15 +15,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e646dee2-e269-4160-8f2c-811321f2083d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/reports/staff_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/reports/staff_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/layouts/reports.html.erb" afterPath="$PROJECT_DIR$/app/views/layouts/reports.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/staff/_employee_dropdown.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/staff/_employee_dropdown.html.erb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/staff/_staff_tab.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/staff/_staff_tab.html.erb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/staff/index.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/staff/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/stocks/index.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/stocks/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cluey_pos.iws" afterPath="$PROJECT_DIR$/cluey_pos.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/reports/staff_reports.js" afterPath="$PROJECT_DIR$/public/javascripts/reports/staff_reports.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/stylesheets/interfaces/large_screen/style.css" afterPath="$PROJECT_DIR$/public/stylesheets/interfaces/large_screen/style.css" />
     </list>
     <ignored path="cluey_pos.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -82,73 +76,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="_staff_tab.html.erb" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="_staff_tab.html.erb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/reports/staff/_staff_tab.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="135" column="46" selection-start="5888" selection-end="5888" vertical-scroll-proportion="-9.375">
+            <state line="163" column="25" selection-start="7132" selection-end="7132" vertical-scroll-proportion="0.86725664">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html.erb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/reports/staff/index.html.erb">
+      <file leaf-file-name="_sales_tab.html.erb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="78" column="104" selection-start="4595" selection-end="4595" vertical-scroll-proportion="-13.125">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_employee_dropdown.html.erb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/reports/staff/_employee_dropdown.html.erb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="28" selection-start="363" selection-end="363" vertical-scroll-proportion="-2.5">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="payments_controller.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/reports/payments_controller.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="256" column="77" selection-start="8518" selection-end="8518" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sales_controller.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/reports/sales_controller.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="245" column="44" selection-start="8469" selection-end="8523" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="staff_reports.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/javascripts/reports/staff_reports.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="116" column="26" selection-start="2869" selection-end="2886" vertical-scroll-proportion="-3.16">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="reports.html.erb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/layouts/reports.html.erb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="80" selection-start="389" selection-end="389" vertical-scroll-proportion="-4.375">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="staff_controller.rb" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/controllers/reports/staff_controller.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="228" column="94" selection-start="7315" selection-end="7391" vertical-scroll-proportion="0.71549296">
+            <state line="202" column="40" selection-start="9466" selection-end="9478" vertical-scroll-proportion="-15.0">
               <folding />
             </state>
           </provider>
@@ -168,7 +108,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/views/reports/sales/export_excel.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/staff/_staff_type_dropdown.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/stocks/export_excel.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/payments/index.html.erb" />
@@ -179,11 +118,12 @@
         <option value="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/stocks/index.html.erb" />
         <option value="$PROJECT_DIR$/app/views/layouts/reports.html.erb" />
-        <option value="$PROJECT_DIR$/app/views/reports/staff/_staff_tab.html.erb" />
         <option value="$PROJECT_DIR$/public/javascripts/reports/staff_reports.js" />
-        <option value="$PROJECT_DIR$/app/views/reports/staff/index.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/staff/_employee_dropdown.html.erb" />
         <option value="$PROJECT_DIR$/app/controllers/reports/staff_controller.rb" />
+        <option value="$PROJECT_DIR$/app/views/reports/staff/index.html.erb" />
+        <option value="$PROJECT_DIR$/public/stylesheets/interfaces/large_screen/style.css" />
+        <option value="$PROJECT_DIR$/app/views/reports/staff/_staff_tab.html.erb" />
       </list>
     </option>
   </component>
@@ -676,7 +616,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.029126214" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4150685" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4150685" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -685,7 +625,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946485" sideWeight="0.7154696" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18246293" sideWeight="0.5849315" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18246293" sideWeight="0.71780825" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -772,13 +712,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/views/reports/staff/export_excel.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="20" selection-start="479" selection-end="479" vertical-scroll-proportion="63.75">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config/database.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="12" column="8" selection-start="302" selection-end="302" vertical-scroll-proportion="0.0">
@@ -803,13 +736,6 @@
     <entry file="file://$PROJECT_DIR$/app/controllers/home_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="380" column="30" selection-start="13604" selection-end="13604" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="68" selection-start="1658" selection-end="1658" vertical-scroll-proportion="-4.6">
           <folding />
         </state>
       </provider>
@@ -849,20 +775,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/staff/_staff_tab.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="135" column="46" selection-start="5888" selection-end="5888" vertical-scroll-proportion="-9.375">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/staff/index.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="78" column="104" selection-start="4595" selection-end="4595" vertical-scroll-proportion="-13.125">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/reports/payments_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="256" column="77" selection-start="8518" selection-end="8518" vertical-scroll-proportion="0.0">
@@ -879,7 +791,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/reports/staff_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="228" column="94" selection-start="7315" selection-end="7391" vertical-scroll-proportion="0.71549296">
+        <state line="212" column="76" selection-start="6535" selection-end="6535" vertical-scroll-proportion="-7.72">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/reports/staff/index.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="103" column="37" selection-start="6138" selection-end="6138" vertical-scroll-proportion="-4.375">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/stylesheets/interfaces/large_screen/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4654" column="51" selection-start="115958" selection-end="115958" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="202" column="40" selection-start="9466" selection-end="9478" vertical-scroll-proportion="-15.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/reports/staff/_staff_tab.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="163" column="25" selection-start="7132" selection-end="7132" vertical-scroll-proportion="0.86725664">
           <folding />
         </state>
       </provider>
