@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120720102944) do
+ActiveRecord::Schema.define(:version => 20120720160340) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -584,6 +584,11 @@ ActiveRecord::Schema.define(:version => 20120720102944) do
     t.text     "report_data"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "clockin_time"
+    t.datetime "clockout_time"
+    t.integer  "shift_seconds",   :default => 0
+    t.integer  "break_seconds",   :default => 0
+    t.integer  "payable_seconds", :default => 0
   end
 
 end
