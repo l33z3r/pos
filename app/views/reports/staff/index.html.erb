@@ -30,29 +30,22 @@
                             <div class="dropdown_container">
                                 <div class="label">Report Type</div>
                                 <select id="search_type_select" onchange="setStaffSearchType($(this).val())">
-                                    <option value="0">Times By Day</option>
-                                    <option value="1">Times by Week</option>
-                                    <option value="2">Times by Month</option>
-                                    <option value="3">Times by Year</option>
+                                    <option value="0">Times By Employee</option>
+                                    <option value="1">Times By Day</option>
+                                    <option value="2">Times by Week</option>
+                                    <option value="3">Times by Month</option>
+                                    <option value="4">Times by Year</option>
                                 </select>
                             </div>
-                            <div class="dropdown_container" style="margin-left: 50px;">
-                                <div class="label">Terminal</div>
-                                <select onchange="addStaffTerminalFilter($(this).val())">
-                                    <option value="">All Terminals</option>
-                                    <% @all_terminals.each do |terminal_id| %>
-                                        <option value="<%= terminal_id %>"><%= terminal_id %></option>
-                                    <% end %>
-                                </select>
-                            </div>
+
                             <% currtime = Time.now.beginning_of_day + 5.hours %>
                             <% lastyear = Time.now - 1.year %>
                             <% yesterday = Time.now - 1.day %>
                             <% lastweek = Time.now - 7.days %>
                             <% lastmonth = Time.now - 1.month %>
                             <div class="dropdown_container">
-                                <div class="label">Date</div>
-                                <select id="date_preselect" onchange="setStaffDateParams($(this).val(), true)" style="width: 120px">
+                                <div style="margin-left:30px;" class="label">Date</div>
+                                <select id="date_preselect" onchange="setStaffDateParams($(this).val(), true)" style="margin-left:30px; width: 120px">
                                     <option value="<%= Time.now.beginning_of_day + @opening_time.hours %>,<%= Time.now.end_of_day + @opening_time.hours %>">Today</option>
                                     <option value="<%= yesterday.beginning_of_day + @opening_time.hours %>,<%= yesterday.end_of_day + @opening_time.hours %>">Yesterday</option>
                                     <option value="<%= Time.now.beginning_of_week + @opening_time.hours %>,<%= Time.now %>">This
@@ -103,14 +96,13 @@
                         </div>
                         <div id="date_select_container">
 
-                            <%= render 'staff_type_dropdown' %>
                             <%= render 'employee_dropdown' %>
 
                             <div class="clear">&nbsp;</div>
                         </div>
                     </div>
                     <div id="refine_button">
-                        <div onclick="setStaffReportParams();runStaffsSearch()" class="button">Update</div>
+                        <div onclick="setStaffReportParams();runStaffSearch()" class="button">Update</div>
                     </div>
                     <div style="float: right; margin-top: 10px; margin-right: 10px;">
                         <div style="margin: 5px; height: 40px;" onclick="switchStaffView('table')" id="table_view" class="button selected">Table

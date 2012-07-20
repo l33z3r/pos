@@ -16,8 +16,8 @@ class Reports::StaffController < Admin::AdminController
 
 
   def index
-    session[:search_type] = :transaction_list
-    session[:search_type_label] = "Transaction List"
+    session[:search_type] = :employee
+    session[:search_type_label] = "Employee"
     session[:payment_type] = ''
     session[:terminal] = ''
     session[:search_product] = ''
@@ -65,9 +65,9 @@ class Reports::StaffController < Admin::AdminController
 
 
   def staff_search
-    if params[:page] != nil
-      session[:current_page] = params[:page].to_i
-    end
+    #if params[:page] != nil
+    #  session[:current_page] = params[:page].to_i
+    #end
     @orders = get_staff_data
     @s_type = session[:search_type]
     render_graph
@@ -75,74 +75,74 @@ class Reports::StaffController < Admin::AdminController
 
   def render_graph
     tax_rate = GlobalSetting::GLOBAL_TAX_RATE.to_i
-    if (@s_type == :day) || (@s_type == :month) || (@s_type == :week) || (@s_type == :year)
-      @h = LazyHighCharts::HighChart.new('graph') do |f|
-        f.options[:chart][:defaultSeriesType] = "column"
-        f.options[:chart][:margin] = [50, 50, 100, 80]
-        f.options[:title][:text] = "Sales By " + session[:search_type_label]
-        @chartdata = []
-        @chartdata2 = []
-        @chartdata3 = []
-        @chartdata4 = []
-        xitems = []
-        @orders.each do |order|
-        if @s_type == :day
-            @chartdata2 << order.created_at.strftime("%B %d, %Y")
-          end
-          if @s_type == :week
-            @chartdata2 << order.created_at.beginning_of_week.strftime("%B %d, %Y")
-          end
-          if @s_type == :month
-            @chartdata2 << order.created_at.strftime("%B, %Y")
-          end
-          if @s_type == :year
-            @chartdata2 << order.created_at.strftime("%Y")
-          end
-
-          @chartdata4 << order.total
-        end
-          #f.series(:name=> 'NET Sales', :data=>@chartdata2)
-          #f.series(:name=> 'VAT', :data=>@chartdata3)
-        f.series(:name=> 'Gross Sales', :data=>@chartdata4)
-        f.options[:xAxis][:categories] = @chartdata2
-        #f.options[:xAxis][:labels] = {:enabled=> true, :rotation=>-35}
-        #f.options[:yAxis][:title] = "Price"
-      end
-    else
-      @h = LazyHighCharts::HighChart.new('graph') do |f|
-        f.options[:chart][:defaultSeriesType] = "column"
-        f.options[:chart][:margin] = [50, 50, 100, 80]
-        f.options[:title][:text] = "Sales By " + session[:search_type_label]
-        @chartdata = []
-        @chartdata2 = []
-        @chartdata3 = []
-        @chartdata4 = []
-        xitems = []
-
-        @orders[0..20].each do |week|
-          net_sales = 0
-          gross_sales = 0
-
-          total_items = week.total
-          gross_sales = week.total
-          product = week.id
-
-          vat = vat_rate(tax_rate, gross_sales)
-          net_sales = net_result(gross_sales, vat)
-
-          @chartdata << net_sales
-          @chartdata3 << vat
-          @chartdata4 << gross_sales
-          @chartdata2 << week.id
-
-        end
-          #f.series(:name=> 'NET Sales', :data=>@chartdata)
-          #f.series(:name=> 'VAT', :data=>@chartdata3)
-        f.series(:name=> 'Gross Sales', :data=>@chartdata4)
-        f.options[:xAxis][:categories] = @chartdata2
-        #f.options[:yAxis][:title] = "Price"
-      end
-    end
+    #if (@s_type == :day) || (@s_type == :month) || (@s_type == :week) || (@s_type == :year)
+    #  @h = LazyHighCharts::HighChart.new('graph') do |f|
+    #    f.options[:chart][:defaultSeriesType] = "column"
+    #    f.options[:chart][:margin] = [50, 50, 100, 80]
+    #    f.options[:title][:text] = "Sales By " + session[:search_type_label]
+    #    @chartdata = []
+    #    @chartdata2 = []
+    #    @chartdata3 = []
+    #    @chartdata4 = []
+    #    xitems = []
+    #    @orders.each do |order|
+    #    if @s_type == :day
+    #        @chartdata2 << order.created_at.strftime("%B %d, %Y")
+    #      end
+    #      if @s_type == :week
+    #        @chartdata2 << order.created_at.beginning_of_week.strftime("%B %d, %Y")
+    #      end
+    #      if @s_type == :month
+    #        @chartdata2 << order.created_at.strftime("%B, %Y")
+    #      end
+    #      if @s_type == :year
+    #        @chartdata2 << order.created_at.strftime("%Y")
+    #      end
+    #
+    #      @chartdata4 << order.total
+    #    end
+    #      #f.series(:name=> 'NET Sales', :data=>@chartdata2)
+    #      #f.series(:name=> 'VAT', :data=>@chartdata3)
+    #    f.series(:name=> 'Gross Sales', :data=>@chartdata4)
+    #    f.options[:xAxis][:categories] = @chartdata2
+    #    #f.options[:xAxis][:labels] = {:enabled=> true, :rotation=>-35}
+    #    #f.options[:yAxis][:title] = "Price"
+    #  end
+    #else
+    #  @h = LazyHighCharts::HighChart.new('graph') do |f|
+    #    f.options[:chart][:defaultSeriesType] = "column"
+    #    f.options[:chart][:margin] = [50, 50, 100, 80]
+    #    f.options[:title][:text] = "Sales By " + session[:search_type_label]
+    #    @chartdata = []
+    #    @chartdata2 = []
+    #    @chartdata3 = []
+    #    @chartdata4 = []
+    #    xitems = []
+    #
+    #    @orders[0..20].each do |week|
+    #      net_sales = 0
+    #      gross_sales = 0
+    #
+    #      total_items = week.total
+    #      gross_sales = week.total
+    #      product = week.id
+    #
+    #      vat = vat_rate(tax_rate, gross_sales)
+    #      net_sales = net_result(gross_sales, vat)
+    #
+    #      @chartdata << net_sales
+    #      @chartdata3 << vat
+    #      @chartdata4 << gross_sales
+    #      @chartdata2 << week.id
+    #
+    #    end
+    #      #f.series(:name=> 'NET Sales', :data=>@chartdata)
+    #      #f.series(:name=> 'VAT', :data=>@chartdata3)
+    #    f.series(:name=> 'Gross Sales', :data=>@chartdata4)
+    #    f.options[:xAxis][:categories] = @chartdata2
+    #    #f.options[:yAxis][:title] = "Price"
+    #  end
+    #end
   end
 
 
@@ -193,9 +193,6 @@ class Reports::StaffController < Admin::AdminController
       session[:search_type] = :transaction_list
       session[:search_type_label] = 'Transaction List'
     end
-
-
-
     if params[:search][:from_date]
       session[:from_date] = params[:search][:from_date]
     end
@@ -214,70 +211,28 @@ class Reports::StaffController < Admin::AdminController
     @selected_from_date = session[:from_date].to_s
     @selected_to_date = session[:to_date].to_s
 
-    if (session[:search_type] == :day || session[:search_type] == :month || session[:search_type] == :year || session[:search_type] == :week)
-
-      if session[:search_type] == :day
-      where = "select o.id, o.created_at, DATE_FORMAT(o.created_at,'%Y-%m-%d') as created_day, o.discount_percent, sum(o.pre_discount_price-o.total) pre_discount_price, sum(total) total from orders o"
-      else
-      where = "select o.id, o.created_at, o.discount_percent, sum(o.pre_discount_price-o.total) pre_discount_price, sum(total) total from orders o"
-      end
-      if session[:terminal] != ''
-        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"
-      else
-        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.is_void = 0"
-      end
-
-      if session[:payment_type] != ''
-        where << " and o.payment_type = '#{session[:payment_type]}'"
-      end
+    if (session[:search_type] == :employee)
+      where = "select wr.* from work_reports wr"
+      where << " where wr.created_at <= '#{@selected_to_date}' and wr.created_at >= '#{@selected_from_date}'"
       if session[:employee] != ''
-        where << " and o.employee_id = '#{session[:employee]}'"
+        where << " and wr.employee_id = '#{session[:employee]}'"
       end
-      if session[:discounts_only] == "true"
-        where << " and o.discount_percent IS NOT NULL"
-      end
-      if session[:training_mode] == true
-        where << " and o.training_mode_sale = 1"
-      else
-        where << " and o.training_mode_sale = 0"
+    else
+      where = "select wr.*, DATE_FORMAT(wr.created_at,'%Y-%m-%d') as created_day from work_reports wr"
+      where << " where wr.created_at <= '#{@selected_to_date}' and wr.created_at >= '#{@selected_from_date}'"
+      if session[:employee] != ''
+        where << " and wr.employee_id = '#{session[:employee]}'"
       end
       if session[:search_type] == :day
-      where << " group by #{session[:search_type]}(o.created_at) order by o.created_at asc"
+        where << " group by created_day order by wr.created_at asc"
       else
-      where << " group by #{session[:search_type]}(o.created_at) order by o.created_at asc"
+        where << " group by #{session[:search_type]}(wr.created_at) order by wr.created_at asc"
       end
-      logger.debug(where)
-      query = Order.find_by_sql(where)
     end
 
-    if session[:search_type] == :transaction_list
-      where = "select o.id, o.created_at, o.discount_percent, o.pre_discount_price, o.total, o.payment_type, o.terminal_id, o.employee_id from orders o"
 
-      if session[:terminal] != ''
-        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"
-      else
-        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.is_void = 0"
-      end
+    query = WorkReport.find_by_sql(where)
 
-      if session[:payment_type] != ''
-        where << " and o.payment_type = '#{session[:payment_type]}'"
-      end
-      if session[:employee] != ''
-        where << " and o.employee_id = '#{session[:employee]}'"
-      end
-      if session[:discounts_only] == "true"
-        where << " and o.discount_percent IS NOT NULL"
-      end
-      if session[:training_mode] == true
-        where << " and o.training_mode_sale = 1"
-      else
-        where << " and o.training_mode_sale = 0"
-      end
-
-      query = Order.paginate_by_sql(where, :page=>session[:current_page], :per_page=> 100)
-
-    end
-   return query
   end
 
 end

@@ -61,14 +61,14 @@ function setPaymentDateParams(set_date, isManual) {
 }
 
 
-function runPaymentsSearch() {
+function runStaffSearch() {
     if (!$('#refine_button').is('.selected')) {
-    $("#report_payments_results").html("Loading...");
+    $("#report_staff_results").html("Loading...");
     $('#refine_button').addClass("selected");
 
     $.ajax({
         type: 'GET',
-        url: '/reports/payments/set_params',
+        url: '/reports/staff/set_params',
         data: {
             "search[search_type]" : search_type,
             "search[from_date]" : selectedFromDate,
@@ -82,7 +82,7 @@ function runPaymentsSearch() {
         }).done(function() {
             $.ajax({
                 type: 'GET',
-                url: '/reports/payments/payments_search',
+                url: '/reports/staff/staff_search',
                 data: {
                     "search[created_at_gt]" : selectedFromDate,
                     "search[created_at_lt]" : selectedToDate,
@@ -101,7 +101,7 @@ function setStaffReportParams() {
 
     $.ajax({
         type: 'GET',
-        url: '/reports/payments/set_params',
+        url: '/reports/staff/set_params',
         data: {
             "search[search_type]" : search_type,
             "search[from_date]" : selectedFromDate,
@@ -131,7 +131,7 @@ function loadStaffDropDown(drop_type) {
 
     $.ajax({
         type: 'GET',
-        url: '/reports/payments/load_dropdown',
+        url: '/reports/staff/load_dropdown',
         data: {
             "search[dropdown_type]" : drop_set_type,
             "search[dropdown_id]" : drop_val
@@ -143,15 +143,15 @@ function switchStaffView(view_type) {
     if (view_type == "table") {
         $("#graph_view").removeClass("selected");
         $("#table_view").addClass("selected");
-        $('#payments_items_graph').hide();
-        $('#payments_items').show();
+        $('#staff_items_graph').hide();
+        $('#staff_items').show();
     }
 
     if (view_type == "graph") {
         $("#graph_view").addClass("selected");
         $("#table_view").removeClass("selected");
-        $('#payments_items_graph').show();
-        $('#payments_items').hide();
+        $('#staff_items_graph').show();
+        $('#staff_items').hide();
 
     }
 }
@@ -161,17 +161,21 @@ function setStaffSearchType(interval_selected) {
     switch (interval_selected) {
 
         case '0':
-            search_type = 'day';
+            search_type = 'employee';
             break;
         case '1':
-            search_type = 'week';
+            search_type = 'day';
             break;
         case '2':
-            search_type = 'month';
+            search_type = 'week';
             break;
         case '3':
+            search_type = 'month';
+            break;
+        case '4':
             search_type = 'year';
             break;
+
 
 
     }
@@ -180,7 +184,7 @@ function setStaffSearchType(interval_selected) {
 
 function setStaffSelect(set_type) {
     if (set_type == -1) {
-        $('#payments_items_graph').hide();
+        $('#staff_items_graph').hide();
         $('#search_type_select').attr('selectedIndex', 0);
         $('#date_preselect').attr('selectedIndex', 10);
         $('#category_id_equals').attr('selectedIndex', 0);
@@ -232,7 +236,7 @@ function setStaffSelect(set_type) {
     }
     $.ajax({
         type: 'GET',
-        url: '/reports/payments/load_dropdown',
+        url: '/reports/staff/load_dropdown',
         data: {
             "search[dropdown_type]" : drop_set_type,
             "search[dropdown_id]" : discounts_only
@@ -240,7 +244,7 @@ function setStaffSelect(set_type) {
     }).done(function() {
     $.ajax({
         type: 'GET',
-        url: '/reports/payments/set_params',
+        url: '/reports/staff/set_params',
         data: {
             "search[search_type]" : search_type,
             "search[from_date]" : selectedFromDate,
