@@ -5,6 +5,12 @@ var clear10BottomBorderHTML = "<div class='clear_top_margin_10_bottom_border'>&n
 
 var appOnline = true;
 
+var activeTableIDSStorageKey = "active_table_ids";
+var breakUserIDSSStorageKey = "break_user_ids";
+var clockedInUserIDSSStorageKey = "clocked_in_user_ids";
+
+var activeUserIDCookieName = "current_user_id";
+
 function isTouchDevice() {
     return !disableAdvancedTouch;
 }
@@ -168,12 +174,22 @@ var inTrainingModeCookieName = "in_training_mode";
 //deletes everything but the fingerprint cookie
 function clearLocalStorageAndCookies() {
     //clear the local and session web storage
-    localStorage.clear();
+    var nextKey = null;
+    
+    for (var i = 0; i < localStorage.length; i++){
+        nextKey = localStorage.key(i);
+
+        if(nextKey == breakUserIDSSStorageKey || nextKey == clockedInUserIDSSStorageKey) {
+            continue;
+        }
+        
+        localStorage.removeItem(nextKey);
+    }
     
     //now clear cookies
     var c = document.cookie.split(";");
         
-    for(var i=0;i<c.length;i++) {
+    for(i=0;i<c.length;i++) {
         var e = c[i].indexOf("=");
         var cname = c[i].substr(0,e);
         
@@ -429,7 +445,7 @@ function deleteStorageValue(key) {
 }
 
 function getActiveTableIDS() {
-    activeTableIDSString = retrieveStorageValue("active_table_ids");
+    activeTableIDSString = retrieveStorageValue(activeTableIDSStorageKey);
     
     //alert("got active table ids " + activeTableIDSString);
     
@@ -443,7 +459,7 @@ function getActiveTableIDS() {
 function storeActiveTableIDS(activeTableIDS) {
     activeTableIDSString = activeTableIDS.join(",");
     //alert("Storing active table ids " + activeTableIDSString);
-    storeKeyValue("active_table_ids", activeTableIDSString);
+    storeKeyValue(activeTableIDSStorageKey, activeTableIDSString);
 }
 
 function addActiveTable(tableID) {
@@ -469,6 +485,90 @@ function removeActiveTable(tableID) {
     });
 
     storeActiveTableIDS(activeTableIDS);
+    
+    return newlyRemoved;
+}
+
+function getBreakUsersIDS() {
+    var breakUserIDSString = retrieveStorageValue(breakUserIDSSStorageKey);
+    
+    if(breakUserIDSString) {
+        return breakUserIDSString.split(",");
+    } else {
+        return new Array();
+    }
+}
+
+function storeBreakUsersIDS(breakUserIDS) {
+    var breakUserIDSString = breakUserIDS.join(",");
+    storeKeyValue(breakUserIDSSStorageKey, breakUserIDSString);
+}
+
+function addBreakUser(userID) {
+    var breakUsersIDS = getBreakUsersIDS();
+    
+    var newlyAdded = ($.inArray(userID.toString(), breakUsersIDS) == -1);
+    
+    if(newlyAdded) {
+        breakUsersIDS.push(userID);
+        storeBreakUsersIDS(breakUsersIDS);
+    }
+    
+    return newlyAdded;
+}
+
+function removeBreakUser(userID) {
+    var breakUsersIDS = getBreakUsersIDS();
+    
+    var newlyRemoved = ($.inArray(userID.toString(), breakUsersIDS) != -1);
+    
+    breakUsersIDS = $.grep(breakUsersIDS, function(val) {
+        return val.toString() != userID.toString();
+    });
+
+    storeBreakUsersIDS(breakUsersIDS);
+    
+    return newlyRemoved;
+}
+
+function getClockedInUsersIDS() {
+    var clockedInUserIDSString = retrieveStorageValue(clockedInUserIDSSStorageKey);
+    
+    if(clockedInUserIDSString) {
+        return clockedInUserIDSString.split(",");
+    } else {
+        return new Array();
+    }
+}
+
+function storeClockedInUsersIDS(clockedInUserIDS) {
+    var clockedInUserIDSString = clockedInUserIDS.join(",");
+    storeKeyValue(clockedInUserIDSSStorageKey, clockedInUserIDSString);
+}
+
+function addClockedInUser(userID) {
+    var clockedInUsersIDS = getClockedInUsersIDS();
+    
+    var newlyAdded = ($.inArray(userID.toString(), clockedInUsersIDS) == -1);
+    
+    if(newlyAdded) {
+        clockedInUsersIDS.push(userID);
+        storeClockedInUsersIDS(clockedInUsersIDS);
+    }
+    
+    return newlyAdded;
+}
+
+function removeClockedInUser(userID) {
+    var clockedInUsersIDS = getClockedInUsersIDS();
+    
+    var newlyRemoved = ($.inArray(userID.toString(), clockedInUsersIDS) != -1);
+    
+    clockedInUsersIDS = $.grep(clockedInUsersIDS, function(val) {
+        return val.toString() != userID.toString();
+    });
+
+    storeClockedInUsersIDS(clockedInUsersIDS);
     
     return newlyRemoved;
 }
@@ -506,6 +606,11 @@ function getRawCookie(c_name) {
     }
 
     return null;
+}
+
+function deleteRawCookie(c_name) {
+    var exdays = -1 * 365 * 100;
+    setRawCookie(c_name, null, exdays);
 }
 
 String.prototype.startsWith = function(str){
@@ -796,10 +901,10 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
     var timeoutSeconds = pollingMaxSeconds + 2;
     
     if(hardReload) {
-        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in in a couple of seconds.";
+        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in in a few seconds.";
         okFuncCall = "doClearAndReload();";
     } else {
-        message = "Settings have been changed by " + reloadTerminalId + ". Screen will reload in a couple of seconds.";
+        message = "Settings have been changed by " + reloadTerminalId + ". Screen will reload in a few seconds.";
         okFuncCall = "doReload(false);";
     }
     
@@ -1041,4 +1146,18 @@ function reloadProducts(callback) {
 
 function reloadCustomers(callback) {
     $.getScript('/javascripts/customers.js', callback);
+}
+
+function storeActiveUserID(userID) {
+    if(userID == null) {
+        deleteRawCookie(activeUserIDCookieName);
+        return;
+    }
+    
+    var exdays = 365 * 100;
+    setRawCookie(activeUserIDCookieName, userID, exdays);
+}
+
+function fetchActiveUserID() {
+    return getRawCookie(activeUserIDCookieName);
 }

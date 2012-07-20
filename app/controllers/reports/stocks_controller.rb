@@ -173,9 +173,9 @@ class Reports::StocksController < Admin::AdminController
       where = "select oi.product_id, p.category_id, p.quantity_in_stock, p.cost_price, p.code_num, SUM(oi.total_price) AS total_price, SUM(oi.quantity) AS quantity from order_items oi inner join products p on p.id = oi.product_id inner join categories c on c.id = p.category_id inner join orders o on oi.order_id = o.id"
 
       if session[:terminal] != ''
-        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"
       else
-        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}'"
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0"
       end
 
       if session[:category] != '' && session[:product] == ''

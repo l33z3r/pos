@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  before_filter :set_current_employee
   
   before_filter :http_basic_authenticate
   
@@ -8,8 +9,7 @@ class ApplicationController < ActionController::Base
   
   helper_method :e, :is_cluey_user?, :cluey_pw_used?, :current_employee, :print_money, :print_credit_balance
   helper_method :mobile_device?, :all_terminals, :all_servers, :current_interface
-  helper_method :development_mode?, :production_mode?
-  helper_method :server_ip, :active_employee_ids, :now_millis
+  helper_method :development_mode?, :production_mode?, :server_ip, :now_millis
   
   before_filter :load_global_vars
   
@@ -19,39 +19,30 @@ class ApplicationController < ActionController::Base
       
   include ActionView::Helpers::NumberHelper
   
-  def e
-    session[:current_employee_id]
-  end
-  
-  def is_cluey_user?
-    Employee.is_cluey_user? e
-  end
-  
   def cluey_pw_used?
     params[:cp] == "cluey100"
   end
 
-  def current_employee
-    begin
-      @e ||= Employee.find(session[:current_employee_id])
-    rescue ActiveRecord::RecordNotFound
-      @e = nil
-    end
+  def set_current_employee
+    @current_employee_id = request.cookies["current_user_id"]
     
-    @e
+    begin
+      @current_employee = Employee.find(@current_employee_id)
+    rescue ActiveRecord::RecordNotFound
+      @current_employee = nil
+    end
   end
   
-  def do_login e_id
-    @employee = Employee.find(e_id  )
-
-    session[:current_employee_id] = @employee.id
-    session[:current_employee_nickname] = @employee.nickname
-    session[:current_employee_admin] = 1 if @employee.is_admin
-    session[:current_employee_role_id] = @employee.role.id
-    session[:current_employee_passcode] = @employee.passcode 
-    
-    @employee.last_login = Time.now
-    @employee.save!
+  def current_employee
+    @current_employee
+  end
+  
+  def e
+    @current_employee_id
+  end
+  
+  def is_cluey_user?
+    Employee.is_cluey_user? e
   end
   
   def fetch_reload_app time
@@ -471,6 +462,7 @@ class ApplicationController < ActionController::Base
       @admin_screen_buttons_per_row = 14
     end
     
+    @timekeeping_terminal = GlobalSetting.parsed_setting_for GlobalSetting::TIMEKEEPING_TERMINAL
   end
   
   def mobile_device?
@@ -483,12 +475,6 @@ class ApplicationController < ActionController::Base
   
   def all_servers
     Employee.all.collect(&:nickname)
-  end
-  
-  def active_employee_ids
-    session[:active_employee_ids] ||= []
-    
-    session[:active_employee_ids]
   end
   
   def now_millis

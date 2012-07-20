@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120712122428) do
+ActiveRecord::Schema.define(:version => 20120716135342) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -514,6 +514,13 @@ ActiveRecord::Schema.define(:version => 20120712122428) do
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
+  create_table "shift_timestamps", :force => true do |t|
+    t.integer  "employee_id"
+    t.integer  "timestamp_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "stock_transactions", :force => true do |t|
     t.integer  "product_id"
     t.integer  "employee_id"
@@ -568,6 +575,13 @@ ActiveRecord::Schema.define(:version => 20120712122428) do
     t.integer  "sync_type"
     t.string   "time"
     t.text     "data",       :limit => 2147483647
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "work_reports", :force => true do |t|
+    t.integer  "employee_id"
+    t.text     "report_data"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

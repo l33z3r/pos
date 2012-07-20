@@ -222,9 +222,9 @@ class Reports::PaymentsController < Admin::AdminController
       where = "select o.id, o.created_at, o.discount_percent, sum(o.pre_discount_price-o.total) pre_discount_price, sum(total) total from orders o"
       end
       if session[:terminal] != ''
-        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
+        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"
       else
-        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}'"
+        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.is_void = 0"
       end
 
       if session[:payment_type] != ''
@@ -254,9 +254,9 @@ class Reports::PaymentsController < Admin::AdminController
       where = "select o.id, o.created_at, o.discount_percent, o.pre_discount_price, o.total, o.payment_type, o.terminal_id, o.employee_id from orders o"
 
       if session[:terminal] != ''
-        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
+        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"
       else
-        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}'"
+        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.is_void = 0"
       end
 
       if session[:payment_type] != ''

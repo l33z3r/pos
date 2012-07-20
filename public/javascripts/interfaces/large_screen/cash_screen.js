@@ -455,6 +455,11 @@ function moneySelected(amount) {
 }
 
 function doChargeRoom(orderData) {
+    if(inTrainingMode) {
+        niceAlert("Room will not be charged in training mode");
+        return;
+    }
+    
     //need to add some additional data to the order data to charge the room
     orderData.datetime = formatDate(new Date(clueyTimestamp()), "dd/MM/yyyy HH:mm:ss");
     orderData.location = business_name;

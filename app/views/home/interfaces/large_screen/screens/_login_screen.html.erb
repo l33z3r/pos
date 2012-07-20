@@ -7,9 +7,9 @@
     <div id="login_receipt" class="receipt">
       <div id="login_till_roll" class="till_roll"></div>
     </div>
-    
+
     <div id="entered_code_container">
-        <div id="num_container"><%= password_field :num, nil, :id => :num, :size => "18" %></div>
+      <div id="num_container"><%= password_field :num, nil, :id => :num, :size => "18" %></div>
     </div>
 
     <div id="keypad" class="keypad">
@@ -29,7 +29,7 @@
 
   <div id="active_users_buttons_container">
     <div id="active_users">
-      <%= render :partial => "/home/interfaces/large_screen/active_employees" %>
+      <%= render :partial => "/home/interfaces/large_screen/employees" %>
     </div>
 
     <div class="clear_spacer">
@@ -52,14 +52,23 @@
         </div>
         <div class="button_name">Clock Out</div>
       </div>
-      
+
+      <% if @timekeeping_terminal == @terminal_id %>
+        <div id="login_screen_button_break" class="button" data-onpress="doBreak()">
+          <div class="icon">
+            <%= image_tag "button_logos/break_button.png", :alt => nil %>
+          </div>
+          <div class="button_name">Break</div>
+        </div>
+      <% end %>
+
       <div id="login_screen_button_receipt" class="button" data-onpress="printLastReceipt()">
         <div class="icon">
           <%= image_tag "/images/button_logos/print_receipt_button.png" %>
         </div>
         <div class="button_name">Print Receipt</div>
       </div>
-      
+
       <div id="login_screen_button_tax_receipt" class="button" data-onpress="printLastReceiptWithVat()">
         <div class="icon">
           <%= image_tag "/images/button_logos/print_receipt_button.png" %>
