@@ -1,19 +1,19 @@
 <% if session[:preselect] != -1 %>
-    <% unless params[:action] == "payments_print" %>
+    <% unless params[:action] == "staff_print" %>
         <div id="options_menu">
-            <div class="option" onclick="setPaymentSelect(-1)" class="print_box">
+            <div class="option" onclick="setStaffSelect(-1)" class="print_box">
                 <div style="float: left;"><img src="/images/button_logos/home.png" alt="Print" width="24" height="24"/>
                 </div>
                 <div style="float: left; margin-top: 6px;margin-left: 2px">
                     <span style="font-weight: bold; margin-top: -3px;">  Home  |</span></div>
             </div>
-            <div class="option" onclick="window.location = '/reports/payments/payments_print'" class="print_box">
+            <div class="option" onclick="window.location = '/reports/staff/staff_print'" class="print_box">
                 <div style="float: left;"><img src="/images/button_logos/print.png" alt="Print" width="24" height="24"/>
                 </div>
                 <div style="float: left; margin-top: 6px;margin-left: 2px">
                     <span style="font-weight: bold; margin-top: -3px;">  Print  |</span></div>
             </div>
-            <div class="option" onclick="window.location = '/reports/payments/export_excel'" class="excel_box">
+            <div class="option" onclick="window.location = '/reports/staff/export_excel'" class="excel_box">
                 <div style="float: left;">
                     <img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24"/></div>
                 <div style="float: left; margin-top: 6px;margin-left: 2px">
@@ -21,15 +21,15 @@
             </div>
         </div>
     <% end %>
-    <div id="payments_items_graph" style="display: none">
+    <div id="staff_items_graph" style="display: none">
         <div id="spacer" style="height:70px;"></div>
         <%= high_chart("graph_container_sales", @h) %>
     </div>
 
 
-    <div id="payments_items" >
-        <% if params[:action] == "payments_print" %>
-            <h3>Payments Report <%= Time.now.strftime("%B %d, %Y") %></h3>
+    <div id="staff_items" >
+        <% if params[:action] == "staff_print" %>
+            <h3>Staffs Report <%= Time.now.strftime("%B %d, %Y") %></h3>
         <% end %>
 
         <% if (@s_type == :day) || (@s_type == :month) || (@s_type == :week) || (@s_type == :year) %>
@@ -107,7 +107,7 @@
             <script type="text/javascript">
                 $(function () {
                     $('.pagination a').click(function () {
-                        $("#report_payments_results").html("Loading...");
+                        $("#report_staff_results").html("Loading...");
                         $.get(this.href, null, null, 'script');
                         return false;
                     });
@@ -136,7 +136,7 @@
                 <% end %>
                     <tbody>
                     <tr>
-                        <td style="text-align: left">                                               d
+                        <td>
                             <%= week.created_at.to_datetime.strftime "%a, %d %b %Y" %>
                         </td>
                         <td>
@@ -184,17 +184,17 @@
 <% else %>
     <div id="saved_items">
         <div id="saved_items_container">
-            <div onclick="setPaymentSelect(0)" class="saved_report_button">
-                <div class="b_text" style="margin-top: 12px"><b>Payments by Transaction This Week</b></div>
+            <div onclick="setStaffSelect(0)" class="saved_report_button">
+                <div class="b_text" style="margin-top: 12px"><b>Staffs by Transaction This Week</b></div>
             </div>
-            <div onclick="setPaymentSelect(1)" class="saved_report_button">
+            <div onclick="setStaffSelect(1)" class="saved_report_button">
                 <div class="b_text" style="margin-top: 12px"><b>Discounted Transactions From Last Week</b></div>
             </div>
-            <div onclick="setPaymentSelect(2)" class="saved_report_button">
-                <div class="b_text"><b>Payments by Month This Year</b></div>
+            <div onclick="setStaffSelect(2)" class="saved_report_button">
+                <div class="b_text"><b>Staffs by Month This Year</b></div>
             </div>
-            <div onclick="setPaymentSelect(3)" class="saved_report_button">
-                <div class="b_text"><b>Payments by Day This Year</b></div>
+            <div onclick="setStaffSelect(3)" class="saved_report_button">
+                <div class="b_text"><b>Staffs by Day This Year</b></div>
             </div>
         </div>
     </div>

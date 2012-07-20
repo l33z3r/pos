@@ -300,7 +300,16 @@ Pos::Application.routes.draw do
         get 'payments_print'
         get 'export_excel'
       end
-    end
+      end
+    resources :staff, :only => [:index] do
+      collection do
+        get 'staff_search'
+        get 'set_params'
+        get 'load_dropdown'
+        get 'staff_print'
+        get 'export_excel'
+      end
+  end
   end
 
   namespace :api do 

@@ -1,147 +1,177 @@
 <% if session[:preselect] != -1 %>
-<% unless params[:action] == "stocks_print" %>
+    <% unless params[:action] == "stocks_print" %>
 
-<div id="options_menu">
-                   <div class="option" onclick="setStockSelect(-1)" class="print_box"> <div style="float: left;"><img src="/images/button_logos/home.png" alt="Print" width="24" height="24" /></div><div style="float: left; margin-top: 6px;margin-left: 2px"><span style="font-weight: bold; margin-top: -3px;">  Home  |</span></div></div>
-                   <div class="option" onclick="window.location = '/reports/stocks/stocks_print'" class="print_box"><div style="float: left;"> <img src="/images/button_logos/print.png" alt="Print" width="24" height="24" /></div><div style="float: left; margin-top: 6px;margin-left: 2px"><span style="font-weight: bold; margin-top: -3px;">  Print  |</span></div></div>
-                   <div class="option" onclick="window.location = '/reports/stocks/export_excel'" class="excel_box"><div style="float: left;"><img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24" /></div><div style="float: left; margin-top: 6px;margin-left: 2px"><span style="font-weight: bold; margin-top: -3px;">  Excel </span></div></div>
+        <div id="options_menu">
+            <div class="option" onclick="setStockSelect(-1)" class="print_box">
+                <div style="float: left;"><img src="/images/button_logos/home.png" alt="Print" width="24" height="24"/>
                 </div>
-<% end %>
-  <div id="stocks_items_graph" style="display: none">
-    <div id="spacer" style="height:70px;"></div>
-    <%= high_chart("graph_container_sales", @h) %>
-</div>
-  <div id="stock_items">
-    <% if session[:show_zeros] %>
-    <table id="product_list" class="admin_table" style="width: 100%">
-          <thead>
-            <th class="header">Name</th>
-            <th class="header">Category</th>
-            <th class="header">Current</th>
-            <th class="header">Sold</th>
-            <th class="header">Total Qty</th>
-            <th class="header">Cost ea</th>
-            <th class="header">Cost Total</th>
-            <th class="header">Revenue</th>
-            <th class="header">Code Num</th>
-          </thead>
-          <% @products.each do |product| %>
-          <tbody>
-          <tr>
-              <td>
-                  <%= product.name %>
-              </td>
-
-              <td>
-                  <%= Category.find_by_id(product.category_id).name %>
-              </td>
-              <td>
-                  <%= product.quantity_in_stock %>
-              </td>
-              <td>
-                  <%= OrderItem.find_all_by_product_id(product.id).count %>
-              </td>
-
-              <td>
-                 <%= OrderItem.find_all_by_product_id(product.id).count %>
-              </td>
-              <td>
-                 <% unless OrderItem.find_by_product_id(product.id) == nil %>
-                 <%= print_money(OrderItem.find_by_product_id(product.id).total_price) %>
-                 <% end %>
-              </td>
-              <td>
-                 <% unless OrderItem.find_by_product_id(product.id) == nil %>
-                 <%= print_money(OrderItem.sum(:total_price, :conditions =>["product_id = ?", product.id])) %>
-                 <% end %>
-              </td>
-              <td>
-                  <%= print_money(OrderItem.sum(:total_price, :conditions =>["product_id = ?", product.id])) %>
-              </td>
-              <td>
-                  <%= product.code_num %>
-              </td>
-
-          </tr>
-          <% end %>
-
-      </tbody>
-    </table>
-    <% else %>
-
-    <table id="product_list" class="admin_table" style="width: 100%">
-          <thead>
-          <% unless session[:search_type] == :by_category %>
-            <th class="header">Name</th>
-          <% end %>
-            <th class="header">Category</th>
-            <th class="header">Current</th>
-            <th class="header">Sold</th>
-            <th class="header">Total Qty</th>
-            <th class="header">Cost ea</th>
-            <th class="header">Cost Total</th>
-            <th class="header">Revenue</th>
-            <th class="header">Margin</th>
-            <th class="header">Code Num</th>
-          </thead>
-          <% @products.each do |item| %>
-          <% product = Product.find_by_id(item.product_id) %>
-          <% price = 0 %>
-          <tbody>
-          <tr>
-              <% unless session[:search_type] == :by_category %>
-              <td>
-                  <%= product.name %>
-              </td>
-              <% end %>
-              <td>
-                  <%= Category.find_by_id(product.category_id).name %>
-              </td>
-              <td>
-                  <%= product.quantity_in_stock / product.quantity_per_container %>
-              </td>
-              <td>
-                   <% quantity_sold = item.quantity  %>
-                   <%= quantity_sold.to_d/product.quantity_per_container.to_d %>
-              </td>
-              <td>
-                  <%= quantity_sold %>
-              </td>
-              <td>
-                 <% price = print_money(product.cost_price) %>
-                 <%= price %>
-              </td>
-              <td>
-                  <% total_price = print_money(price.to_d * quantity_sold.to_i) %>
-                  <%= total_price %>
-              </td>
-              <td>
-                  <% revenue = print_money(item.total_price.to_d) %>
-                  <%= revenue %>
-              </td>
-              <td>
-                  <% unless product.cost_price == 0 %>
-                  <%= print_money(per_profit(revenue, total_price, product.sales_tax_rate)) %>%
-                  <% end %>
-              </td>
-              <td>
-                  <%= product.code_num %>
-              </td>
-          </tr>
-          <% end %>
-
-      </tbody>
-    </table>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Home  |</span></div>
+            </div>
+            <div class="option" onclick="window.location = '/reports/stocks/stocks_print'" class="print_box">
+                <div style="float: left;"><img src="/images/button_logos/print.png" alt="Print" width="24" height="24"/>
+                </div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Print  |</span></div>
+            </div>
+            <div class="option" onclick="window.location = '/reports/stocks/export_excel'" class="excel_box">
+                <div style="float: left;">
+                    <img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24"/></div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Excel </span></div>
+            </div>
+        </div>
     <% end %>
-  </div>
+    <div id="stocks_items_graph" style="display: none">
+        <div id="spacer" style="height:70px;"></div>
+        <%= high_chart("graph_container_sales", @h) %>
+    </div>
+    <div id="stock_items">
+        <% if session[:show_zeros] %>
+            <table id="product_list" class="admin_table" style="width: 100%">
+                <thead>
+                <th class="header">Name</th>
+                <th class="header">Category</th>
+                <th class="header">Current</th>
+                <th class="header">Sold</th>
+                <th class="header">Total Qty</th>
+                <th class="header">Cost ea</th>
+                <th class="header">Cost Total</th>
+                <th class="header">Revenue</th>
+                <th class="header">Code Num</th>
+                </thead>
+                <% @products.each do |product| %>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <%= product.name %>
+                        </td>
+
+                        <td>
+                            <%= Category.find_by_id(product.category_id).name %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.0f", product.quantity_in_stock) %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.0f", OrderItem.find_all_by_product_id(product.id).count) %>
+                        </td>
+
+                        <td>
+                            <%= OrderItem.find_all_by_product_id(product.id).count %>
+                        </td>
+                        <td>
+                            <% unless OrderItem.find_by_product_id(product.id) == nil %>
+                                <%= print_money(OrderItem.find_by_product_id(product.id).total_price) %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <% unless OrderItem.find_by_product_id(product.id) == nil %>
+                                <%= print_money(OrderItem.sum(:total_price, :conditions =>["product_id = ?", product.id])) %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <%= print_money(OrderItem.sum(:total_price, :conditions =>["product_id = ?", product.id])) %>
+                        </td>
+                        <td>
+                            <%= product.code_num %>
+                        </td>
+
+                    </tr>
+                <% end %>
+
+                </tbody>
+            </table>
+        <% else %>
+
+            <table id="product_list" class="admin_table" style="width: 100%">
+                <thead>
+                <% unless session[:search_type] == :by_category %>
+                    <th class="header">Name</th>
+                <% end %>
+                <th class="header">Category</th>
+                <th class="header">Current</th>
+                <th class="header">Sold</th>
+                <th class="header">Total Qty</th>
+                <th class="header">Cost ea</th>
+                <th class="header">Cost Total</th>
+                <th class="header">Revenue</th>
+                <th class="header">Margin</th>
+                <th class="header">Code Num</th>
+                </thead>
+                <% @products.each do |item| %>
+                    <% product = Product.find_by_id(item.product_id) %>
+                    <% price = 0 %>
+                    <tbody>
+                    <tr>
+                        <% unless session[:search_type] == :by_category %>
+                            <td style="text-align: left">
+                                <%= product.name %>
+                            </td>
+                        <% end %>
+                        <td style="text-align: left">
+                            <%= Category.find_by_id(product.category_id).name %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.0f", product.quantity_in_stock / product.quantity_per_container) %>
+                        </td>
+                        <td>
+                            <% quantity_sold = item.quantity %>
+                            <%= sprintf("%.0f", quantity_sold.to_d/product.quantity_per_container.to_d) %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.0f", quantity_sold) %>
+                        </td>
+                        <td>
+                            <% unless product.cost_price == 0 %>
+                                <% price = print_money(product.cost_price) %>
+                                <%= price %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <% total_price = product.cost_price * quantity_sold.to_i %>
+                            <% unless product.cost_price == 0 %>
+                                <%= print_money(total_price) %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <% revenue = item.total_price.to_d %>
+                            <%= print_money(revenue) %>
+                        </td>
+                        <td>
+                            <% unless product.cost_price == 0 %>
+                                <% margin = per_profit(revenue, total_price, product.sales_tax_rate) %>
+                                <% unless (margin == nil) %>
+                                    <%= sprintf("%.0f", margin) %>%
+                                <% end %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <%= product.code_num %>
+                        </td>
+                    </tr>
+                <% end %>
+
+                </tbody>
+            </table>
+        <% end %>
+    </div>
 <% else %>
     <div id="saved_items">
-    <div id="saved_items_container">
-                        <div onclick="setStockSelect(0)" class="saved_report_button"><div class="b_text"> <b>Stocks by Product This Week</b></div></div>
-                        <div onclick="setStockSelect(1)"  class="saved_report_button"><div class="b_text"><b>Stocks by Product This Month</b></div></div>
-                        <div onclick="setStockSelect(2)"  class="saved_report_button"><div class="b_text"><b>Stocks by Product This Year</b></div></div>
-                        <div onclick="setStockSelect(3)"  class="saved_report_button"><div class="b_text"><b>Stocks by Product All Time</b></div></div>
-    </div>
+        <div id="saved_items_container">
+            <div onclick="setStockSelect(0)" class="saved_report_button">
+                <div class="b_text"><b>Stocks by Product This Week</b></div>
+            </div>
+            <div onclick="setStockSelect(1)" class="saved_report_button">
+                <div class="b_text"><b>Stocks by Product This Month</b></div>
+            </div>
+            <div onclick="setStockSelect(2)" class="saved_report_button">
+                <div class="b_text"><b>Stocks by Product This Year</b></div>
+            </div>
+            <div onclick="setStockSelect(3)" class="saved_report_button">
+                <div class="b_text"><b>Stocks by Product All Time</b></div>
+            </div>
+        </div>
     </div>
 <% end %>
 
