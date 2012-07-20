@@ -250,9 +250,7 @@ class HomeController < ApplicationController
       @last_clockout = ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_OUT)
     end
     
-    @print_work_report = GlobalSetting.parsed_setting_for GlobalSetting::PRINT_WORK_REPORT
-    
-    if @timekeeping_terminal == @terminal_id and @print_work_report
+    if @timekeeping_terminal == @terminal_id
       @last_clockin = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::CLOCK_IN}").order("created_at desc").first
       
       @breaks = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::BREAK_IN} or timestamp_type = #{ShiftTimestamp::BREAK_OUT}").where("created_at >= ?", @last_clockin.created_at).where("created_at <= ?", @last_clockout.created_at)
@@ -349,12 +347,44 @@ class HomeController < ApplicationController
       @total_payments = @all_order_items_sold_amount
       @report_data[:total_payments] = @total_payments
       
+      #clockin time
+      @report_data[:clockin_time] = @last_clockin.created_at
+      @report_data[:clockout_time] = @last_clockout.created_at
+      
+      @break_time_seconds = 0 
+      @break_start = 0
+
+      @breaks.each do |b|
+        if(b.timestamp_type == ShiftTimestamp::BREAK_IN)
+          @break_start = b.created_at
+        else
+          @break_time_seconds += (b.created_at - @break_start)
+        end
+      end
+
+      @shift_seconds = (@last_clockout.created_at - @last_clockin.created_at)
+  
+      @payable_seconds = @shift_seconds - @break_time_seconds
+   
+      @report_data[:shift_seconds] = @shift_seconds
+      @report_data[:break_seconds] = @break_time_seconds
+      @report_data[:payable_seconds] = @payable_seconds
+      
+      @hourly_rate = @employee.hourly_rate
+      @report_data[:hourly_rate] = @hourly_rate
+        
+      @payable_hours = (@payable_seconds / 3600.0).round(2)
+      @report_data[:cost] = @hourly_rate * @payable_hours
+        
       @wr = WorkReport.create(:employee_id => @employee.id, :report_data => @report_data)
     
       @custom_work_report_footer = GlobalSetting.parsed_setting_for GlobalSetting::WORK_REPORT_FOOTER_TEXT
-      
+    end
+    
+    @print_work_report = GlobalSetting.parsed_setting_for GlobalSetting::PRINT_WORK_REPORT
+    
+    if @print_work_report
       render :template => "/home/print_work_report"
-      
     else
       render :json => {:success => true}.to_json
     end
