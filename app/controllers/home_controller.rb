@@ -229,7 +229,7 @@ class HomeController < ApplicationController
     @employee_id = params[:employee_id]
     @employee = Employee.find(@employee_id)
     
-    if @timekeeping_terminal == @terminal_id
+    if @timekeeping_terminal == @terminal_id and !is_cluey_user?
       #add an entry to the shift timestamps table
       ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_IN)
     end
@@ -245,12 +245,12 @@ class HomeController < ApplicationController
     
     update_last_active @employee
     
-    if @timekeeping_terminal == @terminal_id
+    if @timekeeping_terminal == @terminal_id and !is_cluey_user?
       #add an entry to the shift timestamps table
       @last_clockout = ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_OUT)
     end
     
-    if @timekeeping_terminal == @terminal_id
+    if @timekeeping_terminal == @terminal_id and !is_cluey_user?
       @last_clockin = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::CLOCK_IN}").order("created_at desc").first
       
       @breaks = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::BREAK_IN} or timestamp_type = #{ShiftTimestamp::BREAK_OUT}").where("created_at >= ?", @last_clockin.created_at).where("created_at <= ?", @last_clockout.created_at)
@@ -412,7 +412,7 @@ class HomeController < ApplicationController
 
     update_last_active @employee
 
-    if @timekeeping_terminal == @terminal_id
+    if @timekeeping_terminal == @terminal_id and !is_cluey_user?
       #add an entry to the shift timestamps table
       ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_IN)
     end
@@ -427,7 +427,7 @@ class HomeController < ApplicationController
 
     update_last_active @employee
 
-    if @timekeeping_terminal == @terminal_id
+    if @timekeeping_terminal == @terminal_id and !is_cluey_user?
       #add an entry to the shift timestamps table
       ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_OUT)
     end
