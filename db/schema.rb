@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120721150857) do
+ActiveRecord::Schema.define(:version => 20120724094103) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -589,6 +589,8 @@ ActiveRecord::Schema.define(:version => 20120721150857) do
     t.integer  "shift_seconds",   :default => 0
     t.integer  "break_seconds",   :default => 0
     t.integer  "payable_seconds", :default => 0
+    t.float    "hourly_rate"
+    t.float    "cost"
   end
 
 end

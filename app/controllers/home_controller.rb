@@ -362,14 +362,14 @@ class HomeController < ApplicationController
       @payable_seconds = @shift_seconds - @break_time_seconds
    
       @hourly_rate = @employee.hourly_rate
-      @report_data[:hourly_rate] = @hourly_rate
         
       @payable_hours = (@payable_seconds / 3600.0).round(2)
-      @report_data[:cost] = @hourly_rate * @payable_hours
+      @cost = @hourly_rate * @payable_hours
         
       @wr = WorkReport.create(:employee_id => @employee.id, :report_data => @report_data, 
-        :clockin_time => @last_clockin.created_at, :clockout_time => @last_clockout.created_at, 
-        :shift_seconds => @shift_seconds, :break_seconds => @break_time_seconds, :payable_seconds => @payable_seconds)
+        :hourly_rate => @hourly_rate, :cost => @cost, :clockin_time => @last_clockin.created_at, 
+        :clockout_time => @last_clockout.created_at, :shift_seconds => @shift_seconds, 
+        :break_seconds => @break_time_seconds, :payable_seconds => @payable_seconds)
     
       @custom_work_report_footer = GlobalSetting.parsed_setting_for GlobalSetting::WORK_REPORT_FOOTER_TEXT
     end

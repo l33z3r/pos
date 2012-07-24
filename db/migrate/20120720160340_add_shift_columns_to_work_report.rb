@@ -1,9 +1,5 @@
 class AddShiftColumnsToWorkReport < ActiveRecord::Migration
   def self.up
-    #need to clear work reports again
-    ShiftTimestamp.all.each(&:destroy)
-    WorkReport.all.each(&:destroy)
-    
     add_column :work_reports, :clockin_time, :datetime
     add_column :work_reports, :clockout_time, :datetime
     
