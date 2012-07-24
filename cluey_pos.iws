@@ -15,21 +15,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e646dee2-e269-4160-8f2c-811321f2083d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/application_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/application_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/reports/staff_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/reports/staff_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/helpers/application_helper.rb" afterPath="$PROJECT_DIR$/app/helpers/application_helper.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/global_setting.rb" afterPath="$PROJECT_DIR$/app/models/global_setting.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/payments/_payments_tab.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/payments/_payments_tab.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/payments/index.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/payments/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/sales/index.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/sales/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/staff/_staff_tab.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/staff/_staff_tab.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/staff/export_excel.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/staff/export_excel.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/staff/index.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/staff/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/stocks/index.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/stocks/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cluey_pos.iws" afterPath="$PROJECT_DIR$/cluey_pos.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/stylesheets/interfaces/large_screen/style.css" afterPath="$PROJECT_DIR$/public/stylesheets/interfaces/large_screen/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/database.yml" afterPath="$PROJECT_DIR$/config/database.yml" />
     </list>
     <ignored path="cluey_pos.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -97,10 +83,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="export_excel.html.erb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="export_excel.html.erb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/reports/staff/export_excel.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="223" column="34" selection-start="9542" selection-end="9542" vertical-scroll-proportion="0.66193855">
+            <state line="222" column="71" selection-start="9505" selection-end="9505" vertical-scroll-proportion="-3.5810812">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="database.yml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/config/database.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="20" column="57" selection-start="562" selection-end="562" vertical-scroll-proportion="0.6036217">
               <folding />
             </state>
           </provider>
@@ -139,7 +134,6 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/public/javascripts/reports/staff_reports.js" />
-        <option value="$PROJECT_DIR$/config/database.yml" />
         <option value="$PROJECT_DIR$/app/views/reports/staff/index.html.erb" />
         <option value="$PROJECT_DIR$/public/stylesheets/interfaces/large_screen/style.css" />
         <option value="$PROJECT_DIR$/app/helpers/application_helper.rb" />
@@ -154,6 +148,7 @@
         <option value="$PROJECT_DIR$/app/controllers/application_controller.rb" />
         <option value="$PROJECT_DIR$/app/views/reports/staff/_staff_tab.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/staff/export_excel.html.erb" />
+        <option value="$PROJECT_DIR$/config/database.yml" />
       </list>
     </option>
   </component>
@@ -742,13 +737,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/public/stylesheets/interfaces/large_screen/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2631" column="7" selection-start="63313" selection-end="63316" vertical-scroll-proportion="-7.04">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/reports/sales_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="245" column="44" selection-start="8469" selection-end="8523" vertical-scroll-proportion="0.0" />
@@ -847,7 +835,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/reports/staff/export_excel.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="223" column="34" selection-start="9542" selection-end="9542" vertical-scroll-proportion="0.66193855">
+        <state line="222" column="71" selection-start="9505" selection-end="9505" vertical-scroll-proportion="-3.5810812">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/database.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="57" selection-start="562" selection-end="562" vertical-scroll-proportion="0.6036217">
           <folding />
         </state>
       </provider>
