@@ -1674,14 +1674,30 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
     width: 30px;
 }
 
-table#product_list {
+table#report_table {
     background-color:#FFFFFF;
  }
 
- table#product_list td {
+ table#report_table td.typeone {
+    background-color: #CC9999;
+    color: black;
     padding: 5px;
     border-right: solid #000 1px;
     text-align: right;
+ }
+
+ table#report_table td.typetwo {
+    background-color: #9999CC;
+    color: black;
+    padding: 5px;
+    border-right: solid #000 1px;
+    text-align: right;
+ }
+
+ table#report_table tr.typetwo {
+    background-color: #9999CC;
+    color: black;
+
  }
 
 

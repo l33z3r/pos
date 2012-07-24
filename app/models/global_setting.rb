@@ -715,6 +715,18 @@ class GlobalSetting < ActiveRecord::Base
     @setting = find_or_create_by_key(:key => property.to_s, :value => "Not Set", :label_text => LABEL_MAP[property])
     @setting
   end
+
+  def self.report_date_format
+    @clockFormat = GlobalSetting.parsed_setting_for GlobalSetting::CLOCK_FORMAT
+
+    if @clockFormat == "12"
+      @report_date_format = "%d/%m/%Y %I:%M"
+    else
+      @report_date_format = "%d/%m/%Y %H:%M"
+    end
+
+    return @report_date_format
+  end
   
   def self.default_date_format
     @clockFormat = GlobalSetting.parsed_setting_for GlobalSetting::CLOCK_FORMAT

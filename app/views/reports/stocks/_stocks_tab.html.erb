@@ -28,7 +28,7 @@
     </div>
     <div id="stock_items">
         <% if session[:show_zeros] %>
-            <table id="product_list" class="admin_table" style="width: 100%">
+            <table id="report_table" class="admin_table" style="width: 100%">
                 <thead>
                 <th class="header">Name</th>
                 <th class="header">Category</th>
@@ -42,7 +42,7 @@
                 </thead>
                 <% @products.each do |product| %>
                     <tbody>
-                    <tr>
+                    <tr class="<%= cycle("even", "odd") %>">
                         <td>
                             <%= product.name %>
                         </td>
@@ -83,7 +83,7 @@
             </table>
         <% else %>
 
-            <table id="product_list" class="admin_table" style="width: 100%">
+            <table id="report_table" class="admin_table" style="width: 100%">
                 <thead>
                 <% unless session[:search_type] == :by_category %>
                     <th class="header">Name</th>
@@ -102,7 +102,7 @@
                     <% product = Product.find_by_id(item.product_id) %>
                     <% price = 0 %>
                     <tbody>
-                    <tr>
+                    <tr class="<%= cycle("even", "odd") %>">
                         <% unless session[:search_type] == :by_category %>
                             <td style="text-align: left">
                                 <%= product.name %>

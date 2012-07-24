@@ -214,8 +214,8 @@ module ApplicationHelper
   end
 
   def hours_mins_for_seconds num_seconds
-    @num_seconds_in_minute = 60
-    @num_seconds_in_hour = 3600
+    @num_seconds_in_minute = 60.0
+    @num_seconds_in_hour = 3600.0
   
     @complete_hours = (num_seconds/@num_seconds_in_hour).to_i
     @hours_rounded = (num_seconds/@num_seconds_in_hour).round(2)

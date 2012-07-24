@@ -377,7 +377,9 @@ class ApplicationController < ActionController::Base
     @business_email_address = GlobalSetting.parsed_setting_for GlobalSetting::EMAIL
     
     @defaultDateFormat = GlobalSetting.default_date_format
-    
+
+    @reportDateFormat = GlobalSetting.report_date_format
+
     @tax_label = GlobalSetting.parsed_setting_for GlobalSetting::TAX_LABEL
     @tax_chargable = GlobalSetting.parsed_setting_for GlobalSetting::TAX_CHARGABLE
     
