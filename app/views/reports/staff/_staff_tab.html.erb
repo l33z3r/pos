@@ -23,7 +23,6 @@
     <% end %>
     <div id="staff_items_graph" style="display: none">
         <div id="spacer" style="height:70px;"></div>
-        <%= high_chart("graph_container_sales", @h) %>
     </div>
 
 
@@ -36,23 +35,22 @@
 
             <table id="product_list" class="admin_table" style="width: 100%">
                 <thead>
+
                 <th class="header">Date</th>
-                <th class="header">Day</th>
-                <th class="header"></th>
-                <th class="header"></th>
-                <th class="header"></th>
-                <th class="header">Total</th>
-                <th class="header">Discount</th>
-                <th class="header">Amount Paid</th>
+                <th class="header">Total Hours</th>
+                <th class="header">Breaks</th>
+                <th class="header">Hours Payable</th>
+                <th class="header">Rate</th>
+                <th class="header">Cost</th>
                 </thead>
                 <% total_items = 0 %>
                 <% @orders.each do |week| %>
 
-
+                    <% @work_data = week[:report_data] %>
                     <tbody>
                     <tr>
                         <td>
-                           <% if @s_type == :day %>
+                         <% if @s_type == :day %>
                                 <%= week.created_at.strftime("%B %d, %Y") %>
                             <% end %>
                             <% if @s_type == :week %>
@@ -65,35 +63,18 @@
                                 <%= week.created_at.strftime("%Y") %>
                             <% end %>
                         </td>
-
                         <td>
-                           <% if @s_type == :day %>
-                                <%= DAYS_OF_THE_WEEK[week.created_at.wday.to_i] %>
-                            <% end %>
-                            <% if @s_type == :week %>
-                                Monday
-                            <% end %>
+                           <%= hours_mins_for_seconds week.shift_seconds %>
+                        </td>
+                        <td>
+                           <%= hours_mins_for_seconds week.break_seconds %>
+                        </td>
+                        <td>
+                            <%= hours_mins_for_seconds week.payable_seconds %>
                         </td>
                         <td>
                         </td>
                         <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                            <% if week.pre_discount_price != nil %>
-                                <%= print_money(week.total + week.pre_discount_price) %>
-                            <% else %>
-                                <%= print_money(week.total) %>
-                            <% end %>
-                        </td>
-                        <td>
-                            <% if week.pre_discount_price != nil %>
-                                <%= print_money( week.pre_discount_price) %>
-                            <% end %>
-                        </td>
-                        <td>
-                            <%= print_money( week.total) %>
                         </td>
                     </tr>
                 <% end %>
@@ -101,9 +82,7 @@
             </table>
 
         <% else %>
-           <div id="pag_container">
-            <%= will_paginate(@orders) %>
-           </div>
+
             <script type="text/javascript">
                 $(function () {
                     $('.pagination a').click(function () {
@@ -115,67 +94,83 @@
             </script>
             <table id="product_list" class="admin_table" style="width: 100%">
                 <thead>
-                <th class="header">Date</th>
-                <th class="header">Time</th>
-                <th class="header">Order Id</th>
-                <th class="header">Terminal</th>
-                <th class="header">Employees</th>
-                <th class="header">Type</th>
-                <th class="header">Total</th>
-                <th class="header">Discount</th>
-                <th class="header">Amount Paid</th>
+                <th class="header">Name</th>
+                <th class="header">ID</th>
+                <th class="header">Start Date</th>
+                <th class="header">Finish Date</th>
+                <th class="header">Total Hours</th>
+                <th class="header">Breaks</th>
+                <th class="header">Hours Payable</th>
+                <th class="header">Rate</th>
+                <th class="header">Cost</th>
                 </thead>
-                <% total_items = 0 %>
-                <% total_net = 0 %>
-                <% total_discount = 0 %>
-                <% total_gross = 0 %>
+                <% total_cost = 0 %>
+                <% total_hours_payable = 0 %>
+                <% total_hours = 0 %>
                 <% @orders.each do |week| %>
-                <% total_net += week.total %>
-                <% if week.discount_percent != nil %>
-                <% total_discount += week.pre_discount_price-week.total %>
-                <% end %>
+
+                    <% @work_data = week[:report_data] %>
+                    <% @employee = Employee.find_by_id(week.employee_id) %>
+
+                    <% total_cost += @work_data[:cost] %>
+                    <% total_hours_payable += week.payable_seconds %>
+                    <% total_hours += week.shift_seconds %>
                     <tbody>
                     <tr>
                         <td>
-                            <%= week.created_at.to_datetime.strftime "%a, %d %b %Y" %>
-                        </td>
-                        <td>
-                            <%= week.created_at.to_datetime.strftime "%l:%M%P" %>
-                        </td>
-                        <td>
-                            <%= week.id %>
-                        </td>
-                        <td>
-                            <%= week.terminal_id %>
-                        </td>
-                        <td>
-                            <%= Employee.find_by_id(week.employee_id).name %>
-                        </td>
-                        <td>
-                            <%= week.payment_type %>
-                        </td>
-                        <td>
-                            <% if week.pre_discount_price != nil %>
-                            <%= print_money(week.pre_discount_price) %>
-                            <% total_gross += week.pre_discount_price  %>
-                            <% else %>
-                            <%= print_money(week.total) %>
-                            <% total_gross += week.total %>
-                            <% end %>
-                        </td>
-                        <td>
-                            <% if week.pre_discount_price != nil %>
-                            <%= print_money( week.pre_discount_price-week.total) %>
-                            <% end %>
-                        </td>
-                        <td>
-                            <%= print_money( week.total) %>
+                          <%= @employee.name %>
                         </td>
 
-
+                        <td>
+                           <%= @employee.id %>
+                        </td>
+                        <td>
+                           <%= week.clockin_time.to_datetime.strftime "%a, %d %b %Y, %l:%M%P" %>
+                        </td>
+                        <td>
+                            <%= week.clockout_time.to_datetime.strftime "%a, %d %b %Y, %l:%M%P" %>
+                        </td>
+                        <td>
+                             <%= hours_mins_for_seconds week.shift_seconds %>
+                        </td>
+                        <td>
+                           <%= hours_mins_for_seconds week.break_seconds %>
+                        </td>
+                        <td>
+                            <%= hours_mins_for_seconds week.payable_seconds %>
+                        </td>
+                        <td>
+                            <%= @work_data[:hourly_rate] %>
+                        </td>
+                        <td>
+                            <%= @work_data[:cost] %>
+                        </td>
                     </tr>
                 <% end %>
-
+                  <tr>
+                    <td style="text-align: left; border-top: 2px solid">
+                        <b>Total:</b>
+                    </td>
+                      <td style="text-align: right; border-top: 2px solid;">
+                    </td>
+                      <td style="text-align: right; border-top: 2px solid;">
+                    </td>
+                      <td style="text-align: right; border-top: 2px solid;">
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid">
+                        <%= hours_mins_for_seconds total_hours %>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid; ">
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid;">
+                        <%= hours_mins_for_seconds total_hours_payable %>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid;">
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid">
+                        <%= print_money(total_cost) %>
+                    </td>
+                </tr>
                 </tbody>
             </table>
             </div>
@@ -183,18 +178,15 @@
         <% end %>
 <% else %>
     <div id="saved_items">
-        <div id="saved_items_container">
+        <div id="saved_items_container" style="margin-left: 200px;">
             <div onclick="setStaffSelect(0)" class="saved_report_button">
-                <div class="b_text" style="margin-top: 12px"><b>Staffs by Transaction This Week</b></div>
+                <div class="b_text" style="margin-top: 12px"><b>Times By Employee This Week</b></div>
             </div>
             <div onclick="setStaffSelect(1)" class="saved_report_button">
-                <div class="b_text" style="margin-top: 12px"><b>Discounted Transactions From Last Week</b></div>
+                <div class="b_text" style="margin-top: 12px"><b>Times By Employee From Last Week</b></div>
             </div>
             <div onclick="setStaffSelect(2)" class="saved_report_button">
-                <div class="b_text"><b>Staffs by Month This Year</b></div>
-            </div>
-            <div onclick="setStaffSelect(3)" class="saved_report_button">
-                <div class="b_text"><b>Staffs by Day This Year</b></div>
+                <div class="b_text"><b>Times By Employee This Year</b></div>
             </div>
         </div>
     </div>

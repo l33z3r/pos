@@ -229,7 +229,7 @@ class HomeController < ApplicationController
     @employee_id = params[:employee_id]
     @employee = Employee.find(@employee_id)
     
-    if @timekeeping_terminal == @terminal_id
+    if @timekeeping_terminal == @terminal_id and !Employee.is_cluey_user?(@employee)
       #add an entry to the shift timestamps table
       ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_IN)
     end
@@ -245,12 +245,12 @@ class HomeController < ApplicationController
     
     update_last_active @employee
     
-    if @timekeeping_terminal == @terminal_id
+    if @timekeeping_terminal == @terminal_id and !Employee.is_cluey_user?(@employee)
       #add an entry to the shift timestamps table
       @last_clockout = ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_OUT)
     end
     
-    if @timekeeping_terminal == @terminal_id
+    if @timekeeping_terminal == @terminal_id and !Employee.is_cluey_user?(@employee)
       @last_clockin = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::CLOCK_IN}").order("created_at desc").first
       
       @breaks = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::BREAK_IN} or timestamp_type = #{ShiftTimestamp::BREAK_OUT}").where("created_at >= ?", @last_clockin.created_at).where("created_at <= ?", @last_clockout.created_at)
@@ -362,14 +362,14 @@ class HomeController < ApplicationController
       @payable_seconds = @shift_seconds - @break_time_seconds
    
       @hourly_rate = @employee.hourly_rate
-      @report_data[:hourly_rate] = @hourly_rate
         
       @payable_hours = (@payable_seconds / 3600.0).round(2)
-      @report_data[:cost] = @hourly_rate * @payable_hours
+      @cost = @hourly_rate * @payable_hours
         
       @wr = WorkReport.create(:employee_id => @employee.id, :report_data => @report_data, 
-        :clockin_time => @last_clockin.created_at, :clockout_time => @last_clockout.created_at, 
-        :shift_seconds => @shift_seconds, :break_seconds => @break_time_seconds, :payable_seconds => @payable_seconds)
+        :hourly_rate => @hourly_rate, :cost => @cost, :clockin_time => @last_clockin.created_at, 
+        :clockout_time => @last_clockout.created_at, :shift_seconds => @shift_seconds, 
+        :break_seconds => @break_time_seconds, :payable_seconds => @payable_seconds)
     
       @custom_work_report_footer = GlobalSetting.parsed_setting_for GlobalSetting::WORK_REPORT_FOOTER_TEXT
     end
@@ -412,7 +412,7 @@ class HomeController < ApplicationController
 
     update_last_active @employee
 
-    if @timekeeping_terminal == @terminal_id
+    if @timekeeping_terminal == @terminal_id and !Employee.is_cluey_user?(@employee)
       #add an entry to the shift timestamps table
       ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_IN)
     end
@@ -427,7 +427,7 @@ class HomeController < ApplicationController
 
     update_last_active @employee
 
-    if @timekeeping_terminal == @terminal_id
+    if @timekeeping_terminal == @terminal_id and !Employee.is_cluey_user?(@employee)
       #add an entry to the shift timestamps table
       ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_OUT)
     end
