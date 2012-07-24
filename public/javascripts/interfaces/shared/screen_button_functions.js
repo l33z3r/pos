@@ -92,6 +92,7 @@ function doSyncTableOrder() {
             return;
         }
     }
+    
     setStatusMessage("Sending Order.");
 
     orderInProcess = true;

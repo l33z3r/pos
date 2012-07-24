@@ -134,7 +134,7 @@ class OrderController < ApplicationController
   private
 
   def create_order order_params
-    Order.transaction do
+#    Order.transaction do
       @order_params = order_params
       @order_details = @order_params.delete(:order_details)
     
@@ -233,7 +233,7 @@ class OrderController < ApplicationController
                 
                 #build a stock_transaction
                 @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
-                  :employee_id => @order_item.employee_id, :product_id => @oia_product,
+                  :employee_id => @order_item.employee_id, :product_id => @oia_product.id,
                   :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
               
                 @st.save
@@ -369,7 +369,7 @@ class OrderController < ApplicationController
       @success = @order_saved and @order_item_saved
     
       @success
-    end
+#    end
   end
 
 end

@@ -357,6 +357,15 @@ div#landing div#active_users_buttons_container div#active_users div.employee_box
     text-decoration: line-through;
 }
 
+div#landing div#active_users_buttons_container div#active_users div.employee_box.has_active_t0_items {
+    border: 1px solid #E36C0A;
+}
+
+div#landing div#active_users_buttons_container div#active_users div.employee_box.has_active_t0_items div.nickname {
+    text-decoration: underline;
+    font-style: italic;
+}
+
 div#landing div#active_users_buttons_container div#active_users div.employee_box div.avatar img {
     height: 60px;
 }

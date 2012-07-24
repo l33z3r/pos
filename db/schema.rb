@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120724094103) do
+ActiveRecord::Schema.define(:version => 20120724142043) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -532,6 +532,7 @@ ActiveRecord::Schema.define(:version => 20120724094103) do
     t.datetime "updated_at"
     t.integer  "delivery_id"
     t.boolean  "is_return",        :default => false
+    t.integer  "order_item_id"
   end
 
   add_index "stock_transactions", ["employee_id"], :name => "index_stock_transactions_on_employee_id"
