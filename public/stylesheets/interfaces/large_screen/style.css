@@ -1683,15 +1683,16 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
     width: 30px;
 }
 
-table#product_list {
+table#report_table {
     background-color:#FFFFFF;
  }
 
- table#product_list td {
+ table#report_table td {
     padding: 5px;
     border-right: solid #000 1px;
     text-align: right;
  }
+
 
 
 

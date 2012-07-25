@@ -57,7 +57,7 @@
                                     <option value="<%= Time.now.beginning_of_year + @opening_time.hours %>,<%= Time.now %>">This
                                         Year to Date
                                     </option>
-                                    <option value="<%= lastweek.beginning_of_week + @opening_time.hours %>,<%= yesterday.end_of_week + @opening_time.hours %>">Last
+                                    <option value="<%= lastweek.beginning_of_week + @opening_time.hours %>,<%= lastweek.end_of_week + @opening_time.hours %>">Last
                                         Week
                                     </option>
                                     <option selected="yes" value="<%= Time.now - 30.days %>,<%= Time.now %>">Last 30

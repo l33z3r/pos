@@ -32,9 +32,10 @@
                                     <option value="4">Sales by Month</option>
                                     <option value="5">Sales by Year</option>
                                     <option value="6">Sales by Product</option>
+                                    <option value="7">Sales by Category</option>
                                 </select>
                             </div>
-                            <div class="dropdown_container">
+                            <div class="dropdown_container" style="margin-left: 30px">
                                 <div class="label">Terminal</div>
                                 <select onchange="addTerminalFilter($(this).val())">
                                     <option value="">All Terminals</option>
@@ -58,7 +59,7 @@
                                     </option>
                                     <option value="<%= Time.now.beginning_of_year + @opening_time.hours  %>,<%= Time.now %>">This Year to Date
                                     </option>
-                                    <option value="<%= lastweek.beginning_of_week + @opening_time.hours %>,<%= yesterday.end_of_week + @opening_time.hours %>">Last
+                                    <option value="<%= lastweek.beginning_of_week + @opening_time.hours %>,<%= lastweek.end_of_week + @opening_time.hours %>">Last
                                         Week
                                     </option>
                                     <option selected="yes" value="<%= Time.now - 30.days %>,<%= Time.now %>">Last 30
