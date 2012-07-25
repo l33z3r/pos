@@ -173,3 +173,7 @@ function makeCustomerPaymentAdminShortcut(customerId) {
     
     goTo('/');
 }
+
+function enableEditLoyaltyPoints() {
+    $('#customer_available_points').attr("disabled", false);
+}
