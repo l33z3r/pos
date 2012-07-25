@@ -4804,13 +4804,13 @@ div#delivery_screen div#finish_delivery_subscreen div#reference_number_container
 div#delivery_screen div#finish_delivery_subscreen div#delivery_date_container {
     float: left;
     width: 50%;
-    height: 350px;
+    height: 450px;
     text-align: center;
     border-bottom: 1px solid #CCC;
 }
 
-div#delivery_screen div#finish_delivery_subscreen div#reference_number_container {
-    border-right: 1px solid #CCC;
+div#delivery_screen div#finish_delivery_subscreen div#delivery_date_container {
+    border-left: 1px solid #CCC;
 }
 
 div#delivery_screen div#finish_delivery_subscreen div#reference_number_container div.header,
@@ -4824,8 +4824,23 @@ div#delivery_screen div#finish_delivery_subscreen div#delivery_date_container di
     background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
 }
 
+div#delivery_screen div#finish_delivery_subscreen div#delivery_date_container div.header {
+    margin-bottom: 10px;
+}
+
+div#delivery_screen div#finish_delivery_subscreen div#delivery_date_container div#delivery_date_cal {
+    margin: auto;
+    width: 212px;
+}
+
+div#delivery_screen div#finish_delivery_subscreen div#reference_number_container input {
+    width: 200px;
+    height: 25px;
+}
+
 div#delivery_screen div#finish_delivery_subscreen div#finish_delivery_misc_buttons_container {
-    border-spacing: 13px;
+    margin-top: 120px;
+    border-spacing: 68px 13px;
 }
 
 div#delivery_screen div#delivery_receipt {

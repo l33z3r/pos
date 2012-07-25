@@ -37,6 +37,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: stock_transactions
@@ -52,5 +53,6 @@ end
 #  updated_at       :datetime
 #  delivery_id      :integer(4)
 #  is_return        :boolean(1)      default(FALSE)
+#  order_item_id    :integer(4)
 #
 

@@ -170,29 +170,29 @@
       <div class="header">Enter Reference Number</div>
 
       <input type="text" id="delivery_reference_number_input"/>
+
+      <div class="clear">&nbsp;</div>
+
+      <div id="finish_delivery_misc_buttons_container">
+        <div class="button" data-onpress="cancelFinishDeliverySubScreen()">
+          <div class="icon">
+            <%= image_tag "button_logos/cancel_button.png" %>
+          </div>
+          <div class="button_name">Cancel</div>
+        </div>
+        <div class="button" data-onpress="promptFinishDelivery()">
+          <div class="icon">
+            <%= image_tag "button_logos/finish_delivery_button.png" %>
+          </div>
+          <div class="button_name">Finish</div>
+        </div>
+      </div>
     </div>
 
     <div id="delivery_date_container">
       <div class="header">Enter Delivery Date</div>
 
-      <input type="text" id="delivery_date_input"/>
-    </div>
-
-    <div class="clear">&nbsp;</div>
-
-    <div id="finish_delivery_misc_buttons_container">
-      <div class="button" data-onpress="cancelFinishDeliverySubScreen()">
-        <div class="icon">
-          <%= image_tag "button_logos/cancel_button.png" %>
-        </div>
-        <div class="button_name">Cancel</div>
-      </div>
-      <div class="button" data-onpress="promptFinishDelivery()">
-        <div class="icon">
-          <%= image_tag "button_logos/finish_delivery_button.png" %>
-        </div>
-        <div class="button_name">Finish</div>
-      </div>
+      <div id="delivery_date_cal"></div>
     </div>
   </div>
 </div>

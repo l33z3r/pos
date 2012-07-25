@@ -13,7 +13,8 @@ function initDeliveryScreen() {
     if(!currentDelivery) {
         currentDelivery = {
             'items': new Array(),
-            'total': 0
+            'total': 0,
+            'received_date': utilFormatDate(new Date(clueyTimestamp()))
         };
     }
     
@@ -300,9 +301,13 @@ function getDeliveryTillRollHTML(includeHeading, includeTotal) {
     
     deliveryTillRollHTML += "<div class='delivery_till_roll_header'>";
     
+    if(currentDelivery.reference_number && currentDelivery.reference_number.length > 0) {
+        deliveryTillRollHTML += "<div class='reference_number'>REF#: " + currentDelivery.reference_number + "</div>" + clearHTML;
+    }
+    
     deliveryTillRollHTML += "<div class='nickname'>" + current_user_nickname + "</div>";
     
-    var timestamp = utilFormatDate(new Date(clueyTimestamp()));
+    var timestamp = currentDelivery.received_date;
     
     deliveryTillRollHTML += "<div class='timestamp'>" + timestamp + "</div>" + clearHTML;
     
@@ -384,16 +389,24 @@ function showFinishDeliverySubScreen() {
     $('#delivery_screen_select_product_container').hide();
     $('#finish_delivery_subscreen').show();
     
-    $('#delivery_date_input').datepicker({
-        dateFormat: 'dd-mm-yy'
+    $('#delivery_date_cal').datetimepicker({
+        dateFormat: 'dd-mm-yy',
+        defaultDate: '01/01/01',
+        timeFormat: 'hh:mm',
+        addSliderAccess: true,
+        maxDate: 0,
+        sliderAccessArgs: { touchonly: false }
     });
+    
+    //force default to now
+    $('#delivery_date_cal').datetimepicker("setDate", new Date());
     
     $('#delivery_reference_number_input').focus();
 }
 
 function cancelFinishDeliverySubScreen() {
     $('#delivery_reference_number_input').val("");
-    $('#delivery_date_input').val("");
+    $('#delivery_date_cal').val("");
     
     $('#delivery_screen_select_product_container').show();
     $('#finish_delivery_subscreen').hide();
@@ -419,13 +432,13 @@ function doFinishDelivery() {
     }
     
     receiveDeliveryInProcess = true;
-    showLoadingDiv("Processing...");
+    showLoadingDiv("Processing...");        
     
     var timeoutMillis = sendOrderToServerTimeoutSeconds * 1000;
     
     currentDelivery.employee_id = current_user_id;
     currentDelivery.reference_number = $('#delivery_reference_number_input').val();
-    currentDelivery.received_date = $('#delivery_date_input').val();
+    currentDelivery.received_date = $('#delivery_date_cal').val();
     storeDelivery();
     
     //send to server
@@ -446,6 +459,11 @@ function doFinishDelivery() {
             delivery : currentDelivery
         }
     });
+    
+    $('#delivery_reference_number_input').val("");
+    $('#delivery_date_cal').val("");
+    $('#delivery_screen_select_product_container').show();
+    $('#finish_delivery_subscreen').hide();
 }
 
 function deliverySentToServerCallback() {
