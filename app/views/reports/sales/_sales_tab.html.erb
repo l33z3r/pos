@@ -32,11 +32,13 @@
             <h3>Sales Report <%= Time.now.strftime("%B %d, %Y") %></h3>
         <% end %>
 
-        <% if (@s_type == :best_seller) || (@s_type == :worst_seller) || (@s_type == :by_product) %>
+        <% if (@s_type == :best_seller) || (@s_type == :worst_seller) || (@s_type == :by_product) || (@s_type == :by_category) %>
 
             <table id="report_table" class="admin_table" style="width: 100%;">
                 <thead>
+                <% if session[:search_type] != :by_category %>
                 <th class="header">Product</th>
+                <% end %>
                 <th class="header">Category</th>
                 <th class="header">Items Qty</th>
                 <th class="header">Gross Sales</th>
@@ -64,11 +66,13 @@
                     <% if product %>
                         <tbody>
                         <tr class="<%= cycle("even", "odd") %>">
+                            <% if session[:search_type] != :by_category %>
                             <td style="text-align: left">
                                 <% if nil != product.name %>
                                     <%= product.name %>
                                 <% end %>
                             </td>
+                            <% end %>
                             <td style="text-align: left">
                                 <% if Category.find_by_id(product.category_id) %>
                                     <% if Category.find_by_id(product.category_id).name %>
@@ -95,8 +99,10 @@
                     <td style="text-align: left; border-top: 2px solid">
                         <b>Total:</b>
                     </td>
+                    <% if session[:search_type] != :by_category %>
                     <td style="text-align: right; border-top: 2px solid">
                     </td>
+                    <% end %>
                     <td style="text-align: right; border-top: 2px solid; ">
                         <%= sprintf("%.0f", total_item_count) %>
                     </td>

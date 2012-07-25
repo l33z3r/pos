@@ -1678,27 +1678,12 @@ table#report_table {
     background-color:#FFFFFF;
  }
 
- table#report_table td.typeone {
-    background-color: #CC9999;
-    color: black;
+ table#report_table td {
     padding: 5px;
     border-right: solid #000 1px;
     text-align: right;
  }
 
- table#report_table td.typetwo {
-    background-color: #9999CC;
-    color: black;
-    padding: 5px;
-    border-right: solid #000 1px;
-    text-align: right;
- }
-
- table#report_table tr.typetwo {
-    background-color: #9999CC;
-    color: black;
-
- }
 
 
 

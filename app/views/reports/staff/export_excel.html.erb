@@ -52,10 +52,10 @@
                             <%= hours_mins_for_seconds week.payable_seconds %>
                         </td>
                         <td>
-                            <%= week.hourly_rate %>
+                            <%= sprintf("%.2f",week.hourly_rate) %>
                         </td>
                         <td>
-                            <%=week.cost %>
+                            <%= sprintf("%.2f",week.cost) %>
                         </td>
                     </tr>
                 <% end %>
@@ -101,9 +101,7 @@
 
                     <% @employee = Employee.find_by_id(week.employee_id) %>
 
-                    <% total_cost_per_emp += week.cost %>
-                    <% total_hours_payable_per_emp += week.payable_seconds %>
-                    <% total_hours_per_emp += week.shift_seconds %>
+
 
                     <% total_cost += week.cost %>
                     <% total_hours_payable += week.payable_seconds %>
@@ -121,18 +119,18 @@
                     </td>
                       <td style="text-align: right; ">
                     </td>
-                    <td style="text-align: left;">
+                    <td style="text-align: right;">
                        <b><%= hours_mins_for_seconds total_hours_per_emp %></b>
                     </td>
                     <td style="text-align: right; ">
                     </td>
-                    <td style="text-align: left; ">
+                    <td style="text-align: right; ">
                         <b><%= hours_mins_for_seconds total_hours_payable_per_emp %></b>
                     </td>
                     <td style="text-align: right; ">
                     </td>
-                    <td style="text-align: left; ">
-                        <b><%=  sprintf("%.2f",total_cost_per_emp) %></b>
+                    <td style="text-align: right; ">
+                        <b><%= sprintf("%.2f",total_cost_per_emp) %></b>
                     </td>
                     </tr>
                     <% total_cost_per_emp = 0 %>
@@ -147,6 +145,10 @@
                      <% end %>
                      <% last_id = week.employee_id %>
                      <% last_name = @employee.name[0..16] %>
+
+                     <% total_cost_per_emp += week.cost %>
+                     <% total_hours_payable_per_emp += week.payable_seconds %>
+                     <% total_hours_per_emp += week.shift_seconds %>
 
                      <tr class="<%= cycle("even", "odd") %>">
                         <td style="text-align: left; max-width: 110px">
@@ -171,10 +173,10 @@
                             <%= hours_mins_for_seconds week.payable_seconds %>
                         </td>
                         <td>
-                            <%=  sprintf("%.2f",week.hourly_rate) %>
+                            <%= sprintf("%.2f",week.hourly_rate) %>
                         </td>
                         <td>
-                            <%=  sprintf("%.2f",week.cost) %>
+                            <%= sprintf("%.2f",week.cost) %>
                         </td>
                     </tr>
                 <% end %>
@@ -189,18 +191,18 @@
                     </td>
                       <td style="text-align: right;">
                     </td>
-                    <td style="text-align: left;">
+                    <td style="text-align: right;">
                        <b><%= hours_mins_for_seconds total_hours_per_emp %></b>
                     </td>
                     <td style="text-align: right; ">
                     </td>
-                    <td style="text-align: left; ">
+                    <td style="text-align: right; ">
                         <b><%= hours_mins_for_seconds total_hours_payable_per_emp %></b>
                     </td>
                     <td style="text-align: right; ">
                     </td>
-                    <td style="text-align: left; ">
-                        <b><%=  sprintf("%.2f",total_cost_per_emp) %></b>
+                    <td style="text-align: right; ">
+                        <b><%= sprintf("%.2f",total_cost_per_emp) %></b>
                     </td>
                     </tr>
                      <% end %>
@@ -215,18 +217,18 @@
                     </td>
                       <td style="text-align: right; border-top: 2px solid;">
                     </td>
-                    <td style="text-align: left; border-top: 2px solid">
+                    <td style="text-align: right; border-top: 2px solid">
                         <%= hours_mins_for_seconds total_hours %>
                     </td>
                     <td style="text-align: right; border-top: 2px solid; ">
                     </td>
-                    <td style="text-align: left; border-top: 2px solid;">
+                    <td style="text-align: right; border-top: 2px solid;">
                         <%= hours_mins_for_seconds total_hours_payable %>
                     </td>
                     <td style="text-align: right; border-top: 2px solid;">
                     </td>
-                    <td style="text-align: left; border-top: 2px solid">
-                        <%=  sprintf("%.2f",total_cost) %>
+                    <td style="text-align: right; border-top: 2px solid">
+                        <%= sprintf("%.2f",total_cost) %>
                     </td>
                 </tr>
                 </tbody>

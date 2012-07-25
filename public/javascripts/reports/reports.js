@@ -456,6 +456,12 @@ function setSearchType(interval_selected) {
             $('#product_search').val('');
             $('#string_search_box').hide();
             break;
+        case '7':
+            search_type = 'by_category';
+            $('#product_dropdown').hide();
+            $('#product_search').val('');
+            $('#string_search_box').hide();
+            break;
 
     }
     setReportParams();
