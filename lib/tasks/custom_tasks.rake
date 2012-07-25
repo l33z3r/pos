@@ -124,6 +124,7 @@ task :build_stock_transactions => :environment do
       
     next if !@order_item.stock_transactions.empty?
     next if @order_item.is_void
+    next if @order_item.order.is_void
       
     @is_training_mode_sale = @order_item.order.training_mode_sale
       
