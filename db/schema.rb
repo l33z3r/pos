@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120724142043) do
+ActiveRecord::Schema.define(:version => 20120725111227) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -118,6 +118,8 @@ ActiveRecord::Schema.define(:version => 20120724142043) do
     t.float    "total"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "received_date"
+    t.string   "reference_number"
   end
 
   create_table "discounts", :force => true do |t|

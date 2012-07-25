@@ -7,7 +7,11 @@ class DeliveryController < ApplicationController
       @delivery_params = params[:delivery]
       @employee_id = @delivery_params[:employee_id]
     
-      @delivery = Delivery.create(:employee_id => @employee_id, :total => @delivery_params[:total])
+      @reference_number = @delivery_params[:reference_number]
+      @received_date = @delivery_params[:received_date]
+      
+      @delivery = Delivery.create(:employee_id => @employee_id, :total => @delivery_params[:total], 
+        :reference_number => @reference_number, :received_date => @received_date)
     
       @delivery_items = @delivery_params[:items]
     

@@ -216,12 +216,9 @@ function showLoginScreen() {
 
     for (var i = 0; i < userIDS.length; i++) {
         var nextUserID = userIDS[i];
-        console.log(nextUserID);
+        
         var nextTable0Order = getOrderFromStorage(nextUserID);
-        try{
-            console.log(nextTable0Order.items.length);
-        }catch(e) {console.log("ERR");}
-    
+        
         if(nextTable0Order && nextTable0Order.items && nextTable0Order.items.length > 0) {
             $('#employee_box_' + nextUserID).addClass("has_active_t0_items");
         } else {

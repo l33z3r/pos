@@ -4787,8 +4787,45 @@ div#reports_container  div.saved_report_button div.b_text {
 
 div#delivery_screen div#delivery_screen_select_product_container {
     width: 730px;
+    height: 440px;
     float: right;
     padding: 0px 10px;
+}
+
+div#delivery_screen div#finish_delivery_subscreen {
+    display: none;
+    width: 729px;
+    float: right;
+    margin: 0px 10px;
+    border: 1px solid #CCC;
+}
+
+div#delivery_screen div#finish_delivery_subscreen div#reference_number_container,
+div#delivery_screen div#finish_delivery_subscreen div#delivery_date_container {
+    float: left;
+    width: 50%;
+    height: 350px;
+    text-align: center;
+    border-bottom: 1px solid #CCC;
+}
+
+div#delivery_screen div#finish_delivery_subscreen div#reference_number_container {
+    border-right: 1px solid #CCC;
+}
+
+div#delivery_screen div#finish_delivery_subscreen div#reference_number_container div.header,
+div#delivery_screen div#finish_delivery_subscreen div#delivery_date_container div.header {
+    padding: 15px;
+    margin-bottom: 140px;
+    font-size: 16px;
+    font-weight: bold;
+    border-bottom: 1px solid #CCC;
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+}
+
+div#delivery_screen div#finish_delivery_subscreen div#finish_delivery_misc_buttons_container {
+    border-spacing: 13px;
 }
 
 div#delivery_screen div#delivery_receipt {

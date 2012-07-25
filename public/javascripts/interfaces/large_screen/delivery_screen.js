@@ -375,6 +375,30 @@ function storeDelivery() {
     storeKeyJSONValue(currentDeliveryStorageKey, currentDelivery);
 }
 
+function showFinishDeliverySubScreen() {
+    if(currentDelivery.items.length == 0) {
+        niceAlert("No Delivery Items Present!");
+        return;
+    }
+    
+    $('#delivery_screen_select_product_container').hide();
+    $('#finish_delivery_subscreen').show();
+    
+    $('#delivery_date_input').datepicker({
+        dateFormat: 'dd-mm-yy'
+    });
+    
+    $('#delivery_reference_number_input').focus();
+}
+
+function cancelFinishDeliverySubScreen() {
+    $('#delivery_reference_number_input').val("");
+    $('#delivery_date_input').val("");
+    
+    $('#delivery_screen_select_product_container').show();
+    $('#finish_delivery_subscreen').hide();
+}
+
 function promptFinishDelivery() {
     ModalPopups.Confirm('niceAlertContainer',
         'Cancel Delivery', "<div id='nice_alert'>Are you sure you want to finish this delivery?</div>",
@@ -389,11 +413,6 @@ function promptFinishDelivery() {
 }
 
 function doFinishDelivery() {
-    if(currentDelivery.items.length == 0) {
-        doCancelDelivery();
-        return;
-    }
-    
     if(receiveDeliveryInProcess) {
         niceAlert("Processing, please wait!");
         return;
@@ -405,6 +424,8 @@ function doFinishDelivery() {
     var timeoutMillis = sendOrderToServerTimeoutSeconds * 1000;
     
     currentDelivery.employee_id = current_user_id;
+    currentDelivery.reference_number = $('#delivery_reference_number_input').val();
+    currentDelivery.received_date = $('#delivery_date_input').val();
     storeDelivery();
     
     //send to server
