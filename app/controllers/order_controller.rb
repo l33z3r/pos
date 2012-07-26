@@ -334,12 +334,14 @@ class OrderController < ApplicationController
             @loyalty_customer.decrement!(:available_points, @points_used_this_sale.to_f)
             
             CustomerPointsAllocation.create({:customer_id => @loyalty_customer.id, :order_id => @order.id, 
-                :amount => @points_used_this_sale * -1, :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
+                :allocation_type => CustomerPointsAllocation::SALE_REDUCE, :amount => @points_used_this_sale * -1, 
+                :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
           end
           
           @points_earned = @loyalty_details[:points_earned]
           CustomerPointsAllocation.create({:customer_id => @loyalty_customer.id, :order_id => @order.id, 
-              :amount => @points_earned, :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
+              :allocation_type => CustomerPointsAllocation::SALE_EARN, :amount => @points_earned, 
+              :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
           
           @loyalty_customer.increment!(:available_points, @points_earned.to_f)
         end

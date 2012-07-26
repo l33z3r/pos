@@ -30,6 +30,13 @@ function initDeliveryScreen() {
     setReturnDeliveryItem(false);
     
     redrawDeliveryReceipt();
+    
+    //are we allowing the change cost price button
+    if(typeof(display_button_passcode_permissions[changeCostPriceButtonID]) != 'undefined') {
+        $('#delivery_screen_change_cost_price_button').show();
+    } else {
+        $('#delivery_screen_change_cost_price_button').hide();
+    }
 }
 
 function resetDeliveryProductSelect() {
@@ -395,7 +402,9 @@ function showFinishDeliverySubScreen() {
         timeFormat: 'hh:mm',
         addSliderAccess: true,
         maxDate: 0,
-        sliderAccessArgs: { touchonly: false }
+        sliderAccessArgs: {
+            touchonly: false
+        }
     });
     
     //force default to now

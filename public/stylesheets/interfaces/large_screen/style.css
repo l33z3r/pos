@@ -345,7 +345,7 @@ div#landing div#active_users_buttons_container div#active_users div.employee_box
     background-color: #FFF;
 }
 
-div#landing div#active_users_buttons_container div#active_users div.employee_box.on_break {
+div#landing div#active_users_buttons_container div#active_users div.employee_box.on_break {    
     background-color: #CCC;
 }
 
@@ -358,12 +358,9 @@ div#landing div#active_users_buttons_container div#active_users div.employee_box
 }
 
 div#landing div#active_users_buttons_container div#active_users div.employee_box.has_active_t0_items {
-    border: 1px solid #E36C0A;
-}
-
-div#landing div#active_users_buttons_container div#active_users div.employee_box.has_active_t0_items div.nickname {
-    text-decoration: underline;
-    font-style: italic;
+    border: 3px solid #E36C0A;
+    width: 93px;
+    height: 81px;
 }
 
 div#landing div#active_users_buttons_container div#active_users div.employee_box div.avatar img {
