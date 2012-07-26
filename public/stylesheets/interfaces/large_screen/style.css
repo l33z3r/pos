@@ -1193,6 +1193,16 @@ div#menu_screen div#order_item_additions div.grid_row div.grid_item.empty {
     cursor: auto;
 }
 
+/* Cash Out Subscreen */
+
+div#menu_screen div#cash_out_subscreen {
+    display: none;
+    height: 546px;
+    background-color: #E0E0E0;
+}
+
+/* End Cash Out Subscreen */
+
 div#menu_screen div#add_note div#keyboard {
     height: 300px;
     width: 700px;

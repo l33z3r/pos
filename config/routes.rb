@@ -145,6 +145,12 @@ Pos::Application.routes.draw do
       end
     end
     
+    resources :cash_out_presets, :only => [:create, :destroy] do
+      collection do
+        post 'update_multiple'
+      end
+    end
+    
     resources :payment_methods, :only => [:create, :destroy] do
       member do
         post 'default'

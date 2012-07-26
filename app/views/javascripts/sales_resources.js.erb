@@ -1,0 +1,26 @@
+var paymentMethods = {};
+
+<% PaymentMethod.all.each do |pm|-%>
+  payment_method_info = {
+  id : '<%= pm.id %>',
+  name : '<%= pm.name.downcase %>', 
+  payment_integration_id : <%=pm.payment_integration_id%>, 
+  receipt_footer_id : <%=pm.receipt_footer ? pm.receipt_footer_id : "null"%>, 
+  open_cash_drawer : <%=pm.open_cash_drawer%>
+  }
+
+  paymentMethods[payment_method_info.id] = payment_method_info;
+
+<% end -%>
+
+var cashOutPresets = new Array();
+
+<% CashOutPreset.all.each do |cop|-%>
+  cash_out_preset_info = {
+  id : '<%= cop.id %>',
+  label : '<%= cop.label.downcase %>'
+  }
+
+  cashOutPresets.push(cash_out_preset_info);
+
+<% end -%>

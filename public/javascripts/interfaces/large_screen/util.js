@@ -614,6 +614,8 @@ function hideAllMenuSubScreens() {
     
     $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').removeClass("selected");
     $('#order_item_additions').hide();
+    
+    $('#cash_out_subscreen').hide();
 }
 
 function currentMenuSubscreenIsMenu() {
@@ -622,6 +624,10 @@ function currentMenuSubscreenIsMenu() {
 
 function currentMenuSubscreenIsModifyOrderItem() {
     return $('#order_item_additions').is(":visible");
+}
+
+function currentMenuSubscreenIsCashOutSubscreen() {
+    return $('#cash_out_subscreen').is(":visible");
 }
 
 function initNoteScreenKeyboard() {

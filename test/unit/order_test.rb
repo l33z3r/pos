@@ -14,6 +14,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: orders
@@ -43,5 +44,6 @@ end
 #  client_name           :string(255)     default(""), not null
 #  time_started          :string(255)
 #  training_mode_sale    :boolean(1)      default(FALSE)
+#  room_id               :integer(4)
 #
 

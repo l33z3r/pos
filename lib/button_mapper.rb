@@ -79,8 +79,7 @@ class ButtonMapper
   EDIT_LOYALTY_POINTS_BUTTON = 76
   
   RESTRICTED_BUTTON_IDS = [
-    ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON,
-    CASH_OUT_BUTTON, STOCK_TAKE_BUTTON,
+    ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON, STOCK_TAKE_BUTTON,
     PRINTERS_BUTTON, CHANGE_WAITER_BUTTON, REFUND_BUTTON, WASTE_BUTTON, CLIENT_BUTTON, THEMES_BUTTON
   ]
   
@@ -164,7 +163,7 @@ class ButtonMapper
     when DELIVERY_BUTTON
       @retval = si_check(DELIVERY_BUTTON, "startDeliveryMode();")
     when CASH_OUT_BUTTON
-      @retval = "alert('cash out button clicked');"
+      @retval = si_check(CASH_OUT_BUTTON, ms_check("showCashOutSubscreen();"))
     when RECEIPT_SETUP_BUTTON
       @retval = "alert('receipt setup button clicked');"
     when PAYMENT_METHODS_BUTTON
