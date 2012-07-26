@@ -103,3 +103,98 @@ task :issue_hard_reset => :environment do
   
   puts "Done!"
 end
+
+desc "Builds Stock Transactions for all existing sales"
+task :build_stock_transactions => :environment do
+  ActiveRecord::Base.connection.execute("update products set quantity_in_stock = 0")
+  ActiveRecord::Base.connection.execute("delete from stock_transactions")
+  ActiveRecord::Base.connection.execute("delete from deliveries")
+    
+  @all_count = OrderItem.all.count
+  puts "Building Stock Transactions For #{@all_count} Order Items"
+    
+  @deduct_stock_during_training_mode = GlobalSetting.parsed_setting_for GlobalSetting::DEDUCT_STOCK_DURING_TRAINING_MODE
+    
+  @count = 0
+    
+  OrderItem.all.each do |oi|
+    @count += 1
+    puts "Processing OrderItem #{@count} of #{@all_count}"
+    @order_item = oi
+      
+    next if !@order_item.stock_transactions.empty?
+    next if @order_item.is_void
+    next if @order_item.order.is_void
+      
+    @is_training_mode_sale = @order_item.order.training_mode_sale
+      
+    @item_stock_usage = @order_item.quantity.to_f
+      
+    if @order_item.is_double
+      @item_stock_usage *= 2
+    elsif @order_item.is_half
+      @item_stock_usage /= 2
+    end
+        
+    if @order_item.oia_data
+      @order_item.oia_data.each do |index, oia|
+        if !@is_training_mode_sale or @deduct_stock_during_training_mode
+          if oia[:product_id] != "-1" and !oia[:product_id].blank?
+            #decrement stock for this oia product
+            @oia_stock_usage = @order_item.quantity.to_f
+      
+            if @order_item.is_double
+              @oia_stock_usage *= 2
+            elsif @order_item.is_half
+              @oia_stock_usage /= 2
+            end
+      
+            @oia_product = Product.find_by_id(oia[:product_id])
+      
+            @old_stock_amount = @oia_product.quantity_in_stock
+            @actual_stock_usage = @oia_product.decrement_stock @oia_stock_usage
+                
+            #build a stock_transaction
+            @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
+              :employee_id => @order_item.employee_id, :product_id => @oia_product.id,
+              :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
+              
+            @st.save
+          end
+        end
+      end
+    end
+        
+    #decrement the stock for this item
+    if @order_item.product.is_stock_item
+      @old_stock_amount = @order_item.product.quantity_in_stock
+      @actual_stock_usage = @order_item.product.decrement_stock @item_stock_usage
+              
+      #build a stock_transaction
+      @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
+        :employee_id => @order_item.employee_id, :product_id => @order_item.product.id,
+        :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
+              
+      @st.save
+    end
+            
+    #decrement the ingredient stock
+    @order_item.product.ingredients.each do |ingredient|
+      if ingredient.product.is_stock_item
+        @old_stock_amount = ingredient.product.quantity_in_stock
+              
+        @ingredient_usage = ingredient.stock_usage
+        @actual_stock_usage = ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
+                
+        #build a stock_transaction
+        @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
+          :employee_id => @order_item.employee_id, :product_id => ingredient.product.id,
+          :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
+              
+        @st.save
+      end
+    end
+  end
+    
+  puts "Finished Building Stock Transactions"
+end

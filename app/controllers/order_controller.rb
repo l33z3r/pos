@@ -134,7 +134,7 @@ class OrderController < ApplicationController
   private
 
   def create_order order_params
-    Order.transaction do
+#    Order.transaction do
       @order_params = order_params
       @order_details = @order_params.delete(:order_details)
     
@@ -226,7 +226,17 @@ class OrderController < ApplicationController
                   @oia_stock_usage /= 2
                 end
       
-                Product.find_by_id(oia[:product_id]).decrement_stock @oia_stock_usage
+                @oia_product = Product.find_by_id(oia[:product_id])
+      
+                @old_stock_amount = @oia_product.quantity_in_stock
+                @actual_stock_usage = @oia_product.decrement_stock @oia_stock_usage
+                
+                #build a stock_transaction
+                @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
+                  :employee_id => @order_item.employee_id, :product_id => @oia_product.id,
+                  :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
+              
+                @st.save
               end
             end
           end
@@ -253,9 +263,6 @@ class OrderController < ApplicationController
         @order_item.is_double = item[:is_double]
         @order_item.is_half = item[:is_half]
       
-        #this happens for every item
-        @order_item_saved = @order_item_saved and @order_item.save
-      
         @item_stock_usage = @order_item.quantity.to_f
       
         if @order_item.is_double
@@ -268,18 +275,38 @@ class OrderController < ApplicationController
           if !@order_item.is_void
             #decrement the stock for this item
             if @order_item.product.is_stock_item
-              @order_item.product.decrement_stock @item_stock_usage
+              @old_stock_amount = @order_item.product.quantity_in_stock
+              @actual_stock_usage = @order_item.product.decrement_stock @item_stock_usage
+              
+              #build a stock_transaction
+              @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
+                :employee_id => @order_item.employee_id, :product_id => @order_item.product.id,
+                :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
+              
+              @st.save
             end
             
             #decrement the ingredient stock
             @order_item.product.ingredients.each do |ingredient|
               if ingredient.product.is_stock_item
+                @old_stock_amount = ingredient.product.quantity_in_stock
+              
                 @ingredient_usage = ingredient.stock_usage
-                ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
+                @actual_stock_usage = ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
+                
+                #build a stock_transaction
+                @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
+                  :employee_id => @order_item.employee_id, :product_id => ingredient.product.id,
+                  :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
+              
+                @st.save
               end
             end
           end
         end
+        
+        #this happens for every item
+        @order_item_saved = @order_item_saved and @order_item.save
       end
       
       #record a card charge if there was one
@@ -342,7 +369,7 @@ class OrderController < ApplicationController
       @success = @order_saved and @order_item_saved
     
       @success
-    end
+#    end
   end
 
 end

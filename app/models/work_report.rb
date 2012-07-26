@@ -36,6 +36,7 @@ class WorkReport < ActiveRecord::Base
   
 end
 
+
 # == Schema Information
 #
 # Table name: work_reports
@@ -50,5 +51,7 @@ end
 #  shift_seconds   :integer(4)      default(0)
 #  break_seconds   :integer(4)      default(0)
 #  payable_seconds :integer(4)      default(0)
+#  hourly_rate     :float
+#  cost            :float
 #
 

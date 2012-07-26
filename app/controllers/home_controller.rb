@@ -67,7 +67,6 @@ class HomeController < ApplicationController
     @order_ready_notification = fetch_order_ready_notification @last_order_ready_notification_time
     
     if @order_ready_notification
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       @order_ready_request_time = @order_ready['order_ready_request_time']
       @order_ready_request_employee_id = @order_ready['order_ready_request_employee_id']
       @order_ready_request_terminal_id = @order_ready['order_ready_request_terminal_id']

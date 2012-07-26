@@ -1,7 +1,8 @@
 class StockTransaction < ActiveRecord::Base
   belongs_to :product
   belongs_to :employee
-  
+  belongs_to :order_item
+
   STOCK_UPDATE = 1
   STOCK_TRANSFER = 2
   DELIVERY = 3
@@ -36,6 +37,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: stock_transactions
@@ -51,5 +53,6 @@ end
 #  updated_at       :datetime
 #  delivery_id      :integer(4)
 #  is_return        :boolean(1)      default(FALSE)
+#  order_item_id    :integer(4)
 #
 

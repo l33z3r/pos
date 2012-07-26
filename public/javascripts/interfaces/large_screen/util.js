@@ -210,6 +210,22 @@ function showLoginScreen() {
     clearNavTitle();
     hideAllScreens();
     $('#landing').show();
+    
+    //if a user has items on their table 0 receipt show it on their logo
+    var userIDS = getClockedInUsersIDS();
+
+    for (var i = 0; i < userIDS.length; i++) {
+        var nextUserID = userIDS[i];
+        
+        var nextTable0Order = getOrderFromStorage(nextUserID);
+        
+        if(nextTable0Order && nextTable0Order.items && nextTable0Order.items.length > 0) {
+            $('#employee_box_' + nextUserID).addClass("has_active_t0_items");
+        } else {
+            $('#employee_box_' + nextUserID).removeClass("has_active_t0_items");
+        }
+    }
+    
     loginRecptScroll();
 }
 

@@ -12,7 +12,7 @@ function initClockedInUsers() {
     clockedInUserIDS = getClockedInUsersIDS();
 
     for (var i = 0; i < employees.length; i++) {
-        var currentEmployee = employees[i]
+        var currentEmployee = employees[i];
         
         if(($.inArray(currentEmployee.id.toString(), clockedInUserIDS) != -1)) {
             currentEmployee.clocked_in = true;            
@@ -186,7 +186,7 @@ function doLogout() {
     }
 
     var id_for_logout = current_user_id;
-
+    
     current_user_id = null;
 
     storeActiveUserID(null);

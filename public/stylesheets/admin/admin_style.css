@@ -2291,4 +2291,12 @@ div#customer_builder div#builder_fields_container div.extra_options div#loyalty_
     width: 110px;
 }
 
+div#customer_builder div#builder_fields_container div.extra_options div#loyalty_tab_content div.left_col div#enable_edit_loyalty_points_button {
+    height: 20px;
+    padding-top: 5px;
+    margin-top: -2px;
+    margin-left: 5px;
+    float: left;
+}
+
 /* End Customers */
