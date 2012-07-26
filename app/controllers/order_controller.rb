@@ -134,7 +134,7 @@ class OrderController < ApplicationController
   private
 
   def create_order order_params
-#    Order.transaction do
+    Order.transaction do
       @order_params = order_params
       @order_details = @order_params.delete(:order_details)
     
@@ -366,12 +366,16 @@ class OrderController < ApplicationController
       if @order.is_table_order and @table_info and !@is_split_bill_order
         @employee_id = @order_params['employee_id']
         do_request_clear_table_order @terminal_id, now_millis, @order.table_info_id, @order.order_num, @employee_id
+        
+        #record the room number in the order
+        @order.room_id = @table_info.room_object.room.id
+        @order.save
       end
 
       @success = @order_saved and @order_item_saved
     
       @success
-#    end
+    end
   end
 
 end

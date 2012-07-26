@@ -9,7 +9,8 @@ var employees = new Array();
   dallas_code : '<%= e.dallas_code %>',
   is_admin : <%= e.is_admin %>,
   role_id : <%= e.role.id %>,
-  pin_required : <%= Role.find(e.role.id).pin_required ? "true" : "false" %>,
+  pin_required : <%= e.role.pin_required ? "true" : "false" %>,
+  login_allowed : <%= e.role.login_allowed ? "true" : "false" %>,
   clocked_in : false
   }
 

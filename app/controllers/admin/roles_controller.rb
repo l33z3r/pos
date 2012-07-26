@@ -45,6 +45,14 @@ class Admin::RolesController < Admin::AdminController
     render :json => {:success => true}.to_json
   end
   
+  def login_allowed_for_role
+    @role = Role.find(params[:id])
+    @role.login_allowed = params[:checked]
+    @role.save!
+    
+    render :json => {:success => true}.to_json
+  end
+  
   private
   
   def disallow_edit_super_user_role

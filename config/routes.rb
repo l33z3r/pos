@@ -123,6 +123,7 @@ Pos::Application.routes.draw do
     resources :roles do 
       collection do
         post 'pin_required_for_role'
+        post 'login_allowed_for_role'
       end
     end
     

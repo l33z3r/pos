@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120726101538) do
+ActiveRecord::Schema.define(:version => 20120726143843) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -351,6 +351,7 @@ ActiveRecord::Schema.define(:version => 20120726101538) do
     t.string   "client_name",                                 :default => "",    :null => false
     t.string   "time_started"
     t.boolean  "training_mode_sale",                          :default => false
+    t.integer  "room_id"
   end
 
   add_index "orders", ["employee_id"], :name => "index_orders_on_employee_id"
@@ -478,7 +479,8 @@ ActiveRecord::Schema.define(:version => 20120726101538) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "pin_required", :default => false
+    t.boolean  "pin_required",  :default => false
+    t.boolean  "login_allowed", :default => true
   end
 
   create_table "room_objects", :force => true do |t|

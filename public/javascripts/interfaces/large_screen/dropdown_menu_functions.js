@@ -121,6 +121,8 @@ function priceChangeModeComplete() {
     $('#menu_items_container .price_change').hide();
     
     setShortcutDropdownDefaultText();
+    
+    requestReload();
 }
 
 var currentPriceChangeProductId = null;
@@ -181,6 +183,8 @@ function finishStockTakeMode() {
     $('#stock_take_new_amount_input').attr("disabled", true);
     
     setShortcutDropdownDefaultText();
+    
+    requestReload();
 }
 
 function loadPriceDivs(pageNum, subPageId) {
