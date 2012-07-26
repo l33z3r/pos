@@ -132,7 +132,7 @@
                     <% if (week.employee_id != last_id && i != 0 && session[:employee] == '' && employee_count > 1) %>
                     <tr class="<%= cycle("even", "odd") %>">
                     <td style="text-align: left;">
-                        Total for <%= last_name %>
+                        Total:
                     </td>
                       <td style="text-align: right; ">
                     </td>
@@ -204,7 +204,7 @@
                     <% if (session[:employee] == '' && employee_count > 1) %>
                     <tr class="<%= cycle("even", "odd") %>">
                     <td style="text-align: left;">
-                        Total for <%= last_name %>
+                        Total:
                     </td>
                       <td style="text-align: right;">
                     </td>
