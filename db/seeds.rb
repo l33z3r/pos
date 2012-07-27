@@ -112,4 +112,4 @@ end
 
 
 #Loyalty
-LoyaltyLevel.create({:label => "Default", :percent => 10, :is_default => true})
+LoyaltyLevel.find_or_create_by_label({:label => "Default", :percent => 10, :is_default => true})
