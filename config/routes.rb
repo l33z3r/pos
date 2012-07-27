@@ -23,6 +23,7 @@ Pos::Application.routes.draw do
   match 'float_history' => "order#float_history", :via => :get
   match 'cash_total_history' => "order#cash_total_history", :via => :get
   match 'outstanding_orders' => "order#create_outstanding", :via => :post
+  match 'cash_out' => "order#cash_out", :via => :post
 
   #delivery
   match 'delivery' => "delivery#receive", :via => :post
@@ -307,7 +308,7 @@ Pos::Application.routes.draw do
         get 'payments_print'
         get 'export_excel'
       end
-      end
+    end
     resources :staff, :only => [:index] do
       collection do
         get 'staff_search'
@@ -316,7 +317,7 @@ Pos::Application.routes.draw do
         get 'staff_print'
         get 'export_excel'
       end
-  end
+    end
   end
 
   namespace :api do 

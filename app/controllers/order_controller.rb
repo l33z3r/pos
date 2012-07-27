@@ -107,6 +107,15 @@ class OrderController < ApplicationController
     render :json => {:success => true}.to_json
   end
   
+  def cash_out
+    @description = params[:description]
+    @amount = params[:amount]
+    
+    CashOut.create(:terminal_id => @terminal_id, :amount => @amount, :note => @description)
+    
+    render :json => {:success => true}.to_json
+  end
+  
   def transfer_order
     @error = false
     

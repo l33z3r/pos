@@ -961,12 +961,12 @@ function showCashOutSubscreen() {
         
         for(var i=0; i<cashOutPresets.length; i++) {
             var nextPreset = cashOutPresets[i];
-            cashOutPresetsHTML += "<div id='preset_" + nextPreset.id + "' class='preset' onclick=''>" + nextPreset.label + "</div>";
+            cashOutPresetsHTML += "<div id='preset_" + nextPreset.id + "' class='preset' onclick='setCashOutDescription(" + nextPreset.id + ");'>" + nextPreset.label + "</div>";
         }
         
         cashOutPresetsHTML += clearHTML;
         
-        $('#cash_out_presets').html(cashOutPresetsHTML);
+        $('#presets_container').html(cashOutPresetsHTML);
         
         toggleKeyboardEnable = false;
     
@@ -985,5 +985,7 @@ function showCashOutSubscreen() {
         $('#close_keyboard_link').hide();
 
         $("#util_keyboard_container").show();
+        
+        $('#cash_out_description').focus().select();
     }
 }

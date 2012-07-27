@@ -338,7 +338,17 @@ class CashTotal < ActiveRecord::Base
     end
         
     @opening_float = CashTotal.current_float_amount terminal_id
+    
     @cash_paid_out = 0
+    
+    @cash_outs = CashOut.where("terminal_id = ?", terminal_id)
+    .where("created_at >= ?", @first_order.created_at)
+      .where("created_at <= ?", Time.now)
+    
+    @cash_outs.all.each do |co|
+      @cash_paid_out += co.amount
+    end
+    
     @over_runs = 0
         
     @total_cash = (@opening_float + @cash_sales_total) - @cash_paid_out - @cash_back_total - @over_runs
@@ -348,7 +358,7 @@ class CashTotal < ActiveRecord::Base
     #TODO: cash paid out
     @cash_summary["Opening Float"] = @opening_float
     @cash_summary["Cash Sales"] = @cash_sales_total
-    #@cash_summary["Cash Paid Out"] = @cash_paid_out
+    @cash_summary["Cash Paid Out"] = @cash_paid_out
     @cash_summary["Cashback"] = @cash_back_total
     #@cash_summary["Over-runs"] = @over_runs
     @cash_summary["Total Cash"] = @total_cash
