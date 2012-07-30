@@ -2630,7 +2630,7 @@ function cashOutFinish() {
         type: 'POST',
         url: '/cash_out',
         complete: function() {
-            setStatusMessage("Cash out has been registered!");
+            setStatusMessage("Expense has been entered!");
         },
         data: {
             description : currentCashOutDescription,

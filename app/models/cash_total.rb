@@ -392,6 +392,20 @@ class CashTotal < ActiveRecord::Base
     @cash_total_data[:cash_summary] = @cash_summary
     @cash_total_data[:cash_outs] = @cash_outs
     
+    #get all the settled account amounts
+    @customer_settlements_amount = 0
+    
+    @customer_txns = CustomerTransaction.where("transaction_type = ?", CustomerTransaction::SETTLEMENT)
+    .where("terminal_id = ?", terminal_id)
+    .where("created_at >= ?", @last_z_total.created_at)
+      .where("created_at <= ?", Time.now)
+    
+    @customer_txns.all.each do |co|
+      @customer_settlements_amount += co.actual_amount
+    end
+    
+    @cash_total_data[:amount_customer_payments_received] = @customer_settlements_amount
+    
     return @overall_total, @cash_total_data
   end
   

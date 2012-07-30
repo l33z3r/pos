@@ -360,7 +360,7 @@ class OrderController < ApplicationController
         @customer = Customer.find_by_id(@customer_details[:customer_id])
         
         CustomerTransaction.create({:transaction_type => CustomerTransaction::CHARGE,
-            :order_id => @order.id, :customer_id => @customer.id,
+            :order_id => @order.id, :customer_id => @customer.id, :terminal_id => @terminal_id,
             :abs_amount => @order.total, :actual_amount => -@order.total, :is_credit => false
           })
         

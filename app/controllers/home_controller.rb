@@ -91,9 +91,9 @@ class HomeController < ApplicationController
       
       @payment = Payment.create({:transaction_type => Payment::CUSTOMER_PAYMENT,
           :employee_id => e, :amount => @amount, :amount_tendered => @amount_tendered,
-          :payment_method => @payment_method})
+          :payment_method => @payment_method, :terminal_id => @terminal_id})
     
-      CustomerTransaction.create({:customer_id => @customer.id,
+      CustomerTransaction.create({:customer_id => @customer.id, :terminal_id => @terminal_id,
           :transaction_type => CustomerTransaction::SETTLEMENT, :is_credit => true,
           :abs_amount => @amount, :actual_amount => @amount, :payment_id => @payment.id})
     
