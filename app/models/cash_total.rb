@@ -316,7 +316,6 @@ class CashTotal < ActiveRecord::Base
           end
         
           @sales_by_payment_type[@first_pt] -= order.service_charge
-          
         end
         
         #overall total
@@ -325,6 +324,32 @@ class CashTotal < ActiveRecord::Base
         @service_charge_total += order.service_charge
       end
     
+      #get all the settled account amounts
+      @customer_settlements_amount = 0
+    
+      @customer_txns = CustomerTransaction.where("transaction_type = ?", CustomerTransaction::SETTLEMENT)
+      .where("terminal_id = ?", terminal_id)
+      .where("created_at >= ?", @last_performed_non_zero_z_total.created_at)
+      .where("created_at <= ?", Time.now)
+    
+      @customer_txns.all.each do |ct|
+        @transaction_amount = ct.actual_amount
+        @transaction_payment_type = ct.payment.payment_method.downcase
+      
+        #if the amount tendered was bigger than the total, we have to subtract from the cash payment for reporting
+        if @transaction_payment_type == PaymentMethod::CASH_PAYMENT_METHOD_NAME and ct.payment.amount_tendered > ct.payment.amount
+          @transaction_amount -= (ct.payment.amount_tendered - ct.payment.amount)
+        end
+          
+        @customer_settlements_amount += @transaction_amount
+      
+        if !@sales_by_payment_type[@transaction_payment_type]
+          @sales_by_payment_type[@transaction_payment_type] = 0
+        end
+            
+        @sales_by_payment_type[@transaction_payment_type] += @transaction_amount
+      end
+        
       #total of all cash sales (including the service charge)
       @cash_sales_total += @sales_by_payment_type[PaymentMethod::CASH_PAYMENT_METHOD_NAME] if @sales_by_payment_type[PaymentMethod::CASH_PAYMENT_METHOD_NAME]
       
@@ -343,8 +368,8 @@ class CashTotal < ActiveRecord::Base
     @cash_paid_out = 0
     
     @cash_outs = CashOut.where("terminal_id = ?", terminal_id)
-    .where("created_at >= ?", @last_z_total.created_at)
-      .where("created_at <= ?", Time.now)
+    .where("created_at >= ?", @last_performed_non_zero_z_total.created_at)
+    .where("created_at <= ?", Time.now)
     
     @cash_outs.all.each do |co|
       @cash_paid_out += co.amount
@@ -359,7 +384,7 @@ class CashTotal < ActiveRecord::Base
     #TODO: cash paid out
     @cash_summary["Opening Float"] = @opening_float
     @cash_summary["Cash Sales"] = @cash_sales_total
-    @cash_summary["Expenses"] = @cash_paid_out
+    @cash_summary["Expenses"] = -1 * @cash_paid_out
     @cash_summary["Cashback"] = @cash_back_total
     #@cash_summary["Over-runs"] = @over_runs
     @cash_summary["Total Cash"] = @total_cash
@@ -391,18 +416,6 @@ class CashTotal < ActiveRecord::Base
     @cash_total_data[:total_covers] = @total_covers
     @cash_total_data[:cash_summary] = @cash_summary
     @cash_total_data[:cash_outs] = @cash_outs
-    
-    #get all the settled account amounts
-    @customer_settlements_amount = 0
-    
-    @customer_txns = CustomerTransaction.where("transaction_type = ?", CustomerTransaction::SETTLEMENT)
-    .where("terminal_id = ?", terminal_id)
-    .where("created_at >= ?", @last_z_total.created_at)
-      .where("created_at <= ?", Time.now)
-    
-    @customer_txns.all.each do |co|
-      @customer_settlements_amount += co.actual_amount
-    end
     
     @cash_total_data[:amount_customer_payments_received] = @customer_settlements_amount
     
