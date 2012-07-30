@@ -31,27 +31,43 @@ cash_totals_data_html = "<div id='cash_totals_data_table'>";
 
     var sales_by_department_addendum = new Array();
 
-    sales_by_department_addendum.push(new Array('Less Discounts', '<%= @cash_total_data[:total_discounts] %>'));
-    sales_by_department_addendum.push(new Array('Less Loyalty Redeemed', '<%= @cash_total_data[:loyalty_redeemed] %>'));
+    <% if @cash_total_data[:total_discounts] != 0 %>
+      sales_by_department_addendum.push(new Array('Less Discounts', '<%= @cash_total_data[:total_discounts] %>'));
+    <% end %>
+
+    <% if @cash_total_data[:loyalty_redeemed] != 0 %>
+      sales_by_department_addendum.push(new Array('Less Loyalty Redeemed', '<%= @cash_total_data[:loyalty_redeemed] %>'));
+    <% end %>
+
     cash_totals_data_html += getCashTotalDataTable(sales_by_department_addendum);
-    
+
     //modify the addendum data to calculate net sales
     var net_sales_data_calc = new Array();
     net_sales_data_calc.push(new Array('Cash Totals', getCashTotalTotal(sales_by_department_data)));
-    net_sales_data_calc.push(new Array('Less Discounts', '-<%= @cash_total_data[:total_discounts] %>'));
-    net_sales_data_calc.push(new Array('Less Loyalty Redeemed', '-<%= @cash_total_data[:loyalty_redeemed] %>'));
-    
+
+    <% if @cash_total_data[:total_discounts] != 0 %>
+      net_sales_data_calc.push(new Array('Less Discounts', '-<%= @cash_total_data[:total_discounts] %>'));
+    <% end %>
+
+    <% if @cash_total_data[:loyalty_redeemed] != 0 %>
+      net_sales_data_calc.push(new Array('Less Loyalty Redeemed', '-<%= @cash_total_data[:loyalty_redeemed] %>'));
+    <% end %>
+
     cash_totals_data_html += getCashTotalDataTableTotals("Net Sales", net_sales_data_calc) + clearHTML;
-    
+
     var sales_by_department_addendum = new Array();
-    sales_by_department_addendum.push(new Array('Add <%= @service_charge_label %> Collected', '<%= @cash_total_data[:service_charge_total] %>'));
+    <% if @cash_total_data[:service_charge_total] != 0 %>
+      sales_by_department_addendum.push(new Array('Add <%= @service_charge_label %> Collected', '<%= @cash_total_data[:service_charge_total] %>'));
+    <% end %>
     cash_totals_data_html += getCashTotalDataTable(sales_by_department_addendum) + clearHTML;
-    
+
     var sales_by_department_addendum = new Array();
-    
-    //add tip to net sales to get total collected
-    net_sales_data_calc.push(new Array('Add Tips', '<%= @cash_total_data[:service_charge_total] %>'));
-    
+
+    <% if @cash_total_data[:service_charge_total] != 0 %>
+      //add tip to net sales to get total collected
+      net_sales_data_calc.push(new Array('Add Tips', '<%= @cash_total_data[:service_charge_total] %>'));
+    <% end %>
+
     cash_totals_data_html += getCashTotalDataTableTotals("Total Received", net_sales_data_calc) + clearHTML;
 
     var sales_by_department_addendum = new Array();
@@ -82,6 +98,9 @@ cash_totals_data_html = "<div id='cash_totals_data_table'>";
     cash_summary_data = new Array();
 
     <% @cash_total_data[:cash_summary].each do |label, amount| %>
+      //don't want to show cashback if 0
+      <% next if label == "Cashback" && amount == 0 %>
+
       cash_summary_data.push(new Array('<%=label%>', '<%=amount%>'));
     <% end %>
 
@@ -152,6 +171,20 @@ cash_totals_data_html = "<div id='cash_totals_data_table'>";
     cash_totals_data_html += getCashTotalSalesByProductDataTable(sales_by_product_data) + clearHTML;
   <% end %>
 
+  <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_TOTAL_OPTION, {:total_type => @total_type, :employee_role => current_employee.role.name, :report_section => CashTotal::RS_CASH_OUT} %>
+
+  <% if @gs.parsed_value %>
+    //construct the cash summary data table
+    var cash_out_data = new Array();
+
+    <% @cash_total_data[:cash_outs].each do |co| %>
+      cash_out_data.push(new Array('<%=co.note%>', '<%=co.amount%>'));
+    <% end %>
+
+    cash_totals_data_html += "<div class='data_table_header'>Expenses Summary</div>";
+    cash_totals_data_html += getCashTotalCashOutDataTable(cash_out_data) + clearHTML;
+  <% end %>
+  
   <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_TOTAL_OPTION, {:total_type => @total_type, :employee_role => current_employee.role.name, :report_section => CashTotal::RS_VOIDS_BY_EMPLOYEE} %>
 
   <% if @gs.parsed_value %>

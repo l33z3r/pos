@@ -26,6 +26,8 @@ var inTrainingMode = false;
 
 var highlightedCover = true;
 
+var cashOutKeypadString = "";
+        
 //this function is called from application.js on page load
 function initMenu() {
     initMenuScreenType();
@@ -199,6 +201,9 @@ function menuScreenKeypadClick(val) {
         $('#display_button_passcode_show').html($('#display_button_passcode_show').html() + "*");
     } else if(inStockTakeMode) {
         $('#stock_take_new_amount_input').val($('#stock_take_new_amount_input').val() + val);
+    } else if(inCashOutMode) {
+        cashOutKeypadString += val;
+        $('#cash_out_amount').html(currency(cashOutKeypadString/100.0));
     } else if(inPriceChangeMode) {
         $('#price_change_new_price_input').val($('#price_change_new_price_input').val() + val);
     } else if(menuScreenType == RETAIL_MENU_SCREEN) {
@@ -225,7 +230,9 @@ function menuScreenKeypadClick(val) {
 }
 
 function menuScreenKeypadClickCancel() {
-    if(inStockTakeMode) {
+    if(inCashOutMode) {
+        cashOutAmountCancelClicked();
+    } else if(inStockTakeMode) {
         $('#stock_take_new_amount_input').val("");
     } else if(inPriceChangeMode) {
         $('#price_change_new_price_input').val("");
@@ -249,7 +256,9 @@ function menuScreenKeypadClickCancel() {
 }
 
 function menuScreenKeypadClickDecimal() {
-    if(inStockTakeMode) {
+    if(inCashOutMode) {
+        return;
+    } else if(inStockTakeMode) {
         $('#stock_take_new_amount_input').val($('#stock_take_new_amount_input').val() + ".");
     } else if(inPriceChangeMode) {
         $('#price_change_new_price_input').val($('#price_change_new_price_input').val() + ".");
@@ -2597,21 +2606,25 @@ function setCashOutDescription(cashOutPresetId) {
 }
 
 function cashOutCancelClicked() {
+    inCashOutMode = false;
     $('#cash_out_description').val("");
     $('#cash_out_amount').val("");
     showMenuScreen();
 }
 
+var currentCashOutDescription = null;
+var currentCashOutAmount = null;
+    
 function cashOutFinish() {
-    var cashOutDescription = $('#cash_out_description').val();
-    var cashOutAmount = $('#cash_out_amount').val();
+    currentCashOutDescription = $('#cash_out_description').val();
     
-    cashOutAmount = parseFloat(cashOutAmount);
-    
-    if(isNaN(cashOutAmount)) {
-        niceAlert("You must enter a cash value!");
+    if(currentCashOutDescription.length == 0) {
+        niceAlert("Please enter a description!");
         return;
     }
+    
+    currentCashOutAmount = $('#cash_out_amount').html().substring(1);    
+    currentCashOutAmount = parseFloat(currentCashOutAmount);
     
     $.ajax({
         type: 'POST',
@@ -2620,16 +2633,58 @@ function cashOutFinish() {
             setStatusMessage("Cash out has been registered!");
         },
         data: {
-            description : cashOutDescription,
-            amount : cashOutAmount
+            description : currentCashOutDescription,
+            amount : currentCashOutAmount
         }
     });
     
+    //print receipt
+    var cashOutReceiptContent = getCashOutReceiptHTML();
+    
+    printReceipt(cashOutReceiptContent, false);
+    
+    cashOutKeypadString = "";
+    
     $('#cash_out_description').val("");
     $('#cash_out_amount').val("");
+    inCashOutMode = false;
+    
+    currentCashOutDescription = currentCashOutAmount = null;
+    
     showMenuScreen();
 }
 
 function cashOutAmountCancelClicked() {
-    $('#cash_out_amount').val("");
+    cashOutKeypadString = "";
+    $('#cash_out_amount').html(currency(0));    
+}
+
+function getCashOutReceiptHTML() {
+    var cashOutTillRollHTML = "<div class='cash_out_till_roll'>";
+    
+    cashOutTillRollHTML += fetchBusinessInfoHeaderHTML() + clearHTML; 
+    cashOutTillRollHTML += "<div class='cash_out_till_roll_heading'>Paid Expense</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "<div class='cash_out_till_roll_header'>";
+    
+    cashOutTillRollHTML += "<div class='nickname'>Entered By: " + current_user_nickname + "</div>";
+    
+    var timestamp = utilFormatDate(new Date(clueyTimestamp()));
+    
+    cashOutTillRollHTML += "<div class='timestamp'>" + timestamp + "</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "<div class='description_header'>Description</div>";
+    cashOutTillRollHTML += "<div class='amount_header'>Amount</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "<div class='data_table'>";
+    
+    cashOutTillRollHTML += "<div class='label'>" + currentCashOutDescription + "</div><div class='data'>" + currency(currentCashOutAmount) + "</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "<div id='cash_out_footer_message'>Please Attatch To Receipt</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "</div>" + clearHTML;
+    
+    return cashOutTillRollHTML;
 }

@@ -50,11 +50,12 @@ class CashTotal < ActiveRecord::Base
   RS_SALES_BY_PRODUCT = 8
   RS_SERVICE_CHARGE_BY_PAYMENT_TYPE = 9
   RS_VOIDS_BY_EMPLOYEE = 10
+  RS_CASH_OUT = 11
   
   REPORT_SECTIONS = [
     RS_SALES_BY_DEPARTMENT, RS_SALES_BY_PAYMENT_TYPE, RS_CASH_SUMMARY, RS_SALES_BY_SERVER, 
     RS_CASH_PAID_OUT, RS_SALES_TAX_SUMMARY, RS_SALES_BY_CATEGORY, RS_SALES_BY_PRODUCT,
-    RS_SERVICE_CHARGE_BY_PAYMENT_TYPE, RS_VOIDS_BY_EMPLOYEE
+    RS_SERVICE_CHARGE_BY_PAYMENT_TYPE, RS_VOIDS_BY_EMPLOYEE, RS_CASH_OUT
   ]
   
   validates :total_type, :presence => true, :inclusion => { :in => VALID_TOTAL_TYPES }
@@ -342,7 +343,7 @@ class CashTotal < ActiveRecord::Base
     @cash_paid_out = 0
     
     @cash_outs = CashOut.where("terminal_id = ?", terminal_id)
-    .where("created_at >= ?", @first_order.created_at)
+    .where("created_at >= ?", @last_z_total.created_at)
       .where("created_at <= ?", Time.now)
     
     @cash_outs.all.each do |co|
@@ -358,7 +359,7 @@ class CashTotal < ActiveRecord::Base
     #TODO: cash paid out
     @cash_summary["Opening Float"] = @opening_float
     @cash_summary["Cash Sales"] = @cash_sales_total
-    @cash_summary["Cash Paid Out"] = @cash_paid_out
+    @cash_summary["Expenses"] = @cash_paid_out
     @cash_summary["Cashback"] = @cash_back_total
     #@cash_summary["Over-runs"] = @over_runs
     @cash_summary["Total Cash"] = @total_cash
@@ -389,6 +390,7 @@ class CashTotal < ActiveRecord::Base
     @cash_total_data[:taxes] = @taxes
     @cash_total_data[:total_covers] = @total_covers
     @cash_total_data[:cash_summary] = @cash_summary
+    @cash_total_data[:cash_outs] = @cash_outs
     
     return @overall_total, @cash_total_data
   end

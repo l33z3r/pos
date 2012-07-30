@@ -1201,6 +1201,10 @@ div#menu_screen div#cash_out_subscreen {
     background-color: #E0E0E0;
 }
 
+div#menu_screen div#cash_out_subscreen div#keyboard {
+    margin-left: 15px;
+}
+
 div#menu_screen div#cash_out_subscreen div#cash_out_controls {
     float: left;
     width: 50%;
@@ -1227,16 +1231,27 @@ div#menu_screen div#cash_out_subscreen div#cash_out_presets div.header {
     margin-bottom: 2px;
 }
 
-div#menu_screen div#cash_out_subscreen div#cash_out_description_container input,
-div#menu_screen div#cash_out_subscreen div#cash_out_amount_container input {
+div#menu_screen div#cash_out_subscreen div#cash_out_top_section {
+    height: 280px;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_description_container input {
     width: 200px;
     height: 25px;
     margin-bottom: 20px;
 }
 
-div#menu_screen div#cash_out_subscreen div#cash_out_amount_container input {
+div#menu_screen div#cash_out_subscreen div#cash_out_amount_container div#cash_out_amount {
     float: left;
-    margin-left: 80px;
+    font-size: 14px;
+    width: 200px;
+    height: 20px;
+    border: 1px solid #CCC;
+    background-color: white;
+    padding: 6px 6px 2px 2px;
+    margin-left: 70px;
+    margin-bottom: 20px;
+    text-align: right;
 }
 
 div#menu_screen div#cash_out_subscreen div#cash_out_amount_container div#cash_out_amount_cancel_button {
@@ -1276,7 +1291,7 @@ div#menu_screen div#add_note div#keyboard {
 }
 
 div#menu_screen div#add_note div#controls {
-    height: 150px;
+    height: 170px;
     margin-left: 80px;
     margin-top: 30px;
     width: 240px;
@@ -1757,16 +1772,27 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
 
 table#report_table {
     background-color:#FFFFFF;
- }
+}
 
- table#report_table td {
+table#report_table td {
     padding: 5px;
     border-right: solid #000 1px;
     text-align: right;
- }
+}
 
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.cash_out_data_table div.cash_out_data_table_description_header {
+    font-weight: bold;
+    width: 180px;
+    float: left;
+    text-align: left;
+}
 
-
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.cash_out_data_table div.cash_out_data_table_amount_header {
+    font-weight: bold;
+    float: left;
+    text-align: right;
+    width: 120px;
+}
 
 /* End Cash Reports Screen */
 
@@ -3406,8 +3432,12 @@ div#total_screen div#totals_screen_select_customer_container div#search_results_
 
 }
 
+div#total_screen div#customer_search_results_keyboard_container {
+    margin-left: 15px;
+}
+
 div#total_screen div#totals_screen_select_customer_container div#search_results_container div#search_results_scroller {
-    height: 300px;
+    height: 320px;
     margin-bottom: 5px;
     border: 1px solid #CCC;
     background-color: #B4B4B4;
@@ -5194,8 +5224,12 @@ div#delivery_screen div#delivery_screen_select_product_container div#delivery_sc
     border-spacing: 13px 3px;
 }
 
+div#delivery_screen div#product_search_results_keyboard_container {
+    margin-left: 15px;
+}
+
 div#delivery_screen div#delivery_screen_select_product_container div#product_search_results_container div#product_search_results_scroller {
-    height: 220px;
+    height: 240px;
     margin-bottom: 5px;
     border: 1px solid #CCC;
     background-color: #B4B4B4;
@@ -5215,8 +5249,8 @@ div#delivery_screen div#delivery_screen_select_product_container div#product_sea
 
 div#delivery_screen div#delivery_screen_select_product_container div#product_search_results_container div.product {
     float: left;
-    width: 205px;
-    margin: 3px;
+    width: 210px;
+    margin: 1px;
     padding: 7px;
     border: 1px solid #333;
     background: #FFF;

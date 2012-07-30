@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120726155140) do
+ActiveRecord::Schema.define(:version => 20120730100053) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
