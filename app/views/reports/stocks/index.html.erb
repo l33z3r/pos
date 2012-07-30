@@ -28,25 +28,16 @@
                             <select id="search_type_select" onchange="setStockSearchType($(this).val())">
                                 <option value="1">Stock by Product</option>
                                 <option value="2">Stock by Category</option>
-                                <option value="3">Stock by Transaction Type</option>
                             </select>
                         </div>
-                            <div class="dropdown_container" style="margin-left: 80px;">
-                                <div class="label">Terminal</div>
-                                <select onchange="addTerminalFilter($(this).val())">
-                                    <option value="">All Terminals</option>
-                                    <% @all_terminals.each do |terminal_id| %>
-                                        <option value="<%= terminal_id %>"><%= terminal_id %></option>
-                                    <% end %>
-                                </select>
-                            </div>
+
                             <% lastyear = Time.now - 1.year %>
                             <% yesterday = Time.now - 1.day %>
                             <% lastweek = Time.now - 7.days %>
                             <% lastmonth = Time.now - 1.month %>
                             <% thirtydays = Time.now - 30.days %>
                             <% twoyears = Time.now.beginning_of_year - 2.years %>
-                            <div class="dropdown_container">
+                            <div class="dropdown_container" style="margin-left: 40px;">
                                 <div class="label">Date</div>
                                 <select id="date_preselect" onchange="setDateParams($(this).val(), true)" style="width: 120px">
                                     <option value="<%= Time.now.beginning_of_day + @opening_time.hours %>,<%= Time.now.end_of_day + @opening_time.hours %>">Today</option>
@@ -103,12 +94,7 @@
                     <div id="refine_button_stock">
                         <div onclick="runStocksSearch()" class="wide_button">Update</div>
                     </div>
-                    <div style="float: right; margin-top: 10px; margin-right: 10px;">
-                        <div style="margin: 5px; height: 40px;" onclick="switchView('table')" id="table_view" class="button selected">Table View</div>
-                    </div>
-                    <div style="float: right; margin-top: 10px; margin-right: 10px;">
-                        <div style="margin: 5px; height: 40px;" onclick="switchView('graph')" id="graph_view" class="button">Graph View</div>
-                    </div>
+
 
                 </div>
                 <div id="report_stocks_results">

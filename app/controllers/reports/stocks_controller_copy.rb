@@ -176,7 +176,7 @@ class Reports::StocksController < Admin::AdminController
       if session[:terminal] != ''
         where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}'"
       else
-        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and st.transaction_type = 5"
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}'"
       end
       if session[:category] != '' && session[:product] == ''
         where << " and c.id = #{session[:category]}"
@@ -196,8 +196,6 @@ class Reports::StocksController < Admin::AdminController
       if session[:search_type] == :by_product
         where << " group by st.product_id"
       end
-
-    where << " order by p.name asc"
 
       query = StockTransaction.find_by_sql(where)
     return query

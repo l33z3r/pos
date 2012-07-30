@@ -22,12 +22,11 @@
             </div>
         </div>
     <% end %>
-    <div id="stocks_items_graph" style="display: none">
-        <div id="spacer" style="height:70px;"></div>
-        <%= high_chart("graph_container_sales", @h) %>
-    </div>
-    <div id="stock_items">
 
+    <div id="stock_items">
+    <% if @products.count == 0 %>
+       <b>No Results Found</b>
+    <% else%>
     <% if session[:search_type] == :by_trans_type %>
         <table id="report_table" class="admin_table" style="width: 100%">
                 <thead>
@@ -83,11 +82,10 @@
                     <th class="header">Name</th>
                 <% end %>
                 <th class="header">Category</th>
-                <th class="header">Opening Stock</th>
-                <th class="header">Closing Stock</th>
-                <th class="header">Change Amount</th>
-                <th class="header">Deliveries</th>
-                <th class="header">Sold</th>
+
+
+                <th class="header">Qty Sold</th>
+                <th class="header">Unit</th>
                 <th class="header">Cost ea</th>
                 <th class="header">Cost Total</th>
                 <th class="header">Revenue</th>
@@ -95,8 +93,7 @@
                 </thead>
                 <% @products.each_with_index do |item, i| %>
                     <% product = Product.find_by_id(item.product_id) %>
-                <% first_entry = StockTransaction.find_by_sql("select st.id, st.transaction_type, st.product_id, st.created_at, st.old_amount, st.change_amount from stock_transactions st inner join products p on p.id = st.product_id inner join categories c on c.id = p.category_id where st.product_id = #{item.product_id} order by st.created_at asc limit 1") %>
-                <% last_entry = StockTransaction.find_by_sql("select st.id, st.transaction_type, st.product_id, st.created_at, st.old_amount, st.change_amount from stock_transactions st inner join products p on p.id = st.product_id inner join categories c on c.id = p.category_id where st.product_id = #{item.product_id} order by st.created_at desc limit 1") %>
+
                     <tbody>
                     <tr class="<%= cycle("even", "odd") %>">
                         <% unless session[:search_type] == :by_category %>
@@ -114,22 +111,12 @@
                                 <% end %>
                         </td>
                         <td>
-                            <%= sprintf("%.0f", first_entry[0].old_amount + last_entry[0].change_amount.abs) %>
-                        </td>
-                        <td>
-                            <%= sprintf("%.0f", last_entry[0].old_amount) %>
-                        </td>
-                        <td>
                             <% quantity_sold = item.change_amount %>
-                            <%= sprintf("%.0f", quantity_sold) %>
+                            <%= sprintf("%.0f", quantity_sold.abs) %>
                         </td>
                         <td>
-
+                            <%= product.unit %>
                         </td>
-                        <td>
-
-                        </td>
-
                         <td>
                             <% unless product.cost_price == 0 %>
                                 <% price = print_money(product.cost_price) %>
@@ -139,7 +126,7 @@
                         <td>
                             <% total_price = product.cost_price * quantity_sold.to_i %>
                             <% unless product.cost_price == 0 %>
-                                <%= print_money(total_price) %>
+                                <%= print_money(total_price.abs) %>
                             <% end %>
                         </td>
                         <td>
@@ -161,22 +148,23 @@
                 </tbody>
             </table>
     <% end %>
+    <% end %>
 
     </div>
 <% else %>
     <div id="saved_items">
         <div id="saved_items_container">
             <div onclick="setStockSelect(0)" class="saved_report_button">
-                <div class="b_text"><b>Stocks by Product This Week</b></div>
+                <div class="b_text"><b>Stock by Product This Week</b></div>
             </div>
             <div onclick="setStockSelect(1)" class="saved_report_button">
-                <div class="b_text"><b>Stocks by Product This Month</b></div>
+                <div class="b_text"><b>Stock by Product This Month</b></div>
             </div>
             <div onclick="setStockSelect(2)" class="saved_report_button">
-                <div class="b_text"><b>Stocks by Product This Year</b></div>
+                <div class="b_text"><b>Stock by Product This Year</b></div>
             </div>
             <div onclick="setStockSelect(3)" class="saved_report_button">
-                <div class="b_text"><b>Stocks by Product All Time</b></div>
+                <div class="b_text"><b>Stock by Product All Time</b></div>
             </div>
         </div>
     </div>
