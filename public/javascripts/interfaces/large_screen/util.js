@@ -645,7 +645,7 @@ function initNoteScreenKeyboard() {
         "top":pos.top + "px"
     } );
     
-    $('#close_keyboard_link').hide();
+    hideUtilKeyboardCloseButton();
 
     $("#util_keyboard_container").show();
 }
@@ -661,7 +661,7 @@ function resetKeyboard() {
         "left" : "0px"
     } );
     
-    $('#close_keyboard_link').show();
+    showUtilKeyboardCloseButton();
     $("#util_keyboard_container").hide();
 }
 
@@ -678,7 +678,7 @@ function placeUtilKeyboard(keyboardPlaceHolderEl) {
         "top":pos.top + "px"
     } );
     
-    $('#close_keyboard_link').hide();
+    hideUtilKeyboardCloseButton();
 
     $("#util_keyboard_container").show();
 }
@@ -801,4 +801,15 @@ function initTrainingModeFromCookie() {
     
     var turnOn = getRawCookie(inTrainingModeCookieName) === "true";
     setTrainingMode(turnOn);
+}
+
+function hideUtilKeyboardCloseButton() {
+    $('#close_keyboard_link').hide();
+    $('#util_keyboard_inner_container').height("230px");
+}
+
+function showUtilKeyboardCloseButton() {
+    $('#close_keyboard_link').show();
+    $('#util_keyboard_inner_container').height("260px");
+    
 }

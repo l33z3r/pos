@@ -982,10 +982,14 @@ function showCashOutSubscreen() {
             "top":pos.top + "px"
         } );
     
-        $('#close_keyboard_link').hide();
+        hideUtilKeyboardCloseButton();
 
         $("#util_keyboard_container").show();
         
         $('#cash_out_description').focus().select();
+        
+        cashOutKeypadString = "";
+        inCashOutMode = true;
+        $('#cash_out_amount').html(currency(0));
     }
 }

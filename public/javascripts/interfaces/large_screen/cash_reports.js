@@ -60,6 +60,22 @@ function getCashTotalVoidsByEmployeeDataTable(employee_data) {
     return cash_total_data_html;
 }
 
+function getCashTotalCashOutDataTable(cash_out_data) {
+    var cash_out_data_html = "<div class='cash_out_data_table data_table'>";
+    
+    cash_out_data_html += "<div class='cash_out_data_table_description_header'>Description</div>";
+    cash_out_data_html += "<div class='cash_out_data_table_amount_header quantity'>Amount</div>" + clear10HTML;
+        
+    for(var i=0; i<cash_out_data.length; i++) {
+        cash_out_data_html += "<div class='cash_out_description label'>" + cash_out_data[i][0] + "</div>";
+        cash_out_data_html += "<div class='cash_out_amount data'>" + currency(cash_out_data[i][1]) + "</div>" + clearHTML;
+    }
+    
+    cash_out_data_html += "</div>";
+    
+    return cash_out_data_html;
+}
+
 function getCashTotalTaxesDataTable(taxes_data) {
     cash_total_data_html = "<div class='taxes_data_table'>";
     
@@ -175,6 +191,7 @@ function doCashTotalReport(total_type, commit) {
         data: {
             total_type : total_type,
             cash_count : reportsCashCount,
+            open_orders_total : getOpenOrdersTotal(),
             commit : commit
         },
         error: function() {
