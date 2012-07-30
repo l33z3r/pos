@@ -151,6 +151,8 @@ task :build_stock_transactions => :environment do
               :employee_id => @order_item.employee_id, :product_id => @oia_product.id,
               :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
               
+            @st.created_at = @order_item.created_at
+            @st.updated_at = @order_item.created_at
             @st.save
           end
         end
@@ -167,6 +169,8 @@ task :build_stock_transactions => :environment do
         :employee_id => @order_item.employee_id, :product_id => @order_item.product.id,
         :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
               
+      @st.created_at = @order_item.created_at
+      @st.updated_at = @order_item.created_at
       @st.save
     end
             
@@ -182,7 +186,9 @@ task :build_stock_transactions => :environment do
         @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
           :employee_id => @order_item.employee_id, :product_id => ingredient.product.id,
           :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
-              
+           
+        @st.created_at = @order_item.created_at
+        @st.updated_at = @order_item.created_at
         @st.save
       end
     end
