@@ -27,53 +27,48 @@
         <%= high_chart("graph_container_sales", @h) %>
     </div>
     <div id="stock_items">
-        <% if session[:show_zeros] %>
-            <table id="report_table" class="admin_table" style="width: 100%">
+
+    <% if session[:search_type] == :by_trans_type %>
+        <table id="report_table" class="admin_table" style="width: 100%">
                 <thead>
-                <th class="header">Name</th>
-                <th class="header">Category</th>
+                <th class="header">Transaction Type</th>
                 <th class="header">Current</th>
-                <th class="header">Sold</th>
-                <th class="header">Total Qty</th>
-                <th class="header">Cost ea</th>
-                <th class="header">Cost Total</th>
+                <th class="header">Change Amount</th>
+
                 <th class="header">Revenue</th>
-                <th class="header">Code Num</th>
+
                 </thead>
-                <% @products.each do |product| %>
+                <% @products.each do |item| %>
+                    <% product = Product.find_by_id(item.product_id) %>
+                    <% price = 0 %>
                     <tbody>
                     <tr class="<%= cycle("even", "odd") %>">
-                        <td>
-                            <%= product.name %>
+
+                        <td style="text-align: left">
+                            <% if item.transaction_type == 1 %>
+                            Stock Update
+                            <% elsif item.transaction_type == 2 %>
+                            Stock Transfer
+                            <% elsif item.transaction_type == 3 %>
+                            Delivery
+                            <% elsif item.transaction_type == 4 %>
+                            Stock Take
+                            <% elsif item.transaction_type == 5 %>
+                            Sale
+                            <% end %>
                         </td>
                         <td>
-                            <%= Category.find_by_id(product.category_id).name %>
+                            <%= sprintf("%.0f", item.old_amount + item.change_amount) %>
                         </td>
                         <td>
-                            <%= sprintf("%.0f", product.quantity_in_stock) %>
-                        </td>
-                        <td>
-                            <%= sprintf("%.0f", OrderItem.find_all_by_product_id(product.id).count) %>
+                            <% quantity_sold = item.change_amount %>
+                            <%= sprintf("%.0f", quantity_sold) %>
                         </td>
 
+
                         <td>
-                            <%= OrderItem.find_all_by_product_id(product.id).count %>
-                        </td>
-                        <td>
-                            <% unless OrderItem.find_by_product_id(product.id) == nil %>
-                                <%= print_money(OrderItem.find_by_product_id(product.id).total_price) %>
-                            <% end %>
-                        </td>
-                        <td>
-                            <% unless OrderItem.find_by_product_id(product.id) == nil %>
-                                <%= print_money(OrderItem.sum(:total_price, :conditions =>["product_id = ?", product.id])) %>
-                            <% end %>
-                        </td>
-                        <td>
-                            <%= print_money(OrderItem.sum(:total_price, :conditions =>["product_id = ?", product.id])) %>
-                        </td>
-                        <td>
-                            <%= product.code_num %>
+                            <% revenue = product.price * quantity_sold %>
+                            <%= print_money(revenue.abs) %>
                         </td>
 
                     </tr>
@@ -81,46 +76,60 @@
 
                 </tbody>
             </table>
-        <% else %>
-
-            <table id="report_table" class="admin_table" style="width: 100%">
+    <% else %>
+        <table id="report_table" class="admin_table" style="width: 100%">
                 <thead>
                 <% unless session[:search_type] == :by_category %>
                     <th class="header">Name</th>
                 <% end %>
                 <th class="header">Category</th>
-                <th class="header">Current</th>
+                <th class="header">Opening Stock</th>
+                <th class="header">Closing Stock</th>
+                <th class="header">Change Amount</th>
+                <th class="header">Deliveries</th>
                 <th class="header">Sold</th>
-                <th class="header">Total Qty</th>
                 <th class="header">Cost ea</th>
                 <th class="header">Cost Total</th>
                 <th class="header">Revenue</th>
                 <th class="header">Margin</th>
-                <th class="header">Code Num</th>
                 </thead>
-                <% @products.each do |item| %>
+                <% @products.each_with_index do |item, i| %>
                     <% product = Product.find_by_id(item.product_id) %>
-                    <% price = 0 %>
+                <% first_entry = StockTransaction.find_by_sql("select st.id, st.transaction_type, st.product_id, st.created_at, st.old_amount, st.change_amount from stock_transactions st inner join products p on p.id = st.product_id inner join categories c on c.id = p.category_id where st.product_id = #{item.product_id} order by st.created_at asc limit 1") %>
+                <% last_entry = StockTransaction.find_by_sql("select st.id, st.transaction_type, st.product_id, st.created_at, st.old_amount, st.change_amount from stock_transactions st inner join products p on p.id = st.product_id inner join categories c on c.id = p.category_id where st.product_id = #{item.product_id} order by st.created_at desc limit 1") %>
                     <tbody>
                     <tr class="<%= cycle("even", "odd") %>">
                         <% unless session[:search_type] == :by_category %>
                             <td style="text-align: left">
-                                <%= product.name %>
+                                <% if nil != product.name %>
+                                    <%= product.name[0...20] %>
+                                <% end %>
                             </td>
                         <% end %>
                         <td style="text-align: left">
-                            <%= Category.find_by_id(product.category_id).name %>
+                            <% if Category.find_by_id(product.category_id) %>
+                                    <% if Category.find_by_id(product.category_id).name %>
+                                        <%= Category.find_by_id(product.category_id).name %>
+                                    <% end %>
+                                <% end %>
                         </td>
                         <td>
-                            <%= sprintf("%.0f", product.quantity_in_stock / product.quantity_per_container) %>
+                            <%= sprintf("%.0f", first_entry[0].old_amount + last_entry[0].change_amount.abs) %>
                         </td>
                         <td>
-                            <% quantity_sold = item.quantity %>
-                            <%= sprintf("%.0f", quantity_sold.to_d/product.quantity_per_container.to_d) %>
+                            <%= sprintf("%.0f", last_entry[0].old_amount) %>
                         </td>
                         <td>
+                            <% quantity_sold = item.change_amount %>
                             <%= sprintf("%.0f", quantity_sold) %>
                         </td>
+                        <td>
+
+                        </td>
+                        <td>
+
+                        </td>
+
                         <td>
                             <% unless product.cost_price == 0 %>
                                 <% price = print_money(product.cost_price) %>
@@ -134,8 +143,8 @@
                             <% end %>
                         </td>
                         <td>
-                            <% revenue = item.total_price.to_d %>
-                            <%= print_money(revenue) %>
+                            <% revenue = product.price * quantity_sold %>
+                            <%= print_money(revenue.abs) %>
                         </td>
                         <td>
                             <% unless product.cost_price == 0 %>
@@ -145,15 +154,14 @@
                                 <% end %>
                             <% end %>
                         </td>
-                        <td>
-                            <%= product.code_num %>
-                        </td>
+
                     </tr>
                 <% end %>
 
                 </tbody>
             </table>
-        <% end %>
+    <% end %>
+
     </div>
 <% else %>
     <div id="saved_items">

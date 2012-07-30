@@ -4683,7 +4683,7 @@ div#reports_container  div#report_sales_filters #refine_button_stock{
     width: 103px;
     height: 64px;
     float: left;
-    margin-left: 70px;
+    margin-left: 100px;
 }
 
 div#reports_container  div#report_sales_filters #refine_button_stock.selected{

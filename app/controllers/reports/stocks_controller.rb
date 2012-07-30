@@ -44,6 +44,8 @@ class Reports::StocksController < Admin::AdminController
 
   def stocks_search
     @products = get_stocks_data
+    @deliveries = get_deliveries
+    @products_solas = get_sold
     @s_type = session[:search_type]
     render_graph
 
@@ -52,6 +54,7 @@ class Reports::StocksController < Admin::AdminController
   def stocks_print
     stocks_search
     @products_drop = Product.all
+
 
     respond_to do |format|
       format.html # show.html.erb
@@ -114,6 +117,10 @@ class Reports::StocksController < Admin::AdminController
       session[:search_type] = :by_category
       session[:show_zeros] = false
       session[:search_type_label] = 'Category'
+    elsif params[:search][:search_type] == 'by_trans_type'
+      session[:search_type] = :by_trans_type
+      session[:show_zeros] = false
+      session[:search_type_label] = 'By Transaction Type'
     elsif params[:search][:search_type] == 'all'
       session[:search_type] = :by_category
       session[:show_zeros] = true
@@ -151,7 +158,7 @@ class Reports::StocksController < Admin::AdminController
           else
                xitems << Category.find_by_id(product.category_id).name
           end
-          quantity_sold = item.quantity
+          quantity_sold = item.change_amount
 
           #@chartdata << product.quantity_in_stock
           @chartdata << quantity_sold
@@ -164,54 +171,96 @@ class Reports::StocksController < Admin::AdminController
 
 
   def get_stocks_data
-
     @selected_from_date = session[:from_date].to_s
     @selected_to_date = session[:to_date].to_s
-
-
-
-      where = "select oi.product_id, p.category_id, p.quantity_in_stock, p.cost_price, p.code_num, SUM(oi.total_price) AS total_price, SUM(oi.quantity) AS quantity from order_items oi inner join products p on p.id = oi.product_id inner join categories c on c.id = p.category_id inner join orders o on oi.order_id = o.id"
-
+      where = "select st.id, st.transaction_type, st.product_id, st.created_at, sum(st.old_amount) as old_amount, sum(st.change_amount) as change_amount from stock_transactions st inner join products p on p.id = st.product_id inner join categories c on c.id = p.category_id"
       if session[:terminal] != ''
-        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"
+        where << " where st.created_at <= '#{@selected_to_date}' and st.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
       else
-        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0"
+        where << " where st.created_at <= '#{@selected_to_date}' and st.created_at >= '#{@selected_from_date}'"
       end
-
       if session[:category] != '' && session[:product] == ''
         where << " and c.id = #{session[:category]}"
       end
-
       if session[:category] != '' && session[:product] != ''
         where << " and p.id = #{session[:product]}"
       end
-
       if session[:category] == '' && session[:product] != ''
         where << " and p.id = #{session[:product]}"
       end
-
-      if session[:training_mode] == true
-        where << " and o.training_mode_sale = 1"
-      else
-        where << " and o.training_mode_sale = 0"
+      if session[:search_type] == :by_trans_type
+        where << " group by st.transaction_type"
       end
-
       if session[:search_type] == :by_category
         where << " group by c.id"
       end
-
       if session[:search_type] == :by_product
-        where << " group by p.id"
+        where << " group by st.product_id"
       end
-
-
-
-      query = OrderItem.find_by_sql(where)
-
-      logger.debug "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss     #{where}"
-
-
-
+      query = StockTransaction.find_by_sql(where)
     return query
   end
+
+  def get_deliveries
+    @selected_from_date = session[:from_date].to_s
+    @selected_to_date = session[:to_date].to_s
+      where = "select st.id, st.transaction_type, st.product_id, st.created_at, sum(st.old_amount) as old_amount, sum(st.change_amount) as change_amount from stock_transactions st inner join products p on p.id = st.product_id inner join categories c on c.id = p.category_id"
+      if session[:terminal] != ''
+        where << " where st.created_at <= '#{@selected_to_date}' and st.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}' and st.transaction_type = 3"
+      else
+        where << " where st.created_at <= '#{@selected_to_date}' and st.created_at >= '#{@selected_from_date}' and st.transaction_type = 3"
+      end
+      if session[:category] != '' && session[:product] == ''
+        where << " and c.id = #{session[:category]}"
+      end
+      if session[:category] != '' && session[:product] != ''
+        where << " and p.id = #{session[:product]}"
+      end
+      if session[:category] == '' && session[:product] != ''
+        where << " and p.id = #{session[:product]}"
+      end
+      if session[:search_type] == :by_trans_type
+        where << " group by st.transaction_type"
+      end
+      if session[:search_type] == :by_category
+        where << " group by c.id"
+      end
+      if session[:search_type] == :by_product
+        where << " group by st.product_id"
+      end
+      query = StockTransaction.find_by_sql(where)
+    return query
+  end
+
+    def get_sold
+    @selected_from_date = session[:from_date].to_s
+    @selected_to_date = session[:to_date].to_s
+      where = "select st.id, st.transaction_type, st.product_id, st.created_at, sum(st.old_amount) as old_amount, sum(st.change_amount) as change_amount from stock_transactions st inner join products p on p.id = st.product_id inner join categories c on c.id = p.category_id"
+      if session[:terminal] != ''
+        where << " where st.created_at <= '#{@selected_to_date}' and st.created_at >= '#{@selected_from_date}' and st.change_amount > 0 and st.transaction_type = 5"
+      else
+        where << " where st.created_at <= '#{@selected_to_date}' and st.created_at >= '#{@selected_from_date}' and st.transaction_type = 5"
+      end
+      if session[:category] != '' && session[:product] == ''
+        where << " and c.id = #{session[:category]}"
+      end
+      if session[:category] != '' && session[:product] != ''
+        where << " and p.id = #{session[:product]}"
+      end
+      if session[:category] == '' && session[:product] != ''
+        where << " and p.id = #{session[:product]}"
+      end
+      if session[:search_type] == :by_trans_type
+        where << " group by st.transaction_type"
+      end
+      if session[:search_type] == :by_category
+        where << " group by c.id"
+      end
+      if session[:search_type] == :by_product
+        where << " group by st.product_id"
+      end
+      query = StockTransaction.find_by_sql(where)
+    return query
+    end
+
 end

@@ -141,3 +141,28 @@
 <script type="text/javascript">
     $('#refine_button_stock').removeClass("selected");
 </script>
+
+
+
+
+
+
+
+
+
+
+                         <td>
+                            <%= sprintf("%.0f", first_entry.old_amount + last_entry.change_amount.abs) %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.0f", last_entry.old_amount + last_entry.change_amount.abs) %>
+                        </td>
+
+
+
+
+
+
+
+                    <% first_entry = StockTransaction.find_by_sql("select st.id, st.transaction_type, st.product_id, st.created_at, st.old_amount, st.change_amount from stock_transactions st inner join products p on p.id = st.product_id inner join categories c on c.id = p.category_id where st.product_id = #{item.product_id} order by st.created_at asc limit 1") %>
+                    <% last_entry = StockTransaction.find_by_sql("select st.id, st.transaction_type, st.product_id, st.created_at, st.old_amount, st.change_amount from stock_transactions st inner join products p on p.id = st.product_id inner join categories c on c.id = p.category_id where st.product_id = #{item.product_id} order by st.created_at desc limit 1") %>
