@@ -203,6 +203,7 @@ function menuScreenKeypadClick(val) {
         $('#stock_take_new_amount_input').val($('#stock_take_new_amount_input').val() + val);
     } else if(inCashOutMode) {
         cashOutKeypadString += val;
+        currentCashOutAmount = cashOutKeypadString;
         $('#cash_out_amount').html(currency(cashOutKeypadString/100.0));
     } else if(inPriceChangeMode) {
         $('#price_change_new_price_input').val($('#price_change_new_price_input').val() + val);
@@ -2609,6 +2610,8 @@ function cashOutCancelClicked() {
     inCashOutMode = false;
     $('#cash_out_description').val("");
     $('#cash_out_amount').val("");
+    cashOutKeypadString = "";
+    currentCashOutAmount = 0;
     showMenuScreen();
 }
 
@@ -2623,9 +2626,7 @@ function cashOutFinish() {
         return;
     }
     
-    currentCashOutAmount = $('#cash_out_amount').html().substring(1);    
-    currentCashOutAmount = parseFloat(currentCashOutAmount);
-    
+    //must divide the amount by 100 so it is not recorded as cents
     $.ajax({
         type: 'POST',
         url: '/cash_out',
@@ -2634,7 +2635,7 @@ function cashOutFinish() {
         },
         data: {
             description : currentCashOutDescription,
-            amount : currentCashOutAmount
+            amount : (currentCashOutAmount/100)
         }
     });
     
@@ -2643,19 +2644,20 @@ function cashOutFinish() {
     
     printReceipt(cashOutReceiptContent, false);
     
-    cashOutKeypadString = "";
-    
     $('#cash_out_description').val("");
     $('#cash_out_amount').val("");
     inCashOutMode = false;
     
+    cashOutKeypadString = "";
     currentCashOutDescription = currentCashOutAmount = null;
+    currentCashOutAmount = 0;
     
     showMenuScreen();
 }
 
 function cashOutAmountCancelClicked() {
     cashOutKeypadString = "";
+    currentCashOutAmount = 0;
     $('#cash_out_amount').html(currency(0));    
 }
 

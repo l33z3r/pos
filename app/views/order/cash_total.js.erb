@@ -72,8 +72,8 @@ cash_totals_data_html = "<div id='cash_totals_data_table'>";
 
     var sales_by_department_addendum = new Array();
 
-    sales_by_department_addendum.push(new Array('Open Orders Total', currency(getOpenOrdersTotal())));
-    sales_by_department_addendum.push(new Array('Total Covers', '<%=@cash_total_data[:total_covers]%>'));
+    sales_by_department_addendum.push(new Array('Open Orders Total', currency(<%= @cash_total_data[:open_orders_total] %>)));
+    sales_by_department_addendum.push(new Array('Total Covers', '<%= @cash_total_data[:total_covers] %>'));
     cash_totals_data_html += getCashTotalDataTable(sales_by_department_addendum, false) + clearHTML;
 
   <% end %>
@@ -193,7 +193,7 @@ cash_totals_data_html = "<div id='cash_totals_data_table'>";
     var cash_out_data = new Array();
 
     <% @cash_total_data[:cash_outs].each do |co| %>
-      cash_out_data.push(new Array('<%=co.note%>', '<%=co.amount%>'));
+      cash_out_data.push(new Array('<%=co[:description]%>', '<%=co[:amount]%>'));
     <% end %>
 
     cash_totals_data_html += "<div class='data_table_header'>Expenses Summary</div>";

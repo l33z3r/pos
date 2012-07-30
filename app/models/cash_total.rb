@@ -60,12 +60,12 @@ class CashTotal < ActiveRecord::Base
   
   validates :total_type, :presence => true, :inclusion => { :in => VALID_TOTAL_TYPES }
   
-  def self.do_total total_type, commit, cash_count, employee, terminal_id
+  def self.do_total total_type, commit, cash_count, open_orders_total, employee, terminal_id
     CashTotal.transaction do
       #validate total_type
       return nil unless VALID_TOTAL_TYPES.include?(total_type)
     
-      @cash_total, @cash_total_data = CashTotal.prepare_cash_total_data terminal_id, cash_count
+      @cash_total, @cash_total_data = CashTotal.prepare_cash_total_data terminal_id, cash_count, open_orders_total
     
       #prepare the next report sequence number
       @next_report_num = CashTotal.get_next_report_number terminal_id, total_type
@@ -87,7 +87,7 @@ class CashTotal < ActiveRecord::Base
     end
   end
   
-  def self.prepare_cash_total_data terminal_id, cash_count
+  def self.prepare_cash_total_data terminal_id, cash_count, open_orders_total
     @sales_by_product = {}
     @sales_by_category = {}
     @sales_by_department = {}
@@ -371,8 +371,11 @@ class CashTotal < ActiveRecord::Base
     .where("created_at >= ?", @last_performed_non_zero_z_total.created_at)
     .where("created_at <= ?", Time.now)
     
+    @serialized_cash_outs = []
+    
     @cash_outs.all.each do |co|
       @cash_paid_out += co.amount
+      @serialized_cash_outs << {:description => co.note, :amount => co.amount}
     end
     
     @over_runs = 0
@@ -415,7 +418,8 @@ class CashTotal < ActiveRecord::Base
     @cash_total_data[:taxes] = @taxes
     @cash_total_data[:total_covers] = @total_covers
     @cash_total_data[:cash_summary] = @cash_summary
-    @cash_total_data[:cash_outs] = @cash_outs
+    @cash_total_data[:cash_outs] = @serialized_cash_outs
+    @cash_total_data[:open_orders_total] = open_orders_total
     
     @cash_total_data[:amount_customer_payments_received] = @customer_settlements_amount
     

@@ -191,6 +191,7 @@ function doCashTotalReport(total_type, commit) {
         data: {
             total_type : total_type,
             cash_count : reportsCashCount,
+            open_orders_total : getOpenOrdersTotal(),
             commit : commit
         },
         error: function() {

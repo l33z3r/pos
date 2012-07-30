@@ -39,7 +39,11 @@ class OrderController < ApplicationController
     
     @cash_count = @cash_count.to_f
     
-    @cash_total_obj, @cash_total, @cash_total_data = CashTotal.do_total @total_type, @commit, @cash_count, current_employee, @terminal_id
+    @open_orders_total = params[:open_orders_total]
+    
+    @open_orders_total = @open_orders_total.to_f
+    
+    @cash_total_obj, @cash_total, @cash_total_data = CashTotal.do_total @total_type, @commit, @cash_count, @open_orders_total, current_employee, @terminal_id
   end
 
   def add_float
