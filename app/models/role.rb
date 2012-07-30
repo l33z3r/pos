@@ -30,14 +30,16 @@ class Role < ActiveRecord::Base
   
 end
 
+
 # == Schema Information
 #
 # Table name: roles
 #
-#  id           :integer(4)      not null, primary key
-#  name         :string(255)
-#  created_at   :datetime
-#  updated_at   :datetime
-#  pin_required :boolean(1)      default(FALSE)
+#  id            :integer(4)      not null, primary key
+#  name          :string(255)
+#  created_at    :datetime
+#  updated_at    :datetime
+#  pin_required  :boolean(1)      default(FALSE)
+#  login_allowed :boolean(1)      default(TRUE)
 #
 

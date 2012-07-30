@@ -2581,3 +2581,55 @@ function performScreenResolutionCSSMods() {
 function doAutoCovers() {
     promptAddCovers();
 }
+
+function setCashOutDescription(cashOutPresetId) {
+    var presetLabel = null;
+    
+    for(var i=0; i<cashOutPresets.length; i++) {
+        var nextPreset = cashOutPresets[i];
+            
+        if(cashOutPresetId == nextPreset.id) {
+            presetLabel = nextPreset.label;
+        }
+    }
+            
+    $('#cash_out_description').val(presetLabel);
+}
+
+function cashOutCancelClicked() {
+    $('#cash_out_description').val("");
+    $('#cash_out_amount').val("");
+    showMenuScreen();
+}
+
+function cashOutFinish() {
+    var cashOutDescription = $('#cash_out_description').val();
+    var cashOutAmount = $('#cash_out_amount').val();
+    
+    cashOutAmount = parseFloat(cashOutAmount);
+    
+    if(isNaN(cashOutAmount)) {
+        niceAlert("You must enter a cash value!");
+        return;
+    }
+    
+    $.ajax({
+        type: 'POST',
+        url: '/cash_out',
+        complete: function() {
+            setStatusMessage("Cash out has been registered!");
+        },
+        data: {
+            description : cashOutDescription,
+            amount : cashOutAmount
+        }
+    });
+    
+    $('#cash_out_description').val("");
+    $('#cash_out_amount').val("");
+    showMenuScreen();
+}
+
+function cashOutAmountCancelClicked() {
+    $('#cash_out_amount').val("");
+}

@@ -30,6 +30,13 @@ function initDeliveryScreen() {
     setReturnDeliveryItem(false);
     
     redrawDeliveryReceipt();
+    
+    //are we allowing the change cost price button
+    if(typeof(display_button_passcode_permissions[changeCostPriceButtonID]) != 'undefined') {
+        $('#delivery_screen_change_cost_price_button').show();
+    } else {
+        $('#delivery_screen_change_cost_price_button').hide();
+    }
 }
 
 function resetDeliveryProductSelect() {
@@ -395,7 +402,9 @@ function showFinishDeliverySubScreen() {
         timeFormat: 'hh:mm',
         addSliderAccess: true,
         maxDate: 0,
-        sliderAccessArgs: { touchonly: false }
+        sliderAccessArgs: {
+            touchonly: false
+        }
     });
     
     //force default to now
@@ -459,11 +468,6 @@ function doFinishDelivery() {
             delivery : currentDelivery
         }
     });
-    
-    $('#delivery_reference_number_input').val("");
-    $('#delivery_date_cal').val("");
-    $('#delivery_screen_select_product_container').show();
-    $('#finish_delivery_subscreen').hide();
 }
 
 function deliverySentToServerCallback() {
@@ -476,6 +480,11 @@ function deliverySentToServerCallback() {
         printReceipt(deliveryReceiptContent, false);
     }
     
+    $('#delivery_reference_number_input').val("");
+    $('#delivery_date_cal').val("");
+    $('#delivery_screen_select_product_container').show();
+    $('#finish_delivery_subscreen').hide();
+    
     //finish up
     currentDelivery = null;
     storeDelivery();
@@ -485,6 +494,8 @@ function deliverySentToServerCallback() {
     niceAlert("Delivery Complete!");
     
     receiveDeliveryInProcess = false;
+    
+    requestReload();
 }
 
 function promptCancelDelivery() {

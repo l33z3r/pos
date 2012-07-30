@@ -382,7 +382,7 @@ function openCashDrawer() {
                 };
             
                 ws.onclose = function() { 
-                    // websocket is closed. 
+                // websocket is closed. 
                 };
             } else {
                 // The browser doesn't support WebSocket
@@ -543,8 +543,8 @@ function promptAddNameToTable() {
     
     addTableNamePopupEl.find('input').focus().select();
     
-//show the keyboard
-$('#util_keyboard_container').slideDown(300);
+    //show the keyboard
+    $('#util_keyboard_container').slideDown(300);
 }
 
 function closePromptAddNameToTable() {
@@ -950,4 +950,42 @@ function setTrainingMode(turnOn) {
 
 function startDeliveryMode() {
     initDeliveryScreen();
+}
+
+function showCashOutSubscreen() {
+    if(currentScreenIsMenu()) {        
+        hideAllMenuSubScreens();
+        $('#cash_out_subscreen').show();
+        
+        var cashOutPresetsHTML = "<div id='presets'>";
+        
+        for(var i=0; i<cashOutPresets.length; i++) {
+            var nextPreset = cashOutPresets[i];
+            cashOutPresetsHTML += "<div id='preset_" + nextPreset.id + "' class='preset' onclick='setCashOutDescription(" + nextPreset.id + ");'>" + nextPreset.label + "</div>";
+        }
+        
+        cashOutPresetsHTML += clearHTML;
+        
+        $('#presets_container').html(cashOutPresetsHTML);
+        
+        toggleKeyboardEnable = false;
+    
+        var keyboardPlaceHolderEl = $('#cash_out_subscreen #keyboard')
+    
+        var pos = keyboardPlaceHolderEl.offset();
+    
+        //show the menu directly over the placeholder
+        $("#util_keyboard_container").css( {
+            "position" : "absolute",
+            "width" : "688px",
+            "left": (pos.left) + "px", 
+            "top":pos.top + "px"
+        } );
+    
+        $('#close_keyboard_link').hide();
+
+        $("#util_keyboard_container").show();
+        
+        $('#cash_out_description').focus().select();
+    }
 }

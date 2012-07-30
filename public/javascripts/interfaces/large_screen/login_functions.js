@@ -81,22 +81,6 @@ function doCancelLoginKeypad() {
     $('#num').val("");
 }
 
-function forceLogin(user_id) {
-    for (var i = 0; i < employees.length; i++) {
-        id = employees[i].id;
-        if (id == user_id) {
-            user_index = i;
-            break;
-        }
-    }
-
-    var nickname = employees[user_index].nickname;
-    var is_admin = employees[user_index].is_admin;
-    var passcode = employees[user_index].passcode;
-
-    loginSuccess(user_id, nickname, is_admin, passcode);
-}
-
 function doDallasLogin() {
     entered_code = $('#num').val();
 
@@ -117,6 +101,12 @@ function doDallasLogin() {
                 
                 if(userOnBreak(id)) {
                     setStatusMessage("User is on break!");
+                    clearClockinCode();
+                    return;
+                }
+                
+                if(!employeeForID(id).login_allowed) {
+                    setStatusMessage("User not allowed login!");
                     clearClockinCode();
                     return;
                 }
@@ -157,6 +147,12 @@ function doLogin() {
                     
                     if(userOnBreak(id)) {
                         setStatusMessage("User is on break!");
+                        clearClockinCode();
+                        return;
+                    }
+                    
+                    if(!employeeForID(id).login_allowed) {
+                        setStatusMessage("User not allowed login!");
                         clearClockinCode();
                         return;
                     }
@@ -288,7 +284,10 @@ function clockinSuccess(id, nickname) {
     clearClockinCode();
 
     addClockedInUser(id);
-    $('#employee_box_' + id).show();
+    
+    if(employeeForID(id).login_allowed) {
+        $('#employee_box_' + id).show();
+    }
 
     setStatusMessage(nickname + " clocked in successfully!");
 

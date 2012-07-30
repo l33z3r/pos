@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120725111227) do
+ActiveRecord::Schema.define(:version => 20120726155140) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -19,6 +19,20 @@ ActiveRecord::Schema.define(:version => 20120725111227) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "reference_number"
+  end
+
+  create_table "cash_out_presets", :force => true do |t|
+    t.string   "label"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cash_outs", :force => true do |t|
+    t.string   "terminal_id"
+    t.string   "note"
+    t.float    "amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "cash_totals", :force => true do |t|
@@ -76,6 +90,7 @@ ActiveRecord::Schema.define(:version => 20120725111227) do
     t.float    "loyalty_level_percent"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "allocation_type"
   end
 
   create_table "customer_transactions", :force => true do |t|
@@ -350,6 +365,7 @@ ActiveRecord::Schema.define(:version => 20120725111227) do
     t.string   "client_name",                                 :default => "",    :null => false
     t.string   "time_started"
     t.boolean  "training_mode_sale",                          :default => false
+    t.integer  "room_id"
   end
 
   add_index "orders", ["employee_id"], :name => "index_orders_on_employee_id"
@@ -477,7 +493,8 @@ ActiveRecord::Schema.define(:version => 20120725111227) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "pin_required", :default => false
+    t.boolean  "pin_required",  :default => false
+    t.boolean  "login_allowed", :default => true
   end
 
   create_table "room_objects", :force => true do |t|

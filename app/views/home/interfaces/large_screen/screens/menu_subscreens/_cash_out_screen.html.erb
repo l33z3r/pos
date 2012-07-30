@@ -1,0 +1,33 @@
+<div id="cash_out_subscreen">
+  <div id="cash_out_controls">
+    <div id="cash_out_description_container">
+      <div class="header">Description</div>
+      <input type="text" id="cash_out_description"/>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div id="cash_out_amount_container">
+      <div class="header">Amount</div>
+      <input type="text" id="cash_out_amount"/>
+      <div id="cash_out_amount_cancel_button" class="small_button" data-onpress="cashOutAmountCancelClicked();">C</div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div id="cash_out_action_buttons_container">
+      <div class="button" data-onpress="cashOutCancelClicked();">Cancel</div>
+      <div class="button" data-onpress="cashOutFinish();">Finish</div>
+      <div class="clear">&nbsp;</div>
+    </div>
+  </div>
+
+  <div id="cash_out_presets">
+    <div class="header">Presets</div>
+    <div id="presets_container"></div>
+  </div>
+
+  <div class="clear">&nbsp;</div>
+
+  <div id="keyboard"></div>
+</div>

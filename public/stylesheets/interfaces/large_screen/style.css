@@ -345,7 +345,7 @@ div#landing div#active_users_buttons_container div#active_users div.employee_box
     background-color: #FFF;
 }
 
-div#landing div#active_users_buttons_container div#active_users div.employee_box.on_break {
+div#landing div#active_users_buttons_container div#active_users div.employee_box.on_break {    
     background-color: #CCC;
 }
 
@@ -358,12 +358,9 @@ div#landing div#active_users_buttons_container div#active_users div.employee_box
 }
 
 div#landing div#active_users_buttons_container div#active_users div.employee_box.has_active_t0_items {
-    border: 1px solid #E36C0A;
-}
-
-div#landing div#active_users_buttons_container div#active_users div.employee_box.has_active_t0_items div.nickname {
-    text-decoration: underline;
-    font-style: italic;
+    border: 3px solid #E36C0A;
+    width: 93px;
+    height: 81px;
 }
 
 div#landing div#active_users_buttons_container div#active_users div.employee_box div.avatar img {
@@ -1195,6 +1192,81 @@ div#menu_screen div#order_item_additions div.grid_row div.grid_item div.name {
 div#menu_screen div#order_item_additions div.grid_row div.grid_item.empty {
     cursor: auto;
 }
+
+/* Cash Out Subscreen */
+
+div#menu_screen div#cash_out_subscreen {
+    display: none;
+    height: 546px;
+    background-color: #E0E0E0;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_controls {
+    float: left;
+    width: 50%;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_presets {
+    float: left;
+    width: 50%;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_description_container div.header,
+div#menu_screen div#cash_out_subscreen div#cash_out_amount_container div.header,
+div#menu_screen div#cash_out_subscreen div#cash_out_presets div.header {
+    padding: 10px;
+    background-color: #333;
+    color: #FFF;
+    margin: 1px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_presets div.header {
+    margin-bottom: 2px;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_description_container input,
+div#menu_screen div#cash_out_subscreen div#cash_out_amount_container input {
+    width: 200px;
+    height: 25px;
+    margin-bottom: 20px;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_amount_container input {
+    float: left;
+    margin-left: 80px;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_amount_container div#cash_out_amount_cancel_button {
+    float: left;
+    margin-left: 20px;
+    width: 50px;
+    height: 15px;
+    padding-top: 7px;
+    margin-top: -1px;
+}
+
+div#menu_screen div#cash_out_subscreen div#presets_container div.preset {
+    float: left;
+    width: 47%;
+    background-color: white;
+    margin: 1px;
+    padding: 3px;
+    border: 1px solid #777;
+    cursor: pointer;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_action_buttons_container {
+    border-spacing: 73px 4px;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_action_buttons_container div.button {
+    height: 35px;
+}
+
+/* End Cash Out Subscreen */
 
 div#menu_screen div#add_note div#keyboard {
     height: 300px;

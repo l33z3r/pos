@@ -66,14 +66,6 @@ task :delete_sync_data => :environment do
   puts "Done!"
 end
 
-desc "Sends hard reset to all terminals without deleting orders"
-task :hard_reset => :environment do
-  puts "Issuing a reset of all terminals"
-  TerminalSyncData.request_hard_reload_app "Cluey Support"
-  
-  puts "Done!"
-end
-
 desc "Deletes all stored receipt data"
 task :delete_recpt_data => :environment do
   @recpt_htmls = StoredReceiptHtml.all

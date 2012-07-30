@@ -107,6 +107,15 @@ class OrderController < ApplicationController
     render :json => {:success => true}.to_json
   end
   
+  def cash_out
+    @description = params[:description]
+    @amount = params[:amount]
+    
+    CashOut.create(:terminal_id => @terminal_id, :amount => @amount, :note => @description)
+    
+    render :json => {:success => true}.to_json
+  end
+  
   def transfer_order
     @error = false
     
@@ -134,7 +143,7 @@ class OrderController < ApplicationController
   private
 
   def create_order order_params
-#    Order.transaction do
+    Order.transaction do
       @order_params = order_params
       @order_details = @order_params.delete(:order_details)
     
@@ -334,12 +343,14 @@ class OrderController < ApplicationController
             @loyalty_customer.decrement!(:available_points, @points_used_this_sale.to_f)
             
             CustomerPointsAllocation.create({:customer_id => @loyalty_customer.id, :order_id => @order.id, 
-                :amount => @points_used_this_sale * -1, :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
+                :allocation_type => CustomerPointsAllocation::SALE_REDUCE, :amount => @points_used_this_sale * -1, 
+                :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
           end
           
           @points_earned = @loyalty_details[:points_earned]
           CustomerPointsAllocation.create({:customer_id => @loyalty_customer.id, :order_id => @order.id, 
-              :amount => @points_earned, :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
+              :allocation_type => CustomerPointsAllocation::SALE_EARN, :amount => @points_earned, 
+              :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
           
           @loyalty_customer.increment!(:available_points, @points_earned.to_f)
         end
@@ -364,12 +375,16 @@ class OrderController < ApplicationController
       if @order.is_table_order and @table_info and !@is_split_bill_order
         @employee_id = @order_params['employee_id']
         do_request_clear_table_order @terminal_id, now_millis, @order.table_info_id, @order.order_num, @employee_id
+        
+        #record the room number in the order
+        @order.room_id = @table_info.room_object.room.id
+        @order.save
       end
 
       @success = @order_saved and @order_item_saved
     
       @success
-#    end
+    end
   end
 
 end
