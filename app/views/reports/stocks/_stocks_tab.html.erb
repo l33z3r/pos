@@ -160,11 +160,13 @@
                             <% end %>
                         </td>
                         <td>
+                            <% unless (revenue == nil) %>
                             <% unless total_price == 0 || total_price == nil || all_cost_price == false %>
                                 <% margin = per_profit(revenue, total_price, product.sales_tax_rate) %>
                                 <% unless (margin == nil) %>
                                     <%= sprintf("%.0f", margin) %>%
                                 <% end %>
+                            <% end %>
                             <% end %>
                         </td>
 
