@@ -117,7 +117,7 @@
                         <% unless session[:search_type] == :by_category %>
                             <td style="text-align: left">
                                 <% if nil != product.name %>
-                                    <%= product.name[0...20] %>
+                                    <%= product.name %>
                                 <% end %>
                             </td>
                         <% end %>
