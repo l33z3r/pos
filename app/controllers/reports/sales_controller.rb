@@ -335,7 +335,7 @@ class Reports::SalesController < Admin::AdminController
     end
 
     if session[:search_type] == :by_product
-      where = "select oi.id, oi.tax_rate, oi.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id inner join products p on oi.product_id = p.id"
+      where = "select oi.id, oi.tax_rate, oi.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id inner join products p on oi.product_id = p.id inner join stock_transaction st on oi.id = st.order_item_id"
       if session[:category] != ''
         where << " and p.category_id = #{session[:category]}"
       end

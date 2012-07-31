@@ -155,7 +155,9 @@
                         </td>
                         <td>
                             <% revenue = total_sales[0].total_price %>
+                            <% unless (revenue == nil) %>
                             <%= print_money(revenue.abs) %>
+                            <% end %>
                         </td>
                         <td>
                             <% unless total_price == 0 || total_price == nil || all_cost_price == false %>
