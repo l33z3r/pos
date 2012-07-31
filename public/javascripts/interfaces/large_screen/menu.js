@@ -26,6 +26,7 @@ var inTrainingMode = false;
 
 var highlightedCover = true;
 
+var inCashOutMode = false;
 var cashOutKeypadString = "";
         
 //this function is called from application.js on page load

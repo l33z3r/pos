@@ -25,6 +25,12 @@ function makeCustomerPayment(customerId) {
         var amountTendered = utilPaymentResponse.amount_tendered;
         var cardCharged = utilPaymentResponse.card_charged;
         
+        var allowCreditCustomer = $('#util_payment_set_allow_credit_customer').is(':checked');
+        
+        if(allowCreditCustomer) {
+            paymentAmount = amountTendered;
+        }
+        
         console.log("Processed payment for " + currency(paymentAmount));
         
         //build receipt
@@ -110,9 +116,18 @@ function makeCustomerPayment(customerId) {
     customerHTMLContent += "<div class='label bold'>Balance:</div>";
     customerHTMLContent += "<div class='data'>" + currencyBalance(currentBalance) + "</div>" + clearHTML;
     
+    customerHTMLContent += "<div class='label bold'>Credit Account:</div>";
+    customerHTMLContent += "<input type='checkbox' id='util_payment_set_allow_credit_customer'/>" + clearHTML;
+    
     customerHTMLContent += "</div></div>" + clearHTML;
     
     startUtilPayment(amount, minAmount, maxAmount, callback, customerHTMLContent);
+    
+    if(amount <= 0) {
+        $("#util_payment_set_allow_credit_customer").attr("checked", true);
+    } else {
+        $("#util_payment_set_allow_credit_customer").attr("checked", false);
+    }
 }
 
 var utilPaymentProcessedCallback = null;
@@ -169,7 +184,7 @@ function finishUtilPayment() {
     utilPaymentResponse.card_charged = utilPaymentCardCharged;
     utilPaymentResponse.amount_tendered = utilPaymentCashTendered;
     
-    utilPaymentResponse.amount = utilPaymentCashTendered;
+    utilPaymentResponse.amount = utilPaymentAmount;
     
     var doOpenCashDrawer = paymentMethods[getPaymentMethodId(utilScreenPaymentMethod)].open_cash_drawer;
     

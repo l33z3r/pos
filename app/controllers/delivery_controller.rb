@@ -11,7 +11,7 @@ class DeliveryController < ApplicationController
       @received_date = @delivery_params[:received_date]
       
       @delivery = Delivery.create(:employee_id => @employee_id, :total => @delivery_params[:total], 
-        :reference_number => @reference_number, :received_date => @received_date)
+        :reference_number => @reference_number, :received_date => @received_date, :terminal_id => @terminal_id)
     
       @delivery_items = @delivery_params[:items]
     
@@ -22,9 +22,6 @@ class DeliveryController < ApplicationController
         @old_amount = @product.quantity_in_stock
         @change_amount = delivery_item[:amount]
       
-        @product.quantity_in_stock = @old_amount.to_f + @change_amount.to_f
-        @product.save
-        
         @is_return = delivery_item[:is_return]
         @note = delivery_item[:note]
         
@@ -45,17 +42,19 @@ class DeliveryController < ApplicationController
             st.old_amount += @change_amount.to_f
             st.save
           end
-          #have to adjust the old_amount of the transaction we are creating here
-          @prior_st = @product.stock_transactions.where("created_at <= ?", @delivery.received_date).where("id != ?", @st.id).order("created_at desc, id desc").first
+        end
+        
+        #have to adjust the old_amount of the transaction we are creating here
+        @prior_st = @product.stock_transactions.where("created_at <= ?", @delivery.received_date).where("id != ?", @st.id).last
           
-          if @prior_st
-            @st.old_amount = @prior_st.old_amount + @prior_st.change_amount
-          else
-            @st.old_amount = 0
-          end
-          
+        if @prior_st
+          @st.old_amount = @prior_st.old_amount + @prior_st.change_amount
           @st.save
         end
+          
+        @last_st_for_product = @product.stock_transactions.last
+        @product.quantity_in_stock = @last_st_for_product.old_amount + @last_st_for_product.change_amount
+        @product.save
       
       end
     
