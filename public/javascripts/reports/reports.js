@@ -392,6 +392,9 @@ function setStockSearchType(interval_selected) {
         case '2':
             search_type = 'by_category';
             break;
+        case '3':
+            search_type = 'by_trans_type';
+            break;
 
     }
     setStockParams();
