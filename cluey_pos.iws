@@ -14,7 +14,12 @@
     <option name="historyRevisionsNumber" value="4" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e646dee2-e269-4160-8f2c-811321f2083d" name="Default" comment="" />
+    <list default="true" id="e646dee2-e269-4160-8f2c-811321f2083d" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cluey_pos.iws" afterPath="$PROJECT_DIR$/cluey_pos.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/database.yml" afterPath="$PROJECT_DIR$/config/database.yml" />
+    </list>
     <ignored path="cluey_pos.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -72,37 +77,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="_staff_tab.html.erb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/reports/staff/_staff_tab.html.erb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="70" selection-start="1724" selection-end="1724" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="database.yml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/database.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="43" selection-start="470" selection-end="470" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_stocks_tab.html.erb" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="_stocks_tab.html.erb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="92" column="37" selection-start="4099" selection-end="4099" vertical-scroll-proportion="-0.625">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="export_excel.html.erb" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/export_excel.html.erb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="89" column="14" selection-start="3635" selection-end="3635" vertical-scroll-proportion="0.11078287">
+            <state line="170" column="22" selection-start="9134" selection-end="9134" vertical-scroll-proportion="0.55314535">
               <folding />
             </state>
           </provider>
@@ -111,25 +89,25 @@
       <file leaf-file-name="sales_controller.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/reports/sales_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="377" column="50" selection-start="14554" selection-end="14554" vertical-scroll-proportion="0.0">
+            <state line="358" column="66" selection-start="13847" selection-end="13847" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="style.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/stylesheets/interfaces/large_screen/style.css">
+      <file leaf-file-name="_sales_tab.html.erb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4601" column="39" selection-start="115450" selection-end="115450" vertical-scroll-proportion="0.0">
+            <state line="89" column="12" selection-start="4607" selection-end="4607" vertical-scroll-proportion="-10.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html.erb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/reports/staff/index.html.erb">
+      <file leaf-file-name="stocks_controller.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="26" selection-start="519" selection-end="536" vertical-scroll-proportion="0.0">
+            <state line="169" column="68" selection-start="5085" selection-end="5085" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -149,7 +127,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/staff/_employee_dropdown.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/staff/export_excel.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/payments/_payments_tab.html.erb" />
@@ -157,14 +134,15 @@
         <option value="$PROJECT_DIR$/app/views/reports/payments/index.html.erb" />
         <option value="$PROJECT_DIR$/public/javascripts/reports/reports.js" />
         <option value="$PROJECT_DIR$/lib/tasks/custom_tasks.rake" />
-        <option value="$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb" />
         <option value="$PROJECT_DIR$/app/views/reports/stocks/index.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/sales/export_excel.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/staff/_staff_tab.html.erb" />
         <option value="$PROJECT_DIR$/public/stylesheets/interfaces/large_screen/style.css" />
-        <option value="$PROJECT_DIR$/config/database.yml" />
-        <option value="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/stocks/export_excel.html.erb" />
+        <option value="$PROJECT_DIR$/config/database.yml" />
+        <option value="$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb" />
+        <option value="$PROJECT_DIR$/app/controllers/reports/sales_controller.rb" />
+        <option value="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" />
       </list>
     </option>
   </component>
@@ -413,24 +391,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cluey_pos" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pos" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="models" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -700,7 +660,7 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27846366" sideWeight="0.0" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27846366" sideWeight="0.0" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946485" sideWeight="0.7154696" order="4" side_tool="false" content_ui="tabs" />
@@ -793,19 +753,9 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/lib/tasks/custom_tasks.rake">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="95" column="43" selection-start="3093" selection-end="3093" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/stocks_print.html.erb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab_backup.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="50" selection-start="1369" selection-end="1369" vertical-scroll-proportion="-12.5" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/reports/stocks_controller_copy.rb">
@@ -813,24 +763,9 @@
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/reports/staff_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="209" column="35" selection-start="6412" selection-end="6412" vertical-scroll-proportion="0.030927835" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="199" column="14" selection-start="6526" selection-end="6526" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/reports/sales/export_excel.html.erb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="109" column="36" selection-start="4948" selection-end="4948" vertical-scroll-proportion="0.221519" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="81" selection-start="0" selection-end="10900" vertical-scroll-proportion="-6.875" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/index.html.erb">
@@ -843,16 +778,6 @@
         <state line="30" column="70" selection-start="1724" selection-end="1724" vertical-scroll-proportion="0.0">
           <folding />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/database.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="43" selection-start="470" selection-end="470" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/reports/sales_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="377" column="50" selection-start="14554" selection-end="14554" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/stylesheets/interfaces/large_screen/style.css">
@@ -869,16 +794,65 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb">
+    <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/export_excel.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="92" column="37" selection-start="4099" selection-end="4099" vertical-scroll-proportion="-0.625">
+        <state line="89" column="14" selection-start="3635" selection-end="3635" vertical-scroll-proportion="-3.125">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/export_excel.html.erb">
+    <entry file="file://$PROJECT_DIR$/lib/tasks/custom_tasks.rake">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="89" column="14" selection-start="3635" selection-end="3635" vertical-scroll-proportion="0.11078287">
+        <state line="108" column="59" selection-start="3667" selection-end="3667" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/database.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="60" selection-start="236" selection-end="236" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/reports/staff_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="231" column="53" selection-start="7597" selection-end="7597" vertical-scroll-proportion="0.8041237">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab_backup.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="95" column="281" selection-start="4581" selection-end="4599" vertical-scroll-proportion="-6.875">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="89" column="12" selection-start="4607" selection-end="4607" vertical-scroll-proportion="-10.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/reports/stocks_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="169" column="68" selection-start="5085" selection-end="5085" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/reports/sales_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="358" column="66" selection-start="13847" selection-end="13847" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="170" column="22" selection-start="9134" selection-end="9134" vertical-scroll-proportion="0.55314535">
           <folding />
         </state>
       </provider>
