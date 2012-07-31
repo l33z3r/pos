@@ -186,7 +186,7 @@ class HomeController < ApplicationController
       next if !mi.product
       next if !mi.product.is_stock_item
       @stock = mi.product.quantity_in_stock
-      @stock_map[mi.id] = @stock ? number_to_human(@stock) : 0
+      @stock_map[mi.id] = @stock
     end
   end
   

@@ -3525,6 +3525,18 @@ div#util_payment_screen div#util_payment_content_container div#cutomer_payment_i
 
 }
 
+div#util_payment_screen div#util_payment_content_container div#cutomer_payment_info_table div.data_table div.label {
+    width: 40%;
+}
+
+div#util_payment_screen div#util_payment_content_container div#cutomer_payment_info_table div.data_table div.data {
+    width: 60%;
+}
+
+div#util_payment_screen div#util_payment_content_container div#cutomer_payment_info_table div.data_table input {
+    margin-top: -8px;
+}
+
 div#util_payment_screen div#action_buttons_info_container div#util_payment_buttons_container {
     border: 1px solid #CCC;
     -moz-border-radius: 7px;

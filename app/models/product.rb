@@ -15,7 +15,7 @@ class Product < ActiveRecord::Base
   has_many :order_items  
   has_many :menu_items, :dependent => :destroy
   
-  has_many :stock_transactions, :order => "CREATED_AT"
+  has_many :stock_transactions, :order => "CREATED_AT, ID"
   
   belongs_to :menu_page_1, :class_name => "MenuPage"
   belongs_to :menu_page_2, :class_name => "MenuPage"
