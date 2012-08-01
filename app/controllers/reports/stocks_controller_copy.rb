@@ -13,9 +13,6 @@ class Reports::StocksController < Admin::AdminController
     gross - vat_rate
   end
 
-  def per_profit(sales_price, cost_price, vat)
-    (((sales_price.to_d/(1+(vat/100)))-cost_price.to_d)/(sales_price.to_d/(1+(vat/100))))*100
-  end
 
   def index
     session[:search_type] = :product

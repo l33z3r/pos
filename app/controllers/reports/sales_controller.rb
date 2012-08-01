@@ -66,7 +66,6 @@ class Reports::SalesController < Admin::AdminController
   def sales_search
     @orders = get_sales_data
     @s_type = session[:search_type]
-    render_graph
   end
 
   def render_graph

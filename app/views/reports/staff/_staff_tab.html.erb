@@ -109,7 +109,7 @@
                 <% total_cost = 0 %>
                 <% total_hours_payable = 0 %>
                 <% total_hours = 0 %>
-                <% last_id = 0 %>
+                <% last_id = -1 %>
                 <% last_name = "" %>
                 <% employee_count = 0 %>
 
@@ -157,10 +157,13 @@
                     <% total_cost_per_emp = 0 %>
                     <% total_hours_payable_per_emp = 0 %>
                     <% total_hours_per_emp = 0 %>
-                    <% end %>
+                     <% end %>
                      <% if week.employee_id != last_id %>
                      <% employee_count = 0 %>
                      <% employee_count += 1 %>
+                     <% total_cost_per_emp = 0 %>
+                     <% total_hours_payable_per_emp = 0 %>
+                    <% total_hours_per_emp = 0 %>
                      <% else %>
                      <% employee_count += 1 %>
                      <% end %>

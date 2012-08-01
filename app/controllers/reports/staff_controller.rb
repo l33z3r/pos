@@ -217,7 +217,7 @@ class Reports::StaffController < Admin::AdminController
       if session[:employee] != ''
         where << " and wr.employee_id = '#{session[:employee]}'"
       end
-      where << " order by employee_id asc"
+      where << " order by wr.employee_id asc"
     else
       where = "select wr.id, wr.created_at, SUM(shift_seconds) shift_seconds, SUM(break_seconds) break_seconds, SUM(payable_seconds) payable_seconds, SUM(hourly_rate) hourly_rate, SUM(cost) cost, DATE_FORMAT(wr.created_at,'%Y-%m-%d') as created_day from work_reports wr"
       where << " where wr.created_at <= '#{@selected_to_date}' and wr.created_at >= '#{@selected_from_date}'"
