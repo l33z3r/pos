@@ -145,7 +145,7 @@
                         <% end %>
                         <td>
                              <% unless session[:search_type] == :by_category %>
-                            <% total_price =  sprintf("%.2f", product.cost_price).to_d *  sprintf("%.1f", quantity_sold).to_d %>
+                            <% total_price =  product.cost_price *  quantity_sold %>
                             <% else %>
                             <% total_price = cost_total %>
                             <% end %>
@@ -162,7 +162,7 @@
                         <td>
                             <% unless (revenue == nil) %>
                             <% unless total_price == 0 || total_price == nil || all_cost_price == false %>
-                                <% margin = per_profit(revenue, total_price, product.sales_tax_rate) %>
+                                <% margin = per_profit(sprintf("%.2f", revenue).to_d, sprintf("%.2f", total_price.abs).to_d, product.sales_tax_rate) %>
                                 <% unless (margin == nil) %>
                                     <%= sprintf("%.0f", margin) %>%
                                 <% end %>

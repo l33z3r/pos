@@ -70,7 +70,6 @@ class Reports::PaymentsController < Admin::AdminController
     end
     @orders = get_payments_data
     @s_type = session[:search_type]
-    render_graph
   end
 
   def render_graph
