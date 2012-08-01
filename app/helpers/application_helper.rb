@@ -102,9 +102,15 @@ module ApplicationHelper
       end
     
       @pm_shortcut_id = GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => @shortcut_num}
-      @shortcut_payment_method = PaymentMethod.find_by_id(@pm_shortcut_id)
       
-      return @shortcut_payment_method.name
+      if @pm_shortcut_id == -1
+        @button_text = "Payment Method Shortcut Button #{@shortcut_num}"
+      else
+        @shortcut_payment_method = PaymentMethod.find_by_id(@pm_shortcut_id)
+        @button_text = @shortcut_payment_method.name
+      end
+      
+      return @button_text
     else
       return button.button_text
     end
