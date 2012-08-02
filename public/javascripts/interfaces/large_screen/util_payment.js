@@ -116,18 +116,31 @@ function makeCustomerPayment(customerId) {
     customerHTMLContent += "<div class='label bold'>Balance:</div>";
     customerHTMLContent += "<div class='data'>" + currencyBalance(currentBalance) + "</div>" + clearHTML;
     
-    customerHTMLContent += "<div class='label bold'>Credit Account:</div>";
+    customerHTMLContent += "<div class='label bold credit_account_label'>Allow Credit:</div>";
     customerHTMLContent += "<input type='checkbox' id='util_payment_set_allow_credit_customer'/>" + clearHTML;
     
     customerHTMLContent += "</div></div>" + clearHTML;
     
     startUtilPayment(amount, minAmount, maxAmount, callback, customerHTMLContent);
     
+    //make sure the checkbox is enabled by default
+    $("#util_payment_set_allow_credit_customer").attr("disabled", false);
+    
     if(amount <= 0) {
         $("#util_payment_set_allow_credit_customer").attr("checked", true);
+        
+        //disable the button now as you must credit the account if they have such a balance
+        $("#util_payment_set_allow_credit_customer").attr("disabled", true);
     } else {
         $("#util_payment_set_allow_credit_customer").attr("checked", false);
     }
+    
+    $('#util_payment_set_allow_credit_customer').iphoneStyle({
+        resizeContainer: false, 
+        resizeHandle : false, 
+        checkedLabel: 'Yes', 
+        uncheckedLabel: 'No'
+    });    
 }
 
 var utilPaymentProcessedCallback = null;
@@ -174,12 +187,18 @@ function finishUtilPayment() {
         return;
     }
     
-    utilPaymentInProgress = true;
-    niceAlert("Processing... Please Wait!");
-    
     if(utilPaymentCashTendered == 0) {
         utilPaymentExactAmountSelected();
+    
+        //cash tendered may still be 0
+        if(utilPaymentCashTendered <= 0) {
+            niceAlert("You must make a payment for more than " + currency(0));
+            return;
+        }     
     }
+    
+    utilPaymentInProgress = true;
+    showLoadingDiv("Processing... Please Wait!");
     
     utilPaymentResponse.card_charged = utilPaymentCardCharged;
     utilPaymentResponse.amount_tendered = utilPaymentCashTendered;

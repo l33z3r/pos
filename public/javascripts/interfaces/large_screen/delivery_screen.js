@@ -53,12 +53,12 @@ function initDeliveryProductSearchKeyboard() {
     var pos = keyboardPlaceHolderEl.offset();
     
     //show the menu directly over the placeholder
-    $("#util_keyboard_container").css( {
+    $("#util_keyboard_container").css({
         "position" : "absolute",
         "width" : "688px",
         "left": (pos.left) + "px", 
         "top":pos.top + "px"
-    } );
+    });
     
     hideUtilKeyboardCloseButton();
 

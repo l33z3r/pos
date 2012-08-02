@@ -3533,8 +3533,13 @@ div#util_payment_screen div#util_payment_content_container div#cutomer_payment_i
     width: 60%;
 }
 
-div#util_payment_screen div#util_payment_content_container div#cutomer_payment_info_table div.data_table input {
-    margin-top: -8px;
+div#util_payment_screen div#util_payment_content_container div#cutomer_payment_info_table div.data_table div.label.credit_account_label {
+    margin-top: 10px;
+}
+
+div#util_payment_screen div#util_payment_content_container div#cutomer_payment_info_table div.data_table div.iPhoneCheckContainer {
+    margin-left: 15px;
+    margin-top: 3px;
 }
 
 div#util_payment_screen div#action_buttons_info_container div#util_payment_buttons_container {
@@ -4926,7 +4931,7 @@ div#delivery_screen div#finish_delivery_subscreen {
 div#delivery_screen div#finish_delivery_subscreen div#reference_number_container,
 div#delivery_screen div#finish_delivery_subscreen div#delivery_date_container {
     float: left;
-    width: 50%;
+    width: 364px;
     height: 450px;
     text-align: center;
     border-bottom: 1px solid #CCC;

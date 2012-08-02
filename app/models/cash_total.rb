@@ -113,9 +113,11 @@ class CashTotal < ActiveRecord::Base
     if @last_performed_non_zero_z_total
       #now load the next order after the end order from the previous z total
       @first_order = Order.where("created_at > ?", @last_performed_non_zero_z_total.end_order.created_at).where("terminal_id = ?", terminal_id).order("created_at").lock(true).first
+      @last_z_total_time = @last_performed_non_zero_z_total.created_at
     else
       #no z totals yet, so just grab orders
       @first_order = Order.where("terminal_id = ?", terminal_id).order("created_at").lock(true).first
+      @last_z_total_time = Time.new(0)
     end
       
     if !@first_order
@@ -329,7 +331,7 @@ class CashTotal < ActiveRecord::Base
     
       @customer_txns = CustomerTransaction.where("transaction_type = ?", CustomerTransaction::SETTLEMENT)
       .where("terminal_id = ?", terminal_id)
-      .where("created_at >= ?", @last_performed_non_zero_z_total.created_at)
+      .where("created_at >= ?", @last_z_total_time)
       .where("created_at <= ?", Time.now)
     
       @customer_txns.all.each do |ct|
@@ -368,7 +370,7 @@ class CashTotal < ActiveRecord::Base
     @cash_paid_out = 0
     
     @cash_outs = CashOut.where("terminal_id = ?", terminal_id)
-    .where("created_at >= ?", @last_performed_non_zero_z_total.created_at)
+    .where("created_at >= ?", @last_z_total_time)
     .where("created_at <= ?", Time.now)
     
     @serialized_cash_outs = []
