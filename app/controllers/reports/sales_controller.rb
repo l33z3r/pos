@@ -56,7 +56,7 @@ class Reports::SalesController < Admin::AdminController
 
   def export_excel
     headers['Content-Type'] = "application/vnd.ms-excel"
-    headers['Content-Disposition'] = 'attachment; filename="Report-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
+    headers['Content-Disposition'] = 'attachment; filename="Report-' + session[:search_type_label] + '-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
     headers['Cache-Control'] = ''
     sales_search
     @products = Product.all
@@ -193,22 +193,22 @@ class Reports::SalesController < Admin::AdminController
 
     if params[:search][:search_type] == 'day'
       session[:search_type] = :day
-      session[:search_type_label] = 'Day'
+      session[:search_type_label] = 'By Day'
     elsif params[:search][:search_type] == 'week'
       session[:search_type] = :week
-      session[:search_type_label] = 'Week'
+      session[:search_type_label] = 'By Week'
     elsif params[:search][:search_type] == 'month'
       session[:search_type] = :month
-      session[:search_type_label] = 'Month'
+      session[:search_type_label] = 'By Month'
     elsif params[:search][:search_type] == 'year'
       session[:search_type] = :year
-      session[:search_type_label] = 'Year'
+      session[:search_type_label] = 'By Year'
     elsif params[:search][:search_type] == 'best_seller'
       session[:search_type] = :best_seller
-      session[:search_type_label] = 'Best Seller'
+      session[:search_type_label] = 'Best Sellers'
     elsif params[:search][:search_type] == 'worst_seller'
       session[:search_type] = :worst_seller
-      session[:search_type_label] = 'Worst Seller'
+      session[:search_type_label] = 'Worst Sellers'
     elsif params[:search][:search_type] == 'by_product'
       session[:search_type] = :by_product
       session[:search_type_label] = 'By Product'

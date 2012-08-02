@@ -58,7 +58,7 @@ class Reports::StaffController < Admin::AdminController
 
   def export_excel
     headers['Content-Type'] = "application/vnd.ms-excel"
-    headers['Content-Disposition'] = 'attachment; filename="Staff Report-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
+    headers['Content-Disposition'] = 'attachment; filename="'+@business_name+' Staff Report-' + session[:search_type_label] + '-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
     headers['Cache-Control'] = ''
     staff_search
   end
@@ -179,19 +179,19 @@ class Reports::StaffController < Admin::AdminController
 
     if params[:search][:search_type] == 'day'
       session[:search_type] = :day
-      session[:search_type_label] = 'Day'
+      session[:search_type_label] = 'By Day'
     elsif params[:search][:search_type] == 'week'
       session[:search_type] = :week
-      session[:search_type_label] = 'Week'
+      session[:search_type_label] = 'By Week'
     elsif params[:search][:search_type] == 'month'
       session[:search_type] = :month
-      session[:search_type_label] = 'Month'
+      session[:search_type_label] = 'By Month'
     elsif params[:search][:search_type] == 'year'
       session[:search_type] = :year
-      session[:search_type_label] = 'Year'
+      session[:search_type_label] = 'By Year'
     elsif params[:search][:search_type] == 'employee'
       session[:search_type] = :employee
-      session[:search_type_label] = 'employee'
+      session[:search_type_label] = 'By Employee'
     end
     if params[:search][:from_date]
       session[:from_date] = params[:search][:from_date]
