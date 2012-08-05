@@ -107,6 +107,8 @@ class CashTotal < ActiveRecord::Base
     @total_covers = 0
     @loyalty_points_redeemed = 0
     
+    @customer_settlements_amount = 0
+    
     #load the first order, based on the last z total or the very first if none exists
     @last_performed_non_zero_z_total = where("total_type = ?", Z_TOTAL).where("end_calc_order_id is not ?", nil).where("terminal_id = ?", terminal_id).order("created_at").lock(true).last
     
@@ -327,8 +329,6 @@ class CashTotal < ActiveRecord::Base
       end
     
       #get all the settled account amounts
-      @customer_settlements_amount = 0
-    
       @customer_txns = CustomerTransaction.where("transaction_type = ?", CustomerTransaction::SETTLEMENT)
       .where("terminal_id = ?", terminal_id)
       .where("created_at >= ?", @last_z_total_time)
