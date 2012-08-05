@@ -48,7 +48,7 @@
 
                         <td>
                             <% revenue = product.price * quantity_sold %>
-                            <%= sprintf("%.2f", revenue.abs) %>
+                            <%= sprintf("%.2f",revenue.abs) %>
                         </td>
 
                     </tr>
@@ -79,10 +79,10 @@
                 <% @products.each_with_index do |item, i| %>
                     <% product = Product.find_by_id(item.product_id) %>
                     <% unless session[:search_type] == :by_category %>
-                    <% total_sales = OrderItem.find_by_sql("select oi.id, sum(oi.total_price) as total_price from order_items as oi inner join orders o on oi.order_id = o.id where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and oi.product_id = #{item.product_id} and o.is_void = 0 and oi.is_void = 0") %>
+                    <% total_sales = OrderItem.find_by_sql("select oi.id, sum(oi.total_price) as total_price from order_items as oi inner join orders o on oi.order_id = o.id inner join stock_transactions st on st.order_item_id = oi.id where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and st.product_id = #{item.product_id} and o.is_void = 0 and oi.is_void = 0 group by st.product_id") %>
                     <% else %>
                     <% total_sales = OrderItem.find_by_sql("select oi.id, sum(oi.total_price) as total_price from order_items as oi inner join orders o on oi.order_id = o.id inner join products p on oi.product_id = p.id where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and p.category_id = #{product.category_id} and o.is_void = 0 and oi.is_void = 0 group by p.category_id") %>
-                    <% products = StockTransaction.find_by_sql("select st.id, st.transaction_type, st.product_id, st.created_at, sum(st.old_amount) as old_amount, sum(st.change_amount) as change_amount from stock_transactions st inner join products p on p.id = st.product_id where st.created_at <= '#{@selected_to_date}' and st.created_at >= '#{@selected_from_date}' and p.category_id = #{product.category_id} group by st.product_id") %>
+                    <% products = StockTransaction.find_by_sql("select st.id, st.transaction_type, st.product_id, st.created_at, st.old_amount, st.change_amount from stock_transactions st inner join products p on p.id = st.product_id where st.created_at <= '#{@selected_to_date}' and st.created_at >= '#{@selected_from_date}' and p.category_id = #{product.category_id}") %>
                     <% cost_total = 0 %>
                     <% products.each do |st| %>
                     <% curr_product = Product.find_by_id(st.product_id) %>
@@ -90,7 +90,7 @@
                      <% if curr_product.cost_price == 0 %>
                      <% all_cost_price = false %>
                      <% end %>
-                    <% cost_total += (sprintf("%.2f", curr_product.cost_price).to_d *  sprintf("%.1f", st.change_amount).to_d) %>
+                    <% cost_total += curr_product.cost_price *  st.change_amount %>
                     <% end %>
                 <% end %>
                     <tbody>
@@ -111,7 +111,7 @@
                         </td>
                         <td>
                             <% quantity_sold = item.change_amount %>
-                            <%= sprintf("%.1f", quantity_sold.abs) %>
+                            <%= sprintf("%.2f", quantity_sold.abs) %>
                         </td>
                         <% unless session[:search_type] == :by_category %>
                         <td>
@@ -119,31 +119,35 @@
                         </td>
                         <td>
                             <% unless product.cost_price == 0 %>
-                                <% price = sprintf("%.2f", product.cost_price) %>
+                                <% price = sprintf("%.2f",product.cost_price) %>
                                 <%= price %>
                         </td>
                         <% end %>
                         <% end %>
                         <td>
                              <% unless session[:search_type] == :by_category %>
-                            <% total_price =  sprintf("%.2f", product.cost_price).to_d *  sprintf("%.1f", quantity_sold).to_d %>
+                            <% total_price =  product.cost_price *  quantity_sold %>
                             <% else %>
                             <% total_price = cost_total %>
                             <% end %>
                             <% unless total_price == 0 || total_price == nil || all_cost_price == false %>
-                                <%= sprintf("%.2f", total_price.abs) %>
+                                <%= sprintf("%.2f",total_price.abs) %>
                             <% end %>
                         </td>
                         <td>
                             <% revenue = total_sales[0].total_price %>
-                            <%= sprintf("%.2f", revenue.abs) %>
+                            <% unless (revenue == nil) %>
+                            <%= sprintf("%.2f",revenue) %>
+                            <% end %>
                         </td>
                         <td>
+                            <% unless (revenue == nil) %>
                             <% unless total_price == 0 || total_price == nil || all_cost_price == false %>
-                                <% margin = per_profit(revenue, total_price, product.sales_tax_rate) %>
+                                <% margin = per_profit(sprintf("%.2f", revenue).to_d, sprintf("%.2f", total_price.abs).to_d, product.sales_tax_rate) %>
                                 <% unless (margin == nil) %>
                                     <%= sprintf("%.0f", margin) %>%
                                 <% end %>
+                            <% end %>
                             <% end %>
                         </td>
 

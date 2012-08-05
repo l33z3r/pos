@@ -64,7 +64,7 @@ class Reports::StocksController < Admin::AdminController
 
     def export_excel
     headers['Content-Type'] = "application/vnd.ms-excel"
-    headers['Content-Disposition'] = 'attachment; filename="Stock Report-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
+    headers['Content-Disposition'] = 'attachment; filename="'+@business_name+' Stock Report-' + session[:search_type_label] + '-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
     headers['Cache-Control'] = ''
     stocks_search
   end
@@ -111,12 +111,12 @@ class Reports::StocksController < Admin::AdminController
 
     if params[:search][:search_type] == 'by_product'
       session[:search_type] = :by_product
-      session[:search_type_label] = 'Product'
+      session[:search_type_label] = 'By Product'
       session[:show_zeros] = false
     elsif params[:search][:search_type] == 'by_category'
       session[:search_type] = :by_category
       session[:show_zeros] = false
-      session[:search_type_label] = 'Category'
+      session[:search_type_label] = 'By Category'
     elsif params[:search][:search_type] == 'by_trans_type'
       session[:search_type] = :by_trans_type
       session[:show_zeros] = false
@@ -124,7 +124,7 @@ class Reports::StocksController < Admin::AdminController
     elsif params[:search][:search_type] == 'all'
       session[:search_type] = :by_category
       session[:show_zeros] = true
-      session[:search_type_label] = 'Category'
+      session[:search_type_label] = 'By Category'
     end
     session[:category] = params[:search][:category]
     session[:product] = params[:search][:product]

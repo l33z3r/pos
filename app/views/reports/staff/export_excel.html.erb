@@ -4,7 +4,6 @@
     <% end %>
 
 
-
     <div id="staff_items" >
         <% if params[:action] == "staff_print" %>
             <h3>Staffs Report <%= Time.now.strftime("%B %d, %Y") %></h3>
@@ -88,7 +87,7 @@
                 <% total_cost = 0 %>
                 <% total_hours_payable = 0 %>
                 <% total_hours = 0 %>
-                <% last_id = 0 %>
+                <% last_id = -1 %>
                 <% last_name = "" %>
                 <% employee_count = 0 %>
 
@@ -107,11 +106,14 @@
                     <% total_hours_payable += week.payable_seconds %>
                     <% total_hours += week.shift_seconds %>
                     <tbody>
-
+                    <% if week.employee_id != last_id  %>
+                    <tr><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                    <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td></tr>
+                    <% end %>
                     <% if (week.employee_id != last_id && i != 0 && session[:employee] == '' && employee_count > 1) %>
                     <tr class="<%= cycle("even", "odd") %>">
                     <td style="text-align: left;">
-                        Total for <%= last_name %>
+                        Total:
                     </td>
                       <td style="text-align: right; ">
                     </td>
@@ -140,6 +142,9 @@
                      <% if week.employee_id != last_id %>
                      <% employee_count = 0 %>
                      <% employee_count += 1 %>
+                     <% total_cost_per_emp = 0 %>
+                     <% total_hours_payable_per_emp = 0 %>
+                    <% total_hours_per_emp = 0 %>
                      <% else %>
                      <% employee_count += 1 %>
                      <% end %>
@@ -179,11 +184,15 @@
                             <%= sprintf("%.2f",week.cost) %>
                         </td>
                     </tr>
+                    <% if week == @orders.last  %>
+                    <tr><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                    <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td></tr>
+                    <% end %>
                 <% end %>
                     <% if (session[:employee] == '' && employee_count > 1) %>
                     <tr class="<%= cycle("even", "odd") %>">
                     <td style="text-align: left;">
-                        Total for <%= last_name %>
+                        Total:
                     </td>
                       <td style="text-align: right;">
                     </td>
@@ -205,6 +214,7 @@
                         <b><%= sprintf("%.2f",total_cost_per_emp) %></b>
                     </td>
                     </tr>
+
                      <% end %>
 
                   <tr>
@@ -237,7 +247,19 @@
 
         <% end %>
 <% else %>
-
+    <div id="saved_items">
+        <div id="saved_items_container" style="margin-left: 200px;">
+            <div onclick="setStaffSelect(0)" class="saved_report_button">
+                <div class="b_text" style="margin-top: 19px"><b>Times By Employee This Week</b></div>
+            </div>
+            <div onclick="setStaffSelect(1)" class="saved_report_button">
+                <div class="b_text" style="margin-top: 19px"><b>Times By Employee From Last Week</b></div>
+            </div>
+            <div onclick="setStaffSelect(2)" class="saved_report_button">
+                <div class="b_text"><b>Times By Employee This Year</b></div>
+            </div>
+        </div>
+    </div>
 <% end %>
 <script type="text/javascript">
     $('#refine_button').removeClass("selected");

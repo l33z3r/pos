@@ -128,7 +128,10 @@
                     <% total_hours_payable += week.payable_seconds %>
                     <% total_hours += week.shift_seconds %>
                     <tbody>
-
+                    <% if week.employee_id != last_id  %>
+                    <tr><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                    <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td></tr>
+                    <% end %>
                     <% if (week.employee_id != last_id && i != 0 && session[:employee] == '' && employee_count > 1) %>
                     <tr class="<%= cycle("even", "odd") %>">
                     <td style="text-align: left;">
@@ -203,6 +206,10 @@
                             <%= print_money(week.cost) %>
                         </td>
                     </tr>
+                    <% if week == @orders.last  %>
+                    <tr><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                    <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td></tr>
+                    <% end %>
                 <% end %>
                     <% if (session[:employee] == '' && employee_count > 1) %>
                     <tr class="<%= cycle("even", "odd") %>">
@@ -229,6 +236,7 @@
                         <b><%= print_money(total_cost_per_emp) %></b>
                     </td>
                     </tr>
+
                      <% end %>
 
                   <tr>
