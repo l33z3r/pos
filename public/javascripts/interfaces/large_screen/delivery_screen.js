@@ -356,7 +356,7 @@ function getDeliveryItemReceiptHTML(deliveryItem) {
         returnItemHTML = "<div class='return_word'>Return</div>" + clearHTML;
     }
     
-    deliveryItemHTML = "<div class='delivery_line " + returnItemClass + "'>" + returnItemHTML;
+    deliveryItemHTML = "<div class='delivery_line " + returnItemClass + "' onclick='deliveryReceiptItemSelected()'>" + returnItemHTML;
     deliveryItemHTML += "<div class='amount'>" + deliveryItem.amount + "</div>";
     
     var unitString = "";
