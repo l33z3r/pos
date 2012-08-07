@@ -1,7 +1,6 @@
 <% if session[:preselect] != -1 %>
     <% unless params[:action] == "stocks_print" %>
 
-
     <% end %>
 
     <div id="stock_items">
@@ -48,7 +47,7 @@
 
                         <td>
                             <% revenue = product.price * quantity_sold %>
-                            <%= sprintf("%.2f",revenue.abs) %>
+                            <%= sprintf("%.2f", revenue.abs) %>
                         </td>
 
                     </tr>
@@ -60,7 +59,7 @@
         <table id="report_table" class="admin_table" style="width: 100%">
                 <thead>
                 <% unless session[:search_type] == :by_category %>
-                    <th class="header">Name</th>
+                    <th class="header">Product</th>
                 <% end %>
                 <th class="header">Category</th>
 
@@ -81,12 +80,16 @@
                     <% unless session[:search_type] == :by_category %>
                     <% total_sales = OrderItem.find_by_sql("select oi.id, sum(oi.total_price) as total_price from order_items as oi inner join orders o on oi.order_id = o.id inner join stock_transactions st on st.order_item_id = oi.id where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and st.product_id = #{item.product_id} and o.is_void = 0 and oi.is_void = 0 group by st.product_id") %>
                     <% else %>
-                    <% total_sales = OrderItem.find_by_sql("select oi.id, sum(oi.total_price) as total_price from order_items as oi inner join orders o on oi.order_id = o.id inner join products p on oi.product_id = p.id where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and p.category_id = #{product.category_id} and o.is_void = 0 and oi.is_void = 0 group by p.category_id") %>
+                    <% total_sales = 0 %>
+                    <% last_id = 0 %>
                     <% products = StockTransaction.find_by_sql("select st.id, st.transaction_type, st.product_id, st.created_at, st.old_amount, st.change_amount from stock_transactions st inner join products p on p.id = st.product_id where st.created_at <= '#{@selected_to_date}' and st.created_at >= '#{@selected_from_date}' and p.category_id = #{product.category_id}") %>
                     <% cost_total = 0 %>
                     <% products.each do |st| %>
                     <% curr_product = Product.find_by_id(st.product_id) %>
-
+                    <% if last_id != st.product_id %>
+                    <% total_sales += OrderItem.find_by_sql("select oi.id, sum(oi.total_price) as total_price from order_items as oi inner join orders o on oi.order_id = o.id inner join stock_transactions st on st.order_item_id = oi.id where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and st.product_id = #{curr_product.id} and o.is_void = 0 and oi.is_void = 0 group by st.product_id")[0].total_price %>
+                    <% end %>
+                    <% last_id = st.product_id %>
                      <% if curr_product.cost_price == 0 %>
                      <% all_cost_price = false %>
                      <% end %>
@@ -119,7 +122,7 @@
                         </td>
                         <td>
                             <% unless product.cost_price == 0 %>
-                                <% price = sprintf("%.2f",product.cost_price) %>
+                                <% price = sprintf("%.2f", product.cost_price) %>
                                 <%= price %>
                         </td>
                         <% end %>
@@ -131,13 +134,17 @@
                             <% total_price = cost_total %>
                             <% end %>
                             <% unless total_price == 0 || total_price == nil || all_cost_price == false %>
-                                <%= sprintf("%.2f",total_price.abs) %>
+                                <%= sprintf("%.2f", total_price.abs) %>
                             <% end %>
                         </td>
                         <td>
+                            <% unless session[:search_type] == :by_category %>
                             <% revenue = total_sales[0].total_price %>
+                            <% else %>
+                            <% revenue = total_sales %>
+                            <% end %>
                             <% unless (revenue == nil) %>
-                            <%= sprintf("%.2f",revenue) %>
+                            <%= sprintf("%.2f", revenue) %>
                             <% end %>
                         </td>
                         <td>
