@@ -11,3 +11,15 @@ class ShiftTimestamp < ActiveRecord::Base
   validates :timestamp_type, :presence => true, :inclusion => { :in => VALID_TIMESTAMP_TYPES }
   
 end
+
+# == Schema Information
+#
+# Table name: shift_timestamps
+#
+#  id             :integer(4)      not null, primary key
+#  employee_id    :integer(4)
+#  timestamp_type :integer(4)
+#  created_at     :datetime
+#  updated_at     :datetime
+#
+

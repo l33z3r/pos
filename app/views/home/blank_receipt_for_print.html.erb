@@ -470,9 +470,31 @@
       div#cash_totals_data_table div.products_data_table div.products_data.quantity {
         width: 25px;
       }
+
+      div#cash_totals_data_table div.cash_out_data_table div.cash_out_data_table_description_header {
+        font-weight: bold;
+        width: 102px;
+        float: left;
+        text-align: left;
+      }
+
+      div#cash_totals_data_table div.cash_out_data_table div.cash_out_data_table_amount_header {
+        font-weight: bold;
+        width: 99px;
+        float: left;
+        text-align: right;
+      }
       
+      div#cash_totals_data_table div.cash_out_data_table div.label {
+        width: 102px;
+      }
+
+      div#cash_totals_data_table div.cash_out_data_table div.data {
+        width: 99px;
+      }
+
       /* End x/z total receipt css */
-      
+
       /* Work Report Receipt CSS */
 
       div#work_report_data_table div.data_table_header {
@@ -492,13 +514,13 @@
         text-align: left;
         width: 120px;
       }
-      
+
       div#work_report_data_table div.data_table div.data {
         float: left;
         text-align: right;
         width: 81px;
       }
-      
+
       div#work_report_data_table div.data_table div.label.date {
         width: 100px;
       }
@@ -523,21 +545,24 @@
         text-align: right;
         width: 109px;
       }  
-      
+
       div#work_report_data_table div.work_report_footer {
         text-align: center;
         margin: 5px 0px;
       }
-      
+
       div#work_report_data_table div.work_report_footer div.message {
         font-weight: bold;
         margin-top: 5px;
       }
-      
+
       /* End Work Report Receipt CSS */
 
       /* Settings for delivery receipt */
       <%= render "/partials/interfaces/large_screen/delivery_receipt_css" %>
+
+      /* Settings for cash out receipt */
+      <%= render "/partials/interfaces/large_screen/cash_out_receipt_css" %>
 
       /* Settings for order receipt */
 
@@ -546,7 +571,7 @@
       }
 
       div.order_receipt div.order_line.course {
-        border-bottom: 2px solid #4F81BD;
+        border-bottom: 2px solid #000;
       }
 
       div.order_receipt div.course_label {

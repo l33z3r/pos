@@ -16,6 +16,7 @@ class CustomerTransaction < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: customer_transactions
@@ -30,5 +31,6 @@ end
 #  created_at       :datetime
 #  updated_at       :datetime
 #  payment_id       :integer(4)
+#  terminal_id      :string(255)
 #
 

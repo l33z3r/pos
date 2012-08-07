@@ -392,6 +392,9 @@ function setStockSearchType(interval_selected) {
         case '2':
             search_type = 'by_category';
             break;
+        case '3':
+            search_type = 'by_trans_type';
+            break;
 
     }
     setStockParams();
@@ -452,6 +455,12 @@ function setSearchType(interval_selected) {
             break;
         case '6':
             search_type = 'by_product';
+            $('#product_dropdown').hide();
+            $('#product_search').val('');
+            $('#string_search_box').hide();
+            break;
+        case '7':
+            search_type = 'by_category';
             $('#product_dropdown').hide();
             $('#product_search').val('');
             $('#string_search_box').hide();

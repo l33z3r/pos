@@ -23,6 +23,7 @@ Pos::Application.routes.draw do
   match 'float_history' => "order#float_history", :via => :get
   match 'cash_total_history' => "order#cash_total_history", :via => :get
   match 'outstanding_orders' => "order#create_outstanding", :via => :post
+  match 'cash_out' => "order#cash_out", :via => :post
 
   #delivery
   match 'delivery' => "delivery#receive", :via => :post
@@ -123,6 +124,7 @@ Pos::Application.routes.draw do
     resources :roles do 
       collection do
         post 'pin_required_for_role'
+        post 'login_allowed_for_role'
       end
     end
     
@@ -139,6 +141,12 @@ Pos::Application.routes.draw do
       member do
         post 'default'
       end
+      collection do
+        post 'update_multiple'
+      end
+    end
+    
+    resources :cash_out_presets, :only => [:create, :destroy] do
       collection do
         post 'update_multiple'
       end
@@ -298,6 +306,15 @@ Pos::Application.routes.draw do
         get 'set_params'
         get 'load_dropdown'
         get 'payments_print'
+        get 'export_excel'
+      end
+    end
+    resources :staff, :only => [:index] do
+      collection do
+        get 'staff_search'
+        get 'set_params'
+        get 'load_dropdown'
+        get 'staff_print'
         get 'export_excel'
       end
     end

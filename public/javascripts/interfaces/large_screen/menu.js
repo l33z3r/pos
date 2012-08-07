@@ -26,6 +26,9 @@ var inTrainingMode = false;
 
 var highlightedCover = true;
 
+var inCashOutMode = false;
+var cashOutKeypadString = "";
+        
 //this function is called from application.js on page load
 function initMenu() {
     initMenuScreenType();
@@ -199,6 +202,10 @@ function menuScreenKeypadClick(val) {
         $('#display_button_passcode_show').html($('#display_button_passcode_show').html() + "*");
     } else if(inStockTakeMode) {
         $('#stock_take_new_amount_input').val($('#stock_take_new_amount_input').val() + val);
+    } else if(inCashOutMode) {
+        cashOutKeypadString += val;
+        currentCashOutAmount = cashOutKeypadString;
+        $('#cash_out_amount').html(currency(cashOutKeypadString/100.0));
     } else if(inPriceChangeMode) {
         $('#price_change_new_price_input').val($('#price_change_new_price_input').val() + val);
     } else if(menuScreenType == RETAIL_MENU_SCREEN) {
@@ -225,7 +232,9 @@ function menuScreenKeypadClick(val) {
 }
 
 function menuScreenKeypadClickCancel() {
-    if(inStockTakeMode) {
+    if(inCashOutMode) {
+        cashOutAmountCancelClicked();
+    } else if(inStockTakeMode) {
         $('#stock_take_new_amount_input').val("");
     } else if(inPriceChangeMode) {
         $('#price_change_new_price_input').val("");
@@ -249,7 +258,9 @@ function menuScreenKeypadClickCancel() {
 }
 
 function menuScreenKeypadClickDecimal() {
-    if(inStockTakeMode) {
+    if(inCashOutMode) {
+        return;
+    } else if(inStockTakeMode) {
         $('#stock_take_new_amount_input').val($('#stock_take_new_amount_input').val() + ".");
     } else if(inPriceChangeMode) {
         $('#price_change_new_price_input').val($('#price_change_new_price_input').val() + ".");
@@ -1238,9 +1249,9 @@ function doTotalFinal() {
         tableInfoLabel = "None";
         isTableOrder = false;
         
-        if(isProcessingTable0Orders) {
-            isTableZeroOrder = true;
+        isTableZeroOrder = true;
             
+        if(isProcessingTable0Orders) {
             //we need to show a loading div while we process the table 0 order as we 
             //cannot allow the user to switch to a different table or the doSyncTable() will never be called for this table 0 order
             showLoadingDiv("Sending Order...");
@@ -1495,7 +1506,7 @@ function orderSentToServerCallback(orderData, errorOccured) {
         
         //first see if its table 0 and send into system orders
         //a null test is to see if table 0
-        if(isTableZeroOrder) {
+        if(isTableZeroOrder && isProcessingTable0Orders) {
             doSyncTableOrder();
             hideLoadingDiv();
         }
@@ -2580,4 +2591,103 @@ function performScreenResolutionCSSMods() {
 
 function doAutoCovers() {
     promptAddCovers();
+}
+
+function setCashOutDescription(cashOutPresetId) {
+    var presetLabel = null;
+    
+    for(var i=0; i<cashOutPresets.length; i++) {
+        var nextPreset = cashOutPresets[i];
+            
+        if(cashOutPresetId == nextPreset.id) {
+            presetLabel = nextPreset.label;
+        }
+    }
+            
+    $('#cash_out_description').val(presetLabel);
+}
+
+function cashOutCancelClicked() {
+    inCashOutMode = false;
+    $('#cash_out_description').val("");
+    $('#cash_out_amount').val("");
+    cashOutKeypadString = "";
+    currentCashOutAmount = 0;
+    showMenuScreen();
+}
+
+var currentCashOutDescription = null;
+var currentCashOutAmount = null;
+    
+function cashOutFinish() {
+    currentCashOutDescription = $('#cash_out_description').val();
+    
+    if(currentCashOutDescription.length == 0) {
+        niceAlert("Please enter a description!");
+        return;
+    }
+    
+    //must divide the amount by 100 so it is not recorded as cents
+    $.ajax({
+        type: 'POST',
+        url: '/cash_out',
+        complete: function() {
+            setStatusMessage("Expense has been entered!");
+        },
+        data: {
+            description : currentCashOutDescription,
+            amount : (currentCashOutAmount/100)
+        }
+    });
+    
+    //print receipt
+    var cashOutReceiptContent = getCashOutReceiptHTML();
+    
+    printReceipt(cashOutReceiptContent, false);
+    
+    $('#cash_out_description').val("");
+    $('#cash_out_amount').val("");
+    inCashOutMode = false;
+    
+    cashOutKeypadString = "";
+    currentCashOutDescription = currentCashOutAmount = null;
+    currentCashOutAmount = 0;
+    
+    showMenuScreen();
+}
+
+function cashOutAmountCancelClicked() {
+    cashOutKeypadString = "";
+    currentCashOutAmount = 0;
+    $('#cash_out_amount').html(currency(0));    
+}
+
+function getCashOutReceiptHTML() {
+    var cashOutTillRollHTML = "<div class='cash_out_till_roll'>";
+    
+    cashOutTillRollHTML += fetchBusinessInfoHeaderHTML() + clearHTML; 
+    cashOutTillRollHTML += "<div class='cash_out_till_roll_heading'>Paid Expense</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "<div class='cash_out_till_roll_header'>";
+    
+    cashOutTillRollHTML += "<div class='nickname'>Entered By: " + current_user_nickname + "</div>";
+    
+    var timestamp = utilFormatDate(new Date(clueyTimestamp()));
+    
+    cashOutTillRollHTML += "<div class='timestamp'>" + timestamp + "</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "<div class='description_header'>Description</div>";
+    cashOutTillRollHTML += "<div class='amount_header'>Amount</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "<div class='data_table'>";
+    
+    cashOutTillRollHTML += "<div class='label'>" + currentCashOutDescription + "</div><div class='data'>" + currency(currentCashOutAmount) + "</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "<div id='cash_out_footer_message'>Please Attatch To Receipt</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "</div>" + clearHTML;
+    
+    return cashOutTillRollHTML;
 }

@@ -102,9 +102,15 @@ module ApplicationHelper
       end
     
       @pm_shortcut_id = GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => @shortcut_num}
-      @shortcut_payment_method = PaymentMethod.find_by_id(@pm_shortcut_id)
       
-      return @shortcut_payment_method.name
+      if @pm_shortcut_id == -1
+        @button_text = "Payment Method Shortcut Button #{@shortcut_num}"
+      else
+        @shortcut_payment_method = PaymentMethod.find_by_id(@pm_shortcut_id)
+        @button_text = @shortcut_payment_method.name
+      end
+      
+      return @button_text
     else
       return button.button_text
     end
@@ -214,8 +220,8 @@ module ApplicationHelper
   end
 
   def hours_mins_for_seconds num_seconds
-    @num_seconds_in_minute = 60
-    @num_seconds_in_hour = 3600
+    @num_seconds_in_minute = 60.0
+    @num_seconds_in_hour = 3600.0
   
     @complete_hours = (num_seconds/@num_seconds_in_hour).to_i
     @hours_rounded = (num_seconds/@num_seconds_in_hour).round(2)

@@ -245,11 +245,21 @@ function displayButtonRoleSalesScreenSelect(dbr_id, checked) {
 }
 
 //admin for roles
-
-function togglePinRequired(role_id, checked) {
+function toggleRolePinRequired(role_id, checked) {
     $.ajax({
         type: 'POST',
         url: '/admin/roles/pin_required_for_role',
+        data: {
+            id : role_id,
+            checked : checked
+        }
+    });
+}
+
+function toggleRoleLoginAllowed(role_id, checked) {
+    $.ajax({
+        type: 'POST',
+        url: '/admin/roles/login_allowed_for_role',
         data: {
             id : role_id,
             checked : checked

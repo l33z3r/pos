@@ -1,0 +1,289 @@
+<% if session[:preselect] != -1 %>
+    <% unless params[:action] == "staff_print" %>
+        <div id="options_menu">
+            <div class="option" onclick="setStaffSelect(-1)" class="print_box">
+                <div style="float: left;"><img src="/images/button_logos/home.png" alt="Print" width="24" height="24"/>
+                </div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Home  |</span></div>
+            </div>
+            <div class="option" onclick="window.location = '/reports/staff/staff_print'" class="print_box">
+                <div style="float: left;"><img src="/images/button_logos/print.png" alt="Print" width="24" height="24"/>
+                </div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Print  |</span></div>
+            </div>
+            <div class="option" onclick="window.location = '/reports/staff/export_excel'" class="excel_box">
+                <div style="float: left;">
+                    <img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24"/></div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Excel </span></div>
+            </div>
+        </div>
+    <% end %>
+    <div id="staff_items_graph" style="display: none">
+        <div id="spacer" style="height:70px;"></div>
+    </div>
+
+
+    <div id="staff_items" >
+        <% if params[:action] == "staff_print" %>
+            <h3>Staffs Report <%= Time.now.strftime("%B %d, %Y") %></h3>
+        <% end %>
+
+        <% if (@s_type == :day) || (@s_type == :month) || (@s_type == :week) || (@s_type == :year) %>
+
+            <table id="report_table" class="admin_table" style="width: 100%">
+                <thead>
+
+                <th class="header">Date</th>
+                <th class="header">Total Hours</th>
+                <th class="header">Breaks</th>
+                <th class="header">Hours Payable</th>
+                <th class="header">Rate</th>
+                <th class="header">Cost</th>
+                </thead>
+                <% total_items = 0 %>
+                <% @orders.each do |week| %>
+
+                    <% @work_data = week[:report_data] %>
+                    <tbody>
+                    <tr class="<%= cycle("even", "odd") %>">
+                        <td style="text-align: left">
+                         <% if @s_type == :day %>
+                                <%= week.created_at.strftime("%B %d, %Y") %>
+                            <% end %>
+                            <% if @s_type == :week %>
+                                Week starting <%= week.created_at.beginning_of_week.strftime("%B %d, %Y") %>
+                            <% end %>
+                            <% if @s_type == :month %>
+                                <%= week.created_at.strftime("%B, %Y") %>
+                            <% end %>
+                            <% if @s_type == :year %>
+                                <%= week.created_at.strftime("%Y") %>
+                            <% end %>
+                        </td>
+                        <td>
+                           <%= hours_mins_for_seconds week.shift_seconds %>
+                        </td>
+                        <td>
+                           <%= hours_mins_for_seconds week.break_seconds %>
+                        </td>
+                        <td>
+                            <%= hours_mins_for_seconds week.payable_seconds %>
+                        </td>
+                        <td>
+                            <%= print_money(week.hourly_rate) %>
+                        </td>
+                        <td>
+                            <%= print_money(week.cost) %>
+                        </td>
+                    </tr>
+                <% end %>
+                </tbody>
+            </table>
+
+        <% else %>
+
+            <script type="text/javascript">
+                $(function () {
+                    $('.pagination a').click(function () {
+                        $("#report_staff_results").html("Loading...");
+                        $.get(this.href, null, null, 'script');
+                        return false;
+                    });
+                });
+            </script>
+            <table id="report_table" class="admin_table" style="width: 100%">
+                <thead>
+                <th class="header">Name</th>
+                <th class="header">ID</th>
+                <th class="header">Start</th>
+                <th class="header">Finish</th>
+                <th class="header">Total Hours</th>
+                <th class="header">Breaks</th>
+                <th class="header">Hours Payable</th>
+                <th class="header">Rate</th>
+                <th class="header">Cost</th>
+                </thead>
+                <% total_cost = 0 %>
+                <% total_hours_payable = 0 %>
+                <% total_hours = 0 %>
+                <% last_id = -1 %>
+                <% last_name = "" %>
+                <% employee_count = 0 %>
+
+                <% total_cost_per_emp = 0 %>
+                <% total_hours_payable_per_emp = 0 %>
+                <% total_hours_per_emp = 0 %>
+
+
+                <% @orders.each_with_index do |week, i| %>
+
+                    <% @employee = Employee.find_by_id(week.employee_id) %>
+
+
+
+                    <% total_cost += week.cost %>
+                    <% total_hours_payable += week.payable_seconds %>
+                    <% total_hours += week.shift_seconds %>
+                    <tbody>
+                    <% if week.employee_id != last_id  %>
+                    <tr><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                    <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td></tr>
+                    <% end %>
+                    <% if (week.employee_id != last_id && i != 0 && session[:employee] == '' && employee_count > 1) %>
+                    <tr class="<%= cycle("even", "odd") %>">
+                    <td style="text-align: left;">
+                        Total:
+                    </td>
+                      <td style="text-align: right; ">
+                    </td>
+                      <td style="text-align: right; ">
+                    </td>
+                      <td style="text-align: right; ">
+                    </td>
+                    <td style="text-align: right;">
+                       <b><%= hours_mins_for_seconds total_hours_per_emp %></b>
+                    </td>
+                    <td style="text-align: right; ">
+                    </td>
+                    <td style="text-align: right; ">
+                        <b><%= hours_mins_for_seconds total_hours_payable_per_emp %></b>
+                    </td>
+                    <td style="text-align: right; ">
+                    </td>
+                    <td style="text-align: right; ">
+                        <b><%= print_money(total_cost_per_emp) %></b>
+                    </td>
+                    </tr>
+                    <% total_cost_per_emp = 0 %>
+                    <% total_hours_payable_per_emp = 0 %>
+                    <% total_hours_per_emp = 0 %>
+                     <% end %>
+                     <% if week.employee_id != last_id %>
+                     <% employee_count = 0 %>
+                     <% employee_count += 1 %>
+                     <% total_cost_per_emp = 0 %>
+                     <% total_hours_payable_per_emp = 0 %>
+                    <% total_hours_per_emp = 0 %>
+                     <% else %>
+                     <% employee_count += 1 %>
+                     <% end %>
+                     <% last_id = week.employee_id %>
+                     <% last_name = @employee.name[0..16] %>
+
+                     <% total_cost_per_emp += week.cost %>
+                     <% total_hours_payable_per_emp += week.payable_seconds %>
+                     <% total_hours_per_emp += week.shift_seconds %>
+
+                     <tr class="<%= cycle("even", "odd") %>">
+                        <td style="text-align: left; max-width: 110px">
+                          <%= @employee.name[0..16] %>
+                        </td>
+                        <td >
+                           <%= @employee.staff_id %>
+                        </td>
+                        <td>
+                           <%= week.clockin_time.strftime(@reportDateFormat) %>
+                        </td>
+                        <td>
+                            <%= week.clockout_time.strftime(@reportDateFormat) %>
+                        </td>
+                        <td>
+                             <%= hours_mins_for_seconds week.shift_seconds %>
+                        </td>
+                        <td>
+                           <%= hours_mins_for_seconds week.break_seconds %>
+                        </td>
+                        <td>
+                            <%= hours_mins_for_seconds week.payable_seconds %>
+                        </td>
+                        <td>
+                            <%= print_money(week.hourly_rate) %>
+                        </td>
+                        <td>
+                            <%= print_money(week.cost) %>
+                        </td>
+                    </tr>
+                    <% if week == @orders.last  %>
+                    <tr><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                    <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td></tr>
+                    <% end %>
+                <% end %>
+                    <% if (session[:employee] == '' && employee_count > 1) %>
+                    <tr class="<%= cycle("even", "odd") %>">
+                    <td style="text-align: left;">
+                        Total:
+                    </td>
+                      <td style="text-align: right;">
+                    </td>
+                      <td style="text-align: right;">
+                    </td>
+                      <td style="text-align: right;">
+                    </td>
+                    <td style="text-align: right;">
+                       <b><%= hours_mins_for_seconds total_hours_per_emp %></b>
+                    </td>
+                    <td style="text-align: right; ">
+                    </td>
+                    <td style="text-align: right; ">
+                        <b><%= hours_mins_for_seconds total_hours_payable_per_emp %></b>
+                    </td>
+                    <td style="text-align: right; ">
+                    </td>
+                    <td style="text-align: right; ">
+                        <b><%= print_money(total_cost_per_emp) %></b>
+                    </td>
+                    </tr>
+
+                     <% end %>
+
+                  <tr>
+                    <td style="text-align: left; border-top: 2px solid">
+                        <b>Total:</b>
+                    </td>
+                      <td style="text-align: right; border-top: 2px solid;">
+                    </td>
+                      <td style="text-align: right; border-top: 2px solid;">
+                    </td>
+                      <td style="text-align: right; border-top: 2px solid;">
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid">
+                        <%= hours_mins_for_seconds total_hours %>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid; ">
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid;">
+                        <%= hours_mins_for_seconds total_hours_payable %>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid;">
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid">
+                        <%= print_money(total_cost) %>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+
+        <% end %>
+<% else %>
+    <div id="saved_items">
+        <div id="saved_items_container" style="margin-left: 200px;">
+            <div onclick="setStaffSelect(0)" class="saved_report_button">
+                <div class="b_text" style="margin-top: 19px"><b>Times By Employee This Week</b></div>
+            </div>
+            <div onclick="setStaffSelect(1)" class="saved_report_button">
+                <div class="b_text" style="margin-top: 19px"><b>Times By Employee From Last Week</b></div>
+            </div>
+            <div onclick="setStaffSelect(2)" class="saved_report_button">
+                <div class="b_text"><b>Times By Employee This Year</b></div>
+            </div>
+        </div>
+    </div>
+<% end %>
+<script type="text/javascript">
+    $('#refine_button').removeClass("selected");
+</script>
+

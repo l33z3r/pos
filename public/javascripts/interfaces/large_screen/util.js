@@ -210,6 +210,22 @@ function showLoginScreen() {
     clearNavTitle();
     hideAllScreens();
     $('#landing').show();
+    
+    //if a user has items on their table 0 receipt show it on their logo
+    var userIDS = getClockedInUsersIDS();
+
+    for (var i = 0; i < userIDS.length; i++) {
+        var nextUserID = userIDS[i];
+        
+        var nextTable0Order = getOrderFromStorage(nextUserID);
+        
+        if(nextTable0Order && nextTable0Order.items && nextTable0Order.items.length > 0) {
+            $('#employee_box_' + nextUserID).addClass("has_active_t0_items");
+        } else {
+            $('#employee_box_' + nextUserID).removeClass("has_active_t0_items");
+        }
+    }
+    
     loginRecptScroll();
 }
 
@@ -598,6 +614,8 @@ function hideAllMenuSubScreens() {
     
     $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').removeClass("selected");
     $('#order_item_additions').hide();
+    
+    $('#cash_out_subscreen').hide();
 }
 
 function currentMenuSubscreenIsMenu() {
@@ -606,6 +624,10 @@ function currentMenuSubscreenIsMenu() {
 
 function currentMenuSubscreenIsModifyOrderItem() {
     return $('#order_item_additions').is(":visible");
+}
+
+function currentMenuSubscreenIsCashOutSubscreen() {
+    return $('#cash_out_subscreen').is(":visible");
 }
 
 function initNoteScreenKeyboard() {
@@ -623,7 +645,7 @@ function initNoteScreenKeyboard() {
         "top":pos.top + "px"
     } );
     
-    $('#close_keyboard_link').hide();
+    hideUtilKeyboardCloseButton();
 
     $("#util_keyboard_container").show();
 }
@@ -639,7 +661,7 @@ function resetKeyboard() {
         "left" : "0px"
     } );
     
-    $('#close_keyboard_link').show();
+    showUtilKeyboardCloseButton();
     $("#util_keyboard_container").hide();
 }
 
@@ -656,7 +678,7 @@ function placeUtilKeyboard(keyboardPlaceHolderEl) {
         "top":pos.top + "px"
     } );
     
-    $('#close_keyboard_link').hide();
+    hideUtilKeyboardCloseButton();
 
     $("#util_keyboard_container").show();
 }
@@ -779,6 +801,16 @@ function initTrainingModeFromCookie() {
     
     var turnOn = getRawCookie(inTrainingModeCookieName) === "true";
     setTrainingMode(turnOn);
+}
+
+function hideUtilKeyboardCloseButton() {
+    $('#close_keyboard_link').hide();
+    $('#util_keyboard_inner_container').height("230px");
+}
+
+function showUtilKeyboardCloseButton() {
+    $('#close_keyboard_link').show();
+    $('#util_keyboard_inner_container').height("260px");
 }
 
 function setFirefoxPrefs() {

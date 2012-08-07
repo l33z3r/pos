@@ -1999,7 +1999,21 @@ div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll 
     width: 30px;
 }
 
-/* Previous Cash Totals */
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.cash_out_data_table_description_header {
+    font-weight: bold;
+    width: 180px;
+    float: left;
+    text-align: left;
+}
+
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.cash_out_data_table_amount_header {
+    font-weight: bold;
+    float: left;
+    text-align: right;
+    width: 120px;
+}
+
+/* End Previous Cash Totals */
 
 /* OIAGs */
 
@@ -2289,6 +2303,14 @@ div#customer_builder div#builder_fields_container div.extra_options div#loyalty_
 div#customer_builder div#builder_fields_container div.extra_options div#loyalty_tab_content div.right_col {
     float: left;
     width: 110px;
+}
+
+div#customer_builder div#builder_fields_container div.extra_options div#loyalty_tab_content div.left_col div#enable_edit_loyalty_points_button {
+    height: 20px;
+    padding-top: 5px;
+    margin-top: -2px;
+    margin-left: 5px;
+    float: left;
 }
 
 /* End Customers */

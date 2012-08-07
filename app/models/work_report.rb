@@ -35,3 +35,23 @@ class WorkReport < ActiveRecord::Base
   end
   
 end
+
+
+# == Schema Information
+#
+# Table name: work_reports
+#
+#  id              :integer(4)      not null, primary key
+#  employee_id     :integer(4)
+#  report_data     :text
+#  created_at      :datetime
+#  updated_at      :datetime
+#  clockin_time    :datetime
+#  clockout_time   :datetime
+#  shift_seconds   :integer(4)      default(0)
+#  break_seconds   :integer(4)      default(0)
+#  payable_seconds :integer(4)      default(0)
+#  hourly_rate     :float
+#  cost            :float
+#
+

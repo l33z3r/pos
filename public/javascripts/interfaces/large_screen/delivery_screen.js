@@ -13,7 +13,8 @@ function initDeliveryScreen() {
     if(!currentDelivery) {
         currentDelivery = {
             'items': new Array(),
-            'total': 0
+            'total': 0,
+            'received_date': utilFormatDate(new Date(clueyTimestamp()))
         };
     }
     
@@ -29,6 +30,13 @@ function initDeliveryScreen() {
     setReturnDeliveryItem(false);
     
     redrawDeliveryReceipt();
+    
+    //are we allowing the change cost price button
+    if(typeof(display_button_passcode_permissions[changeCostPriceButtonID]) != 'undefined') {
+        $('#delivery_screen_change_cost_price_button').show();
+    } else {
+        $('#delivery_screen_change_cost_price_button').hide();
+    }
 }
 
 function resetDeliveryProductSelect() {
@@ -45,14 +53,14 @@ function initDeliveryProductSearchKeyboard() {
     var pos = keyboardPlaceHolderEl.offset();
     
     //show the menu directly over the placeholder
-    $("#util_keyboard_container").css( {
+    $("#util_keyboard_container").css({
         "position" : "absolute",
         "width" : "688px",
         "left": (pos.left) + "px", 
         "top":pos.top + "px"
-    } );
+    });
     
-    $('#close_keyboard_link').hide();
+    hideUtilKeyboardCloseButton();
 
     $("#util_keyboard_container").show();
     
@@ -300,9 +308,13 @@ function getDeliveryTillRollHTML(includeHeading, includeTotal) {
     
     deliveryTillRollHTML += "<div class='delivery_till_roll_header'>";
     
+    if(currentDelivery.reference_number && currentDelivery.reference_number.length > 0) {
+        deliveryTillRollHTML += "<div class='reference_number'>REF#: " + currentDelivery.reference_number + "</div>" + clearHTML;
+    }
+    
     deliveryTillRollHTML += "<div class='nickname'>" + current_user_nickname + "</div>";
     
-    var timestamp = utilFormatDate(new Date(clueyTimestamp()));
+    var timestamp = currentDelivery.received_date;
     
     deliveryTillRollHTML += "<div class='timestamp'>" + timestamp + "</div>" + clearHTML;
     
@@ -375,6 +387,40 @@ function storeDelivery() {
     storeKeyJSONValue(currentDeliveryStorageKey, currentDelivery);
 }
 
+function showFinishDeliverySubScreen() {
+    if(currentDelivery.items.length == 0) {
+        niceAlert("No Delivery Items Present!");
+        return;
+    }
+    
+    $('#delivery_screen_select_product_container').hide();
+    $('#finish_delivery_subscreen').show();
+    
+    $('#delivery_date_cal').datetimepicker({
+        dateFormat: 'dd-mm-yy',
+        defaultDate: '01/01/01',
+        timeFormat: 'hh:mm',
+        addSliderAccess: true,
+        maxDate: 0,
+        sliderAccessArgs: {
+            touchonly: false
+        }
+    });
+    
+    //force default to now
+    $('#delivery_date_cal').datetimepicker("setDate", new Date());
+    
+    $('#delivery_reference_number_input').focus();
+}
+
+function cancelFinishDeliverySubScreen() {
+    $('#delivery_reference_number_input').val("");
+    $('#delivery_date_cal').val("");
+    
+    $('#delivery_screen_select_product_container').show();
+    $('#finish_delivery_subscreen').hide();
+}
+
 function promptFinishDelivery() {
     ModalPopups.Confirm('niceAlertContainer',
         'Cancel Delivery', "<div id='nice_alert'>Are you sure you want to finish this delivery?</div>",
@@ -389,22 +435,19 @@ function promptFinishDelivery() {
 }
 
 function doFinishDelivery() {
-    if(currentDelivery.items.length == 0) {
-        doCancelDelivery();
-        return;
-    }
-    
     if(receiveDeliveryInProcess) {
         niceAlert("Processing, please wait!");
         return;
     }
     
     receiveDeliveryInProcess = true;
-    showLoadingDiv("Processing...");
+    showLoadingDiv("Processing...");        
     
     var timeoutMillis = sendOrderToServerTimeoutSeconds * 1000;
     
     currentDelivery.employee_id = current_user_id;
+    currentDelivery.reference_number = $('#delivery_reference_number_input').val();
+    currentDelivery.received_date = $('#delivery_date_cal').val();
     storeDelivery();
     
     //send to server
@@ -430,7 +473,17 @@ function doFinishDelivery() {
 function deliverySentToServerCallback() {
     //print receipt
     var deliveryReceiptContent = getDeliveryTillRollHTML(true, true);
-    printReceipt(deliveryReceiptContent, false);
+    
+    if(printLocalDeliveryReceipts) {
+        printLocalReceipt(deliveryReceiptContent, false);
+    } else {
+        printReceipt(deliveryReceiptContent, false);
+    }
+    
+    $('#delivery_reference_number_input').val("");
+    $('#delivery_date_cal').val("");
+    $('#delivery_screen_select_product_container').show();
+    $('#finish_delivery_subscreen').hide();
     
     //finish up
     currentDelivery = null;
@@ -441,6 +494,8 @@ function deliverySentToServerCallback() {
     niceAlert("Delivery Complete!");
     
     receiveDeliveryInProcess = false;
+    
+    requestReload();
 }
 
 function promptCancelDelivery() {

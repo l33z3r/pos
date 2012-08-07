@@ -75,12 +75,13 @@ class ButtonMapper
   PM_SHORTCUT_2_BUTTON = 72
   PM_SHORTCUT_3_BUTTON = 73
   TRAINING_MODE_TOGGLE_BUTTON =  74
-  
+  CHANGE_COST_PRICE_BUTTON = 75
+  EDIT_LOYALTY_POINTS_BUTTON = 76
   
   RESTRICTED_BUTTON_IDS = [
-    ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON,
-    CASH_OUT_BUTTON, STOCK_TAKE_BUTTON,
-    PRINTERS_BUTTON, CHANGE_WAITER_BUTTON, REFUND_BUTTON, WASTE_BUTTON, CLIENT_BUTTON, THEMES_BUTTON
+    ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON, STOCK_TAKE_BUTTON,
+    PRINTERS_BUTTON, CHANGE_WAITER_BUTTON, REFUND_BUTTON, WASTE_BUTTON, CLIENT_BUTTON, THEMES_BUTTON, 
+    CHANGE_COST_PRICE_BUTTON, EDIT_LOYALTY_POINTS_BUTTON
   ]
   
   def action_for_button button
@@ -163,7 +164,7 @@ class ButtonMapper
     when DELIVERY_BUTTON
       @retval = si_check(DELIVERY_BUTTON, "startDeliveryMode();")
     when CASH_OUT_BUTTON
-      @retval = "alert('cash out button clicked');"
+      @retval = si_check(CASH_OUT_BUTTON, ms_check("showCashOutSubscreen();"))
     when RECEIPT_SETUP_BUTTON
       @retval = "alert('receipt setup button clicked');"
     when PAYMENT_METHODS_BUTTON
@@ -236,6 +237,10 @@ class ButtonMapper
       @retval = si_check(PM_SHORTCUT_3_BUTTON, ms_check("pmShortcut(3);"))
     when TRAINING_MODE_TOGGLE_BUTTON
       @retval = si_check(TRAINING_MODE_TOGGLE_BUTTON, ms_check("toggleTrainingMode();"))
+    when CHANGE_COST_PRICE_BUTTON
+      @retval = "alert('Change Cost Price Button Clicked');"
+    when EDIT_LOYALTY_POINTS_BUTTON
+      @retval = "alert('Edit Loyalty Points Button Clicked');"
     end
 
     @retval

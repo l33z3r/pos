@@ -345,7 +345,7 @@ div#landing div#active_users_buttons_container div#active_users div.employee_box
     background-color: #FFF;
 }
 
-div#landing div#active_users_buttons_container div#active_users div.employee_box.on_break {
+div#landing div#active_users_buttons_container div#active_users div.employee_box.on_break {    
     background-color: #CCC;
 }
 
@@ -355,6 +355,12 @@ div#landing div#active_users_buttons_container div#active_users div.employee_box
 
 div#landing div#active_users_buttons_container div#active_users div.employee_box.on_break div.nickname {
     text-decoration: line-through;
+}
+
+div#landing div#active_users_buttons_container div#active_users div.employee_box.has_active_t0_items {
+    border: 3px solid #E36C0A;
+    width: 93px;
+    height: 81px;
 }
 
 div#landing div#active_users_buttons_container div#active_users div.employee_box div.avatar img {
@@ -1187,6 +1193,96 @@ div#menu_screen div#order_item_additions div.grid_row div.grid_item.empty {
     cursor: auto;
 }
 
+/* Cash Out Subscreen */
+
+div#menu_screen div#cash_out_subscreen {
+    display: none;
+    height: 546px;
+    background-color: #E0E0E0;
+}
+
+div#menu_screen div#cash_out_subscreen div#keyboard {
+    margin-left: 15px;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_controls {
+    float: left;
+    width: 50%;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_presets {
+    float: left;
+    width: 50%;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_description_container div.header,
+div#menu_screen div#cash_out_subscreen div#cash_out_amount_container div.header,
+div#menu_screen div#cash_out_subscreen div#cash_out_presets div.header {
+    padding: 10px;
+    background-color: #333;
+    color: #FFF;
+    margin: 1px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_presets div.header {
+    margin-bottom: 2px;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_top_section {
+    height: 280px;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_description_container input {
+    width: 200px;
+    height: 25px;
+    margin-bottom: 20px;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_amount_container div#cash_out_amount {
+    float: left;
+    font-size: 14px;
+    width: 200px;
+    height: 20px;
+    border: 1px solid #CCC;
+    background-color: white;
+    padding: 6px 6px 2px 2px;
+    margin-left: 70px;
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_amount_container div#cash_out_amount_cancel_button {
+    float: left;
+    margin-left: 20px;
+    width: 50px;
+    height: 15px;
+    padding-top: 7px;
+    margin-top: -1px;
+}
+
+div#menu_screen div#cash_out_subscreen div#presets_container div.preset {
+    float: left;
+    width: 47%;
+    background-color: white;
+    margin: 1px;
+    padding: 3px;
+    border: 1px solid #777;
+    cursor: pointer;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_action_buttons_container {
+    border-spacing: 73px 4px;
+}
+
+div#menu_screen div#cash_out_subscreen div#cash_out_action_buttons_container div.button {
+    height: 35px;
+}
+
+/* End Cash Out Subscreen */
+
 div#menu_screen div#add_note div#keyboard {
     height: 300px;
     width: 700px;
@@ -1195,7 +1291,7 @@ div#menu_screen div#add_note div#keyboard {
 }
 
 div#menu_screen div#add_note div#controls {
-    height: 150px;
+    height: 170px;
     margin-left: 80px;
     margin-top: 30px;
     width: 240px;
@@ -1672,6 +1768,30 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
 
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.products_data_table div.products_data.quantity {
     width: 30px;
+}
+
+table#report_table {
+    background-color:#FFFFFF;
+}
+
+table#report_table td {
+    padding: 5px;
+    border-right: solid #000 1px;
+    text-align: right;
+}
+
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.cash_out_data_table div.cash_out_data_table_description_header {
+    font-weight: bold;
+    width: 180px;
+    float: left;
+    text-align: left;
+}
+
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.cash_out_data_table div.cash_out_data_table_amount_header {
+    font-weight: bold;
+    float: left;
+    text-align: right;
+    width: 120px;
 }
 
 /* End Cash Reports Screen */
@@ -3312,8 +3432,12 @@ div#total_screen div#totals_screen_select_customer_container div#search_results_
 
 }
 
+div#total_screen div#customer_search_results_keyboard_container {
+    margin-left: 15px;
+}
+
 div#total_screen div#totals_screen_select_customer_container div#search_results_container div#search_results_scroller {
-    height: 300px;
+    height: 320px;
     margin-bottom: 5px;
     border: 1px solid #CCC;
     background-color: #B4B4B4;
@@ -3399,6 +3523,23 @@ div#util_payment_screen div#util_payment_content_container div#cutomer_payment_i
 
 div#util_payment_screen div#util_payment_content_container div#cutomer_payment_info_table div.data_table {
 
+}
+
+div#util_payment_screen div#util_payment_content_container div#cutomer_payment_info_table div.data_table div.label {
+    width: 40%;
+}
+
+div#util_payment_screen div#util_payment_content_container div#cutomer_payment_info_table div.data_table div.data {
+    width: 60%;
+}
+
+div#util_payment_screen div#util_payment_content_container div#cutomer_payment_info_table div.data_table div.label.credit_account_label {
+    margin-top: 10px;
+}
+
+div#util_payment_screen div#util_payment_content_container div#cutomer_payment_info_table div.data_table div.iPhoneCheckContainer {
+    margin-left: 15px;
+    margin-top: 3px;
 }
 
 div#util_payment_screen div#action_buttons_info_container div#util_payment_buttons_container {
@@ -4473,6 +4614,14 @@ div#reports_container #sales_items{
     height: 553px;
 }
 
+div#reports_container #staff_items{
+    overflow: auto;
+    border:  1px solid black;
+    border-radius: 10px;
+    width: 100%;
+    height: 553px;
+}
+
 div#reports_container #stock_items{
     overflow: auto;
     border:  1px solid black;
@@ -4661,7 +4810,7 @@ div#reports_container  div#report_sales_filters #refine_button_stock{
     width: 103px;
     height: 64px;
     float: left;
-    margin-left: 70px;
+    margin-left: 100px;
 }
 
 div#reports_container  div#report_sales_filters #refine_button_stock.selected{
@@ -4766,8 +4915,60 @@ div#reports_container  div.saved_report_button div.b_text {
 
 div#delivery_screen div#delivery_screen_select_product_container {
     width: 730px;
+    height: 440px;
     float: right;
     padding: 0px 10px;
+}
+
+div#delivery_screen div#finish_delivery_subscreen {
+    display: none;
+    width: 729px;
+    float: right;
+    margin: 0px 10px;
+    border: 1px solid #CCC;
+}
+
+div#delivery_screen div#finish_delivery_subscreen div#reference_number_container,
+div#delivery_screen div#finish_delivery_subscreen div#delivery_date_container {
+    float: left;
+    width: 364px;
+    height: 450px;
+    text-align: center;
+    border-bottom: 1px solid #CCC;
+}
+
+div#delivery_screen div#finish_delivery_subscreen div#delivery_date_container {
+    border-left: 1px solid #CCC;
+}
+
+div#delivery_screen div#finish_delivery_subscreen div#reference_number_container div.header,
+div#delivery_screen div#finish_delivery_subscreen div#delivery_date_container div.header {
+    padding: 15px;
+    margin-bottom: 140px;
+    font-size: 16px;
+    font-weight: bold;
+    border-bottom: 1px solid #CCC;
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+}
+
+div#delivery_screen div#finish_delivery_subscreen div#delivery_date_container div.header {
+    margin-bottom: 10px;
+}
+
+div#delivery_screen div#finish_delivery_subscreen div#delivery_date_container div#delivery_date_cal {
+    margin: auto;
+    width: 212px;
+}
+
+div#delivery_screen div#finish_delivery_subscreen div#reference_number_container input {
+    width: 200px;
+    height: 25px;
+}
+
+div#delivery_screen div#finish_delivery_subscreen div#finish_delivery_misc_buttons_container {
+    margin-top: 120px;
+    border-spacing: 68px 13px;
 }
 
 div#delivery_screen div#delivery_receipt {
@@ -5048,8 +5249,12 @@ div#delivery_screen div#delivery_screen_select_product_container div#delivery_sc
     border-spacing: 13px 3px;
 }
 
+div#delivery_screen div#product_search_results_keyboard_container {
+    margin-left: 15px;
+}
+
 div#delivery_screen div#delivery_screen_select_product_container div#product_search_results_container div#product_search_results_scroller {
-    height: 220px;
+    height: 240px;
     margin-bottom: 5px;
     border: 1px solid #CCC;
     background-color: #B4B4B4;
@@ -5069,8 +5274,8 @@ div#delivery_screen div#delivery_screen_select_product_container div#product_sea
 
 div#delivery_screen div#delivery_screen_select_product_container div#product_search_results_container div.product {
     float: left;
-    width: 205px;
-    margin: 3px;
+    width: 210px;
+    margin: 1px;
     padding: 7px;
     border: 1px solid #333;
     background: #FFF;

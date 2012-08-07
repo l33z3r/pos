@@ -1,0 +1,192 @@
+<% if session[:preselect] != -1 %>
+    <% unless params[:action] == "stocks_print" %>
+
+        <div id="options_menu">
+            <div class="option" onclick="setStockSelect(-1)" class="print_box">
+                <div style="float: left;"><img src="/images/button_logos/home.png" alt="Print" width="24" height="24"/>
+                </div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Home  |</span></div>
+            </div>
+            <div class="option" onclick="window.location = '/reports/stocks/stocks_print'" class="print_box">
+                <div style="float: left;"><img src="/images/button_logos/print.png" alt="Print" width="24" height="24"/>
+                </div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Print  |</span></div>
+            </div>
+            <div class="option" onclick="window.location = '/reports/stocks/export_excel'" class="excel_box">
+                <div style="float: left;">
+                    <img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24"/></div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Excel </span></div>
+            </div>
+        </div>
+    <% end %>
+
+    <div id="stock_items">
+
+    <% if session[:search_type] == :by_trans_type %>
+        <table id="report_table" class="admin_table" style="width: 100%">
+                <thead>
+                <th class="header">Transaction Type</th>
+                <th class="header">Current</th>
+                <th class="header">Change Amount</th>
+
+                <th class="header">Revenue</th>
+
+                </thead>
+                <% @products.each do |item| %>
+                    <% product = Product.find_by_id(item.product_id) %>
+                    <% price = 0 %>
+                    <tbody>
+                    <tr class="<%= cycle("even", "odd") %>">
+
+                        <td style="text-align: left">
+                            <% if item.transaction_type == 1 %>
+                            Stock Update
+                            <% elsif item.transaction_type == 2 %>
+                            Stock Transfer
+                            <% elsif item.transaction_type == 3 %>
+                            Delivery
+                            <% elsif item.transaction_type == 4 %>
+                            Stock Take
+                            <% elsif item.transaction_type == 5 %>
+                            Sale
+                            <% end %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.0f", item.old_amount + item.change_amount) %>
+                        </td>
+                        <td>
+                            <% quantity_sold = item.change_amount %>
+                            <%= sprintf("%.0f", quantity_sold) %>
+                        </td>
+
+
+                        <td>
+                            <% revenue = product.price * quantity_sold %>
+                            <%= print_money(revenue.abs) %>
+                        </td>
+
+                    </tr>
+                <% end %>
+
+                </tbody>
+            </table>
+    <% else %>
+        <table id="report_table" class="admin_table" style="width: 100%">
+                <thead>
+                <% unless session[:search_type] == :by_category %>
+                    <th class="header">Name</th>
+                <% end %>
+                <th class="header">Category</th>
+                <th class="header">Opening Stock</th>
+                <th class="header">Deliveries</th>
+                <th class="header">Closing Stock</th>
+                <th class="header">Change Amount</th>
+
+                <th class="header">Sold</th>
+                <th class="header">Cost ea</th>
+                <th class="header">Cost Total</th>
+                <th class="header">Revenue</th>
+                <th class="header">Margin</th>
+                </thead>
+                <% @products.each_with_index do |item, i| %>
+                    <% product = Product.find_by_id(item.product_id) %>
+                <% first_entry = StockTransaction.find_by_sql("select st.id, st.transaction_type, st.product_id, st.created_at, st.old_amount, st.change_amount from stock_transactions st inner join order_items oi on st.order_item_id = oi.id where st.product_id = #{item.product_id} and oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' order by oi.created_at asc limit 1") %>
+                <% last_entry = StockTransaction.find_by_sql("select st.id, st.transaction_type, st.product_id, st.created_at, st.old_amount, st.change_amount from stock_transactions st inner join order_items oi on st.order_item_id = oi.id where st.product_id = #{item.product_id} and oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' order by oi.created_at desc limit 1") %>
+                <% deliveries = StockTransaction.find_by_sql("select st.id, sum(st.change_amount) as change_amount from stock_transactions st where st.product_id = #{item.product_id} and st.created_at <= '#{@selected_to_date}' and st.created_at >= '#{@selected_from_date}' and st.transaction_type = 3") %>
+                <% sold_items = StockTransaction.find_by_sql("select st.id, sum(st.change_amount) as change_amount from stock_transactions st inner join order_items oi on st.order_item_id = oi.id where st.product_id = #{item.product_id} and oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and st.transaction_type = 5") %>
+
+                    <tbody>
+                    <tr class="<%= cycle("even", "odd") %>">
+                        <% unless session[:search_type] == :by_category %>
+                            <td style="text-align: left">
+                                <% if nil != product.name %>
+                                    <%= product.name[0...20] %>
+                                <% end %>
+                            </td>
+                        <% end %>
+                        <td style="text-align: left">
+                            <% if Category.find_by_id(product.category_id) %>
+                                    <% if Category.find_by_id(product.category_id).name %>
+                                        <%= Category.find_by_id(product.category_id).name %>
+                                    <% end %>
+                                <% end %>
+                        </td>
+                        <td>
+                            <% opening_stock = first_entry[0].old_amount + last_entry[0].change_amount.abs %>
+                            <%= sprintf("%.0f", opening_stock) %>
+                        </td>
+                        <td>
+                            <% if deliveries[0].change_amount %>
+                             <%= deliveries[0].change_amount %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.0f", last_entry[0].old_amount) %>
+                        </td>
+                        <td>
+                            <% quantity_sold = item.change_amount %>
+                            <%= sprintf("%.0f", quantity_sold) %>
+                        </td>
+
+                        <td>
+                            <%= sold_items[0].change_amount.abs %>
+                        </td>
+
+                        <td>
+                            <% unless product.cost_price == 0 %>
+                                <% price = print_money(product.cost_price) %>
+                                <%= price %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <% total_price = product.cost_price * quantity_sold.to_i %>
+                            <% unless product.cost_price == 0 %>
+                                <%= print_money(total_price.abs) %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <% revenue = product.price * quantity_sold %>
+                            <%= print_money(revenue.abs) %>
+                        </td>
+                        <td>
+                            <% unless product.cost_price == 0 %>
+                                <% margin = per_profit(revenue, total_price, product.sales_tax_rate) %>
+                                <% unless (margin == nil) %>
+                                    <%= sprintf("%.0f", margin) %>%
+                                <% end %>
+                            <% end %>
+                        </td>
+
+                    </tr>
+                <% end %>
+
+                </tbody>
+            </table>
+    <% end %>
+
+    </div>
+<% else %>
+    <div id="saved_items">
+        <div id="saved_items_container">
+            <div onclick="setStockSelect(0)" class="saved_report_button">
+                <div class="b_text"><b>Stocks by Product This Week</b></div>
+            </div>
+            <div onclick="setStockSelect(1)" class="saved_report_button">
+                <div class="b_text"><b>Stocks by Product This Month</b></div>
+            </div>
+            <div onclick="setStockSelect(2)" class="saved_report_button">
+                <div class="b_text"><b>Stocks by Product This Year</b></div>
+            </div>
+            <div onclick="setStockSelect(3)" class="saved_report_button">
+                <div class="b_text"><b>Stocks by Product All Time</b></div>
+            </div>
+        </div>
+    </div>
+<% end %>
+
+<script type="text/javascript">
+    $('#refine_button_stock').removeClass("selected");
+</script>

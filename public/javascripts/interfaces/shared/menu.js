@@ -209,7 +209,6 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     //copy over the order number
     tableOrders[tableID].order_num = tableOrderDataJSON.order_num;
-    //alert("OrderNum: " + tableOrders[tableID].order_num);
     
     //copy over the client name
     var clientName = tableOrderDataJSON.client_name;
@@ -236,6 +235,11 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     //copy over the cashback
     if(typeof tableOrderDataJSON.cashback != 'undefined') {
         tableOrders[tableID].cashback = parseFloat(tableOrderDataJSON.cashback);
+    }
+    
+    //copy over the void order id if there is one
+    if(typeof tableOrderDataJSON.void_order_id != 'undefined') {
+        tableOrders[tableID].void_order_id = tableOrderDataJSON.void_order_id;
     }
     
     //copy over the courses array

@@ -1,0 +1,9 @@
+$("#report_staff_results").html("<%= escape_javascript(render("staff_tab")) %>");
+
+if ($('#graph_view').hasClass('selected')) {
+    $('#staff_items_graph').show();
+    $('#staff_items').hide();
+} else {
+    $('#staff_items_graph').hide();
+    $('#staff_items').show();
+}

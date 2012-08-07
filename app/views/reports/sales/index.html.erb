@@ -10,6 +10,11 @@
             <div class="report_tab" onclick="window.location = '/reports/payments'">
                Payments
             </div>
+            <br>
+            <div class="report_tab" onclick="window.location = '/reports/staff'">
+                Staff
+            </div>
+
 </div>
 <div id="reports_container">
 
@@ -31,9 +36,10 @@
                                     <option value="4">Sales by Month</option>
                                     <option value="5">Sales by Year</option>
                                     <option value="6">Sales by Product</option>
+                                    <option value="7">Sales by Category</option>
                                 </select>
                             </div>
-                            <div class="dropdown_container">
+                            <div class="dropdown_container" style="margin-left: 30px;max-width:120px;">
                                 <div class="label">Terminal</div>
                                 <select onchange="addTerminalFilter($(this).val())">
                                     <option value="">All Terminals</option>
@@ -57,7 +63,7 @@
                                     </option>
                                     <option value="<%= Time.now.beginning_of_year + @opening_time.hours  %>,<%= Time.now %>">This Year to Date
                                     </option>
-                                    <option value="<%= lastweek.beginning_of_week + @opening_time.hours %>,<%= yesterday.end_of_week + @opening_time.hours %>">Last
+                                    <option value="<%= lastweek.beginning_of_week + @opening_time.hours %>,<%= lastweek.end_of_week + @opening_time.hours %>">Last
                                         Week
                                     </option>
                                     <option selected="yes" value="<%= Time.now - 30.days %>,<%= Time.now %>">Last 30
@@ -111,12 +117,7 @@
                     <div id="refine_button">
                         <div onclick="setReportParams();runSalesSearch()" class="button">Update</div>
                     </div>
-                    <div style="float: right; margin-top: 10px; margin-right: 10px;">
-                        <div style="margin: 5px; height: 40px;" onclick="switchView('table')" id="table_view" class="button selected">Table View</div>
-                    </div>
-                    <div style="float: right; margin-top: 10px; margin-right: 10px;">
-                        <div style="margin: 5px; height: 40px;" onclick="switchView('graph')" id="graph_view" class="button">Graph View</div>
-                    </div>
+
 
                 </div>
 

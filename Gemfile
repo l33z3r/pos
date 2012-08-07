@@ -51,7 +51,7 @@ gem "tzinfo", "0.3.33"
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test do
-  gem 'annotate'
+  gem 'annotate', "2.4.0"
   
   #gem 'rails-footnotes', :git => 'https://github.com/josevalim/rails-footnotes.git'
   

@@ -7,7 +7,11 @@ class DeliveryController < ApplicationController
       @delivery_params = params[:delivery]
       @employee_id = @delivery_params[:employee_id]
     
-      @delivery = Delivery.create(:employee_id => @employee_id, :total => @delivery_params[:total])
+      @reference_number = @delivery_params[:reference_number]
+      @received_date = @delivery_params[:received_date]
+      
+      @delivery = Delivery.create(:employee_id => @employee_id, :total => @delivery_params[:total], 
+        :reference_number => @reference_number, :received_date => @received_date, :terminal_id => @terminal_id)
     
       @delivery_items = @delivery_params[:items]
     
@@ -18,9 +22,6 @@ class DeliveryController < ApplicationController
         @old_amount = @product.quantity_in_stock
         @change_amount = delivery_item[:amount]
       
-        @product.quantity_in_stock = @old_amount.to_f + @change_amount.to_f
-        @product.save
-        
         @is_return = delivery_item[:is_return]
         @note = delivery_item[:note]
         
@@ -28,6 +29,33 @@ class DeliveryController < ApplicationController
           :delivery_id => @delivery.id, :product_id => @product.id, :is_return => @is_return, :employee_id => @employee_id,
           :old_amount => @old_amount, :change_amount => @change_amount, 
           :note => @note, :transaction_type => StockTransaction::DELIVERY)
+        
+        @st.created_at = @st.updated_at = @delivery.received_date
+        @st.save
+        
+        #need to modify all transactions after this delivery
+        @st_modify = @product.stock_transactions.where("created_at > ?", @delivery.received_date)
+        
+        if !@st_modify.empty?
+          @st_modify.each do |st|
+            logger.info "Modifying st: #{@st.id}"
+            st.old_amount += @change_amount.to_f
+            st.save
+          end
+        end
+        
+        #have to adjust the old_amount of the transaction we are creating here
+        @prior_st = @product.stock_transactions.where("created_at <= ?", @delivery.received_date).where("id != ?", @st.id).last
+          
+        if @prior_st
+          @st.old_amount = @prior_st.old_amount + @prior_st.change_amount
+          @st.save
+        end
+          
+        @last_st_for_product = @product.stock_transactions.last
+        @product.quantity_in_stock = @last_st_for_product.old_amount + @last_st_for_product.change_amount
+        @product.save
+      
       end
     
       if @success

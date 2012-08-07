@@ -7,6 +7,8 @@ class Room < ActiveRecord::Base
   validates :grid_y_size, :presence => true, :numericality => true
   validates :grid_resolution, :presence => true, :numericality => true
   
+  has_many :orders
+  
   def permid_for_grid_square(x, y)
     @room_object = room_object_for_grid_square(x, y)
     

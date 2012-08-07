@@ -132,6 +132,9 @@
   var toggleProductInfoButtonID = "<%= ButtonMapper::PRODUCT_INFO_POPUP_BUTTON %>";
   var toggleTrainingModeButtonID = "<%= ButtonMapper::TRAINING_MODE_TOGGLE_BUTTON %>";
   var deliveryButtonID = "<%= ButtonMapper::DELIVERY_BUTTON %>";
+  var changeCostPriceButtonID = "<%= ButtonMapper::CHANGE_COST_PRICE_BUTTON %>";
+  var editLoyaltyPointsButtonID = "<%= ButtonMapper::EDIT_LOYALTY_POINTS_BUTTON %>";
+  var cashOutButtonID = "<%= ButtonMapper::CASH_OUT_BUTTON %>";
   
   var updateStockType = <%= StockTransaction::STOCK_UPDATE %>;
   var transferStockType = <%= StockTransaction::STOCK_TRANSFER %>;
@@ -193,12 +196,11 @@
   pmShortcutMap[1] = pmShortcut1ID;
   pmShortcutMap[2] = pmShortcut2ID;
   pmShortcutMap[3] = pmShortcut3ID;
-<<<<<<< HEAD
-
-=======
   
   var globalAutoPromptForCovers = <%= GlobalSetting.parsed_setting_for GlobalSetting::PROMPT_FOR_COVERS %>;
   
   var clueyUserId = <%= Employee.cluey_user.id %>;
->>>>>>> master
+
+  var printLocalDeliveryReceipts = <%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_LOCAL_RECIEVE_DELIVERY, {:fingerprint => @terminal_fingerprint} %>;
+
 </script>

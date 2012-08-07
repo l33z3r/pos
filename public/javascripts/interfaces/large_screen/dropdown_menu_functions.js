@@ -9,7 +9,7 @@ function menuScreenDropdownItemSelected(index, name) {
         finishStockTakeMode();
     }
     
-    if(index.startsWith("1")) {
+    if(index.startsWith("1-")) {
         var displayID = index.substring(2);
         
         showLoadingDiv("Loading Menu...");
@@ -27,7 +27,7 @@ function menuScreenDropdownItemSelected(index, name) {
             }
         });
         return;
-    } else if(index.startsWith("2")) {
+    } else if(index.startsWith("2-")) {
         var priceLevel = index.substring(2);
         
         setGlobalPriceLevel(priceLevel);
@@ -67,7 +67,16 @@ function menuScreenDropdownItemSelected(index, name) {
         }
         
         return;
-    }
+    } else if(index == 10) {
+        //make sure this user has permissions for this
+        if(typeof(display_button_passcode_permissions[parseInt(cashOutButtonID)]) != 'undefined') {
+            showCashOutSubscreen();
+        } else {
+            niceAlert("You do not have permission to pay expenses!");
+        }
+        
+        return;
+    } 
     
     setShortcutDropdownDefaultText();
 }
@@ -121,6 +130,8 @@ function priceChangeModeComplete() {
     $('#menu_items_container .price_change').hide();
     
     setShortcutDropdownDefaultText();
+    
+    requestReload();
 }
 
 var currentPriceChangeProductId = null;
@@ -181,6 +192,8 @@ function finishStockTakeMode() {
     $('#stock_take_new_amount_input').attr("disabled", true);
     
     setShortcutDropdownDefaultText();
+    
+    requestReload();
 }
 
 function loadPriceDivs(pageNum, subPageId) {
