@@ -21,10 +21,7 @@
             </div>
         </div>
     <% end %>
-    <div id="payments_items_graph" style="display: none">
-        <div id="spacer" style="height:70px;"></div>
-        <%= high_chart("graph_container_sales", @h) %>
-    </div>
+
 
 
     <div id="payments_items" >
@@ -34,7 +31,7 @@
 
         <% if (@s_type == :day) || (@s_type == :month) || (@s_type == :week) || (@s_type == :year) %>
 
-            <table id="product_list" class="admin_table" style="width: 100%">
+            <table id="report_table" class="admin_table" style="width: 100%">
                 <thead>
                 <th class="header">Date</th>
                 <th class="header">Day</th>
@@ -50,7 +47,7 @@
 
 
                     <tbody>
-                    <tr>
+                    <tr class="<%= cycle("even", "odd") %>">
                         <td>
                            <% if @s_type == :day %>
                                 <%= week.created_at.strftime("%B %d, %Y") %>
@@ -113,7 +110,7 @@
                     });
                 });
             </script>
-            <table id="product_list" class="admin_table" style="width: 100%">
+            <table id="report_table" class="admin_table" style="width: 100%">
                 <thead>
                 <th class="header">Date</th>
                 <th class="header">Time</th>
@@ -135,8 +132,8 @@
                 <% total_discount += week.pre_discount_price-week.total %>
                 <% end %>
                     <tbody>
-                    <tr>
-                        <td>
+                    <tr class="<%= cycle("even", "odd") %>">
+                        <td style="text-align: left">
                             <%= week.created_at.to_datetime.strftime "%a, %d %b %Y" %>
                         </td>
                         <td>
@@ -145,10 +142,10 @@
                         <td>
                             <%= week.id %>
                         </td>
-                        <td>
+                        <td style="text-align: left;">
                             <%= week.terminal_id %>
                         </td>
-                        <td>
+                        <td style="text-align: left;">
                             <%= Employee.find_by_id(week.employee_id).name %>
                         </td>
                         <td>

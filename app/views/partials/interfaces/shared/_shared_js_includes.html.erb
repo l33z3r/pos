@@ -6,12 +6,13 @@
   "plugins/jquery.plugin.menuTree", "plugins/dateFormat", :cache => "cache/plugin_libs_1" %>
 
 <%= javascript_include_tag "plugins/jquery.bubblepopup", "plugins/jquery.jplayer.min",
-  "plugins/jquery.jscrollpane", "plugins/jquery.mousewheel", "plugins/jquery-ui-timepicker-addon", "plugins/jwerty.js", "plugins/jquery.bgiframe",
-  "plugins/jquery.cluey_custom_mcdropdown", "plugins/jquery.ibutton", "plugins/jquery.cluey_custom_swipe",
-  "plugins/md5", "plugins/Math.uuid", "plugins/jquery.caret", :cache => "cache/plugin_libs_2" %>
+  "plugins/jquery.jscrollpane", "plugins/jquery.mousewheel", "plugins/jquery-ui-timepicker-addon", 
+  "plugins/jwerty.js", "plugins/jquery.bgiframe", "plugins/jquery.cluey_custom_mcdropdown", 
+  "plugins/jquery.ibutton", "plugins/jquery.cluey_custom_swipe", "plugins/md5", "plugins/Math.uuid", 
+  "plugins/jquery.caret", :cache => "cache/plugin_libs_2" %>
 
 <!--cant cache the following scripts as they are erb templates -->
-<%= javascript_include_tag "employees", "customers", "products", "tables", "payment_methods" %>
+<%= javascript_include_tag "employees", "customers", "products", "tables", "sales_resources" %>
 
 <!-- js shared between interfaces -->
 <%= javascript_includes "interfaces/shared/", :recursive => true, :cache => "cache/shared" %>

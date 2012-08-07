@@ -56,7 +56,7 @@ class Reports::SalesController < Admin::AdminController
 
   def export_excel
     headers['Content-Type'] = "application/vnd.ms-excel"
-    headers['Content-Disposition'] = 'attachment; filename="Report-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
+    headers['Content-Disposition'] = 'attachment; filename="Report-' + session[:search_type_label] + '-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
     headers['Cache-Control'] = ''
     sales_search
     @products = Product.all
@@ -66,7 +66,6 @@ class Reports::SalesController < Admin::AdminController
   def sales_search
     @orders = get_sales_data
     @s_type = session[:search_type]
-    render_graph
   end
 
   def render_graph
@@ -194,25 +193,28 @@ class Reports::SalesController < Admin::AdminController
 
     if params[:search][:search_type] == 'day'
       session[:search_type] = :day
-      session[:search_type_label] = 'Day'
+      session[:search_type_label] = 'By Day'
     elsif params[:search][:search_type] == 'week'
       session[:search_type] = :week
-      session[:search_type_label] = 'Week'
+      session[:search_type_label] = 'By Week'
     elsif params[:search][:search_type] == 'month'
       session[:search_type] = :month
-      session[:search_type_label] = 'Month'
+      session[:search_type_label] = 'By Month'
     elsif params[:search][:search_type] == 'year'
       session[:search_type] = :year
-      session[:search_type_label] = 'Year'
+      session[:search_type_label] = 'By Year'
     elsif params[:search][:search_type] == 'best_seller'
       session[:search_type] = :best_seller
-      session[:search_type_label] = 'Best Seller'
+      session[:search_type_label] = 'Best Sellers'
     elsif params[:search][:search_type] == 'worst_seller'
       session[:search_type] = :worst_seller
-      session[:search_type_label] = 'Worst Seller'
+      session[:search_type_label] = 'Worst Sellers'
     elsif params[:search][:search_type] == 'by_product'
       session[:search_type] = :by_product
       session[:search_type_label] = 'By Product'
+    elsif params[:search][:search_type] == 'by_category'
+      session[:search_type] = :by_category
+      session[:search_type_label] = 'By Category'
     end
     session[:category] = params[:search][:category]
     session[:product] = params[:search][:product]
@@ -234,12 +236,7 @@ class Reports::SalesController < Admin::AdminController
     @selected_from_date = session[:from_date].to_s
     @selected_to_date = session[:to_date].to_s
 
-      #if !session[:search]
-      #  query = OrderItem.find_by_sql("select o.id, o.tax_rate, o.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items o where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' group by o.product_id order by total_price desc")
-      #  session[:search] = 'init'
-      #else
-      #query = Order.find_by_sql("select * from orders o inner join order_items oi on o.id = oi.order_id")
-      #query = Order.find_by_sql("select * from orders o inner join order_items oi on o.id = oi.order_id inner join products p on p.category_id = 1 group by o.id")
+
     if (session[:search_type] == :day || session[:search_type] == :month || session[:search_type] == :year || session[:search_type] == :week)
 
       if session[:search_type] == :day
@@ -338,26 +335,40 @@ class Reports::SalesController < Admin::AdminController
 
     if session[:search_type] == :by_product
       where = "select oi.id, oi.tax_rate, oi.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id inner join products p on oi.product_id = p.id"
-
       if session[:category] != ''
         where << " and p.category_id = #{session[:category]}"
       end
-
       if session[:terminal] != ''
         where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"
       else
         where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0"
       end
-
       if session[:training_mode]
         where << " and o.training_mode_sale = 1"
       else
         where << " and o.training_mode_sale = 0"
       end
-
       where << " group by oi.product_id order by p.name asc"
       query = OrderItem.find_by_sql(where)
+    end
 
+      if session[:search_type] == :by_category
+      where = "select oi.id, oi.tax_rate, oi.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id inner join products p on oi.product_id = p.id"
+      if session[:category] != ''
+        where << " and p.category_id = #{session[:category]}"
+      end
+      if session[:terminal] != ''
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"
+      else
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0"
+      end
+      if session[:training_mode]
+        where << " and o.training_mode_sale = 1"
+      else
+        where << " and o.training_mode_sale = 0"
+      end
+      where << " group by p.category_id order by p.name asc"
+      query = OrderItem.find_by_sql(where)
     end
 
       #end

@@ -382,7 +382,7 @@ function openCashDrawer() {
                 };
             
                 ws.onclose = function() { 
-                    // websocket is closed. 
+                // websocket is closed. 
                 };
             } else {
                 // The browser doesn't support WebSocket
@@ -543,8 +543,8 @@ function promptAddNameToTable() {
     
     addTableNamePopupEl.find('input').focus().select();
     
-//show the keyboard
-$('#util_keyboard_container').slideDown(300);
+    //show the keyboard
+    $('#util_keyboard_container').slideDown(300);
 }
 
 function closePromptAddNameToTable() {
@@ -761,6 +761,22 @@ function promptVoidAllOrderItems() {
         return;
     }
     
+    var order = getCurrentOrder();
+    var allItemsSynced = true;
+    
+    for(var i=0; i<order.items.length; i++) {
+        var item = order.items[i];
+        if(!item.synced) {
+            allItemsSynced = false;
+            break;
+        }
+    }
+    
+    if(!allItemsSynced) {
+        niceAlert("You can only void all items after they have been order. You can delete unordered items.");
+        return;        
+    }
+    
     ModalPopups.Confirm('niceAlertContainer',
         'Void All?', "<div id='nice_alert'>Are you sure you want to void all items and cash this order out?</div>",
         {
@@ -785,6 +801,11 @@ function promptAddCovers() {
     if(selectedTable == -1) {
         setStatusMessage("Only valid for table orders!");
         return;
+    }
+    
+    //if we are on table 0 and no order items have been added, then there is no order object
+    if(currentOrder == null) {
+        currentOrder = buildInitialOrder();
     }
     
     var popupHTML = $("#add_covers_popup_markup").html();
@@ -929,4 +950,46 @@ function setTrainingMode(turnOn) {
 
 function startDeliveryMode() {
     initDeliveryScreen();
+}
+
+function showCashOutSubscreen() {
+    if(currentScreenIsMenu()) {        
+        hideAllMenuSubScreens();
+        $('#cash_out_subscreen').show();
+        
+        var cashOutPresetsHTML = "<div id='presets'>";
+        
+        for(var i=0; i<cashOutPresets.length; i++) {
+            var nextPreset = cashOutPresets[i];
+            cashOutPresetsHTML += "<div id='preset_" + nextPreset.id + "' class='preset' onclick='setCashOutDescription(" + nextPreset.id + ");'>" + nextPreset.label + "</div>";
+        }
+        
+        cashOutPresetsHTML += clearHTML;
+        
+        $('#presets_container').html(cashOutPresetsHTML);
+        
+        toggleKeyboardEnable = false;
+    
+        var keyboardPlaceHolderEl = $('#cash_out_subscreen #keyboard')
+    
+        var pos = keyboardPlaceHolderEl.offset();
+    
+        //show the menu directly over the placeholder
+        $("#util_keyboard_container").css( {
+            "position" : "absolute",
+            "width" : "688px",
+            "left": (pos.left) + "px", 
+            "top":pos.top + "px"
+        } );
+    
+        hideUtilKeyboardCloseButton();
+
+        $("#util_keyboard_container").show();
+        
+        $('#cash_out_description').focus().select();
+        
+        cashOutKeypadString = "";
+        inCashOutMode = true;
+        $('#cash_out_amount').html(currency(0));
+    }
 }

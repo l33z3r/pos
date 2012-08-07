@@ -39,7 +39,11 @@ class OrderController < ApplicationController
     
     @cash_count = @cash_count.to_f
     
-    @cash_total_obj, @cash_total, @cash_total_data = CashTotal.do_total @total_type, @commit, @cash_count, current_employee, @terminal_id
+    @open_orders_total = params[:open_orders_total]
+    
+    @open_orders_total = @open_orders_total.to_f
+    
+    @cash_total_obj, @cash_total, @cash_total_data = CashTotal.do_total @total_type, @commit, @cash_count, @open_orders_total, current_employee, @terminal_id
   end
 
   def add_float
@@ -103,6 +107,15 @@ class OrderController < ApplicationController
       @order_num = params[:order_num]
       do_request_clear_table_order @terminal_id, now_millis, @table_id, @order_num, e
     end
+    
+    render :json => {:success => true}.to_json
+  end
+  
+  def cash_out
+    @description = params[:description]
+    @amount = params[:amount]
+    
+    CashOut.create(:terminal_id => @terminal_id, :amount => @amount, :note => @description)
     
     render :json => {:success => true}.to_json
   end
@@ -226,7 +239,17 @@ class OrderController < ApplicationController
                   @oia_stock_usage /= 2
                 end
       
-                Product.find_by_id(oia[:product_id]).decrement_stock @oia_stock_usage
+                @oia_product = Product.find_by_id(oia[:product_id])
+      
+                @old_stock_amount = @oia_product.quantity_in_stock
+                @actual_stock_usage = @oia_product.decrement_stock @oia_stock_usage
+                
+                #build a stock_transaction
+                @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
+                  :employee_id => @order_item.employee_id, :product_id => @oia_product.id,
+                  :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
+              
+                @st.save
               end
             end
           end
@@ -253,9 +276,6 @@ class OrderController < ApplicationController
         @order_item.is_double = item[:is_double]
         @order_item.is_half = item[:is_half]
       
-        #this happens for every item
-        @order_item_saved = @order_item_saved and @order_item.save
-      
         @item_stock_usage = @order_item.quantity.to_f
       
         if @order_item.is_double
@@ -268,18 +288,38 @@ class OrderController < ApplicationController
           if !@order_item.is_void
             #decrement the stock for this item
             if @order_item.product.is_stock_item
-              @order_item.product.decrement_stock @item_stock_usage
+              @old_stock_amount = @order_item.product.quantity_in_stock
+              @actual_stock_usage = @order_item.product.decrement_stock @item_stock_usage
+              
+              #build a stock_transaction
+              @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
+                :employee_id => @order_item.employee_id, :product_id => @order_item.product.id,
+                :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
+              
+              @st.save
             end
             
             #decrement the ingredient stock
             @order_item.product.ingredients.each do |ingredient|
               if ingredient.product.is_stock_item
+                @old_stock_amount = ingredient.product.quantity_in_stock
+              
                 @ingredient_usage = ingredient.stock_usage
-                ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
+                @actual_stock_usage = ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
+                
+                #build a stock_transaction
+                @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
+                  :employee_id => @order_item.employee_id, :product_id => ingredient.product.id,
+                  :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
+              
+                @st.save
               end
             end
           end
         end
+        
+        #this happens for every item
+        @order_item_saved = @order_item_saved and @order_item.save
       end
       
       #record a card charge if there was one
@@ -307,12 +347,14 @@ class OrderController < ApplicationController
             @loyalty_customer.decrement!(:available_points, @points_used_this_sale.to_f)
             
             CustomerPointsAllocation.create({:customer_id => @loyalty_customer.id, :order_id => @order.id, 
-                :amount => @points_used_this_sale * -1, :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
+                :allocation_type => CustomerPointsAllocation::SALE_REDUCE, :amount => @points_used_this_sale * -1, 
+                :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
           end
           
           @points_earned = @loyalty_details[:points_earned]
           CustomerPointsAllocation.create({:customer_id => @loyalty_customer.id, :order_id => @order.id, 
-              :amount => @points_earned, :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
+              :allocation_type => CustomerPointsAllocation::SALE_EARN, :amount => @points_earned, 
+              :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
           
           @loyalty_customer.increment!(:available_points, @points_earned.to_f)
         end
@@ -322,7 +364,7 @@ class OrderController < ApplicationController
         @customer = Customer.find_by_id(@customer_details[:customer_id])
         
         CustomerTransaction.create({:transaction_type => CustomerTransaction::CHARGE,
-            :order_id => @order.id, :customer_id => @customer.id,
+            :order_id => @order.id, :customer_id => @customer.id, :terminal_id => @terminal_id,
             :abs_amount => @order.total, :actual_amount => -@order.total, :is_credit => false
           })
         
@@ -337,6 +379,10 @@ class OrderController < ApplicationController
       if @order.is_table_order and @table_info and !@is_split_bill_order
         @employee_id = @order_params['employee_id']
         do_request_clear_table_order @terminal_id, now_millis, @order.table_info_id, @order.order_num, @employee_id
+        
+        #record the room number in the order
+        @order.room_id = @table_info.room_object.room.id
+        @order.save
       end
 
       @success = @order_saved and @order_item_saved

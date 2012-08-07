@@ -298,21 +298,6 @@ function getTableOrderFromStorage(current_user_id, selectedTable) {
     parseAndFillTableOrderJSON(tableOrderDataJSON);
 }
 
-// OLD VERSION THAT KEEPS COPY OF ORDERS PER USER (KEEP FOR REVERT)
-//function getTableOrderFromStorage(current_user_id, selectedTable) {
-//    key = "user_" + current_user_id + "_table_" + selectedTable + "_current_order";
-//    storageData = retrieveStorageValue(key);
-//    
-//    tableOrderDataJSON = null;
-//    
-//    if(storageData != null) {
-//        tableOrderDataJSON = JSON.parse(storageData);
-//    }
-//    
-//    tableNum = selectedTable;
-//    parseAndFillTableOrderJSON(tableOrderDataJSON);
-//}
-
 function userHasUniqueTableOrder(userID, tableID) {
     var key = "user_" + userID + "_table_" + tableID + "_current_order";
     return localStorage.getItem(key) != null;
@@ -679,6 +664,17 @@ function serverNickname(user_id) {
     }
     
     return server;
+}
+
+function employeeForID(employeeId) {
+    for (var i = 0; i < employees.length; i++) {
+        var id = employees[i].id;
+        if (id == employeeId) {
+            return employees[i];
+        }
+    }
+    
+    return null;
 }
 
 function serverRoleID(user_id) {
@@ -1160,4 +1156,14 @@ function storeActiveUserID(userID) {
 
 function fetchActiveUserID() {
     return getRawCookie(activeUserIDCookieName);
+}
+
+function requestReload() {
+    $.ajax({
+        type: 'POST',
+        url: '/request_terminal_reload',        
+        success: function() {
+            console.log("Reload request sent to server!");
+        }
+    });
 }

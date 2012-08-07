@@ -137,7 +137,20 @@ class Admin::CustomersController < Admin::AdminController
   def update
     @customer = Customer.find(params[:id])
 
+    @old_loyalty_points_amount = @customer.available_points
+    
     if @customer.update_attributes(params[:customer])
+      @new_loyalty_points_amount = @customer.available_points
+    
+      if @old_loyalty_points_amount != @new_loyalty_points_amount
+        #create an allocation
+        @points_change_amount = @new_loyalty_points_amount - @old_loyalty_points_amount
+        @allocation_type = @points_change_amount > 0 ? CustomerPointsAllocation::MANUAL_EARN : CustomerPointsAllocation::MANUAL_REDUCE
+        
+        CustomerPointsAllocation.create({:customer_id => @customer.id, :allocation_type => @allocation_type, 
+            :amount => @points_change_amount, :loyalty_level_percent => @customer.loyalty_level.percent})
+      end
+    
       redirect_to(admin_customers_url, :notice => 'Customer was successfully updated.')
     else
       @hide_admin_header = true

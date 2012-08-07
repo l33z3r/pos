@@ -12,10 +12,10 @@ class Product < ActiveRecord::Base
   belongs_to :order_item_addition_grid
   
   belongs_to :modifier_category
-  has_many :order_items
+  has_many :order_items  
   has_many :menu_items, :dependent => :destroy
   
-  has_many :stock_transactions, :order => "CREATED_AT"
+  has_many :stock_transactions, :order => "CREATED_AT, ID"
   
   belongs_to :menu_page_1, :class_name => "MenuPage"
   belongs_to :menu_page_2, :class_name => "MenuPage"
@@ -231,11 +231,15 @@ class Product < ActiveRecord::Base
     
     @qis = read_attribute("quantity_in_stock")
     
+    @decrement_val = 0
+    
     if @qpc > 0
       logger.info "!!!! decrementing #{name} by #{quantity} with qtypct: #{@qpc}"
       @decrement_val = quantity/@qpc
       decrement!(:quantity_in_stock, @decrement_val)
     end
+    
+    @decrement_val
   end
   
   def last_stock_transaction

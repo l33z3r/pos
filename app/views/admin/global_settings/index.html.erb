@@ -34,6 +34,7 @@
           <li><a id="receipt_footers_section_link" href="#receipt_footers_section">Receipt Footers</a></li>
           <li><a id="tax_rates_section_link" href="#tax_rates_section">Sales Tax Rates</a></li>
           <li><a id="loyalty_levels_section_link" href="#loyalty_levels_section">Loyalty Levels</a></li>
+          <li><a id="cash_out_presets_section_link" href="#cash_out_presets_section">Cash Out Presets</a></li>
           <li><a id="discounts_section_link" href="#discounts_section_section">Discounts</a></li>
           <li><a id="coursing_section_link" href="#coursing_section">Coursing</a></li>
           <li><a id="price_level_labels_section_link" href="#coursing_section">Price Levels</a></li>
@@ -932,6 +933,74 @@
             <div class="clear">&nbsp;</div>
           </div>
         </div>
+        
+        <div class="container" id="#cash_out_presets_section">
+          <div class="jscrollpane">
+            <h4>Current Cash Out Presets</h4>
+
+            <%= form_tag update_multiple_admin_cash_out_presets_path do %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="330">Label</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <% CashOutPreset.all(:order => :label).each do |tr| %>
+                    <%= fields_for "cash_out_presets[]", tr do |f| %>
+                      <tr>
+                        <td><%= f.text_field :label %></td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Save" %>
+              </div>
+
+            <% end %>
+
+            <h4>New Cash Out Preset</h4>
+
+            <%= form_for [:admin, CashOutPreset.new] do |f| %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="330">Label</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>
+                      <%= f.text_field :label %>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Create" %>
+              </div>
+
+            <% end %>
+
+            <div class="clear">&nbsp;</div>
+          </div>
+        </div>
 
         <div class="container" id="#discounts_section">
           <div class="jscrollpane">
@@ -1275,6 +1344,24 @@
                              value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">No</div>
                       <div class="clear">&nbsp;</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Print Local Delivery Receipts?
+                    </td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PRINT_LOCAL_RECIEVE_DELIVERY, {:fingerprint => @terminal_fingerprint} %>
+                      <div class="controls">
+                        <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                               value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
+                        <div class="label">Yes</div>
+                        <div class="clear">&nbsp;</div>
+
+                        <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
+                               value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
+                        <div class="label">No</div>
+                      </div>
                     </td>
                   </tr>
                   <tr>

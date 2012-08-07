@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120716135342) do
+ActiveRecord::Schema.define(:version => 20120731101140) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -19,6 +19,20 @@ ActiveRecord::Schema.define(:version => 20120716135342) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "reference_number"
+  end
+
+  create_table "cash_out_presets", :force => true do |t|
+    t.string   "label"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cash_outs", :force => true do |t|
+    t.string   "terminal_id"
+    t.string   "note"
+    t.float    "amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "cash_totals", :force => true do |t|
@@ -76,6 +90,7 @@ ActiveRecord::Schema.define(:version => 20120716135342) do
     t.float    "loyalty_level_percent"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "allocation_type"
   end
 
   create_table "customer_transactions", :force => true do |t|
@@ -88,6 +103,7 @@ ActiveRecord::Schema.define(:version => 20120716135342) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "payment_id"
+    t.string   "terminal_id"
   end
 
   create_table "customers", :force => true do |t|
@@ -118,6 +134,9 @@ ActiveRecord::Schema.define(:version => 20120716135342) do
     t.float    "total"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "received_date"
+    t.string   "reference_number"
+    t.string   "terminal_id"
   end
 
   create_table "discounts", :force => true do |t|
@@ -348,6 +367,7 @@ ActiveRecord::Schema.define(:version => 20120716135342) do
     t.string   "client_name",                                 :default => "",    :null => false
     t.string   "time_started"
     t.boolean  "training_mode_sale",                          :default => false
+    t.integer  "room_id"
   end
 
   add_index "orders", ["employee_id"], :name => "index_orders_on_employee_id"
@@ -380,6 +400,7 @@ ActiveRecord::Schema.define(:version => 20120716135342) do
     t.string   "payment_method"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "terminal_id"
   end
 
   create_table "products", :force => true do |t|
@@ -475,7 +496,8 @@ ActiveRecord::Schema.define(:version => 20120716135342) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "pin_required", :default => false
+    t.boolean  "pin_required",  :default => false
+    t.boolean  "login_allowed", :default => true
   end
 
   create_table "room_objects", :force => true do |t|
@@ -532,6 +554,7 @@ ActiveRecord::Schema.define(:version => 20120716135342) do
     t.datetime "updated_at"
     t.integer  "delivery_id"
     t.boolean  "is_return",        :default => false
+    t.integer  "order_item_id"
   end
 
   add_index "stock_transactions", ["employee_id"], :name => "index_stock_transactions_on_employee_id"
@@ -584,6 +607,13 @@ ActiveRecord::Schema.define(:version => 20120716135342) do
     t.text     "report_data"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "clockin_time"
+    t.datetime "clockout_time"
+    t.integer  "shift_seconds",   :default => 0
+    t.integer  "break_seconds",   :default => 0
+    t.integer  "payable_seconds", :default => 0
+    t.float    "hourly_rate"
+    t.float    "cost"
   end
 
 end

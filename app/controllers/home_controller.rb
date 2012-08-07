@@ -67,7 +67,6 @@ class HomeController < ApplicationController
     @order_ready_notification = fetch_order_ready_notification @last_order_ready_notification_time
     
     if @order_ready_notification
-      logger.info "!!!!!!!!!!!!!!!!!ORDER READY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       @order_ready_request_time = @order_ready['order_ready_request_time']
       @order_ready_request_employee_id = @order_ready['order_ready_request_employee_id']
       @order_ready_request_terminal_id = @order_ready['order_ready_request_terminal_id']
@@ -92,9 +91,9 @@ class HomeController < ApplicationController
       
       @payment = Payment.create({:transaction_type => Payment::CUSTOMER_PAYMENT,
           :employee_id => e, :amount => @amount, :amount_tendered => @amount_tendered,
-          :payment_method => @payment_method})
+          :payment_method => @payment_method, :terminal_id => @terminal_id})
     
-      CustomerTransaction.create({:customer_id => @customer.id,
+      CustomerTransaction.create({:customer_id => @customer.id, :terminal_id => @terminal_id,
           :transaction_type => CustomerTransaction::SETTLEMENT, :is_credit => true,
           :abs_amount => @amount, :actual_amount => @amount, :payment_id => @payment.id})
     
@@ -187,7 +186,7 @@ class HomeController < ApplicationController
       next if !mi.product
       next if !mi.product.is_stock_item
       @stock = mi.product.quantity_in_stock
-      @stock_map[mi.id] = @stock ? number_to_human(@stock) : 0
+      @stock_map[mi.id] = @stock
     end
   end
   
@@ -229,7 +228,7 @@ class HomeController < ApplicationController
     @employee_id = params[:employee_id]
     @employee = Employee.find(@employee_id)
     
-    if @timekeeping_terminal == @terminal_id
+    if @timekeeping_terminal == @terminal_id and !Employee.is_cluey_user?(@employee)
       #add an entry to the shift timestamps table
       ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_IN)
     end
@@ -245,14 +244,12 @@ class HomeController < ApplicationController
     
     update_last_active @employee
     
-    if @timekeeping_terminal == @terminal_id
+    if @timekeeping_terminal == @terminal_id and !Employee.is_cluey_user?(@employee)
       #add an entry to the shift timestamps table
       @last_clockout = ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_OUT)
     end
     
-    @print_work_report = GlobalSetting.parsed_setting_for GlobalSetting::PRINT_WORK_REPORT
-    
-    if @timekeeping_terminal == @terminal_id and @print_work_report
+    if @timekeeping_terminal == @terminal_id and !Employee.is_cluey_user?(@employee)
       @last_clockin = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::CLOCK_IN}").order("created_at desc").first
       
       @breaks = @employee.shift_timestamps.where("timestamp_type = #{ShiftTimestamp::BREAK_IN} or timestamp_type = #{ShiftTimestamp::BREAK_OUT}").where("created_at >= ?", @last_clockin.created_at).where("created_at <= ?", @last_clockout.created_at)
@@ -349,12 +346,37 @@ class HomeController < ApplicationController
       @total_payments = @all_order_items_sold_amount
       @report_data[:total_payments] = @total_payments
       
-      @wr = WorkReport.create(:employee_id => @employee.id, :report_data => @report_data)
+      @break_time_seconds = 0 
+      @break_start = 0
+
+      @breaks.each do |b|
+        if(b.timestamp_type == ShiftTimestamp::BREAK_IN)
+          @break_start = b.created_at
+        else
+          @break_time_seconds += (b.created_at - @break_start)
+        end
+      end
+
+      @shift_seconds = (@last_clockout.created_at - @last_clockin.created_at)
+      @payable_seconds = @shift_seconds - @break_time_seconds
+   
+      @hourly_rate = @employee.hourly_rate
+        
+      @payable_hours = (@payable_seconds / 3600.0).round(2)
+      @cost = @hourly_rate * @payable_hours
+        
+      @wr = WorkReport.create(:employee_id => @employee.id, :report_data => @report_data, 
+        :hourly_rate => @hourly_rate, :cost => @cost, :clockin_time => @last_clockin.created_at, 
+        :clockout_time => @last_clockout.created_at, :shift_seconds => @shift_seconds, 
+        :break_seconds => @break_time_seconds, :payable_seconds => @payable_seconds)
     
       @custom_work_report_footer = GlobalSetting.parsed_setting_for GlobalSetting::WORK_REPORT_FOOTER_TEXT
-      
+    end
+    
+    @print_work_report = GlobalSetting.parsed_setting_for GlobalSetting::PRINT_WORK_REPORT
+    
+    if @print_work_report
       render :template => "/home/print_work_report"
-      
     else
       render :json => {:success => true}.to_json
     end
@@ -389,7 +411,7 @@ class HomeController < ApplicationController
 
     update_last_active @employee
 
-    if @timekeeping_terminal == @terminal_id
+    if @timekeeping_terminal == @terminal_id and !Employee.is_cluey_user?(@employee)
       #add an entry to the shift timestamps table
       ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_IN)
     end
@@ -404,7 +426,7 @@ class HomeController < ApplicationController
 
     update_last_active @employee
 
-    if @timekeeping_terminal == @terminal_id
+    if @timekeeping_terminal == @terminal_id and !Employee.is_cluey_user?(@employee)
       #add an entry to the shift timestamps table
       ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_OUT)
     end

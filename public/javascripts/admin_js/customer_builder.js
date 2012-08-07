@@ -9,6 +9,16 @@ function initCustomerFormBuilder() {
     placeUtilKeyboard(keyboardPlaceHolderEl);
     
     $('#product_name').focus();
+    
+    //we need to let the global admin init function run first 
+    //to set the permissions array so we need a timeout here
+    setTimeout(function() {
+        if(typeof(display_button_passcode_permissions[editLoyaltyPointsButtonID]) != 'undefined') {
+            $('#enable_edit_loyalty_points_button').show();
+        } else {
+            $('#enable_edit_loyalty_points_button').hide();
+        }
+    }, 1000);
 }
 
 function customerBuilderExtraOptionsGeneralSelected() {
@@ -172,4 +182,8 @@ function makeCustomerPaymentAdminShortcut(customerId) {
     setRawCookie(salesInterfaceForwardJSExecuteCookieName, codeToExecute, exdays);
     
     goTo('/');
+}
+
+function enableEditLoyaltyPoints() {
+    $('#customer_available_points').attr("disabled", false);
 }

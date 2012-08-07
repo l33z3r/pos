@@ -754,7 +754,7 @@ function initCustomerSearchKeyboard() {
         "top":pos.top + "px"
     } );
     
-    $('#close_keyboard_link').hide();
+    hideUtilKeyboardCloseButton();
 
     $("#util_keyboard_container").show();
     
