@@ -165,6 +165,10 @@ function callHomePollInitSequenceCompleteHook() {
     //are we on the previous sales screen?
     checkUpdateOpenOrdersScreen();
     
+    $('#table_select_container_loading_message').hide();
+    $('#table_select_container').show();
+    $('#table_screen_button').show();
+    
     //hide the spinner at the top nav
     $('#loading_orders_spinner').hide();
 }

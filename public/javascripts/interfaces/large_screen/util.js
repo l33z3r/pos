@@ -241,7 +241,7 @@ function showMenuScreen() {
     
     if(menuScreenType == RESTAURANT_MENU_SCREEN) {
         //show the shortcut dropdown
-        $('#menu_screen_shortcut_dropdown_container').show();   
+        initMenuScreenNavItems();
     } else if(menuScreenType == RETAIL_MENU_SCREEN) {
         //show the shortcut dropdown
         $('#menu_screen_shortcut_dropdown_container').show();   
@@ -810,6 +810,5 @@ function hideUtilKeyboardCloseButton() {
 
 function showUtilKeyboardCloseButton() {
     $('#close_keyboard_link').show();
-    $('#util_keyboard_inner_container').height("260px");
-    
+    $('#util_keyboard_inner_container').height("260px");    
 }
