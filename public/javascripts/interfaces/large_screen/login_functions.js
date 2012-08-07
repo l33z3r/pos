@@ -198,6 +198,10 @@ function doLogout() {
     //hide the shortcut dropdown
     $('#menu_screen_shortcut_dropdown_container').hide();
 
+    //hide the nav controls
+    $('#nav_util_button_clear_reload').hide();
+    $('#nav_util_button_reset_timestamp').hide();
+        
     $('#e_name').hide();
     
     $('#num').blur();
@@ -291,7 +295,7 @@ function clockinSuccess(id, nickname) {
 
     setStatusMessage(nickname + " clocked in successfully!");
 
-    //send ajax logout
+    //send ajax clockin
     $.ajax({
         type: 'POST',
         url: '/clockin',
@@ -346,13 +350,7 @@ function loginSuccess(id, nickname, is_admin, passcode) {
 
     showMenuScreen();
 
-    //show the red x 
-    $('#nav_save_button').show();
-
-    //show the shortcut dropdown
-    $('#menu_screen_shortcut_dropdown_container').show();
-
-    $('#e_name').show();
+    initMenuScreenNavItems();    
 
     loadCurrentOrder();
 
@@ -455,7 +453,7 @@ function breakInSuccess(id, nickname) {
 
     setStatusMessage(nickname + " started break!");
 
-    //send ajax logout
+    //send ajax break in
     $.ajax({
         type: 'POST',
         url: '/break_in',

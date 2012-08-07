@@ -148,6 +148,11 @@ function doReload(resetSession) {
 
 function refreshClicked() {
     callHome = false;
+    doReload(false);
+}
+
+function resetOrderTimestamp() {
+    callHome = false;
     
     lastSyncTableOrderTime = 0;
     storeKeyValue(lastSyncKey, lastSyncTableOrderTime);

@@ -532,7 +532,7 @@ nav#main_nav div#nav_save_button img {
     height: 25px;
 }
 
-nav#main_nav div#nav_util_button {
+nav#main_nav div.nav_util_button {
     height: 22px;
     float: right;
     cursor: pointer;
@@ -540,7 +540,7 @@ nav#main_nav div#nav_util_button {
     margin-top: -3px;
 }
 
-nav#main_nav div#nav_util_button img {
+nav#main_nav div.nav_util_button img {
     height: 25px;
 }
 
@@ -879,12 +879,14 @@ div#receipt_keypad_container div#top_buttons div#stock_take_header div#finish_st
 }
 
 div#receipt_keypad_container div#table_select_container {
+    display: none;
     float: left;
     font-size: 15px;
     font-weight: normal;
 }
 
 div#receipt_keypad_container div#table_screen_button {
+    display: none;
     margin: 0px 6px 0px 4px;
     width: 92px;
     max-width: 92px;
@@ -904,6 +906,11 @@ div#receipt_keypad_container div#table_screen_button {
     font-size: 15px;
     font-weight: normal;
     float: left;
+}
+
+div#receipt_keypad_container div#table_select_container_loading_message {
+    padding: 10px;
+    font-size: 14px;
 }
 
 div#menu_screen div#menu_pages_container div#pages {
@@ -1788,6 +1795,20 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
 }
 
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.cash_out_data_table div.cash_out_data_table_amount_header {
+    font-weight: bold;
+    float: left;
+    text-align: right;
+    width: 120px;
+}
+
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.account_payments_data_table div.account_payments_data_table_customer_name_header {
+    font-weight: bold;
+    width: 180px;
+    float: left;
+    text-align: left;
+}
+
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.account_payments_data_table div.account_payments_data_table_amount_header {
     font-weight: bold;
     float: left;
     text-align: right;

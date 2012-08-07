@@ -51,11 +51,12 @@ class CashTotal < ActiveRecord::Base
   RS_SERVICE_CHARGE_BY_PAYMENT_TYPE = 9
   RS_VOIDS_BY_EMPLOYEE = 10
   RS_CASH_OUT = 11
+  RS_ACCOUNT_PAYMENT_BREAKDOWN = 12
   
   REPORT_SECTIONS = [
     RS_SALES_BY_DEPARTMENT, RS_SALES_BY_PAYMENT_TYPE, RS_CASH_SUMMARY, RS_SALES_BY_SERVER, 
     RS_CASH_PAID_OUT, RS_SALES_TAX_SUMMARY, RS_SALES_BY_CATEGORY, RS_SALES_BY_PRODUCT,
-    RS_SERVICE_CHARGE_BY_PAYMENT_TYPE, RS_VOIDS_BY_EMPLOYEE, RS_CASH_OUT
+    RS_SERVICE_CHARGE_BY_PAYMENT_TYPE, RS_VOIDS_BY_EMPLOYEE, RS_CASH_OUT, RS_ACCOUNT_PAYMENT_BREAKDOWN
   ]
   
   validates :total_type, :presence => true, :inclusion => { :in => VALID_TOTAL_TYPES }
@@ -99,6 +100,8 @@ class CashTotal < ActiveRecord::Base
     @taxes = {}
         
     @cash_total_data = {}
+    
+    @serialized_account_payments = []
     
     @cash_sales_total = 0
     @cash_back_total = 0
@@ -327,7 +330,7 @@ class CashTotal < ActiveRecord::Base
         
         @service_charge_total += order.service_charge
       end
-    
+      
       #get all the settled account amounts
       @customer_txns = CustomerTransaction.where("transaction_type = ?", CustomerTransaction::SETTLEMENT)
       .where("terminal_id = ?", terminal_id)
@@ -350,6 +353,8 @@ class CashTotal < ActiveRecord::Base
         end
             
         @sales_by_payment_type[@transaction_payment_type] += @transaction_amount
+        
+        @serialized_account_payments << {:customer_name => ct.customer.name, :amount => ct.actual_amount}
       end
         
       #total of all cash sales (including the service charge)
@@ -421,6 +426,7 @@ class CashTotal < ActiveRecord::Base
     @cash_total_data[:total_covers] = @total_covers
     @cash_total_data[:cash_summary] = @cash_summary
     @cash_total_data[:cash_outs] = @serialized_cash_outs
+    @cash_total_data[:account_payments] = @serialized_account_payments
     @cash_total_data[:open_orders_total] = open_orders_total
     
     @cash_total_data[:amount_customer_payments_received] = @customer_settlements_amount

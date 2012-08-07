@@ -657,6 +657,11 @@ function exitApp() {
 }
 
 function tablesButtonPressed() {
+    if (!callHomePollInitSequenceComplete) {
+        niceAlert("Downloading data from server, please wait.");
+        return;
+    }
+    
     unorderedItemsPopup('doTablesButtonPressed();', true);
 }
 
