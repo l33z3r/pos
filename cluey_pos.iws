@@ -15,7 +15,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e646dee2-e269-4160-8f2c-811321f2083d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/database.yml" afterPath="$PROJECT_DIR$/config/database.yml" />
     </list>
     <ignored path="cluey_pos.iws" />
@@ -75,19 +74,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="_stocks_tab.html.erb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="_stocks_tab.html.erb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="184" column="47" selection-start="9798" selection-end="9798" vertical-scroll-proportion="0.90909094">
+            <state line="184" column="47" selection-start="9798" selection-end="9798" vertical-scroll-proportion="-17.5">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="database.yml" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="database.yml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/config/database.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="24" selection-start="63" selection-end="63" vertical-scroll-proportion="0.0">
+            <state line="21" column="43" selection-start="580" selection-end="580" vertical-scroll-proportion="0.4208417">
               <folding />
             </state>
           </provider>
@@ -121,8 +120,8 @@
         <option value="$PROJECT_DIR$/app/controllers/reports/payments_controller.rb" />
         <option value="$PROJECT_DIR$/app/views/reports/stocks/export_excel.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/payments/export_excel.html.erb" />
-        <option value="$PROJECT_DIR$/config/database.yml" />
         <option value="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" />
+        <option value="$PROJECT_DIR$/config/database.yml" />
       </list>
     </option>
   </component>
@@ -863,16 +862,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/database.yml">
+    <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="24" selection-start="63" selection-end="63" vertical-scroll-proportion="0.0">
+        <state line="184" column="47" selection-start="9798" selection-end="9798" vertical-scroll-proportion="-17.5">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb">
+    <entry file="file://$PROJECT_DIR$/config/database.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="184" column="47" selection-start="9798" selection-end="9798" vertical-scroll-proportion="0.90909094">
+        <state line="21" column="43" selection-start="580" selection-end="580" vertical-scroll-proportion="0.4208417">
           <folding />
         </state>
       </provider>
