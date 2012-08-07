@@ -200,8 +200,40 @@ class Reports::StocksController < Admin::AdminController
 
     where << " order by p.name asc"
 
-      query = StockTransaction.find_by_sql(where)
-    return query
+    query = StockTransaction.find_by_sql(where)
+  end
+
+  def get_stocks_valuation_data
+    @selected_from_date = session[:from_date].to_s
+    @selected_to_date = session[:to_date].to_s
+      where = "select st.id, st.transaction_type, st.product_id, st.created_at, sum(st.old_amount) as old_amount, sum(st.change_amount) as change_amount from stock_transactions st inner join products p on p.id = st.product_id inner join order_items oi on st.order_item_id = oi.id inner join categories c on c.id = p.category_id"
+      if session[:terminal] != ''
+        where << " where st.created_at <= '#{@selected_to_date}' and st.created_at >= '#{@selected_from_date}'"
+      else
+        where << " where st.created_at <= '#{@selected_to_date}' and st.created_at >= '#{@selected_from_date}' and st.transaction_type = 5"
+      end
+      if session[:category] != '' && session[:product] == ''
+        where << " and c.id = #{session[:category]}"
+      end
+      if session[:category] != '' && session[:product] != ''
+        where << " and p.id = #{session[:product]}"
+      end
+      if session[:category] == '' && session[:product] != ''
+        where << " and p.id = #{session[:product]}"
+      end
+      if session[:search_type] == :by_trans_type
+        where << " group by st.transaction_type"
+      end
+      if session[:search_type] == :by_category
+        where << " group by c.id"
+      end
+      if session[:search_type] == :by_product
+        where << " group by st.product_id"
+      end
+
+    where << " order by p.name asc"
+
+    query = StockTransaction.find_by_sql(where)
   end
 
 
