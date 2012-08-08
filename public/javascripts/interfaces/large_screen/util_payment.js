@@ -134,7 +134,7 @@ function makeCustomerPayment(customerId) {
     $("#util_payment_set_allow_credit_customer").attr("disabled", false);
     
     if(amount <= 0) {
-        $("#util_payment_set_allow_credit_customer").attr("checked", true);
+        $("#util_payment_set_allow_credit_customer ").attr("checked", true);
         
         //disable the button now as you must credit the account if they have such a balance
         $("#util_payment_set_allow_credit_customer").attr("disabled", true);
