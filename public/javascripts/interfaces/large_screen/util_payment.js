@@ -21,14 +21,21 @@ function makeCustomerPayment(customerId) {
     currentPaymentCustomerId = customerId;
     
     var callback = function() {
-        var paymentAmount = utilPaymentResponse.amount;
         var amountTendered = utilPaymentResponse.amount_tendered;
         var cardCharged = utilPaymentResponse.card_charged;
         
         var allowCreditCustomer = $('#util_payment_set_allow_credit_customer').is(':checked');
         
+        var paymentAmount;
+        
         if(allowCreditCustomer) {
             paymentAmount = amountTendered;
+        } else {
+            if(utilPaymentResponse.amount_tendered >= utilPaymentResponse.amount)
+                paymentAmount = utilPaymentResponse.amount;
+            else {
+                paymentAmount = utilPaymentResponse.amount_tendered;
+            }
         }
         
         console.log("Processed payment for " + currency(paymentAmount));
@@ -127,7 +134,7 @@ function makeCustomerPayment(customerId) {
     $("#util_payment_set_allow_credit_customer").attr("disabled", false);
     
     if(amount <= 0) {
-        $("#util_payment_set_allow_credit_customer").attr("checked", true);
+        $("#util_payment_set_allow_credit_customer ").attr("checked", true);
         
         //disable the button now as you must credit the account if they have such a balance
         $("#util_payment_set_allow_credit_customer").attr("disabled", true);

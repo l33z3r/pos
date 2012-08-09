@@ -66,6 +66,24 @@ function initMenu() {
     setTimeout(callForwardButtonFunction, 500);
 }
 
+function initMenuScreenNavItems() {
+    //show the red x 
+    $('#nav_save_button').show();
+
+    //show the shortcut dropdown
+    $('#menu_screen_shortcut_dropdown_container').show();
+
+    $('#e_name').show();
+    
+    if(current_user_id == clueyUserId) {
+        $('#nav_util_button_clear_reload').show();
+        $('#nav_util_button_reset_timestamp').show();        
+    } else {
+        $('#nav_util_button_clear_reload').hide();
+        $('#nav_util_button_reset_timestamp').hide();
+    }
+}
+
 function callForwardButtonFunction() {
     //now if there is a forward function call from the admin function shortcut screen
     var forwardFunctionButtonId = getRawCookie(salesInterfaceForwardFunctionCookieName);

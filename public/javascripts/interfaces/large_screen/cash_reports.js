@@ -76,6 +76,22 @@ function getCashTotalCashOutDataTable(cash_out_data) {
     return cash_out_data_html;
 }
 
+function getCashTotalAccountPaymentsDataTable(account_payments_data) {
+    var account_payments_data_html = "<div class='account_payments_data_table data_table'>";
+    
+    account_payments_data_html += "<div class='account_payments_data_table_customer_name_header'>Customer</div>";
+    account_payments_data_html += "<div class='account_payments_data_table_amount_header quantity'>Amount</div>" + clear10HTML;
+        
+    for(var i=0; i<account_payments_data.length; i++) {
+        account_payments_data_html += "<div class='cash_out_customer_name label'>" + account_payments_data[i][0] + "</div>";
+        account_payments_data_html += "<div class='cash_out_amount data'>" + currency(account_payments_data[i][1]) + "</div>" + clearHTML;
+    }
+    
+    account_payments_data_html += "</div>";
+    
+    return account_payments_data_html;
+}
+
 function getCashTotalTaxesDataTable(taxes_data) {
     cash_total_data_html = "<div class='taxes_data_table'>";
     

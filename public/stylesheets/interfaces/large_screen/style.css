@@ -532,7 +532,7 @@ nav#main_nav div#nav_save_button img {
     height: 25px;
 }
 
-nav#main_nav div#nav_util_button {
+nav#main_nav div.nav_util_button {
     height: 22px;
     float: right;
     cursor: pointer;
@@ -540,7 +540,7 @@ nav#main_nav div#nav_util_button {
     margin-top: -3px;
 }
 
-nav#main_nav div#nav_util_button img {
+nav#main_nav div.nav_util_button img {
     height: 25px;
 }
 
@@ -879,12 +879,14 @@ div#receipt_keypad_container div#top_buttons div#stock_take_header div#finish_st
 }
 
 div#receipt_keypad_container div#table_select_container {
+    display: none;
     float: left;
     font-size: 15px;
     font-weight: normal;
 }
 
 div#receipt_keypad_container div#table_screen_button {
+    display: none;
     margin: 0px 6px 0px 4px;
     width: 92px;
     max-width: 92px;
@@ -904,6 +906,11 @@ div#receipt_keypad_container div#table_screen_button {
     font-size: 15px;
     font-weight: normal;
     float: left;
+}
+
+div#receipt_keypad_container div#table_select_container_loading_message {
+    padding: 10px;
+    font-size: 14px;
 }
 
 div#menu_screen div#menu_pages_container div#pages {
@@ -1788,6 +1795,20 @@ div#cash_reports_screen div#receipt_report_container div#reports_center_receipt 
 }
 
 div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.cash_out_data_table div.cash_out_data_table_amount_header {
+    font-weight: bold;
+    float: left;
+    text-align: right;
+    width: 120px;
+}
+
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.account_payments_data_table div.account_payments_data_table_customer_name_header {
+    font-weight: bold;
+    width: 180px;
+    float: left;
+    text-align: left;
+}
+
+div#cash_reports_screen div#receipt_report_container div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.account_payments_data_table div.account_payments_data_table_amount_header {
     font-weight: bold;
     float: left;
     text-align: right;
@@ -5010,6 +5031,12 @@ div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_lin
     cursor: pointer;
 }
 
+div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_line.selected {
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background-color: #4297D7;
+}
+
 div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_line.return {
     color: red;
     margin: 0px 2px;
@@ -5288,6 +5315,47 @@ div#delivery_screen div#delivery_screen_select_product_container div#product_sea
     font-weight: normal;
     padding: 2px;
     margin: 0px 1px;
+}
+
+div#edit_delivery_item_popup_markup {
+    display: none;
+}
+
+div#edit_delivery_item_popup_markup_container {
+    width: 280px;
+    height: 490px;
+}
+
+div#edit_delivery_item_popup_markup_container div#delivery_item_quantity_editor {
+    padding-top: 10px;
+}
+
+div#edit_delivery_item_popup_markup_container div#delivery_item_quantity_editor div#delivery_item_quantity_label {
+    font-weight: bold;
+    float: left;
+    margin: 4px 11px 1px 6px;
+    font-size: 12px;
+}
+
+div#edit_delivery_item_popup_markup_container div#delivery_item_quantity_editor input.delivery_item_quantity {
+    float: left;
+    margin: 1px 4px 1px 1px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+div#edit_delivery_item_popup_markup_container div#delete_delivery_item_button {
+    padding: 10px;
+    float: right;
+    cursor: pointer;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    height: 18px;
+    width: 100px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    margin: 3px 22px;
 }
 
 /* End Delivery Screen */

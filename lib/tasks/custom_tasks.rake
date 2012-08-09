@@ -109,7 +109,7 @@ task :build_stock_transactions => :environment do
     
   @count = 0
     
-  OrderItem.all.each do |oi|
+  OrderItem.find_each do |oi|
     @count += 1
     puts "Processing OrderItem #{@count} of #{@all_count}"
     @order_item = oi

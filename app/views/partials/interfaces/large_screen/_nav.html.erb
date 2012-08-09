@@ -25,15 +25,19 @@
 
   <div id="connection_status">&nbsp;</div>
 
-  <div id="nav_util_button" onclick="doClearAndReload();">
+  <div class="nav_util_button" id="nav_util_button_clear_reload" onclick="doClearAndReload();">
     <%= image_tag "button_logos/clear_refresh.png" %>
   </div>
 
-  <div id="nav_util_button" onclick="refreshClicked();">
+  <div class="nav_util_button" id="nav_util_button_reset_timestamp" onclick="resetOrderTimestamp();">
+    <%= image_tag "button_logos/reset_order_timestamp.png" %>
+  </div>
+
+  <div class="nav_util_button" id="nav_util_button_reload" onclick="refreshClicked();">
     <%= image_tag "button_logos/refresh.png" %>
   </div>
 
-  <div id="nav_util_button" onclick="toggleUtilKeyboard();">
+  <div class="nav_util_button" onclick="toggleUtilKeyboard();">
     <%= image_tag "button_logos/keyboard.png" %>
   </div>
 
