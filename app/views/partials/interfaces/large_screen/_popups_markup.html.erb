@@ -459,3 +459,39 @@
     </div>
   </div>
 </div>
+
+<div id="edit_delivery_item_popup_markup">
+  <div id="edit_delivery_item_popup_markup_container" class="popup_container">
+
+    <div id="delete_delivery_item_button" class="button" data-onpress="removeSelectedDeliveryItem()">Delete</div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div id="delivery_item_quantity_editor">
+      <div id="delivery_item_quantity_label">Quantity:</div>
+      <input type="text" class="quantity" size="6" id="current_selected_delivery_item_quantity"/>
+    </div>
+
+    <div class="edit_delivery_item_popup_keypad_container"></div>
+
+    <div class="clear_top_margin_10">&nbsp;</div>
+
+    <div class="action_buttons_container">
+      <div class="action_buttons">
+        <div id="cancel_button" class="button" data-onpress="closeEditDeliveryItem()">
+          <div class="icon">
+            <%= image_tag "button_logos/cancel_button.png"%>
+          </div>
+          <div class="button_name">Cancel</div>
+        </div>
+        <div id="save_button" class="button" data-onpress="saveEditDeliveryItem()">
+          <div class="icon">
+            <%= image_tag "button_logos/ok_button.png"%>
+          </div>
+          <div class="button_name">OK</div>
+        </div>
+        <div class="clear">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+</div>

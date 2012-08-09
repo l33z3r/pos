@@ -7,6 +7,9 @@ var deliveryItemReturnMode = false;
 
 var receiveDeliveryInProcess = false;
 
+var currentSelectedDeliveryItemEl = null;
+var editDeliveryItemPopupAnchor = null;
+
 function initDeliveryScreen() {
     currentDelivery = retrieveStorageJSONValue(currentDeliveryStorageKey);
     
@@ -338,16 +341,21 @@ function getDeliveryTillRollHTML(includeHeading, includeTotal) {
 function getAllDeliveryItemsReceiptHTML() {
     var allDeliveryItemsReceiptHTML = "";
 
+    var deliveryItemNumber;
+
     for(var i=0; i<currentDelivery.items.length; i++) {
-        item = currentDelivery.items[i];
-        allDeliveryItemsReceiptHTML += getDeliveryItemReceiptHTML(item);
+        var item = currentDelivery.items[i];
+        
+        deliveryItemNumber = i + 1;
+        
+        allDeliveryItemsReceiptHTML += getDeliveryItemReceiptHTML(item, deliveryItemNumber);
     }
     
     return allDeliveryItemsReceiptHTML;
 }
     
 //TODO: replace with jquery template => http://api.jquery.com/jQuery.template/
-function getDeliveryItemReceiptHTML(deliveryItem) {
+function getDeliveryItemReceiptHTML(deliveryItem, deliveryItemNumber) {
     var returnItemClass = "";
     var returnItemHTML = "";
     
@@ -356,7 +364,7 @@ function getDeliveryItemReceiptHTML(deliveryItem) {
         returnItemHTML = "<div class='return_word'>Return</div>" + clearHTML;
     }
     
-    deliveryItemHTML = "<div class='delivery_line " + returnItemClass + "' onclick='deliveryReceiptItemSelected()'>" + returnItemHTML;
+    deliveryItemHTML = "<div class='delivery_line " + returnItemClass + "' data-delivery_item_number='" + deliveryItemNumber + "' onclick='deliveryReceiptItemSelected(this)'>" + returnItemHTML;
     deliveryItemHTML += "<div class='amount'>" + deliveryItem.amount + "</div>";
     
     var unitString = "";
@@ -373,7 +381,7 @@ function getDeliveryItemReceiptHTML(deliveryItem) {
         costPrice = currency(deliveryItem.product.cost_price * deliveryItem.amount, false);
     }
     
-    deliveryItemHTML += "<div class='cost_price'>" + costPrice + "</div>";
+    deliveryItemHTML += "<div class='cost_price'>" + costPrice + "</div>" + clearHTML;
     deliveryItemHTML += "</div>" + clearHTML;
     
     if(deliveryItem.note.length > 0) {
@@ -739,4 +747,114 @@ function saveAddDeliveryItemNote() {
     lastItem.note = newNote;
     storeDelivery();
     redrawDeliveryReceipt();
+}
+
+function deliveryReceiptItemSelected(deliveryItemEl) {
+    closeEditDeliveryItem();
+    
+    currentSelectedDeliveryItemEl = $(deliveryItemEl);
+    
+    currentSelectedDeliveryItemEl.addClass("selected");
+    
+    editDeliveryItemPopupAnchor = $('#delivery_receipt');
+    
+    if(editDeliveryItemPopupAnchor.HasBubblePopup()) {
+        editDeliveryItemPopupAnchor.RemoveBubblePopup();
+    }
+    
+    editDeliveryItemPopupAnchor.CreateBubblePopup();
+    
+    var popupHTML = $("#edit_delivery_item_popup_markup").html();
+    
+    editDeliveryItemPopupAnchor.ShowBubblePopup({
+        position: 'right',  
+        align: 'top',
+        tail	 : {
+            align: 'middle'
+        },
+        innerHtml: popupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+        
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false        
+    }, false);
+    
+    editDeliveryItemPopupAnchor.FreezeBubblePopup();
+         
+    //set the current price and quantity
+    var popupId = editDeliveryItemPopupAnchor.GetBubblePopupID();
+    
+    var currentQuantity = currentSelectedDeliveryItemEl.children('.amount').html();
+    $('#' + popupId).find('.quantity').val(currentQuantity);
+    
+    $('#' + popupId).find('.quantity').focus().select();
+    
+    var keypadPosition = $('#' + popupId).find('.edit_delivery_item_popup_keypad_container');
+    
+    var clickFunction = function(val) {
+        doKeyboardInput(lastActiveElement, val);
+    };
+    
+    var cancelFunction = function() {
+        doKeyboardInputCancel(lastActiveElement);
+    };
+    
+    setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
+
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closeEditDeliveryItem);
+    
+    return $('#' + popupId);
+}
+
+function saveEditDeliveryItem() {
+    var popupId = editDeliveryItemPopupAnchor.GetBubblePopupID();
+    
+    //fetch the order from the order array and modify it
+    //then modify the html in the receipt
+    var targetInputQuantityEl = $('#' + popupId).find('.quantity');
+    var newQuantity = parseFloat(targetInputQuantityEl.val());
+    
+    if(isNaN(newQuantity) || newQuantity == 0) {
+        newQuantity = 1;
+    }
+    
+    //fetch the item number
+    var deliveryItemNumber = currentSelectedDeliveryItemEl.data("delivery_item_number");
+    
+    var deliveryItem = currentDelivery.items[deliveryItemNumber - 1];
+    
+    deliveryItem.amount = newQuantity;
+    
+    storeDelivery();
+    redrawDeliveryReceipt();    
+    closeEditDeliveryItem();
+}
+
+function closeEditDeliveryItem() {
+    if(currentSelectedDeliveryItemEl) {
+        hideBubblePopup(editDeliveryItemPopupAnchor);
+        currentSelectedDeliveryItemEl.removeClass("selected");
+        currentSelectedDeliveryItemEl = null;
+    }
+}
+
+function removeSelectedDeliveryItem() {
+    if(!currentSelectedDeliveryItemEl) {
+        return;
+    }
+    //fetch the item number
+    var deliveryItemNumber = currentSelectedDeliveryItemEl.data("delivery_item_number");
+
+    currentDelivery.items.splice(deliveryItemNumber-1, 1);
+    
+    storeDelivery();
+    
+    currentSelectedDeliveryItemEl.hide();
+    redrawDeliveryReceipt();    
+    closeEditDeliveryItem();
 }
