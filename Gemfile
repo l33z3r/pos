@@ -2,6 +2,8 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.5'
 
+gem 'mysql2', '0.2.6'
+
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
@@ -59,9 +61,4 @@ group :development, :test do
   gem 'ruby-debug19'
   gem "mongrel", '1.2.0.pre2'
   
-  gem 'mysql2', '0.2.6'
-end
-
-group :production do
-  gem 'mysql2', '0.2.6'
 end

@@ -21,3 +21,19 @@ production:
   s3_secret_access_key: 5y2c5V9P5dRcMTXdKzvDJcCNpzY9FjcfDJ35vLDs
   google_translate_api_key: AIzaSyBTUOHzAlYtVL8xP9NHh9WsQmMijzws2x4
   in_kiosk_mode: true
+  
+heroku_staging:
+  use_s3: false
+  s3_bucket_name: cluey_staging
+  s3_access_key_id: AKIAICNSMYJPXRM2ENDQ
+  s3_secret_access_key: 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
+  google_translate_api_key: AIzaSyBTUOHzAlYtVL8xP9NHh9WsQmMijzws2x4
+  in_kiosk_mode: true
+  
+heroku_production:
+  use_s3: false
+  s3_bucket_name: cluey
+  s3_access_key_id: AKIAICNSMYJPXRM2ENDQ
+  s3_secret_access_key: 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
+  google_translate_api_key: AIzaSyBTUOHzAlYtVL8xP9NHh9WsQmMijzws2x4
+  in_kiosk_mode: true
