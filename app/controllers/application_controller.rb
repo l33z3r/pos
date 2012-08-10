@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  before_filter :setup_for_subdomain
   before_filter :set_current_employee
   
   before_filter :http_basic_authenticate
@@ -613,6 +614,11 @@ class ApplicationController < ActionController::Base
     end
   ensure
     Socket.do_not_reverse_lookup = orig
+  end
+  
+  def setup_for_subdomain
+    @sd = request.subdomain
+    @sd
   end
 
 end

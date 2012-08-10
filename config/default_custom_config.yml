@@ -23,7 +23,7 @@ production:
   in_kiosk_mode: true
   
 heroku_staging:
-  use_s3: false
+  use_s3: true
   s3_bucket_name: cluey_staging
   s3_access_key_id: AKIAICNSMYJPXRM2ENDQ
   s3_secret_access_key: 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
@@ -31,7 +31,7 @@ heroku_staging:
   in_kiosk_mode: true
   
 heroku_production:
-  use_s3: false
+  use_s3: true
   s3_bucket_name: cluey
   s3_access_key_id: AKIAICNSMYJPXRM2ENDQ
   s3_secret_access_key: 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
