@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120731101140) do
+ActiveRecord::Schema.define(:version => 20120810134930) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -82,6 +82,15 @@ ActiveRecord::Schema.define(:version => 20120731101140) do
   end
 
   add_index "client_transactions", ["order_id"], :name => "index_client_transactions_on_order_id"
+
+  create_table "cluey_accounts", :force => true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "password_hash"
+    t.string   "password_salt"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "customer_points_allocations", :force => true do |t|
     t.integer  "customer_id"
@@ -373,6 +382,15 @@ ActiveRecord::Schema.define(:version => 20120731101140) do
   add_index "orders", ["employee_id"], :name => "index_orders_on_employee_id"
   add_index "orders", ["table_info_id"], :name => "index_orders_on_table_info_id"
   add_index "orders", ["void_order_id"], :name => "index_orders_on_void_order_id"
+
+  create_table "outlets", :force => true do |t|
+    t.integer  "cluey_account_id"
+    t.string   "name"
+    t.string   "username"
+    t.string   "password"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "payment_methods", :force => true do |t|
     t.string   "name"

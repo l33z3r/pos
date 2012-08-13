@@ -1,4 +1,4 @@
-class ApplicationController < ActionController::Base
+class ApplicationController < AppBaseController
   before_filter :setup_for_subdomain
   before_filter :set_current_employee
   
@@ -617,8 +617,56 @@ class ApplicationController < ActionController::Base
   end
   
   def setup_for_subdomain
-    @sd = request.subdomain
-    @sd
+    @subdomain = request.subdomain
+    
+    if @subdomain == "www"
+      redirect_to welcome_url
+      return
+    end
+    
+    #split the subdomain
+    @subdomain_parts = @subdomain.split(".")
+    
+    if @subdomain_parts.length != 2
+      redirect_to welcome_url
+      return
+    end
+    
+    @outlet_name = @subdomain_parts[0]
+    @account_name = @subdomain_parts[1]    
+    
+    @account = ClueyAccount.find_by_name @account_name
+    
+    if !@account
+      flash[:error] = "Account #{@account_name} not found!"
+      redirect_to welcome_url
+      return
+    end
+    
+    @account.outlets.each do |outlet|
+      if outlet.name == @outlet_name
+        #now check the session for the current terminal to be logged into this outlet
+       
+        #are we the master user
+        if current_cluey_account and outlet.cluey_account.id == current_cluey_account.id
+          return true
+        end
+        
+        #are we logged in to this outlet
+        if current_outlet_account and outlet.account.id == current_cluey_account.id
+          return true
+        end
+        
+        flash[:error] = "Outlet #{@outlet_name} not found for account #{@account_name}!"
+        redirect_to outlet_login
+        return
+      end
+    end
+    
+    flash[:error] = "Outlet #{@outlet_name} not found for account #{@account_name}!"
+    redirect_to welcome_url
+    return
+    
   end
 
 end

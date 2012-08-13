@@ -3,6 +3,7 @@ class Delivery < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: deliveries
@@ -14,5 +15,6 @@ end
 #  updated_at       :datetime
 #  received_date    :datetime
 #  reference_number :string(255)
+#  terminal_id      :string(255)
 #
 

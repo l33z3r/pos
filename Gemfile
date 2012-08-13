@@ -12,6 +12,8 @@ gem 'arel', '2.0.9'
 
 gem 'rake', '0.8.7'
 
+gem "bcrypt-ruby", '3.0.1', :require => "bcrypt"
+
 gem 'populator'
 gem 'faker'
   

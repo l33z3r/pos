@@ -36,6 +36,7 @@ GEM
       builder
       mime-types
       xml-simple
+    bcrypt-ruby (3.0.1)
     blankslate (2.1.2.4)
     builder (2.1.2)
     columnize (0.3.6)
@@ -140,6 +141,7 @@ DEPENDENCIES
   annotate (= 2.4.0)
   arel (= 2.0.9)
   aws-s3 (= 0.6.2)
+  bcrypt-ruby (= 3.0.1)
   faker
   jbuilder (= 0.3.2)
   lazy_high_charts (= 1.1.5)

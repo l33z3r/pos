@@ -1,5 +1,16 @@
 Pos::Application.routes.draw do
 
+  #cluey account routes
+  match 'welcome' => "accounts/accounts#index", :as => "welcome"
+  get "account_log_out" => "accounts/sessions#destroy", :as => "account_log_out"    
+  get "account_log_in" => "accounts/sessions#new", :as => "account_log_in"
+  get "account_sign_up" => "accounts/accounts#new", :as => "account_sign_up"
+
+  namespace :accounts do
+    resources :accounts, :only => [:new, :create]    
+    resources :sessions, :only => [:new, :create, :destroy]
+  end
+
   #js error logging
   match 'js_error_log' => "home#js_error_log", :via => :post
   

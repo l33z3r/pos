@@ -1,0 +1,35 @@
+ <h1>Sign Up For Cluey</h1>
+
+<%= form_for @cluey_account, :url => url_for(:controller => 'accounts/accounts', :action => 'create') do |f| %>
+  <% if @cluey_account.errors.any? %>
+    <div class="error_messages">
+      <h2>Form is invalid</h2>
+      <ul>
+        <% for message in @cluey_account.errors.full_messages %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+ <p>
+    <%= f.label :name, :label => "Business Name" %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </p>
+  <p>
+    <%= f.label :email_confirmation %><br />
+    <%= f.text_field :email_confirmation %>
+  </p>
+  <p>
+    <%= f.label :password %><br />
+    <%= f.password_field :password %>
+  </p>
+  <p>
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation %>
+  </p>
+  <p class="button"><%= f.submit %></p>
+<% end %>
