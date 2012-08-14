@@ -4821,6 +4821,14 @@ div#reports_container  div#report_sales_filters #refine_button{
     margin-left: 80px;
 }
 
+div#reports_container #glances_refine_button{
+    margin-top: 5px;
+    width: 103px;
+    height: 24px;
+    float: left;
+    margin-left: 180px;
+}
+
 div#reports_container  div#report_sales_filters #refine_button.selected{
     cursor: progress;
     color: graytext;

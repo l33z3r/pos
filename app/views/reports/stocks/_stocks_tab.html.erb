@@ -207,7 +207,10 @@
                     <% products.each do |st| %>
                     <% curr_product = Product.find_by_id(st.product_id) %>
                     <% if last_id != st.product_id %>
-                    <% total_sales += OrderItem.find_by_sql("select oi.id, sum(oi.total_price) as total_price from order_items as oi inner join orders o on oi.order_id = o.id inner join stock_transactions st on st.order_item_id = oi.id where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and st.product_id = #{curr_product.id} and o.is_void = 0 and oi.is_void = 0 group by st.product_id")[0].total_price %>
+                    <% current_sale = OrderItem.find_by_sql("select oi.id, sum(oi.total_price) as total_price from order_items as oi inner join orders o on oi.order_id = o.id inner join stock_transactions st on st.order_item_id = oi.id where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and st.product_id = #{curr_product.id} and o.is_void = 0 and oi.is_void = 0 group by st.product_id")  %>
+                    <% if current_sale.any? %>
+                    <% total_sales += current_sale[0].total_price %>
+                    <% end %>
                     <% end %>
                     <% last_id = st.product_id %>
                      <% if curr_product.cost_price == 0 %>
