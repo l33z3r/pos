@@ -4651,6 +4651,14 @@ div#reports_container #stock_items{
     height: 553px;
 }
 
+div#reports_container #deliveries_items{
+    overflow: auto;
+    border:  1px solid black;
+    border-radius: 10px;
+    width: 100%;
+    height: 553px;
+}
+
 div#reports_container #payments_items{
     overflow: auto;
     border:  1px solid black;

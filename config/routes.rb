@@ -309,6 +309,15 @@ Pos::Application.routes.draw do
         get 'export_excel'
       end
     end
+    resources :deliveries, :only => [:index] do
+      collection do
+        get 'deliveries_search'
+        get 'set_params'
+        get 'load_dropdown'
+        get 'deliveries_print'
+        get 'export_excel'
+      end
+    end
     resources :staff, :only => [:index] do
       collection do
         get 'staff_search'

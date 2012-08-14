@@ -27,48 +27,150 @@
     <% if @products.count == 0 %>
        <b>No Results Found</b>
     <% else%>
-    <% if session[:search_type] == :by_trans_type %>
-        <table id="report_table" class="admin_table" style="width: 100%">
+        <% if session[:search_type] == :by_valuation %>
+           <table id="report_table" class="admin_table" style="width: 100%">
                 <thead>
-                <th class="header">Transaction Type</th>
-                <th class="header">Current</th>
-                <th class="header">Change Amount</th>
-
-                <th class="header">Revenue</th>
-
+                <th class="header">Product</th>
+                <th class="header">Category</th>
+                <th class="header">Buy Unit</th>
+                <th class="header">Buy Cost</th>
+                <th class="header">Qty/container</th>
+                <th class="header">Sales Unit</th>
+                <th class="header">Sales Price/unit</th>
+                <th class="header">Sales Price/container</th>
+                <th class="header">Current Stock</th>
+                <th class="header">Cost Valuation</th>
+                <th class="header">Sales Valuation</th>
+                <th class="header">Cost Total</th>
                 </thead>
-                <% @products.each do |item| %>
-                    <% product = Product.find_by_id(item.product_id) %>
-                    <% price = 0 %>
+
+                <% @products.each do |week| %>
+
                     <tbody>
                     <tr class="<%= cycle("even", "odd") %>">
-
+                            <td style="text-align: left">
+                                <% if nil != week.name %>
+                                    <%= week.name %>
+                                <% end %>
+                            </td>
                         <td style="text-align: left">
-                            <% if item.transaction_type == 1 %>
-                            Stock Update
-                            <% elsif item.transaction_type == 2 %>
-                            Stock Transfer
-                            <% elsif item.transaction_type == 3 %>
-                            Delivery
-                            <% elsif item.transaction_type == 4 %>
-                            Stock Take
-                            <% elsif item.transaction_type == 5 %>
-                            Sale
+                            <% if Category.find_by_id(week.category_id) %>
+                                    <% if Category.find_by_id(week.category_id).name %>
+                                        <%= Category.find_by_id(week.category_id).name %>
+                                    <% end %>
+                                <% end %>
+                        </td>
+                        <td style="text-align: left;">
+                            <%= week.unit %>
+                        </td>
+                        <td>
+                            <%= print_money(week.cost_price) %>
+                        </td>
+                        <td>
+                            <%= week.quantity_per_container %>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                           <%= print_money(week.price) %>
+                        </td>
+                        <td>
+                           <%= print_money(week.price.to_d*week.quantity_per_container.to_d) %>
+                        </td>
+
+                        <td>
+                            <%= week.quantity_in_stock %>
+                        </td>
+                        <td>
+                            <% unless week.cost_price == 0 %>
+                                <% cost_valuation = (week.cost_price.to_d*week.quantity_in_stock.to_d).abs %>
+                                <%= print_money(cost_valuation) %>
                             <% end %>
                         </td>
                         <td>
-                            <%= sprintf("%.0f", item.old_amount + item.change_amount) %>
+                            <% unless week.price == 0 %>
+                                <% sales_valuation = (week.price.to_d*week.quantity_in_stock.to_d).abs %>
+                                <%= print_money(sales_valuation) %>
+                            <% end %>
                         </td>
                         <td>
-                            <% quantity_sold = item.change_amount %>
-                            <%= sprintf("%.0f", quantity_sold) %>
+                            <% unless cost_valuation == nil %>
+                                <% margin = per_profit(sprintf("%.2f", sales_valuation.abs).to_d, sprintf("%.2f", cost_valuation.abs).to_d, week.sales_tax_rate) %>
+                                <% unless (margin == nil) %>
+                                    <%=  sprintf("%.0f",margin) %>%
+                                <% end %>
+                                <% end %>
+                        </td>
+                    </tr>
+                <% end %>
+
+                </tbody>
+            </table>
+    <% elsif session[:search_type] == :by_delivery %>
+           <table id="report_table" class="admin_table" style="width: 100%">
+                <thead>
+                <th class="header">Received Date</th>
+                <th class="header">Time</th>
+                <th class="header">Product</th>
+                <th class="header">Category</th>
+                <th class="header">Employee</th>
+                <th class="header">Unit</th>
+                <th class="header">Reference ID</th>
+                <th class="header">Current Stock</th>
+                <th class="header">Deliveries</th>
+                <th class="header">Unit Cost</th>
+                <th class="header">Cost Total</th>
+                </thead>
+
+                <% @products.each do |week| %>
+                    <% @delivery = Delivery.find_by_id(week.delivery_id) %>
+                    <% @employee = Employee.find_by_id(week.employee_id) %>
+                    <% @product = Product.find_by_id(week.product_id) %>
+                    <% if @delivery %>
+                    <tbody>
+                    <tr class="<%= cycle("even", "odd") %>">
+                        <td style="text-align: left">
+                            <%= @delivery.received_date.to_datetime.strftime "%a, %d %b %Y" %>
+                        </td>
+                        <td style="text-align: left;">
+                            <%= @delivery.received_date.to_datetime.strftime "%l:%M%P" %>
+                        </td>
+                            <td style="text-align: left">
+                                <% if nil != @product.name %>
+                                    <%= @product.name %>
+                                <% end %>
+                            </td>
+                        <td style="text-align: left">
+                            <% if Category.find_by_id(@product.category_id) %>
+                                    <% if Category.find_by_id(@product.category_id).name %>
+                                        <%= Category.find_by_id(@product.category_id).name %>
+                                    <% end %>
+                                <% end %>
+                        </td>
+                        <td style="text-align: left;">
+                            <%= @employee.name %>
                         </td>
                         <td>
-                            <% revenue = product.price * quantity_sold %>
-                            <%= print_money(revenue.abs) %>
+                            <%= @product.unit %>
+                        </td>
+                        <td>
+                            <%= @delivery.reference_number %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.2f",@product.quantity_in_stock) %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.2f",week.change_amount) %>
                         </td>
 
+                        <td>
+                            <%= print_money(@product.cost_price) %>
+                        </td>
+                        <td>
+                            <%= print_money(@product.cost_price.to_d*week.change_amount.to_d) %>
+                        </td>
                     </tr>
+                <% end %>
                 <% end %>
 
                 </tbody>

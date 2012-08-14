@@ -18,8 +18,6 @@ function initMcDropDowns() {
 function hideAllMenuSubScreens() {
     $('#menu_container').hide();
 
-
-
     $('.button[id=sales_button_' + tablesButtonID + ']').removeClass("selected");
     $('#table_screen').hide();
     
