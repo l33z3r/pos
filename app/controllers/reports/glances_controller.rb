@@ -39,7 +39,17 @@ class Reports::GlancesController < Admin::AdminController
     @number_of_sales = number_of_sales
     @total_number_sales = total_number_sales
     @busiest_hour = busiest_hour
+    unless @busiest_hour.empty?
+      @busiest_hour = @busiest_hour[0].created_at
+    end
     @total_busiest_hour = total_busiest_hour
+    @todays_voids = todays_voids
+    @total_voids = total_voids
+    @todays_discounts = todays_discounts
+    @average_discounts = average_discounts
+    @sales_by_payments = sales_by_payments
+    @sales_by_server = sales_by_server
+    @expenses_paid = expenses_paid
 
   end
 
@@ -89,8 +99,8 @@ class Reports::GlancesController < Admin::AdminController
 
 
   def todays_sales
-    @selected_from_date = session[:from_date].to_s
-    @selected_to_date = session[:to_date].to_s
+    @selected_from_date = Time.now.beginning_of_day
+    @selected_to_date = Time.now
     where = "select oi.id, oi.created_at, DATE_FORMAT(oi.created_at,'%Y-%m-%d') as created_day, oi.product_id, SUM((oi.total_price-(oi.total_price/(1+(oi.tax_rate/100))))) as tax_rate, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id"
     if session[:terminal] != ''
         where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"
@@ -160,7 +170,7 @@ class Reports::GlancesController < Admin::AdminController
         where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0"
       end
     where << " group by hour(oi.created_at) order by total_price desc"
-    query = OrderItem.find_by_sql(where)[0].created_at
+    query = OrderItem.find_by_sql(where)
   end
 
   def total_busiest_hour
@@ -174,6 +184,97 @@ class Reports::GlancesController < Admin::AdminController
       end
     where << " group by hour(oi.created_at) order by total_price desc"
     query = OrderItem.find_by_sql(where)[0].created_at
+  end
+
+  def todays_voids
+    @selected_from_date = Time.now.beginning_of_day
+    @selected_to_date = Time.now
+    where = "select oi.id, oi.created_at, DATE_FORMAT(oi.created_at,'%Y-%m-%d') as created_day, oi.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id"
+    if session[:terminal] != ''
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
+      else
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}'"
+      end
+    where << " and oi.is_void = 1"
+    query = OrderItem.find_by_sql(where)[0].total_price
+  end
+
+  def total_voids
+    @selected_from_date = Time.now.beginning_of_year
+    @selected_to_date = Time.now
+    where = "select oi.id, oi.created_at, DATE_FORMAT(oi.created_at,'%Y-%m-%d') as created_day, oi.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id"
+    if session[:terminal] != ''
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
+      else
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}'"
+      end
+    where << " and oi.is_void = 1"
+    query = OrderItem.find_by_sql(where)[0].total_price
+  end
+
+  def todays_discounts
+    @selected_from_date = Time.now.beginning_of_day
+    @selected_to_date = Time.now
+    where = "select oi.id, oi.created_at, DATE_FORMAT(oi.created_at,'%Y-%m-%d') as created_day, oi.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id"
+    if session[:terminal] != ''
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"
+      else
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0"
+      end
+    where << " and o.discount_percent IS NOT NULL"
+    query = OrderItem.find_by_sql(where)
+  end
+
+  def average_discounts
+    @selected_from_date = Time.now.beginning_of_year
+    @selected_to_date = Time.now
+    where = "select oi.id, oi.created_at, DATE_FORMAT(oi.created_at,'%Y-%m-%d') as created_day, oi.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id"
+    if session[:terminal] != ''
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"
+      else
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0"
+      end
+    where << " and o.discount_percent IS NOT NULL"
+    where << " group by created_day order by oi.created_at asc"
+    query = OrderItem.find_by_sql(where)
+  end
+
+  def sales_by_payments
+    @selected_from_date = Time.now.beginning_of_day
+    @selected_to_date = Time.now
+    where = "select o.id, o.created_at, o.discount_percent, o.pre_discount_price, sum(total) total, o.payment_type, o.terminal_id, o.employee_id from orders o"
+    if session[:terminal] != ''
+        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.is_void = 0 and o.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"
+      else
+        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.is_void = 0 and o.is_void = 0"
+      end
+    where << " group by o.payment_type"
+    query = Order.find_by_sql(where)
+  end
+
+  def sales_by_server
+    @selected_from_date = Time.now.beginning_of_day
+    @selected_to_date = Time.now
+    where = "select o.id, o.created_at, o.discount_percent, o.pre_discount_price, sum(total) total, o.payment_type, o.terminal_id, o.employee_id from orders o"
+    if session[:terminal] != ''
+        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.is_void = 0 and o.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"
+      else
+        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.is_void = 0 and o.is_void = 0"
+      end
+    where << " group by o.employee_id"
+    query = Order.find_by_sql(where)
+  end
+
+  def expenses_paid
+    @selected_from_date = Time.now.beginning_of_day
+    @selected_to_date = Time.now
+    where = "select o.id, o.terminal_id, o.note, o.amount, o.created_at from cash_outs o"
+    if session[:terminal] != ''
+        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.terminal_id = '#{session[:terminal]}'"
+      else
+        where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}'"
+      end
+    query = Order.find_by_sql(where)
   end
 
 end
