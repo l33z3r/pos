@@ -8,6 +8,7 @@ two:
   key: MyString
   value: MyString
 
+
 # == Schema Information
 #
 # Table name: global_settings
@@ -22,5 +23,6 @@ two:
 #  logo_updated_at   :datetime
 #  created_at        :datetime
 #  updated_at        :datetime
+#  outlet_id         :integer(4)
 #
 

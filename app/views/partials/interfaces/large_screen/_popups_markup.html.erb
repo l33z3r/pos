@@ -80,7 +80,7 @@
           0%
         </div>
       </div>
-      <% Discount.all.each do |discount| %>
+      <% current_outlet.discounts.all.each do |discount| %>
         <div class="button" id="discount_button_<%=discount.id%>" data-onpress="setDiscountVal(<%=discount.percent%>)">
           <div class="name">
             <%=discount.name%>
@@ -159,7 +159,7 @@
     <div class="clear">&nbsp;</div>
 
     <% GlobalSetting.course_vals.each do |course_val| %>
-      <% @gs = GlobalSetting.setting_for GlobalSetting::COURSE_LABEL, {:course_val => course_val} %>
+      <% @gs = GlobalSetting.setting_for GlobalSetting::COURSE_LABEL, current_outlet, {:course_val => course_val} %>
       <div class="course_label course_label_<%=course_val%>" onclick="applyCourseFromPopup(<%=course_val%>);"><%= @gs.value %></div>
       <div class="clear">&nbsp;</div>
     <% end %> 

@@ -7,6 +7,7 @@ class DisplayButtonRoleTest < ActiveSupport::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: display_button_roles
@@ -19,5 +20,6 @@ end
 #  created_at           :datetime
 #  updated_at           :datetime
 #  passcode_required    :boolean(1)      default(FALSE)
+#  outlet_id            :integer(4)
 #
 

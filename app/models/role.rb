@@ -1,34 +1,22 @@
 class Role < ActiveRecord::Base
+  belongs_to :outlet
+  
   has_many :employees
   has_many :display_button_roles
 
   validates :name, :presence => true
+  validates_uniqueness_of :name, :case_sensitive => false, :scope => :outlet_id
   
-  before_save :prevent_rename_super_user_role
-  before_save :prevent_rename_employee_role
-
-  SUPER_USER_ROLE_ID = find_by_name("Administrator").try(:id)
-  EMPLOYEE_ROLE_ID = find_by_name("Employee").try(:id)
-  
-  def prevent_rename_super_user_role
-    @editing_super_user = (SUPER_USER_ROLE_ID == id)
-    
-    if @editing_super_user
-      #make sure we are not changing the name "Administrator"
-      write_attribute("name", "Administrator")
-    end
+  def self.super_user_role_id current_outlet
+    find_by_outlet_id_and_name(current_outlet.id, "Administrator").try(:id)
   end
   
-  def prevent_rename_employee_role
-    @editing_employee = (EMPLOYEE_ROLE_ID == id)
-    
-    if @editing_employee
-      #make sure we are not changing the name "Employee"
-      write_attribute("name", "Employee")
-    end
+  def self.employee_role_id current_outlet
+    find_by_outlet_id_and_name(current_outlet.id, "Employee").try(:id)
   end
   
 end
+
 
 
 # == Schema Information
@@ -41,5 +29,6 @@ end
 #  updated_at    :datetime
 #  pin_required  :boolean(1)      default(FALSE)
 #  login_allowed :boolean(1)      default(TRUE)
+#  outlet_id     :integer(4)
 #
 

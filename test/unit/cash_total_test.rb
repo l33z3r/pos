@@ -7,6 +7,7 @@ class CashTotalTest < ActiveSupport::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: cash_totals
@@ -22,5 +23,6 @@ end
 #  terminal_id         :string(255)
 #  report_num          :integer(4)
 #  report_data         :text
+#  outlet_id           :integer(4)
 #
 

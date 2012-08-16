@@ -7,6 +7,7 @@ class DiscountTest < ActiveSupport::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: discounts
@@ -17,5 +18,6 @@ end
 #  is_default :boolean(1)
 #  created_at :datetime
 #  updated_at :datetime
+#  outlet_id  :integer(4)
 #
 

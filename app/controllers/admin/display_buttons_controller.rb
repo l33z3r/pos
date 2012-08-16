@@ -17,7 +17,7 @@ class Admin::DisplayButtonsController < Admin::AdminController
     @display_buttons = DisplayButton.update(params[:display_buttons].keys, params[:display_buttons].values).reject { |p| p.errors.empty? }
     
     #have to manually set the service charge button label to the global value
-    @service_charge_button = DisplayButton.find_by_perm_id(ButtonMapper::SERVICE_CHARGE_BUTTON)
+    @service_charge_button = DisplayButton.find_by_outlet_id_and_perm_id(current_outlet.id, ButtonMapper::SERVICE_CHARGE_BUTTON)
     @service_charge_button.button_text = @service_charge_label
     @service_charge_button.save
     
@@ -30,7 +30,7 @@ class Admin::DisplayButtonsController < Admin::AdminController
   end
   
   def button_group_create
-    DisplayButtonGroup.create({:name => params[:name]})
+    DisplayButtonGroup.create({:outlet_id => current_outlet.id, :name => params[:name]})
     
     flash[:notice] = "Button Group created!"
     render :json => {:success => true}.to_json
@@ -48,7 +48,7 @@ class Admin::DisplayButtonsController < Admin::AdminController
   end
   
   def button_group_delete
-    @dbg = DisplayButtonGroup.find(params[:dbg_id])
+    @dbg = current_outlet.display_button_groups.find(params[:dbg_id])
     @dbg.destroy
     
     flash[:notice] = "Button Group deleted!"
@@ -56,7 +56,7 @@ class Admin::DisplayButtonsController < Admin::AdminController
   end
   
   def update_sales_screen_button_role
-    @dbr = DisplayButtonRole.find(params[:id])
+    @dbr = current_outlet.display_button_roles.find(params[:id])
     @dbr.show_on_sales_screen = params[:checked]
     @dbr.save!
     
@@ -64,7 +64,7 @@ class Admin::DisplayButtonsController < Admin::AdminController
   end
 
   def update_admin_screen_button_role
-    @dbr = DisplayButtonRole.find(params[:id])
+    @dbr = current_outlet.display_button_roles.find(params[:id])
     
     if params[:checked]
       @dbr.show_on_admin_screen = params[:checked]

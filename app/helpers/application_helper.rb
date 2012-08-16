@@ -1,5 +1,10 @@
 module ApplicationHelper
 
+  def shown_on_admin_screen? dbr
+    return true if dbr.role.id == Role::super_user_role_id(current_outlet)
+    dbr.show_on_admin_screen
+  end
+  
   def product_image_thumb product, show_default=false
     @img_url = product_image_url product, show_default
     
@@ -29,7 +34,7 @@ module ApplicationHelper
   end
   
   def business_logo_thumb show_default=false
-    @gs = GlobalSetting.setting_for GlobalSetting::LOGO, {:logo_type => "business_logo"}
+    @gs = GlobalSetting.setting_for GlobalSetting::LOGO, current_outlet, {:logo_type => "business_logo"}
     
     if @gs.has_logo?
       image_tag @gs.logo.url(:thumb)
@@ -66,8 +71,8 @@ module ApplicationHelper
         @shortcut_num = 3
       end
     
-      @pm_shortcut_id = GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => @shortcut_num}
-      @shortcut_payment_method = PaymentMethod.find_by_id(@pm_shortcut_id)
+      @pm_shortcut_id = GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, current_outlet, {:shortcut_num => @shortcut_num}
+      @shortcut_payment_method = current_outlet.payment_methods.find_by_id(@pm_shortcut_id)
       
       return payment_method_logo_thumb(@shortcut_payment_method, true)
     else
@@ -101,12 +106,12 @@ module ApplicationHelper
         @shortcut_num = 3
       end
     
-      @pm_shortcut_id = GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => @shortcut_num}
+      @pm_shortcut_id = GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, current_outlet, {:shortcut_num => @shortcut_num}
       
       if @pm_shortcut_id == -1
         @button_text = "Payment Method Shortcut Button #{@shortcut_num}"
       else
-        @shortcut_payment_method = PaymentMethod.find_by_id(@pm_shortcut_id)
+        @shortcut_payment_method = current_outlet.payment_methods.find_by_id(@pm_shortcut_id)
         @button_text = @shortcut_payment_method.name
       end
       

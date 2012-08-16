@@ -43,22 +43,22 @@ class OrderController < ApplicationController
     
     @open_orders_total = @open_orders_total.to_f
     
-    @cash_total_obj, @cash_total, @cash_total_data = CashTotal.do_total @total_type, @commit, @cash_count, @open_orders_total, current_employee, @terminal_id
+    @cash_total_obj, @cash_total, @cash_total_data = CashTotal.do_total @total_type, @commit, @cash_count, @open_orders_total, current_employee, @terminal_id, current_outlet
   end
 
   def add_float
     @float_amount = params[:float_total]
-    CashTotal.do_add_float current_employee, @terminal_id, @float_amount
+    CashTotal.do_add_float current_employee, @terminal_id, @float_amount, current_outlet
     render :json => {:success => true}.to_json
   end
   
   def float_history
-    @last_z_total, @previous_floats = CashTotal.floats_since_last_z_total @terminal_id
+    @last_z_total, @previous_floats = CashTotal.floats_since_last_z_total @terminal_id, current_outlet
   end
   
   def cash_total_history
-    @last_z_total, @previous_floats = CashTotal.floats_since_last_z_total @terminal_id
-    @previous_x_totals = CashTotal.all_cash_totals CashTotal::X_TOTAL, @terminal_id
+    @last_z_total, @previous_floats = CashTotal.floats_since_last_z_total @terminal_id, current_outlet
+    @previous_x_totals = CashTotal.all_cash_totals CashTotal::X_TOTAL, @terminal_id, current_outlet
   end
   
   def sync_table_order
@@ -71,7 +71,7 @@ class OrderController < ApplicationController
     
     #check if this order has been cashed out already but let the table 0 order through
     if @table_id != "0" and @order_num 
-      if Order.find_by_order_num @order_num
+      if current_outlet.orders.find_by_order_num @order_num
         #this order has already been cashed, so do nothing...
         logger.info "Order has already been cashed. Ignoring..."
         @error = true
@@ -83,9 +83,9 @@ class OrderController < ApplicationController
     @employee_id = params[:employee_id]
     
     #make sure the table still exists in the system as it will cause a weird error if not
-    @table = TableInfo.find_by_id(@table_id)
+    @table = current_outlet.table_infos.find_by_id(@table_id)
     
-    @employee = Employee.find_by_id(@employee_id)
+    @employee = current_outlet.employees.find_by_id(@employee_id)
     
     @last_sync_time = params[:lastSyncTableOrderTime]
     @retry = false
@@ -101,7 +101,7 @@ class OrderController < ApplicationController
   
   def delete_table_order
     @table_id = params[:table_id]
-    @table = TableInfo.find_by_id(@table_id)
+    @table = current_outlet.table_infos.find_by_id(@table_id)
       
     if @table
       @order_num = params[:order_num]
@@ -115,7 +115,7 @@ class OrderController < ApplicationController
     @description = params[:description]
     @amount = params[:amount]
     
-    CashOut.create(:terminal_id => @terminal_id, :amount => @amount, :note => @description)
+    CashOut.create(:outlet_id => current_outlet.id, :terminal_id => @terminal_id, :amount => @amount, :note => @description)
     
     render :json => {:success => true}.to_json
   end
@@ -126,11 +126,11 @@ class OrderController < ApplicationController
     @table_from_id = params[:table_from_id]
     
     @table_to_id = params[:table_to_id]
-    @table_to = TableInfo.find_by_id(@table_to_id)
+    @table_to = current_outlet.table_infos.find_by_id(@table_to_id)
     
     if @table_to
       if @table_from_id.to_i != 0 and @table_from_id.to_i != -1 and @table_from_id.to_i != -2
-        @table_from = TableInfo.find_by_id(@table_from_id)      
+        @table_from = current_outlet.table_infos.find_by_id(@table_from_id)      
     
         if @table_from
           @table_from_order_num = params[:table_from_order_num] 
@@ -153,7 +153,7 @@ class OrderController < ApplicationController
     
       #make sure we have not already cashed this order out. 
       #We use a combination of terminal ID and time started to uniquely identify orders
-      @existing_order = Order.where("terminal_id = ?", @terminal_id).where("time_started = ?", order_params["time_started"])
+      @existing_order = current_outlet.orders.where("terminal_id = ?", @terminal_id).where("time_started = ?", order_params["time_started"])
       
       if !@existing_order.empty?
         #simply ignore the order
@@ -173,11 +173,13 @@ class OrderController < ApplicationController
     
       @order = Order.new(@order_params)
     
+      @order.outlet_id = current_outlet.id
+      
       #pick up if this is a training mode sale or not      
       @is_training_mode_sale = @is_training_mode_sale_order_param == "true"
       @order.training_mode_sale = @is_training_mode_sale
       
-      @deduct_stock_during_training_mode = GlobalSetting.parsed_setting_for GlobalSetting::DEDUCT_STOCK_DURING_TRAINING_MODE
+      @deduct_stock_during_training_mode = GlobalSetting.parsed_setting_for GlobalSetting::DEDUCT_STOCK_DURING_TRAINING_MODE, current_outlet
       
       if(!Employee.find_by_id(@order.employee_id))
         #employee id not set correctly, so just grab the last active employee
@@ -185,12 +187,12 @@ class OrderController < ApplicationController
       end
     
       if !@order.order_num or @order.order_num.to_s.length == 0
-        @order.order_num = Order.next_order_num
+        @order.order_num = Order.next_order_num current_outlet
       end
     
       #is this a re initiailised previous order?
       if @order.void_order_id
-        @order_to_void = Order.find(@order.void_order_id)
+        @order_to_void = current_outlet.orders.find(@order.void_order_id)
         @order_to_void.is_void = true
         @order_to_void.save
       end
@@ -203,6 +205,9 @@ class OrderController < ApplicationController
       #build order items
       @order_details[:items].each do |index, item|
         @order_item = @order.order_items.build
+        
+        @order_item.outlet_id = current_outlet.id
+        
         @order_item.employee_id = item[:serving_employee_id]
 
         @order_item.product_id = item[:product][:id]
@@ -239,13 +244,13 @@ class OrderController < ApplicationController
                   @oia_stock_usage /= 2
                 end
       
-                @oia_product = Product.find_by_id(oia[:product_id])
+                @oia_product = current_outlet.products.find_by_id(oia[:product_id])
       
                 @old_stock_amount = @oia_product.quantity_in_stock
                 @actual_stock_usage = @oia_product.decrement_stock @oia_stock_usage
                 
                 #build a stock_transaction
-                @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
+                @st = @order_item.stock_transactions.build(:outlet_id => current_outlet.id, :transaction_type => StockTransaction::SALE, 
                   :employee_id => @order_item.employee_id, :product_id => @oia_product.id,
                   :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
               
@@ -292,7 +297,7 @@ class OrderController < ApplicationController
               @actual_stock_usage = @order_item.product.decrement_stock @item_stock_usage
               
               #build a stock_transaction
-              @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
+              @st = @order_item.stock_transactions.build(:outlet_id => current_outlet.id, :transaction_type => StockTransaction::SALE, 
                 :employee_id => @order_item.employee_id, :product_id => @order_item.product.id,
                 :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
               
@@ -308,7 +313,7 @@ class OrderController < ApplicationController
                 @actual_stock_usage = ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
                 
                 #build a stock_transaction
-                @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
+                @st = @order_item.stock_transactions.build(:outlet_id => current_outlet.id, :transaction_type => StockTransaction::SALE, 
                   :employee_id => @order_item.employee_id, :product_id => ingredient.product.id,
                   :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
               
@@ -329,6 +334,7 @@ class OrderController < ApplicationController
         @card_charge_reference_number = @card_charge_details[:reference_number]
         
         CardTransaction.create({
+            :outlet_id => current_outlet.id,
             :order_id => @order.id, 
             :payment_method => @card_charge_payment_method, 
             :amount => @card_charge_amount,
@@ -337,22 +343,22 @@ class OrderController < ApplicationController
       
       #was the loyalty system used
       if @loyalty_details
-        @loyalty_customer = Customer.find_by_id(@loyalty_details[:customer_id])
+        @loyalty_customer = current_outlet.customers.find_by_id(@loyalty_details[:customer_id])
         
         if @loyalty_customer
           if @order_details[:split_payments][:loyalty]
-            @points_per_currency_unit = GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_POINTS_PER_CURRENCY_UNIT
+            @points_per_currency_unit = GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_POINTS_PER_CURRENCY_UNIT, current_outlet
             @points_used_this_sale = @order_details[:split_payments][:loyalty].to_f * @points_per_currency_unit
             
             @loyalty_customer.decrement!(:available_points, @points_used_this_sale.to_f)
             
-            CustomerPointsAllocation.create({:customer_id => @loyalty_customer.id, :order_id => @order.id, 
+            CustomerPointsAllocation.create({:outlet_id => current_outlet.id, :customer_id => @loyalty_customer.id, :order_id => @order.id, 
                 :allocation_type => CustomerPointsAllocation::SALE_REDUCE, :amount => @points_used_this_sale * -1, 
                 :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
           end
           
           @points_earned = @loyalty_details[:points_earned]
-          CustomerPointsAllocation.create({:customer_id => @loyalty_customer.id, :order_id => @order.id, 
+          CustomerPointsAllocation.create({:outlet_id => current_outlet.id, :customer_id => @loyalty_customer.id, :order_id => @order.id, 
               :allocation_type => CustomerPointsAllocation::SALE_EARN, :amount => @points_earned, 
               :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
           
@@ -361,9 +367,9 @@ class OrderController < ApplicationController
       end
       
       if @customer_details
-        @customer = Customer.find_by_id(@customer_details[:customer_id])
+        @customer = current_outlet.customers.find_by_id(@customer_details[:customer_id])
         
-        CustomerTransaction.create({:transaction_type => CustomerTransaction::CHARGE,
+        CustomerTransaction.create({:outlet_id => current_outlet.id, :transaction_type => CustomerTransaction::CHARGE,
             :order_id => @order.id, :customer_id => @customer.id, :terminal_id => @terminal_id,
             :abs_amount => @order.total, :actual_amount => -@order.total, :is_credit => false
           })
@@ -372,7 +378,7 @@ class OrderController < ApplicationController
         @customer.save
       end
     
-      @table_info = TableInfo.find_by_id(@order.table_info_id)
+      @table_info = current_outlet.table_infos.find_by_id(@order.table_info_id)
     
       #must tell all terminals that this order is cleared
       #only do this if that table still exists!

@@ -3,7 +3,7 @@ class Admin::RoomsController < Admin::AdminController
   before_filter :load_room, :except => [:index, :new, :create, :tables]
   
   def index
-    @rooms = Room.all
+    @rooms = current_outlet.rooms.all
   end
   
   def new
@@ -13,6 +13,8 @@ class Admin::RoomsController < Admin::AdminController
   def create
     @room = Room.new(params[:room])
 
+    @room.outlet_id = current_outlet.id
+    
     if @room.save
       #send a reload request to other terminals
       request_reload_app @terminal_id
@@ -47,7 +49,7 @@ class Admin::RoomsController < Admin::AdminController
     @grid_y = @grid_parts.last.to_i
     
     if params[:room_object_id]
-      @room_object = RoomObject.find(params[:room_object_id])
+      @room_object = current_outlet.room_objects.find(params[:room_object_id])
       
       if check_intersection(@room, @grid_x, @grid_y, @room_object.permid, @room_object.id)
         @room_object.grid_x = @grid_x
@@ -57,7 +59,8 @@ class Admin::RoomsController < Admin::AdminController
         @place_error = true
       end
     else
-      @room_object = RoomObject.new_from_permid(params[:room_object_permid])
+      @room_object = RoomObject.new_from_permid(params[:room_object_permid], current_outlet)
+      @room_object.outlet_id = current_outlet.id
       @room_object.room_id = @room.id
       
       if check_intersection(@room, @grid_x, @grid_y, @room_object.permid, nil)
@@ -69,7 +72,7 @@ class Admin::RoomsController < Admin::AdminController
       
         #is this a new table?
         if @room_object.object_type == RoomObject::TABLE
-          @table_info = TableInfo.new({:room_object_id => @room_object.id, :perm_id => "#{@room_object.id}"})
+          @table_info = TableInfo.new({:outlet_id => current_outlet.id, :room_object_id => @room_object.id, :perm_id => "#{@room_object.id}"})
           @table_info.save!
         end
       else
@@ -101,7 +104,7 @@ class Admin::RoomsController < Admin::AdminController
   def label_table
     @room_object_id = params[:room_object_id]
     
-    @room_object = RoomObject.find(@room_object_id)
+    @room_object = current_outlet.room_objects.find(@room_object_id)
       
     @table_info = @room_object.table_info
     @table_id = @table_info.id
@@ -112,7 +115,7 @@ class Admin::RoomsController < Admin::AdminController
     #make sure this table is closed before we remove it.
     #if there is no sync data, then it is safe,
     #or if the only sync data is a clear table order, then it is safe also
-    TerminalSyncData.fetch_sync_table_order_times.each do |tsd|
+    TerminalSyncData.fetch_sync_table_order_times(current_outlet).each do |tsd|
       if tsd.data[:table_id].to_s == @table_id.to_s
         #there is sync data for this table,
         #if it is not data related to clearing the table, 
@@ -136,7 +139,7 @@ class Admin::RoomsController < Admin::AdminController
     end
     
     if @rename
-      @existing_table = TableInfo.find_by_perm_id(@new_label)
+      @existing_table = current_outlet.table_infos.find_by_perm_id(@new_label)
       
       if @existing_table and (@existing_table.id != @table_id)
         @rename = false
@@ -156,7 +159,7 @@ class Admin::RoomsController < Admin::AdminController
   def remove_table
     @room_object_id = params[:room_object_id]
     
-    @room_object = RoomObject.find(@room_object_id)
+    @room_object = current_outlet.room_objects.find(@room_object_id)
     
     @table_info = @room_object.table_info
     @table_id = @table_info.id
@@ -166,7 +169,7 @@ class Admin::RoomsController < Admin::AdminController
     #make sure this table is closed before we remove it.
     #if there is no sync data, then it is safe,
     #or if the only sync data is a clear table order, then it is safe also
-    TerminalSyncData.fetch_sync_table_order_times.each do |tsd|
+    TerminalSyncData.fetch_sync_table_order_times(current_outlet).each do |tsd|
       if tsd.data[:table_id].to_s == @table_id.to_s
         #there is sync data for this table,
         #if it is not data related to clearing the table, 
@@ -181,7 +184,7 @@ class Admin::RoomsController < Admin::AdminController
       @room_object.destroy
     
       #remove the sync info for that table
-      TerminalSyncData.remove_sync_data_for_table @table_id
+      TerminalSyncData.remove_sync_data_for_table @table_id, current_outlet
     end
     
     #send a reload request to other terminals
@@ -189,12 +192,12 @@ class Admin::RoomsController < Admin::AdminController
   end
   
   def remove_wall
-    RoomObject.find(params[:wall_id]).destroy
+    current_outlet.room_objects.find(params[:wall_id]).destroy
     render :json => {:success => true}.to_json
   end
   
   def update
-    @room = Room.find(params[:id])
+    @room = current_outlet.rooms.find(params[:id])
     
     @room.update_attributes(params[:room])
     
@@ -202,7 +205,7 @@ class Admin::RoomsController < Admin::AdminController
   end
   
   def destroy
-    @room = Room.find(params[:id])
+    @room = current_outlet.rooms.find(params[:id])
     
     @delete = true
     
@@ -210,7 +213,7 @@ class Admin::RoomsController < Admin::AdminController
     #if there is no sync data, then it is safe,
     #or if the only sync data is a clear table order, then it is safe also
     @room.table_infos.each do |table_info|
-      TerminalSyncData.fetch_sync_table_order_times.each do |tsd|
+      TerminalSyncData.fetch_sync_table_order_times(current_outlet).each do |tsd|
         if tsd.data[:table_id].to_s == table_info.id.to_s
           #there is sync data for this table,
           #if it is not data related to clearing the table, 
@@ -226,7 +229,7 @@ class Admin::RoomsController < Admin::AdminController
       #remove the sync info for all tables in that room
       @room.table_infos.each do |table_info|
         logger.info("checking delete for table info #{table_info.id}")
-        TerminalSyncData.remove_sync_data_for_table table_info.id
+        TerminalSyncData.remove_sync_data_for_table table_info.id, current_outlet
       end
     
       @room.destroy
@@ -246,14 +249,14 @@ class Admin::RoomsController < Admin::AdminController
   private
   
   def load_room
-    @room = Room.find(params[:id])
+    @room = current_outlet.rooms.find(params[:id])
   end
   
   def check_intersection room, target_x, target_y, permid, existing_room_object_id
     #check that this position is not already occupied
     @existing_object = false
     
-    @temp_room_object = RoomObject.new_from_permid(permid)
+    @temp_room_object = RoomObject.new_from_permid(permid, current_outlet)
     @temp_room_object.grid_x = target_x
     @temp_room_object.grid_y = target_y
     

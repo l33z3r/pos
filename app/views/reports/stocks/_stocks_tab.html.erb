@@ -168,7 +168,7 @@
                         <td>
                             <% unless (revenue == nil) %>
                             <% unless total_price == 0 || total_price == nil || all_cost_price == false %>
-                                <% margin = per_profit(sprintf("%.2f", revenue).to_d, sprintf("%.2f", total_price.abs).to_d, product.sales_tax_rate) %>
+                                <% margin = per_profit(sprintf("%.2f", revenue).to_d, sprintf("%.2f", total_price.abs).to_d, product.get_sales_tax_rate(current_outlet)) %>
                                 <% unless (margin == nil) %>
                                     <%=  margin.to_i %>%
                                 <% end %>

@@ -1,10 +1,10 @@
 class Admin::ModifierCategoriesController < Admin::AdminController
   def index
-    @modifier_categories = ModifierCategory.all
+    @modifier_categories = current_outlet.modifier_categories.all
   end
 
   def show
-    @modifier_category = ModifierCategory.find(params[:id])
+    @modifier_category = current_outlet.modifier_categories.find(params[:id])
   end
 
   def new
@@ -16,12 +16,19 @@ class Admin::ModifierCategoriesController < Admin::AdminController
   end
 
   def edit
-    @modifier_category = ModifierCategory.find(params[:id])
+    @modifier_category = current_outlet.modifier_categories.find(params[:id])
   end
 
   def create
     @modifier_category = ModifierCategory.new(params[:modifier_category])
 
+    @modifier_category.outlet_id = current_outlet.id
+    
+    @modifier_category.modifiers.each do |m|
+      m.outlet_id = current_outlet.id
+      m.save
+    end
+    
     if @modifier_category.save
       redirect_to [:admin, @modifier_category], :notice => 'Modifier category was successfully created.'
     else
@@ -30,9 +37,14 @@ class Admin::ModifierCategoriesController < Admin::AdminController
   end
 
   def update
-    @modifier_category = ModifierCategory.find(params[:id])
+    @modifier_category = current_outlet.modifier_categories.find(params[:id])
 
     if @modifier_category.update_attributes(params[:modifier_category])
+      @modifier_category.modifiers.each do |m|
+        m.outlet_id = current_outlet.id
+        m.save
+      end
+    
       redirect_to [:admin, @modifier_category], :notice => 'Modifier category was successfully updated.'
     else
       render :action => "edit"
@@ -40,7 +52,7 @@ class Admin::ModifierCategoriesController < Admin::AdminController
   end
 
   def destroy
-    @modifier_category = ModifierCategory.find(params[:id])
+    @modifier_category = current_outlet.modifier_categories.find(params[:id])
     @modifier_category.destroy
 
     redirect_to admin_modifier_categories_url

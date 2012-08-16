@@ -8,6 +8,7 @@ class RoleTest < ActiveSupport::TestCase
 end
 
 
+
 # == Schema Information
 #
 # Table name: roles
@@ -18,5 +19,6 @@ end
 #  updated_at    :datetime
 #  pin_required  :boolean(1)      default(FALSE)
 #  login_allowed :boolean(1)      default(TRUE)
+#  outlet_id     :integer(4)
 #
 

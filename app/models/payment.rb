@@ -1,4 +1,6 @@
 class Payment < ActiveRecord::Base
+  belongs_to :outlet
+  
   has_one :customer_transaction
   belongs_to :card_transaction
   
@@ -8,6 +10,7 @@ class Payment < ActiveRecord::Base
   
   validates :transaction_type, :presence => true, :inclusion => { :in => VALID_TRANSACTION_TYPES }
 end
+
 
 
 
@@ -25,5 +28,6 @@ end
 #  created_at          :datetime
 #  updated_at          :datetime
 #  terminal_id         :string(255)
+#  outlet_id           :integer(4)
 #
 

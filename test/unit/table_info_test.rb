@@ -7,6 +7,7 @@ class TableInfoTest < ActiveSupport::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: table_infos
@@ -16,5 +17,6 @@ end
 #  room_object_id :integer(4)
 #  created_at     :datetime
 #  updated_at     :datetime
+#  outlet_id      :integer(4)
 #
 

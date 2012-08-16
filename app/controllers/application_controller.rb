@@ -28,7 +28,7 @@ class ApplicationController < AppBaseController
     @current_employee_id = request.cookies["current_user_id"]
     
     begin
-      @current_employee = Employee.find(@current_employee_id)
+      @current_employee = current_outlet.employees.find(@current_employee_id)
     rescue ActiveRecord::RecordNotFound
       @current_employee = nil
     end
@@ -68,7 +68,7 @@ class ApplicationController < AppBaseController
   end
   
   def request_reload_app terminal_id
-    TerminalSyncData.request_reload_app terminal_id
+    TerminalSyncData.request_reload_app terminal_id, current_outlet
   end
   
   def fetch_sync_table_order time
@@ -117,7 +117,7 @@ class ApplicationController < AppBaseController
   
   def do_request_sync_table_order terminal_id, table_order_data, table_id, employee_id, last_sync_time
     TerminalSyncData.transaction do
-      @sync_table_order_times = TerminalSyncData.fetch_sync_table_order_times
+      @sync_table_order_times = TerminalSyncData.fetch_sync_table_order_times current_outlet
       @last_table_order_sync = @sync_table_order_times.last
       
       @sync_table_order_times_reversed = @sync_table_order_times.reverse
@@ -139,7 +139,7 @@ class ApplicationController < AppBaseController
       
       #does this order have an order id? if not generate one
       if !table_order_data[:orderData][:order_num] or table_order_data[:orderData][:order_num].blank?
-        table_order_data[:orderData][:order_num] = Order.next_order_num
+        table_order_data[:orderData][:order_num] = Order.next_order_num current_outlet
       end
       
       table_order_data = table_order_data.to_json
@@ -157,7 +157,7 @@ class ApplicationController < AppBaseController
         end
       end
       
-      TerminalSyncData.create!({:sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 
+      TerminalSyncData.create!({:outlet_id => current_outlet.id, :sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 
           :time => @time, :data => @sync_data})
       
       return false
@@ -170,7 +170,7 @@ class ApplicationController < AppBaseController
     
       @sync_data = {:terminal_id => terminal_id, :clear_table_order => true, :table_id => table_id, :order_num => order_num, :serving_employee_id => employee_id}
       
-      TerminalSyncData.create!({:sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 
+      TerminalSyncData.create!({:outlet_id => current_outlet.id, :sync_type => TerminalSyncData::SYNC_TABLE_ORDER_REQUEST, 
           :time => time, :data => @sync_data})
     end
   end
@@ -182,7 +182,7 @@ class ApplicationController < AppBaseController
     @max_orders_kept = 5
     @order_count = 0
     
-    @tsds = TerminalSyncData.fetch_sync_table_order_times.reverse
+    @tsds = TerminalSyncData.fetch_sync_table_order_times(current_outlet).reverse
     
     @tsds.each do |tsd|
       if tsd.data[:table_id].to_s == table_id.to_s
@@ -203,7 +203,7 @@ class ApplicationController < AppBaseController
   
   def remove_old_table_0_orders
     @max_table_0_orders = 30
-    @tsds_reversed = TerminalSyncData.fetch_sync_table_order_times.reverse
+    @tsds_reversed = TerminalSyncData.fetch_sync_table_order_times(current_outlet).reverse
     
     #remove table orders
     @table_0_order_count = 0
@@ -260,26 +260,26 @@ class ApplicationController < AppBaseController
     Rails.env == "production" or Rails.env == "production_heroku"
   end
   
-  rescue_from StandardError do |exception|
-    
-    EXCEPTION_LOGGER.error('ERROR!')
-    EXCEPTION_LOGGER.error("Time: #{Time.now.to_s(:long)}")
-    EXCEPTION_LOGGER.error(params.inspect)
-    EXCEPTION_LOGGER.error(exception.message)
-    EXCEPTION_LOGGER.error(exception.backtrace.join("\n") + "\n\n\n\n")
-    
-    # Raise it anyway because you just want to put it in the log
-    raise exception
-  end
-  
-  rescue_from Errno::ETIMEDOUT, Errno::EHOSTUNREACH, Errno::ECONNREFUSED, Errno::EALREADY, SocketError do |host_unreachable_exception|
-    SOCKET_EXCEPTION_LOGGER.error
-    SOCKET_EXCEPTION_LOGGER.error('SOCKET ERROR!')
-    SOCKET_EXCEPTION_LOGGER.error("Time: #{Time.now.to_s(:long)}")
-    SOCKET_EXCEPTION_LOGGER.error(params.inspect)
-    SOCKET_EXCEPTION_LOGGER.error(host_unreachable_exception.message)
-    SOCKET_EXCEPTION_LOGGER.error(host_unreachable_exception.backtrace.join("\n") + "\n\n\n\n")
-  end
+#  rescue_from StandardError do |exception|
+#    
+#    EXCEPTION_LOGGER.error('ERROR!')
+#    EXCEPTION_LOGGER.error("Time: #{Time.now.to_s(:long)}")
+#    EXCEPTION_LOGGER.error(params.inspect)
+#    EXCEPTION_LOGGER.error(exception.message)
+#    EXCEPTION_LOGGER.error(exception.backtrace.join("\n") + "\n\n\n\n")
+#    
+#    # Raise it anyway because you just want to put it in the log
+#    raise exception
+#  end
+#  
+#  rescue_from Errno::ETIMEDOUT, Errno::EHOSTUNREACH, Errno::ECONNREFUSED, Errno::EALREADY, SocketError do |host_unreachable_exception|
+#    SOCKET_EXCEPTION_LOGGER.error
+#    SOCKET_EXCEPTION_LOGGER.error('SOCKET ERROR!')
+#    SOCKET_EXCEPTION_LOGGER.error("Time: #{Time.now.to_s(:long)}")
+#    SOCKET_EXCEPTION_LOGGER.error(params.inspect)
+#    SOCKET_EXCEPTION_LOGGER.error(host_unreachable_exception.message)
+#    SOCKET_EXCEPTION_LOGGER.error(host_unreachable_exception.backtrace.join("\n") + "\n\n\n\n")
+#  end
   
   private
   
@@ -322,7 +322,7 @@ class ApplicationController < AppBaseController
   def reload_interface_times
     @reload_interface_times = {}
     
-    TerminalSyncData.fetch_terminal_reload_request_times.each do |reload|
+    TerminalSyncData.fetch_terminal_reload_request_times(current_outlet).each do |reload|
       @reload_interface_times[reload.time.to_i.to_s] = reload.data
     end
     
@@ -332,7 +332,7 @@ class ApplicationController < AppBaseController
   def sync_table_order_times
     @sync_table_order_times = {}
     
-    TerminalSyncData.fetch_sync_table_order_times.each do |sync_table|
+    TerminalSyncData.fetch_sync_table_order_times(current_outlet).each do |sync_table|
       @sync_table_order_times[sync_table.time.to_i.to_s] = sync_table.data
     end
     
@@ -342,7 +342,7 @@ class ApplicationController < AppBaseController
   def order_ready_notification_times
     @order_ready_notification_times = {}
     
-    TerminalSyncData.fetch_order_ready_request_times.each do |order_ready|
+    TerminalSyncData.fetch_order_ready_request_times(current_outlet).each do |order_ready|
       @order_ready_notification_times[order_ready.time.to_i.to_s] = order_ready.data
     end
     
@@ -353,38 +353,38 @@ class ApplicationController < AppBaseController
     @terminal_fingerprint = request.cookies["terminal_fingerprint"]
     
     if(@terminal_fingerprint)
-      @terminal_id_gs = GlobalSetting.terminal_id_for @terminal_fingerprint
+      @terminal_id_gs = GlobalSetting.terminal_id_for @terminal_fingerprint, current_outlet
       @terminal_id = @terminal_id_gs.parsed_value
     else
       @terminal_id = "Initializing"
     end
 
-    @currency_symbol = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL
-    @currency_symbol_small = GlobalSetting.parsed_setting_for GlobalSetting::SMALL_CURRENCY_SYMBOL
+    @currency_symbol = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL, current_outlet
+    @currency_symbol_small = GlobalSetting.parsed_setting_for GlobalSetting::SMALL_CURRENCY_SYMBOL, current_outlet
 
-    @earliest_opening_hour = GlobalSetting.parsed_setting_for GlobalSetting::EARLIEST_OPENING_HOUR
-    @latest_closing_hour = GlobalSetting.parsed_setting_for GlobalSetting::LATEST_CLOSING_HOUR
+    @earliest_opening_hour = GlobalSetting.parsed_setting_for GlobalSetting::EARLIEST_OPENING_HOUR, current_outlet
+    @latest_closing_hour = GlobalSetting.parsed_setting_for GlobalSetting::LATEST_CLOSING_HOUR, current_outlet
     
-    @currency_note_image_setting = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_NOTES_IMAGES
+    @currency_note_image_setting = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_NOTES_IMAGES, current_outlet
     
-    @auto_print_receipt = GlobalSetting.parsed_setting_for GlobalSetting::AUTO_PRINT_RECEIPT
-    @order_receipt_width_setting = GlobalSetting.parsed_setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, {:fingerprint => @terminal_fingerprint}
+    @auto_print_receipt = GlobalSetting.parsed_setting_for GlobalSetting::AUTO_PRINT_RECEIPT, current_outlet
+    @order_receipt_width_setting = GlobalSetting.parsed_setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, current_outlet, {:fingerprint => @terminal_fingerprint}
     
-    @service_charge_label = GlobalSetting.parsed_setting_for GlobalSetting::SERVICE_CHARGE_LABEL
-    @business_name = GlobalSetting.parsed_setting_for GlobalSetting::BUSINESS_NAME
-    @business_address = GlobalSetting.parsed_setting_for GlobalSetting::ADDRESS
-    @business_fax = GlobalSetting.parsed_setting_for GlobalSetting::FAX
-    @business_telephone = GlobalSetting.parsed_setting_for GlobalSetting::TELEPHONE
-    @business_email_address = GlobalSetting.parsed_setting_for GlobalSetting::EMAIL
+    @service_charge_label = GlobalSetting.parsed_setting_for GlobalSetting::SERVICE_CHARGE_LABEL, current_outlet
+    @business_name = GlobalSetting.parsed_setting_for GlobalSetting::BUSINESS_NAME, current_outlet
+    @business_address = GlobalSetting.parsed_setting_for GlobalSetting::ADDRESS, current_outlet
+    @business_fax = GlobalSetting.parsed_setting_for GlobalSetting::FAX, current_outlet
+    @business_telephone = GlobalSetting.parsed_setting_for GlobalSetting::TELEPHONE, current_outlet
+    @business_email_address = GlobalSetting.parsed_setting_for GlobalSetting::EMAIL, current_outlet
     
-    @defaultDateFormat = GlobalSetting.default_date_format
+    @defaultDateFormat = GlobalSetting.default_date_format current_outlet
 
-    @reportDateFormat = GlobalSetting.report_date_format
+    @reportDateFormat = GlobalSetting.report_date_format current_outlet
 
-    @tax_label = GlobalSetting.parsed_setting_for GlobalSetting::TAX_LABEL
-    @tax_chargable = GlobalSetting.parsed_setting_for GlobalSetting::TAX_CHARGABLE
+    @tax_label = GlobalSetting.parsed_setting_for GlobalSetting::TAX_LABEL, current_outlet
+    @tax_chargable = GlobalSetting.parsed_setting_for GlobalSetting::TAX_CHARGABLE, current_outlet
     
-    @web_socket_service_ip_gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, {:fingerprint => @terminal_fingerprint}
+    @web_socket_service_ip_gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, current_outlet, {:fingerprint => @terminal_fingerprint}
     
     if @web_socket_service_ip_gs.value.blank?
       @web_socket_service_ip_gs.value = request.remote_ip
@@ -394,9 +394,9 @@ class ApplicationController < AppBaseController
     
     @web_socket_service_ip = @web_socket_service_ip_gs.value
     
-    @cash_drawer_service_ip_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_IP_ADDRESS, {:fingerprint => @terminal_fingerprint}
+    @cash_drawer_service_ip_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_IP_ADDRESS, current_outlet, {:fingerprint => @terminal_fingerprint}
     
-    @use_wss_receipt_printer = GlobalSetting.parsed_setting_for GlobalSetting::USE_WSS_RECEIPT_PRINTER, {:fingerprint => @terminal_fingerprint}
+    @use_wss_receipt_printer = GlobalSetting.parsed_setting_for GlobalSetting::USE_WSS_RECEIPT_PRINTER, current_outlet, {:fingerprint => @terminal_fingerprint}
     
     #if this isn't set, copy the value from the printer ip
     if @cash_drawer_service_ip_gs.value.blank?
@@ -407,11 +407,11 @@ class ApplicationController < AppBaseController
     
     @cash_drawer_service_ip = @cash_drawer_service_ip_gs.value
     
-    @use_wss_cash_drawer = GlobalSetting.parsed_setting_for GlobalSetting::USE_WSS_CASH_DRAWER, {:fingerprint => @terminal_fingerprint}
+    @use_wss_cash_drawer = GlobalSetting.parsed_setting_for GlobalSetting::USE_WSS_CASH_DRAWER, current_outlet, {:fingerprint => @terminal_fingerprint}
     
-    @printer_left_margin = GlobalSetting.parsed_setting_for GlobalSetting::PRINTER_LEFT_MARGIN, {:fingerprint => @terminal_fingerprint}
+    @printer_left_margin = GlobalSetting.parsed_setting_for GlobalSetting::PRINTER_LEFT_MARGIN, current_outlet, {:fingerprint => @terminal_fingerprint}
     
-    @zalion_charge_room_service_ip_gs = GlobalSetting.setting_for GlobalSetting::ZALION_ROOM_CHARGE_SERVICE_IP
+    @zalion_charge_room_service_ip_gs = GlobalSetting.setting_for GlobalSetting::ZALION_ROOM_CHARGE_SERVICE_IP, current_outlet
     
     if @zalion_charge_room_service_ip_gs.value.blank?
       @zalion_charge_room_service_ip_gs.value = request.remote_ip
@@ -421,7 +421,7 @@ class ApplicationController < AppBaseController
     
     @zalion_charge_room_service_ip = @zalion_charge_room_service_ip_gs.value
     
-    @credit_card_charge_service_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_CHARGE_SERVICE_IP, {:fingerprint => @terminal_fingerprint}
+    @credit_card_charge_service_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_CHARGE_SERVICE_IP, current_outlet, {:fingerprint => @terminal_fingerprint}
     
     if @credit_card_charge_service_ip_gs.value.blank?
       @credit_card_charge_service_ip_gs.value = request.remote_ip
@@ -431,7 +431,7 @@ class ApplicationController < AppBaseController
     
     @credit_card_charge_service_ip = @credit_card_charge_service_ip_gs.value
     
-    @credit_card_terminal_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_IP, {:fingerprint => @terminal_fingerprint}
+    @credit_card_terminal_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_IP, current_outlet, {:fingerprint => @terminal_fingerprint}
     
     if @credit_card_terminal_ip_gs.value.blank?
       @credit_card_terminal_ip_gs.value = request.remote_ip
@@ -441,20 +441,20 @@ class ApplicationController < AppBaseController
     
     @credit_card_terminal_ip = @credit_card_terminal_ip_gs.value
     
-    @windows_printer_margins = GlobalSetting.parsed_setting_for GlobalSetting::WINDOWS_PRINTER_MARGINS, {:fingerprint => @terminal_fingerprint}
+    @windows_printer_margins = GlobalSetting.parsed_setting_for GlobalSetting::WINDOWS_PRINTER_MARGINS, current_outlet, {:fingerprint => @terminal_fingerprint}
     
     #white space in menus
-    @use_whitespace_in_mobile_menus = GlobalSetting.parsed_setting_for GlobalSetting::USE_WHITE_SPACE_MOBILE_MENUS
-    @use_whitespace_in_desktop_menus = GlobalSetting.parsed_setting_for GlobalSetting::USE_WHITE_SPACE_DESKTOP_MENUS
+    @use_whitespace_in_mobile_menus = GlobalSetting.parsed_setting_for GlobalSetting::USE_WHITE_SPACE_MOBILE_MENUS, current_outlet
+    @use_whitespace_in_desktop_menus = GlobalSetting.parsed_setting_for GlobalSetting::USE_WHITE_SPACE_DESKTOP_MENUS, current_outlet
     
     #menu screen type
-    @menu_screen_type = GlobalSetting.parsed_setting_for GlobalSetting::MENU_SCREEN_TYPE, {:fingerprint => @terminal_fingerprint}
+    @menu_screen_type = GlobalSetting.parsed_setting_for GlobalSetting::MENU_SCREEN_TYPE, current_outlet, {:fingerprint => @terminal_fingerprint}
     
-    @show_charge_card_button = GlobalSetting.parsed_setting_for GlobalSetting::SHOW_CHARGE_CARD_BUTTON
+    @show_charge_card_button = GlobalSetting.parsed_setting_for GlobalSetting::SHOW_CHARGE_CARD_BUTTON, current_outlet
     
-    @currentResolution = GlobalSetting.parsed_setting_for GlobalSetting::SCREEN_RESOLUTION, {:fingerprint => @terminal_fingerprint}
-    @normalResolution = GlobalSetting::SCREEN_RESOLUTION_NORMAL
-    @resolution1360x786 = GlobalSetting::SCREEN_RESOLUTION_1360x786
+    @currentResolution = GlobalSetting.parsed_setting_for GlobalSetting::SCREEN_RESOLUTION, current_outlet, {:fingerprint => @terminal_fingerprint}
+    @normalResolution = GlobalSetting::SCREEN_RESOLUTION_NORMAL, current_outlet
+    @resolution1360x786 = GlobalSetting::SCREEN_RESOLUTION_1360x786, current_outlet
   
     #menu screen buttons etc
     @menu_screen_buttons_per_row = 8
@@ -465,7 +465,7 @@ class ApplicationController < AppBaseController
       @admin_screen_buttons_per_row = 14
     end
     
-    @timekeeping_terminal = GlobalSetting.parsed_setting_for GlobalSetting::TIMEKEEPING_TERMINAL
+    @timekeeping_terminal = GlobalSetting.parsed_setting_for GlobalSetting::TIMEKEEPING_TERMINAL, current_outlet
   end
   
   def mobile_device?
@@ -473,11 +473,11 @@ class ApplicationController < AppBaseController
   end
   
   def all_terminals
-    GlobalSetting.all_terminals
+    GlobalSetting.all_terminals current_outlet
   end
   
   def all_servers
-    Employee.all.collect(&:nickname)
+    current_outlet.employees.all.collect(&:nickname)
   end
   
   def now_millis
@@ -520,11 +520,11 @@ class ApplicationController < AppBaseController
     
     @need_auth = false
     
-    @authentication_required = GlobalSetting.parsed_setting_for GlobalSetting::AUTHENTICATION_REQUIRED
-    @local_auth_required = GlobalSetting.parsed_setting_for GlobalSetting::LOCAL_AUTHENTICATION_REQUIRED
+    @authentication_required = GlobalSetting.parsed_setting_for GlobalSetting::AUTHENTICATION_REQUIRED, current_outlet
+    @local_auth_required = GlobalSetting.parsed_setting_for GlobalSetting::LOCAL_AUTHENTICATION_REQUIRED, current_outlet
     
-    @http_basic_username = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_USERNAME
-    @http_basic_password = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_PASSWORD
+    @http_basic_username = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_USERNAME, current_outlet
+    @http_basic_password = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_PASSWORD, current_outlet
   
     if @authentication_required 
       @need_auth = true
@@ -592,7 +592,7 @@ class ApplicationController < AppBaseController
   end
   
   def update_html5_cache_timestamp 
-    @timestamp_setting = GlobalSetting.setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP
+    @timestamp_setting = GlobalSetting.setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP, current_outlet
     @timestamp_setting.value = now_millis
     @timestamp_setting.save
   end
@@ -620,52 +620,75 @@ class ApplicationController < AppBaseController
     @subdomain = request.subdomain
     
     if @subdomain == "www"
-      redirect_to welcome_url
+      redirect_to welcome_path
+      return
+    end
+    
+    if @subdomain == "signup"
+      redirect_to account_sign_up_url
       return
     end
     
     #split the subdomain
     @subdomain_parts = @subdomain.split(".")
     
-    if @subdomain_parts.length != 2
-      redirect_to welcome_url
+    if @subdomain_parts.length == 1
+      redirect_to accounts_accounts_path
       return
-    end
+    elsif @subdomain_parts.length == 2
+      #accessing an outlet
+      @outlet_name = @subdomain_parts[0]
+      @account_name = @subdomain_parts[1]    
     
-    @outlet_name = @subdomain_parts[0]
-    @account_name = @subdomain_parts[1]    
+      @account = ClueyAccount.find_by_name @account_name
     
-    @account = ClueyAccount.find_by_name @account_name
-    
-    if !@account
-      flash[:error] = "Account #{@account_name} not found!"
-      redirect_to welcome_url
-      return
-    end
-    
-    @account.outlets.each do |outlet|
-      if outlet.name == @outlet_name
-        #now check the session for the current terminal to be logged into this outlet
-       
-        #are we the master user
-        if current_cluey_account and outlet.cluey_account.id == current_cluey_account.id
-          return true
-        end
-        
-        #are we logged in to this outlet
-        if current_outlet_account and outlet.account.id == current_cluey_account.id
-          return true
-        end
-        
-        flash[:error] = "Outlet #{@outlet_name} not found for account #{@account_name}!"
-        redirect_to outlet_login
+      if !@account
+        flash[:error] = "Account #{@account_name} not found!"
+        redirect_to welcome_url
         return
       end
-    end
     
-    flash[:error] = "Outlet #{@outlet_name} not found for account #{@account_name}!"
-    redirect_to welcome_url
-    return
+      @account.outlets.each do |outlet|
+        if outlet.name == @outlet_name
+          #now check the session for the current terminal to be logged into this outlet
+          #are we logged in to this outlet
+          if current_outlet and outlet.id == current_outlet.id
+            return true
+          end
+        
+          #login required
+          authenticate_or_request_with_http_basic do |username, password|
+            logger.info "#{username} #{password} #{@http_basic_username} #{@http_basic_password}"
+          
+            @username_matches = outlet.username == username
+            @password_matches = outlet.password_hash == BCrypt::Engine.hash_secret(password, outlet.password_salt)
+            
+            @auth_ok = @username_matches && @password_matches
+      
+            if @auth_ok
+              session[:current_outlet_id] = outlet.id
+            
+              if !outlet.has_seed_data
+                OutletBuilder::build_outlet_seed_data(outlet.id)
+                outlet.has_seed_data = true
+                outlet.save
+              end
+            end
+      
+            @auth_ok
+          end
+        
+          return
+        end
+      end
+    
+      flash[:error] = "Outlet #{@outlet_name} not found for account #{@account_name}!"
+      redirect_to welcome_url
+      return
+    else
+      redirect_to welcome_url
+      return
+    end
     
   end
 

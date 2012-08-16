@@ -30,6 +30,8 @@
 
 
 class Order < ActiveRecord::Base
+  belongs_to :outlet
+  
   has_many :order_items
   belongs_to :employee
   belongs_to :table_info
@@ -54,14 +56,15 @@ class Order < ActiveRecord::Base
     total + cashback + service_charge
   end
   
-  def self.next_order_num
-    GlobalSetting.next_order_number
+  def self.next_order_num current_outlet
+    GlobalSetting.next_order_number current_outlet
   end
   
   def is_replacement?
     void_order != nil
   end
 end
+
 
 
 
@@ -96,5 +99,6 @@ end
 #  time_started          :string(255)
 #  training_mode_sale    :boolean(1)      default(FALSE)
 #  room_id               :integer(4)
+#  outlet_id             :integer(4)
 #
 

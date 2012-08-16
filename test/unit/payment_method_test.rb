@@ -11,6 +11,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: payment_methods
@@ -28,5 +29,6 @@ end
 #  receipt_footer_id      :integer(4)
 #  open_cash_drawer       :boolean(1)      default(TRUE)
 #  is_active              :boolean(1)      default(TRUE)
+#  outlet_id              :integer(4)
 #
 

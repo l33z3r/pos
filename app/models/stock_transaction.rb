@@ -1,4 +1,6 @@
 class StockTransaction < ActiveRecord::Base
+  belongs_to :outlet
+  
   belongs_to :product
   belongs_to :employee
   belongs_to :order_item
@@ -38,6 +40,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: stock_transactions
@@ -54,5 +57,6 @@ end
 #  delivery_id      :integer(4)
 #  is_return        :boolean(1)      default(FALSE)
 #  order_item_id    :integer(4)
+#  outlet_id        :integer(4)
 #
 

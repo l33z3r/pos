@@ -8,6 +8,7 @@ class GlobalSettingTest < ActiveSupport::TestCase
 end
 
 
+
 # == Schema Information
 #
 # Table name: global_settings
@@ -22,5 +23,6 @@ end
 #  logo_updated_at   :datetime
 #  created_at        :datetime
 #  updated_at        :datetime
+#  outlet_id         :integer(4)
 #
 

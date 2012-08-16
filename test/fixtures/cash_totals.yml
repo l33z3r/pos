@@ -1,5 +1,18 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  type: MyString
+  total: 1.5
+  start_calc_order_id: 1
+  end_calc_order_id: 1
+
+two:
+  type: MyString
+  total: 1.5
+  start_calc_order_id: 1
+  end_calc_order_id: 1
+
 # == Schema Information
-# Schema version: 20110705150431
 #
 # Table name: cash_totals
 #
@@ -14,18 +27,6 @@
 #  terminal_id         :string(255)
 #  report_num          :integer(4)
 #  report_data         :text
+#  outlet_id           :integer(4)
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-one:
-  type: MyString
-  total: 1.5
-  start_calc_order_id: 1
-  end_calc_order_id: 1
-
-two:
-  type: MyString
-  total: 1.5
-  start_calc_order_id: 1
-  end_calc_order_id: 1

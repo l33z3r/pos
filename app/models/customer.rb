@@ -1,4 +1,6 @@
 class Customer < ActiveRecord::Base
+  belongs_to :outlet
+  
   has_many :customer_points
   belongs_to :loyalty_level
   
@@ -17,8 +19,10 @@ class Customer < ActiveRecord::Base
   }
   
   validates :name, :presence => true
-  validates :swipe_card_code, :uniqueness => true, :allow_blank => true
-  validates :customer_number, :uniqueness => true, :allow_blank => true
+  
+  validates_uniqueness_of :swipe_card_code, :case_sensitive => false, :scope => :outlet_id, :allow_blank => true  
+  validates_uniqueness_of :customer_number, :case_sensitive => false, :scope => :outlet_id, :allow_blank => true
+  
   validates :customer_number, :numericality => {:less_than_or_equal_to => 9999999}, :allow_blank => true
   
   validates :customer_type, :presence => true, :inclusion => { :in => VALID_CUSTOMER_TYPES }
@@ -40,7 +44,7 @@ class Customer < ActiveRecord::Base
     if c_num.blank?
       @card_code = ""  
     else
-      @swipe_card_prefix = GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_CARD_PREFIX
+      @swipe_card_prefix = GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_CARD_PREFIX, current_outlet
     
       @customer_number_prefix = "10000000"
     
@@ -56,7 +60,7 @@ class Customer < ActiveRecord::Base
     if card_code.blank?
       @customer_number = nil
     else
-      @swipe_card_prefix = GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_CARD_PREFIX
+      @swipe_card_prefix = GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_CARD_PREFIX, current_outlet
     
       @customer_number_prefix = "10000000"
     
@@ -93,8 +97,8 @@ class Customer < ActiveRecord::Base
     write_attribute("current_balance", c_balance)
   end
   
-  def self.all_active
-    Customer.where("is_active = ?", true)
+  def self.all_active current_outlet
+    current_outlet.customers.where("is_active = ?", true)
   end
   
   ACCOUNT_NUMBER_BASE = 100000
@@ -108,6 +112,7 @@ class Customer < ActiveRecord::Base
     errors.add(:customer_number, " not valid. You must enter either a swipe card code or a customer number if this customer is a loyalty customer") if is_loyalty_customer? and (swipe_card_code.blank? and customer_number.blank?)
   end
 end
+
 
 # == Schema Information
 #
@@ -134,5 +139,6 @@ end
 #  customer_number  :integer(4)
 #  customer_type    :string(255)
 #  is_active        :boolean(1)      default(TRUE)
+#  outlet_id        :integer(4)
 #
 

@@ -8,7 +8,7 @@
       <div class="label">Note</div>
     </div>
 
-    <% OrderItemAdditionGrid.all.each do |oiag| %>
+    <% current_outlet.order_item_addition_grids.all.each do |oiag| %>
       <div class="tab oia_tab" id="oia_tab_<%= oiag.id %>" data-oiag_id="<%= oiag.id %>" data-onpress="orderItemAdditionTabSelected(<%= oiag.id %>);">
         <div class="label"><%= oiag.name %></div>
       </div>
@@ -26,7 +26,7 @@
     <div class="clear">&nbsp;</div>
   </div>
 
-  <% OrderItemAdditionGrid.all.each do |oiag| %>
+  <% current_outlet.order_item_addition_grids.all.each do |oiag| %>
     <div id="oiag_<%=oiag.id%>" class="oia_container" data-grid_x_size="<%=oiag.grid_x_size%>" data-grid_y_size="<%=oiag.grid_y_size%>">
       <% (1..oiag.grid_y_size).each do |y| %>
         <div class="grid_row">

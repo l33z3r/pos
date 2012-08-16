@@ -7,7 +7,7 @@ class Admin::HomeController < Admin::AdminController
   def sync_info
     if params[:clear_sync_infos]
       TerminalSyncData.transaction do
-        TerminalSyncData.find(:all, :lock => true).each do |tsd|
+        current_outlet.terminal_sync_data.find(:all, :lock => true).each do |tsd|
           tsd.destroy
         end
       end

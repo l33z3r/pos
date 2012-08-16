@@ -48,7 +48,7 @@
                 </thead>
 
                 <tbody>
-                  <% DisplayButton.all(:order => "button_text").each do |display_button| %>
+                  <% current_outlet.display_buttons.all(:order => "button_text").each do |display_button| %>
                     <tr>
                       <td><%=display_button.perm_id%></td>
                       <td>
@@ -59,7 +59,7 @@
                       <td>
                         <%= fields_for "display_buttons[]", display_button do |f| %>
                           <%= f.label :display_button_group_id, "Button Group:" %>
-                          <%= f.collection_select :display_button_group_id, DisplayButtonGroup.find(:all), 
+                          <%= f.collection_select :display_button_group_id, current_outlet.display_button_groups.find(:all), 
                             :id, :name, :include_blank => "None" %>
                         <% end %>
                       </td>
@@ -99,7 +99,7 @@
                 </thead>
 
                 <tbody>
-                  <% DisplayButtonGroup.all(:order => "name").each do |dbg| %>
+                  <% current_outlet.display_button_groups.all(:order => "name").each do |dbg| %>
                     <tr>
                       <td>
                         <%= fields_for "display_button_groups[]", dbg do |f| %>

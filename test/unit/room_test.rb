@@ -9,6 +9,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: rooms
@@ -22,5 +23,6 @@ end
 #  grid_resolution                :integer(4)      default(5)
 #  default_service_charge_percent :float
 #  prompt_for_client_name         :boolean(1)      default(FALSE)
+#  outlet_id                      :integer(4)
 #
 

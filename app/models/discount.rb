@@ -1,17 +1,6 @@
-# == Schema Information
-# Schema version: 20110531092627
-#
-# Table name: discounts
-#
-#  id         :integer(4)      not null, primary key
-#  name       :string(255)
-#  percent    :float
-#  is_default :boolean(1)
-#  created_at :datetime
-#  updated_at :datetime
-#
-
 class Discount < ActiveRecord::Base
+  belongs_to :outlet
+  
   validates :name, :presence => true
   validates :percent, :presence => true, :numericality => true
   
@@ -22,11 +11,11 @@ class Discount < ActiveRecord::Base
     "#{name} (#{percent}%)"  
   end
   
-  def self.load_default
-    discount = find_by_is_default(true)
+  def self.load_default current_outlet
+    discount = find_by_outlet_id_and_is_default(current_outlet.id, true)
     
     if !discount
-      discount = find(:first)
+      discount = find_first_by_outlet_id(current_outlet.id)
       
       discount.is_default = true
       discount.save
@@ -35,3 +24,17 @@ class Discount < ActiveRecord::Base
     discount
   end
 end
+
+# == Schema Information
+#
+# Table name: discounts
+#
+#  id         :integer(4)      not null, primary key
+#  name       :string(255)
+#  percent    :float
+#  is_default :boolean(1)
+#  created_at :datetime
+#  updated_at :datetime
+#  outlet_id  :integer(4)
+#
+

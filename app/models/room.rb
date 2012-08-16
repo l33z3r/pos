@@ -1,8 +1,12 @@
 class Room < ActiveRecord::Base
+  belongs_to :outlet
+  
   has_many :room_objects, :dependent => :destroy
   has_many :table_infos, :through => :room_objects, :order => :perm_id
   
-  validates :name, :presence => true, :uniqueness => true
+  validates :name, :presence => true
+  validates_uniqueness_of :name, :case_sensitive => false, :scope => :outlet_id
+  
   validates :grid_x_size, :presence => true, :numericality => true
   validates :grid_y_size, :presence => true, :numericality => true
   validates :grid_resolution, :presence => true, :numericality => true
@@ -29,6 +33,7 @@ class Room < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: rooms
@@ -42,5 +47,6 @@ end
 #  grid_resolution                :integer(4)      default(5)
 #  default_service_charge_percent :float
 #  prompt_for_client_name         :boolean(1)      default(FALSE)
+#  outlet_id                      :integer(4)
 #
 

@@ -15,13 +15,13 @@ class Admin::PreviousCashTotalsController < Admin::AdminController
     params[:search][:total_type_ne] = CashTotal::FLOAT
     
     @order = (params[:order] and params[:order].eql?("DESC")) ? "DESC" : "ASC"
-    @cash_total = CashTotal.search(params[:search]).order("created_at "+@order)
+    @cash_total = current_outlet.cash_totals.search(params[:search]).order("created_at "+@order)
     @cash_total = @cash_total.paginate :page => params[:page], :per_page => 20
     @all_terminals = all_terminals
   end
 
   def previous_cash_total
-    @cash_total_db = CashTotal.search(params[:search])
+    @cash_total_db = current_outlet.cash_totals.search(params[:search])
     @cash_total = @cash_total_db.first.total
     @cash_total_data = @cash_total_db.first.report_data
     @show_header_section = true

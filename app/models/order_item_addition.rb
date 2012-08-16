@@ -1,4 +1,6 @@
 class OrderItemAddition < ActiveRecord::Base
+  belongs_to :outlet
+  
   belongs_to :order_item_addition_grid
   belongs_to :follow_on_grid, :class_name => "OrderItemAdditionGrid"
   belongs_to :product
@@ -13,6 +15,7 @@ class OrderItemAddition < ActiveRecord::Base
   validates :pos_y, :presence => true, :numericality => true
 
 end
+
 
 
 
@@ -39,5 +42,6 @@ end
 #  is_addable                  :boolean(1)      default(FALSE)
 #  follow_on_grid_id           :integer(4)
 #  product_id                  :integer(4)
+#  outlet_id                   :integer(4)
 #
 

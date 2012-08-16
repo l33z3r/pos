@@ -1,4 +1,6 @@
 class OrderItem < ActiveRecord::Base
+  belongs_to :outlet
+  
   serialize :oia_data
   
   belongs_to :order
@@ -40,6 +42,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: order_items
@@ -66,5 +69,6 @@ end
 #  is_void                :boolean(1)      default(FALSE)
 #  is_half                :boolean(1)      default(FALSE)
 #  void_employee_id       :integer(4)
+#  outlet_id              :integer(4)
 #
 

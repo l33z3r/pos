@@ -181,7 +181,10 @@ function clearLocalStorageAndCookies() {
     //clear the local and session web storage
     var nextKey = null;
     
-    for (var i = 0; i < localStorage.length; i++){
+    //must record the loop length first as it will change during the course of the loop
+    var loopLength = localStorage.length;
+    
+    for (var i = 0; i < loopLength; i++){
         nextKey = localStorage.key(i);
 
         if(nextKey == breakUserIDSSStorageKey || nextKey == clockedInUserIDSSStorageKey) {

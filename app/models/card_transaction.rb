@@ -1,6 +1,9 @@
 class CardTransaction < ActiveRecord::Base
+  belongs_to :outlet
+  
   belongs_to :order
 end
+
 
 
 # == Schema Information
@@ -14,5 +17,6 @@ end
 #  created_at       :datetime
 #  updated_at       :datetime
 #  reference_number :string(255)
+#  outlet_id        :integer(4)
 #
 

@@ -1,14 +1,3 @@
-# == Schema Information
-# Schema version: 20110519162432
-#
-# Table name: display_button_groups
-#
-#  id         :integer(4)      not null, primary key
-#  name       :string(255)
-#  created_at :datetime
-#  updated_at :datetime
-#
-
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 # This model initially had no columns defined.  If you add columns to the
@@ -20,3 +9,15 @@ one: {}
 #
 two: {}
 #  column: value
+
+# == Schema Information
+#
+# Table name: display_button_groups
+#
+#  id         :integer(4)      not null, primary key
+#  name       :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#  outlet_id  :integer(4)
+#
+

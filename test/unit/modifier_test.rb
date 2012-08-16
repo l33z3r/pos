@@ -7,6 +7,7 @@ class ModifierTest < ActiveSupport::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: modifiers
@@ -17,5 +18,6 @@ end
 #  price                :float
 #  created_at           :datetime
 #  updated_at           :datetime
+#  outlet_id            :integer(4)
 #
 

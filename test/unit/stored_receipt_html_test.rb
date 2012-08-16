@@ -7,6 +7,7 @@ class StoredReceiptHtmlTest < ActiveSupport::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: stored_receipt_htmls
@@ -17,5 +18,6 @@ end
 #  stored_html  :text
 #  created_at   :datetime
 #  updated_at   :datetime
+#  outlet_id    :integer(4)
 #
 

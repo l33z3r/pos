@@ -203,7 +203,7 @@
         <div class="input_box">
           <select id="product_id_input" onchange="updateSelectedGridItem()">
             <option value="-1">None</div>
-              <% Product.non_deleted.each do |p| %>                     
+              <% Product.non_deleted(current_outlet).each do |p| %>                     
               <option value="<%= p.id %>">
                 <%= p.name %>
               </option>
@@ -217,7 +217,7 @@
         <div class="input_box">
           <select id="follow_grid_id_input" onchange="updateSelectedGridItem()">
             <option value="-1">None</div>
-              <% OrderItemAdditionGrid.all.each do |o| %>                     
+              <% current_outlet.order_item_addition_grids.all.each do |o| %>                     
               <option value="<%= o.id %>">
                 <%= o.name %>
               </option>

@@ -22,7 +22,7 @@
     </div>
     <div class="field">
       <%= f.label :parent_category_id %> (Optional)<br />
-      <%= f.collection_select :parent_category_id, Category.find(:all), :id, :name, 
+      <%= f.collection_select :parent_category_id, current_outlet.categories.find(:all), :id, :name, 
         :prompt => "Select a Category", :include_blank => "None" %>
     </div>
     <div class="field">
@@ -144,7 +144,7 @@
     </div>
     <div class="field">
       <%= f.label :modifier_grid_id %><br/>
-      <%= f.collection_select :order_item_addition_grid_id, OrderItemAdditionGrid.find(:all), :id, :name, 
+      <%= f.collection_select :order_item_addition_grid_id, current_outlet.order_item_addition_grids.find(:all), :id, :name, 
         :prompt => "Select a Modifier Grid", :include_blank => "None" %>
       <div class="clear">&nbsp;</div>
     </div>
@@ -164,12 +164,12 @@
     </div>
     <div class="field">
       <%= f.label :tax_rate_id %><br />
-      <%= f.collection_select :tax_rate_id, TaxRate.find(:all), :id, :name_for_select, 
+      <%= f.collection_select :tax_rate_id, current_outlet.tax_rates.find(:all), :id, :name_for_select, 
         :prompt => "Select a #{@tax_label} Rate", :include_blank => "Default" %>
     </div>
     <div class="field">
       <%= f.label :course_num, "Course" %><br />
-      <%= f.select :course_num, options_for_select(GlobalSetting.course_options, @category.course_num) %>
+      <%= f.select :course_num, options_for_select(GlobalSetting.course_options(current_outlet), @category.course_num) %>
     </div>
     <div id="actions">
       <%= f.submit %>

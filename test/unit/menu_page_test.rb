@@ -8,6 +8,7 @@ class MenuPageTest < ActiveSupport::TestCase
 end
 
 
+
 # == Schema Information
 #
 # Table name: menu_pages
@@ -19,5 +20,6 @@ end
 #  created_at          :datetime
 #  updated_at          :datetime
 #  embedded_display_id :integer(4)
+#  outlet_id           :integer(4)
 #
 

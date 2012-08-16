@@ -15,9 +15,9 @@ class Admin::CustomersController < Admin::AdminController
         end
     
         @selected_letter = "all"
-        @customers = Customer.all
+        @customers = Customer.all_active(current_outlet)
       
-        query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from customers group by substr(name,1,1)")
+        query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from customers where outlet_id = #{current_outlet.id} group by substr(name,1,1)")
         @letters = []
     
         for element in query
@@ -29,7 +29,7 @@ class Admin::CustomersController < Admin::AdminController
       end
       
       format.csv do 
-        @customers = Customer.all_active
+        @customers = Customer.all_active(current_outlet)
 
         @csv_string = "Customer Number,Customer Type,Name,Contact Name, DOB,Address,Postal Address,Telephone,Mobile,Fax,"
         @csv_string += "Email,Credit Limit,Current Balance,Credit Available,Loyalty Level,Available Loyalty Points,Swipe Card Code\n"
@@ -116,17 +116,19 @@ class Admin::CustomersController < Admin::AdminController
   def new
     @hide_admin_header = true
     @customer = Customer.new
-    @customer.loyalty_level_id = LoyaltyLevel.load_default.id
+    @customer.loyalty_level_id = LoyaltyLevel.load_default(current_outlet).id
   end
 
   def edit
     @hide_admin_header = true
-    @customer = Customer.find(params[:id])
+    @customer = current_outlet.customers.find(params[:id])
   end
 
   def create
     @customer = Customer.new(params[:customer])
 
+    @customer.outlet_id = current_outlet.id
+    
     if @customer.save
       redirect_to(admin_customers_url, :notice => 'Customer was successfully created.')
     else
@@ -135,7 +137,7 @@ class Admin::CustomersController < Admin::AdminController
   end
 
   def update
-    @customer = Customer.find(params[:id])
+    @customer = current_outlet.customers.find(params[:id])
 
     @old_loyalty_points_amount = @customer.available_points
     
@@ -147,7 +149,7 @@ class Admin::CustomersController < Admin::AdminController
         @points_change_amount = @new_loyalty_points_amount - @old_loyalty_points_amount
         @allocation_type = @points_change_amount > 0 ? CustomerPointsAllocation::MANUAL_EARN : CustomerPointsAllocation::MANUAL_REDUCE
         
-        CustomerPointsAllocation.create({:customer_id => @customer.id, :allocation_type => @allocation_type, 
+        CustomerPointsAllocation.create({:outlet_id => current_outlet.id, :customer_id => @customer.id, :allocation_type => @allocation_type, 
             :amount => @points_change_amount, :loyalty_level_percent => @customer.loyalty_level.percent})
       end
     
@@ -159,7 +161,7 @@ class Admin::CustomersController < Admin::AdminController
   end
 
   def search
-    @search = Customer.search(params[:search]).order('name') 
+    @search = current_outlet.customers.search(params[:search]).order('name') 
     @customers = @search.all
   end
 

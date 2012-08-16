@@ -8,7 +8,7 @@
 
     <div id="util_payment_options_section">
       <div id="util_payment_options">
-        <% PaymentMethod.for_util_payment.each do |pm| %>
+        <% PaymentMethod.for_util_payment(current_outlet).each do |pm| %>
           <div id="<%=pm.name.gsub(" ", "_").downcase%>_util_payment_method_button" class="button util_payment_method_button" data-onpress="utilPaymentScreenPaymentMethodSelected('<%=pm.id%>')">
             <div class="icon">
               <%= payment_method_logo_thumb pm, true %>

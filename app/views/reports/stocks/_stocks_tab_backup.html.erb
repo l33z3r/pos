@@ -153,7 +153,7 @@
                         </td>
                         <td>
                             <% unless product.cost_price == 0 %>
-                                <% margin = per_profit(revenue, total_price, product.sales_tax_rate) %>
+                                <% margin = per_profit(revenue, total_price, product.get_sales_tax_rate(current_outlet)) %>
                                 <% unless (margin == nil) %>
                                     <%= sprintf("%.0f", margin) %>%
                                 <% end %>

@@ -1,4 +1,6 @@
 class CustomerTransaction < ActiveRecord::Base
+  belongs_to :outlet
+  
   belongs_to :order
   belongs_to :customer
   
@@ -17,6 +19,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: customer_transactions
@@ -32,5 +35,6 @@ end
 #  updated_at       :datetime
 #  payment_id       :integer(4)
 #  terminal_id      :string(255)
+#  outlet_id        :integer(4)
 #
 

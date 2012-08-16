@@ -1,5 +1,7 @@
 class Product < ActiveRecord::Base
 
+  belongs_to :outlet
+  
   PRODUCT_IMAGE_DIRECTORY = "#{Rails.root}/public/images/product_images/*"
   
   has_attached_file :product_image, PAPERCLIP_STORAGE_OPTIONS.merge(:styles => { :medium => "300x300>", :thumb => "115x60>" })
@@ -20,8 +22,11 @@ class Product < ActiveRecord::Base
   belongs_to :menu_page_1, :class_name => "MenuPage"
   belongs_to :menu_page_2, :class_name => "MenuPage"
   
-  validates :name, :presence => true, :uniqueness => true
-  validates :upc, :uniqueness => true, :allow_blank => true
+  validates :name, :presence => true
+  validates_uniqueness_of :name, :case_sensitive => false, :scope => :outlet_id
+  
+  validates_uniqueness_of :upc, :case_sensitive => false, :scope => :outlet_id
+  
   validates :category_id, :numericality => true, :allow_blank => true
   validates :size, :numericality => {:greater_than_or_equal_to => 0}, :allow_blank => true
   validates :price, :presence => true, :numericality => {:greater_than_or_equal_to => 0}
@@ -93,24 +98,24 @@ class Product < ActiveRecord::Base
     end
   end
   
-  def self.categoryless
-    where(:category_id => nil).where(:is_deleted => false)
+  def self.categoryless current_outlet
+    current_outlet.products.where(:category_id => nil).where(:is_deleted => false)
   end
   
-  def self.non_deleted 
-    where(:is_deleted => false).order(:name)
+  def self.non_deleted current_outlet
+    current_outlet.products.where(:is_deleted => false).order(:name)
   end
   
-  def sales_tax_rate
+  def get_sales_tax_rate current_outlet
     if tax_rate_id.blank?
       if category_id
         if category.tax_rate_id.blank?
-          TaxRate.load_default.rate
+          TaxRate.load_default(current_outlet).rate
         else
           category.tax_rate.rate
         end
       else
-        TaxRate.load_default.rate
+        TaxRate.load_default(current_outlet).rate
       end
     else
       tax_rate.rate
@@ -246,13 +251,13 @@ class Product < ActiveRecord::Base
     stock_transactions
   end
   
-  def self.product_options_for_select product_id
+  def self.product_options_for_select product_id, current_outlet
     @options = []
     
     #the none option
     @options << ["None", "0"]
     
-    Product.non_deleted.each do |p|
+    Product.non_deleted(current_outlet).each do |p|
       #product cant be its own ingredient
       next if product_id == p.id
       
@@ -328,6 +333,7 @@ class Product < ActiveRecord::Base
   end
   
 end
+
 
 
 
@@ -420,5 +426,6 @@ end
 #  kitchen_screens                          :string(255)     default("")
 #  half_price                               :float           default(0.0)
 #  blocked_printers                         :string(255)
+#  outlet_id                                :integer(4)
 #
 

@@ -7,6 +7,7 @@ class ModifierCategoryTest < ActiveSupport::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: modifier_categories
@@ -15,5 +16,6 @@ end
 #  name       :string(255)
 #  created_at :datetime
 #  updated_at :datetime
+#  outlet_id  :integer(4)
 #
 

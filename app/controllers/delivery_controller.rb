@@ -10,14 +10,14 @@ class DeliveryController < ApplicationController
       @reference_number = @delivery_params[:reference_number]
       @received_date = @delivery_params[:received_date]
       
-      @delivery = Delivery.create(:employee_id => @employee_id, :total => @delivery_params[:total], 
+      @delivery = Delivery.create(:outlet_id => current_outlet.id, :employee_id => @employee_id, :total => @delivery_params[:total], 
         :reference_number => @reference_number, :received_date => @received_date, :terminal_id => @terminal_id)
     
       @delivery_items = @delivery_params[:items]
     
       @delivery_items.each do |index, delivery_item|
         @product_id = delivery_item[:product][:id]
-        @product = Product.find_by_id(@product_id)
+        @product = current_outlet.products.find_by_id(@product_id)
       
         @old_amount = @product.quantity_in_stock
         @change_amount = delivery_item[:amount]
@@ -25,7 +25,7 @@ class DeliveryController < ApplicationController
         @is_return = delivery_item[:is_return]
         @note = delivery_item[:note]
         
-        @st = StockTransaction.create(
+        @st = StockTransaction.create(:outlet_id => current_outlet.id,
           :delivery_id => @delivery.id, :product_id => @product.id, :is_return => @is_return, :employee_id => @employee_id,
           :old_amount => @old_amount, :change_amount => @change_amount, 
           :note => @note, :transaction_type => StockTransaction::DELIVERY)

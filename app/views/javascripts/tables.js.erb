@@ -21,7 +21,7 @@ tables['0'] = {
   room_id : '0'
 }
 
-<% TableInfo.all.each do |ti|-%>
+<% current_outlet.table_infos.all.each do |ti|-%>
   table_info = {
     id : '<%= ti.id %>',
     label : '<%= ti.perm_id %>',
@@ -41,7 +41,7 @@ rooms['0'] = {
   prompt_for_client_name : false
 }
 
-<% Room.all.each do |room|-%>
+<% current_outlet.rooms.all.each do |room|-%>
   room_info = {
     id : '<%= room.id %>',
     defaultServiceChargePercent : '<%= room.default_service_charge_percent %>', 

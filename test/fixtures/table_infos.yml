@@ -1,15 +1,3 @@
-# == Schema Information
-# Schema version: 20110512185508
-#
-# Table name: table_infos
-#
-#  id             :integer(4)      not null, primary key
-#  perm_id        :string(255)
-#  room_object_id :integer(4)
-#  created_at     :datetime
-#  updated_at     :datetime
-#
-
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
@@ -19,3 +7,16 @@ one:
 two:
   perm_id: MyString
   room_object_id: 1
+
+# == Schema Information
+#
+# Table name: table_infos
+#
+#  id             :integer(4)      not null, primary key
+#  perm_id        :string(255)
+#  room_object_id :integer(4)
+#  created_at     :datetime
+#  updated_at     :datetime
+#  outlet_id      :integer(4)
+#
+

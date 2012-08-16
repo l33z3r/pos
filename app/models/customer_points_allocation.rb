@@ -1,4 +1,6 @@
 class CustomerPointsAllocation < ActiveRecord::Base
+  belongs_to :outlet
+  
   belongs_to :customer
   belongs_to :order
   
@@ -14,6 +16,7 @@ class CustomerPointsAllocation < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: customer_points_allocations
@@ -26,5 +29,6 @@ end
 #  created_at            :datetime
 #  updated_at            :datetime
 #  allocation_type       :integer(4)
+#  outlet_id             :integer(4)
 #
 

@@ -71,7 +71,7 @@
       </div>
       <div class="field">
         <div class="label">Loyalty Level</div>
-        <%= f.collection_select :loyalty_level_id, LoyaltyLevel.all, :id, :label, 
+        <%= f.collection_select :loyalty_level_id, current_outlet.loyalty_levels.all, :id, :label, 
           :prompt => "Select a Loyalty Level" %>
         <div class="clear">&nbsp;</div>
       </div>

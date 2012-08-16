@@ -10,6 +10,7 @@ two:
   display_id: 1
   page_num: 1
 
+
 # == Schema Information
 #
 # Table name: menu_pages
@@ -21,5 +22,6 @@ two:
 #  created_at          :datetime
 #  updated_at          :datetime
 #  embedded_display_id :integer(4)
+#  outlet_id           :integer(4)
 #
 

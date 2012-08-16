@@ -12,14 +12,14 @@
 
       <div>
         <ul>
-          <% DisplayButtonGroup.all_with_empty.each do |dbg| %>
+          <% DisplayButtonGroup.all_with_empty(current_outlet).each do |dbg| %>
             <li><a id="<%= dbg.name.gsub(" ", "_") %>_link" href="#<%= dbg.name.gsub(" ", "_") %>_options"><%= dbg.name %></a></li>
           <% end %>
         </ul>
       </div>
 
       <div>
-        <% DisplayButtonGroup.all_with_empty.each do |dbg| %>
+        <% DisplayButtonGroup.all_with_empty(current_outlet).each do |dbg| %>
 
           <div id="#<%= dbg.name.gsub(" ", "_") %>_options">
             <div class="jscrollpane">
@@ -35,7 +35,7 @@
                     <thead>
                       <tr>
                         <th width="100">Button</th>
-                        <% Role.find(:all, :order => :id).each do |role| %>
+                        <% current_outlet.roles.find(:all, :order => :id).each do |role| %>
                           <th width="70"><%=role.name%></th>
                         <% end %>
                       </tr>
@@ -48,10 +48,10 @@
 
                         <tr>
                           <td><%= db.button_text %></td>
-                          <% Role.find(:all, :order => :id).each do |role| %>
+                          <% current_outlet.roles.find(:all, :order => :id).each do |role| %>
                             <td>
-                              <% dbr = DisplayButtonRole.find_or_create_by_display_button_id_and_role_id(db.id, role.id) %>
-                              <% next if role.id == Role::SUPER_USER_ROLE_ID && db.perm_id == ButtonMapper::MORE_OPTIONS_BUTTON %>
+                              <% dbr = DisplayButtonRole.find_or_create_by_outlet_id_and_display_button_id_and_role_id(current_outlet.id, db.id, role.id) %>
+                              <% next if role.id == Role::super_user_role_id(current_outlet) && db.perm_id == ButtonMapper::MORE_OPTIONS_BUTTON %>
                               <%= check_box_tag "#{db.button_text}_#{role.name}", dbr.show_on_sales_screen, dbr.show_on_sales_screen,
                                 :onchange => "displayButtonRoleSalesScreenSelect(#{dbr.id}, this.checked);" %>
                             </td>

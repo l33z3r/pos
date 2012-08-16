@@ -20,9 +20,11 @@ class ProductCSVMapper
   UNIT_INDEX = 17
   SIZE_INDEX = 18
   
-  def self.product_from_row row
+  def self.product_from_row row, current_outlet
     @new_product = Product.new
       
+    @new_product.outlet_id = current_outlet.id
+    
     @new_product.name = name_from_row row
     @new_product.brand = brand_from_row row
     @new_product.description = description_from_row row

@@ -1,5 +1,11 @@
 desc "Delete orders, order_items, terminal_sync_data, cash_totals, terminal_ids, stored_receipt_htmls, client_transactions, card_transactions, customer_transactions, payments"
 task :delete_historical_data => :environment do
+  return
+  
+  
+  
+  
+  
   puts "Deleting historical data!"
   
   @orders = Order.all
@@ -53,6 +59,10 @@ end
 
 desc "Deletes all terminal_sync_data, and issues a hard reset of each terminal"
 task :delete_sync_data => :environment do
+  return
+  
+  
+  
   @terminal_sync_datas = TerminalSyncData.all
   puts "Deleting #{@terminal_sync_datas.length} terminal_sync_datas"
   @terminal_sync_datas.each(&:destroy)
@@ -68,6 +78,12 @@ end
 
 desc "Deletes all stored receipt data"
 task :delete_recpt_data => :environment do
+  return
+  
+  
+  
+  
+  
   @recpt_htmls = StoredReceiptHtml.all
   puts "Deleting #{@recpt_htmls.length} receipt_htmls"
   @recpt_htmls.each(&:destroy) 
@@ -77,11 +93,23 @@ end
 
 desc "Clear duplicate keys in global settings"
 task :clear_dup_keys_gs => :environment do
+  return
+  
+  
+  
+  
+  
   GlobalSetting.clear_dup_keys_gs
 end
 
 desc "Issues a soft reset of each terminal"
 task :issue_soft_reset => :environment do
+  return
+  
+  
+  
+  
+  
   puts "Issuing a soft reset of all terminals"
   TerminalSyncData.request_reload_app "Cluey Support"
   
@@ -90,6 +118,12 @@ end
 
 desc "Issues a hard reset of each terminal"
 task :issue_hard_reset => :environment do
+  return
+  
+  
+  
+  
+  
   puts "Issuing a hard reset of all terminals"
   TerminalSyncData.request_hard_reload_app "Cluey Support"
   
@@ -98,6 +132,12 @@ end
 
 desc "Builds Stock Transactions for all existing sales"
 task :build_stock_transactions => :environment do
+  return
+  
+  
+  
+  
+  
   ActiveRecord::Base.connection.execute("update products set quantity_in_stock = 0")
   ActiveRecord::Base.connection.execute("delete from stock_transactions")
   ActiveRecord::Base.connection.execute("delete from deliveries")

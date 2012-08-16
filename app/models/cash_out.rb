@@ -1,5 +1,8 @@
 class CashOut < ActiveRecord::Base
+  belongs_to :outlet
+  
 end
+
 
 # == Schema Information
 #
@@ -11,5 +14,6 @@ end
 #  amount      :float
 #  created_at  :datetime
 #  updated_at  :datetime
+#  outlet_id   :integer(4)
 #
 

@@ -15,6 +15,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: categories
@@ -33,5 +34,6 @@ end
 #  kitchen_screens                          :string(255)     default("")
 #  blocked_printers                         :string(255)
 #  prompt_for_covers                        :boolean(1)      default(FALSE)
+#  outlet_id                                :integer(4)
 #
 

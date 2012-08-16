@@ -7,6 +7,7 @@ class DisplayButtonTest < ActiveSupport::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: display_buttons
@@ -17,5 +18,6 @@ end
 #  updated_at              :datetime
 #  perm_id                 :integer(4)
 #  display_button_group_id :integer(4)
+#  outlet_id               :integer(4)
 #
 

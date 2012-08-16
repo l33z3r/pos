@@ -1,4 +1,6 @@
 class WorkReport < ActiveRecord::Base
+  belongs_to :outlet
+  
   belongs_to :employee
   
   serialize :report_data
@@ -37,6 +39,7 @@ class WorkReport < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: work_reports
@@ -53,5 +56,6 @@ end
 #  payable_seconds :integer(4)      default(0)
 #  hourly_rate     :float
 #  cost            :float
+#  outlet_id       :integer(4)
 #
 

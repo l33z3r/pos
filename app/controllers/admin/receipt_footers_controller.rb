@@ -3,6 +3,8 @@ class Admin::ReceiptFootersController < Admin::AdminController
   def create
     @receipt_footer = ReceiptFooter.new(params[:receipt_footer])
 
+    @receipt_footer.outlet_id = current_outlet.id
+    
     if @receipt_footer.save
       redirect_to admin_global_settings_path, :notice => 'Receipt Footer was successfully created.'
     else
@@ -22,7 +24,7 @@ class Admin::ReceiptFootersController < Admin::AdminController
   end
 
   def destroy
-    @receipt_footer = ReceiptFooter.find(params[:id])
+    @receipt_footer = current_outlet.receipt_footers.find(params[:id])
     @receipt_footer.destroy
 
     flash[:notice] = "Receipt Footer Deleted!"

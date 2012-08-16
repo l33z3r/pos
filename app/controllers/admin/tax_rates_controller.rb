@@ -3,6 +3,8 @@ class Admin::TaxRatesController < Admin::AdminController
   def create
     @tax_rate = TaxRate.new(params[:tax_rate])
 
+    @tax_rate.outlet_id = current_outlet.id
+    
     if @tax_rate.save
       redirect_to admin_global_settings_path, :notice => 'Tax Rate was successfully created.'
     else
@@ -23,13 +25,13 @@ class Admin::TaxRatesController < Admin::AdminController
 
   def destroy
     #Don't allow deleting of last one
-    if TaxRate.all.size == 1
+    if current_outlet.tax_rates.all.size == 1
       flash[:notice] = "You must have at least one tax rate!"
       redirect_to admin_global_settings_path
       return
     end
     
-    @tax_rate = TaxRate.find(params[:id])
+    @tax_rate = current_outlet.tax_rates.find(params[:id])
     @tax_rate.destroy
 
     flash[:notice] = "Tax Rate Deleted!"
@@ -37,11 +39,11 @@ class Admin::TaxRatesController < Admin::AdminController
   end
   
   def default
-    @old_default_tax_rate = TaxRate.load_default
+    @old_default_tax_rate = TaxRate.load_default(current_outlet)
     @old_default_tax_rate.is_default = false
     @old_default_tax_rate.save
 
-    @new_default_tax_rate = TaxRate.find(params[:id])
+    @new_default_tax_rate = current_outlet.tax_rates.find(params[:id])
     @new_default_tax_rate.is_default = true
     @new_default_tax_rate.save
 

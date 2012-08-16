@@ -1,4 +1,6 @@
 class Category < ActiveRecord::Base
+  belongs_to :outlet
+  
   has_many :products, :conditions => "products.is_deleted = false", :dependent => :nullify  
   has_many :products_including_deleted, :class_name => "Product", :dependent => :nullify 
   
@@ -7,7 +9,8 @@ class Category < ActiveRecord::Base
   
   belongs_to :parent_category, :class_name => "Category"
 
-  validates :name, :presence => true, :uniqueness => true
+  validates :name, :presence => true
+  validates_uniqueness_of :name, :case_sensitive => false, :scope => :outlet_id
   
   #for will_paginate
   cattr_reader :per_page
@@ -118,6 +121,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: categories
@@ -136,5 +140,6 @@ end
 #  kitchen_screens                          :string(255)     default("")
 #  blocked_printers                         :string(255)
 #  prompt_for_covers                        :boolean(1)      default(FALSE)
+#  outlet_id                                :integer(4)
 #
 

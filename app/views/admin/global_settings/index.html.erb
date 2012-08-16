@@ -68,7 +68,7 @@
                   <tr>
                     <td>Default Home Screen</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_HOME_SCREEN, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_HOME_SCREEN, current_outlet, {:fingerprint => @terminal_fingerprint} %>
 
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::LOGIN_SCREEN %>" 
@@ -92,7 +92,7 @@
                   <tr>
                     <td>Type Of Menu Screen</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::MENU_SCREEN_TYPE, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::MENU_SCREEN_TYPE, current_outlet, {:fingerprint => @terminal_fingerprint} %>
 
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::RESTAURANT_MENU_SCREEN %>" 
@@ -116,7 +116,7 @@
                   <tr>
                     <td>Screen Resolution</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::SCREEN_RESOLUTION, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::SCREEN_RESOLUTION, current_outlet, {:fingerprint => @terminal_fingerprint} %>
 
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::SCREEN_RESOLUTION_NORMAL %>" 
@@ -134,7 +134,7 @@
                   <tr>
                     <td>Screen That Shows After Login</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_POST_LOGIN_SCREEN %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_POST_LOGIN_SCREEN, current_outlet %>
 
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::MENU_SCREEN %>" 
@@ -152,7 +152,8 @@
                   <tr>
                     <td>Use Whitespace In Mobile Menus?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::USE_WHITE_SPACE_MOBILE_MENUS %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::USE_WHITE_SPACE_MOBILE_MENUS, current_outlet %>
+                      
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -167,7 +168,8 @@
                   <tr>
                     <td>Use Whitespace In Terminal Menus?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::USE_WHITE_SPACE_DESKTOP_MENUS %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::USE_WHITE_SPACE_DESKTOP_MENUS, current_outlet %>
+                      
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -182,7 +184,8 @@
                   <tr>
                     <td>Bypass Pin Number?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::BYPASS_PIN %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::BYPASS_PIN, current_outlet %>
+                      
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Per Role</div>
@@ -197,7 +200,7 @@
                   <tr>
                     <td>Clock Format</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::CLOCK_FORMAT %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::CLOCK_FORMAT, current_outlet %>
 
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::CLOCK_FORMAT_12 %>" 
@@ -215,7 +218,7 @@
                   <tr>
                     <td>Auto Prompt For Covers?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::PROMPT_FOR_COVERS %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PROMPT_FOR_COVERS, current_outlet %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -260,7 +263,7 @@
                   <tr>
                     <td>Business Name</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::BUSINESS_NAME %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::BUSINESS_NAME, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -269,7 +272,7 @@
                   <tr>
                     <td>Address</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::ADDRESS %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::ADDRESS, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -278,7 +281,7 @@
                   <tr>
                     <td>Telephone</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::TELEPHONE %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::TELEPHONE, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -287,7 +290,7 @@
                   <tr>
                     <td>Fax</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::FAX %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::FAX, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -296,7 +299,7 @@
                   <tr>
                     <td>Email</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::EMAIL %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::EMAIL, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -305,7 +308,7 @@
                   <tr>
                     <td>Business Information (200 Chars)</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::BUSINESS_INFO_MESSAGE %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::BUSINESS_INFO_MESSAGE, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_area :value, :class => "mceEditor" %>
                       <% end %>
@@ -314,7 +317,7 @@
                   <tr>
                     <td>Business Logo</td>
                     <td>
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::LOGO, {:logo_type => "business_logo"} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::LOGO, current_outlet, {:logo_type => "business_logo"} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <div class="business_logo">
                           <div class="label">Current Logo:</div>
@@ -373,7 +376,7 @@
                 </thead>
 
                 <tbody>
-                  <% PaymentMethod.all(:order => :name).each do |pm| %>
+                  <% current_outlet.payment_methods.all(:order => :name).each do |pm| %>
                     <%= fields_for "payment_methods[]", pm do |f| %>
                       <tr>
                         <td>
@@ -403,7 +406,7 @@
                           <% end %>
                         </td>
                         <td>
-                          <%= f.collection_select :receipt_footer_id, ReceiptFooter.all, :id, :name, 
+                          <%= f.collection_select :receipt_footer_id, current_outlet.receipt_footers.all, :id, :name, 
                             :prompt => "Select a Footer", :include_blank => "None" %>
                         </td>
                         <td>
@@ -485,27 +488,27 @@
                   <tr>
                     <td>Button 1</td>
                     <td>
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => 1} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, current_outlet, {:shortcut_num => 1} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.select :value, options_for_select(PaymentMethod.options_for_shortcut_linking, @gs.parsed_value) %>
+                        <%= f.select :value, options_for_select(PaymentMethod.options_for_shortcut_linking(current_outlet), @gs.parsed_value) %>
                       <% end %>
                     </td>
                   </tr>
                   <tr>
                     <td>Button 2</td>
                     <td>
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => 2} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, current_outlet, {:shortcut_num => 2} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.select :value, options_for_select(PaymentMethod.options_for_shortcut_linking, @gs.parsed_value) %>
+                        <%= f.select :value, options_for_select(PaymentMethod.options_for_shortcut_linking(current_outlet), @gs.parsed_value) %>
                       <% end %>
                     </td>
                   </tr>
                   <tr>
                     <td>Button 3</td>
                     <td>
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => 3} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PM_SHORTCUT_ID, current_outlet, {:shortcut_num => 3} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.select :value, options_for_select(PaymentMethod.options_for_shortcut_linking, @gs.parsed_value) %>
+                        <%= f.select :value, options_for_select(PaymentMethod.options_for_shortcut_linking(current_outlet), @gs.parsed_value) %>
                       <% end %>
                     </td>
                   </tr>
@@ -548,7 +551,7 @@
                 </thead>
 
                 <tbody>
-                  <% ReceiptFooter.all(:order => :name).each do |rf| %>
+                  <% current_outlet.receipt_footers.all(:order => :name).each do |rf| %>
                     <%= fields_for "receipt_footers[]", rf do |f| %>
                       <tr>
                         <td><%= f.text_field :name, :size => 17 %></td>
@@ -626,7 +629,7 @@
                   <tr>
                     <td>Is Tax Chargable?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::TAX_CHARGABLE %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::TAX_CHARGABLE, current_outlet %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -642,7 +645,7 @@
                   <tr>
                     <td>Tax Chargable Sales Tax Rate</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::GLOBAL_TAX_RATE %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::GLOBAL_TAX_RATE, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -652,7 +655,7 @@
                   <tr>
                     <td>What Do You Want To Call Sales Tax(Tax/Vat etc)?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::TAX_LABEL %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::TAX_LABEL, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -662,7 +665,7 @@
                   <tr>
                     <td>Tax Number</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::TAX_NUMBER %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::TAX_NUMBER, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -672,7 +675,7 @@
                   <tr>
                     <td>Print <%= @tax_label %> Receipt?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::PRINT_VAT_RECEIPT %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PRINT_VAT_RECEIPT, current_outlet %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -688,7 +691,7 @@
                   <tr>
                     <td>Enter A Label For Service Charge</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::SERVICE_CHARGE_LABEL %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::SERVICE_CHARGE_LABEL, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -698,7 +701,7 @@
                   <tr>
                     <td>Default Service Charge Percent (0 - 100)</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_SERVICE_CHARGE_PERCENT %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_SERVICE_CHARGE_PERCENT, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -732,7 +735,7 @@
                 </thead>
 
                 <tbody>
-                  <% TaxRate.all(:order => :name).each do |tr| %>
+                  <% current_outlet.tax_rates.all(:order => :name).each do |tr| %>
                     <%= fields_for "tax_rates[]", tr do |f| %>
                       <tr>
                         <td><%= f.text_field :name %></td>
@@ -814,7 +817,7 @@
                   <tr>
                     <td>Enable Loyalty Redemption?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::ENABLE_LOYALTY_REDEMPTION %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::ENABLE_LOYALTY_REDEMPTION, current_outlet %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -829,16 +832,16 @@
                   <tr>
                     <td>Loyalty Level Card Prefix (e.g. %ICR)</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::LOYALTY_CARD_PREFIX %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::LOYALTY_CARD_PREFIX, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
                     </td>
                   </tr>
                   <tr>
-                    <td>Loyalty Points Per <%= GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL %>1</td>
+                    <td>Loyalty Points Per <%= GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_SYMBOL, current_outlet %>1</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::LOYALTY_POINTS_PER_CURRENCY_UNIT %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::LOYALTY_POINTS_PER_CURRENCY_UNIT, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -872,14 +875,14 @@
                 </thead>
 
                 <tbody>
-                  <% LoyaltyLevel.all(:order => :label).each do |tr| %>
-                    <%= fields_for "loyalty_levels[]", tr do |f| %>
+                  <% current_outlet.loyalty_levels.all(:order => :label).each do |ll| %>
+                    <%= fields_for "loyalty_levels[]", ll do |f| %>
                       <tr>
                         <td><%= f.text_field :label %></td>
                         <td><%= f.text_field :percent, :size => 4 %></td>
-                        <td><%= link_to "Delete", admin_loyalty_level_path(tr), :method => :delete, :confirm => "Are You Sure?" %></td>
+                        <td><%= link_to "Delete", admin_loyalty_level_path(ll), :method => :delete, :confirm => "Are You Sure?" %></td>
                         <td>
-                          <%= radio_button_tag "set_default_loyalty_level", "#{tr.id}", tr.is_default, 
+                          <%= radio_button_tag "set_default_loyalty_level", "#{ll.id}", ll.is_default, 
                             :onchange => "doSetDefaultLoyaltyLevel(this.value);" %>
                         </td>
                       </tr>
@@ -950,7 +953,7 @@
                 </thead>
 
                 <tbody>
-                  <% CashOutPreset.all(:order => :label).each do |tr| %>
+                  <% current_outlet.cash_out_presets.all(:order => :label).each do |tr| %>
                     <%= fields_for "cash_out_presets[]", tr do |f| %>
                       <tr>
                         <td><%= f.text_field :label %></td>
@@ -1021,9 +1024,9 @@
                 </thead>
 
                 <tbody>
-                  <% Discount.all(:order => :name).each do |discount| %>
+                  <% current_outlet.discounts.all(:order => :name).each do |discount| %>
                     <%= fields_for "discounts[]", discount do |f| %>
-                      <tr><% Discount.load_default  %>
+                      <tr><% Discount.load_default current_outlet  %>
                         <td><%= f.text_field :name %></td>
                         <td><%= f.text_field :percent, :size => 4 %></td>
                         <td><%= link_to "Delete", admin_discount_path(discount), :method => :delete, :confirm => "Are You Sure?" %></td>
@@ -1104,7 +1107,7 @@
                     <tr>
                       <td><%= course_val %></td>
                       <td>
-                        <% @gs = GlobalSetting.setting_for GlobalSetting::COURSE_LABEL, {:course_val => course_val} %>
+                        <% @gs = GlobalSetting.setting_for GlobalSetting::COURSE_LABEL, current_outlet, {:course_val => course_val} %>
                         <%= fields_for "global_settings[]", @gs do |f| %>
                           <%= f.text_field :value %>
                         <% end %>
@@ -1147,7 +1150,7 @@
                     <tr>
                       <td><%= price_level %></td>
                       <td>
-                        <% @gs = GlobalSetting.setting_for GlobalSetting::PRICE_LEVEL_LABEL, {:price_level => price_level} %>
+                        <% @gs = GlobalSetting.setting_for GlobalSetting::PRICE_LEVEL_LABEL, current_outlet, {:price_level => price_level} %>
                         <%= fields_for "global_settings[]", @gs do |f| %>
                           <%= f.text_field :value %>
                         <% end %>
@@ -1187,7 +1190,7 @@
                   <tr>
                     <td>Print Work Reports?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::PRINT_WORK_REPORT %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PRINT_WORK_REPORT, current_outlet %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -1202,7 +1205,7 @@
                   <tr>
                     <td>Main Timekeeping Terminal</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::TIMEKEEPING_TERMINAL %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::TIMEKEEPING_TERMINAL, current_outlet %>
 
                       <select name="global_settings[<%=@gs.id%>][value]" id="terminal_dropdown">
                         <% all_terminals.each do |terminal_id|%>
@@ -1214,7 +1217,7 @@
                   <tr>
                     <td>Work Report Footer Text</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_FOOTER_TEXT %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_FOOTER_TEXT, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -1252,7 +1255,7 @@
                     <tr>
                       <td><%= WorkReport.report_section_name rs %></td>
                       <td>
-                        <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, {:report_section => rs} %>
+                        <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, current_outlet, {:report_section => rs} %>
                         <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                                value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                         <div class="label">Show</div>
@@ -1298,7 +1301,7 @@
                   <tr>
                     <td>Currency Symbol</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::CURRENCY_SYMBOL %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::CURRENCY_SYMBOL, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -1307,7 +1310,7 @@
                   <tr>
                     <td>Small Currency Symbol</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::SMALL_CURRENCY_SYMBOL %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::SMALL_CURRENCY_SYMBOL, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -1316,7 +1319,7 @@
                   <tr>
                     <td>Currency Note Images:</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::CURRENCY_NOTES_IMAGES %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::CURRENCY_NOTES_IMAGES, current_outlet %>
 
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::CURRENCY_NOTES_IMAGES_EURO %>" 
@@ -1334,7 +1337,7 @@
                   <tr>
                     <td>Automatically Print Receipt?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::AUTO_PRINT_RECEIPT %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::AUTO_PRINT_RECEIPT, current_outlet %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -1351,7 +1354,7 @@
                       Print Local Delivery Receipts?
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::PRINT_LOCAL_RECIEVE_DELIVERY, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PRINT_LOCAL_RECIEVE_DELIVERY, current_outlet, {:fingerprint => @terminal_fingerprint} %>
                       <div class="controls">
                         <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                                value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
@@ -1367,7 +1370,7 @@
                   <tr>
                     <td>Show Charge Card Button?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::SHOW_CHARGE_CARD_BUTTON %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::SHOW_CHARGE_CARD_BUTTON, current_outlet %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -1382,7 +1385,7 @@
                   <tr>
                     <td>All Mobile Devices Receive Order Notifications?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::All_DEVICES_ORDER_NOTIFICATION %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::All_DEVICES_ORDER_NOTIFICATION, current_outlet %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -1398,7 +1401,7 @@
                     <td>Receipt Message (200 Chars)</td>
 
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::RECEIPT_MESSAGE %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::RECEIPT_MESSAGE, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_area :value, :class => "mceEditor" %>
                       <% end %>
@@ -1409,7 +1412,7 @@
                       Enable On Screen Beep?
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::DO_BEEP, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::DO_BEEP, current_outlet, {:fingerprint => @terminal_fingerprint} %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -1421,12 +1424,12 @@
                       <div class="clear">&nbsp;</div>
                     </td>
                   </tr>
-                  <tr>
+                  <!--tr>
                     <td>
                       Terminal Name
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.terminal_id_for @terminal_fingerprint %>
+                      <% @gs = GlobalSetting.terminal_id_for @terminal_fingerprint, current_outlet %>
 
                       <div id="terminal_name_field_unique_error" style="display: none;">
                         This terminal name has already been taken, if you submit this, the old terminal name will be overwritten
@@ -1436,7 +1439,7 @@
                         <%= f.text_field :value, :id => "terminal_name_field", :onkeyup => "checkForUniqueTerminalName();" %>
                       <% end %>
                     </td>
-                  </tr>
+                  </tr-->
                   <tr>
                     <td>
                       Your IP Address
@@ -1448,7 +1451,7 @@
                   <tr>
                     <td>Bypass open orders for Z totals on this terminal?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL, current_outlet, {:fingerprint => @terminal_fingerprint} %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -1463,7 +1466,7 @@
                   <tr>
                     <td>Allow re-opening closed orders after Z Totals?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::ALLOW_REOPEN_ORDER_AFTER_Z %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::ALLOW_REOPEN_ORDER_AFTER_Z, current_outlet %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -1480,7 +1483,7 @@
                       Earliest Opening Hour
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::EARLIEST_OPENING_HOUR %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::EARLIEST_OPENING_HOUR, current_outlet %>
 
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
@@ -1492,7 +1495,7 @@
                       Latest Closing Hour
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::LATEST_CLOSING_HOUR %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::LATEST_CLOSING_HOUR, current_outlet %>
 
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
@@ -1502,7 +1505,7 @@
                   <tr>
                     <td>What Do You Want To Call A Half Measure?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::HALF_MEASURE_LABEL %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::HALF_MEASURE_LABEL, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -1511,7 +1514,7 @@
                   <tr>
                     <td>Deduct Stock In Training Mode?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::DEDUCT_STOCK_DURING_TRAINING_MODE %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::DEDUCT_STOCK_DURING_TRAINING_MODE, current_outlet %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -1555,7 +1558,7 @@
                   <tr>
                     <td>Disable Advanced Touch?</td>
                     <td id="dat_section" class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @terminal_fingerprint, :user_agent => request.user_agent} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, current_outlet, {:fingerprint => @terminal_fingerprint, :user_agent => request.user_agent} %>
                       <div class="controls">
                         <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                                value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
@@ -1577,7 +1580,7 @@
                   <tr>
                     <td>Show Licence Expired Screen (Every 15 Mins)?</td>
                     <td id="dat_section" class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::SHOW_LICENCE_EXPIRED_SCREEN %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::SHOW_LICENCE_EXPIRED_SCREEN, current_outlet %>
                       <div class="controls">
                         <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                                value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
@@ -1606,7 +1609,7 @@
                       Printer Service IP Address
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, current_outlet, {:fingerprint => @terminal_fingerprint} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -1617,7 +1620,7 @@
                       Use Web Sockets For Printer Service?
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_RECEIPT_PRINTER, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_RECEIPT_PRINTER, current_outlet, {:fingerprint => @terminal_fingerprint} %>
                       <div class="controls">
                         <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                                value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
@@ -1635,7 +1638,7 @@
                       Cash Drawer Service IP Address
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_IP_ADDRESS, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_IP_ADDRESS, current_outlet, {:fingerprint => @terminal_fingerprint} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -1646,7 +1649,7 @@
                       Use Web Sockets For Cash Drawer Service?
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_CASH_DRAWER, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_CASH_DRAWER, current_outlet, {:fingerprint => @terminal_fingerprint} %>
                       <div class="controls">
                         <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                                value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
@@ -1664,7 +1667,7 @@
                       Zalion Room Charge Service IP Address
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::ZALION_ROOM_CHARGE_SERVICE_IP %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::ZALION_ROOM_CHARGE_SERVICE_IP, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -1675,7 +1678,7 @@
                       Allow Zalion Split Payments?
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::ALLOW_ZALION_SPLIT_PAYMENTS %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::ALLOW_ZALION_SPLIT_PAYMENTS, current_outlet %>
                       <div class="controls">
                         <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                                value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
@@ -1693,7 +1696,7 @@
                       Credit Card Charge Service IP Address
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_CHARGE_SERVICE_IP, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_CHARGE_SERVICE_IP, current_outlet, {:fingerprint => @terminal_fingerprint} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -1704,7 +1707,7 @@
                       Credit Card Terminal IP Address
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_IP, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_IP, current_outlet, {:fingerprint => @terminal_fingerprint} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -1715,7 +1718,7 @@
                       Credit Card Terminal Port
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, current_outlet, {:fingerprint => @terminal_fingerprint} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -1726,7 +1729,7 @@
                       Printer Left Margin (Pixels)
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::PRINTER_LEFT_MARGIN, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PRINTER_LEFT_MARGIN, current_outlet, {:fingerprint => @terminal_fingerprint} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -1735,7 +1738,7 @@
                   <tr>
                     <td>Use Windows OS Printer Margins?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::WINDOWS_PRINTER_MARGINS, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::WINDOWS_PRINTER_MARGINS, current_outlet, {:fingerprint => @terminal_fingerprint} %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -1758,7 +1761,7 @@
                   <tr>
                     <td>Order Receipt Width?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, current_outlet, {:fingerprint => @terminal_fingerprint} %>
 
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="<%= GlobalSetting::ORDER_RECEIPT_WIDTH_80MM %>" 
@@ -1776,7 +1779,7 @@
                   <tr>
                     <td>Global Authentication Required?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::AUTHENTICATION_REQUIRED %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::AUTHENTICATION_REQUIRED, current_outlet %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -1791,7 +1794,7 @@
                   <tr>
                     <td>Local Authentication Required?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::LOCAL_AUTHENTICATION_REQUIRED %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::LOCAL_AUTHENTICATION_REQUIRED, current_outlet %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -1806,7 +1809,7 @@
                   <tr>
                     <td>App HTTP Authentication Username</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::HTTP_AUTH_USERNAME %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::HTTP_AUTH_USERNAME, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -1815,7 +1818,7 @@
                   <tr>
                     <td>App HTTP Authentication Password</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::HTTP_AUTH_PASSWORD %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::HTTP_AUTH_PASSWORD, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -1824,7 +1827,7 @@
                   <tr>
                     <td>Process Cash Sales As Orders?</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::PROCESS_TABLE_0_ORDERS %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::PROCESS_TABLE_0_ORDERS, current_outlet %>
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -1839,7 +1842,7 @@
                   <tr>
                     <td>Polling Interval (In seconds (1-5))</td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::POLLING_INTERVAL_SECONDS %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::POLLING_INTERVAL_SECONDS, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>

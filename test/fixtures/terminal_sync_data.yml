@@ -10,6 +10,7 @@ one: {}
 two: {}
 #  column: value
 
+
 # == Schema Information
 #
 # Table name: terminal_sync_data
@@ -20,5 +21,6 @@ two: {}
 #  data       :text(2147483647
 #  created_at :datetime
 #  updated_at :datetime
+#  outlet_id  :integer(4)
 #
 

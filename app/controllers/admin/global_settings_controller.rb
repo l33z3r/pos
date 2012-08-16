@@ -6,12 +6,12 @@ class Admin::GlobalSettingsController < Admin::AdminController
   end
   
   def toggle_print_receipt
-    @gs = GlobalSetting.setting_for GlobalSetting::AUTO_PRINT_RECEIPT
+    @gs = GlobalSetting.setting_for GlobalSetting::AUTO_PRINT_RECEIPT, current_outlet
     @gs.value = (!@gs.parsed_value).to_s
     @gs.save!
     
     #must reload the setting
-    @gs = GlobalSetting.setting_for GlobalSetting::AUTO_PRINT_RECEIPT
+    @gs = GlobalSetting.setting_for GlobalSetting::AUTO_PRINT_RECEIPT, current_outlet
   end
 
   def update_multiple
@@ -19,8 +19,8 @@ class Admin::GlobalSettingsController < Admin::AdminController
     
     if @global_settings.empty?
       #have to manually set the service charge button label to the global value
-      @service_charge_button = DisplayButton.find_by_perm_id(ButtonMapper::SERVICE_CHARGE_BUTTON)
-      @service_charge_button.button_text = GlobalSetting.parsed_setting_for GlobalSetting::SERVICE_CHARGE_LABEL
+      @service_charge_button = current_outlet.display_buttons.find_by_perm_id(ButtonMapper::SERVICE_CHARGE_BUTTON)
+      @service_charge_button.button_text = GlobalSetting.parsed_setting_for GlobalSetting::SERVICE_CHARGE_LABEL, current_outlet
       @service_charge_button.save
     
       #send a reload request to other terminals
@@ -51,7 +51,7 @@ class Admin::GlobalSettingsController < Admin::AdminController
     @employee_role = params[:role]
     @report_section = params[:report_section]
     
-    @gs = GlobalSetting.setting_for GlobalSetting::CASH_TOTAL_OPTION, {:total_type => @total_type, :employee_role => @employee_role, :report_section => @report_section}
+    @gs = GlobalSetting.setting_for GlobalSetting::CASH_TOTAL_OPTION, current_outlet, {:total_type => @total_type, :employee_role => @employee_role, :report_section => @report_section}
     
     @checked = params[:checked]
     
@@ -62,7 +62,7 @@ class Admin::GlobalSettingsController < Admin::AdminController
   end
   
   def update_show_report_in_cash_total
-    @dbr = DisplayButtonRole.find(params[:id])
+    @dbr = current_outlet.display_button_roles.find(params[:id])
     @dbr.show_on_sales_screen = params[:checked]
     @dbr.save!
     

@@ -1,6 +1,9 @@
 class Delivery < ActiveRecord::Base
+  belongs_to :outlet
+  
   belongs_to :employee
 end
+
 
 
 
@@ -16,5 +19,6 @@ end
 #  received_date    :datetime
 #  reference_number :string(255)
 #  terminal_id      :string(255)
+#  outlet_id        :integer(4)
 #
 

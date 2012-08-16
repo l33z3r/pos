@@ -1,10 +1,13 @@
 #THIS RECORDS A CHARGE ROOM TRANSACTION
 
 class ClientTransaction < ActiveRecord::Base
+  belongs_to :outlet
+  
   belongs_to :order
   serialize :transaction_data, Hash
   validates :payment_integration_type_id, :presence => true, :inclusion => { :in => PaymentMethod::PAYMENT_INTEGRATION_TYPES }
 end
+
 
 # == Schema Information
 #
@@ -17,5 +20,6 @@ end
 #  transaction_data            :text(2147483647
 #  created_at                  :datetime
 #  updated_at                  :datetime
+#  outlet_id                   :integer(4)
 #
 

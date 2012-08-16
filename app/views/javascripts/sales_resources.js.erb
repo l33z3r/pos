@@ -1,6 +1,6 @@
 var paymentMethods = {};
 
-<% PaymentMethod.all.each do |pm|-%>
+<% current_outlet.payment_methods.all.each do |pm|-%>
   payment_method_info = {
   id : '<%= pm.id %>',
   name : '<%= pm.name.downcase %>', 
@@ -15,7 +15,7 @@ var paymentMethods = {};
 
 var cashOutPresets = new Array();
 
-<% CashOutPreset.all.each do |cop|-%>
+<% current_outlet.cash_out_presets.all.each do |cop|-%>
   cash_out_preset_info = {
   id : '<%= cop.id %>',
   label : '<%= cop.label.downcase %>'

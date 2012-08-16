@@ -7,6 +7,7 @@ class MenuItemTest < ActiveSupport::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: menu_items
@@ -17,5 +18,6 @@ end
 #  created_at   :datetime
 #  updated_at   :datetime
 #  order_num    :integer(4)      default(0)
+#  outlet_id    :integer(4)
 #
 

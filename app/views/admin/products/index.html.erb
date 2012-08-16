@@ -57,7 +57,7 @@
     <div class="center_col">
       <div class="field">
         <div class="label">Category</div>
-        <%= collection_select :category_id, :equals, Category.find(:all), :id, :name, options = {:include_blank => "Any", :selected => @session_category} %>
+        <%= collection_select :category_id, :equals, current_outlet.categories.find(:all), :id, :name, options = {:include_blank => "Any", :selected => @session_category} %>
         <div class="clear">&nbsp;</div>
       </div>
     </div>

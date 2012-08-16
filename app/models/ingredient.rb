@@ -1,4 +1,6 @@
 class Ingredient < ActiveRecord::Base
+  belongs_to :outlet
+  
   belongs_to :product
   belongs_to :ingredient_product, :class_name => "Product", :foreign_key => "ingredient_product_id"  
   
@@ -6,6 +8,7 @@ class Ingredient < ActiveRecord::Base
     (quantity_numerator.to_f / quantity_denominator.to_f)
   end
 end
+
 
 
 
@@ -20,5 +23,6 @@ end
 #  quantity_denominator  :float           default(1.0)
 #  created_at            :datetime
 #  updated_at            :datetime
+#  outlet_id             :integer(4)
 #
 

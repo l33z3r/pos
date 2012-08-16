@@ -1,5 +1,13 @@
+class Modifier < ActiveRecord::Base
+  belongs_to :outlet
+  
+  belongs_to :modifier_category
+
+  validates :name, :presence => true
+  validates :price, :presence => true, :numericality => true
+end
+
 # == Schema Information
-# Schema version: 20110427122814
 #
 # Table name: modifiers
 #
@@ -9,11 +17,6 @@
 #  price                :float
 #  created_at           :datetime
 #  updated_at           :datetime
+#  outlet_id            :integer(4)
 #
 
-class Modifier < ActiveRecord::Base
-  belongs_to :modifier_category
-
-  validates :name, :presence => true
-  validates :price, :presence => true, :numericality => true
-end

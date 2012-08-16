@@ -7,7 +7,7 @@ class Admin::AdminController < ApplicationController
   private
   
   def load_more_options_buttons_for_role
-    @more_options_buttons_dbrs = DisplayButtonRole.admin_screen_buttons_for_role(current_employee.role.id)
+    @more_options_buttons_dbrs = DisplayButtonRole.admin_screen_buttons_for_role(current_outlet, current_employee.role.id)
   end
   
   def check_logged_in
@@ -18,7 +18,7 @@ class Admin::AdminController < ApplicationController
   end
 
   def is_admin?
-    @current_employee.is_admin
+    @current_employee.is_admin current_outlet
   end
 
 end

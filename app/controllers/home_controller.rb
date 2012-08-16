@@ -39,10 +39,10 @@ class HomeController < ApplicationController
       if @sync_table_order[:clear_table_order]
         @clear_table_order = @sync_table_order
         @sync_table_order = nil
-        @table_label = TableInfo.find_by_id(@clear_table_order[:table_id]).perm_id
+        @table_label = current_outlet.table_infos.find_by_id(@clear_table_order[:table_id]).perm_id
         
         @serving_employee_id = @clear_table_order[:serving_employee_id];
-        @terminal_employee = Employee.find(@serving_employee_id).nickname;
+        @terminal_employee = current_outlet.employees.find(@serving_employee_id).nickname;
         @order_num = @clear_table_order[:order_num]
         
         @clear_table_order_request_time = @clear_table_order[:sync_table_order_request_time]
@@ -52,10 +52,10 @@ class HomeController < ApplicationController
         @sync_table_order_request_terminal_id = @sync_table_order[:sync_table_order_request_terminal_id]
         @sync_table_order_data = JSON.parse(@sync_table_order[:order_data]).symbolize_keys!
       
-        @table_label = TableInfo.find_by_id(@sync_table_order_data[:tableID]).perm_id
+        @table_label = current_outlet.table_infos.find_by_id(@sync_table_order_data[:tableID]).perm_id
       
         @serving_employee_id = @sync_table_order[:serving_employee_id];
-        @terminal_employee = Employee.find(@serving_employee_id).nickname;
+        @terminal_employee = current_outlet.employees.find(@serving_employee_id).nickname;
       
         @new_sync_table_order_time = @sync_table_order_request_time.to_i + 1
       end
@@ -84,16 +84,16 @@ class HomeController < ApplicationController
   
   def customer_payment
     CustomerTransaction.transaction do
-      @customer = Customer.find_by_id(params[:customer_id])
+      @customer = current_outlet.customers.find_by_id(params[:customer_id])
       @amount = params[:amount].to_f
       @amount_tendered = params[:amount_tendered].to_f
       @payment_method = params[:payment_method]
       
-      @payment = Payment.create({:transaction_type => Payment::CUSTOMER_PAYMENT,
+      @payment = Payment.create({:outlet_id => current_outlet.id, :transaction_type => Payment::CUSTOMER_PAYMENT,
           :employee_id => e, :amount => @amount, :amount_tendered => @amount_tendered,
           :payment_method => @payment_method, :terminal_id => @terminal_id})
     
-      CustomerTransaction.create({:customer_id => @customer.id, :terminal_id => @terminal_id,
+      CustomerTransaction.create({:outlet_id => current_outlet.id, :customer_id => @customer.id, :terminal_id => @terminal_id,
           :transaction_type => CustomerTransaction::SETTLEMENT, :is_credit => true,
           :abs_amount => @amount, :actual_amount => @amount, :payment_id => @payment.id})
     
@@ -106,7 +106,7 @@ class HomeController < ApplicationController
       if @card_charged
         @reference_number = params[:reference_number]
         
-        @card_transaction = CardTransaction.create({:payment_method => @payment_method,
+        @card_transaction = CardTransaction.create({:outlet_id => current_outlet.id, :payment_method => @payment_method,
             :amount => @amount, :reference_number => @reference_number
           })
         
@@ -125,14 +125,14 @@ class HomeController < ApplicationController
     @page_num = params[:page_num].to_i
     @sub_page_id = params[:sub_page_id].to_i
     
-    @display = TerminalDisplayLink.load_display_for_terminal @terminal_id
+    @display = TerminalDisplayLink.load_display_for_terminal @terminal_id, current_outlet
     
     @price_map = {}
     
     @menu_page = @display.menu_pages[@page_num-1]
     
     if @sub_page_id and @sub_page_id > 0
-      @menu_page = MenuPage.find(@sub_page_id)
+      @menu_page = current_outlet.menu_pages.find(@sub_page_id)
     end
     
     @menu_page.menu_items.each do |mi|
@@ -143,11 +143,11 @@ class HomeController < ApplicationController
   end
   
   def load_price_receipt_for_product
-    @product = Product.find(params[:product_id])
+    @product = current_outlet.products.find(params[:product_id])
   end
   
   def update_price
-    @product = Product.find(params[:product_id])
+    @product = current_outlet.products.find(params[:product_id])
     @new_price = params[:new_price].to_f
     
     @menu_item_id = params[:menu_item_id]
@@ -159,7 +159,7 @@ class HomeController < ApplicationController
   end
   
   def update_cost_price
-    @product = Product.find(params[:product_id])
+    @product = current_outlet.products.find(params[:product_id])
     @new_cost_price = params[:new_cost_price].to_f
     
     @product.cost_price = @new_cost_price
@@ -172,14 +172,14 @@ class HomeController < ApplicationController
     @page_num = params[:page_num].to_i
     @sub_page_id = params[:sub_page_id].to_i
     
-    @display = TerminalDisplayLink.load_display_for_terminal @terminal_id
+    @display = TerminalDisplayLink.load_display_for_terminal @terminal_id, current_outlet
     
     @stock_map = {}
     
     @menu_page = @display.menu_pages[@page_num-1]
     
     if @sub_page_id and @sub_page_id > 0
-      @menu_page = MenuPage.find(@sub_page_id)
+      @menu_page = current_outlet.menu_pages.find(@sub_page_id)
     end
     
     @menu_page.menu_items.each do |mi|
@@ -191,13 +191,13 @@ class HomeController < ApplicationController
   end
   
   def load_stock_receipt_for_product
-    @product = Product.find(params[:product_id])
+    @product = current_outlet.products.find(params[:product_id])
     
     @stock_transaction = @product.last_stock_transaction.last
   end
   
   def update_stock
-    @product = Product.find(params[:product_id])
+    @product = current_outlet.products.find(params[:product_id])
     @new_amount = params[:new_amount].to_f
     @type = params[:t_type]
     
@@ -205,7 +205,7 @@ class HomeController < ApplicationController
     
     @change_amount = @new_amount - @product.quantity_in_stock
     
-    @st = StockTransaction.create(:product_id => @product.id, :employee_id => current_employee.id, 
+    @st = StockTransaction.create(:outlet_id => current_outlet.id, :product_id => @product.id, :employee_id => current_employee.id, 
       :old_amount => @product.quantity_in_stock, :change_amount => @change_amount, :transaction_type => @type)
     
     @product.quantity_in_stock = @new_amount
@@ -226,11 +226,11 @@ class HomeController < ApplicationController
 
   def clockin
     @employee_id = params[:employee_id]
-    @employee = Employee.find(@employee_id)
+    @employee = current_outlet.employees.find(@employee_id)
     
     if @timekeeping_terminal == @terminal_id and !Employee.is_cluey_user?(@employee)
       #add an entry to the shift timestamps table
-      ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_IN)
+      ShiftTimestamp.create(:outlet_id => current_outlet.id, :employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_IN)
     end
     
     update_last_active @employee
@@ -240,13 +240,13 @@ class HomeController < ApplicationController
 
   def clockout
     @employee_id = params[:employee_id]
-    @employee = Employee.find(@employee_id)
+    @employee = current_outlet.employees.find(@employee_id)
     
     update_last_active @employee
     
     if @timekeeping_terminal == @terminal_id and !Employee.is_cluey_user?(@employee)
       #add an entry to the shift timestamps table
-      @last_clockout = ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_OUT)
+      @last_clockout = ShiftTimestamp.create(:outlet_id => current_outlet.id, :employee_id => @employee.id, :timestamp_type => ShiftTimestamp::CLOCK_OUT)
     end
     
     if @timekeeping_terminal == @terminal_id and !Employee.is_cluey_user?(@employee)
@@ -365,15 +365,15 @@ class HomeController < ApplicationController
       @payable_hours = (@payable_seconds / 3600.0).round(2)
       @cost = @hourly_rate * @payable_hours
         
-      @wr = WorkReport.create(:employee_id => @employee.id, :report_data => @report_data, 
+      @wr = WorkReport.create(:outlet_id => current_outlet.id, :employee_id => @employee.id, :report_data => @report_data, 
         :hourly_rate => @hourly_rate, :cost => @cost, :clockin_time => @last_clockin.created_at, 
         :clockout_time => @last_clockout.created_at, :shift_seconds => @shift_seconds, 
         :break_seconds => @break_time_seconds, :payable_seconds => @payable_seconds)
     
-      @custom_work_report_footer = GlobalSetting.parsed_setting_for GlobalSetting::WORK_REPORT_FOOTER_TEXT
+      @custom_work_report_footer = GlobalSetting.parsed_setting_for GlobalSetting::WORK_REPORT_FOOTER_TEXT, current_outlet
     end
     
-    @print_work_report = GlobalSetting.parsed_setting_for GlobalSetting::PRINT_WORK_REPORT
+    @print_work_report = GlobalSetting.parsed_setting_for GlobalSetting::PRINT_WORK_REPORT, current_outlet
     
     if @print_work_report
       render :template => "/home/print_work_report"
@@ -384,7 +384,7 @@ class HomeController < ApplicationController
 
   def login
     @employee_id = params[:employee_id]
-    @employee = Employee.find(@employee_id)
+    @employee = current_outlet.employees.find(@employee_id)
     
     @employee.last_logout = Time.now
     
@@ -395,7 +395,7 @@ class HomeController < ApplicationController
   
   def logout
     @employee_id = params[:employee_id]
-    @employee = Employee.find(@employee_id)
+    @employee = current_outlet.employees.find(@employee_id)
     
     @employee.last_logout = Time.now
     
@@ -405,7 +405,7 @@ class HomeController < ApplicationController
   end
   
   def break_in
-    @employee = Employee.find(params[:id])
+    @employee = current_outlet.employees.find(params[:id])
 
     redirect_to :back, :flash => {:error => "Employee not found."} and return if @employee.nil?
 
@@ -413,14 +413,14 @@ class HomeController < ApplicationController
 
     if @timekeeping_terminal == @terminal_id and !Employee.is_cluey_user?(@employee)
       #add an entry to the shift timestamps table
-      ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_IN)
+      ShiftTimestamp.create(:outlet_id => current_outlet.id, :employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_IN)
     end
     
     render :json => {:success => true}.to_json
   end
   
   def break_out
-    @employee = Employee.find(params[:id])
+    @employee = current_outlet.employees.find(params[:id])
 
     redirect_to :back, :flash => {:error => "Employee not found."} and return if @employee.nil?
 
@@ -428,7 +428,7 @@ class HomeController < ApplicationController
 
     if @timekeeping_terminal == @terminal_id and !Employee.is_cluey_user?(@employee)
       #add an entry to the shift timestamps table
-      ShiftTimestamp.create(:employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_OUT)
+      ShiftTimestamp.create(:outlet_id => current_outlet.id, :employee_id => @employee.id, :timestamp_type => ShiftTimestamp::BREAK_OUT)
     end
     
     render :json => {:success => true}.to_json
@@ -576,6 +576,7 @@ class HomeController < ApplicationController
       }
       
       @ct = ClientTransaction.create(
+        :outlet_id => current_outlet.id,
         :order_id => @order_id, 
         :client_name => @client_name, 
         :transaction_data => @transaction_data,
@@ -709,7 +710,7 @@ class HomeController < ApplicationController
     @files << "\n# Modification Digest: #{digest.hexdigest}"
     
     #a timestamp that we can update from the app to force a reload
-    @modification_timestamp = GlobalSetting.parsed_setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP
+    @modification_timestamp = GlobalSetting.parsed_setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP, current_outlet
     @files << "\n# Modification Timestamp: #{@modification_timestamp}"
     
     render :text => @files.join("\n"), :content_type => 'text/cache-manifest', :layout => nil
@@ -727,9 +728,9 @@ class HomeController < ApplicationController
   private
 
   def do_common_interface_actions
-    @employees = Employee.all_active
-    @display = TerminalDisplayLink.load_display_for_terminal @terminal_id
-    @rooms = Room.all
+    @employees = Employee.all_active current_outlet
+    @display = TerminalDisplayLink.load_display_for_terminal @terminal_id, current_outlet
+    @rooms = current_outlet.rooms.all
   end
   
   def perform_interface_specific_actions
@@ -747,12 +748,12 @@ class HomeController < ApplicationController
     @menu_screen_buttons_map = {}
     @options_screen_buttons_map = {}
     
-    Role.all.each do |role|
-      @menu_screen_buttons_map[role.id] = DisplayButtonRole.menu_screen_buttons_for_role(role.id)
-      @options_screen_buttons_map[role.id] = DisplayButtonRole.admin_screen_buttons_for_role(role.id)
+    current_outlet.roles.each do |role|
+      @menu_screen_buttons_map[role.id] = DisplayButtonRole.menu_screen_buttons_for_role(current_outlet, role.id)
+      @options_screen_buttons_map[role.id] = DisplayButtonRole.admin_screen_buttons_for_role(current_outlet, role.id)
     end 
     
-    @customer_letter_query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from customers where customer_type in ('#{Customer::NORMAL}', '#{Customer::BOTH}') and is_active = true group by substr(name,1,1)")
+    @customer_letter_query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from customers where customer_type in ('#{Customer::NORMAL}', '#{Customer::BOTH}') and is_active = true and outlet_id = #{current_outlet.id} group by substr(name,1,1)")
 
     @customer_letters = []
     
@@ -761,7 +762,7 @@ class HomeController < ApplicationController
       @customer_letters += element
     end
     
-    @product_letter_query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from products where products.is_stock_item = true group by substr(name,1,1)")
+    @product_letter_query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from products where products.is_stock_item = true and outlet_id = #{current_outlet.id} group by substr(name,1,1)")
 
     @product_letters = []
     
@@ -773,16 +774,16 @@ class HomeController < ApplicationController
   end
   
   def do_medium_interface_actions
-    @tables_button = DisplayButton.find_by_perm_id(ButtonMapper::TABLES_BUTTON) 
-    @order_button = DisplayButton.find_by_perm_id(ButtonMapper::ORDER_BUTTON) 
-    @modify_button = DisplayButton.find_by_perm_id(ButtonMapper::MODIFY_ORDER_ITEM_BUTTON)
-    @course_button = DisplayButton.find_by_perm_id(ButtonMapper::COURSE_BUTTON)
-    @remove_item_button = DisplayButton.find_by_perm_id(ButtonMapper::REMOVE_ITEM_BUTTON);
-    @print_bill_button = DisplayButton.find_by_perm_id(ButtonMapper::PRINT_BILL_BUTTON);
-    @global_settings_button = DisplayButton.find_by_perm_id(ButtonMapper::SYSTEM_BUTTON);
-    @transfer_order_button = DisplayButton.find_by_perm_id(ButtonMapper::TRANSFER_ORDER_BUTTON);
-    @toggle_menu_item_double_mode_button = DisplayButton.find_by_perm_id(ButtonMapper::TOGGLE_MENU_ITEM_DOUBLE_BUTTON);
-    @toggle_menu_item_half_mode_button = DisplayButton.find_by_perm_id(ButtonMapper::TOGGLE_MENU_ITEM_HALF_BUTTON);
+    @tables_button = DisplayButton.find_by_outlet_id_and_perm_id(current_outlet.id, ButtonMapper::TABLES_BUTTON) 
+    @order_button = DisplayButton.find_by_outlet_id_and_perm_id(current_outlet.id, ButtonMapper::ORDER_BUTTON) 
+    @modify_button = DisplayButton.find_by_outlet_id_and_perm_id(current_outlet.id, ButtonMapper::MODIFY_ORDER_ITEM_BUTTON)
+    @course_button = DisplayButton.find_by_outlet_id_and_perm_id(current_outlet.id, ButtonMapper::COURSE_BUTTON)
+    @remove_item_button = DisplayButton.find_by_outlet_id_and_perm_id(current_outlet.id, ButtonMapper::REMOVE_ITEM_BUTTON);
+    @print_bill_button = DisplayButton.find_by_outlet_id_and_perm_id(current_outlet.id, ButtonMapper::PRINT_BILL_BUTTON);
+    @global_settings_button = DisplayButton.find_by_outlet_id_and_perm_id(current_outlet.id, ButtonMapper::SYSTEM_BUTTON);
+    @transfer_order_button = DisplayButton.find_by_outlet_id_and_perm_id(current_outlet.id, ButtonMapper::TRANSFER_ORDER_BUTTON);
+    @toggle_menu_item_double_mode_button = DisplayButton.find_by_outlet_id_and_perm_id(current_outlet.id, ButtonMapper::TOGGLE_MENU_ITEM_DOUBLE_BUTTON);
+    @toggle_menu_item_half_mode_button = DisplayButton.find_by_outlet_id_and_perm_id(current_outlet.id, ButtonMapper::TOGGLE_MENU_ITEM_HALF_BUTTON);
     
     @display_buttons = []
 
@@ -807,19 +808,19 @@ class HomeController < ApplicationController
     
     #store the last receipt html for the terminal, server and table
     if params[:currentTerminalRecptHTML] and !params[:currentTerminalRecptHTML].blank?
-      StoredReceiptHtml.find_all_by_receipt_type_and_receipt_key(StoredReceiptHtml::TERMINAL, @terminal_id).each(&:destroy)
-      @srh = StoredReceiptHtml.new({:receipt_type => StoredReceiptHtml::TERMINAL, :receipt_key => @terminal_id, :stored_html => params[:currentTerminalRecptHTML]})
+      current_outlet.stored_receipt_htmls.find_all_by_receipt_type_and_receipt_key(StoredReceiptHtml::TERMINAL, @terminal_id).each(&:destroy)
+      @srh = StoredReceiptHtml.new({:outlet_id => current_outlet.id, :receipt_type => StoredReceiptHtml::TERMINAL, :receipt_key => @terminal_id, :stored_html => params[:currentTerminalRecptHTML]})
       @srh.save!
       
-      StoredReceiptHtml.find_all_by_receipt_type_and_receipt_key(StoredReceiptHtml::EMPLOYEE, current_employee.nickname).each(&:destroy)
-      @serh = StoredReceiptHtml.new({:receipt_type => StoredReceiptHtml::EMPLOYEE, :receipt_key => current_employee.nickname, :stored_html => params[:currentTerminalRecptHTML]})
+      current_outlet.stored_receipt_htmls.find_all_by_receipt_type_and_receipt_key(StoredReceiptHtml::EMPLOYEE, current_employee.nickname).each(&:destroy)
+      @serh = StoredReceiptHtml.new({:outlet_id => current_outlet.id, :receipt_type => StoredReceiptHtml::EMPLOYEE, :receipt_key => current_employee.nickname, :stored_html => params[:currentTerminalRecptHTML]})
       @serh.save!
       
       @current_table_label = params[:currentTerminalRecptTableLabel]
       
       if @current_table_label and !@current_table_label.blank?
-        StoredReceiptHtml.find_all_by_receipt_type_and_receipt_key(StoredReceiptHtml::TABLE, @current_table_label).each(&:destroy)
-        @strh = StoredReceiptHtml.new({:receipt_type => StoredReceiptHtml::TABLE, :receipt_key => @current_table_label, :stored_html => params[:currentTerminalRecptHTML]})
+        current_outlet.stored_receipt_htmls.find_all_by_receipt_type_and_receipt_key(StoredReceiptHtml::TABLE, @current_table_label).each(&:destroy)
+        @strh = StoredReceiptHtml.new({:outlet_id => current_outlet.id, :receipt_type => StoredReceiptHtml::TABLE, :receipt_key => @current_table_label, :stored_html => params[:currentTerminalRecptHTML]})
         @strh.save!
       end
     end

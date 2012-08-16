@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120810134930) do
+ActiveRecord::Schema.define(:version => 20120815134901) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -19,13 +19,19 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "reference_number"
+    t.integer  "outlet_id"
   end
+
+  add_index "card_transactions", ["outlet_id"], :name => "index_card_transactions_on_outlet_id"
 
   create_table "cash_out_presets", :force => true do |t|
     t.string   "label"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
+
+  add_index "cash_out_presets", ["outlet_id"], :name => "index_cash_out_presets_on_outlet_id"
 
   create_table "cash_outs", :force => true do |t|
     t.string   "terminal_id"
@@ -33,7 +39,10 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.float    "amount"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
+
+  add_index "cash_outs", ["outlet_id"], :name => "index_cash_outs_on_outlet_id"
 
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
@@ -46,10 +55,12 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.string   "terminal_id"
     t.integer  "report_num"
     t.text     "report_data"
+    t.integer  "outlet_id"
   end
 
   add_index "cash_totals", ["employee_id"], :name => "index_cash_totals_on_employee_id"
   add_index "cash_totals", ["end_calc_order_id"], :name => "index_cash_totals_on_end_calc_order_id"
+  add_index "cash_totals", ["outlet_id"], :name => "index_cash_totals_on_outlet_id"
   add_index "cash_totals", ["start_calc_order_id"], :name => "index_cash_totals_on_start_calc_order_id"
 
   create_table "categories", :force => true do |t|
@@ -66,9 +77,11 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.string   "kitchen_screens",                          :default => ""
     t.string   "blocked_printers"
     t.boolean  "prompt_for_covers",                        :default => false
+    t.integer  "outlet_id"
   end
 
   add_index "categories", ["order_item_addition_grid_id"], :name => "index_categories_on_order_item_addition_grid_id"
+  add_index "categories", ["outlet_id"], :name => "index_categories_on_outlet_id"
   add_index "categories", ["parent_category_id"], :name => "index_categories_on_parent_category_id"
   add_index "categories", ["tax_rate_id"], :name => "index_categories_on_tax_rate_id"
 
@@ -79,9 +92,11 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.text     "transaction_data",            :limit => 2147483647
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
 
   add_index "client_transactions", ["order_id"], :name => "index_client_transactions_on_order_id"
+  add_index "client_transactions", ["outlet_id"], :name => "index_client_transactions_on_outlet_id"
 
   create_table "cluey_accounts", :force => true do |t|
     t.string   "name"
@@ -100,7 +115,10 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "allocation_type"
+    t.integer  "outlet_id"
   end
+
+  add_index "customer_points_allocations", ["outlet_id"], :name => "index_customer_points_allocations_on_outlet_id"
 
   create_table "customer_transactions", :force => true do |t|
     t.integer  "customer_id"
@@ -113,7 +131,10 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.datetime "updated_at"
     t.integer  "payment_id"
     t.string   "terminal_id"
+    t.integer  "outlet_id"
   end
+
+  add_index "customer_transactions", ["outlet_id"], :name => "index_customer_transactions_on_outlet_id"
 
   create_table "customers", :force => true do |t|
     t.string   "name"
@@ -136,7 +157,10 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.integer  "customer_number"
     t.string   "customer_type"
     t.boolean  "is_active",        :default => true
+    t.integer  "outlet_id"
   end
+
+  add_index "customers", ["outlet_id"], :name => "index_customers_on_outlet_id"
 
   create_table "deliveries", :force => true do |t|
     t.integer  "employee_id"
@@ -146,7 +170,10 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.datetime "received_date"
     t.string   "reference_number"
     t.string   "terminal_id"
+    t.integer  "outlet_id"
   end
+
+  add_index "deliveries", ["outlet_id"], :name => "index_deliveries_on_outlet_id"
 
   create_table "discounts", :force => true do |t|
     t.string   "name"
@@ -154,13 +181,19 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.boolean  "is_default"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
+
+  add_index "discounts", ["outlet_id"], :name => "index_discounts_on_outlet_id"
 
   create_table "display_button_groups", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
+
+  add_index "display_button_groups", ["outlet_id"], :name => "index_display_button_groups_on_outlet_id"
 
   create_table "display_button_roles", :force => true do |t|
     t.integer  "display_button_id"
@@ -170,9 +203,11 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "passcode_required",    :default => false
+    t.integer  "outlet_id"
   end
 
   add_index "display_button_roles", ["display_button_id"], :name => "index_display_button_roles_on_display_button_id"
+  add_index "display_button_roles", ["outlet_id"], :name => "index_display_button_roles_on_outlet_id"
   add_index "display_button_roles", ["role_id"], :name => "index_display_button_roles_on_role_id"
 
   create_table "display_buttons", :force => true do |t|
@@ -181,9 +216,11 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.datetime "updated_at"
     t.integer  "perm_id"
     t.integer  "display_button_group_id"
+    t.integer  "outlet_id"
   end
 
   add_index "display_buttons", ["display_button_group_id"], :name => "index_display_buttons_on_display_button_group_id"
+  add_index "display_buttons", ["outlet_id"], :name => "index_display_buttons_on_outlet_id"
 
   create_table "displays", :force => true do |t|
     t.string   "name"
@@ -191,7 +228,10 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.datetime "updated_at"
     t.boolean  "is_default", :default => false
     t.boolean  "is_public",  :default => false
+    t.integer  "outlet_id"
   end
+
+  add_index "displays", ["outlet_id"], :name => "index_displays_on_outlet_id"
 
   create_table "employees", :force => true do |t|
     t.string   "staff_id"
@@ -214,8 +254,10 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.datetime "employee_image_updated_at"
     t.string   "clockin_code"
     t.string   "dallas_code"
+    t.integer  "outlet_id"
   end
 
+  add_index "employees", ["outlet_id"], :name => "index_employees_on_outlet_id"
   add_index "employees", ["role_id"], :name => "index_employees_on_role_id"
 
   create_table "global_settings", :force => true do |t|
@@ -228,7 +270,10 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.datetime "logo_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
+
+  add_index "global_settings", ["outlet_id"], :name => "index_global_settings_on_outlet_id"
 
   create_table "ingredients", :force => true do |t|
     t.integer  "product_id"
@@ -237,9 +282,11 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.float    "quantity_denominator",  :default => 1.0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
 
   add_index "ingredients", ["ingredient_product_id"], :name => "index_ingredients_on_ingredient_product_id"
+  add_index "ingredients", ["outlet_id"], :name => "index_ingredients_on_outlet_id"
   add_index "ingredients", ["product_id"], :name => "index_ingredients_on_product_id"
 
   create_table "loyalty_levels", :force => true do |t|
@@ -248,7 +295,10 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.boolean  "is_default", :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
+
+  add_index "loyalty_levels", ["outlet_id"], :name => "index_loyalty_levels_on_outlet_id"
 
   create_table "menu_items", :force => true do |t|
     t.integer  "menu_page_id"
@@ -256,10 +306,12 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "order_num",    :default => 0
+    t.integer  "outlet_id"
   end
 
   add_index "menu_items", ["menu_page_id", "product_id"], :name => "index_menu_items_on_menu_page_id_and_product_id"
   add_index "menu_items", ["menu_page_id"], :name => "index_menu_items_on_menu_page_id"
+  add_index "menu_items", ["outlet_id"], :name => "index_menu_items_on_outlet_id"
   add_index "menu_items", ["product_id", "menu_page_id"], :name => "index_menu_items_on_product_id_and_menu_page_id"
   add_index "menu_items", ["product_id"], :name => "index_menu_items_on_product_id"
 
@@ -270,16 +322,21 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "embedded_display_id"
+    t.integer  "outlet_id"
   end
 
   add_index "menu_pages", ["display_id"], :name => "index_menu_pages_on_display_id"
   add_index "menu_pages", ["embedded_display_id"], :name => "index_menu_pages_on_embedded_display_id"
+  add_index "menu_pages", ["outlet_id"], :name => "index_menu_pages_on_outlet_id"
 
   create_table "modifier_categories", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
+
+  add_index "modifier_categories", ["outlet_id"], :name => "index_modifier_categories_on_outlet_id"
 
   create_table "modifiers", :force => true do |t|
     t.integer  "modifier_category_id"
@@ -287,9 +344,11 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.float    "price"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
 
   add_index "modifiers", ["modifier_category_id"], :name => "index_modifiers_on_modifier_category_id"
+  add_index "modifiers", ["outlet_id"], :name => "index_modifiers_on_outlet_id"
 
   create_table "order_item_addition_grids", :force => true do |t|
     t.string   "name"
@@ -297,7 +356,10 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.integer  "grid_y_size"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
+
+  add_index "order_item_addition_grids", ["outlet_id"], :name => "index_order_item_addition_grids_on_outlet_id"
 
   create_table "order_item_additions", :force => true do |t|
     t.integer  "order_item_addition_grid_id"
@@ -317,10 +379,12 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.boolean  "is_addable",                  :default => false
     t.integer  "follow_on_grid_id"
     t.integer  "product_id"
+    t.integer  "outlet_id"
   end
 
   add_index "order_item_additions", ["follow_on_grid_id"], :name => "index_order_item_additions_on_follow_on_grid_id"
   add_index "order_item_additions", ["order_item_addition_grid_id"], :name => "index_order_item_additions_on_order_item_addition_grid_id"
+  add_index "order_item_additions", ["outlet_id"], :name => "index_order_item_additions_on_outlet_id"
   add_index "order_item_additions", ["product_id"], :name => "index_order_item_additions_on_product_id"
 
   create_table "order_items", :force => true do |t|
@@ -345,10 +409,12 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.boolean  "is_void",                                      :default => false
     t.boolean  "is_half",                                      :default => false
     t.integer  "void_employee_id"
+    t.integer  "outlet_id"
   end
 
   add_index "order_items", ["employee_id"], :name => "index_order_items_on_employee_id"
   add_index "order_items", ["order_id"], :name => "index_order_items_on_order_id"
+  add_index "order_items", ["outlet_id"], :name => "index_order_items_on_outlet_id"
   add_index "order_items", ["product_id"], :name => "index_order_items_on_product_id"
 
   create_table "orders", :force => true do |t|
@@ -377,9 +443,11 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.string   "time_started"
     t.boolean  "training_mode_sale",                          :default => false
     t.integer  "room_id"
+    t.integer  "outlet_id"
   end
 
   add_index "orders", ["employee_id"], :name => "index_orders_on_employee_id"
+  add_index "orders", ["outlet_id"], :name => "index_orders_on_outlet_id"
   add_index "orders", ["table_info_id"], :name => "index_orders_on_table_info_id"
   add_index "orders", ["void_order_id"], :name => "index_orders_on_void_order_id"
 
@@ -387,9 +455,11 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.integer  "cluey_account_id"
     t.string   "name"
     t.string   "username"
-    t.string   "password"
+    t.string   "password_hash"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "has_seed_data",    :default => false
+    t.string   "password_salt"
   end
 
   create_table "payment_methods", :force => true do |t|
@@ -405,8 +475,10 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.integer  "receipt_footer_id"
     t.boolean  "open_cash_drawer",       :default => true
     t.boolean  "is_active",              :default => true
+    t.integer  "outlet_id"
   end
 
+  add_index "payment_methods", ["outlet_id"], :name => "index_payment_methods_on_outlet_id"
   add_index "payment_methods", ["receipt_footer_id"], :name => "index_payment_methods_on_receipt_footer_id"
 
   create_table "payments", :force => true do |t|
@@ -419,7 +491,10 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "terminal_id"
+    t.integer  "outlet_id"
   end
+
+  add_index "payments", ["outlet_id"], :name => "index_payments_on_outlet_id"
 
   create_table "products", :force => true do |t|
     t.string   "brand"
@@ -496,6 +571,7 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.string   "kitchen_screens",                          :default => ""
     t.float    "half_price",                               :default => 0.0
     t.string   "blocked_printers"
+    t.integer  "outlet_id"
   end
 
   add_index "products", ["category_id"], :name => "index_products_on_category_id"
@@ -503,12 +579,16 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
   add_index "products", ["menu_page_2_id"], :name => "index_products_on_menu_page_2_id"
   add_index "products", ["modifier_category_id"], :name => "index_products_on_modifier_category_id"
   add_index "products", ["order_item_addition_grid_id"], :name => "index_products_on_order_item_addition_grid_id"
+  add_index "products", ["outlet_id"], :name => "index_products_on_outlet_id"
   add_index "products", ["tax_rate_id"], :name => "index_products_on_tax_rate_id"
 
   create_table "receipt_footers", :force => true do |t|
-    t.string "name"
-    t.text   "content"
+    t.string  "name"
+    t.text    "content"
+    t.integer "outlet_id"
   end
+
+  add_index "receipt_footers", ["outlet_id"], :name => "index_receipt_footers_on_outlet_id"
 
   create_table "roles", :force => true do |t|
     t.string   "name"
@@ -516,7 +596,10 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.datetime "updated_at"
     t.boolean  "pin_required",  :default => false
     t.boolean  "login_allowed", :default => true
+    t.integer  "outlet_id"
   end
+
+  add_index "roles", ["outlet_id"], :name => "index_roles_on_outlet_id"
 
   create_table "room_objects", :force => true do |t|
     t.string   "object_type"
@@ -529,8 +612,10 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.integer  "grid_y_size"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
 
+  add_index "room_objects", ["outlet_id"], :name => "index_room_objects_on_outlet_id"
   add_index "room_objects", ["room_id"], :name => "index_room_objects_on_room_id"
 
   create_table "rooms", :force => true do |t|
@@ -542,7 +627,10 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.integer  "grid_resolution",                :default => 5
     t.float    "default_service_charge_percent"
     t.boolean  "prompt_for_client_name",         :default => false
+    t.integer  "outlet_id"
   end
+
+  add_index "rooms", ["outlet_id"], :name => "index_rooms_on_outlet_id"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
@@ -559,7 +647,10 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.integer  "timestamp_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
+
+  add_index "shift_timestamps", ["outlet_id"], :name => "index_shift_timestamps_on_outlet_id"
 
   create_table "stock_transactions", :force => true do |t|
     t.integer  "product_id"
@@ -573,9 +664,11 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.integer  "delivery_id"
     t.boolean  "is_return",        :default => false
     t.integer  "order_item_id"
+    t.integer  "outlet_id"
   end
 
   add_index "stock_transactions", ["employee_id"], :name => "index_stock_transactions_on_employee_id"
+  add_index "stock_transactions", ["outlet_id"], :name => "index_stock_transactions_on_outlet_id"
   add_index "stock_transactions", ["product_id"], :name => "index_stock_transactions_on_product_id"
 
   create_table "stored_receipt_htmls", :force => true do |t|
@@ -584,15 +677,20 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.text     "stored_html"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
+
+  add_index "stored_receipt_htmls", ["outlet_id"], :name => "index_stored_receipt_htmls_on_outlet_id"
 
   create_table "table_infos", :force => true do |t|
     t.string   "perm_id"
     t.integer  "room_object_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
 
+  add_index "table_infos", ["outlet_id"], :name => "index_table_infos_on_outlet_id"
   add_index "table_infos", ["room_object_id"], :name => "index_table_infos_on_room_object_id"
 
   create_table "tax_rates", :force => true do |t|
@@ -601,16 +699,21 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.boolean  "is_default"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
+
+  add_index "tax_rates", ["outlet_id"], :name => "index_tax_rates_on_outlet_id"
 
   create_table "terminal_display_links", :force => true do |t|
     t.string   "terminal_id"
     t.integer  "display_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
 
   add_index "terminal_display_links", ["display_id"], :name => "index_terminal_display_links_on_display_id"
+  add_index "terminal_display_links", ["outlet_id"], :name => "index_terminal_display_links_on_outlet_id"
 
   create_table "terminal_sync_data", :force => true do |t|
     t.integer  "sync_type"
@@ -618,7 +721,10 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.text     "data",       :limit => 2147483647
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "outlet_id"
   end
+
+  add_index "terminal_sync_data", ["outlet_id"], :name => "index_terminal_sync_data_on_outlet_id"
 
   create_table "work_reports", :force => true do |t|
     t.integer  "employee_id"
@@ -632,6 +738,9 @@ ActiveRecord::Schema.define(:version => 20120810134930) do
     t.integer  "payable_seconds", :default => 0
     t.float    "hourly_rate"
     t.float    "cost"
+    t.integer  "outlet_id"
   end
+
+  add_index "work_reports", ["outlet_id"], :name => "index_work_reports_on_outlet_id"
 
 end

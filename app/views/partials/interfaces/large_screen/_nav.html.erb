@@ -49,7 +49,7 @@
       <li>
         Change Menu
         <ul>
-          <% Display.all.each do |display| %>
+          <% current_outlet.displays.all.each do |display| %>
             <li rel="1-<%= display.id %>">              
               <%= @display.id == display.id ? "* " : "" %>
               <%= display.name %>
@@ -61,9 +61,9 @@
         Price Level
         <ul id="price_levels">
           <li rel="2-1">Standard</li>
-          <li rel="2-2"><%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, {:price_level => 2} %></li>
-          <li rel="2-3"><%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, {:price_level => 3} %></li>
-          <li rel="2-4"><%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, {:price_level => 4} %></li>
+          <li rel="2-2"><%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, current_outlet, {:price_level => 2} %></li>
+          <li rel="2-3"><%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, current_outlet, {:price_level => 3} %></li>
+          <li rel="2-4"><%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, current_outlet, {:price_level => 4} %></li>
         </ul>
       </li>
       <li id="change_prices_dropdown_option" rel="3">Change Prices</li>

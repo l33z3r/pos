@@ -1,21 +1,3 @@
-# == Schema Information
-# Schema version: 20110705150431
-#
-# Table name: cash_totals
-#
-#  id                  :integer(4)      not null, primary key
-#  total_type          :string(255)
-#  total               :float
-#  start_calc_order_id :integer(4)
-#  end_calc_order_id   :integer(4)
-#  created_at          :datetime
-#  updated_at          :datetime
-#  employee_id         :integer(4)
-#  terminal_id         :string(255)
-#  report_num          :integer(4)
-#  report_data         :text
-#
-
 # Notes on Cash Totals:
 # Voided items and orders do not count toward totals
 # Totals by product may not add up as the prices may have changed for a product over the course of a working day
@@ -24,6 +6,8 @@
 # 
 
 class CashTotal < ActiveRecord::Base
+  
+  belongs_to :outlet
   
   serialize :report_data
   
@@ -61,25 +45,25 @@ class CashTotal < ActiveRecord::Base
   
   validates :total_type, :presence => true, :inclusion => { :in => VALID_TOTAL_TYPES }
   
-  def self.do_total total_type, commit, cash_count, open_orders_total, employee, terminal_id
+  def self.do_total total_type, commit, cash_count, open_orders_total, employee, terminal_id, current_outlet
     CashTotal.transaction do
       #validate total_type
       return nil unless VALID_TOTAL_TYPES.include?(total_type)
     
-      @cash_total, @cash_total_data = CashTotal.prepare_cash_total_data terminal_id, cash_count, open_orders_total
+      @cash_total, @cash_total_data = CashTotal.prepare_cash_total_data terminal_id, cash_count, open_orders_total, current_outlet
     
       #prepare the next report sequence number
-      @next_report_num = CashTotal.get_next_report_number terminal_id, total_type
+      @next_report_num = CashTotal.get_next_report_number terminal_id, total_type, current_outlet
       
       @cash_total_data[:business_info_data] = {}
       @cash_total_data[:business_info_data]["#{total_type} Report Number:"] = @next_report_num
       @cash_total_data[:business_info_data]["Terminal:"] = terminal_id
-      @cash_total_data[:business_info_data]["Date:"] = Time.now.strftime(GlobalSetting.default_date_format)
+      @cash_total_data[:business_info_data]["Date:"] = Time.now.strftime(GlobalSetting.default_date_format(current_outlet))
       @cash_total_data[:business_info_data]["Performed By:"] = employee.nickname
     
       #insert a row if commit is true
       if commit
-        @cash_total_obj = CashTotal.new({:employee_id => employee.id, :terminal_id => terminal_id, :report_num => @next_report_num,
+        @cash_total_obj = CashTotal.new({:outlet_id => current_outlet.id, :employee_id => employee.id, :terminal_id => terminal_id, :report_num => @next_report_num,
             :report_data => @cash_total_data, :start_order => @first_order, :end_order => @last_order, :total_type => total_type, :total => @overall_total})
         @cash_total_obj.save!
       end
@@ -88,7 +72,7 @@ class CashTotal < ActiveRecord::Base
     end
   end
   
-  def self.prepare_cash_total_data terminal_id, cash_count, open_orders_total
+  def self.prepare_cash_total_data terminal_id, cash_count, open_orders_total, current_outlet
     @sales_by_product = {}
     @sales_by_category = {}
     @sales_by_department = {}
@@ -113,15 +97,15 @@ class CashTotal < ActiveRecord::Base
     @customer_settlements_amount = 0
     
     #load the first order, based on the last z total or the very first if none exists
-    @last_performed_non_zero_z_total = where("total_type = ?", Z_TOTAL).where("end_calc_order_id is not ?", nil).where("terminal_id = ?", terminal_id).order("created_at").lock(true).last
+    @last_performed_non_zero_z_total = current_outlet.cash_totals.where("total_type = ?", Z_TOTAL).where("end_calc_order_id is not ?", nil).where("terminal_id = ?", terminal_id).order("created_at").lock(true).last
     
     if @last_performed_non_zero_z_total
       #now load the next order after the end order from the previous z total
-      @first_order = Order.where("created_at > ?", @last_performed_non_zero_z_total.end_order.created_at).where("terminal_id = ?", terminal_id).order("created_at").lock(true).first
+      @first_order = current_outlet.orders.where("created_at > ?", @last_performed_non_zero_z_total.end_order.created_at).where("terminal_id = ?", terminal_id).order("created_at").lock(true).first
       @last_z_total_time = @last_performed_non_zero_z_total.created_at
     else
       #no z totals yet, so just grab orders
-      @first_order = Order.where("terminal_id = ?", terminal_id).order("created_at").lock(true).first
+      @first_order = current_outlet.orders.where("terminal_id = ?", terminal_id).order("created_at").lock(true).first
       @last_z_total_time = Time.new(0)
     end
       
@@ -130,14 +114,14 @@ class CashTotal < ActiveRecord::Base
       @service_charge_total = 0
     else
       #load the most recent order
-      @last_order = Order.where("terminal_id = ?", terminal_id).order("created_at").lock(true).last
+      @last_order = current_outlet.orders.where("terminal_id = ?", terminal_id).order("created_at").lock(true).last
 
       #do the calculation
       @overall_total = 0
       @service_charge_total = 0
         
       #here are all the orders for this terminal since the last z total
-      @orders = Order.where("created_at >= ?", @first_order.created_at).where("created_at <= ?", @last_order.created_at).where("terminal_id = ?", terminal_id).where("training_mode_sale is false").where("is_void is false").lock(true)
+      @orders = current_outlet.orders.where("created_at >= ?", @first_order.created_at).where("created_at <= ?", @last_order.created_at).where("terminal_id = ?", terminal_id).where("training_mode_sale is false").where("is_void is false").lock(true)
        
       @orders.each do |order|
         
@@ -156,7 +140,7 @@ class CashTotal < ActiveRecord::Base
           
           if order_item.is_void
             
-            @void_employee = Employee.find_by_id(order_item.void_employee_id)
+            @void_employee = current_outlet.employees.find_by_id(order_item.void_employee_id)
             @void_employee_nickname = @void_employee.nickname
             
             #initialise a hash for employee
@@ -211,8 +195,8 @@ class CashTotal < ActiveRecord::Base
           end
             
           #now if tax chargable, add it on
-          @tax_chargable = GlobalSetting.parsed_setting_for GlobalSetting::TAX_CHARGABLE
-          @global_tax_rate = GlobalSetting.parsed_setting_for GlobalSetting::GLOBAL_TAX_RATE
+          @tax_chargable = GlobalSetting.parsed_setting_for GlobalSetting::TAX_CHARGABLE, current_outlet
+          @global_tax_rate = GlobalSetting.parsed_setting_for GlobalSetting::GLOBAL_TAX_RATE, current_outlet
             
           @product_sales_quantity = @sales_by_product[@product_name][:quantity].to_f
           @product_sales_quantity += order_item.quantity
@@ -332,7 +316,7 @@ class CashTotal < ActiveRecord::Base
       end
       
       #get all the settled account amounts
-      @customer_txns = CustomerTransaction.where("transaction_type = ?", CustomerTransaction::SETTLEMENT)
+      @customer_txns = current_outlet.customer_transactions.where("transaction_type = ?", CustomerTransaction::SETTLEMENT)
       .where("terminal_id = ?", terminal_id)
       .where("created_at >= ?", @last_z_total_time)
       .where("created_at <= ?", Time.now)
@@ -364,17 +348,17 @@ class CashTotal < ActiveRecord::Base
       @loyalty_points_redeemed += @sales_by_payment_type[PaymentMethod::LOYALTY_PAYMENT_METHOD_NAME] if @sales_by_payment_type[PaymentMethod::LOYALTY_PAYMENT_METHOD_NAME]
       
       #total of all cash back
-      @cash_back_total += Order.where("created_at >= ?", @first_order.created_at)
+      @cash_back_total += current_outlet.orders.where("created_at >= ?", @first_order.created_at)
       .where("created_at <= ?", @last_order.created_at)
       .where("is_void is false")
       .where("terminal_id = ?", terminal_id).lock(true).sum("cashback")
     end
         
-    @opening_float = CashTotal.current_float_amount terminal_id
+    @opening_float = CashTotal.current_float_amount terminal_id, current_outlet
     
     @cash_paid_out = 0
     
-    @cash_outs = CashOut.where("terminal_id = ?", terminal_id)
+    @cash_outs = current_outlet.cash_outs.where("terminal_id = ?", terminal_id)
     .where("created_at >= ?", @last_z_total_time)
     .where("created_at <= ?", Time.now)
     
@@ -434,10 +418,10 @@ class CashTotal < ActiveRecord::Base
     return @overall_total, @cash_total_data
   end
   
-  def self.get_next_report_number terminal_id, total_type
+  def self.get_next_report_number terminal_id, total_type, current_outlet
     @next_report_num = 1
     
-    @last_report_for_type = where("total_type = ?", total_type).where("terminal_id = ?", terminal_id).order("created_at").lock(true).last
+    @last_report_for_type = current_outlet.cash_totals.where("total_type = ?", total_type).where("terminal_id = ?", terminal_id).order("created_at").lock(true).last
     
     if @last_report_for_type
       @next_report_num = @last_report_for_type.report_num + 1
@@ -446,29 +430,29 @@ class CashTotal < ActiveRecord::Base
     @next_report_num
   end
   
-  def self.do_add_float employee, terminal_id, float_amount
-    @cash_total_obj = CashTotal.new({:employee_id => employee.id, :terminal_id => terminal_id,
+  def self.do_add_float employee, terminal_id, float_amount, current_outlet
+    @cash_total_obj = CashTotal.new({:outlet_id => current_outlet.id, :employee_id => employee.id, :terminal_id => terminal_id,
         :total_type => FLOAT, :total => float_amount})
     @cash_total_obj.save
   end
   
-  def self.last_z_total terminal_id
-    where("total_type = ?", Z_TOTAL).where("terminal_id = ?", terminal_id).order("created_at").last
+  def self.last_z_total terminal_id, current_outlet
+    current_outlet.cash_totals.where("total_type = ?", Z_TOTAL).where("terminal_id = ?", terminal_id).order("created_at").last
   end
 
-  def self.current_float_amount terminal_id
-    @last_z_total, @previous_floats = CashTotal.floats_since_last_z_total terminal_id
+  def self.current_float_amount terminal_id, current_outlet
+    @last_z_total, @previous_floats = CashTotal.floats_since_last_z_total terminal_id, current_outlet
     
     @sum = @previous_floats.sum("total")
     
     @sum
   end
   
-  def self.floats_since_last_z_total terminal_id
-    @last_z_total = CashTotal.last_z_total terminal_id
+  def self.floats_since_last_z_total terminal_id, current_outlet
+    @last_z_total = CashTotal.last_z_total terminal_id, current_outlet
     
     #select all previous floats since last z total
-    @previous_floats = where("total_type = ?", CashTotal::FLOAT).where("terminal_id = ?", terminal_id)
+    @previous_floats = current_outlet.cash_totals("total_type = ?", CashTotal::FLOAT).where("terminal_id = ?", terminal_id)
     
     if @last_z_total
       @previous_floats = @previous_floats.where("created_at >= ?", @last_z_total.created_at)
@@ -479,8 +463,8 @@ class CashTotal < ActiveRecord::Base
     return @last_z_total, @previous_floats
   end
   
-  def self.all_cash_totals total_type, terminal_id
-    where("total_type = ?", total_type).where("terminal_id = ?", terminal_id).order("created_at desc")
+  def self.all_cash_totals total_type, terminal_id, current_outlet
+    current_outlet.cash_totals.where("total_type = ?", total_type).where("terminal_id = ?", terminal_id).order("created_at desc")
   end
   
   def self.report_sections 
@@ -502,3 +486,22 @@ class CashTotal < ActiveRecord::Base
   end
 
 end
+
+# == Schema Information
+#
+# Table name: cash_totals
+#
+#  id                  :integer(4)      not null, primary key
+#  total_type          :string(255)
+#  total               :float
+#  start_calc_order_id :integer(4)
+#  end_calc_order_id   :integer(4)
+#  created_at          :datetime
+#  updated_at          :datetime
+#  employee_id         :integer(4)
+#  terminal_id         :string(255)
+#  report_num          :integer(4)
+#  report_data         :text
+#  outlet_id           :integer(4)
+#
+

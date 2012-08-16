@@ -7,6 +7,7 @@ class RoomObjectTest < ActiveSupport::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: room_objects
@@ -22,5 +23,6 @@ end
 #  grid_y_size :integer(4)
 #  created_at  :datetime
 #  updated_at  :datetime
+#  outlet_id   :integer(4)
 #
 

@@ -8,6 +8,7 @@ class TerminalSyncDataTest < ActiveSupport::TestCase
 end
 
 
+
 # == Schema Information
 #
 # Table name: terminal_sync_data
@@ -18,5 +19,6 @@ end
 #  data       :text(2147483647
 #  created_at :datetime
 #  updated_at :datetime
+#  outlet_id  :integer(4)
 #
 

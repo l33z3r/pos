@@ -5,17 +5,19 @@
     clearLocalStorageAndCookies();
 <% end %>
   
+  console.log("Current outlet id: <%=session[:current_outlet_id]%>");
+  
   //interface
   var currentInterface = "<%= current_interface %>";
   
   //load the setting for bypass pin
-  var bypassPin = <%= GlobalSetting.parsed_setting_for GlobalSetting::BYPASS_PIN %>;
+  var bypassPin = <%= GlobalSetting.parsed_setting_for GlobalSetting::BYPASS_PIN, current_outlet %>;
     
   //are we allowing bypassing of open orders for z totals on this terminal
-  var bypassOpenOrdersForCashTotal = <%= GlobalSetting.parsed_setting_for GlobalSetting::BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL, {:fingerprint => @terminal_fingerprint} %>;
+  var bypassOpenOrdersForCashTotal = <%= GlobalSetting.parsed_setting_for GlobalSetting::BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
     
   //clock format
-  var clockFormat = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CLOCK_FORMAT %>";
+  var clockFormat = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CLOCK_FORMAT, current_outlet %>";
     
   var defaultJSDateFormat = "";
   var defaultJSTimeFormat = "";
@@ -29,7 +31,7 @@
   }
   
   //licence expired screen?
-  var showLicenceExpiredScreen = <%= GlobalSetting.parsed_setting_for GlobalSetting::SHOW_LICENCE_EXPIRED_SCREEN %>;
+  var showLicenceExpiredScreen = <%= GlobalSetting.parsed_setting_for GlobalSetting::SHOW_LICENCE_EXPIRED_SCREEN, current_outlet %>;
   
   //is tax chargable
   var taxChargable = <%= @tax_chargable %>;
@@ -37,19 +39,19 @@
   var taxLabel = "<%= @tax_label %>";
    
   //global tax rate
-  var globalTaxRate = <%= GlobalSetting.parsed_setting_for GlobalSetting::GLOBAL_TAX_RATE %>;
+  var globalTaxRate = <%= GlobalSetting.parsed_setting_for GlobalSetting::GLOBAL_TAX_RATE, current_outlet %>;
    
-  var printVatReceipt = <%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_VAT_RECEIPT %>;
+  var printVatReceipt = <%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_VAT_RECEIPT, current_outlet %>;
    
-  var taxNumber = "<%= GlobalSetting.parsed_setting_for GlobalSetting::TAX_NUMBER %>";
+  var taxNumber = "<%= GlobalSetting.parsed_setting_for GlobalSetting::TAX_NUMBER, current_outlet %>";
   
   //service charge label
   var serviceChargeLabel = "<%= @service_charge_label %>";
   
-  var globalDefaultServiceChargePercent = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_SERVICE_CHARGE_PERCENT %>;
+  var globalDefaultServiceChargePercent = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_SERVICE_CHARGE_PERCENT, current_outlet %>;
   
   //default payment method
-  var defaultPaymentMethod = "<%= PaymentMethod.load_default.name.downcase %>";
+  var defaultPaymentMethod = "<%= PaymentMethod.load_default(current_outlet).name.downcase %>";
    
   var cashPaymentMethodName = "<%= PaymentMethod::CASH_PAYMENT_METHOD_NAME %>";
   var loyaltyPaymentMethodName = "<%= PaymentMethod::LOYALTY_PAYMENT_METHOD_NAME %>";
@@ -59,8 +61,8 @@
   var dynamicCurrencySymbol = "<%= @currency_symbol %>";
   
   //load the dynamically set screen that appears after a sale and login screen
-  var defaultHomeScreen = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_HOME_SCREEN, {:fingerprint => @terminal_fingerprint} %>;
-  var defaultPostLoginScreen = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_POST_LOGIN_SCREEN %>;
+  var defaultHomeScreen = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_HOME_SCREEN, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
+  var defaultPostLoginScreen = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_POST_LOGIN_SCREEN, current_outlet %>;
   var LOGIN_SCREEN = <%= GlobalSetting::LOGIN_SCREEN %>;
   var MENU_SCREEN = <%= GlobalSetting::MENU_SCREEN %>;
   var TABLES_SCREEN = <%= GlobalSetting::TABLES_SCREEN %>;
@@ -75,27 +77,27 @@
   
   var autoPrintReceipt = <%= @auto_print_receipt %>;
   
-  var receiptMessage = "<%= raw escape_javascript((GlobalSetting.parsed_setting_for (GlobalSetting::RECEIPT_MESSAGE))) %>";
+  var receiptMessage = "<%= raw escape_javascript((GlobalSetting.parsed_setting_for(GlobalSetting::RECEIPT_MESSAGE, current_outlet))) %>";
 
   var customReceiptFooters = {};
 
-<% ReceiptFooter.all.each do |rf| %>
+<% current_outlet.receipt_footers.all.each do |rf| %>
     customReceiptFooters[<%=rf.id%>] = {"name" : "<%=rf.name%>", "content" : "<%= raw escape_javascript(rf.content) %>"};
 <% end %>
       
-  var businessInfoMessage = "<%= raw escape_javascript((GlobalSetting.parsed_setting_for (GlobalSetting::BUSINESS_INFO_MESSAGE))) %>";
+  var businessInfoMessage = "<%= raw escape_javascript((GlobalSetting.parsed_setting_for(GlobalSetting::BUSINESS_INFO_MESSAGE, current_outlet))) %>";
 
-  var defaultDiscountPercent = "<%= Discount.load_default.percent %>";
+  var defaultDiscountPercent = "<%= Discount.load_default(current_outlet).percent %>";
   
   var terminalID = "<%=@terminal_id%>";
   
-  var pollingAmount = <%= GlobalSetting.parsed_setting_for GlobalSetting::POLLING_INTERVAL_SECONDS %> * 1000;
+  var pollingAmount = <%= GlobalSetting.parsed_setting_for GlobalSetting::POLLING_INTERVAL_SECONDS, current_outlet %> * 1000;
   var pollingMinSeconds = <%= GlobalSetting::POLLING_MIN_SECONDS %>;
   var pollingMaxSeconds = <%= GlobalSetting::POLLING_MAX_SECONDS %>;
   
   var using_mobile = <%= mobile_device? ? "true" : "false" %>;
   
-  var doBeep = <%= GlobalSetting.parsed_setting_for GlobalSetting::DO_BEEP, {:fingerprint => @terminal_fingerprint} %>;
+  var doBeep = <%= GlobalSetting.parsed_setting_for GlobalSetting::DO_BEEP, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
   
   var railsEnvironment = "<%= ENV['RAILS_ENV'] %>";
   
@@ -111,7 +113,7 @@
   var business_fax = "<%= @business_fax %>";
   var business_email_address = "<%= @business_email_address %>";
 
-<% @display = Display.load_default unless @display %>
+<% @display = Display.load_default(current_outlet) unless @display %>
     
   var selectedDisplayId = <%= @display.id %>;
     
@@ -147,11 +149,11 @@
   
   var creditCardChargeServiceIP = "<%= @credit_card_charge_service_ip %>";
   var creditCardTerminalIP = "<%= @credit_card_terminal_ip %>";
-  var creditCardTerminalPort = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, {:fingerprint => @terminal_fingerprint} %>";
+  var creditCardTerminalPort = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, current_outlet, {:fingerprint => @terminal_fingerprint} %>";
   
   var orderReceiptWidthSetting = "<%= @order_receipt_width_setting %>";
   
-  var allDevicesOrderNotification = <%= GlobalSetting.parsed_setting_for GlobalSetting::All_DEVICES_ORDER_NOTIFICATION %>;
+  var allDevicesOrderNotification = <%= GlobalSetting.parsed_setting_for GlobalSetting::All_DEVICES_ORDER_NOTIFICATION, current_outlet %>;
   
   //these variables are used to get a syncronised time on each device
   var serverCounterStartTimeMillis = <%= now_millis %>;
@@ -162,24 +164,24 @@
   
   var zalionChargeRoomServiceIP = "<%= @zalion_charge_room_service_ip %>";
 
-  var disableAdvancedTouch = <%= GlobalSetting.parsed_setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @terminal_fingerprint, :user_agent => request.user_agent} %>;
+  var disableAdvancedTouch = <%= GlobalSetting.parsed_setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, current_outlet, {:fingerprint => @terminal_fingerprint, :user_agent => request.user_agent} %>;
 
   //enumerate the course labels
   var courseLabels = {};
 
-<% GlobalSetting.course_options.each do |label, course_val| %>
+<% GlobalSetting.course_options(current_outlet).each do |label, course_val| %>
     courseLabels[<%=course_val%>] = "<%=label%>";
 <% end %>
     
-  var isProcessingTable0Orders = <%= GlobalSetting.parsed_setting_for GlobalSetting::PROCESS_TABLE_0_ORDERS %>;
+  var isProcessingTable0Orders = <%= GlobalSetting.parsed_setting_for GlobalSetting::PROCESS_TABLE_0_ORDERS, current_outlet %>;
   
-  var loyaltyCardPrefix = "<%= GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_CARD_PREFIX %>";
-  var enableLoyaltyCardRedemption = <%= GlobalSetting.parsed_setting_for GlobalSetting::ENABLE_LOYALTY_REDEMPTION %>;
-  var loyaltyPointsPerCurrencyUnit = <%= GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_POINTS_PER_CURRENCY_UNIT %>;
+  var loyaltyCardPrefix = "<%= GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_CARD_PREFIX, current_outlet %>";
+  var enableLoyaltyCardRedemption = <%= GlobalSetting.parsed_setting_for GlobalSetting::ENABLE_LOYALTY_REDEMPTION, current_outlet %>;
+  var loyaltyPointsPerCurrencyUnit = <%= GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_POINTS_PER_CURRENCY_UNIT, current_outlet %>;
   
-  var halfMeasureLabel = "<%= GlobalSetting.parsed_setting_for GlobalSetting::HALF_MEASURE_LABEL %>";
+  var halfMeasureLabel = "<%= GlobalSetting.parsed_setting_for GlobalSetting::HALF_MEASURE_LABEL, current_outlet %>";
   
-  var allowedZalionSplitPayments = <%= GlobalSetting.parsed_setting_for GlobalSetting::ALLOW_ZALION_SPLIT_PAYMENTS %>;
+  var allowedZalionSplitPayments = <%= GlobalSetting.parsed_setting_for GlobalSetting::ALLOW_ZALION_SPLIT_PAYMENTS, current_outlet %>;
   
   var currentResolution = "<%= @currentResolution %>";
   var normalResolution = "<%= @normalResolution %>";
@@ -187,9 +189,9 @@
   
   var usingPrintService = true;
   
-  var pmShortcut1ID = <%= GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => 1} %>;
-  var pmShortcut2ID = <%= GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => 2} %>;
-  var pmShortcut3ID = <%= GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, {:shortcut_num => 3} %>;
+  var pmShortcut1ID = <%= GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, current_outlet, {:shortcut_num => 1} %>;
+  var pmShortcut2ID = <%= GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, current_outlet, {:shortcut_num => 2} %>;
+  var pmShortcut3ID = <%= GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, current_outlet, {:shortcut_num => 3} %>;
   
   var pmShortcutMap = {};
   
@@ -197,9 +199,9 @@
   pmShortcutMap[2] = pmShortcut2ID;
   pmShortcutMap[3] = pmShortcut3ID;
   
-  var globalAutoPromptForCovers = <%= GlobalSetting.parsed_setting_for GlobalSetting::PROMPT_FOR_COVERS %>;
+  var globalAutoPromptForCovers = <%= GlobalSetting.parsed_setting_for GlobalSetting::PROMPT_FOR_COVERS, current_outlet %>;
   
-  var clueyUserId = <%= Employee.cluey_user.id %>;
+  var clueyUserId = <%= Employee.cluey_user(current_outlet).id %>;
   
-  var printLocalDeliveryReceipts = <%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_LOCAL_RECIEVE_DELIVERY, {:fingerprint => @terminal_fingerprint} %>;
+  var printLocalDeliveryReceipts = <%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_LOCAL_RECIEVE_DELIVERY, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
 </script>
