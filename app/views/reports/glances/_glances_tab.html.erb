@@ -2,63 +2,68 @@
     <h3>SALES</h3>
     <table class="items_table">
       <tbody>
-        <% @sales_by_department.keys.each do |key| %>
-          <tr>
-            <td width="200" class="left"><%=key%></td>
-            <td width="80" class="right"><%=@currency%> <%=sprintf("%.2f", @sales_by_department[key])%></td>
-          </tr>
-        <% end %>
         <tr>
           <td width="200" class="left"><b>Total Sales</b></td>
-          <td width="80" class="right"><b><%=@currency%> <%=sprintf("%.2f", @sales_by_department_total)%></b></td>
+          <td width="80" class="middle"><b>Today</b></td>
+          <td width="80" class="right"><b>Average</b></td>
+        </tr>
+        <tr>
+          <td width="200" class="left"><b>Total</b></td>
+          <td width="80" class="middle"><b><% unless @today_sales == nil %><%= print_money(@today_sales)%><% else %>No Data<% end %> </b></td>
+          <td width="80" class="right"><b><%= print_money(@average_day_sales/@total_number_days) %> </b></td>
         </tr>
         <div class="clear">&nbsp;</div>
-        <% if !@items_per_hour.nil? and !@items_per_hour.empty? %>
-          <tr>
-            <td width="200" class="left">No of Sales</td>
-            <td width="80" class="right"><%=@number_of_sales%></td>
-          </tr>
-          <tr>
-            <td width="200" class="left">Average Sale</td>
-            <td width="80" class="right"><%=@currency%> <%=sprintf("%.2f", @average_sale)%></td>
-          </tr>
-          <tr>
-            <td width="200" class="left">Busiest Hour</td>
-            <td width="80" class="right"><% if @busiest_hour %><%=@busiest_hour%>-<%=@busiest_hour+1%> hs.<% end %></td>
-          </tr>
-          <%#*<tr>%>
-            <%#*<td width="200" class="left">Qty of No Sale</td>%>
-            <%#*<td width="80" class="right"></td>%>
-          <%#*</tr>%>
-          <tr>
-            <td width="200" class="left">Qty of Voided Sales</td>
-            <td width="80" class="right"><%=@voided_sales%></td>
-          </tr>
-          <%#*<tr>%>
-            <%#*<td width="200" class="left">Refunds</td>%>
-            <%#*<td width="80" class="right"></td>%>
-          <%#*</tr>%>
-          <tr>
-            <td width="200" class="left">Total Discount</td>
-            <td width="80" class="right"><%=@currency%> <%=sprintf("%.2f", @total_discount)%></td>
-          </tr>
-        <%end%>
+        <tr>
+          <td width="200" class="left">No. of Sales</td>
+          <td width="80" class="middle"><% if @number_of_sales != 0 %><%= @number_of_sales %><% end %></td>
+          <td width="80" class="right"><%= @total_number_sales/@total_number_days %></td>
+        </tr>
+        <div class="clear">&nbsp;</div>
+        <tr>
+          <td width="200" class="left">Average Sales</td>
+
+          <td width="80" class="middle"><% unless @today_sales == nil %><%= print_money(@today_sales/@number_of_sales) %><% end %></td>
+          <td width="80" class="right"><%= print_money(@average_day_sales/@total_number_sales) %></td>
+        </tr>
+        <div class="clear">&nbsp;</div>
+        <tr>
+          <td width="200" class="left">Busiest Hour</td>
+          <td width="80" class="middle"><% unless @busiest_hour == nil %><%= @busiest_hour.strftime("%H") %>:00<% end %></td>
+          <td width="80" class="right"><%= @total_busiest_hour.strftime("%H") %>:00 </td>
+        </tr>
+        <tr>
+          <td width="200" class="left">Qty of Voided Sales</td>
+          <td width="80" class="middle"><% unless @todays_voids == nil %><%= @todays_voids %> <% end %></td>
+          <td width="80" class="right"><% unless @total_voids == nil %><%= print_money(@total_voids/@total_number_days) %><% end %> </td>
+        </tr>
+        <tr>
+          <td width="200" class="left">Total Discount</td>
+          <td width="80" class="middle"><% unless @todays_discounts[0].total_price == nil %><%= print_money(@todays_discounts[0].total_price) %> <% end %></td>
+          <td width="80" class="right"><% unless @average_discounts.empty? %><%= print_money(@average_discounts[0].total_price/@total_number_days) %><% end %> </td>
+        </tr>
+
       </tbody>
     </table>
   <div>
     <h3>SALES BY PAYMENT TYPE</h3>
     <table class="items_table">
       <tbody>
-        <% @sales_by_payment_type.keys.each do |key| %>
-          <tr>
-            <td width="200" class="left"><%=key%></td>
-            <td width="80" class="right"><%=@currency%> <%=sprintf("%.2f", @sales_by_payment_type[key])%></td>
-          </tr>
-        <% end %>
+      <% unless @sales_by_payments.empty? %>
+      <% @sales_by_payments.each do |pt| %>
+        <% @all_sales_by_payments = Order.find_by_sql("select o.id, o.created_at, o.discount_percent, o.pre_discount_price, sum(total) total, o.payment_type, o.terminal_id, o.employee_id from orders o where o.created_at <= '2012-08-15 16:22:35 +0100' and o.created_at >= '2010-01-01 00:00:00 +0000' and o.payment_type = '#{pt.payment_type}' and o.is_void = 0 group by o.payment_type") %>
         <tr>
-          <td width="200" class="left"><b>Total Sales</b></td>
-          <td width="80" class="right"><b><%=@currency%> <%=sprintf("%.2f", @sales_by_payment_total)%></b></td>
+          <td width="200" class="left"><%= pt.payment_type %></td>
+          <td width="80" class="middle"><% unless pt.total == nil %><%= print_money(pt.total) %><% end %></td>
+          <td width="80" class="right"><% unless @all_sales_by_payments == nil %><%= print_money(@all_sales_by_payments[0].total/@total_number_days) %><% end %> </td>
         </tr>
+      <% end %>
+      <% else %>
+      <tr>
+          <td width="200" class="left"></td>
+          <td width="80" class="middle">No Data</td>
+          <td width="80" class="right"> </td>
+        </tr>
+      <% end %>
       </tbody>
     </table>
   </div>
@@ -66,86 +71,64 @@
     <h3>SALES BY SERVER</h3>
     <table class="items_table">
       <tbody>
-        <% @sales_by_server.keys.each do |key| %>
-          <tr>
-            <td width="200" class="left"><%=key%></td>
-            <td width="80" class="right"><%=@currency%> <%=sprintf("%.2f", @sales_by_server[key])%></td>
-          </tr>
-        <% end %>
+      <% unless @sales_by_server.empty? %>
+      <% @sales_by_server.each do |e| %>
+        <% @all_sales_by_server = Order.find_by_sql("select o.id, o.created_at, o.discount_percent, o.pre_discount_price, sum(total) total, o.payment_type, o.terminal_id, o.employee_id from orders o where o.created_at <= '2012-08-15 16:22:35 +0100' and o.created_at >= '2010-01-01 00:00:00 +0000' and o.employee_id = '#{e.employee_id}' and o.is_void = 0 group by o.employee_id") %>
         <tr>
-          <td width="200" class="left"><b>Total Sales</b></td>
-          <td width="80" class="right"><b><%=@currency%> <%=sprintf("%.2f", @sales_by_server_total)%></b></td>
+          <td width="200" class="left"><%= Employee.find_by_id(e.employee_id).name %></td>
+          <td width="80" class="middle"><% unless e.total == nil %><%= print_money(e.total) %><% end %></td>
+          <td width="80" class="right"><% unless @all_sales_by_server == nil %><%= print_money(@all_sales_by_server[0].total/@total_number_days) %><% end %> </td>
         </tr>
+      <% end %>
+      <% else %>
+      <tr>
+          <td width="200" class="left"></td>
+          <td width="80" class="middle">No Data</td>
+          <td width="80" class="right"> </td>
+        </tr>
+      <% end %>
+
       </tbody>
     </table>
   </div>
   <div>
-    <h3>LAST 7 DAYS SUMMARY</h3>
+    <% unless @expenses_paid.empty? %>
+    <h3>Expenses Paid</h3>
     <table class="items_table">
       <tbody>
-        <% @sales_last_7_days.keys.sort.reverse.each do |key| %>
-          <tr>
-            <td width="200" class="left"><%=@sales_last_7_days[key][0]%></td>
-            <td width="80" class="right"><%=@currency%> <%=sprintf("%.2f", @sales_last_7_days[key][1])%></td>
-          </tr>
-        <% end %>
+        <% @expenses_paid.each do |ex| %>
         <tr>
-          <td width="200" class="left"><b>Total Last 7 Days</b></td>
-          <td width="80" class="right"><b><%=@currency%> <%=sprintf("%.2f", @sales_last_7_days_total)%></b></td>
+          <td width="200" class="left"><b><%= ex.note[0..20] %></b></td>
+          <td width="80" class="right"><b><%= print_money(ex.amount) %></b></td>
         </tr>
+        <% end %>
       </tbody>
     </table>
+   <% end %>
   </div>
 </div>
 
 <div id="at_a_glance_results_right">
 
   <div>
+    <% unless @top_selling_items.empty? %>
     <h3>TOP SELLING ITEMS</h3>
-    <% if !@top_selling_items.empty? %>
       <table class="items_table">
-        <tbody>
-          <% @top_selling_items.each do |top_item| %>
-            <tr>
-              <td width="40" class="left"><%=top_item[1][1]%></td>
-              <td width="160" class="center"><%=(!top_item[1][0].nil?)?top_item[1][0]:"<NAME>"%></td>
-              <td width="70" class="right"><%=@currency%> <%=sprintf("%.2f", top_item[1][2])%></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <% else %>
-      <div class="drag_message">No items found.</div>
-    <% end %>
-  </div>
-
-  <% if !@items_per_hour.empty? and @graph %>
-    <%= high_chart("graph_container", @graph) do |c| %>
-      <%= "options.tooltip.formatter = function() { return this.x +'-'+ parseInt(parseInt(this.x)+parseInt(#{@h_interval})) +' hs: #{@currency}'+ this.y;}" %>
-    <%end %>
-  <%end %>
-
-  <div>
-    <% if !@items_per_interval_hour.empty? %>
-    <table class="items_table">
-      <thead>
-        <tr>
-          <th width="80" class="left">Hour</th>
-          <th width="80" >Qty</th>
-          <th width="80" class="right">Total Sales</th>
-        </tr>
-      </thead>
       <tbody>
-        <% @items_per_interval_hour.keys.sort.rotate(@elems_to_move).each do |key| %>
-          <tr>
-            <td width="80" class="left"><%=key%>-<%=key+@h_interval%></td>
-            <td width="80" class="center-column"><%=@items_per_interval_hour[key][0]%> items</td>
-            <td width="80" class="right"><%=@currency%> <%=sprintf("%.2f", @items_per_interval_hour[key][1])%></td>
-          </tr>
+        <% @top_selling_items.each do |ex| %>
+        <tr>
+          <td width="100" class="left"><%= ex.id %></td>
+          <td width="100" class="middle"><%= Product.find_by_id(ex.product_id).name %></td>
+          <td width="100" class="right"><%= print_money(ex.total_price) %></td>
+        </tr>
         <% end %>
       </tbody>
     </table>
-    <% end %>
+   <% end %>
   </div>
+
+
+
+
 
 </div>

@@ -18,9 +18,9 @@
 
 
       <div>
-        
+
         <div>
-            
+
             <div id="at_a_glance_filters" class="popout_dialog">
                <div id="date_select_container">
                   <div class="dropdown_container">
@@ -35,37 +35,27 @@
 
                   <div class="dropdown_container">
                     <div class="label">Date</div>
-                    <select onchange="addDateFilter($(this).val())">
+                    <select onchange="setGlancesSearchType($(this).val())">
                       <option value="1">Today</option>
                       <option value="2">Yesterday</option>
-                      <option value="3">Last Week</option>
-                      <option value="4">Last Month</option>
-                      <option value="5">All Time</option>
+
                     </select>
                   </div>
                  <div id="days">
-                   <div class="dropdown_container">
-                     <div class="label">Date From</div>
-                     <div class="input_date">
-                       <input type="text" size="13" id="date_from" name="date_from"
-                              value="<%=@selected_from_date.to_date.strftime("%d-%m-%Y")%>"/>
-                     </div>
-                   </div>
-                   <div class="dropdown_container">
-                     <div class="label">Date To</div>
-                     <div class="input_date">
-                       <input type="text" size="13" id="date_to" name="date_to"
-                              value="<%=@selected_to_date.to_date.strftime("%d-%m-%Y")%>"/>
-                     </div>
-                   </div>
+
                  </div>
+                 <div id="glances_refine_button">
+                        <div onclick="setReportParams();runGlancesSearch()" class="button" style="height:38px">Update</div>
+                    </div>
 
                   <div class="clear">&nbsp;</div>
                 </div>
             </div>
 
             <div id="at_a_glance_results">
+                <% if @today_sales != nil %>
                 <%= render 'glances_tab' %>
+                <% end %>
             </div>
 
 
@@ -80,3 +70,9 @@
     </div>
 
 </div>
+
+<script type="text/javascript">
+    window.onload = function() {
+    runGlancesSearch();
+}
+</script>

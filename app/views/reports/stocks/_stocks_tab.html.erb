@@ -27,48 +27,150 @@
     <% if @products.count == 0 %>
        <b>No Results Found</b>
     <% else%>
-    <% if session[:search_type] == :by_trans_type %>
-        <table id="report_table" class="admin_table" style="width: 100%">
+        <% if @s_type == :by_valuation %>
+           <table id="report_table" class="admin_table" style="width: 100%">
                 <thead>
-                <th class="header">Transaction Type</th>
-                <th class="header">Current</th>
-                <th class="header">Change Amount</th>
-
-                <th class="header">Revenue</th>
-
+                <th class="header">Product</th>
+                <th class="header">Category</th>
+                <th class="header">Buy Unit</th>
+                <th class="header">Buy Cost</th>
+                <th class="header">Qty/container</th>
+                <th class="header">Sales Unit</th>
+                <th class="header">Sales Price/unit</th>
+                <th class="header">Sales Price/container</th>
+                <th class="header">Current Stock</th>
+                <th class="header">Cost Valuation</th>
+                <th class="header">Sales Valuation</th>
+                <th class="header">Margin</th>
                 </thead>
-                <% @products.each do |item| %>
-                    <% product = Product.find_by_id(item.product_id) %>
-                    <% price = 0 %>
+
+                <% @products.each do |week| %>
+
                     <tbody>
                     <tr class="<%= cycle("even", "odd") %>">
-
+                            <td style="text-align: left">
+                                <% if nil != week.name %>
+                                    <%= week.name %>
+                                <% end %>
+                            </td>
                         <td style="text-align: left">
-                            <% if item.transaction_type == 1 %>
-                            Stock Update
-                            <% elsif item.transaction_type == 2 %>
-                            Stock Transfer
-                            <% elsif item.transaction_type == 3 %>
-                            Delivery
-                            <% elsif item.transaction_type == 4 %>
-                            Stock Take
-                            <% elsif item.transaction_type == 5 %>
-                            Sale
+                            <% if Category.find_by_id(week.category_id) %>
+                                    <% if Category.find_by_id(week.category_id).name %>
+                                        <%= Category.find_by_id(week.category_id).name %>
+                                    <% end %>
+                                <% end %>
+                        </td>
+                        <td style="text-align: left;">
+                            <%= week.unit %>
+                        </td>
+                        <td>
+                            <%= print_money(week.cost_price) %>
+                        </td>
+                        <td>
+                            <%= week.quantity_per_container %>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                           <%= print_money(week.price) %>
+                        </td>
+                        <td>
+                           <%= print_money(week.price.to_d*week.quantity_per_container.to_d) %>
+                        </td>
+
+                        <td>
+                            <%= week.quantity_in_stock %>
+                        </td>
+                        <td>
+                            <% unless week.cost_price == 0 %>
+                                <% cost_valuation = (week.cost_price.to_d*week.quantity_in_stock.to_d).abs %>
+                                <%= print_money(cost_valuation) %>
                             <% end %>
                         </td>
                         <td>
-                            <%= sprintf("%.0f", item.old_amount + item.change_amount) %>
+                            <% unless week.price == 0 %>
+                                <% sales_valuation = (week.price.to_d*week.quantity_in_stock.to_d).abs %>
+                                <%= print_money(sales_valuation) %>
+                            <% end %>
                         </td>
                         <td>
-                            <% quantity_sold = item.change_amount %>
-                            <%= sprintf("%.0f", quantity_sold) %>
+                            <% unless cost_valuation == nil || sales_valuation == nil %>
+                                <% margin = per_profit(sprintf("%.2f", sales_valuation.abs).to_d, sprintf("%.2f", cost_valuation.abs).to_d, week.sales_tax_rate) %>
+                                <% unless (margin == nil) %>
+                                    <%=  sprintf("%.0f",margin) %>%
+                                <% end %>
+                                <% end %>
+                        </td>
+                    </tr>
+                <% end %>
+
+                </tbody>
+            </table>
+    <% elsif @s_type == :by_delivery %>
+           <table id="report_table" class="admin_table" style="width: 100%">
+                <thead>
+                <th class="header">Received Date</th>
+                <th class="header">Time</th>
+                <th class="header">Product</th>
+                <th class="header">Category</th>
+                <th class="header">Employee</th>
+                <th class="header">Unit</th>
+                <th class="header">Reference ID</th>
+                <th class="header">Current Stock</th>
+                <th class="header">Deliveries</th>
+                <th class="header">Unit Cost</th>
+                <th class="header">Cost Total</th>
+                </thead>
+
+                <% @products.each do |week| %>
+                    <% @delivery = Delivery.find_by_id(week.delivery_id) %>
+                    <% @employee = Employee.find_by_id(week.employee_id) %>
+                    <% @product = Product.find_by_id(week.product_id) %>
+                    <% if @delivery %>
+                    <tbody>
+                    <tr class="<%= cycle("even", "odd") %>">
+                        <td style="text-align: left">
+                            <%= @delivery.received_date.to_datetime.strftime "%a, %d %b %Y" %>
+                        </td>
+                        <td style="text-align: left;">
+                            <%= @delivery.received_date.to_datetime.strftime "%l:%M%P" %>
+                        </td>
+                            <td style="text-align: left">
+                                <% if nil != @product.name %>
+                                    <%= @product.name %>
+                                <% end %>
+                            </td>
+                        <td style="text-align: left">
+                            <% if Category.find_by_id(@product.category_id) %>
+                                    <% if Category.find_by_id(@product.category_id).name %>
+                                        <%= Category.find_by_id(@product.category_id).name %>
+                                    <% end %>
+                                <% end %>
+                        </td>
+                        <td style="text-align: left;">
+                            <%= @employee.name %>
                         </td>
                         <td>
-                            <% revenue = product.price * quantity_sold %>
-                            <%= print_money(revenue.abs) %>
+                            <%= @product.unit %>
+                        </td>
+                        <td>
+                            <%= @delivery.reference_number %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.2f",@product.quantity_in_stock) %>
+                        </td>
+                        <td>
+                            <%= sprintf("%.2f",week.change_amount) %>
                         </td>
 
+                        <td>
+                            <%= print_money(@product.cost_price) %>
+                        </td>
+                        <td>
+                            <%= print_money(@product.cost_price.to_d*week.change_amount.to_d) %>
+                        </td>
                     </tr>
+                <% end %>
                 <% end %>
 
                 </tbody>
@@ -76,14 +178,14 @@
     <% else %>
         <table id="report_table" class="admin_table" style="width: 100%">
                 <thead>
-                <% unless session[:search_type] == :by_category %>
+                <% unless @s_type == :by_category %>
                     <th class="header">Product</th>
                 <% end %>
                 <th class="header">Category</th>
 
 
                 <th class="header">Qty Sold</th>
-                <% unless session[:search_type] == :by_category %>
+                <% unless @s_type == :by_category %>
                 <th class="header">Unit</th>
 
                 <th class="header">Cost ea</th>
@@ -95,7 +197,7 @@
                 <% all_cost_price = true %>
                 <% @products.each_with_index do |item, i| %>
                     <% product = Product.find_by_id(item.product_id) %>
-                    <% unless session[:search_type] == :by_category %>
+                    <% unless @s_type == :by_category %>
                     <% total_sales = OrderItem.find_by_sql("select oi.id, sum(oi.total_price) as total_price from order_items as oi inner join orders o on oi.order_id = o.id inner join stock_transactions st on st.order_item_id = oi.id where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and st.product_id = #{item.product_id} and o.is_void = 0 and oi.is_void = 0 group by st.product_id") %>
                     <% else %>
                     <% total_sales = 0 %>
@@ -105,7 +207,10 @@
                     <% products.each do |st| %>
                     <% curr_product = Product.find_by_id(st.product_id) %>
                     <% if last_id != st.product_id %>
-                    <% total_sales += OrderItem.find_by_sql("select oi.id, sum(oi.total_price) as total_price from order_items as oi inner join orders o on oi.order_id = o.id inner join stock_transactions st on st.order_item_id = oi.id where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and st.product_id = #{curr_product.id} and o.is_void = 0 and oi.is_void = 0 group by st.product_id")[0].total_price %>
+                    <% current_sale = OrderItem.find_by_sql("select oi.id, sum(oi.total_price) as total_price from order_items as oi inner join orders o on oi.order_id = o.id inner join stock_transactions st on st.order_item_id = oi.id where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and st.product_id = #{curr_product.id} and o.is_void = 0 and oi.is_void = 0 group by st.product_id")  %>
+                    <% if current_sale.any? %>
+                    <% total_sales += current_sale[0].total_price %>
+                    <% end %>
                     <% end %>
                     <% last_id = st.product_id %>
                      <% if curr_product.cost_price == 0 %>
@@ -116,7 +221,7 @@
                 <% end %>
                     <tbody>
                     <tr class="<%= cycle("even", "odd") %>">
-                        <% unless session[:search_type] == :by_category %>
+                        <% unless @s_type == :by_category %>
                             <td style="text-align: left">
                                 <% if nil != product.name %>
                                     <%= product.name %>
@@ -134,7 +239,7 @@
                             <% quantity_sold = item.change_amount %>
                             <%= sprintf("%.2f", quantity_sold.abs) %>
                         </td>
-                        <% unless session[:search_type] == :by_category %>
+                        <% unless @s_type == :by_category %>
                         <td>
                             <%= product.unit %>
                         </td>
@@ -146,7 +251,7 @@
                         <% end %>
                         <% end %>
                         <td>
-                             <% unless session[:search_type] == :by_category %>
+                             <% unless @s_type == :by_category %>
                             <% total_price =  product.cost_price *  quantity_sold %>
                             <% else %>
                             <% total_price = cost_total %>
@@ -156,7 +261,7 @@
                             <% end %>
                         </td>
                         <td>
-                            <% unless session[:search_type] == :by_category %>
+                            <% unless @s_type == :by_category %>
                             <% revenue = total_sales[0].total_price %>
                             <% else %>
                             <% revenue = total_sales %>
@@ -166,11 +271,11 @@
                             <% end %>
                         </td>
                         <td>
-                            <% unless (revenue == nil) %>
+                            <% unless (revenue == nil || revenue == 0) %>
                             <% unless total_price == 0 || total_price == nil || all_cost_price == false %>
                                 <% margin = per_profit(sprintf("%.2f", revenue).to_d, sprintf("%.2f", total_price.abs).to_d, product.sales_tax_rate) %>
                                 <% unless (margin == nil) %>
-                                    <%=  margin.to_i %>%
+                                    <%=  sprintf("%.2f",margin) %>%
                                 <% end %>
                             <% end %>
                             <% end %>

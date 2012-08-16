@@ -1,11 +1,11 @@
-<% @nav_title = "Reports - Stock" %>
+<% @nav_title = "Reports - Products" %>
 <div id="reports_nav">
 
             <div class="report_tab" onclick="window.location = '/reports/sales'">
                Sales
             </div> <br>
             <div class="report_tab selected" onclick="window.location = '/reports/stocks'">
-                Stock
+                Products
             </div> <br>
             <div class="report_tab" onclick="window.location = '/reports/payments'">
                Payments
@@ -28,6 +28,8 @@
                             <select id="search_type_select" onchange="setStockSearchType($(this).val())">
                                 <option value="1">Stock by Product</option>
                                 <option value="2">Stock by Category</option>
+                                <option value="3">Deliveries</option>
+                                <option value="4">Stock Valuation</option>
                             </select>
                         </div>
 
@@ -37,7 +39,7 @@
                             <% lastmonth = Time.now - 1.month %>
                             <% thirtydays = Time.now - 30.days %>
                             <% twoyears = Time.now.beginning_of_year - 2.years %>
-                            <div class="dropdown_container" style="margin-left: 40px;">
+                            <div class="dropdown_container" style="margin-left: 40px;" id="date_select">
                                 <div class="label">Date</div>
                                 <select id="date_preselect" onchange="setDateParams($(this).val(), true)" style="width: 120px">
                                     <option value="<%= Time.now.beginning_of_day + @opening_time.hours %>,<%= Time.now.end_of_day + @opening_time.hours %>">Today</option>
@@ -64,14 +66,14 @@
                                 </select>
                             </div>
                             <div id="days">
-                                <div class="dropdown_container">
+                                <div class="dropdown_container" id="from_date">
                                     <div class="label">Date From</div>
                                     <div class="input_date">
                                         <input type="text" size="13" onchange="updateDateParams($(this).val(), 'from')" readonly="readonly" id="date_from" name="date_from"
                                                value="<%= @selected_from_date.to_date.strftime("%Y-%m-%d %H:%M") %>"/>
                                     </div>
                                 </div>
-                                <div class="dropdown_container">
+                                <div class="dropdown_container" id="to_date">
                                     <div class="label">Date To</div>
                                     <div class="input_date">
                                         <input type="text" size="13" onchange="updateDateParams($(this).val(), 'to')" readonly="readonly" id="date_to" name="date_to"
@@ -85,8 +87,15 @@
 
                             <%= render 'category_dropdown' %>
 
-                            <div id="product_dropdown" >
+                            <div id="product_dropdown">
                                 <%= render 'product_dropdown' %>
+                            </div>
+                            <div class="dropdown_container" id="string_search_box" style="display: none; margin-left: 40px;">
+                                 <div class="label">Delivery Ref.</div>
+                                 <div class="input_search">
+                                        <input type="text" size="12" id="delivery_search" onchange="setStockSearchTerm($(this).val())"
+                                               value=""/>
+                            </div>
                             </div>
                             <div class="clear">&nbsp;</div>
                         </div>

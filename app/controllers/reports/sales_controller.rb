@@ -236,7 +236,6 @@ class Reports::SalesController < Admin::AdminController
     @selected_from_date = session[:from_date].to_s
     @selected_to_date = session[:to_date].to_s
 
-
     if (session[:search_type] == :day || session[:search_type] == :month || session[:search_type] == :year || session[:search_type] == :week)
 
       if session[:search_type] == :day

@@ -4651,6 +4651,14 @@ div#reports_container #stock_items{
     height: 553px;
 }
 
+div#reports_container #deliveries_items{
+    overflow: auto;
+    border:  1px solid black;
+    border-radius: 10px;
+    width: 100%;
+    height: 553px;
+}
+
 div#reports_container #payments_items{
     overflow: auto;
     border:  1px solid black;
@@ -4811,6 +4819,14 @@ div#reports_container  div#report_sales_filters #refine_button{
     height: 64px;
     float: left;
     margin-left: 80px;
+}
+
+div#reports_container #glances_refine_button{
+    margin-top: 5px;
+    width: 103px;
+    height: 24px;
+    float: left;
+    margin-left: 40px;
 }
 
 div#reports_container  div#report_sales_filters #refine_button.selected{
