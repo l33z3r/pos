@@ -94,7 +94,7 @@
                             <% end %>
                         </td>
                         <td>
-                            <% unless cost_valuation == nil %>
+                            <% unless cost_valuation == nil || sales_valuation == nil %>
                                 <% margin = per_profit(sprintf("%.2f", sales_valuation.abs).to_d, sprintf("%.2f", cost_valuation.abs).to_d, week.sales_tax_rate) %>
                                 <% unless (margin == nil) %>
                                     <%=  sprintf("%.0f",margin) %>%
@@ -275,7 +275,7 @@
                             <% unless total_price == 0 || total_price == nil || all_cost_price == false %>
                                 <% margin = per_profit(sprintf("%.2f", revenue).to_d, sprintf("%.2f", total_price.abs).to_d, product.sales_tax_rate) %>
                                 <% unless (margin == nil) %>
-                                    <%=  margin.to_i %>%
+                                    <%=  sprintf("%.2f",margin) %>%
                                 <% end %>
                             <% end %>
                             <% end %>

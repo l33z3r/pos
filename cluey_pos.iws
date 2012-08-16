@@ -15,9 +15,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e646dee2-e269-4160-8f2c-811321f2083d" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/controllers/reports/stocks_controller_copy.rb" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/reports/glances_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/reports/glances_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/glances/_glances_tab.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/glances/_glances_tab.html.erb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cluey_pos.iws" afterPath="$PROJECT_DIR$/cluey_pos.iws" />
     </list>
@@ -101,10 +98,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_stocks_tab.html.erb" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="_stocks_tab.html.erb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="43" selection-start="1566" selection-end="1566" vertical-scroll-proportion="-2.2972972">
+            <state line="94" column="105" selection-start="4665" selection-end="4665" vertical-scroll-proportion="0.6097561">
               <folding />
             </state>
           </provider>
@@ -119,10 +116,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="database.yml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="database.yml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config/database.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="39" selection-start="694" selection-end="694" vertical-scroll-proportion="0.6196581">
+            <state line="15" column="45" selection-start="364" selection-end="364" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -164,9 +161,9 @@
         <option value="$PROJECT_DIR$/app/views/reports/payments/_payments_tab.html.erb" />
         <option value="$PROJECT_DIR$/app/controllers/reports/glances_controller.rb" />
         <option value="$PROJECT_DIR$/app/views/reports/glances/_glances_tab.html.erb" />
-        <option value="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/stocks/stocks_search.js.erb" />
         <option value="$PROJECT_DIR$/config/database.yml" />
+        <option value="$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb" />
       </list>
     </option>
   </component>
@@ -1200,13 +1197,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="43" selection-start="1566" selection-end="1566" vertical-scroll-proportion="-2.2972972">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/stocks_search.js.erb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="8" column="1" selection-start="274" selection-end="274" vertical-scroll-proportion="0.0">
@@ -1216,7 +1206,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/config/database.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="39" selection-start="694" selection-end="694" vertical-scroll-proportion="0.6196581">
+        <state line="15" column="45" selection-start="364" selection-end="364" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/reports/stocks/_stocks_tab.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="94" column="105" selection-start="4665" selection-end="4665" vertical-scroll-proportion="0.6097561">
           <folding />
         </state>
       </provider>
