@@ -41,7 +41,7 @@
                 <th class="header">Current Stock</th>
                 <th class="header">Cost Valuation</th>
                 <th class="header">Sales Valuation</th>
-                <th class="header">Cost Total</th>
+                <th class="header">Margin</th>
                 </thead>
 
                 <% @products.each do |week| %>
@@ -271,7 +271,7 @@
                             <% end %>
                         </td>
                         <td>
-                            <% unless (revenue == nil) %>
+                            <% unless (revenue == nil || revenue == 0) %>
                             <% unless total_price == 0 || total_price == nil || all_cost_price == false %>
                                 <% margin = per_profit(sprintf("%.2f", revenue).to_d, sprintf("%.2f", total_price.abs).to_d, product.sales_tax_rate) %>
                                 <% unless (margin == nil) %>

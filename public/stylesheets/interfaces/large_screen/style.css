@@ -4826,7 +4826,7 @@ div#reports_container #glances_refine_button{
     width: 103px;
     height: 24px;
     float: left;
-    margin-left: 180px;
+    margin-left: 40px;
 }
 
 div#reports_container  div#report_sales_filters #refine_button.selected{

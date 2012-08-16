@@ -1,33 +1,13 @@
 <% if session[:preselect] != -1 %>
     <% unless params[:action] == "stocks_print" %>
 
-        <div id="options_menu">
-            <div class="option" onclick="setStockSelect(-1)" class="print_box">
-                <div style="float: left;"><img src="/images/button_logos/home.png" alt="Print" width="24" height="24"/>
-                </div>
-                <div style="float: left; margin-top: 6px;margin-left: 2px">
-                    <span style="font-weight: bold; margin-top: -3px;">  Home  |</span></div>
-            </div>
-            <div class="option" onclick="window.location = '/reports/stocks/stocks_print'" class="print_box">
-                <div style="float: left;"><img src="/images/button_logos/print.png" alt="Print" width="24" height="24"/>
-                </div>
-                <div style="float: left; margin-top: 6px;margin-left: 2px">
-                    <span style="font-weight: bold; margin-top: -3px;">  Print  |</span></div>
-            </div>
-            <div class="option" onclick="window.location = '/reports/stocks/export_excel'" class="excel_box">
-                <div style="float: left;">
-                    <img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24"/></div>
-                <div style="float: left; margin-top: 6px;margin-left: 2px">
-                    <span style="font-weight: bold; margin-top: -3px;">  Excel </span></div>
-            </div>
-        </div>
     <% end %>
 
     <div id="stock_items">
     <% if @products.count == 0 %>
        <b>No Results Found</b>
     <% else%>
-        <% if session[:search_type] == :by_valuation %>
+        <% if @s_type == :by_valuation %>
            <table id="report_table" class="admin_table" style="width: 100%">
                 <thead>
                 <th class="header">Product</th>
@@ -41,7 +21,7 @@
                 <th class="header">Current Stock</th>
                 <th class="header">Cost Valuation</th>
                 <th class="header">Sales Valuation</th>
-                <th class="header">Margin</th>
+                <th class="header">Cost Total</th>
                 </thead>
 
                 <% @products.each do |week| %>
@@ -69,13 +49,15 @@
                         <td>
                             <%= week.quantity_per_container %>
                         </td>
-
+                        <td>
+                        </td>
                         <td>
                            <%= sprintf("%.2f",week.price) %>
                         </td>
                         <td>
-                           <%= print_money(week.price.to_d*week.quantity_per_container.to_d) %>
+                           <%= sprintf("%.2f",week.price.to_d*week.quantity_per_container.to_d) %>
                         </td>
+
                         <td>
                             <%= week.quantity_in_stock %>
                         </td>
@@ -92,7 +74,7 @@
                             <% end %>
                         </td>
                         <td>
-                            <% unless cost_valuation == nil %>
+                            <% unless cost_valuation == nil || sales_valuation == nil %>
                                 <% margin = per_profit(sprintf("%.2f", sales_valuation.abs).to_d, sprintf("%.2f", cost_valuation.abs).to_d, week.sales_tax_rate) %>
                                 <% unless (margin == nil) %>
                                     <%=  sprintf("%.0f",margin) %>%
@@ -104,7 +86,7 @@
 
                 </tbody>
             </table>
-    <% elsif session[:search_type] == :by_delivery %>
+    <% elsif @s_type == :by_delivery %>
            <table id="report_table" class="admin_table" style="width: 100%">
                 <thead>
                 <th class="header">Received Date</th>
@@ -176,14 +158,14 @@
     <% else %>
         <table id="report_table" class="admin_table" style="width: 100%">
                 <thead>
-                <% unless session[:search_type] == :by_category %>
+                <% unless @s_type == :by_category %>
                     <th class="header">Product</th>
                 <% end %>
                 <th class="header">Category</th>
 
 
                 <th class="header">Qty Sold</th>
-                <% unless session[:search_type] == :by_category %>
+                <% unless @s_type == :by_category %>
                 <th class="header">Unit</th>
 
                 <th class="header">Cost ea</th>
@@ -195,7 +177,7 @@
                 <% all_cost_price = true %>
                 <% @products.each_with_index do |item, i| %>
                     <% product = Product.find_by_id(item.product_id) %>
-                    <% unless session[:search_type] == :by_category %>
+                    <% unless @s_type == :by_category %>
                     <% total_sales = OrderItem.find_by_sql("select oi.id, sum(oi.total_price) as total_price from order_items as oi inner join orders o on oi.order_id = o.id inner join stock_transactions st on st.order_item_id = oi.id where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and st.product_id = #{item.product_id} and o.is_void = 0 and oi.is_void = 0 group by st.product_id") %>
                     <% else %>
                     <% total_sales = 0 %>
@@ -205,7 +187,10 @@
                     <% products.each do |st| %>
                     <% curr_product = Product.find_by_id(st.product_id) %>
                     <% if last_id != st.product_id %>
-                    <% total_sales += OrderItem.find_by_sql("select oi.id, sum(oi.total_price) as total_price from order_items as oi inner join orders o on oi.order_id = o.id inner join stock_transactions st on st.order_item_id = oi.id where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and st.product_id = #{curr_product.id} and o.is_void = 0 and oi.is_void = 0 group by st.product_id")[0].total_price %>
+                    <% current_sale = OrderItem.find_by_sql("select oi.id, sum(oi.total_price) as total_price from order_items as oi inner join orders o on oi.order_id = o.id inner join stock_transactions st on st.order_item_id = oi.id where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and st.product_id = #{curr_product.id} and o.is_void = 0 and oi.is_void = 0 group by st.product_id")  %>
+                    <% if current_sale.any? %>
+                    <% total_sales += current_sale[0].total_price %>
+                    <% end %>
                     <% end %>
                     <% last_id = st.product_id %>
                      <% if curr_product.cost_price == 0 %>
@@ -216,7 +201,7 @@
                 <% end %>
                     <tbody>
                     <tr class="<%= cycle("even", "odd") %>">
-                        <% unless session[:search_type] == :by_category %>
+                        <% unless @s_type == :by_category %>
                             <td style="text-align: left">
                                 <% if nil != product.name %>
                                     <%= product.name %>
@@ -234,7 +219,7 @@
                             <% quantity_sold = item.change_amount %>
                             <%= sprintf("%.2f", quantity_sold.abs) %>
                         </td>
-                        <% unless session[:search_type] == :by_category %>
+                        <% unless @s_type == :by_category %>
                         <td>
                             <%= product.unit %>
                         </td>
@@ -246,7 +231,7 @@
                         <% end %>
                         <% end %>
                         <td>
-                             <% unless session[:search_type] == :by_category %>
+                             <% unless @s_type == :by_category %>
                             <% total_price =  product.cost_price *  quantity_sold %>
                             <% else %>
                             <% total_price = cost_total %>
@@ -256,7 +241,7 @@
                             <% end %>
                         </td>
                         <td>
-                            <% unless session[:search_type] == :by_category %>
+                            <% unless @s_type == :by_category %>
                             <% revenue = total_sales[0].total_price %>
                             <% else %>
                             <% revenue = total_sales %>
@@ -270,7 +255,7 @@
                             <% unless total_price == 0 || total_price == nil || all_cost_price == false %>
                                 <% margin = per_profit(sprintf("%.2f", revenue).to_d, sprintf("%.2f", total_price.abs).to_d, product.sales_tax_rate) %>
                                 <% unless (margin == nil) %>
-                                    <%=  margin.to_i %>%
+                                    <%=  sprintf("%.2f",margin) %>%
                                 <% end %>
                             <% end %>
                             <% end %>

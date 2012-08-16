@@ -38,7 +38,7 @@
         </tr>
         <tr>
           <td width="200" class="left">Total Discount</td>
-          <td width="80" class="middle"><% unless @todays_discounts[0].total_price == nil %><%= @todays_discounts[0].total_price %> <% end %></td>
+          <td width="80" class="middle"><% unless @todays_discounts[0].total_price == nil %><%= print_money(@todays_discounts[0].total_price) %> <% end %></td>
           <td width="80" class="right"><% unless @average_discounts.empty? %><%= print_money(@average_discounts[0].total_price/@total_number_days) %><% end %> </td>
         </tr>
 
@@ -111,8 +111,20 @@
 <div id="at_a_glance_results_right">
 
   <div>
+    <% unless @top_selling_items.empty? %>
     <h3>TOP SELLING ITEMS</h3>
-
+      <table class="items_table">
+      <tbody>
+        <% @top_selling_items.each do |ex| %>
+        <tr>
+          <td width="100" class="left"><%= ex.id %></td>
+          <td width="100" class="middle"><%= Product.find_by_id(ex.product_id).name %></td>
+          <td width="100" class="right"><%= print_money(ex.total_price) %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+   <% end %>
   </div>
 
 

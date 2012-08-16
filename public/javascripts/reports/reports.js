@@ -173,6 +173,14 @@ function addDateFilter(interval_selected) {
 
 function runGlancesSearch() {
     $("#at_a_glance_results").html("Loading...");
+     $.ajax({
+                type: 'GET',
+                url: '/reports/glances/set_params',
+                data: {
+                    "search[search_type]" : search_type,
+                    "search[terminal]" : terminalId
+                }
+            }).done(function() {
     $.ajax({
         type: 'GET',
         url: '/reports/glances/glances_search',
@@ -183,7 +191,7 @@ function runGlancesSearch() {
             "search2[hour_from]" : hour_from,
             "search2[hour_to]" : hour_to
         }
-    });
+    });});
 }
 
 function runSalesSearch() {
@@ -324,6 +332,22 @@ function setReportParams() {
             "search[to_date]" : selectedToDate,
             "search[terminal]" : terminalId,
             "search[training_mode]" : inTrainingMode
+
+        }
+    });
+}
+
+function setGlancesParams() {
+
+    select_type = ''
+
+    $.ajax({
+        type: 'GET',
+        url: '/reports/glances/set_params',
+        data: {
+            "search[search_type]" : search_type,
+            "search[terminal]" : terminalId
+
 
         }
     });
@@ -481,6 +505,34 @@ function setStockSearchTerm(drop_type) {
         });
     }
 }
+
+function setGlancesSearchType(interval_selected) {
+    switch (interval_selected) {
+        case '0':
+            search_type = 'today';
+
+            break;
+    }
+    switch (interval_selected) {
+        case '1':
+            search_type = 'yesterday';
+
+            break;
+    }
+    switch (interval_selected) {
+        case '2':
+            search_type = 'this_week';
+
+            break;
+    }
+    switch (interval_selected) {
+        case '3':
+            search_type = 'last_week';
+
+            break;
+    }
+    setGlancesParams();
+};
 
 
 function setSearchType(interval_selected) {
