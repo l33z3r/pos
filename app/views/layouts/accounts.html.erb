@@ -1,18 +1,30 @@
-<div id="user_nav">
-  <% if current_cluey_account %>
-    Logged in as <%= current_cluey_account.name %>.
-    <%= link_to "Log out", account_log_out_url %>
-  <% else %>
-    <%= link_to "Sign up", account_sign_up_url(:subdomain => "signup") %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cluey - POS</title>
+    <%= stylesheet_links "accounts/", :recursive => true, :cache => "cache/accounts_styles" %>
+    <%= javascript_include_tag "rails", "accounts/application", :cache => "cache/large_screen" %>
+  </head>
+  <body>
 
-    <% if @subdomain and @subdomain != "www" and @subdomain != "signup" %>
-        or <%= link_to "log in", account_log_in_url %>
+    <div id="user_nav">
+      <% if current_cluey_account %>
+        Logged in as <%= current_cluey_account.name %>.
+        <%= link_to "Log out", account_log_out_url %>
+      <% else %>
+        <%= link_to "Sign up", account_sign_up_url(:subdomain => "signup") %>
+
+        <% if @subdomain and @subdomain != "www" and @subdomain != "signup" %>
+          or <%= link_to "log in", account_log_in_url %>
+        <% end %>
       <% end %>
+    </div>
+
+    <% flash.each do |name, msg| %>
+      <%= content_tag :div, msg, :id => "flash_#{name}" %>
     <% end %>
-  </div>
 
-  <% flash.each do |name, msg| %>
-    <%= content_tag :div, msg, :id => "flash_#{name}" %>
-  <% end %>
+    <%= yield %>
 
-  <%= yield %>
+  </body>
+</html>

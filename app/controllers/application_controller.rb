@@ -658,7 +658,7 @@ class ApplicationController < AppBaseController
         
           #login required
           authenticate_or_request_with_http_basic do |username, password|
-            logger.info "#{username} #{password} #{@http_basic_username} #{@http_basic_password}"
+            #logger.info "#{username} #{password} #{@http_basic_username} #{@http_basic_password}"
           
             @username_matches = outlet.username == username
             @password_matches = outlet.password_hash == BCrypt::Engine.hash_secret(password, outlet.password_salt)
