@@ -52,6 +52,12 @@ class Outlet < ActiveRecord::Base
   has_many :terminal_sync_data, :class_name => "TerminalSyncData", :foreign_key => "outlet_id"
   has_many :work_reports   
   
+  before_save :downcase_fields
+  
+  def downcase_fields
+    self.name.downcase
+  end
+  
   def encrypt_password
     if password.present?
       self.password_salt = BCrypt::Engine.generate_salt

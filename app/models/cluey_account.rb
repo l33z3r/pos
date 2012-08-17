@@ -23,6 +23,12 @@ class ClueyAccount < ActiveRecord::Base
     "help", "login", "signup", "support", "www", "demo", "cluey"
   ]
   
+  before_save :downcase_fields
+  
+  def downcase_fields
+    self.name.downcase
+  end
+  
   def name_not_reserved
     if RESERVED_NAMES.include? name
       errors.add(:name, "is a reserved name")
