@@ -538,44 +538,50 @@ function setGlancesSearchType(interval_selected) {
 function setSearchType(interval_selected) {
     switch (interval_selected) {
         case '0':
-            search_type = 'best_seller';
+            search_type = 'full_report';
             $('#product_dropdown').hide();
             $('#product_search').val('');
             $('#string_search_box').hide();
             break;
         case '1':
-            search_type = 'worst_seller';
+            search_type = 'best_seller';
             $('#product_dropdown').hide();
             $('#product_search').val('');
             $('#string_search_box').hide();
             break;
         case '2':
+            search_type = 'worst_seller';
+            $('#product_dropdown').hide();
+            $('#product_search').val('');
+            $('#string_search_box').hide();
+            break;
+        case '3':
             search_type = 'day';
             $('#product_dropdown').show();
             $('#string_search_box').show();
             break;
-        case '3':
+        case '4':
             search_type = 'week';
             $('#product_dropdown').show();
             $('#string_search_box').show();
             break;
-        case '4':
+        case '5':
             search_type = 'month';
             $('#product_dropdown').show();
             $('#string_search_box').show();
             break;
-        case '5':
+        case '6':
             search_type = 'year';
             $('#product_dropdown').show();
             $('#string_search_box').show();
             break;
-        case '6':
+        case '7':
             search_type = 'by_product';
             $('#product_dropdown').hide();
             $('#product_search').val('');
             $('#string_search_box').hide();
             break;
-        case '7':
+        case '8':
             search_type = 'by_category';
             $('#product_dropdown').hide();
             $('#product_search').val('');
@@ -647,6 +653,10 @@ function setSearchSelect(set_type) {
 
 function setStockSelect(set_type) {
     if (set_type == -1) {
+        $('#string_search_box').hide();
+        $('#to_date').show();
+        $('#from_date').show();
+        $('#date_select').show();
         $('#sales_items_graph').hide();
         $('#search_type_select').attr('selectedIndex', 0);
         $('#date_preselect').attr('selectedIndex', 10);

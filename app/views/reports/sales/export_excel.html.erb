@@ -1,6 +1,25 @@
 <% if session[:preselect] != -1 %>
     <% unless params[:action] == "sales_print" %>
-
+        <div id="options_menu">
+            <div class="option" onclick="setSearchSelect(-1)" class="print_box">
+                <div style="float: left;"><img src="/images/button_logos/home.png" alt="Print" width="24" height="24"/>
+                </div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Home  |</span></div>
+            </div>
+            <div class="option" onclick="window.location = '/reports/sales/sales_print'" class="print_box">
+                <div style="float: left;"><img src="/images/button_logos/print.png" alt="Print" width="24" height="24"/>
+                </div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Print  |</span></div>
+            </div>
+            <div class="option" onclick="window.location = '/reports/sales/export_excel'" class="excel_box">
+                <div style="float: left;">
+                    <img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24"/></div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Excel </span></div>
+            </div>
+        </div>
     <% end %>
 
 
@@ -62,13 +81,13 @@
                                 <%= "%g" % total_items %>
                             </td>
                             <td style="text-align: right">
-                                <%= sprintf("%.2f", gross_sales) %>
+                                <%= sprintf("%.2f",gross_sales) %>
                             </td>
                             <td style="text-align: right">
-                                <%= sprintf("%.2f", vat) %>
+                                <%= sprintf("%.2f",vat) %>
                             </td>
                             <td style="text-align: right">
-                                <%= sprintf("%.2f", net_sales) %>
+                                <%= sprintf("%.2f",net_sales) %>
                             </td>
                         </tr>
                     <% end %>
@@ -85,18 +104,170 @@
                         <%= sprintf("%.0f", total_item_count) %>
                     </td>
                     <td style="text-align: right; border-top: 2px solid;">
-                        <%= sprintf("%.2f", total_gross) %>
+                        <%= sprintf("%.2f",total_gross) %>
                     </td>
                     <td style="text-align: right; border-top: 2px solid;">
-                        <%= sprintf("%.2f", total_vat) %>
+                        <%= sprintf("%.2f",total_vat) %>
                     </td>
                     <td style="text-align: right; border-top: 2px solid">
-                        <%= sprintf("%.2f", total_net) %>
+                        <%= sprintf("%.2f",total_net) %>
                     </td>
                 </tr>
                 </tbody>
             </table>
 
+        <% elsif session[:search_type] == :full_report %>
+             <table id="report_table" class="admin_table" style="width: 100%;">
+                <thead>
+
+                <th class="header">Category</th>
+                <th class="header">Items Qty</th>
+                <th class="header">Gross Sales</th>
+                <th class="header">VAT</th>
+                <th class="header">Net Sales</th>
+                </thead>
+                <% total_gross = 0 %>
+                <% total_vat = 0 %>
+                <% total_net = 0 %>
+                <% total_item_count = 0 %>
+                <% @categories.each do |week| %>
+                    <% product = Product.find_by_id(week.product_id) %>
+                    <% total_items = week.quantity %>
+                    <% gross_sales = 0 %>
+                    <% gross_sales = week.total_price %>
+                    <% vat = 0 %>
+                    <% tax_rate = week.tax_rate %>
+                    <% vat = vat_rate(tax_rate, gross_sales) %>
+                    <% net_sales = net_result(gross_sales, vat) %>
+
+                    <% total_gross += gross_sales %>
+                    <% total_vat += vat %>
+                    <% total_net += net_sales %>
+                    <% total_item_count += total_items %>
+                    <% if product %>
+                        <tbody>
+                        <tr class="<%= cycle("even", "odd") %>">
+
+                            <td style="text-align: left">
+                                <% if Category.find_by_id(product.category_id) %>
+                                    <% if Category.find_by_id(product.category_id).name %>
+                                        <%= Category.find_by_id(product.category_id).name %>
+                                    <% end %>
+                                <% end %>
+                            </td>
+                            <td style="text-align: right">
+                                <%= "%g" % total_items %>
+                            </td>
+                            <td style="text-align: right">
+                                <%= sprintf("%.2f",gross_sales) %>
+                            </td>
+                            <td style="text-align: right">
+                                <%= sprintf("%.2f",vat) %>
+                            </td>
+                            <td style="text-align: right">
+                                <%= sprintf("%.2f",net_sales) %>
+                            </td>
+                        </tr>
+                    <% end %>
+                <% end %>
+                <tr>
+                    <td style="text-align: left; border-top: 2px solid">
+                        <b>Total:</b>
+                    </td>
+
+                    <td style="text-align: right; border-top: 2px solid; ">
+                        <%= sprintf("%.0f", total_item_count) %>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid;">
+                        <%= sprintf("%.2f",total_gross) %>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid;">
+                        <%= sprintf("%.2f",total_vat) %>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid">
+                        <%= sprintf("%.2f",total_net) %>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table id="report_table" class="admin_table" style="width: 100%;">
+                <thead>
+                <th class="header">Product</th>
+                <th class="header">Category</th>
+                <th class="header">Items Qty</th>
+                <th class="header">Gross Sales</th>
+                <th class="header">VAT</th>
+                <th class="header">Net Sales</th>
+                </thead>
+                <% total_gross = 0 %>
+                <% total_vat = 0 %>
+                <% total_net = 0 %>
+                <% total_item_count = 0 %>
+                <% @orders.each do |week| %>
+                    <% product = Product.find_by_id(week.product_id) %>
+                    <% total_items = week.quantity %>
+                    <% gross_sales = 0 %>
+                    <% gross_sales = week.total_price %>
+                    <% vat = 0 %>
+                    <% tax_rate = week.tax_rate %>
+                    <% vat = vat_rate(tax_rate, gross_sales) %>
+                    <% net_sales = net_result(gross_sales, vat) %>
+
+                    <% total_gross += gross_sales %>
+                    <% total_vat += vat %>
+                    <% total_net += net_sales %>
+                    <% total_item_count += total_items %>
+                    <% if product %>
+                        <tbody>
+                        <tr class="<%= cycle("even", "odd") %>">
+                            <td style="text-align: left">
+                                <% if nil != product.name %>
+                                    <%= product.name %>
+                                <% end %>
+                            </td>
+                            <td style="text-align: left">
+                                <% if Category.find_by_id(product.category_id) %>
+                                    <% if Category.find_by_id(product.category_id).name %>
+                                        <%= Category.find_by_id(product.category_id).name %>
+                                    <% end %>
+                                <% end %>
+                            </td>
+                            <td style="text-align: right">
+                                <%= "%g" % total_items %>
+                            </td>
+                            <td style="text-align: right">
+                                <%= sprintf("%.2f",gross_sales) %>
+                            </td>
+                            <td style="text-align: right">
+                                <%= sprintf("%.2f",vat) %>
+                            </td>
+                            <td style="text-align: right">
+                                <%= sprintf("%.2f",net_sales) %>
+                            </td>
+                        </tr>
+                    <% end %>
+                <% end %>
+                <tr>
+                    <td style="text-align: left; border-top: 2px solid">
+                        <b>Total:</b>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid">
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid; ">
+                        <%= sprintf("%.0f", total_item_count) %>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid;">
+                        <%= sprintf("%.2f",total_gross) %>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid;">
+                        <%= sprintf("%.2f",total_vat) %>
+                    </td>
+                    <td style="text-align: right; border-top: 2px solid">
+                        <%= sprintf("%.2f",total_net) %>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         <% else %>
 
             <table id="report_table" class="admin_table" style="width: 100%">
@@ -157,13 +328,13 @@
                             <%= sprintf("%.0f", total_items) %>
                         </td>
                         <td>
-                            <%= sprintf("%.2f", gross_sales) %>
+                            <%= sprintf("%.2f",gross_sales) %>
                         </td>
                         <td>
-                            <%= sprintf("%.2f", vat) %>
+                            <%= sprintf("%.2f",vat) %>
                         </td>
                         <td>
-                            <%= sprintf("%.2f", net_sales) %>
+                            <%= sprintf("%.2f",net_sales) %>
                         </td>
 
                     </tr>
@@ -178,13 +349,13 @@
                         <%= sprintf("%.0f", total_item_count) %>
                     </td>
                     <td style="text-align: right; border-top: 2px solid;">
-                        <%= sprintf("%.2f", total_gross) %>
+                        <%= sprintf("%.2f",total_gross) %>
                     </td>
                     <td style="text-align: right; border-top: 2px solid;">
-                        <%= sprintf("%.2f", total_vat) %>
+                        <%= sprintf("%.2f",total_vat) %>
                     </td>
                     <td style="text-align: right; border-top: 2px solid">
-                        <%= sprintf("%.2f", total_net) %>
+                        <%= sprintf("%.2f",total_net) %>
                     </td>
                 </tr>
                 </tbody>
@@ -193,7 +364,22 @@
 
         <% end %>
 <% else %>
-
+    <div id="saved_items">
+        <div id="saved_items_container">
+            <div onclick="setSearchSelect(0)" class="saved_report_button">
+                <div class="b_text"><b>Sales by Day This Week</b></div>
+            </div>
+            <div onclick="setSearchSelect(1)" class="saved_report_button">
+                <div class="b_text"><b>This Months Best Sales</b></div>
+            </div>
+            <div onclick="setSearchSelect(2)" class="saved_report_button">
+                <div class="b_text"><b>Sales by Month This Year</b></div>
+            </div>
+            <div onclick="setSearchSelect(3)" class="saved_report_button">
+                <div class="b_text"><b>Sales by Product This Week</b></div>
+            </div>
+        </div>
+    </div>
 <% end %>
 <script type="text/javascript">
     $('#refine_button').removeClass("selected");

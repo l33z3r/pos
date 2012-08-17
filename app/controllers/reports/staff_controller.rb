@@ -84,7 +84,6 @@ class Reports::StaffController < Admin::AdminController
     end
     if params[:search][:dropdown_type] == 'discounts_only'
       session[:discounts_only] = params[:search][:dropdown_id]
-      logger.debug "**********************************************************************************************************  #{params[:search][:dropdown_id]}"
     end
     render :nothing => true
   end
