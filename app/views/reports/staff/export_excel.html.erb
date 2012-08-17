@@ -107,10 +107,10 @@
                     <% total_hours += week.shift_seconds %>
                     <tbody>
 
-                    <% if (week.employee_id != last_id && i != 0 && session[:employee] == '' && employee_count > 1) %>
+                    <% if (week.employee_id != last_id && i != 0 && session[:employee] == '') %>
                     <tr class="<%= cycle("even", "odd") %>">
                     <td style="text-align: left;">
-                        Total:
+                        <b>Total for <%= last_name %>:</b>
                     </td>
                       <td style="text-align: right; ">
                     </td>

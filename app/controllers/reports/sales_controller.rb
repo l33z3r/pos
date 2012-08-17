@@ -338,7 +338,7 @@ class Reports::SalesController < Admin::AdminController
 
     end
 
-    if session[:search_type] == :by_product || session[:search_type] == :full_report
+    if session[:search_type] == :by_product
       where = "select oi.id, oi.tax_rate, oi.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id inner join products p on oi.product_id = p.id"
       if session[:category] != ''
         where << " and p.category_id = #{session[:category]}"
@@ -373,6 +373,25 @@ class Reports::SalesController < Admin::AdminController
         where << " and o.training_mode_sale = 0"
       end
       where << " group by p.category_id order by p.name asc"
+      query = OrderItem.find_by_sql(where)
+    end
+
+    if session[:search_type] == :full_report
+      where = "select oi.id, oi.tax_rate, oi.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id inner join products p on oi.product_id = p.id"
+      if session[:category] != ''
+        where << " and p.category_id = #{session[:category]}"
+      end
+      if session[:terminal] != ''
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"
+      else
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0"
+      end
+      if session[:training_mode]
+        where << " and o.training_mode_sale = 1"
+      else
+        where << " and o.training_mode_sale = 0"
+      end
+      where << " group by oi.product_id order by p.category_id asc"
       query = OrderItem.find_by_sql(where)
     end
 

@@ -23,38 +23,31 @@
     </div>
 </div>
 <div id="reports_container">
-
-
-
       <div>
-
         <div>
-
             <div id="at_a_glance_filters" class="popout_dialog">
                <div id="date_select_container">
                   <div class="dropdown_container">
                     <div class="label">Terminal</div>
-                    <select onchange="addTerminalFilter($(this).val())">
+                    <select onchange="addGlancesTerminalFilter($(this).val())">
                       <option value="">All Terminals</option>
                       <% @all_terminals.each do |terminal_id|%>
                           <option value="<%= terminal_id %>"><%= terminal_id %></option>
                       <% end %>
                     </select>
                   </div>
-
                   <div class="dropdown_container">
                     <div class="label">Date</div>
                     <select onchange="setGlancesSearchType($(this).val())">
-                      <option value="1">Today</option>
-                      <option value="2">Yesterday</option>
-
+                      <option value="0">Today</option>
+                      <option value="1">Yesterday</option>
                     </select>
                   </div>
                  <div id="days">
 
                  </div>
                  <div id="glances_refine_button">
-                        <div onclick="setReportParams();runGlancesSearch()" class="button" style="height:38px">Update</div>
+                        <div onclick="runGlancesSearch()" class="button" style="height:38px">Update</div>
                     </div>
 
                   <div class="clear">&nbsp;</div>
@@ -67,10 +60,6 @@
                 <% end %>
             </div>
 
-
-
-
-
         </div>
 
 
@@ -82,6 +71,7 @@
 
 <script type="text/javascript">
     window.onload = function() {
+    setGlancesSearchType('0');
     runGlancesSearch();
 }
 </script>

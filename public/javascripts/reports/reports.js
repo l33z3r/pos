@@ -70,6 +70,11 @@ function addTerminalFilter(terminal_id) {
     setStockParams();
 }
 
+function addGlancesTerminalFilter(terminal_id) {
+    terminalId = terminal_id;
+    setGlancesParams();
+}
+
 function addHourFromFilter(hour) {
     hour_from = hour;
 //    runGlancesSearch();

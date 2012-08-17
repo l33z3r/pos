@@ -40,9 +40,9 @@
                                     <option value="8">Sales by Category</option>
                                 </select>
                             </div>
-                            <div class="dropdown_container" style="margin-left: 30px;max-width:120px;">
+                            <div class="dropdown_container" style="margin-left: 30px;min-width:120px;max-width:120px;">
                                 <div class="label">Terminal</div>
-                                <select onchange="addTerminalFilter($(this).val())">
+                                <select style="min-width:120px;max-width:120px;" onchange="addTerminalFilter($(this).val())">
                                     <option value="">All Terminals</option>
                                     <% @all_terminals.each do |terminal_id| %>
                                         <option value="<%= terminal_id %>"><%= terminal_id %></option>

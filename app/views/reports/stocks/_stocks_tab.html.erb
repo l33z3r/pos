@@ -262,8 +262,12 @@
                             <% end %>
                         </td>
                         <td>
-                            <% unless @s_type == :by_category || total_sales[0] == nil %>
+                            <% unless @s_type == :by_category %>
+                            <% if total_sales[0] != nil %>
                             <% revenue = total_sales[0].total_price %>
+                            <% else %>
+                            <% revenue = 0 %>
+                            <% end %>
                             <% else %>
                             <% revenue = total_sales %>
                             <% end %>

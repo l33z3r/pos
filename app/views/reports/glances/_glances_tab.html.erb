@@ -10,26 +10,26 @@
         <tr>
           <td width="200" class="left"><b>Total</b></td>
           <td width="80" class="middle"><b><% unless @today_sales == nil %><%= print_money(@today_sales)%><% else %>No Data<% end %> </b></td>
-          <td width="80" class="right"><b><%= print_money(@average_day_sales/@total_number_days) %> </b></td>
+          <td width="80" class="right"><b><% unless @average_day_sales == nil %><%= print_money(@average_day_sales/@total_number_days) %><% else %>No Data<% end %> </b></td>
         </tr>
         <div class="clear">&nbsp;</div>
         <tr>
           <td width="200" class="left">No. of Sales</td>
           <td width="80" class="middle"><% if @number_of_sales != 0 %><%= @number_of_sales %><% end %></td>
-          <td width="80" class="right"><%= @total_number_sales/@total_number_days %></td>
+          <td width="80" class="right"><% if @total_number_sales != 0 %><%= @total_number_sales/@total_number_days %><% end %></td>
         </tr>
         <div class="clear">&nbsp;</div>
         <tr>
           <td width="200" class="left">Average Sales</td>
 
           <td width="80" class="middle"><% unless @today_sales == nil %><%= print_money(@today_sales/@number_of_sales) %><% end %></td>
-          <td width="80" class="right"><%= print_money(@average_day_sales/@total_number_sales) %></td>
+          <td width="80" class="right"><% unless @average_day_sales == nil %><%= print_money(@average_day_sales/@total_number_sales) %><% end %></td>
         </tr>
         <div class="clear">&nbsp;</div>
         <tr>
           <td width="200" class="left">Busiest Hour</td>
-          <td width="80" class="middle"><% unless @busiest_hour == nil %><%= @busiest_hour.strftime("%H") %>:00<% end %></td>
-          <td width="80" class="right"><%= @total_busiest_hour.strftime("%H") %>:00 </td>
+          <td width="80" class="middle"><% unless @busiest_hour == "" %><%= @busiest_hour.strftime("%H") %>:00<% end %></td>
+          <td width="80" class="right"><% unless @total_busiest_hour == "" %><%= @total_busiest_hour.strftime("%H") %>:00<% end %> </td>
         </tr>
         <tr>
           <td width="200" class="left">Qty of Voided Sales</td>
@@ -119,6 +119,28 @@
         <tr>
           <td width="100" class="left"><%= ex.id %></td>
           <td width="100" class="middle"><%= Product.find_by_id(ex.product_id).name %></td>
+          <td width="100" class="right"><%= print_money(ex.total_price) %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+   <% end %>
+  </div>
+
+  <div>
+    <% unless @sales_by_hour.empty? %>
+    <h3>SALES BY HOUR</h3>
+      <table class="items_table">
+      <tbody>
+        <tr>
+          <td width="100" class="left"><b>Hour</b></td>
+          <td width="100" class="middle"><b>Qty</b></td>
+          <td width="100" class="right"><b>Total Sales</b></td>
+        </tr>
+        <% @sales_by_hour.each do |ex| %>
+        <tr>
+          <td width="100" class="left"><%= ex.created_at.strftime("%H") %>:00</td>
+          <td width="100" class="middle"><%= ex.count %></td>
           <td width="100" class="right"><%= print_money(ex.total_price) %></td>
         </tr>
         <% end %>
