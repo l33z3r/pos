@@ -70,7 +70,6 @@ class Reports::StaffController < Admin::AdminController
     #end
     @orders = get_staff_data
     @s_type = session[:search_type]
-    render_graph
   end
 
 
