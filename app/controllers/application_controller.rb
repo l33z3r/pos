@@ -261,24 +261,11 @@ class ApplicationController < AppBaseController
   end
   
   rescue_from StandardError do |exception|
-    Rails.logger.error('ERROR!')
-    Rails.logger.error("Time: #{Time.now.to_s(:long)}")
-    Rails.logger.error(params.inspect)
-    Rails.logger.error(exception.message)
-    Rails.logger.error(exception.backtrace.join("\n") + "\n\n\n\n")
-    
-    # Raise it anyway because you just want to put it in the log
-    raise exception
+    raise exception.exception("ERROR!!!!!!!!!!!!!!!" + "\n\n" + exception.message + "\n\n")
   end
   
   rescue_from Errno::ETIMEDOUT, Errno::EHOSTUNREACH, Errno::ECONNREFUSED, Errno::EALREADY, SocketError do |host_unreachable_exception|
-    Rails.logger.error('SOCKET ERROR!')
-    Rails.logger.error("Time: #{Time.now.to_s(:long)}")
-    Rails.logger.error(params.inspect)
-    Rails.logger.error(host_unreachable_exception.message)
-    Rails.logger.error(host_unreachable_exception.backtrace.join("\n") + "\n\n\n\n")
-    
-    raise host_unreachable_exception
+    raise host_unreachable_exception.exception("SOCKET ERROR!!!!!!!!!!!!!!!" + "\n\n" + host_unreachable_exception.message + "\n\n")
   end
   
   private

@@ -181,8 +181,8 @@ class CashTotal < ActiveRecord::Base
           #sales by category
           if !@sales_by_category[@category_name]
             @sales_by_category[@category_name] = 0
-          end
-            
+          end                      
+          
           if order_item.product.category and order_item.product.category.parent_category
             @department_name = order_item.product.category.parent_category.name
           else 
