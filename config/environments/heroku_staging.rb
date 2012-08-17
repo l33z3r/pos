@@ -19,8 +19,8 @@ Pos::Application.configure do
   # just comment this out and Rails will serve the files
 
   #rotate every 20 megabytes
-#  config.logger = Logger.new(Rails.root.join("log", Rails.env + ".log"), 10, 20 * 1024 * 1024)
-#  config.logger.level = Logger::INFO
+  config.logger = Logger.new(STDOUT)
+  config.logger.level = Logger::INFO
   
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
