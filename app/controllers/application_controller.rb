@@ -2,7 +2,7 @@ class ApplicationController < AppBaseController
   before_filter :setup_for_subdomain
   before_filter :set_current_employee
   
-  before_filter :http_basic_authenticate
+  #before_filter :http_basic_authenticate
   
   before_filter :check_reset_session
   
@@ -503,74 +503,74 @@ class ApplicationController < AppBaseController
     current_interface == MEDIUM_INTERFACE
   end
   
-  def http_basic_authenticate
-    
-    @need_auth = false
-    
-    @authentication_required = GlobalSetting.parsed_setting_for GlobalSetting::AUTHENTICATION_REQUIRED, current_outlet
-    @local_auth_required = GlobalSetting.parsed_setting_for GlobalSetting::LOCAL_AUTHENTICATION_REQUIRED, current_outlet
-    
-    @http_basic_username = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_USERNAME, current_outlet
-    @http_basic_password = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_PASSWORD, current_outlet
-  
-    if @authentication_required 
-      @need_auth = true
-      
-      if !@local_auth_required
-        @local_access = false
-        
-        @remote_ip = request.remote_ip
-        
-        #check ip on same lan
-        @server_ip_parts = server_ip.split(".")
-        
-        @server_ip_base = "#{@server_ip_parts[0]}.#{@server_ip_parts[1]}.#{@server_ip_parts[2]}."
-          
-        if @remote_ip.starts_with? @server_ip_base or @remote_ip == "127.0.0.1"
-          @local_access = true
-        else 
-          @local_access = false
-        end
-        
-        if @local_access
-          @need_auth = false
-        end
-      end
-    else
-      logger.info "Auth is not required by setting"
-    end
-    
-    if !@need_auth
-      return
-    end
-
-    if !session[:auth_succeeded]
-      #check is the name and password sent in the url and authenticate off that first if it is present
-      @username_param = params[:u]
-      @password_param = params[:p]
-    
-      @username_ok = (@username_param and @username_param == @http_basic_username)
-      @password_ok = (@password_param and @password_param == @http_basic_password)
-    
-      if @username_ok and @password_ok
-        session[:auth_succeeded] = true
-        return
-      end
-    else
-      return
-    end
-    
-    authenticate_or_request_with_http_basic do |username, password|
-      logger.info "#{username} #{password} #{@http_basic_username} #{@http_basic_password}"
-      @auth_ok = username == @http_basic_username && password == @http_basic_password
-      
-      if @auth_ok
-        session[:auth_succeeded] = true
-      end
-      
-      @auth_ok
-    end
-  end
+#  def http_basic_authenticate
+#    
+#    @need_auth = false
+#    
+#    @authentication_required = GlobalSetting.parsed_setting_for GlobalSetting::AUTHENTICATION_REQUIRED, current_outlet
+#    @local_auth_required = GlobalSetting.parsed_setting_for GlobalSetting::LOCAL_AUTHENTICATION_REQUIRED, current_outlet
+#    
+#    @http_basic_username = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_USERNAME, current_outlet
+#    @http_basic_password = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_PASSWORD, current_outlet
+#  
+#    if @authentication_required 
+#      @need_auth = true
+#      
+#      if !@local_auth_required
+#        @local_access = false
+#        
+#        @remote_ip = request.remote_ip
+#        
+#        #check ip on same lan
+#        @server_ip_parts = server_ip.split(".")
+#        
+#        @server_ip_base = "#{@server_ip_parts[0]}.#{@server_ip_parts[1]}.#{@server_ip_parts[2]}."
+#          
+#        if @remote_ip.starts_with? @server_ip_base or @remote_ip == "127.0.0.1"
+#          @local_access = true
+#        else 
+#          @local_access = false
+#        end
+#        
+#        if @local_access
+#          @need_auth = false
+#        end
+#      end
+#    else
+#      logger.info "Auth is not required by setting"
+#    end
+#    
+#    if !@need_auth
+#      return
+#    end
+#
+#    if !session[:auth_succeeded]
+#      #check is the name and password sent in the url and authenticate off that first if it is present
+#      @username_param = params[:u]
+#      @password_param = params[:p]
+#    
+#      @username_ok = (@username_param and @username_param == @http_basic_username)
+#      @password_ok = (@password_param and @password_param == @http_basic_password)
+#    
+#      if @username_ok and @password_ok
+#        session[:auth_succeeded] = true
+#        return
+#      end
+#    else
+#      return
+#    end
+#    
+#    authenticate_or_request_with_http_basic do |username, password|
+#      logger.info "#{username} #{password} #{@http_basic_username} #{@http_basic_password}"
+#      @auth_ok = username == @http_basic_username && password == @http_basic_password
+#      
+#      if @auth_ok
+#        session[:auth_succeeded] = true
+#      end
+#      
+#      @auth_ok
+#    end
+#  end
   
   def check_reset_cache_timestamp
     if params[:reset_cache]

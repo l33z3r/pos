@@ -29,8 +29,8 @@ class Reports::SalesController < Admin::AdminController
 
     session[:preselect] = -1
 
-    @opening_time = GlobalSetting.parsed_setting_for GlobalSetting::EARLIEST_OPENING_HOUR
-    @closing_time = GlobalSetting.parsed_setting_for GlobalSetting::LATEST_CLOSING_HOUR
+    @opening_time = GlobalSetting.parsed_setting_for GlobalSetting::EARLIEST_OPENING_HOUR, current_outlet
+    @closing_time = GlobalSetting.parsed_setting_for GlobalSetting::LATEST_CLOSING_HOUR, current_outlet
 
     @selected_from_date = Time.now
     @selected_to_date = Time.now
@@ -39,13 +39,14 @@ class Reports::SalesController < Admin::AdminController
     @current_product = nil
     @all_terminals = all_terminals
       #sales_search
-    @products = Product.all.sort_by { |p| p.name.downcase }
+    
+    @products = current_outlet.products.all.sort_by { |p| p.name.downcase }
 
   end
 
   def sales_print
     sales_search
-    @products = Product.all
+    @products = current_outlet.products.all
 
     respond_to do |format|
       format.html # show.html.erb
@@ -59,7 +60,7 @@ class Reports::SalesController < Admin::AdminController
     headers['Content-Disposition'] = 'attachment; filename="'+@business_name+' Report-' + session[:search_type_label] + '-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
     headers['Cache-Control'] = ''
     sales_search
-    @products = Product.all
+    @products = current_outlet.products.all
   end
 
 
