@@ -212,10 +212,10 @@
                     <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td></tr>
                     <% end %>
                 <% end %>
-                    <% if (session[:employee] == '' && employee_count > 1) %>
+                    <% if (session[:employee] == '') %>
                     <tr class="<%= cycle("even", "odd") %>">
                     <td style="text-align: left;">
-                        Total:
+                       <b>Total:</b>
                     </td>
                       <td style="text-align: right;">
                     </td>

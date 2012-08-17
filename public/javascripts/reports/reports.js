@@ -604,33 +604,33 @@ function setSearchSelect(set_type) {
         $('#date_preselect').attr('selectedIndex', 10);
         $('#category_id_equals').attr('selectedIndex', 0);
         $('#product_id_equals').attr('selectedIndex', 0);
-        search_type = 'best_seller';
+        search_type = 'full_report';
         setDateParams($('#date_preselect').val(), false);
         select_type = set_type
     }
     if (set_type == 0) {
-        $('#search_type_select').attr('selectedIndex', 2);
+        $('#search_type_select').attr('selectedIndex', 3);
         $('#date_preselect').attr('selectedIndex', 2);
         search_type = 'day';
         setDateParams($('#date_preselect').val(), false);
         select_type = set_type
     }
     if (set_type == 1) {
-        $('#search_type_select').attr('selectedIndex', 0);
+        $('#search_type_select').attr('selectedIndex', 1);
         $('#date_preselect').attr('selectedIndex', 3);
         search_type = 'best_seller';
         setDateParams($('#date_preselect').val(), false);
         select_type = set_type
     }
     if (set_type == 2) {
-        $('#search_type_select').attr('selectedIndex', 4);
+        $('#search_type_select').attr('selectedIndex', 5);
         $('#date_preselect').attr('selectedIndex', 4);
         search_type = 'month';
         setDateParams($('#date_preselect').val(), false);
         select_type = set_type
     }
     if (set_type == 3) {
-        $('#search_type_select').attr('selectedIndex', 0);
+        $('#search_type_select').attr('selectedIndex', 7);
         $('#date_preselect').attr('selectedIndex', 2);
         search_type = 'best_seller';
         setDateParams($('#date_preselect').val(), false);
@@ -664,7 +664,7 @@ function setStockSelect(set_type) {
         $('#date_select').show();
         $('#sales_items_graph').hide();
         $('#search_type_select').attr('selectedIndex', 0);
-        $('#date_preselect').attr('selectedIndex', 10);
+        $('#date_preselect').attr('selectedIndex', 0);
         $('#category_id_equals').attr('selectedIndex', 0);
         $('#category_id_equals').attr('selectedIndex', 0);
         $('#product_id_equals').attr('selectedIndex', 0);

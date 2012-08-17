@@ -81,7 +81,7 @@
                         </td>
                         <td>
                             <% if product.category.parent_category
-                                   @parent_category_name = @product.category.parent_category.name
+                                   @parent_category_name = product.category.parent_category.name
                                else
                                    @parent_category_name = "None"
                                end %>
@@ -170,7 +170,7 @@
                         </td>
                         <td>
                             <% if product.category.parent_category
-                                   @parent_category_name = @product.category.parent_category.name
+                                   @parent_category_name = product.category.parent_category.name
                                else
                                    @parent_category_name = "None"
                                end %>
