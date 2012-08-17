@@ -10,6 +10,10 @@ class HomeController < ApplicationController
     do_common_interface_actions
   end
   
+  def force_error
+    1/0
+  end
+  
   def mobile_index
     @all_terminals = all_terminals
     @all_servers = all_servers

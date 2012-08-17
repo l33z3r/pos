@@ -1,5 +1,7 @@
 Pos::Application.routes.draw do
 
+  match "force_error" => "home#force_error"
+  
   #cluey account routes
   match 'welcome' => "accounts/accounts#welcome", :as => "welcome"
   get "account_log_out" => "accounts/sessions#destroy", :as => "account_log_out"    
