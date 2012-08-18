@@ -156,7 +156,7 @@ DEPENDENCIES
   prawnto (= 0.1.1)
   rails (= 3.0.5)
   rake (= 0.8.7)
-  recaptcha
+  recaptcha (= 0.3.4)
   rspec-rails (= 2.6.1)
   ruby-debug19
   smurf (= 1.0.8)
