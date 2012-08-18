@@ -43,4 +43,18 @@ class Accounts::ApplicationController < AppBaseController
     return
   end
   
+  def check_captcha(redirect=nil)
+    if !verify_recaptcha
+      @message = "Please enter the captcha correctly!"
+      if redirect
+        flash[:error] = @message
+      else
+        flash.now[:error] = @message
+      end
+      false
+    else
+      true
+    end
+  end
+  
 end

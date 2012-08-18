@@ -27,5 +27,8 @@
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation %>
   </p>
+  
+  <div id="captcha_section"><%= recaptcha_tags %></div>
+  
   <p class="button"><%= f.submit %></p>
 <% end %>

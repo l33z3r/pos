@@ -10,6 +10,9 @@ class Accounts::OutletsController < Accounts::ApplicationController
   def create
     @outlet = Outlet.new(params[:outlet])
     
+    #verify captcha
+    render :action=>'new' and return unless check_captcha(false)
+    
     @outlet.cluey_account_id = current_cluey_account.id
     
     if @outlet.save

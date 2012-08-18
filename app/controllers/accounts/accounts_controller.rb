@@ -26,10 +26,28 @@ class Accounts::AccountsController < Accounts::ApplicationController
     @cluey_account = ClueyAccount.new(params[:cluey_account])
     
     if @cluey_account.save
+      
+      #deliver activate email
+      AccountMailer.deliver_signup_notification @cluey_account
+      
       flash[:notice] = "Signed up successfully! Welcome to Cluey!"
       redirect_to accounts_accounts_url(:subdomain => @cluey_account.name)
     else
       render "new"
+    end
+  end
+  
+  def activate
+    @user = params[:activation_code].blank? ? false : User.find_by_activation_code(params[:activation_code])
+    if @user && !@user.activated?
+      @user.activate
+      self.user = @user unless logged_in?
+      AccountMailer.deliver_signup @user
+      flash[:positive] = "Thanks, your account has been activated"
+      redirect_back_or_default('/')
+    else
+      flash[:negative] = "You have already activated your account!"
+      redirect_back_or_default('/')
     end
   end
   

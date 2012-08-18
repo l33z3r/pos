@@ -3,6 +3,8 @@ development:
   s3_bucket_name: clueypos_development
   s3_access_key_id: AKIAIY5ORKJHOQ7C5ZHA
   s3_secret_access_key: 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
+  recaptcha_public_key: 6LfpZ9USAAAAAGtq7QkhGraD3_6Spb6tSnAIL4rI
+  recaptcha_private_key: 6LfpZ9USAAAAAHh-le2xNBAVeX-P-MWWAVLeCrQK
   google_translate_api_key: AIzaSyBTUOHzAlYtVL8xP9NHh9WsQmMijzws2x4
   in_kiosk_mode: false
 
@@ -11,6 +13,8 @@ test:
   s3_bucket_name: clueypos_test
   s3_access_key_id: AKIAIY5ORKJHOQ7C5ZHA
   s3_secret_access_key: 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
+  recaptcha_public_key: 6LfpZ9USAAAAAGtq7QkhGraD3_6Spb6tSnAIL4rI
+  recaptcha_private_key: 6LfpZ9USAAAAAHh-le2xNBAVeX-P-MWWAVLeCrQK
   google_translate_api_key: AIzaSyBTUOHzAlYtVL8xP9NHh9WsQmMijzws2x4
   in_kiosk_mode: false
 
@@ -19,6 +23,8 @@ production:
   s3_bucket_name: clueypos_production
   s3_access_key_id: AKIAIY5ORKJHOQ7C5ZHA
   s3_secret_access_key: 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
+  recaptcha_public_key: 6LfpZ9USAAAAAGtq7QkhGraD3_6Spb6tSnAIL4rI
+  recaptcha_private_key: 6LfpZ9USAAAAAHh-le2xNBAVeX-P-MWWAVLeCrQK
   google_translate_api_key: AIzaSyBTUOHzAlYtVL8xP9NHh9WsQmMijzws2x4
   in_kiosk_mode: true
   
@@ -27,6 +33,8 @@ heroku_staging:
   s3_bucket_name: cluey_staging
   s3_access_key_id: AKIAICNSMYJPXRM2ENDQ
   s3_secret_access_key: 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
+  recaptcha_public_key: 6LfpZ9USAAAAAGtq7QkhGraD3_6Spb6tSnAIL4rI
+  recaptcha_private_key: 6LfpZ9USAAAAAHh-le2xNBAVeX-P-MWWAVLeCrQK
   google_translate_api_key: AIzaSyBTUOHzAlYtVL8xP9NHh9WsQmMijzws2x4
   in_kiosk_mode: true
   
@@ -35,5 +43,7 @@ heroku_production:
   s3_bucket_name: cluey
   s3_access_key_id: AKIAICNSMYJPXRM2ENDQ
   s3_secret_access_key: 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
+  recaptcha_public_key: 6LfqZ9USAAAAALbZX6WnfPDXWt-cF6Rq7Jw08w6r
+  recaptcha_private_key: 6LfqZ9USAAAAADhQS_TYLldT-Ohnglt8-N5DaoCW
   google_translate_api_key: AIzaSyBTUOHzAlYtVL8xP9NHh9WsQmMijzws2x4
   in_kiosk_mode: true

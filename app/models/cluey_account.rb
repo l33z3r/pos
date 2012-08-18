@@ -1,3 +1,5 @@
+require 'digest/sha1'
+
 class ClueyAccount < ActiveRecord::Base
   has_many :outlets
   
@@ -49,6 +51,23 @@ class ClueyAccount < ActiveRecord::Base
       self.password_salt = BCrypt::Engine.generate_salt
       self.password_hash = BCrypt::Engine.hash_secret(password, password_salt)
     end
+  end
+  
+  def after_create
+    #make activation code
+    self.activation_code = Digest::SHA1.hexdigest( Time.now.to_s.split(//).sort_by {rand}.join )
+    save
+  end
+  
+  # Activates the user in the database.
+  def activate
+    self.activated_at = Time.now.utc
+    self.activation_code = nil
+    save
+  end
+
+  def activated?
+    activation_code.nil?
   end
 end
 

@@ -34,6 +34,7 @@ gem 'prawn', '0.12.0'
 gem 'prawnto' , '0.1.1'
 
 gem 'newrelic_rpm'
+gem "recaptcha", :require => "recaptcha/rails"
 
 #lock down on version of tzinfo gem
 gem "tzinfo", "0.3.33"

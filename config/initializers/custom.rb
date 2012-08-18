@@ -47,5 +47,11 @@ end
 
 GOOGLE_TRANSLATE_API_KEY = CUSTOM_CONFIG['google_translate_api_key']
 
+#recaptcha
+Recaptcha.configure do |config|
+  config.public_key  = CUSTOM_CONFIG['recaptcha_public_key']
+  config.private_key = CUSTOM_CONFIG['recaptcha_private_key']
+end
+
 require "net/http"
 require "uri"

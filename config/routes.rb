@@ -9,7 +9,12 @@ Pos::Application.routes.draw do
   get "account_sign_up" => "accounts/accounts#new", :as => "account_sign_up"
 
   namespace :accounts do
-    resources :accounts, :only => [:new, :create, :index]    
+    resources :accounts, :only => [:new, :create, :index] do
+      collection do
+        get 'activate'
+      end
+    end
+    
     resources :sessions, :only => [:new, :create, :destroy]
     
     resources :outlets
