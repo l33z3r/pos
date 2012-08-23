@@ -39,8 +39,8 @@
                 <th class="header">Sales Price/unit</th>
                 <th class="header">Sales Price/container</th>
                 <th class="header">Current Stock</th>
-                <th class="header">Cost Valuation</th>
-                <th class="header">Sales Valuation</th>
+                <th class="header">Cost Value</th>
+                <th class="header">Sales Value</th>
                 <th class="header">Margin</th>
                 </thead>
 
@@ -50,7 +50,7 @@
                     <tr class="<%= cycle("even", "odd") %>">
                             <td style="text-align: left">
                                 <% if nil != week.name %>
-                                    <%= week.name %>
+                                    <%= week.name[0..20] %>
                                 <% end %>
                             </td>
                         <td style="text-align: left">
@@ -75,11 +75,12 @@
                            <%= print_money(week.price) %>
                         </td>
                         <td>
-                           <%= print_money(week.price.to_d*week.quantity_per_container.to_d) %>
+                           <% sales_price_per_c = (week.price.to_d*week.quantity_per_container.to_d) %>
+                           <%= print_money(sales_price_per_c) %>
                         </td>
 
                         <td>
-                            <%= week.quantity_in_stock %>
+                            <%= sprintf("%.2f",week.quantity_in_stock) %>
                         </td>
                         <td>
                             <% unless week.cost_price == 0 %>
@@ -88,8 +89,8 @@
                             <% end %>
                         </td>
                         <td>
-                            <% unless week.price == 0 %>
-                                <% sales_valuation = (week.price.to_d*week.quantity_in_stock.to_d).abs %>
+                            <% unless sales_price_per_c == 0 %>
+                                <% sales_valuation = (sales_price_per_c*week.quantity_in_stock.to_d).abs %>
                                 <%= print_money(sales_valuation) %>
                             <% end %>
                         </td>
@@ -262,7 +263,11 @@
                         </td>
                         <td>
                             <% unless @s_type == :by_category %>
+                            <% if total_sales[0] != nil %>
                             <% revenue = total_sales[0].total_price %>
+                            <% else %>
+                            <% revenue = 0 %>
+                            <% end %>
                             <% else %>
                             <% revenue = total_sales %>
                             <% end %>
@@ -275,7 +280,7 @@
                             <% unless total_price == 0 || total_price == nil || all_cost_price == false %>
                                 <% margin = per_profit(sprintf("%.2f", revenue).to_d, sprintf("%.2f", total_price.abs).to_d, product.sales_tax_rate) %>
                                 <% unless (margin == nil) %>
-                                    <%=  sprintf("%.2f",margin) %>%
+                                    <%=  sprintf("%.0f",margin) %>%
                                 <% end %>
                             <% end %>
                             <% end %>

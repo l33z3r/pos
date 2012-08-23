@@ -1,6 +1,7 @@
 <% if session[:preselect] != -1 %>
     <% unless params[:action] == "stocks_print" %>
 
+
     <% end %>
 
     <div id="stock_items">
@@ -19,9 +20,9 @@
                 <th class="header">Sales Price/unit</th>
                 <th class="header">Sales Price/container</th>
                 <th class="header">Current Stock</th>
-                <th class="header">Cost Valuation</th>
-                <th class="header">Sales Valuation</th>
-                <th class="header">Cost Total</th>
+                <th class="header">Cost Value</th>
+                <th class="header">Sales Value</th>
+                <th class="header">Margin</th>
                 </thead>
 
                 <% @products.each do |week| %>
@@ -30,7 +31,7 @@
                     <tr class="<%= cycle("even", "odd") %>">
                             <td style="text-align: left">
                                 <% if nil != week.name %>
-                                    <%= week.name %>
+                                    <%= week.name[0..20] %>
                                 <% end %>
                             </td>
                         <td style="text-align: left">
@@ -44,7 +45,7 @@
                             <%= week.unit %>
                         </td>
                         <td>
-                            <%= sprintf("%.2f",week.cost_price) %>
+                            <%= sprintf("%.2f", week.cost_price) %>
                         </td>
                         <td>
                             <%= week.quantity_per_container %>
@@ -52,25 +53,26 @@
                         <td>
                         </td>
                         <td>
-                           <%= sprintf("%.2f",week.price) %>
+                           <%= sprintf("%.2f", week.price) %>
                         </td>
                         <td>
-                           <%= sprintf("%.2f",week.price.to_d*week.quantity_per_container.to_d) %>
+                           <% sales_price_per_c = (week.price.to_d*week.quantity_per_container.to_d) %>
+                           <%= sprintf("%.2f", sales_price_per_c) %>
                         </td>
 
                         <td>
-                            <%= week.quantity_in_stock %>
+                            <%= sprintf("%.2f",week.quantity_in_stock) %>
                         </td>
                         <td>
                             <% unless week.cost_price == 0 %>
                                 <% cost_valuation = (week.cost_price.to_d*week.quantity_in_stock.to_d).abs %>
-                                <%= sprintf("%.2f",cost_valuation) %>
+                                <%= sprintf("%.2f", cost_valuation) %>
                             <% end %>
                         </td>
                         <td>
-                            <% unless week.price == 0 %>
-                                <% sales_valuation = (week.price.to_d*week.quantity_in_stock.to_d).abs %>
-                                <%= sprintf("%.2f",sales_valuation) %>
+                            <% unless sales_price_per_c == 0 %>
+                                <% sales_valuation = (sales_price_per_c*week.quantity_in_stock.to_d).abs %>
+                                <%= sprintf("%.2f", sales_valuation) %>
                             <% end %>
                         </td>
                         <td>
@@ -144,10 +146,10 @@
                         </td>
 
                         <td>
-                            <%= sprintf("%.2f",@product.cost_price) %>
+                            <%= sprintf("%.2f", @product.cost_price) %>
                         </td>
                         <td>
-                            <%= sprintf("%.2f",@product.cost_price.to_d*week.change_amount.to_d) %>
+                            <%= sprintf("%.2f", @product.cost_price.to_d*week.change_amount.to_d) %>
                         </td>
                     </tr>
                 <% end %>
@@ -225,7 +227,7 @@
                         </td>
                         <td>
                             <% unless product.cost_price == 0 %>
-                                <% price = sprintf("%.2f",product.cost_price) %>
+                                <% price = sprintf("%.2f", product.cost_price) %>
                                 <%= price %>
                         </td>
                         <% end %>
@@ -237,25 +239,29 @@
                             <% total_price = cost_total %>
                             <% end %>
                             <% unless total_price == 0 || total_price == nil || all_cost_price == false %>
-                                <%= sprintf("%.2f",total_price.abs) %>
+                                <%= sprintf("%.2f", total_price.abs) %>
                             <% end %>
                         </td>
                         <td>
                             <% unless @s_type == :by_category %>
+                            <% if total_sales[0] != nil %>
                             <% revenue = total_sales[0].total_price %>
+                            <% else %>
+                            <% revenue = 0 %>
+                            <% end %>
                             <% else %>
                             <% revenue = total_sales %>
                             <% end %>
                             <% unless (revenue == nil) %>
-                            <%= sprintf("%.2f",revenue) %>
+                            <%= sprintf("%.2f", revenue) %>
                             <% end %>
                         </td>
                         <td>
-                            <% unless (revenue == nil) %>
+                            <% unless (revenue == nil || revenue == 0) %>
                             <% unless total_price == 0 || total_price == nil || all_cost_price == false %>
                                 <% margin = per_profit(sprintf("%.2f", revenue).to_d, sprintf("%.2f", total_price.abs).to_d, product.sales_tax_rate) %>
                                 <% unless (margin == nil) %>
-                                    <%=  sprintf("%.2f",margin) %>%
+                                    <%=  sprintf("%.0f",margin) %>%
                                 <% end %>
                             <% end %>
                             <% end %>

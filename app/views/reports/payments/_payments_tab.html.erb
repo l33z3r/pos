@@ -47,7 +47,7 @@
 
                     <tbody>
                     <tr class="<%= cycle("even", "odd") %>">
-                        <td>
+                        <td style="text-align: left;">
                            <% if @s_type == :day %>
                                 <%= week.created_at.strftime("%B %d, %Y") %>
                             <% end %>
@@ -62,7 +62,7 @@
                             <% end %>
                         </td>
 
-                        <td>
+                        <td style="text-align: left;">
                            <% if @s_type == :day %>
                                 <%= DAYS_OF_THE_WEEK[week.created_at.wday.to_i] %>
                             <% end %>
@@ -140,7 +140,7 @@
                 <th class="header">Time</th>
                 <th class="header">Order Id</th>
                 <th class="header">Terminal</th>
-                <th class="header">Employees</th>
+                <th class="header">Employee</th>
                 <th class="header">Type</th>
                 <th class="header">Total</th>
                 <th class="header">Discount</th>

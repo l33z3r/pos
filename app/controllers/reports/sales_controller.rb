@@ -16,8 +16,8 @@ class Reports::SalesController < Admin::AdminController
 
 
   def index
-    session[:search_type] = :best_seller
-    session[:search_type_label] = "Best Seller"
+    session[:search_type] = :full_report
+    session[:search_type_label] = "Full Report"
     session[:category] = ''
     session[:product] = ''
     session[:terminal] = ''
@@ -65,6 +65,9 @@ class Reports::SalesController < Admin::AdminController
 
   def sales_search
     @orders = get_sales_data
+    if session[:search_type] == :full_report
+      @categories = sales_by_category
+    end
     @s_type = session[:search_type]
   end
 
@@ -215,6 +218,9 @@ class Reports::SalesController < Admin::AdminController
     elsif params[:search][:search_type] == 'by_category'
       session[:search_type] = :by_category
       session[:search_type_label] = 'By Category'
+    elsif params[:search][:search_type] == 'full_report'
+      session[:search_type] = :full_report
+      session[:search_type_label] = 'By Full Report'
     end
     session[:category] = params[:search][:category]
     session[:product] = params[:search][:product]
@@ -351,7 +357,7 @@ class Reports::SalesController < Admin::AdminController
       query = OrderItem.find_by_sql(where)
     end
 
-      if session[:search_type] == :by_category
+    if session[:search_type] == :by_category
       where = "select oi.id, oi.tax_rate, oi.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id inner join products p on oi.product_id = p.id"
       if session[:category] != ''
         where << " and p.category_id = #{session[:category]}"
@@ -370,9 +376,47 @@ class Reports::SalesController < Admin::AdminController
       query = OrderItem.find_by_sql(where)
     end
 
+    if session[:search_type] == :full_report
+      where = "select oi.id, oi.tax_rate, oi.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id inner join products p on oi.product_id = p.id"
+      if session[:category] != ''
+        where << " and p.category_id = #{session[:category]}"
+      end
+      if session[:terminal] != ''
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"
+      else
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0"
+      end
+      if session[:training_mode]
+        where << " and o.training_mode_sale = 1"
+      else
+        where << " and o.training_mode_sale = 0"
+      end
+      where << " group by oi.product_id order by p.category_id asc"
+      query = OrderItem.find_by_sql(where)
+    end
+
       #end
     return query
 
+  end
+
+  def sales_by_category
+      where = "select oi.id, oi.tax_rate, oi.product_id, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id inner join products p on oi.product_id = p.id"
+      if session[:category] != ''
+        where << " and p.category_id = #{session[:category]}"
+      end
+      if session[:terminal] != ''
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"
+      else
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0"
+      end
+      if session[:training_mode]
+        where << " and o.training_mode_sale = 1"
+      else
+        where << " and o.training_mode_sale = 0"
+      end
+      where << " group by p.category_id order by p.name asc"
+      query = OrderItem.find_by_sql(where)
   end
 
 end

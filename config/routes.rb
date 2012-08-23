@@ -273,6 +273,7 @@ Pos::Application.routes.draw do
         get 'glances_search'
         get 'sales_search'
         get 'cash_search'
+        get 'set_params'
         get 'payments_search'
         get 'customers_search'
         get 'suppliers_search'

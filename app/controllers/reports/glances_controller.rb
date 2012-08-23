@@ -42,8 +42,15 @@ class Reports::GlancesController < Admin::AdminController
     @busiest_hour = busiest_hour
     unless @busiest_hour.empty?
       @busiest_hour = @busiest_hour[0].created_at
+    else
+      @busiest_hour = ""
     end
     @total_busiest_hour = total_busiest_hour
+    unless @total_busiest_hour.empty?
+      @total_busiest_hour = @total_busiest_hour[0].created_at
+    else
+      @total_busiest_hour = ""
+    end
     @todays_voids = todays_voids
     @total_voids = total_voids
     @todays_discounts = todays_discounts
@@ -52,6 +59,7 @@ class Reports::GlancesController < Admin::AdminController
     @sales_by_server = sales_by_server
     @expenses_paid = expenses_paid
     @top_selling_items = top_selling_items
+    @sales_by_hour = sales_by_hour
 
   end
 
@@ -65,6 +73,9 @@ class Reports::GlancesController < Admin::AdminController
       session[:search_type] = :this_week
     elsif params[:search][:search_type] == 'last_week'
       session[:search_type] = :last_week
+    end
+    if params[:search][:terminal]
+      session[:terminal] = params[:search][:terminal]
     end
     render :nothing => true
   end
@@ -155,7 +166,7 @@ class Reports::GlancesController < Admin::AdminController
         where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0"
       end
     where << " group by hour(oi.created_at) order by total_price desc"
-    query = OrderItem.find_by_sql(where)[0].created_at
+    query = OrderItem.find_by_sql(where)
   end
 
   def todays_voids
@@ -259,6 +270,19 @@ class Reports::GlancesController < Admin::AdminController
         where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}'"
       end
     where << " group by oi.product_id order by total_price desc limit 10"
+    query = OrderItem.find_by_sql(where)
+  end
+
+  def sales_by_hour
+    @selected_from_date = get_from_date
+    @selected_to_date = get_to_date
+    where = "select oi.id, COUNT(oi.id) AS count, oi.created_at, oi.product_id, SUM((oi.total_price-(oi.total_price/(1+(oi.tax_rate/100))))) as tax_rate, SUM(total_price) total_price, SUM(quantity) quantity from order_items oi inner join orders o on oi.order_id = o.id"
+    if session[:terminal] != ''
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"
+      else
+        where << " where oi.created_at <= '#{@selected_to_date}' and oi.created_at >= '#{@selected_from_date}' and o.is_void = 0 and oi.is_void = 0"
+      end
+    where << " group by hour(oi.created_at) order by oi.created_at asc"
     query = OrderItem.find_by_sql(where)
   end
 

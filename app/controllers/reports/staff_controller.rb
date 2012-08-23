@@ -70,7 +70,6 @@ class Reports::StaffController < Admin::AdminController
     #end
     @orders = get_staff_data
     @s_type = session[:search_type]
-    render_graph
   end
 
 
@@ -85,7 +84,6 @@ class Reports::StaffController < Admin::AdminController
     end
     if params[:search][:dropdown_type] == 'discounts_only'
       session[:discounts_only] = params[:search][:dropdown_id]
-      logger.debug "**********************************************************************************************************  #{params[:search][:dropdown_id]}"
     end
     render :nothing => true
   end
