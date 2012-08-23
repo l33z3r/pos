@@ -158,6 +158,12 @@ Pos::Application.routes.draw do
       end
     end
     
+    resources :printers, :only => [:create, :destroy] do
+      collection do
+        post 'update_multiple'
+      end
+    end
+    
     resources :loyalty_levels, :only => [:create, :destroy] do
       member do
         post 'default'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120818085619) do
+ActiveRecord::Schema.define(:version => 20120822090316) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -497,6 +497,16 @@ ActiveRecord::Schema.define(:version => 20120818085619) do
   end
 
   add_index "payments", ["outlet_id"], :name => "index_payments_on_outlet_id"
+
+  create_table "printers", :force => true do |t|
+    t.integer  "outlet_id"
+    t.string   "label"
+    t.string   "network_path"
+    t.integer  "paper_width_mm", :default => 80
+    t.integer  "font_size",      :default => 11
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "products", :force => true do |t|
     t.string   "brand"

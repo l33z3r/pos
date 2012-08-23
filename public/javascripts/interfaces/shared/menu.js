@@ -98,9 +98,13 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         renderReceipt(tableID);
     }
     
-    if(lastSyncTableOrderTime > lastPrintCheckTime) {
-        checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);
+    if(imTheTerminal) {
+        
     }
+    
+//    if(lastSyncTableOrderTime > lastPrintCheckTime) {
+//        checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);
+//    }
     
     if(tableID != 0) {
         newlyAdded = addActiveTable(tableID);
@@ -266,11 +270,17 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     }
 }
 
-function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID) {
-    var itemsToPrint = new Array();
+function checkForItemsToPrint(order, serverNickname) {
+    if(!inLargeInterface()) {
+        niceAlert("Not yet implemented for mobiles!");
+        return;
+    }
     
-    for(var itemKey in items) {
-        var theItem = items[itemKey];
+    var printerOrders = {};
+    var items = order.items;
+    
+    for(i=0; i<items.length; i++) {
+        var theItem = items[i];
         
         //we only want to print items from the order that are new i.e. not synced on the other terminal yet
         var isItemSynced = theItem.synced;
@@ -280,21 +290,31 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
             var itemPrinters = theItem.product.printers;
             
             if((typeof itemPrinters != "undefined") && itemPrinters.length > 0) {
-                var printersArray = itemPrinters.split(",");
-                
-                var inPrinterArray = $.inArray(terminalID.toLowerCase(), printersArray) != -1;
-                
+                //are we allowed print from this terminal
                 var blockedPrinter = false;
                 var itemBlockedPrinters = theItem.product.blocked_printers;
                 
                 if((typeof itemBlockedPrinters != "undefined") && itemBlockedPrinters.length > 0) {
                     var blockedPrintersArray = itemBlockedPrinters.split(",");
-                
-                    blockedPrinter = $.inArray(recvdTerminalID.toLowerCase(), blockedPrintersArray) != -1;
+                    blockedPrinter = $.inArray(terminalID.toLowerCase(), blockedPrintersArray) != -1;
                 }
                 
-                if(inPrinterArray && !blockedPrinter) {
-                    itemsToPrint.push(theItem);
+                if(blockedPrinter) {
+                    continue;
+                }
+                
+                //now loop through the printer ids
+                var printersArray = itemPrinters.split(",");
+                
+                for(j=0; j<printersArray.length; j++) {
+                    var nextPrinterID = printersArray[j];
+                    
+                    //lazy init
+                    if(typeof(printerOrders[nextPrinterID]) == 'undefined') {
+                        printerOrders[nextPrinterID] = new Array();
+                    }
+                    
+                    printerOrders[nextPrinterID].push(theItem);
                 }
             } else {
                 //check category printers
@@ -304,21 +324,32 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
                     var categoryPrinters = categories[categoryId].printers;
             
                     if((typeof categoryPrinters != "undefined") && categoryPrinters.length > 0) {
-                        var categoryPrintersArray = categoryPrinters.split(",");
-                
-                        var inCategoryPrinterArray = $.inArray(terminalID.toLowerCase(), categoryPrintersArray) != -1;
-                
+                        //are we allowed print from this terminal
                         var blockedCategoryPrinter = false;
                         var categoryBlockedPrinters = categories[categoryId].blocked_printers;
                 
                         if((typeof categoryBlockedPrinters != "undefined") && categoryBlockedPrinters.length > 0) {
                             var blockedCategoryPrintersArray = categoryBlockedPrinters.split(",");
                 
-                            blockedCategoryPrinter = $.inArray(recvdTerminalID.toLowerCase(), blockedCategoryPrintersArray) != -1;
+                            blockedCategoryPrinter = $.inArray(terminalID.toLowerCase(), blockedCategoryPrintersArray) != -1;
                         }
                 
-                        if(inCategoryPrinterArray && !blockedCategoryPrinter) {
-                            itemsToPrint.push(theItem);
+                        if(blockedCategoryPrinter) {
+                            continue;
+                        }
+                        
+                        //now loop through the printer ids
+                        var categoryPrintersArray = categoryPrinters.split(",");
+                
+                        for(j=0; j<categoryPrintersArray.length; j++) {
+                            nextPrinterID = categoryPrintersArray[j];
+                    
+                            //lazy init
+                            if(typeof(printerOrders[nextPrinterID]) == 'undefined') {
+                                printerOrders[nextPrinterID] = new Array();
+                            }
+                    
+                            printerOrders[nextPrinterID].push(theItem);
                         }
                     }
                 }
@@ -326,14 +357,16 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
         }
     }
     
-    var itemsToPrintOrder = {
-        'items' : itemsToPrint
-    }
-    
-    doAutoCoursing(itemsToPrintOrder);
-    
-    if(itemsToPrint.length > 0 && inLargeInterface()) {
-        printItemsFromOrder(serverNickname, recvdTerminalID, orderJSON, itemsToPrint);
+    for(var printerID in printerOrders) {
+        var itemsToPrint = printerOrders[printerID];
+        
+        var itemsToPrintOrder = {
+            'items' : itemsToPrint
+        }
+        
+        doAutoCoursing(itemsToPrintOrder);
+            
+        printItemsFromOrder(printerID, serverNickname, order, itemsToPrint);
     }
 }
 

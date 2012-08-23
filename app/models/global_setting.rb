@@ -1,4 +1,4 @@
-class GlobalSetting < ActiveRecord::Base
+  class GlobalSetting < ActiveRecord::Base
   
   belongs_to :outlet
   
@@ -90,6 +90,9 @@ class GlobalSetting < ActiveRecord::Base
   TIMEKEEPING_TERMINAL = 71
   ALLOW_REOPEN_ORDER_AFTER_Z = 72
   PRINT_LOCAL_RECIEVE_DELIVERY = 73
+  CASH_DRAWER_COM_PORT = 74
+  CASH_DRAWER_CODE = 75
+  LOCAL_PRINTER_ID = 76
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -164,7 +167,10 @@ class GlobalSetting < ActiveRecord::Base
     PRINT_WORK_REPORT => "Print Work Report",
     TIMEKEEPING_TERMINAL => "Timekeeping Terminal",
     ALLOW_REOPEN_ORDER_AFTER_Z => "Allow Reopening Of Orders After a Z Total", 
-    PRINT_LOCAL_RECIEVE_DELIVERY => "Print Delivery Receipts Locally on Terminal Rather Than to Print Service"
+    PRINT_LOCAL_RECIEVE_DELIVERY => "Print Delivery Receipts Locally on Terminal Rather Than to Print Service", 
+    CASH_DRAWER_COM_PORT => "Cash Drawer Com Port",
+    CASH_DRAWER_CODE => "Cash Drawer Code",
+    LOCAL_PRINTER_ID => "Local Printer ID"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -403,6 +409,15 @@ class GlobalSetting < ActiveRecord::Base
     when PRINT_LOCAL_RECIEVE_DELIVERY
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{PRINT_LOCAL_RECIEVE_DELIVERY.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[PRINT_LOCAL_RECIEVE_DELIVERY])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when CASH_DRAWER_COM_PORT
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{CASH_DRAWER_COM_PORT.to_s}_#{args[:fingerprint]}", :value => "COM1", :label_text => LABEL_MAP[CASH_DRAWER_COM_PORT])
+      @gs.parsed_value = @gs.value
+    when CASH_DRAWER_CODE
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{CASH_DRAWER_CODE.to_s}_#{args[:fingerprint]}", :value => "27,112,48,48,48", :label_text => LABEL_MAP[CASH_DRAWER_CODE])
+      @gs.parsed_value = @gs.value
+    when LOCAL_PRINTER_ID
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{LOCAL_PRINTER_ID.to_s}_#{args[:fingerprint]}", :value => -1, :label_text => LABEL_MAP[LOCAL_PRINTER_ID])
+      @gs.parsed_value = @gs.value.to_i
     else
       @gs = load_setting property, current_outlet
       @gs.parsed_value = @gs.value
@@ -646,6 +661,27 @@ class GlobalSetting < ActiveRecord::Base
 #             @my_print_local_receive_delivery_gs.value = @print_local_receive_delivery_gs.value
 #             @my_print_local_receive_delivery_gs.save
 # 	    
+      #cash drawer com port
+#             @cash_drawer_com_port_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_COM_PORT, {:fingerprint => @old_fingerprint}
+# 	    
+#             @my_cash_drawer_com_port_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_COM_PORT, {:fingerprint => @my_terminal_fingerprint}
+#             @my_cash_drawer_com_port_gs.value = @cash_drawer_com_port_gs.value
+#             @my_cash_drawer_com_port_gs.save
+      
+      #cash drawer code
+#             @cash_drawer_code_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_CODE, {:fingerprint => @old_fingerprint}
+# 	    
+#             @my_cash_drawer_code_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_CODE, {:fingerprint => @my_terminal_fingerprint}
+#             @my_cash_drawer_code_gs.value = @cash_drawer_code_gs.value
+#             @my_cash_drawer_code_gs.save
+      
+      #local printer id
+#             @local_printer_id_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_CODE, {:fingerprint => @old_fingerprint}
+# 	    
+#             @my_local_printer_id_gs = GlobalSetting.setting_for GlobalSetting::LOCAL_PRINTER_ID, {:fingerprint => @my_terminal_fingerprint}
+#             @my_local_printer_id_gs.value = @local_printer_id_gs.value
+#             @my_local_printer_id_gs.save
+      
 #             #delete old gs objects
 #             @websocket_ip_gs.destroy
 #             @cash_drawer_ip_gs.destroy
@@ -663,6 +699,9 @@ class GlobalSetting < ActiveRecord::Base
 #             @wss_receipt_printer_gs.destroy
 #             @screen_resolution_gs.destroy
 # 	    @print_local_receive_delivery_gs.destroy
+#      		@cash_drawer_com_port_gs.destroy
+#      @cash_drawer_code_gs.destroy
+#      @local_printer_id_gs.destroy
 #           end
 #         end
 #         if value
@@ -698,6 +737,9 @@ class GlobalSetting < ActiveRecord::Base
         write_attribute("value", new_value)
       elsif key.starts_with? "#{PRINT_LOCAL_RECIEVE_DELIVERY.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
+      elsif key.starts_with? "#{LOCAL_PRINTER_ID.to_s}_"
+        new_value = value.to_i
         write_attribute("value", new_value)
       end
     

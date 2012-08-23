@@ -27,6 +27,10 @@ function goTo(place) {
     return false;
 }
 
+function goToNewWindow(place) {
+    window.open(place,'_blank');
+}
+
 function postTo(place, data) {
     var formHTML = '<form action="' + place + '" method="POST">';
     

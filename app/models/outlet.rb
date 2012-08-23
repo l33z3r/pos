@@ -51,6 +51,7 @@ class Outlet < ActiveRecord::Base
   has_many :terminal_display_links
   has_many :terminal_sync_data, :class_name => "TerminalSyncData", :foreign_key => "outlet_id"
   has_many :work_reports   
+  has_many :printers
   
   before_save :downcase_fields
   
@@ -66,6 +67,7 @@ class Outlet < ActiveRecord::Base
   end
 end
 
+
 # == Schema Information
 #
 # Table name: outlets
@@ -74,8 +76,10 @@ end
 #  cluey_account_id :integer(4)
 #  name             :string(255)
 #  username         :string(255)
-#  password         :string(255)
+#  password_hash    :string(255)
 #  created_at       :datetime
 #  updated_at       :datetime
+#  has_seed_data    :boolean(1)      default(FALSE)
+#  password_salt    :string(255)
 #
 

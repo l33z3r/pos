@@ -14,6 +14,15 @@ $(function() {
 });
 
 function doGlobalInit() {
+    //make sure we have all compatible plugins etc
+    if(checkForFirefox()) {   
+        if(checkForClueyPlugin()) {
+            if(checkForJSPrintSetupPlugin()) {
+                checkForUninstalledPrinters();
+            }
+        }
+    }
+    
     initUsers();
 
     //whenever a link is clicked, we show a loading div
@@ -35,7 +44,7 @@ function doGlobalInit() {
         if (showPrintFrame) {
             $('#wrapper').height(1770);
             $('#body').height(1770);
-            $('#printFrame').width(300).height(800);
+            $('#printFrame').width(600).height(1800);
             $('#printFrame').css("overflow", "scroll");
         }
 

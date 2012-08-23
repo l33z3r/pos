@@ -24,3 +24,22 @@ var cashOutPresets = new Array();
   cashOutPresets.push(cash_out_preset_info);
 
 <% end -%>
+  
+var printers = new Array();
+var printerNetworkPaths = new Array();
+var printersByID  = {};
+
+<% current_outlet.printers.all.each do |printer|-%>
+  printer_info = {
+  id : '<%= printer.id %>',
+  label : '<%= printer.label.downcase %>',
+  network_path : '<%= escape_javascript(printer.network_path) %>',
+  paper_width_mm: '<%= printer.paper_width_mm %>',
+  font_size: '<%= printer.font_size %>'
+  }
+
+  printers.push(printer_info);
+  printerNetworkPaths.push('<%= escape_javascript(printer.network_path) %>');
+  printersByID[printer_info.id] = printer_info;
+  
+<% end -%>

@@ -36,7 +36,8 @@ function doGlobalInit() {
     if(showPrintFrame) {
         $('#wrapper').height(1770);
         $('#body').height(1770);
-        $('#printFrame').width(300).height(800);
+        $('#printFrame').width(600).height(1800);
+        $('#printFrame').css("overflow", "scroll");
     }
     
     //need to set the scroll content holder width

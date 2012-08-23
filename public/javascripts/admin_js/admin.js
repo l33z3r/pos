@@ -584,3 +584,12 @@ function initTinyMCE() {
         maxlength: 220
     });
 }
+
+function initLocalPrinterListDropdown() {
+    //list off local printers that are not already in the system
+    for(i=0; i<newLocalPrinters.length; i++) {
+        var nextLocalPrinterName = newLocalPrinters[i].toLowerCase();
+        
+        $("#printer_network_path").append("<option value='" + nextLocalPrinterName + "'>" + nextLocalPrinterName + "</option>");
+    }
+}

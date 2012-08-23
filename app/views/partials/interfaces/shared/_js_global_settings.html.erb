@@ -141,17 +141,11 @@
   var updateStockType = <%= StockTransaction::STOCK_UPDATE %>;
   var transferStockType = <%= StockTransaction::STOCK_TRANSFER %>;
   
-  var webSocketServiceIP = "<%= @web_socket_service_ip %>";
-  var using_wss_receipt_printer = <%= @use_wss_receipt_printer %>;
-  
-  var cashDrawerServiceIP = "<%= @cash_drawer_service_ip %>";
-  var using_wss_cash_drawer = <%= @use_wss_cash_drawer %>;
+  var localPrinterID = <%= GlobalSetting.parsed_setting_for GlobalSetting::LOCAL_PRINTER_ID, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
   
   var creditCardChargeServiceIP = "<%= @credit_card_charge_service_ip %>";
   var creditCardTerminalIP = "<%= @credit_card_terminal_ip %>";
   var creditCardTerminalPort = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, current_outlet, {:fingerprint => @terminal_fingerprint} %>";
-  
-  var orderReceiptWidthSetting = "<%= @order_receipt_width_setting %>";
   
   var allDevicesOrderNotification = <%= GlobalSetting.parsed_setting_for GlobalSetting::All_DEVICES_ORDER_NOTIFICATION, current_outlet %>;
   
@@ -187,7 +181,8 @@
   var normalResolution = "<%= @normalResolution %>";
   var resolution1360x786 = "<%= @resolution1360x786 %>";
   
-  var usingPrintService = true;
+  var cashDrawerComPort = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CASH_DRAWER_COM_PORT, current_outlet, {:fingerprint => @terminal_fingerprint} %>";
+  var cashDrawerCode = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CASH_DRAWER_CODE, current_outlet, {:fingerprint => @terminal_fingerprint} %>";
   
   var pmShortcut1ID = <%= GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, current_outlet, {:shortcut_num => 1} %>;
   var pmShortcut2ID = <%= GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, current_outlet, {:shortcut_num => 2} %>;

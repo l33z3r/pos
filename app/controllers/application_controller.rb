@@ -9,7 +9,7 @@ class ApplicationController < AppBaseController
   before_filter :check_reset_cache_timestamp
   
   helper_method :e, :is_cluey_user?, :cluey_pw_used?, :current_employee, :print_money, :print_credit_balance
-  helper_method :mobile_device?, :all_terminals, :all_servers, :current_interface
+  helper_method :mobile_device?, :all_terminals, :all_printers, :all_servers, :current_interface
   helper_method :development_mode?, :production_mode?, :server_ip, :now_millis
   
   before_filter :load_global_vars
@@ -260,13 +260,13 @@ class ApplicationController < AppBaseController
     Rails.env == "production" or Rails.env == "production_heroku"
   end
   
-  rescue_from StandardError do |exception|
-    raise exception.exception("ERROR!!!!!!!!!!!!!!!" + "\n\n" + exception.message + "\n\n")
-  end
-  
-  rescue_from Errno::ETIMEDOUT, Errno::EHOSTUNREACH, Errno::ECONNREFUSED, Errno::EALREADY, SocketError do |host_unreachable_exception|
-    raise host_unreachable_exception.exception("SOCKET ERROR!!!!!!!!!!!!!!!" + "\n\n" + host_unreachable_exception.message + "\n\n")
-  end
+#  rescue_from StandardError do |exception|
+#    raise exception.exception("ERROR!!!!!!!!!!!!!!!" + "\n\n" + exception.message + "\n\n")
+#  end
+#  
+#  rescue_from Errno::ETIMEDOUT, Errno::EHOSTUNREACH, Errno::ECONNREFUSED, Errno::EALREADY, SocketError do |host_unreachable_exception|
+#    raise host_unreachable_exception.exception("SOCKET ERROR!!!!!!!!!!!!!!!" + "\n\n" + host_unreachable_exception.message + "\n\n")
+#  end
   
   private
   
@@ -355,7 +355,6 @@ class ApplicationController < AppBaseController
     @currency_note_image_setting = GlobalSetting.parsed_setting_for GlobalSetting::CURRENCY_NOTES_IMAGES, current_outlet
     
     @auto_print_receipt = GlobalSetting.parsed_setting_for GlobalSetting::AUTO_PRINT_RECEIPT, current_outlet
-    @order_receipt_width_setting = GlobalSetting.parsed_setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, current_outlet, {:fingerprint => @terminal_fingerprint}
     
     @service_charge_label = GlobalSetting.parsed_setting_for GlobalSetting::SERVICE_CHARGE_LABEL, current_outlet
     @business_name = GlobalSetting.parsed_setting_for GlobalSetting::BUSINESS_NAME, current_outlet
@@ -370,33 +369,6 @@ class ApplicationController < AppBaseController
 
     @tax_label = GlobalSetting.parsed_setting_for GlobalSetting::TAX_LABEL, current_outlet
     @tax_chargable = GlobalSetting.parsed_setting_for GlobalSetting::TAX_CHARGABLE, current_outlet
-    
-    @web_socket_service_ip_gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, current_outlet, {:fingerprint => @terminal_fingerprint}
-    
-    if @web_socket_service_ip_gs.value.blank?
-      @web_socket_service_ip_gs.value = request.remote_ip
-      @web_socket_service_ip_gs.save
-      @web_socket_service_ip_gs.reload
-    end
-    
-    @web_socket_service_ip = @web_socket_service_ip_gs.value
-    
-    @cash_drawer_service_ip_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_IP_ADDRESS, current_outlet, {:fingerprint => @terminal_fingerprint}
-    
-    @use_wss_receipt_printer = GlobalSetting.parsed_setting_for GlobalSetting::USE_WSS_RECEIPT_PRINTER, current_outlet, {:fingerprint => @terminal_fingerprint}
-    
-    #if this isn't set, copy the value from the printer ip
-    if @cash_drawer_service_ip_gs.value.blank?
-      @cash_drawer_service_ip_gs.value = @web_socket_service_ip
-      @cash_drawer_service_ip_gs.save
-      @cash_drawer_service_ip_gs.reload
-    end
-    
-    @cash_drawer_service_ip = @cash_drawer_service_ip_gs.value
-    
-    @use_wss_cash_drawer = GlobalSetting.parsed_setting_for GlobalSetting::USE_WSS_CASH_DRAWER, current_outlet, {:fingerprint => @terminal_fingerprint}
-    
-    @printer_left_margin = GlobalSetting.parsed_setting_for GlobalSetting::PRINTER_LEFT_MARGIN, current_outlet, {:fingerprint => @terminal_fingerprint}
     
     @zalion_charge_room_service_ip_gs = GlobalSetting.setting_for GlobalSetting::ZALION_ROOM_CHARGE_SERVICE_IP, current_outlet
     
@@ -428,8 +400,6 @@ class ApplicationController < AppBaseController
     
     @credit_card_terminal_ip = @credit_card_terminal_ip_gs.value
     
-    @windows_printer_margins = GlobalSetting.parsed_setting_for GlobalSetting::WINDOWS_PRINTER_MARGINS, current_outlet, {:fingerprint => @terminal_fingerprint}
-    
     #white space in menus
     @use_whitespace_in_mobile_menus = GlobalSetting.parsed_setting_for GlobalSetting::USE_WHITE_SPACE_MOBILE_MENUS, current_outlet
     @use_whitespace_in_desktop_menus = GlobalSetting.parsed_setting_for GlobalSetting::USE_WHITE_SPACE_DESKTOP_MENUS, current_outlet
@@ -440,8 +410,8 @@ class ApplicationController < AppBaseController
     @show_charge_card_button = GlobalSetting.parsed_setting_for GlobalSetting::SHOW_CHARGE_CARD_BUTTON, current_outlet
     
     @currentResolution = GlobalSetting.parsed_setting_for GlobalSetting::SCREEN_RESOLUTION, current_outlet, {:fingerprint => @terminal_fingerprint}
-    @normalResolution = GlobalSetting::SCREEN_RESOLUTION_NORMAL, current_outlet
-    @resolution1360x786 = GlobalSetting::SCREEN_RESOLUTION_1360x786, current_outlet
+    @normalResolution = GlobalSetting::SCREEN_RESOLUTION_NORMAL
+    @resolution1360x786 = GlobalSetting::SCREEN_RESOLUTION_1360x786
   
     #menu screen buttons etc
     @menu_screen_buttons_per_row = 8
@@ -461,6 +431,10 @@ class ApplicationController < AppBaseController
   
   def all_terminals
     GlobalSetting.all_terminals current_outlet
+  end
+  
+  def all_printers
+    current_outlet.printers
   end
   
   def all_servers
@@ -503,74 +477,74 @@ class ApplicationController < AppBaseController
     current_interface == MEDIUM_INTERFACE
   end
   
-#  def http_basic_authenticate
-#    
-#    @need_auth = false
-#    
-#    @authentication_required = GlobalSetting.parsed_setting_for GlobalSetting::AUTHENTICATION_REQUIRED, current_outlet
-#    @local_auth_required = GlobalSetting.parsed_setting_for GlobalSetting::LOCAL_AUTHENTICATION_REQUIRED, current_outlet
-#    
-#    @http_basic_username = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_USERNAME, current_outlet
-#    @http_basic_password = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_PASSWORD, current_outlet
-#  
-#    if @authentication_required 
-#      @need_auth = true
-#      
-#      if !@local_auth_required
-#        @local_access = false
-#        
-#        @remote_ip = request.remote_ip
-#        
-#        #check ip on same lan
-#        @server_ip_parts = server_ip.split(".")
-#        
-#        @server_ip_base = "#{@server_ip_parts[0]}.#{@server_ip_parts[1]}.#{@server_ip_parts[2]}."
-#          
-#        if @remote_ip.starts_with? @server_ip_base or @remote_ip == "127.0.0.1"
-#          @local_access = true
-#        else 
-#          @local_access = false
-#        end
-#        
-#        if @local_access
-#          @need_auth = false
-#        end
-#      end
-#    else
-#      logger.info "Auth is not required by setting"
-#    end
-#    
-#    if !@need_auth
-#      return
-#    end
-#
-#    if !session[:auth_succeeded]
-#      #check is the name and password sent in the url and authenticate off that first if it is present
-#      @username_param = params[:u]
-#      @password_param = params[:p]
-#    
-#      @username_ok = (@username_param and @username_param == @http_basic_username)
-#      @password_ok = (@password_param and @password_param == @http_basic_password)
-#    
-#      if @username_ok and @password_ok
-#        session[:auth_succeeded] = true
-#        return
-#      end
-#    else
-#      return
-#    end
-#    
-#    authenticate_or_request_with_http_basic do |username, password|
-#      logger.info "#{username} #{password} #{@http_basic_username} #{@http_basic_password}"
-#      @auth_ok = username == @http_basic_username && password == @http_basic_password
-#      
-#      if @auth_ok
-#        session[:auth_succeeded] = true
-#      end
-#      
-#      @auth_ok
-#    end
-#  end
+  #  def http_basic_authenticate
+  #    
+  #    @need_auth = false
+  #    
+  #    @authentication_required = GlobalSetting.parsed_setting_for GlobalSetting::AUTHENTICATION_REQUIRED, current_outlet
+  #    @local_auth_required = GlobalSetting.parsed_setting_for GlobalSetting::LOCAL_AUTHENTICATION_REQUIRED, current_outlet
+  #    
+  #    @http_basic_username = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_USERNAME, current_outlet
+  #    @http_basic_password = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_PASSWORD, current_outlet
+  #  
+  #    if @authentication_required 
+  #      @need_auth = true
+  #      
+  #      if !@local_auth_required
+  #        @local_access = false
+  #        
+  #        @remote_ip = request.remote_ip
+  #        
+  #        #check ip on same lan
+  #        @server_ip_parts = server_ip.split(".")
+  #        
+  #        @server_ip_base = "#{@server_ip_parts[0]}.#{@server_ip_parts[1]}.#{@server_ip_parts[2]}."
+  #          
+  #        if @remote_ip.starts_with? @server_ip_base or @remote_ip == "127.0.0.1"
+  #          @local_access = true
+  #        else 
+  #          @local_access = false
+  #        end
+  #        
+  #        if @local_access
+  #          @need_auth = false
+  #        end
+  #      end
+  #    else
+  #      logger.info "Auth is not required by setting"
+  #    end
+  #    
+  #    if !@need_auth
+  #      return
+  #    end
+  #
+  #    if !session[:auth_succeeded]
+  #      #check is the name and password sent in the url and authenticate off that first if it is present
+  #      @username_param = params[:u]
+  #      @password_param = params[:p]
+  #    
+  #      @username_ok = (@username_param and @username_param == @http_basic_username)
+  #      @password_ok = (@password_param and @password_param == @http_basic_password)
+  #    
+  #      if @username_ok and @password_ok
+  #        session[:auth_succeeded] = true
+  #        return
+  #      end
+  #    else
+  #      return
+  #    end
+  #    
+  #    authenticate_or_request_with_http_basic do |username, password|
+  #      logger.info "#{username} #{password} #{@http_basic_username} #{@http_basic_password}"
+  #      @auth_ok = username == @http_basic_username && password == @http_basic_password
+  #      
+  #      if @auth_ok
+  #        session[:auth_succeeded] = true
+  #      end
+  #      
+  #      @auth_ok
+  #    end
+  #  end
   
   def check_reset_cache_timestamp
     if params[:reset_cache]
@@ -604,7 +578,7 @@ class ApplicationController < AppBaseController
   end
   
   def setup_for_subdomain
-    @subdomain = request.subdomain
+    @subdomain = "agreatspot.lee"#request.subdomain
     
     if @subdomain == "www"
       redirect_to welcome_path
@@ -646,23 +620,25 @@ class ApplicationController < AppBaseController
           #login required
           authenticate_or_request_with_http_basic do |username, password|
             #logger.info "#{username} #{password}"
+            session[:current_outlet_id] = 4
+            true
           
-            @username_matches = outlet.username == username
-            @password_matches = outlet.password_hash == BCrypt::Engine.hash_secret(password, outlet.password_salt)
-            
-            @auth_ok = @username_matches && @password_matches
-      
-            if @auth_ok
-              session[:current_outlet_id] = outlet.id
-            
-              if !outlet.has_seed_data
-                OutletBuilder::build_outlet_seed_data(outlet.id)
-                outlet.has_seed_data = true
-                outlet.save
-              end
-            end
-      
-            @auth_ok
+#            @username_matches = outlet.username == username
+#            @password_matches = outlet.password_hash == BCrypt::Engine.hash_secret(password, outlet.password_salt)
+#            
+#            @auth_ok = @username_matches && @password_matches
+#      
+#            if @auth_ok
+#              session[:current_outlet_id] = outlet.id
+#            
+#              if !outlet.has_seed_data
+#                OutletBuilder::build_outlet_seed_data(outlet.id)
+#                outlet.has_seed_data = true
+#                outlet.save
+#              end
+#            end
+#      
+#            @auth_ok
           end
         
           return

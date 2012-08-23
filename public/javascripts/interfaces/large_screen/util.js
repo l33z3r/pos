@@ -812,3 +812,149 @@ function showUtilKeyboardCloseButton() {
     $('#close_keyboard_link').show();
     $('#util_keyboard_inner_container').height("260px");    
 }
+
+function checkForFirefox() {
+    var ua = $.browser;
+    
+    if (typeof(ua.mozilla) == 'undefined') {
+        alert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software!");
+        return false;
+    }
+    
+    return true;
+}
+
+function checkForClueyPlugin() {
+    if(!checkForFirefox()) {
+        return false;
+    }
+    
+    if(typeof(cluey_ff_ext) == 'undefined') {
+        var title = "Cluey Addon Not Found";
+        
+        hideNiceAlert();
+        
+        ModalPopups.Alert('niceAlertContainer',
+            title, "<div id='nice_alert' class='licence_expired_header'>Cluey Firefox Extension Not Found. You can download it by clicking OK. You must then install it via firefox.</div>",
+            {
+                width: 360,
+                height: 310,
+                okButtonText: 'Download',
+                onOk: "goToNewWindow(\"/install/cluey_ff_extension.xpi\");hideNiceAlert();"
+            });
+        
+        return false;
+    } else {
+        cluey_ff_ext.setClueyPrefs();
+        
+        return true;
+    }
+}
+
+function checkForJSPrintSetupPlugin() {
+    //using the jsprint library
+    //http://jsprintsetup.mozdev.org/reference.html
+    if(typeof(jsPrintSetup) == 'undefined') {
+        var title = "jsPrintSetup Firefox Addon Not Found";
+        
+        hideNiceAlert();
+        
+        ModalPopups.Alert('niceAlertContainer',
+            title, "<div id='nice_alert' class='licence_expired_header'>jsPrintSetup Firefox Addon Not Found. You can download it by clicking OK. You must then install it via firefox.</div>",
+            {
+                width: 360,
+                height: 310,
+                okButtonText: 'Download',
+                onOk: "goToNewWindow(\"/install/jsprintsetup-0.9.2.xpi\");hideNiceAlert();"
+            });
+        
+        return false;
+    } else {
+        return true;
+    }
+}
+
+var localPrinters;
+var newLocalPrinters = new Array();
+var notFoundPrinterIDs = new Array();
+
+function checkForUninstalledPrinters() {
+    
+    var printersString = jsPrintSetup.getPrintersList();
+    
+    localPrinters = printersString.split(",");
+    console.log("Found " + localPrinters.length + " local printers");
+    
+    for(i=0; i<localPrinters.length; i++) {
+        var nextLocalPrinterNetworkPath = localPrinters[i].toLowerCase();
+        localPrinters[i] = nextLocalPrinterNetworkPath;
+        
+        console.log("Local Printer " + (i+1) + ": " + nextLocalPrinterNetworkPath);
+        
+        if($.inArray(nextLocalPrinterNetworkPath, printerNetworkPaths) == -1) {
+            newLocalPrinters.push(nextLocalPrinterNetworkPath);
+        }
+    }
+    
+    console.log("Got " + printers.length + " system printers");
+    
+    for(i=0; i<printers.length; i++) {
+        //make sure to compare with the unescaped network path
+        var nextSystemPrinterNetworkPath = printers[i].network_path.toLowerCase();
+        
+        console.log("System Printer " + (i+1) + ": " + printers[i].network_path.toLowerCase());
+        
+        for(j=0; j<localPrinters.length; j++) {
+            console.log("LP " + (j+1) + ": " + localPrinters[j]);
+        }
+    
+        if($.inArray(nextSystemPrinterNetworkPath, localPrinters) == -1) {
+            notFoundPrinterIDs.push(printers[i].id);
+        }
+    }
+    
+    console.log("There are " + newLocalPrinters.length + " new local printers on your system");
+    
+    for(i=0; i<newLocalPrinters.length; i++) {
+        var nextNewLocalPrinterNetworkPath = newLocalPrinters[i].toLowerCase();        
+        console.log("New Local Printer " + (i+1) + ": " + nextNewLocalPrinterNetworkPath);
+    }
+    
+    console.log("There are " + notFoundPrinterIDs.length + " printers not found on your system");
+    
+    var notFoundPrintersNetworkPaths = new Array();
+    
+    for(i=0; i<notFoundPrinterIDs.length; i++) {
+        var nextNotFoudnPrinter = printersByID[notFoundPrinterIDs[i]];
+        var nextNotFoudnPrinterNetworkPath = nextNotFoudnPrinter.network_path.toLowerCase();        
+        console.log("Not Found Printer " + (i+1) + ": " + nextNotFoudnPrinterNetworkPath);
+        notFoundPrintersNetworkPaths.push(nextNotFoudnPrinterNetworkPath);
+    }
+    
+    var localPrinter = printersByID[localPrinterID];
+    
+    if(localPrinter) {
+        if($.inArray(localPrinter.network_path.toLowerCase(), localPrinters) == -1) {
+            notFoundPrinterIDs.push(localPrinter.id);
+        }
+    }
+    
+    if(notFoundPrintersNetworkPaths.length > 0) {
+        var title = "Printers Not Installed";
+        
+        hideNiceAlert();
+        
+        ModalPopups.Alert('niceAlertContainer',
+            title, "<div id='nice_alert' class='licence_expired_header'>Warning... The following printers are not installed on this terminal: " + notFoundPrintersNetworkPaths.join(",") + "</div>",
+            {
+                width: 360,
+                height: 310,
+                okButtonText: 'OK',
+                onOk: "hideNiceAlert();"
+            });
+        
+        return false;
+    } else {
+        return true;
+    }
+}

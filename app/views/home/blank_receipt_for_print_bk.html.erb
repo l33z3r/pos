@@ -9,8 +9,14 @@
 
       body {
         font-family: verdana, sans-serif;
+        font-size: 9px;
+        width: 210px;
         margin: 0px;
         overflow: hidden;
+
+        margin-left: <%=@printer_left_margin%>px;
+
+        <%= render "/partials/interfaces/shared/receipt_margins_css_#{@order_receipt_width_setting}" %>
       }
 
       body * {
@@ -38,7 +44,7 @@
       }
 
       div.business_info {
-        width: 90%;
+        width: 190px;
       }
 
       div.business_info {
@@ -57,7 +63,7 @@
 
       div.data_table_header {
         font-weight: bold;
-        font-size: 155%;
+        font-size: 14px;
         margin: 3px;
         margin-top: 15px;
         text-align: center;
@@ -75,26 +81,25 @@
       div.data_table div.label {
         float: left;
         text-align: left;
-        width: 43%;
+        width: 92px;
       }
 
       div.data_table div.data {
         float: left;
         text-align: right;
         padding-right: 3px;
-        width: 50%;
+        width: 106px;
         font-weight: bold;
       }
 
       div.data_table div.total_line_container {
-        width: 99%;
         float: left;
-        font-size: 155%;
+        font-size: 14px;
         margin: 8px 0px;
       }
 
       div.data_table div.total_line_container div.label {
-        width: 45%;
+        width: 95px;
       }
 
       div.data_table div.total_line_container div.data {
@@ -103,12 +108,12 @@
 
       div.data_table div.change_line_container {
         float: left;
-        font-size: 133%;
+        font-size: 12px;
         margin: 8px 0px;
       }
 
       div.data_table div.change_line_container div.label {
-        width: 44%;
+        width: 93px;
       }
 
       div.data_table div.change_line_container div.data {
@@ -116,18 +121,18 @@
       }
 
       div.data_table div.label.time {
-        width: 41%;
+        width: 88px;
       }
 
       div.data_table div.data.time {
-        width: 52%;
+        width: 110px;
         padding-right: 3px;
       }
 
       div.terminal {
         float: left;
         font-weight: bold;
-        width: 53%;
+        width: 112px;
         text-align: right;
       }
 
@@ -150,7 +155,7 @@
 
       div.order_line div.discount {
         float: left;
-        width: 90%;
+        width: 190px;
       }
 
       div.order_line div.discount_complimentary {
@@ -166,32 +171,32 @@
       div.amount {
         float: left;
         text-align: left;
-        width: 12%;
+        width: 26px;
         margin-left: 3px;
       }
 
       div.name {
         float: left;
-        width: 61%;
+        width: 130px;
         text-align: left;
       }
 
       div.total {
         float: left;
-        width: 16%;
+        width: 35px;
         text-align: right;
       }
 
       div.modifier_name {
         float: left;
-        width: 59%;
+        width: 125px;
         margin-left: 30px;
         text-align: left;
       }
 
       div.modifier_price {
         float: left;
-        width: 19%;
+        width: 40px;
         text-align: right;
       }
 
@@ -207,33 +212,33 @@
 
       div.oia_name {
         float: left;
-        width: 61%;
+        width: 130px;
         margin-left: 24px;
         text-align: left;
       }
 
       div.oia_name.note {
         font-style: italic;
-        width: 63%;
+        width: 134px;
         margin-left: 20px
       }
 
       div.oia_price {
         float: left;
-        width: 19%;
+        width: 40px;
         text-align: right;
       }
 
       div.discount div.header {
         float: left;
-        width: 47%;
+        width: 100px;
         text-align: right;
         font-style: italic;
       }
 
       div.discount div.discount_amount {
         float: left;
-        width: 22%;
+        width: 47px;
         margin-right: 3px;
         text-align: right;
         font-style: italic;
@@ -241,7 +246,7 @@
 
       div.discount div.new_price {
         float: left;
-        width: 16%;
+        width: 35px;
         text-align: left;
         font-style: italic;
       }
@@ -258,19 +263,19 @@
 
       div#zalion_receipt_info div.label {
         float: left;
-        width: 52%;
+        width: 110px;
         font-weight: bold;
       }
 
       div#zalion_receipt_info div.data {
         float: left;
-        width: 38%;
+        width: 80px;
       }
 
       div#zalion_receipt_info div.line {
         margin-top: 10px;
         float: left;
-        width: 95%;
+        width: 200px;
         font-weight: bold;
       }
 
@@ -282,19 +287,19 @@
 
       div#loyalty_receipt_info div.label {
         float: left;
-        width: 52%;
+        width: 110px;
         font-weight: bold;
       }
 
       div#loyalty_receipt_info div.data {
         float: left;
-        width: 38%;
+        width: 80px;
       }
 
       div#loyalty_receipt_info div.line {
         margin-top: 10px;
         float: left;
-        width: 95%;
+        width: 200px;
         font-weight: bold;
       }
 
@@ -315,24 +320,24 @@
 
       div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_name {
         font-weight: bold;
-        font-size: 144%;
+        font-size: 13px;
       }
 
       div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_address {
-        font-size: 144%;
+        font-size: 13px;
       }
 
       div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_telephone {
-        font-size: 144%;
+        font-size: 13px;
       }
 
       div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_email_address {
-        font-size: 144%;
+        font-size: 13px;
       }
 
       div#cash_totals_data_table div.data_table_header {
         font-weight: bold;
-        font-size: 155%;
+        font-size: 14px;
         margin: 3px;
         margin-top: 15px;
         text-align: center;
@@ -345,13 +350,13 @@
       div#cash_totals_data_table div.data_table div.label {
         float: left;
         text-align: left;
-        width: 43%;
+        width: 92px;
       }
 
       div#cash_totals_data_table div.data_table div.data {
         float: left;
         text-align: right;
-        width: 51%;
+        width: 109px;
       }
 
       div#cash_totals_data_table div.totals_data_table {
@@ -361,14 +366,14 @@
       div#cash_totals_data_table div.totals_data_table div.totals_label {
         float: left;
         text-align: left;
-        width: 43%;
+        width: 92px;
         font-weight: bold;
       }
 
       div#cash_totals_data_table div.totals_data_table div.totals_data {
         float: left;
         text-align: right;
-        width: 51%;
+        width: 109px;
       }
 
       div.vat_breakdown div.header {
@@ -387,13 +392,13 @@
       }
 
       div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_header {
-        width: 23%;
+        width: 50px;
         float: left;
         text-align: right;
       }
 
       div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_label_header {
-        width: 23%;
+        width: 50px;
         float: left;
         text-align: left;
       }
@@ -401,14 +406,14 @@
       div#cash_totals_data_table div.taxes_data_table div.taxes_label {
         float: left;
         text-align: left;
-        width: 23%;
+        width: 50px;
         font-weight: bold;
       }
 
       div#cash_totals_data_table div.taxes_data_table div.taxes_data {
         float: left;
         text-align: right;
-        width: 23%;
+        width: 50px;
       }
 
       div#cash_totals_data_table div.taxes_totals_data_table {
@@ -418,14 +423,14 @@
       div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_label {
         float: left;
         text-align: left;
-        width: 23%;
+        width: 50px;
         font-weight: bold;
       }
 
       div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_data {
         float: left;
         text-align: right;
-        width: 23%;
+        width: 50px;
       }
 
       div#cash_totals_data_table div.products_data_table {
@@ -434,18 +439,18 @@
 
       div.products_data_table div.products_data_table_header {
         font-weight: bold;
-        width: 27%;
+        width: 58px;
         float: left;
         text-align: right;
       }
 
       div.products_data_table div.products_data_table_header.quantity {
-        width: 11%;
+        width: 25px;
       }
 
       div#cash_totals_data_table div.products_data_table div.products_data_table_label_header {
         font-weight: bold;
-        width: 55%;
+        width: 117px;
         float: left;
         text-align: left;
       }
@@ -453,53 +458,53 @@
       div#cash_totals_data_table div.products_data_table div.products_label {
         float: left;
         text-align: left;
-        width: 55%;
+        width: 117px;
       }
 
       div#cash_totals_data_table div.products_data_table div.products_data {
         float: left;
         text-align: right;
-        width: 27%;
+        width: 58px;
       }
 
       div#cash_totals_data_table div.products_data_table div.products_data.quantity {
-        width: 11%;
+        width: 25px;
       }
 
       div#cash_totals_data_table div.cash_out_data_table div.cash_out_data_table_description_header {
         font-weight: bold;
-        width: 48%;
+        width: 102px;
         float: left;
         text-align: left;
       }
 
       div#cash_totals_data_table div.cash_out_data_table div.cash_out_data_table_amount_header {
         font-weight: bold;
-        width: 47%;
+        width: 99px;
         float: left;
         text-align: right;
       }
-
+      
       div#cash_totals_data_table div.account_payments_data_table div.account_payments_data_table_customer_name_header {
         font-weight: bold;
-        width: 48%;
+        width: 102px;
         float: left;
         text-align: left;
       }
 
       div#cash_totals_data_table div.account_payments_data_table div.account_payments_data_table_amount_header {
         font-weight: bold;
-        width: 47%;
+        width: 99px;
         float: left;
         text-align: right;
       }
-
+      
       div#cash_totals_data_table div.cash_out_data_table div.label {
-        width: 48%;
+        width: 102px;
       }
 
       div#cash_totals_data_table div.cash_out_data_table div.data {
-        width: 47%;
+        width: 99px;
       }
 
       /* End x/z total receipt css */
@@ -508,7 +513,7 @@
 
       div#work_report_data_table div.data_table_header {
         font-weight: bold;
-        font-size: 155%;
+        font-size: 14px;
         margin: 3px;
         margin-top: 15px;
         text-align: center;
@@ -521,21 +526,21 @@
       div#work_report_data_table div.data_table div.label {
         float: left;
         text-align: left;
-        width: 57%;
+        width: 120px;
       }
 
       div#work_report_data_table div.data_table div.data {
         float: left;
         text-align: right;
-        width: 38%;
+        width: 81px;
       }
 
       div#work_report_data_table div.data_table div.label.date {
-        width: 47%;
+        width: 100px;
       }
 
       div#work_report_data_table div.data_table div.data.date {
-        width: 47%;
+        width: 101px;
       }
 
       div#work_report_data_table div.totals_data_table {
@@ -545,14 +550,14 @@
       div#work_report_data_table div.totals_data_table div.totals_label {
         float: left;
         text-align: left;
-        width: 43%;
+        width: 92px;
         font-weight: bold;
       }
 
       div#work_report_data_table div.totals_data_table div.totals_data {
         float: left;
         text-align: right;
-        width: 51%;
+        width: 109px;
       }  
 
       div#work_report_data_table div.work_report_footer {
@@ -588,48 +593,14 @@
         float: left;
         padding-left: 20px;
         text-align: left;
-        width: 66%;
+        width: 140px;
       }
 
       div.order_receipt div.total {
         width: 10px;
       }
 
-      div.order_receipt {
-        font-size: 111%;
-      }
-
-      div#order_receipt_header div.order_num {
-        padding: 10px 0px;
-        margin: auto;
-        text-align: center;
-        font-size: 133%;
-      }
-
-      div#order_receipt_header div.data_table {
-        margin-bottom: 0px;
-      }
-
-      div#order_receipt_header div.data_table div.label {
-        width: 43%;
-      }
-
-      div#order_receipt_header div.data_table div.data {
-        text-align: right;
-      }
-
-      div#order_receipt_header div.data.time {
-        float: left;
-        text-align: left;
-        width: 45%;
-      }
-
-      div#order_receipt_header div.terminal {
-        float: left;
-        text-align: right;
-        padding-right: 3px;
-        width: 50%;
-      }
+      <%= render "/partials/interfaces/shared/order_receipt_css_#{@order_receipt_width_setting}" %>
     </style>    
   </head>
   <body id="print_receipt_content">

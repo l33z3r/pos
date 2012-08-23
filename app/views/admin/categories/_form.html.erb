@@ -32,10 +32,10 @@
 
       <input id="select_printers_button" type="button" value="Select" onclick="showSelectPrintersDialog()"/>
 
-      <% all_terminals.each do |terminal_name| %>
-        <input type="checkbox" id="choose_printer_checkbox_<%= id_safe terminal_name %>"
-               name="category[selected_printers][]" value="<%= id_safe terminal_name %>" 
-               style="display: none;" <%= @category.printing_to_terminal?(id_safe(terminal_name)) ? "checked" : "" %>/>
+      <% all_printers.each do |printer| %>
+        <input type="checkbox" id="choose_printer_checkbox_<%= id_safe printer.id.to_s %>"
+               name="category[selected_printers][]" value="<%= id_safe printer.id.to_s %>" 
+               style="display: none;" <%= @category.printing_to_terminal?(id_safe(printer.id.to_s)) ? "checked" : "" %>/>
              <% end %>
 
       <!-- the following input is to make sure that we send the category[selected_printers] param when no printers are selected -->
@@ -49,11 +49,11 @@
           <div class="header">Select Printers</div>
 
           <div class="terminal_switches">
-            <% all_terminals.each do |terminal_name| %>
+            <% all_printers.each do |printer| %>
               <div class="terminal_switch">
-                <input type="checkbox" data-terminal_name="<%= id_safe terminal_name%>"
+                <input type="checkbox" data-terminal_name="<%= id_safe printer.id.to_s %>"
                        onchange="printerSwitchToggle(this)"/>
-                <div class="label"><%=terminal_name%></div>
+                <div class="label"><%=printer.label%></div>
               </div>
               <div class="clear_top_margin_5">&nbsp;</div>
             <% end %>
@@ -65,7 +65,7 @@
       <div class="clear">&nbsp;</div>
     </div>
     <div class="field">
-      <label for="category[selected_blocked_printers][]">Blocked Printers</label>
+      <label for="category[selected_blocked_printers][]">Blocked Terminals</label>
 
       <div class="clear">&nbsp;</div>
 
@@ -85,7 +85,7 @@
       <div id="select_blocked_printers_markup" style="display: none;">
         <div class="select_blocked_printers_dialog">
 
-          <div class="header">Select Blocked Printers</div>
+          <div class="header">Select Blocked Terminals</div>
 
           <div class="terminal_switches">
             <% all_terminals.each do |terminal_name| %>

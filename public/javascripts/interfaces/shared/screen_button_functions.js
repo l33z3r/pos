@@ -41,7 +41,31 @@ function orderButtonPressed() {
 
 function doSyncTableOrder() {
     if (!appOnline) {
-        niceAlert("Cannot contact server, ordering is disabled until connection re-established!");
+        
+        
+        
+        //just try print the items even if offline, this is a bit of a hack
+        if(selectedTable != previousOrderTableNum && selectedTable != tempSplitBillTableNum) {
+            if (selectedTable == 0) {
+                if (!isTableZeroOrder) {
+                    //You must move this order to a table
+                    return;
+                } else {
+                    order = lastTableZeroOrder;
+                }
+            } else {
+                order = tableOrders[selectedTable];
+            }
+        }
+        
+        checkForItemsToPrint(order, current_user_nickname);
+        
+        
+        
+        
+        
+        
+        niceAlert("Cannot contact server, ordering is disabled until connection re-established! Orders should still print locally.");
         return;
     }
 
@@ -93,6 +117,8 @@ function doSyncTableOrder() {
         }
     }
     
+    checkForItemsToPrint(order, current_user_nickname);
+    
     setStatusMessage("Sending Order.");
 
     orderInProcess = true;
@@ -120,7 +146,7 @@ function doSyncTableOrder() {
         tableID : selectedTable,
         orderData : copiedOrderForSend
     }
-
+    
     var userId = current_user_id;
 
     if (isTableZeroOrder) {
@@ -206,6 +232,15 @@ function totalPressed() {
 }
 
 function printBill() {
+    if (currentOrderEmpty()) {
+        setStatusMessage("No order present!", true, true);
+        return;
+    }
+
+    if (!ensureLoggedIn()) {
+        return;
+    }
+
     applyDefaultServiceChargePercent();
 
     totalOrder = getCurrentOrder();

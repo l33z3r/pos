@@ -25,7 +25,7 @@ class Product < ActiveRecord::Base
   validates :name, :presence => true
   validates_uniqueness_of :name, :case_sensitive => false, :scope => :outlet_id
   
-  validates_uniqueness_of :upc, :case_sensitive => false, :scope => :outlet_id
+  validates_uniqueness_of :upc, :case_sensitive => false, :scope => :outlet_id, :allow_blank => true
   
   validates :category_id, :numericality => true, :allow_blank => true
   validates :size, :numericality => {:greater_than_or_equal_to => 0}, :allow_blank => true

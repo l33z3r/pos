@@ -8,6 +8,14 @@
   <% end %>
 <% end %>
 
+<% content_for :head do %>
+  <script type="text/javascript">
+    $(function() {
+      initLocalPrinterListDropdown();
+    });
+  </script>
+<% end %>
+
 <% @nav_title = "Settings" %>
 
 <% content_for :admin_subnav_links_right do %>
@@ -153,7 +161,7 @@
                     <td>Use Whitespace In Mobile Menus?</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::USE_WHITE_SPACE_MOBILE_MENUS, current_outlet %>
-                      
+
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -169,7 +177,7 @@
                     <td>Use Whitespace In Terminal Menus?</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::USE_WHITE_SPACE_DESKTOP_MENUS, current_outlet %>
-                      
+
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Yes</div>
@@ -185,7 +193,7 @@
                     <td>Bypass Pin Number?</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::BYPASS_PIN, current_outlet %>
-                      
+
                       <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
                              value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
                       <div class="label">Per Role</div>
@@ -936,7 +944,7 @@
             <div class="clear">&nbsp;</div>
           </div>
         </div>
-        
+
         <div class="container" id="#cash_out_presets_section">
           <div class="jscrollpane">
             <h4>Current Cash Out Presets</h4>
@@ -1537,7 +1545,92 @@
 
             <% end %>
 
+            <h4>Current Printers</h4>
+
+            <%= form_tag update_multiple_admin_printers_path do %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="140">Label</th>
+                    <th width="140">Network Path</th>
+                    <th width="170">Paper Width (MM)</th>
+                    <th width="150">Font Size</th>
+                    <th width="150">Delete</th>                    
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <% current_outlet.printers.all(:order => :label).each do |pr| %>
+                    <%= fields_for "printers[]", pr do |f| %>
+                      <tr>
+                        <td><%= f.text_field :label %></td>
+                        <td><%= f.text_field :network_path, :disabled => true %></td>
+                        <td><%= f.text_field :paper_width_mm, :size => 4 %></td>
+                        <td><%= f.text_field :font_size, :size => 4 %></td>
+                        <td><%= link_to "Delete", admin_printer_path(pr), :method => :delete, :confirm => "Are You Sure?" %></td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Save" %>
+              </div>
+
+            <% end %>
+
+            <h4>New Printer</h4>
+
+            <%= form_for [:admin, Printer.new] do |f| %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="140">Label</th>
+                    <th width="140">Network Path</th>
+                    <th width="170">Paper Width (MM)</th>
+                    <th width="150">Font Size</th>
+                    <th width="150">Delete</th> 
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>
+                      <%= f.text_field :label %>
+                    </td>
+                    <td>
+                      <!-- this gets build via js -->
+                      <%= f.select :network_path, [] %>
+                    </td>
+                    <td>
+                      <%= f.text_field :paper_width_mm, :size => 4 %>
+                    </td>
+                    <td>
+                      <%= f.text_field :font_size, :size => 4 %>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Create" %>
+              </div>
+
+            <% end %>
+
             <div class="clear">&nbsp;</div>
+
           </div>
         </div>
 
@@ -1606,10 +1699,21 @@
                   </tr>
                   <tr>
                     <td>
-                      Printer Service IP Address
+                      Local Receipt Printer
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, current_outlet, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::LOCAL_PRINTER_ID, current_outlet, {:fingerprint => @terminal_fingerprint} %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.select :value, options_for_select(Printer.options_for_select(current_outlet), @gs.parsed_value) %>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Cash Drawer Com Port
+                    </td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_COM_PORT, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -1617,49 +1721,13 @@
                   </tr>
                   <tr>
                     <td>
-                      Use Web Sockets For Printer Service?
+                      Cash Drawer Code
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_RECEIPT_PRINTER, current_outlet, {:fingerprint => @terminal_fingerprint} %>
-                      <div class="controls">
-                        <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                               value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
-                        <div class="label">Yes</div>
-                        <div class="clear">&nbsp;</div>
-
-                        <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                               value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
-                        <div class="label">No</div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Cash Drawer Service IP Address
-                    </td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_IP_ADDRESS, current_outlet, {:fingerprint => @terminal_fingerprint} %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_CODE, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Use Web Sockets For Cash Drawer Service?
-                    </td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_CASH_DRAWER, current_outlet, {:fingerprint => @terminal_fingerprint} %>
-                      <div class="controls">
-                        <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                               value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
-                        <div class="label">Yes</div>
-                        <div class="clear">&nbsp;</div>
-
-                        <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                               value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
-                        <div class="label">No</div>
-                      </div>
                     </td>
                   </tr>
                   <tr>
@@ -1726,54 +1794,10 @@
                   </tr>
                   <tr>
                     <td>
-                      Printer Left Margin (Pixels)
-                    </td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::PRINTER_LEFT_MARGIN, current_outlet, {:fingerprint => @terminal_fingerprint} %>
-                      <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.text_field :value %>
-                      <% end %>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Use Windows OS Printer Margins?</td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::WINDOWS_PRINTER_MARGINS, current_outlet, {:fingerprint => @terminal_fingerprint} %>
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
-                      <div class="label">Yes</div>
-                      <div class="clear">&nbsp;</div>
-
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
-                      <div class="label">No</div>
-                      <div class="clear">&nbsp;</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
                       Your IP Address
                     </td>
                     <td class="text_align_left">
                       <input type="text" value="<%= request.remote_ip %>" size="30" disabled="true"/>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Order Receipt Width?</td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, current_outlet, {:fingerprint => @terminal_fingerprint} %>
-
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="<%= GlobalSetting::ORDER_RECEIPT_WIDTH_80MM %>" 
-                             <%= @gs.parsed_value == GlobalSetting::ORDER_RECEIPT_WIDTH_80MM ? "checked" : "" %>/>
-                      <div class="label">80mm</div>
-                      <div class="clear">&nbsp;</div>
-
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="<%= GlobalSetting::ORDER_RECEIPT_WIDTH_76MM %>" 
-                             <%= @gs.parsed_value == GlobalSetting::ORDER_RECEIPT_WIDTH_76MM ? "checked" : "" %>/>
-                      <div class="label">76mm</div>
-                      <div class="clear">&nbsp;</div>
                     </td>
                   </tr>
                   <tr>
@@ -1859,7 +1883,6 @@
 
             <% end %>
 
-            <div class="clear">&nbsp;</div>
           </div>
         </div>
 
