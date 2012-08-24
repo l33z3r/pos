@@ -829,6 +829,10 @@ function checkForClueyPlugin() {
         return false;
     }
     
+    //TODO: remove this
+    setStatusMessage("You should be using firefox!");
+    return false;
+    
     if(typeof(cluey_ff_ext) == 'undefined') {
         var title = "Cluey Addon Not Found";
         
