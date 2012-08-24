@@ -578,7 +578,7 @@ class ApplicationController < AppBaseController
   end
   
   def setup_for_subdomain
-    @subdomain = "agreatspot.lee"#request.subdomain
+    @subdomain = request.subdomain
     
     if @subdomain == "www"
       redirect_to welcome_path
