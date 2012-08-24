@@ -43,23 +43,23 @@ function doSyncTableOrder() {
     if (!appOnline) {
         
         
-        
-        //just try print the items even if offline, this is a bit of a hack
-        if(selectedTable != previousOrderTableNum && selectedTable != tempSplitBillTableNum) {
-            if (selectedTable == 0) {
-                if (!isTableZeroOrder) {
-                    //You must move this order to a table
-                    return;
+        if(inLargeInterface()) {
+            //just try print the items even if offline, this is a bit of a hack
+            if(selectedTable != previousOrderTableNum && selectedTable != tempSplitBillTableNum) {
+                if (selectedTable == 0) {
+                    if (!isTableZeroOrder) {
+                        //You must move this order to a table
+                        return;
+                    } else {
+                        order = lastTableZeroOrder;
+                    }
                 } else {
-                    order = lastTableZeroOrder;
+                    order = tableOrders[selectedTable];
                 }
-            } else {
-                order = tableOrders[selectedTable];
             }
+        
+            checkForItemsToPrint(order, current_user_nickname);
         }
-        
-        checkForItemsToPrint(order, current_user_nickname);
-        
         
         
         

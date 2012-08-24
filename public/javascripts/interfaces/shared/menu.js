@@ -107,7 +107,7 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
 
             var copiedOrderForPrintCheck = $.extend(true, copiedOrder, tableOrders[tableID]);        
             copiedOrderForPrintCheck.items = newlySyncedItems;
-            
+            alert("Checking for items to print with array : " + copiedOrderForPrintCheck.items);
             checkForItemsToPrint(copiedOrderForPrintCheck, terminalEmployee);
         }
     }
