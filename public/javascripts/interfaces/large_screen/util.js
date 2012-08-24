@@ -817,6 +817,14 @@ function checkForFirefox() {
     var ua = $.browser;
     
     if (typeof(ua.mozilla) == 'undefined') {
+
+        //TODO: remove this
+        setStatusMessage("You should be using firefox!");
+        return false;
+    
+    
+        
+        
         alert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software!");
         return false;
     }
