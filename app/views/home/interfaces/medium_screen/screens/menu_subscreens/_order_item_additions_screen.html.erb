@@ -2,7 +2,7 @@
   <div id="oia_tabs_container">
     <div id="oia_tabs">
       <div class="tabs">
-        <% OrderItemAdditionGrid.all.each do |oiag| %>
+        <% current_outlet.order_item_addition_grids.each do |oiag| %>
           <div class="tab oia_tab" id="oia_tab_<%= oiag.id %>" data-oiag_id="<%= oiag.id %>" onclick="orderItemAdditionTabSelected(<%= oiag.id %>);">
             <div class="label"><%= oiag.name %></div>
           </div>
@@ -13,7 +13,7 @@
   </div>
 
   <div id="order_item_additions">
-    <% OrderItemAdditionGrid.all.each do |oiag| %>
+    <% current_outlet.order_item_addition_grids.each do |oiag| %>
       <div id="oiag_<%=oiag.id%>" class="oia_container" data-grid_x_size="<%=oiag.grid_x_size%>" data-grid_y_size="<%=oiag.grid_y_size%>">
         <% (1..oiag.grid_y_size).each do |y| %>
               <div class="grid_row">

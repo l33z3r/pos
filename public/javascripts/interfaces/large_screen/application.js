@@ -15,10 +15,12 @@ $(function() {
 
 function doGlobalInit() {
     //make sure we have all compatible plugins etc
-    if(checkForFirefox()) {   
-        if(checkForClueyPlugin()) {
-            if(checkForJSPrintSetupPlugin()) {
-                checkForUninstalledPrinters();
+    if(!inMobileContext()) {
+        if(checkForFirefox()) {   
+            if(checkForClueyPlugin()) {
+                if(checkForJSPrintSetupPlugin()) {
+                    checkForUninstalledPrinters();
+                }
             }
         }
     }

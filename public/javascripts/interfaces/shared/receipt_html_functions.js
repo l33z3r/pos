@@ -139,6 +139,11 @@ var printerProgressListener = {
 };
     
 function printContent(content, printerID) {
+    if(inMediumInterface()) {
+        niceAlert("Printing is not yet supported for the cloud on mobiles except for ordering");
+        return;
+    }
+    
     if(!checkForClueyPlugin() || !checkForJSPrintSetupPlugin()) {
         return;
     }

@@ -1,18 +1,3 @@
-//this sends a print job to the designated terminal for printing from mobiles
-function printItemsFromOrder(printerID, serverNickname, order, items) {
-    var allOrderItemsReceiptHTML = "<div class='order_receipt'>";
-    allOrderItemsReceiptHTML += getPrintedOrderReceiptHeader(serverNickname, order);
-
-    for(var i=0; i<items.length; i++) {
-        var item = items[i];
-        allOrderItemsReceiptHTML += getLineItemHTMLForPrintedOrderReceipt(item);
-    }
-    
-    allOrderItemsReceiptHTML += "</div>";
-    
-    printReceipt(allOrderItemsReceiptHTML, false, printerID);
-}
-
 function getCurrentRecptHTML() {
     return $('#menu_screen_till_roll').html();
 }

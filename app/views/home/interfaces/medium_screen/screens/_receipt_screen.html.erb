@@ -161,7 +161,7 @@
     <div class="clear">&nbsp;</div>
 
     <% GlobalSetting.course_vals.each do |course_val| %>
-      <% @gs = GlobalSetting.setting_for GlobalSetting::COURSE_LABEL, {:course_val => course_val} %>
+      <% @gs = GlobalSetting.setting_for GlobalSetting::COURSE_LABEL, current_outlet, {:course_val => course_val} %>
       <div class="course_label course_label_<%=course_val%>" onclick="applyCourseFromPopup(<%=course_val%>);"><br><%= @gs.value %></div>
       <div class="clear">&nbsp;</div>
     <% end %>
