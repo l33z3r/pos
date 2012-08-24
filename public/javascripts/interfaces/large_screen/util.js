@@ -840,7 +840,7 @@ function checkForClueyPlugin() {
                 width: 360,
                 height: 310,
                 okButtonText: 'Download',
-                onOk: "goToNewWindow(\"/install/cluey_ff_extension.xpi\");hideNiceAlert();"
+                onOk: "goToNewWindow(\"/firefox_extensions/cluey_ff_extension.xpi\");hideNiceAlert();"
             });
         
         return false;
@@ -865,7 +865,7 @@ function checkForJSPrintSetupPlugin() {
                 width: 360,
                 height: 310,
                 okButtonText: 'Download',
-                onOk: "goToNewWindow(\"/install/jsprintsetup-0.9.2.xpi\");hideNiceAlert();"
+                onOk: "goToNewWindow(\"/firefox_extensions/jsprintsetup-0.9.2.xpi\");hideNiceAlert();"
             });
         
         return false;
