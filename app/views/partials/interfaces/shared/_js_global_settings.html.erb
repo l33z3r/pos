@@ -199,4 +199,6 @@
   var clueyUserId = <%= Employee.cluey_user(current_outlet).id %>;
   
   var printLocalDeliveryReceipts = <%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_LOCAL_RECIEVE_DELIVERY, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
+  
+  var printDelegateTerminalID = "<%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_DELEGATE_TERMINAL_ID, current_outlet %>";
 </script>

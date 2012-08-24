@@ -117,7 +117,9 @@ function doSyncTableOrder() {
         }
     }
     
-    checkForItemsToPrint(order, current_user_nickname);
+    if(inLargeInterface()) {
+        checkForItemsToPrint(order, current_user_nickname);
+    }
     
     setStatusMessage("Sending Order.");
 
@@ -141,6 +143,10 @@ function doSyncTableOrder() {
     var copiedOrder = {};
 
     var copiedOrderForSend = $.extend(true, copiedOrder, order);
+
+    if(inMediumInterface()) {
+        copiedOrderForSend.needsPrintDelegate = true;
+    }
 
     tableOrderData = {
         tableID : selectedTable,

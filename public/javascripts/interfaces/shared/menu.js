@@ -67,6 +67,9 @@ function getCurrentOrder() {
     return null;
 }
 
+//this stores the newly synced items so we can build an order to print if we are the print delegate
+var newlySyncedItems; 
+
 function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee, tableOrderDataJSON) {
     //data types need to be cast
     convertOrderItemStringsToBooleans(tableOrderDataJSON);
@@ -78,11 +81,6 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
     
     for(var i = 0; i < employees.length; i++) {
         nextUserIDToSyncWith = employees[i].id;
-        
-        //skip if terminal and user same
-        //        if(recvdTerminalID == terminalID && terminalEmployeeID == nextUserIDToSyncWith) {
-        //            continue;
-        //        }
         
         if(!userHasUniqueTableOrder(nextUserIDToSyncWith, tableID)) {
             continue;
@@ -96,15 +94,23 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
     
     if(inKitchenContext()) {
         renderReceipt(tableID);
-    }
+    } 
     
-    if(imTheTerminal) {
-        
-    }
+    if(printDelegateTerminalID == terminalID && recvdTerminalID != terminalID && tableOrderDataJSON.needsPrintDelegate) {
+        if(lastSyncTableOrderTime > lastPrintCheckTime) {
+            
+            //load the synced order
+            getTableOrderFromStorage(current_user_id, tableID);
     
-//    if(lastSyncTableOrderTime > lastPrintCheckTime) {
-//        checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);
-//    }
+            //copy it
+            var copiedOrder = {};
+
+            var copiedOrderForPrintCheck = $.extend(true, copiedOrder, tableOrders[tableID]);        
+            copiedOrderForPrintCheck.items = newlySyncedItems;
+            
+            checkForItemsToPrint(copiedOrderForPrintCheck, terminalEmployee);
+        }
+    }
     
     if(tableID != 0) {
         newlyAdded = addActiveTable(tableID);
@@ -128,12 +134,11 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
 function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith) {
     //the order is in json form, we need to turn it back into an array
     syncOrderItems = new Array();
+    newlySyncedItems = new Array();
     
     for(var itemKey in tableOrderDataJSON.items) {
         var theItem = tableOrderDataJSON.items[itemKey];
 
-        var copiedOrderItem = {};
-        
         if(typeof(theItem.oia_items) != "undefined") {
             //we must convert the oia_items hash to an array (the server turned our array into some indexed hash)
             var newOIAItems = new Array();
@@ -156,9 +161,17 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
             theItem.oia_items = newOIAItems;
         }
     
-        var copiedOrderItemForStore = $.extend(true, copiedOrderItem, theItem);
+        var copiedOrderItem = {};
+        var copiedOrderItem2 = {};
         
-        copiedOrderItemForStore.synced = "true";
+        var copiedOrderItemForStore = $.extend(true, copiedOrderItem, theItem);
+        var copiedOrderItemForPrint = $.extend(true, copiedOrderItem2, theItem);
+        
+        if(!copiedOrderItemForStore.synced) {
+            newlySyncedItems.push(copiedOrderItemForPrint);
+            copiedOrderItemForStore.synced = "true";
+        }
+        
         syncOrderItems.push(copiedOrderItemForStore);
     }
     
@@ -223,7 +236,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     if(clientName.length > 0) {
         $('#table_label_' + tableID).html(tables[tableID].label + " (" + clientName + ")");
     }
-    
+        
     //copy over the covers
     var covers = tableOrderDataJSON.covers;
     tableOrders[tableID].covers = covers;

@@ -365,7 +365,11 @@ function openCashDrawer() {
         return;
     }
     
-    cluey_ff_ext.openCashDrawer(cashDrawerComPort, cashDrawerCode);
+    try {
+        cluey_ff_ext.openCashDrawer(cashDrawerComPort, cashDrawerCode);
+    } catch(ex) {
+        setStatusMessage("Error opening cash drawer!");
+    }
 }
 
 var addTableNamePopupEl;

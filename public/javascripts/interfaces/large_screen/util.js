@@ -882,7 +882,13 @@ function checkForUninstalledPrinters() {
     
     var printersString = jsPrintSetup.getPrintersList();
     
-    localPrinters = printersString.split(",");
+    if(printersString != null) {
+        localPrinters = printersString.split(",");
+    } else {
+        //maybe the plugin permissions have not been given yet
+        localPrinters = new Array();
+    }
+    
     console.log("Found " + localPrinters.length + " local printers");
     
     for(i=0; i<localPrinters.length; i++) {

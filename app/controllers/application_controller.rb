@@ -617,12 +617,19 @@ class ApplicationController < AppBaseController
             return true
           end
         
-          #login required
-          authenticate_or_request_with_http_basic do |username, password|
-            #logger.info "#{username} #{password}"
-            session[:current_outlet_id] = 4
-            true
           
+          
+          
+          #disable login for now
+          session[:current_outlet_id] = outlet.id
+          
+          
+          
+          
+          #login required
+#          authenticate_or_request_with_http_basic do |username, password|
+#            #logger.info "#{username} #{password}"
+#                           
 #            @username_matches = outlet.username == username
 #            @password_matches = outlet.password_hash == BCrypt::Engine.hash_secret(password, outlet.password_salt)
 #            
@@ -639,7 +646,7 @@ class ApplicationController < AppBaseController
 #            end
 #      
 #            @auth_ok
-          end
+#          end
         
           return
         end
