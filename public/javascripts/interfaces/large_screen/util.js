@@ -819,7 +819,7 @@ function checkForFirefox() {
     if (typeof(ua.mozilla) == 'undefined') {
 
         //TODO: remove this
-        setStatusMessage("You should be using firefox!");
+        //You should be using firefox!
         return false;
     
     
@@ -838,7 +838,7 @@ function checkForClueyPlugin() {
     }
     
     //TODO: remove this
-    setStatusMessage("You should be using firefox!");
+    //You should be using firefox!
     return false;
     
     if(typeof(cluey_ff_ext) == 'undefined') {
@@ -864,6 +864,10 @@ function checkForClueyPlugin() {
 }
 
 function checkForJSPrintSetupPlugin() {
+    //TODO: remove this
+    //You should be using firefox!
+    return false;
+    
     //using the jsprint library
     //http://jsprintsetup.mozdev.org/reference.html
     if(typeof(jsPrintSetup) == 'undefined') {

@@ -1878,7 +1878,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Polling Interval (In seconds (1-5))</td>
+                    <td>Polling Interval (In seconds (<%= GlobalSetting::POLLING_MIN_SECONDS %>-<%= GlobalSetting::POLLING_MAX_SECONDS %>))</td>
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::POLLING_INTERVAL_SECONDS, current_outlet %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
