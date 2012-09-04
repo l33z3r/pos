@@ -10,8 +10,8 @@ Pos::Application.configure do
   config.whiny_nils = true
 
   #rotate every 20 megabytes
-  config.logger = Logger.new(Rails.root.join("log", Rails.env + ".log"), 10, 20 * 1024 * 1024)
-  config.logger.level = Logger::DEBUG
+#  config.logger = Logger.new(Rails.root.join("log", Rails.env + ".log"), 10, 20 * 1024 * 1024)
+#  config.logger.level = Logger::DEBUG
   
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true

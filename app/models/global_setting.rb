@@ -345,7 +345,7 @@
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{CREDIT_CARD_TERMINAL_PORT.to_s}_#{args[:fingerprint]}", :value => "25000", :label_text => LABEL_MAP[CREDIT_CARD_TERMINAL_PORT])
       @gs.parsed_value = @gs.value.to_i
     when POLLING_INTERVAL_SECONDS
-      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{POLLING_INTERVAL_SECONDS.to_s}", :value => POLLING_MIN_SECONDS, :label_text => LABEL_MAP[POLLING_INTERVAL_SECONDS])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{POLLING_INTERVAL_SECONDS.to_s}", :value => 20, :label_text => LABEL_MAP[POLLING_INTERVAL_SECONDS])
       @gs.parsed_value = @gs.value.to_i
     when PROCESS_TABLE_0_ORDERS
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => PROCESS_TABLE_0_ORDERS.to_s, :value => "true", :label_text => LABEL_MAP[PROCESS_TABLE_0_ORDERS])
