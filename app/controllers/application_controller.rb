@@ -270,7 +270,7 @@ class ApplicationController < AppBaseController
   
   rescue_from StandardError do |exception|
     
-    EXCEPTION_LOGGER.error('ERROR!')
+    EXCEPTION_LOGGER.error('CLUEY ERROR!!!!!')
     EXCEPTION_LOGGER.error("Time: #{Time.now.to_s(:long)}")
     EXCEPTION_LOGGER.error(params.inspect)
     EXCEPTION_LOGGER.error(exception.message)
