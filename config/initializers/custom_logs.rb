@@ -1,6 +1,9 @@
 #an exception logger
 #EXCEPTION_LOGGER = Logger.new(Rails.root.join('log', 'errors.log'), 10, 20.megabytes)
 
+EXCEPTION_LOGGER = Logger.new(STDOUT)
+EXCEPTION_LOGGER.level = Logger::INFO
+    
 #a logger for network exceptions
 #SOCKET_EXCEPTION_LOGGER = Logger.new(Rails.root.join('log', 'network_errors.log'), 10, 20.megabytes)
 
@@ -9,7 +12,8 @@
 class NoisyLogger < Rails::Rack::Logger
   def initialize app, opts = {}
     @default_log = Logger.new(STDOUT)
-
+    @default_log.level = Logger::INFO
+    
     @noisy_log = Logger.new('/dev/null')
 
     @app = app
