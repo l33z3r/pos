@@ -260,12 +260,33 @@ class ApplicationController < AppBaseController
     Rails.env == "production" or Rails.env == "production_heroku"
   end
   
-#  rescue_from StandardError do |exception|
-#    raise exception.exception("ERROR!!!!!!!!!!!!!!!" + "\n\n" + exception.message + "\n\n")
+  rescue_from StandardError do |exception|
+    raise exception.exception("ERROR!!!!!!!!!!!!!!!" + "\n\n" + exception.message + "\n\n")
+  end
+  
+  rescue_from Errno::ETIMEDOUT, Errno::EHOSTUNREACH, Errno::ECONNREFUSED, Errno::EALREADY, SocketError do |host_unreachable_exception|
+    raise host_unreachable_exception.exception("SOCKET ERROR!!!!!!!!!!!!!!!" + "\n\n" + host_unreachable_exception.message + "\n\n")
+  end
+  
+  #  rescue_from StandardError do |exception|
+#    
+#    EXCEPTION_LOGGER.error('ERROR!')
+#    EXCEPTION_LOGGER.error("Time: #{Time.now.to_s(:long)}")
+#    EXCEPTION_LOGGER.error(params.inspect)
+#    EXCEPTION_LOGGER.error(exception.message)
+#    EXCEPTION_LOGGER.error(exception.backtrace.join("\n") + "\n\n\n\n")
+#    
+#    # Raise it anyway because you just want to put it in the log
+#    raise exception
 #  end
 #  
 #  rescue_from Errno::ETIMEDOUT, Errno::EHOSTUNREACH, Errno::ECONNREFUSED, Errno::EALREADY, SocketError do |host_unreachable_exception|
-#    raise host_unreachable_exception.exception("SOCKET ERROR!!!!!!!!!!!!!!!" + "\n\n" + host_unreachable_exception.message + "\n\n")
+#    SOCKET_EXCEPTION_LOGGER.error
+#    SOCKET_EXCEPTION_LOGGER.error('SOCKET ERROR!')
+#    SOCKET_EXCEPTION_LOGGER.error("Time: #{Time.now.to_s(:long)}")
+#    SOCKET_EXCEPTION_LOGGER.error(params.inspect)
+#    SOCKET_EXCEPTION_LOGGER.error(host_unreachable_exception.message)
+#    SOCKET_EXCEPTION_LOGGER.error(host_unreachable_exception.backtrace.join("\n") + "\n\n\n\n")
 #  end
   
   private
