@@ -260,13 +260,13 @@ class ApplicationController < AppBaseController
     Rails.env == "production" or Rails.env == "production_heroku"
   end
   
-  rescue_from StandardError do |exception|
-    raise exception.exception("ERROR!!!!!!!!!!!!!!!" + "\n\n" + exception.message + "\n\n")
-  end
-  
-  rescue_from Errno::ETIMEDOUT, Errno::EHOSTUNREACH, Errno::ECONNREFUSED, Errno::EALREADY, SocketError do |host_unreachable_exception|
-    raise host_unreachable_exception.exception("SOCKET ERROR!!!!!!!!!!!!!!!" + "\n\n" + host_unreachable_exception.message + "\n\n")
-  end
+#  rescue_from StandardError do |exception|
+#    raise exception.exception("ERROR!!!!!!!!!!!!!!!" + "\n\n" + exception.message + "\n\n")
+#  end
+#  
+#  rescue_from Errno::ETIMEDOUT, Errno::EHOSTUNREACH, Errno::ECONNREFUSED, Errno::EALREADY, SocketError do |host_unreachable_exception|
+#    raise host_unreachable_exception.exception("SOCKET ERROR!!!!!!!!!!!!!!!" + "\n\n" + host_unreachable_exception.message + "\n\n")
+#  end
   
   #  rescue_from StandardError do |exception|
 #    
