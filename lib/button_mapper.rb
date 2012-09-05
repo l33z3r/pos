@@ -193,7 +193,7 @@ class ButtonMapper
     when COURSE_BUTTON
       @retval = si_check(COURSE_BUTTON, ms_check("changeCourseNum();"))
     when PRINT_BILL_BUTTON
-      @retval = si_check(PRINT_BILL_BUTTON, "printBill();")
+      @retval = si_check(PRINT_BILL_BUTTON, "printBillPressed();")
     when KITCHEN_SCREEN_BUTTON
       @retval = "goTo('#{kitchen_path}');"
     when PREVIOUS_CASH_TOTALS_BUTTON
