@@ -78,9 +78,15 @@ class ButtonMapper
   CHANGE_COST_PRICE_BUTTON = 75
   EDIT_LOYALTY_POINTS_BUTTON = 76
   
+  #These buttons should not be shown on the interface or used in any way
   RESTRICTED_BUTTON_IDS = [
     ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON, STOCK_TAKE_BUTTON,
-    PRINTERS_BUTTON, CHANGE_WAITER_BUTTON, REFUND_BUTTON, WASTE_BUTTON, CLIENT_BUTTON, THEMES_BUTTON
+    PRINTERS_BUTTON, CHANGE_WAITER_BUTTON, REFUND_BUTTON, WASTE_BUTTON, CLIENT_BUTTON, THEMES_BUTTON, Z_REPORTS_BUTTON
+  ]
+  
+  #these buttons are used (maybe just for permissions), but should not be shown on interface.
+  HIDDEN_BUTTON_IDS = [
+    CHANGE_COST_PRICE_BUTTON, EDIT_LOYALTY_POINTS_BUTTON
   ]
   
   def action_for_button button
@@ -93,9 +99,9 @@ class ButtonMapper
     when Z_TOTAL_BUTTON
       @retval = si_check(Z_TOTAL_BUTTON, ms_check("prepareZTotal();"))
     when X_REPORTS_BUTTON
-      @retval = "goTo('#{admin_cash_total_options_path}?section=x'); return false;"
-    when Z_REPORTS_BUTTON
-      @retval = "goTo('#{admin_cash_total_options_path}?section=z'); return false;"
+      @retval = "goTo('#{admin_cash_total_options_path}'); return false;"
+#    when Z_REPORTS_BUTTON
+#      @retval = "goTo('#{admin_cash_total_options_path}?section=z'); return false;"
     when MANAGE_USERS_BUTTON
       @retval = "goTo('#{admin_employees_path}'); return false;"
     when MANAGE_ROLES_BUTTON
@@ -193,7 +199,7 @@ class ButtonMapper
     when COURSE_BUTTON
       @retval = si_check(COURSE_BUTTON, ms_check("changeCourseNum();"))
     when PRINT_BILL_BUTTON
-      @retval = si_check(PRINT_BILL_BUTTON, "printBill();")
+      @retval = si_check(PRINT_BILL_BUTTON, "printBillPressed();")
     when KITCHEN_SCREEN_BUTTON
       @retval = "goTo('#{kitchen_path}');"
     when PREVIOUS_CASH_TOTALS_BUTTON

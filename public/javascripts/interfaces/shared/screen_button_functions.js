@@ -237,6 +237,27 @@ function totalPressed() {
     unorderedItemsPopup('doTotal(true);', true);
 }
 
+function printBillPressed() {
+    //make sure all items in this order have already been ordered
+    var orderSynced = true;
+    
+    var order = getCurrentOrder();
+    
+    for(var i=0; i<order.items.length; i++) {
+        if(!order.items[i].synced) {
+            orderSynced = false;
+            break;
+        }
+    }
+    
+    if(!orderSynced) {
+        niceAlert("You cannot print a bill until you order all items on the receipt. You can also delete unordered items!");
+        return;
+    }
+    
+    printBill();
+}
+
 function printBill() {
     if (currentOrderEmpty()) {
         setStatusMessage("No order present!", true, true);

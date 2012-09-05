@@ -44,7 +44,7 @@
                     <tbody>
                       <% dbg.display_buttons.each do |db| %>
 
-                        <% next if ButtonMapper::RESTRICTED_BUTTON_IDS.include?(db.perm_id) %>
+                        <% next if ButtonMapper::RESTRICTED_BUTTON_IDS.include?(db.perm_id) or ButtonMapper::HIDDEN_BUTTON_IDS.include?(db.perm_id) %>
 
                         <tr>
                           <td><%= db.button_text %></td>

@@ -34,7 +34,7 @@
                 <tr>
                   <td><%= terminal %></td>
                   <td>
-                    <%= select_tag "Display", options_from_collection_for_select(@displays, "id", "name", TerminalDisplayLink.for_terminal(terminal).try(:display_id)), :onchange => "linkTerminalDisplay('#{terminal}', this.value)" %>
+                    <%= select_tag "Display", options_from_collection_for_select(@displays, "id", "name", TerminalDisplayLink.for_terminal(terminal, current_outlet).try(:display_id)), :onchange => "linkTerminalDisplay('#{terminal}', this.value)" %>
                   </td>
                   <td>
                 </tr>

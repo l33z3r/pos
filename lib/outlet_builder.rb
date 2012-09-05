@@ -118,7 +118,7 @@ class OutletBuilder
   end
   
   def self.display_buttons_map
-    return [[1, "X Total"],[2, "Z Total"],[3, "X Options"], [4, "Z Options"], [5, "Employees"],
+    return [[1, "X Total"],[2, "Z Total"],[3, "X/Z Options"], [4, "Z Options"], [5, "Employees"],
       [6, "Employee Roles"], [7, "Products"], [8, "Categories"], [9, "Displays"], [10, "Sales Screen"],
       [11, "Access Control"], [12, "Modifier Categories"], [13, "Room Design"], [14, "Cash"],
       [15, "Sub-Total"], [16, "Wait"], [17, "Functions"], [18, "Button Names"], [19, "Tables"],

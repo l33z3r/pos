@@ -1,4 +1,3 @@
-# rails_log_stdout
+This plugin overrides the plugin that heroku would install to log all output to STDOUT
 
-Configure a Rails 2 or 3 app to log to STDOUT by default
-
+Cluey uses their own logger which can be found in config/initializers/custom_logs.rb

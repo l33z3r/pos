@@ -41,7 +41,7 @@ class NoisyLogger < Rails::Rack::Logger
     # ActiveSupport::LogSubscriber class (which Rails::Rack::Logger inherits
     # from) caches the logger, so we have to override that too
     @logger = logfile
-
+    
     super
   end
 end

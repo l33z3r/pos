@@ -851,12 +851,14 @@
   end
   
   def self.clear_dup_keys_gs current_outlet
+    logger.info "Clearing DUP keys gs for #{current_outlet.id}"
+    
     current_outlet.global_settings.order("created_at desc, id desc").group_by(&:key).each do |gs_key, gs_set|
       if gs_set.size > 1
         #we have duplicates
         @del_count = gs_set.size - 1
 	
-        puts "Found #{gs_set.size} duplicate keys for Key: #{gs_key} Label: '#{gs_set.first.label_text}'. Removing #{@del_count} duplicates!"
+        logger.info "Found #{gs_set.size} duplicate keys for Key: #{gs_key} Label: '#{gs_set.first.label_text}'. Removing #{@del_count} duplicates!"
 	
         gs_set.each do |gs|
           break if @del_count == 0

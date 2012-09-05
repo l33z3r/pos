@@ -8,6 +8,8 @@ class ClueyAccount < ActiveRecord::Base
   attr_accessor :password
   before_save :encrypt_password
   
+  after_create :make_activation_code
+  
   validates :name, :presence => true
   validates_uniqueness_of :name, :case_sensitive => false
   
@@ -53,8 +55,8 @@ class ClueyAccount < ActiveRecord::Base
     end
   end
   
-  def after_create
-    #make activation code
+  def make_activation_code
+    #make activation code after model created
     self.activation_code = Digest::SHA1.hexdigest( Time.now.to_s.split(//).sort_by {rand}.join )
     save
   end

@@ -2,7 +2,7 @@ class Admin::GlobalSettingsController < Admin::AdminController
   cache_sweeper :display_button_sweeper
 
   def index
-    
+    GlobalSetting.clear_dup_keys_gs current_outlet
   end
   
   def toggle_print_receipt
