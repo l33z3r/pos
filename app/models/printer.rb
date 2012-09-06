@@ -34,6 +34,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: printers
@@ -43,7 +44,7 @@ end
 #  label          :string(255)
 #  network_path   :string(255)
 #  paper_width_mm :integer(4)      default(80)
-#  font_size      :integer(4)      default(13)
+#  font_size      :integer(4)      default(11)
 #  created_at     :datetime
 #  updated_at     :datetime
 #

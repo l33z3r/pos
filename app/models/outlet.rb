@@ -1,5 +1,6 @@
 class Outlet < ActiveRecord::Base
   belongs_to :cluey_account
+  has_many :outlet_terminals, :dependent => :destroy
   
   validates :name, :presence => true
   validates_uniqueness_of :name, :case_sensitive => false, :scope => :cluey_account_id
@@ -64,7 +65,7 @@ class Outlet < ActiveRecord::Base
       self.password_salt = BCrypt::Engine.generate_salt
       self.password_hash = BCrypt::Engine.hash_secret(password, password_salt)
     end
-  end
+  end  
 end
 
 

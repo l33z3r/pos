@@ -1,0 +1,23 @@
+<h1>New Terminal For Outlet <%= @outlet.name %></h1>
+
+<%= form_for @outlet_terminal, :url => create_terminal_accounts_outlet_path(@outlet) do |f| %>
+  <% if @outlet_terminal.errors.any? %>
+    <div class="error_messages">
+      <h2>Form is invalid</h2>
+      <ul>
+        <% for message in @outlet_terminal.errors.full_messages %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :outlet_id %>
+
+  <p>
+    <%= f.label :name, :label => "Terminal Name" %><br />
+    <%= f.text_field :name %>
+  </p>
+
+  <p class="button"><%= f.submit %></p>
+<% end %>

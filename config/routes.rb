@@ -17,7 +17,13 @@ Pos::Application.routes.draw do
     
     resources :sessions, :only => [:new, :create, :destroy]
     
-    resources :outlets
+    resources :outlets do
+      member do
+        get 'new_terminal'
+        post 'create_terminal'
+      end
+    end
+    
     resources :reports, :only => [:index]
   end
 

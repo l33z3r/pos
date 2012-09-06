@@ -1444,7 +1444,7 @@
                       </div>
 
                       <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.text_field :value, :id => "terminal_name_field", :onkeyup => "checkForUniqueTerminalName();" %>
+                        <%= f.select :value, options_for_select(OutletTerminal.options_for_select(current_outlet), @gs.parsed_value), {}, :id => "terminal_name_field", :onchange => "checkForUniqueTerminalName();" %>
                       <% end %>
                     </td>
                   </tr>
