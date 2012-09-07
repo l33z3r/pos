@@ -820,7 +820,7 @@ function checkForFirefox() {
 
         //TODO: remove this
         //You should be using firefox!
-        return false;
+        //return false;
     
     
         
@@ -839,7 +839,7 @@ function checkForClueyPlugin() {
     
     //TODO: remove this
     //You should be using firefox!
-    return false;
+    //return false;
     
     if(typeof(cluey_ff_ext) == 'undefined') {
         var title = "Cluey Addon Not Found";
@@ -857,6 +857,7 @@ function checkForClueyPlugin() {
         
         return false;
     } else {
+        console.log("Setting cluey prefs in plugin");
         cluey_ff_ext.setClueyPrefs();
         
         return true;
@@ -866,7 +867,7 @@ function checkForClueyPlugin() {
 function checkForJSPrintSetupPlugin() {
     //TODO: remove this
     //You should be using firefox!
-    return false;
+    //return false;
     
     //using the jsprint library
     //http://jsprintsetup.mozdev.org/reference.html
@@ -978,5 +979,22 @@ function checkForUninstalledPrinters() {
         return false;
     } else {
         return true;
+    }
+}
+
+function generateBrowserSessionId() {
+    generatedBrowserSessionId = Math.uuid();
+    storeKeyValue(browserSessionIdStorageKey, generatedBrowserSessionId);
+    
+    console.log("Set browser session id to: " + generatedBrowserSessionId);
+}
+
+function checkForDuplicateBrowserSession() {
+    
+    var storedBrowserSessionId = retrieveStorageValue(browserSessionIdStorageKey);
+    
+    if(generatedBrowserSessionId != storedBrowserSessionId) {
+        alert("Another browser tab is open for the cluey app. This tab will now close.");
+        window.close();
     }
 }

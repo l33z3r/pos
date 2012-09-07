@@ -9,6 +9,9 @@ var display_button_passcode_permissions;
 
 var loyaltyCardCode = "";
 
+var generatedBrowserSessionId = null;
+var browserSessionIdStorageKey = "browser_session_id";
+
 $(function() {
     doGlobalInit();
 });
@@ -165,6 +168,9 @@ function doGlobalInit() {
     //start calling home
     callHomePoll();
 
+    //this prevents multiple tabs opening
+    generateBrowserSessionId();
+    
     clueyScheduler();
     
     initTrainingModeFromCookie();        
@@ -445,4 +451,5 @@ function doScheduledTasks() {
     testShowLicenceExpiredScreen();
     trySendOutstandingOrdersToServer();
     pingHome();
+    checkForDuplicateBrowserSession();
 }

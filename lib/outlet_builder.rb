@@ -115,6 +115,11 @@ class OutletBuilder
         :outlet_id => outlet_id, :key => GlobalSetting::LAST_ORDER_ID.to_s, 
         :value => 0, 
         :label_text => GlobalSetting::LABEL_MAP[GlobalSetting::LAST_ORDER_ID]})
+    
+    #add a default terminal
+    @default_terminal = @outlet.outlet_terminals.build
+    @default_terminal.name = "terminal1"
+    @default_terminal.save
   end
   
   def self.display_buttons_map
