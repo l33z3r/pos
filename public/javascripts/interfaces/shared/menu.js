@@ -45,6 +45,7 @@ var globalPriceLevel = null;
 var globalPriceLevelKey = "global_price_level";
 
 var lastOrderSentTime = null;
+var lastOrderTable = null;
 
 var lastSaleObj;
 

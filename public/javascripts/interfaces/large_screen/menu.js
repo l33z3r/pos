@@ -1231,16 +1231,29 @@ function doTotalFinal() {
         return;
     }
     
-//    //check that we have not just made an order, if so, we must wait before cashing out as it causes problems
-//    //but we allow table 0 orders to be cashed out regardless
-//    var now = clueyTimestamp();
-//    
-//    //if we are on table 0 and we are not processing table 0 orders, then we can skip this check
-//    if((selectedTable != 0 || isProcessingTable0Orders) && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
-//        showLoadingDiv("Waiting on previous sale to finish processing...");
-//        setTimeout(doTotalFinal, 1000);
-//        return;
-//    }
+    //check that we have not just made an order, if so, we must wait before cashing out as we lose orders as the get cleared before they reach the kitchen screen
+    //but we allow table 0 orders to be cashed out regardless
+    var now = clueyTimestamp();
+    
+    
+    
+    
+    
+    
+    
+    //TODO: //this solution might not be good enough as you can go to another order and hit order then come back and cash this one out
+    //
+    //
+    //
+    //
+    //
+    //if we are trying to cash out an order that we just hit "order" for, then wait for the polling amount so others can download the order
+    //if((selectedTable != 0) && (lastOrderTable == selectedTable) && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
+    if(selectedTable != 0 && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
+        showLoadingDiv("Waiting on previous sale to finish processing...");
+        setTimeout(doTotalFinal, 1000);
+        return;
+    }
     
     hideLoadingDiv();
     
