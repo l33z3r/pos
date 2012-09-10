@@ -1236,7 +1236,8 @@ function doTotalFinal() {
     var now = clueyTimestamp();
     
     //if we are on table 0 and we are not processing table 0 orders, then we can skip this check
-    if((selectedTable != 0 || isProcessingTable0Orders) && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
+    //    if((selectedTable != 0 || isProcessingTable0Orders) && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
+    if((selectedTable != 0 || isProcessingTable0Orders) && lastOrderSentTime != null && ((now - lastOrderSentTime) < 2000)) {
         showLoadingDiv("Waiting on previous sale to finish processing...");
         setTimeout(doTotalFinal, 1000);
         return;
