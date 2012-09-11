@@ -898,7 +898,7 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
     }
     
     if(reloadTerminalId == terminalID) {
-        //return;
+        return;
     }
     
     //hide any previous popups
