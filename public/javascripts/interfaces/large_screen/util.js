@@ -612,7 +612,7 @@ function getLastReceiptItem() {
 function hideAllMenuSubScreens() {
     $('#menu_container').hide();
     
-    $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').removeClass("selected");
+    $('.button[id=sales_button_' + modifyOrderItemButtonID + '], .button[id=admin_screen_button_' + modifyOrderItemButtonID + ']').removeClass("selected");
     $('#order_item_additions').hide();
     
     $('#cash_out_subscreen').hide();

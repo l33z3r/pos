@@ -898,21 +898,22 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
     }
     
     if(reloadTerminalId == terminalID) {
-        return;
+        //return;
     }
     
     //hide any previous popups
     hideNiceAlert();
     
-    //the timeout must be 2 seconds over the pollingAmount so that it has a chance to save the timestamp
-    //preventing the reload request from reappearing
-    var timeoutSeconds = pollingMaxSeconds + 2;
+    //must write the last reload time to cookie here so that the reload message does not keep popping up
+    writeLastReloadTimeCookie();
+    
+    var timeoutSeconds = 5;
     
     if(hardReload) {
-        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in in a few seconds.";
+        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
         okFuncCall = "doClearAndReload();";
     } else {
-        message = "Settings have been changed by " + reloadTerminalId + ". Screen will reload in a few seconds.";
+        message = "Settings have been changed by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
         okFuncCall = "doReload(false);";
     }
     
@@ -926,6 +927,13 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
         });
         
     setTimeout(okFuncCall, timeoutSeconds * 1000);
+}
+
+function writeLastReloadTimeCookie() {
+    ////write it to cookie        
+    //100 year expiry, but will really end up in year 2038 due to limitations in browser
+    var interfaceReloadTimeCookeExpDays = 365 * 100;
+    setRawCookie(lastReloadCookieName, lastInterfaceReloadTime, interfaceReloadTimeCookeExpDays);
 }
 
 function getURLHashParams() {

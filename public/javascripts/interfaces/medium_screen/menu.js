@@ -1094,7 +1094,7 @@ function showMenuItemsSubscreen() {
 function switchToModifyOrderItemSubscreen() {
     if (currentScreenIsMenu) {
         hideAllMenuSubScreens();
-        $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').addClass("selected");
+        $('.button[id=sales_button_' + modifyOrderItemButtonID + '], .button[id=admin_screen_button_' + modifyOrderItemButtonID + ']').addClass("selected");
         $('#oia_subscreen').show();
         orderItemAdditionTabSelected(currentModifierGridIdForProduct);
 
@@ -1119,7 +1119,7 @@ function showTablesSubscreen() {
         $('#menu_screen #cluey_logo').show();
         initScreenDefault = "true";
     }
-    $('.button[id=sales_button_' + tablesButtonID + ']').addClass("selected");
+    $('.button[id=sales_button_' + tablesButtonID + '], .button[id=admin_screen_button_' + tablesButtonID + ']').addClass("selected");
     $('#table_screen').show();
 }
 
@@ -1132,7 +1132,7 @@ function showCoversSubscreen() {
             $('#menu_screen #cluey_logo').show();
             initScreenDefault = "true";
         }
-        $('.button[id=sales_button_' + tablesButtonID + ']').addClass("selected");
+        $('.button[id=sales_button_' + tablesButtonID + '], .button[id=admin_screen_button_' + tablesButtonID + ']').addClass("selected");
         checkForCovers();
         $('#table_screen').hide();
         $('#covers_screen').show();
@@ -1166,7 +1166,7 @@ function showCoversSubscreen() {
                 $('#menu_screen #cluey_logo').show();
                 initScreenDefault = "true";
             }
-            $('.button[id=sales_button_' + tablesButtonID + ']').addClass("selected");
+            $('.button[id=sales_button_' + tablesButtonID + '], .button[id=admin_screen_button_' + tablesButtonID + ']').addClass("selected");
             $('#table_screen').hide();
             $('#covers_screen').show();
         } else {

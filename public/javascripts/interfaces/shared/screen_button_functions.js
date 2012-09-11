@@ -364,10 +364,10 @@ function setMenuItemDoubleMode(turnOn) {
         setMenuItemHalfMode(false);
 
         menuItemDoubleMode = true;
-        $('.button[id=sales_button_' + toggleMenuItemDoubleModeButtonID + ']').addClass("selected");
+        $('.button[id=sales_button_' + toggleMenuItemDoubleModeButtonID + '], .button[id=admin_screen_button_' + toggleMenuItemDoubleModeButtonID + ']').addClass("selected");
     } else {
         menuItemDoubleMode = false;
-        $('.button[id=sales_button_' + toggleMenuItemDoubleModeButtonID + ']').removeClass("selected");
+        $('.button[id=sales_button_' + toggleMenuItemDoubleModeButtonID + '], .button[id=admin_screen_button_' + toggleMenuItemDoubleModeButtonID + ']').removeClass("selected");
     }
 }
 
@@ -381,10 +381,10 @@ function setMenuItemHalfMode(turnOn) {
         setMenuItemDoubleMode(false);
 
         menuItemHalfMode = true;
-        $('.button[id=sales_button_' + toggleMenuItemHalfModeButtonID + ']').addClass("selected");
+        $('.button[id=sales_button_' + toggleMenuItemHalfModeButtonID + '], .button[id=admin_screen_button_' + toggleMenuItemHalfModeButtonID + ']').addClass("selected");
     } else {
         menuItemHalfMode = false;
-        $('.button[id=sales_button_' + toggleMenuItemHalfModeButtonID + ']').removeClass("selected");
+        $('.button[id=sales_button_' + toggleMenuItemHalfModeButtonID + '], .button[id=admin_screen_button_' + toggleMenuItemHalfModeButtonID + ']').removeClass("selected");
     }
 }
 
@@ -395,10 +395,10 @@ function toggleMenuItemStandardPriceOverrideMode() {
 function setMenuItemStandardPriceOverrideMode(turnOn) {
     if (turnOn) {
         menuItemStandardPriceOverrideMode = true;
-        $('.button[id=sales_button_' + toggleMenuItemStandardPriceOverrideModeButtonID + ']').addClass("selected");
+        $('.button[id=sales_button_' + toggleMenuItemStandardPriceOverrideModeButtonID + '], .button[id=admin_screen_button_' + toggleMenuItemStandardPriceOverrideModeButtonID + ']').addClass("selected");
     } else {
         menuItemStandardPriceOverrideMode = false;
-        $('.button[id=sales_button_' + toggleMenuItemStandardPriceOverrideModeButtonID + ']').removeClass("selected");
+        $('.button[id=sales_button_' + toggleMenuItemStandardPriceOverrideModeButtonID + '], .button[id=admin_screen_button_' + toggleMenuItemStandardPriceOverrideModeButtonID + ']').removeClass("selected");
     }
 }
 
@@ -452,9 +452,9 @@ function toggleProductInfoPopup() {
 function setProductInfoPopup(turnOn) {
     if (turnOn) {
         productInfoPopupMode = true;
-        $('.button[id=sales_button_' + toggleProductInfoButtonID + ']').addClass("selected");
+        $('.button[id=sales_button_' + toggleProductInfoButtonID + '], .button[id=admin_screen_button_' + toggleProductInfoButtonID + ']').addClass("selected");
     } else {
         productInfoPopupMode = false;
-        $('.button[id=sales_button_' + toggleProductInfoButtonID + ']').removeClass("selected");
+        $('.button[id=sales_button_' + toggleProductInfoButtonID + '], .button[id=admin_screen_button_' + toggleProductInfoButtonID + ']').removeClass("selected");
     }
 }

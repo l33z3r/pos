@@ -81,10 +81,7 @@ function callHomePoll() {
             lastInterfaceReloadTime = clueyTimestamp();
         }
     } else {
-        //write it to cookie        
-        //100 year expiry, but will really end up in year 2038 due to limitations in browser
-        var interfaceReloadTimeCookeExpDays = 365 * 100;
-        setRawCookie(lastReloadCookieName, lastInterfaceReloadTime, interfaceReloadTimeCookeExpDays);
+        writeLastReloadTimeCookie();
     }
     
     //load/store the timestamp for print checks

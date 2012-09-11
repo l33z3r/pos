@@ -2019,7 +2019,7 @@ function doOpenOIANoteScreen() {
     
     $('#oia_tab_note').addClass("selected");
     
-    $('.button[id=sales_button_' + addNoteButtonID + ']').addClass("selected");
+    $('.button[id=sales_button_' + addNoteButtonID + '], .button[id=admin_screen_button_' + addNoteButtonID + ']').addClass("selected");
     
     $('#oia_container').hide();
     $('#add_note').show();
@@ -2213,12 +2213,12 @@ function finishDoSyncTableOrder() {
 
 function toggleModifyOrderItemScreen() {
     if(currentMenuSubscreenIsMenu()) {
-        $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').addClass("selected");
+        $('.button[id=sales_button_' + modifyOrderItemButtonID + '], .button[id=admin_screen_button_' + modifyOrderItemButtonID + ']').addClass("selected");
         showModifyOrderItemScreen();
     } else {
         resetKeyboard();
-        $('.button[id=sales_button_' + addNoteButtonID + ']').removeClass("selected");
-        $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').removeClass("selected");
+        $('.button[id=sales_button_' + addNoteButtonID + '], .button[id=admin_screen_button_' + addNoteButtonID + ']').removeClass("selected");
+        $('.button[id=sales_button_' + modifyOrderItemButtonID + '], .button[id=admin_screen_button_' + modifyOrderItemButtonID + ']').removeClass("selected");
         switchToMenuItemsSubscreen();
     }
 }
@@ -2245,7 +2245,7 @@ function switchToModifyOrderItemSubscreen() {
         resetKeyboard();
         hideAllMenuSubScreens();
         
-        $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').addClass("selected");
+        $('.button[id=sales_button_' + modifyOrderItemButtonID + '], .button[id=admin_screen_button_' + modifyOrderItemButtonID + ']').addClass("selected");
         $('#order_item_additions').show();
         $('#order_item_additions #add_note').hide();
         

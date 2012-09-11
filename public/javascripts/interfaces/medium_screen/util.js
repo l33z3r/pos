@@ -18,12 +18,10 @@ function initMcDropDowns() {
 function hideAllMenuSubScreens() {
     $('#menu_container').hide();
 
-
-
-    $('.button[id=sales_button_' + tablesButtonID + ']').removeClass("selected");
+    $('.button[id=sales_button_' + tablesButtonID + '], .button[id=admin_screen_button_' + tablesButtonID + ']').removeClass("selected");
     $('#table_screen').hide();
     
-    $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').removeClass("selected");
+    $('.button[id=sales_button_' + modifyOrderItemButtonID + '], .button[id=admin_screen_button_' + tablesButtonID + ']').removeClass("selected");
     $('#oia_subscreen').hide();
 }
 

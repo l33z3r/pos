@@ -227,7 +227,7 @@ class ButtonMapper
     when COVERS_BUTTON
       @retval = si_check(COVERS_BUTTON, ms_check("promptAddCovers();"))
     when PRODUCT_INFO_POPUP_BUTTON
-      @retval = si_check(PRODUCT_INFO_POPUP_BUTTON, ms_check("toggleProductInfoPopup();"))
+      @retval = si_check(PRODUCT_INFO_POPUP_BUTTON, "toggleProductInfoPopup();")
     when MANAGE_CUSTOMERS_BUTTON
       @retval = "goTo('#{admin_customers_path}?show_normal_customers=true'); return false;"
     when MANAGE_LOYALTY_CUSTOMERS_BUTTON

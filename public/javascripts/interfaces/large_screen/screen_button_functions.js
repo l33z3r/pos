@@ -342,7 +342,7 @@ function showAddNoteToOrderItemScreen() {
         if(currentScreenIsMenu()) {
             if(currentMenuSubscreenIsModifyOrderItem()) {
                 if(doSaveNote()) {
-                    $('.button[id=sales_button_' + addNoteButtonID + ']').removeClass("selected");
+                    $('.button[id=sales_button_' + addNoteButtonID + '], .button[id=admin_screen_button_' + addNoteButtonID + ']').removeClass("selected");
                     resetKeyboard();
                     switchToMenuItemsSubscreen();
                 }
@@ -827,12 +827,10 @@ function setTrainingMode(turnOn) {
     setRawCookie(inTrainingModeCookieName, inTrainingMode, exdays);
     
     if(inTrainingMode) {
-        $('.button[id=sales_button_' + toggleTrainingModeButtonID + ']').addClass("selected");
-        $('.button[id=admin_screen_button_' + toggleTrainingModeButtonID + ']').addClass("selected");
+        $('.button[id=sales_button_' + toggleTrainingModeButtonID + '], .button[id=admin_screen_button_' + toggleTrainingModeButtonID + ']').addClass("selected");
         $('nav#main_nav').addClass("training_mode");
     } else {
-        $('.button[id=sales_button_' + toggleTrainingModeButtonID + ']').removeClass("selected");
-        $('.button[id=admin_screen_button_' + toggleTrainingModeButtonID + ']').removeClass("selected");
+        $('.button[id=sales_button_' + toggleTrainingModeButtonID + '], .button[id=admin_screen_button_' + toggleTrainingModeButtonID + ']').removeClass("selected");
         $('nav#main_nav').removeClass("training_mode");
     }
 }
