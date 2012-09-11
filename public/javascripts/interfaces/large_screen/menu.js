@@ -956,7 +956,7 @@ function saveEditOrderItem() {
     targetInputQuantityEl = $('#' + popupId).find('.quantity');
     newQuantity = parseFloat(targetInputQuantityEl.val());
     
-    if(isNaN(newQuantity) || newQuantity == 0) {
+    if(isNaN(newQuantity) || newQuantity <= 0) {
         newQuantity = 1;
     }
     
