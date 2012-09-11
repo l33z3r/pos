@@ -202,7 +202,7 @@ class Admin::DisplaysController < Admin::AdminController
       end
     else
       (1..16).each do |num|
-        @new_page.menu_items.build({:order_num => num}).save!
+        @new_page.menu_items.build({:outlet_id => current_outlet.id, :order_num => num}).save!
       end
     end
     
