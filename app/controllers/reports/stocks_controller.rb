@@ -31,7 +31,7 @@ class Reports::StocksController < Admin::AdminController
     session[:training_mode] = false
     @current_category = nil
     @current_product = nil
-    @products_drop = Product.all
+    @products_drop = Product.all.sort_by { |p| p.name.downcase }
 
     @opening_time = GlobalSetting.parsed_setting_for GlobalSetting::EARLIEST_OPENING_HOUR
 
@@ -194,6 +194,7 @@ class Reports::StocksController < Admin::AdminController
       if session[:category] == '' && session[:product] != ''
         where << " and p.id = #{session[:product]}"
       end
+      where << " and p.is_deleted = 0 and p.is_stock_item = 1"
       where << " order by p.name asc"
   elsif session[:search_type] == :by_delivery
       where = "select st.id, st.transaction_type, st.delivery_id, st.employee_id, st.product_id, st.created_at, st.change_amount from stock_transactions st inner join products p on p.id = st.product_id inner join categories c on c.id = p.category_id inner join deliveries d on d.id = st.delivery_id"

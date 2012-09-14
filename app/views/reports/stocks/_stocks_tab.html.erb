@@ -43,14 +43,15 @@
                 <th class="header">Sales Value</th>
                 <th class="header">Margin</th>
                 </thead>
-
+               <% total_cost_value = 0 %>
+               <% total_sales_value = 0 %>
                 <% @products.each do |week| %>
 
                     <tbody>
                     <tr class="<%= cycle("even", "odd") %>">
                             <td style="text-align: left">
                                 <% if nil != week.name %>
-                                    <%= week.name[0..20] %>
+                                    <%= week.name %>
                                 <% end %>
                             </td>
                         <td style="text-align: left">
@@ -84,19 +85,21 @@
                         </td>
                         <td>
                             <% unless week.cost_price == 0 %>
-                                <% cost_valuation = (week.cost_price.to_d*week.quantity_in_stock.to_d).abs %>
+                                <% cost_valuation = (week.cost_price.to_d*week.quantity_in_stock.to_d) %>
+                                <% total_cost_value += cost_valuation %>
                                 <%= print_money(cost_valuation) %>
                             <% end %>
                         </td>
                         <td>
                             <% unless sales_price_per_c == 0 %>
-                                <% sales_valuation = (sales_price_per_c*week.quantity_in_stock.to_d).abs %>
+                                <% sales_valuation = (sales_price_per_c*week.quantity_in_stock.to_d) %>
                                 <%= print_money(sales_valuation) %>
+                                <% total_sales_value += sales_valuation %>
                             <% end %>
                         </td>
                         <td>
-                            <% unless cost_valuation == nil || sales_valuation == nil %>
-                                <% margin = per_profit(sprintf("%.2f", sales_valuation.abs).to_d, sprintf("%.2f", cost_valuation.abs).to_d, week.sales_tax_rate) %>
+                            <% unless cost_valuation == nil || sales_valuation == nil || week.quantity_in_stock == 0 %>
+                                <% margin = per_profit(sprintf("%.2f", sales_valuation.abs).to_d, sprintf("%.2f", cost_valuation.abs).to_d, week.sales_tax_rate).abs %>
                                 <% unless (margin == nil) %>
                                     <%=  sprintf("%.0f",margin) %>%
                                 <% end %>
@@ -104,7 +107,36 @@
                         </td>
                     </tr>
                 <% end %>
+               <tr>
+                   <td style="text-align: left; border-top: 2px solid">
+                       <b>Total:</b>
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid">
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid; ">
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid; ">
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid;">
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid;">
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid">
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid">
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid">
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid">
+                       <%=  print_money(total_cost_value) %>
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid">
+                       <%=  print_money(total_sales_value) %>
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid">
 
+                   </td>
+               </tr>
                 </tbody>
             </table>
     <% elsif @s_type == :by_delivery %>
@@ -122,11 +154,12 @@
                 <th class="header">Unit Cost</th>
                 <th class="header">Cost Total</th>
                 </thead>
-
+               <% total_cost = 0 %>
                 <% @products.each do |week| %>
                     <% @delivery = Delivery.find_by_id(week.delivery_id) %>
                     <% @employee = Employee.find_by_id(week.employee_id) %>
                     <% @product = Product.find_by_id(week.product_id) %>
+
                     <% if @delivery %>
                     <tbody>
                     <tr class="<%= cycle("even", "odd") %>">
@@ -168,12 +201,39 @@
                             <%= print_money(@product.cost_price) %>
                         </td>
                         <td>
-                            <%= print_money(@product.cost_price.to_d*week.change_amount.to_d) %>
+                            <% cost_total=@product.cost_price.to_d*week.change_amount.to_d %>
+                            <%= print_money(cost_total) %>
+                            <% total_cost += cost_total %>
                         </td>
                     </tr>
                 <% end %>
                 <% end %>
-
+               <tr>
+                   <td style="text-align: left; border-top: 2px solid">
+                       <b>Total:</b>
+                   </td>
+                       <td style="text-align: right; border-top: 2px solid">
+                       </td>
+                   <td style="text-align: right; border-top: 2px solid; ">
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid; ">
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid;">
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid;">
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid">
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid">
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid">
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid">
+                   </td>
+                   <td style="text-align: right; border-top: 2px solid">
+                   <%=  print_money(total_cost) %>
+                   </td>
+               </tr>
                 </tbody>
             </table>
     <% else %>
