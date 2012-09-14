@@ -5047,6 +5047,12 @@ div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_lin
     cursor: pointer;
 }
 
+div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_line.selected {
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background-color: #4297D7;
+}
+
 div#delivery_screen div#delivery_receipt div#delivery_till_roll div.delivery_line.return {
     color: red;
     margin: 0px 2px;
@@ -5325,6 +5331,47 @@ div#delivery_screen div#delivery_screen_select_product_container div#product_sea
     font-weight: normal;
     padding: 2px;
     margin: 0px 1px;
+}
+
+div#edit_delivery_item_popup_markup {
+    display: none;
+}
+
+div#edit_delivery_item_popup_markup_container {
+    width: 280px;
+    height: 490px;
+}
+
+div#edit_delivery_item_popup_markup_container div#delivery_item_quantity_editor {
+    padding-top: 10px;
+}
+
+div#edit_delivery_item_popup_markup_container div#delivery_item_quantity_editor div#delivery_item_quantity_label {
+    font-weight: bold;
+    float: left;
+    margin: 4px 11px 1px 6px;
+    font-size: 12px;
+}
+
+div#edit_delivery_item_popup_markup_container div#delivery_item_quantity_editor input.delivery_item_quantity {
+    float: left;
+    margin: 1px 4px 1px 1px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+div#edit_delivery_item_popup_markup_container div#delete_delivery_item_button {
+    padding: 10px;
+    float: right;
+    cursor: pointer;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    height: 18px;
+    width: 100px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    margin: 3px 22px;
 }
 
 /* End Delivery Screen */
