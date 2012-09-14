@@ -119,7 +119,13 @@ function loadFirstTab() {
 function orderSelected(orderId, is_void) {
     setPreviousSaleReceipt("Loading...");
     
-    initReopenOrderButton(is_void);
+    if(is_void) {
+        reOpenOrderHandler = function() {
+            setStatusMessage("Cannot re-open a void order!");
+        };
+    } else {
+        reOpenOrderHandler = reOpenOrder;
+    }
     
     $.ajax({
         type: 'GET',
@@ -154,19 +160,7 @@ function parsePreviousOrder(previousOrderJSON) {
     
     $('#total_container div#label').html("Total:");
     $('#admin_order_list_total_value').html(currency(totalOrder.totalFinal + totalOrder.cashback));
-}
-
-function initReopenOrderButton(is_void) {
-    if(is_void) {
-        reOpenOrderHandler = function() {
-            setStatusMessage("Cannot re-open a void order!");
-        };
-    } else {
-        reOpenOrderHandler = reOpenOrder;
-    }
-    
-    return false;
-}
+}   
 
 var openOrdersTableFilter = "";
 var openOrdersServerFilter = "";

@@ -315,8 +315,11 @@ class CashTotal < ActiveRecord::Base
             pt = pt.downcase
            
             #if the amount tendered was bigger than the total, we have to subtract from the cash payment for reporting
-            if pt == PaymentMethod::CASH_PAYMENT_METHOD_NAME and order.amount_tendered > order.total
-              amount -= (order.amount_tendered - (order.total + order.service_charge))
+            #and we only do it for orders that were not refunds
+            if order.total > 0
+              if pt == PaymentMethod::CASH_PAYMENT_METHOD_NAME and order.amount_tendered > order.total
+                amount -= (order.amount_tendered - (order.total + order.service_charge))
+              end
             end
           
             if !@sales_by_payment_type[pt]

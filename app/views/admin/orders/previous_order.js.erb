@@ -1,7 +1,9 @@
 <% if !@allowed_reopen %>
-  niceAlert("You cannot reopen an order that has already been z totaled!");
-  setPreviousSaleReceipt("");
-<% else %>
+  reOpenOrderHandler = function() {
+            setStatusMessage("You cannot reopen an order that has already been z totaled!");
+        };
+<% end %>
+        
   //have to construct a json that is compatible with the js code
 
   previousOrderJSON = <%= raw(@order.to_json) %>.order;
@@ -104,4 +106,3 @@
   serviceCharge = parseFloat(previousOrderJSON.service_charge);
 
   parsePreviousOrder(previousOrderJSON);
-<% end %>
