@@ -2712,7 +2712,7 @@ function getCashOutReceiptHTML() {
     
     cashOutTillRollHTML += "<div class='data_table'>";
     
-    cashOutTillRollHTML += "<div class='label'>" + currentCashOutDescription + "</div><div class='data'>" + currency(currentCashOutAmount) + "</div>" + clearHTML;
+    cashOutTillRollHTML += "<div class='label'>" + currentCashOutDescription + "</div><div class='data'>" + currency(currentCashOutAmount/100) + "</div>" + clearHTML;
     
     cashOutTillRollHTML += "</div>" + clearHTML;
     
