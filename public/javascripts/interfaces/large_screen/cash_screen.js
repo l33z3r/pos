@@ -2,6 +2,8 @@ var currentCCReferenceNumber;
 
 var splitPayments;
 
+var cashScreenRefundMode = false;
+
 //if a card transasction goes through, you should not be able to cancel the sale
 var disallowCancelSaleCC = false;
 
@@ -27,7 +29,11 @@ function updateTotalTendered() {
     totalAmountInclCashback = currentTotalFinal + cashback;
 
     //calculate change and show the finish sale button
-    change = totalCashTendered - totalAmountInclCashback;
+    if(totalAmountInclCashback > 0) {
+        change = totalCashTendered - totalAmountInclCashback;
+    } else {
+        change = 0;
+    }
     
     //as we calculate change dynamically, it could be negative while
     //it is being entered, so we must stop that
@@ -71,43 +77,48 @@ function finishSale() {
 
     totalAmountInclCashback = roundNumber(currentTotalFinal + cashback, 2);
 
-    if(cashTendered < totalAmountInclCashback) {
-        if(loyaltyPaymentMethodSelected) {
-            niceAlert("Not enough loyalty points to cover the whole sale! Other payment methods must be used to cover the difference.");
-            return;
-        }
-        
-        //auto fill to exact amount 
-        moneySelected(-1);
-        finishSale();
-        return;
-    }
-    
-    //make sure that you cannot have any change if there is no cash in the split payments array
-    if(cashTendered > totalAmountInclCashback) {
-        var positiveCashAmount = false;
-        
-        var totalCashAmount = 0;
-        
-        for(pm in splitPayments) {
-            if(pm.toLowerCase() == cashPaymentMethodName && parseFloat(splitPayments[pm]) > 0) {
-                positiveCashAmount = true;
-                totalCashAmount = parseFloat(splitPayments[pm]);
-                break;
+    if(cashScreenRefundMode) {
+        cashTendered = totalAmountInclCashback;
+        splitPayments[paymentMethod] = totalAmountInclCashback;
+    } else {
+        if(cashTendered < totalAmountInclCashback) {
+            if(loyaltyPaymentMethodSelected) {
+                niceAlert("Not enough loyalty points to cover the whole sale! Other payment methods must be used to cover the difference.");
+                return;
             }
-        }
         
-        if(!positiveCashAmount) {
-            niceAlert("You cannot enter an amount (" + currency(cashTendered) + ") above the total (" + currency(totalAmountInclCashback) + "), if you are not taking a cash payment, as you cannot issue change without cash.");
+            //auto fill to exact amount 
+            moneySelected(-1);
+            finishSale();
             return;
         }
         
-        change = roundNumber(parseFloat(cashTendered - totalAmountInclCashback), 2);
+        //make sure that you cannot have any change if there is no cash in the split payments array
+        if(cashTendered > totalAmountInclCashback) {
+            var positiveCashAmount = false;
         
-        //make sure the change cannot be greater than the cash amount
-        if(change >= totalCashAmount) {
-            niceAlert("Change cannot be greater than or equal the cash amount!");
-            return;
+            var totalCashAmount = 0;
+        
+            for(pm in splitPayments) {
+                if(pm.toLowerCase() == cashPaymentMethodName && parseFloat(splitPayments[pm]) > 0) {
+                    positiveCashAmount = true;
+                    totalCashAmount = parseFloat(splitPayments[pm]);
+                    break;
+                }
+            }
+        
+            if(!positiveCashAmount) {
+                niceAlert("You cannot enter an amount (" + currency(cashTendered) + ") above the total (" + currency(totalAmountInclCashback) + "), if you are not taking a cash payment, as you cannot issue change without cash.");
+                return;
+            }
+        
+            change = roundNumber(parseFloat(cashTendered - totalAmountInclCashback), 2);
+        
+            //make sure the change cannot be greater than the cash amount
+            if(change >= totalCashAmount) {
+                niceAlert("Change cannot be greater than or equal the cash amount!");
+                return;
+            }
         }
     }
     
@@ -148,13 +159,7 @@ function paymentMethodSelected(pm_id) {
     //must be the last payment method you select in order to actually do the integration
     //also check for other payment methods that do not allow for split payments
     if(paymentIntegrationId != 0 && splitPayments[paymentMethod] > 0) {
-        if(!allowedZalionSplitPayments) {
-            splitPayments = {};
-        } else {
-            var warningMessage = paymentMethod + " must be the last payment method used if splitting a payment (Enter zero to cancel).";
-            niceAlert(warningMessage);
-            return;
-        }
+        splitPayments = {};
     } else if(accountPaymentMethodSelected && splitPayments[paymentMethod] > 0) {
         if(disallowCancelSaleCC) {
             niceAlert("You cannot charge to an account, as a card transaction has already been processed!");
@@ -171,6 +176,11 @@ function paymentMethodSelected(pm_id) {
     cashPaymentMethodSelected = (method == cashPaymentMethodName);
     
     if(loyaltyPaymentMethodSelected) {
+        if(cashScreenRefundMode) {
+            setStatusMessage("Loyalty system cannot be used during a refund!", true, true);
+            return;
+        }
+    
         if(!totalOrder.loyalty) {
             niceAlert("Please swipe the customers loyalty card first!");
             loyaltyPaymentMethodSelected = false;
@@ -194,7 +204,7 @@ function paymentMethodSelected(pm_id) {
         
         var pointsUsedInCurrencyPennies = 0;
         
-        if(availablePoints <=0) {
+        if(availablePoints <= 0) {
             niceAlert("This customer has no available loyalty points!");
             loyaltyPaymentMethodSelected = false;
             return;
@@ -256,14 +266,12 @@ function paymentMethodSelected(pm_id) {
         
         if(paymentIntegrationId == zalionPaymentIntegrationId) {
             
-            if(!allowedZalionSplitPayments) {
-                //reset the payment methods array 
-                splitPayments = {};
-                splitPayments[paymentMethod] = 0;
+            //reset the payment methods array 
+            splitPayments = {};
+            splitPayments[paymentMethod] = 0;
                 
-                moneySelected(-1);
-                updateTotalTendered();
-            }
+            moneySelected(-1);
+            updateTotalTendered();
             
             //we have to store the string that represents the current zalion payment method, so that
             //we can retrieve the amount later that will be actually charged to the room
@@ -405,6 +413,11 @@ function totalsScreenKeypadClick(val) {
         return;
     }
     
+    if(cashScreenRefundMode) {
+        setStatusMessage("Currency cannot be added to a sale during a refund!", true, true);
+        return;
+    }
+    
     cashTenderedKeypadString += val;
     cashTendered = parseFloat(cashTenderedKeypadString/100.0);
     //alert(splitPayments[paymentMethod] + " " + cashTendered);
@@ -428,6 +441,11 @@ function totalsScreenKeypadClickCancel() {
 }
 
 function moneySelected(amount) {
+    if(cashScreenRefundMode) {
+        setStatusMessage("Currency cannot be added to a sale during a refund!", true, true);
+        return;
+    }
+    
     if(loyaltyPaymentMethodSelected || accountPaymentMethodSelected) {
         return;
     }
@@ -834,7 +852,7 @@ function loadSearchCustomersForLetter(letter) {
 function updateCustomerSearchResults() {
     var searchString = $('#customer_search_input').val().toLowerCase();
     
-   var results = new Array();
+    var results = new Array();
     
     var nextCustomer = null;
     

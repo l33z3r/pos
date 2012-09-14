@@ -346,6 +346,24 @@ function setMenuItemHalfMode(turnOn) {
     }
 }
 
+function toggleMenuItemRefundMode() {
+    setMenuItemRefundMode(!menuItemRefundMode);
+}
+
+function setMenuItemRefundMode(turnOn) {
+    if (turnOn) {
+        //ensure half mode and double modes are not enabled
+        setMenuItemHalfMode(false);
+        setMenuItemDoubleMode(false);
+
+        menuItemRefundMode = true;
+        $('.button[id=sales_button_' + toggleMenuItemRefundModeButtonID + ']').addClass("selected");
+    } else {
+        menuItemRefundMode = false;
+        $('.button[id=sales_button_' + toggleMenuItemRefundModeButtonID + ']').removeClass("selected");
+    }
+}
+
 function toggleMenuItemStandardPriceOverrideMode() {
     setMenuItemStandardPriceOverrideMode(!menuItemStandardPriceOverrideMode);
 }

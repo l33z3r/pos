@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120731101140) do
+ActiveRecord::Schema.define(:version => 20120912182753) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -82,6 +82,17 @@ ActiveRecord::Schema.define(:version => 20120731101140) do
   end
 
   add_index "client_transactions", ["order_id"], :name => "index_client_transactions_on_order_id"
+
+  create_table "cluey_accounts", :force => true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "password_hash"
+    t.string   "password_salt"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "activation_code"
+    t.datetime "activated_at"
+  end
 
   create_table "customer_points_allocations", :force => true do |t|
     t.integer  "customer_id"
@@ -336,6 +347,7 @@ ActiveRecord::Schema.define(:version => 20120731101140) do
     t.boolean  "is_void",                                      :default => false
     t.boolean  "is_half",                                      :default => false
     t.integer  "void_employee_id"
+    t.boolean  "is_refund",                                    :default => false
   end
 
   add_index "order_items", ["employee_id"], :name => "index_order_items_on_employee_id"
@@ -374,6 +386,24 @@ ActiveRecord::Schema.define(:version => 20120731101140) do
   add_index "orders", ["table_info_id"], :name => "index_orders_on_table_info_id"
   add_index "orders", ["void_order_id"], :name => "index_orders_on_void_order_id"
 
+  create_table "outlet_terminals", :force => true do |t|
+    t.integer  "outlet_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "outlets", :force => true do |t|
+    t.integer  "cluey_account_id"
+    t.string   "name"
+    t.string   "username"
+    t.string   "password_hash"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "has_seed_data",    :default => false
+    t.string   "password_salt"
+  end
+
   create_table "payment_methods", :force => true do |t|
     t.string   "name"
     t.boolean  "is_default"
@@ -401,6 +431,16 @@ ActiveRecord::Schema.define(:version => 20120731101140) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "terminal_id"
+  end
+
+  create_table "printers", :force => true do |t|
+    t.integer  "outlet_id"
+    t.string   "label"
+    t.string   "network_path"
+    t.integer  "paper_width_mm", :default => 80
+    t.integer  "font_size",      :default => 11
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "products", :force => true do |t|

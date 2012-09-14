@@ -225,6 +225,8 @@ class OrderController < ApplicationController
           @order_item.void_employee_id = item[:void_employee_id]
         end
         
+        @order_item.is_refund = item[:is_refund] == "true"
+        
         #oias
         if item[:oia_items]
           item[:oia_items].each do |index, oia|

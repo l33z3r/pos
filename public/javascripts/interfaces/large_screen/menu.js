@@ -28,7 +28,12 @@ var highlightedCover = true;
 
 var inCashOutMode = false;
 var cashOutKeypadString = "";
-        
+ 
+//this is to make sure that when all the images are loaded, that the ipad dislays them correctly
+$(window).load(function(){
+    tryDocumentLoadedLoadFirstMenuPage();
+});
+
 //this function is called from application.js on page load
 function initMenu() {
     initMenuScreenType();
@@ -106,11 +111,6 @@ function callForwardButtonFunction() {
         setRawCookie(salesInterfaceForwardJSExecuteCookieName, "", -365);
     }
 }
-
-//this is to make sure that when all the images are loaded, that the ipad dislays them correctly
-$(window).load(function(){
-    tryDocumentLoadedLoadFirstMenuPage();
-});
 
 function initMenuScreenType() {
     if(menuScreenType == RESTAURANT_MENU_SCREEN) {
@@ -633,11 +633,13 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         orderHTML += "<div class='server " + (showAddedLine ? "added_line" : "") + "'>At " + timeAdded + " " + nickname + " added:</div>";
     }
     
-    orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
+    orderHTML += "<div class='amount' data-is_refund='" + orderItem.is_refund + "'>" + orderItem.amount + "</div>";
     
     orderHTML += "<div class='name' data-course_num='" + orderItem.product.course_num + "'>" + notSyncedMarker + " ";
 
-    if (orderItem.is_double) {
+    if(orderItem.is_refund) {
+        orderHTML += "Refund ";
+    } else if(orderItem.is_double) {
         orderHTML += "Double ";
     } else if (orderItem.is_half) {
         orderHTML += halfMeasureLabel + " ";
@@ -861,6 +863,13 @@ function doSelectReceiptItem(orderItemEl) {
     $('#' + popupId).find('.price').val(currentPrice);
     
     currentQuantity = orderItemEl.children('.amount').html();
+    
+    var isRefund = orderItemEl.children('.amount').data("is_refund");
+    
+    if(isRefund) {
+        currentQuantity = -1 * parseFloat(currentQuantity);
+    }
+    
     $('#' + popupId).find('.quantity').val(currentQuantity);
     
     $('#' + popupId).find('.quantity').focus().select();
@@ -971,12 +980,13 @@ function saveEditOrderItem() {
     
     var courseNum = order.items[itemNumber - 1].product.course_num;
     var is_void = order.items[itemNumber - 1].is_void;
+    var is_refund = order.items[itemNumber - 1].is_refund;
     
     if(selectedTable != 0) {
-        modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum, is_void);
+        modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum, is_void, is_refund);
         storeTableOrderInStorage(current_user_id, selectedTable, order);
     } else {
-        modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum, is_void);
+        modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum, is_void, is_refund);
         
         storeOrderInStorage(current_user_id, order);
     }
@@ -1193,6 +1203,8 @@ function doTotal(applyDefaultServiceCharge) {
     
     $('#cash_screen_sub_total_value').html(currency(orderTotal));
     
+    cashScreenRefundMode = orderTotal < 0;
+    
     if(!paymentMethod) {
         paymentMethod = defaultPaymentMethod;
     }
@@ -1332,7 +1344,9 @@ function doTotalFinal() {
     
     var orderTotal = totalOrder.total;
     
-    if(parseFloat(cashTendered) == 0.0) {
+    if(parseFloat(cashTendered) < 0.0) {
+        totalOrder.cash_tendered = 0;
+    } else if(parseFloat(cashTendered) == 0.0) {
         cashTendered = orderTotal + serviceCharge;
         totalOrder.cash_tendered = orderTotal + serviceCharge;
     } else {
@@ -1446,6 +1460,7 @@ function doTotalFinal() {
     cashback = 0;
     paymentMethod = null;
     currentCardChargeAmount = 0;
+    cashScreenRefundMode = false;
     
     //do we need to clear the previous order from the receipt dropdown selection?
     if(selectedTable == previousOrderTableNum) {
@@ -1886,10 +1901,10 @@ function applyCourseFromPopup(courseVal) {
     item.show_course_label = true;
     
     if(selectedTable != 0) {
-        modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum, item.is_void);
+        modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum, item.is_void, item.is_refund);
         storeTableOrderInStorage(current_user_id, selectedTable, order);
     } else {
-        modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum, item.is_void);
+        modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum, item.is_void, item.is_refund);
         storeOrderInStorage(current_user_id, order);
     }
     
@@ -1924,7 +1939,7 @@ function voidOrderItemFromEditDialog() {
     //unsync the item so it gets sent to other terminals
     item.synced = false;
     
-    modifyOrderItem(order, itemNumber, item.amount, item.product_price, item.product.course_num, makeVoid);
+    modifyOrderItem(order, itemNumber, item.amount, item.product_price, item.product.course_num, makeVoid, item.is_refund);
     storeTableOrderInStorage(current_user_id, selectedTable, order);
     
     order = getCurrentOrder();
@@ -1945,7 +1960,7 @@ function voidAllOrderItems() {
     for(var i=0; i<order.items.length; i++) {
         var item = order.items[i];
         item.is_void = true;
-        modifyOrderItem(order, i+1, item.amount, item.product_price, item.product.course_num, item.is_void);
+        modifyOrderItem(order, i+1, item.amount, item.product_price, item.product.course_num, item.is_void, item.is_refund);
     }
     
     storeTableOrderInStorage(current_user_id, selectedTable, order);
@@ -2401,7 +2416,7 @@ function doSplitOrderItem(orderLine, reverse) {
     
     //take it from the order
     if(theItem.amount - currentSplitBillItemQuantity > 0) {
-        modifyOrderItem(orderFrom, itemNumber, theItem.amount - currentSplitBillItemQuantity, theItem.product_price, theItem.product.course_num, theItem.is_void);
+        modifyOrderItem(orderFrom, itemNumber, theItem.amount - currentSplitBillItemQuantity, theItem.product_price, theItem.product.course_num, theItem.is_void, theItem.is_refund);
     } else {
         //we are removing an item, so make sure that it is not the last one on the original order
         if(!reverse && orderFrom.items.length == 1) {
@@ -2422,7 +2437,8 @@ function doSplitOrderItem(orderLine, reverse) {
     //add this item to the order array
     orderTo.items.push(theCopiedOrderItem);
     
-    modifyOrderItem(orderTo, theCopiedOrderItem.itemNumber, currentSplitBillItemQuantity, theCopiedOrderItem.product_price, theCopiedOrderItem.product.course_num, theCopiedOrderItem.is_void);
+    modifyOrderItem(orderTo, theCopiedOrderItem.itemNumber, currentSplitBillItemQuantity, 
+        theCopiedOrderItem.product_price, theCopiedOrderItem.product.course_num, theCopiedOrderItem.is_void, theCopiedOrderItem.is_refund);
     
     loadSplitBillReceipts();
     
@@ -2699,7 +2715,7 @@ function getCashOutReceiptHTML() {
     
     cashOutTillRollHTML += "<div class='data_table'>";
     
-    cashOutTillRollHTML += "<div class='label'>" + currentCashOutDescription + "</div><div class='data'>" + currency(currentCashOutAmount) + "</div>" + clearHTML;
+    cashOutTillRollHTML += "<div class='label'>" + currentCashOutDescription + "</div><div class='data'>" + currency(currentCashOutAmount/100) + "</div>" + clearHTML;
     
     cashOutTillRollHTML += "</div>" + clearHTML;
     

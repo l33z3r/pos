@@ -52,11 +52,13 @@ class CashTotal < ActiveRecord::Base
   RS_VOIDS_BY_EMPLOYEE = 10
   RS_CASH_OUT = 11
   RS_ACCOUNT_PAYMENT_BREAKDOWN = 12
+  RS_REFUNDS_BY_EMPLOYEE = 13
   
   REPORT_SECTIONS = [
     RS_SALES_BY_DEPARTMENT, RS_SALES_BY_PAYMENT_TYPE, RS_CASH_SUMMARY, RS_SALES_BY_SERVER, 
     RS_CASH_PAID_OUT, RS_SALES_TAX_SUMMARY, RS_SALES_BY_CATEGORY, RS_SALES_BY_PRODUCT,
-    RS_SERVICE_CHARGE_BY_PAYMENT_TYPE, RS_VOIDS_BY_EMPLOYEE, RS_CASH_OUT, RS_ACCOUNT_PAYMENT_BREAKDOWN
+    RS_SERVICE_CHARGE_BY_PAYMENT_TYPE, RS_VOIDS_BY_EMPLOYEE, RS_CASH_OUT, 
+    RS_ACCOUNT_PAYMENT_BREAKDOWN, RS_REFUNDS_BY_EMPLOYEE
   ]
   
   validates :total_type, :presence => true, :inclusion => { :in => VALID_TOTAL_TYPES }
@@ -95,6 +97,7 @@ class CashTotal < ActiveRecord::Base
     @sales_by_server = {}
     @sales_by_payment_type = {}
     @voids_by_employee = {}
+    @refunds_by_employee = {}
     @service_charge_by_payment_type = {}
     @cash_summary = {}
     @taxes = {}
@@ -155,7 +158,6 @@ class CashTotal < ActiveRecord::Base
           end
           
           if order_item.is_void
-            
             @void_employee = Employee.find_by_id(order_item.void_employee_id)
             @void_employee_nickname = @void_employee.nickname
             
@@ -176,6 +178,23 @@ class CashTotal < ActiveRecord::Base
           
             #now continue to next product so this one does not get included in sales totals
             next
+          end
+          
+          if order_item.is_refund
+            #initialise a hash for employee
+            if !@refunds_by_employee[@server_nickname]
+              @refunds_by_employee[@server_nickname] = {
+                :quantity => 0,
+                :sales_total => 0
+              }
+            end
+          
+            @product_refunds_quantity = @refunds_by_employee[@server_nickname][:quantity].to_f
+            @product_refunds_quantity -= order_item.quantity
+            @product_refunds_quantity = sprintf("%g", @product_refunds_quantity)
+            @refunds_by_employee[@server_nickname][:quantity] = @product_refunds_quantity
+          
+            @refunds_by_employee[@server_nickname][:sales_total] -= @order_item_price
           end
           
           @product_name = order_item.product.name
@@ -408,6 +427,10 @@ class CashTotal < ActiveRecord::Base
     #sort voids_by_employee alphabetically
     @voids_by_employee = @voids_by_employee.sort
     @cash_total_data[:voids_by_employee] = @voids_by_employee
+    
+    #sort refunds_by_employee alphabetically
+    @refunds_by_employee = @refunds_by_employee.sort
+    @cash_total_data[:refunds_by_employee] = @refunds_by_employee
     
     @cash_total_data[:sales_by_category] = @sales_by_category
     

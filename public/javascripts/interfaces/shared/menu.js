@@ -4,6 +4,7 @@ var currentMenuSubPageId;
 
 var menuItemDoubleMode = false;
 var menuItemHalfMode = false;
+var menuItemRefundMode = false;
 var productInfoPopupMode = false;
 var menuItemStandardPriceOverrideMode = false;
 var currentMenuItemQuantity = "";
@@ -374,6 +375,10 @@ function convertOrderItemStringsToBooleans(tableOrderDataJSON) {
             theItem.is_void = (theItem.is_void.toString() == "true" ? true : false);   
         }
         
+        if(theItem.is_refund) {
+            theItem.is_refund = (theItem.is_refund.toString() == "true" ? true : false);   
+        }
+        
         //this is only untill we have the new code deployed for a while we can be sure that double_price will be present on newly created orders
         if(typeof(theItem.is_double) != 'undefined') {
             theItem.is_double = (theItem.is_double.toString() == "true" ? true : false);
@@ -453,18 +458,29 @@ function applyExistingDiscountToOrderItem(order, itemNumber) {
     applyDiscountToOrderItem(order, itemNumber, -1);
 }
 
-function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum, is_void) {
+function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCourseNum, is_void, is_refund) {
     targetOrderItem = order.items[itemNumber-1];
 
-    targetOrderItem.amount = newQuantity;
-    targetOrderItem.product_price = newPricePerUnit;
-    targetOrderItem.product.course_num = newCourseNum;
-    
     if(typeof(is_void) == 'undefined') {
         is_void = false;
     }
     
     targetOrderItem.is_void = is_void;
+    
+    if(typeof(is_refund) == 'undefined') {
+        is_refund = false;
+    }
+    
+    targetOrderItem.is_refund = is_refund;
+    
+    if(targetOrderItem.is_refund) {
+        newQuantity = -1 * newQuantity;
+        
+    }
+    
+    targetOrderItem.amount = newQuantity;
+    targetOrderItem.product_price = newPricePerUnit;
+    targetOrderItem.product.course_num = newCourseNum;
     
     //add the employee who voided the item
     if(targetOrderItem.is_void) {
@@ -509,6 +525,21 @@ function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCou
     
     //get rid of rounding errors
     targetOrderItem.total_price = roundNumber(parseFloat(targetOrderItem.total_price), 2);
+    
+    if(targetOrderItem.pre_discount_price) {
+        targetOrderItem.pre_discount_price = roundNumber(parseFloat(targetOrderItem.pre_discount_price), 2);
+    }
+    
+    //now set the refund price
+//    if(targetOrderItem.is_refund) {
+//        if(targetOrderItem.total_price > 0) {
+//            targetOrderItem.total_price = -1 * targetOrderItem.total_price;
+//        }
+//        
+//        if(targetOrderItem.pre_discount_price && targetOrderItem.pre_discount_price > 0) {
+//            targetOrderItem.pre_discount_price = -1 * targetOrderItem.pre_discount_price;
+//        }
+//    }
     
     applyExistingDiscountToOrderItem(order, itemNumber);
     calculateOrderTotal(order);
@@ -622,8 +653,13 @@ function buildOrderItem(product, amount) {
     var productPrice = product.price;
     var isDouble = false;
     var isHalf = false;
+    var isRefund = false;
     
-    if(menuItemDoubleMode) {
+    if(menuItemRefundMode) {
+        amount = -1 * amount;
+        setMenuItemRefundMode(false);
+        isRefund = true;
+    } else if(menuItemDoubleMode) {
         productPrice = product.double_price;
         isDouble = true;
         setMenuItemDoubleMode(false);
@@ -645,14 +681,15 @@ function buildOrderItem(product, amount) {
     var totalProductPrice = roundNumber(productPrice*amount, 2);
     
     orderItem = {
-        'amount':amount,
-        'product':product,
-        'tax_rate':taxRate,
-        'product_price':productPrice,
-        'is_double':isDouble,
-        'is_half':isHalf,
-        'total_price':totalProductPrice,
-        'is_void':false
+        'amount' : amount,
+        'product' : product,
+        'tax_rate' : taxRate,
+        'product_price' : productPrice,
+        'is_double' : isDouble,
+        'is_half' : isHalf,
+        'total_price' : totalProductPrice,
+        'is_void' : false,
+        'is_refund' : isRefund
     }
     
     //fill in the category id of the product

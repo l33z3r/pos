@@ -56,6 +56,11 @@ function doPrintLastReceipt(withVat) {
 }
 
 function promptForServiceCharge() {
+    if(cashScreenRefundMode) {
+        setStatusMessage(serviceChargeLabel + " cannot be applied during a refund!", true, true);
+        return;
+    }
+    
     if(currentOrderEmpty()) {
         setStatusMessage("No order present!", true, true);
         return;
@@ -184,6 +189,11 @@ function setDefaultServiceChargeButtonSelected(popupEl, percentage) {
 }
 
 function promptForCashback() {
+    if(cashScreenRefundMode) {
+        setStatusMessage("Cashback cannot be applied during a refund!", true, true);
+        return;
+    }
+    
     if(currentOrderEmpty()) {
         setStatusMessage("No order present!", true, true);
         return;
@@ -997,4 +1007,8 @@ function showCashOutSubscreen() {
         inCashOutMode = true;
         $('#cash_out_amount').html(currency(0));
     }
+}
+
+function toggleRefundMode() {
+    
 }

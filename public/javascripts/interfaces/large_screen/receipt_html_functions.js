@@ -54,7 +54,9 @@ function getLineItemHTMLForPrintedOrderReceipt(orderItem) {
     
     lineItemHTMLForOrder += "<div class='name'>";
         
-    if(orderItem.is_double) {
+    if(orderItem.is_refund) {
+        lineItemHTMLForOrder += "Refund ";
+    } else if(orderItem.is_double) {
         lineItemHTMLForOrder += "Double ";
     } else if(orderItem.is_half) {
         lineItemHTMLForOrder += halfMeasureLabel + " ";

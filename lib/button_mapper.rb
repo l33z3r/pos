@@ -80,7 +80,7 @@ class ButtonMapper
   
   RESTRICTED_BUTTON_IDS = [
     ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON, STOCK_TAKE_BUTTON,
-    PRINTERS_BUTTON, CHANGE_WAITER_BUTTON, REFUND_BUTTON, WASTE_BUTTON, CLIENT_BUTTON, THEMES_BUTTON
+    PRINTERS_BUTTON, CHANGE_WAITER_BUTTON, WASTE_BUTTON, CLIENT_BUTTON, THEMES_BUTTON
   ]
   
   def action_for_button button
@@ -145,7 +145,7 @@ class ButtonMapper
     when NO_SALE_BUTTON
       @retval = si_check(NO_SALE_BUTTON, ms_check("openCashDrawer();"))
     when REFUND_BUTTON
-      @retval = "alert('refund button clicked');"
+      @retval = si_check(REFUND_BUTTON, "toggleMenuItemRefundMode();")
     when REMOVE_ITEM_BUTTON
       @retval = si_check(REMOVE_ITEM_BUTTON, ms_check("removeLastOrderItem();"))
     when ADD_NOTE_BUTTON

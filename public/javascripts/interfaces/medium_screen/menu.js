@@ -370,16 +370,19 @@ function saveEditOrderItem() {
 
     var courseNum = order.items[itemNumber - 1].product.course_num;
     var is_void = order.items[itemNumber - 1].is_void;
+    var is_void = order.items[itemNumber - 1].is_refund;
+    
     $('.new_price').val(null);
+    
     if (isNaN(newPricePerUnit)) {
         newPricePerUnit = currentPrice;
     }
 
     if (selectedTable != 0) {
-        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum, is_void);
+        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum, is_void, is_refund);
         storeTableOrderInStorage(current_user_id, selectedTable, order);
     } else {
-        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum, is_void);
+        order = modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, courseNum, is_void, is_refund);
         storeOrderInStorage(current_user_id, order);
     }
 
@@ -761,10 +764,10 @@ function applyCourseFromPopup(courseVal) {
     newCourseNum = courseVal;
 
     if (selectedTable != 0) {
-        modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum, item.is_void);
+        modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum, item.is_void, item.is_refund);
         storeTableOrderInStorage(current_user_id, selectedTable, order);
     } else {
-        modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum, item.is_void);
+        modifyOrderItem(order, itemNumber, item.amount, item.product_price, newCourseNum, item.is_void, item.is_refund);
         storeOrderInStorage(current_user_id, order);
     }
 
@@ -845,7 +848,6 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         includeServerAddedText = true;
     }
 
-
     haveDiscount = orderItem.discount_percent && orderItem.discount_percent > 0;
 
     itemPriceWithoutDiscountOrModifier = orderItem.amount * orderItem.product_price;
@@ -878,11 +880,13 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         orderHTML += "<div class='server " + (showAddedLine ? "added_line" : "") + "'>At " + timeAdded + " " + nickname + " added:</div>";
     }
 
-    orderHTML += "<div class='amount'>" + orderItem.amount + "</div>";
+    orderHTML += "<div class='amount' data-is_refund='" + orderItem.is_refund + "'>" + orderItem.amount + "</div>";
 
     orderHTML += "<div class='name' data-course_num='" + orderItem.product.course_num + "'>" + notSyncedMarker + " ";
 
-    if (orderItem.is_double) {
+    if(orderItem.is_refund) {
+        orderHTML += "Refund ";
+    } else if(orderItem.is_double) {
         orderHTML += "Double ";
     } else if (orderItem.is_half) {
         orderHTML += halfMeasureLabel + " ";
@@ -893,11 +897,14 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     orderItemTotalPriceText = number_to_currency(itemPriceWithoutModifier, {
         precision : 2
     });
+    
     orderHTML += "<div class='total' data-per_unit_price='" + orderItem.product_price + "'>" + (orderItem.product.show_price_on_receipt ? orderItemTotalPriceText : "") + "</div>";
+    
     if (orderItem.show_course_label) {
         orderHTML += "<div class='clear'>&nbsp;</div>";
         orderHTML += "<div class='course_label'>Serve As " + courseLabels[parseInt(orderItem.product.course_num)] + "</div>";
     }
+    
     if (orderItem.modifier) {
         orderHTML += "<div class='clear'>&nbsp;</div>";
         orderHTML += "<div class='modifier_name'>" + orderItem.modifier.name + "</div>";
