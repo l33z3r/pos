@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120731101140) do
+ActiveRecord::Schema.define(:version => 20120726143843) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -90,7 +90,6 @@ ActiveRecord::Schema.define(:version => 20120731101140) do
     t.float    "loyalty_level_percent"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "allocation_type"
   end
 
   create_table "customer_transactions", :force => true do |t|
@@ -103,7 +102,6 @@ ActiveRecord::Schema.define(:version => 20120731101140) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "payment_id"
-    t.string   "terminal_id"
   end
 
   create_table "customers", :force => true do |t|
@@ -367,7 +365,6 @@ ActiveRecord::Schema.define(:version => 20120731101140) do
     t.string   "client_name",                                 :default => "",    :null => false
     t.string   "time_started"
     t.boolean  "training_mode_sale",                          :default => false
-    t.integer  "room_id"
   end
 
   add_index "orders", ["employee_id"], :name => "index_orders_on_employee_id"
@@ -400,7 +397,6 @@ ActiveRecord::Schema.define(:version => 20120731101140) do
     t.string   "payment_method"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "terminal_id"
   end
 
   create_table "products", :force => true do |t|
@@ -552,9 +548,9 @@ ActiveRecord::Schema.define(:version => 20120731101140) do
     t.string   "note"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "order_item_id"
     t.integer  "delivery_id"
     t.boolean  "is_return",        :default => false
-    t.integer  "order_item_id"
   end
 
   add_index "stock_transactions", ["employee_id"], :name => "index_stock_transactions_on_employee_id"

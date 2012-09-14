@@ -66,7 +66,7 @@ var categories = new Array();
   categories[<%= c.id %>] = {
     'id':'<%= c.id %>', 'name':'<%= escape_javascript raw(c.name) %>', 
     'printers': "<%= c.printers %>",
-    'blocked_printers' : "<%= c.blocked_printers %>",
+    'blocked_printers' : "<%= c.blocked_printers %>",z
     'kitchen_screens' : "<%=c.kitchen_screens%>",
     'modifier_grid_id' : <%= c.order_item_addition_grid ? c.order_item_addition_grid.id : "null" %>,
     'modifier_grid_id_mandatory' : <%= c.order_item_addition_grid_id_is_mandatory %>, 

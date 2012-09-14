@@ -3,7 +3,7 @@ class AddColumnsToWorkReport < ActiveRecord::Migration
     #need to clear work reports again
     ShiftTimestamp.all.each(&:destroy)
     WorkReport.all.each(&:destroy)
-    
+
     add_column :work_reports, :hourly_rate, :float
     add_column :work_reports, :cost, :float
   end
