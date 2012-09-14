@@ -360,11 +360,6 @@ class CashTotal < ActiveRecord::Base
         @transaction_amount = ct.actual_amount
         @transaction_payment_type = ct.payment.payment_method.downcase
       
-        #if the amount tendered was bigger than the total, we have to subtract from the cash payment for reporting
-        if @transaction_payment_type == PaymentMethod::CASH_PAYMENT_METHOD_NAME and ct.payment.amount_tendered > ct.payment.amount
-          @transaction_amount -= (ct.payment.amount_tendered - ct.payment.amount)
-        end
-          
         @customer_settlements_amount += @transaction_amount
       
         if !@sales_by_payment_type[@transaction_payment_type]
