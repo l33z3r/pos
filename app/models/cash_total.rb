@@ -53,12 +53,13 @@ class CashTotal < ActiveRecord::Base
   RS_CASH_OUT = 11
   RS_ACCOUNT_PAYMENT_BREAKDOWN = 12
   RS_REFUNDS_BY_EMPLOYEE = 13
+  RS_REFUNDS_BY_PRODUCT = 14
   
   REPORT_SECTIONS = [
     RS_SALES_BY_DEPARTMENT, RS_SALES_BY_PAYMENT_TYPE, RS_CASH_SUMMARY, RS_SALES_BY_SERVER, 
     RS_CASH_PAID_OUT, RS_SALES_TAX_SUMMARY, RS_SALES_BY_CATEGORY, RS_SALES_BY_PRODUCT,
     RS_SERVICE_CHARGE_BY_PAYMENT_TYPE, RS_VOIDS_BY_EMPLOYEE, RS_CASH_OUT, 
-    RS_ACCOUNT_PAYMENT_BREAKDOWN, RS_REFUNDS_BY_EMPLOYEE
+    RS_ACCOUNT_PAYMENT_BREAKDOWN, RS_REFUNDS_BY_EMPLOYEE, RS_REFUNDS_BY_PRODUCT
   ]
   
   validates :total_type, :presence => true, :inclusion => { :in => VALID_TOTAL_TYPES }
@@ -98,6 +99,7 @@ class CashTotal < ActiveRecord::Base
     @sales_by_payment_type = {}
     @voids_by_employee = {}
     @refunds_by_employee = {}
+    @refunds_by_product = {}
     @service_charge_by_payment_type = {}
     @cash_summary = {}
     @taxes = {}
@@ -110,6 +112,7 @@ class CashTotal < ActiveRecord::Base
     @cash_back_total = 0
        
     @total_discounts = 0
+    @total_refunds = 0
     @total_covers = 0
     @loyalty_points_redeemed = 0
     
@@ -152,6 +155,8 @@ class CashTotal < ActiveRecord::Base
           #including discounts at both the order level and the order item level
           @order_item_price = order_item.total_price
           
+          @product_name = order_item.product.name
+          
           #take away the whole order discount
           if order.discount_percent and order.discount_percent > 0
             @order_item_price -= ((order.discount_percent * @order_item_price)/100)
@@ -192,12 +197,27 @@ class CashTotal < ActiveRecord::Base
             @product_refunds_quantity = @refunds_by_employee[@server_nickname][:quantity].to_f
             @product_refunds_quantity -= order_item.quantity
             @product_refunds_quantity = sprintf("%g", @product_refunds_quantity)
+            
             @refunds_by_employee[@server_nickname][:quantity] = @product_refunds_quantity
-          
             @refunds_by_employee[@server_nickname][:sales_total] -= @order_item_price
-          end
+            
+            #now do refunds by product
+            #initialise a hash for employee
+            if !@refunds_by_product[@product_name]
+              @refunds_by_product[@product_name] = {
+                :quantity => 0,
+                :sales_total => 0
+              }
+            end
           
-          @product_name = order_item.product.name
+            @refunds_by_product[@product_name][:quantity] = @product_refunds_quantity
+            @refunds_by_product[@product_name][:sales_total] -= @order_item_price
+            
+            @total_refunds += @order_item_price
+            
+            #now continue to next product so this one does not get included in sales totals
+            next
+          end
           
           #sales by product
           if !@sales_by_product[@product_name]
@@ -430,6 +450,10 @@ class CashTotal < ActiveRecord::Base
     @refunds_by_employee = @refunds_by_employee.sort
     @cash_total_data[:refunds_by_employee] = @refunds_by_employee
     
+    #sort refunds_by_product alphabetically
+    @refunds_by_product = @refunds_by_product.sort
+    @cash_total_data[:refunds_by_product] = @refunds_by_product
+    
     @cash_total_data[:sales_by_category] = @sales_by_category
     
     #put the discounts in as the last item in sales by department
@@ -442,6 +466,7 @@ class CashTotal < ActiveRecord::Base
     @cash_total_data[:service_charge_total] = @service_charge_total
     @cash_total_data[:total_with_service_charge] = @service_charge_total + @overall_total
     @cash_total_data[:total_discounts] = @total_discounts
+    @cash_total_data[:total_refunds] = -1 * @total_refunds
     @cash_total_data[:loyalty_redeemed] = @loyalty_points_redeemed
     @cash_total_data[:taxes] = @taxes
     @cash_total_data[:total_covers] = @total_covers
