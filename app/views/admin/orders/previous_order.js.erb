@@ -1,108 +1,135 @@
-<% if !@allowed_reopen %>
-  reOpenOrderHandler = function() {
-            setStatusMessage("You cannot reopen an order that has already been z totaled!");
-        };
+//have to construct a json that is compatible with the js code
+
+previousOrderJSON = <%= raw(@order.to_json) %>.order;
+
+var orderItems = new Array();
+
+<% @order_items.each do |order_item| %>
+  var orderItem = <%= raw(order_item.to_json) %>.order_item;
+  orderItem.product = <%= raw(order_item.product.to_json) %>.product;
+
+  //copy the tax rate from the order item over to the product
+  orderItem.product.tax_rate = orderItem.tax_rate;
+  orderItem.modifier = {'name' : '<%= raw(order_item.modifier_name) %>', 'price' : '<%= raw(order_item.modifier_price) %>'};
+
+  //attach the item number to the order item 
+  //which is its number in the receipt
+  orderItem.itemNumber = orderItems.length + 1;
+
+  //alias some vars for compatibility
+  orderItem.amount = orderItem.quantity;
+
+  //calculate the product price by dividing the total price by quantity, rather than
+  //by the prodcut price now, as it may not be the same, as the price may have been 
+  //different at sale time
+  orderItem.product_price = parseFloat(orderItem.total_price)/parseFloat(orderItem.amount);
+
+  if(orderItem.show_server_added_text != null) {
+  orderItem.showServerAddedText = orderItem.show_server_added_text;
+  } else {
+  delete orderItem['show_server_added_text'];
+  }
+
+  orderItem.serving_employee_id = orderItem.employee_id;
+
+  //delete null values
+  if(orderItem.discount_percent == null) {
+  delete orderItem['discount_percent'];
+  }
+
+  if(orderItem.pre_discount_price == null) {
+  delete orderItem['pre_discount_price'];
+  }
+
+  if(orderItem.modifier_name == null) {
+  delete orderItem['modifier_name'];
+  }
+
+  if(orderItem.modifier_price == null) {
+  delete orderItem['modifier_price'];
+  }
+
+  if(orderItem.oia_data == null) {
+  delete orderItem['oia_data'];
+  }
+
+  orderItems.push(orderItem);
 <% end %>
-        
-  //have to construct a json that is compatible with the js code
 
-  previousOrderJSON = <%= raw(@order.to_json) %>.order;
+//reset the total to be just the sum of all the order items (bar the voided ones), as the discounts and deductions will be worked out based on that
+oldTotal = previousOrderJSON.total;
+subTotal = parseFloat(<%= @order_items.where("is_void = ?", false).sum(:total_price) %>).toFixed(2);
+previousOrderJSON.total = subTotal;
 
-  var orderItems = new Array();
+//cash tendered and change and payment method and service charge
+previousOrderJSON.cash_tendered = previousOrderJSON.amount_tendered;
 
-  <% @order_items.each do |order_item| %>
-    var orderItem = <%= raw(order_item.to_json) %>.order_item;
-    orderItem.product = <%= raw(order_item.product.to_json) %>.product;
+//the change is worked out from the old total which does not include the cashback or service charge
+previousOrderJSON.change = previousOrderJSON.cash_tendered - previousOrderJSON.cashback - previousOrderJSON.service_charge - oldTotal;
 
-    //copy the tax rate from the order item over to the product
-    orderItem.product.tax_rate = orderItem.tax_rate;
-    orderItem.modifier = {'name' : '<%= raw(order_item.modifier_name) %>', 'price' : '<%= raw(order_item.modifier_price) %>'};
+//make sure to only round to two decimal places so we dont get rounding errors
+previousOrderJSON.change = parseFloat(previousOrderJSON.change).toFixed(2);
 
-    //attach the item number to the order item 
-    //which is its number in the receipt
-    orderItem.itemNumber = orderItems.length + 1;
+previousOrderJSON.payment_method = previousOrderJSON.payment_type;
 
-    //alias some vars for compatibility
-    orderItem.amount = orderItem.quantity;
+orderDateString = "<%= @order.created_at %>";
+x = orderDateString.match(/(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}):(\d{2})/);
+previousOrderJSON.time = new Date(x[1],x[2]-1,x[3],x[4],x[5]);
 
-    //calculate the product price by dividing the total price by quantity, rather than
-    //by the prodcut price now, as it may not be the same, as the price may have been 
-    //different at sale time
-    orderItem.product_price = parseFloat(orderItem.total_price)/parseFloat(orderItem.amount);
+//covers 
+previousOrderJSON.covers = previousOrderJSON.num_persons;
 
-    if(orderItem.show_server_added_text != null) {
-    orderItem.showServerAddedText = orderItem.show_server_added_text;
-    } else {
-    delete orderItem['show_server_added_text'];
-    }
+//client name
+previousOrderJSON.client_name = previousOrderJSON.client_name;
 
-    orderItem.serving_employee_id = orderItem.employee_id;
+<% if @order.is_table_order %>
+  previousOrderJSON.table = "<%= @order.table_info_label %>";
+  previousOrderJSON.tableInfoId = <%= @order.table_info_id %>;
+<% end %>
 
-    //delete null values
-    if(orderItem.discount_percent == null) {
-    delete orderItem['discount_percent'];
-    }
+previousOrderJSON.items = orderItems;
 
-    if(orderItem.pre_discount_price == null) {
-    delete orderItem['pre_discount_price'];
-    }
+//store the previous order id for voiding purposes
+previousOrderJSON.void_order_id = <%= @order.id %>;
 
-    if(orderItem.modifier_name == null) {
-    delete orderItem['modifier_name'];
-    }
+//load the void order info
+previousOrderJSON.replacement_for_order_id = <%= @order.void_order ? @order.void_order.order_num : 0 %>;
+previousOrderJSON.replacement_by_order_id = <%= @order.replacement_order ? @order.replacement_order.order_num : 0 %>;
 
-    if(orderItem.modifier_price == null) {
-    delete orderItem['modifier_price'];
-    }
+cashback = parseFloat(previousOrderJSON.cashback);
+serviceCharge = parseFloat(previousOrderJSON.service_charge);
 
-    if(orderItem.oia_data == null) {
-    delete orderItem['oia_data'];
-    }
-
-    orderItems.push(orderItem);
-  <% end %>
-
-  //reset the total to be just the sum of all the order items (bar the voided ones), as the discounts and deductions will be worked out based on that
-  oldTotal = previousOrderJSON.total;
-  subTotal = <%= @order_items.where("is_void = ?", false).sum(:total_price) %>;
-  previousOrderJSON.total = subTotal;
-
-  //cash tendered and change and payment method and service charge
-  previousOrderJSON.cash_tendered = previousOrderJSON.amount_tendered;
-
-  //the change is worked out from the old total which does not include the cashback or service charge
-  previousOrderJSON.change = previousOrderJSON.cash_tendered - previousOrderJSON.cashback - previousOrderJSON.service_charge - oldTotal;
-
-  //make sure to only round to two decimal places so we dont get rounding errors
-  previousOrderJSON.change = parseFloat(previousOrderJSON.change).toFixed(2);
-
-  previousOrderJSON.payment_method = previousOrderJSON.payment_type;
-
-  orderDateString = "<%= @order.created_at %>";
-  x = orderDateString.match(/(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}):(\d{2})/);
-  previousOrderJSON.time = new Date(x[1],x[2]-1,x[3],x[4],x[5]);
-
-  //covers 
-  previousOrderJSON.covers = previousOrderJSON.num_persons;
-
-  //client name
-  previousOrderJSON.client_name = previousOrderJSON.client_name;
-
-  <% if @order.is_table_order %>
-    previousOrderJSON.table = "<%= @order.table_info_label %>";
-    previousOrderJSON.tableInfoId = <%= @order.table_info_id %>;
-  <% end %>
-
-  previousOrderJSON.items = orderItems;
-
-  //store the previous order id for voiding purposes
-  previousOrderJSON.void_order_id = <%= @order.id %>;
-
-  //load the void order info
-  previousOrderJSON.replacement_for_order_id = <%= @order.void_order ? @order.void_order.order_num : 0 %>;
-  previousOrderJSON.replacement_by_order_id = <%= @order.replacement_order ? @order.replacement_order.order_num : 0 %>;
-
-  cashback = parseFloat(previousOrderJSON.cashback);
-  serviceCharge = parseFloat(previousOrderJSON.service_charge);
-
-  parsePreviousOrder(previousOrderJSON);
+<% if !@allow_reopen_after_z %>
+  reOpenOrderHandler = function() {
+  setStatusMessage("You cannot reopen an order that has already been z totaled!");
+  };
+<% elsif !@allow_reopen_refund_order %>
+  reOpenOrderHandler = function() {
+  setStatusMessage("You cannot reopen an order that was a refund!");
+  };
+<% elsif @must_refund_zalion %>
+  //add zalion info to the order
+  var clientTransactionJSON = <%= raw(@order.client_transaction.to_json) %>.client_transaction;
+  
+  previousOrderJSON['charged_room'] = {
+                selected_room_number : clientTransactionJSON.transaction_data.selected_room_number,
+                selected_folio_number : clientTransactionJSON.transaction_data.selected_folio_number,
+                selected_folio_name : clientTransactionJSON.client_name,
+                payment_integration_type_id : clientTransactionJSON.payment_integration_type_id
+            }
+            
+  reOpenOrderHandler = function() {
+    ModalPopups.Confirm('niceAlertContainer',
+        'Re-Open?', "<div id='nice_alert'>This will cause a refund to be posted to zalion, are you sure you want to re-open?</div>",
+        {
+            yesButtonText: 'Yes',
+            noButtonText: 'No',
+            onYes: "hideNiceAlert();postZalionAndReOpenOrder();",
+            onNo: "hideNiceAlert();",
+            width: 400,
+            height: 250
+        } );
+  };
+<% end %>
+  
+parsePreviousOrder(previousOrderJSON);

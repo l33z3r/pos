@@ -40,19 +40,32 @@ class Admin::OrdersController < Admin::AdminController
   def previous_order
     @order = Order.find(params[:id])
     
-    @allowed_reopen = true
-    
     @order_terminal_id = @order.terminal_id
     @order_created_at = @order.created_at
     
     @post_order_z_cash_total = CashTotal.where("total_type = ?", CashTotal::Z_TOTAL).where("terminal_id = ?", @order_terminal_id).where("created_at >= ?", @order_created_at)
     
+    #are we allowed reopen z orders
+    @allow_reopen_after_z = true
+    
     @is_order_pre_z = !@post_order_z_cash_total.empty?
     
     if @is_order_pre_z
       @allow_reopen_after_z = GlobalSetting.parsed_setting_for GlobalSetting::ALLOW_REOPEN_ORDER_AFTER_Z
-      
-      @allowed_reopen = @allow_reopen_after_z
+    end
+    
+    #not allowed reopen refund orders
+    @allow_reopen_refund_order =  true
+    
+    if @order.total < 0
+      @allow_reopen_refund_order = false
+    end
+    
+    #check does this order have to post a refund to zalion
+    @must_refund_zalion = false
+    
+    if @order.client_transaction
+      @must_refund_zalion = true
     end
     
     @order_items = @order.order_items

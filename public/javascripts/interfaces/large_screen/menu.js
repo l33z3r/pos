@@ -1534,7 +1534,7 @@ function orderSentToServerCallback(orderData, errorOccured) {
                 payment_integration_type_id : paymentIntegrationId
             }
         
-            doChargeRoom(orderData);
+            doChargeZalion(orderData);
         }
         
         //first see if its table 0 and send into system orders

@@ -485,7 +485,7 @@ function moneySelected(amount) {
     $('#tendered_value').html(currency(newAmount));
 }
 
-function doChargeRoom(orderData) {
+function doChargeZalion(orderData, callback) {
     if(inTrainingMode) {
         niceAlert("Room will not be charged in training mode");
         return;
@@ -495,34 +495,36 @@ function doChargeRoom(orderData) {
     orderData.datetime = formatDate(new Date(clueyTimestamp()), "dd/MM/yyyy HH:mm:ss");
     orderData.location = business_name;
     
-    if(paymentIntegrationId != 0) {
-        if(paymentIntegrationId == zalionPaymentIntegrationId) {
-            //send request to charge via zalion by firing off request to post to POSTINGS.TXT
-            var zalion_charge_request_url = 'http://' + zalionChargeRoomServiceIP + ':8080/ClueyWebSocketServices/zalion_charge';
+    //send request to charge via zalion by firing off request to post to POSTINGS.TXT
+    var zalion_charge_request_url = 'http://' + zalionChargeRoomServiceIP + ':8080/ClueyWebSocketServices/zalion_charge';
             
-            //we only want to send over the amount that was actually charged to the room, not the entire total
-            orderData.total = parseFloat(splitPayments[currentZalionPaymentMethodName]);
+    //we only want to send over the amount that was actually charged to the room, not the entire total
+    orderData.total = parseFloat(splitPayments[currentZalionPaymentMethodName]);
             
-            //convert json to string
-            var orderDataString = JSON.stringify(orderData);
+    //convert json to string
+    var orderDataString = JSON.stringify(orderData);
     
-            $.ajax({
-                type: 'POST',
-                url: '/forward_zalion_charge_request',
-                error: function() {
-                    setStatusMessage("Error Charging to Zalion", false, false);
-                },
-                success: function() {
-                    setStatusMessage("Room successfully charged.", false, false);                   
-                },
-                data: {
-                    zalion_charge_request_url : zalion_charge_request_url,
-                    order_data_json_string : orderDataString,
-                    order_data : orderData
-                }
-            });
-        }
+    var successCallback = function() {
+        setStatusMessage("Room successfully charged.", false, false);                   
     }
+        
+    if(typeof(callback) != "undefined") {
+        successCallback = callback;
+    }
+    
+    $.ajax({
+        type: 'POST',
+        url: '/forward_zalion_charge_request',
+        error: function() {
+            setStatusMessage("Error Charging to Zalion", false, false);
+        },
+        success: successCallback,
+        data: {
+            zalion_charge_request_url : zalion_charge_request_url,
+            order_data_json_string : orderDataString,
+            order_data : orderData
+        }
+    });
 }
 
 var togglePrintReceiptInProgress = false;

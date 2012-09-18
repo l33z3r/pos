@@ -43,7 +43,13 @@ class Order < ActiveRecord::Base
   has_one :replacement_order, :class_name => "Order", :foreign_key => "void_order_id"
   
   has_one :client_transaction
+  
+  #this transaction is the CHARGE for the order if one present  
   has_one :customer_transaction
+  
+  #this transaction is the refund for this order if one present
+  has_one :refund_customer_transaction, :class_name => "CustomerTransaction", :foreign_key => "refund_order_id"
+  
   has_one :customer_points_allocation
   
   #for will_paginate

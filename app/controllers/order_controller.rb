@@ -193,6 +193,23 @@ class OrderController < ApplicationController
         @order_to_void = Order.find(@order.void_order_id)
         @order_to_void.is_void = true
         @order_to_void.save
+        
+        #do we need to post a refund to zalion
+        
+        
+        
+        #do we need to post a refund to an account
+        if @order_to_void.customer_transaction
+          @customer = @order_to_void.customer_transaction.customer
+        
+          CustomerTransaction.create({:transaction_type => CustomerTransaction::REFUND,
+              :refund_order_id => @order_to_void.id, :customer_id => @customer.id, :terminal_id => @terminal_id,
+              :abs_amount => @order_to_void.total, :actual_amount => @order_to_void.total, :is_credit => true
+            })
+        
+          @customer.current_balance = @customer.current_balance - @order_to_void.total 
+          @customer.save
+        end
       end
 
       @order_saved = @order.save
