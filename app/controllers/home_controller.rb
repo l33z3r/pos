@@ -713,7 +713,7 @@ class HomeController < ApplicationController
     end
     
     #a digest of all the files
-    @files << "\n# Modification Digest: ab#{digest.hexdigest}"
+    @files << "\n# Modification Digest: abcdefghijklm"#{digest.hexdigest}"
     
     #a timestamp that we can update from the app to force a reload
     @modification_timestamp = GlobalSetting.parsed_setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP, current_outlet

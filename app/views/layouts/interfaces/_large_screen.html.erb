@@ -4,64 +4,252 @@
   <head>
     <%= render :partial => "/partials/interfaces/large_screen/common_head" %>
 
-    <script type="text/javascript">
-      var cacheStatusValues = [];
-      cacheStatusValues[0] = 'uncached';
-      cacheStatusValues[1] = 'idle';
-      cacheStatusValues[2] = 'checking';
-      cacheStatusValues[3] = 'downloading';
-      cacheStatusValues[4] = 'updateready';
-      cacheStatusValues[5] = 'obsolete';
-
-      var cache = window.applicationCache;
-      cache.addEventListener('cached', logEvent, false);
-      cache.addEventListener('checking', logEvent, false);
-      cache.addEventListener('downloading', logEvent, false);
-      cache.addEventListener('error', logEvent, false);
-      cache.addEventListener('noupdate', logEvent, false);
-      cache.addEventListener('obsolete', logEvent, false);
-      cache.addEventListener('progress', logEvent, false);
-      cache.addEventListener('updateready', logEvent, false);
-
-      function logEvent(e) {
-        var online, status, type, message;
-        online = (navigator.onLine) ? 'yes' : 'no';
-        status = cacheStatusValues[cache.status];
-        type = e.type;
-        message = 'online: ' + online;
-        message+= ', event: ' + type;
-        message+= ', status: ' + status;
-        if (type == 'error' && navigator.onLine) {
-          message+= ' (probably a syntax error in manifest)';
-        }
-        console.log(message);
-      }
-
-      window.applicationCache.addEventListener(
-      'updateready',
-      function(){
-        window.applicationCache.swapCache();
-        console.log('swap cache has been called');
-      },
-      false
-    );
-    </script>
+    
 
   </head>
   <body>
 
-    <div id="wrapper" class="wrapper large_interface">
-      <div id="body">
-        <div id="content_container">
-          <%= render :partial => "/partials/interfaces/large_screen/nav" %>
+    <p>
+      Application Status: <span id="applicationStatus">Online</span>
+      -
+      <!--- Output the time. --->
+  <cfset writeOutput( timeFormat( now(), "h:mm:ss TT" ) ) />
+</p>
 
-          <%= yield %>
-        </div>
-      </div>
+<p>
+  <a id="manualUpdate" href="#">Check for an updated Cache</a>
+</p>
 
+<p>
+  Progress: <span id="cacheProgress"></span>
+</p>
+
+<ul id="applicationEvents">
+  <!-- This will be populated dynamically. -->
+</ul>
+
+<!-- When the DOM is ready (ie. Now), run the scripts. -->
+    <script type="text/javascript">
+ 
+      // Get the DOM references we'll need to play with.
+      var appStatus = $( "#applicationStatus" );
+      var appEvents = $( "#applicationEvents" );
+      var manualUpdate = $( "#manualUpdate" );
+      var cacheProgress = $( "#cacheProgress" );
+ 
+      // Get a short-hand for our application cache object.
+      var appCache = window.applicationCache;
+ 
+      // Create a cache properties object to help us keep track of
+      // the progress of the caching.
+      var cacheProperties = {
+        filesDownloaded: 0,
+        totalFiles: 0
+      };
+ 
+ 
+      // I log an event to the event list.
+      function logEvent( event ){
+        
+      }
+ 
+ 
+      // I get the total number of files in the cache manifest.
+      // I do this by manually parsing the manifest file.
+      function getTotalFiles(){
+        // First, reset the total file count and download count.
+        cacheProperties.filesDownloaded = 0;
+        cacheProperties.totalFiles = 0;
+ 
+        // Now, grab the cache manifest file.
+        $.ajax({
+          type: "get",
+          url: "./cache_manifest",
+          dataType: "text",
+          cache: false,
+          success: function( content ){
+            // Strip out the non-cache sections.
+            // NOTE: The line break here is only to prevent
+            // wrapping in the BLOG.
+            content = content.replace(
+            new RegExp(
+            "(NETWORK|FALLBACK):" +
+              "((?!(NETWORK|FALLBACK|CACHE):)[\\w\\W]*)",
+            "gi"
+          ),
+            ""
+          );
+ 
+            // Strip out all comments.
+            content = content.replace(
+            new RegExp( "#[^\\r\\n]*(\\r\\n?|\\n)", "g" ),
+            ""
+          );
+ 
+            // Strip out the cache manifest header and
+            // trailing slashes.
+            content = content.replace(
+            new RegExp( "CACHE MANIFEST\\s*|\\s*$", "g" ),
+            ""
+          );
+ 
+            // Strip out extra line breaks and replace with
+            // a hash sign that we can break on.
+            content = content.replace(
+            new RegExp( "[\\r\\n]+", "g" ),
+            "#"
+          );
+ 
+            // Get the total number of files.
+            var totalFiles = content.split( "#" ).length;
+ 
+            // Store the total number of files. Here, we are
+            // adding one for *THIS* file, which is cached
+            // implicitly as it points to the manifest.
+            cacheProperties.totalFiles = (totalFiles + 1);
+          }
+        });
+      }
+ 
+ 
+      // I display the download progress.
+      function displayProgress(){
+        // Increment the running total.
+        cacheProperties.filesDownloaded++;
+ 
+        // Check to see if we have a total number of files.
+        if (cacheProperties.totalFiles){
+ 
+        var percentComplete = Math.round(((cacheProperties.filesDownloaded * 100.0)/cacheProperties.totalFiles));
+        
+          // We have the total number of files, so output the
+          // running total as a function of the known total.
+          cacheProgress.text(percentComplete + "%");
+ 
+        }
+      }
+ 
+ 
+      // Bind the manual update link.
+      manualUpdate.click(
+      function( event ){
+        // Prevent the default event.
+        event.preventDefault();
+ 
+        // Manually ask the cache to update.
+        appCache.update();
+      }
+    );
+ 
+ 
+      // Bind to online/offline events.
+      $( window ).bind(
+      "online offline",
+      function( event ){
+        // Update the online status.
+        appStatus.text( navigator.onLine ? "Online" : "Offline" );
+      }
+    );
+ 
+      // Set the initial status of the application.
+      appStatus.text( navigator.onLine ? "Online" : "Offline" );
+ 
+ 
+      // List for checking events. This gets fired when the browser
+      // is checking for an udpated manifest file or is attempting
+      // to download it for the first time.
+      $( appCache ).bind(
+      "checking",
+      function( event ){
+        logEvent( "Checking for manifest" );
+      }
+    );
+ 
+      // This gets fired if there is no update to the manifest file
+      // that has just been checked.
+      $( appCache ).bind(
+      "noupdate",
+      function( event ){
+        logEvent( "No cache updates" );
+      }
+    );
+ 
+      // This gets fired when the browser is downloading the files
+      // defined in the cache manifest.
+      $( appCache ).bind(
+      "downloading",
+      function( event ){
+        logEvent( "Downloading cache" );
+ 
+        // Get the total number of files in our manifest.
+        getTotalFiles();
+      }
+    );
+ 
+      // This gets fired for every file that is downloaded by the
+      // cache update.
+      $( appCache ).bind(
+      "progress",
+      function( event ){
+        //logEvent( "File downloaded" );
+ 
+        // Show the download progress.
+        displayProgress();
+      }
+    );
+ 
+      // This gets fired when all cached files have been
+      // downloaded and are available to the application cache.
+      $( appCache ).bind(
+      "cached",
+      function( event ){
+        logEvent( "All files downloaded" );
+      }
+    );
+ 
+      // This gets fired when new cache files have been downloaded
+      // and are ready to replace the *existing* cache. The old
+      // cache will need to be swapped out.
+      $( appCache ).bind(
+      "updateready",
+      function( event ){
+        logEvent( "New cache available" );
+ 
+        // Swap out the old cache.
+        appCache.swapCache();
+      }
+    );
+ 
+      // This gets fired when the cache manifest cannot be found.
+      $( appCache ).bind(
+      "obsolete",
+      function( event ){
+        logEvent( "Manifest cannot be found" );
+      }
+    );
+ 
+      // This gets fired when an error occurs
+      $( appCache ).bind(
+      "error",
+      function( event ){
+        logEvent( "An error occurred" );
+      }
+    );
+ 
+    </script>
+    
+<div id="wrapper" class="wrapper large_interface">
+  <div id="body">
+    <div id="content_container">
+      <%= render :partial => "/partials/interfaces/large_screen/nav" %>
+
+      <%= yield %>
     </div>
+  </div>
 
-    <%= render :partial => "/partials/interfaces/large_screen/common_footer" %>
+</div>
 
-  </body>
+<%= render :partial => "/partials/interfaces/large_screen/common_footer" %>
+
+</body>
 </html>
