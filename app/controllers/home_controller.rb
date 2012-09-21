@@ -654,6 +654,8 @@ class HomeController < ApplicationController
 
     @all_images = Dir.glob("#{Rails.root}/public/images/**/*") | Dir.glob("#{Rails.root}/public/system/**/*")
     
+    @all_images.sort!
+    
     @all_images.each do |rb_file|
       next if !rb_file.match /\.png$/ and !rb_file.match /\.jpg$/ and !rb_file.match /\.gif$/
       
@@ -668,6 +670,8 @@ class HomeController < ApplicationController
     end
     
     @all_scripts = Dir.glob("#{Rails.root}/public/javascripts/**/*")
+    
+    @all_scripts.sort!
     
     @all_scripts.each do |rb_file|
       next if !rb_file.match /\.js$/
@@ -689,6 +693,8 @@ class HomeController < ApplicationController
     @files << "/javascripts/sales_resources.js"
     
     @all_stylesheets = Dir.glob("#{Rails.root}/public/stylesheets/**/*")
+    
+    @all_stylesheets.sort!
     
     @all_stylesheets.each do |rb_file|
       next if !rb_file.match /\.css$/
@@ -713,7 +719,7 @@ class HomeController < ApplicationController
     end
     
     #a digest of all the files
-    @files << "\n# Modification Digest: abcdefghijklm"#{digest.hexdigest}"
+    @files << "\n# Modification Digest: abcdefghijklmn"#{digest.hexdigest}"
     
     #a timestamp that we can update from the app to force a reload
     @modification_timestamp = GlobalSetting.parsed_setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP, current_outlet
