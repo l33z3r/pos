@@ -47,5 +47,5 @@ Pos::Application.configure do
   config.active_support.deprecation = :notify
   
   #enable this for html5 caching
-  #ENV["RAILS_ASSET_ID"] = ""
+  ENV["RAILS_ASSET_ID"] = ""
 end

@@ -685,6 +685,8 @@ class HomeController < ApplicationController
     @files << "/javascripts/tables.js"
     @files << "/javascripts/employees.js"
     @files << "/javascripts/products.js"
+    @files << "/javascripts/customers.js"
+    @files << "/javascripts/sales_resources.js"
     
     @all_stylesheets = Dir.glob("#{Rails.root}/public/stylesheets/**/*")
     
@@ -711,7 +713,7 @@ class HomeController < ApplicationController
     end
     
     #a digest of all the files
-    @files << "\n# Modification Digest: #{digest.hexdigest}"
+    @files << "\n# Modification Digest: ab#{digest.hexdigest}"
     
     #a timestamp that we can update from the app to force a reload
     @modification_timestamp = GlobalSetting.parsed_setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP, current_outlet

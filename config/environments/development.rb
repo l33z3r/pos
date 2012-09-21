@@ -32,6 +32,6 @@ Pos::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
   
   #enable this for html5 caching
-  #ENV["RAILS_ASSET_ID"] = ""
+  ENV["RAILS_ASSET_ID"] = ""
 end
 
