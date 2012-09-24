@@ -936,6 +936,27 @@ function writeLastReloadTimeCookie() {
     setRawCookie(lastReloadCookieName, lastInterfaceReloadTime, interfaceReloadTimeCookeExpDays);
 }
 
+function alertCacheReloadRequest() {
+    //hide any previous popups
+    hideNiceAlert();
+    
+    var timeoutSeconds = 5;
+    
+    var message = "Settings have been changed. Screen will reload in " + timeoutSeconds + " seconds.";
+    var okFuncCall = "doReload(false);";
+    
+    ModalPopups.Alert('niceAlertContainer',
+        "Please Reload Screen", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
+        {
+            width: 360,
+            height: 280,
+            okButtonText: 'Reload Now',
+            onOk: okFuncCall
+        });
+        
+    setTimeout(okFuncCall, timeoutSeconds * 1000);
+}
+
 function getURLHashParams() {
     var hashParams = {};
     
