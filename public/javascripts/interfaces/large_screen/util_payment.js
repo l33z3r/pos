@@ -9,6 +9,11 @@ function makeCustomerPayment(customerId) {
         return;
     }
     
+    if(cacheDownloading) {
+        cacheDownloadingPopup();
+        return;
+    }
+    
     var customer = creditCustomers[customerId];
     
     if(!customer) {

@@ -175,7 +175,7 @@ function doGlobalInit() {
     
     initTrainingModeFromCookie();        
 
-//enable this for html5 cache flushing
+    //enable this for html5 cache flushing
     if(inProdMode()) {
         //start checking for cache updates
         cacheUpdateCheckPoll();

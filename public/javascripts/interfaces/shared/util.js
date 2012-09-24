@@ -4,6 +4,7 @@ var clear30HTML = "<div class='clear_top_margin_30'>&nbsp;</div>";
 var clear10BottomBorderHTML = "<div class='clear_top_margin_10_bottom_border'>&nbsp;</div>";
 
 var appOnline = true;
+var cacheDownloading = false;
 
 var activeTableIDSStorageKey = "active_table_ids";
 var breakUserIDSSStorageKey = "break_user_ids";
@@ -19,6 +20,11 @@ function goTo(place) {
     //only allow if not offline
     if(!appOnline) {
         appOfflinePopup();
+        return false;
+    }
+    
+    if(cacheDownloading) {
+        cacheDownloadingPopup();
         return false;
     }
     
@@ -942,7 +948,7 @@ function alertCacheReloadRequest() {
     
     var timeoutSeconds = 5;
     
-    var message = "Settings have been changed. Screen will reload in " + timeoutSeconds + " seconds.";
+    var message = "Cache download complete. App will reload in " + timeoutSeconds + " seconds.";
     var okFuncCall = "doReload(false);";
     
     ModalPopups.Alert('niceAlertContainer',
@@ -1058,6 +1064,10 @@ function setConnectionStatus(connected) {
 
 function appOfflinePopup() {
     niceAlert("Server cannot be contacted. App will operate in restricted mode. Some features may not be available.");
+}
+
+function cacheDownloadingPopup() {
+    niceAlert("The cache is downloading. App will operate in restricted mode. Some features may not be available.");
 }
 
 //function to force a button to be clicked that works with both advanced touch and non

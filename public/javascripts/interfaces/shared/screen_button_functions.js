@@ -40,8 +40,12 @@ function orderButtonPressed() {
 }
 
 function doSyncTableOrder() {
+    if(cacheDownloading) {
+        cacheDownloadingPopup();
+        return;
+    }
+    
     if (!appOnline) {
-        
         
         if(inLargeInterface()) {
             //just try print the items even if offline, this is a bit of a hack

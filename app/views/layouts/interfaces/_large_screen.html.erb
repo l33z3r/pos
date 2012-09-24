@@ -145,6 +145,7 @@
         console.log( "Downloading cache" );
         
         //show on interface that cache is stale and download is happening
+        cacheDownloading = true;
         $('nav#main_nav').addClass("cache_update");
         $('#cache_status').show();
         

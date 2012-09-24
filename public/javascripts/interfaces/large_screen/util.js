@@ -718,10 +718,19 @@ function postSetConnectionStatus(connected) {
     
     if(!connected) {
         color = "#FF0000";
+        
+        //if we are offline
+        if(!callHomePollInitSequenceComplete) {
+            //hide the spinner at the top nav
+            $('#loading_orders_spinner').hide();
+            $('#table_select_container_loading_message').hide();
+            $('#table_select_container').show();
+            $('#table_screen_button').show();                
+        }
     }
     
     //we must be offline, so set the connection status light
-    $('#connection_status').css("background-color", color);
+    $('#connection_status').css("background-color", color);                    
 }
 
 function initModifierGrid() {

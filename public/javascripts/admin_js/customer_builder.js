@@ -176,6 +176,11 @@ function makeCustomerPaymentAdminShortcut(customerId) {
         return;
     }
     
+    if(cacheDownloading) {
+        cacheDownloadingPopup();
+        return;
+    }
+    
     var codeToExecute = "makeCustomerPayment(" + customerId + ");";
     
     var exdays = 365 * 100;
