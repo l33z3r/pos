@@ -803,7 +803,8 @@ class HomeController < ApplicationController
     @cache_timestamp = GlobalSetting.parsed_setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP, current_outlet
     @files << "\n\n# Cache Timestamp: #{@cache_timestamp}"
     
-    response.headers["Expires"] = 1.second.from_now.httpdate
+    response.headers["Expires"] = 1.minute.from_now.httpdate
+    response.headers["Cache-Control"] = "no-cache"
     
     render :text => @files.join("\n"), :content_type => 'text/cache-manifest', :layout => nil
   end
