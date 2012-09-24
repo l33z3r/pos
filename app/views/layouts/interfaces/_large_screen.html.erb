@@ -213,10 +213,11 @@
       $( appCache ).bind(
       "updateready",
       function( event ){
-        logEvent( "New cache available" );
+        console.log( "New cache available" );
  
         // Swap out the old cache.
         appCache.swapCache();
+        doReload();
       }
     );
  

@@ -6,8 +6,6 @@ class ApplicationController < AppBaseController
   
   before_filter :check_reset_session
   
-  before_filter :check_reset_cache_timestamp
-  
   helper_method :e, :is_cluey_user?, :cluey_pw_used?, :current_employee, :print_money, :print_credit_balance
   helper_method :mobile_device?, :all_terminals, :all_printers, :all_servers, :current_interface
   helper_method :development_mode?, :production_mode?, :server_ip, :now_millis
@@ -553,12 +551,6 @@ class ApplicationController < AppBaseController
   #      @auth_ok
   #    end
   #  end
-  
-  def check_reset_cache_timestamp
-    if params[:reset_cache]
-      update_html5_cache_timestamp
-    end
-  end
   
   ###
   ### CODE TO GET SERVER IP

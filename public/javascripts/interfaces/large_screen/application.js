@@ -176,10 +176,10 @@ function doGlobalInit() {
     initTrainingModeFromCookie();        
 
 //enable this for html5 cache flushing
-//    if(inProdMode()) {
-//        //start checking for cache updates
-//        cacheUpdateCheckPoll();
-//    }
+    if(inProdMode()) {
+        //start checking for cache updates
+        cacheUpdateCheckPoll();
+    }
 }
 
 function showInitialScreen() {
