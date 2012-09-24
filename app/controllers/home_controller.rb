@@ -804,7 +804,7 @@ class HomeController < ApplicationController
     @files << "\n\n# Cache Timestamp: #{@cache_timestamp}"
     
     response.headers["Expires"] = 1.minute.from_now.httpdate
-    response.headers["Cache-Control"] = "no-cache"
+    response.headers["Cache-Control"] = "no-cache, private"
     
     render :text => @files.join("\n"), :content_type => 'text/cache-manifest', :layout => nil
   end
