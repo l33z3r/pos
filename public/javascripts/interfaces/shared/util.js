@@ -639,7 +639,7 @@ function inDevMode() {
 }
 
 function inProdMode() {
-    return railsEnvironment == 'production' || railsEnvironment == 'production_heroku';
+    return railsEnvironment != 'development';
 }
 
 function inKioskMode() {
