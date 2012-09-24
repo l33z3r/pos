@@ -435,12 +435,14 @@ function initAdminTables() {
 }
 
 function cacheUpdateCheckPoll() {
-    console.log("Checking for cache update");
+    if(!cacheDownloading) {
+        console.log("Checking for cache update");
 
-    try {
-        window.applicationCache.update();
-    } catch(e) {
-        console.log("Error");
+        try {
+            window.applicationCache.update();
+        } catch(e) {
+            console.log("Error");
+        }
     }
 
     setTimeout(cacheUpdateCheckPoll, 5000);
