@@ -652,7 +652,7 @@ class HomeController < ApplicationController
   def cache_manifest
     @files = ["CACHE MANIFEST\n"]
 
-    @all_images = Dir.glob("#{Rails.root}/public/images/**/*") | Dir.glob("#{Rails.root}/public/system/**/*")
+    @all_images = Dir.glob("#{Rails.root}/public/images/**/*")
     
     @all_images.sort!
     
@@ -669,7 +669,95 @@ class HomeController < ApplicationController
       
     end
     
-    @all_scripts = Dir.glob("#{Rails.root}/public/javascripts/**/*")
+    
+    
+    
+    
+    
+    #now, load images relating to a particular outlet products
+    @outlet_product_images = []
+    
+    current_outlet.products.all.each do |product|
+      if product.has_product_image?
+        @outlet_product_images << product.product_image.url(:thumb, false)
+      elsif product.display_image and !product.display_image.blank?
+        @outlet_product_images << "/images/product_images/#{product.display_image}"
+      end
+    end
+    
+    @outlet_product_images.sort!
+    
+    @outlet_product_images.each do |rb_file|
+      next if !rb_file.match /\.png$/ and !rb_file.match /\.jpg$/ and !rb_file.match /\.gif$/
+      
+      #escape whitespace
+      if rb_file.match /\s+/ 
+        rb_file.gsub!(" ", "%20")
+        rb_file
+      end
+      
+      @files << "#{rb_file}"
+      
+    end
+    
+    
+    
+    #now, load images relating to a particular outlet employees
+    @outlet_employee_images = []
+    
+    current_outlet.employees.all.each do |employee|
+      if Employee.is_cluey_user?(employee.id)
+        @outlet_employee_images << "/images/cluey_user_image.jpg"
+      elsif employee.has_employee_image?
+        @outlet_employee_images << employee.employee_image.url(:thumb)
+      end
+    end
+    
+    @outlet_employee_images.sort!
+    
+    @outlet_employee_images.each do |rb_file|
+      next if !rb_file.match /\.png$/ and !rb_file.match /\.jpg$/ and !rb_file.match /\.gif$/
+      
+      #escape whitespace
+      if rb_file.match /\s+/ 
+        rb_file.gsub!(" ", "%20")
+        rb_file
+      end
+      
+      @files << "#{rb_file}"
+      
+    end
+    
+    
+    
+    #now, load images relating to a particular outlet payment methods
+    @outlet_payment_method_images = []
+    
+    current_outlet.payment_methods.all.each do |payment_method|
+      if payment_method.has_logo?
+        @outlet_payment_method_images << payment_method.logo.url(:thumb)
+      end
+    end
+    
+    @outlet_payment_method_images.sort!
+    
+    @outlet_payment_method_images.each do |rb_file|
+      next if !rb_file.match /\.png$/ and !rb_file.match /\.jpg$/ and !rb_file.match /\.gif$/
+      
+      #escape whitespace
+      if rb_file.match /\s+/ 
+        rb_file.gsub!(" ", "%20")
+        rb_file
+      end
+      
+      @files << "#{rb_file}"
+      
+    end
+    
+    
+    
+    
+    @all_scripts = Dir.glob("#{Rails.root}/public/javascripts/cache/**/*")
     
     @all_scripts.sort!
     
@@ -692,7 +780,7 @@ class HomeController < ApplicationController
     @files << "/javascripts/customers.js"
     @files << "/javascripts/sales_resources.js"
     
-    @all_stylesheets = Dir.glob("#{Rails.root}/public/stylesheets/**/*")
+    @all_stylesheets = Dir.glob("#{Rails.root}/public/stylesheets/cache/**/*")
     
     @all_stylesheets.sort!
     
@@ -712,18 +800,9 @@ class HomeController < ApplicationController
     @files << "\nNETWORK:"
     @files << '*'
     
-    digest = Digest::SHA1.new
-    @files.each do |f|
-      actual_file = File.join(Rails.root,'public',f)
-      digest << "##{File.mtime(actual_file)}" if File.exist?(actual_file)
-    end
-    
-    #a digest of all the files
-    @files << "\n# Modification Digest: abcdefghijklmn"#{digest.hexdigest}"
-    
     #a timestamp that we can update from the app to force a reload
-    @modification_timestamp = GlobalSetting.parsed_setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP, current_outlet
-    @files << "\n# Modification Timestamp: #{@modification_timestamp}"
+    @cache_timestamp = GlobalSetting.parsed_setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP, current_outlet
+    @files << "\n\n# Cache Timestamp: #{@cache_timestamp}"
     
     render :text => @files.join("\n"), :content_type => 'text/cache-manifest', :layout => nil
   end

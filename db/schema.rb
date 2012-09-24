@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120906085934) do
+ActiveRecord::Schema.define(:version => 20120924104716) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -242,8 +242,8 @@ ActiveRecord::Schema.define(:version => 20120906085934) do
     t.string   "passcode"
     t.string   "address"
     t.string   "telephone"
-    t.float    "hourly_rate"
-    t.float    "overtime_rate"
+    t.float    "hourly_rate",                 :default => 0.0,                   :null => false
+    t.float    "overtime_rate",               :default => 0.0,                   :null => false
     t.datetime "last_login",                  :default => '2012-01-07 09:28:01'
     t.datetime "last_active",                 :default => '2012-01-07 09:28:01'
     t.datetime "last_logout",                 :default => '2012-01-07 09:28:01'
