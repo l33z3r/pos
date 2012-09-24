@@ -68,7 +68,10 @@ class ApplicationController < AppBaseController
   end
   
   def request_reload_app terminal_id
-    TerminalSyncData.request_reload_app terminal_id, current_outlet
+    @timestamp_setting = GlobalSetting.setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP, current_outlet
+    @timestamp_setting.value = now_millis
+    @timestamp_setting.save
+    #TerminalSyncData.request_reload_app terminal_id, current_outlet
   end
   
   def fetch_sync_table_order time
@@ -555,12 +558,6 @@ class ApplicationController < AppBaseController
     if params[:reset_cache]
       update_html5_cache_timestamp
     end
-  end
-  
-  def update_html5_cache_timestamp 
-    @timestamp_setting = GlobalSetting.setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP, current_outlet
-    @timestamp_setting.value = now_millis
-    @timestamp_setting.save
   end
   
   ###
