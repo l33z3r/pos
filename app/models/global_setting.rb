@@ -764,7 +764,8 @@ class GlobalSetting < ActiveRecord::Base
   
   def self.next_order_number
     GlobalSetting.transaction do
-      @gs = find_or_create_by_key(:key => LAST_ORDER_ID.to_s, :value => 0, :label_text => LABEL_MAP[LAST_ORDER_ID], :lock => true)
+      @gs = find_or_create_by_key(:key => LAST_ORDER_ID.to_s, :value => 0, :label_text => LABEL_MAP[LAST_ORDER_ID])
+      @gs.lock!
       @gs.save!
     
       @gs.reload
