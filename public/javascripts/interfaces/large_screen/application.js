@@ -440,6 +440,7 @@ function cacheUpdateCheckPoll() {
     try {
         window.applicationCache.update();
     } catch(e) {
+        console.log("Error");
     }
 
     setTimeout(cacheUpdateCheckPoll, 5000);
