@@ -657,6 +657,9 @@ class HomeController < ApplicationController
     @all_images.sort!
     
     @all_images.each do |rb_file|
+      #ignore the product images dir as they are dealt with below
+      next if rb_file.match(/\/images\/product_images\//)
+      
       next if !rb_file.match /\.png$/ and !rb_file.match /\.jpg$/ and !rb_file.match /\.gif$/
       
       #escape whitespace
@@ -670,14 +673,10 @@ class HomeController < ApplicationController
     end
     
     
-    
-    
-    
-    
     #now, load images relating to a particular outlet products
     @outlet_product_images = []
     
-    current_outlet.products.all.each do |product|
+    Product.non_deleted(current_outlet).all.each do |product|
       if product.has_product_image?
         @outlet_product_images << product.product_image.url(:thumb, false)
       elsif product.display_image and !product.display_image.blank?
