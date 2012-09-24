@@ -390,7 +390,7 @@ class HomeController < ApplicationController
     @employee_id = params[:employee_id]
     @employee = current_outlet.employees.find(@employee_id)
     
-    @employee.last_logout = Time.now
+    @employee.last_login = Time.now
     
     update_last_active @employee
 
