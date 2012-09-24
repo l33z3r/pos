@@ -463,7 +463,7 @@ nav#main_nav {
     font-weight: bold;
     background-color: black;
     background: -moz-linear-gradient(#737373, #000000) repeat scroll 0 0 transparent;
-    background: -webkit-gradient(linear, left top, left bottom, from(#737373), to(#000));
+    background: -webkit-gradient(linear, left top, left bottom, from(#737373), to(#000000));
     text-align: left;
     padding: 4px;
     margin-bottom: 2px;
@@ -472,7 +472,13 @@ nav#main_nav {
 nav#main_nav.training_mode {
     background-color: #E36C0A;
     background: -moz-linear-gradient(#E36C0A, #000000) repeat scroll 0 0 transparent;
-    background: -webkit-gradient(linear, left top, left bottom, from(#E36C0A), to(#000));
+    background: -webkit-gradient(linear, left top, left bottom, from(#E36C0A), to(#000000));
+}
+
+nav#main_nav.cache_update {
+    background-color: #4297D7;
+    background: -moz-linear-gradient(#4297D7, #000000) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#4297D7), to(#000000));
 }
 
 nav#main_nav div#nav_back_link,
@@ -481,6 +487,7 @@ nav#main_nav div#business_name,
 nav#main_nav div#e_name,
 nav#main_nav div#terminal_id,
 nav#main_nav div#clock,
+nav#main_nav div#cache_status,
 nav#main_nav div#date,
 nav#main_nav div#nav_title,
 nav#main_nav div#loading_orders_spinner {
