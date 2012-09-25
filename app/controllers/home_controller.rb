@@ -802,7 +802,7 @@ class HomeController < ApplicationController
     end
 
     @files << "\nNETWORK:"
-    @files << '*'
+    @files << "*\n\n"
     
     response.headers["Expires"] = "access plus 0 seconds"
     response.headers["Cache-Control"] = "no-cache, private"

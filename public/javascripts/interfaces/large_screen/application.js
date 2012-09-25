@@ -178,7 +178,7 @@ function doGlobalInit() {
     //enable this for html5 cache flushing
     if(inProdMode()) {
         //start checking for cache updates
-        cacheUpdateCheckPoll();
+        //cacheUpdateCheckPoll();
     }
 }
 
