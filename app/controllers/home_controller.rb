@@ -650,8 +650,13 @@ class HomeController < ApplicationController
   # when one of the listed files change...
   # So the client knows when to refresh its cache.
   def cache_manifest
-    @files = ["CACHE MANIFEST\n"]
+    @files = ["CACHE MANIFEST\n\n"]
 
+    #a timestamp that we can update from the app to force a reload
+    @cache_timestamp = GlobalSetting.parsed_setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP, current_outlet
+    @files << "\n\n# Cache Timestamp: #{@cache_timestamp}\n\n"
+    
+   
     @all_images = Dir.glob("#{Rails.root}/public/images/**/*")
     
     @all_images.sort!
@@ -799,11 +804,7 @@ class HomeController < ApplicationController
     @files << "\nNETWORK:"
     @files << '*'
     
-    #a timestamp that we can update from the app to force a reload
-    @cache_timestamp = GlobalSetting.parsed_setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP, current_outlet
-    @files << "\n\n# Cache Timestamp: #{@cache_timestamp}"
-    
-    response.headers["Expires"] = 1.minute.from_now.httpdate
+    response.headers["Expires"] = "access plus 0 seconds"
     response.headers["Cache-Control"] = "no-cache, private"
     
     render :text => @files.join("\n"), :content_type => 'text/cache-manifest', :layout => nil
