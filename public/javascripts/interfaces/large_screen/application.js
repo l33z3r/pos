@@ -437,15 +437,11 @@ function initAdminTables() {
 function cacheUpdateCheckPoll() {
     if(!cacheDownloading) {
         console.log("Checking for cache update");
-
-        try {
-            window.applicationCache.update();
-        } catch(e) {
-            console.log("Error");
-        }
+       
+        window.applicationCache.update();
     }
 
-    setTimeout(cacheUpdateCheckPoll, 5000);
+    setTimeout(cacheUpdateCheckPoll, 10000);
 }
 
 function doScheduledTasks() {
