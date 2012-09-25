@@ -171,6 +171,12 @@
       "cached",
       function( event ){
         console.log( "All files downloaded" );
+        
+        //this is the first dl of the cache so we must do some things
+        cacheDownloading = false;
+        $('nav#main_nav').removeClass("cache_update");
+        $('#cache_status').text("");
+        $('#cache_status').hide();
       }
     );
  
