@@ -804,7 +804,7 @@ class HomeController < ApplicationController
     @files << "\nNETWORK:"
     @files << "*\n\n"
     
-    response.headers["Expires"] = "access plus 10 seconds"
+    response.headers["Expires"] = "access plus 30 seconds"
     response.headers["Cache-Control"] = "no-cache, private"
     
     render :text => @files.join("\n"), :content_type => 'text/cache-manifest', :layout => nil

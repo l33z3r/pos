@@ -834,7 +834,7 @@ function checkForFirefox() {
     
         
         
-        alert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software!");
+        niceAlert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software!");
         return false;
     }
     

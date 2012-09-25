@@ -178,7 +178,7 @@ function doGlobalInit() {
     //enable this for html5 cache flushing
     if(inProdMode()) {
         //start checking for cache updates
-        //cacheUpdateCheckPoll();
+        cacheUpdateCheckPoll();
     }
 }
 
@@ -441,7 +441,7 @@ function cacheUpdateCheckPoll() {
         window.applicationCache.update();
     }
 
-    setTimeout(cacheUpdateCheckPoll, 10000);
+    setTimeout(cacheUpdateCheckPoll, 120000);
 }
 
 function doScheduledTasks() {
