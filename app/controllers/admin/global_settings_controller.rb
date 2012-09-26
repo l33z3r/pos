@@ -22,9 +22,6 @@ class Admin::GlobalSettingsController < Admin::AdminController
       @service_charge_button = current_outlet.display_buttons.find_by_perm_id(ButtonMapper::SERVICE_CHARGE_BUTTON)
       @service_charge_button.button_text = GlobalSetting.parsed_setting_for GlobalSetting::SERVICE_CHARGE_LABEL, current_outlet
       @service_charge_button.save
-    
-      #send a reload request to other terminals
-      request_reload_app @terminal_id
       
       #this action is also used in the medium interface, so we have to conditionally redirect
       #what is the entry point for each interface?

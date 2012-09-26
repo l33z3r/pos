@@ -59,8 +59,6 @@ class DeliveryController < ApplicationController
       end
     
       if @success
-        #send a reload request to other terminals
-        request_reload_app @terminal_id
       
         render :json => {:success => true}.to_json
       else

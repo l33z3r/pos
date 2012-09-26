@@ -95,3 +95,15 @@ function doScheduledTasks() {
     //this is called on at regular intervals
     pingHome();
 }
+
+function cacheDownloadReset() {
+    $('body').removeClass("cache_update");
+    $('#cache_status').text("");
+    $('#cache_status').hide();
+}
+
+function cacheDownloadStarted() {
+    $('body').addClass("cache_update");
+    $('#cache_status').show();
+    $('#cache_status').text("Cache DL: 0%");
+}

@@ -79,14 +79,11 @@ function getLastReceiptItem() {
 }
 
 function postSetConnectionStatus(connected) {
-    var color = "#E0E0E0";
-    
     if(!connected) {
-        color = "#FF0000";
+        $('body').addClass("disconnected");
+    } else {
+        $('body').removeClass("connected");
     }
-    
-    //we must be offline, so set the connection status light
-    $('body').css("background-color", color);
 }
 
 function kickMenuScrollers() {

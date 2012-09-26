@@ -47,6 +47,12 @@ $(function() {
     
     //make sure all links only work when app online.
     $('a').live("click", preventOfflineHref);
+
+    //enable this for html5 cache flushing
+    if(true) {//inProdMode()) {
+        //start checking for cache updates
+        startCacheUpdateCheckPoll();
+    }
 });
     
 function callHomePoll() {

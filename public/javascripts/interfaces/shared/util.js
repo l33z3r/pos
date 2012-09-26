@@ -4,7 +4,6 @@ var clear30HTML = "<div class='clear_top_margin_30'>&nbsp;</div>";
 var clear10BottomBorderHTML = "<div class='clear_top_margin_10_bottom_border'>&nbsp;</div>";
 
 var appOnline = true;
-var cacheDownloading = false;
 
 var activeTableIDSStorageKey = "active_table_ids";
 var breakUserIDSSStorageKey = "break_user_ids";
@@ -948,7 +947,7 @@ function alertCacheReloadRequest() {
     
     var timeoutSeconds = 5;
     
-    var message = "Cache download complete. App will reload in " + timeoutSeconds + " seconds.";
+    var message = "New cache downloaded! App will reload in " + timeoutSeconds + " seconds.";
     var okFuncCall = "doReload(false);";
     
     ModalPopups.Alert('niceAlertContainer',

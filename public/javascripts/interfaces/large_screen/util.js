@@ -719,8 +719,10 @@ function postSetConnectionStatus(connected) {
     if(!connected) {
         color = "#FF0000";
         
-        //if we are offline
+        //if we are offline and the init sequence has not completed then we are operating in offline mode
         if(!callHomePollInitSequenceComplete) {
+            callHomePollInitSequenceComplete = true;
+            
             //hide the spinner at the top nav
             $('#loading_orders_spinner').hide();
             $('#table_select_container_loading_message').hide();

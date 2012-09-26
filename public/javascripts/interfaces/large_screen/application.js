@@ -173,13 +173,7 @@ function doGlobalInit() {
     
     clueyScheduler();
     
-    initTrainingModeFromCookie();        
-
-    //enable this for html5 cache flushing
-    if(inProdMode()) {
-        //start checking for cache updates
-        cacheUpdateCheckPoll();
-    }
+    initTrainingModeFromCookie(); 
 }
 
 function showInitialScreen() {
@@ -434,16 +428,6 @@ function initAdminTables() {
     $('.admin_table tbody tr:odd').addClass('odd');
 }
 
-function cacheUpdateCheckPoll() {
-    if(!cacheDownloading) {
-        console.log("Checking for cache update");
-       
-        window.applicationCache.update();
-    }
-
-    setTimeout(cacheUpdateCheckPoll, 120000);
-}
-
 function doScheduledTasks() {
     //this is called on at regular intervals
     rollDate();
@@ -451,4 +435,16 @@ function doScheduledTasks() {
     trySendOutstandingOrdersToServer();
     pingHome();
     checkForDuplicateBrowserSession();
+}
+
+function cacheDownloadReset() {
+    $('nav#main_nav').removeClass("cache_update");
+    $('#cache_status').text("");
+    $('#cache_status').hide();
+}
+
+function cacheDownloadStarted() {
+    $('nav#main_nav').addClass("cache_update");
+    $('#cache_status').show();
+    $('#cache_status').text("Cache DL: 0%");
 }

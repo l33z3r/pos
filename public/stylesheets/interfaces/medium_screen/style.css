@@ -30,6 +30,14 @@ body {
     
 }
 
+body.disconnected {
+    background-color: #FF0000;
+}
+
+body.cache_update {
+    background-color: #4297D7;
+}
+
 input[type=radio], input[type=checkbox], input[type=button], select {
     cursor: pointer;
 }
@@ -166,6 +174,21 @@ div#loading_orders_spinner {
 
 div#loading_orders_spinner img {
     height: 16px;
+}
+
+div#cache_status {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: #FFF;
+    margin-left: 10px;
+    width: 180px;
+    min-width: 20px;
+    padding: 6px;
+    -moz-border-bottom-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    -moz-border-bottom-right-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
 
 div#js_player {
