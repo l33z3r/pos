@@ -33,6 +33,12 @@ gem 'prawnto' , '0.1.1'
 #lock down on version of tzinfo gem
 gem "tzinfo", "0.3.33"
 
+#lock down pdf reader gem
+gem "pdf-reader", "1.1.0"
+
+#lock down mime types gem
+gem "mime-types", "1.17.2"
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
