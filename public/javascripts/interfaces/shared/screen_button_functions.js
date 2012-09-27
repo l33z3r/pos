@@ -248,6 +248,11 @@ function applyDefaultServiceChargePercent() {
 }
 
 function startTransferOrderMode() {
+    if (!appOnline) {
+        niceAlert("Cannot contact server, transfering orders is disabled until connection re-established!");
+        return;
+    }
+
     if (!callHomePollInitSequenceComplete) {
         niceAlert("Downloading data from server, please wait.");
         return;
@@ -282,6 +287,11 @@ function startTransferOrderMode() {
 }
 
 function startTransferOrderItemMode() {
+    if (!appOnline) {
+        niceAlert("Cannot contact server, transfering order items is disabled until connection re-established!");
+        return;
+    }
+
     if (!callHomePollInitSequenceComplete) {
         niceAlert("Downloading data from server, please wait.");
         return;
