@@ -36,7 +36,7 @@ GEM
       builder
       mime-types
       xml-simple
-    blankslate (3.1.2)
+    blankslate (2.1.2.4)
     builder (2.1.2)
     columnize (0.3.6)
     daemons (1.0.10)
@@ -140,6 +140,7 @@ DEPENDENCIES
   annotate (= 2.4.0)
   arel (= 2.0.9)
   aws-s3 (= 0.6.2)
+  blankslate (= 2.1.2.4)
   faker
   jbuilder (= 0.3.2)
   lazy_high_charts (= 1.1.5)

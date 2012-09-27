@@ -29,7 +29,6 @@ gem 'jbuilder', '0.3.2'
 gem 'prawn', '0.12.0'
 gem 'prawnto' , '0.1.1'
 
-
 #lock down on version of tzinfo gem
 gem "tzinfo", "0.3.33"
 
@@ -38,6 +37,9 @@ gem "pdf-reader", "1.1.0"
 
 #lock down mime types gem
 gem "mime-types", "1.17.2"
+
+#lock down blankslate gem
+gem "blankslate", "2.1.2.4"
 
 # Use unicorn as the web server
 # gem 'unicorn'
