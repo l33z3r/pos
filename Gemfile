@@ -45,6 +45,9 @@ gem "pdf-reader", "1.1.0"
 #lock down mime types gem
 gem "mime-types", "1.17.2"
 
+#lock down blankslate gem
+gem "blankslate", "2.1.2.4"
+
 # Use unicorn as the web server
 # gem 'unicorn'
 

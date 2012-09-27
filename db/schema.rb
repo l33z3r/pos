@@ -198,14 +198,14 @@ ActiveRecord::Schema.define(:version => 20120927105046) do
   add_index "display_button_groups", ["outlet_id"], :name => "index_display_button_groups_on_outlet_id"
 
   create_table "display_button_roles", :force => true do |t|
-    t.integer  "display_button_id"
+    t.integer  "display_button_id",    :limit => 8
     t.integer  "role_id"
-    t.boolean  "show_on_sales_screen", :default => false
-    t.boolean  "show_on_admin_screen", :default => false
+    t.boolean  "show_on_sales_screen",              :default => false
+    t.boolean  "show_on_admin_screen",              :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "passcode_required",    :default => false
-    t.integer  "outlet_id"
+    t.boolean  "passcode_required",                 :default => false
+    t.integer  "outlet_id",            :limit => 8
   end
 
   add_index "display_button_roles", ["display_button_id"], :name => "index_display_button_roles_on_display_button_id"
@@ -335,7 +335,7 @@ ActiveRecord::Schema.define(:version => 20120927105046) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",  :limit => 8
   end
 
   add_index "modifier_categories", ["outlet_id"], :name => "index_modifier_categories_on_outlet_id"
@@ -454,7 +454,7 @@ ActiveRecord::Schema.define(:version => 20120927105046) do
   add_index "orders", ["void_order_id"], :name => "index_orders_on_void_order_id"
 
   create_table "outlet_terminals", :force => true do |t|
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",  :limit => 8
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -506,11 +506,11 @@ ActiveRecord::Schema.define(:version => 20120927105046) do
   add_index "payments", ["outlet_id"], :name => "index_payments_on_outlet_id"
 
   create_table "printers", :force => true do |t|
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",      :limit => 8
     t.string   "label"
     t.string   "network_path"
-    t.integer  "paper_width_mm", :default => 80
-    t.integer  "font_size",      :default => 11
+    t.integer  "paper_width_mm",              :default => 80
+    t.integer  "font_size",                   :default => 11
     t.datetime "created_at"
     t.datetime "updated_at"
   end
