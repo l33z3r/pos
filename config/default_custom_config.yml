@@ -1,8 +1,8 @@
 development:
-  use_s3: false
-  s3_bucket_name: clueypos_development
-  s3_access_key_id: AKIAIY5ORKJHOQ7C5ZHA
-  s3_secret_access_key: 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
+  use_s3: true
+  s3_bucket_name: cluey_development
+  s3_access_key_id: AKIAICNSMYJPXRM2ENDQ
+  s3_secret_access_key: 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
   recaptcha_public_key: 6LfpZ9USAAAAAGtq7QkhGraD3_6Spb6tSnAIL4rI
   recaptcha_private_key: 6LfpZ9USAAAAAHh-le2xNBAVeX-P-MWWAVLeCrQK
   google_translate_api_key: AIzaSyBTUOHzAlYtVL8xP9NHh9WsQmMijzws2x4
