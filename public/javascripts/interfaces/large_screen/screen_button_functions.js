@@ -469,6 +469,11 @@ function saveAddNameToTable() {
 }
 
 function startSplitBillMode() {
+    if(!appOnline) {
+        niceAlert("Server cannot be contacted. Split bill is disabled until connection re-established.");
+        return;
+    }
+    
     if(haveSplitBillOrder(current_user_id)) {
         niceAlert("You must deal with the split order that is currently open. Please select it from the menu and either transfer it to a table or cash it out.");
         tableSelectMenu.setValue(tempSplitBillTableNum);

@@ -294,6 +294,11 @@ function applyDefaultServiceChargePercent() {
 }
 
 function startTransferOrderMode() {
+    if(!appOnline) {
+        niceAlert("Server cannot be contacted. Transfering orders is disabled until connection re-established.");
+        return;
+    }
+    
     if (!callHomePollInitSequenceComplete) {
         niceAlert("Downloading data from server, please wait.");
         return;
@@ -328,6 +333,11 @@ function startTransferOrderMode() {
 }
 
 function startTransferOrderItemMode() {
+    if(!appOnline) {
+        niceAlert("Server cannot be contacted. Transfering orders is disabled until connection re-established.");
+        return;
+    }
+    
     if (!callHomePollInitSequenceComplete) {
         niceAlert("Downloading data from server, please wait.");
         return;
@@ -407,6 +417,11 @@ function setMenuItemStandardPriceOverrideMode(turnOn) {
 }
 
 function deleteCurrentOrder() {
+    if(!appOnline) {
+        niceAlert("Server cannot be contacted. Deleting orders across the system is disabled until connection re-established.");
+        return;
+    }
+    
     if (selectedTable == previousOrderTableNum) {
         setStatusMessage("Not valid for reopened orders!");
         return;

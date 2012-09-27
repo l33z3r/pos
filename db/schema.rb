@@ -10,16 +10,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120924104716) do
+ActiveRecord::Schema.define(:version => 20120927105046) do
 
   create_table "card_transactions", :force => true do |t|
-    t.integer  "order_id"
+    t.integer  "order_id",         :limit => 8
     t.string   "payment_method"
     t.float    "amount"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "reference_number"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",        :limit => 8
   end
 
   add_index "card_transactions", ["outlet_id"], :name => "index_card_transactions_on_outlet_id"
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.string   "label"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",  :limit => 8
   end
 
   add_index "cash_out_presets", ["outlet_id"], :name => "index_cash_out_presets_on_outlet_id"
@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.float    "amount"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",   :limit => 8
   end
 
   add_index "cash_outs", ["outlet_id"], :name => "index_cash_outs_on_outlet_id"
@@ -47,15 +47,15 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
   create_table "cash_totals", :force => true do |t|
     t.string   "total_type"
     t.float    "total"
-    t.integer  "start_calc_order_id"
-    t.integer  "end_calc_order_id"
+    t.integer  "start_calc_order_id", :limit => 8
+    t.integer  "end_calc_order_id",   :limit => 8
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "employee_id"
+    t.integer  "employee_id",         :limit => 8
     t.string   "terminal_id"
     t.integer  "report_num"
     t.text     "report_data"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",           :limit => 8
   end
 
   add_index "cash_totals", ["employee_id"], :name => "index_cash_totals_on_employee_id"
@@ -65,19 +65,19 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
-    t.integer  "parent_category_id"
+    t.integer  "parent_category_id",                       :limit => 8
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "tax_rate_id"
-    t.string   "printers",                                 :default => ""
-    t.integer  "order_item_addition_grid_id"
-    t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => -1
-    t.string   "kitchen_screens",                          :default => ""
+    t.integer  "tax_rate_id",                              :limit => 8
+    t.string   "printers",                                              :default => ""
+    t.integer  "order_item_addition_grid_id",              :limit => 8
+    t.boolean  "order_item_addition_grid_id_is_mandatory",              :default => false
+    t.integer  "course_num",                                            :default => -1
+    t.string   "kitchen_screens",                                       :default => ""
     t.string   "blocked_printers"
-    t.boolean  "prompt_for_covers",                        :default => false
-    t.integer  "outlet_id"
+    t.boolean  "prompt_for_covers",                                     :default => false
+    t.integer  "outlet_id",                                :limit => 8
   end
 
   add_index "categories", ["order_item_addition_grid_id"], :name => "index_categories_on_order_item_addition_grid_id"
@@ -86,13 +86,13 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
   add_index "categories", ["tax_rate_id"], :name => "index_categories_on_tax_rate_id"
 
   create_table "client_transactions", :force => true do |t|
-    t.integer  "order_id"
-    t.integer  "payment_integration_type_id"
+    t.integer  "order_id",                    :limit => 8
+    t.integer  "payment_integration_type_id", :limit => 8
     t.string   "client_name"
     t.text     "transaction_data",            :limit => 2147483647
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",                   :limit => 8
   end
 
   add_index "client_transactions", ["order_id"], :name => "index_client_transactions_on_order_id"
@@ -110,30 +110,30 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
   end
 
   create_table "customer_points_allocations", :force => true do |t|
-    t.integer  "customer_id"
-    t.integer  "order_id"
+    t.integer  "customer_id",           :limit => 8
+    t.integer  "order_id",              :limit => 8
     t.integer  "amount"
     t.float    "loyalty_level_percent"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "allocation_type"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",             :limit => 8
   end
 
   add_index "customer_points_allocations", ["outlet_id"], :name => "index_customer_points_allocations_on_outlet_id"
 
   create_table "customer_transactions", :force => true do |t|
-    t.integer  "customer_id"
+    t.integer  "customer_id",      :limit => 8
     t.string   "transaction_type"
-    t.integer  "order_id"
-    t.boolean  "is_credit",        :default => true, :null => false
-    t.float    "abs_amount",       :default => 0.0,  :null => false
-    t.float    "actual_amount",    :default => 0.0,  :null => false
+    t.integer  "order_id",         :limit => 8
+    t.boolean  "is_credit",                     :default => true, :null => false
+    t.float    "abs_amount",                    :default => 0.0,  :null => false
+    t.float    "actual_amount",                 :default => 0.0,  :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "payment_id"
+    t.integer  "payment_id",       :limit => 8
     t.string   "terminal_id"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",        :limit => 8
   end
 
   add_index "customer_transactions", ["outlet_id"], :name => "index_customer_transactions_on_outlet_id"
@@ -148,31 +148,31 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.string   "mobile"
     t.string   "fax"
     t.string   "email"
-    t.float    "credit_limit",     :default => 0.0,  :null => false
-    t.float    "current_balance",  :default => 0.0,  :null => false
-    t.float    "credit_available", :default => 0.0,  :null => false
-    t.integer  "loyalty_level_id"
-    t.integer  "available_points", :default => 0,    :null => false
+    t.float    "credit_limit",                  :default => 0.0,  :null => false
+    t.float    "current_balance",               :default => 0.0,  :null => false
+    t.float    "credit_available",              :default => 0.0,  :null => false
+    t.integer  "loyalty_level_id", :limit => 8
+    t.integer  "available_points",              :default => 0,    :null => false
     t.string   "swipe_card_code"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "customer_number"
     t.string   "customer_type"
-    t.boolean  "is_active",        :default => true
-    t.integer  "outlet_id"
+    t.boolean  "is_active",                     :default => true
+    t.integer  "outlet_id",        :limit => 8
   end
 
   add_index "customers", ["outlet_id"], :name => "index_customers_on_outlet_id"
 
   create_table "deliveries", :force => true do |t|
-    t.integer  "employee_id"
+    t.integer  "employee_id",      :limit => 8
     t.float    "total"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "received_date"
     t.string   "reference_number"
     t.string   "terminal_id"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",        :limit => 8
   end
 
   add_index "deliveries", ["outlet_id"], :name => "index_deliveries_on_outlet_id"
@@ -183,7 +183,7 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.boolean  "is_default"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",  :limit => 8
   end
 
   add_index "discounts", ["outlet_id"], :name => "index_discounts_on_outlet_id"
@@ -192,7 +192,7 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",  :limit => 8
   end
 
   add_index "display_button_groups", ["outlet_id"], :name => "index_display_button_groups_on_outlet_id"
@@ -217,8 +217,8 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "perm_id"
-    t.integer  "display_button_group_id"
-    t.integer  "outlet_id"
+    t.integer  "display_button_group_id", :limit => 8
+    t.integer  "outlet_id",               :limit => 8
   end
 
   add_index "display_buttons", ["display_button_group_id"], :name => "index_display_buttons_on_display_button_group_id"
@@ -228,9 +228,9 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_default", :default => false
-    t.boolean  "is_public",  :default => false
-    t.integer  "outlet_id"
+    t.boolean  "is_default",              :default => false
+    t.boolean  "is_public",               :default => false
+    t.integer  "outlet_id",  :limit => 8
   end
 
   add_index "displays", ["outlet_id"], :name => "index_displays_on_outlet_id"
@@ -242,21 +242,21 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.string   "passcode"
     t.string   "address"
     t.string   "telephone"
-    t.float    "hourly_rate",                 :default => 0.0,                   :null => false
-    t.float    "overtime_rate",               :default => 0.0,                   :null => false
-    t.datetime "last_login",                  :default => '2012-01-07 09:28:01'
-    t.datetime "last_active",                 :default => '2012-01-07 09:28:01'
-    t.datetime "last_logout",                 :default => '2012-01-07 09:28:01'
+    t.float    "hourly_rate",                              :default => 0.0,                   :null => false
+    t.float    "overtime_rate",                            :default => 0.0,                   :null => false
+    t.datetime "last_login",                               :default => '2012-01-07 09:28:01'
+    t.datetime "last_active",                              :default => '2012-01-07 09:28:01'
+    t.datetime "last_logout",                              :default => '2012-01-07 09:28:01'
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "role_id",                     :default => 1
+    t.integer  "role_id",                     :limit => 8
     t.string   "employee_image_file_name"
     t.string   "employee_image_content_type"
     t.integer  "employee_image_file_size"
     t.datetime "employee_image_updated_at"
     t.string   "clockin_code"
     t.string   "dallas_code"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",                   :limit => 8
   end
 
   add_index "employees", ["outlet_id"], :name => "index_employees_on_outlet_id"
@@ -272,19 +272,19 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.datetime "logo_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",         :limit => 8
   end
 
   add_index "global_settings", ["outlet_id"], :name => "index_global_settings_on_outlet_id"
 
   create_table "ingredients", :force => true do |t|
-    t.integer  "product_id"
-    t.integer  "ingredient_product_id"
-    t.float    "quantity_numerator",    :default => 1.0
-    t.float    "quantity_denominator",  :default => 1.0
+    t.integer  "product_id",            :limit => 8
+    t.integer  "ingredient_product_id", :limit => 8
+    t.float    "quantity_numerator",                 :default => 1.0
+    t.float    "quantity_denominator",               :default => 1.0
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",             :limit => 8
   end
 
   add_index "ingredients", ["ingredient_product_id"], :name => "index_ingredients_on_ingredient_product_id"
@@ -293,22 +293,22 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
 
   create_table "loyalty_levels", :force => true do |t|
     t.string   "label"
-    t.float    "percent",    :default => 10.0,  :null => false
-    t.boolean  "is_default", :default => false
+    t.float    "percent",                 :default => 10.0,  :null => false
+    t.boolean  "is_default",              :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",  :limit => 8
   end
 
   add_index "loyalty_levels", ["outlet_id"], :name => "index_loyalty_levels_on_outlet_id"
 
   create_table "menu_items", :force => true do |t|
-    t.integer  "menu_page_id"
-    t.integer  "product_id"
+    t.integer  "menu_page_id", :limit => 8
+    t.integer  "product_id",   :limit => 8
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "order_num",    :default => 0
-    t.integer  "outlet_id"
+    t.integer  "order_num",                 :default => 0
+    t.integer  "outlet_id",    :limit => 8
   end
 
   add_index "menu_items", ["menu_page_id", "product_id"], :name => "index_menu_items_on_menu_page_id_and_product_id"
@@ -319,12 +319,12 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
 
   create_table "menu_pages", :force => true do |t|
     t.string   "name"
-    t.integer  "display_id"
+    t.integer  "display_id",          :limit => 8
     t.integer  "page_num"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "embedded_display_id"
-    t.integer  "outlet_id"
+    t.integer  "embedded_display_id", :limit => 8
+    t.integer  "outlet_id",           :limit => 8
   end
 
   add_index "menu_pages", ["display_id"], :name => "index_menu_pages_on_display_id"
@@ -341,12 +341,12 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
   add_index "modifier_categories", ["outlet_id"], :name => "index_modifier_categories_on_outlet_id"
 
   create_table "modifiers", :force => true do |t|
-    t.integer  "modifier_category_id"
+    t.integer  "modifier_category_id", :limit => 8
     t.string   "name"
     t.float    "price"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",            :limit => 8
   end
 
   add_index "modifiers", ["modifier_category_id"], :name => "index_modifiers_on_modifier_category_id"
@@ -358,17 +358,17 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.integer  "grid_y_size"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",   :limit => 8
   end
 
   add_index "order_item_addition_grids", ["outlet_id"], :name => "index_order_item_addition_grids_on_outlet_id"
 
   create_table "order_item_additions", :force => true do |t|
-    t.integer  "order_item_addition_grid_id"
+    t.integer  "order_item_addition_grid_id", :limit => 8
     t.string   "description"
     t.float    "add_charge"
     t.float    "minus_charge"
-    t.boolean  "available",                   :default => true
+    t.boolean  "available",                                :default => true
     t.string   "background_color"
     t.string   "text_color"
     t.integer  "text_size"
@@ -377,11 +377,11 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "background_color_2"
-    t.boolean  "hide_on_receipt",             :default => true
-    t.boolean  "is_addable",                  :default => false
-    t.integer  "follow_on_grid_id"
-    t.integer  "product_id"
-    t.integer  "outlet_id"
+    t.boolean  "hide_on_receipt",                          :default => true
+    t.boolean  "is_addable",                               :default => false
+    t.integer  "follow_on_grid_id",           :limit => 8
+    t.integer  "product_id",                  :limit => 8
+    t.integer  "outlet_id",                   :limit => 8
   end
 
   add_index "order_item_additions", ["follow_on_grid_id"], :name => "index_order_item_additions_on_follow_on_grid_id"
@@ -390,9 +390,9 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
   add_index "order_item_additions", ["product_id"], :name => "index_order_item_additions_on_product_id"
 
   create_table "order_items", :force => true do |t|
-    t.integer  "order_id"
-    t.integer  "employee_id"
-    t.integer  "product_id"
+    t.integer  "order_id",               :limit => 8
+    t.integer  "employee_id",            :limit => 8
+    t.integer  "product_id",             :limit => 8
     t.float    "quantity"
     t.float    "total_price"
     t.datetime "created_at"
@@ -410,8 +410,8 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.text     "oia_data",               :limit => 2147483647
     t.boolean  "is_void",                                      :default => false
     t.boolean  "is_half",                                      :default => false
-    t.integer  "void_employee_id"
-    t.integer  "outlet_id"
+    t.integer  "void_employee_id",       :limit => 8
+    t.integer  "outlet_id",              :limit => 8
   end
 
   add_index "order_items", ["employee_id"], :name => "index_order_items_on_employee_id"
@@ -420,7 +420,7 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
   add_index "order_items", ["product_id"], :name => "index_order_items_on_product_id"
 
   create_table "orders", :force => true do |t|
-    t.integer  "employee_id"
+    t.integer  "employee_id",           :limit => 8
     t.float    "total"
     t.string   "payment_type"
     t.float    "amount_tendered"
@@ -428,7 +428,7 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.integer  "num_persons"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "table_info_id"
+    t.integer  "table_info_id",         :limit => 8
     t.float    "discount_percent"
     t.float    "pre_discount_price"
     t.string   "terminal_id"
@@ -437,15 +437,15 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.float    "global_sales_tax_rate"
     t.float    "service_charge"
     t.float    "cashback"
-    t.integer  "void_order_id"
+    t.integer  "void_order_id",         :limit => 8
     t.boolean  "is_void",                                     :default => false
     t.integer  "order_num",             :limit => 8
     t.text     "split_payments",        :limit => 2147483647
     t.string   "client_name",                                 :default => "",    :null => false
     t.string   "time_started"
     t.boolean  "training_mode_sale",                          :default => false
-    t.integer  "room_id"
-    t.integer  "outlet_id"
+    t.integer  "room_id",               :limit => 8
+    t.integer  "outlet_id",             :limit => 8
   end
 
   add_index "orders", ["employee_id"], :name => "index_orders_on_employee_id"
@@ -461,13 +461,13 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
   end
 
   create_table "outlets", :force => true do |t|
-    t.integer  "cluey_account_id"
+    t.integer  "cluey_account_id", :limit => 8
     t.string   "name"
     t.string   "username"
     t.string   "password_hash"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "has_seed_data",    :default => false
+    t.boolean  "has_seed_data",                 :default => false
     t.string   "password_salt"
   end
 
@@ -480,11 +480,11 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.datetime "logo_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "payment_integration_id", :default => 0
-    t.integer  "receipt_footer_id"
-    t.boolean  "open_cash_drawer",       :default => true
-    t.boolean  "is_active",              :default => true
-    t.integer  "outlet_id"
+    t.integer  "payment_integration_id", :limit => 8
+    t.integer  "receipt_footer_id",      :limit => 8
+    t.boolean  "open_cash_drawer",                    :default => true
+    t.boolean  "is_active",                           :default => true
+    t.integer  "outlet_id",              :limit => 8
   end
 
   add_index "payment_methods", ["outlet_id"], :name => "index_payment_methods_on_outlet_id"
@@ -492,15 +492,15 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
 
   create_table "payments", :force => true do |t|
     t.string   "transaction_type"
-    t.integer  "employee_id"
-    t.integer  "card_transaction_id"
-    t.float    "amount",              :default => 0.0, :null => false
-    t.float    "amount_tendered",     :default => 0.0, :null => false
+    t.integer  "employee_id",         :limit => 8
+    t.integer  "card_transaction_id", :limit => 8
+    t.float    "amount",                           :default => 0.0, :null => false
+    t.float    "amount_tendered",                  :default => 0.0, :null => false
     t.string   "payment_method"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "terminal_id"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",           :limit => 8
   end
 
   add_index "payments", ["outlet_id"], :name => "index_payments_on_outlet_id"
@@ -518,46 +518,46 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
   create_table "products", :force => true do |t|
     t.string   "brand"
     t.string   "name"
-    t.integer  "category_id"
+    t.integer  "category_id",                              :limit => 8
     t.string   "description"
-    t.float    "size",                                     :default => 1.0,   :null => false
+    t.float    "size",                                                  :default => 1.0,   :null => false
     t.string   "unit"
-    t.integer  "items_per_unit",                           :default => 0,     :null => false
-    t.float    "sales_tax_rate",                           :default => 0.0,   :null => false
-    t.float    "price",                                    :default => 0.0,   :null => false
+    t.integer  "items_per_unit",                                        :default => 0,     :null => false
+    t.float    "sales_tax_rate",                                        :default => 0.0,   :null => false
+    t.float    "price",                                                 :default => 0.0,   :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "product_image_file_name"
     t.string   "product_image_content_type"
     t.integer  "product_image_file_size"
     t.datetime "product_image_updated_at"
-    t.integer  "modifier_category_id"
-    t.integer  "tax_rate_id"
-    t.integer  "parent_product_id"
-    t.string   "printers",                                 :default => ""
-    t.float    "quantity_in_stock",                        :default => 0.0
+    t.integer  "modifier_category_id",                     :limit => 8
+    t.integer  "tax_rate_id",                              :limit => 8
+    t.integer  "parent_product_id",                        :limit => 8
+    t.string   "printers",                                              :default => ""
+    t.float    "quantity_in_stock",                                     :default => 0.0
     t.integer  "code_num"
     t.string   "upc"
-    t.float    "price_2",                                  :default => 0.0,   :null => false
-    t.float    "price_3",                                  :default => 0.0,   :null => false
-    t.float    "price_4",                                  :default => 0.0,   :null => false
-    t.float    "margin_percent",                           :default => 0.0,   :null => false
-    t.float    "cost_price",                               :default => 0.0,   :null => false
-    t.float    "shipping_cost",                            :default => 0.0,   :null => false
-    t.float    "commission_percent",                       :default => 0.0,   :null => false
+    t.float    "price_2",                                               :default => 0.0,   :null => false
+    t.float    "price_3",                                               :default => 0.0,   :null => false
+    t.float    "price_4",                                               :default => 0.0,   :null => false
+    t.float    "margin_percent",                                        :default => 0.0,   :null => false
+    t.float    "cost_price",                                            :default => 0.0,   :null => false
+    t.float    "shipping_cost",                                         :default => 0.0,   :null => false
+    t.float    "commission_percent",                                    :default => 0.0,   :null => false
     t.integer  "container_type_id"
-    t.float    "quantity_per_container",                   :default => 1.0,   :null => false
-    t.boolean  "is_active",                                :default => true
-    t.boolean  "is_service",                               :default => false
-    t.boolean  "show_price_prompt",                        :default => false
-    t.boolean  "show_quantity_prompt",                     :default => false
-    t.boolean  "show_serial_num_prompt",                   :default => false
-    t.boolean  "show_add_note_prompt",                     :default => false
-    t.boolean  "sell_if_out_of_stock",                     :default => true
-    t.boolean  "show_on_web",                              :default => true
-    t.boolean  "notify_stock_manager",                     :default => true
-    t.boolean  "use_weigh_scales",                         :default => false
-    t.float    "minimum_quantity",                         :default => 1.0
+    t.float    "quantity_per_container",                                :default => 1.0,   :null => false
+    t.boolean  "is_active",                                             :default => true
+    t.boolean  "is_service",                                            :default => false
+    t.boolean  "show_price_prompt",                                     :default => false
+    t.boolean  "show_quantity_prompt",                                  :default => false
+    t.boolean  "show_serial_num_prompt",                                :default => false
+    t.boolean  "show_add_note_prompt",                                  :default => false
+    t.boolean  "sell_if_out_of_stock",                                  :default => true
+    t.boolean  "show_on_web",                                           :default => true
+    t.boolean  "notify_stock_manager",                                  :default => true
+    t.boolean  "use_weigh_scales",                                      :default => false
+    t.float    "minimum_quantity",                                      :default => 1.0
     t.float    "order_quantity"
     t.integer  "supplier_1_id"
     t.float    "supplier_1_cost"
@@ -571,24 +571,24 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.string   "button_bg_color"
     t.string   "button_text_color"
     t.string   "button_vertical_align"
-    t.boolean  "show_button_image",                        :default => true
-    t.integer  "menu_button_width",                        :default => 1
-    t.integer  "menu_button_height",                       :default => 1
+    t.boolean  "show_button_image",                                     :default => true
+    t.integer  "menu_button_width",                                     :default => 1
+    t.integer  "menu_button_height",                                    :default => 1
     t.string   "menu_page_1_id"
     t.string   "menu_page_2_id"
     t.string   "button_bg_color_2"
-    t.boolean  "is_special",                               :default => false
-    t.boolean  "is_deleted",                               :default => false
-    t.boolean  "show_price_on_receipt",                    :default => true
-    t.float    "double_price",                             :default => 0.0,   :null => false
+    t.boolean  "is_special",                                            :default => false
+    t.boolean  "is_deleted",                                            :default => false
+    t.boolean  "show_price_on_receipt",                                 :default => true
+    t.float    "double_price",                                          :default => 0.0,   :null => false
     t.string   "display_image"
-    t.boolean  "hide_on_printed_receipt",                  :default => false
+    t.boolean  "hide_on_printed_receipt",                               :default => false
     t.integer  "order_item_addition_grid_id"
-    t.boolean  "order_item_addition_grid_id_is_mandatory", :default => false
-    t.integer  "course_num",                               :default => -1
-    t.boolean  "is_stock_item",                            :default => true
-    t.string   "kitchen_screens",                          :default => ""
-    t.float    "half_price",                               :default => 0.0
+    t.boolean  "order_item_addition_grid_id_is_mandatory",              :default => false
+    t.integer  "course_num",                                            :default => -1
+    t.boolean  "is_stock_item",                                         :default => true
+    t.string   "kitchen_screens",                                       :default => ""
+    t.float    "half_price",                                            :default => 0.0
     t.string   "blocked_printers"
     t.integer  "outlet_id"
   end
@@ -604,7 +604,7 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
   create_table "receipt_footers", :force => true do |t|
     t.string  "name"
     t.text    "content"
-    t.integer "outlet_id"
+    t.integer "outlet_id", :limit => 8
   end
 
   add_index "receipt_footers", ["outlet_id"], :name => "index_receipt_footers_on_outlet_id"
@@ -613,9 +613,9 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "pin_required",  :default => false
-    t.boolean  "login_allowed", :default => true
-    t.integer  "outlet_id"
+    t.boolean  "pin_required",               :default => false
+    t.boolean  "login_allowed",              :default => true
+    t.integer  "outlet_id",     :limit => 8
   end
 
   add_index "roles", ["outlet_id"], :name => "index_roles_on_outlet_id"
@@ -624,14 +624,14 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.string   "object_type"
     t.string   "permid"
     t.string   "label"
-    t.integer  "room_id"
+    t.integer  "room_id",     :limit => 8
     t.integer  "grid_x"
     t.integer  "grid_y"
     t.integer  "grid_x_size"
     t.integer  "grid_y_size"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",   :limit => 8
   end
 
   add_index "room_objects", ["outlet_id"], :name => "index_room_objects_on_outlet_id"
@@ -643,10 +643,10 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.integer  "grid_y_size"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "grid_resolution",                :default => 5
+    t.integer  "grid_resolution",                             :default => 5
     t.float    "default_service_charge_percent"
-    t.boolean  "prompt_for_client_name",         :default => false
-    t.integer  "outlet_id"
+    t.boolean  "prompt_for_client_name",                      :default => false
+    t.integer  "outlet_id",                      :limit => 8
   end
 
   add_index "rooms", ["outlet_id"], :name => "index_rooms_on_outlet_id"
@@ -662,28 +662,28 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "shift_timestamps", :force => true do |t|
-    t.integer  "employee_id"
+    t.integer  "employee_id",    :limit => 8
     t.integer  "timestamp_type"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",      :limit => 8
   end
 
   add_index "shift_timestamps", ["outlet_id"], :name => "index_shift_timestamps_on_outlet_id"
 
   create_table "stock_transactions", :force => true do |t|
-    t.integer  "product_id"
-    t.integer  "employee_id"
+    t.integer  "product_id",       :limit => 8
+    t.integer  "employee_id",      :limit => 8
     t.float    "old_amount"
     t.float    "change_amount"
     t.integer  "transaction_type"
     t.string   "note"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "delivery_id"
-    t.boolean  "is_return",        :default => false
-    t.integer  "order_item_id"
-    t.integer  "outlet_id"
+    t.integer  "delivery_id",      :limit => 8
+    t.boolean  "is_return",                     :default => false
+    t.integer  "order_item_id",    :limit => 8
+    t.integer  "outlet_id",        :limit => 8
   end
 
   add_index "stock_transactions", ["employee_id"], :name => "index_stock_transactions_on_employee_id"
@@ -696,17 +696,17 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.text     "stored_html"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",    :limit => 8
   end
 
   add_index "stored_receipt_htmls", ["outlet_id"], :name => "index_stored_receipt_htmls_on_outlet_id"
 
   create_table "table_infos", :force => true do |t|
     t.string   "perm_id"
-    t.integer  "room_object_id"
+    t.integer  "room_object_id", :limit => 8
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",      :limit => 8
   end
 
   add_index "table_infos", ["outlet_id"], :name => "index_table_infos_on_outlet_id"
@@ -718,17 +718,17 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.boolean  "is_default"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",  :limit => 8
   end
 
   add_index "tax_rates", ["outlet_id"], :name => "index_tax_rates_on_outlet_id"
 
   create_table "terminal_display_links", :force => true do |t|
     t.string   "terminal_id"
-    t.integer  "display_id"
+    t.integer  "display_id",  :limit => 8
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",   :limit => 8
   end
 
   add_index "terminal_display_links", ["display_id"], :name => "index_terminal_display_links_on_display_id"
@@ -740,24 +740,24 @@ ActiveRecord::Schema.define(:version => 20120924104716) do
     t.text     "data",       :limit => 2147483647
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",  :limit => 8
   end
 
   add_index "terminal_sync_data", ["outlet_id"], :name => "index_terminal_sync_data_on_outlet_id"
 
   create_table "work_reports", :force => true do |t|
-    t.integer  "employee_id"
+    t.integer  "employee_id",     :limit => 8
     t.text     "report_data"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "clockin_time"
     t.datetime "clockout_time"
-    t.integer  "shift_seconds",   :default => 0
-    t.integer  "break_seconds",   :default => 0
-    t.integer  "payable_seconds", :default => 0
+    t.integer  "shift_seconds",                :default => 0
+    t.integer  "break_seconds",                :default => 0
+    t.integer  "payable_seconds",              :default => 0
     t.float    "hourly_rate"
     t.float    "cost"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",       :limit => 8
   end
 
   add_index "work_reports", ["outlet_id"], :name => "index_work_reports_on_outlet_id"

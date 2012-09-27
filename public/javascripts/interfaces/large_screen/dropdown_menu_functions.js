@@ -86,6 +86,11 @@ function setShortcutDropdownDefaultText() {
 }
 
 function startPriceChangeMode() {
+    if(!appOnline) {
+        niceAlert("Server cannot be contacted. Changing prices is disabled until connection re-established.");
+        return;
+    }
+    
     if(inStockTakeMode) {
         niceAlert("Please finish checking stock first!");
         return;
@@ -156,6 +161,11 @@ function loadPriceChangeReceiptArea(productId, menuItemId) {
 }
 
 function startStockTakeMode() {
+    if(!appOnline) {
+        niceAlert("Server cannot be contacted. Stock mode is disabled until connection re-established.");
+        return;
+    }
+    
     if(inPriceChangeMode) {
         niceAlert("Please finish changing prices first!");
         return;
