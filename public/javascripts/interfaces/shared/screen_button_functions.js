@@ -389,6 +389,11 @@ function setMenuItemStandardPriceOverrideMode(turnOn) {
 }
 
 function deleteCurrentOrder() {
+    if (!appOnline) {
+        niceAlert("Cannot contact server, deleting an order across the system is disabled until connection re-established!");
+        return;
+    }
+
     if (selectedTable == previousOrderTableNum) {
         setStatusMessage("Not valid for reopened orders!");
         return;
