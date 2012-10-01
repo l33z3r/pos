@@ -76,3 +76,7 @@ group :development, :test do
   
   gem 's3', '0.3.7'
 end
+
+group :heroku_staging, :heroku_production do
+  gem 'thin'
+end

@@ -111,7 +111,13 @@ namespace :assets do
           ## mime-type. `obj.save` will upload and store the file to S3.
           obj = bucket.objects.build(remote_file)
           obj.content = open(file)
-          obj.content_type = MIME::Types.type_for(file).to_s
+          
+          if file.ends_with? ".js"
+            obj.content_type = "text/javascript"
+          else
+            obj.content_type = MIME::Types.type_for(file).to_s
+          end
+          
           obj.save
         else
           puts "No change in file... skipping"
