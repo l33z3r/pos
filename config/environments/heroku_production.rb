@@ -30,7 +30,7 @@ Pos::Application.configure do
   config.serve_static_assets = false
 
   # Enable serving of images, stylesheets, and javascripts from an asset server
-  config.action_controller.asset_host = "https://s3.amazonaws.com/cluey_production"
+  config.action_controller.asset_host = "http://cluey.s3.amazonaws.com/"
 
   config.action_mailer.default_url_options = {:host => "clueypos.com"}
   # Don't care if the mailer can't send
