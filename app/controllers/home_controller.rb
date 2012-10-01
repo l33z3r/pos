@@ -810,6 +810,14 @@ class HomeController < ApplicationController
     render :text => @files.join("\n"), :content_type => 'text/cache-manifest', :layout => nil
   end
   
+  def build_assets
+    if !development_mode?
+      redirect_to home_path and return
+    end
+    
+    render :layout => nil
+  end
+  
   def js_error_log
     #spit out the params
     params.each do |key, value|

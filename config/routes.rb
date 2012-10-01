@@ -1,6 +1,7 @@
 Pos::Application.routes.draw do
 
   match "force_error" => "home#force_error"
+  match "build_assets" => "home#build_assets"
   
   #cluey account routes
   match 'welcome' => "accounts/accounts#welcome", :as => "welcome"

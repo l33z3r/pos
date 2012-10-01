@@ -1,17 +1,17 @@
 class ApplicationController < AppBaseController
-  before_filter :setup_for_subdomain, :except => [:ping]
-  before_filter :set_current_employee, :except => [:ping, :cache_manifest]
+  before_filter :setup_for_subdomain, :except => [:ping, :build_assets, :force_error]
+  before_filter :set_current_employee, :except => [:ping, :cache_manifest, :build_assets, :force_error]
 
   
   #before_filter :http_basic_authenticate
   
-  before_filter :check_reset_session, :except => [:ping, :cache_manifest]
+  before_filter :check_reset_session, :except => [:ping, :cache_manifest, :build_assets, :force_error]
   
   helper_method :e, :is_cluey_user?, :cluey_pw_used?, :current_employee, :print_money, :print_credit_balance
   helper_method :mobile_device?, :all_terminals, :all_printers, :all_servers, :current_interface
   helper_method :development_mode?, :production_mode?, :server_ip, :now_millis
   
-  before_filter :load_global_vars, :except => [:ping, :cache_manifest]
+  before_filter :load_global_vars, :except => [:ping, :cache_manifest, :build_assets, :force_error]
   
   LARGE_INTERFACE = "large"
   MEDIUM_INTERFACE = "medium"
