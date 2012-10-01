@@ -4,6 +4,11 @@
   <head>
     <%= render "/partials/interfaces/medium_screen/assets" %>
     <%= render "/partials/interfaces/large_screen/assets" %>
+    
+    <%= javascript_include_tag "admin_js/admin" %>
+    
+    <%= stylesheet_links "accounts/", :recursive => true, :cache => "cache/accounts" %>
+    <%= javascript_include_tag "rails", "accounts/application", :cache => "cache/accounts" %>
   </head>
   
   <body>

@@ -25,7 +25,10 @@ task :cache_assets => :environment do
   
   paths.each do |path|
     if File.exist?(path)
-      system("git add #{path}") ? true : fail
+      Dir.glob(path + "*").each do |full_path|
+        puts "----->  adding to index: #{full_path}"
+        system("git add #{full_path}") ? true : fail
+      end
     end
   end
 

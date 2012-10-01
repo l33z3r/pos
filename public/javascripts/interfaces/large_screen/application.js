@@ -18,7 +18,7 @@ $(function() {
 
 function doGlobalInit() {
     //make sure we have all compatible plugins etc
-    if(!inMobileContext()) {
+    if(!inMobileContext()) { 
         if(checkForFirefox()) {   
             if(checkForClueyPlugin()) {
                 if(checkForJSPrintSetupPlugin()) {
