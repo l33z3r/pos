@@ -1,6 +1,25 @@
 <% if session[:preselect] != -1 %>
     <% unless params[:action] == "customer_print" %>
-
+        <div id="options_menu">
+            <div class="option" onclick="setCustomerSelect(-1)" class="print_box">
+                <div style="float: left;"><img src="/images/button_logos/home.png" alt="Print" width="24" height="24"/>
+                </div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Home  |</span></div>
+            </div>
+            <div class="option" onclick="window.location = '/reports/customers/customer_print'" class="print_box">
+                <div style="float: left;"><img src="/images/button_logos/print.png" alt="Print" width="24" height="24"/>
+                </div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Print  |</span></div>
+            </div>
+            <div class="option" onclick="window.location = '/reports/customers/export_excel'" class="excel_box">
+                <div style="float: left;">
+                    <img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24"/></div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Excel </span></div>
+            </div>
+        </div>
     <% end %>
     <div id="customer_items_graph" style="display: none">
         <div id="spacer" style="height:70px;"></div>
@@ -53,13 +72,13 @@
                             <% if week.transaction_type == "settlement" %><%= week.payment_id %><% end %>
                         </td>
                         <td style="text-align: right; border-top: 2px solid; ">
-                            <% if week.transaction_type == "charge" %><%= week.abs_amount %><% end %>
+                            <% if week.transaction_type == "charge" %><%= sprintf("%.2f",week.abs_amount) %><% end %>
                         </td>
                         <td style="text-align: right; border-top: 2px solid;">
-                            <% if week.transaction_type == "settlement" %><%= week.abs_amount %><% end %>
+                            <% if week.transaction_type == "settlement" %><%= sprintf("%.2f",week.abs_amount) %><% end %>
                         </td>
                         <td style="text-align: right; border-top: 2px solid;">
-                            <%= week.actual_amount %>
+                            <%= sprintf("%.2f",week.actual_amount) %>
                         </td>
 
                     </tr>
@@ -107,16 +126,16 @@
                             <%= week.transaction_type %>
                         </td>
                         <td style="text-align: right; border-top: 2px solid">
-                            <% if week.transaction_type == "settlement" %><%= week.payment_id %><% end %>
+                            <% if week.transaction_type == "settlement" %><%= sprintf("%.2f",week.abs_amount) %><% end %>
                         </td>
                         <td style="text-align: right; border-top: 2px solid; ">
-                            <% if week.transaction_type == "charge" %><%= week.abs_amount %><% end %>
+                            <% if week.transaction_type == "charge" %><%= sprintf("%.2f",week.abs_amount) %><% end %>
                         </td>
                         <td style="text-align: right; border-top: 2px solid;">
-                            <% if week.transaction_type == "settlement" %><%= week.abs_amount %><% end %>
+                            <% if week.transaction_type == "settlement" %><%= sprintf("%.2f",week.abs_amount) %><% end %>
                         </td>
                         <td style="text-align: right; border-top: 2px solid;">
-                            <%= week.actual_amount %>
+                            <%= sprintf("%.2f",week.actual_amount) %>
                         </td>
                     </tr>
 

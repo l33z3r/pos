@@ -72,13 +72,13 @@
                             <% if week.transaction_type == "settlement" %><%= week.payment_id %><% end %>
                         </td>
                         <td style="text-align: right; border-top: 2px solid; ">
-                            <% if week.transaction_type == "charge" %><%= week.abs_amount %><% end %>
+                            <% if week.transaction_type == "charge" %><%= print_money(week.abs_amount) %><% end %>
                         </td>
                         <td style="text-align: right; border-top: 2px solid;">
-                            <% if week.transaction_type == "settlement" %><%= week.abs_amount %><% end %>
+                            <% if week.transaction_type == "settlement" %><%= print_money(week.abs_amount) %><% end %>
                         </td>
                         <td style="text-align: right; border-top: 2px solid;">
-                            <%= week.actual_amount %>
+                            <%= print_money(week.actual_amount) %>
                         </td>
 
                     </tr>
@@ -126,16 +126,16 @@
                             <%= week.transaction_type %>
                         </td>
                         <td style="text-align: right; border-top: 2px solid">
-                            <% if week.transaction_type == "settlement" %><%= week.payment_id %><% end %>
+                            <% if week.transaction_type == "settlement" %><%= print_money(week.abs_amount) %><% end %>
                         </td>
                         <td style="text-align: right; border-top: 2px solid; ">
-                            <% if week.transaction_type == "charge" %><%= week.abs_amount %><% end %>
+                            <% if week.transaction_type == "charge" %><%= print_money(week.abs_amount) %><% end %>
                         </td>
                         <td style="text-align: right; border-top: 2px solid;">
-                            <% if week.transaction_type == "settlement" %><%= week.abs_amount %><% end %>
+                            <% if week.transaction_type == "settlement" %><%= print_money(week.abs_amount) %><% end %>
                         </td>
                         <td style="text-align: right; border-top: 2px solid;">
-                            <%= week.actual_amount %>
+                            <%= print_money(week.actual_amount) %>
                         </td>
                     </tr>
 
