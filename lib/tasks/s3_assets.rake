@@ -1,89 +1,119 @@
-desc "cache assets"
-task :cache_assets => :environment do
+require 's3'
+require 'digest/md5'
+require 'mime/types'
 
-  paths = ['public/javascripts/cache/', 'public/stylesheets/cache/']
-
-  puts "-----> caching assets..."
-  paths.each do |path|
-    puts "-----> #{path}"
-  end
-
-  paths.each do |path|
-    FileUtils.rm(Dir.glob(path + "*")) if File.exist?(path)
-  end
-
-  ActionController::Base.perform_caching = true
-
-  session = ActionDispatch::Integration::Session.new(Rails.application)
-  session.get('/build_assets')
-  
-  begin
-    session.follow_redirect!
-  rescue
-    #whogivesaratsass
-  end
-  
-  paths.each do |path|
-    if File.exist?(path)
-      Dir.glob(path + "*").each do |full_path|
-        puts "----->  adding to index: #{full_path}"
-        system("git add #{full_path}") ? true : fail
-      end
-    end
-  end
-
-  if %x[git diff-index HEAD].present?
-    puts "-----> committing cached assets"
-    system("git commit -m 'cache_assets'") ? true : fail
-  else
-    puts "-----> nothing to commit"
-  end
-
-  puts "-----> done"
-end
-
-
-# RAILS_ROOT/lib/tasks/assets.rake
 namespace :assets do
-  desc 'Precompile assets and upload to S3'
-  task :upload, [:noop] => ['assets:clean', 'assets:precompile'] do |_, args|
-    args.with_defaults(noop: false)
+  desc "Generate Cached Assets"
+  task :cache => :environment do
 
-    Fog.credentials_path = "#{Rails.root}/config/fog_credentials.yml"
+    paths = ['public/javascripts/cache/', 'public/stylesheets/cache/']
 
-    Dir.chdir("#{Rails.root}/public") do
-      assets = FileList['assets',"assets/**/*"].inject({}) do |hsh, path|
-        if File.directory? path
-          hsh.update("#{path}/" => :directory)
-        else
-          hsh.update(path => OpenSSL::Digest::MD5.hexdigest(File.read(path)))
-        end
-      end
-      raise 'public/assets is empty: aborting' if assets.size <= 1
+    puts "-----> caching assets..."
+  
+    paths.each do |path|
+      FileUtils.rm(Dir.glob(path + "*")) if File.exist?(path)
+    end
 
-      fog = Fog::Storage.new(provider: 'AWS')
-      # Replace ASSETS_BUCKET with the name of the S3 bucket for storing assets
-      bucket = fog.directories.get(ASSETS_BUCKET)
+    ActionController::Base.perform_caching = true
 
-      assets.each do |file, etag|
-        case etag
-        when :directory
-          puts "Directory #{file}"
-          bucket.files.create(key: file, public: true) unless args[:noop]
-        when bucket.files.get(file).try(:etag)
-          puts "Skipping #{file} (identical)"
-        else
-          puts "Uploading #{file}"
-          bucket.files.create(key: file, public: true, body: File.open(file), cache_control: "max-age=#{1.month.to_i}") unless args[:noop]
-        end
-      end
-
-      bucket.files.each do |object|
-        unless assets.has_key? object.key
-          puts "Removing #{object.key} (no longer exists)"
-          object.destroy unless args[:noop]
+    session = ActionDispatch::Integration::Session.new(Rails.application)
+    session.get('/build_assets')
+  
+    begin
+      session.follow_redirect!
+    rescue
+      #whogivesaratsass
+    end
+  
+    paths.each do |path|
+      if File.exist?(path)
+        Dir.glob(path + "*").each do |full_path|
+          puts "----->  adding to index: #{full_path}"
+          system("git add #{full_path}")
         end
       end
     end
+
+    if %x[git diff-index HEAD].present?
+      puts "-----> committing cached assets"
+      system("git commit -m 'cache_assets'")
+    else
+      puts "-----> nothing to commit"
+    end
+
+    puts "-----> done"
+  end
+  
+  desc "Deploy all assets in public/**/* to S3/Cloudfront"
+  task :sync do
+
+    prod_env = ENV['prod_env']
+    require "#{RAILS_ROOT}/config/initializers/custom"
+
+    AWS_ACCESS_KEY_ID = YAML_CONFIG_FILE[prod_env]["s3_access_key_id"]
+    AWS_SECRET_ACCESS_KEY = YAML_CONFIG_FILE[prod_env]["s3_secret_access_key"]
+    AWS_BUCKET = YAML_CONFIG_FILE[prod_env]["s3_bucket_name"]
+
+    ## Use the `s3` gem to connect my bucket
+    puts "== Uploading assets to S3/Cloudfront"
+
+    service = S3::Service.new(
+      :access_key_id => AWS_ACCESS_KEY_ID,
+      :secret_access_key => AWS_SECRET_ACCESS_KEY)
+    bucket = service.buckets.find(AWS_BUCKET)
+
+    ## Needed to show progress
+    STDOUT.sync = true
+
+    ## Find all files (recursively) in ./public and process them.
+    all_files = Dir.glob("public/**/*")
+    
+    total_files_count = all_files.size
+    upload_file_count = 0
+    percent_complete = 0
+    
+    puts "-----> Syncing #{total_files_count} files with S3"
+    
+    all_files.each do |file|
+      upload_file_count += 1
+      
+      percent_complete = (upload_file_count * 100)/total_files_count
+      
+      ## Only upload files, we're not interested in directories
+      if File.file?(file)
+        ## Slash 'public/' from the filename for use on S3
+        remote_file = file.gsub("public/", "")
+
+        ## Try to find the remote_file, an error is thrown when no
+        ## such file can be found, that's okay.  
+        begin
+          obj = bucket.objects.find_first(remote_file)
+        rescue
+          obj = nil
+        end
+
+        ## If the object does not exist, or if the MD5 Hash / etag of the 
+        ## file has changed, upload it.
+        
+        puts "Syncing #{remote_file} (#{upload_file_count} of #{total_files_count}) (#{percent_complete}%)..."
+        
+        if !obj || (obj.etag != Digest::MD5.hexdigest(File.read(file)))
+          puts "Uploading file..."
+
+          ## Simply create a new object, write the content and set the proper 
+          ## mime-type. `obj.save` will upload and store the file to S3.
+          obj = bucket.objects.build(remote_file)
+          obj.content = open(file)
+          obj.content_type = MIME::Types.type_for(file).to_s
+          obj.save
+        else
+          puts "No change in file... skipping"
+        end
+      end
+    end
+    STDOUT.sync = false # Done with progress output.
+
+    puts
+    puts "== Done syncing assets"
   end
 end

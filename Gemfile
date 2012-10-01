@@ -74,4 +74,5 @@ group :development, :test do
   gem 'ruby-debug19'
   gem "mongrel", '1.2.0.pre2'
   
+  gem 's3', '0.3.7'
 end
