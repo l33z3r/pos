@@ -66,15 +66,22 @@ namespace :assets do
     ## Needed to show progress
     STDOUT.sync = true
 
-    #Select some files in the public directory to sync
-    all_files = Dir.glob("public/images/**/*") | Dir.glob("public/javascripts/**/*") | Dir.glob("public/stylesheets/**/*") 
-    all_files |= Dir.glob("public/firefox_extensions/**/*") | Dir.glob("public/jqtouch") | Dir.glob("public/files/**/*") | Dir.glob("public/sounds/**/*")
-    all_files << "public/404.html"
-    all_files << "public/422.html" 
-    all_files << "public/500.html" 
-    all_files << "public/favicon.ico" 
-    all_files << "public/robots.txt"
-    
+    if ENV['only_js']
+      all_files = Dir.glob("public/javascripts/**/*") 
+    elsif ENV['only_css']
+      all_files = Dir.glob("public/stylesheets/**/*") 
+    elsif ENV['only_css_js']
+      all_files = Dir.glob("public/javascripts/**/*") | Dir.glob("public/stylesheets/**/*") 
+    else
+      #Select some files in the public directory to sync
+      all_files = Dir.glob("public/images/**/*") | Dir.glob("public/javascripts/**/*") | Dir.glob("public/stylesheets/**/*") 
+      all_files |= Dir.glob("public/firefox_extensions/**/*") | Dir.glob("public/jqtouch") | Dir.glob("public/files/**/*") | Dir.glob("public/sounds/**/*")
+      all_files << "public/404.html"
+      all_files << "public/422.html" 
+      all_files << "public/500.html" 
+      all_files << "public/favicon.ico" 
+      all_files << "public/robots.txt"
+    end
     total_files_count = all_files.size
     upload_file_count = 0
     percent_complete = 0
