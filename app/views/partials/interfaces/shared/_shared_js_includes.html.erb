@@ -12,7 +12,11 @@
   "plugins/jquery.caret", :cache => "cache/plugin_libs_2" %>
 
 <!--cant cache the following scripts as they are erb templates -->
-<%= javascript_include_tag "employees", "customers", "products", "tables", "sales_resources" %>
+<script src="/javascripts/employees.js" type="text/javascript"></script>
+<script src="/javascripts/customers.js" type="text/javascript"></script>
+<script src="/javascripts/products.js" type="text/javascript"></script>
+<script src="/javascripts/tables.js" type="text/javascript"></script>
+<script src="/javascripts/sales_resources.js" type="text/javascript"></script>
 
 <!-- js shared between interfaces -->
 <%= javascript_includes "interfaces/shared/", :recursive => true, :cache => "cache/shared" %>

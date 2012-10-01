@@ -44,7 +44,8 @@ namespace :assets do
     puts "-----> done"
   end
   
-  desc "Deploy all assets in public/**/* to S3/Cloudfront"
+  #http://ariejan.net/2011/01/01/rake-task-to-sync-your-assets-to-amazon-s3cloudfront
+  desc "Deploy selected assets in public folder to S3"
   task :sync do
 
     prod_env = ENV['prod_env']
@@ -52,7 +53,7 @@ namespace :assets do
 
     AWS_ACCESS_KEY_ID = YAML_CONFIG_FILE[prod_env]["s3_access_key_id"]
     AWS_SECRET_ACCESS_KEY = YAML_CONFIG_FILE[prod_env]["s3_secret_access_key"]
-    AWS_BUCKET = YAML_CONFIG_FILE[prod_env]["s3_bucket_name"]
+    AWS_BUCKET = YAML_CONFIG_FILE[prod_env]["s3_public_bucket_name"]
 
     ## Use the `s3` gem to connect my bucket
     puts "== Uploading assets to S3/Cloudfront"
@@ -65,8 +66,14 @@ namespace :assets do
     ## Needed to show progress
     STDOUT.sync = true
 
-    ## Find all files (recursively) in ./public and process them.
-    all_files = Dir.glob("public/**/*")
+    #Select some files in the public directory to sync
+    all_files = Dir.glob("public/images/**/*") | Dir.glob("public/javascripts/**/*") | Dir.glob("public/stylesheets/**/*") 
+    all_files |= Dir.glob("public/firefox_extensions/**/*") | Dir.glob("public/jqtouch") | Dir.glob("public/files/**/*") | Dir.glob("public/sounds/**/*")
+    all_files << "public/404.html"
+    all_files << "public/422.html" 
+    all_files << "public/500.html" 
+    all_files << "public/favicon.ico" 
+    all_files << "public/robots.txt"
     
     total_files_count = all_files.size
     upload_file_count = 0
