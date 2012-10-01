@@ -204,10 +204,14 @@ function preventOfflineHref() {
     return true;
 }
 
+var pingTimeoutSeconds = 60;
+var pingTimeoutMillis = pingTimeoutSeconds * 1000;
+
 function pingHome() {
     $.ajax({
         url: "/ping",
         type : "GET",
+        timeout: pingTimeoutMillis,
         success: function() {
             setConnectionStatus(true);
         },
