@@ -1,7 +1,5 @@
 log/*
 tmp/*
-public/javascripts/cache/*
-public/stylesheets/cache/*
 nbproject/*
 public/system/
 config/custom_config.yml

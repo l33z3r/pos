@@ -1,7 +1,7 @@
 desc "cache assets"
 task :cache_assets => :environment do
 
-  paths = ['public/javascripts/cache/*', 'public/stylesheets/cache/*']
+  paths = ['public/javascripts/cache/', 'public/stylesheets/cache/']
 
   puts "-----> caching assets..."
   paths.each do |path|
@@ -9,15 +9,20 @@ task :cache_assets => :environment do
   end
 
   paths.each do |path|
-    FileUtils.rm(path) if File.exist?(path)
+    FileUtils.rm(Dir.glob(path + "*")) if File.exist?(path)
   end
 
   ActionController::Base.perform_caching = true
 
   session = ActionDispatch::Integration::Session.new(Rails.application)
   session.get('/build_assets')
-  session.follow_redirect!
-
+  
+  begin
+    session.follow_redirect!
+  rescue
+    #whogivesaratsass
+  end
+  
   paths.each do |path|
     if File.exist?(path)
       system("git add #{path}") ? true : fail
