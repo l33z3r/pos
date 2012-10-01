@@ -114,6 +114,8 @@ namespace :assets do
           
           if file.ends_with? ".js"
             obj.content_type = "text/javascript"
+          elsif file.ends_with? ".css"
+            obj.content_type = "text/css"
           else
             obj.content_type = MIME::Types.type_for(file).to_s
           end

@@ -673,7 +673,7 @@ class HomeController < ApplicationController
         rb_file
       end
       
-      @files << "#{rb_file[rb_file.rindex("/public/")+7..rb_file.length-1]}"
+      @files << "#{Rails.application.config.action_controller.asset_host}#{rb_file[rb_file.rindex("/public/")+7..rb_file.length-1]}"
       
     end
     
@@ -700,7 +700,7 @@ class HomeController < ApplicationController
         rb_file
       end
       
-      @files << "#{rb_file}"
+      @files << "#{Rails.application.config.action_controller.asset_host}#{rb_file}"
       
     end
     
@@ -728,7 +728,7 @@ class HomeController < ApplicationController
         rb_file
       end
       
-      @files << "#{rb_file}"
+      @files << "#{Rails.application.config.action_controller.asset_host}#{rb_file}"
       
     end
     
@@ -754,7 +754,7 @@ class HomeController < ApplicationController
         rb_file
       end
       
-      @files << "#{rb_file}"
+      @files << "#{Rails.application.config.action_controller.asset_host}#{rb_file}"
       
     end
     
@@ -774,7 +774,7 @@ class HomeController < ApplicationController
         rb_file
       end
       
-      @files << "#{rb_file[rb_file.rindex("/public/")+7..rb_file.length-1]}"
+      @files << "#{Rails.application.config.action_controller.asset_host}#{rb_file[rb_file.rindex("/public/")+7..rb_file.length-1]}"
       
     end
     
@@ -797,7 +797,7 @@ class HomeController < ApplicationController
         rb_file
       end
       
-      @files << "#{rb_file[rb_file.rindex("/public/")+7..rb_file.length-1]}"
+      @files << "#{Rails.application.config.action_controller.asset_host}#{rb_file[rb_file.rindex("/public/")+7..rb_file.length-1]}"
       
     end
 
