@@ -759,48 +759,37 @@ class HomeController < ApplicationController
     end
     
     
-    
-    
-    @all_scripts = Dir.glob("#{Rails.root}/public/javascripts/cache/**/*")
-    
-    @all_scripts.sort!
-    
-    @all_scripts.each do |rb_file|
-      next if !rb_file.match /\.js$/
-      
-      #escape whitespace
-      if rb_file.match /\s+/ 
-        rb_file.gsub!(" ", "%20")
-        rb_file
-      end
-      
-      @files << "#{Rails.application.config.action_controller.asset_host}#{rb_file[rb_file.rindex("/public/")+7..rb_file.length-1]}"
-      
-    end
-    
+    #
+    ##
+    ##
+    ##
+    ##
+    #manually list out the js files
     @files << "/javascripts/tables.js"
     @files << "/javascripts/employees.js"
     @files << "/javascripts/products.js"
     @files << "/javascripts/customers.js"
     @files << "/javascripts/sales_resources.js"
     
-    @all_stylesheets = Dir.glob("#{Rails.root}/public/stylesheets/cache/**/*")
-    
-    @all_stylesheets.sort!
-    
-    @all_stylesheets.each do |rb_file|
-      next if !rb_file.match /\.css$/
-      
-      #escape whitespace
-      if rb_file.match /\s+/ 
-        rb_file.gsub!(" ", "%20")
-        rb_file
-      end
-      
-      @files << "#{Rails.application.config.action_controller.asset_host}#{rb_file[rb_file.rindex("/public/")+7..rb_file.length-1]}"
-      
-    end
+    @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/accounts.js"
+    @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/jq_libs.js"
+    @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/large_screen.js"
+    @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/medium_screen.js"
+    @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/plugin_libs_1.js"
+    @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/plugin_libs_2.js"
+    @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/shared.js"
+    @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/modal_popups_libs.js"
 
+    #
+    ##
+    ##
+    ##
+    ##
+    #manually list out the stylesheet files
+    @files << "#{Rails.application.config.action_controller.asset_host}/stylesheets/cache/accounts.css"
+    @files << "#{Rails.application.config.action_controller.asset_host}/stylesheets/cache/large_screen_styles.css"
+    @files << "#{Rails.application.config.action_controller.asset_host}/stylesheets/cache/medium_screen_styles.css"
+    
     @files << "\nNETWORK:"
     @files << "*\n\n"
     
