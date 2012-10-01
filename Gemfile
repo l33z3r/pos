@@ -78,5 +78,5 @@ group :development, :test do
 end
 
 group :heroku_staging, :heroku_production do
-  gem 'thin'
+  gem "thin", "1.5.0"
 end
