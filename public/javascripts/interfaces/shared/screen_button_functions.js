@@ -248,6 +248,11 @@ function applyDefaultServiceChargePercent() {
 }
 
 function startTransferOrderMode() {
+    if (!appOnline) {
+        niceAlert("Cannot contact server, transfering orders is disabled until connection re-established!");
+        return;
+    }
+
     if (!callHomePollInitSequenceComplete) {
         niceAlert("Downloading data from server, please wait.");
         return;
@@ -282,6 +287,11 @@ function startTransferOrderMode() {
 }
 
 function startTransferOrderItemMode() {
+    if (!appOnline) {
+        niceAlert("Cannot contact server, transfering order items is disabled until connection re-established!");
+        return;
+    }
+
     if (!callHomePollInitSequenceComplete) {
         niceAlert("Downloading data from server, please wait.");
         return;
@@ -346,6 +356,24 @@ function setMenuItemHalfMode(turnOn) {
     }
 }
 
+function toggleMenuItemRefundMode() {
+    setMenuItemRefundMode(!menuItemRefundMode);
+}
+
+function setMenuItemRefundMode(turnOn) {
+    if (turnOn) {
+        //ensure half mode and double modes are not enabled
+        setMenuItemHalfMode(false);
+        setMenuItemDoubleMode(false);
+
+        menuItemRefundMode = true;
+        $('.button[id=sales_button_' + toggleMenuItemRefundModeButtonID + ']').addClass("selected");
+    } else {
+        menuItemRefundMode = false;
+        $('.button[id=sales_button_' + toggleMenuItemRefundModeButtonID + ']').removeClass("selected");
+    }
+}
+
 function toggleMenuItemStandardPriceOverrideMode() {
     setMenuItemStandardPriceOverrideMode(!menuItemStandardPriceOverrideMode);
 }
@@ -361,6 +389,11 @@ function setMenuItemStandardPriceOverrideMode(turnOn) {
 }
 
 function deleteCurrentOrder() {
+    if (!appOnline) {
+        niceAlert("Cannot contact server, deleting an order across the system is disabled until connection re-established!");
+        return;
+    }
+
     if (selectedTable == previousOrderTableNum) {
         setStatusMessage("Not valid for reopened orders!");
         return;

@@ -119,7 +119,13 @@ function loadFirstTab() {
 function orderSelected(orderId, is_void) {
     setPreviousSaleReceipt("Loading...");
     
-    initReopenOrderButton(is_void);
+    if(is_void) {
+        reOpenOrderHandler = function() {
+            setStatusMessage("Cannot re-open a void order!");
+        };
+    } else {
+        reOpenOrderHandler = reOpenOrder;
+    }
     
     $.ajax({
         type: 'GET',
@@ -154,19 +160,7 @@ function parsePreviousOrder(previousOrderJSON) {
     
     $('#total_container div#label').html("Total:");
     $('#admin_order_list_total_value').html(currency(totalOrder.totalFinal + totalOrder.cashback));
-}
-
-function initReopenOrderButton(is_void) {
-    if(is_void) {
-        reOpenOrderHandler = function() {
-            setStatusMessage("Cannot re-open a void order!");
-        };
-    } else {
-        reOpenOrderHandler = reOpenOrder;
-    }
-    
-    return false;
-}
+}   
 
 var openOrdersTableFilter = "";
 var openOrdersServerFilter = "";
@@ -344,4 +338,51 @@ function printPreviousSale() {
     
     printReceiptHTML = fetchFinalReceiptHTML(true, false, printVatReceipt);
     printReceipt(printReceiptHTML, true);
+}
+
+function postZalionAndReOpenOrder() {
+    //copy the order and make sure all the items are a minus so that a refund gets posted
+    //most of this method is making the order compatible with zalion and is very messy code
+    var copiedOrder = {};
+    
+    var copiedTotalOrder = $.extend(true, copiedOrder, totalOrder);
+    
+    for(var i=0; i<copiedTotalOrder.items.length; i++) {
+        copiedTotalOrder.items[i].total_price *= -1;
+        
+        if(copiedTotalOrder.items[i].product.code_num == null) {
+            copiedTotalOrder.items[i].product.code_num = "";
+        }
+        
+        if(copiedTotalOrder.items[i].product.category == null) {
+            copiedTotalOrder.items[i].product.category = "none";
+        }
+        
+        if(copiedTotalOrder.items[i].product.department == null) {
+            copiedTotalOrder.items[i].product.department = "none";
+        }
+        
+        if(copiedTotalOrder.items[i].product.tax_rate == null) {
+            copiedTotalOrder.items[i].product.tax_rate = "none";
+        }
+    }
+    
+    //this block is a pure hack so that we fill the split payments array with the appropriate amount so that 
+    //zalion gets charged correctly. set the total to a negative number
+    currentZalionPaymentMethodName = copiedTotalOrder.payment_method;
+    copiedTotalOrder.splitPayments = {}
+    copiedTotalOrder.splitPayments[currentZalionPaymentMethodName] = copiedTotalOrder.total * -1;
+    
+    //There are variables that need to be set to call doChargeZalion
+    //This is another pure hack
+    splitPayments = copiedTotalOrder.splitPayments;
+    var orderDetails = {};
+    var copiedOrderDetails = $.extend(true, orderDetails, copiedTotalOrder);
+    copiedTotalOrder.order_details = copiedOrderDetails;
+    
+    //now pass the data on to zalion to refund
+    showLoadingDiv();
+    
+    var reopenOrderCallback = reOpenOrder;
+    doChargeZalion(copiedTotalOrder, reopenOrderCallback);
 }

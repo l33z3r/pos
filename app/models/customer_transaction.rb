@@ -6,10 +6,11 @@ class CustomerTransaction < ActiveRecord::Base
   
   SETTLEMENT = "settlement"
   CHARGE = "charge"
+  REFUND = "refund"
   MISC_CREDIT = "misc_credit"
   MISC_DEBIT = "misc_debit"
   
-  VALID_TRANSACTION_TYPES = [SETTLEMENT, CHARGE, MISC_CREDIT, MISC_DEBIT]
+  VALID_TRANSACTION_TYPES = [SETTLEMENT, CHARGE, REFUND, MISC_CREDIT, MISC_DEBIT]
   
   validates :transaction_type, :presence => true, :inclusion => { :in => VALID_TRANSACTION_TYPES }
   

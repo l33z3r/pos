@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120726143843) do
+ActiveRecord::Schema.define(:version => 20120924104716) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id"
@@ -83,6 +83,17 @@ ActiveRecord::Schema.define(:version => 20120726143843) do
 
   add_index "client_transactions", ["order_id"], :name => "index_client_transactions_on_order_id"
 
+  create_table "cluey_accounts", :force => true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "password_hash"
+    t.string   "password_salt"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "activation_code"
+    t.datetime "activated_at"
+  end
+
   create_table "customer_points_allocations", :force => true do |t|
     t.integer  "customer_id"
     t.integer  "order_id"
@@ -90,6 +101,7 @@ ActiveRecord::Schema.define(:version => 20120726143843) do
     t.float    "loyalty_level_percent"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "allocation_type"
   end
 
   create_table "customer_transactions", :force => true do |t|
@@ -102,6 +114,8 @@ ActiveRecord::Schema.define(:version => 20120726143843) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "payment_id"
+    t.string   "terminal_id"
+    t.integer  "refund_order_id"
   end
 
   create_table "customers", :force => true do |t|
@@ -189,8 +203,8 @@ ActiveRecord::Schema.define(:version => 20120726143843) do
     t.string   "passcode"
     t.string   "address"
     t.string   "telephone"
-    t.float    "hourly_rate"
-    t.float    "overtime_rate"
+    t.float    "hourly_rate",                 :default => 0.0,                   :null => false
+    t.float    "overtime_rate",               :default => 0.0,                   :null => false
     t.datetime "last_login",                  :default => '2012-01-07 09:28:01'
     t.datetime "last_active",                 :default => '2012-01-07 09:28:01'
     t.datetime "last_logout",                 :default => '2012-01-07 09:28:01'
@@ -334,6 +348,7 @@ ActiveRecord::Schema.define(:version => 20120726143843) do
     t.boolean  "is_void",                                      :default => false
     t.boolean  "is_half",                                      :default => false
     t.integer  "void_employee_id"
+    t.boolean  "is_refund",                                    :default => false
   end
 
   add_index "order_items", ["employee_id"], :name => "index_order_items_on_employee_id"
@@ -365,11 +380,30 @@ ActiveRecord::Schema.define(:version => 20120726143843) do
     t.string   "client_name",                                 :default => "",    :null => false
     t.string   "time_started"
     t.boolean  "training_mode_sale",                          :default => false
+    t.integer  "room_id"
   end
 
   add_index "orders", ["employee_id"], :name => "index_orders_on_employee_id"
   add_index "orders", ["table_info_id"], :name => "index_orders_on_table_info_id"
   add_index "orders", ["void_order_id"], :name => "index_orders_on_void_order_id"
+
+  create_table "outlet_terminals", :force => true do |t|
+    t.integer  "outlet_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "outlets", :force => true do |t|
+    t.integer  "cluey_account_id"
+    t.string   "name"
+    t.string   "username"
+    t.string   "password_hash"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "has_seed_data",    :default => false
+    t.string   "password_salt"
+  end
 
   create_table "payment_methods", :force => true do |t|
     t.string   "name"
@@ -395,6 +429,17 @@ ActiveRecord::Schema.define(:version => 20120726143843) do
     t.float    "amount",              :default => 0.0, :null => false
     t.float    "amount_tendered",     :default => 0.0, :null => false
     t.string   "payment_method"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "terminal_id"
+  end
+
+  create_table "printers", :force => true do |t|
+    t.integer  "outlet_id"
+    t.string   "label"
+    t.string   "network_path"
+    t.integer  "paper_width_mm", :default => 80
+    t.integer  "font_size",      :default => 11
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -548,9 +593,9 @@ ActiveRecord::Schema.define(:version => 20120726143843) do
     t.string   "note"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "order_item_id"
     t.integer  "delivery_id"
     t.boolean  "is_return",        :default => false
+    t.integer  "order_item_id"
   end
 
   add_index "stock_transactions", ["employee_id"], :name => "index_stock_transactions_on_employee_id"

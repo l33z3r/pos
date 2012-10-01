@@ -56,6 +56,11 @@ function doPrintLastReceipt(withVat) {
 }
 
 function promptForServiceCharge() {
+    if(cashScreenRefundMode) {
+        setStatusMessage(serviceChargeLabel + " cannot be applied during a refund!", true, true);
+        return;
+    }
+    
     if(currentOrderEmpty()) {
         setStatusMessage("No order present!", true, true);
         return;
@@ -184,6 +189,11 @@ function setDefaultServiceChargeButtonSelected(popupEl, percentage) {
 }
 
 function promptForCashback() {
+    if(cashScreenRefundMode) {
+        setStatusMessage("Cashback cannot be applied during a refund!", true, true);
+        return;
+    }
+    
     if(currentOrderEmpty()) {
         setStatusMessage("No order present!", true, true);
         return;
@@ -585,6 +595,11 @@ function saveAddNameToTable() {
 }
 
 function startSplitBillMode() {
+    if (!appOnline) {
+        niceAlert("Cannot contact server, splitting a bill is disabled until connection re-established!");
+        return;
+    }
+
     if(haveSplitBillOrder(current_user_id)) {
         niceAlert("You must deal with the split order that is currently open. Please select it from the menu and either transfer it to a table or cash it out.");
         tableSelectMenu.setValue(tempSplitBillTableNum);
@@ -997,4 +1012,8 @@ function showCashOutSubscreen() {
         inCashOutMode = true;
         $('#cash_out_amount').html(currency(0));
     }
+}
+
+function toggleRefundMode() {
+    
 }

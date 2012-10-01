@@ -40,6 +40,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: order_items
@@ -66,5 +67,6 @@ end
 #  is_void                :boolean(1)      default(FALSE)
 #  is_half                :boolean(1)      default(FALSE)
 #  void_employee_id       :integer(4)
+#  is_refund              :boolean(1)      default(FALSE)
 #
 

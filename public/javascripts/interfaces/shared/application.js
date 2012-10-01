@@ -24,6 +24,15 @@ var scheduledTasksIntervalSeconds = 10;
 //the following hack is to get over eventX eventY being deprecated in new builds of chrome
 $.event.props = $.event.props.join('|').replace('layerX|layerY|', '').split('|');
 
+//bind to cache events
+// Bind to online/offline events.
+$(window).bind(
+    "online offline",
+    function(event) {
+        setConnectionStatus(navigator.onLine);
+    }
+);
+    
 $(function() {
     current_user_id = fetchActiveUserID();
     
