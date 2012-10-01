@@ -20,7 +20,7 @@ Pos::Application.configure do
   #turn this on for some fragment caching testing in development mode
   config.action_controller.perform_caching = false
   
-  config.action_controller.asset_host = "https://s3.amazonaws.com/cluey_staging"
+  #config.action_controller.asset_host = "https://s3.amazonaws.com/cluey_staging"
   
   config.action_mailer.default_url_options = {:host => "localhost:3000"}
   # Don't care if the mailer can't send

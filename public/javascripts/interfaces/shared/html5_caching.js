@@ -27,7 +27,7 @@ $(appCache).bind(
     function(event) {
         console.log("Checking for manifest");
     }
-);
+    );
  
 // This gets fired if there is no update to the manifest file
 // that has just been checked.
@@ -36,7 +36,7 @@ $(appCache).bind(
     function(event) {
         console.log("No cache updates");
     }
-);
+    );
  
 // This gets fired when the browser is downloading the files
 // defined in the cache manifest.
@@ -52,7 +52,7 @@ $(appCache).bind(
         // Get the total number of files in our manifest.
         getTotalFiles();
     }
-);
+    );
  
 // This gets fired for every file that is downloaded by the
 // cache update.
@@ -76,7 +76,7 @@ $(appCache).bind(
         cacheDownloading = false;
         cacheDownloadReset();
     }
-);
+    );
  
 // This gets fired when new cache files have been downloaded
 // and are ready to replace the *existing* cache. The old
@@ -90,7 +90,7 @@ $(appCache).bind(
         appCache.swapCache();
         alertCacheReloadRequest();
     }
-);
+    );
  
 // This gets fired when the cache manifest cannot be found.
 $(appCache).bind(
@@ -104,13 +104,16 @@ $(appCache).bind(
 $(appCache).bind(
     "error",
     function(event) {
-        niceAlert("An error occurred while downloading the latest cache. You may be using a stale version. Try reloading the app.");
+        //if we are offline, there is no need to display the error notice
+        if(appOnline) {
+            niceAlert("An error occurred while downloading the latest cache. You may be using a stale version. Try reloading the app.");
         
-        //reset some things
-        cacheDownloading = false;
-        cacheDownloadReset();
+            //reset some things
+            cacheDownloading = false;
+            cacheDownloadReset();
+        }
     }
-);        
+    );        
  
 // I get the total number of files in the cache manifest.
 // I do this by manually parsing the manifest file.
@@ -196,7 +199,7 @@ function startCacheUpdateCheckPoll() {
 }
   
 function cacheUpdateCheckPoll() {
-    if(!cacheDownloading) {
+    if(appOnline && !cacheDownloading) {
         console.log("Checking for cache update");
        
         window.applicationCache.update();
