@@ -1,0 +1,5 @@
+<div class="dropdown_container" >
+    <div class="label">Customer</div>
+    <%= collection_select :customer_id, :equals, Customer.find(:all).sort_by{|p| p.name.downcase}, :id, :name, options = {:include_blank => "All Customers", :selected => @current_method}, {:onchange => "loadCustomerDropDown($(this).find('option:selected').val())", :style=>'width:145px'} %>
+    <div class="clear">&nbsp;</div>
+</div>

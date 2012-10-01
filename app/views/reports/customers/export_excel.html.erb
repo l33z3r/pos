@@ -1,0 +1,149 @@
+<% if session[:preselect] != -1 %>
+    <% unless params[:action] == "customer_print" %>
+
+    <% end %>
+    <div id="customer_items_graph" style="display: none">
+        <div id="spacer" style="height:70px;"></div>
+    </div>
+
+
+    <div id="customer_items" >
+        <% if params[:action] == "customer_print" %>
+            <h3>Customers Report <%= Time.now.strftime("%B %d, %Y") %></h3>
+        <% end %>
+
+        <% if session[:search_type] == :customer %>
+
+            <table id="report_table" class="admin_table" style="width: 100%">
+                <thead>
+
+                <th class="header">Date</th>
+                <th class="header">Time</th>
+                <th class="header">Customer</th>
+                <th class="header">Transaction</th>
+                <th class="header">Ref. Number</th>
+                <th class="header">Debit</th>
+                <th class="header">Credit</th>
+                <th class="header">Balance</th>
+                </thead>
+
+
+
+                <% @orders.each_with_index do |week, i| %>
+
+                    <% @customer = Customer.find_by_id(week.customer_id) %>
+
+
+                    <tbody>
+
+                    <tr>
+                        <td style="text-align: left; border-top: 2px solid">
+                            <%= week.created_at.strftime("%B %d, %Y") %>
+                        </td>
+                        <td style="text-align: left; border-top: 2px solid;">
+                            <%= week.created_at.strftime("%H:%M") %>
+                        </td>
+                        <td style="text-align: left; border-top: 2px solid;">
+                            <%= @customer.name %>
+                        </td>
+                        <td style="text-align: left; border-top: 2px solid;">
+                            <%= week.transaction_type %>
+                        </td>
+                        <td style="text-align: right; border-top: 2px solid">
+                            <% if week.transaction_type == "settlement" %><%= week.payment_id %><% end %>
+                        </td>
+                        <td style="text-align: right; border-top: 2px solid; ">
+                            <% if week.transaction_type == "charge" %><%= week.abs_amount %><% end %>
+                        </td>
+                        <td style="text-align: right; border-top: 2px solid;">
+                            <% if week.transaction_type == "settlement" %><%= week.abs_amount %><% end %>
+                        </td>
+                        <td style="text-align: right; border-top: 2px solid;">
+                            <%= week.actual_amount %>
+                        </td>
+
+                    </tr>
+
+                <% end %>
+
+                </tbody>
+            </table>
+
+        <% else %>
+
+
+            <table id="report_table" class="admin_table" style="width: 100%">
+                <thead>
+                <th class="header">Date</th>
+                <th class="header">Time</th>
+                <th class="header">Customer</th>
+                <th class="header">Transaction</th>
+                <th class="header">Ref. Number</th>
+                <th class="header">Debit</th>
+                <th class="header">Credit</th>
+                <th class="header">Balance</th>
+                </thead>
+
+
+
+                <% @orders.each_with_index do |week, i| %>
+
+                    <% @customer = Customer.find_by_id(week.customer_id) %>
+
+
+                    <tbody>
+
+                    <tr>
+                        <td style="text-align: left; border-top: 2px solid">
+                            <%= week.created_at.strftime("%B %d, %Y") %>
+                        </td>
+                        <td style="text-align: left; border-top: 2px solid;">
+                            <%= week.created_at.strftime("%H:%M") %>
+                        </td>
+                        <td style="text-align: left; border-top: 2px solid;">
+                            <%= @customer.name %>
+                        </td>
+                        <td style="text-align: left; border-top: 2px solid;">
+                            <%= week.transaction_type %>
+                        </td>
+                        <td style="text-align: right; border-top: 2px solid">
+                            <% if week.transaction_type == "settlement" %><%= week.payment_id %><% end %>
+                        </td>
+                        <td style="text-align: right; border-top: 2px solid; ">
+                            <% if week.transaction_type == "charge" %><%= week.abs_amount %><% end %>
+                        </td>
+                        <td style="text-align: right; border-top: 2px solid;">
+                            <% if week.transaction_type == "settlement" %><%= week.abs_amount %><% end %>
+                        </td>
+                        <td style="text-align: right; border-top: 2px solid;">
+                            <%= week.actual_amount %>
+                        </td>
+                    </tr>
+
+                <% end %>
+
+
+                </tbody>
+            </table>
+            </div>
+
+        <% end %>
+<% else %>
+    <div id="saved_items">
+        <div id="saved_items_container" style="margin-left: 200px;">
+            <div onclick="setCustomerSelect(0)" class="saved_report_button">
+                <div class="b_text" style="margin-top: 12px"><b>Customer Transactions This Week</b></div>
+            </div>
+            <div onclick="setCustomerSelect(1)" class="saved_report_button">
+                <div class="b_text" style="margin-top: 12px"><b>Customer Transactions From Last Week</b></div>
+            </div>
+            <div onclick="setCustomerSelect(2)" class="saved_report_button">
+                <div class="b_text" style="margin-top: 12px"><b>Customer Transactions This Year</b></div>
+            </div>
+        </div>
+    </div>
+<% end %>
+<script type="text/javascript">
+    $('#refine_button').removeClass("selected");
+</script>
+
