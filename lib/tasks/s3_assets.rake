@@ -4,7 +4,7 @@ require 'mime/types'
 
 namespace :assets do
   desc "Generate Cached Assets"
-  task :cache do
+  task :cache => :environment do
 
     paths = ['public/javascripts/cache/', 'public/stylesheets/cache/']
 
