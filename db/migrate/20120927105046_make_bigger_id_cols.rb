@@ -5,6 +5,8 @@ class MakeBiggerIdCols < ActiveRecord::Migration
     execute("ALTER TABLE products MODIFY column modifier_category_id BIGINT")
     execute("ALTER TABLE products MODIFY column tax_rate_id BIGINT")
     execute("ALTER TABLE products MODIFY column parent_product_id BIGINT")
+    execute("ALTER TABLE products MODIFY order_item_addition_grid_id BIGINT")
+    execute("ALTER TABLE products MODIFY column outlet_id BIGINT")
     
     execute("ALTER TABLE outlets MODIFY column id BIGINT NOT NULL AUTO_INCREMENT")
     execute("ALTER TABLE outlets MODIFY column cluey_account_id BIGINT")

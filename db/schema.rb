@@ -583,14 +583,14 @@ ActiveRecord::Schema.define(:version => 20120927105046) do
     t.float    "double_price",                                          :default => 0.0,   :null => false
     t.string   "display_image"
     t.boolean  "hide_on_printed_receipt",                               :default => false
-    t.integer  "order_item_addition_grid_id"
+    t.integer  "order_item_addition_grid_id",              :limit => 8
     t.boolean  "order_item_addition_grid_id_is_mandatory",              :default => false
     t.integer  "course_num",                                            :default => -1
     t.boolean  "is_stock_item",                                         :default => true
     t.string   "kitchen_screens",                                       :default => ""
     t.float    "half_price",                                            :default => 0.0
     t.string   "blocked_printers"
-    t.integer  "outlet_id"
+    t.integer  "outlet_id",                                :limit => 8
   end
 
   add_index "products", ["category_id"], :name => "index_products_on_category_id"
