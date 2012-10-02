@@ -73,7 +73,10 @@ group :development, :test do
   gem "rspec-rails", "2.6.1"
   gem 'ruby-debug19'
   gem "mongrel", '1.2.0.pre2'
-  
+end
+
+#this is only used in development to sync assets with s3
+group :build_assets do
   gem 's3', '0.3.7'
 end
 

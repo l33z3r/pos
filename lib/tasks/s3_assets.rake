@@ -4,11 +4,11 @@ require 'mime/types'
 
 namespace :assets do
   desc "Generate Cached Assets"
-  task :cache => :environment do
+  task :cache do
 
     paths = ['public/javascripts/cache/', 'public/stylesheets/cache/']
 
-    puts "-----> caching assets..."
+    puts "-----> Building assets..."
   
     paths.each do |path|
       FileUtils.rm(Dir.glob(path + "*")) if File.exist?(path)
@@ -46,7 +46,7 @@ namespace :assets do
   
   #http://ariejan.net/2011/01/01/rake-task-to-sync-your-assets-to-amazon-s3cloudfront
   desc "Deploy selected assets in public folder to S3"
-  task :sync do
+  task :sync => [:cache] do
 
     prod_env = ENV['prod_env']
     require "#{RAILS_ROOT}/config/initializers/custom"
