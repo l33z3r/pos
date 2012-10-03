@@ -2225,7 +2225,7 @@ function toggelNoteChargePlusMins() {
 function renderMenuItemButtonDimensions() {
     var button_border = 1;
     var button_margin = 1;
-    var original_width = 88;
+    var original_width = 62;
 
     $('#items .item').each(function() {
         var item = $(this);
