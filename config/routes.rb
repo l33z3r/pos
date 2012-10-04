@@ -328,6 +328,15 @@ Pos::Application.routes.draw do
         get 'export_excel'
       end
     end
+    resources :customers, :only => [:index] do
+      collection do
+        get 'customer_search'
+        get 'set_params'
+        get 'load_dropdown'
+        get 'customer_print'
+        get 'export_excel'
+      end
+    end
   end
 
   namespace :api do 

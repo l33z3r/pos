@@ -193,8 +193,6 @@ class Reports::PaymentsController < Admin::AdminController
       session[:search_type_label] = 'Transaction List'
     end
 
-
-
     if params[:search][:from_date]
       session[:from_date] = params[:search][:from_date]
     end

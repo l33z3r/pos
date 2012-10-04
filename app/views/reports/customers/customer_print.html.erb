@@ -1,0 +1,14 @@
+
+<div id="back_button" style="float: right;margin-bottom: 10px;margin-right: 10px; "><div style="margin: 5px; height: 40px;" onclick="window.location = '/reports/customers'" class="button">Back</div></div>
+<div id="report_customer_results">
+    <%= render 'customer_tab' %>
+</div>
+
+<script type="text/javascript">
+    $('#customer_items_graph').show();
+    $('#customer_items').show();
+    $('#main_nav').hide();
+    $('#back_button').hide();
+    window.onload = window.print();
+    $('#back_button').show();
+</script>
