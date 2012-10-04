@@ -1050,6 +1050,16 @@ function tableScreenSelectTable(tableId) {
     doSelectTable(tableId);
 }
 
+function transferOrderError() {
+    hideNiceAlert();        
+    $('#tables_screen_status_message').hide();
+    inTransferOrderMode = false;
+    transferOrderInProgress = false;
+    showMenuScreen();
+    setStatusMessage("Error transfering order. Server might be down!");
+    return;
+}
+
 function loadReceipt(order, doScroll) {
     clearReceipt();
     
