@@ -18,7 +18,7 @@ body {
     overflow: hidden;
     line-height: 15px;
 
-    /*    zoom: .78;*/
+    zoom: .78;
 
     /* disable text selection */
     -webkit-user-select: none;
@@ -181,16 +181,11 @@ div.mcdropdown {
 }
 
 div#wrapper {
-    /*    width: 1020px;*/
-    width: 795px;
-
+    width: 1020px;
     margin: auto;
     text-align: center;
     background-color: #e0e0e0;
-
-    /*    height: 770px;*/
-    height: 600px;
-
+    height: 770px;
     overflow: hidden;
 }
 
@@ -268,7 +263,7 @@ div#landing {
 }
 
 div#landing div#active_users_buttons_container {
-    width: 520px;
+    width: 740px;
     float: right;
     border: 1px solid #AAA;
     -moz-border-radius: 4px;
@@ -332,7 +327,7 @@ div#login_popup div#cancel_show_login {
 }
 
 div#landing div#active_users_buttons_container div#active_users {
-    height: 460px;
+    height: 626px;
 }
 
 div#landing div#active_users_buttons_container div#active_users div.employee_box {
@@ -377,14 +372,14 @@ div#landing div#login_receipt_keypad_container {
 }
 
 div#landing div#login_receipt_keypad_container div#login_receipt {
-    height: 218px;
+    height: 384px;
     background-color: #FFF;
     overflow-y: auto;
     display: block;
 }
 
 div#landing div#login_receipt_keypad_container div#login_receipt div#login_till_roll {
-    height: 200px;
+    height: 355px;
     display: block;
     background-color: #FFF;
 }
@@ -478,7 +473,7 @@ nav#main_nav div#date,
 nav#main_nav div#nav_title,
 nav#main_nav div#loading_orders_spinner {
     float: left;
-/*    padding: 2px 4px;*/
+    padding: 2px 4px;
     border-right: 1px solid #DDD;
     color: #FFF;
     min-width: 80px;
@@ -592,7 +587,7 @@ div#receipt_keypad_container {
 }
 
 div#menu_screen div#menu_pages_container {
-    width: 520px;
+    width: 740px;
     float: right;
     border: 1px solid #CCC;
     -moz-border-radius: 7px;
@@ -600,7 +595,7 @@ div#menu_screen div#menu_pages_container {
 }
 
 div#menu_screen div#menu_pages_container div#menu_container {
-    height: 402px;
+    height: 546px;
     overflow-y: hidden;
 }
 
@@ -619,12 +614,12 @@ div.global_status_message {
 }
 
 div#receipt_keypad_container div#receipt_container {
-    height: 185px;
+    height: 351px;
     background-color: #FFF;
 }
 
 div#receipt_keypad_container div#receipt {
-    height: 160px;
+    height: 305px;
     overflow-y: auto;
     display: block;
     background-color: #FFF;
@@ -920,11 +915,11 @@ div#menu_screen div#menu_pages_container div.sub_menu_items_container {
 
 div#menu_screen div#menu_pages_container div#menu_buttons {
     border-spacing: 3px;
-    height: 138px;
+    height: 159px;
 }
 
 div#menu_screen div#menu_pages_container div#menu_buttons div.buttons div.button {
-    width: 60px;
+    width: 87px;
     max-width: 87px;
 }
 
@@ -953,7 +948,7 @@ div#menu_screen div#menu_pages_container div#pages div.page {
     text-align: center;
     vertical-align: middle;
     height: 55px;
-    width: 50px;
+    width: 88px;
     cursor: pointer;
     border: 1px solid #AAA;
     cursor: pointer;
@@ -996,7 +991,7 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
     position: relative;
     float: left;
     margin: 1px;
-    height: 63px;
+    height: 92px;
     border: 1px solid #AAA;
     cursor: pointer;
     -moz-border-radius: 3px;
@@ -1024,7 +1019,7 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.item_pic img {
     position: relative;
-    height: 40px;
+    height: 58px;
     max-height: 58px;
     max-width: 86px;
     margin-top: 1px;
@@ -1037,7 +1032,7 @@ div#menu_screen div#menu_pages_container div#menu_items_container div#items div.
     position: absolute;
     bottom: 1px;
     background-color: #FFF;
-    width: 60px;
+    width: 86px;
 }
 
 div#menu_screen div#menu_pages_container div#menu_items_container div#items div.item div.stock_count {
@@ -1797,7 +1792,7 @@ div#menu_screen div#receipt_keypad_container div#menu_buttons_popup_anchor {
 /* Generic Till Roll */
 
 div#menu_screen div#receipt_keypad_container div#receipt div#till_roll {
-    height: 130px;
+    height: 260px;
     display: block;
     background-color: #FFF;
 }
@@ -4125,7 +4120,7 @@ div.text_only_tabs div.text_only_tab div.label {
 div.button {
     width: 73px;
     max-width: 73px;
-    height: 60px;
+    height: 71px;
     max-height: 71px;
     overflow: hidden;
     vertical-align: middle;
@@ -4182,13 +4177,13 @@ div.button.selected {
 }
 
 div.button div.icon {
-    height: 25px;
+    height: 36px;
     margin-bottom: 2px;
     margin-top: 3px;
 }
 
 div.button div.icon img {
-    max-height: 23px;
+    max-height: 36px;
     max-width: 55px;
 }
 
