@@ -831,7 +831,7 @@ function checkForFirefox() {
 
         //TODO: remove this
         //You should be using firefox!
-        //return false;
+        return false;
     
     
         
