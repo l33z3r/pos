@@ -438,7 +438,7 @@ function initTrainingModeFromCookie(){if(getRawCookie(inTrainingModeCookieName)=
 var turnOn=getRawCookie(inTrainingModeCookieName)==="true";setTrainingMode(turnOn);}
 function hideUtilKeyboardCloseButton(){$('#close_keyboard_link').hide();$('#util_keyboard_inner_container').height("230px");}
 function showUtilKeyboardCloseButton(){$('#close_keyboard_link').show();$('#util_keyboard_inner_container').height("260px");}
-function checkForFirefox(){var ua=$.browser;if(typeof(ua.mozilla)=='undefined'){niceAlert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software!");return false;}
+function checkForFirefox(){var ua=$.browser;if(typeof(ua.mozilla)=='undefined'){return false;niceAlert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software!");return false;}
 return true;}
 function checkForClueyPlugin(){if(!checkForFirefox()){return false;}
 if(typeof(cluey_ff_ext)=='undefined'){var title="Cluey Addon Not Found";hideNiceAlert();ModalPopups.Alert('niceAlertContainer',title,"<div id='nice_alert' class='licence_expired_header'>Cluey Firefox Extension Not Found. You can download it by clicking OK. You must then install it via firefox.</div>",{width:360,height:310,okButtonText:'Download',onOk:"goToNewWindow(\"/firefox_extensions/cluey_ff_extension.xpi\");hideNiceAlert();"});return false;}else{console.log("Setting cluey prefs in plugin");cluey_ff_ext.setClueyPrefs();return true;}}
