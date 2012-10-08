@@ -36,17 +36,40 @@ function goToNewWindow(place) {
     window.open(place,'_blank');
 }
 
-function postTo(place, data) {
-    var formHTML = '<form action="' + place + '" method="POST">';
-    
-    for (var key in data) {
-        formHTML += '<input type="hidden" name="' + key + '" value="' + data[key] + '"/>';
-    }
-    
-    formHTML += '</form>';
-    
+//function postTo(place, data) {
+//    var formHTML = '<form action="' + place + '" method="POST">';
+//    
+//    for (var key in data) {
+//        formHTML += '<input type="hidden" name="' + key + '" value="' + data[key] + '"/>';
+//    }
+//    
+//    formHTML += '</form>';
+//    
+//    showSpinner();
+//    $(formHTML).submit();
+//}
+
+function postTo(path, params) {
     showSpinner();
-    $(formHTML).submit();
+    
+    var form = document.createElement("form");
+    
+    form.setAttribute("method", "post");
+    form.setAttribute("action", path);
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+         }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
 }
 
 function inMobileContext() {

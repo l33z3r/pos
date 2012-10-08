@@ -18,7 +18,7 @@ Pos::Application.configure do
   config.action_view.debug_rjs             = true
   
   #turn this on for some fragment caching testing in development mode
-  config.action_controller.perform_caching = true
+  config.action_controller.perform_caching = false
   
   #config.action_controller.asset_host = "http://cluey_staging.s3.amazonaws.com"
   

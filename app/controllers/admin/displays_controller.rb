@@ -208,7 +208,9 @@ class Admin::DisplaysController < Admin::AdminController
     
     #save again after build
     @new_page.save!
+    
     flash[:notice] = "Page Created"
+    
     redirect_to builder_admin_display_path(@display)
   end
 
