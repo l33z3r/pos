@@ -1056,7 +1056,7 @@ function transferOrderError() {
     inTransferOrderMode = false;
     transferOrderInProgress = false;
     showMenuScreen();
-    setStatusMessage("Error transfering order. Server might be down!");
+    niceAlert("Error transferring order. Server might be down!");
     return;
 }
 
