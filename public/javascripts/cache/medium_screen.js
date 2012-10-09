@@ -160,6 +160,7 @@ if(inTransferOrderMode){if(transferOrderInProgress){niceAlert("Transfer table or
 doTransferTable(selectedTable,table_info.id);clearTableNumberEntered()
 return;}
 current_table_label=table_label;doSelectTable(table_info.id);clearTableNumberEntered();if(menuScreenDefault=="true"){showMenuItemsSubscreen();}else{showMenuItemsSubscreen();swipeToReceipt();menuScreenDefault="true"}}
+function transferOrderError(){hideNiceAlert();inTransferOrderMode=false;transferOrderInProgress=false;showMenuItemsSubscreen();setStatusMessage("Error transfering order. Server might be down!");return;}
 function removeTableClass(table_class){$('.button').removeClass("selected");}
 function clearTableNumberEntered(){$('#table_num').val("");$('#table_number_show').html("");}
 function postDoSelectTable(){var theLabel="Table "+current_table_label;$('.button[id=sales_button_'+tablesButtonID+'] .button_name').html(theLabel);$('#receipt_screen #header #table_name').html(theLabel);}
