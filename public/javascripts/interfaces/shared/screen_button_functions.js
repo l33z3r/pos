@@ -46,7 +46,6 @@ function doSyncTableOrder() {
     }
     
     if (!appOnline) {
-        
         if(inLargeInterface()) {
             //just try print the items even if offline, this is a bit of a hack
             if(selectedTable != previousOrderTableNum && selectedTable != tempSplitBillTableNum) {
@@ -65,12 +64,7 @@ function doSyncTableOrder() {
             checkForItemsToPrint(order, current_user_nickname);
         }
         
-        
-        
-        
-        
         niceAlert("Cannot contact server, ordering is disabled until connection re-established! Orders should still print locally.");
-        return;
     }
 
     var order = null;
@@ -137,9 +131,9 @@ function doSyncTableOrder() {
     var checkForShowServerAddedText = true;
 
     //mark the item that we need to show the server added text for
-    for (var i = 0; i < order.items.length; i++) {
-        if (checkForShowServerAddedText && !order.items[i].synced && !order.items[i].is_void) {
-            order.items[i].showServerAddedText = true;
+    for (var j = 0; j < order.items.length; j++) {
+        if (checkForShowServerAddedText && !order.items[j].synced && !order.items[j].is_void) {
+            order.items[j].showServerAddedText = true;
             checkForShowServerAddedText = false;
         }
     }
@@ -196,7 +190,24 @@ function finishSyncTableOrder() {
 
 function syncTableOrderFail() {
     orderInProcess = false;
-    niceAlert("Order not sent, no connection, please try again");
+    
+    //THIS IS TO STOP THE LIMBO PROBLEM
+    if(inTransferOrderItemMode) {
+        $('#tables_screen_status_message').hide();
+        hideNiceAlert();
+        transferOrderItemInProgress = false;
+        inTransferOrderItemMode = false;
+        showMenuScreen();
+        niceAlert("Error, Server may be down. You may need to hit order again for both tables to ensure that the changes are system wide.");
+    } else if(inSplitBillMode) {
+        cancelSplitBillMode();
+        tableSelectMenu.setValue(tempSplitBillTableNum);
+        doSelectTable(tempSplitBillTableNum);
+        niceAlert("Error, Server may be down. You may need to hit order again for the original table to ensure that the changes are system wide.");
+        $('#split_bill_select_item').show();
+    } else {
+        niceAlert("Order not sent, no connection, please try again");
+    }
 }
 
 function retryTableOrder() {

@@ -49,7 +49,7 @@ $(function() {
     $('a').live("click", preventOfflineHref);
 
     //enable this for html5 cache flushing
-    if(true) {//inProdMode()) {
+    if(!inDevMode()) {
         //start checking for cache updates
         startCacheUpdateCheckPoll();
     }

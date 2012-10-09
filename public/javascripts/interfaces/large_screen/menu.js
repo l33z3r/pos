@@ -1040,6 +1040,16 @@ function tableScreenSelectTable(tableId) {
     doSelectTable(tableId);
 }
 
+function transferOrderError() {
+    hideNiceAlert();        
+    $('#tables_screen_status_message').hide();
+    inTransferOrderMode = false;
+    transferOrderInProgress = false;
+    showMenuScreen();
+    niceAlert("Error transferring order. Server might be down!");
+    return;
+}
+
 function loadReceipt(order, doScroll) {
     clearReceipt();
     
@@ -1546,7 +1556,7 @@ function orderSentToServerCallback(orderData, errorOccured) {
         reloadCustomers();
     } else {
         if(!isTableZeroOrder) {
-            niceAlert("There was an error cashing out the last order, the server could not process it, or could not be reached. It will automatically resend itself, please do not cash out on another terminal!");
+            niceAlert("There was an error cashing out the last order. It will automatically resend itself, please do not cash out on another terminal!");
         }
     }
     

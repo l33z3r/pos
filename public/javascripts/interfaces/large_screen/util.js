@@ -828,14 +828,6 @@ function checkForFirefox() {
     var ua = $.browser;
     
     if (typeof(ua.mozilla) == 'undefined') {
-
-        //TODO: remove this
-        //You should be using firefox!
-        return false;
-    
-    
-        
-        
         niceAlert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software!");
         return false;
     }
@@ -847,10 +839,6 @@ function checkForClueyPlugin() {
     if(!checkForFirefox()) {
         return false;
     }
-    
-    //TODO: remove this
-    //You should be using firefox!
-    //return false;
     
     if(typeof(cluey_ff_ext) == 'undefined') {
         var title = "Cluey Addon Not Found";
@@ -975,18 +963,7 @@ function checkForUninstalledPrinters() {
     
     if(notFoundPrintersNetworkPaths.length > 0) {
         var title = "Printers Not Installed";
-        
-        hideNiceAlert();
-        
-        ModalPopups.Alert('niceAlertContainer',
-            title, "<div id='nice_alert' class='licence_expired_header'>Warning... The following printers are not installed on this terminal: " + notFoundPrintersNetworkPaths.join(",") + "</div>",
-            {
-                width: 360,
-                height: 310,
-                okButtonText: 'OK',
-                onOk: "hideNiceAlert();"
-            });
-        
+        niceAlert("Warning... The following printers are not installed on this terminal: " + notFoundPrintersNetworkPaths.join(","), title);
         return false;
     } else {
         return true;
@@ -1005,7 +982,7 @@ function checkForDuplicateBrowserSession() {
     var storedBrowserSessionId = retrieveStorageValue(browserSessionIdStorageKey);
     
     if(generatedBrowserSessionId != storedBrowserSessionId) {
-        alert("Another browser tab is open for the cluey app. This tab will now close.");
+        niceAlert("Another browser tab is open for the cluey app. This tab will now close.");
         window.close();
     }
 }

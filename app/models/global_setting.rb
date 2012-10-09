@@ -305,12 +305,13 @@
       #ipad ua using atomic: Mozilla/5.0 (iPad; CPU OS 5_0_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9A405
       #ipad ua using kiosk: Mozilla/5.0 (iPad; U; CPU OS 5_0_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A405 Safari/7534.48.3
       
-      @test_for_desktop = "Chrome"
+      @test_for_chrome = "Chrome"
+      @test_for_firefox = "Mozilla"
       @test_for_android = "Android"
       @test_for_ipad = "iPad"
       
       @user_agent = args[:user_agent]
-      @default_disable_advanced_touch = @user_agent.include?(@test_for_desktop) and !@user_agent.include?(@test_for_android) and !@user_agent.include?(@test_for_ipad)
+      @default_disable_advanced_touch = (@user_agent.include?(@test_for_chrome) or @user_agent.include?(@test_for_firefox)) and !@user_agent.include?(@test_for_android) and !@user_agent.include?(@test_for_ipad)
       
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{DISABLE_ADVANCED_TOUCH.to_s}_#{args[:fingerprint]}", :value => "#{@default_disable_advanced_touch}", :label_text => LABEL_MAP[DISABLE_ADVANCED_TOUCH])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)

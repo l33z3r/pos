@@ -1361,6 +1361,15 @@ function doSubmitTableNumber() {
 
 }
 
+function transferOrderError() {
+    hideNiceAlert();        
+    inTransferOrderMode = false;
+    transferOrderInProgress = false;
+    showMenuItemsSubscreen();
+    setStatusMessage("Error transfering order. Server might be down!");
+    return;
+}
+
 function removeTableClass(table_class) {
     $('.button').removeClass("selected");
 }
