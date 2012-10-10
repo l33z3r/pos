@@ -14,20 +14,21 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: payments
 #
-#  id                  :integer(4)      not null, primary key
+#  id                  :integer(8)      not null, primary key
 #  transaction_type    :string(255)
-#  employee_id         :integer(4)
-#  card_transaction_id :integer(4)
+#  employee_id         :integer(8)
+#  card_transaction_id :integer(8)
 #  amount              :float           default(0.0), not null
 #  amount_tendered     :float           default(0.0), not null
 #  payment_method      :string(255)
 #  created_at          :datetime
 #  updated_at          :datetime
 #  terminal_id         :string(255)
-#  outlet_id           :integer(4)
+#  outlet_id           :integer(8)
 #
 

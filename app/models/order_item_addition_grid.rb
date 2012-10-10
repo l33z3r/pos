@@ -35,16 +35,17 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: order_item_addition_grids
 #
-#  id          :integer(4)      not null, primary key
+#  id          :integer(8)      not null, primary key
 #  name        :string(255)
 #  grid_x_size :integer(4)
 #  grid_y_size :integer(4)
 #  created_at  :datetime
 #  updated_at  :datetime
-#  outlet_id   :integer(4)
+#  outlet_id   :integer(8)
 #
 

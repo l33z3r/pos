@@ -18,30 +18,13 @@
 
         <tbody>
           <tr>
-            <td class="label">
-              Terminal Name
+            <td>
+              Unlink This Mobile?
             </td>
-            <td class="data text_align_left">
-              <% @gs = GlobalSetting.terminal_id_for @terminal_fingerprint, current_outlet %>
-
-              <div id="terminal_name_field_unique_error" style="display: none;">
-                This terminal name has already been taken, if you submit this, the old terminal name will be overwritten
+            <td class="text_align_left">
+              <div id="delete_terminal_fingerprint_cookie_button" class="button" data-onpress="unlinkTerminal()">
+                Unlink
               </div>
-
-              <%= fields_for "global_settings[]", @gs do |f| %>
-                <%= f.text_field :value, :id => "terminal_name_field", :onkeyup => "checkForUniqueTerminalName();" %>
-              <% end %>
-            </td>
-          </tr>
-          <tr>
-            <td class="label">
-              Printer IP Address
-            </td>
-            <td class="data text_align_left">
-              <% @gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, current_outlet, {:fingerprint => @terminal_fingerprint} %>
-              <%= fields_for "global_settings[]", @gs do |f| %>
-                <%= f.text_field :value %>
-              <% end %>
             </td>
           </tr>
           <tr>
@@ -65,38 +48,6 @@
                      value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
               <div class="label">No</div>
               <div class="clear">&nbsp;</div>
-            </td>
-          </tr>
-          <tr>
-            <td class="label">Printer Left Margin (Pixels)</td>
-            <td class="data text_align_left">
-              <% @gs = GlobalSetting.setting_for GlobalSetting::PRINTER_LEFT_MARGIN, current_outlet, {:fingerprint => @terminal_fingerprint} %>
-              <%= fields_for "global_settings[]", @gs do |f| %>
-                <%= f.text_field :value %>
-              <% end %>
-            </td>
-          </tr>
-          <tr>
-            <td class="label">Use Windows OS Printer Margins?</td>
-            <td class="data text_align_left">
-              <% @gs = GlobalSetting.setting_for GlobalSetting::WINDOWS_PRINTER_MARGINS, current_outlet, {:fingerprint => @terminal_fingerprint} %>
-              <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                     value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
-              <div class="label">Yes</div>
-              <div class="clear">&nbsp;</div>
-
-              <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                     value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
-              <div class="label">No</div>
-              <div class="clear">&nbsp;</div>
-            </td>
-          </tr>
-          <tr>
-            <td class="label">
-              Update App
-            </td>
-            <td class="data text_align_left">
-              <div id="update_app_link" class="button" onclick="updateApp();">Update App</div>
             </td>
           </tr>
         </tbody>

@@ -114,11 +114,12 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: payment_methods
 #
-#  id                     :integer(4)      not null, primary key
+#  id                     :integer(8)      not null, primary key
 #  name                   :string(255)
 #  is_default             :boolean(1)
 #  logo_file_name         :string(255)
@@ -127,10 +128,10 @@ end
 #  logo_updated_at        :datetime
 #  created_at             :datetime
 #  updated_at             :datetime
-#  payment_integration_id :integer(4)      default(0)
-#  receipt_footer_id      :integer(4)
+#  payment_integration_id :integer(8)
+#  receipt_footer_id      :integer(8)
 #  open_cash_drawer       :boolean(1)      default(TRUE)
 #  is_active              :boolean(1)      default(TRUE)
-#  outlet_id              :integer(4)
+#  outlet_id              :integer(8)
 #
 

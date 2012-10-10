@@ -548,169 +548,6 @@
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     else
-      #catch the keys that are not only integers and wont get caught in the switch statement
-#       if key.starts_with? "#{TERMINAL_ID.to_s}_"
-#         if value_changed?
-#           @res = GlobalSetting.where("global_settings.key != ?", key).where("global_settings.value = ?", value)
-#           if @res.size > 0
-#             #copy the settings over to the new fingerprint
-#             @old_terminal_gs = @res.first
-#             @old_fingerprint = @old_terminal_gs.key.split("_").last
-# 	    
-#             #web socket ip
-#             @websocket_ip_gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, {:fingerprint => @old_fingerprint}
-# 	    
-#             @my_terminal_fingerprint = key.split("_").last
-# 	    
-#             @my_websocket_ip_gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, {:fingerprint => @my_terminal_fingerprint}
-#             @my_websocket_ip_gs.value = @websocket_ip_gs.value
-#             @my_websocket_ip_gs.save
-# 
-#             #cash drawer ip
-#             @cash_drawer_ip_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_IP_ADDRESS, {:fingerprint => @old_fingerprint}
-# 	    
-#             @my_cash_drawer_ip_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_IP_ADDRESS, {:fingerprint => @my_terminal_fingerprint}
-#             @my_cash_drawer_ip_gs.value = @cash_drawer_ip_gs.value
-#             @my_cash_drawer_ip_gs.save
-# 	      
-#             #order receipt width
-#             @order_reciept_width_gs = GlobalSetting.setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, {:fingerprint => @old_fingerprint}
-# 	    
-#             @my_order_reciept_width_gs = GlobalSetting.setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, {:fingerprint => @my_terminal_fingerprint}
-#             @my_order_reciept_width_gs.value = @order_reciept_width_gs.value
-#             @my_order_reciept_width_gs.save
-# 	    
-#             #menu screen type
-#             @menu_screen_type_gs = GlobalSetting.setting_for GlobalSetting::MENU_SCREEN_TYPE, {:fingerprint => @old_fingerprint}
-# 	    
-#             @my_menu_screen_type_gs = GlobalSetting.setting_for GlobalSetting::MENU_SCREEN_TYPE, {:fingerprint => @my_terminal_fingerprint}
-#             @my_menu_screen_type_gs.value = @menu_screen_type_gs.value
-#             @my_menu_screen_type_gs.save
-# 	    
-#             #printer left margin
-#             @printer_left_margin_gs = GlobalSetting.setting_for GlobalSetting::PRINTER_LEFT_MARGIN, {:fingerprint => @old_fingerprint}
-# 	    
-#             @my_printer_left_margin_gs = GlobalSetting.setting_for GlobalSetting::PRINTER_LEFT_MARGIN, {:fingerprint => @my_terminal_fingerprint}
-#             @my_printer_left_margin_gs.value = @printer_left_margin_gs.value
-#             @my_printer_left_margin_gs.save
-# 	    
-#             #disable advanced touch
-#             @disable_advanced_touch_gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @old_fingerprint, :user_agent => ""}
-# 	    
-#             @my_disable_advanced_touch_gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @my_terminal_fingerprint, :user_agent => ""}
-#             @my_disable_advanced_touch_gs.value = @disable_advanced_touch_gs.value
-#             @my_disable_advanced_touch_gs.save
-# 	    
-#             #home screen
-#             @home_screen_gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_HOME_SCREEN, {:fingerprint => @old_fingerprint}
-# 	    
-#             @my_home_screen_gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_HOME_SCREEN, {:fingerprint => @my_terminal_fingerprint}
-#             @my_home_screen_gs.value = @home_screen_gs.value
-#             @my_home_screen_gs.save
-# 	    
-#             #cc charge service ip
-#             @cc_charge_service_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_CHARGE_SERVICE_IP, {:fingerprint => @old_fingerprint}
-# 	    
-#             @my_cc_charge_service_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_CHARGE_SERVICE_IP, {:fingerprint => @my_terminal_fingerprint}
-#             @my_cc_charge_service_ip_gs.value = @cc_charge_service_ip_gs.value
-#             @my_cc_charge_service_ip_gs.save
-# 	    
-#             #cc terminal ip
-#             @cc_terminal_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_IP, {:fingerprint => @old_fingerprint}
-# 	    
-#             @my_cc_terminal_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_IP, {:fingerprint => @my_terminal_fingerprint}
-#             @my_cc_terminal_ip_gs.value = @cc_terminal_ip_gs.value
-#             @my_cc_terminal_ip_gs.save
-# 	    
-#             #cc terminal port
-#             @cc_terminal_port_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, {:fingerprint => @old_fingerprint}
-# 	    
-#             @my_cc_terminal_port_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, {:fingerprint => @my_terminal_fingerprint}
-#             @my_cc_terminal_port_gs.value = @cc_terminal_port_gs.value
-#             @my_cc_terminal_port_gs.save
-# 	    
-#             #perform beep on click?
-#             @do_beep_gs = GlobalSetting.setting_for GlobalSetting::DO_BEEP, {:fingerprint => @old_fingerprint}
-# 	    
-#             @my_do_beep_gs = GlobalSetting.setting_for GlobalSetting::DO_BEEP, {:fingerprint => @my_terminal_fingerprint}
-#             @my_do_beep_gs.value = @do_beep_gs.value
-#             @my_do_beep_gs.save
-# 	    
-#             #use wss for cash drawer?
-#             @wss_cash_drawer_gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_CASH_DRAWER, {:fingerprint => @old_fingerprint}
-# 	    
-#             @my_wss_cash_drawer_gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_CASH_DRAWER, {:fingerprint => @my_terminal_fingerprint}
-#             @my_wss_cash_drawer_gs.value = @wss_cash_drawer_gs.value
-#             @my_wss_cash_drawer_gs.save
-# 	    
-#             #use wss for receipt printer?
-#             @wss_receipt_printer_gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_RECEIPT_PRINTER, {:fingerprint => @old_fingerprint}
-# 	    
-#             @my_wss_receipt_printer_gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_RECEIPT_PRINTER, {:fingerprint => @my_terminal_fingerprint}
-#             @my_wss_receipt_printer_gs.value = @wss_receipt_printer_gs.value
-#             @my_wss_receipt_printer_gs.save
-# 	    
-#             #screen resolution
-#             @screen_resolution_gs = GlobalSetting.setting_for GlobalSetting::SCREEN_RESOLUTION, {:fingerprint => @old_fingerprint}
-# 	    
-#             @my_screen_resolution_gs = GlobalSetting.setting_for GlobalSetting::SCREEN_RESOLUTION, {:fingerprint => @my_terminal_fingerprint}
-#             @my_screen_resolution_gs.value = @screen_resolution_gs.value
-#             @my_screen_resolution_gs.save
-# 	    
-# 	    #print local receive deliver
-#             @print_local_receive_delivery_gs = GlobalSetting.setting_for GlobalSetting::PRINT_LOCAL_RECIEVE_DELIVERY, {:fingerprint => @old_fingerprint}
-# 	    
-#             @my_print_local_receive_delivery_gs = GlobalSetting.setting_for GlobalSetting::PRINT_LOCAL_RECIEVE_DELIVERY, {:fingerprint => @my_terminal_fingerprint}
-#             @my_print_local_receive_delivery_gs.value = @print_local_receive_delivery_gs.value
-#             @my_print_local_receive_delivery_gs.save
-# 	    
-      #cash drawer com port
-#             @cash_drawer_com_port_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_COM_PORT, {:fingerprint => @old_fingerprint}
-# 	    
-#             @my_cash_drawer_com_port_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_COM_PORT, {:fingerprint => @my_terminal_fingerprint}
-#             @my_cash_drawer_com_port_gs.value = @cash_drawer_com_port_gs.value
-#             @my_cash_drawer_com_port_gs.save
-      
-      #cash drawer code
-#             @cash_drawer_code_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_CODE, {:fingerprint => @old_fingerprint}
-# 	    
-#             @my_cash_drawer_code_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_CODE, {:fingerprint => @my_terminal_fingerprint}
-#             @my_cash_drawer_code_gs.value = @cash_drawer_code_gs.value
-#             @my_cash_drawer_code_gs.save
-      
-      #local printer id
-#             @local_printer_id_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_CODE, {:fingerprint => @old_fingerprint}
-# 	    
-#             @my_local_printer_id_gs = GlobalSetting.setting_for GlobalSetting::LOCAL_PRINTER_ID, {:fingerprint => @my_terminal_fingerprint}
-#             @my_local_printer_id_gs.value = @local_printer_id_gs.value
-#             @my_local_printer_id_gs.save
-      
-#             #delete old gs objects
-#             @websocket_ip_gs.destroy
-#             @cash_drawer_ip_gs.destroy
-#             @order_reciept_width_gs.destroy
-#             @old_terminal_gs.destroy
-#             @menu_screen_type_gs.destroy
-#             @printer_left_margin_gs.destroy
-#             @disable_advanced_touch_gs.destroy
-#             @home_screen_gs.destroy
-#             @cc_charge_service_ip_gs.destroy
-#             @cc_terminal_ip_gs.destroy
-#             @cc_terminal_port_gs.destroy
-#             @do_beep_gs.destroy
-#             @wss_cash_drawer_gs.destroy
-#             @wss_receipt_printer_gs.destroy
-#             @screen_resolution_gs.destroy
-# 	    @print_local_receive_delivery_gs.destroy
-#      		@cash_drawer_com_port_gs.destroy
-#      @cash_drawer_code_gs.destroy
-#      @local_printer_id_gs.destroy
-#           end
-#         end
-#         if value
-#           new_value = (value ? value.gsub(" ", "").gsub("'", "").gsub("\"", "") : nil)
-#           write_attribute("value", new_value)
-#         end
       if key.starts_with?  "#{WINDOWS_PRINTER_MARGINS.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
@@ -904,11 +741,12 @@
 end
 
 
+
 # == Schema Information
 #
 # Table name: global_settings
 #
-#  id                :integer(4)      not null, primary key
+#  id                :integer(8)      not null, primary key
 #  key               :string(255)
 #  value             :text
 #  label_text        :string(255)
@@ -918,6 +756,6 @@ end
 #  logo_updated_at   :datetime
 #  created_at        :datetime
 #  updated_at        :datetime
-#  outlet_id         :integer(4)
+#  outlet_id         :integer(8)
 #
 

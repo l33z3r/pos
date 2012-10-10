@@ -41,22 +41,23 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: stock_transactions
 #
-#  id               :integer(4)      not null, primary key
-#  product_id       :integer(4)
-#  employee_id      :integer(4)
+#  id               :integer(8)      not null, primary key
+#  product_id       :integer(8)
+#  employee_id      :integer(8)
 #  old_amount       :float
 #  change_amount    :float
 #  transaction_type :integer(4)
 #  note             :string(255)
 #  created_at       :datetime
 #  updated_at       :datetime
-#  delivery_id      :integer(4)
+#  delivery_id      :integer(8)
 #  is_return        :boolean(1)      default(FALSE)
-#  order_item_id    :integer(4)
-#  outlet_id        :integer(4)
+#  order_item_id    :integer(8)
+#  outlet_id        :integer(8)
 #
 

@@ -12,6 +12,7 @@ class ClueyAccount < ActiveRecord::Base
   
   validates :name, :presence => true
   validates_uniqueness_of :name, :case_sensitive => false
+  validates_format_of :name, :with => /^[-a-z]+$/i, :message => "must only contain characters from the alphabet"
   
   validates :email,
     :presence => true,   
@@ -74,11 +75,12 @@ class ClueyAccount < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: cluey_accounts
 #
-#  id              :integer(4)      not null, primary key
+#  id              :integer(8)      not null, primary key
 #  name            :string(255)
 #  email           :string(255)
 #  password_hash   :string(255)
@@ -87,5 +89,6 @@ end
 #  updated_at      :datetime
 #  activation_code :string(255)
 #  activated_at    :datetime
+#  is_active       :boolean(1)      default(TRUE)
 #
 

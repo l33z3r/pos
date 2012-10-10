@@ -8,13 +8,14 @@ class ReceiptFooter < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: receipt_footers
 #
-#  id        :integer(4)      not null, primary key
+#  id        :integer(8)      not null, primary key
 #  name      :string(255)
 #  content   :text
-#  outlet_id :integer(4)
+#  outlet_id :integer(8)
 #
 

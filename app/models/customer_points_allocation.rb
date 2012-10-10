@@ -17,18 +17,19 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: customer_points_allocations
 #
-#  id                    :integer(4)      not null, primary key
-#  customer_id           :integer(4)
-#  order_id              :integer(4)
+#  id                    :integer(8)      not null, primary key
+#  customer_id           :integer(8)
+#  order_id              :integer(8)
 #  amount                :integer(4)
 #  loyalty_level_percent :float
 #  created_at            :datetime
 #  updated_at            :datetime
 #  allocation_type       :integer(4)
-#  outlet_id             :integer(4)
+#  outlet_id             :integer(8)
 #
 

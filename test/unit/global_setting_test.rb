@@ -9,11 +9,12 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: global_settings
 #
-#  id                :integer(4)      not null, primary key
+#  id                :integer(8)      not null, primary key
 #  key               :string(255)
 #  value             :text
 #  label_text        :string(255)
@@ -23,6 +24,6 @@ end
 #  logo_updated_at   :datetime
 #  created_at        :datetime
 #  updated_at        :datetime
-#  outlet_id         :integer(4)
+#  outlet_id         :integer(8)
 #
 

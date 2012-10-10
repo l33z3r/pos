@@ -4,6 +4,10 @@ class Outlet < ActiveRecord::Base
   
   validates :name, :presence => true
   validates_uniqueness_of :name, :case_sensitive => false, :scope => :cluey_account_id
+  validates_format_of :name, :with => /^[-a-z]+$/i, :message => "must only contain characters from the alphabet"
+  
+  validates :username, :presence => true
+  validates_format_of :username, :with => /^[-a-z]+$/i, :message => "must only contain characters from the alphabet"
   
   attr_accessor :password
   before_save :encrypt_password
@@ -69,12 +73,13 @@ class Outlet < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: outlets
 #
-#  id               :integer(4)      not null, primary key
-#  cluey_account_id :integer(4)
+#  id               :integer(8)      not null, primary key
+#  cluey_account_id :integer(8)
 #  name             :string(255)
 #  username         :string(255)
 #  password_hash    :string(255)
@@ -82,5 +87,6 @@ end
 #  updated_at       :datetime
 #  has_seed_data    :boolean(1)      default(FALSE)
 #  password_salt    :string(255)
+#  is_active        :boolean(1)      default(TRUE)
 #
 

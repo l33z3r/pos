@@ -36,19 +36,6 @@ function goToNewWindow(place) {
     window.open(place,'_blank');
 }
 
-//function postTo(place, data) {
-//    var formHTML = '<form action="' + place + '" method="POST">';
-//    
-//    for (var key in data) {
-//        formHTML += '<input type="hidden" name="' + key + '" value="' + data[key] + '"/>';
-//    }
-//    
-//    formHTML += '</form>';
-//    
-//    showSpinner();
-//    $(formHTML).submit();
-//}
-
 function postTo(path, params) {
     showSpinner();
     
@@ -65,7 +52,7 @@ function postTo(path, params) {
             hiddenField.setAttribute("value", params[key]);
 
             form.appendChild(hiddenField);
-         }
+        }
     }
 
     document.body.appendChild(form);
@@ -266,13 +253,9 @@ function setFingerPrintCookie() {
 }
 
 function regenerateTerminalFingerprintCookie() {
-    var answer = confirm("Are you sure?");
-    
-    if (answer) {
-        setRawCookie(terminalFingerPrintCookieName, "", -365);
-        setFingerPrintCookie()
-        doReload(false);
-    }
+    setRawCookie(terminalFingerPrintCookieName, "", -365);
+    setFingerPrintCookie()
+    goTo("/");
 }
 
 function storeOrderInStorage(current_user_id, order_to_store) {

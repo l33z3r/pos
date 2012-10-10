@@ -40,12 +40,13 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: work_reports
 #
-#  id              :integer(4)      not null, primary key
-#  employee_id     :integer(4)
+#  id              :integer(8)      not null, primary key
+#  employee_id     :integer(8)
 #  report_data     :text
 #  created_at      :datetime
 #  updated_at      :datetime
@@ -56,6 +57,6 @@ end
 #  payable_seconds :integer(4)      default(0)
 #  hourly_rate     :float
 #  cost            :float
-#  outlet_id       :integer(4)
+#  outlet_id       :integer(8)
 #
 

@@ -176,6 +176,68 @@ function doGlobalInit() {
     initTrainingModeFromCookie(); 
 }
 
+var showingTerminalSelectDialog = false;
+
+//this gets called from the polling when a terminal is not yet set
+function showTerminalSelectDialog() {
+    //must wait on js resources to load
+    if(typeof(outletTerminals) == "undefined") {
+        return;
+    }
+    
+    if(showingTerminalSelectDialog) {
+        return;
+    }
+    
+    showingTerminalSelectDialog = true;
+    
+    if(availableOutletTerminals.length == 0) {
+        var title = "Subscription Reached!";
+        var message = "You have only paid for " + outletTerminals.length + " terminal(s), which have all been assigned. You can create more terminals in the accounts section. Click OK to be redirected.";
+        
+        hideNiceAlert();
+        
+        ModalPopups.Alert('niceAlertContainer',
+            title, "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
+            {
+                width: 360,
+                height: 310,
+                okButtonText: 'Ok',
+                onOk: "goTo(outletTerminalsURL);"
+            });
+        
+        return;
+    }
+     
+    var dropdownMarkup = "<select id='terminal_select_dropdown'>";
+    
+    for(i=0; i<availableOutletTerminals.length; i++) {
+        dropdownMarkup += "<option value='" + availableOutletTerminals[i].name + "'>" + availableOutletTerminals[i].name + "</option>";
+    }
+    
+    dropdownMarkup += "</select>";
+    
+    title = "Please select a terminal:";
+        
+    var terminalSelectMarkup = "<div id='nice_alert' class='nice_alert'>" + dropdownMarkup + "</div>";
+    
+    hideNiceAlert();
+    
+    ModalPopups.Alert('niceAlertContainer',
+        title, terminalSelectMarkup,
+        {
+            width: 360,
+            height: 200,
+            okButtonText: 'Ok',
+            onOk: "terminalSelected()"
+        });
+}
+
+function terminalSelected() {
+    var selectedTerminal = $('select#terminal_select_dropdown option:selected').val();
+    linkTerminal(selectedTerminal);
+}
+
 function showInitialScreen() {
     if (current_user_id == null) {
         showLoginScreen();

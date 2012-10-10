@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120927105046) do
+ActiveRecord::Schema.define(:version => 20121010093346) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id",         :limit => 8
@@ -107,6 +107,7 @@ ActiveRecord::Schema.define(:version => 20120927105046) do
     t.datetime "updated_at"
     t.string   "activation_code"
     t.datetime "activated_at"
+    t.boolean  "is_active",       :default => true
   end
 
   create_table "customer_points_allocations", :force => true do |t|
@@ -458,6 +459,7 @@ ActiveRecord::Schema.define(:version => 20120927105046) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "assigned",                :default => false
   end
 
   create_table "outlets", :force => true do |t|
@@ -469,6 +471,7 @@ ActiveRecord::Schema.define(:version => 20120927105046) do
     t.datetime "updated_at"
     t.boolean  "has_seed_data",                 :default => false
     t.string   "password_salt"
+    t.boolean  "is_active",                     :default => true
   end
 
   create_table "payment_methods", :force => true do |t|

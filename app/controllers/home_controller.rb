@@ -645,6 +645,33 @@ class HomeController < ApplicationController
     end
   end
   
+  #this links a terminal to an OutletTerminal model instance
+  def link_terminal
+    @outlet_terminal_name = params[:outletTerminalName]
+    
+    @outlet_terminal = current_outlet.outlet_terminals.find_by_name @outlet_terminal_name
+    
+    @error = false
+    
+    if @outlet_terminal and !@outlet_terminal.assigned
+      @terminal_id_gs = GlobalSetting.terminal_id_for @terminal_fingerprint, current_outlet
+      @outlet_terminal.link_terminal @terminal_id_gs
+    else
+      @error = true
+    end
+  end
+  
+  def unlink_terminal
+    @terminal_id_gs = GlobalSetting.terminal_id_for @terminal_fingerprint, current_outlet
+    @outlet_terminal = current_outlet.outlet_terminals.find_by_name @terminal_id
+    
+    @outlet_terminal.unlink_terminal @terminal_id_gs
+    
+    request_immediate_reload_app @terminal_id
+    
+    render :json => {:success => true}.to_json
+  end
+  
   # Rails controller action for an HTML5 cache manifest file.
   # Generates a plain text list of files that changes
   # when one of the listed files change...

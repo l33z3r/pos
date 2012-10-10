@@ -15,15 +15,16 @@ class ShiftTimestamp < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: shift_timestamps
 #
-#  id             :integer(4)      not null, primary key
-#  employee_id    :integer(4)
+#  id             :integer(8)      not null, primary key
+#  employee_id    :integer(8)
 #  timestamp_type :integer(4)
 #  created_at     :datetime
 #  updated_at     :datetime
-#  outlet_id      :integer(4)
+#  outlet_id      :integer(8)
 #
 

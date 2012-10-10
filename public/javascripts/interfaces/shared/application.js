@@ -220,3 +220,54 @@ function pingHome() {
         }
     });
 }
+
+function linkTerminal(outletTerminalName) {
+    showLoadingDiv("Linking terminal to " + outletTerminalName);
+    
+    $.ajax({
+        url: "/link_terminal",
+        type : "POST",
+        error: function() {
+            hideNiceAlert();
+        
+            var message = "Error Linking Terminal!";
+        
+            ModalPopups.Alert('niceAlertContainer',
+                title, "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
+                {
+                    width: 360,
+                    height: 310,
+                    okButtonText: 'Ok',
+                    onOk: "doReload(false)"
+                });
+        },
+        complete: function() {
+            showingTerminalSelectDialog = false;
+        },
+        data : {
+            outletTerminalName : outletTerminalName
+        }
+    });
+}
+
+function unlinkTerminal() {
+    var answer = confirm("Are you sure?");
+    
+    if (!answer) {
+        return;
+    }
+    
+    showLoadingDiv("Unlinking terminal");
+    
+    $.ajax({
+        url: "/unlink_terminal",
+        type : "POST",
+        error: function() {
+            niceAlert("Error Unlinking Terminal!");
+        },
+        complete: function() {
+            hideNiceAlert();
+            regenerateTerminalFingerprintCookie();
+        }
+    });
+}

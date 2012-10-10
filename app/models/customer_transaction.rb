@@ -20,21 +20,22 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: customer_transactions
 #
-#  id               :integer(4)      not null, primary key
-#  customer_id      :integer(4)
+#  id               :integer(8)      not null, primary key
+#  customer_id      :integer(8)
 #  transaction_type :string(255)
-#  order_id         :integer(4)
+#  order_id         :integer(8)
 #  is_credit        :boolean(1)      default(TRUE), not null
 #  abs_amount       :float           default(0.0), not null
 #  actual_amount    :float           default(0.0), not null
 #  created_at       :datetime
 #  updated_at       :datetime
-#  payment_id       :integer(4)
+#  payment_id       :integer(8)
 #  terminal_id      :string(255)
-#  outlet_id        :integer(4)
+#  outlet_id        :integer(8)
 #
 

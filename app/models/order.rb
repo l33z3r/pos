@@ -69,12 +69,13 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: orders
 #
-#  id                    :integer(4)      not null, primary key
-#  employee_id           :integer(4)
+#  id                    :integer(8)      not null, primary key
+#  employee_id           :integer(8)
 #  total                 :float
 #  payment_type          :string(255)
 #  amount_tendered       :float
@@ -82,7 +83,7 @@ end
 #  num_persons           :integer(4)
 #  created_at            :datetime
 #  updated_at            :datetime
-#  table_info_id         :integer(4)
+#  table_info_id         :integer(8)
 #  discount_percent      :float
 #  pre_discount_price    :float
 #  terminal_id           :string(255)
@@ -91,14 +92,14 @@ end
 #  global_sales_tax_rate :float
 #  service_charge        :float
 #  cashback              :float
-#  void_order_id         :integer(4)
+#  void_order_id         :integer(8)
 #  is_void               :boolean(1)      default(FALSE)
 #  order_num             :integer(8)
 #  split_payments        :text(2147483647
 #  client_name           :string(255)     default(""), not null
 #  time_started          :string(255)
 #  training_mode_sale    :boolean(1)      default(FALSE)
-#  room_id               :integer(4)
-#  outlet_id             :integer(4)
+#  room_id               :integer(8)
+#  outlet_id             :integer(8)
 #
 

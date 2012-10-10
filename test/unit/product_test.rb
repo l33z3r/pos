@@ -28,14 +28,15 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: products
 #
-#  id                                       :integer(4)      not null, primary key
+#  id                                       :integer(8)      not null, primary key
 #  brand                                    :string(255)
 #  name                                     :string(255)
-#  category_id                              :integer(4)
+#  category_id                              :integer(8)
 #  description                              :string(255)
 #  size                                     :float           default(1.0), not null
 #  unit                                     :string(255)
@@ -48,9 +49,9 @@ end
 #  product_image_content_type               :string(255)
 #  product_image_file_size                  :integer(4)
 #  product_image_updated_at                 :datetime
-#  modifier_category_id                     :integer(4)
-#  tax_rate_id                              :integer(4)
-#  parent_product_id                        :integer(4)
+#  modifier_category_id                     :integer(8)
+#  tax_rate_id                              :integer(8)
+#  parent_product_id                        :integer(8)
 #  printers                                 :string(255)     default("")
 #  quantity_in_stock                        :float           default(0.0)
 #  code_num                                 :integer(4)
@@ -100,13 +101,13 @@ end
 #  double_price                             :float           default(0.0), not null
 #  display_image                            :string(255)
 #  hide_on_printed_receipt                  :boolean(1)      default(FALSE)
-#  order_item_addition_grid_id              :integer(4)
+#  order_item_addition_grid_id              :integer(8)
 #  order_item_addition_grid_id_is_mandatory :boolean(1)      default(FALSE)
 #  course_num                               :integer(4)      default(-1)
 #  is_stock_item                            :boolean(1)      default(TRUE)
 #  kitchen_screens                          :string(255)     default("")
 #  half_price                               :float           default(0.0)
 #  blocked_printers                         :string(255)
-#  outlet_id                                :integer(4)
+#  outlet_id                                :integer(8)
 #
 

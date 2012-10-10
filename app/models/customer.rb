@@ -114,11 +114,12 @@ class Customer < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: customers
 #
-#  id               :integer(4)      not null, primary key
+#  id               :integer(8)      not null, primary key
 #  name             :string(255)
 #  contact_name     :string(255)
 #  dob              :date
@@ -131,7 +132,7 @@ end
 #  credit_limit     :float           default(0.0), not null
 #  current_balance  :float           default(0.0), not null
 #  credit_available :float           default(0.0), not null
-#  loyalty_level_id :integer(4)
+#  loyalty_level_id :integer(8)
 #  available_points :integer(4)      default(0), not null
 #  swipe_card_code  :string(255)
 #  created_at       :datetime
@@ -139,6 +140,6 @@ end
 #  customer_number  :integer(4)
 #  customer_type    :string(255)
 #  is_active        :boolean(1)      default(TRUE)
-#  outlet_id        :integer(4)
+#  outlet_id        :integer(8)
 #
 

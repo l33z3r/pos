@@ -8,16 +8,17 @@ class MenuItemTest < ActiveSupport::TestCase
 end
 
 
+
 # == Schema Information
 #
 # Table name: menu_items
 #
-#  id           :integer(4)      not null, primary key
-#  menu_page_id :integer(4)
-#  product_id   :integer(4)
+#  id           :integer(8)      not null, primary key
+#  menu_page_id :integer(8)
+#  product_id   :integer(8)
 #  created_at   :datetime
 #  updated_at   :datetime
 #  order_num    :integer(4)      default(0)
-#  outlet_id    :integer(4)
+#  outlet_id    :integer(8)
 #
 

@@ -9,17 +9,18 @@ class ClientTransaction < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: client_transactions
 #
-#  id                          :integer(4)      not null, primary key
-#  order_id                    :integer(4)
-#  payment_integration_type_id :integer(4)
+#  id                          :integer(8)      not null, primary key
+#  order_id                    :integer(8)
+#  payment_integration_type_id :integer(8)
 #  client_name                 :string(255)
 #  transaction_data            :text(2147483647
 #  created_at                  :datetime
 #  updated_at                  :datetime
-#  outlet_id                   :integer(4)
+#  outlet_id                   :integer(8)
 #
 

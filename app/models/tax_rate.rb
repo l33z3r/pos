@@ -25,16 +25,17 @@ class TaxRate < ActiveRecord::Base
   
 end
 
+
 # == Schema Information
 #
 # Table name: tax_rates
 #
-#  id         :integer(4)      not null, primary key
+#  id         :integer(8)      not null, primary key
 #  name       :string(255)
 #  rate       :float
 #  is_default :boolean(1)
 #  created_at :datetime
 #  updated_at :datetime
-#  outlet_id  :integer(4)
+#  outlet_id  :integer(8)
 #
 

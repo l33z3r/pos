@@ -71,8 +71,10 @@ class ApplicationController < AppBaseController
     @timestamp_setting = GlobalSetting.setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP, current_outlet
     @timestamp_setting.value = now_millis
     @timestamp_setting.save
-    
-    #TerminalSyncData.request_reload_app terminal_id, current_outlet
+  end
+  
+  def request_immediate_reload_app terminal_id
+    TerminalSyncData.request_reload_app terminal_id, current_outlet
   end
   
   def fetch_sync_table_order time
@@ -432,6 +434,9 @@ class ApplicationController < AppBaseController
     end
     
     @timekeeping_terminal = GlobalSetting.parsed_setting_for GlobalSetting::TIMEKEEPING_TERMINAL, current_outlet
+    
+    @accounts_url = accounts_accounts_url(:subdomain => @account.name)
+    @outlet_terminals_url = accounts_outlet_url(@current_outlet, :subdomain => @account.name)     
   end
   
   def mobile_device?

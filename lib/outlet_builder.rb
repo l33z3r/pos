@@ -117,7 +117,7 @@ class OutletBuilder
         :label_text => GlobalSetting::LABEL_MAP[GlobalSetting::LAST_ORDER_ID]})
     
     #add a default terminal
-    @default_terminal = @outlet.outlet_terminals.build
+    @default_terminal = OutletTerminal.create({:outlet_id => outlet_id})
     @default_terminal.name = "terminal1"
     @default_terminal.save
   end

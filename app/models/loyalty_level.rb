@@ -21,16 +21,17 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: loyalty_levels
 #
-#  id         :integer(4)      not null, primary key
+#  id         :integer(8)      not null, primary key
 #  label      :string(255)
 #  percent    :float           default(10.0), not null
 #  is_default :boolean(1)      default(FALSE)
 #  created_at :datetime
 #  updated_at :datetime
-#  outlet_id  :integer(4)
+#  outlet_id  :integer(8)
 #
 

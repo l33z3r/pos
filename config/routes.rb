@@ -79,6 +79,8 @@ Pos::Application.routes.draw do
   get 'ping' => "home#ping"
   match 'request_terminal_reload' => "home#request_terminal_reload", :via => :post
   match 'clear_all_fragment_caches' => "home#clear_all_fragment_caches", :via => :post
+  match 'link_terminal' => "home#link_terminal", :via => :post
+  match 'unlink_terminal' => "home#unlink_terminal", :via => :post
   
   #appcache
   match 'cache_manifest' => "home#cache_manifest"
@@ -145,7 +147,6 @@ Pos::Application.routes.draw do
     resources :terminals, :only => [:index] do
       collection do
         post 'link_display'
-        get 'check_for_unique'
       end
     end
     

@@ -201,4 +201,7 @@
   var printLocalDeliveryReceipts = <%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_LOCAL_RECIEVE_DELIVERY, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
   
   var printDelegateTerminalID = "<%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_DELEGATE_TERMINAL_ID, current_outlet %>";
+  
+  var accountsURL = "<%= @accounts_url %>";
+  var outletTerminalsURL = "<%= @outlet_terminals_url %>";
 </script>

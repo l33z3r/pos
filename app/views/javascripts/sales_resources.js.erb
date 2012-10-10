@@ -24,7 +24,7 @@ var cashOutPresets = new Array();
   cashOutPresets.push(cash_out_preset_info);
 
 <% end -%>
-  
+
 var printers = new Array();
 var printerNetworkPaths = new Array();
 var printersByID  = {};
@@ -41,5 +41,26 @@ var printersByID  = {};
   printers.push(printer_info);
   printerNetworkPaths.push('<%= escape_javascript(printer.network_path) %>');
   printersByID[printer_info.id] = printer_info;
-  
+
+<% end -%>
+
+var outletTerminals = new Array();
+var assignedOutletTerminals = new Array();
+var availableOutletTerminals = new Array();
+
+<% current_outlet.outlet_terminals.all.each do |ot|-%>
+  ot_info = {
+  id : '<%= ot.id %>',
+  name: '<%= ot.name %>',
+  assigned: <%= ot.assigned %>
+  }
+
+  outletTerminals.push(ot_info);
+
+  if(ot_info.assigned) {
+  assignedOutletTerminals.push(ot_info);
+  } else {
+  availableOutletTerminals.push(ot_info);
+  }
+
 <% end -%>

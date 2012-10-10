@@ -10,11 +10,12 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: rooms
 #
-#  id                             :integer(4)      not null, primary key
+#  id                             :integer(8)      not null, primary key
 #  name                           :string(255)
 #  grid_x_size                    :integer(4)
 #  grid_y_size                    :integer(4)
@@ -23,6 +24,6 @@ end
 #  grid_resolution                :integer(4)      default(5)
 #  default_service_charge_percent :float
 #  prompt_for_client_name         :boolean(1)      default(FALSE)
-#  outlet_id                      :integer(4)
+#  outlet_id                      :integer(8)
 #
 
