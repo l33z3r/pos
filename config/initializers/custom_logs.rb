@@ -12,7 +12,7 @@ EXCEPTION_LOGGER.level = Logger::INFO
 class NoisyLogger < Rails::Rack::Logger
   def initialize app, opts = {}
     @default_log = Logger.new(STDOUT)
-    @default_log.level = Logger::INFO
+    @default_log.level = Logger::DEBUG
     
     @noisy_log = Logger.new('/dev/null')
 
