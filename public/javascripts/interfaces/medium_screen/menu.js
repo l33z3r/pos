@@ -1061,11 +1061,11 @@ function postDoSyncTableOrder() {
         return;
     }
 
-        setStatusMessage("Order Sent");
+    setStatusMessage("Order Sent");
     //vibrate!
     vibrate();
 
-//    showTablesSubscreen();
+    //    showTablesSubscreen();
     tableScreenBack();
 }
 
@@ -1158,8 +1158,8 @@ function showCoversSubscreen() {
                     }
                 }
             }
-//            $("#covers_num").val(tableOrderDataJSON.covers);
-//            $("#covers_num").addClass('highlighted');
+            //            $("#covers_num").val(tableOrderDataJSON.covers);
+            //            $("#covers_num").addClass('highlighted');
             checkForCovers();
             if (initScreenDefault == "false") {
                 $('#menu_screen #buttons_container').hide();
@@ -1234,7 +1234,7 @@ function doCancelcoverNumberSelectKeypad() {
     oldVal = $('#covers_num').val().toString();
     newVal = oldVal.substring(0, oldVal.length - 1);
     newVal = oldVal.substring(0, oldVal.length - 1);
-//    $('#cover_number_show').html(newVal);
+    //    $('#cover_number_show').html(newVal);
     $('#covers_num').val(newVal);
 //    $('.new_price').val(newVal);
 }
@@ -1324,7 +1324,7 @@ function doSubmitTableNumber() {
     //check table exists
     table_info = getTableForLabel(table_label);
 
-//    clearTableNumberEntered();
+    //    clearTableNumberEntered();
 
     if (!table_info) {
         $('#table_number_show').html("No Such Table!");
@@ -1505,13 +1505,31 @@ function displayDropdownSelected(selectedDisplayId) {
 
 }
 
-function doMobileLogout() {
+//this function also exists in the mobile.js file, and is copied here for 
+//convinience so we have a shortcut on the mobile interface
+function logoutShortcut() {
+    if(current_user_id == null) {
+        //not logged in
+        return;
+    }
+
+    showLoadingDiv();
+
+    var id_for_logout = current_user_id;
+
+    current_user_id = null;
+
+    storeActiveUserID(null);
+
     //send ajax logout
     $.ajax({
         type: 'POST',
-        url: '/logout'
+        url: '/logout',
+        complete: goToMainMenu,
+        data: {
+            employee_id : id_for_logout
+        }
     });
-    goToMainMenu();
 }
 
 function doAutoCovers() {

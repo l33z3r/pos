@@ -52,7 +52,7 @@ function mobileLoginSuccess(id, nickname, is_admin, passcode) {
         type: 'POST',
         url: '/login',
         data: {
-            id : id
+            employee_id : id
         }
     });
     
