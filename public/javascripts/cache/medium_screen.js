@@ -178,7 +178,8 @@ function orderReadyCancelClicked(){hideOrderReadyPopup();stopVibrate();console.l
 function hidePreviousOrderReadyPopup(){hideOrderReadyPopup();}
 function hideOrderReadyPopup(){try{ModalPopups.Close('niceAlertContainer');}catch(e){}}
 function displayDropdownSelected(selectedDisplayId){showSpinner();$.ajax({type:'POST',url:'/admin/terminals/link_display',success:function(){window.location.reload();},data:{terminal_id:terminalID,display_id:selectedDisplayId}});}
-function doMobileLogout(){$.ajax({type:'POST',url:'/logout'});goToMainMenu();}
+function logoutShortcut(){if(current_user_id==null){return;}
+showLoadingDiv();var id_for_logout=current_user_id;current_user_id=null;storeActiveUserID(null);$.ajax({type:'POST',url:'/logout',complete:goToMainMenu,data:{employee_id:id_for_logout}});}
 function doAutoCovers(){promptAddCovers();}
 function setStatusMessage(message,hide,shake){niceAlert(message);console.log("Status message set "+message);}
 function initMcDropDowns(){$("#room_select_input").mcDropdown("#room_select",{maxRows:6});roomSelectMenu=$("#room_select_input").mcDropdown();$("#menu_select_input").mcDropdown("#menu_select");menuSelectMenu=$("#menu_select_input").mcDropdown();}
