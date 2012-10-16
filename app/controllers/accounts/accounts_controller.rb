@@ -1,5 +1,5 @@
 class Accounts::AccountsController < Accounts::ApplicationController
-  skip_before_filter :setup_for_master_subdomain, :ensure_logged_in, :only => [:welcome, :new, :create]
+  skip_before_filter :setup_for_master_subdomain, :ensure_logged_in, :only => [:welcome, :new, :create, :activate]
   before_filter :do_setup_for_master_subdomain_if_not_signup_subdomain, :only => [:new, :create]
 
   def do_setup_for_master_subdomain_if_not_signup_subdomain
@@ -29,26 +29,27 @@ class Accounts::AccountsController < Accounts::ApplicationController
       
       #deliver activate email
       AccountMailer.deliver_signup_notification @cluey_account
-      
-      flash[:notice] = "Signed up successfully! Welcome to Cluey!"
-      redirect_to accounts_accounts_url(:subdomain => @cluey_account.name)
     else
       render "new"
     end
   end
   
   def activate
-    @user = params[:activation_code].blank? ? false : User.find_by_activation_code(params[:activation_code])
-    if @user && !@user.activated?
-      @user.activate
-      self.user = @user unless logged_in?
-      AccountMailer.deliver_signup @user
-      flash[:positive] = "Thanks, your account has been activated"
-      redirect_back_or_default('/')
-    else
-      flash[:negative] = "You have already activated your account!"
-      redirect_back_or_default('/')
+    @cluey_account = params[:activation_code].blank? ? false : ClueyAccount.find_by_activation_code(params[:activation_code])
+    
+    if !@cluey_account
+      flash[:error] = "Account is either already activated, or does not exist!"
+      redirect_to welcome_path(:subdomain => "signup")
+      return
     end
+    
+    @cluey_account.activate
+      
+    #log in
+    session[:current_cluey_account_id] = @cluey_account
+      
+    flash[:positive] = "Thanks, your account has been activated. Welcome to Cluey!"
+    redirect_to accounts_accounts_path
   end
   
 end

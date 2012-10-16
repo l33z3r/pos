@@ -40,7 +40,7 @@ class Accounts::ApplicationController < AppBaseController
           
     flash[:error] = "Please Log In"
     redirect_to account_log_in_path
-    return
+    return false
   end
   
   def check_captcha(redirect=nil)

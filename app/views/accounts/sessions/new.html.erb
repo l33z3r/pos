@@ -2,7 +2,7 @@
 
 <%= form_tag accounts_sessions_path do %>
   <p>
-    <%= label_tag :name %><br />
+    <%= label_tag :name, "Business Name" %><br />
     <%= text_field_tag :name, params[:name] %>
   </p>
   <p>
@@ -11,3 +11,7 @@
   </p>
   <p class="button"><%= submit_tag "Log in" %></p>
 <% end %>
+
+<br/><br/>
+
+<%= link_to "Forgot Your Password?", new_accounts_password_reset_path %>

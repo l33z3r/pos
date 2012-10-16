@@ -3,7 +3,7 @@ require 'digest/sha1'
 class ClueyAccount < ActiveRecord::Base
   has_many :outlets
   
-  attr_accessible :name, :email, :password, :password_confirmation
+  attr_accessible :name, :email, :password, :password_confirmation, :email_confirmation
   
   attr_accessor :password
   before_save :encrypt_password
@@ -14,13 +14,14 @@ class ClueyAccount < ActiveRecord::Base
   validates_uniqueness_of :name, :case_sensitive => false
   validates_format_of :name, :with => /^[-a-z]+$/i, :message => "must only contain characters from the alphabet"
   
-  validates :email,
-    :presence => true,   
-    :uniqueness => true,   
-    :confirmation => true,
-    :format => { :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i }
-          
-  validates :password, :presence => {:on => :create}, :confirmation => true, :length => {:minimum => 5}    
+  validates :email, :presence => true   
+  validates_uniqueness_of :email, :case_sensitive => false
+  validates_format_of :email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, :message => "Not a valid email address"
+  validates :email, :confirmation => true
+    
+  attr_accessor :updating_password
+  validates :password, :presence => {:on => :create}, :confirmation => true, :if => :should_validate_password? 
+  validates :password, :length => {:minimum => 5}, :if => :should_validate_password?  
     
   validate :name_not_reserved
  
@@ -71,6 +72,21 @@ class ClueyAccount < ActiveRecord::Base
 
   def activated?
     activation_code.nil?
+  end
+  
+  def should_validate_password?
+    updating_password || new_record?
+  end
+  
+  def send_password_reset
+    begin
+      self.password_reset_token = SecureRandom.urlsafe_base64
+    end while self.class.exists?(password_reset_token: password_reset_token)
+    
+    self.password_reset_sent_at = Time.zone.now
+    save
+    
+    AccountMailer.deliver_password_reset self
   end
 end
 

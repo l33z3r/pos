@@ -8,6 +8,13 @@ class Accounts::SessionsController < Accounts::ApplicationController
     @cluey_account = ClueyAccount.authenticate(params[:name], params[:password])
     
     if @cluey_account
+      if !@cluey_account.activated?
+        AccountMailer.deliver_signup_notification @cluey_account
+        flash[:error] = "You have not yet activated your account. An activation email has been resent to your inbox. Please check your spam inbox too."
+        redirect_to account_log_in_path
+        return
+      end
+      
       session[:current_cluey_account_id] = @cluey_account.id
       redirect_to accounts_accounts_path, :notice => "Logged In Successfully!"
     else

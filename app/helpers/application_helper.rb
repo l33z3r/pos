@@ -128,10 +128,6 @@ module ApplicationHelper
     end
     link_to_function("New Modifier", "addModifierFields(this, \"#{escape_javascript(fields)}\")")
   end
-  
-  def show_flash
-    
-  end
 
   def is_admin?
     session[:current_employee_admin] == 1

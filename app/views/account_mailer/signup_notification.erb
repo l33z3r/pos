@@ -1,19 +1,13 @@
-Welcome to the Clueypos!
-
-Follow the link below to activate your account.
+Welcome to Cluey!
 
 <br/><br/>
 
-<% if @cluey_account.activated? %>
-  <a href="<%= accounts_accounts_url @cluey_account.profile %>"><%= accounts_accounts_url @cluey_account.profile %></a>
-<% else %>
-  <a href="<%= activate_accounts_accounts_url(:activation_code => @cluey_account.activation_code) %>">
-    <%= activate_accounts_accounts_url(:activation_code => @cluey_account.activation_code) %>
-  </a>
-<% end %>
+<a href="<%= activate_accounts_accounts_url(:host => @host, :activation_code => @cluey_account.activation_code) %>">Click Here</a>
 
+to activate your account.
+  
 <br/><br/>
 
 regards,
 
-the PMF team!
+the Cluey team!
