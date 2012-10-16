@@ -25,6 +25,8 @@ class ClueyAccount < ActiveRecord::Base
     
   validate :name_not_reserved
  
+  has_many :customers, :through => :outlets
+  
   RESERVED_NAMES = [
     "help", "login", "signup", "support", "www", "demo", "cluey"
   ]
