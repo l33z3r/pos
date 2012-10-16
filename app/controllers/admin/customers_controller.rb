@@ -121,7 +121,8 @@ class Admin::CustomersController < Admin::AdminController
 
   def edit
     @hide_admin_header = true
-    @customer = current_outlet.cluey_account.customers.readonly(false).find(params[:id])
+    #    @customer = current_outlet.cluey_account.customers.readonly(false).find(params[:id])
+    @customer = current_outlet.customers.find(params[:id])
   end
 
   def create
@@ -137,7 +138,8 @@ class Admin::CustomersController < Admin::AdminController
   end
 
   def update
-    @customer = current_outlet.cluey_account.customers.readonly(false).find(params[:id])
+    #    @customer = current_outlet.cluey_account.customers.readonly(false).find(params[:id])
+    @customer = current_outlet.customers.find(params[:id])
 
     @old_loyalty_points_amount = @customer.available_points
     
@@ -161,7 +163,8 @@ class Admin::CustomersController < Admin::AdminController
   end
 
   def search
-    @search = current_outlet.cluey_account.customers.readonly(false).search(params[:search]).order('name') 
+    #    @search = current_outlet.cluey_account.customers.readonly(false).search(params[:search]).order('name') 
+    @search = current_outlet.customers.search(params[:search]).order('name') 
     @customers = @search.all
   end
 
