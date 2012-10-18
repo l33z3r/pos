@@ -98,8 +98,7 @@ class Customer < ActiveRecord::Base
   end
   
   def self.all_active current_outlet
-#    current_outlet.cluey_account.customers.where("customers.is_active = ?", true)
-    current_outlet.customers.where("is_active = ?", true)
+    current_outlet.cluey_account.customers.where("customers.is_active = ?", true)
   end
   
   ACCOUNT_NUMBER_BASE = 100000
