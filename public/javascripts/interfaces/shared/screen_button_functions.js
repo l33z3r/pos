@@ -4,6 +4,11 @@ var orderInProcess = false;
 var isTableZeroOrder = false;
 
 function orderButtonPressed() {
+    if (!appOnline) {
+        niceAlert("Cannot contact server, ordering is disabled until connection re-established!");
+        return;
+    }
+
     var order = getCurrentOrder();
 
     var autoCovers = false;
@@ -40,11 +45,6 @@ function orderButtonPressed() {
 }
 
 function doSyncTableOrder() {
-    if (!appOnline) {
-        niceAlert("Cannot contact server, ordering is disabled until connection re-established!");
-        return;
-    }
-
     var order = null;
 
     if (!isTableZeroOrder && !ensureLoggedIn()) {
@@ -159,7 +159,24 @@ function finishSyncTableOrder() {
 
 function syncTableOrderFail() {
     orderInProcess = false;
-    niceAlert("Order not sent, no connection, please try again");
+    
+    //THIS IS TO STOP THE LIMBO PROBLEM
+    if(inTransferOrderItemMode) {
+        $('#tables_screen_status_message').hide();
+        hideNiceAlert();
+        transferOrderItemInProgress = false;
+        inTransferOrderItemMode = false;
+        showMenuScreen();
+        niceAlert("Error, Server may be down. You may need to hit order again for both tables to ensure that the changes are system wide.");
+    } else if(inSplitBillMode) {
+        cancelSplitBillMode();
+        tableSelectMenu.setValue(tempSplitBillTableNum);
+        doSelectTable(tempSplitBillTableNum);
+        niceAlert("Error, Server may be down. You may need to hit order again for the original table to ensure that the changes are system wide.");
+        $('#split_bill_select_item').show();
+    } else {
+        niceAlert("Order not sent, no connection, please try again");
+    }
 }
 
 function retryTableOrder() {

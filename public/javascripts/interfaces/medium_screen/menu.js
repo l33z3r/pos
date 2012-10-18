@@ -370,7 +370,7 @@ function saveEditOrderItem() {
 
     var courseNum = order.items[itemNumber - 1].product.course_num;
     var is_void = order.items[itemNumber - 1].is_void;
-    var is_void = order.items[itemNumber - 1].is_refund;
+    var is_refund = order.items[itemNumber - 1].is_refund;
     
     $('.new_price').val(null);
     
@@ -1366,6 +1366,15 @@ function doSubmitTableNumber() {
         menuScreenDefault = "true"
     }
 
+}
+
+function transferOrderError() {
+    hideNiceAlert();        
+    inTransferOrderMode = false;
+    transferOrderInProgress = false;
+    showMenuItemsSubscreen();
+    setStatusMessage("Error transfering order. Server might be down!");
+    return;
 }
 
 function removeTableClass(table_class) {

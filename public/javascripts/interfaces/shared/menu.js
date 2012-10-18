@@ -986,6 +986,7 @@ function doTransferTable(tableFrom, tableTo) {
     $.ajax({
         type: 'POST',
         url: '/transfer_order',
+        error: transferOrderError,
         data: {
             table_from_id : tableFrom,
             table_from_order_num : getCurrentOrder().order_num,
