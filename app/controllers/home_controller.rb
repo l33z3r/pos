@@ -667,7 +667,7 @@ class HomeController < ApplicationController
     
     @outlet_terminal.unlink_terminal @terminal_id_gs
     
-    request_immediate_reload_app @terminal_id
+    request_sales_resources_reload @terminal_id
     
     render :json => {:success => true}.to_json
   end
@@ -792,12 +792,6 @@ class HomeController < ApplicationController
     ##
     ##
     #manually list out the js files
-    @files << "/javascripts/tables.js"
-    @files << "/javascripts/employees.js"
-    @files << "/javascripts/products.js"
-    @files << "/javascripts/customers.js"
-    @files << "/javascripts/sales_resources.js"
-    
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/accounts.js"
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/jq_libs.js"
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/large_screen.js"

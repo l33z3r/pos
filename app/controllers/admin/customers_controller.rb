@@ -130,6 +130,9 @@ class Admin::CustomersController < Admin::AdminController
     @customer.outlet_id = current_outlet.id
     
     if @customer.save
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       redirect_to(admin_customers_url, :notice => 'Customer was successfully created.')
     else
       render :action => "new"
@@ -152,6 +155,9 @@ class Admin::CustomersController < Admin::AdminController
         CustomerPointsAllocation.create({:outlet_id => current_outlet.id, :customer_id => @customer.id, :allocation_type => @allocation_type, 
             :amount => @points_change_amount, :loyalty_level_percent => @customer.loyalty_level.percent})
       end
+    
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
     
       redirect_to(admin_customers_url, :notice => 'Customer was successfully updated.')
     else

@@ -27,6 +27,9 @@ class Admin::DisplaysController < Admin::AdminController
         @page_2.menu_items.build({:outlet_id => current_outlet.id, :order_num => num}).save!
       end
       
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       redirect_to(builder_admin_display_path(@display), :notice => 'Display was successfully created.')
     else
       render :action => "new"
@@ -37,6 +40,9 @@ class Admin::DisplaysController < Admin::AdminController
     @display = current_outlet.displays.find(params[:id])
 
     if @display.update_attributes(params[:display])
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       flash[:notice] = 'Display was successfully updated.'
       redirect_to :action => "index"
     else
@@ -66,6 +72,9 @@ class Admin::DisplaysController < Admin::AdminController
       end
     end
     
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     redirect_to(admin_displays_path, :notice => 'Display was successfully duplicated.')
   end
 
@@ -83,6 +92,9 @@ class Admin::DisplaysController < Admin::AdminController
     #force load default in case it was destroyed
     Display.load_default(current_outlet)
     
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     redirect_to(admin_displays_url, :notice => 'Display was deleted.')
   end
 
@@ -91,6 +103,9 @@ class Admin::DisplaysController < Admin::AdminController
     
     @display.name = params[:name]
     @display.save!
+    
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
     
     render :json => {:success => true}.to_json
   end
@@ -151,6 +166,9 @@ class Admin::DisplaysController < Admin::AdminController
       end
     end
     
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     @menu_item.save!
   end
 
@@ -161,6 +179,9 @@ class Admin::DisplaysController < Admin::AdminController
 
     MenuItem.delete_menu_item @menu_item
 
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     render :json => {:success => true}.to_json
   end
 
@@ -209,8 +230,10 @@ class Admin::DisplaysController < Admin::AdminController
     #save again after build
     @new_page.save!
     
-    flash[:notice] = "Page Created"
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
     
+    flash[:notice] = "Page Created"
     redirect_to builder_admin_display_path(@display)
   end
 
@@ -229,6 +252,9 @@ class Admin::DisplaysController < Admin::AdminController
     
     @menu_page.destroy
 
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     redirect_to(builder_admin_display_path(@display), :notice => 'Page Deleted.')
   end
 
@@ -240,6 +266,9 @@ class Admin::DisplaysController < Admin::AdminController
     @menu_page.name = params[:new_name]
     @menu_page.save!
 
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     render :json => {:success => true}.to_json
   end
   
@@ -251,6 +280,9 @@ class Admin::DisplaysController < Admin::AdminController
     @menu_item.product.name = params[:new_name]
     @menu_item.product.save!
 
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     render :json => {:success => true}.to_json
   end
 
@@ -263,6 +295,9 @@ class Admin::DisplaysController < Admin::AdminController
     @new_default_display.is_default = true
     @new_default_display.save
 
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     render :json => {:success => true}.to_json
   end
   

@@ -986,3 +986,14 @@ function checkForDuplicateBrowserSession() {
         window.close();
     }
 }
+
+function indicateSalesResourcesReloadRequired(reloadTerminalId) {
+    $('.sales_resources_reload_indicator').data("terminal_id", reloadTerminalId);
+    $('.sales_resources_reload_indicator').show();
+}
+
+function reloadSalesResourcesClicked(el) {
+    var reloadTerminalId = $(el).data("terminal_id");
+    $('.sales_resources_reload_indicator').hide();
+    promptReloadSalesResources(reloadTerminalId);
+}

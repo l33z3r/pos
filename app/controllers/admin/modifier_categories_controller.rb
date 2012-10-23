@@ -30,6 +30,9 @@ class Admin::ModifierCategoriesController < Admin::AdminController
     end
     
     if @modifier_category.save
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       redirect_to [:admin, @modifier_category], :notice => 'Modifier category was successfully created.'
     else
       render :action => "new"
@@ -45,6 +48,9 @@ class Admin::ModifierCategoriesController < Admin::AdminController
         m.save
       end
     
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       redirect_to [:admin, @modifier_category], :notice => 'Modifier category was successfully updated.'
     else
       render :action => "edit"
@@ -55,6 +61,9 @@ class Admin::ModifierCategoriesController < Admin::AdminController
     @modifier_category = current_outlet.modifier_categories.find(params[:id])
     @modifier_category.destroy
 
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     redirect_to admin_modifier_categories_url
   end
 end

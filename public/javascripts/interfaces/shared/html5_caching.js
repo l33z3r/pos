@@ -88,7 +88,7 @@ $(appCache).bind(
  
         // Swap out the old cache.
         appCache.swapCache();
-        alertCacheReloadRequest();
+        doReloadSalesResources(alertCacheReloadRequest);
     }
     );
  

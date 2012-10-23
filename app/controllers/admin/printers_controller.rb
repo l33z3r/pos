@@ -6,6 +6,9 @@ class Admin::PrintersController < Admin::AdminController
     @printer.outlet_id = current_outlet.id
     
     if @printer.save
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       redirect_to admin_global_settings_path, :notice => 'Printer was successfully created.'
     else
       redirect_to admin_global_settings_path, :error => 'Error creating new printer.'
@@ -16,6 +19,9 @@ class Admin::PrintersController < Admin::AdminController
     @printers = Printer.update(params[:printers].keys, params[:printers].values).reject { |p| p.errors.empty? }
     
     if @printers.empty?
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       flash[:notice] = "Printers Updated!"
       redirect_to admin_global_settings_path
     else
@@ -27,6 +33,9 @@ class Admin::PrintersController < Admin::AdminController
     @printer = current_outlet.printers.find(params[:id])
     @printer.destroy
 
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     flash[:notice] = "Printer Deleted!"
     redirect_to admin_global_settings_path
   end
@@ -40,6 +49,9 @@ class Admin::PrintersController < Admin::AdminController
     @new_default_printer.is_default = true
     @new_default_printer.save
 
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     render :json => {:success => true}.to_json
   end
 end

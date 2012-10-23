@@ -903,12 +903,9 @@ function clueyTimestamp() {
 
 var ignoreReloadRequest = false;
 
+//THERE ARE 2 TYPES OF RELOAD, ONE IS A HARD RESET, AND THE OTHER IS A SALES RESOURCES RESET
 function alertReloadRequest(reloadTerminalId, hardReload) {
     if(ignoreReloadRequest) {
-        return;
-    }
-    
-    if(reloadTerminalId == terminalID) {
         return;
     }
     
@@ -923,21 +920,34 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
     if(hardReload) {
         message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
         okFuncCall = "doClearAndReload();";
+        
+        ModalPopups.Alert('niceAlertContainer',
+            "Please Reload Screen", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
+            {
+                width: 360,
+                height: 280,
+                okButtonText: 'Reload Now',
+                onOk: okFuncCall
+            });
+        
+        setTimeout(okFuncCall, timeoutSeconds * 1000);
     } else {
-        message = "Settings have been changed by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
-        okFuncCall = "doReload(false);";
+        indicateSalesResourcesReloadRequired(reloadTerminalId);
     }
-    
+}
+
+function promptReloadSalesResources(reloadTerminalId) {
+    var message = "Your POS data has been changed by " + reloadTerminalId + ", click OK to pick up the new data!";
+    var okFuncCall = "doReloadSalesResources();";
+        
     ModalPopups.Alert('niceAlertContainer',
-        "Please Reload Screen", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
+        "Click OK To Refresh", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
         {
             width: 360,
             height: 280,
-            okButtonText: 'Reload Now',
+            okButtonText: 'Refresh',
             onOk: okFuncCall
         });
-        
-    setTimeout(okFuncCall, timeoutSeconds * 1000);
 }
 
 function writeLastReloadTimeCookie() {
@@ -1190,14 +1200,6 @@ function focusSelectInput(inputEl) {
         start : 0, 
         end : 0
     });
-}
-
-function reloadProducts(callback) {
-    $.getScript('/javascripts/products.js', callback);
-}
-
-function reloadCustomers(callback) {
-    $.getScript('/javascripts/customers.js', callback);
 }
 
 function storeActiveUserID(userID) {

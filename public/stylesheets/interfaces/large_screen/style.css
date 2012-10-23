@@ -632,6 +632,26 @@ div.global_status_message {
     display: none;
 }
 
+div#menu_screen div.sales_resources_reload_indicator img {
+    height: 23px;
+}
+
+div#landing div.sales_resources_reload_indicator {
+    float: right;
+    margin-top: -66px;
+}
+
+div#landing div.sales_resources_reload_indicator img {
+    height: 50px;
+    margin-top: 2px;
+    margin-right: 10px;
+}
+
+div.sales_resources_reload_indicator {
+    display: none;
+    cursor: pointer;
+}
+
 div#receipt_keypad_container div#receipt_container {
     height: 351px;
     background-color: #FFF;

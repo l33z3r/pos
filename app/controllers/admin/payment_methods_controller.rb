@@ -6,7 +6,10 @@ class Admin::PaymentMethodsController < Admin::AdminController
     @payment_method.outlet_id = current_outlet.id
     
     if @payment_method.save
-      redirect_to admin_global_settings_path, :notice => 'Payment Method was successfully created.'
+      #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
+    redirect_to admin_global_settings_path, :notice => 'Payment Method was successfully created.'
     else
       render :action => admin_global_settings_path
     end
@@ -24,7 +27,10 @@ class Admin::PaymentMethodsController < Admin::AdminController
         @dpm.save
         @dpm = PaymentMethod.load_default(current_outlet)
         
-        flash[:notice] = "Payment Methods Updated! Note that the default payment method has been set to cash as the one you chose is not eligible for default"
+        #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
+    flash[:notice] = "Payment Methods Updated! Note that the default payment method has been set to cash as the one you chose is not eligible for default"
       else 
         flash[:notice] = "Payment Methods Updated!"
       end
@@ -75,6 +81,9 @@ class Admin::PaymentMethodsController < Admin::AdminController
       end
     end
 
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     flash[:notice] = "Payment Method Deleted!"
     redirect_to admin_global_settings_path
   end
@@ -88,6 +97,9 @@ class Admin::PaymentMethodsController < Admin::AdminController
     @new_default_payment_method.is_default = true
     @new_default_payment_method.save
 
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     render :json => {:success => true}.to_json
   end
 end

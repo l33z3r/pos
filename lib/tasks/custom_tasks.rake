@@ -1,90 +1,122 @@
 desc "Delete orders, order_items, terminal_sync_data, cash_totals, terminal_ids, stored_receipt_htmls, client_transactions, card_transactions, customer_transactions, payments"
 task :delete_historical_data => :environment do
-  return
+  @outlet_id = ENV['outlet_id']
   
+  if !@outlet_id
+    abort "You must provide an 'outlet_id' parameter"
+  end
   
+  @outlet = Outlet.find_by_id(@outlet_id)
   
+  if !@outlet
+    abort "Outlet not found for ID: #{@outlet_id}"
+  end
   
+  puts "Deleting historical data for outlet #{@outlet.name}!"
   
-  puts "Deleting historical data!"
-  
-  @orders = Order.all
+  @orders = @outlet.orders.all
   puts "Deleting #{@orders.length} orders"
   @orders.each(&:destroy)
   
-  @order_items = OrderItem.all
+  @order_items = @outlet.order_items.all
   puts "Deleting #{@order_items.length} order_items"
   @order_items.each(&:destroy)
   
-  @terminal_sync_datas = TerminalSyncData.all
+  @terminal_sync_datas = @outlet.terminal_sync_data.all
   puts "Deleting #{@terminal_sync_datas.length} terminal_sync_datas"
   @terminal_sync_datas.each(&:destroy)
   
-  @cash_totals = CashTotal.all
+  @cash_totals = @outlet.cash_totals.all
   puts "Deleting #{@cash_totals.length} cash_totals"
   @cash_totals.each(&:destroy)
   
-  @recpt_htmls = StoredReceiptHtml.all
+  @recpt_htmls = @outlet.stored_receipt_htmls.all
   puts "Deleting #{@recpt_htmls.length} receipt_htmls"
   @recpt_htmls.each(&:destroy) 
   
-  @client_transactions = ClientTransaction.all
+  @client_transactions = @outlet.client_transactions.all
   puts "Deleting #{@client_transactions.length} client_transactions"
   @client_transactions.each(&:destroy) 
   
-  @card_transactions = CardTransaction.all
+  @card_transactions = @outlet.card_transactions.all
   puts "Deleting #{@card_transactions.length} card_transactions"
   @card_transactions.each(&:destroy) 
   
-  @customer_transactions = CustomerTransaction.all
+  @customer_transactions = @outlet.customer_transactions.all
   puts "Deleting #{@customer_transactions.length} customer_transactions"
   @customer_transactions.each(&:destroy) 
   
-  @payments = Payment.all
+  @customer_points_allocations = @outlet.customer_points_allocations.all
+  puts "Deleting #{@customer_points_allocations.length} customer_points_allocations"
+  @customer_points_allocations.each(&:destroy) 
+  
+  @payments = @outlet.payments.all
   puts "Deleting #{@payments.length} payments"
   @payments.each(&:destroy) 
     
-  @stock_transactions = StockTransaction.all
+  @stock_transactions = @outlet.stock_transactions.all
   puts "Deleting #{@stock_transactions.length} stock_transactions"
   @stock_transactions.each(&:destroy)
   
+  @deliveries = @outlet.deliveries.all
+  puts "Deleting #{@deliveries.length} deliveries"
+  @deliveries.each(&:destroy)
+  
   puts "Clearing duplicate global_settings keys"
-  GlobalSetting.clear_dup_keys_gs
+  GlobalSetting.clear_dup_keys_gs @outlet
   
   puts "Issuing a reset of all terminals"
-  TerminalSyncData.request_hard_reload_app "Cluey Support"
+  TerminalSyncData.request_hard_reload_app "Cluey Support", @outlet
   
   puts "Done!"
 end
 
 desc "Deletes all terminal_sync_data, and issues a hard reset of each terminal"
 task :delete_sync_data => :environment do
-  return
+  @outlet_id = ENV['outlet_id']
   
+  if !@outlet_id
+    abort "You must provide an 'outlet_id' parameter"
+  end
   
+  @outlet = Outlet.find_by_id(@outlet_id)
   
-  @terminal_sync_datas = TerminalSyncData.all
+  if !@outlet
+    abort "Outlet not found for ID: #{@outlet_id}"
+  end
+  
+  puts "Deleting terminal sync data for outlet #{@outlet.name}"
+  
+  @terminal_sync_datas = @outlet.terminal_sync_data.all
   puts "Deleting #{@terminal_sync_datas.length} terminal_sync_datas"
   @terminal_sync_datas.each(&:destroy)
   
   puts "Clearing duplicate global_settings keys"
-  GlobalSetting.clear_dup_keys_gs
+  GlobalSetting.clear_dup_keys_gs @outlet
   
   puts "Issuing a reset of all terminals"
-  TerminalSyncData.request_hard_reload_app "Cluey Support"
+  TerminalSyncData.request_hard_reload_app "Cluey Support", @outlet
   
   puts "Done!"
 end
 
 desc "Deletes all stored receipt data"
 task :delete_recpt_data => :environment do
-  return
+  @outlet_id = ENV['outlet_id']
   
+  if !@outlet_id
+    abort "You must provide an 'outlet_id' parameter"
+  end
   
+  @outlet = Outlet.find_by_id(@outlet_id)
   
+  if !@outlet
+    abort "Outlet not found for ID: #{@outlet_id}"
+  end
   
+  puts "Deleting receipt data for outlet #{@outlet.name}"
   
-  @recpt_htmls = StoredReceiptHtml.all
+  @recpt_htmls = @outlet.stored_receipt_htmls.all
   puts "Deleting #{@recpt_htmls.length} receipt_htmls"
   @recpt_htmls.each(&:destroy) 
   
@@ -93,63 +125,89 @@ end
 
 desc "Clear duplicate keys in global settings"
 task :clear_dup_keys_gs => :environment do
-  return
+  @outlet_id = ENV['outlet_id']
   
+  if !@outlet_id
+    abort "You must provide an 'outlet_id' parameter"
+  end
   
+  @outlet = Outlet.find_by_id(@outlet_id)
   
+  if !@outlet
+    abort "Outlet not found for ID: #{@outlet_id}"
+  end
   
+  puts "Deleting duplicate gs keys for outlet #{@outlet.name}"
   
-  GlobalSetting.clear_dup_keys_gs
+  GlobalSetting.clear_dup_keys_gs @outlet
 end
 
 desc "Issues a soft reset of each terminal"
 task :issue_soft_reset => :environment do
-  return
+  @outlet_id = ENV['outlet_id']
   
+  if !@outlet_id
+    abort "You must provide an 'outlet_id' parameter"
+  end
   
+  @outlet = Outlet.find_by_id(@outlet_id)
   
+  if !@outlet
+    abort "Outlet not found for ID: #{@outlet_id}"
+  end
   
-  
-  puts "Issuing a soft reset of all terminals"
-  TerminalSyncData.request_reload_app "Cluey Support"
+  puts "Issuing a soft reset of all terminals for outlet #{@outlet.name}"
+  TerminalSyncData.request_reload_app "Cluey Support", @outlet
   
   puts "Done!"
 end
 
 desc "Issues a hard reset of each terminal"
 task :issue_hard_reset => :environment do
-  return
+  @outlet_id = ENV['outlet_id']
   
+  if !@outlet_id
+    abort "You must provide an 'outlet_id' parameter"
+  end
   
+  @outlet = Outlet.find_by_id(@outlet_id)
   
+  if !@outlet
+    abort "Outlet not found for ID: #{@outlet_id}"
+  end
   
-  
-  puts "Issuing a hard reset of all terminals"
-  TerminalSyncData.request_hard_reload_app "Cluey Support"
+  puts "Issuing a hard reset of all terminals for outlet #{@outlet.name}"
+  TerminalSyncData.request_hard_reload_app "Cluey Support", @outlet
   
   puts "Done!"
 end
 
 desc "Builds Stock Transactions for all existing sales"
 task :build_stock_transactions => :environment do
-  return
+  @outlet_id = ENV['outlet_id']
   
+  if !@outlet_id
+    abort "You must provide an 'outlet_id' parameter"
+  end
   
+  @outlet = Outlet.find_by_id(@outlet_id)
   
+  if !@outlet
+    abort "Outlet not found for ID: #{@outlet_id}"
+  end
   
-  
-  ActiveRecord::Base.connection.execute("update products set quantity_in_stock = 0")
-  ActiveRecord::Base.connection.execute("delete from stock_transactions")
-  ActiveRecord::Base.connection.execute("delete from deliveries")
+  ActiveRecord::Base.connection.execute("update products set quantity_in_stock = 0 where outlet_id = #{@outlet_id}")
+  ActiveRecord::Base.connection.execute("delete from stock_transactions where outlet_id = #{@outlet_id}")
+  ActiveRecord::Base.connection.execute("delete from deliveries where outlet_id = #{@outlet_id}")
     
-  @all_count = OrderItem.all.count
-  puts "Building Stock Transactions For #{@all_count} Order Items"
+  @all_count = @outlet.order_items.all.count
+  puts "Building Stock Transactions For #{@all_count} Order Items for outlet #{@outlet.name}"
     
-  @deduct_stock_during_training_mode = GlobalSetting.parsed_setting_for GlobalSetting::DEDUCT_STOCK_DURING_TRAINING_MODE
+  @deduct_stock_during_training_mode = GlobalSetting.parsed_setting_for GlobalSetting::DEDUCT_STOCK_DURING_TRAINING_MODE, @outlet
     
   @count = 0
     
-  OrderItem.find_each do |oi|
+  @outlet.order_items.find_each do |oi|
     @count += 1
     puts "Processing OrderItem #{@count} of #{@all_count}"
     @order_item = oi
@@ -181,14 +239,14 @@ task :build_stock_transactions => :environment do
               @oia_stock_usage /= 2
             end
       
-            @oia_product = Product.find_by_id(oia[:product_id])
+            @oia_product = @outlet.products.find_by_id(oia[:product_id])
       
             @old_stock_amount = @oia_product.quantity_in_stock
             @actual_stock_usage = @oia_product.decrement_stock @oia_stock_usage
                 
             #build a stock_transaction
             @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
-              :employee_id => @order_item.employee_id, :product_id => @oia_product.id,
+              :outlet_id => @outlet_id, :employee_id => @order_item.employee_id, :product_id => @oia_product.id,
               :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
               
             @st.created_at = @order_item.created_at
@@ -206,7 +264,7 @@ task :build_stock_transactions => :environment do
               
       #build a stock_transaction
       @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
-        :employee_id => @order_item.employee_id, :product_id => @order_item.product.id,
+        :outlet_id => @outlet_id, :employee_id => @order_item.employee_id, :product_id => @order_item.product.id,
         :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
               
       @st.created_at = @order_item.created_at
@@ -224,7 +282,7 @@ task :build_stock_transactions => :environment do
                 
         #build a stock_transaction
         @st = @order_item.stock_transactions.build(:transaction_type => StockTransaction::SALE, 
-          :employee_id => @order_item.employee_id, :product_id => ingredient.product.id,
+          :outlet_id => @outlet_id, :employee_id => @order_item.employee_id, :product_id => ingredient.product.id,
           :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
            
         @st.created_at = @order_item.created_at

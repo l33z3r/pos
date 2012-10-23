@@ -165,6 +165,9 @@ class Admin::ProductsController < Admin::AdminController
         end
       end
 
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       flash[:notice] = "CSV Import Successful! #{@product_count} new products, #{@category_count} new categories and #{@department_count} new departments have been added to the database."
       redirect_to admin_products_path
     else
@@ -198,6 +201,10 @@ class Admin::ProductsController < Admin::AdminController
 
     if @product.save
       update_menus_for_product @product, @new_menu_1_id, @old_menu_1_id, @new_menu_2_id, @old_menu_2_id
+      
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       redirect_to(admin_products_url, :notice => 'Product was successfully created.')
     else
       render :action => "new"
@@ -221,6 +228,9 @@ class Admin::ProductsController < Admin::AdminController
 
       update_menus_for_product @product, @new_menu_1_id, @old_menu_1_id, @new_menu_2_id, @old_menu_2_id
 
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       #we may have came to this page directly from the menu builder screen
       #we want to store the fact, so that when we update the product, we go back to that screen
       if !params[:back_builder_screen_id].blank?
@@ -291,7 +301,10 @@ class Admin::ProductsController < Admin::AdminController
     @product.price = params[:price]
     @product.save!
 
-    render :json => {:success => true}.to_json
+    #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
+      render :json => {:success => true}.to_json
   end
 
   def search
@@ -327,7 +340,10 @@ class Admin::ProductsController < Admin::AdminController
     @product = current_outlet.products.find(params[:id])
     @product.mark_as_deleted
 
-    render :json => {:success => true}.to_json
+    #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
+      render :json => {:success => true}.to_json
   end
 
   private

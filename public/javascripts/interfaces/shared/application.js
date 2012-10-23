@@ -25,6 +25,8 @@ var scheduledTasksIntervalSeconds = 10;
 $.event.props = $.event.props.join('|').replace('layerX|layerY|', '').split('|');
 
 $(function() {
+    initSalesResources();
+
     current_user_id = fetchActiveUserID();
     
     //init some user vars

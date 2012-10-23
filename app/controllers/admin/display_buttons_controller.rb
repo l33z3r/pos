@@ -22,6 +22,9 @@ class Admin::DisplayButtonsController < Admin::AdminController
     @service_charge_button.save
     
     if @display_buttons.empty?
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       flash[:notice] = "Buttons updated!"
       redirect_to edit_multiple_admin_display_buttons_path
     else
@@ -32,6 +35,9 @@ class Admin::DisplayButtonsController < Admin::AdminController
   def button_group_create
     DisplayButtonGroup.create({:outlet_id => current_outlet.id, :name => params[:name]})
     
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     flash[:notice] = "Button Group created!"
     render :json => {:success => true}.to_json
   end
@@ -40,6 +46,9 @@ class Admin::DisplayButtonsController < Admin::AdminController
     @display_button_groups = DisplayButtonGroup.update(params[:display_button_groups].keys, params[:display_button_groups].values).reject { |p| p.errors.empty? }
     
     if @display_button_groups.empty?
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       flash[:notice] = "Button Groups updated!"
       redirect_to edit_multiple_admin_display_buttons_path
     else
@@ -51,11 +60,17 @@ class Admin::DisplayButtonsController < Admin::AdminController
     @dbg = current_outlet.display_button_groups.find(params[:dbg_id])
     @dbg.destroy
     
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     flash[:notice] = "Button Group deleted!"
     render :json => {:success => true}.to_json
   end
   
   def update_sales_screen_button_role
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     @dbr = current_outlet.display_button_roles.find(params[:id])
     @dbr.show_on_sales_screen = params[:checked]
     @dbr.save!
@@ -74,6 +89,9 @@ class Admin::DisplayButtonsController < Admin::AdminController
     
     @dbr.save!
 
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     render :json => {:success => true}.to_json
   end
   

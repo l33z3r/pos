@@ -73,7 +73,8 @@ class ApplicationController < AppBaseController
     @timestamp_setting.save
   end
   
-  def request_immediate_reload_app terminal_id
+  #this only causes the assets to reload
+  def request_sales_resources_reload terminal_id
     TerminalSyncData.request_reload_app terminal_id, current_outlet
   end
   

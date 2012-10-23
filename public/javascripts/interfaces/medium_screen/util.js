@@ -156,3 +156,8 @@ function initModifierGrid() {
     
     $('div#order_item_additions .grid_row .grid_item').css("height", newHeight + "px");
 }
+
+//for mobile we can just force a reload rather than prompting
+function indicateSalesResourcesReloadRequired(reloadTerminalId) {
+    promptReloadSalesResources(reloadTerminalId);
+}

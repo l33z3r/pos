@@ -116,7 +116,7 @@ function finishPriceChangeMode() {
     showLoadingDiv("Loading new prices...");
     
     //reload the products
-    reloadProducts(priceChangeModeComplete);
+    doReloadSalesResources(priceChangeModeComplete);
 }
 
 function priceChangeModeComplete() {   

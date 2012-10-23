@@ -1,3 +1,9 @@
+//
+//
+// PAYMENT METHODS
+//
+//
+//
 var paymentMethods = {};
 
 <% current_outlet.payment_methods.all.each do |pm|-%>
@@ -13,6 +19,12 @@ var paymentMethods = {};
 
 <% end -%>
 
+//
+//
+// EXPENSES
+//
+//
+//
 var cashOutPresets = new Array();
 
 <% current_outlet.cash_out_presets.all.each do |cop|-%>
@@ -25,6 +37,12 @@ var cashOutPresets = new Array();
 
 <% end -%>
 
+//
+//
+// PRINTERS
+//
+//
+//
 var printers = new Array();
 var printerNetworkPaths = new Array();
 var printersByID  = {};
@@ -44,6 +62,12 @@ var printersByID  = {};
 
 <% end -%>
 
+//
+//
+// TERMINALS
+//
+//
+//  
 var outletTerminals = new Array();
 var assignedOutletTerminals = new Array();
 var availableOutletTerminals = new Array();
@@ -62,5 +86,274 @@ var availableOutletTerminals = new Array();
   } else {
   availableOutletTerminals.push(ot_info);
   }
+
+<% end -%>
+
+//
+//
+// CUSTOMERS
+//
+//
+//
+var customers = new Array();
+
+var creditCustomers = {};
+var loyaltyCustomers = {};
+var loyaltyCustomersByCode = {};
+
+<% Customer.all_active(current_outlet).each do |c|-%>
+  customer_info = {
+  id : '<%= c.id %>',
+  name : '<%= escape_javascript raw(c.name) %>',
+  is_normal_customer : <%= c.is_normal_customer? ? "true" : "false" %>,
+  is_loyalty_customer : <%= c.is_loyalty_customer? ? "true" : "false" %>,
+  loyalty_level_id : <%= c.loyalty_level_id %>,
+  available_points : <%= c.available_points %>,
+  swipe_card_code : '<%= c.swipe_card_code %>',
+  credit_limit : <%= c.credit_limit %>,
+  current_balance : <%= c.current_balance %>,
+  credit_available : <%= c.credit_available %>,
+  customer_number : <%= c.customer_number.blank? ? -1 : c.customer_number %>,
+  account_number : <%= c.account_number %>
+  };
+
+  customers.push(customer_info);
+
+  if(customer_info.is_loyalty_customer) {
+  loyaltyCustomers[customer_info.id] = customer_info;
+
+  var loyaltyCardCodeStripped = customer_info.swipe_card_code.substring(0, 12);
+
+  loyaltyCustomersByCode[loyaltyCardCodeStripped] = customer_info;
+  }
+
+  if(customer_info.is_normal_customer) {
+  creditCustomers[customer_info.id] = customer_info;
+  }
+<% end -%>
+
+//
+//
+// LOYALTY LEVELS
+//
+//
+//
+var loyaltyLevels = {};
+
+<% current_outlet.loyalty_levels.all.each do |ll| -%>
+  loyalty_level_info = {
+  label : '<%= escape_javascript raw(ll.label) %>',
+  percent : <%= ll.percent %>
+  };
+
+  loyaltyLevels[<%= ll.id %>] = loyalty_level_info;
+<% end %>
+
+//
+//
+// EMPLOYEES
+//
+//
+//
+var employees = new Array();
+
+<% current_outlet.employees.all.each do |e|-%>
+  employee_info = {
+  id : '<%= e.id %>',
+  nickname : '<%= escape_javascript raw(e.nickname) %>',
+  passcode : '<%= e.passcode %>',
+  clockin_code : '<%= e.clockin_code %>',
+  dallas_code : '<%= e.dallas_code %>',
+  is_admin : <%= e.is_admin current_outlet %>,
+  role_id : <%= e.role.id %>,
+  pin_required : <%= e.role.pin_required ? "true" : "false" %>,
+  login_allowed : <%= e.role.login_allowed ? "true" : "false" %>,
+  clocked_in : false
+  }
+
+  employees.push(employee_info);
+
+<% end -%>
+
+//
+//
+// BUTTON PERMISSIONS
+//
+//
+//
+//build a map of button permissions
+all_display_button_permissions = new Array();
+
+<% current_outlet.roles.all.each do |role| %>
+  all_display_button_permissions[<%=role.id%>] = new Array();
+
+  <% DisplayButtonRole.menu_screen_buttons_for_role(current_outlet, role.id).each do |dbr| %>
+    all_display_button_permissions[<%=role.id%>]['<%=dbr.display_button.perm_id%>'] = <%= dbr.passcode_required ? "true" : "false" %>;
+  <% end %>
+
+  <% DisplayButtonRole.admin_screen_buttons_for_role(current_outlet, role.id).each do |dbr| %>
+    all_display_button_permissions[<%=role.id%>]['<%=dbr.display_button.perm_id%>'] = <%= dbr.passcode_required ? "true" : "false" %>;
+  <% end %>
+<% end %>
+
+//
+//
+// PRODUCTS
+//
+//
+//
+var products = new Array();
+var products_by_upc = new Array();
+var non_deleted_products = new Array();
+var stock_products = new Array();
+
+<% current_outlet.products.all.each do |p|%>  
+
+  var nextProduct = {
+  'id':'<%= p.id %>', 'name':'<%= escape_javascript raw(p.name) %>', 
+  'description':'<%= escape_javascript raw(p.description) %>', 
+  'img_url' : '<%= product_image_url p %>',
+  'price':<%= p.price %>, 'tax_rate':<%=p.get_sales_tax_rate(current_outlet)%>,
+  'price_2':<%= p.price_2 %>, 'price_3':<%= p.price_3 %>, 'price_4':<%= p.price_4 %>,
+  'double_price' : <%=p.double_price%>,
+  'half_price' : <%=p.half_price%>,
+  'cost_price' : <%=p.cost_price%>,
+  'hide_on_printed_receipt' : <%=p.hide_on_printed_receipt%>,
+  'show_price_on_receipt' : <%=p.show_price_on_receipt%>,
+  'prompt_price' : <%=p.show_price_prompt%>,
+  'is_stock_item' : <%=p.is_stock_item%>,
+  'printers' : "<%= p.printers %>",
+  'blocked_printers' : "<%= p.blocked_printers %>",
+  'kitchen_screens' : "<%=p.kitchen_screens%>",
+  'deleted' : <%= p.is_deleted %>,
+  'category_id' : <%= p.category ? p.category.id : "null" %>,
+  'upc' : '<%= p.upc %>',
+  'code_num' : '<%= p.code_num %>',
+  'modifier_grid_id' : <%= p.order_item_addition_grid ? p.order_item_addition_grid.id : "null" %>,
+  'modifier_grid_id_mandatory' : <%= p.order_item_addition_grid_id_is_mandatory %>,
+  'course_num' : <%= p.calc_course_num %>,
+  'unit' : '<%= p.unit %>'
+  };
+
+  products[<%= p.id %>] = nextProduct;
+
+  <% if !p.upc.blank? %>
+    products_by_upc[<%= p.upc %>] = nextProduct;
+  <% end %>
+
+  <% if p.modifier_category_id %>
+    products[<%= p.id %>]['modifier_category_id'] = <%=p.modifier_category_id%>;
+  <% end %>
+
+  if(!nextProduct.deleted) {
+  non_deleted_products[<%= p.id %>] = nextProduct;
+
+  if(nextProduct.is_stock_item) {
+  stock_products[<%= p.id %>] = nextProduct;
+  }
+  }
+<% end %>
+
+//
+//
+// MODIFIERS
+//
+//
+//
+var modifier_categories = new Array();
+
+<% current_outlet.modifier_categories.all.each do |mc| %>
+  modifier_categories[<%=mc.id%>] = {'id':<%=mc.id%>, 'name':'<%= escape_javascript raw(mc.name) %>'}
+  modifier_categories[<%=mc.id%>]['modifiers'] = new Array();
+  <% mc.modifiers.all.each do |m| %>
+    modifier_categories[<%=mc.id%>]['modifiers'][<%=m.id%>] = {'id':<%=m.id%>, 'name':'<%= escape_javascript m.name%>', 'price':<%=m.price%>}
+  <% end %>
+<% end %>
+
+//
+//
+// CATEGORIES
+//
+//
+//
+var categories = new Array();
+
+<% current_outlet.categories.all.each do |c|%>    
+  categories[<%= c.id %>] = {
+  'id':'<%= c.id %>', 'name':'<%= escape_javascript raw(c.name) %>', 
+  'printers': "<%= c.printers %>",
+  'blocked_printers' : "<%= c.blocked_printers %>",
+  'kitchen_screens' : "<%=c.kitchen_screens%>",
+  'modifier_grid_id' : <%= c.order_item_addition_grid ? c.order_item_addition_grid.id : "null" %>,
+  'modifier_grid_id_mandatory' : <%= c.order_item_addition_grid_id_is_mandatory %>, 
+  'parent_category_id' : <%= c.parent_category ? c.parent_category_id : "null" %>,
+  'course_num' : <%= c.course_num %>,
+  'prompt_for_covers' : <%= c.prompt_for_covers %>
+  };
+<% end %>
+
+//
+//
+// TABLES
+//
+//
+//
+var tables = new Array();
+
+//hard code table -2 for tempSplitBill
+tables['-2'] = {
+id : '0',
+label : '0',
+room_id : '0'
+}
+
+//hard code table -1 for previous Order
+tables['-1'] = {
+id : '0',
+label : '0',
+room_id : '0'
+}
+
+//hard code table 0
+tables['0'] = {
+id : '0',
+label : '0',
+room_id : '0'
+}
+
+<% current_outlet.table_infos.all.each do |ti|-%>
+  table_info = {
+  id : '<%= ti.id %>',
+  label : '<%= ti.perm_id %>',
+  room_id : '<%=ti.room_object.room_id%>'
+  }
+
+  tables['<%=ti.id%>'] = table_info;
+
+<% end -%>
+
+//
+//
+// ROOMS
+//
+//
+//
+var rooms = new Array();
+
+//hard code room 0
+rooms['0'] = {
+id : '0',
+defaultServiceChargePercent : '0', 
+prompt_for_client_name : false
+}
+
+<% current_outlet.rooms.all.each do |room|-%>
+  room_info = {
+  id : '<%= room.id %>',
+  defaultServiceChargePercent : '<%= room.default_service_charge_percent %>', 
+  prompt_for_client_name : <%= room.prompt_for_client_name %>
+  }
+
+  rooms['<%=room.id%>'] = room_info;
 
 <% end -%>
