@@ -88,7 +88,12 @@ $(appCache).bind(
  
         // Swap out the old cache.
         appCache.swapCache();
-        doReloadSalesResources(alertCacheReloadRequest);
+        
+        var functionToPerform = function() {
+            doReloadSalesResources(alertCacheReloadRequest);
+        };
+        
+        indicateActionRequired(functionToPerform);
     }
     );
  

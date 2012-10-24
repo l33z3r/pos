@@ -987,13 +987,14 @@ function checkForDuplicateBrowserSession() {
     }
 }
 
-function indicateSalesResourcesReloadRequired(reloadTerminalId) {
-    $('.sales_resources_reload_indicator').data("terminal_id", reloadTerminalId);
+var actionFunction = null;
+
+function indicateActionRequired(functionToPerform) {
+    actionFunction = functionToPerform;
     $('.sales_resources_reload_indicator').show();
 }
 
-function reloadSalesResourcesClicked(el) {
-    var reloadTerminalId = $(el).data("terminal_id");
+function actionRequiredClicked() {
     $('.sales_resources_reload_indicator').hide();
-    promptReloadSalesResources(reloadTerminalId);
+    actionFunction.call();    
 }

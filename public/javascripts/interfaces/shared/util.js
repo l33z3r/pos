@@ -932,7 +932,11 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
         
         setTimeout(okFuncCall, timeoutSeconds * 1000);
     } else {
-        indicateSalesResourcesReloadRequired(reloadTerminalId);
+        var functionToPerform = function() {
+            promptReloadSalesResources(reloadTerminalId);
+        };
+        
+        indicateActionRequired(functionToPerform);
     }
 }
 
