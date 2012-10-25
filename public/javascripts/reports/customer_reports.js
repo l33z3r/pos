@@ -130,7 +130,6 @@ function loadCustomerDropDown(drop_val) {
    if (drop_val == ''){
        drop_val = 'all'
    }
-    alert(drop_val)
     $.ajax({
         type: 'GET',
         url: '/reports/customers/load_dropdown',

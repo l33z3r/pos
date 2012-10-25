@@ -118,6 +118,7 @@ class Reports::CustomersController < Admin::AdminController
       where = "select ct.* from customer_transactions ct"
       where << " where ct.created_at <= '#{@selected_to_date}' and ct.created_at >= '#{@selected_from_date}'"
     end
+    where << " order by ct.customer_id"
 
 
     query = CustomerTransaction.find_by_sql(where)
