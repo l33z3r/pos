@@ -10,7 +10,7 @@ var receiveDeliveryInProcess = false;
 var currentSelectedDeliveryItemEl = null;
 var editDeliveryItemPopupAnchor = null;
 
-var sendDeliveryToServerTimeoutSeconds = 60;
+var sendDeliveryToServerTimeoutSeconds = 120;
 
 function initDeliveryScreen() {
     currentDelivery = retrieveStorageJSONValue(currentDeliveryStorageKey);
