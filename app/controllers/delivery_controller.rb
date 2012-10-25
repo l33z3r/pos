@@ -56,6 +56,9 @@ class DeliveryController < ApplicationController
       
       end
     
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       render :json => {:success => true}.to_json
     end
   end

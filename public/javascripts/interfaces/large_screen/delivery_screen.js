@@ -10,6 +10,8 @@ var receiveDeliveryInProcess = false;
 var currentSelectedDeliveryItemEl = null;
 var editDeliveryItemPopupAnchor = null;
 
+var sendDeliveryToServerTimeoutSeconds = 60;
+
 function initDeliveryScreen() {
     currentDelivery = retrieveStorageJSONValue(currentDeliveryStorageKey);
     
@@ -451,7 +453,7 @@ function doFinishDelivery() {
     receiveDeliveryInProcess = true;
     showLoadingDiv("Processing...");        
     
-    var timeoutMillis = sendOrderToServerTimeoutSeconds * 1000;
+    var timeoutMillis = sendDeliveryToServerTimeoutSeconds * 1000;
     
     currentDelivery.employee_id = current_user_id;
     currentDelivery.reference_number = $('#delivery_reference_number_input').val();
