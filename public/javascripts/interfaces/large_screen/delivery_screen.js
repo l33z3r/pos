@@ -10,7 +10,7 @@ var receiveDeliveryInProcess = false;
 var currentSelectedDeliveryItemEl = null;
 var editDeliveryItemPopupAnchor = null;
 
-var sendDeliveryToServerTimeoutSeconds = 60;
+var sendDeliveryToServerTimeoutSeconds = 120;
 
 function initDeliveryScreen() {
     currentDelivery = retrieveStorageJSONValue(currentDeliveryStorageKey);
@@ -465,14 +465,17 @@ function doFinishDelivery() {
         type: 'POST',
         url: '/delivery',
         timeout: timeoutMillis,
-        error: function() {
-            niceAlert("Error finishing delivery!");
+        error: function(x, t, m) {
+            hideLoadingDiv();
+            
+            if(t==="timeout") {
+                niceAlert("Processing the delivery has timed out. Please check in Reports if the delivery was recorded before retrying.");
+            } else {
+                niceAlert("Error finishing delivery!");
+            }
         },
         success: function() {
             deliverySentToServerCallback();
-        },
-        complete: function() {
-            hideLoadingDiv();
         },
         data: {
             delivery : currentDelivery
