@@ -72,7 +72,7 @@ $(appCache).bind(
         console.log("All files downloaded");
         
         //this is the first dl of the cache so we must do some things
-        niceAlert("App has been cached successfully!");
+        setStatusMessage("Sales interface has been saved for offline use!");
         cacheDownloading = false;
         cacheDownloadReset();
     }
@@ -88,6 +88,7 @@ $(appCache).bind(
  
         // Swap out the old cache.
         appCache.swapCache();
+        cacheDownloadReset();
         indicateActionRequired(alertCacheReloadRequest);
     }
     );

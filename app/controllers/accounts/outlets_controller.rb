@@ -38,6 +38,10 @@ class Accounts::OutletsController < Accounts::ApplicationController
     @outlet_terminal = OutletTerminal.new(params[:outlet_terminal])
     
     if @outlet_terminal.save
+      @outlet = @outlet_terminal.outlet
+      #send a reload request to other terminals
+      request_sales_resources_reload_for_outlet @outlet
+    
       flash[:notice] = "Terminal #{@outlet_terminal.name} added!"
       redirect_to accounts_outlet_path(@outlet)
     else

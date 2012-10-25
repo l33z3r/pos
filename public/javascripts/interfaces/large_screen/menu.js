@@ -1551,9 +1551,6 @@ function orderSentToServerCallback(orderData, errorOccured) {
             doSyncTableOrder();
             hideLoadingDiv();
         }
-        
-        //reload the customers as their points/credit may need updating
-        doReloadSalesResources();
     } else {
         if(!isTableZeroOrder) {
             niceAlert("There was an error cashing out the last order. It will automatically resend itself, please do not cash out on another terminal!");

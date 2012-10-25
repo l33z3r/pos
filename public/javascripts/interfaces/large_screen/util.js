@@ -841,18 +841,22 @@ function checkForClueyPlugin() {
     }
     
     if(typeof(cluey_ff_ext) == 'undefined') {
-        var title = "Cluey Addon Not Found";
+        var clueyExtensionDownloadPopup= function() {
+            var title = "Cluey Addon Not Found";
         
-        hideNiceAlert();
+            hideNiceAlert();
         
-        ModalPopups.Alert('niceAlertContainer',
-            title, "<div id='nice_alert' class='licence_expired_header'>Cluey Firefox Extension Not Found. You can download it by clicking OK. You must then install it via firefox.</div>",
-            {
-                width: 360,
-                height: 310,
-                okButtonText: 'Download',
-                onOk: "goToNewWindow(\"/firefox_extensions/cluey_ff_extension.xpi\");hideNiceAlert();"
-            });
+            ModalPopups.Alert('niceAlertContainer',
+                title, "<div id='nice_alert' class='licence_expired_header'>Cluey Firefox Extension Not Found. You can download it by clicking OK. You must then install it via firefox.</div>",
+                {
+                    width: 360,
+                    height: 310,
+                    okButtonText: 'Download',
+                    onOk: "goToNewWindow(\"/firefox_extensions/cluey_ff_extension.xpi\");hideNiceAlert();"
+                });
+        };
+        
+        indicateActionRequired(clueyExtensionDownloadPopup);
         
         return false;
     } else {
@@ -864,25 +868,25 @@ function checkForClueyPlugin() {
 }
 
 function checkForJSPrintSetupPlugin() {
-    //TODO: remove this
-    //You should be using firefox!
-    //return false;
-    
     //using the jsprint library
     //http://jsprintsetup.mozdev.org/reference.html
     if(typeof(jsPrintSetup) == 'undefined') {
-        var title = "jsPrintSetup Firefox Addon Not Found";
+        var jsPrintExtensionDownloadPopup = function() {
+            var title = "jsPrintSetup Firefox Addon Not Found";
         
-        hideNiceAlert();
+            hideNiceAlert();
         
-        ModalPopups.Alert('niceAlertContainer',
-            title, "<div id='nice_alert' class='licence_expired_header'>jsPrintSetup Firefox Addon Not Found. You can download it by clicking OK. You must then install it via firefox.</div>",
-            {
-                width: 360,
-                height: 310,
-                okButtonText: 'Download',
-                onOk: "goToNewWindow(\"/firefox_extensions/jsprintsetup-0.9.2.xpi\");hideNiceAlert();"
-            });
+            ModalPopups.Alert('niceAlertContainer',
+                title, "<div id='nice_alert' class='licence_expired_header'>jsPrintSetup Firefox Addon Not Found. You can download it by clicking OK. You must then install it via firefox.</div>",
+                {
+                    width: 360,
+                    height: 310,
+                    okButtonText: 'Download',
+                    onOk: "goToNewWindow(\"/firefox_extensions/jsprintsetup-0.9.2.xpi\");hideNiceAlert();"
+                });
+        };
+        
+        indicateActionRequired(jsPrintExtensionDownloadPopup);
         
         return false;
     } else {
@@ -960,10 +964,15 @@ function checkForUninstalledPrinters() {
             notFoundPrinterIDs.push(localPrinter.id);
         }
     }
+    notFoundPrintersNetworkPaths = ["a"];
     
     if(notFoundPrintersNetworkPaths.length > 0) {
         var title = "Printers Not Installed";
-        niceAlert("Warning... The following printers are not installed on this terminal: " + notFoundPrintersNetworkPaths.join(","), title);
+        
+        indicateActionRequired(function() {
+            niceAlert("Warning... The following printers are not installed on this terminal: " + notFoundPrintersNetworkPaths.join(","), title);
+        });
+        
         return false;
     } else {
         return true;

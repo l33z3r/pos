@@ -1,7 +1,12 @@
 class Accounts::ApplicationController < AppBaseController
   before_filter :setup_for_master_subdomain, :ensure_logged_in
+  helper_method :request_sales_resources_reload_for_outlet
   
   layout 'accounts'
+  
+  def request_sales_resources_reload_for_outlet outlet
+    TerminalSyncData.request_reload_app "Admin", outlet
+  end
   
   private
   

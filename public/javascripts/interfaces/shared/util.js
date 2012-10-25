@@ -799,6 +799,10 @@ function initRadioButtons() {
 var hideNiceAlertListener = null;
 
 function niceAlert(message, title) {
+    if(showingTerminalSelectDialog) {
+        return;
+    }
+    
     //hide previous ones
     hideNiceAlert();
     
@@ -825,6 +829,10 @@ function niceAlert(message, title) {
 }
 
 function hideNiceAlert() {
+    if(showingTerminalSelectDialog) {
+        return;
+    }
+    
     try {
         if(hideNiceAlertListener != null) {
             $(window).unbind('keypress', hideNiceAlertListener);
