@@ -97,14 +97,15 @@ class HomeController < ApplicationController
           :employee_id => e, :amount => @amount, :amount_tendered => @amount_tendered,
           :payment_method => @payment_method, :terminal_id => @terminal_id})
     
-      CustomerTransaction.create({:outlet_id => current_outlet.id, :customer_id => @customer.id, :terminal_id => @terminal_id,
-          :transaction_type => CustomerTransaction::SETTLEMENT, :is_credit => true,
-          :abs_amount => @amount, :actual_amount => @amount, :payment_id => @payment.id})
-    
       #deduct the customers balance
       @customer.current_balance = @customer.current_balance - @amount
       @customer.save
       
+      CustomerTransaction.create({:outlet_id => current_outlet.id, :customer_id => @customer.id, :terminal_id => @terminal_id,
+          :transaction_type => CustomerTransaction::SETTLEMENT, :is_credit => true,
+          :abs_amount => @amount, :actual_amount => @amount, 
+          :payment_id => @payment.id, :closing_balance => @customer.current_balance})
+    
       @card_charged = params[:card_charged].to_s == "true"
       
       if @card_charged

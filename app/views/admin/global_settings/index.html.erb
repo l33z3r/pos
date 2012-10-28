@@ -1457,7 +1457,7 @@
                       Cash Drawer Com Port
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_COM_PORT, current_outlet %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_COM_PORT, current_outlet, {:fingerprint => @terminal_fingerprint} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>
@@ -1468,7 +1468,7 @@
                       Cash Drawer Code
                     </td>
                     <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_CODE, current_outlet %>
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_CODE, current_outlet, {:fingerprint => @terminal_fingerprint} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value %>
                       <% end %>

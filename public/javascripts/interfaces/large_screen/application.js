@@ -12,6 +12,8 @@ var loyaltyCardCode = "";
 var generatedBrowserSessionId = null;
 var browserSessionIdStorageKey = "browser_session_id";
 
+var clueyPluginInitialized = false;
+
 $(function() {
     doGlobalInit();
 });
@@ -176,8 +178,6 @@ function doGlobalInit() {
     initTrainingModeFromCookie(); 
 }
 
-var showingTerminalSelectDialog = false;
-
 //this gets called from the polling when a terminal is not yet set
 function showTerminalSelectDialog() {
     //must wait on js resources to load
@@ -189,13 +189,13 @@ function showTerminalSelectDialog() {
         return;
     }
     
-    showingTerminalSelectDialog = true;
-    
     if(availableOutletTerminals.length == 0) {
-        var title = "Subscription Reached!";
-        var message = "You have only paid for " + outletTerminals.length + " terminal(s), which have all been assigned. You can create more terminals in the accounts section. Click OK to be redirected.";
-        
         hideNiceAlert();
+        
+        showingTerminalSelectDialog = true;
+    
+    var title = "Subscription Reached!";
+        var message = "You have only paid for " + outletTerminals.length + " terminal(s), which have all been assigned. You can create more terminals in the accounts section. Click OK to be redirected.";
         
         ModalPopups.Alert('niceAlertContainer',
             title, "<div id='nice_alert' class='nice_alert'>" + message + "</div>",

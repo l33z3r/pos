@@ -369,13 +369,14 @@ class OrderController < ApplicationController
       if @customer_details
         @customer = current_outlet.customers.find_by_id(@customer_details[:customer_id])
         
-        CustomerTransaction.create({:outlet_id => current_outlet.id, :transaction_type => CustomerTransaction::CHARGE,
-            :order_id => @order.id, :customer_id => @customer.id, :terminal_id => @terminal_id,
-            :abs_amount => @order.total, :actual_amount => -@order.total, :is_credit => false
-          })
-        
         @customer.current_balance = @customer.current_balance + @order.total 
         @customer.save
+        
+        CustomerTransaction.create({:outlet_id => current_outlet.id, :transaction_type => CustomerTransaction::CHARGE,
+            :order_id => @order.id, :customer_id => @customer.id, :terminal_id => @terminal_id,
+            :abs_amount => @order.total, :actual_amount => -@order.total, 
+            :is_credit => false, :closing_balance => @customer.current_balance
+          })
       end
     
       @table_info = current_outlet.table_infos.find_by_id(@order.table_info_id)

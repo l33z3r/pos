@@ -21,6 +21,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: customer_transactions
@@ -37,5 +38,6 @@ end
 #  payment_id       :integer(8)
 #  terminal_id      :string(255)
 #  outlet_id        :integer(8)
+#  closing_balance  :float           default(0.0), not null
 #
 

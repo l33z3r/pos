@@ -61,7 +61,7 @@ class Outlet < ActiveRecord::Base
   before_save :downcase_fields
   
   def downcase_fields
-    self.name.downcase
+    self.name.downcase!
   end
   
   def encrypt_password

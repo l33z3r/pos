@@ -860,8 +860,13 @@ function checkForClueyPlugin() {
         
         return false;
     } else {
-        console.log("Setting cluey prefs in plugin");
-        cluey_ff_ext.setClueyPrefs();
+        
+        if(!clueyPluginInitialized) {
+            console.log("Setting cluey prefs in plugin");
+            cluey_ff_ext.setClueyPrefs();
+            
+            clueyPluginInitialized = true;
+        }
         
         return true;
     }
@@ -964,7 +969,6 @@ function checkForUninstalledPrinters() {
             notFoundPrinterIDs.push(localPrinter.id);
         }
     }
-    notFoundPrintersNetworkPaths = ["a"];
     
     if(notFoundPrintersNetworkPaths.length > 0) {
         var title = "Printers Not Installed";

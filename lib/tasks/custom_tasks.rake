@@ -182,7 +182,7 @@ task :issue_hard_reset => :environment do
   puts "Done!"
 end
 
-desc "Builds Stock Transactions for all existing sales"
+desc "Builds Stock Transactions for all existing sales. This is not really needed anymore, as it was used to migrate older systems"
 task :build_stock_transactions => :environment do
   @outlet_id = ENV['outlet_id']
   
@@ -293,4 +293,26 @@ task :build_stock_transactions => :environment do
   end
     
   puts "Finished Building Stock Transactions"
+end
+
+desc "Fills in the closing balance for all customer transactions"
+task :calculate_customer_txn_closing_balance => :environment do
+  puts "Calculating closing balances for all customer transactions"
+    
+  Customer.all.each do |c|
+    
+    puts "Calculating for customer '#{c.name}-#{c.contact_name}' (ID:#{c.id})"
+    
+    @customer_balance = 0
+    
+    c.customer_transactions.each do |txn|
+      @customer_balance += txn.actual_amount
+      txn.closing_balance = @customer_balance
+      txn.save
+    end
+    
+    puts "Done for customer ID:#{c.id}"
+  end
+  
+  puts "Finished calculating closing balances for all customers"
 end

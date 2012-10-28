@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121016120003) do
+ActiveRecord::Schema.define(:version => 20121026142313) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id",         :limit => 8
@@ -137,6 +137,7 @@ ActiveRecord::Schema.define(:version => 20121016120003) do
     t.integer  "payment_id",       :limit => 8
     t.string   "terminal_id"
     t.integer  "outlet_id",        :limit => 8
+    t.float    "closing_balance",               :default => 0.0,  :null => false
   end
 
   add_index "customer_transactions", ["outlet_id"], :name => "index_customer_transactions_on_outlet_id"

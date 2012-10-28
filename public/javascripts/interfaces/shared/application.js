@@ -21,6 +21,8 @@ var lastPrintCheckTime = null;
     
 var scheduledTasksIntervalSeconds = 10;
     
+var showingTerminalSelectDialog = false;
+
 //the following hack is to get over eventX eventY being deprecated in new builds of chrome
 $.event.props = $.event.props.join('|').replace('layerX|layerY|', '').split('|');
 
