@@ -103,7 +103,7 @@ class HomeController < ApplicationController
       
       CustomerTransaction.create({:outlet_id => current_outlet.id, :customer_id => @customer.id, :terminal_id => @terminal_id,
           :transaction_type => CustomerTransaction::SETTLEMENT, :is_credit => true,
-          :abs_amount => @amount, :actual_amount => @amount, 
+          :abs_amount => @amount, :actual_amount => -@amount, 
           :payment_id => @payment.id, :closing_balance => @customer.current_balance})
     
       @card_charged = params[:card_charged].to_s == "true"

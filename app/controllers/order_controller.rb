@@ -374,7 +374,7 @@ class OrderController < ApplicationController
         
         CustomerTransaction.create({:outlet_id => current_outlet.id, :transaction_type => CustomerTransaction::CHARGE,
             :order_id => @order.id, :customer_id => @customer.id, :terminal_id => @terminal_id,
-            :abs_amount => @order.total, :actual_amount => -@order.total, 
+            :abs_amount => @order.total, :actual_amount => @order.total, 
             :is_credit => false, :closing_balance => @customer.current_balance
           })
       end
