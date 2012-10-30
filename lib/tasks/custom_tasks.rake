@@ -196,3 +196,23 @@ task :build_stock_transactions => :environment do
     
   puts "Finished Building Stock Transactions"
 end
+
+desc "Fills in the closing balance for all customer transactions"
+task :calculate_customer_txn_closing_balance => :environment do
+  puts "Calculating closing balances for all customer transactions"
+    
+  Customer.all.each do |c|
+    
+    puts "Calculating for customer '#{c.name}-#{c.contact_name}' (ID:#{c.id})"
+    
+    @customer_balance = 0
+    
+    c.customer_transactions.each do |txn|
+      @customer_balance += txn.actual_amount
+      txn.closing_balance = @customer_balance.round(2)
+      txn.save
+    end
+    
+    puts "Done for customer ID:#{c.id}"
+  end
+end
