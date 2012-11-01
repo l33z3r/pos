@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121026142313) do
+ActiveRecord::Schema.define(:version => 20121101160833) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id",         :limit => 8
@@ -107,9 +107,10 @@ ActiveRecord::Schema.define(:version => 20121026142313) do
     t.datetime "updated_at"
     t.string   "activation_code"
     t.datetime "activated_at"
-    t.boolean  "is_active",              :default => true
+    t.boolean  "is_active",                    :default => true
     t.string   "password_reset_token"
     t.datetime "password_reset_sent_at"
+    t.string   "login_crossdomain_auth_token"
   end
 
   create_table "customer_points_allocations", :force => true do |t|

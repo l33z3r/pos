@@ -307,7 +307,7 @@ task :calculate_customer_txn_closing_balance => :environment do
     
     c.customer_transactions.each do |txn|
       @customer_balance += txn.actual_amount
-      txn.closing_balance = @customer_balance
+      txn.closing_balance = @customer_balance.round(2)
       txn.save
     end
     

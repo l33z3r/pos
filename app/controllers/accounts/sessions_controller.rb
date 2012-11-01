@@ -16,6 +16,15 @@ class Accounts::SessionsController < Accounts::ApplicationController
       end
       
       session[:current_cluey_account_id] = @cluey_account.id
+      
+      #set the auth_token cookie to allow the master user to log in 
+      #to seperate pos systems without the password prompt
+      cookies[:login_auth_token] = {
+        :value => @cluey_account.login_crossdomain_auth_token,
+        :expires => 20.years.from_now,
+        :domain => ".#{APP_DOMAIN}"
+      }
+      
       redirect_to accounts_accounts_path, :notice => "Logged In Successfully!"
     else
       flash.now.alert = "Invalid email or password"

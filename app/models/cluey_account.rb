@@ -9,6 +9,7 @@ class ClueyAccount < ActiveRecord::Base
   before_save :encrypt_password
   
   after_create :make_activation_code
+  after_create :generate_login_crossdomain_auth_token
   
   validates :name, :presence => true
   validates_uniqueness_of :name, :case_sensitive => false
@@ -90,7 +91,16 @@ class ClueyAccount < ActiveRecord::Base
     
     AccountMailer.deliver_password_reset self
   end
+  
+  def generate_login_crossdomain_auth_token
+    begin
+      self.login_crossdomain_auth_token = SecureRandom.urlsafe_base64
+    end while self.class.exists?(login_crossdomain_auth_token: login_crossdomain_auth_token)
+    
+    save
+  end
 end
+
 
 
 
@@ -99,17 +109,18 @@ end
 #
 # Table name: cluey_accounts
 #
-#  id                     :integer(8)      not null, primary key
-#  name                   :string(255)
-#  email                  :string(255)
-#  password_hash          :string(255)
-#  password_salt          :string(255)
-#  created_at             :datetime
-#  updated_at             :datetime
-#  activation_code        :string(255)
-#  activated_at           :datetime
-#  is_active              :boolean(1)      default(TRUE)
-#  password_reset_token   :string(255)
-#  password_reset_sent_at :datetime
+#  id                           :integer(8)      not null, primary key
+#  name                         :string(255)
+#  email                        :string(255)
+#  password_hash                :string(255)
+#  password_salt                :string(255)
+#  created_at                   :datetime
+#  updated_at                   :datetime
+#  activation_code              :string(255)
+#  activated_at                 :datetime
+#  is_active                    :boolean(1)      default(TRUE)
+#  password_reset_token         :string(255)
+#  password_reset_sent_at       :datetime
+#  login_crossdomain_auth_token :string(255)
 #
 

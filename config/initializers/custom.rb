@@ -53,5 +53,7 @@ Recaptcha.configure do |config|
   config.private_key = CUSTOM_CONFIG['recaptcha_private_key']
 end
 
+APP_DOMAIN = CUSTOM_CONFIG['domain_name']
+
 require "net/http"
 require "uri"

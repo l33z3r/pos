@@ -270,7 +270,7 @@ class ApplicationController < AppBaseController
   rescue_from StandardError do |exception|
     
     EXCEPTION_LOGGER.error('CLUEY ERROR!!!!!')
-    EXCEPTION_LOGGER.error("OUTELET ID: #{current_outlet.id}")
+    EXCEPTION_LOGGER.error("OUTELET ID: #{current_outlet.id}") if current_outlet
     EXCEPTION_LOGGER.error("Time: #{Time.now.to_s(:long)}")
     EXCEPTION_LOGGER.error(params.inspect)
     EXCEPTION_LOGGER.error(exception.message)
@@ -492,94 +492,6 @@ class ApplicationController < AppBaseController
     current_interface == MEDIUM_INTERFACE
   end
   
-  #  def http_basic_authenticate
-  #    
-  #    @need_auth = false
-  #    
-  #    @authentication_required = GlobalSetting.parsed_setting_for GlobalSetting::AUTHENTICATION_REQUIRED, current_outlet
-  #    @local_auth_required = GlobalSetting.parsed_setting_for GlobalSetting::LOCAL_AUTHENTICATION_REQUIRED, current_outlet
-  #    
-  #    @http_basic_username = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_USERNAME, current_outlet
-  #    @http_basic_password = GlobalSetting.parsed_setting_for GlobalSetting::HTTP_AUTH_PASSWORD, current_outlet
-  #  
-  #    if @authentication_required 
-  #      @need_auth = true
-  #      
-  #      if !@local_auth_required
-  #        @local_access = false
-  #        
-  #        @remote_ip = request.remote_ip
-  #        
-  #        #check ip on same lan
-  #        @server_ip_parts = server_ip.split(".")
-  #        
-  #        @server_ip_base = "#{@server_ip_parts[0]}.#{@server_ip_parts[1]}.#{@server_ip_parts[2]}."
-  #          
-  #        if @remote_ip.starts_with? @server_ip_base or @remote_ip == "127.0.0.1"
-  #          @local_access = true
-  #        else 
-  #          @local_access = false
-  #        end
-  #        
-  #        if @local_access
-  #          @need_auth = false
-  #        end
-  #      end
-  #    else
-  #      logger.info "Auth is not required by setting"
-  #    end
-  #    
-  #    if !@need_auth
-  #      return
-  #    end
-  #
-  #    if !session[:auth_succeeded]
-  #      #check is the name and password sent in the url and authenticate off that first if it is present
-  #      @username_param = params[:u]
-  #      @password_param = params[:p]
-  #    
-  #      @username_ok = (@username_param and @username_param == @http_basic_username)
-  #      @password_ok = (@password_param and @password_param == @http_basic_password)
-  #    
-  #      if @username_ok and @password_ok
-  #        session[:auth_succeeded] = true
-  #        return
-  #      end
-  #    else
-  #      return
-  #    end
-  #    
-  #    authenticate_or_request_with_http_basic do |username, password|
-  #      logger.info "#{username} #{password} #{@http_basic_username} #{@http_basic_password}"
-  #      @auth_ok = username == @http_basic_username && password == @http_basic_password
-  #      
-  #      if @auth_ok
-  #        session[:auth_succeeded] = true
-  #      end
-  #      
-  #      @auth_ok
-  #    end
-  #  end
-  
-  ###
-  ### CODE TO GET SERVER IP
-  ###
-  def server_ip
-    begin
-      orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true  # turn off reverse DNS resolution temporarily
-
-      UDPSocket.open do |s|
-        s.connect '64.233.187.99', 1
-        s.addr.last
-      end
-    
-    rescue
-      return "127.0.0.1"
-    end
-  ensure
-    Socket.do_not_reverse_lookup = orig
-  end
-  
   def setup_for_subdomain
     @subdomain = request.subdomain
     
@@ -611,7 +523,7 @@ class ApplicationController < AppBaseController
         redirect_to welcome_url
         return
       end
-    
+             
       @account.outlets.each do |outlet|
         if outlet.name == @outlet_name
           #now check the session for the current terminal to be logged into this outlet
@@ -621,37 +533,39 @@ class ApplicationController < AppBaseController
             
             return true
           end
-        
           
+          #check if we have the cross domain login auth token cookie that was 
+          #set in the accounts pages to allow a login from those pages without a prompt here
+          @login_auth_token = cookies[:login_auth_token]
           
-          
-          #disable login for now
-          session[:current_outlet_id] = outlet.id
-          
-          
-          
+          if @login_auth_token
+            @auth_token_cluey_account = ClueyAccount.find_by_login_crossdomain_auth_token @login_auth_token
+            
+            if @auth_token_cluey_account
+              #make sure that the auth_token_cluey_account owns this outlet
+              if @auth_token_cluey_account.outlets.map(&:id).include?(outlet.id)
+                logger.info "!!!!!!!!!!!!!!!!!!!!!!!LOGGED IN WITH AUTH TOKEN #{@login_auth_token}"
+                set_current_outlet outlet
+                return true
+              end
+            end
+          end
           
           #login required
-          #          authenticate_or_request_with_http_basic do |username, password|
-          #            #logger.info "#{username} #{password}"
-          #                           
-          #            @username_matches = outlet.username == username
-          #            @password_matches = outlet.password_hash == BCrypt::Engine.hash_secret(password, outlet.password_salt)
-          #            
-          #            @auth_ok = @username_matches && @password_matches
-          #      
-          #            if @auth_ok
-          #              session[:current_outlet_id] = outlet.id
-          #            
-          #              if !outlet.has_seed_data
-          #                OutletBuilder::build_outlet_seed_data(outlet.id)
-          #                outlet.has_seed_data = true
-          #                outlet.save
-          #              end
-          #            end
-          #      
-          #            @auth_ok
-          #          end
+          authenticate_or_request_with_http_basic do |username, password|
+            logger.info "#{username} #{password}"
+                                 
+            @username_matches = outlet.username == username
+            @password_matches = outlet.password_hash == BCrypt::Engine.hash_secret(password, outlet.password_salt)
+                  
+            @auth_ok = @username_matches && @password_matches
+            
+            if @auth_ok
+              set_current_outlet outlet
+            end
+            
+            @auth_ok
+          end
         
           return
         end
@@ -665,6 +579,16 @@ class ApplicationController < AppBaseController
       return
     end
     
+  end
+  
+  def set_current_outlet outlet
+    session[:current_outlet_id] = outlet.id
+                  
+    if !outlet.has_seed_data
+      OutletBuilder::build_outlet_seed_data(outlet.id)
+      outlet.has_seed_data = true
+      outlet.save
+    end
   end
 
 end

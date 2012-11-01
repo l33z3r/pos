@@ -1,4 +1,5 @@
 development:
+  domain_name: lvh.me
   use_s3: true
   s3_public_bucket_name: cluey_development
   s3_user_uploads_bucket_name: cluey_development_user_uploads
@@ -10,6 +11,7 @@ development:
   in_kiosk_mode: false
 
 test:
+  domain_name: lvh.me
   use_s3: false
   s3_public_bucket_name: cluey_test
   s3_user_uploads_bucket_name: cluey_test_user_uploads
@@ -21,6 +23,7 @@ test:
   in_kiosk_mode: false
 
 production:
+  domain_name: lvh.me
   use_s3: false
   s3_bucket_name: clueypos_production
   s3_access_key_id: AKIAIY5ORKJHOQ7C5ZHA
@@ -31,6 +34,7 @@ production:
   in_kiosk_mode: true
   
 heroku_staging:
+  domain_name: clueypos-staging.com
   use_s3: true
   s3_public_bucket_name: cluey_staging
   s3_user_uploads_bucket_name: cluey_staging_user_uploads
@@ -42,6 +46,7 @@ heroku_staging:
   in_kiosk_mode: true
   
 heroku_production:
+  domain_name: cluey.com
   use_s3: true
   s3_public_bucket_name: cluey
   s3_user_uploads_bucket_name: cluey_user_uploads
