@@ -28,14 +28,15 @@ HTTP_BASIC_AUTH_USERNAME = CUSTOM_CONFIG["http_basic_auth_username"]
 HTTP_BASIC_AUTH_PASSWORD = CUSTOM_CONFIG["http_basic_auth_password"]
 
 USE_S3 = CUSTOM_CONFIG["use_s3"]
-S3_BUCKET_NAME = CUSTOM_CONFIG["s3_user_uploads_bucket_name"]
+S3_USER_UPLOADS_BUCKET_NAME = CUSTOM_CONFIG["s3_user_uploads_bucket_name"]
+S3_USER_UPLOADS_ASSET_HOST = CUSTOM_CONFIG["s3_user_uploads_asset_host"]
 S3_ACCESS_KEY_ID = CUSTOM_CONFIG["s3_access_key_id"]
 S3_SECRET_ACCESS_KEY = CUSTOM_CONFIG["s3_secret_access_key"]
 DAYS_OF_THE_WEEK = %w[Sunday Monday Tuesday Wednesday Thursday Friday Saturday]
 
 if USE_S3 
   PAPERCLIP_STORAGE_OPTIONS = {:storage => :s3,
-    :bucket => S3_BUCKET_NAME,
+    :bucket => S3_USER_UPLOADS_BUCKET_NAME,
     :s3_credentials => {
       :access_key_id => S3_ACCESS_KEY_ID,
       :secret_access_key => S3_SECRET_ACCESS_KEY

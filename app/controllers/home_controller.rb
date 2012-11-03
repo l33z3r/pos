@@ -708,10 +708,11 @@ class HomeController < ApplicationController
     
     #now, load images relating to a particular outlet products
     @outlet_product_images = []
+    @outlet_product_images_paperclip = []
     
     Product.non_deleted(current_outlet).all.each do |product|
       if product.has_product_image?
-        @outlet_product_images << product.product_image.url(:thumb, false)
+        @outlet_product_images_paperclip << product.product_image.url(:thumb, false)
       elsif product.display_image and !product.display_image.blank?
         @outlet_product_images << "/images/product_images/#{product.display_image}"
       end
@@ -729,6 +730,29 @@ class HomeController < ApplicationController
       end
       
       @files << "#{Rails.application.config.action_controller.asset_host}#{rb_file}"
+      
+    end
+    
+    #we need to treat the paperclip images differently
+    #they are in the form: http://s3.amazonaws.com/cluey_user_uploads/app/public/system/product_images/699/thumb/hot-nuts2.jpg
+    #we need to strip out the part just before and including the bucket name and put our own in
+    @outlet_product_images_paperclip.sort!
+    
+    @outlet_product_images_paperclip.each do |rb_file|
+      
+      @bucket_name_start_index = rb_file.index S3_USER_UPLOADS_BUCKET_NAME      
+      @bucket_name_end_index = @bucket_name_start_index + S3_USER_UPLOADS_BUCKET_NAME.length
+      rb_file = rb_file[@bucket_name_end_index..rb_file.length - 1]
+      
+      next if !rb_file.match /\.png$/ and !rb_file.match /\.jpg$/ and !rb_file.match /\.gif$/
+      
+      #escape whitespace
+      if rb_file.match /\s+/ 
+        rb_file.gsub!(" ", "%20")
+        rb_file
+      end
+      
+      @files << "#{S3_USER_UPLOADS_ASSET_HOST}#{rb_file}"
       
     end
     
