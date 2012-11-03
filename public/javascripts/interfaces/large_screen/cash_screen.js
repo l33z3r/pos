@@ -279,9 +279,9 @@ function paymentMethodSelected(pm_id) {
                 url: '/forward_zalion_roomfile_request',
                 error: function() {
                     hideLoadingDiv();
-                    niceAlert("Error Getting Zalion Data.", false, false);                   
-                    paymentMethodSelected(getPaymentMethodId(defaultPaymentMethod));
+                    niceAlert("Error Getting Zalion Data.", false, false);
                     splitPayments = {};
+                    paymentMethodSelected(getPaymentMethodId(defaultPaymentMethod));
                 },
                 data: {
                     zalion_roomfile_request_url : zalion_roomfile_request_url
