@@ -13,7 +13,7 @@ var activeUserIDCookieName = "current_user_id";
 
 var serverCounterStartTimeMillis = null;
 var counterStartTimeMillis = null;
-var clueyTimestampInitialized= false;
+var clueyTimestampInitializedFromServer = false;
 
 function isTouchDevice() {
     return !disableAdvancedTouch;
@@ -909,23 +909,29 @@ function initPressedCSS() {
     });
 }
 
-function initClueyTimestamp(startTimeMillis) {
-    if(!clueyTimestampInitialized) {
-        clueyTimestampInitialized = true;
-        serverCounterStartTimeMillis = startTimeMillis;
+function initClueyTimestampFromServer(serverStartTimeMillis) {
+    if(!clueyTimestampInitializedFromServer) {
+        clueyTimestampInitializedFromServer = true;
+        serverCounterStartTimeMillis = serverStartTimeMillis;
         counterStartTimeMillis = new Date().getTime();
-  
-        //start the clock in the nav bar
+        startClock();
+    }
+}
+
+function clueyTimestamp() {
+    if(clueyTimestampInitializedFromServer) {
+    return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
+    } else 
+        return new Date().getTime();
+}
+
+function startClock() {
+    //start the clock in the nav bar
         $("div#clock").clock({
             "calendar" : "false",
             "format" : clockFormat,
             "timestamp" : clueyTimestamp()
         });
-    }
-}
-
-function clueyTimestamp() {
-    return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
 }
 
 var ignoreReloadRequest = false;

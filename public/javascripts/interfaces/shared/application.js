@@ -154,8 +154,6 @@ function callHomePoll() {
 }
 
 function manualCallHomePoll() {
-    return;
-    
     if(!pollInProgress) {
         callHomePoll();   
     }    
@@ -178,7 +176,6 @@ function callHomePollComplete() {
             finishedLoadingKitchenScreen();
         } else if(inLargeInterface()) {
         //we do manual polling now
-        setTimeout(callHomePoll, pollingAmount);
         } else if(inMediumInterface()) {
             setTimeout(callHomePoll, pollingAmount);
         }                

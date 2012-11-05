@@ -29,7 +29,7 @@ class ClueyAccount < ActiveRecord::Base
   has_many :customers, :through => :outlets
   
   RESERVED_NAMES = [
-    "help", "login", "signup", "support", "www", "demo", "cluey"
+    "help", "login", "signup", "support", "www", "demo"
   ]
   
   before_save :downcase_fields
