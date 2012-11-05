@@ -909,7 +909,7 @@ function initPressedCSS() {
     });
 }
 
-function initClueyTimestamp(startTimeMillis) {alert("init ti");
+function initClueyTimestamp(startTimeMillis) {
     if(!clueyTimestampInitialized) {
         clueyTimestampInitialized = true;
         serverCounterStartTimeMillis = startTimeMillis;
