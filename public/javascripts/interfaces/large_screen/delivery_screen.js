@@ -10,6 +10,8 @@ var receiveDeliveryInProcess = false;
 var currentSelectedDeliveryItemEl = null;
 var editDeliveryItemPopupAnchor = null;
 
+var sendDeliveryToServerTimeoutSeconds = 120;
+
 function initDeliveryScreen() {
     currentDelivery = retrieveStorageJSONValue(currentDeliveryStorageKey);
     
@@ -451,7 +453,7 @@ function doFinishDelivery() {
     receiveDeliveryInProcess = true;
     showLoadingDiv("Processing...");        
     
-    var timeoutMillis = sendOrderToServerTimeoutSeconds * 1000;
+    var timeoutMillis = sendDeliveryToServerTimeoutSeconds * 1000;
     
     currentDelivery.employee_id = current_user_id;
     currentDelivery.reference_number = $('#delivery_reference_number_input').val();
@@ -463,14 +465,17 @@ function doFinishDelivery() {
         type: 'POST',
         url: '/delivery',
         timeout: timeoutMillis,
-        error: function() {
-            niceAlert("Error finishing delivery!");
+        error: function(x, t, m) {
+            hideLoadingDiv();
+            
+            if(t==="timeout") {
+                niceAlert("Processing the delivery has timed out. Please check in Reports if the delivery was recorded before retrying.");
+            } else {
+                niceAlert("Error finishing delivery!");
+            }
         },
         success: function() {
             deliverySentToServerCallback();
-        },
-        complete: function() {
-            hideLoadingDiv();
         },
         data: {
             delivery : currentDelivery

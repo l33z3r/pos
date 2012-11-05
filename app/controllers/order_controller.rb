@@ -382,13 +382,13 @@ class OrderController < ApplicationController
       if @customer_details
         @customer = Customer.find_by_id(@customer_details[:customer_id])
         
-        CustomerTransaction.create({:transaction_type => CustomerTransaction::CHARGE,
-            :order_id => @order.id, :customer_id => @customer.id, :terminal_id => @terminal_id,
-            :abs_amount => @order.total, :actual_amount => -@order.total, :is_credit => false
-          })
-        
         @customer.current_balance = @customer.current_balance + @order.total 
         @customer.save
+        
+        CustomerTransaction.create({:transaction_type => CustomerTransaction::CHARGE,
+            :order_id => @order.id, :customer_id => @customer.id, :terminal_id => @terminal_id,
+            :abs_amount => @order.total, :actual_amount => @order.total, 
+            :is_credit => false, :closing_balance => @customer.current_balance})          
       end
     
       @table_info = TableInfo.find_by_id(@order.table_info_id)

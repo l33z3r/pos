@@ -381,17 +381,19 @@ class CashTotal < ActiveRecord::Base
     
       @customer_txns.all.each do |ct|
         @transaction_amount = ct.actual_amount
+        @abs_transaction_amount = -1 * @transaction_amount
+        
         @transaction_payment_type = ct.payment.payment_method.downcase
       
-        @customer_settlements_amount += @transaction_amount
+        @customer_settlements_amount += @abs_transaction_amount
       
         if !@sales_by_payment_type[@transaction_payment_type]
           @sales_by_payment_type[@transaction_payment_type] = 0
         end
             
-        @sales_by_payment_type[@transaction_payment_type] += @transaction_amount
+        @sales_by_payment_type[@transaction_payment_type] += @abs_transaction_amount
         
-        @serialized_account_payments << {:customer_name => ct.customer.name, :amount => ct.actual_amount}
+        @serialized_account_payments << {:customer_name => ct.customer.name, :amount => @abs_transaction_amount}
       end
         
       #total of all cash sales (including the service charge)

@@ -2,8 +2,6 @@ class DeliveryController < ApplicationController
 
   def receive
     Delivery.transaction do
-      @success = true
-    
       @delivery_params = params[:delivery]
       @employee_id = @delivery_params[:employee_id]
     
@@ -58,14 +56,10 @@ class DeliveryController < ApplicationController
       
       end
     
-      if @success
-        #send a reload request to other terminals
-        request_reload_app @terminal_id
+      #send a reload request to other terminals
+      request_reload_app @terminal_id
       
-        render :json => {:success => true}.to_json
-      else
-        render :json => {:success => false}.to_json
-      end
+      render :json => {:success => true}.to_json
     end
   end
 
