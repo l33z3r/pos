@@ -316,3 +316,37 @@ task :calculate_customer_txn_closing_balance => :environment do
   
   puts "Finished calculating closing balances for all customers"
 end
+
+desc "Generates a password hash for a cluey account given a string"
+task :generate_password_hash => :environment do
+  
+  @cluey_account_id = ENV['cluey_account_id']
+  
+  if !@cluey_account_id
+    abort "You must provide a 'cluey_account_id' parameter"
+  end
+  
+  @cluey_account = ClueyAccount.find_by_id @cluey_account_id
+  
+  if !@cluey_account
+    abort "Account not found for ID: #{@cluey_account_id}"
+  end
+  
+  @new_password = ENV['new_password']
+  
+  if !@new_password
+    abort "You must provide a 'new_password' parameter"
+  end
+  
+  puts "Setting password for account #{@cluey_account.name} to #{@new_password}"
+    
+  @cluey_account.password = @new_password
+  @cluey_account.password_confirmation = @new_password
+  @save_ok = @cluey_account.save!    
+  
+  if @save_ok
+    puts "New password set!"
+  else
+    puts "Error changing password, please check that password is valid"
+  end    
+end
