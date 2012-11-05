@@ -125,13 +125,6 @@ function doGlobalInit() {
         initKitchen();
     }
 
-    //start the clock in the nav bar
-    $("div#clock").clock({
-        "calendar" : "false",
-        "format" : clockFormat,
-        "timestamp" : clueyTimestamp()
-    });
-
     //any input that gains focus will call this function
     $("input,textarea").live("focus", function(event) {
         //unhighlight last active

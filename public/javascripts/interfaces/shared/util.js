@@ -11,6 +11,10 @@ var clockedInUserIDSSStorageKey = "clocked_in_user_ids";
 
 var activeUserIDCookieName = "current_user_id";
 
+var serverCounterStartTimeMillis = null;
+var counterStartTimeMillis = null;
+var clueyTimestampInitialized= false;
+
 function isTouchDevice() {
     return !disableAdvancedTouch;
 }
@@ -903,6 +907,21 @@ function initPressedCSS() {
             $(this).unbind(cancelEventName);
         });
     });
+}
+
+function initClueyTimestamp(startTimeMillis) {alert("init ti");
+    if(!clueyTimestampInitialized) {
+        clueyTimestampInitialized = true;
+        serverCounterStartTimeMillis = startTimeMillis;
+        counterStartTimeMillis = new Date().getTime();
+  
+        //start the clock in the nav bar
+        $("div#clock").clock({
+            "calendar" : "false",
+            "format" : clockFormat,
+            "timestamp" : clueyTimestamp()
+        });
+    }
 }
 
 function clueyTimestamp() {
