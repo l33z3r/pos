@@ -1038,6 +1038,8 @@ function tableScreenSelectTable(tableId) {
     
     tableSelectMenu.setValue(tableId);
     doSelectTable(tableId);
+    
+    manualCallHomePoll();
 }
 
 function transferOrderError() {
@@ -2216,6 +2218,8 @@ function finishDoSyncTableOrder() {
     orderReceiptHTML = fetchOrderReceiptHTML(lastSyncedOrder);
     setLoginReceipt("Last Order", orderReceiptHTML);
     loginRecptUpdate();
+    
+    manualCallHomePoll();
 }
 
 function toggleModifyOrderItemScreen() {

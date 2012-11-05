@@ -6,6 +6,11 @@ var isTableZeroOrder = false;
 function orderButtonPressed() {
     var order = getCurrentOrder();
 
+    if (currentOrderEmpty()) {
+        setStatusMessage("No order present!", true, true);
+        return;
+    }
+
     var autoCovers = false;
 
     if (globalAutoPromptForCovers) {

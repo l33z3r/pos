@@ -449,13 +449,13 @@ class CashTotal < ActiveRecord::Base
     @last_z_total = CashTotal.last_z_total terminal_id, current_outlet
     
     #select all previous floats since last z total
-    @previous_floats = current_outlet.cash_totals("total_type = ?", CashTotal::FLOAT).where("terminal_id = ?", terminal_id)
+    @previous_floats = current_outlet.cash_totals.where("total_type = ?", CashTotal::FLOAT).where("terminal_id = ?", terminal_id)
     
     if @last_z_total
       @previous_floats = @previous_floats.where("created_at >= ?", @last_z_total.created_at)
     end
     
-    @previous_floats = @previous_floats.order("created_at desc")
+    #@previous_floats = @previous_floats.order("created_at desc")
     
     return @last_z_total, @previous_floats
   end

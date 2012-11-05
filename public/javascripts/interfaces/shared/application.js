@@ -12,6 +12,8 @@ var lastActiveElement;
 
 var callHomePollInitSequenceComplete = false;
 var callHome = true;
+var currentPollObj = null;
+var pollInProgress = false;
 
 var lastSyncTableOrderTime = null;
 var lastSyncKey = "last_sync_table_order_time";
@@ -127,13 +129,18 @@ function callHomePoll() {
         currentTableLabel = tableInfoLabel = tables[selectedTable].label;
     }
     
-    $.ajax({
+    pollInProgress = true;
+    
+    currentPollObj = $.ajax({
         url: callHomeURL,
         type : "POST",
         dataType: 'script',
         success: callHomePollComplete,
         error: function() {
             setTimeout(callHomePoll, 5000);
+        },
+        complete: function() {
+            pollInProgress = false;
         },
         data : {
             lastInterfaceReloadTime : lastInterfaceReloadTime,
@@ -144,6 +151,14 @@ function callHomePoll() {
             lastOrderReadyNotificationTime : lastOrderReadyNotificationTime
         }
     });
+}
+
+function manualCallHomePoll() {
+    return;
+    
+    if(!pollInProgress) {
+        callHomePoll();   
+    }    
 }
 
 var immediateCallHome = false;
@@ -161,9 +176,12 @@ function callHomePollComplete() {
         if(inKitchenContext() && !kitchenScreenInitialized) {
             kitchenScreenInitialized = true;
             finishedLoadingKitchenScreen();
-        }
-        
+        } else if(inLargeInterface()) {
+        //we do manual polling now
         setTimeout(callHomePoll, pollingAmount);
+        } else if(inMediumInterface()) {
+            setTimeout(callHomePoll, pollingAmount);
+        }                
     }
 }
 

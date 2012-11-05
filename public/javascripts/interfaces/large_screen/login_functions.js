@@ -384,6 +384,8 @@ function loginSuccess(id, nickname, is_admin, passcode) {
     } else {
         $('#split_bill_select_item').hide();
     }
+    
+    manualCallHomePoll();
 }
 
 function clockinFailure() {

@@ -583,6 +583,8 @@ function doTablesButtonPressed() {
         //reset the quantity
         currentMenuItemQuantity = "";
         $('#menu_screen_input_show').html("");
+        
+        manualCallHomePoll();
     } else {
         showTablesScreen();
     }
