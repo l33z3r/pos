@@ -2,10 +2,14 @@ class Accounts::PasswordResetsController < Accounts::ApplicationController
   skip_before_filter :ensure_logged_in
   
   def create
-    @cluey_account = ClueyAccount.find_by_email(params[:email])
+    @entered_email = params[:email]
+    @password_reset_cluey_account = ClueyAccount.find_by_email(@entered_email)
+    @success = true
     
-    if @cluey_account and @cluey_account.activated?
-      @cluey_account.send_password_reset 
+    if @password_reset_cluey_account and @password_reset_cluey_account.activated? and @password_reset_cluey_account.id == @cluey_account.id
+      @password_reset_cluey_account.send_password_reset     
+    else
+      @success = false
     end
   end
 

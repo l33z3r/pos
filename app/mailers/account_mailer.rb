@@ -1,5 +1,5 @@
 class AccountMailer < ActionMailer::Base
-  MAILER_FROM_ADDRESS = "clueynoreply@clueypos.com"
+  MAILER_FROM_ADDRESS = "support@#{APP_DOMAIN}"
 
   def signup_notification cluey_account
     @subject        = "Activate Your Cluey Account!"

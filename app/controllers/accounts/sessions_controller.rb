@@ -5,22 +5,22 @@ class Accounts::SessionsController < Accounts::ApplicationController
   end
 
   def create
-    @cluey_account = ClueyAccount.authenticate(params[:name], params[:password])
+    @login_cluey_account = ClueyAccount.authenticate(params[:email], params[:password])
     
-    if @cluey_account
-      if !@cluey_account.activated?
-        AccountMailer.deliver_signup_notification @cluey_account
+    if @login_cluey_account and @login_cluey_account.id == @cluey_account.id
+      if !@login_cluey_account.activated?
+        AccountMailer.deliver_signup_notification @login_cluey_account
         flash[:error] = "You have not yet activated your account. An activation email has been resent to your inbox. Please check your spam inbox too."
         redirect_to account_log_in_path
         return
       end
       
-      session[:current_cluey_account_id] = @cluey_account.id
+      session[:current_cluey_account_id] = @login_cluey_account.id
       
       #set the auth_token cookie to allow the master user to log in 
       #to seperate pos systems without the password prompt
       cookies[:login_auth_token] = {
-        :value => @cluey_account.login_crossdomain_auth_token,
+        :value => @login_cluey_account.login_crossdomain_auth_token,
         :expires => 20.years.from_now,
         :domain => ".#{APP_DOMAIN}"
       }
