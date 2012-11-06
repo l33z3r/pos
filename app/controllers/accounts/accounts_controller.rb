@@ -26,7 +26,6 @@ class Accounts::AccountsController < Accounts::ApplicationController
     @cluey_account = ClueyAccount.new(params[:cluey_account])
     
     if @cluey_account.save
-      
       #deliver activate email
       AccountMailer.deliver_signup_notification @cluey_account
     else
@@ -36,17 +35,20 @@ class Accounts::AccountsController < Accounts::ApplicationController
   
   def activate
     @cluey_account = params[:activation_code].blank? ? false : ClueyAccount.find_by_activation_code(params[:activation_code])
-    
+
     if !@cluey_account
       flash[:error] = "Account is either already activated, or does not exist!"
       redirect_to welcome_path(:subdomain => "signup")
       return
     end
-    
+
     @cluey_account.activate
-      
+  
     #log in
     session[:current_cluey_account_id] = @cluey_account
+      
+    #deliver welcome email
+    AccountMailer.deliver_welcome @cluey_account
       
     flash[:positive] = "Thanks, your account has been activated. Welcome to Cluey!"
     redirect_to accounts_accounts_path

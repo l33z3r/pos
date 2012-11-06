@@ -380,7 +380,7 @@ class HomeController < ApplicationController
     
     @print_work_report = GlobalSetting.parsed_setting_for GlobalSetting::PRINT_WORK_REPORT, current_outlet
     
-    if @print_work_report
+    if @print_work_report and @last_clockin
       render :template => "/home/print_work_report"
     else
       render :json => {:success => true}.to_json
