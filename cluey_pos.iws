@@ -15,7 +15,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e646dee2-e269-4160-8f2c-811321f2083d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/database.yml" afterPath="$PROJECT_DIR$/config/database.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/customers/_customer_tab.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/customers/_customer_tab.html.erb" />
     </list>
     <ignored path="cluey_pos.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -114,19 +114,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_customer_tab.html.erb" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="_customer_tab.html.erb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/reports/customers/_customer_tab.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="25" selection-start="1555" selection-end="1555" vertical-scroll-proportion="-15.0">
+            <state line="326" column="80" selection-start="15383" selection-end="15383" vertical-scroll-proportion="0.26792827">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="database.yml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="database.yml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config/database.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="17" selection-start="850" selection-end="850" vertical-scroll-proportion="0.5544747">
+            <state line="38" column="17" selection-start="850" selection-end="850" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -177,8 +177,8 @@
         <option value="$PROJECT_DIR$/app/controllers/reports/customers_controller.rb" />
         <option value="$PROJECT_DIR$/public/javascripts/reports/customer_reports.js" />
         <option value="$PROJECT_DIR$/app/views/reports/customers/export_excel.html.erb" />
-        <option value="$PROJECT_DIR$/app/views/reports/customers/_customer_tab.html.erb" />
         <option value="$PROJECT_DIR$/config/database.yml" />
+        <option value="$PROJECT_DIR$/app/views/reports/customers/_customer_tab.html.erb" />
       </list>
     </option>
   </component>
@@ -1097,16 +1097,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/customers/_customer_tab.html.erb">
+    <entry file="file://$PROJECT_DIR$/config/database.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="25" selection-start="1555" selection-end="1555" vertical-scroll-proportion="-15.0">
+        <state line="38" column="17" selection-start="850" selection-end="850" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/database.yml">
+    <entry file="file://$PROJECT_DIR$/app/views/reports/customers/_customer_tab.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="17" selection-start="850" selection-end="850" vertical-scroll-proportion="0.5544747">
+        <state line="326" column="80" selection-start="15383" selection-end="15383" vertical-scroll-proportion="0.26792827">
           <folding />
         </state>
       </provider>

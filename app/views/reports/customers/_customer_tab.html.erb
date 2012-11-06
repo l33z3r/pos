@@ -154,7 +154,7 @@
                         <td style="text-align: right; ">
                         </td>
                         <td style="text-align: right;">
-                            <%= print_money(@customer.current_balance) %>
+                            <b><%= print_money(@customer.current_balance) %></b>
                         </td>
                     </tr>
                     <tr>
@@ -220,7 +220,7 @@
                         <td style="text-align: right; ">
                         </td>
                         <td style="text-align: right;">
-                            <%= print_money(current_balance) %>
+                            <b><%= print_money(@customer.current_balance) %></b>
                         </td>
                     </tr>
                     <% last_balance = 0 %>
@@ -324,7 +324,7 @@
                         <td style="text-align: right; ">
                         </td>
                         <td style="text-align: right;">
-                            <%= print_money(current_balance) %>
+                            <b><%= print_money(@customer.current_balance) %></b>
                         </td>
                     </tr>
                     <tr class="<%= cycle("even", "odd") %>">
