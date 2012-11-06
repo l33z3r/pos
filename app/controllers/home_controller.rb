@@ -678,6 +678,12 @@ class HomeController < ApplicationController
   # when one of the listed files change...
   # So the client knows when to refresh its cache.
   def cache_manifest
+  
+    if development_mode?
+      raise ActionController::RoutingError.new('Not Found')
+      return
+    end
+  
     @files = ["CACHE MANIFEST\n\n"]
 
     #a timestamp that we can update from the app to force a reload

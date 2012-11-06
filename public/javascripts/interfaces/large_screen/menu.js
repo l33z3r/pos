@@ -1554,6 +1554,8 @@ function orderSentToServerCallback(orderData, errorOccured) {
             hideLoadingDiv();
         }
     } else {
+        hideLoadingDiv();
+        
         if(!isTableZeroOrder) {
             niceAlert("There was an error cashing out the last order. It will automatically resend itself, please do not cash out on another terminal!");
         }
