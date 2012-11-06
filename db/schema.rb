@@ -83,20 +83,6 @@ ActiveRecord::Schema.define(:version => 20121026142313) do
 
   add_index "client_transactions", ["order_id"], :name => "index_client_transactions_on_order_id"
 
-  create_table "cluey_accounts", :force => true do |t|
-    t.string   "name"
-    t.string   "email"
-    t.string   "password_hash"
-    t.string   "password_salt"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "activation_code"
-    t.datetime "activated_at"
-    t.boolean  "is_active",              :default => true
-    t.string   "password_reset_token"
-    t.datetime "password_reset_sent_at"
-  end
-
   create_table "customer_points_allocations", :force => true do |t|
     t.integer  "customer_id",           :limit => 8
     t.integer  "order_id",              :limit => 8
@@ -391,26 +377,6 @@ ActiveRecord::Schema.define(:version => 20121026142313) do
   add_index "orders", ["table_info_id"], :name => "index_orders_on_table_info_id"
   add_index "orders", ["void_order_id"], :name => "index_orders_on_void_order_id"
 
-  create_table "outlet_terminals", :force => true do |t|
-    t.integer  "outlet_id",  :limit => 8
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "assigned",                :default => false
-  end
-
-  create_table "outlets", :force => true do |t|
-    t.integer  "cluey_account_id", :limit => 8
-    t.string   "name"
-    t.string   "username"
-    t.string   "password_hash"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "has_seed_data",                 :default => false
-    t.string   "password_salt"
-    t.boolean  "is_active",                     :default => true
-  end
-
   create_table "payment_methods", :force => true do |t|
     t.string   "name"
     t.boolean  "is_default"
@@ -438,16 +404,6 @@ ActiveRecord::Schema.define(:version => 20121026142313) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "terminal_id"
-  end
-
-  create_table "printers", :force => true do |t|
-    t.integer  "outlet_id",      :limit => 8
-    t.string   "label"
-    t.string   "network_path"
-    t.integer  "paper_width_mm",              :default => 80
-    t.integer  "font_size",                   :default => 11
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "products", :force => true do |t|
@@ -599,9 +555,9 @@ ActiveRecord::Schema.define(:version => 20121026142313) do
     t.string   "note"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "order_item_id",    :limit => 8
     t.integer  "delivery_id",      :limit => 8
     t.boolean  "is_return",                     :default => false
-    t.integer  "order_item_id",    :limit => 8
   end
 
   add_index "stock_transactions", ["employee_id"], :name => "index_stock_transactions_on_employee_id"

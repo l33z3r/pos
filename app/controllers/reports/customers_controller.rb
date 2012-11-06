@@ -120,7 +120,6 @@ class Reports::CustomersController < Admin::AdminController
     end
     where << " order by ct.customer_id"
 
-
     query = CustomerTransaction.find_by_sql(where)
 
   end
