@@ -1487,6 +1487,18 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>Offline Order Delegate Terminal</td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::OFFLINE_ORDER_DELEGATE_TERMINAL_ID, current_outlet %>
+
+                      <select name="global_settings[<%=@gs.id%>][value]" id="terminal_dropdown">
+                        <% all_terminals.each do |terminal_id|%>
+                          <option value="<%= terminal_id %>" <%= @gs.parsed_value == terminal_id ? 'selected' : '' %>><%= terminal_id %></option>
+                        <% end %>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
                     <td>
                       Your IP Address
                     </td>

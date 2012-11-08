@@ -1252,7 +1252,7 @@ function doTotalFinal() {
         return;
     }
     
-    if(!appOnline && offlineOrderDelegateTerminal != terminalID) {
+    if(!appOnline && selectedTable != 0 && offlineOrderDelegateTerminal != terminalID) {
         niceAlert("App is in offline mode. Please use terminal " + offlineOrderDelegateTerminal + " to cash out table orders");
         return;
     }
