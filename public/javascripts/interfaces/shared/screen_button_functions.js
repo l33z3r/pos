@@ -50,8 +50,8 @@ function doSyncTableOrder() {
         return;
     }
     
-    if (!appOnline) {
-        if(inLargeInterface()) {
+    if(!appOnline) {
+        if(inLargeInterface() && offlineOrderDelegateTerminal == terminalID) {
             //just try print the items even if offline, this is a bit of a hack
             if(selectedTable != previousOrderTableNum && selectedTable != tempSplitBillTableNum) {
                 if (selectedTable == 0) {
@@ -67,9 +67,20 @@ function doSyncTableOrder() {
             }
         
             checkForItemsToPrint(order, current_user_nickname);
+            
+            //mark all items in this order as synced for offline mode
+            for (var i = 0; i < order.items.length; i++) {
+                order.items[i]['synced'] = true;
+            }
+    
+            loadAfterSaleScreen();            
+            setStatusMessage("Offline order stored");
+            
+            return;
         }
         
-        niceAlert("Cannot contact server, ordering is disabled until connection re-established! Orders should still print locally.");
+        niceAlert("App is in offline mode. Please use terminal " + offlineOrderDelegateTerminal + " to process all offline orders");
+        return;
     }
 
     var order = null;

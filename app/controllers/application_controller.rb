@@ -506,7 +506,7 @@ class ApplicationController < AppBaseController
     end
     
     #split the subdomain
-    @subdomain_parts = @subdomain.split(".")
+    @subdomain_parts = @subdomain.split("-")
     
     if @subdomain_parts.length == 1
       redirect_to accounts_accounts_path

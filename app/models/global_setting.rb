@@ -94,6 +94,7 @@
   CASH_DRAWER_CODE = 75
   LOCAL_PRINTER_ID = 76
   PRINT_DELEGATE_TERMINAL_ID = 77
+  OFFLINE_ORDER_DELEGATE_TERMINAL_ID = 78
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -172,7 +173,8 @@
     CASH_DRAWER_COM_PORT => "Cash Drawer Com Port",
     CASH_DRAWER_CODE => "Cash Drawer Code",
     LOCAL_PRINTER_ID => "Local Printer ID",
-    PRINT_DELEGATE_TERMINAL_ID => "Print Delegate Terminal ID"
+    PRINT_DELEGATE_TERMINAL_ID => "Print Delegate Terminal ID",
+    OFFLINE_ORDER_DELEGATE_TERMINAL_ID => "Offline Order Delegate Terminal ID"
   }
   
   LATEST_TERMINAL_HOURS = 24

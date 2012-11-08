@@ -1159,14 +1159,23 @@ function clearOrder(selectedTable) {
         clearOrderInStorage(current_user_id);
         currentOrder = null;
     } else {
-        clearTableOrderInStorage(current_user_id, selectedTable);
-    //dont need to worry about clearing memory as it is read in from cookie which now no longer exists
+        for (var i = 0; i < employees.length; i++) {
+            clearTableOrderInStorage(employees[i].id, selectedTable);
+        }
+    
+        //clear the master orders array
+        clearTableOrderInStorage(masterOrdersUserId, selectedTable);
     }
     
     clearReceipt();
 }
 
 function doTotal(applyDefaultServiceCharge) {
+    if(!appOnline && offlineOrderDelegateTerminal != terminalID) {
+        niceAlert("App is in offline mode. Please use terminal " + offlineOrderDelegateTerminal + " to cash out table orders");
+        return;
+    }
+    
     if(!callHomePollInitSequenceComplete) {
         niceAlert("Downloading data from server, please wait.");
         return;
@@ -1243,6 +1252,11 @@ function doTotalFinal() {
         return;
     }
     
+    if(!appOnline && offlineOrderDelegateTerminal != terminalID) {
+        niceAlert("App is in offline mode. Please use terminal " + offlineOrderDelegateTerminal + " to cash out table orders");
+        return;
+    }
+    
     //check that we have not just made an order, if so, we must wait before cashing out as we lose orders as the get cleared before they reach the kitchen screen
     //but we allow table 0 orders to be cashed out regardless
     var now = clueyTimestamp();
@@ -1260,7 +1274,6 @@ function doTotalFinal() {
     //
     //
     //if we are trying to cash out an order that we just hit "order" for, then wait for the polling amount so others can download the order
-    //if((selectedTable != 0) && (lastOrderTable == selectedTable) && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
     if(selectedTable != 0 && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
         showLoadingDiv("Waiting on previous sale to finish processing...");
         setTimeout(doTotalFinal, 1000);
@@ -1555,10 +1568,7 @@ function orderSentToServerCallback(orderData, errorOccured) {
         }
     } else {
         hideLoadingDiv();
-        
-        if(!isTableZeroOrder) {
-            niceAlert("There was an error cashing out the last order. It will automatically resend itself, please do not cash out on another terminal!");
-        }
+        setStatusMessage("Order saved offline. Will sync with server when connection re-established.");
     }
     
     cashSaleInProcess = false;
