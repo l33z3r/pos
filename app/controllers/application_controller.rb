@@ -551,6 +551,23 @@ class ApplicationController < AppBaseController
             end
           end
           
+          #check if the login credentials were sent in the url
+          @url_outlet_login_username = params[:u]
+          @url_outlet_login_password = params[:p]
+          
+          if @url_outlet_login_username and @url_outlet_login_password
+            @url_username_matches = outlet.username == @url_outlet_login_username
+            @url_password_matches = outlet.password_hash == BCrypt::Engine.hash_secret(@url_outlet_login_password, outlet.password_salt)
+                  
+            @url_auth_ok = @url_username_matches && @url_password_matches
+            
+            if @url_auth_ok
+              logger.info "!!!!!!!!!!!!!!!!!!!!!!!LOGGED IN WITH USERNAME/PASSWORD IN URL"
+                set_current_outlet outlet
+              return true
+            end
+          end 
+          
           #login required
           authenticate_or_request_with_http_basic do |username, password|
             logger.info "#{username} #{password}"
