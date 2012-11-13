@@ -14,9 +14,7 @@
     <option name="historyRevisionsNumber" value="4" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e646dee2-e269-4160-8f2c-811321f2083d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/customers/_customer_tab.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/customers/_customer_tab.html.erb" />
-    </list>
+    <list default="true" id="e646dee2-e269-4160-8f2c-811321f2083d" name="Default" comment="" />
     <ignored path="cluey_pos.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -117,7 +115,7 @@
       <file leaf-file-name="_customer_tab.html.erb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/reports/customers/_customer_tab.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="326" column="80" selection-start="15383" selection-end="15383" vertical-scroll-proportion="0.26792827">
+            <state line="338" column="42" selection-start="16286" selection-end="16286" vertical-scroll-proportion="0.62649405">
               <folding />
             </state>
           </provider>
@@ -1106,7 +1104,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/reports/customers/_customer_tab.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="326" column="80" selection-start="15383" selection-end="15383" vertical-scroll-proportion="0.26792827">
+        <state line="338" column="42" selection-start="16286" selection-end="16286" vertical-scroll-proportion="0.62649405">
           <folding />
         </state>
       </provider>
