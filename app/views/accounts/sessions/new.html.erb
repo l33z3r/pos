@@ -1,17 +1,50 @@
-<h1>Log in to account: <%= @cluey_account.name %></h1>
+<%- @hide_header_logo = true %>
 
-<%= form_tag accounts_sessions_path do %>
-  <p>
-    <%= label_tag :email, "Email Address" %><br />
-    <%= text_field_tag :email, params[:email] %>
-  </p>
-  <p>
-    <%= label_tag :password %><br />
-    <%= password_field_tag :password %>
-  </p>
-  <p class="button"><%= submit_tag "Log in" %></p>
-<% end %>
+<div id="login_page">
+  <div id="left_column">
+    <%= image_tag "accounts/header_logo.png", :class => "cluey_logo" %>
 
-<br/><br/>
+    <div id="girl_1_container">
+      <%= image_tag "accounts/girl_1.png", :class => "girl_1" %>
+    </div>
+  </div>
 
-<%= link_to "Forgot Your Password?", new_accounts_password_reset_path %>
+  <div id="right_column">
+    <div id="header_1">
+      Sign In To Account: <%= @cluey_account.name %>
+    </div>
+
+    <%= form_tag accounts_sessions_path do %>
+      <div id="fields_container">
+        <div class="field">
+          <div class="label">Email Address:</div>
+          <%= text_field_tag :email, params[:email] %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Password:</div>
+          <%= password_field_tag :password %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Remember Me:</div>
+          <%= check_box_tag :remember_me %>
+          <div class="clear">&nbsp;</div>
+        </div>
+
+        <div id="forgot_password_link">
+          <%= link_to "Forgot Your Password?", new_accounts_password_reset_path %>
+        </div>        
+
+        <div class="submit">
+          <input type="submit" class="big_blue_button_1" value="SIGN IN"/>
+        </div>
+
+      </div>
+    <% end %>
+
+  </div>
+
+  <div class="clear">&nbsp;</div>
+
+</div>

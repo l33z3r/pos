@@ -495,11 +495,6 @@ class ApplicationController < AppBaseController
   def setup_for_subdomain
     @subdomain = request.subdomain
     
-    if @subdomain == "www"
-      redirect_to welcome_path
-      return
-    end
-    
     if @subdomain == "signup"
       redirect_to account_sign_up_url
       return
@@ -520,7 +515,7 @@ class ApplicationController < AppBaseController
     
       if !@account
         flash[:error] = "Account #{@account_name} not found!"
-        redirect_to welcome_url
+        redirect_to root_url(:subdomain => "signup")
         return
       end
              

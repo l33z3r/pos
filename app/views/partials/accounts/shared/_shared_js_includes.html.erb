@@ -1,0 +1,29 @@
+<%= javascript_include_tag "jquery/jquery.min", "jquery/jquery-ui.min", :cache => "cache/accounts/jq_libs" %>
+
+<%= javascript_include_tag "rails", "accounts/application", :cache => "cache/accounts" %>
+
+<!-- plugins js -->
+<%= javascript_include_tag "plugins/iphone-style-checkboxes", "plugins/jquery-jvert-tabs-1.1.4",
+  "plugins/keyboard", "plugins/touch-scroll", "plugins/jquery.cookie", "plugins/jquery.clock",
+  "plugins/jquery.plugin.menuTree", "plugins/dateFormat", :cache => "cache/accounts/plugin_libs_1" %>
+
+<%= javascript_include_tag "plugins/jquery.bubblepopup", "plugins/jquery.jplayer.min",
+  "plugins/jquery.jscrollpane", "plugins/jquery.mousewheel", "plugins/jquery-ui-timepicker-addon", 
+  "plugins/jwerty.js", "plugins/jquery.bgiframe", "plugins/jquery.cluey_custom_mcdropdown", 
+  "plugins/jquery.ibutton", "plugins/jquery.cluey_custom_swipe", "plugins/md5", "plugins/Math.uuid", 
+  "plugins/jquery.caret", :cache => "cache/accounts/plugin_libs_2" %>
+
+<% if params[:showfirebuglite] == "true" %>
+  <!-- include firebug lite -->
+  <script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
+<% end %>
+
+<!-- Modal Popups (http://www.modalpopups.com) -->
+<%= javascript_include_tag 'plugins/modal-popups/shCore', 'plugins/modal-popups/ModalPopups',
+  'plugins/modal-popups/shBrushJScript', :cache => "cache/accounts/modal_popups_libs" %>
+
+<!-- SOME JS VARS -->
+<script type="text/javascript">
+  var APP_DOMAIN = "<%= APP_DOMAIN %>";
+  var APP_PORT = "<%= APP_PORT %>"
+</script>

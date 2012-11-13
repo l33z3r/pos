@@ -1,7 +1,10 @@
 class Accounts::SessionsController < Accounts::ApplicationController
-  skip_before_filter :ensure_logged_in, :only => [:new, :create]
+  skip_before_filter :ensure_logged_in, :only => [:new, :create] 
+  
+  layout :choose_layout
   
   def new
+    
   end
 
   def create
@@ -15,25 +18,30 @@ class Accounts::SessionsController < Accounts::ApplicationController
         return
       end
       
-      session[:current_cluey_account_id] = @login_cluey_account.id
-      
-      #set the auth_token cookie to allow the master user to log in 
-      #to seperate pos systems without the password prompt
-      cookies[:login_auth_token] = {
-        :value => @login_cluey_account.login_crossdomain_auth_token,
-        :expires => 20.years.from_now,
-        :domain => ".#{APP_DOMAIN}"
-      }
+      set_login_credentials @login_cluey_account
       
       redirect_to accounts_accounts_path, :notice => "Logged In Successfully!"
     else
-      flash.now.alert = "Invalid email or password"
+      flash.now[:error] = "Invalid email or password"
       render "new"
     end
   end
 
   def destroy
     session[:current_cluey_account_id] = nil
-    redirect_to welcome_url, :notice => "Logged out!"
+    redirect_to root_url(:subdomain => "signup"), :notice => "Logged out!"
   end
+  
+  private 
+  
+  def choose_layout
+    @accounts_logged_out_layout_action_array = ["new", "create"]
+    
+    if @accounts_logged_out_layout_action_array.include? action_name
+      return "accounts_logged_out"
+    else 
+      return "accounts"
+    end
+  end
+  
 end

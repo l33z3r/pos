@@ -1,35 +1,95 @@
- <h1>Sign Up For Cluey</h1>
+<%- @hide_header_logo = true %>
 
-<%= form_for @cluey_account, :url => url_for(:controller => 'accounts/accounts', :action => 'create') do |f| %>
-  <% if @cluey_account.errors.any? %>
-    <div class="error_messages">
-      <h2>Form is invalid</h2>
-      <ul>
-        <% for message in @cluey_account.errors.full_messages %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+<div id="signup_page">
+  <div id="left_column">
+    <%= image_tag "accounts/header_logo.png", :class => "cluey_logo" %>
+
+    <div id="girl_1_container">
+      <%= image_tag "accounts/girl_1.png", :class => "girl_1" %>
     </div>
-  <% end %>
- <p>
-    <%= f.label :name, "Business Name (No Numbers or Spaces)" %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :email %><br />
-    <%= f.text_field :email %>
-  </p>
-  <p>
-    <%= f.label :email_confirmation %><br />
-    <%= f.text_field :email_confirmation %>
-  </p>
-  <p>
-    <%= f.label :password %><br />
-    <%= f.password_field :password %>
-  </p>
-  <p>
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation %>
-  </p>
-  <p class="button"><%= f.submit %></p>
-<% end %>
+  </div>
+
+  <div id="right_column">
+    <div id="header_1">
+      Create An Account
+    </div>
+
+    <div id="header_2">
+      60 Day Free Trial
+    </div>
+
+    <%= form_for @cluey_account, :url => url_for(:controller => 'accounts/accounts', :action => 'create') do |f| %>
+      <% if @cluey_account.errors.any? %>
+        <div class="error_messages">
+          <h3>Oops, you've made a mistake!</h3>
+          <ul>
+            <% for message in @cluey_account.errors.full_messages %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div id="fields_container">
+        <div class="field">
+          <div class="label">Business Name <i>(Only Letters)</i>:</div>
+          <%= f.text_field :name %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">First Name:</div>
+          <%= f.text_field :first_name %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Surname:</div>
+          <%= f.text_field :last_name %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Email Address:</div>
+          <%= f.text_field :email %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Confirm Email Address:</div>
+          <%= f.text_field :email_confirmation %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Password:</div>
+          <%= f.password_field :password %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Password Confirmation:</div>
+          <%= f.password_field :password_confirmation %>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Country:</div>
+          <%= country_code_select(:cluey_account, :country_id,
+            priority_countries = ['IE', 'GB', 'US'],
+            {:selected => @cluey_account.country_id, :include_blank => false},
+            {:style => ''}
+          ) %>
+          <div class="clear">&nbsp;</div>
+        </div>
+
+        <div class="submit">
+          <input type="submit" class="big_blue_button_1" value="CREATE ACCOUNT"/>
+        </div>
+
+      </div>
+    <% end %>
+
+  </div>
+
+  <div class="clear">&nbsp;</div>
+
+  <div id="terms_blurb">
+    By creating this account I agree that I have read and accept the 
+    <%= link_to "Terms and Conditions", terms_accounts_accounts_path %>.
+  </div>
+
+</div>

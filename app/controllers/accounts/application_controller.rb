@@ -1,9 +1,7 @@
 class Accounts::ApplicationController < AppBaseController
   before_filter :setup_for_master_subdomain, :ensure_logged_in
   helper_method :request_sales_resources_reload_for_outlet
-  
-  layout 'accounts'
-  
+    
   def request_sales_resources_reload_for_outlet outlet
     TerminalSyncData.request_reload_app "Admin", outlet
   end
@@ -14,7 +12,7 @@ class Accounts::ApplicationController < AppBaseController
     @subdomain = request.subdomain
     
     if @subdomain == "signup"
-      redirect_to welcome_url(:subdomain => "signup")
+      redirect_to root_url(:subdomain => "signup")
       return
     end
     
@@ -23,7 +21,7 @@ class Accounts::ApplicationController < AppBaseController
     
     if @subdomain_parts.length != 1
       flash[:notice] = "Invalid Subdomain"
-      redirect_to welcome_url(:subdomain => "signup")
+      redirect_to root_url(:subdomain => "signup")
       return
     end
     
@@ -33,7 +31,7 @@ class Accounts::ApplicationController < AppBaseController
     
     if !@cluey_account
       flash[:error] = "Account #{@account_name} not found!"
-      redirect_to welcome_url(:subdomain => "signup")
+      redirect_to root_url(:subdomain => "signup")
       return
     end
   end
@@ -60,6 +58,18 @@ class Accounts::ApplicationController < AppBaseController
     else
       true
     end
+  end
+  
+  def set_login_credentials cluey_account
+    session[:current_cluey_account_id] = cluey_account.id
+      
+    #set the auth_token cookie to allow the master user to log in 
+    #to seperate pos systems without the password prompt
+    cookies[:login_auth_token] = {
+      :value => cluey_account.login_crossdomain_auth_token,
+      :expires => 20.years.from_now,
+      :domain => ".#{APP_DOMAIN}"
+    }
   end
   
 end

@@ -76,6 +76,7 @@ namespace :assets do
       #Select some files in the public directory to sync
       all_files = Dir.glob("public/images/**/*") | Dir.glob("public/javascripts/**/*") | Dir.glob("public/stylesheets/**/*") 
       all_files |= Dir.glob("public/firefox_extensions/**/*") | Dir.glob("public/jqtouch") | Dir.glob("public/files/**/*") | Dir.glob("public/sounds/**/*")
+      all_files << "public/install/cluey.apk"
       all_files << "public/404.html"
       all_files << "public/422.html" 
       all_files << "public/500.html" 
@@ -88,6 +89,7 @@ namespace :assets do
     
     puts "-----> Syncing #{total_files_count} files with S3"
     
+    all_files = ["public/install/cluey.apk"]
     all_files.each do |file|
       upload_file_count += 1
       

@@ -2,30 +2,42 @@
 <html>
   <head>
     <title>Cluey - POS</title>
-    <%= stylesheet_links "accounts/", :recursive => true, :cache => "cache/accounts_styles" %>
-    <%= javascript_include_tag "jquery/jquery.min", "jquery/jquery-ui.min", :cache => "cache/jq_libs" %>
-    <%= javascript_include_tag "rails", "accounts/application", :cache => "cache/accounts" %>
+    
+    <%= render "/partials/accounts/shared/shared_js_includes" %>
+    <%= render "/partials/accounts/shared/shared_css_includes" %>
   </head>
   <body>
 
-    <div id="user_nav">
-      <% if current_cluey_account %>
-        Logged in as <%= current_cluey_account.name %>.
-        <%= link_to "Log out", account_log_out_url %>
-      <% else %>
-        <%= link_to "Sign up", account_sign_up_url(:subdomain => "signup") %>
+    <div id="wrapper">
+      <div id="header">
 
-        <% if @subdomain and @subdomain != "www" and @subdomain != "signup" %>
-          or <%= link_to "log in", account_log_in_url %>
+        <div id="header_logo">
+          <%= link_to image_tag("accounts/header_logo.png"), accounts_accounts_path %>
+        </div>
+
+        <div id="login_info">
+          Logged in as <%= current_cluey_account.name %>.
+            <%= link_to "Log out", account_log_out_url %>
+        </div>
+        
+        <div id="navigation">
+          
+        </div>
+      </div>
+
+      <div id="flash">
+        <% flash.each do |name, msg| %>
+          <%= content_tag :div, msg, :id => "flash_#{name}" %>
         <% end %>
-      <% end %>
+      </div>
+
+      <div id="content">
+        <%= yield %>
+      </div>
+
+      <div id="footer">
+
+      </div>
     </div>
-
-    <% flash.each do |name, msg| %>
-      <%= content_tag :div, msg, :id => "flash_#{name}" %>
-    <% end %>
-
-    <%= yield %>
-
   </body>
 </html>

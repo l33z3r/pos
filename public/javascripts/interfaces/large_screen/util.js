@@ -827,9 +827,13 @@ function showUtilKeyboardCloseButton() {
 function checkForFirefox() {
     var ua = $.browser;
     
-    if (typeof(ua.mozilla) == 'undefined') {
-        niceAlert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software!");
-        return false;
+    var isiPad = navigator.userAgent.match(/iPad/i) != null
+    
+    if(!isiPad) {
+        if (typeof(ua.mozilla) == 'undefined') {
+            niceAlert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software!");
+            return false;
+        }
     }
     
     return true;

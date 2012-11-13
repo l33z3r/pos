@@ -3,7 +3,7 @@
 <%= form_for @outlet, :url => url_for(:controller => 'accounts/outlets', :action => 'create') do |f| %>
   <% if @outlet.errors.any? %>
     <div class="error_messages">
-      <h2>Form is invalid</h2>
+      <h2>Oops, you've made a mistake!</h2>
       <ul>
         <% for message in @outlet.errors.full_messages %>
           <li><%= message %></li>

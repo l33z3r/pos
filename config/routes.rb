@@ -4,7 +4,6 @@ Pos::Application.routes.draw do
   match "build_assets" => "home#build_assets"
   
   #cluey account routes
-  match 'welcome' => "accounts/accounts#welcome", :as => "welcome"
   get "account_log_out" => "accounts/sessions#destroy", :as => "account_log_out"    
   get "account_log_in" => "accounts/sessions#new", :as => "account_log_in"
   get "account_sign_up" => "accounts/accounts#new", :as => "account_sign_up"
@@ -13,6 +12,12 @@ Pos::Application.routes.draw do
     resources :accounts, :only => [:new, :create, :index] do
       collection do
         get 'activate'
+        get 'contact'
+        get 'privacy'
+        get 'terms' 
+        get 'help'
+        get 'browser_not_supported'
+        get 'pricing'
       end
     end
     

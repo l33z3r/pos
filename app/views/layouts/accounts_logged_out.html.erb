@@ -1,31 +1,62 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Cluey - POS</title>
-    <%= stylesheet_links "accounts/", :recursive => true, :cache => "cache/accounts_styles" %>
-    <%= javascript_include_tag "jquery/jquery.min", "jquery/jquery-ui.min", :cache => "cache/jq_libs" %>
-    <%= javascript_include_tag "rails", "accounts/application", :cache => "cache/accounts" %>
+    <title>Cluey - POS <%= yield(:page_title) %></title>
+
+    <%= render "/partials/accounts/shared/shared_js_includes" %>
+    <%= render "/partials/accounts/shared/shared_css_includes" %>
   </head>
   <body>
 
-    <div id="user_nav">
-      <% if current_cluey_account %>
-        Logged in as <%= current_cluey_account.name %>.
-        <%= link_to "Log out", account_log_out_url %>
-      <% else %>
-        <%= link_to "Sign up", account_sign_up_url(:subdomain => "signup") %>
+    <div id="wrapper">
+      <div id="header">
 
-        <% if @subdomain and @subdomain != "www" and @subdomain != "signup" %>
-          or <%= link_to "log in", account_log_in_url %>
+        <% if !@hide_header_logo %>
+          <div id="header_logo">          
+            <%= link_to image_tag("accounts/header_logo.png"), root_url(:subdomain => "signup") %>
+          </div>
         <% end %>
-      <% end %>
+
+        <div id="navigation">
+          <%= link_to "Contact Us", contact_accounts_accounts_path %> |
+          <%= link_to "Help", help_accounts_accounts_path %> |
+          <%= link_to "Pricing", pricing_accounts_accounts_path %> |
+          <a href="javascript:signInPopup();" id="signin_link">Sign In</a>
+        </div>
+
+        <div id="signin_popup_markup">
+          <div id="signin_popup_container">
+            <input type="text" placeholder="Your Account Name" id="account_name"/>
+            <div id="domain">.<%= APP_DOMAIN + APP_PORT %></div>
+
+            <div class="clear">&nbsp;</div>
+
+            <div id="go_to_account_button" class="big_blue_button_1" onclick="goToAccountsPage();">
+              Go To My Account            
+            </div>
+
+            <div class="clear">&nbsp;</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="flash">
+        <% flash.each do |name, msg| %>
+          <%= content_tag :div, msg, :id => "flash_#{name}" %>
+        <% end %>
+      </div>
+
+      <div id="content">
+        <%= yield %>
+      </div>
+
+      <div class="clear">&nbsp;</div>
+
+      <div id="footer">
+        <%= link_to "Terms and Conditions", terms_accounts_accounts_path %> |
+        <%= link_to "Privacy Policy", privacy_accounts_accounts_path %> |
+        &COPY;2012 Cluey Ltd. All rights reserved.
+      </div>
     </div>
-
-    <% flash.each do |name, msg| %>
-      <%= content_tag :div, msg, :id => "flash_#{name}" %>
-    <% end %>
-
-    <%= yield %>
-
   </body>
 </html>

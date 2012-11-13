@@ -12,7 +12,9 @@ class Outlet < ActiveRecord::Base
   attr_accessor :password
   before_save :encrypt_password
   
-  validates :password, :presence => {:on => :create}, :confirmation => true, :length => {:minimum => 5}
+  attr_accessor :updating_password, :bypass_validate_password
+  validates :password, :presence => {:on => :create}, :confirmation => true, :if => :should_validate_password? 
+  validates :password, :length => {:minimum => 5}, :if => :should_validate_password?  
   
   has_many :products
   has_many :displays
@@ -69,7 +71,12 @@ class Outlet < ActiveRecord::Base
       self.password_salt = BCrypt::Engine.generate_salt
       self.password_hash = BCrypt::Engine.hash_secret(password, password_salt)
     end
-  end  
+  end 
+  
+  def should_validate_password?
+    (updating_password || new_record?) and !bypass_validate_password
+  end
+  
 end
 
 

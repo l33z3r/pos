@@ -55,6 +55,11 @@ Recaptcha.configure do |config|
 end
 
 APP_DOMAIN = CUSTOM_CONFIG['domain_name']
+APP_PORT = CUSTOM_CONFIG['domain_port']
+
+if APP_PORT
+  APP_PORT = ":" + APP_PORT.to_s
+end
 
 require "net/http"
 require "uri"

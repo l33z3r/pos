@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121101160833) do
+ActiveRecord::Schema.define(:version => 20121113096451) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id",         :limit => 8
@@ -111,6 +111,14 @@ ActiveRecord::Schema.define(:version => 20121101160833) do
     t.string   "password_reset_token"
     t.datetime "password_reset_sent_at"
     t.string   "login_crossdomain_auth_token"
+    t.string   "first_name",                                     :null => false
+    t.string   "last_name",                                      :null => false
+    t.integer  "country_id",                                     :null => false
+  end
+
+  create_table "countries", :force => true do |t|
+    t.string "iso"
+    t.string "name"
   end
 
   create_table "customer_points_allocations", :force => true do |t|
@@ -677,6 +685,12 @@ ActiveRecord::Schema.define(:version => 20121101160833) do
   end
 
   add_index "shift_timestamps", ["outlet_id"], :name => "index_shift_timestamps_on_outlet_id"
+
+  create_table "states", :force => true do |t|
+    t.string  "name"
+    t.integer "country_id"
+    t.string  "iso"
+  end
 
   create_table "stock_transactions", :force => true do |t|
     t.integer  "product_id",       :limit => 8

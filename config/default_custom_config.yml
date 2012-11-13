@@ -1,5 +1,6 @@
 development:
   domain_name: lvh.me
+  domain_port: 3000
   use_s3: true
   s3_public_bucket_name: cluey_development
   s3_user_uploads_bucket_name: cluey_development_user_uploads
@@ -13,6 +14,7 @@ development:
 
 test:
   domain_name: lvh.me
+  domain_port: 3000
   use_s3: false
   s3_public_bucket_name: cluey_test
   s3_user_uploads_asset_host: http://
@@ -26,6 +28,7 @@ test:
 
 production:
   domain_name: lvh.me
+  domain_port: 3000
   use_s3: false
   s3_bucket_name: clueypos_production
   s3_user_uploads_asset_host: http://
@@ -38,6 +41,7 @@ production:
   
 heroku_staging:
   domain_name: clueypos-staging.com
+  domain_port: 
   use_s3: true
   s3_public_bucket_name: cluey_staging
   s3_user_uploads_bucket_name: cluey_staging_user_uploads
@@ -51,6 +55,7 @@ heroku_staging:
   
 heroku_production:
   domain_name: cluey.com
+  domain_port: 
   use_s3: true
   s3_public_bucket_name: cluey
   s3_user_uploads_bucket_name: cluey_user_uploads

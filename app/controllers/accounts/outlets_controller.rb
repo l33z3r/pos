@@ -1,4 +1,6 @@
 class Accounts::OutletsController < Accounts::ApplicationController
+  layout "accounts"
+  
   def index
     @outlets = current_cluey_account.outlets.all
   end
@@ -11,7 +13,7 @@ class Accounts::OutletsController < Accounts::ApplicationController
     @outlet = Outlet.new(params[:outlet])
     
     #verify captcha
-    render :action=> 'new' and return unless check_captcha(false)
+    render :action => 'new' and return unless check_captcha(false)
     
     @outlet.cluey_account_id = current_cluey_account.id
     
