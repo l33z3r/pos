@@ -6,10 +6,10 @@ class Country < ActiveRecord::Base
   
   has_many :cluey_accounts
   
-#  IE_COUNTRY_ID = Country.find_by_iso("IE").id
-#  GB_COUNTRY_ID = Country.find_by_iso("GB").id
-#  US_COUNTRY_ID = Country.find_by_iso("US").id
-#  AU_COUNTRY_ID = Country.find_by_iso("AU").id
+  IE_COUNTRY_ID = Country.find_by_iso("IE").try(:id)
+  GB_COUNTRY_ID = Country.find_by_iso("GB").try(:id)
+  US_COUNTRY_ID = Country.find_by_iso("US").try(:id)
+  AU_COUNTRY_ID = Country.find_by_iso("AU").try(:id)
   
   def self.get_default_national_service_charge_label outlet
     @current_country_id = outlet.cluey_account.country_id 
