@@ -83,26 +83,6 @@ class Accounts::AccountsController < Accounts::ApplicationController
     redirect_to accounts_accounts_path
   end
   
-  def contact
-    
-  end
-  
-  def privacy
-    
-  end
-  
-  def terms
-    
-  end
-  
-  def browser_not_supported
-    
-  end
-  
-  def pricing
-    
-  end
-  
   private
   
   def set_account_time_zone

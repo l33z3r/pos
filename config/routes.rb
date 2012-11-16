@@ -16,7 +16,6 @@ Pos::Application.routes.draw do
         get 'contact'
         get 'privacy'
         get 'terms' 
-        get 'help'
         get 'browser_not_supported'
         get 'pricing'
       end
