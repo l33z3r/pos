@@ -918,20 +918,22 @@ function initClueyTimestampFromServer(serverStartTimeMillis) {
     }
 }
 
+//this returns a timestamp in the users timezone NOT in UTC
 function clueyTimestamp() {
     if(clueyTimestampInitializedFromServer) {
-    return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
-    } else 
+        return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
+    } else {
         return new Date().getTime();
+    }
 }
 
 function startClock() {
     //start the clock in the nav bar
-        $("div#clock").clock({
-            "calendar" : "false",
-            "format" : clockFormat,
-            "timestamp" : clueyTimestamp()
-        });
+    $("div#clock").clock({
+        "calendar" : "false",
+        "format" : clockFormat,
+        "timestamp" : clueyTimestamp()
+    });
 }
 
 var ignoreReloadRequest = false;

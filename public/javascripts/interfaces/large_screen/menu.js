@@ -1261,22 +1261,9 @@ function doTotalFinal() {
     //but we allow table 0 orders to be cashed out regardless
     var now = clueyTimestamp();
     
-    
-    
-    
-    
-    
-    
-    //TODO: //this solution might not be good enough as you can go to another order and hit order then come back and cash this one out
-    //
-    //
-    //
-    //
-    //
     //if we are trying to cash out an order that we just hit "order" for, then wait for the polling amount so others can download the order
     if(selectedTable != 0 && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
-        showLoadingDiv("Waiting on previous sale to finish processing...");
-        setTimeout(doTotalFinal, 1000);
+        niceAlert("Waiting on previous order to be synced across system, please try again in " + (pollingAmount/1000) + " seconds.");
         return;
     }
     

@@ -11,6 +11,7 @@ Pos::Application.routes.draw do
   namespace :accounts do
     resources :accounts, :only => [:new, :create, :index] do
       collection do
+        get 'account_not_found'
         get 'activate'
         get 'contact'
         get 'privacy'
@@ -32,6 +33,10 @@ Pos::Application.routes.draw do
     end
     
     resources :reports, :only => [:index]
+  end
+  
+  namespace :cluey_admin do
+    resources :sessions, :only => [:new, :create, :destroy]
   end
 
   #js error logging

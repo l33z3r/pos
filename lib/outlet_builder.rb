@@ -61,7 +61,7 @@ class OutletBuilder
     #
     #Taxes and Payment Methods ETC
     @cash_payment_method = PaymentMethod.find_or_create_by_outlet_id_and_name(:outlet_id => outlet_id, :name => PaymentMethod::CASH_PAYMENT_METHOD_NAME, :payment_integration_id => 0, :open_cash_drawer => true, :is_default => true)
-    @loyalty_payment_method = PaymentMethod.find_or_create_by_outlet_id_and_name(:outlet_id => outlet_id, :name => PaymentMethod::LOYALTY_PAYMENT_METHOD_NAME, :payment_integration_id => 0, :open_cash_drawer => false, :is_default => false)
+    @loyalty_payment_method = PaymentMethod.find_or_create_by_outlet_id_and_name(:outlet_id => outlet_id, :name => PaymentMethod::LOYALTY_PAYMENT_METHOD_NAME, :payment_integration_id => 0, :open_cash_drawer => false, :is_default => false, :is_active => false)
     @account_payment_method = PaymentMethod.find_or_create_by_outlet_id_and_name(:outlet_id => outlet_id, :name => PaymentMethod::ACCOUNT_PAYMENT_METHOD_NAME, :payment_integration_id => 0, :open_cash_drawer => false, :is_default => false)
 
     @default_tax_rate = TaxRate.find_or_create_by_outlet_id_and_name(:outlet_id => outlet_id, :name => "default", :rate => 12, :is_default => true)

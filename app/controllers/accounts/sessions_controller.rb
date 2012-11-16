@@ -4,7 +4,10 @@ class Accounts::SessionsController < Accounts::ApplicationController
   layout :choose_layout
   
   def new
-    
+    if current_cluey_account
+      redirect_to accounts_accounts_path
+      return
+    end
   end
 
   def create
@@ -20,6 +23,14 @@ class Accounts::SessionsController < Accounts::ApplicationController
       
       set_login_credentials @login_cluey_account
       
+      if params[:remember_me]
+        cookies[:accounts_login_auth_token] = {
+          :value => @login_cluey_account.login_crossdomain_auth_token,
+          :expires => 20.years.from_now,
+          :domain => "#{@login_cluey_account.name}.#{APP_DOMAIN}"
+        }
+      end
+      
       redirect_to accounts_accounts_path, :notice => "Logged In Successfully!"
     else
       flash.now[:error] = "Invalid email or password"
@@ -29,7 +40,9 @@ class Accounts::SessionsController < Accounts::ApplicationController
 
   def destroy
     session[:current_cluey_account_id] = nil
-    redirect_to root_url(:subdomain => "signup"), :notice => "Logged out!"
+    cookies.delete :login_auth_token, :domain => ".#{APP_DOMAIN}"
+    cookies.delete :accounts_login_auth_token, :domain => "#{current_cluey_account.name}.#{APP_DOMAIN}"
+    redirect_to account_log_in_path, :notice => "Logged out!"
   end
   
   private 

@@ -1,10 +1,8 @@
 class ApplicationController < AppBaseController
   before_filter :setup_for_subdomain, :except => [:ping, :build_assets, :force_error]
+  before_filter :check_for_firefox, :except => [:ping, :build_assets, :force_error]
   before_filter :set_current_employee, :except => [:ping, :cache_manifest, :build_assets, :force_error]
 
-  
-  #before_filter :http_basic_authenticate
-  
   before_filter :check_reset_session, :except => [:ping, :cache_manifest, :build_assets, :force_error]
   
   helper_method :e, :is_cluey_user?, :cluey_pw_used?, :current_employee, :print_money, :print_credit_balance
@@ -504,7 +502,17 @@ class ApplicationController < AppBaseController
     @subdomain_parts = @subdomain.split("-")
     
     if @subdomain_parts.length == 1
+      @account_name = @subdomain_parts[0]    
+    
+      @account = ClueyAccount.find_by_name @account_name
+    
+      if !@account
+        redirect_to account_not_found_accounts_accounts_url(:subdomain => "signup")
+        return
+      end
+      
       redirect_to accounts_accounts_path
+      
       return
     elsif @subdomain_parts.length == 2
       #accessing an outlet
@@ -558,7 +566,7 @@ class ApplicationController < AppBaseController
             
             if @url_auth_ok
               logger.info "!!!!!!!!!!!!!!!!!!!!!!!LOGGED IN WITH USERNAME/PASSWORD IN URL"
-                set_current_outlet outlet
+              set_current_outlet outlet
               return true
             end
           end 
@@ -591,6 +599,23 @@ class ApplicationController < AppBaseController
       return
     end
     
+  end
+  
+  def check_for_firefox    
+    #we also allow android and ipad
+    @test_for_chrome = "Chrome"
+    @test_for_firefox = "Firefox"
+    @test_for_android = "Android"
+    @test_for_ipad = "iPad"
+      
+    @user_agent = request.user_agent
+    puts "UA: #{@user_agent}"
+    @is_firefox_or_ipad = @user_agent.include?(@test_for_firefox) or @user_agent.include?(@test_for_ipad) and @user_agent.include?(@test_for_android)
+    
+    if !@is_firefox_or_ipad
+      redirect_to browser_not_supported_accounts_accounts_url(:subdomain => current_outlet.cluey_account.name)
+      return
+    end
   end
   
   def set_current_outlet outlet

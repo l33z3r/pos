@@ -12,7 +12,7 @@ class Accounts::ApplicationController < AppBaseController
     @subdomain = request.subdomain
     
     if @subdomain == "signup"
-      redirect_to root_url(:subdomain => "signup")
+      redirect_to account_sign_up_url(:subdomain => "signup")
       return
     end
     
@@ -21,7 +21,7 @@ class Accounts::ApplicationController < AppBaseController
     
     if @subdomain_parts.length != 1
       flash[:notice] = "Invalid Subdomain"
-      redirect_to root_url(:subdomain => "signup")
+      redirect_to account_sign_up_url(:subdomain => "signup")
       return
     end
     
@@ -31,7 +31,7 @@ class Accounts::ApplicationController < AppBaseController
     
     if !@cluey_account
       flash[:error] = "Account #{@account_name} not found!"
-      redirect_to root_url(:subdomain => "signup")
+      redirect_to account_not_found_accounts_accounts_url(:subdomain => "signup")
       return
     end
   end
@@ -40,8 +40,25 @@ class Accounts::ApplicationController < AppBaseController
     if current_cluey_account and @cluey_account.id == current_cluey_account.id
       return true
     end
+    
+    #check if using auth token for accounts login
+    #set in the accounts login page
+    @accounts_login_auth_token = cookies[:accounts_login_auth_token]
           
-    flash[:error] = "Please Log In"
+    if @accounts_login_auth_token
+      @accounts_auth_token_cluey_account = ClueyAccount.find_by_login_crossdomain_auth_token @accounts_login_auth_token
+            
+      if @accounts_auth_token_cluey_account
+        #make sure that the auth_token_cluey_account owns this outlet
+        if @accounts_auth_token_cluey_account.id == @cluey_account.id
+          logger.info "!!!!!!!!!!!!!!!!!!!!!!!LOGGED TO ACCOUNTS IN WITH AUTH ACCOUNTS AUTH TOKEN #{@accounts_login_auth_token}"
+          set_login_credentials @accounts_auth_token_cluey_account
+          return true
+        end
+      end
+    end
+          
+    flash[:notice] = "Please Log In"
     redirect_to account_log_in_path
     return false
   end

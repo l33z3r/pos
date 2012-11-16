@@ -21,13 +21,14 @@ $(function() {
 function doGlobalInit() {
     //make sure we have all compatible plugins etc
     if(!inMobileContext()) { 
-        if(checkForFirefox()) {   
+        //we don't check for firefox here anymore as it is done in the controller
+        //if(checkForFirefox()) {   
             if(checkForClueyPlugin()) {
                 if(checkForJSPrintSetupPlugin()) {
                     checkForUninstalledPrinters();
                 }
             }
-        }
+        //}
     }
     
     initUsers();

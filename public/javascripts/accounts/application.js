@@ -33,9 +33,21 @@ function signInPopup() {
     signInPopupAnchor.FreezeBubblePopup();
     
     signInPopupID = signInPopupAnchor.GetBubblePopupID();
+    
+    $(window).bind('keypress', function(event) {
+        if(event.keyCode == 13) {
+            goToAccountsPage();
+        }
+    });
 }
 
 function goToAccountsPage() {
     var accountName = $('#' + signInPopupID).find('#account_name').val();
-    window.location = "http://" + accountName + "." + APP_DOMAIN + APP_PORT;
+    
+    if(accountName.length == 0) {
+        niceAlert("Please Enter An Account Name");
+        return;
+    }
+    
+    window.location = "http://" + accountName + "." + APP_DOMAIN + APP_PORT + "/account_log_in";
 }

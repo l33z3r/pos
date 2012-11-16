@@ -4,6 +4,15 @@ html {
     font-family: Verdana;
 }
 
+a {
+    text-decoration: none;
+    color: #797979;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 div#wrapper {
     min-width: 1024px;
     max-width: 1260px;
@@ -33,13 +42,7 @@ div#header div#navigation {
 }
 
 div#header div#navigation a {
-    text-decoration: none;
-    color: #797979;
     margin: 0px 5px;
-}
-
-div#header div#navigation a:hover {
-    text-decoration: underline;
 }
 
 div#content {
@@ -52,15 +55,6 @@ div#footer {
     padding-top: 10px;
     text-align: right;
     font-size: 11px;
-}
-
-div#footer a {
-    text-decoration: none;
-    color: #797979;
-}
-
-div#footer a:hover {
-    text-decoration: underline;
 }
 
 div#content div#left_column {
@@ -271,15 +265,6 @@ div#login_page div#forgot_password_link {
     margin-top: 30px;
 }
 
-div#login_page div#forgot_password_link a {
-     color: #797979;
-    text-decoration: none;
-}
-
-div#login_page div#forgot_password_link a:hover {
-     text-decoration: underline;
-}
-
 /* End Login Page */
 
 /* Forgot Password Page */
@@ -423,6 +408,61 @@ div#reset_password_page form div#fields_container div.submit input {
 
 /* End Forgot Password Page */
 
+/* Not firefox page */
+
+div#not_firefox_page {
+    color: #333;    
+}
+
+div#not_firefox_page img.cluey_logo {
+    margin: 50px auto 30px auto;
+    display: block;
+}
+
+div#not_firefox_page div#girl_1_container {
+    background-color: #E4E4E4;
+    width: 303px;   
+    margin: auto;
+}
+
+div#not_firefox_page img.girl_1 {
+    margin: 10px;
+}
+
+div#not_firefox_page div#header_1 {
+    font-size: 20px;
+    margin-top: 30px;
+    color: #000;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+div#not_firefox_page div#ff_blurb_container {
+    border: 1px solid #333;
+    width: 500px;
+    margin: 30px auto;
+    text-align: center;
+    padding: 20px;
+}
+
+div#not_firefox_page div#ff_blurb_container div#text {
+    width: 420px;
+    margin: 0px auto 20px auto;
+    font-size: 14px;
+}
+
+div#not_firefox_page div#ff_blurb_container div#download_link {
+    font-size: 17px;
+    margin-top: 10px;
+}
+
+div#not_firefox_page a#ok_button {
+    width: 150px;
+    margin-left: 200px;
+}
+
+/* End not firefox page */
+
 /* Static Pages */
 
 div#content div.header {
@@ -455,22 +495,29 @@ form div.error_messages {
 }
 
 input.big_blue_button_1,
-div.big_blue_button_1 {
+div.big_blue_button_1,
+a.big_blue_button_1 {
     padding: 15px;
     border: 1px solid #333;
     -moz-border-radius: 7px;
     border-radius: 7px;
     box-shadow: 0px 1px 0px #777;
-    background-color: #4297D7;
+    background-color: #12409D;
     font-size: 15px;
     color: #FFF;
     cursor: pointer;
+    display: block;
+    text-align: center;
+}
+
+a.big_blue_button_1:hover {
+    text-decoration: none;
 }
 
 div#flash div#flash_error {
     color: red;
     text-align: center;
-    border: 1px solid #797979;
+    border: 2px solid red;
     -moz-border-radius: 7px;
     border-radius: 7px;
     width: 300px;
@@ -480,9 +527,9 @@ div#flash div#flash_error {
 }
 
 div#flash div#flash_notice {
-    color: blue;
+    color: #12409D;
     text-align: center;
-    border: 1px solid #797979;
+    border: 2px solid #12409D;
     -moz-border-radius: 7px;
     border-radius: 7px;
     width: 300px;
@@ -492,9 +539,9 @@ div#flash div#flash_notice {
 }
 
 div#flash div#flash_positive {
-    color: blue;
+    color: #12409D;
     text-align: center;
-    border: 1px solid #797979;
+    border: 2px solid #12409D;
     -moz-border-radius: 7px;
     border-radius: 7px;
     width: 300px;

@@ -1,4 +1,4 @@
-  class GlobalSetting < ActiveRecord::Base
+class GlobalSetting < ActiveRecord::Base
   
   belongs_to :outlet
   
@@ -203,10 +203,12 @@
         end
       end
     when CURRENCY_SYMBOL
-      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => CURRENCY_SYMBOL.to_s, :value => "$", :label_text => LABEL_MAP[CURRENCY_SYMBOL])
+      @default_currency_symbol = Country.get_default_national_currency_symbol_label current_outlet
+      
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => CURRENCY_SYMBOL.to_s, :value => @default_currency_symbol, :label_text => LABEL_MAP[CURRENCY_SYMBOL])
       @gs.parsed_value = @gs.value
     when BYPASS_PIN
-      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => BYPASS_PIN.to_s, :value => "false", :label_text => LABEL_MAP[BYPASS_PIN])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => BYPASS_PIN.to_s, :value => "true", :label_text => LABEL_MAP[BYPASS_PIN])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when DEFAULT_HOME_SCREEN
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{DEFAULT_HOME_SCREEN.to_s}_#{args[:fingerprint]}", :value => 1, :label_text => LABEL_MAP[DEFAULT_HOME_SCREEN])
@@ -215,7 +217,9 @@
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => AUTO_PRINT_RECEIPT.to_s, :value => "false", :label_text => LABEL_MAP[AUTO_PRINT_RECEIPT])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when SMALL_CURRENCY_SYMBOL
-      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => SMALL_CURRENCY_SYMBOL.to_s, :value => "c", :label_text => LABEL_MAP[SMALL_CURRENCY_SYMBOL])
+      @default_small_currency_symbol = Country.get_default_national_small_currency_symbol_label current_outlet
+      
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => SMALL_CURRENCY_SYMBOL.to_s, :value => @default_small_currency_symbol, :label_text => LABEL_MAP[SMALL_CURRENCY_SYMBOL])
       @gs.parsed_value = @gs.value
     when THEME
       #the key will be the key for payment type followed by the actual description of that type
@@ -231,13 +235,20 @@
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => TAX_CHARGABLE.to_s, :value => "false", :label_text => LABEL_MAP[TAX_CHARGABLE])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when GLOBAL_TAX_RATE
-      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => GLOBAL_TAX_RATE.to_s, :value => 0, :label_text => LABEL_MAP[GLOBAL_TAX_RATE])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => GLOBAL_TAX_RATE.to_s, :value => 20, :label_text => LABEL_MAP[GLOBAL_TAX_RATE])
       @gs.parsed_value = @gs.value.to_f
+    when SERVICE_CHARGE_LABEL
+      @default_service_charge_label = Country.get_default_national_service_charge_label current_outlet
+      
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => SERVICE_CHARGE_LABEL.to_s, :value => @default_service_charge_label, :label_text => LABEL_MAP[SERVICE_CHARGE_LABEL])
+      @gs.parsed_value = @gs.value
     when CASH_TOTAL_OPTION
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{CASH_TOTAL_OPTION.to_s}_#{args[:total_type]}_#{args[:employee_role]}_#{args[:report_section]}", :value => "true", :label_text => LABEL_MAP[CASH_TOTAL_OPTION])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when TAX_LABEL
-      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => TAX_LABEL.to_s, :value => "Tax", :label_text => LABEL_MAP[TAX_LABEL])
+      @default_tax_label = Country.get_default_national_tax_label current_outlet
+      
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => TAX_LABEL.to_s, :value => @default_tax_label, :label_text => LABEL_MAP[TAX_LABEL])
       @gs.parsed_value = @gs.value
     when DO_BEEP
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{DO_BEEP.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[DO_BEEP])
@@ -381,7 +392,7 @@
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{SCREEN_RESOLUTION.to_s}_#{args[:fingerprint]}", :value => SCREEN_RESOLUTION_NORMAL, :label_text => LABEL_MAP[SCREEN_RESOLUTION])
       @gs.parsed_value = @gs.value
     when PM_SHORTCUT_ID
-      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{PM_SHORTCUT_ID.to_s}_#{args[:shortcut_num]}", :value => PaymentMethod.load_default(current_outlet).id, :label_text => LABEL_MAP[PM_SHORTCUT_ID])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{PM_SHORTCUT_ID.to_s}_#{args[:shortcut_num]}", :value => "-1", :label_text => LABEL_MAP[PM_SHORTCUT_ID])
       @gs.parsed_value = @gs.value.to_i
     when PROMPT_FOR_COVERS
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => PROMPT_FOR_COVERS.to_s, :value => "false", :label_text => LABEL_MAP[PROMPT_FOR_COVERS])
@@ -600,7 +611,7 @@
   private
   
   def self.load_setting property, current_outlet
-    @setting = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => property.to_s, :value => "Not Set", :label_text => LABEL_MAP[property])
+    @setting = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => property.to_s, :value => "", :label_text => LABEL_MAP[property])
     @setting
   end
 

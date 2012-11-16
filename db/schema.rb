@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121113096451) do
+ActiveRecord::Schema.define(:version => 20121114190331) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id",         :limit => 8
@@ -416,7 +416,6 @@ ActiveRecord::Schema.define(:version => 20121113096451) do
     t.float    "pre_discount_price"
     t.float    "tax_rate"
     t.string   "terminal_id"
-    t.string   "time_added"
     t.boolean  "show_server_added_text",                       :default => false
     t.string   "product_name"
     t.boolean  "is_double",                                    :default => false
@@ -425,6 +424,7 @@ ActiveRecord::Schema.define(:version => 20121113096451) do
     t.boolean  "is_half",                                      :default => false
     t.integer  "void_employee_id",       :limit => 8
     t.integer  "outlet_id",              :limit => 8
+    t.datetime "date_added"
   end
 
   add_index "order_items", ["employee_id"], :name => "index_order_items_on_employee_id"
@@ -455,10 +455,10 @@ ActiveRecord::Schema.define(:version => 20121113096451) do
     t.integer  "order_num",             :limit => 8
     t.text     "split_payments",        :limit => 2147483647
     t.string   "client_name",                                 :default => "",    :null => false
-    t.string   "time_started"
     t.boolean  "training_mode_sale",                          :default => false
     t.integer  "room_id",               :limit => 8
     t.integer  "outlet_id",             :limit => 8
+    t.datetime "date_started"
   end
 
   add_index "orders", ["employee_id"], :name => "index_orders_on_employee_id"

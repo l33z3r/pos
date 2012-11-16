@@ -151,9 +151,14 @@ class OrderController < ApplicationController
       @order_params = order_params
       @order_details = @order_params.delete(:order_details)
     
+      #convert the time_started timestamp to a date
+      @new_order_time_started = Time.at(@order_params["time_started"].to_i/1000)
+      @order_params.delete(:time_started)
+      @order_params[:date_started] = @new_order_time_started
+      
       #make sure we have not already cashed this order out. 
       #We use a combination of terminal ID and time started to uniquely identify orders
-      @existing_order = current_outlet.orders.where("terminal_id = ?", @terminal_id).where("time_started = ?", order_params["time_started"])
+      @existing_order = current_outlet.orders.where("terminal_id = ?", @terminal_id).where("date_started = ?", @new_order_time_started)
       
       if !@existing_order.empty?
         #simply ignore the order
@@ -273,8 +278,8 @@ class OrderController < ApplicationController
         @order_item.tax_rate = item[:tax_rate]
       
         #the time it was added to the order
-        @order_item.time_added = item[:time_added]
-
+        @order_item.date_added = Time.at(item[:time_added].to_i/1000)
+        
         #do we want to show the serveraddeditem text
         @order_item.show_server_added_text = item[:showServerAddedText]
       
