@@ -152,7 +152,7 @@
   //these variables are used to get a syncronised time on each device
   var serverCounterStartTimeMillis = <%= now_local_millis %>;
   var counterStartTimeMillis = new Date().getTime();
-  alert("<%=Time.zone.name%> <%=(Time.zone.now.to_f * 1000).to_i%> <%=Time.zone.utc_offset%>");
+  
   //payment integration IDs
   var zalionPaymentIntegrationId = <%= PaymentMethod::PAYMENT_INTEGRATION_ZALION %>;
   
