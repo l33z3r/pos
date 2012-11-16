@@ -11,7 +11,7 @@ namespace :assets do
     puts "-----> Building assets..."
   
     paths.each do |path|
-      FileUtils.rm(Dir.glob(path + "*")) if File.exist?(path)
+      FileUtils.rm_rf(Dir.glob(path + "*")) if File.exist?(path)
     end
 
     ActionController::Base.perform_caching = true
