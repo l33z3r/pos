@@ -11,6 +11,7 @@ class Country < ActiveRecord::Base
   US_COUNTRY_ID = Country.find_by_iso("US").try(:id)
   AU_COUNTRY_ID = Country.find_by_iso("AU").try(:id)
   
+  #can maybe move this stuff to a yaml file
   def self.get_default_national_service_charge_label outlet
     @current_country_id = outlet.cluey_account.country_id 
       
