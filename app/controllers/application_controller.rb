@@ -69,7 +69,7 @@ class ApplicationController < AppBaseController
   def request_reload_app terminal_id
     #update the cache_manifest
     @timestamp_setting = GlobalSetting.setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP, current_outlet
-    @timestamp_setting.value = now_millis
+    @timestamp_setting.value = now_local_millis
     @timestamp_setting.save
   end
   

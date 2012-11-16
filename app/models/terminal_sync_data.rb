@@ -40,10 +40,10 @@ class TerminalSyncData < ActiveRecord::Base
         end
       end
     
-      @now_millis = GlobalSetting.now_millis
+      @now_local_millis = GlobalSetting.now_local_millis
       
       TerminalSyncData.create!({:outlet_id => current_outlet.id, :sync_type => TerminalSyncData::TERMINAL_RELOAD_REQUEST, 
-          :time => @now_millis.to_s, :data => {:terminal_id => terminal_id}})
+          :time => @now_local_millis.to_s, :data => {:terminal_id => terminal_id}})
     end
   end
   
@@ -53,10 +53,10 @@ class TerminalSyncData < ActiveRecord::Base
         tsd.destroy
       end
     
-      @now_millis = GlobalSetting.now_millis
+      @now_local_millis = GlobalSetting.now_local_millis
       
       TerminalSyncData.create!({:outlet_id => current_outlet.id, :sync_type => TerminalSyncData::TERMINAL_RELOAD_REQUEST, 
-          :time => @now_millis.to_s, :data => {:terminal_id => terminal_id, :hard_reset => true}})
+          :time => @now_local_millis.to_s, :data => {:terminal_id => terminal_id, :hard_reset => true}})
     end
   end
   
@@ -68,10 +68,10 @@ class TerminalSyncData < ActiveRecord::Base
         end
       end
       
-      @now_millis = GlobalSetting.now_millis
+      @now_local_millis = GlobalSetting.now_local_millis
       
       TerminalSyncData.create!({:outlet_id => current_outlet.id, :sync_type => TerminalSyncData::ORDER_READY_REQUEST, 
-          :time => @now_millis.to_s, :data => {:order_num => order_num, :employee_id => employee_id, :terminal_id => terminal_id, :table_id => table_info.id, :table_label => table_info.perm_id}})
+          :time => @now_local_millis.to_s, :data => {:order_num => order_num, :employee_id => employee_id, :terminal_id => terminal_id, :table_id => table_info.id, :table_label => table_info.perm_id}})
     end
   end
   

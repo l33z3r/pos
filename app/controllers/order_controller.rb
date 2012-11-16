@@ -134,7 +134,7 @@ class OrderController < ApplicationController
     
         if @table_from
           @table_from_order_num = params[:table_from_order_num] 
-          do_request_clear_table_order @terminal_id, now_millis, @table_from_id, @table_from_order_num, e
+          do_request_clear_table_order @terminal_id, now_local_millis, @table_from_id, @table_from_order_num, e
         else
           @error = true
         end
