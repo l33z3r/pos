@@ -1,4 +1,4 @@
-class Accounts::SessionsController < ClueyAdmin::ApplicationController
+class ClueyAdmin::SessionsController < ClueyAdmin::ApplicationController
   skip_before_filter :ensure_logged_in, :only => [:new, :create] 
   
   def new
