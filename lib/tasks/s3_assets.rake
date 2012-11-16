@@ -89,7 +89,6 @@ namespace :assets do
     
     puts "-----> Syncing #{total_files_count} files with S3"
     
-    all_files = ["public/install/cluey.apk"]
     all_files.each do |file|
       upload_file_count += 1
       

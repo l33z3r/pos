@@ -121,8 +121,6 @@ function doGlobalInit() {
 
         showInitialScreen();
         
-        startClock();
-
         showScreenFromHashParams();
     } else if (inKitchenContext()) {
         initKitchen();

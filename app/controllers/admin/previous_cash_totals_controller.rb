@@ -1,7 +1,7 @@
 class Admin::PreviousCashTotalsController < Admin::AdminController
 
   def index
-    @selected_to_date = @selected_from_date = Date.today
+    @selected_to_date = @selected_from_date = Time.zone.now
   end
 
   def cash_total_search

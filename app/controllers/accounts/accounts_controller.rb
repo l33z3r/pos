@@ -4,6 +4,8 @@ class Accounts::AccountsController < Accounts::ApplicationController
   
   before_filter :do_setup_for_master_subdomain_if_not_signup_subdomain, :only => [:new, :create]
     
+  before_filter :set_account_time_zone
+  
   layout :choose_layout
   
   def do_setup_for_master_subdomain_if_not_signup_subdomain
@@ -30,6 +32,16 @@ class Accounts::AccountsController < Accounts::ApplicationController
   def create
     @cluey_account = ClueyAccount.new(params[:cluey_account])
     
+    #set the timezone based off the chosen country
+    begin
+      tzc = TZInfo::Country.get(@cluey_account.country.iso)
+      
+      #choose the first in the list, it can be changed later if the user wishes
+      @cluey_account.time_zone = tzc.zone_names.first
+    rescue 
+      @cluey_account.time_zone = DEFAULT_TIME_ZONE_NAME
+    end
+
     if @cluey_account.save
       #build a default outlet
       @outlet = Outlet.new
@@ -39,6 +51,7 @@ class Accounts::AccountsController < Accounts::ApplicationController
       @outlet.password_hash = @cluey_account.password_hash
       @outlet.password_salt = @cluey_account.password_salt
       @outlet.cluey_account_id = @cluey_account.id
+      @outlet.time_zone = @cluey_account.time_zone
       @outlet.save!
       OutletBuilder::build_outlet_seed_data(@outlet.id)
       
@@ -90,7 +103,13 @@ class Accounts::AccountsController < Accounts::ApplicationController
     
   end
   
-  private 
+  private
+  
+  def set_account_time_zone
+    if current_cluey_account
+      Time.zone = current_cluey_account.time_zone
+    end
+  end
   
   def choose_layout
     @accounts_logged_out_layout_action_array = ["new", "create", "account_not_found", "contact", "help", "privacy", "terms", "browser_not_supported", "pricing"]

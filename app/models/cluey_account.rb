@@ -3,7 +3,7 @@ require 'digest/sha1'
 class ClueyAccount < ActiveRecord::Base
   has_many :outlets
   
-  attr_accessible :first_name, :last_name, :country_id, :name, :email, :password, :password_confirmation, :email_confirmation
+  attr_accessible :first_name, :last_name, :country_id, :name, :email, :password, :password_confirmation, :email_confirmation, :time_zone
   
   attr_accessor :password
   before_save :encrypt_password
@@ -30,6 +30,8 @@ class ClueyAccount < ActiveRecord::Base
   validate :name_not_reserved
  
   has_many :customers, :through => :outlets
+  
+  belongs_to :country
   
   RESERVED_NAMES = [
     "help", "login", "signup", "support", "www", "demo"

@@ -7,6 +7,7 @@ class Accounts::OutletsController < Accounts::ApplicationController
   
   def new
     @outlet = Outlet.new
+    @outlet.time_zone = current_cluey_account.time_zone
   end
 
   def create

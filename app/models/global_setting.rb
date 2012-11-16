@@ -183,6 +183,9 @@ class GlobalSetting < ActiveRecord::Base
     @gs = nil
     
     case property.to_i
+    when BUSINESS_NAME
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{BUSINESS_NAME.to_s}_#{args[:fingerprint]}", :value => current_outlet.name, :label_text => LABEL_MAP[BUSINESS_NAME])
+      @gs.parsed_value = @gs.value
     when LOGO
       @logo_type = args[:logo_type]
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{LOGO.to_s}_#{@logo_type}", :value => "Not Used For Logo", :label_text => LABEL_MAP[LOGO])
@@ -203,7 +206,7 @@ class GlobalSetting < ActiveRecord::Base
         end
       end
     when CURRENCY_SYMBOL
-      @default_currency_symbol = Country.get_default_national_currency_symbol_label current_outlet
+      @default_currency_symbol = Country.get_default_national_currency_symbol current_outlet
       
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => CURRENCY_SYMBOL.to_s, :value => @default_currency_symbol, :label_text => LABEL_MAP[CURRENCY_SYMBOL])
       @gs.parsed_value = @gs.value
@@ -217,7 +220,7 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => AUTO_PRINT_RECEIPT.to_s, :value => "false", :label_text => LABEL_MAP[AUTO_PRINT_RECEIPT])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when SMALL_CURRENCY_SYMBOL
-      @default_small_currency_symbol = Country.get_default_national_small_currency_symbol_label current_outlet
+      @default_small_currency_symbol = Country.get_default_national_small_currency_symbol current_outlet
       
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => SMALL_CURRENCY_SYMBOL.to_s, :value => @default_small_currency_symbol, :label_text => LABEL_MAP[SMALL_CURRENCY_SYMBOL])
       @gs.parsed_value = @gs.value
@@ -693,8 +696,24 @@ class GlobalSetting < ActiveRecord::Base
     return 2..4
   end
   
-  def self.now_millis
-    (Time.now.to_f * 1000).to_i
+  #this is local time milliseconds
+  #the way we interact dates between rails and js is to provide js with num milliseconds since epoch and then add their timezone offset
+  def self.now_local_millis
+    utc_millis = (Time.zone.now.to_f * 1000).to_i
+    
+    #now add the timezone offset
+    local_millis = utc_millis_to_local_millis(utc_millis)
+    local_millis
+  end
+  
+  def self.local_millis_to_utc_millis local_millis
+    utc_millis = local_millis.to_i - Time.zone.utc_offset.to_f * 1000
+    utc_millis
+  end
+  
+  def self.utc_millis_to_local_millis utc_millis
+    local_millis = utc_millis.to_i + Time.zone.utc_offset.to_f * 1000
+    local_millis
   end
   
   def self.terminal_id_for fingerprint, current_outlet

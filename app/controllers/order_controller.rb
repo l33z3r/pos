@@ -105,7 +105,7 @@ class OrderController < ApplicationController
       
     if @table
       @order_num = params[:order_num]
-      do_request_clear_table_order @terminal_id, now_millis, @table_id, @order_num, e
+      do_request_clear_table_order @terminal_id, now_local_millis, @table_id, @order_num, e
     end
     
     render :json => {:success => true}.to_json
@@ -152,7 +152,9 @@ class OrderController < ApplicationController
       @order_details = @order_params.delete(:order_details)
     
       #convert the time_started timestamp to a date
-      @new_order_time_started = Time.at(@order_params["time_started"].to_i/1000)
+      @time_started_utc_millis = GlobalSetting.local_millis_to_utc_millis(@order_params["time_started"])
+      @new_order_time_started = Time.zone.at(@time_started_utc_millis/1000)
+      
       @order_params.delete(:time_started)
       @order_params[:date_started] = @new_order_time_started
       
@@ -278,7 +280,8 @@ class OrderController < ApplicationController
         @order_item.tax_rate = item[:tax_rate]
       
         #the time it was added to the order
-        @order_item.date_added = Time.at(item[:time_added].to_i/1000)
+        @time_added_utc_millis = GlobalSetting.local_millis_to_utc_millis(item[:time_added])
+        @order_item.date_added = Time.zone.at(@time_added_utc_millis/1000)
         
         #do we want to show the serveraddeditem text
         @order_item.show_server_added_text = item[:showServerAddedText]
@@ -390,7 +393,7 @@ class OrderController < ApplicationController
       #only do this if that table still exists!
       if @order.is_table_order and @table_info and !@is_split_bill_order
         @employee_id = @order_params['employee_id']
-        do_request_clear_table_order @terminal_id, now_millis, @order.table_info_id, @order.order_num, @employee_id
+        do_request_clear_table_order @terminal_id, now_local_millis, @order.table_info_id, @order.order_num, @employee_id
         
         #record the room number in the order
         @order.room_id = @table_info.room_object.room.id

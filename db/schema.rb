@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121114190331) do
+ActiveRecord::Schema.define(:version => 20121116113636) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id",         :limit => 8
@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(:version => 20121114190331) do
     t.string   "first_name",                                     :null => false
     t.string   "last_name",                                      :null => false
     t.integer  "country_id",                                     :null => false
+    t.string   "time_zone",                                      :null => false
   end
 
   create_table "countries", :force => true do |t|
@@ -484,6 +485,7 @@ ActiveRecord::Schema.define(:version => 20121114190331) do
     t.boolean  "has_seed_data",                 :default => false
     t.string   "password_salt"
     t.boolean  "is_active",                     :default => true
+    t.string   "time_zone",                                        :null => false
   end
 
   create_table "payment_methods", :force => true do |t|

@@ -1,5 +1,7 @@
 class ApplicationController < AppBaseController
   before_filter :setup_for_subdomain, :except => [:ping, :build_assets, :force_error]
+  before_filter :set_outlet_time_zone
+  
   before_filter :check_for_firefox, :except => [:ping, :build_assets, :force_error]
   before_filter :set_current_employee, :except => [:ping, :cache_manifest, :build_assets, :force_error]
 
@@ -7,7 +9,7 @@ class ApplicationController < AppBaseController
   
   helper_method :e, :is_cluey_user?, :cluey_pw_used?, :current_employee, :print_money, :print_credit_balance
   helper_method :mobile_device?, :all_terminals, :all_printers, :all_servers, :current_interface
-  helper_method :development_mode?, :production_mode?, :server_ip, :now_millis
+  helper_method :development_mode?, :production_mode?, :server_ip, :now_local_millis
   
   before_filter :load_global_vars, :except => [:ping, :cache_manifest, :build_assets, :force_error]
   
@@ -151,7 +153,7 @@ class ApplicationController < AppBaseController
       
       @sync_data = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => employee_id}.to_yaml
       
-      @time = now_millis
+      @time = now_local_millis
       
       #make sure the time is at least 2 milliseconds after the last sync so that it gets picked up ok
       if @last_table_order_sync
@@ -454,8 +456,8 @@ class ApplicationController < AppBaseController
     current_outlet.employees.all.collect(&:nickname)
   end
   
-  def now_millis
-    GlobalSetting.now_millis
+  def now_local_millis
+    GlobalSetting.now_local_millis
   end
   
   def current_interface
@@ -625,6 +627,14 @@ class ApplicationController < AppBaseController
       OutletBuilder::build_outlet_seed_data(outlet.id)
       outlet.has_seed_data = true
       outlet.save
+    end
+  end
+  
+  private
+  
+  def set_outlet_time_zone
+    if current_outlet
+      Time.zone = current_outlet.time_zone
     end
   end
 

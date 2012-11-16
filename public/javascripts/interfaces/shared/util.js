@@ -923,7 +923,7 @@ function clueyTimestamp() {
     if(clueyTimestampInitializedFromServer) {
         return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
     } else {
-        return new Date().getTime();
+        return 0;
     }
 }
 

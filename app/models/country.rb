@@ -4,8 +4,10 @@
 class Country < ActiveRecord::Base
   attr_accessible :id, :iso, :name
   
+  has_many :cluey_accounts
+  
   IE_COUNTRY_ID = Country.find_by_iso("IE").id
-  BG_COUNTRY_ID = Country.find_by_iso("GB").id
+  GB_COUNTRY_ID = Country.find_by_iso("GB").id
   US_COUNTRY_ID = Country.find_by_iso("US").id
   AU_COUNTRY_ID = Country.find_by_iso("AU").id
   
