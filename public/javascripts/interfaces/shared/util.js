@@ -14,6 +14,7 @@ var activeUserIDCookieName = "current_user_id";
 var serverCounterStartTimeMillis = null;
 var counterStartTimeMillis = null;
 var clueyTimestampInitializedFromServer = false;
+var clueyTimestampStorageKey = "last_initialized_cluey_timestamp";
 
 function isTouchDevice() {
     return !disableAdvancedTouch;
@@ -474,6 +475,19 @@ function storeActiveTableIDS(activeTableIDS) {
     storeKeyValue(activeTableIDSStorageKey, activeTableIDSString);
 }
 
+function storeCurrentClueyTimestamp() {
+    var clueyTimestampJSON = {
+        "clueyTimestamp" : clueyTimestamp(),
+        "localTimestamp" : new Date().getTime()
+    }
+    
+    storeKeyJSONValue(clueyTimestampStorageKey, clueyTimestampJSON);
+}
+
+function getCurrentClueyTimestamp() {
+    return retrieveStorageJSONValue(clueyTimestampStorageKey);
+}
+
 function addActiveTable(tableID) {
     activeTableIDS = getActiveTableIDS();
     
@@ -914,6 +928,10 @@ function initClueyTimestampFromServer(serverStartTimeMillis) {
         clueyTimestampInitializedFromServer = true;
         serverCounterStartTimeMillis = serverStartTimeMillis;
         counterStartTimeMillis = new Date().getTime();
+        
+        //store the cluey timestamp and the local time so that we can figure out the clueyTimestamp if we are offline next time
+        storeCurrentClueyTimestamp();
+        
         startClock();
     }
 }
@@ -923,13 +941,39 @@ function clueyTimestamp() {
     if(clueyTimestampInitializedFromServer) {
         return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
     } else {
-        return 0;
+        //load the stored clueyTimestamp and work out the dates by subtracting the local time from the stored local time
+        var nowLocalMillis = new Date().getTime();
+        
+        var currentClueyTimestampJSON = getCurrentClueyTimestamp();
+        
+        //if we have never stored a timestamp
+        if(currentClueyTimestampJSON == null) {
+            return 0;
+        }
+        
+        var storedClueyTimestamp = currentClueyTimestampJSON.clueyTimestamp;
+        var storedLocalTimestamp = currentClueyTimestampJSON.localTimestamp;
+        
+        var offlineClueyTimestamp = nowLocalMillis - storedLocalTimestamp + storedClueyTimestamp
+        
+        return offlineClueyTimestamp;
     }
 }
 
+var currentClockEl = null;
+
 function startClock() {
+    //remove the old clock so that two clocks are not running
+    if(currentClockEl) {
+        currentClockEl.remove();
+    }
+    
+    //insert the clock
+    $("div#clock").append("<span id='jq_clock'></span>");
+    currentClockEl = $("div#clock span#jq_clock");
+    
     //start the clock in the nav bar
-    $("div#clock").clock({
+    $("span#jq_clock").clock({
         "calendar" : "false",
         "format" : clockFormat,
         "timestamp" : clueyTimestamp()

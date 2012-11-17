@@ -123,6 +123,8 @@ function callHomePoll() {
         currentTerminalRecptHTML = getCurrentRecptHTML();
     }
     
+    startClock();
+    
     currentTableLabel = "";
     
     if(selectedTable != previousOrderTableNum && selectedTable != tempSplitBillTableNum && selectedTable != 0) {
@@ -137,7 +139,7 @@ function callHomePoll() {
         dataType: 'script',
         success: callHomePollComplete,
         error: function() {
-            setTimeout(callHomePoll, 5000);
+            setTimeout(callHomePoll, 20000);
         },
         complete: function() {
             pollInProgress = false;
