@@ -14,7 +14,7 @@ a:hover {
 }
 
 div#wrapper {
-    min-width: 1024px;
+    min-width: 960px;
     max-width: 1260px;
     margin: 10px auto;
     background-color: #FFF;
