@@ -1,3 +1,13 @@
+/* Reset CSS */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+/* End Reset CSS */
+
 html {
     color: #797979;
     font-size: 13px;
@@ -145,7 +155,7 @@ div#signup_page div#header_2 {
 }
 
 div#signup_page form div#fields_container {
-    width: 600px;
+    width: 470px;
     margin: auto;
 }
 
@@ -161,7 +171,7 @@ div#signup_page form div#fields_container div.field {
 div#signup_page form div#fields_container div.label {
     margin-top: 2px;
     float: left;
-    width: 40%;
+    width: 45%;
     text-align: right;
     margin-right: 10px;
 }
@@ -169,8 +179,7 @@ div#signup_page form div#fields_container div.label {
 div#signup_page form div#fields_container input,
 div#signup_page form div#fields_container select {
     float: left;
-    width: 55%;
-    width: 200px;
+    width: 45%;
     cursor: pointer;
 }
 
@@ -222,7 +231,7 @@ div#login_page div#header_1 {
 }
 
 div#login_page form div#fields_container {
-    width: 600px;
+    width: 470px;
     margin: auto;
 }
 
@@ -238,15 +247,14 @@ div#login_page form div#fields_container div.field {
 div#login_page form div#fields_container div.label {
     margin-top: 2px;
     float: left;
-    width: 40%;
+    width: 45%;
     text-align: right;
     margin-right: 10px;
 }
 
 div#login_page form div#fields_container input {
     float: left;
-    width: 55%;
-    width: 200px;
+    width: 45%;
     cursor: pointer;
 }
 
@@ -297,7 +305,7 @@ div#forgot_password_page div#header_1 {
 }
 
 div#forgot_password_page form div#fields_container {
-    width: 600px;
+    width: 470px;
     margin: auto;
 }
 
@@ -318,15 +326,14 @@ div#forgot_password_page form div#fields_container div.field {
 div#forgot_password_page form div#fields_container div.label {
     margin-top: 2px;
     float: left;
-    width: 40%;
+    width: 45%;
     text-align: right;
     margin-right: 10px;
 }
 
 div#forgot_password_page form div#fields_container input {
     float: left;
-    width: 55%;
-    width: 200px;
+    width: 45%;
     cursor: pointer;
 }
 
@@ -368,7 +375,7 @@ div#reset_password_page div#header_1 {
 }
 
 div#reset_password_page form div#fields_container {
-    width: 600px;
+    width: 470px;
     margin: auto;
 }
 
@@ -384,15 +391,14 @@ div#reset_password_page form div#fields_container div.field {
 div#reset_password_page form div#fields_container div.label {
     margin-top: 2px;
     float: left;
-    width: 40%;
+    width: 45%;
     text-align: right;
     margin-right: 10px;
 }
 
 div#reset_password_page form div#fields_container input {
     float: left;
-    width: 55%;
-    width: 200px;
+    width: 45%;
     cursor: pointer;
 }
 
@@ -439,14 +445,14 @@ div#not_firefox_page div#header_1 {
 
 div#not_firefox_page div#ff_blurb_container {
     border: 1px solid #333;
-    width: 500px;
+    width: 450px;
     margin: 30px auto;
     text-align: center;
     padding: 20px;
 }
 
 div#not_firefox_page div#ff_blurb_container div#text {
-    width: 420px;
+    width: 400px;
     margin: 0px auto 20px auto;
     font-size: 14px;
 }
@@ -484,7 +490,7 @@ div.field_with_errors input {
 }
 
 form div.error_messages {
-    width: 500px;    
+    width: 470px;    
     margin: auto;
     -moz-border-radius: 7px;
     border-radius: 7px;
