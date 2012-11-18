@@ -1,6 +1,25 @@
 <% if session[:preselect] != -1 %>
     <% unless params[:action] == "sales_print" %>
-
+        <div id="options_menu">
+            <div class="option" onclick="setSearchSelect(-1)" class="print_box">
+                <div style="float: left;"><img src="/images/button_logos/home.png" alt="Print" width="24" height="24"/>
+                </div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Home  |</span></div>
+            </div>
+            <div class="option" onclick="window.location = '/reports/sales/sales_print'" class="print_box">
+                <div style="float: left;"><img src="/images/button_logos/print.png" alt="Print" width="24" height="24"/>
+                </div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Print  |</span></div>
+            </div>
+            <div class="option" onclick="window.location = '/reports/sales/export_excel'" class="excel_box">
+                <div style="float: left;">
+                    <img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24"/></div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Excel </span></div>
+            </div>
+        </div>
     <% end %>
 
 
@@ -43,6 +62,7 @@
                 <% total_net += net_sales %>
                 <% total_item_count += total_items %>
                 <% if product %>
+                    <% category = product.category %>
                     <tbody>
                     <tr class="<%= cycle("even", "odd") %>">
                         <% if session[:search_type] != :by_category %>
@@ -54,17 +74,21 @@
 
                         <% end %>
                         <td style="text-align: left">
-                            <% if Category.find_by_id(product.category_id) %>
-                                <% if Category.find_by_id(product.category_id).name %>
-                                    <%= Category.find_by_id(product.category_id).name %>
+                            <% if category %>
+                                <% if category.name %>
+                                    <%= category.name %>
                                 <% end %>
                             <% end %>
                         </td>
                         <td>
-                            <% if product.category.parent_category
+                            <% if category
+                                 if category.parent_category
                                    @parent_category_name = product.category.parent_category.name
-                               else
+                                 else
                                    @parent_category_name = "None"
+                                 end
+                               else
+                                 @parent_category_name = "None"
                                end %>
                             <%= @parent_category_name %>
                         </td>
@@ -72,13 +96,13 @@
                             <%= "%g" % total_items %>
                         </td>
                         <td style="text-align: right">
-                            <%= sprintf("%.2f", gross_sales) %>
+                            <%= sprintf("%.2f",gross_sales) %>
                         </td>
                         <td style="text-align: right">
-                            <%= sprintf("%.2f", vat) %>
+                            <%= sprintf("%.2f",vat) %>
                         </td>
                         <td style="text-align: right">
-                            <%= sprintf("%.2f", net_sales) %>
+                            <%= sprintf("%.2f",net_sales) %>
                         </td>
                     </tr>
                 <% end %>
@@ -97,13 +121,13 @@
                     <%= sprintf("%.0f", total_item_count) %>
                 </td>
                 <td style="text-align: right; border-top: 2px solid;">
-                    <%= sprintf("%.2f", total_gross) %>
+                    <%= sprintf("%.2f",total_gross) %>
                 </td>
                 <td style="text-align: right; border-top: 2px solid;">
-                    <%= sprintf("%.2f", total_vat) %>
+                    <%= sprintf("%.2f",total_vat) %>
                 </td>
                 <td style="text-align: right; border-top: 2px solid">
-                    <%= sprintf("%.2f", total_net) %>
+                    <%= sprintf("%.2f",total_net) %>
                 </td>
             </tr>
             </tbody>
@@ -139,21 +163,26 @@
                 <% total_net += net_sales %>
                 <% total_item_count += total_items %>
                 <% if product %>
+                    <% category = product.category %>
                     <tbody>
                     <tr class="<%= cycle("even", "odd") %>">
 
                         <td style="text-align: left">
-                            <% if Category.find_by_id(product.category_id) %>
-                                <% if Category.find_by_id(product.category_id).name %>
-                                    <%= Category.find_by_id(product.category_id).name %>
+                            <% if category %>
+                                <% if category.name %>
+                                    <%= category.name %>
                                 <% end %>
                             <% end %>
                         </td>
-                        <td>
-                            <% if product.category.parent_category
+                        <td style="text-align: left">
+                            <% if category
+                                 if category.parent_category
                                    @parent_category_name = product.category.parent_category.name
-                               else
+                                 else
                                    @parent_category_name = "None"
+                                 end
+                               else
+                                 @parent_category_name = "None"
                                end %>
                             <%= @parent_category_name %>
                         </td>
@@ -161,13 +190,13 @@
                             <%= "%g" % total_items %>
                         </td>
                         <td style="text-align: right">
-                            <%= sprintf("%.2f", gross_sales) %>
+                            <%= sprintf("%.2f",gross_sales) %>
                         </td>
                         <td style="text-align: right">
-                            <%= sprintf("%.2f", vat) %>
+                            <%= sprintf("%.2f",vat) %>
                         </td>
                         <td style="text-align: right">
-                            <%= sprintf("%.2f", net_sales) %>
+                            <%= sprintf("%.2f",net_sales) %>
                         </td>
                     </tr>
                 <% end %>
@@ -184,13 +213,13 @@
                     <%= sprintf("%.0f", total_item_count) %>
                 </td>
                 <td style="text-align: right; border-top: 2px solid;">
-                    <%= sprintf("%.2f", total_gross) %>
+                    <%= sprintf("%.2f",total_gross) %>
                 </td>
                 <td style="text-align: right; border-top: 2px solid;">
-                    <%= sprintf("%.2f", total_vat) %>
+                    <%= sprintf("%.2f",total_vat) %>
                 </td>
                 <td style="text-align: right; border-top: 2px solid">
-                    <%= sprintf("%.2f", total_net) %>
+                    <%= sprintf("%.2f",total_net) %>
                 </td>
             </tr>
             </tbody>
@@ -242,13 +271,13 @@
                             <%= "%g" % total_items %>
                         </td>
                         <td style="text-align: right">
-                            <%= sprintf("%.2f", gross_sales) %>
+                            <%= sprintf("%.2f",gross_sales) %>
                         </td>
                         <td style="text-align: right">
-                            <%= sprintf("%.2f", vat) %>
+                            <%= sprintf("%.2f",vat) %>
                         </td>
                         <td style="text-align: right">
-                            <%= sprintf("%.2f", net_sales) %>
+                            <%= sprintf("%.2f",net_sales) %>
                         </td>
                     </tr>
                 <% end %>
@@ -263,13 +292,13 @@
                     <%= sprintf("%.0f", total_item_count) %>
                 </td>
                 <td style="text-align: right; border-top: 2px solid;">
-                    <%= sprintf("%.2f", total_gross) %>
+                    <%= sprintf("%.2f",total_gross) %>
                 </td>
                 <td style="text-align: right; border-top: 2px solid;">
-                    <%= sprintf("%.2f", total_vat) %>
+                    <%= sprintf("%.2f",total_vat) %>
                 </td>
                 <td style="text-align: right; border-top: 2px solid">
-                    <%= sprintf("%.2f", total_net) %>
+                    <%= sprintf("%.2f",total_net) %>
                 </td>
             </tr>
             </tbody>
@@ -334,13 +363,13 @@
                         <%= sprintf("%.0f", total_items) %>
                     </td>
                     <td>
-                        <%= sprintf("%.2f", gross_sales) %>
+                        <%= sprintf("%.2f",gross_sales) %>
                     </td>
                     <td>
-                        <%= sprintf("%.2f", vat) %>
+                        <%= sprintf("%.2f",vat) %>
                     </td>
                     <td>
-                        <%= sprintf("%.2f", net_sales) %>
+                        <%= sprintf("%.2f",net_sales) %>
                     </td>
 
                 </tr>
@@ -355,13 +384,13 @@
                     <%= sprintf("%.0f", total_item_count) %>
                 </td>
                 <td style="text-align: right; border-top: 2px solid;">
-                    <%= sprintf("%.2f", total_gross) %>
+                    <%= sprintf("%.2f",total_gross) %>
                 </td>
                 <td style="text-align: right; border-top: 2px solid;">
-                    <%= sprintf("%.2f", total_vat) %>
+                    <%= sprintf("%.2f",total_vat) %>
                 </td>
                 <td style="text-align: right; border-top: 2px solid">
-                    <%= sprintf("%.2f", total_net) %>
+                    <%= sprintf("%.2f",total_net) %>
                 </td>
             </tr>
             </tbody>
