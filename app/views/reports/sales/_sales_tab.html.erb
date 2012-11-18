@@ -62,6 +62,7 @@
                 <% total_net += net_sales %>
                 <% total_item_count += total_items %>
                 <% if product %>
+                    <% category = product.category %>
                     <tbody>
                     <tr class="<%= cycle("even", "odd") %>">
                         <% if session[:search_type] != :by_category %>
@@ -73,17 +74,21 @@
 
                         <% end %>
                         <td style="text-align: left">
-                            <% if Category.find_by_id(product.category_id) %>
-                                <% if Category.find_by_id(product.category_id).name %>
-                                    <%= Category.find_by_id(product.category_id).name %>
+                            <% if category %>
+                                <% if category.name %>
+                                    <%= category.name %>
                                 <% end %>
                             <% end %>
                         </td>
                         <td>
-                            <% if product.category.parent_category
+                            <% if category
+                                 if category.parent_category
                                    @parent_category_name = product.category.parent_category.name
-                               else
+                                 else
                                    @parent_category_name = "None"
+                                 end
+                               else
+                                 @parent_category_name = "None"
                                end %>
                             <%= @parent_category_name %>
                         </td>
@@ -158,21 +163,26 @@
                 <% total_net += net_sales %>
                 <% total_item_count += total_items %>
                 <% if product %>
+                    <% category = product.category %>
                     <tbody>
                     <tr class="<%= cycle("even", "odd") %>">
 
                         <td style="text-align: left">
-                            <% if Category.find_by_id(product.category_id) %>
-                                <% if Category.find_by_id(product.category_id).name %>
-                                    <%= Category.find_by_id(product.category_id).name %>
+                            <% if category %>
+                                <% if category.name %>
+                                    <%= category.name %>
                                 <% end %>
                             <% end %>
                         </td>
                         <td style="text-align: left">
-                            <% if product.category.parent_category
+                            <% if category
+                                 if category.parent_category
                                    @parent_category_name = product.category.parent_category.name
-                               else
+                                 else
                                    @parent_category_name = "None"
+                                 end
+                               else
+                                 @parent_category_name = "None"
                                end %>
                             <%= @parent_category_name %>
                         </td>

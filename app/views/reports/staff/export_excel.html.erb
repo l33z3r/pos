@@ -1,263 +1,398 @@
 <% if session[:preselect] != -1 %>
-    <% unless params[:action] == "staff_print" %>
+    <% unless params[:action] == "sales_print" %>
 
     <% end %>
 
 
-    <div id="staff_items" >
-        <% if params[:action] == "staff_print" %>
-            <h3>Staffs Report <%= Time.now.strftime("%B %d, %Y") %></h3>
-        <% end %>
 
-        <% if (@s_type == :day) || (@s_type == :month) || (@s_type == :week) || (@s_type == :year) %>
+    <div id="sales_items">
+    <% if params[:action] == "sales_print" %>
+        <h3>Sales Report <%= Time.now.strftime("%B %d, %Y") %></h3>
+    <% end %>
 
-            <table id="report_table" class="admin_table" style="width: 100%">
-                <thead>
+    <% if (@s_type == :best_seller) || (@s_type == :worst_seller) || (@s_type == :by_product) || (@s_type == :by_category) %>
 
-                <th class="header">Date</th>
-                <th class="header">Total Hours</th>
-                <th class="header">Breaks</th>
-                <th class="header">Hours Payable</th>
-                <th class="header">Rate</th>
-                <th class="header">Cost</th>
-                </thead>
-                <% total_items = 0 %>
-                <% @orders.each do |week| %>
+        <table id="report_table" class="admin_table" style="width: 100%;">
+            <thead>
+            <% if session[:search_type] != :by_category %>
+                <th class="header">Product</th>
+            <% end %>
+            <th class="header">Category</th>
+            <th class="header">Department</th>
+            <th class="header">Items Qty</th>
+            <th class="header">Gross Sales</th>
+            <th class="header">VAT</th>
+            <th class="header">Net Sales</th>
+            </thead>
+            <% total_gross = 0 %>
+            <% total_vat = 0 %>
+            <% total_net = 0 %>
+            <% total_item_count = 0 %>
+            <% @orders.each do |week| %>
+                <% product = Product.find_by_id(week.product_id) %>
+                <% total_items = week.quantity %>
+                <% gross_sales = 0 %>
+                <% gross_sales = week.total_price %>
+                <% vat = 0 %>
+                <% tax_rate = week.tax_rate %>
+                <% vat = vat_rate(tax_rate, gross_sales) %>
+                <% net_sales = net_result(gross_sales, vat) %>
 
-                    <% @work_data = week[:report_data] %>
+                <% total_gross += gross_sales %>
+                <% total_vat += vat %>
+                <% total_net += net_sales %>
+                <% total_item_count += total_items %>
+                <% if product %>
+                    <% category = product.category %>
+                    <tbody>
+                    <tr class="<%= cycle("even", "odd") %>">
+                        <% if session[:search_type] != :by_category %>
+                            <td style="text-align: left">
+                                <% if nil != product.name %>
+                                    <%= product.name %>
+                                <% end %>
+                            </td>
+
+                        <% end %>
+                        <td style="text-align: left">
+                            <% if category %>
+                                <% if category.name %>
+                                    <%= category.name %>
+                                <% end %>
+                            <% end %>
+                        </td>
+                        <td>
+                            <% if category
+                                 if category.parent_category
+                                   @parent_category_name = product.category.parent_category.name
+                                 else
+                                   @parent_category_name = "None"
+                                 end
+                               else
+                                 @parent_category_name = "None"
+                               end %>
+                            <%= @parent_category_name %>
+                        </td>
+                        <td style="text-align: right">
+                            <%= "%g" % total_items %>
+                        </td>
+                        <td style="text-align: right">
+                            <%= sprintf("%.0f", gross_sales) %>
+                        </td>
+                        <td style="text-align: right">
+                            <%= sprintf("%.0f", vat) %>
+                        </td>
+                        <td style="text-align: right">
+                            <%= sprintf("%.0f", net_sales) %>
+                        </td>
+                    </tr>
+                <% end %>
+            <% end %>
+            <tr>
+                <td style="text-align: left; border-top: 2px solid">
+                    <b>Total:</b>
+                </td>
+                <% if session[:search_type] != :by_category %>
+                    <td style="text-align: right; border-top: 2px solid">
+                    </td>
+                <% end %>
+                <td style="text-align: right; border-top: 2px solid; ">
+                </td>
+                <td style="text-align: right; border-top: 2px solid; ">
+                    <%= sprintf("%.0f", total_item_count) %>
+                </td>
+                <td style="text-align: right; border-top: 2px solid;">
+                    <%= sprintf("%.0f", total_gross) %>
+                </td>
+                <td style="text-align: right; border-top: 2px solid;">
+                    <%= sprintf("%.0f", total_vat) %>
+                </td>
+                <td style="text-align: right; border-top: 2px solid">
+                    <%= sprintf("%.0f", total_net) %>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    <% elsif session[:search_type] == :full_report %>
+        <table id="report_table" class="admin_table" style="width: 100%;">
+            <thead>
+
+            <th class="header">Category</th>
+            <th class="header">Department</th>
+            <th class="header">Items Qty</th>
+            <th class="header">Gross Sales</th>
+            <th class="header">VAT</th>
+            <th class="header">Net Sales</th>
+            </thead>
+            <% total_gross = 0 %>
+            <% total_vat = 0 %>
+            <% total_net = 0 %>
+            <% total_item_count = 0 %>
+            <% @categories.each do |week| %>
+                <% product = Product.find_by_id(week.product_id) %>
+                <% total_items = week.quantity %>
+                <% gross_sales = 0 %>
+                <% gross_sales = week.total_price %>
+                <% vat = 0 %>
+                <% tax_rate = week.tax_rate %>
+                <% vat = vat_rate(tax_rate, gross_sales) %>
+                <% net_sales = net_result(gross_sales, vat) %>
+
+                <% total_gross += gross_sales %>
+                <% total_vat += vat %>
+                <% total_net += net_sales %>
+                <% total_item_count += total_items %>
+                <% if product %>
+                    <% category = product.category %>
+                    <tbody>
+                    <tr class="<%= cycle("even", "odd") %>">
+
+                        <td style="text-align: left">
+                            <% if category %>
+                                <% if category.name %>
+                                    <%= category.name %>
+                                <% end %>
+                            <% end %>
+                        </td>
+                        <td style="text-align: left">
+                            <% if category
+                                 if category.parent_category
+                                   @parent_category_name = product.category.parent_category.name
+                                 else
+                                   @parent_category_name = "None"
+                                 end
+                               else
+                                 @parent_category_name = "None"
+                               end %>
+                            <%= @parent_category_name %>
+                        </td>
+                        <td style="text-align: right">
+                            <%= "%g" % total_items %>
+                        </td>
+                        <td style="text-align: right">
+                            <%= sprintf("%.0f", gross_sales) %>
+                        </td>
+                        <td style="text-align: right">
+                            <%= sprintf("%.0f", vat) %>
+                        </td>
+                        <td style="text-align: right">
+                            <%= sprintf("%.0f", net_sales) %>
+                        </td>
+                    </tr>
+                <% end %>
+            <% end %>
+            <tr>
+                <td style="text-align: left; border-top: 2px solid">
+                    <b>Total:</b>
+                </td>
+                <td style="text-align: right; border-top: 2px solid">
+
+                </td>
+
+                <td style="text-align: right; border-top: 2px solid; ">
+                    <%= sprintf("%.0f", total_item_count) %>
+                </td>
+                <td style="text-align: right; border-top: 2px solid;">
+                    <%= sprintf("%.0f", total_gross) %>
+                </td>
+                <td style="text-align: right; border-top: 2px solid;">
+                    <%= sprintf("%.0f", total_vat) %>
+                </td>
+                <td style="text-align: right; border-top: 2px solid">
+                    <%= sprintf("%.0f", total_net) %>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table id="report_table" class="admin_table" style="width: 100%;">
+            <thead>
+            <th class="header">Product</th>
+            <th class="header">Category</th>
+            <th class="header">Items Qty</th>
+            <th class="header">Gross Sales</th>
+            <th class="header">VAT</th>
+            <th class="header">Net Sales</th>
+            </thead>
+            <% total_gross = 0 %>
+            <% total_vat = 0 %>
+            <% total_net = 0 %>
+            <% total_item_count = 0 %>
+            <% @orders.each do |week| %>
+                <% product = Product.find_by_id(week.product_id) %>
+                <% total_items = week.quantity %>
+                <% gross_sales = 0 %>
+                <% gross_sales = week.total_price %>
+                <% vat = 0 %>
+                <% tax_rate = week.tax_rate %>
+                <% vat = vat_rate(tax_rate, gross_sales) %>
+                <% net_sales = net_result(gross_sales, vat) %>
+
+                <% total_gross += gross_sales %>
+                <% total_vat += vat %>
+                <% total_net += net_sales %>
+                <% total_item_count += total_items %>
+                <% if product %>
                     <tbody>
                     <tr class="<%= cycle("even", "odd") %>">
                         <td style="text-align: left">
-                         <% if @s_type == :day %>
-                                <%= week.created_at.strftime("%B %d, %Y") %>
-                            <% end %>
-                            <% if @s_type == :week %>
-                                Week starting <%= week.created_at.beginning_of_week.strftime("%B %d, %Y") %>
-                            <% end %>
-                            <% if @s_type == :month %>
-                                <%= week.created_at.strftime("%B, %Y") %>
-                            <% end %>
-                            <% if @s_type == :year %>
-                                <%= week.created_at.strftime("%Y") %>
+                            <% if nil != product.name %>
+                                <%= product.name %>
                             <% end %>
                         </td>
-                        <td>
-                           <%= hours_mins_for_seconds week.shift_seconds %>
+                        <td style="text-align: left">
+                            <% if Category.find_by_id(product.category_id) %>
+                                <% if Category.find_by_id(product.category_id).name %>
+                                    <%= Category.find_by_id(product.category_id).name %>
+                                <% end %>
+                            <% end %>
                         </td>
-                        <td>
-                           <%= hours_mins_for_seconds week.break_seconds %>
+
+                        <td style="text-align: right">
+                            <%= "%g" % total_items %>
                         </td>
-                        <td>
-                            <%= hours_mins_for_seconds week.payable_seconds %>
+                        <td style="text-align: right">
+                            <%= sprintf("%.0f", gross_sales) %>
                         </td>
-                        <td>
-                            <%= sprintf("%.2f",week.hourly_rate) %>
+                        <td style="text-align: right">
+                            <%= sprintf("%.0f", vat) %>
                         </td>
-                        <td>
-                            <%= sprintf("%.2f",week.cost) %>
+                        <td style="text-align: right">
+                            <%= sprintf("%.0f", net_sales) %>
                         </td>
                     </tr>
                 <% end %>
-                </tbody>
-            </table>
+            <% end %>
+            <tr>
+                <td style="text-align: left; border-top: 2px solid">
+                    <b>Total:</b>
+                </td>
+                <td style="text-align: right; border-top: 2px solid">
+                </td>
+                <td style="text-align: right; border-top: 2px solid; ">
+                    <%= sprintf("%.0f", total_item_count) %>
+                </td>
+                <td style="text-align: right; border-top: 2px solid;">
+                    <%= sprintf("%.0f", total_gross) %>
+                </td>
+                <td style="text-align: right; border-top: 2px solid;">
+                    <%= sprintf("%.0f", total_vat) %>
+                </td>
+                <td style="text-align: right; border-top: 2px solid">
+                    <%= sprintf("%.0f", total_net) %>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    <% else %>
 
-        <% else %>
+        <table id="report_table" class="admin_table" style="width: 100%">
+            <thead>
+            <th class="header">Date</th>
+            <th class="header">Day</th>
+            <th class="header">Items Qty</th>
+            <th class="header">Gross Sales</th>
+            <th class="header">VAT</th>
+            <th class="header">NET Sales</th>
+            </thead>
+            <% total_gross = 0 %>
+            <% total_vat = 0 %>
+            <% total_net = 0 %>
+            <% total_item_count = 0 %>
+            <% total_items = 0 %>
+            <% @orders.each do |week| %>
 
-            <script type="text/javascript">
-                $(function () {
-                    $('.pagination a').click(function () {
-                        $("#report_staff_results").html("Loading...");
-                        $.get(this.href, null, null, 'script');
-                        return false;
-                    });
-                });
-            </script>
-            <table id="report_table" class="admin_table" style="width: 100%">
-                <thead>
-                <th class="header">Name</th>
-                <th class="header">ID</th>
-                <th class="header">Start</th>
-                <th class="header">Finish</th>
-                <th class="header">Total Hours</th>
-                <th class="header">Breaks</th>
-                <th class="header">Hours Payable</th>
-                <th class="header">Rate</th>
-                <th class="header">Cost</th>
-                </thead>
-                <% total_cost = 0 %>
-                <% total_hours_payable = 0 %>
-                <% total_hours = 0 %>
-                <% last_id = -1 %>
-                <% last_name = "" %>
-                <% employee_count = 0 %>
+                <% gross_sales = 0 %>
+                <% net_sales = 0 %>
+                <% vat = 0 %>
+                <% new_tax_rate = 0 %>
+                <% total_items = week.quantity %>
+                <% gross_sales = week.total_price %>
+                <% vat = week.tax_rate %>
+                <% net_sales = net_result(gross_sales, vat) %>
 
-                <% total_cost_per_emp = 0 %>
-                <% total_hours_payable_per_emp = 0 %>
-                <% total_hours_per_emp = 0 %>
+                <% total_gross += gross_sales %>
+                <% total_vat += vat %>
+                <% total_net += net_sales %>
+                <% total_item_count += total_items %>
+                <tbody>
+                <tr class="<%= cycle("even", "odd") %>">
+                    <td style="text-align: left">
+                        <% if @s_type == :day %>
+                            <%= week.created_at.strftime("%B %d, %Y") %>
+                        <% end %>
+                        <% if @s_type == :week %>
+                            Week starting <%= week.created_at.beginning_of_week.strftime("%B %d, %Y") %>
+                        <% end %>
+                        <% if @s_type == :month %>
+                            <%= week.created_at.strftime("%B, %Y") %>
+                        <% end %>
+                        <% if @s_type == :year %>
+                            <%= week.created_at.strftime("%Y") %>
+                        <% end %>
+                    </td>
 
+                    <td style="text-align: left">
+                        <% if @s_type == :day %>
+                            <%= DAYS_OF_THE_WEEK[week.created_at.wday.to_i] %>
+                        <% end %>
+                        <% if @s_type == :week %>
+                            Monday
+                        <% end %>
+                    </td>
+                    <td>
+                        <%= sprintf("%.0f", total_items) %>
+                    </td>
+                    <td>
+                        <%= sprintf("%.0f", gross_sales) %>
+                    </td>
+                    <td>
+                        <%= sprintf("%.0f", vat) %>
+                    </td>
+                    <td>
+                        <%= sprintf("%.0f", net_sales) %>
+                    </td>
 
-                <% @orders.each_with_index do |week, i| %>
-
-                    <% @employee = Employee.find_by_id(week.employee_id) %>
-
-
-
-                    <% total_cost += week.cost %>
-                    <% total_hours_payable += week.payable_seconds %>
-                    <% total_hours += week.shift_seconds %>
-                    <tbody>
-
-                    <% if (week.employee_id != last_id && i != 0 && session[:employee] == '') %>
-                    <tr class="<%= cycle("even", "odd") %>">
-                    <td style="text-align: left;">
-                        <b>Total for <%= last_name %>:</b>
-                    </td>
-                      <td style="text-align: right; ">
-                    </td>
-                      <td style="text-align: right; ">
-                    </td>
-                      <td style="text-align: right; ">
-                    </td>
-                    <td style="text-align: right;">
-                       <b><%= hours_mins_for_seconds total_hours_per_emp %></b>
-                    </td>
-                    <td style="text-align: right; ">
-                    </td>
-                    <td style="text-align: right; ">
-                        <b><%= hours_mins_for_seconds total_hours_payable_per_emp %></b>
-                    </td>
-                    <td style="text-align: right; ">
-                    </td>
-                    <td style="text-align: right; ">
-                        <b><%= sprintf("%.2f",total_cost_per_emp) %></b>
-                    </td>
-                    </tr>
-                    <% total_cost_per_emp = 0 %>
-                    <% total_hours_payable_per_emp = 0 %>
-                    <% total_hours_per_emp = 0 %>
-                     <% end %>
-                     <% if week.employee_id != last_id  %>
-                    <tr><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
-                    <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td></tr>
-                    <% end %>
-                     <% if week.employee_id != last_id %>
-                     <% employee_count = 0 %>
-                     <% employee_count += 1 %>
-                     <% total_cost_per_emp = 0 %>
-                     <% total_hours_payable_per_emp = 0 %>
-                    <% total_hours_per_emp = 0 %>
-                     <% else %>
-                     <% employee_count += 1 %>
-                     <% end %>
-                     <% last_id = week.employee_id %>
-                     <% last_name = @employee.name[0..16] %>
-
-                     <% total_cost_per_emp += week.cost %>
-                     <% total_hours_payable_per_emp += week.payable_seconds %>
-                     <% total_hours_per_emp += week.shift_seconds %>
-
-                     <tr class="<%= cycle("even", "odd") %>">
-                        <td style="text-align: left; max-width: 110px">
-                          <%= @employee.name[0..16] %>
-                        </td>
-                        <td >
-                           <%= @employee.staff_id %>
-                        </td>
-                        <td>
-                           <%= week.clockin_time.strftime(@reportDateFormat) %>
-                        </td>
-                        <td>
-                            <%= week.clockout_time.strftime(@reportDateFormat) %>
-                        </td>
-                        <td>
-                             <%= hours_mins_for_seconds week.shift_seconds %>
-                        </td>
-                        <td>
-                           <%= hours_mins_for_seconds week.break_seconds %>
-                        </td>
-                        <td>
-                            <%= hours_mins_for_seconds week.payable_seconds %>
-                        </td>
-                        <td>
-                            <%= sprintf("%.2f",week.hourly_rate) %>
-                        </td>
-                        <td>
-                            <%= sprintf("%.2f",week.cost) %>
-                        </td>
-                    </tr>
-                    <% if week == @orders.last  %>
-                    <tr><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
-                    <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td><td style="height:0px; padding: 0px; border-top: solid #000 1px"></td></tr>
-                    <% end %>
-                <% end %>
-                    <% if (session[:employee] == '') %>
-                    <tr class="<%= cycle("even", "odd") %>">
-                    <td style="text-align: left;">
-                        <b>Total for <%= last_name %>:</b>
-                    </td>
-                      <td style="text-align: right;">
-                    </td>
-                      <td style="text-align: right;">
-                    </td>
-                      <td style="text-align: right;">
-                    </td>
-                    <td style="text-align: right;">
-                       <b><%= hours_mins_for_seconds total_hours_per_emp %></b>
-                    </td>
-                    <td style="text-align: right; ">
-                    </td>
-                    <td style="text-align: right; ">
-                        <b><%= hours_mins_for_seconds total_hours_payable_per_emp %></b>
-                    </td>
-                    <td style="text-align: right; ">
-                    </td>
-                    <td style="text-align: right; ">
-                        <b><%= sprintf("%.2f",total_cost_per_emp) %></b>
-                    </td>
-                    </tr>
-
-                     <% end %>
-
-                  <tr>
-                    <td style="text-align: left; border-top: 2px solid">
-                        <b>Total:</b>
-                    </td>
-                      <td style="text-align: right; border-top: 2px solid;">
-                    </td>
-                      <td style="text-align: right; border-top: 2px solid;">
-                    </td>
-                      <td style="text-align: right; border-top: 2px solid;">
-                    </td>
-                    <td style="text-align: right; border-top: 2px solid">
-                        <%= hours_mins_for_seconds total_hours %>
-                    </td>
-                    <td style="text-align: right; border-top: 2px solid; ">
-                    </td>
-                    <td style="text-align: right; border-top: 2px solid;">
-                        <%= hours_mins_for_seconds total_hours_payable %>
-                    </td>
-                    <td style="text-align: right; border-top: 2px solid;">
-                    </td>
-                    <td style="text-align: right; border-top: 2px solid">
-                        <%= sprintf("%.2f",total_cost) %>
-                    </td>
                 </tr>
-                </tbody>
-            </table>
-            </div>
+            <% end %>
+            <tr>
+                <td style="text-align: left; border-top: 2px solid">
+                    <b>Total:</b>
+                </td>
+                <td style="text-align: right; border-top: 2px solid">
+                </td>
+                <td style="text-align: right; border-top: 2px solid; ">
+                    <%= sprintf("%.0f", total_item_count) %>
+                </td>
+                <td style="text-align: right; border-top: 2px solid;">
+                    <%= sprintf("%.0f", total_gross) %>
+                </td>
+                <td style="text-align: right; border-top: 2px solid;">
+                    <%= sprintf("%.0f", total_vat) %>
+                </td>
+                <td style="text-align: right; border-top: 2px solid">
+                    <%= sprintf("%.0f", total_net) %>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
 
-        <% end %>
+    <% end %>
 <% else %>
     <div id="saved_items">
-        <div id="saved_items_container" style="margin-left: 200px;">
-            <div onclick="setStaffSelect(0)" class="saved_report_button">
-                <div class="b_text" style="margin-top: 19px"><b>Times By Employee This Week</b></div>
+        <div id="saved_items_container">
+            <div onclick="setSearchSelect(0)" class="saved_report_button">
+                <div class="b_text"><b>Sales by Day This Week</b></div>
             </div>
-            <div onclick="setStaffSelect(1)" class="saved_report_button">
-                <div class="b_text" style="margin-top: 19px"><b>Times By Employee From Last Week</b></div>
+            <div onclick="setSearchSelect(1)" class="saved_report_button">
+                <div class="b_text"><b>This Months Best Sales</b></div>
             </div>
-            <div onclick="setStaffSelect(2)" class="saved_report_button">
-                <div class="b_text"><b>Times By Employee This Year</b></div>
+            <div onclick="setSearchSelect(2)" class="saved_report_button">
+                <div class="b_text"><b>Sales by Month This Year</b></div>
+            </div>
+            <div onclick="setSearchSelect(3)" class="saved_report_button">
+                <div class="b_text"><b>Sales by Product This Week</b></div>
             </div>
         </div>
     </div>
@@ -265,4 +400,3 @@
 <script type="text/javascript">
     $('#refine_button').removeClass("selected");
 </script>
-
