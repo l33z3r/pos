@@ -1,5 +1,5 @@
 <% content_for :head do %>
-  <%= javascript_include_tag "admin_js/menu-builder" %>
+  <%= javascript_include_tag "admin_js/display_builder" %>
   <%= stylesheet_link_tag "admin/menu_builder" %>
 
   <script type="text/javascript">
@@ -45,7 +45,7 @@
       <ul id="products_tree">
         <li>
           <ul>
-            <% Category.all.each do |category| %>
+            <% current_outlet.categories.all.each do |category| %>
               <li>
                 <a href="#" class="select_category" id="select_category_<%=category.id%>"><%= category.name %></a>
                 <ul>
@@ -69,7 +69,7 @@
             <li>
               <a href="#" class="select_category" id="select_category_0">No Category</a>
               <ul>
-                <% Product.categoryless.each do |product| %>
+                <% Product.categoryless(current_outlet).each do |product| %>
                   <li>
                     <div class="image_container">
                       <div class="select_product" id="select_product_<%=product.id%>">

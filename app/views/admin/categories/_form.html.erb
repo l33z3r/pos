@@ -22,7 +22,7 @@
     </div>
     <div class="field">
       <%= f.label :parent_category_id %> (Optional)<br />
-      <%= f.collection_select :parent_category_id, Category.find(:all), :id, :name, 
+      <%= f.collection_select :parent_category_id, current_outlet.categories.find(:all), :id, :name, 
         :prompt => "Select a Category", :include_blank => "None" %>
     </div>
     <div class="field">
@@ -32,10 +32,10 @@
 
       <input id="select_printers_button" type="button" value="Select" onclick="showSelectPrintersDialog()"/>
 
-      <% all_terminals.each do |terminal_name| %>
-        <input type="checkbox" id="choose_printer_checkbox_<%= id_safe terminal_name %>"
-               name="category[selected_printers][]" value="<%= id_safe terminal_name %>" 
-               style="display: none;" <%= @category.printing_to_terminal?(id_safe(terminal_name)) ? "checked" : "" %>/>
+      <% all_printers.each do |printer| %>
+        <input type="checkbox" id="choose_printer_checkbox_<%= id_safe printer.id.to_s %>"
+               name="category[selected_printers][]" value="<%= id_safe printer.id.to_s %>" 
+               style="display: none;" <%= @category.printing_to_terminal?(id_safe(printer.id.to_s)) ? "checked" : "" %>/>
              <% end %>
 
       <!-- the following input is to make sure that we send the category[selected_printers] param when no printers are selected -->
@@ -49,11 +49,11 @@
           <div class="header">Select Printers</div>
 
           <div class="terminal_switches">
-            <% all_terminals.each do |terminal_name| %>
+            <% all_printers.each do |printer| %>
               <div class="terminal_switch">
-                <input type="checkbox" data-terminal_name="<%= id_safe terminal_name%>"
+                <input type="checkbox" data-terminal_name="<%= id_safe printer.id.to_s %>"
                        onchange="printerSwitchToggle(this)"/>
-                <div class="label"><%=terminal_name%></div>
+                <div class="label"><%=printer.label%></div>
               </div>
               <div class="clear_top_margin_5">&nbsp;</div>
             <% end %>
@@ -65,10 +65,49 @@
       <div class="clear">&nbsp;</div>
     </div>
     <div class="field">
+      <label for="category[selected_blocked_printers][]">Blocked Terminals</label>
+
+      <div class="clear">&nbsp;</div>
+
+      <input id="select_blocked_printers_button" type="button" value="Select" onclick="showSelectBlockedPrintersDialog()"/>
+
+      <% all_terminals.each do |terminal_name| %>
+        <input type="checkbox" id="choose_blocked_printer_checkbox_<%= id_safe terminal_name %>"
+               name="category[blocked_printers][]" value="<%= id_safe terminal_name %>" 
+               style="display: none;" <%= @category.blocked_printing_to_terminal?(id_safe(terminal_name)) ? "checked" : "" %>/>
+             <% end %>
+
+      <!-- the following input is to make sure that we send the category[blocked_selected_printers] param when no printers are selected -->
+      <input type="checkbox" id="choose_blocked_printer_checkbox_blank"
+             name="category[blocked_printers][]" value="" 
+             style="display: none;" checked/>
+
+      <div id="select_blocked_printers_markup" style="display: none;">
+        <div class="select_blocked_printers_dialog">
+
+          <div class="header">Select Blocked Terminals</div>
+
+          <div class="terminal_switches">
+            <% all_terminals.each do |terminal_name| %>
+              <div class="terminal_switch">
+                <input type="checkbox" data-terminal_name="<%= id_safe terminal_name%>"
+                       onchange="blockedPrinterSwitchToggle(this)"/>
+                <div class="label"><%=terminal_name%></div>
+              </div>
+              <div class="clear_top_margin_5">&nbsp;</div>
+            <% end %>
+          </div>
+
+          <div class="button ok_button" onclick="hideSelectBlockedPrintersDialog()">Done</div>
+        </div>
+      </div>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
       <label for="category[selected_kitchen_screens][]">Screens</label>
 
       <div class="clear">&nbsp;</div>
-      
+
       <input id="select_kitchen_screens_button" type="button" value="Select" onclick="showSelectKitchenScreensDialog()"/>
 
       <% all_terminals.each do |terminal_name| %>
@@ -105,8 +144,13 @@
     </div>
     <div class="field">
       <%= f.label :modifier_grid_id %><br/>
-      <%= f.collection_select :order_item_addition_grid_id, OrderItemAdditionGrid.find(:all), :id, :name, 
+      <%= f.collection_select :order_item_addition_grid_id, current_outlet.order_item_addition_grids.find(:all), :id, :name, 
         :prompt => "Select a Modifier Grid", :include_blank => "None" %>
+      <div class="clear">&nbsp;</div>
+    </div>
+    <div class="field">
+      <%= f.label :prompt_for_covers %><br/>
+      <%= f.check_box :prompt_for_covers %>
       <div class="clear">&nbsp;</div>
     </div>
     <div class="field">
@@ -120,12 +164,12 @@
     </div>
     <div class="field">
       <%= f.label :tax_rate_id %><br />
-      <%= f.collection_select :tax_rate_id, TaxRate.find(:all), :id, :name_for_select, 
+      <%= f.collection_select :tax_rate_id, current_outlet.tax_rates.find(:all), :id, :name_for_select, 
         :prompt => "Select a #{@tax_label} Rate", :include_blank => "Default" %>
     </div>
     <div class="field">
       <%= f.label :course_num, "Course" %><br />
-      <%= f.select :course_num, options_for_select(GlobalSetting.course_options, @category.course_num) %>
+      <%= f.select :course_num, options_for_select(GlobalSetting.course_options(current_outlet), @category.course_num) %>
     </div>
     <div id="actions">
       <%= f.submit %>

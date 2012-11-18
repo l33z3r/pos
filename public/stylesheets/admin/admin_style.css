@@ -622,6 +622,48 @@ div.select_printers_dialog div.ok_button {
     float: right;
 }
 
+div.select_blocked_printers_dialog {
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    width: 250px;
+}
+
+div.select_blocked_printers_dialog div.header {
+    font-size: 16px;
+    color: #000;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+div.select_blocked_printers_dialog div.terminal_switches {
+
+}
+
+div.select_blocked_printers_dialog div.terminal_switches div.terminal_switch div.label {
+    float: left;
+    margin-left: 10px;
+    margin-top: 4px;
+    font-size: 14px;
+    color: #000;
+    width: 100px;
+}
+
+div.select_blocked_printers_dialog div.terminal_switches div.terminal_switch {
+    margin-bottom: 5px;
+}
+
+div.select_blocked_printers_dialog div.ok_button {
+    height: 30px;
+    display: block;
+    padding-top: 15px;
+    color: #000;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 5px 0px;
+    float: right;
+}
+
 div.select_kitchen_screens_dialog {
     padding: 10px;
     max-height: 300px;
@@ -974,7 +1016,7 @@ div#edit_modifier_category section#form_container form div#actions input {
 /* Admin Categories Page */
 
 div#admin_category_list section#categories {
-    width: 640px;
+    width: 820px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -1058,6 +1100,10 @@ div#edit_category section#form_container form div#actions input {
 }
 
 div#edit_category section#form_container input#select_printers_button {
+    width: 220px;
+}
+
+div#edit_category section#form_container input#select_blocked_printers_button {
     width: 220px;
 }
 
@@ -1692,12 +1738,12 @@ div#edit_theme_settings section#theme_settings div#global_font_color_container i
 /* Previous Cash Totals */
 
 /* previous cash totals table */
-div#cash_reports_screen div#search_previous_cash_totals_container{
+div#cash_reports_screen div#search_previous_cash_totals_container {
     width: 645px;
     float: left;
 }
 
-div#cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog{
+div#cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog {
     width: auto;
 }
 
@@ -1763,6 +1809,10 @@ div#cash_reports_screen div#search_previous_cash_totals_container div#search_pop
 div#cash_reports_screen div#search_previous_cash_totals_container div#search_popout.popout_dialog div.clear_top_margin_10 {
     height: 5px;
     clear: both;
+}
+
+div#cash_reports_screen div#search_previous_cash_totals_container table#cash_total_list {
+    min-width: 640px;
 }
 
 div#cash_reports_screen div#search_previous_cash_totals_container div#results_table {
@@ -1949,7 +1999,21 @@ div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll 
     width: 30px;
 }
 
-/* Previous Cash Totals */
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.cash_out_data_table_description_header {
+    font-weight: bold;
+    width: 180px;
+    float: left;
+    text-align: left;
+}
+
+div#cash_reports_screen div#reports_center_receipt div#reports_center_till_roll div#cash_totals_data_table div.cash_out_data_table_amount_header {
+    font-weight: bold;
+    float: left;
+    text-align: right;
+    width: 120px;
+}
+
+/* End Previous Cash Totals */
 
 /* OIAGs */
 
@@ -1961,6 +2025,121 @@ div#new_order_item_addition_grid div#fields {
 /* End OIAGs */
 
 /* Customers */
+
+div#admin_customer_list section#customers {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#admin_customer_list section#customers {
+    height: 560px;
+}
+
+div#admin_customer_list section#customers div#customers_container {
+    height: 500px;
+    overflow-y: auto;
+}
+
+div#admin_customer_list section#customers div#customers_container div.make_payment_button {
+    height: 500px;
+    overflow-y: auto;
+}
+
+div#admin_customer_list div#search_fields_container {
+    width: 940px;
+    margin: auto;
+}
+
+div#admin_customer_list div#search_fields_container div.left_col,
+div#admin_customer_list div#search_fields_container div.center_col,
+div#admin_customer_list div#search_fields_container div.right_col{
+    float: left;
+    margin: 0px 5px;
+}
+
+div#admin_customer_list div#search_fields_container div.left_col div.field,
+div#admin_customer_list div#search_fields_container div.center_col div.field,
+div#admin_customer_list div#search_fields_container div.right_col div.field {
+    height: 30px;
+}
+
+div#admin_customer_list div#search_fields_container div.right_col div.field input {
+    float: left;
+}
+
+div#admin_customer_list div#search_fields_container div.right_col div.field input[type="checkbox"] {
+    margin-top: -2px;
+}
+
+div#admin_customer_list div#search_fields_container div.button_col{
+    float: right;
+    margin-left: 10px;
+}
+
+div#admin_customer_list div#search_fields_container div.button_col div.button{
+    float: right;
+    padding-top: 2px;
+    height: 56px;
+    width: 150px;
+}
+
+div#admin_customer_list div#search_fields_container div.left_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 140px;
+}
+
+div#admin_customer_list div#search_fields_container div.center_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 140px;
+}
+
+div#admin_customer_list div#search_fields_container div.center_col div.field select {
+    float: left;
+    width: 130px;
+}
+
+div#admin_customer_list div#search_fields_container div.right_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-right: 10px;
+    width: auto;
+}
+div#admin_customer_list div#search_fields_container div.right_col div.field div#deleted {
+    float: right;
+}
+
+div#admin_customer_list div.left_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 110px;
+}
+
+div#admin_customer_list div.center_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 110px;
+}
+
+div#admin_customer_list div.right_col div.field div.label {
+    float: left;
+    text-align: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 120px;
+}
 
 div#customer_builder div.action_buttons {
     border-spacing: 7px;
@@ -2110,6 +2289,28 @@ div#customer_builder div#builder_fields_container div.extra_options div.tab_cont
 
 div#customer_builder div#builder_fields_container div.extra_options div#options_tab_content div.field {
     height: 30px;
+}
+
+div#customer_builder div#builder_fields_container div.extra_options div#loyalty_tab_content div.left_col {
+    float: left;
+    width: 450px;    
+}
+
+div#customer_builder div#builder_fields_container div.extra_options div#loyalty_tab_content div.left_col input {
+    width: 110px;
+}
+
+div#customer_builder div#builder_fields_container div.extra_options div#loyalty_tab_content div.right_col {
+    float: left;
+    width: 110px;
+}
+
+div#customer_builder div#builder_fields_container div.extra_options div#loyalty_tab_content div.left_col div#enable_edit_loyalty_points_button {
+    height: 20px;
+    padding-top: 5px;
+    margin-top: -2px;
+    margin-left: 5px;
+    float: left;
 }
 
 /* End Customers */

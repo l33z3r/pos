@@ -9,11 +9,28 @@ var display_button_passcode_permissions;
 
 var loyaltyCardCode = "";
 
+var generatedBrowserSessionId = null;
+var browserSessionIdStorageKey = "browser_session_id";
+
+var clueyPluginInitialized = false;
+
 $(function() {
     doGlobalInit();
 });
 
 function doGlobalInit() {
+    //make sure we have all compatible plugins etc
+    if(!inMobileContext()) { 
+        if(checkForFirefox()) {   
+            if(checkForClueyPlugin()) {
+                if(checkForJSPrintSetupPlugin()) {
+                    checkForUninstalledPrinters();
+                }
+            }
+        }
+    }
+    
+    initUsers();
 
     //whenever a link is clicked, we show a loading div
     $('a:not(.no_loading_div)').live("click", function() {
@@ -34,7 +51,7 @@ function doGlobalInit() {
         if (showPrintFrame) {
             $('#wrapper').height(1770);
             $('#body').height(1770);
-            $('#printFrame').width(300).height(800);
+            $('#printFrame').width(600).height(1800);
             $('#printFrame').css("overflow", "scroll");
         }
 
@@ -48,6 +65,7 @@ function doGlobalInit() {
     setFingerPrintCookie();
 
     if (isTouchDevice()) {
+
         //init touch if were not in mobile as that uses jqt
         if (!inMobileContext()) {
             initTouch();
@@ -55,12 +73,12 @@ function doGlobalInit() {
 
         initTouchRecpts();
 
-        $('div.item, div.page, div.button, div.employee_box, div.key, div.go_key, div.cancel_key, div.util_keypadkey, div.tab, div.grid_item, div.room_object').live('click', function() {
+        $('div.item, div.page, div.button, div.small_button, div.employee_box, div.key, div.go_key, div.cancel_key, div.util_keypadkey, div.tab, div.grid_item, div.room_object').live('click', function() {
             eval($(this).data('onpress'));
         });
     } else {
         //copy over the onclick events to the onmousedown events for a better interface
-        $('div.item, div.page, div.button, div.employee_box, div.key, div.go_key, div.cancel_key, div.util_keypadkey, div.tab, div.grid_item, div.room_object').live('mousedown', function() {
+        $('div.item, div.page, div.button, div.small_button, div.employee_box, div.key, div.go_key, div.cancel_key, div.util_keypadkey, div.tab, div.grid_item, div.room_object').live('mousedown', function() {
             eval($(this).data('onpress'));
         });
     }
@@ -74,32 +92,16 @@ function doGlobalInit() {
 
     if (inMenuContext()) {
         initMenu();
-
-        $(window).keySequenceDetector('u"', function() {
-            if ($('#admin_content_screen').is(":visible")) {
-//                setStatusMessage("Logging out... Please wait.");
-//                doLogout();
-//                window.location = "/home"
-                return;
-            } else {
-                doLogout();
-            }
-
-        });
+        
+        initDallasKeyListeners();
         
         //listener for the loyalty card swipe
         $(window).keySequenceDetector(loyaltyCardPrefix, function() {
-            
             //reset the code
             loyaltyCardCode = "";
                 
             $(window).bind('keypress', loyaltyCardListenerHandler);
         });
-
-        setTimeout(function() {
-            $('#num').focus();
-            scanFocusLoginPoll();
-        }, 1000);
 
         //check if we have loaded a previous order from the admin interface
         //this will also load it into tableOrders[-1]
@@ -117,17 +119,13 @@ function doGlobalInit() {
         }
 
         showInitialScreen();
+        
+        startClock();
 
         showScreenFromHashParams();
     } else if (inKitchenContext()) {
         initKitchen();
     }
-
-    //start the clock in the nav bar
-    $("div#clock").clock({
-        "calendar":"false",
-        "format": clockFormat
-    });
 
     //any input that gains focus will call this function
     $("input,textarea").live("focus", function(event) {
@@ -142,8 +140,9 @@ function doGlobalInit() {
         lastActiveElement.addClass("focus");
 
         var allowFocusElements = [
-        "num", "scan_upc", "description_input", "price_change_new_price_input", "stock_take_new_amount_input", "room_number_input"
-        ]
+        "num", "scan_upc", "description_input", "price_change_new_price_input", 
+        "stock_take_new_amount_input", "room_number_input", "customer_search_input"
+        ];
 
         var focusedElementId = lastActiveElement.attr("id");
 
@@ -166,13 +165,72 @@ function doGlobalInit() {
     //start calling home
     callHomePoll();
 
+    //this prevents multiple tabs opening
+    generateBrowserSessionId();
+    
     clueyScheduler();
+    
+    initTrainingModeFromCookie(); 
+}
 
-//enable this for html5 cache flushing
-//    if(inProdMode()) {
-//        //start checking for cache updates
-//        cacheUpdateCheckPoll();
-//    }
+//this gets called from the polling when a terminal is not yet set
+function showTerminalSelectDialog() {
+    //must wait on js resources to load
+    if(typeof(outletTerminals) == "undefined") {
+        return;
+    }
+    
+    if(showingTerminalSelectDialog) {
+        return;
+    }
+    
+    if(availableOutletTerminals.length == 0) {
+        hideNiceAlert();
+        
+        showingTerminalSelectDialog = true;
+    
+    var title = "Subscription Reached!";
+        var message = "You have only paid for " + outletTerminals.length + " terminal(s), which have all been assigned. You can create more terminals in the accounts section. Click OK to be redirected.";
+        
+        ModalPopups.Alert('niceAlertContainer',
+            title, "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
+            {
+                width: 360,
+                height: 310,
+                okButtonText: 'Ok',
+                onOk: "goTo(outletTerminalsURL);"
+            });
+        
+        return;
+    }
+     
+    var dropdownMarkup = "<select id='terminal_select_dropdown'>";
+    
+    for(i=0; i<availableOutletTerminals.length; i++) {
+        dropdownMarkup += "<option value='" + availableOutletTerminals[i].name + "'>" + availableOutletTerminals[i].name + "</option>";
+    }
+    
+    dropdownMarkup += "</select>";
+    
+    title = "Please select a terminal:";
+        
+    var terminalSelectMarkup = "<div id='nice_alert' class='nice_alert'>" + dropdownMarkup + "</div>";
+    
+    hideNiceAlert();
+    
+    ModalPopups.Alert('niceAlertContainer',
+        title, terminalSelectMarkup,
+        {
+            width: 360,
+            height: 200,
+            okButtonText: 'Ok',
+            onOk: "terminalSelected()"
+        });
+}
+
+function terminalSelected() {
+    var selectedTerminal = $('select#terminal_select_dropdown option:selected').val();
+    linkTerminal(selectedTerminal);
 }
 
 function showInitialScreen() {
@@ -190,7 +248,10 @@ function showInitialScreen() {
         //show the red x 
         $('#nav_save_button').show();
 
-        if (current_user_nickname != null) $('#e_name').html(current_user_nickname);
+        if (current_user_nickname != null) {
+            $('#e_name').html(current_user_nickname);
+            $('#e_name').show();
+        }
     }
 }
 
@@ -424,21 +485,23 @@ function initAdminTables() {
     $('.admin_table tbody tr:odd').addClass('odd');
 }
 
-function cacheUpdateCheckPoll() {
-    console.log("Checking for cache update");
-
-    try {
-        window.applicationCache.update();
-    } catch(e) {
-    }
-
-    setTimeout(cacheUpdateCheckPoll, 5000);
-}
-
 function doScheduledTasks() {
     //this is called on at regular intervals
     rollDate();
     testShowLicenceExpiredScreen();
     trySendOutstandingOrdersToServer();
     pingHome();
+    checkForDuplicateBrowserSession();
+}
+
+function cacheDownloadReset() {
+    $('nav#main_nav').removeClass("cache_update");
+    $('#cache_status').text("");
+    $('#cache_status').hide();
+}
+
+function cacheDownloadStarted() {
+    $('nav#main_nav').addClass("cache_update");
+    $('#cache_status').show();
+    $('#cache_status').text("Cache DL: 0%");
 }

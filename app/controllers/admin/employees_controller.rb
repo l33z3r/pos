@@ -1,11 +1,11 @@
 class Admin::EmployeesController < Admin::AdminController
 
   def index
-    @employees = Employee.all_except_cluey.paginate :page => params[:page], :order => 'nickname'
+    @employees = Employee.all_except_cluey(current_outlet).paginate :page => params[:page], :order => 'nickname'
   end
 
   def show
-    @employee = Employee.find(params[:id])
+    @employee = current_outlet.employees.find(params[:id])
   end
 
   def new
@@ -13,21 +13,26 @@ class Admin::EmployeesController < Admin::AdminController
   end
 
   def edit
-    @employee = Employee.find(params[:id])
+    @employee = current_outlet.employees.find(params[:id])
   end
 
   def create
-      @employee = Employee.new(params[:employee])
+    @employee = Employee.new(params[:employee])
 
-      if @employee.save
-        redirect_to([:admin, @employee], :notice => 'Employee was successfully created.')
-      else
-        render :action => "new"
-      end
+    @employee.outlet_id = current_outlet.id
+    
+    if @employee.save
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
+      redirect_to([:admin, @employee], :notice => 'Employee was successfully created.')
+    else
+      render :action => "new"
+    end
   end
 
   def update
-    @employee = Employee.find(params[:id])
+    @employee = current_outlet.employees.find(params[:id])
 
     if params[:delete_employee_image]
       @employee.employee_image.destroy #Will remove the attachment and save the model
@@ -35,6 +40,9 @@ class Admin::EmployeesController < Admin::AdminController
     end
     
     if @employee.update_attributes(params[:employee])
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       redirect_to([:admin, @employee], :notice => 'Employee was successfully updated.')
     else
       render :action => "edit"
@@ -42,9 +50,12 @@ class Admin::EmployeesController < Admin::AdminController
   end
 
   def destroy
-    @employee = Employee.find(params[:id])
+    @employee = current_outlet.employees.find(params[:id])
     @employee.destroy
 
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     redirect_to(admin_employees_url)
   end
 end

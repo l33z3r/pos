@@ -60,6 +60,38 @@ function getCashTotalVoidsByEmployeeDataTable(employee_data) {
     return cash_total_data_html;
 }
 
+function getCashTotalCashOutDataTable(cash_out_data) {
+    var cash_out_data_html = "<div class='cash_out_data_table data_table'>";
+    
+    cash_out_data_html += "<div class='cash_out_data_table_description_header'>Description</div>";
+    cash_out_data_html += "<div class='cash_out_data_table_amount_header quantity'>Amount</div>" + clear10HTML;
+        
+    for(var i=0; i<cash_out_data.length; i++) {
+        cash_out_data_html += "<div class='cash_out_description label'>" + cash_out_data[i][0] + "</div>";
+        cash_out_data_html += "<div class='cash_out_amount data'>" + currency(cash_out_data[i][1]) + "</div>" + clearHTML;
+    }
+    
+    cash_out_data_html += "</div>";
+    
+    return cash_out_data_html;
+}
+
+function getCashTotalAccountPaymentsDataTable(account_payments_data) {
+    var account_payments_data_html = "<div class='account_payments_data_table data_table'>";
+    
+    account_payments_data_html += "<div class='account_payments_data_table_customer_name_header'>Customer</div>";
+    account_payments_data_html += "<div class='account_payments_data_table_amount_header quantity'>Amount</div>" + clear10HTML;
+        
+    for(var i=0; i<account_payments_data.length; i++) {
+        account_payments_data_html += "<div class='cash_out_customer_name label'>" + account_payments_data[i][0] + "</div>";
+        account_payments_data_html += "<div class='cash_out_amount data'>" + currency(account_payments_data[i][1]) + "</div>" + clearHTML;
+    }
+    
+    account_payments_data_html += "</div>";
+    
+    return account_payments_data_html;
+}
+
 function getCashTotalTaxesDataTable(taxes_data) {
     cash_total_data_html = "<div class='taxes_data_table'>";
     
@@ -93,6 +125,16 @@ function getCashTotalDataTableTotals(label, data) {
     totals_html += "<div class='totals_data'>" + currency(total) + "</div></div>" + clearHTML;
     
     return totals_html;
+}
+
+function getCashTotalTotal(data) {
+    var total = 0;
+    
+    for(var i=0; i<data.length; i++) {
+        total += parseFloat(data[i][1]);
+    }
+    
+    return total;
 }
 
 function getCashTotalTaxesDataTableTotals(label, data) {
@@ -165,6 +207,7 @@ function doCashTotalReport(total_type, commit) {
         data: {
             total_type : total_type,
             cash_count : reportsCashCount,
+            open_orders_total : getOpenOrdersTotal(),
             commit : commit
         },
         error: function() {
@@ -284,7 +327,8 @@ function getOpenOrdersTotal() {
     }
     
     for(var u = 0; u < tableIDS.length; u++) {
-        var thisOrderTotal = tableOrders[parseInt(tableIDS[u])].total;
+        var thisOrderTotal = roundNumber(parseFloat(tableOrders[parseInt(tableIDS[u])].total), 2);
+        
         total += thisOrderTotal;
     }
     

@@ -8,15 +8,18 @@ class TerminalSyncDataTest < ActiveSupport::TestCase
 end
 
 
+
+
 # == Schema Information
 #
 # Table name: terminal_sync_data
 #
-#  id         :integer(4)      not null, primary key
+#  id         :integer(8)      not null, primary key
 #  sync_type  :integer(4)
 #  time       :string(255)
 #  data       :text(2147483647
 #  created_at :datetime
 #  updated_at :datetime
+#  outlet_id  :integer(8)
 #
 

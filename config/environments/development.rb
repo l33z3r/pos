@@ -10,8 +10,8 @@ Pos::Application.configure do
   config.whiny_nils = true
 
   #rotate every 20 megabytes
-  config.logger = Logger.new(Rails.root.join("log", Rails.env + ".log"), 10, 20 * 1024 * 1024)
-  config.logger.level = Logger::DEBUG
+#  config.logger = Logger.new(Rails.root.join("log", Rails.env + ".log"), 10, 20 * 1024 * 1024)
+#  config.logger.level = Logger::DEBUG
   
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
@@ -20,8 +20,13 @@ Pos::Application.configure do
   #turn this on for some fragment caching testing in development mode
   config.action_controller.perform_caching = false
   
+  #config.action_controller.asset_host = "http://cluey_staging.s3.amazonaws.com"
+  
+  config.action_mailer.default_url_options = {:host => "lvh.me:3000"}
+  
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.delivery_method = :test
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
@@ -30,6 +35,6 @@ Pos::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
   
   #enable this for html5 caching
-  #ENV["RAILS_ASSET_ID"] = ""
+  ENV["RAILS_ASSET_ID"] = ""
 end
 

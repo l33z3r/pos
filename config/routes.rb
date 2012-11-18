@@ -1,5 +1,34 @@
 Pos::Application.routes.draw do
 
+  match "force_error" => "home#force_error"
+  match "build_assets" => "home#build_assets"
+  
+  #cluey account routes
+  match 'welcome' => "accounts/accounts#welcome", :as => "welcome"
+  get "account_log_out" => "accounts/sessions#destroy", :as => "account_log_out"    
+  get "account_log_in" => "accounts/sessions#new", :as => "account_log_in"
+  get "account_sign_up" => "accounts/accounts#new", :as => "account_sign_up"
+
+  namespace :accounts do
+    resources :accounts, :only => [:new, :create, :index] do
+      collection do
+        get 'activate'
+      end
+    end
+    
+    resources :sessions, :only => [:new, :create, :destroy]
+    resources :password_resets
+    
+    resources :outlets do
+      member do
+        get 'new_terminal'
+        post 'create_terminal'
+      end
+    end
+    
+    resources :reports, :only => [:index]
+  end
+
   #js error logging
   match 'js_error_log' => "home#js_error_log", :via => :post
   
@@ -9,6 +38,9 @@ Pos::Application.routes.draw do
   match 'forward_zalion_roomfile_request' => "home#forward_zalion_roomfile_request", :via => :get
   match 'forward_zalion_charge_request' => "home#forward_zalion_charge_request", :via => :post
   match 'forward_credit_card_charge_request' => "home#forward_credit_card_charge_request", :via => :post
+  
+  #customer payment
+  match 'customer_payment' => "home#customer_payment", :via => :post
   
   #orders
   match 'order' => "order#create", :via => :post
@@ -20,10 +52,13 @@ Pos::Application.routes.draw do
   match 'float_history' => "order#float_history", :via => :get
   match 'cash_total_history' => "order#cash_total_history", :via => :get
   match 'outstanding_orders' => "order#create_outstanding", :via => :post
+  match 'cash_out' => "order#cash_out", :via => :post
 
+  #delivery
+  match 'delivery' => "delivery#receive", :via => :post
+  
   #routes for screens to login etc
   match 'home' => "home#index"
-  get "home/active_employees"
   get 'blank_receipt_for_print' => "home#blank_receipt_for_print"
   
   #kitchen screen
@@ -45,6 +80,8 @@ Pos::Application.routes.draw do
   get 'ping' => "home#ping"
   match 'request_terminal_reload' => "home#request_terminal_reload", :via => :post
   match 'clear_all_fragment_caches' => "home#clear_all_fragment_caches", :via => :post
+  match 'link_terminal' => "home#link_terminal", :via => :post
+  match 'unlink_terminal' => "home#unlink_terminal", :via => :post
   
   #appcache
   match 'cache_manifest' => "home#cache_manifest"
@@ -61,15 +98,19 @@ Pos::Application.routes.draw do
   match 'load_price_for_menu_page' => "home#load_price_for_menu_page", :via => :get
   match 'load_price_receipt_for_product' => "home#load_price_receipt_for_product", :via => :get
   match 'update_price' => "home#update_price", :via => :post
+  match 'update_cost_price' => "home#update_cost_price", :via => :post
   
   #init the sales screen buttons based on role permissions
   match 'init_sales_screen_buttons' => "home#init_sales_screen_buttons"
 
-  match 'login' => "home#login", :via => :post
-  match 'logout' => "home#logout", :via => :post
   match 'clockin' => "home#clockin", :via => :post
   match 'clockout' => "home#clockout", :via => :post
-
+  match 'login' => "home#login", :via => :post
+  match 'logout' => "home#logout", :via => :post
+  match 'break_in' => "home#break_in", :via => :post
+  match 'break_out' => "home#break_out", :via => :post
+  match 'print_work_report' => "home#print_work_report", :via => :post
+  
   #sync info page
   get 'sync_info' => "admin/home#sync_info"
   
@@ -107,13 +148,13 @@ Pos::Application.routes.draw do
     resources :terminals, :only => [:index] do
       collection do
         post 'link_display'
-        get 'check_for_unique'
       end
     end
     
     resources :roles do 
       collection do
         post 'pin_required_for_role'
+        post 'login_allowed_for_role'
       end
     end
     
@@ -126,10 +167,22 @@ Pos::Application.routes.draw do
       end
     end
     
+    resources :printers, :only => [:create, :destroy] do
+      collection do
+        post 'update_multiple'
+      end
+    end
+    
     resources :loyalty_levels, :only => [:create, :destroy] do
       member do
         post 'default'
       end
+      collection do
+        post 'update_multiple'
+      end
+    end
+    
+    resources :cash_out_presets, :only => [:create, :destroy] do
       collection do
         post 'update_multiple'
       end
@@ -280,6 +333,24 @@ Pos::Application.routes.draw do
         get 'set_params'
         get 'load_dropdown'
         get 'stocks_print'
+        get 'export_excel'
+      end
+    end
+    resources :payments, :only => [:index] do
+      collection do
+        get 'payments_search'
+        get 'set_params'
+        get 'load_dropdown'
+        get 'payments_print'
+        get 'export_excel'
+      end
+    end
+    resources :staff, :only => [:index] do
+      collection do
+        get 'staff_search'
+        get 'set_params'
+        get 'load_dropdown'
+        get 'staff_print'
         get 'export_excel'
       end
     end

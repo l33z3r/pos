@@ -82,7 +82,7 @@
         </div>
         <div class="field">
           <div class="label">Category</div>
-          <%= f.collection_select :category_id, Category.all, :id, :name, 
+          <%= f.collection_select :category_id, current_outlet.categories.all, :id, :name, 
             :prompt => "Select a Category", :include_blank => "None" %>
           <div class="clear">&nbsp;</div>
         </div>
@@ -103,7 +103,7 @@
         </div>
         <div class="field">
           <div class="label">Modifier Grid</div>
-          <%= f.collection_select :order_item_addition_grid_id, OrderItemAdditionGrid.all, :id, :name, 
+          <%= f.collection_select :order_item_addition_grid_id, current_outlet.order_item_addition_grids.all, :id, :name, 
             :prompt => "Select a Modifier Grid", :include_blank => "None" %>
           <div class="clear">&nbsp;</div>
         </div>
@@ -114,7 +114,7 @@
         </div>
         <div class="field">
           <div class="label">Parent Product</div>
-          <%= f.collection_select :parent_product_id, Product.find(:all), :id, :name, 
+          <%= f.collection_select :parent_product_id, Product.non_deleted(current_outlet), :id, :name, 
             :prompt => "Select a Product", :include_blank => "None" %>
           <div class="clear">&nbsp;</div>
         </div>
@@ -122,10 +122,10 @@
           <div class="label">Printers</div>
           <input id="select_printers_button" type="button" value="Select" onclick="showSelectPrintersDialog()"/>
 
-          <% all_terminals.each do |terminal_name| %>
-            <input type="checkbox" id="choose_printer_checkbox_<%= id_safe terminal_name %>"
-                   name="product[selected_printers][]" value="<%= id_safe terminal_name %>" 
-                   style="display: none;" <%= @product.printing_to_terminal?(id_safe(terminal_name)) ? "checked" : "" %>/>
+          <% all_printers.each do |printer| %>
+            <input type="checkbox" id="choose_printer_checkbox_<%= id_safe printer.id.to_s %>"
+                   name="product[selected_printers][]" value="<%= id_safe printer.id.to_s %>" 
+                   style="display: none;" <%= @product.printing_to_terminal?(id_safe(printer.id.to_s)) ? "checked" : "" %>/>
                  <% end %>
 
           <!-- the following input is to make sure that we send the product[selected_printers] param when no printers are selected -->
@@ -139,17 +139,53 @@
               <div class="header">Select Printers</div>
 
               <div class="terminal_switches">
-                <% all_terminals.each do |terminal_name| %>
+                <% all_printers.each do |printer| %>
                   <div class="terminal_switch">
-                    <input type="checkbox" data-terminal_name="<%= id_safe terminal_name%>"
+                    <input type="checkbox" data-terminal_name="<%= id_safe printer.id.to_s %>"
                            onchange="printerSwitchToggle(this)"/>
-                    <div class="label"><%=terminal_name%></div>
+                    <div class="label"><%= printer.label %></div>
                   </div>
                   <div class="clear_top_margin_5">&nbsp;</div>
                 <% end %>
               </div>
 
               <div class="button ok_button" onclick="hideSelectPrintersDialog()">Done</div>
+            </div>
+          </div>
+          <div class="clear">&nbsp;</div>
+        </div>
+        <div class="field">
+          <div class="label">Blocked Terminals</div>
+          <input id="select_blocked_printers_button" type="button" value="Select" onclick="showSelectBlockedPrintersDialog()"/>
+
+          <% all_terminals.each do |terminal_name| %>
+            <input type="checkbox" id="choose_blocked_printer_checkbox_<%= id_safe terminal_name %>"
+                   name="product[blocked_printers][]" value="<%= id_safe terminal_name %>" 
+                   style="display: none;" <%= @product.blocked_printing_to_terminal?(id_safe(terminal_name)) ? "checked" : "" %>/>
+                 <% end %>
+
+          <!-- the following input is to make sure that we send the product[blocked_selected_printers] param when no printers are selected -->
+          <input type="checkbox" id="choose_blocked_printer_checkbox_blank"
+                 name="product[blocked_printers][]" value="" 
+                 style="display: none;" checked/>
+
+          <div id="select_blocked_printers_markup" style="display: none;">
+            <div class="select_blocked_printers_dialog">
+
+              <div class="header">Select Blocked Terminals</div>
+
+              <div class="terminal_switches">
+                <% all_terminals.each do |terminal_name| %>
+                  <div class="terminal_switch">
+                    <input type="checkbox" data-terminal_name="<%= id_safe terminal_name%>"
+                           onchange="blockedPrinterSwitchToggle(this)"/>
+                    <div class="label"><%=terminal_name%></div>
+                  </div>
+                  <div class="clear_top_margin_5">&nbsp;</div>
+                <% end %>
+              </div>
+
+              <div class="button ok_button" onclick="hideSelectBlockedPrintersDialog()">Done</div>
             </div>
           </div>
           <div class="clear">&nbsp;</div>

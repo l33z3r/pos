@@ -1,13 +1,13 @@
 <% content_for :head do %>
-  <%= javascript_include_tag "admin_js/modifier-grid-builder" %>
+  <%= javascript_include_tag "admin_js/modifier_grid_builder" %>
   <%= stylesheet_link_tag "admin/modifier_grid_builder"  %>
 
   <%= javascript_include_tag  "plugins/Colour.compressed", "plugins/ColourPicker.compressed" %>
 
   <script type="text/javascript">
-    grid_x = <%=@oiag.grid_x_size%>;
-    grid_y = <%=@oiag.grid_y_size%>;
-    grid_id = <%=@oiag.id%>;
+    grid_x = <%= @oiag.grid_x_size %>;
+    grid_y = <%= @oiag.grid_y_size %>;
+    grid_id = <%= @oiag.id %>;
   </script>
 
 <% end %>
@@ -66,24 +66,28 @@
 
       <div class="clear">&nbsp;</div>
     </div>
-    
-    <!--div id="grid_resizer">
-      <div class="top_label">Grid Size</div>
 
-      <div id="width">
-        <input type="text" id="grid_width_input" value="<%=@oiag.grid_x_size%>" size="1" onchange="updateGridSize();"/>
-        <div class="label">Wide</div>
+    <div id="grid_resizer">
+      <div class="top_label">Grid Size:</div>
+
+      <div id="four_by_four">
+        <input type="radio" name="grid_width_input" 
+               id="grid_size_input_4" value="4" onclick="updateGridSize(4);"
+               <%= @oiag.grid_x_size == 4 ? "checked " : "" %>/>
+        <div class="label">4x4</div>
         <div class="clear">&nbsp;</div>
       </div>
 
       <div class="clear">&nbsp;</div>
 
-      <div id="height">
-        <input type="text" id="grid_height_input" value="<%=@oiag.grid_y_size%>" size="1" onchange="updateGridSize();"/>
-        <div class="label">High</div>
+      <div id="six_by_six">
+        <input type="radio" name="grid_width_input" 
+               id="grid_size_input_6" value="6" onclick="updateGridSize(6);"
+               <%= @oiag.grid_x_size == 6 ? "checked " : "" %>/>
+        <div class="label">6x6</div>
         <div class="clear">&nbsp;</div>
       </div>
-    </div-->
+    </div>
   </div>
 
   <div id="builder">
@@ -100,7 +104,7 @@
         <div class="top_label">Description</div>
         <div class="input_box">
           <input type="text" id="description_input" value=""/>
-          </div>
+        </div>
       </div>
 
       <div id="charge">
@@ -199,7 +203,7 @@
         <div class="input_box">
           <select id="product_id_input" onchange="updateSelectedGridItem()">
             <option value="-1">None</div>
-            <% Product.non_deleted.each do |p| %>                     
+              <% Product.non_deleted(current_outlet).each do |p| %>                     
               <option value="<%= p.id %>">
                 <%= p.name %>
               </option>
@@ -207,13 +211,13 @@
           </select>
         </div>
       </div>
-      
+
       <div id="follow_grid_id">
         <div class="top_label">Follow Grid</div>
         <div class="input_box">
           <select id="follow_grid_id_input" onchange="updateSelectedGridItem()">
             <option value="-1">None</div>
-            <% OrderItemAdditionGrid.all.each do |o| %>                     
+              <% current_outlet.order_item_addition_grids.all.each do |o| %>                     
               <option value="<%= o.id %>">
                 <%= o.name %>
               </option>

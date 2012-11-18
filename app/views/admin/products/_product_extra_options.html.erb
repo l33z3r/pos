@@ -27,22 +27,27 @@
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
+        <div class="label">Half Price</div>
+        <%= f.text_field :half_price %>
+        <div class="clear">&nbsp;</div>
+      </div>
+      <div class="field">
         <div class="label">
-          <%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, {:price_level => 2} %>
+          <%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, current_outlet, {:price_level => 2} %>
         </div>
         <%= f.text_field :price_2 %>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
         <div class="label">
-          <%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, {:price_level => 3} %>
+          <%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, current_outlet, {:price_level => 3} %>
         </div>
         <%= f.text_field :price_3 %>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
         <div class="label">
-          <%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, {:price_level => 4} %>
+          <%= GlobalSetting.parsed_setting_for GlobalSetting::PRICE_LEVEL_LABEL, current_outlet, {:price_level => 4} %>
         </div>
         <%= f.text_field :price_4 %>
         <div class="clear">&nbsp;</div>
@@ -69,13 +74,13 @@
       </div>
       <div class="field">
         <div class="label"><%=@tax_label%> Rate</div>
-        <%= f.collection_select :tax_rate_id, TaxRate.find(:all), :id, :name_for_select, 
+        <%= f.collection_select :tax_rate_id, current_outlet.tax_rates.find(:all), :id, :name_for_select, 
           :prompt => "Select a #{@tax_label} Rate", :include_blank => "Default" %>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
         <div class="label">Course</div>
-        <%= f.select :course_num, options_for_select(GlobalSetting.course_options, @product.course_num) %>
+        <%= f.select :course_num, options_for_select(GlobalSetting.course_options(current_outlet), @product.course_num) %>
       </div>
     </div>
     <div class="right_col">
@@ -95,7 +100,7 @@
       </div>
       <div class="field">
         <div class="label">Container Type</div>
-        <%= f.collection_select :container_type_id, Category.find(:all), :id, :name, 
+        <%= f.collection_select :container_type_id, current_outlet.categories.find(:all), :id, :name, 
           :prompt => "Select a Category", :include_blank => "None" %>
         <div class="clear">&nbsp;</div>
       </div>
@@ -111,17 +116,17 @@
       </div>
       <div class="field">
         <div class="label">Menu 1</div>
-        <%= f.select :menu_page_1_id, MenuPage.select_opts, :prompt => "Select a Menu"%>
+        <%= f.select :menu_page_1_id, MenuPage.select_opts(current_outlet), :prompt => "Select a Menu"%>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
         <div class="label">Menu 2</div>
-        <%= f.select :menu_page_2_id, MenuPage.select_opts, :prompt => "Select a Menu" %>
+        <%= f.select :menu_page_2_id, MenuPage.select_opts(current_outlet), :prompt => "Select a Menu" %>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
         <div class="label">Modifier</div>
-        <%= f.collection_select :modifier_category_id, ModifierCategory.find(:all), :id, :name, 
+        <%= f.collection_select :modifier_category_id, current_outlet.modifier_categories.find(:all), :id, :name, 
           :prompt => "Select a Modifier", :include_blank => "None" %>
         <div class="clear">&nbsp;</div>
       </div>
@@ -297,7 +302,7 @@
     </div>
     <div class="field">
       <div class="label">Supplier 1</div>
-      <%= f.collection_select :supplier_1_id, Category.find(:all), :id, :name, 
+      <%= f.collection_select :supplier_1_id, current_outlet.categories.find(:all), :id, :name, 
         :prompt => "Select a Category", :include_blank => "None" %>
       <div class="clear">&nbsp;</div>
     </div>
@@ -313,7 +318,7 @@
     </div>
     <div class="field">
       <div class="label">Supplier 2</div>
-      <%= f.collection_select :supplier_2_id, Category.find(:all), :id, :name, 
+      <%= f.collection_select :supplier_2_id, current_outlet.categories.find(:all), :id, :name, 
         :prompt => "Select a Category", :include_blank => "None" %>
       <div class="clear">&nbsp;</div>
     </div>
@@ -342,7 +347,7 @@
         <%= fields_for "product[#{ingredient.new_record? ? "" : "existing_"}ingredient_products][]", ingredient do |ingredient_form| %>
 
           <div class="product">
-            <%= ingredient_form.select :product_id, options_for_select((Product.product_options_for_select @product.id), ingredient.product_id) %>
+            <%= ingredient_form.select :product_id, options_for_select((Product.product_options_for_select(@product.id, current_outlet)), ingredient.product_id) %>
           </div>
 
           <%= ingredient_form.hidden_field :ingredient_product_id, {:value => @product.id} %>

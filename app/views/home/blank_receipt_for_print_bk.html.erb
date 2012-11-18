@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css" media="all">
+      @page {
+        margin: 0px;
+        padding: 0px;
+      }
+
+      body {
+        font-family: verdana, sans-serif;
+        font-size: 9px;
+        width: 210px;
+        margin: 0px;
+        overflow: hidden;
+
+        margin-left: <%=@printer_left_margin%>px;
+
+        <%= render "/partials/interfaces/shared/receipt_margins_css_#{@order_receipt_width_setting}" %>
+      }
+
+      body * {
+        overflow: hidden;
+      }
+
+      div.clear {
+        height: 1px;
+        clear: both;
+      }
+
+      div.clear_top_margin_10 {
+        height: 5px;
+        clear: both;
+      }
+
+      div.clear_top_margin_10_bottom_border {
+        height: 5px;
+        clear: both;
+      }
+
+      div.the_dots {
+        text-align: center;
+        margin-bottom: 5px;
+      }
+
+      div.business_info {
+        width: 190px;
+      }
+
+      div.business_info {
+        text-align: center;
+        font-weight: bold;
+        margin: auto;
+      }
+
+      div.custom_business_info {
+        text-align: center;
+      }
+
+      div.custom_business_info p {
+        margin: 3px 0px;
+      }
+
+      div.data_table_header {
+        font-weight: bold;
+        font-size: 14px;
+        margin: 3px;
+        margin-top: 15px;
+        text-align: center;
+      }
+
+      div.data_table {
+        margin: 10px 0px;
+      }
+
+      div.data_table div.header {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      div.data_table div.label {
+        float: left;
+        text-align: left;
+        width: 92px;
+      }
+
+      div.data_table div.data {
+        float: left;
+        text-align: right;
+        padding-right: 3px;
+        width: 106px;
+        font-weight: bold;
+      }
+
+      div.data_table div.total_line_container {
+        float: left;
+        font-size: 14px;
+        margin: 8px 0px;
+      }
+
+      div.data_table div.total_line_container div.label {
+        width: 95px;
+      }
+
+      div.data_table div.total_line_container div.data {
+        padding-right: 0px;
+      }
+
+      div.data_table div.change_line_container {
+        float: left;
+        font-size: 12px;
+        margin: 8px 0px;
+      }
+
+      div.data_table div.change_line_container div.label {
+        width: 93px;
+      }
+
+      div.data_table div.change_line_container div.data {
+        padding-right: 0px;
+      }
+
+      div.data_table div.label.time {
+        width: 88px;
+      }
+
+      div.data_table div.data.time {
+        width: 110px;
+        padding-right: 3px;
+      }
+
+      div.terminal {
+        float: left;
+        font-weight: bold;
+        width: 112px;
+        text-align: right;
+      }
+
+      div.order_line {
+        margin: 0px 2px;
+      }
+
+      div.order_line.void {
+        visibility: hidden;
+        height: 1px;
+      }
+
+      div.order_line.course {
+
+      }
+
+      div.order_line.hide_on_printed_receipt {
+        display: none;
+      }
+
+      div.order_line div.discount {
+        float: left;
+        width: 190px;
+      }
+
+      div.order_line div.discount_complimentary {
+        clear: both;
+        margin-left: 60px;
+        margin-top: 10px;
+      }
+
+      div.order_line div.course_label {
+        visibility: hidden;
+      }
+
+      div.amount {
+        float: left;
+        text-align: left;
+        width: 26px;
+        margin-left: 3px;
+      }
+
+      div.name {
+        float: left;
+        width: 130px;
+        text-align: left;
+      }
+
+      div.total {
+        float: left;
+        width: 35px;
+        text-align: right;
+      }
+
+      div.modifier_name {
+        float: left;
+        width: 125px;
+        margin-left: 30px;
+        text-align: left;
+      }
+
+      div.modifier_price {
+        float: left;
+        width: 40px;
+        text-align: right;
+      }
+
+      /* need to force a height so it prints correctly */
+      div.oia {
+        float: left;
+      }
+
+      div.oia.hide_on_receipt {
+        visibility: hidden;
+        height: 0px;
+      }
+
+      div.oia_name {
+        float: left;
+        width: 130px;
+        margin-left: 24px;
+        text-align: left;
+      }
+
+      div.oia_name.note {
+        font-style: italic;
+        width: 134px;
+        margin-left: 20px
+      }
+
+      div.oia_price {
+        float: left;
+        width: 40px;
+        text-align: right;
+      }
+
+      div.discount div.header {
+        float: left;
+        width: 100px;
+        text-align: right;
+        font-style: italic;
+      }
+
+      div.discount div.discount_amount {
+        float: left;
+        width: 47px;
+        margin-right: 3px;
+        text-align: right;
+        font-style: italic;
+      }
+
+      div.discount div.new_price {
+        float: left;
+        width: 35px;
+        text-align: left;
+        font-style: italic;
+      }
+
+      div#receipt_message {
+        margin-bottom: 5px;
+      }
+
+      div#zalion_receipt_info div.header {
+        text-align: left;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      div#zalion_receipt_info div.label {
+        float: left;
+        width: 110px;
+        font-weight: bold;
+      }
+
+      div#zalion_receipt_info div.data {
+        float: left;
+        width: 80px;
+      }
+
+      div#zalion_receipt_info div.line {
+        margin-top: 10px;
+        float: left;
+        width: 200px;
+        font-weight: bold;
+      }
+
+      div#loyalty_receipt_info div.header {
+        text-align: left;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      div#loyalty_receipt_info div.label {
+        float: left;
+        width: 110px;
+        font-weight: bold;
+      }
+
+      div#loyalty_receipt_info div.data {
+        float: left;
+        width: 80px;
+      }
+
+      div#loyalty_receipt_info div.line {
+        margin-top: 10px;
+        float: left;
+        width: 200px;
+        font-weight: bold;
+      }
+
+      div.vat_breakdown div.header {
+
+      }
+
+      /* x/z total receipt css */
+
+      div#reports_center_till_roll {
+        text-align: center;
+      }
+
+      div#cash_totals_data_table div#cash_totals_data_table_header_section {
+        margin: 20px 0px;
+        text-align: center;
+      }
+
+      div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_name {
+        font-weight: bold;
+        font-size: 13px;
+      }
+
+      div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_address {
+        font-size: 13px;
+      }
+
+      div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_telephone {
+        font-size: 13px;
+      }
+
+      div#cash_totals_data_table div#cash_totals_data_table_header_section div.business_email_address {
+        font-size: 13px;
+      }
+
+      div#cash_totals_data_table div.data_table_header {
+        font-weight: bold;
+        font-size: 14px;
+        margin: 3px;
+        margin-top: 15px;
+        text-align: center;
+      }
+
+      div#cash_totals_data_table div.data_table {
+        margin-top: 10px;
+      }
+
+      div#cash_totals_data_table div.data_table div.label {
+        float: left;
+        text-align: left;
+        width: 92px;
+      }
+
+      div#cash_totals_data_table div.data_table div.data {
+        float: left;
+        text-align: right;
+        width: 109px;
+      }
+
+      div#cash_totals_data_table div.totals_data_table {
+        margin-top: 5px;
+      }
+
+      div#cash_totals_data_table div.totals_data_table div.totals_label {
+        float: left;
+        text-align: left;
+        width: 92px;
+        font-weight: bold;
+      }
+
+      div#cash_totals_data_table div.totals_data_table div.totals_data {
+        float: left;
+        text-align: right;
+        width: 109px;
+      }
+
+      div.vat_breakdown div.header {
+        text-align: left;
+        font-weight: bold;
+      }
+
+      div.vat_breakdown div.footer {
+        font-weight: bold;
+        margin-top: 10px;
+        text-align: left;
+      }
+
+      div#cash_totals_data_table div.taxes_data_table {
+        margin-top: 10px;
+      }
+
+      div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_header {
+        width: 50px;
+        float: left;
+        text-align: right;
+      }
+
+      div#cash_totals_data_table div.taxes_data_table div.taxes_data_table_label_header {
+        width: 50px;
+        float: left;
+        text-align: left;
+      }
+
+      div#cash_totals_data_table div.taxes_data_table div.taxes_label {
+        float: left;
+        text-align: left;
+        width: 50px;
+        font-weight: bold;
+      }
+
+      div#cash_totals_data_table div.taxes_data_table div.taxes_data {
+        float: left;
+        text-align: right;
+        width: 50px;
+      }
+
+      div#cash_totals_data_table div.taxes_totals_data_table {
+        margin-top: 5px;
+      }
+
+      div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_label {
+        float: left;
+        text-align: left;
+        width: 50px;
+        font-weight: bold;
+      }
+
+      div#cash_totals_data_table div.taxes_totals_data_table div.taxes_totals_data {
+        float: left;
+        text-align: right;
+        width: 50px;
+      }
+
+      div#cash_totals_data_table div.products_data_table {
+        margin-top: 10px;
+      }
+
+      div.products_data_table div.products_data_table_header {
+        font-weight: bold;
+        width: 58px;
+        float: left;
+        text-align: right;
+      }
+
+      div.products_data_table div.products_data_table_header.quantity {
+        width: 25px;
+      }
+
+      div#cash_totals_data_table div.products_data_table div.products_data_table_label_header {
+        font-weight: bold;
+        width: 117px;
+        float: left;
+        text-align: left;
+      }
+
+      div#cash_totals_data_table div.products_data_table div.products_label {
+        float: left;
+        text-align: left;
+        width: 117px;
+      }
+
+      div#cash_totals_data_table div.products_data_table div.products_data {
+        float: left;
+        text-align: right;
+        width: 58px;
+      }
+
+      div#cash_totals_data_table div.products_data_table div.products_data.quantity {
+        width: 25px;
+      }
+
+      div#cash_totals_data_table div.cash_out_data_table div.cash_out_data_table_description_header {
+        font-weight: bold;
+        width: 102px;
+        float: left;
+        text-align: left;
+      }
+
+      div#cash_totals_data_table div.cash_out_data_table div.cash_out_data_table_amount_header {
+        font-weight: bold;
+        width: 99px;
+        float: left;
+        text-align: right;
+      }
+      
+      div#cash_totals_data_table div.account_payments_data_table div.account_payments_data_table_customer_name_header {
+        font-weight: bold;
+        width: 102px;
+        float: left;
+        text-align: left;
+      }
+
+      div#cash_totals_data_table div.account_payments_data_table div.account_payments_data_table_amount_header {
+        font-weight: bold;
+        width: 99px;
+        float: left;
+        text-align: right;
+      }
+      
+      div#cash_totals_data_table div.cash_out_data_table div.label {
+        width: 102px;
+      }
+
+      div#cash_totals_data_table div.cash_out_data_table div.data {
+        width: 99px;
+      }
+
+      /* End x/z total receipt css */
+
+      /* Work Report Receipt CSS */
+
+      div#work_report_data_table div.data_table_header {
+        font-weight: bold;
+        font-size: 14px;
+        margin: 3px;
+        margin-top: 15px;
+        text-align: center;
+      }
+
+      div#work_report_data_table div.data_table {
+        margin-top: 10px;
+      }
+
+      div#work_report_data_table div.data_table div.label {
+        float: left;
+        text-align: left;
+        width: 120px;
+      }
+
+      div#work_report_data_table div.data_table div.data {
+        float: left;
+        text-align: right;
+        width: 81px;
+      }
+
+      div#work_report_data_table div.data_table div.label.date {
+        width: 100px;
+      }
+
+      div#work_report_data_table div.data_table div.data.date {
+        width: 101px;
+      }
+
+      div#work_report_data_table div.totals_data_table {
+        margin-top: 5px;
+      }
+
+      div#work_report_data_table div.totals_data_table div.totals_label {
+        float: left;
+        text-align: left;
+        width: 92px;
+        font-weight: bold;
+      }
+
+      div#work_report_data_table div.totals_data_table div.totals_data {
+        float: left;
+        text-align: right;
+        width: 109px;
+      }  
+
+      div#work_report_data_table div.work_report_footer {
+        text-align: center;
+        margin: 5px 0px;
+      }
+
+      div#work_report_data_table div.work_report_footer div.message {
+        font-weight: bold;
+        margin-top: 5px;
+      }
+
+      /* End Work Report Receipt CSS */
+
+      /* Settings for delivery receipt */
+      <%= render "/partials/interfaces/large_screen/delivery_receipt_css" %>
+
+      /* Settings for cash out receipt */
+      <%= render "/partials/interfaces/large_screen/cash_out_receipt_css" %>
+
+      /* Settings for order receipt */
+
+      div.order_receipt div.oia.hide_on_receipt {
+        visibility: visible;
+      }
+
+      div.order_receipt div.order_line.course {
+        border-bottom: 2px solid #000;
+      }
+
+      div.order_receipt div.course_label {
+        visibility: visible;
+        float: left;
+        padding-left: 20px;
+        text-align: left;
+        width: 140px;
+      }
+
+      div.order_receipt div.total {
+        width: 10px;
+      }
+
+      <%= render "/partials/interfaces/shared/order_receipt_css_#{@order_receipt_width_setting}" %>
+    </style>    
+  </head>
+  <body id="print_receipt_content">
+    <div id="print_receipt_wrapper">
+      <div id="print_receipt" class="receipt">
+        <div id="till_roll" class="till_roll"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

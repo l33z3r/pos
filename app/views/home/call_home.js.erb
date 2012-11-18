@@ -1,10 +1,10 @@
 //if we have a result we are gonna immediately poll again
 immediateCallHome = false;
 
-<% if @reload_app %>
+<% if @reload_app %>  
   //update the timestamp and make sure the time is in the future
   lastInterfaceReloadTime = clueyTimestamp();
-  
+
   if(lastInterfaceReloadTime <= <%=@reload_request_time%>) {
   lastInterfaceReloadTime = <%=@reload_request_time%> + 1;
   }
@@ -17,12 +17,12 @@ immediateCallHome = false;
   tableOrderDataJSON = <%= @sync_table_order_data[:orderData].to_json.html_safe %>;
   doReceiveTableOrderSync("<%= @sync_table_order_request_terminal_id %>", <%=@sync_table_order_data[:tableID]%>, 
   "<%=@table_label%>", "<%=@serving_employee_id%>", "<%=@terminal_employee%>", tableOrderDataJSON);
-  
+
   //update the lastPrintCheckTime
   if(lastSyncTableOrderTime >= lastPrintCheckTime) {
-    lastPrintCheckTime = lastSyncTableOrderTime;
+  lastPrintCheckTime = lastSyncTableOrderTime;
   }
-  
+
   immediateCallHome = true;
 <% end %>
 
@@ -30,22 +30,31 @@ immediateCallHome = false;
   lastSyncTableOrderTime = <%= @new_clear_table_order_time %>;
   doReceiveClearTableOrder("<%=@clear_table_order[:terminal_id]%>", <%=@clear_table_order[:table_id]%>, 
   <%= @order_num ? @order_num : -1 %>, "<%=@table_label%>", "<%=@serving_employee_id%>", "<%=@terminal_employee%>");
-  
+
   //update the lastPrintCheckTime
   if(lastSyncTableOrderTime >= lastPrintCheckTime) {
-    lastPrintCheckTime = lastSyncTableOrderTime;
+  lastPrintCheckTime = lastSyncTableOrderTime;
   }
-  
+
   immediateCallHome = true;
 <% end %>
 
+//this initializes linking a fingerprint to a string
 <% if cookies["terminal_fingerprint"] and !cookies["terminal_id_set"] %>
   <% cookies["terminal_id_set"] = true %>
   terminalID = "<%=@terminal_id%>";
   $('#terminal_id').html(terminalID);
 <% end %>
 
+//this makes sure that we have selected a terminal from our dropdown
+//if the terminal name starts with the "NT%" prefix, then we have not selected a terminal yet
+<% if cookies["terminal_id_set"] and @terminal_id.starts_with? "NT#" %>
+  showTerminalSelectDialog();
+<% end %>
+
 <% if @order_ready_notification %>
   lastOrderReadyNotificationTime = <%= @new_order_ready_update_time %>;
   doReceiveOrderReady(<%= @order_ready_request_employee_id %>, "<%= @order_ready_request_terminal_id %>", <%= @order_ready_request_table_id %>, <%= @order_ready_request_order_num %>,  "<%= @order_ready_reqeust_table_label %>");
 <% end %>
+
+initClueyTimestampFromServer(<%= now_millis %>);

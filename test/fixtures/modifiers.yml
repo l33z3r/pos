@@ -1,16 +1,3 @@
-# == Schema Information
-# Schema version: 20110427122814
-#
-# Table name: modifiers
-#
-#  id                   :integer(4)      not null, primary key
-#  modifier_category_id :integer(4)
-#  name                 :string(255)
-#  price                :float
-#  created_at           :datetime
-#  updated_at           :datetime
-#
-
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
@@ -22,3 +9,18 @@ two:
   modifier_category_id: 1
   name: MyString
   price: 1.5
+
+
+# == Schema Information
+#
+# Table name: modifiers
+#
+#  id                   :integer(8)      not null, primary key
+#  modifier_category_id :integer(8)
+#  name                 :string(255)
+#  price                :float
+#  created_at           :datetime
+#  updated_at           :datetime
+#  outlet_id            :integer(8)
+#
+

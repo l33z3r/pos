@@ -27,9 +27,9 @@ class Admin::OrdersController < Admin::AdminController
     params[:search] = params[:search] ? {:meta_sort => 'created_at.desc'}.merge(params[:search]) : {:meta_sort => 'created_at.desc'}
     
     if params[:only_void_orders]
-      @search = Order.where("void_order_id is not ? or is_void is true", nil).search(params[:search])
+      @search = current_outlet.orders.where("void_order_id is not ? or is_void is true", nil).search(params[:search])
     else
-      @search = Order.search(params[:search])
+      @search = current_outlet.orders.search(params[:search])
     end
     
     #for lazy loading use: @search.relation
@@ -38,7 +38,23 @@ class Admin::OrdersController < Admin::AdminController
   end
   
   def previous_order
-    @order = Order.find(params[:id])
+    @order = current_outlet.orders.find(params[:id])
+    
+    @allowed_reopen = true
+    
+    @order_terminal_id = @order.terminal_id
+    @order_created_at = @order.created_at
+    
+    @post_order_z_cash_total = current_outlet.cash_totals.where("total_type = ?", CashTotal::Z_TOTAL).where("terminal_id = ?", @order_terminal_id).where("created_at >= ?", @order_created_at)
+    
+    @is_order_pre_z = !@post_order_z_cash_total.empty?
+    
+    if @is_order_pre_z
+      @allow_reopen_after_z = GlobalSetting.parsed_setting_for GlobalSetting::ALLOW_REOPEN_ORDER_AFTER_Z, current_outlet
+      
+      @allowed_reopen = @allow_reopen_after_z
+    end
+    
     @order_items = @order.order_items
   end
   

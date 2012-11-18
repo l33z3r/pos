@@ -1,17 +1,6 @@
-# == Schema Information
-# Schema version: 20110709145601
-#
-# Table name: stored_receipt_htmls
-#
-#  id           :integer(4)      not null, primary key
-#  receipt_type :string(255)
-#  receipt_key  :string(255)
-#  stored_html  :text
-#  created_at   :datetime
-#  updated_at   :datetime
-#
-
 class StoredReceiptHtml < ActiveRecord::Base
+  
+  belongs_to :outlet
   
   TERMINAL = "terminal"
   EMPLOYEE = "employee"
@@ -35,3 +24,18 @@ class StoredReceiptHtml < ActiveRecord::Base
   end
   
 end
+
+
+# == Schema Information
+#
+# Table name: stored_receipt_htmls
+#
+#  id           :integer(8)      not null, primary key
+#  receipt_type :string(255)
+#  receipt_key  :string(255)
+#  stored_html  :text
+#  created_at   :datetime
+#  updated_at   :datetime
+#  outlet_id    :integer(8)
+#
+

@@ -12,6 +12,8 @@ var lastActiveElement;
 
 var callHomePollInitSequenceComplete = false;
 var callHome = true;
+var currentPollObj = null;
+var pollInProgress = false;
 
 var lastSyncTableOrderTime = null;
 var lastSyncKey = "last_sync_table_order_time";
@@ -19,15 +21,44 @@ var lastSyncKey = "last_sync_table_order_time";
 var lastInterfaceReloadTime = null;
 var lastPrintCheckTime = null;
     
+var scheduledTasksIntervalSeconds = 10;
+    
+var showingTerminalSelectDialog = false;
+
 //the following hack is to get over eventX eventY being deprecated in new builds of chrome
 $.event.props = $.event.props.join('|').replace('layerX|layerY|', '').split('|');
 
 $(function() {
+    initSalesResources();
+
+    current_user_id = fetchActiveUserID();
+    
+    //init some user vars
+    if(current_user_id) { 
+        for (var i = 0; i < employees.length; i++) {
+            var nextId = employees[i].id;
+        
+            if(nextId.toString() == current_user_id) {
+                last_user_id = current_user_id;
+                current_user_nickname = employees[i].nickname;
+                current_user_is_admin = employees[i].is_admin;
+                current_user_passcode = employees[i].passcode;
+                current_user_role_id = employees[i].role_id;
+            }
+        }
+    }
+    
     //disable image drag
     $('img').live("mousedown", preventImageDrag);
     
     //make sure all links only work when app online.
     $('a').live("click", preventOfflineHref);
+
+    //enable this for html5 cache flushing
+    if(!inDevMode()) {
+        //start checking for cache updates
+        startCacheUpdateCheckPoll();
+    }
 });
     
 function callHomePoll() {
@@ -62,10 +93,7 @@ function callHomePoll() {
             lastInterfaceReloadTime = clueyTimestamp();
         }
     } else {
-        //write it to cookie        
-        //100 year expiry, but will really end up in year 2038 due to limitations in browser
-        var interfaceReloadTimeCookeExpDays = 365 * 100;
-        setRawCookie(lastReloadCookieName, lastInterfaceReloadTime, interfaceReloadTimeCookeExpDays);
+        writeLastReloadTimeCookie();
     }
     
     //load/store the timestamp for print checks
@@ -101,13 +129,18 @@ function callHomePoll() {
         currentTableLabel = tableInfoLabel = tables[selectedTable].label;
     }
     
-    $.ajax({
+    pollInProgress = true;
+    
+    currentPollObj = $.ajax({
         url: callHomeURL,
         type : "POST",
         dataType: 'script',
         success: callHomePollComplete,
         error: function() {
             setTimeout(callHomePoll, 5000);
+        },
+        complete: function() {
+            pollInProgress = false;
         },
         data : {
             lastInterfaceReloadTime : lastInterfaceReloadTime,
@@ -118,6 +151,12 @@ function callHomePoll() {
             lastOrderReadyNotificationTime : lastOrderReadyNotificationTime
         }
     });
+}
+
+function manualCallHomePoll() {
+    if(!pollInProgress) {
+        callHomePoll();   
+    }    
 }
 
 var immediateCallHome = false;
@@ -135,9 +174,11 @@ function callHomePollComplete() {
         if(inKitchenContext() && !kitchenScreenInitialized) {
             kitchenScreenInitialized = true;
             finishedLoadingKitchenScreen();
-        }
-        
-        setTimeout(callHomePoll, pollingAmount);
+        } else if(inLargeInterface()) {
+        //we do manual polling now
+        } else if(inMediumInterface()) {
+            setTimeout(callHomePoll, pollingAmount);
+        }                
     }
 }
 
@@ -148,13 +189,18 @@ function callHomePollInitSequenceCompleteHook() {
     
     //hide the spinner at the top nav
     $('#loading_orders_spinner').hide();
+        
+    if(inLargeInterface()) {
+        $('#table_select_container_loading_message').hide();
+        $('#table_select_container').show();
+        $('#table_screen_button').show();            
+    }
 }
 
 function clueyScheduler() {
     doScheduledTasks();
     
-    var numSeconds = 10;
-    setTimeout(clueyScheduler, numSeconds * 1000);
+    setTimeout(clueyScheduler, scheduledTasksIntervalSeconds * 1000);
 }
 
 function preventImageDrag(event) {
@@ -166,17 +212,25 @@ function preventImageDrag(event) {
 function preventOfflineHref() {
     if(!appOnline) {
         appOfflinePopup();
-        event.preventDefault();
+        return false;
+    }
+    
+    if(cacheDownloading) {
+        cacheDownloadingPopup();
         return false;
     }
         
     return true;
 }
 
+var pingTimeoutSeconds = 60;
+var pingTimeoutMillis = pingTimeoutSeconds * 1000;
+
 function pingHome() {
     $.ajax({
         url: "/ping",
         type : "GET",
+        timeout: pingTimeoutMillis,
         success: function() {
             setConnectionStatus(true);
         },
@@ -184,5 +238,55 @@ function pingHome() {
             setConnectionStatus(false);
         }
     });
+}
+
+function linkTerminal(outletTerminalName) {
+    showLoadingDiv("Linking terminal to " + outletTerminalName);
     
+    $.ajax({
+        url: "/link_terminal",
+        type : "POST",
+        error: function() {
+            hideNiceAlert();
+        
+            var message = "Error Linking Terminal!";
+        
+            ModalPopups.Alert('niceAlertContainer',
+                title, "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
+                {
+                    width: 360,
+                    height: 310,
+                    okButtonText: 'Ok',
+                    onOk: "doReload(false)"
+                });
+        },
+        complete: function() {
+            showingTerminalSelectDialog = false;
+        },
+        data : {
+            outletTerminalName : outletTerminalName
+        }
+    });
+}
+
+function unlinkTerminal() {
+    var answer = confirm("Are you sure?");
+    
+    if (!answer) {
+        return;
+    }
+    
+    showLoadingDiv("Unlinking terminal");
+    
+    $.ajax({
+        url: "/unlink_terminal",
+        type : "POST",
+        error: function() {
+            niceAlert("Error Unlinking Terminal!");
+        },
+        complete: function() {
+            hideNiceAlert();
+            regenerateTerminalFingerprintCookie();
+        }
+    });
 }

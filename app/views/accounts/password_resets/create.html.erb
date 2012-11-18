@@ -1,0 +1,5 @@
+<% if @success %>
+  An email has been sent to <%= @entered_email %> with password reset instructions.
+<% else %>
+  Email address <%= @entered_email %> is not valid for account <%= @cluey_account.name %> 
+<% end %>

@@ -2,6 +2,8 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.5'
 
+gem 'mysql2', '0.2.6'
+
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
@@ -9,6 +11,8 @@ gem 'rails', '3.0.5'
 gem 'arel', '2.0.9'
 
 gem 'rake', '0.8.7'
+
+gem "bcrypt-ruby", '3.0.1', :require => "bcrypt"
 
 gem 'populator'
 gem 'faker'
@@ -28,6 +32,22 @@ gem 'jbuilder', '0.3.2'
 
 gem 'prawn', '0.12.0'
 gem 'prawnto' , '0.1.1'
+
+gem 'newrelic_rpm'
+gem "recaptcha", '0.3.4', :require => "recaptcha/rails"
+
+#lock down on version of tzinfo gem
+gem "tzinfo", "0.3.33"
+
+#lock down pdf reader gem
+gem "pdf-reader", "1.1.0"
+
+#lock down mime types gem
+gem "mime-types", "1.17.2"
+
+#lock down blankslate gem
+gem "blankslate", "2.1.2.4"
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
@@ -46,17 +66,20 @@ gem 'prawnto' , '0.1.1'
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test do
-  gem 'annotate'
+  gem 'annotate', "2.4.0"
   
   #gem 'rails-footnotes', :git => 'https://github.com/josevalim/rails-footnotes.git'
   
   gem "rspec-rails", "2.6.1"
   gem 'ruby-debug19'
   gem "mongrel", '1.2.0.pre2'
-  
-  gem 'mysql2', '0.2.6'
 end
 
-group :production do
-  gem 'mysql2', '0.2.6'
+#this is only used in development to sync assets with s3
+group :build_assets do
+  gem 's3', '0.3.7'
+end
+
+group :heroku_staging, :heroku_production do
+  gem "thin", "1.5.0"
 end

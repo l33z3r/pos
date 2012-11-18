@@ -1,10 +1,17 @@
 class OrderItem < ActiveRecord::Base
+  belongs_to :outlet
+  
   serialize :oia_data
   
   belongs_to :order
   belongs_to :employee
+  
+  has_one :void_employee, :class_name => "Employee", :foreign_key => "void_employee_id"
+  
   belongs_to :product
 
+  has_many :stock_transactions
+  
   def week
     self.created_at.strftime('%W')
   end
@@ -33,14 +40,18 @@ end
 
 
 
+
+
+
+
 # == Schema Information
 #
 # Table name: order_items
 #
-#  id                     :integer(4)      not null, primary key
-#  order_id               :integer(4)
-#  employee_id            :integer(4)
-#  product_id             :integer(4)
+#  id                     :integer(8)      not null, primary key
+#  order_id               :integer(8)
+#  employee_id            :integer(8)
+#  product_id             :integer(8)
 #  quantity               :float
 #  total_price            :float
 #  created_at             :datetime
@@ -57,5 +68,8 @@ end
 #  is_double              :boolean(1)      default(FALSE)
 #  oia_data               :text(2147483647
 #  is_void                :boolean(1)      default(FALSE)
+#  is_half                :boolean(1)      default(FALSE)
+#  void_employee_id       :integer(8)
+#  outlet_id              :integer(8)
 #
 

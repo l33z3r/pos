@@ -30,6 +30,14 @@ body {
     
 }
 
+body.disconnected {
+    background-color: #FF0000;
+}
+
+body.cache_update {
+    background-color: #4297D7;
+}
+
 input[type=radio], input[type=checkbox], input[type=button], select {
     cursor: pointer;
 }
@@ -166,6 +174,21 @@ div#loading_orders_spinner {
 
 div#loading_orders_spinner img {
     height: 16px;
+}
+
+div#cache_status {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: #FFF;
+    margin-left: 10px;
+    width: 180px;
+    min-width: 20px;
+    padding: 6px;
+    -moz-border-bottom-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    -moz-border-bottom-right-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
 
 div#js_player {
@@ -325,7 +348,7 @@ div#menu_screen div#menu_container div#menu_items_container div.menu_item_spacer
     background-color: transparent;
 }
 
-div#menu_screen div#menu_container div#menu_items_container div.item.inactive {
+div#menu_screen div#menu_container div#menu_items_container div.item.inactive div.item_name {
     text-decoration: line-through;
 }
 
@@ -568,6 +591,62 @@ div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row div.grid
 div#menu_screen div#oia_subscreen div#order_item_additions div.grid_row div.grid_item.empty {
     cursor: auto;
 }
+
+div#menu_screen div#covers_screen {
+    display: none;
+    height: 603px;
+}
+
+div#menu_screen div#covers_screen div#header {
+    text-align: center;
+    padding: 8px;
+    height: 60px;
+    background: -moz-linear-gradient(#558ED5, #17365D) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#558ED5), to(#17365D));
+}
+
+div#menu_screen div#covers_screen div#header div#back_button {
+    float: left;
+}
+
+div#menu_screen div#covers_screen div#header div#options_button {
+    float: right;
+}
+
+div#menu_screen div#covers_screen div#header div.title {
+    float: left;
+    margin-left: 32px;
+    margin-top: 22px;
+    font-size: 24px;
+    color: #FFF;
+    font-weight: bold;
+}
+
+div#menu_screen div#covers_screen div#cover_number_show {
+    margin: 5px auto;
+    border: 1px solid #DDD;
+    width: 430px;
+    height: 28px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px 0px 5px 0px;
+    border: 1px solid #CCC;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 0px 1px 1px 0px #777;
+    background-color: #FFF;
+    text-align: center;
+}
+
+div#menu_screen div#covers_screen div#keypad_container {
+    height: 554px;
+    background-color: #E0E0E0;
+}
+
+div#menu_screen div#covers_screen div#keypad_container div.keypad {
+
+}
+
 
 div#menu_screen div#table_screen {
     display: none;
@@ -1545,13 +1624,40 @@ div.table_tab_selected {
     text-align: center;
     cursor: pointer;
     border: 1px solid #777;
+    border-bottom-width: 0;
     -moz-border-radius: 7px;
     border-top-left-radius: 7px;
     border-top-right-radius: 7px;
     box-shadow: 0px 1px 0px #777;
-    background: -moz-linear-gradient(#F8F8F8, #E0E0E0) repeat scroll 0 0 transparent;
-    background: -webkit-gradient(linear, left top, left bottom, from(#F8F8F8), to(#E0E0E0));
+    background: -moz-linear-gradient(#E7E7E7, #C1C1C1) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
 
+
+}
+
+div.table_tab_selected.selected {
+    color: white;
+    background: -moz-linear-gradient(#C1C1C1, #101010) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#C1C1C1), to(#101010));
+    border-bottom-width: 0;
+}
+
+#covers_num{
+    border: none;
+    width: 45px;
+    font-size: 18px;
+    margin-top: -5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#covers_num.highlighted{
+    background-color: blue;
+    color: white;
+}
+
+#covers_num:focus{
+    outline: none;
 }
 
 div.tabs {

@@ -5,6 +5,16 @@ var clear10BottomBorderHTML = "<div class='clear_top_margin_10_bottom_border'>&n
 
 var appOnline = true;
 
+var activeTableIDSStorageKey = "active_table_ids";
+var breakUserIDSSStorageKey = "break_user_ids";
+var clockedInUserIDSSStorageKey = "clocked_in_user_ids";
+
+var activeUserIDCookieName = "current_user_id";
+
+var serverCounterStartTimeMillis = null;
+var counterStartTimeMillis = null;
+var clueyTimestampInitializedFromServer = false;
+
 function isTouchDevice() {
     return !disableAdvancedTouch;
 }
@@ -16,22 +26,41 @@ function goTo(place) {
         return false;
     }
     
+    if(cacheDownloading) {
+        cacheDownloadingPopup();
+        return false;
+    }
+    
     showSpinner();
     window.location = place;
     return false;
 }
 
-function postTo(place, data) {
-    var formHTML = '<form action="' + place + '" method="POST">';
-    
-    for (var key in data) {
-        formHTML += '<input type="hidden" name="' + key + '" value="' + data[key] + '"/>';
-    }
-    
-    formHTML += '</form>';
-    
+function goToNewWindow(place) {
+    window.open(place,'_blank');
+}
+
+function postTo(path, params) {
     showSpinner();
-    $(formHTML).submit();
+    
+    var form = document.createElement("form");
+    
+    form.setAttribute("method", "post");
+    form.setAttribute("action", path);
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+        }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
 }
 
 function inMobileContext() {
@@ -52,6 +81,14 @@ function inMediumInterface() {
 
 function inAndroidWrapper() {
     return (typeof clueyAndroidJSInterface != "undefined");
+}
+
+function currencyBalance(balance) {
+    if(balance < 0) {
+        return currency(Math.abs(balance)) + "CR";
+    } else {
+        return currency(balance);
+    }
 }
 
 function currency(number, showUnit) {
@@ -134,6 +171,11 @@ function doReload(resetSession) {
 
 function refreshClicked() {
     callHome = false;
+    doReload(false);
+}
+
+function resetOrderTimestamp() {
+    callHome = false;
     
     lastSyncTableOrderTime = 0;
     storeKeyValue(lastSyncKey, lastSyncTableOrderTime);
@@ -154,16 +196,31 @@ var sessionIdCookieName = "_session_id";
 var lastReloadCookieName = "last_reload_time";
 var lastPrintCheckCookieName = "last_print_check_time";
 var salesInterfaceForwardFunctionCookieName = "sales_interface_forward_function";
+var salesInterfaceForwardJSExecuteCookieName = "sales_interface_forward_js_execute";
+var inTrainingModeCookieName = "in_training_mode";
 
 //deletes everything but the fingerprint cookie
 function clearLocalStorageAndCookies() {
     //clear the local and session web storage
-    localStorage.clear();
+    var nextKey = null;
+    
+    //must record the loop length first as it will change during the course of the loop
+    var loopLength = localStorage.length;
+    
+    for (var i = 0; i < loopLength; i++){
+        nextKey = localStorage.key(i);
+
+        if(nextKey == breakUserIDSSStorageKey || nextKey == clockedInUserIDSSStorageKey) {
+            continue;
+        }
+        
+        localStorage.removeItem(nextKey);
+    }
     
     //now clear cookies
     var c = document.cookie.split(";");
         
-    for(var i=0;i<c.length;i++) {
+    for(i=0;i<c.length;i++) {
         var e = c[i].indexOf("=");
         var cname = c[i].substr(0,e);
         
@@ -200,13 +257,9 @@ function setFingerPrintCookie() {
 }
 
 function regenerateTerminalFingerprintCookie() {
-    var answer = confirm("Are you sure?");
-    
-    if (answer) {
-        setRawCookie(terminalFingerPrintCookieName, "", -365);
-        setFingerPrintCookie()
-        doReload(false);
-    }
+    setRawCookie(terminalFingerPrintCookieName, "", -365);
+    setFingerPrintCookie()
+    goTo("/");
 }
 
 function storeOrderInStorage(current_user_id, order_to_store) {
@@ -247,17 +300,10 @@ function storeTableOrderInStorage(current_user_id, table_num, order_to_store) {
     return storeKeyValue(key, value);
 }
 
-// OLD VERSION THAT KEEPS COPY OF ORDERS PER USER (KEEP FOR REVERT)
-//function storeTableOrderInStorage(current_user_id, table_num, order_to_store) {
-//    key = "user_" + current_user_id + "_table_" + table_num + "_current_order";
-//    value = JSON.stringify(order_to_store);
-//    return storeKeyValue(key, value);
-//}
-
 function getTableOrderFromStorage(current_user_id, selectedTable) {
     key = "user_" + current_user_id + "_table_" + selectedTable + "_current_order";
     storageData = retrieveStorageValue(key);
-    
+
     tableOrderDataJSON = null;
     
     if(storageData != null) {
@@ -274,25 +320,10 @@ function getTableOrderFromStorage(current_user_id, selectedTable) {
             }
         }
     }
-    
+
     tableNum = selectedTable;
     parseAndFillTableOrderJSON(tableOrderDataJSON);
 }
-
-// OLD VERSION THAT KEEPS COPY OF ORDERS PER USER (KEEP FOR REVERT)
-//function getTableOrderFromStorage(current_user_id, selectedTable) {
-//    key = "user_" + current_user_id + "_table_" + selectedTable + "_current_order";
-//    storageData = retrieveStorageValue(key);
-//    
-//    tableOrderDataJSON = null;
-//    
-//    if(storageData != null) {
-//        tableOrderDataJSON = JSON.parse(storageData);
-//    }
-//    
-//    tableNum = selectedTable;
-//    parseAndFillTableOrderJSON(tableOrderDataJSON);
-//}
 
 function userHasUniqueTableOrder(userID, tableID) {
     var key = "user_" + userID + "_table_" + tableID + "_current_order";
@@ -393,7 +424,7 @@ function buildInitialOrder() {
         'courses' : new Array(),
         'total': 0,
         'client_name' : "",
-        'covers' : 0
+        'covers' : -1
     };
     
     return initOrder;
@@ -426,7 +457,7 @@ function deleteStorageValue(key) {
 }
 
 function getActiveTableIDS() {
-    activeTableIDSString = retrieveStorageValue("active_table_ids");
+    activeTableIDSString = retrieveStorageValue(activeTableIDSStorageKey);
     
     //alert("got active table ids " + activeTableIDSString);
     
@@ -440,7 +471,7 @@ function getActiveTableIDS() {
 function storeActiveTableIDS(activeTableIDS) {
     activeTableIDSString = activeTableIDS.join(",");
     //alert("Storing active table ids " + activeTableIDSString);
-    storeKeyValue("active_table_ids", activeTableIDSString);
+    storeKeyValue(activeTableIDSStorageKey, activeTableIDSString);
 }
 
 function addActiveTable(tableID) {
@@ -466,6 +497,90 @@ function removeActiveTable(tableID) {
     });
 
     storeActiveTableIDS(activeTableIDS);
+    
+    return newlyRemoved;
+}
+
+function getBreakUsersIDS() {
+    var breakUserIDSString = retrieveStorageValue(breakUserIDSSStorageKey);
+    
+    if(breakUserIDSString) {
+        return breakUserIDSString.split(",");
+    } else {
+        return new Array();
+    }
+}
+
+function storeBreakUsersIDS(breakUserIDS) {
+    var breakUserIDSString = breakUserIDS.join(",");
+    storeKeyValue(breakUserIDSSStorageKey, breakUserIDSString);
+}
+
+function addBreakUser(userID) {
+    var breakUsersIDS = getBreakUsersIDS();
+    
+    var newlyAdded = ($.inArray(userID.toString(), breakUsersIDS) == -1);
+    
+    if(newlyAdded) {
+        breakUsersIDS.push(userID);
+        storeBreakUsersIDS(breakUsersIDS);
+    }
+    
+    return newlyAdded;
+}
+
+function removeBreakUser(userID) {
+    var breakUsersIDS = getBreakUsersIDS();
+    
+    var newlyRemoved = ($.inArray(userID.toString(), breakUsersIDS) != -1);
+    
+    breakUsersIDS = $.grep(breakUsersIDS, function(val) {
+        return val.toString() != userID.toString();
+    });
+
+    storeBreakUsersIDS(breakUsersIDS);
+    
+    return newlyRemoved;
+}
+
+function getClockedInUsersIDS() {
+    var clockedInUserIDSString = retrieveStorageValue(clockedInUserIDSSStorageKey);
+    
+    if(clockedInUserIDSString) {
+        return clockedInUserIDSString.split(",");
+    } else {
+        return new Array();
+    }
+}
+
+function storeClockedInUsersIDS(clockedInUserIDS) {
+    var clockedInUserIDSString = clockedInUserIDS.join(",");
+    storeKeyValue(clockedInUserIDSSStorageKey, clockedInUserIDSString);
+}
+
+function addClockedInUser(userID) {
+    var clockedInUsersIDS = getClockedInUsersIDS();
+    
+    var newlyAdded = ($.inArray(userID.toString(), clockedInUsersIDS) == -1);
+    
+    if(newlyAdded) {
+        clockedInUsersIDS.push(userID);
+        storeClockedInUsersIDS(clockedInUsersIDS);
+    }
+    
+    return newlyAdded;
+}
+
+function removeClockedInUser(userID) {
+    var clockedInUsersIDS = getClockedInUsersIDS();
+    
+    var newlyRemoved = ($.inArray(userID.toString(), clockedInUsersIDS) != -1);
+    
+    clockedInUsersIDS = $.grep(clockedInUsersIDS, function(val) {
+        return val.toString() != userID.toString();
+    });
+
+    storeClockedInUsersIDS(clockedInUsersIDS);
     
     return newlyRemoved;
 }
@@ -505,12 +620,25 @@ function getRawCookie(c_name) {
     return null;
 }
 
+function deleteRawCookie(c_name) {
+    var exdays = -1 * 365 * 100;
+    setRawCookie(c_name, null, exdays);
+}
+
 String.prototype.startsWith = function(str){
     return (this.indexOf(str) === 0);
 };
 
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
+
+String.prototype.contains = function(str){
+    return (this.indexOf(str) != -1);
+};
+
+String.prototype.splice = function( idx, rem, s ) {
+    return (this.slice(0,idx) + s + this.slice(idx + Math.abs(rem)));
 };
 
 function utilFormatDate(date) {
@@ -526,7 +654,7 @@ function inDevMode() {
 }
 
 function inProdMode() {
-    return railsEnvironment == 'production' || railsEnvironment == 'production_heroku';
+    return railsEnvironment != 'development';
 }
 
 function inKioskMode() {
@@ -563,6 +691,17 @@ function serverNickname(user_id) {
     }
     
     return server;
+}
+
+function employeeForID(employeeId) {
+    for (var i = 0; i < employees.length; i++) {
+        var id = employees[i].id;
+        if (id == employeeId) {
+            return employees[i];
+        }
+    }
+    
+    return null;
 }
 
 function serverRoleID(user_id) {
@@ -661,7 +800,13 @@ function initRadioButtons() {
     });
 }
 
+var hideNiceAlertListener = null;
+
 function niceAlert(message, title) {
+    if(showingTerminalSelectDialog) {
+        return;
+    }
+    
     //hide previous ones
     hideNiceAlert();
     
@@ -677,10 +822,26 @@ function niceAlert(message, title) {
             okButtonText: 'Ok',
             onOk: "hideNiceAlert()"
         });
+        
+    hideNiceAlertListener = function(event) {
+        if(getEventKeyCode(event) == 13) {
+            hideNiceAlert();
+        }
+    };
+        
+    $(window).bind('keypress', hideNiceAlertListener);
 }
 
 function hideNiceAlert() {
+    if(showingTerminalSelectDialog) {
+        return;
+    }
+    
     try {
+        if(hideNiceAlertListener != null) {
+            $(window).unbind('keypress', hideNiceAlertListener);
+        }
+        
         ModalPopups.Close('niceAlertContainer');
     } catch (e) {
         
@@ -748,29 +909,99 @@ function initPressedCSS() {
     });
 }
 
-function clueyTimestamp() {
-    return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
+function initClueyTimestampFromServer(serverStartTimeMillis) {
+    if(!clueyTimestampInitializedFromServer) {
+        clueyTimestampInitializedFromServer = true;
+        serverCounterStartTimeMillis = serverStartTimeMillis;
+        counterStartTimeMillis = new Date().getTime();
+        startClock();
+    }
 }
 
+function clueyTimestamp() {
+    if(clueyTimestampInitializedFromServer) {
+    return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
+    } else 
+        return new Date().getTime();
+}
+
+function startClock() {
+    //start the clock in the nav bar
+        $("div#clock").clock({
+            "calendar" : "false",
+            "format" : clockFormat,
+            "timestamp" : clueyTimestamp()
+        });
+}
+
+var ignoreReloadRequest = false;
+
+//THERE ARE 2 TYPES OF RELOAD, ONE IS A HARD RESET, AND THE OTHER IS A SALES RESOURCES RESET
 function alertReloadRequest(reloadTerminalId, hardReload) {
-    if(reloadTerminalId == terminalID) {
+    if(ignoreReloadRequest) {
         return;
     }
     
     //hide any previous popups
     hideNiceAlert();
     
-    //the timeout must be 2 seconds over the pollingAmount so that it has a chance to save the timestamp
-    //preventing the reload request from reappearing
-    var timeoutSeconds = pollingMaxSeconds + 2;
+    //must write the last reload time to cookie here so that the reload message does not keep popping up
+    writeLastReloadTimeCookie();
+    
+    var timeoutSeconds = 5;
     
     if(hardReload) {
         message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
         okFuncCall = "doClearAndReload();";
+        
+        ModalPopups.Alert('niceAlertContainer',
+            "Please Reload Screen", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
+            {
+                width: 360,
+                height: 280,
+                okButtonText: 'Reload Now',
+                onOk: okFuncCall
+            });
+        
+        setTimeout(okFuncCall, timeoutSeconds * 1000);
     } else {
-        message = "Settings have been changed by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
-        okFuncCall = "doReload(false);";
+        var functionToPerform = function() {
+            promptReloadSalesResources(reloadTerminalId);
+        };
+        
+        indicateActionRequired(functionToPerform);
     }
+}
+
+function promptReloadSalesResources(reloadTerminalId) {
+    var message = "Your POS data has been changed by " + reloadTerminalId + ", click OK to pick up the new data!";
+    var okFuncCall = "doReloadSalesResources();";
+        
+    ModalPopups.Alert('niceAlertContainer',
+        "Click OK To Refresh", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
+        {
+            width: 360,
+            height: 280,
+            okButtonText: 'Refresh',
+            onOk: okFuncCall
+        });
+}
+
+function writeLastReloadTimeCookie() {
+    ////write it to cookie        
+    //100 year expiry, but will really end up in year 2038 due to limitations in browser
+    var interfaceReloadTimeCookeExpDays = 365 * 100;
+    setRawCookie(lastReloadCookieName, lastInterfaceReloadTime, interfaceReloadTimeCookeExpDays);
+}
+
+function alertCacheReloadRequest() {
+    //hide any previous popups
+    hideNiceAlert();
+    
+    var timeoutSeconds = 5;
+    
+    var message = "New cache downloaded! App will reload in " + timeoutSeconds + " seconds.";
+    var okFuncCall = "doReload(false);";
     
     ModalPopups.Alert('niceAlertContainer',
         "Please Reload Screen", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
@@ -887,6 +1118,10 @@ function appOfflinePopup() {
     niceAlert("Server cannot be contacted. App will operate in restricted mode. Some features may not be available.");
 }
 
+function cacheDownloadingPopup() {
+    niceAlert("The cache is downloading. App will operate in restricted mode. Some features may not be available.");
+}
+
 //function to force a button to be clicked that works with both advanced touch and non
 function doClickAButton(el) {
     el.mousedown().mouseup().click();
@@ -931,4 +1166,99 @@ function playSound(url) {
         sound.attr('autostart', true);
         $('body').append(sound);
     }
+}
+
+function setEventyKeyCode(e, code) {
+    e.keyCode = code;
+}
+
+function getEventKeyCode(e) {
+    //console.log("KC: " + e.keyCode + " - " + e.charCode + " : " + (e.charCode || e.keyCode));
+    return e.charCode || e.keyCode;
+}
+
+function sizeOfHash(theHash) {
+    return Object.keys(theHash).length
+}
+
+function sizeOfObjectInBytes(value) {
+    return lengthInUtf8Bytes(JSON.stringify(value));
+}
+
+function lengthInUtf8Bytes(str) {
+    // Matches only the 10.. bytes that are non-initial characters in a multi-byte sequence.
+    var m = encodeURIComponent(str).match(/%[89ABab]/g);
+    return str.length + (m ? m.length : 0);
+}
+
+function doKeyboardInput(input, val) {
+    var caretStart = input.caret().start;
+    var caretEnd = input.caret().end;
+        
+    var newStartVal = input.val().substring(0, caretStart);
+    var newEndVal = input.val().substring(caretEnd);
+        
+    input.val(newStartVal + val + newEndVal);
+    input.caret({
+        start : caretStart + 1, 
+        end : caretStart + 1
+    });
+}
+
+function doKeyboardInputCancel(input) {
+    var caretStart = input.caret().start;
+    var caretEnd = input.caret().end;
+        
+    var newStartVal;
+    var newEndVal;
+        
+    if(caretEnd > caretStart) {
+        newStartVal = input.val().substring(0, caretStart);
+        newEndVal = input.val().substring(caretEnd);
+        input.val(newStartVal + newEndVal);
+        input.caret({
+            start : caretStart, 
+            end : caretStart
+        });
+    } else {
+        newStartVal = input.val().substring(0, caretStart - 1);
+        newEndVal = input.val().substring(caretEnd);
+        input.val(newStartVal + newEndVal);
+        input.caret({
+            start : caretStart - 1, 
+            end : caretStart - 1
+        });
+    }
+}
+
+function focusSelectInput(inputEl) {
+    addTableNamePopupEl.find('input').focus();
+    addTableNamePopupEl.find('input').caret({
+        start : 0, 
+        end : 0
+    });
+}
+
+function storeActiveUserID(userID) {
+    if(userID == null) {
+        deleteRawCookie(activeUserIDCookieName);
+        return;
+    }
+    
+    var exdays = 365 * 100;
+    setRawCookie(activeUserIDCookieName, userID, exdays);
+}
+
+function fetchActiveUserID() {
+    return getRawCookie(activeUserIDCookieName);
+}
+
+function requestReload() {
+    $.ajax({
+        type: 'POST',
+        url: '/request_terminal_reload',        
+        success: function() {
+            console.log("Reload request sent to server!");
+        }
+    });
 }

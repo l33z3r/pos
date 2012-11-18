@@ -1,0 +1,6 @@
+<%= stylesheet_links "/jqtouch/jqtouch", "/jqtouch/themes/apple/theme", "mobile/", :cache => "cache/mobile", :recursive => true %>
+
+<%= javascript_include_tag "/jqtouch/jqtouch", "mobile/mobile", "mobile/mobile_login_functions", "mobile/mobile_util", :cache => "cache/mobile" %>
+
+<!-- load the js shared between medium and mobile for use on android devices -->
+<%= javascript_include_tag "interfaces/shared/mobile_device", :cache => "cache/mobile_device"%>

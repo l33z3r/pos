@@ -51,7 +51,22 @@ function fetchLastRoomID(user_id) {
     return lastRoomID;
 }
 
-function printReceipt(content, printRecptMessage) {
+function printReceipt(content, printRecptMessage, printerID) {
+    var receiptContent = receiptContentSetup(content, printRecptMessage);
+    printContent(receiptContent, printerID);
+}
+
+//this causes a local print resulting in a popup
+function printLocalReceipt(content, printRecptMessage) {
+    var receiptContent = receiptContentSetup(content, printRecptMessage);
+    
+    $('#printFrame').contents().find('#till_roll').html(receiptContent);
+
+    printFrame.focus();
+    printFrame.print();
+}
+
+function receiptContentSetup(content, printRecptMessage) {
     if(!inKitchenContext()) {
         setStatusMessage("Printing Receipt");
     }
@@ -65,10 +80,11 @@ function printReceipt(content, printRecptMessage) {
     
     //you set mandatoryFooterMessageHTML before calling this and it will print it
     //used for the likes of zalion
-    if(mandatoryFooterMessageHTML != null) {
+    if(mandatoryFooterMessageHTML != null && mandatoryFooterMessageHTML.length > 0) {
         content += clearHTML + mandatoryFooterMessageHTML;
-        mandatoryFooterMessageHTML = null;
     }
+    
+    mandatoryFooterMessageHTML = null;
     
     if(printRecptMessage) {
         receiptMessageHTML = "<div id='receipt_message'>" + footer + "</div>";
@@ -77,75 +93,152 @@ function printReceipt(content, printRecptMessage) {
     //add space and a dot so we print a bottom margin
     content += clear30HTML + "<div class='the_dots'>.  .  .</div>";
     
-    printContent(content);
+    return content;
 }
 
-function printContent(content) {
-    $('#printFrame').contents().find('#till_roll').html(content);
-
-    var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>"
-    + $('#printFrame').contents().find('html').html() + "</html>";
-
-    //make sure the html content is compatible with the print service
-    //replace <hr> with <hr></hr>
-    content_with_css = content_with_css.replace("<hr>", "<hr></hr>");
-
-    if(using_wss_receipt_printer) {
-        if ("WebSocket" in window) {
-            var ws = new WebSocket("ws://" + webSocketServiceIP + ":8080/ClueyWebSocketServices/receipt_printer_ws");
-
-            ws.onopen = function()
-            {
-                //there is a maximum limit on the size of the message we can send,
-                //so we split it into groups of 3072 chars (3kb of data)
-                var charsPerGroup = 3072;
-
-                console.log("Breaking data up into " + Math.ceil(content_with_css.length/charsPerGroup) + " groups to send to print service");
-                for(var i = 0; i < content_with_css.length; i+=charsPerGroup) {
-                    var nextGroup = content_with_css.substring(i, i + charsPerGroup);
-                    console.log("Sending group " + ((i/charsPerGroup) + 1));
-                    ws.send(nextGroup);
-                }
-
-                ws.close();
-            };
-
-            ws.onmessage = function (evt)
-            {
-                var received_msg = evt.data;
-                console.log("Message received: " + received_msg);
-            };
-            ws.onclose = function()
-            {
-                // websocket is closed.
-                console.log("Connection closed!");
-            };
-        } else {
-            // The browser doesn't support WebSocket
-            alert("WebSocket NOT supported by your browser, Please disable web sockets!");
+//see here for code for listener: https://www.mozdev.org/bugs/show_bug.cgi?id=24359#c4
+var printerProgressListener = {
+    stateIsRequest:false,
+        printing: false,
+    QueryInterface : function(aIID) {
+        if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
+            aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+            aIID.equals(Components.interfaces.nsISupports))
+            return this;
+        throw Components.results.NS_NOINTERFACE;
+    },
+   
+    onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus) {
+        console.log('State Change -> State Flags:'+aStateFlags+' Status:'+aStatus);
+     
+        if (aStateFlags == 262160) {// 0x40010 = STATE_IS_NETWORK | STATE_STOP
+            this.printing = false;
         }
-    } else {
-        var print_service_url = 'http://' + webSocketServiceIP + ':8080/ClueyWebSocketServices/receipt_printer';
-
-        $.ajax({
-            type: 'POST',
-            url: '/forward_print_service_request',
-            error: function() {
-                setStatusMessage("Printer service cannot be reached.", false, false);
-            },
-            data: {
-                print_service_url : print_service_url,
-                html_data : content_with_css
-            }
-        });
+        
+        return 0;
+    },
+   
+    onLocationChange : function(aWebProgress, aRequest, aLocation) {
+        return 0;
+    },
+   
+    onProgressChange : function(aWebProgress, aRequest,
+        aCurSelfProgress, aMaxSelfProgress,
+        aCurTotalProgress, aMaxTotalProgress){
+//        alert('Self Current:'+aCurSelfProgress+' Self Max:'+aMaxSelfProgress
+//            +' Total Current:'+aCurTotalProgress+' Total Max:'+aMaxTotalProgress);
+        
+        this.printing = true;
+    },
+   
+    onStatusChange : function(aWebProgress, aRequest, aStateFlags, aStatus) {
+//        alert('Status Change -> State Flags:'+aStateFlags+' Status:'+aStatus);
+    },
+    onSecurityChange : function(aWebProgress, aRequest, aState){}
+//    onLinkIconAvailable : function(a){}
+};
+    
+function printContent(content, printerID) {
+    if(inMediumInterface()) {
+        niceAlert("Printing is not yet supported for the cloud on mobiles except for ordering");
+        return;
     }
-
-//DO IT THE OLD FASHIONED WAY (firefox)
-//    $('#printFrame').contents().find('#till_roll').html(content);
-//
-//    printFrame.focus();
-//    printFrame.print();
-
+    
+    if(!checkForClueyPlugin() || !checkForJSPrintSetupPlugin()) {
+        return;
+    }
+    
+    console.log("Attempting to print to printer " + printerID);
+    
+    if (printerProgressListener.printing) {
+        console.log("Waiting 500 ms for previous print job to complete.");
+        
+        setTimeout(function(){
+            printContent(content, printerID)
+        }, 500);
+        
+        return;
+    }
+    
+    var printer;
+    
+    if(printerID) {
+        printer = printersByID[printerID];
+    } else {
+        if(localPrinterID == -1) {
+            niceAlert("You have not set a local receipt printer for this terminal");
+            return
+        }
+        
+        printer = printersByID[localPrinterID];
+    }
+        
+    if(!printer) {
+        niceAlert("No printer found with id " + localPrinterID);
+        return;
+    }
+    
+    var printerNetworkPath = printer.network_path.toLowerCase();
+    
+    if($.inArray(printerNetworkPath, localPrinters) == -1) {
+        var title = "Printer Not Installed";
+        
+        hideNiceAlert();
+        
+        ModalPopups.Alert('niceAlertContainer',
+            title, "<div id='nice_alert' class='licence_expired_header'>You are trying to print to a printer that is not installed on this terminal: " + printerNetworkPath + "</div>",
+            {
+                width: 360,
+                height: 310,
+                okButtonText: 'Ok',
+                onOk: "hideNiceAlert();"
+            });
+        
+        return;
+    }
+    
+    console.log("Printing to printer: " + printerNetworkPath);
+    jsPrintSetup.refreshOptions();
+    jsPrintSetup.setPrinter(printerNetworkPath);
+        
+    // set top margins in millimeters
+    jsPrintSetup.setOption('marginTop', 0);
+    jsPrintSetup.setOption('marginBottom', 0);
+    jsPrintSetup.setOption('marginLeft', 0);
+    jsPrintSetup.setOption('marginRight', 0);
+    // set page header
+    jsPrintSetup.setOption('headerStrLeft', '');
+    jsPrintSetup.setOption('headerStrCenter', '');
+    jsPrintSetup.setOption('headerStrRight', '');
+    // set empty page footer
+    jsPrintSetup.setOption('footerStrLeft', '');
+    jsPrintSetup.setOption('footerStrCenter', '');
+    jsPrintSetup.setOption('footerStrRight', '');
+   
+    // clears user preferences always silent print value
+    // to enable using 'printSilent' option
+    jsPrintSetup.clearSilentPrint();
+        
+    // Suppress print dialog (for this context only)
+    jsPrintSetup.setOption('printSilent', 1);
+    jsPrintSetup.setShowPrintProgress(false);
+        
+    jsPrintSetup.saveOptions(jsPrintSetup.kSaveAll);
+    jsPrintSetup.saveGlobalOptions(jsPrintSetup.kSaveAll);
+        
+    //register the progress listener
+    jsPrintSetup.setPrintProgressListener(printerProgressListener);
+        
+    // Do Print 
+    $('#printFrame').contents().find('#till_roll').html(content);
+    
+    //set some printer settings
+    var mmToPixelFactor = 3.779527559;
+    var paperWidth = printer.paper_width_mm * mmToPixelFactor;
+    $('#printFrame').contents().find('body').width(paperWidth + "px");
+    $('#printFrame').contents().find('body').css("font-size", printer.font_size + "px");
+    
+    jsPrintSetup.printWindow(printFrame);
 }
 
 function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, includeVatBreakdown) {

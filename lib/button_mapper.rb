@@ -70,11 +70,23 @@ class ButtonMapper
   PRODUCT_INFO_POPUP_BUTTON = 67
   MANAGE_CUSTOMERS_BUTTON = 68
   MANAGE_LOYALTY_CUSTOMERS_BUTTON = 69
+  TOGGLE_MENU_ITEM_HALF_BUTTON = 70
+  PM_SHORTCUT_1_BUTTON = 71
+  PM_SHORTCUT_2_BUTTON = 72
+  PM_SHORTCUT_3_BUTTON = 73
+  TRAINING_MODE_TOGGLE_BUTTON =  74
+  CHANGE_COST_PRICE_BUTTON = 75
+  EDIT_LOYALTY_POINTS_BUTTON = 76
   
+  #These buttons should not be shown on the interface or used in any way
   RESTRICTED_BUTTON_IDS = [
-    ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON,
-    CASH_OUT_BUTTON, DELIVERY_BUTTON, STOCK_TAKE_BUTTON,
-    PRINTERS_BUTTON, CHANGE_WAITER_BUTTON, REFUND_BUTTON, WASTE_BUTTON, CLIENT_BUTTON, THEMES_BUTTON
+    ORDER_TYPES_BUTTON, GIFT_VOUCHER_BUTTON, RECEIPT_SETUP_BUTTON, SERVICE_CHARGE_BUTTON, STOCK_TAKE_BUTTON,
+    PRINTERS_BUTTON, CHANGE_WAITER_BUTTON, REFUND_BUTTON, WASTE_BUTTON, CLIENT_BUTTON, THEMES_BUTTON, Z_REPORTS_BUTTON
+  ]
+  
+  #these buttons are used (maybe just for permissions), but should not be shown on interface.
+  HIDDEN_BUTTON_IDS = [
+    CHANGE_COST_PRICE_BUTTON, EDIT_LOYALTY_POINTS_BUTTON
   ]
   
   def action_for_button button
@@ -87,9 +99,9 @@ class ButtonMapper
     when Z_TOTAL_BUTTON
       @retval = si_check(Z_TOTAL_BUTTON, ms_check("prepareZTotal();"))
     when X_REPORTS_BUTTON
-      @retval = "goTo('#{admin_cash_total_options_path}?section=x'); return false;"
-    when Z_REPORTS_BUTTON
-      @retval = "goTo('#{admin_cash_total_options_path}?section=z'); return false;"
+      @retval = "goTo('#{admin_cash_total_options_path}'); return false;"
+#    when Z_REPORTS_BUTTON
+#      @retval = "goTo('#{admin_cash_total_options_path}?section=z'); return false;"
     when MANAGE_USERS_BUTTON
       @retval = "goTo('#{admin_employees_path}'); return false;"
     when MANAGE_ROLES_BUTTON
@@ -155,9 +167,9 @@ class ButtonMapper
     when STOCK_TAKE_BUTTON
       @retval = "alert('stock take button clicked');"
     when DELIVERY_BUTTON
-      @retval = "alert('delivery button clicked');"
+      @retval = si_check(DELIVERY_BUTTON, "startDeliveryMode();")
     when CASH_OUT_BUTTON
-      @retval = "alert('cash out button clicked');"
+      @retval = si_check(CASH_OUT_BUTTON, ms_check("showCashOutSubscreen();"))
     when RECEIPT_SETUP_BUTTON
       @retval = "alert('receipt setup button clicked');"
     when PAYMENT_METHODS_BUTTON
@@ -171,7 +183,7 @@ class ButtonMapper
     when PRINT_RECEIPT_BUTTON
       @retval = si_check(PRINT_RECEIPT_BUTTON, "printCurrentReceipt();");
     when ORDER_BUTTON
-      @retval = si_check(ORDER_BUTTON, "doSyncTableOrder();");
+      @retval = si_check(ORDER_BUTTON, "orderButtonPressed();");
     when SERVICE_CHARGE_BUTTON
       @retval = si_check(SERVICE_CHARGE_BUTTON, ms_check("promptForServiceCharge();"))
     when PREVIOUS_ORDERS_BUTTON
@@ -187,7 +199,7 @@ class ButtonMapper
     when COURSE_BUTTON
       @retval = si_check(COURSE_BUTTON, ms_check("changeCourseNum();"))
     when PRINT_BILL_BUTTON
-      @retval = si_check(PRINT_BILL_BUTTON, "printBill();")
+      @retval = si_check(PRINT_BILL_BUTTON, "printBillPressed();")
     when KITCHEN_SCREEN_BUTTON
       @retval = "goTo('#{kitchen_path}');"
     when PREVIOUS_CASH_TOTALS_BUTTON
@@ -197,7 +209,7 @@ class ButtonMapper
     when ADD_NAME_TO_TABLE_BUTTON
       @retval = si_check(ADD_NAME_TO_TABLE_BUTTON, ms_check("promptAddNameToTable();"))
     when REPORTS_BUTTON
-      @retval = "goTo('#{reports_glances_path}');"
+      @retval = "goTo('#{reports_sales_path}');"
     when SPLIT_BILL_BUTTON
       @retval = si_check(SPLIT_BILL_BUTTON, ms_check("startSplitBillMode();"))
     when EXIT_APP_BUTTON
@@ -215,11 +227,25 @@ class ButtonMapper
     when COVERS_BUTTON
       @retval = si_check(COVERS_BUTTON, ms_check("promptAddCovers();"))
     when PRODUCT_INFO_POPUP_BUTTON
-      @retval = si_check(PRODUCT_INFO_POPUP_BUTTON, ms_check("toggleProductInfoPopup();"))
+      @retval = si_check(PRODUCT_INFO_POPUP_BUTTON, "toggleProductInfoPopup();")
     when MANAGE_CUSTOMERS_BUTTON
-      @retval = "goTo('#{admin_customers_path}'); return false;"
+      @retval = "goTo('#{admin_customers_path}?show_normal_customers=true'); return false;"
     when MANAGE_LOYALTY_CUSTOMERS_BUTTON
-      @retval = "goTo('#{admin_customers_path}'); return false;"
+      @retval = "goTo('#{admin_customers_path}?show_loyalty_customers=true'); return false;"
+    when TOGGLE_MENU_ITEM_HALF_BUTTON
+      @retval = si_check(TOGGLE_MENU_ITEM_HALF_BUTTON, ms_check("toggleMenuItemHalfMode();"))
+    when PM_SHORTCUT_1_BUTTON
+      @retval = si_check(PM_SHORTCUT_1_BUTTON, ms_check("pmShortcut(1);"))
+    when PM_SHORTCUT_2_BUTTON
+      @retval = si_check(PM_SHORTCUT_2_BUTTON, ms_check("pmShortcut(2);"))
+    when PM_SHORTCUT_3_BUTTON
+      @retval = si_check(PM_SHORTCUT_3_BUTTON, ms_check("pmShortcut(3);"))
+    when TRAINING_MODE_TOGGLE_BUTTON
+      @retval = si_check(TRAINING_MODE_TOGGLE_BUTTON, ms_check("toggleTrainingMode();"))
+    when CHANGE_COST_PRICE_BUTTON
+      @retval = "alert('Change Cost Price Button Clicked');"
+    when EDIT_LOYALTY_POINTS_BUTTON
+      @retval = "alert('Edit Loyalty Points Button Clicked');"
     end
 
     @retval
@@ -233,6 +259,14 @@ class ButtonMapper
     end
     
     return ""
+  end
+  
+  def self.uneditable_buttons
+    [SERVICE_CHARGE_BUTTON, PM_SHORTCUT_1_BUTTON, PM_SHORTCUT_2_BUTTON, PM_SHORTCUT_3_BUTTON]
+  end
+  
+  def self.pm_shortcut_buttons
+    [PM_SHORTCUT_1_BUTTON, PM_SHORTCUT_2_BUTTON, PM_SHORTCUT_3_BUTTON]
   end
   
   #CHECK ARE WE ON MENU SCREEN

@@ -1,0 +1,117 @@
+<div id="util_payment_screen" style="display: none;">
+  <div id="content_container" class="popout_dialog">
+    <div id="header" class="header">
+      <div id="util_payment_header" class="label"></div>
+    </div>
+
+    <div class="clear_top_margin_20">&nbsp;</div>
+
+    <div id="util_payment_options_section">
+      <div id="util_payment_options">
+        <% PaymentMethod.for_util_payment(current_outlet).each do |pm| %>
+          <div id="<%=pm.name.gsub(" ", "_").downcase%>_util_payment_method_button" class="button util_payment_method_button" data-onpress="utilPaymentScreenPaymentMethodSelected('<%=pm.id%>')">
+            <div class="icon">
+              <%= payment_method_logo_thumb pm, true %>
+            </div>
+            <div class="button_name"><%=pm.name.titleize%></div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div id="util_payment_keypad_container">
+      <div id="util_payment_keypad" class="keypad">
+        <div id="keys" class="keys">
+          <% [[7,9],[4,6],[1,3]].each do |x,y| %>
+            <% (x..y).each do |num| %>
+              <div id="totals_keypad_num_<%= num %>" class="key" data-onpress="utilPaymentScreenKeypadClick(<%= num %>)"><%= num %></div>
+            <% end %>
+          <% end %>
+
+          <div id="totals_keypad_num_0" class="key" data-onpress="utilPaymentScreenKeypadClick('0')">0</div>
+          <div id="totals_keypad_num_00" class="key" data-onpress="utilPaymentScreenKeypadClick('00')">00</div>
+          <div id="totals_cancel_key" class="key" data-onpress="utilPaymentScreenKeypadClickCancel()">C</div>
+        </div>
+
+        <div class="clear">&nbsp;</div>
+      </div>
+    </div>
+
+    <div id="action_buttons_info_container">
+      <div id="util_payment_content_container"></div>
+
+      <div id="util_payment_tender_section">
+
+        <div id="take_tendered_container">
+
+          <div id="tendered_popout">
+            <div class="clear_top_margin_10">&nbsp;</div>
+
+            <div id="tendered_data_tables_container">
+
+              <div class="data_table">
+                <div class="bold label">Payment Amount:</div>
+                <div id="util_payment_total_value" class="data"></div>
+                <div class="clear">&nbsp;</div>
+              </div>
+              <div class="clear">&nbsp;</div>
+
+              <div id="util_payment_tendered_amount" class="data_table">
+                <div class="bold label">Amount Tendered:</div>
+                <div id="util_payment_tendered_value" class="data"></div>
+                <div class="clear">&nbsp;</div>
+              </div>
+              <div class="clear">&nbsp;</div>
+
+              <div class="data_table" id="util_payment_balance_container">
+                <div class="bold label">Balance Due:</div>
+                <div id="util_payment_balance_value" class="bold data"></div>
+                <div class="clear">&nbsp;</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clear">&nbsp;</div>
+
+      <div id="util_payment_buttons_container">
+
+        <div class="action_buttons">
+          <div class="button" data-onpress="cancelUtilPayment()">
+            <div class="icon">
+              <%= image_tag "button_logos/cancel_util_payment.png" %>
+            </div>
+            <div class="button_name">Cancel</div>
+          </div>
+
+          <div id="finish_sale_button" class="button" data-onpress="finishUtilPayment()">
+            <div class="icon">
+              <%= image_tag "button_logos/finish_util_payment.png" %>
+            </div>
+            <div class="button_name">OK</div>
+          </div>
+
+          <div class="button" data-onpress="utilPaymentScreenChargeCreditCard()">
+            <div class="icon">
+              <%= image_tag "button_logos/charge_card_button.png" %>
+            </div>
+            <div class="button_name">Charge Card</div>
+          </div>
+
+          <div id="util_payment_exact_amount_button" class="button" data-onpress="utilPaymentExactAmountSelected()">
+            <div class="button_name">Exact Amount</div>
+          </div>
+
+          <div class="clear">&nbsp;</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
+  </div>
+</div>

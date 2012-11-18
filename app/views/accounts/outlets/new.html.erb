@@ -1,0 +1,34 @@
+<h1>Create an Outlet</h1>
+
+<%= form_for @outlet, :url => url_for(:controller => 'accounts/outlets', :action => 'create') do |f| %>
+  <% if @outlet.errors.any? %>
+    <div class="error_messages">
+      <h2>Form is invalid</h2>
+      <ul>
+        <% for message in @outlet.errors.full_messages %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <p>
+    <%= f.label :name, :label => "Outlet Name (This will be used as the subdomain)" %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :username %><br />
+    <%= f.text_field :username %>
+  </p>
+  <p>
+    <%= f.label :password %><br />
+    <%= f.password_field :password %>
+  </p>
+  <p>
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation %>
+  </p>
+  
+  <div id="captcha_section"><%= recaptcha_tags %></div>
+  
+  <p class="button"><%= f.submit "Create Outlet" %></p>
+<% end %>

@@ -329,7 +329,7 @@ function changePriceLastOrderItem() {
         //must set a timeout here so that if we are on the more 
         //options screen, the widths have time to calculate correctly
         var popup = doSelectReceiptItem(currentSelectedReceiptItemEl);
-        popup.find('.price').focus();
+        popup.find('.price').focus().select();
     }
 }
 
@@ -342,7 +342,7 @@ function showAddNoteToOrderItemScreen() {
         if(currentScreenIsMenu()) {
             if(currentMenuSubscreenIsModifyOrderItem()) {
                 if(doSaveNote()) {
-                    $('.button[id=sales_button_' + addNoteButtonID + ']').removeClass("selected");
+                    $('.button[id=sales_button_' + addNoteButtonID + '], .button[id=admin_screen_button_' + addNoteButtonID + ']').removeClass("selected");
                     resetKeyboard();
                     switchToMenuItemsSubscreen();
                 }
@@ -361,72 +361,15 @@ function showGlobalSettingsPage() {
 }
 
 function openCashDrawer() {
-    if(using_wss_cash_drawer) {
-        if ("WebSocket" in window) {
-            console.log("Sending cash drawer message");
-        
-            // Let us open a web socket
-            var ws = new WebSocket("ws://" + cashDrawerServiceIP + ":8080/ClueyWebSocketServices/cash_drawer_controller_ws");
-        
-            ws.onopen = function() {
-                // Web Socket is connected, send data using send()
-                ws.send("open cash drawer!");
-                console.log("Cash Drawer message sent");
-                ws.close();
-            };
-        
-            ws.onmessage = function (evt) { 
-                var received_msg = evt.data;
-                console.log("Message received: " + received_msg);
-            };
-            
-            ws.onclose = function() { 
-                // websocket is closed.
-                console.log("Connection closed!"); 
-            };
-        } else {
-            // The browser doesn't support WebSocket
-            alert("WebSocket NOT supported by your browser, Please disable web sockets!");
-        }
-    } else {
-        var cash_drawer_service_url = 'http://' + cashDrawerServiceIP + ':8080/ClueyWebSocketServices/cash_drawer_controller';
-    
-        $.ajax({
-            type: 'POST',
-            url: '/forward_cash_drawer_request',
-            error: function() {
-                setStatusMessage("Cash drawer service cannot be reached.", false, false);
-            },
-            data: {
-                cash_drawer_service_url : cash_drawer_service_url,
-                message : "open cash drawer"
-            }
-        });
+    if(!checkForClueyPlugin()) {
+        return;
     }
     
-//DO IT THE OLD FASHIONED WAY (only works with firefox)
-    
-//    //search for "signed.applets.codebase_principal_support" 
-//    //in this list and toggle its value to "true"
-//    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-//
-//    // create an nsILocalFile for the executable
-//    var file = Components.classes["@mozilla.org/file/local;1"]
-//    .createInstance(Components.interfaces.nsILocalFile);
-//    file.initWithPath("c:\\open_cash_drawer.bat");
-//
-//    // create an nsIProcess
-//    var process = Components.classes["@mozilla.org/process/util;1"]
-//    .createInstance(Components.interfaces.nsIProcess);
-//    process.init(file);
-//
-//    // Run the process.
-//    // If first param is true, calling thread will be blocked until
-//    // called process terminates.
-//    // Second and third params are used to pass command-line arguments
-//    // to the process.
-//    var args = [];
-//    process.run(false, args, args.length);
+    try {
+        cluey_ff_ext.openCashDrawer(cashDrawerComPort, cashDrawerCode);
+    } catch(ex) {
+        setStatusMessage("Error opening cash drawer!");
+    }
 }
 
 var addTableNamePopupEl;
@@ -482,7 +425,7 @@ function promptAddNameToTable() {
         addTableNamePopupEl.find('input').val(tableOrder.client_name);
     }
     
-    addTableNamePopupEl.find('input').focus();
+    addTableNamePopupEl.find('input').focus().select();
     
     //show the keyboard
     $('#util_keyboard_container').slideDown(300);
@@ -526,6 +469,11 @@ function saveAddNameToTable() {
 }
 
 function startSplitBillMode() {
+    if(!appOnline) {
+        niceAlert("Server cannot be contacted. Split bill is disabled until connection re-established.");
+        return;
+    }
+    
     if(haveSplitBillOrder(current_user_id)) {
         niceAlert("You must deal with the split order that is currently open. Please select it from the menu and either transfer it to a table or cash it out.");
         tableSelectMenu.setValue(tempSplitBillTableNum);
@@ -598,6 +546,11 @@ function exitApp() {
 }
 
 function tablesButtonPressed() {
+    if (!callHomePollInitSequenceComplete) {
+        niceAlert("Downloading data from server, please wait.");
+        return;
+    }
+    
     unorderedItemsPopup('doTablesButtonPressed();', true);
 }
 
@@ -630,6 +583,8 @@ function doTablesButtonPressed() {
         //reset the quantity
         currentMenuItemQuantity = "";
         $('#menu_screen_input_show').html("");
+        
+        manualCallHomePoll();
     } else {
         showTablesScreen();
     }
@@ -702,6 +657,22 @@ function promptVoidAllOrderItems() {
         return;
     }
     
+    var order = getCurrentOrder();
+    var allItemsSynced = true;
+    
+    for(var i=0; i<order.items.length; i++) {
+        var item = order.items[i];
+        if(!item.synced) {
+            allItemsSynced = false;
+            break;
+        }
+    }
+    
+    if(!allItemsSynced) {
+        niceAlert("You can only void all items after they have been order. You can delete unordered items.");
+        return;        
+    }
+    
     ModalPopups.Confirm('niceAlertContainer',
         'Void All?', "<div id='nice_alert'>Are you sure you want to void all items and cash this order out?</div>",
         {
@@ -723,9 +694,14 @@ function promptAddCovers() {
         return;
     }    
     
-    if(selectedTable == 0 || selectedTable == -1) {
+    if(selectedTable == -1) {
         setStatusMessage("Only valid for table orders!");
         return;
+    }
+    
+    //if we are on table 0 and no order items have been added, then there is no order object
+    if(currentOrder == null) {
+        currentOrder = buildInitialOrder();
     }
     
     var popupHTML = $("#add_covers_popup_markup").html();
@@ -763,26 +739,43 @@ function promptAddCovers() {
     
     var tableOrder = getCurrentOrder();
     
-    addCoversPopupEl.find('input').val(tableOrder.covers);
+    var covers = parseInt(tableOrder.covers);
     
-    addCoversPopupEl.find('input').focus();
+    if(covers == -1) {
+        addCoversPopupEl.find('input').val("");
+    } else {
+        addCoversPopupEl.find('input').val(tableOrder.covers);   
+    }    
     
-    //show the keyboard
-    $('#util_keyboard_container').slideDown(300);
+    addCoversPopupEl.find('input').focus().select();
+    
+    keypadPosition = $('#' + popupId).find('.add_covers_popup_keypad_container');
+    
+    clickFunction = function(val) {
+        var input = addCoversPopupEl.find('input');
+        doKeyboardInput(input, val);
+    };
+    
+    cancelFunction = function() {
+        var input = addCoversPopupEl.find('input');
+        doKeyboardInputCancel(input);
+    };
+    
+    setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
+
+    //register the click handler to hide the popup when outside clicked
+    registerPopupClickHandler($('#' + popupId), closePromptAddCovers);
 }
 
 function closePromptAddCovers() {
     if(addCoversPopupEl) {
         hideBubblePopup(addCoversPopupAnchor);
     }
-    
-    //hide the keyboard
-    $('#util_keyboard_container').slideUp(300);
 }
 
 function saveAddCovers() {
     //do nothing if not table order
-    if(selectedTable == 0 || selectedTable == -1) {
+    if(selectedTable == -1) {
         closePromptAddCovers();
         return;
     }
@@ -794,7 +787,7 @@ function saveAddCovers() {
     //make sure its an integer
     covers = parseInt(covers);
     
-    if(isNaN(covers)) {
+    if(isNaN(covers) || covers < 0) {
         covers = 0;
     }
     
@@ -802,12 +795,95 @@ function saveAddCovers() {
     
     closePromptAddCovers();
     
-    storeTableOrderInStorage(current_user_id, selectedTable, tableOrder);
+    if(selectedTable == 0) {
+        storeTableOrderInStorage(current_user_id, selectedTable, tableOrder);
+    }
     
     if(!currentOrderEmpty()) {
-        doAutoLoginAfterSync = true;
+        if(manualCoversPrompt) {
+            doAutoLoginAfterSync = true;
+        }
+        
+        manualCoversPrompt = true;
+        
         doSyncTableOrder();
-    } 
+    }
+}
+
+function pmShortcut(shortcutNum) {
+    var shortcutPaymentMethod = paymentMethods[pmShortcutMap[shortcutNum]];
     
-    setStatusMessage("Covers added to table");
+    applyDefaultServiceChargePercent();
+    
+    cashTendered = 0;
+    splitPayments = {};
+    
+    paymentMethod = shortcutPaymentMethod.name;
+    
+    doTotalFinal();
+}
+
+function toggleTrainingMode() {
+    setTrainingMode(!inTrainingMode);
+}
+
+function setTrainingMode(turnOn) {
+    inTrainingMode = turnOn;
+    
+    var exdays = 365 * 100;
+    setRawCookie(inTrainingModeCookieName, inTrainingMode, exdays);
+    
+    if(inTrainingMode) {
+        $('.button[id=sales_button_' + toggleTrainingModeButtonID + '], .button[id=admin_screen_button_' + toggleTrainingModeButtonID + ']').addClass("selected");
+        $('nav#main_nav').addClass("training_mode");
+    } else {
+        $('.button[id=sales_button_' + toggleTrainingModeButtonID + '], .button[id=admin_screen_button_' + toggleTrainingModeButtonID + ']').removeClass("selected");
+        $('nav#main_nav').removeClass("training_mode");
+    }
+}
+
+function startDeliveryMode() {
+    initDeliveryScreen();
+}
+
+function showCashOutSubscreen() {
+    if(currentScreenIsMenu()) {        
+        hideAllMenuSubScreens();
+        $('#cash_out_subscreen').show();
+        
+        var cashOutPresetsHTML = "<div id='presets'>";
+        
+        for(var i=0; i<cashOutPresets.length; i++) {
+            var nextPreset = cashOutPresets[i];
+            cashOutPresetsHTML += "<div id='preset_" + nextPreset.id + "' class='preset' onclick='setCashOutDescription(" + nextPreset.id + ");'>" + nextPreset.label + "</div>";
+        }
+        
+        cashOutPresetsHTML += clearHTML;
+        
+        $('#presets_container').html(cashOutPresetsHTML);
+        
+        toggleKeyboardEnable = false;
+    
+        var keyboardPlaceHolderEl = $('#cash_out_subscreen #keyboard')
+    
+        var pos = keyboardPlaceHolderEl.offset();
+    
+        //show the menu directly over the placeholder
+        $("#util_keyboard_container").css( {
+            "position" : "absolute",
+            "width" : "688px",
+            "left": (pos.left) + "px", 
+            "top":pos.top + "px"
+        } );
+    
+        hideUtilKeyboardCloseButton();
+
+        $("#util_keyboard_container").show();
+        
+        $('#cash_out_description').focus().select();
+        
+        cashOutKeypadString = "";
+        inCashOutMode = true;
+        $('#cash_out_amount').html(currency(0));
+    }
 }

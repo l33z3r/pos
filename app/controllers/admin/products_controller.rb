@@ -1,5 +1,3 @@
-require 'csv'
-
 class Admin::ProductsController < Admin::AdminController
   cache_sweeper :product_sweeper
 
@@ -9,11 +7,11 @@ class Admin::ProductsController < Admin::AdminController
       format.html do
         if (session[:search1].nil? && session[:search2].nil? && session[:search3].nil?)
           @selected_letter = "all"
-          @products = Product.non_deleted
+          @products = Product.non_deleted current_outlet
         else
           search
         end
-        query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from products group by substr(name,1,1)")
+        query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from products where outlet_id = #{current_outlet.id} group by substr(name,1,1)")
         @letters = []
         for element in query
           if (!"0123456789".include?(element[0]))
@@ -24,23 +22,23 @@ class Admin::ProductsController < Admin::AdminController
       end
       
       format.csv do 
-        @products = Product.non_deleted
+        @products = Product.non_deleted current_outlet
   
-        @csv_string = "Department,Category,Name,Brand,Description,Price,Double Price,Code Number,"
+        @csv_string = "Department,Category,Name,Brand,Description,Price,Double Price, Half Price,Code Number,"
         @csv_string += "UPC,Price 2,Price 3,Price 4,Margin Percent,Items Per Unit,Quantity Per Container,"
         @csv_string += "Cost Price,Unit,Size,Sales Tax Percent\n"
         
         @products.each do |p|
-          @category = (p.category ? p.category.name : "none").gsub(",", "")
-          @department = ((p.category and p.category.parent_category) ? p.category.parent_category.name : "none").gsub(",", "")
+          @category = (p.category ? p.category.name : "none").gsub(",", "").gsub("\r", "").gsub("\n", "")
+          @department = ((p.category and p.category.parent_category) ? p.category.parent_category.name : "none").gsub(",", "").gsub("\r", "").gsub("\n", "")
           
-          @name = p.name.gsub(",", "")
-          @brand = (p.brand ? p.brand : "").gsub(",", "")
-          @description = (p.description ? p.description : "").gsub(",", "")
+          @name = p.name.gsub(",", "").gsub("\r", "").gsub("\n", "")
+          @brand = (p.brand ? p.brand : "").gsub(",", "").gsub("\r", "").gsub("\n", "")
+          @description = (p.description ? p.description : "").gsub(",", "").gsub("\r", "").gsub("\n", "")
           
           @csv_string += "#{@department},#{@category},#{@name},#{@brand},#{@description},#{p.price},"
-          @csv_string += "#{p.double_price},#{p.code_num},#{p.upc},#{p.price_2},#{p.price_3},#{p.price_4},"
-          @csv_string += "#{p.margin_percent},#{p.items_per_unit},#{p.quantity_per_container},#{p.cost_price},#{p.unit}, #{p.size},#{p.sales_tax_rate}\n"
+          @csv_string += "#{p.double_price},#{p.half_price},#{p.code_num},#{p.upc},#{p.price_2},#{p.price_3},#{p.price_4},"
+          @csv_string += "#{p.margin_percent},#{p.items_per_unit},#{p.quantity_per_container},#{p.cost_price},#{p.unit}, #{p.size},#{p.get_sales_tax_rate(current_outlet)}\n"
         end
         
         render :text => @csv_string
@@ -87,7 +85,7 @@ class Admin::ProductsController < Admin::AdminController
         @categories[@category_name] = []
       end
 
-      @new_product = ProductCSVMapper::product_from_row row
+      @new_product = ProductCSVMapper::product_from_row row, current_outlet
 
       if @department_name and @category_name
         @departments[@department_name] << @category_name
@@ -129,14 +127,14 @@ class Admin::ProductsController < Admin::AdminController
         #attatch an image
         p.set_image
         p.save
-        p.reload
+        #p.reload
       end
 
       #build the categories
       @categories.each do |name, products|
         @category_product_ids = products.collect &:id
 
-        @new_category = Category.find_or_initialize_by_name(name)
+        @new_category = Category.find_or_initialize_by_outlet_id_and_name(current_outlet.id, name)
 
         if @new_category.new_record?
           @category_count += 1
@@ -149,7 +147,7 @@ class Admin::ProductsController < Admin::AdminController
 
       #build the departments
       @departments.each do |dep_name, category_names|
-        @new_department = Category.find_or_initialize_by_name(dep_name)
+        @new_department = Category.find_or_initialize_by_outlet_id_and_name(current_outlet.id, dep_name)
 
         if @new_department.new_record?
           @department_count += 1
@@ -159,7 +157,7 @@ class Admin::ProductsController < Admin::AdminController
 
         #we don't override a category if it already has a department
         category_names.each do |cn|
-          c = Category.find_by_name(cn)
+          c = Category.find_by_outlet_id_and_name(current_outlet.id, cn)
           if !c.parent_category
             c.parent_category_id = @new_department.id
             c.save
@@ -167,6 +165,9 @@ class Admin::ProductsController < Admin::AdminController
         end
       end
 
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       flash[:notice] = "CSV Import Successful! #{@product_count} new products, #{@category_count} new categories and #{@department_count} new departments have been added to the database."
       redirect_to admin_products_path
     else
@@ -184,13 +185,15 @@ class Admin::ProductsController < Admin::AdminController
 
   def edit
     @hide_admin_header = true
-    @product = Product.find(params[:id])
+    @product = current_outlet.products.find(params[:id])
     (12 - @product.ingredients.length).times { @product.ingredients.build }
   end
 
   def create
     @product = Product.new(params[:product])
-
+    
+    @product.outlet_id = current_outlet.id
+    
     @new_menu_1_id = params[:product][:menu_page_1_id]
     @old_menu_1_id = @product.menu_page_1 ? @product.menu_page_1.id : nil
     @new_menu_2_id = params[:product][:menu_page_2_id]
@@ -198,6 +201,10 @@ class Admin::ProductsController < Admin::AdminController
 
     if @product.save
       update_menus_for_product @product, @new_menu_1_id, @old_menu_1_id, @new_menu_2_id, @old_menu_2_id
+      
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       redirect_to(admin_products_url, :notice => 'Product was successfully created.')
     else
       render :action => "new"
@@ -205,7 +212,7 @@ class Admin::ProductsController < Admin::AdminController
   end
 
   def update
-    @product = Product.find(params[:id])
+    @product = current_outlet.products.find(params[:id])
 
     if params[:delete_product_image]
       @product.product_image.destroy #Will remove the attachment and save the model
@@ -221,10 +228,13 @@ class Admin::ProductsController < Admin::AdminController
 
       update_menus_for_product @product, @new_menu_1_id, @old_menu_1_id, @new_menu_2_id, @old_menu_2_id
 
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       #we may have came to this page directly from the menu builder screen
       #we want to store the fact, so that when we update the product, we go back to that screen
       if !params[:back_builder_screen_id].blank?
-        @display = Display.find(params[:back_builder_screen_id])
+        @display = current_outlet.displays.find(params[:back_builder_screen_id])
         redirect_to(builder_admin_display_path(@display), :notice => 'Product was successfully updated.')
       else
         redirect_to(admin_products_url, :notice => 'Product was successfully updated.')
@@ -287,11 +297,14 @@ class Admin::ProductsController < Admin::AdminController
   end
 
   def update_price
-    @product = Product.find(params[:id])
+    @product = current_outlet.products.find(params[:id])
     @product.price = params[:price]
     @product.save!
 
-    render :json => {:success => true}.to_json
+    #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
+      render :json => {:success => true}.to_json
   end
 
   def search
@@ -308,11 +321,11 @@ class Admin::ProductsController < Admin::AdminController
       get_session_parameters_to_fields
     end
     #search
-    @search1 = Product.search(@param1).order('name')
+    @search1 = current_outlet.products.search(@param1).order('name')
     @products1 = @search1.all
     if (!@param2.nil? && !@param3.nil?)
-      @search2 = Product.where("(code_num = ? OR upc = ? OR price = ? OR price_2 = ? OR price_3 = ? OR price_4) AND is_deleted = false", @param2, @param2, @param2, @param2, @param2).order('name')
-      @search3 = Product.search(@param3).order('name')
+      @search2 = current_outlet.products.where("(code_num = ? OR upc = ? OR price = ? OR price_2 = ? OR price_3 = ? OR price_4) AND is_deleted = false", @param2, @param2, @param2, @param2, @param2).order('name')
+      @search3 = current_outlet.products.search(@param3).order('name')
       @products2 = @search2.all
       @products3 = @search3.all
       @merge1 = @products2 | @products3
@@ -324,13 +337,13 @@ class Admin::ProductsController < Admin::AdminController
   end
 
   def mark_as_deleted
-    @product = Product.find(params[:id])
+    @product = current_outlet.products.find(params[:id])
     @product.mark_as_deleted
 
     #send a reload request to other terminals
-    request_reload_app @terminal_id
-
-    render :json => {:success => true}.to_json
+      request_sales_resources_reload @terminal_id
+    
+      render :json => {:success => true}.to_json
   end
 
   private
@@ -362,7 +375,7 @@ class Admin::ProductsController < Admin::AdminController
 
     #remove it from old_menu_id
     if !old_menu_id.blank?
-      @old_menu_page = MenuPage.find(old_menu_id)
+      @old_menu_page = current_outlet.menu_pages.find(old_menu_id)
 
       @old_menu_page.menu_items.each do |mi|
         next if !mi.product
@@ -376,7 +389,7 @@ class Admin::ProductsController < Admin::AdminController
 
     #add it to new_menu_id if it's not already there
     if !new_menu_id.blank?
-      @new_menu_page = MenuPage.find(new_menu_id)
+      @new_menu_page = current_outlet.menu_pages.find(new_menu_id)
 
       @new_menu_page.menu_items.each do |mi|
         next if !mi.product
@@ -392,7 +405,7 @@ class Admin::ProductsController < Admin::AdminController
         @next_order_num = @new_menu_page.menu_items.last.order_num + 1
       end
 
-      @menu_item = MenuItem.create({:product_id => product.id,
+      @menu_item = MenuItem.create({:outlet_id => current_outlet.id, :product_id => product.id,
           :menu_page_id => new_menu_id, :order_num => @next_order_num})
     end
 

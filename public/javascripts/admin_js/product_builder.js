@@ -55,8 +55,8 @@ function setExtraOptionsSelectedTab(tab_el_name, tab_content_el_name) {
 }
 
 function updateStockCalculation(index) {
-    var numerator = parseInt($('#quantity_numerator_' + index).val());
-    var denominator = parseInt($('#quantity_denominator_' + index).val());
+    var numerator = parseFloat($('#quantity_numerator_' + index).val());
+    var denominator = parseFloat($('#quantity_denominator_' + index).val());
     
     if(isNaN(numerator) || numerator <=0) {
         numerator = 1;
@@ -288,6 +288,71 @@ function printerSwitchToggle(switchEl) {
     var terminalName = switchEl.data("terminal_name");
    
     $('#choose_printer_checkbox_' + terminalName).attr("checked", is_selected);
+}
+
+var selectBlockedPrintersDialogAnchor = null;
+
+function showSelectBlockedPrintersDialog() {
+    selectBlockedPrintersDialogAnchor = $('#select_blocked_printers_button');
+    
+    if(selectBlockedPrintersDialogAnchor.HasBubblePopup()) {
+        selectBlockedPrintersDialogAnchor.RemoveBubblePopup();
+    }
+    
+    selectBlockedPrintersDialogAnchor.CreateBubblePopup();
+    
+    popupHTML = $('#select_blocked_printers_markup').html();
+    
+    selectBlockedPrintersDialogAnchor.ShowBubblePopup({
+        position: 'bottom',  
+        align: 'middle',
+        tail	 : {
+            align: 'middle'
+        },
+        innerHtml: popupHTML,
+														   
+        innerHtmlStyle:{ 
+            'text-align':'left'
+        },
+        
+        themeName: 	'all-grey',
+        themePath: 	'/images/jquerybubblepopup-theme',
+        alwaysVisible: false        
+    }, false);
+    
+    selectBlockedPrintersDialogAnchor.FreezeBubblePopup();
+    
+    //initialize the iphone sliders
+    var popupId = selectBlockedPrintersDialogAnchor.GetBubblePopupID();
+    
+    $('#' + popupId).find(':checkbox').each(function() {
+        var terminalName = $(this).data("terminal_name")
+        var origChecked = $('#choose_blocked_printer_checkbox_' + terminalName).attr("checked");
+        $(this).attr("checked", origChecked);
+    });
+    
+    $('#' + popupId).find(':checkbox').iphoneStyle({
+        resizeContainer: false, 
+        resizeHandle : false, 
+        checkedLabel: 'Yes', 
+        uncheckedLabel: 'No'
+    });
+}
+
+function hideSelectBlockedPrintersDialog() {
+    if(selectBlockedPrintersDialogAnchor.HasBubblePopup()) {
+        selectBlockedPrintersDialogAnchor.HideBubblePopup();
+        selectBlockedPrintersDialogAnchor.FreezeBubblePopup();
+    }
+}
+
+function blockedPrinterSwitchToggle(switchEl) {
+    switchEl = $(switchEl);
+   
+    var is_selected = switchEl.attr("checked");
+    var terminalName = switchEl.data("terminal_name");
+   
+    $('#choose_blocked_printer_checkbox_' + terminalName).attr("checked", is_selected);
 }
 
 var selectKitchenScreensDialogAnchor = null;

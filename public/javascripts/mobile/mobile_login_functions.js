@@ -40,19 +40,21 @@ function doMobileLogin() {
 }
 
 function mobileLoginSuccess(id, nickname, is_admin, passcode) {
+    current_user_id = id;
+    current_user_nickname = nickname;
+    current_user_is_admin = is_admin;
+    current_user_passcode = passcode;
+    
+    storeActiveUserID(current_user_id);
+    
     //send ajax login
     $.ajax({
         type: 'POST',
         url: '/login',
         data: {
-            id : id
+            employee_id : id
         }
     });
-
-    current_user_id = id;
-    current_user_nickname = nickname;
-    current_user_is_admin = is_admin;
-    current_user_passcode = passcode;
     
     //set the username in the menu
     $('#e_name').html(nickname);
@@ -83,7 +85,11 @@ function doMobileLogout() {
         return;
     }
 
+    var id_for_logout = current_user_id;
+
     current_user_id = null;
+
+    storeActiveUserID(null);
 
     setMobileStatusMessage("Logged Out!");
 
@@ -94,6 +100,9 @@ function doMobileLogout() {
     //send ajax logout
     $.ajax({
         type: 'POST',
-        url: '/logout'
+        url: '/logout',
+        data: {
+            employee_id : id_for_logout
+        }
     });
 }

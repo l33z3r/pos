@@ -34,7 +34,7 @@
               <thead>
                 <tr>
                   <th width="160">Button</th>
-                  <% Role.find(:all, :order => :id).each do |role| %>
+                  <% current_outlet.roles.find(:all, :order => :id).each do |role| %>
                     <th width="120"><%=role.name%></th>
                   <% end %>
                 </tr>
@@ -44,9 +44,9 @@
                 <% CashTotal::report_sections.each do |rs| %>
                   <tr>
                     <td><%= CashTotal.report_section_name rs %></td>
-                    <% Role.find(:all, :order => :id).each do |role| %>
+                    <% current_outlet.roles.find(:all, :order => :id).each do |role| %>
                       <td>
-                        <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_TOTAL_OPTION, {:total_type => CashTotal::X_TOTAL, :employee_role => role.name, :report_section => rs} %>
+                        <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_TOTAL_OPTION, current_outlet, {:total_type => CashTotal::X_TOTAL, :employee_role => role.name, :report_section => rs} %>
                         <%= check_box_tag "#{CashTotal.report_section_name rs}_#{role.name}", @gs.parsed_value, @gs.parsed_value,
                           :onchange => "cashTotalOptionSelect('#{role.name}','#{CashTotal::X_TOTAL}', '#{rs}', this.checked);" %>
                       </td>
@@ -69,7 +69,7 @@
               <thead>
                 <tr>
                   <th width="160">Button</th>
-                  <% Role.find(:all, :order => :id).each do |role| %>
+                  <% current_outlet.roles.find(:all, :order => :id).each do |role| %>
                     <th width="120"><%=role.name%></th>
                   <% end %>
                 </tr>
@@ -79,9 +79,9 @@
                 <% CashTotal::report_sections.each do |rs| %>
                   <tr>
                     <td><%= CashTotal.report_section_name rs %></td>
-                    <% Role.find(:all, :order => :id).each do |role| %>
+                    <% current_outlet.roles.find(:all, :order => :id).each do |role| %>
                       <td>
-                        <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_TOTAL_OPTION, {:total_type => CashTotal::Z_TOTAL, :employee_role => role.name, :report_section => rs} %>
+                        <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_TOTAL_OPTION, current_outlet, {:total_type => CashTotal::Z_TOTAL, :employee_role => role.name, :report_section => rs} %>
                         <%= check_box_tag "#{CashTotal.report_section_name rs}_#{role.name}", @gs.parsed_value, @gs.parsed_value,
                           :onchange => "cashTotalOptionSelect('#{role.name}','#{CashTotal::Z_TOTAL}', '#{rs}', this.checked);" %>
                       </td>

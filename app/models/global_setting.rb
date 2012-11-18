@@ -1,10 +1,14 @@
-class GlobalSetting < ActiveRecord::Base
+  class GlobalSetting < ActiveRecord::Base
+  
+  belongs_to :outlet
   
   before_save :prepare_value_for_save
   
   has_attached_file :logo, PAPERCLIP_STORAGE_OPTIONS.merge(:styles => {:large => "400x400", :medium => "300x300>", :thumb => "115x115>" })
   
-  validates :key, :presence => true, :uniqueness => true
+  validates :key, :presence => true
+  
+  
   validates :label_text, :presence => true
   
   #this is a semantic value built from the raw value, depending on the property
@@ -73,6 +77,24 @@ class GlobalSetting < ActiveRecord::Base
   LOYALTY_POINTS_PER_CURRENCY_UNIT = 58
   USE_WSS_CASH_DRAWER = 59
   USE_WSS_RECEIPT_PRINTER = 60
+  HALF_MEASURE_LABEL = 61
+  SHOW_CHARGE_CARD_BUTTON = 62
+  ALLOW_ZALION_SPLIT_PAYMENTS = 63
+  SCREEN_RESOLUTION = 64
+  PM_SHORTCUT_ID = 65
+  PROMPT_FOR_COVERS = 66
+  DEDUCT_STOCK_DURING_TRAINING_MODE = 67
+  WORK_REPORT_OPTION = 68
+  WORK_REPORT_FOOTER_TEXT = 69
+  PRINT_WORK_REPORT = 70
+  TIMEKEEPING_TERMINAL = 71
+  ALLOW_REOPEN_ORDER_AFTER_Z = 72
+  PRINT_LOCAL_RECIEVE_DELIVERY = 73
+  CASH_DRAWER_COM_PORT = 74
+  CASH_DRAWER_CODE = 75
+  LOCAL_PRINTER_ID = 76
+  PRINT_DELEGATE_TERMINAL_ID = 77
+  OFFLINE_ORDER_DELEGATE_TERMINAL_ID = 78
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -134,18 +156,36 @@ class GlobalSetting < ActiveRecord::Base
     ENABLE_LOYALTY_REDEMPTION => "Enable Loyalty Redemption",
     LOYALTY_POINTS_PER_CURRENCY_UNIT => "Loyalty Points Per Currency Unit",
     USE_WSS_CASH_DRAWER => "Use Web Sockets For Cash Drawer",
-    USE_WSS_RECEIPT_PRINTER => "Use Web Sockets For Receipt Printing"
+    USE_WSS_RECEIPT_PRINTER => "Use Web Sockets For Receipt Printing",
+    HALF_MEASURE_LABEL => "Half Measure Label",
+    SHOW_CHARGE_CARD_BUTTON => "Show Charge Card",
+    ALLOW_ZALION_SPLIT_PAYMENTS => "Allow Zalion Split Payments",
+    SCREEN_RESOLUTION => "Screen Resolution",
+    PM_SHORTCUT_ID => "Payment Method Shortcut ID",
+    PROMPT_FOR_COVERS => "Prompt For Covers",
+    DEDUCT_STOCK_DURING_TRAINING_MODE => "Deduct Stock In Training Mode",
+    WORK_REPORT_OPTION => "Work Report Option",
+    WORK_REPORT_FOOTER_TEXT => "Work Report Footer Text",
+    PRINT_WORK_REPORT => "Print Work Report",
+    TIMEKEEPING_TERMINAL => "Timekeeping Terminal",
+    ALLOW_REOPEN_ORDER_AFTER_Z => "Allow Reopening Of Orders After a Z Total", 
+    PRINT_LOCAL_RECIEVE_DELIVERY => "Print Delivery Receipts Locally on Terminal Rather Than to Print Service", 
+    CASH_DRAWER_COM_PORT => "Cash Drawer Com Port",
+    CASH_DRAWER_CODE => "Cash Drawer Code",
+    LOCAL_PRINTER_ID => "Local Printer ID",
+    PRINT_DELEGATE_TERMINAL_ID => "Print Delegate Terminal ID",
+    OFFLINE_ORDER_DELEGATE_TERMINAL_ID => "Offline Order Delegate Terminal ID"
   }
   
   LATEST_TERMINAL_HOURS = 24
   
-  def self.setting_for property, args={}
+  def self.setting_for property, current_outlet, args={}
     @gs = nil
     
     case property.to_i
     when LOGO
       @logo_type = args[:logo_type]
-      @gs = find_or_create_by_key(:key => "#{LOGO.to_s}_#{@logo_type}", :value => "Not Used For Logo", :label_text => LABEL_MAP[LOGO])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{LOGO.to_s}_#{@logo_type}", :value => "Not Used For Logo", :label_text => LABEL_MAP[LOGO])
       @gs.parsed_value = @gs.value
     when TERMINAL_ID
       if !args[:fingerprint]
@@ -153,108 +193,108 @@ class GlobalSetting < ActiveRecord::Base
       else
         #the key will be the key for terminal id followed by the terminal fingerprint
         GlobalSetting.transaction do
-          @gs = find_by_key("#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :lock => true)
+          @gs = find_by_outlet_id_and_key(current_outlet.id, "#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :lock => true)
 	  
           if !@gs
-            @gs = create(:key => "#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :value => "NT##{Time.now.to_i.to_s[-4,4]}", :label_text => LABEL_MAP[TERMINAL_ID])
+            @gs = create(:outlet_id => current_outlet.id, :key => "#{TERMINAL_ID.to_s}_#{args[:fingerprint]}", :value => "NT##{Time.now.to_i.to_s[-4,4]}", :label_text => LABEL_MAP[TERMINAL_ID])
           end
 	  
           @gs.parsed_value = @gs.value
         end
       end
     when CURRENCY_SYMBOL
-      @gs = find_or_create_by_key(:key => CURRENCY_SYMBOL.to_s, :value => "$", :label_text => LABEL_MAP[CURRENCY_SYMBOL])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => CURRENCY_SYMBOL.to_s, :value => "$", :label_text => LABEL_MAP[CURRENCY_SYMBOL])
       @gs.parsed_value = @gs.value
     when BYPASS_PIN
-      @gs = find_or_create_by_key(:key => BYPASS_PIN.to_s, :value => "false", :label_text => LABEL_MAP[BYPASS_PIN])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => BYPASS_PIN.to_s, :value => "false", :label_text => LABEL_MAP[BYPASS_PIN])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when DEFAULT_HOME_SCREEN
-      @gs = find_or_create_by_key(:key => "#{DEFAULT_HOME_SCREEN.to_s}_#{args[:fingerprint]}", :value => 1, :label_text => LABEL_MAP[DEFAULT_HOME_SCREEN])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{DEFAULT_HOME_SCREEN.to_s}_#{args[:fingerprint]}", :value => 1, :label_text => LABEL_MAP[DEFAULT_HOME_SCREEN])
       @gs.parsed_value = @gs.value.to_i
     when AUTO_PRINT_RECEIPT
-      @gs = find_or_create_by_key(:key => AUTO_PRINT_RECEIPT.to_s, :value => "false", :label_text => LABEL_MAP[AUTO_PRINT_RECEIPT])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => AUTO_PRINT_RECEIPT.to_s, :value => "false", :label_text => LABEL_MAP[AUTO_PRINT_RECEIPT])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when SMALL_CURRENCY_SYMBOL
-      @gs = find_or_create_by_key(:key => SMALL_CURRENCY_SYMBOL.to_s, :value => "c", :label_text => LABEL_MAP[SMALL_CURRENCY_SYMBOL])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => SMALL_CURRENCY_SYMBOL.to_s, :value => "c", :label_text => LABEL_MAP[SMALL_CURRENCY_SYMBOL])
       @gs.parsed_value = @gs.value
     when THEME
       #the key will be the key for payment type followed by the actual description of that type
-      @gs = find_or_create_by_key(:key => "#{THEME.to_s}_#{args[:theme_property]}", :value => nil, :label_text => LABEL_MAP[THEME])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{THEME.to_s}_#{args[:theme_property]}", :value => nil, :label_text => LABEL_MAP[THEME])
       @gs.parsed_value = @gs.value
     when DEFAULT_POST_LOGIN_SCREEN
-      @gs = find_or_create_by_key(:key => DEFAULT_POST_LOGIN_SCREEN.to_s, :value => 2, :label_text => LABEL_MAP[DEFAULT_POST_LOGIN_SCREEN])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => DEFAULT_POST_LOGIN_SCREEN.to_s, :value => 2, :label_text => LABEL_MAP[DEFAULT_POST_LOGIN_SCREEN])
       @gs.parsed_value = @gs.value.to_i
     when CLOCK_FORMAT
-      @gs = find_or_create_by_key(:key => CLOCK_FORMAT.to_s, :value => "12", :label_text => LABEL_MAP[CLOCK_FORMAT])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => CLOCK_FORMAT.to_s, :value => "12", :label_text => LABEL_MAP[CLOCK_FORMAT])
       @gs.parsed_value = @gs.value
     when TAX_CHARGABLE
-      @gs = find_or_create_by_key(:key => TAX_CHARGABLE.to_s, :value => "false", :label_text => LABEL_MAP[TAX_CHARGABLE])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => TAX_CHARGABLE.to_s, :value => "false", :label_text => LABEL_MAP[TAX_CHARGABLE])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when GLOBAL_TAX_RATE
-      @gs = find_or_create_by_key(:key => GLOBAL_TAX_RATE.to_s, :value => 0, :label_text => LABEL_MAP[GLOBAL_TAX_RATE])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => GLOBAL_TAX_RATE.to_s, :value => 0, :label_text => LABEL_MAP[GLOBAL_TAX_RATE])
       @gs.parsed_value = @gs.value.to_f
     when CASH_TOTAL_OPTION
-      @gs = find_or_create_by_key(:key => "#{CASH_TOTAL_OPTION.to_s}_#{args[:total_type]}_#{args[:employee_role]}_#{args[:report_section]}", :value => "true", :label_text => LABEL_MAP[CASH_TOTAL_OPTION])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{CASH_TOTAL_OPTION.to_s}_#{args[:total_type]}_#{args[:employee_role]}_#{args[:report_section]}", :value => "true", :label_text => LABEL_MAP[CASH_TOTAL_OPTION])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when TAX_LABEL
-      @gs = find_or_create_by_key(:key => TAX_LABEL.to_s, :value => "Tax", :label_text => LABEL_MAP[TAX_LABEL])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => TAX_LABEL.to_s, :value => "Tax", :label_text => LABEL_MAP[TAX_LABEL])
       @gs.parsed_value = @gs.value
     when DO_BEEP
-      @gs = find_or_create_by_key(:key => "#{DO_BEEP.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[DO_BEEP])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{DO_BEEP.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[DO_BEEP])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when RELOAD_HTML5_CACHE_TIMESTAMP
-      @gs = find_or_create_by_key(:key => RELOAD_HTML5_CACHE_TIMESTAMP.to_s, :value => 0, :label_text => LABEL_MAP[RELOAD_HTML5_CACHE_TIMESTAMP])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => RELOAD_HTML5_CACHE_TIMESTAMP.to_s, :value => 0, :label_text => LABEL_MAP[RELOAD_HTML5_CACHE_TIMESTAMP])
       @gs.parsed_value = @gs.value.to_f
     when WEBSOCKET_IP
-      @gs = find_or_create_by_key(:key => "#{WEBSOCKET_IP.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[WEBSOCKET_IP])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{WEBSOCKET_IP.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[WEBSOCKET_IP])
       @gs.parsed_value = @gs.value
     when CURRENCY_NOTES_IMAGES
-      @gs = find_or_create_by_key(:key => CURRENCY_NOTES_IMAGES.to_s, :value => CURRENCY_NOTES_IMAGES_EURO, :label_text => LABEL_MAP[CURRENCY_NOTES_IMAGES])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => CURRENCY_NOTES_IMAGES.to_s, :value => CURRENCY_NOTES_IMAGES_EURO, :label_text => LABEL_MAP[CURRENCY_NOTES_IMAGES])
       @gs.parsed_value = @gs.value
     when ORDER_RECEIPT_WIDTH
-      @gs = find_or_create_by_key(:key => "#{ORDER_RECEIPT_WIDTH.to_s}_#{args[:fingerprint]}", :value => ORDER_RECEIPT_WIDTH_80MM, :label_text => LABEL_MAP[ORDER_RECEIPT_WIDTH])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{ORDER_RECEIPT_WIDTH.to_s}_#{args[:fingerprint]}", :value => ORDER_RECEIPT_WIDTH_80MM, :label_text => LABEL_MAP[ORDER_RECEIPT_WIDTH])
       @gs.parsed_value = @gs.value
     when AUTHENTICATION_REQUIRED
-      @gs = find_or_create_by_key(:key => AUTHENTICATION_REQUIRED.to_s, :value => "false", :label_text => LABEL_MAP[AUTHENTICATION_REQUIRED])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => AUTHENTICATION_REQUIRED.to_s, :value => "false", :label_text => LABEL_MAP[AUTHENTICATION_REQUIRED])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when LOCAL_AUTHENTICATION_REQUIRED
-      @gs = find_or_create_by_key(:key => LOCAL_AUTHENTICATION_REQUIRED.to_s, :value => "false", :label_text => LABEL_MAP[LOCAL_AUTHENTICATION_REQUIRED])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => LOCAL_AUTHENTICATION_REQUIRED.to_s, :value => "false", :label_text => LABEL_MAP[LOCAL_AUTHENTICATION_REQUIRED])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when All_DEVICES_ORDER_NOTIFICATION
-      @gs = find_or_create_by_key(:key => All_DEVICES_ORDER_NOTIFICATION.to_s, :value => "false", :label_text => LABEL_MAP[All_DEVICES_ORDER_NOTIFICATION])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => All_DEVICES_ORDER_NOTIFICATION.to_s, :value => "false", :label_text => LABEL_MAP[All_DEVICES_ORDER_NOTIFICATION])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when DEFAULT_SERVICE_CHARGE_PERCENT
-      @gs = find_or_create_by_key(:key => DEFAULT_SERVICE_CHARGE_PERCENT.to_s, :value => 0, :label_text => LABEL_MAP[DEFAULT_SERVICE_CHARGE_PERCENT])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => DEFAULT_SERVICE_CHARGE_PERCENT.to_s, :value => 0, :label_text => LABEL_MAP[DEFAULT_SERVICE_CHARGE_PERCENT])
       @gs.parsed_value = @gs.value.to_f
     when TAX_NUMBER
-      @gs = find_or_create_by_key(:key => TAX_NUMBER.to_s, :value => "", :label_text => LABEL_MAP[TAX_NUMBER])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => TAX_NUMBER.to_s, :value => "", :label_text => LABEL_MAP[TAX_NUMBER])
       @gs.parsed_value = @gs.value
     when PRINT_VAT_RECEIPT
-      @gs = find_or_create_by_key(:key => PRINT_VAT_RECEIPT.to_s, :value => "true", :label_text => LABEL_MAP[PRINT_VAT_RECEIPT])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => PRINT_VAT_RECEIPT.to_s, :value => "true", :label_text => LABEL_MAP[PRINT_VAT_RECEIPT])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when MENU_SCREEN_TYPE
-      @gs = find_or_create_by_key(:key => "#{MENU_SCREEN_TYPE.to_s}_#{args[:fingerprint]}", :value => 1, :label_text => LABEL_MAP[MENU_SCREEN_TYPE])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{MENU_SCREEN_TYPE.to_s}_#{args[:fingerprint]}", :value => 1, :label_text => LABEL_MAP[MENU_SCREEN_TYPE])
       @gs.parsed_value = @gs.value.to_i
     when WINDOWS_PRINTER_MARGINS
-      @gs = find_or_create_by_key(:key => "#{WINDOWS_PRINTER_MARGINS.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[WINDOWS_PRINTER_MARGINS])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{WINDOWS_PRINTER_MARGINS.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[WINDOWS_PRINTER_MARGINS])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when EARLIEST_OPENING_HOUR
-      @gs = find_or_create_by_key(:key => EARLIEST_OPENING_HOUR.to_s, :value => 5, :label_text => LABEL_MAP[EARLIEST_OPENING_HOUR])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => EARLIEST_OPENING_HOUR.to_s, :value => 5, :label_text => LABEL_MAP[EARLIEST_OPENING_HOUR])
       @gs.parsed_value = @gs.value.to_i
     when LATEST_CLOSING_HOUR
-      @gs = find_or_create_by_key(:key => LATEST_CLOSING_HOUR.to_s, :value => 5, :label_text => LABEL_MAP[LATEST_CLOSING_HOUR])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => LATEST_CLOSING_HOUR.to_s, :value => 5, :label_text => LABEL_MAP[LATEST_CLOSING_HOUR])
       @gs.parsed_value = @gs.value.to_i
     when BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL
-      @gs = find_or_create_by_key(:key => "#{BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when ZALION_ROOM_CHARGE_SERVICE_IP
-      @gs = find_or_create_by_key(:key => "#{ZALION_ROOM_CHARGE_SERVICE_IP.to_s}", :value => "", :label_text => LABEL_MAP[ZALION_ROOM_CHARGE_SERVICE_IP])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{ZALION_ROOM_CHARGE_SERVICE_IP.to_s}", :value => "", :label_text => LABEL_MAP[ZALION_ROOM_CHARGE_SERVICE_IP])
       @gs.parsed_value = @gs.value
     when COURSE_LABEL
-      @gs = find_or_create_by_key(:key => "#{COURSE_LABEL.to_s}_#{args[:course_val]}", :value => "Course #{args[:course_val]}", :label_text => LABEL_MAP[COURSE_LABEL])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{COURSE_LABEL.to_s}_#{args[:course_val]}", :value => "Course #{args[:course_val]}", :label_text => LABEL_MAP[COURSE_LABEL])
       @gs.parsed_value = @gs.value
     when PRINTER_LEFT_MARGIN
-      @gs = find_or_create_by_key(:key => "#{PRINTER_LEFT_MARGIN.to_s}_#{args[:fingerprint]}", :value => 0, :label_text => LABEL_MAP[PRINTER_LEFT_MARGIN])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{PRINTER_LEFT_MARGIN.to_s}_#{args[:fingerprint]}", :value => 0, :label_text => LABEL_MAP[PRINTER_LEFT_MARGIN])
       @gs.parsed_value = @gs.value
     when DISABLE_ADVANCED_TOUCH
       
@@ -267,68 +307,124 @@ class GlobalSetting < ActiveRecord::Base
       #ipad ua using atomic: Mozilla/5.0 (iPad; CPU OS 5_0_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9A405
       #ipad ua using kiosk: Mozilla/5.0 (iPad; U; CPU OS 5_0_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A405 Safari/7534.48.3
       
-      @test_for_desktop = "Chrome"
+      @test_for_chrome = "Chrome"
+      @test_for_firefox = "Mozilla"
       @test_for_android = "Android"
       @test_for_ipad = "iPad"
       
       @user_agent = args[:user_agent]
-      @default_disable_advanced_touch = @user_agent.include?(@test_for_desktop) and !@user_agent.include?(@test_for_android) and !@user_agent.include?(@test_for_ipad)
+      @default_disable_advanced_touch = (@user_agent.include?(@test_for_chrome) or @user_agent.include?(@test_for_firefox)) and !@user_agent.include?(@test_for_android) and !@user_agent.include?(@test_for_ipad)
       
-      @gs = find_or_create_by_key(:key => "#{DISABLE_ADVANCED_TOUCH.to_s}_#{args[:fingerprint]}", :value => "#{@default_disable_advanced_touch}", :label_text => LABEL_MAP[DISABLE_ADVANCED_TOUCH])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{DISABLE_ADVANCED_TOUCH.to_s}_#{args[:fingerprint]}", :value => "#{@default_disable_advanced_touch}", :label_text => LABEL_MAP[DISABLE_ADVANCED_TOUCH])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when HTTP_AUTH_USERNAME
-      @gs = find_or_create_by_key(:key => HTTP_AUTH_USERNAME.to_s, :value => "cluey", :label_text => LABEL_MAP[HTTP_AUTH_USERNAME])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => HTTP_AUTH_USERNAME.to_s, :value => "cluey", :label_text => LABEL_MAP[HTTP_AUTH_USERNAME])
       @gs.parsed_value = @gs.value
     when HTTP_AUTH_PASSWORD
-      @gs = find_or_create_by_key(:key => HTTP_AUTH_PASSWORD.to_s, :value => "cluey100", :label_text => LABEL_MAP[HTTP_AUTH_PASSWORD])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => HTTP_AUTH_PASSWORD.to_s, :value => "cluey100", :label_text => LABEL_MAP[HTTP_AUTH_PASSWORD])
       @gs.parsed_value = @gs.value
     when CASH_DRAWER_IP_ADDRESS
-      @gs = find_or_create_by_key(:key => "#{CASH_DRAWER_IP_ADDRESS.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[CASH_DRAWER_IP_ADDRESS])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{CASH_DRAWER_IP_ADDRESS.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[CASH_DRAWER_IP_ADDRESS])
       @gs.parsed_value = @gs.value
     when PRICE_LEVEL_LABEL
-      @gs = find_or_create_by_key(:key => "#{PRICE_LEVEL_LABEL.to_s}_#{args[:price_level]}", :value => "Price #{args[:price_level]}", :label_text => LABEL_MAP[PRICE_LEVEL_LABEL])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{PRICE_LEVEL_LABEL.to_s}_#{args[:price_level]}", :value => "Price #{args[:price_level]}", :label_text => LABEL_MAP[PRICE_LEVEL_LABEL])
       @gs.parsed_value = @gs.value
     when USE_WHITE_SPACE_MOBILE_MENUS
-      @gs = find_or_create_by_key(:key => USE_WHITE_SPACE_MOBILE_MENUS.to_s, :value => "false", :label_text => LABEL_MAP[USE_WHITE_SPACE_MOBILE_MENUS])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => USE_WHITE_SPACE_MOBILE_MENUS.to_s, :value => "false", :label_text => LABEL_MAP[USE_WHITE_SPACE_MOBILE_MENUS])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when USE_WHITE_SPACE_DESKTOP_MENUS
-      @gs = find_or_create_by_key(:key => USE_WHITE_SPACE_DESKTOP_MENUS.to_s, :value => "true", :label_text => LABEL_MAP[USE_WHITE_SPACE_DESKTOP_MENUS])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => USE_WHITE_SPACE_DESKTOP_MENUS.to_s, :value => "true", :label_text => LABEL_MAP[USE_WHITE_SPACE_DESKTOP_MENUS])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when SHOW_LICENCE_EXPIRED_SCREEN
-      @gs = find_or_create_by_key(:key => SHOW_LICENCE_EXPIRED_SCREEN.to_s, :value => "false", :label_text => LABEL_MAP[SHOW_LICENCE_EXPIRED_SCREEN])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => SHOW_LICENCE_EXPIRED_SCREEN.to_s, :value => "false", :label_text => LABEL_MAP[SHOW_LICENCE_EXPIRED_SCREEN])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when CREDIT_CARD_CHARGE_SERVICE_IP
-      @gs = find_or_create_by_key(:key => "#{CREDIT_CARD_CHARGE_SERVICE_IP.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[CREDIT_CARD_CHARGE_SERVICE_IP])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{CREDIT_CARD_CHARGE_SERVICE_IP.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[CREDIT_CARD_CHARGE_SERVICE_IP])
       @gs.parsed_value = @gs.value
     when CREDIT_CARD_TERMINAL_IP
-      @gs = find_or_create_by_key(:key => "#{CREDIT_CARD_TERMINAL_IP.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[CREDIT_CARD_TERMINAL_IP])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{CREDIT_CARD_TERMINAL_IP.to_s}_#{args[:fingerprint]}", :value => "", :label_text => LABEL_MAP[CREDIT_CARD_TERMINAL_IP])
       @gs.parsed_value = @gs.value
     when CREDIT_CARD_TERMINAL_PORT
-      @gs = find_or_create_by_key(:key => "#{CREDIT_CARD_TERMINAL_PORT.to_s}_#{args[:fingerprint]}", :value => "25000", :label_text => LABEL_MAP[CREDIT_CARD_TERMINAL_PORT])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{CREDIT_CARD_TERMINAL_PORT.to_s}_#{args[:fingerprint]}", :value => "25000", :label_text => LABEL_MAP[CREDIT_CARD_TERMINAL_PORT])
       @gs.parsed_value = @gs.value.to_i
     when POLLING_INTERVAL_SECONDS
-      @gs = find_or_create_by_key(:key => "#{POLLING_INTERVAL_SECONDS.to_s}", :value => 1, :label_text => LABEL_MAP[POLLING_INTERVAL_SECONDS])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{POLLING_INTERVAL_SECONDS.to_s}", :value => 20, :label_text => LABEL_MAP[POLLING_INTERVAL_SECONDS])
       @gs.parsed_value = @gs.value.to_i
     when PROCESS_TABLE_0_ORDERS
-      @gs = find_or_create_by_key(:key => PROCESS_TABLE_0_ORDERS.to_s, :value => "true", :label_text => LABEL_MAP[PROCESS_TABLE_0_ORDERS])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => PROCESS_TABLE_0_ORDERS.to_s, :value => "true", :label_text => LABEL_MAP[PROCESS_TABLE_0_ORDERS])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when LOYALTY_CARD_PREFIX
-      @gs = find_or_create_by_key(:key => LOYALTY_CARD_PREFIX.to_s, :value => "%ICR", :label_text => LABEL_MAP[LOYALTY_CARD_PREFIX])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => LOYALTY_CARD_PREFIX.to_s, :value => "%ICR", :label_text => LABEL_MAP[LOYALTY_CARD_PREFIX])
       @gs.parsed_value = @gs.value
     when ENABLE_LOYALTY_REDEMPTION
-      @gs = find_or_create_by_key(:key => ENABLE_LOYALTY_REDEMPTION.to_s, :value => "true", :label_text => LABEL_MAP[ENABLE_LOYALTY_REDEMPTION])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => ENABLE_LOYALTY_REDEMPTION.to_s, :value => "true", :label_text => LABEL_MAP[ENABLE_LOYALTY_REDEMPTION])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when LOYALTY_POINTS_PER_CURRENCY_UNIT
-      @gs = find_or_create_by_key(:key => "#{LOYALTY_POINTS_PER_CURRENCY_UNIT.to_s}", :value => 100, :label_text => LABEL_MAP[LOYALTY_POINTS_PER_CURRENCY_UNIT])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{LOYALTY_POINTS_PER_CURRENCY_UNIT.to_s}", :value => 100, :label_text => LABEL_MAP[LOYALTY_POINTS_PER_CURRENCY_UNIT])
       @gs.parsed_value = @gs.value.to_i
     when USE_WSS_CASH_DRAWER
-      @gs = find_or_create_by_key(:key => "#{USE_WSS_CASH_DRAWER.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[USE_WSS_CASH_DRAWER])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{USE_WSS_CASH_DRAWER.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[USE_WSS_CASH_DRAWER])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when USE_WSS_RECEIPT_PRINTER
-      @gs = find_or_create_by_key(:key => "#{USE_WSS_RECEIPT_PRINTER.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[USE_WSS_RECEIPT_PRINTER])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{USE_WSS_RECEIPT_PRINTER.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[USE_WSS_RECEIPT_PRINTER])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when HALF_MEASURE_LABEL
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => HALF_MEASURE_LABEL.to_s, :value => "Half", :label_text => LABEL_MAP[HALF_MEASURE_LABEL])
+      @gs.parsed_value = @gs.value
+    when SHOW_CHARGE_CARD_BUTTON
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => SHOW_CHARGE_CARD_BUTTON.to_s, :value => "true", :label_text => LABEL_MAP[SHOW_CHARGE_CARD_BUTTON])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when ALLOW_ZALION_SPLIT_PAYMENTS
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => ALLOW_ZALION_SPLIT_PAYMENTS.to_s, :value => "false", :label_text => LABEL_MAP[ALLOW_ZALION_SPLIT_PAYMENTS])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when SCREEN_RESOLUTION
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{SCREEN_RESOLUTION.to_s}_#{args[:fingerprint]}", :value => SCREEN_RESOLUTION_NORMAL, :label_text => LABEL_MAP[SCREEN_RESOLUTION])
+      @gs.parsed_value = @gs.value
+    when PM_SHORTCUT_ID
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{PM_SHORTCUT_ID.to_s}_#{args[:shortcut_num]}", :value => PaymentMethod.load_default(current_outlet).id, :label_text => LABEL_MAP[PM_SHORTCUT_ID])
+      @gs.parsed_value = @gs.value.to_i
+    when PROMPT_FOR_COVERS
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => PROMPT_FOR_COVERS.to_s, :value => "false", :label_text => LABEL_MAP[PROMPT_FOR_COVERS])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when DEDUCT_STOCK_DURING_TRAINING_MODE
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => DEDUCT_STOCK_DURING_TRAINING_MODE.to_s, :value => "false", :label_text => LABEL_MAP[DEDUCT_STOCK_DURING_TRAINING_MODE])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when WORK_REPORT_OPTION
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{WORK_REPORT_OPTION.to_s}_#{args[:report_section]}", :value => "true", :label_text => LABEL_MAP[WORK_REPORT_OPTION])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when WORK_REPORT_FOOTER_TEXT
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => WORK_REPORT_FOOTER_TEXT.to_s, :value => "Please Retain For Records Or Disputes", :label_text => LABEL_MAP[WORK_REPORT_FOOTER_TEXT])
+      @gs.parsed_value = @gs.value
+    when PRINT_WORK_REPORT
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => PRINT_WORK_REPORT.to_s, :value => "false", :label_text => LABEL_MAP[PRINT_WORK_REPORT])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)    
+    when TIMEKEEPING_TERMINAL
+      
+      if GlobalSetting.all_terminals(current_outlet).length > 0
+	@timekeeping_terminal = GlobalSetting.all_terminals(current_outlet).first
+      else 
+	@timekeeping_terminal = ""
+      end
+      
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => TIMEKEEPING_TERMINAL.to_s, :value => @timekeeping_terminal, :label_text => LABEL_MAP[TIMEKEEPING_TERMINAL])
+      @gs.parsed_value = @gs.value
+    when ALLOW_REOPEN_ORDER_AFTER_Z
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => ALLOW_REOPEN_ORDER_AFTER_Z.to_s, :value => "false", :label_text => LABEL_MAP[ALLOW_REOPEN_ORDER_AFTER_Z])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when PRINT_LOCAL_RECIEVE_DELIVERY
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{PRINT_LOCAL_RECIEVE_DELIVERY.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[PRINT_LOCAL_RECIEVE_DELIVERY])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when CASH_DRAWER_COM_PORT
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{CASH_DRAWER_COM_PORT.to_s}_#{args[:fingerprint]}", :value => "COM1", :label_text => LABEL_MAP[CASH_DRAWER_COM_PORT])
+      @gs.parsed_value = @gs.value
+    when CASH_DRAWER_CODE
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{CASH_DRAWER_CODE.to_s}_#{args[:fingerprint]}", :value => "27,112,48,48,48", :label_text => LABEL_MAP[CASH_DRAWER_CODE])
+      @gs.parsed_value = @gs.value
+    when LOCAL_PRINTER_ID
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{LOCAL_PRINTER_ID.to_s}_#{args[:fingerprint]}", :value => -1, :label_text => LABEL_MAP[LOCAL_PRINTER_ID])
+      @gs.parsed_value = @gs.value.to_i
     else
-      @gs = load_setting property
+      @gs = load_setting property, current_outlet
       @gs.parsed_value = @gs.value
     end
     
@@ -355,9 +451,6 @@ class GlobalSetting < ActiveRecord::Base
       write_attribute("value", new_value)
     when GLOBAL_TAX_RATE
       new_value = value.to_f
-      write_attribute("value", new_value)
-    when CASH_TOTAL_OPTION
-      new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     when RELOAD_HTML5_CACHE_TIMESTAMP
       new_value = value.to_i
@@ -435,158 +528,69 @@ class GlobalSetting < ActiveRecord::Base
       end
       
       write_attribute("value", new_value)
+    when SHOW_CHARGE_CARD_BUTTON
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when ALLOW_ZALION_SPLIT_PAYMENTS
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when RELOAD_HTML5_CACHE_TIMESTAMP
+      new_value = value.to_i
+      write_attribute("value", new_value)
+    when PROMPT_FOR_COVERS
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when DEDUCT_STOCK_DURING_TRAINING_MODE
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when PRINT_WORK_REPORT
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when ALLOW_REOPEN_ORDER_AFTER_Z
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
     else
-      #catch the keys that are not only integers and wont get caught in the switch statement
-      if key.starts_with? TERMINAL_ID.to_s
-        if value_changed?
-          @res = GlobalSetting.where("global_settings.key != ?", key).where("global_settings.value = ?", value)
-          if @res.size > 0
-            #copy the settings over to the new fingerprint
-            @old_terminal_gs = @res.first
-            @old_fingerprint = @old_terminal_gs.key.split("_").last
-	    
-            #web socket ip
-            @websocket_ip_gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, {:fingerprint => @old_fingerprint}
-	    
-            @my_terminal_fingerprint = key.split("_").last
-	    
-            @my_websocket_ip_gs = GlobalSetting.setting_for GlobalSetting::WEBSOCKET_IP, {:fingerprint => @my_terminal_fingerprint}
-            @my_websocket_ip_gs.value = @websocket_ip_gs.value
-            @my_websocket_ip_gs.save
-
-            #cash drawer ip
-            @cash_drawer_ip_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_IP_ADDRESS, {:fingerprint => @old_fingerprint}
-	    
-            @my_cash_drawer_ip_gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_IP_ADDRESS, {:fingerprint => @my_terminal_fingerprint}
-            @my_cash_drawer_ip_gs.value = @cash_drawer_ip_gs.value
-            @my_cash_drawer_ip_gs.save
-	      
-            #order receipt width
-            @order_reciept_width_gs = GlobalSetting.setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, {:fingerprint => @old_fingerprint}
-	    
-            @my_order_reciept_width_gs = GlobalSetting.setting_for GlobalSetting::ORDER_RECEIPT_WIDTH, {:fingerprint => @my_terminal_fingerprint}
-            @my_order_reciept_width_gs.value = @order_reciept_width_gs.value
-            @my_order_reciept_width_gs.save
-	    
-            #menu screen type
-            @menu_screen_type_gs = GlobalSetting.setting_for GlobalSetting::MENU_SCREEN_TYPE, {:fingerprint => @old_fingerprint}
-	    
-            @my_menu_screen_type_gs = GlobalSetting.setting_for GlobalSetting::MENU_SCREEN_TYPE, {:fingerprint => @my_terminal_fingerprint}
-            @my_menu_screen_type_gs.value = @menu_screen_type_gs.value
-            @my_menu_screen_type_gs.save
-	    
-            #printer left margin
-            @printer_left_margin_gs = GlobalSetting.setting_for GlobalSetting::PRINTER_LEFT_MARGIN, {:fingerprint => @old_fingerprint}
-	    
-            @my_printer_left_margin_gs = GlobalSetting.setting_for GlobalSetting::PRINTER_LEFT_MARGIN, {:fingerprint => @my_terminal_fingerprint}
-            @my_printer_left_margin_gs.value = @printer_left_margin_gs.value
-            @my_printer_left_margin_gs.save
-	    
-            #disable advanced touch
-            @disable_advanced_touch_gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @old_fingerprint, :user_agent => ""}
-	    
-            @my_disable_advanced_touch_gs = GlobalSetting.setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, {:fingerprint => @my_terminal_fingerprint, :user_agent => ""}
-            @my_disable_advanced_touch_gs.value = @disable_advanced_touch_gs.value
-            @my_disable_advanced_touch_gs.save
-	    
-            #home screen
-            @home_screen_gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_HOME_SCREEN, {:fingerprint => @old_fingerprint}
-	    
-            @my_home_screen_gs = GlobalSetting.setting_for GlobalSetting::DEFAULT_HOME_SCREEN, {:fingerprint => @my_terminal_fingerprint}
-            @my_home_screen_gs.value = @home_screen_gs.value
-            @my_home_screen_gs.save
-	    
-            #cc charge service ip
-            @cc_charge_service_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_CHARGE_SERVICE_IP, {:fingerprint => @old_fingerprint}
-	    
-            @my_cc_charge_service_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_CHARGE_SERVICE_IP, {:fingerprint => @my_terminal_fingerprint}
-            @my_cc_charge_service_ip_gs.value = @cc_charge_service_ip_gs.value
-            @my_cc_charge_service_ip_gs.save
-	    
-            #cc terminal ip
-            @cc_terminal_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_IP, {:fingerprint => @old_fingerprint}
-	    
-            @my_cc_terminal_ip_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_IP, {:fingerprint => @my_terminal_fingerprint}
-            @my_cc_terminal_ip_gs.value = @cc_terminal_ip_gs.value
-            @my_cc_terminal_ip_gs.save
-	    
-            #cc terminal port
-            @cc_terminal_port_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, {:fingerprint => @old_fingerprint}
-	    
-            @my_cc_terminal_port_gs = GlobalSetting.setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, {:fingerprint => @my_terminal_fingerprint}
-            @my_cc_terminal_port_gs.value = @cc_terminal_port_gs.value
-            @my_cc_terminal_port_gs.save
-	    
-            #perform beep on click?
-            @do_beep_gs = GlobalSetting.setting_for GlobalSetting::DO_BEEP, {:fingerprint => @old_fingerprint}
-	    
-            @my_do_beep_gs = GlobalSetting.setting_for GlobalSetting::DO_BEEP, {:fingerprint => @my_terminal_fingerprint}
-            @my_do_beep_gs.value = @do_beep_gs.value
-            @my_do_beep_gs.save
-	    
-            #use wss for cash drawer?
-            @wss_cash_drawer_gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_CASH_DRAWER, {:fingerprint => @old_fingerprint}
-	    
-            @my_wss_cash_drawer_gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_CASH_DRAWER, {:fingerprint => @my_terminal_fingerprint}
-            @my_wss_cash_drawer_gs.value = @wss_cash_drawer_gs.value
-            @my_wss_cash_drawer_gs.save
-	    
-            #use wss for receipt printer?
-            @wss_receipt_printer_gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_RECEIPT_PRINTER, {:fingerprint => @old_fingerprint}
-	    
-            @my_wss_receipt_printer_gs = GlobalSetting.setting_for GlobalSetting::USE_WSS_RECEIPT_PRINTER, {:fingerprint => @my_terminal_fingerprint}
-            @my_wss_receipt_printer_gs.value = @wss_receipt_printer_gs.value
-            @my_wss_receipt_printer_gs.save
-	    
-            #delete old gs objects
-            @websocket_ip_gs.destroy
-            @cash_drawer_ip_gs.destroy
-            @order_reciept_width_gs.destroy
-            @old_terminal_gs.destroy
-            @menu_screen_type_gs.destroy
-            @printer_left_margin_gs.destroy
-            @disable_advanced_touch_gs.destroy
-            @home_screen_gs.destroy
-            @cc_charge_service_ip_gs.destroy
-            @cc_terminal_ip_gs.destroy
-            @cc_terminal_port_gs.destroy
-            @do_beep_gs.destroy
-            @wss_cash_drawer_gs.destroy
-            @wss_receipt_printer_gs.destroy
-          end
-        end
-        if value
-          new_value = (value ? value.gsub(" ", "").gsub("'", "").gsub("\"", "") : nil)
-          write_attribute("value", new_value)
-        end
-      elsif key.starts_with? WINDOWS_PRINTER_MARGINS.to_s
+      if key.starts_with?  "#{WINDOWS_PRINTER_MARGINS.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
-      elsif key.starts_with? BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL.to_s
+      elsif key.starts_with? "#{BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
-      elsif key.starts_with? PRINTER_LEFT_MARGIN.to_s
+      elsif key.starts_with? "#{PRINTER_LEFT_MARGIN.to_s}_"
         new_value = value.to_i
         write_attribute("value", new_value)
-      elsif key.starts_with? DISABLE_ADVANCED_TOUCH.to_s
+      elsif key.starts_with? "#{DISABLE_ADVANCED_TOUCH.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
-      elsif key.starts_with? DO_BEEP.to_s
+      elsif key.starts_with? "#{DO_BEEP.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
-      elsif key.starts_with? USE_WSS_CASH_DRAWER.to_s
+      elsif key.starts_with? "#{USE_WSS_CASH_DRAWER.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
-      elsif key.starts_with? USE_WSS_RECEIPT_PRINTER.to_s
+      elsif key.starts_with? "#{USE_WSS_RECEIPT_PRINTER.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
+      elsif key.starts_with? "#{CASH_TOTAL_OPTION.to_s}_"
+        new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
+      elsif key.starts_with? "#{WORK_REPORT_OPTION.to_s}_"
+        new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
+      elsif key.starts_with? "#{PRINT_LOCAL_RECIEVE_DELIVERY.to_s}_"
+        new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
+      elsif key.starts_with? "#{LOCAL_PRINTER_ID.to_s}_"
+        new_value = value.to_i
         write_attribute("value", new_value)
       end
+    
     end
   end
   
   #this is just a shortcut method
-  def self.parsed_setting_for property, args={}
-    setting_for(property, args).try(:parsed_value)
+  def self.parsed_setting_for property, current_outlet, args={}
+    setting_for(property, current_outlet, args).try(:parsed_value)
   end
   
   def has_logo?
@@ -595,13 +599,25 @@ class GlobalSetting < ActiveRecord::Base
   
   private
   
-  def self.load_setting property
-    @setting = find_or_create_by_key(:key => property.to_s, :value => "Not Set", :label_text => LABEL_MAP[property])
+  def self.load_setting property, current_outlet
+    @setting = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => property.to_s, :value => "Not Set", :label_text => LABEL_MAP[property])
     @setting
   end
+
+  def self.report_date_format current_outlet
+    @clockFormat = GlobalSetting.parsed_setting_for GlobalSetting::CLOCK_FORMAT, current_outlet
+
+    if @clockFormat == "12"
+      @report_date_format = "%d/%m/%Y %I:%M"
+    else
+      @report_date_format = "%d/%m/%Y %H:%M"
+    end
+
+    return @report_date_format
+  end
   
-  def self.default_date_format
-    @clockFormat = GlobalSetting.parsed_setting_for GlobalSetting::CLOCK_FORMAT
+  def self.default_date_format current_outlet
+    @clockFormat = GlobalSetting.parsed_setting_for GlobalSetting::CLOCK_FORMAT, current_outlet
     
     if @clockFormat == "12"
       @defaultDateFormat = "%I:%M %d/%m/%Y"
@@ -612,31 +628,31 @@ class GlobalSetting < ActiveRecord::Base
     return @defaultDateFormat
   end
   
-  def self.all_terminals
-    where("global_settings.key like ?", "#{TERMINAL_ID}%").where("global_settings.value not like ?", "NT%").order("value").collect(&:value).uniq
+  def self.all_terminals current_outlet
+    current_outlet.global_settings.where("global_settings.key like '#{TERMINAL_ID}\\_%'").where("global_settings.value not like ?", "NT%").order("value").collect(&:value).uniq
   end
   
-  def self.latest_terminals
-    where("global_settings.key like ?", "#{TERMINAL_ID}%")
+  def self.latest_terminals current_outlet
+    current_outlet.global_settings.where("global_settings.key like ?", "#{TERMINAL_ID}\\_%")
     .where("global_settings.value not like ?", "NT%")
     .where("updated_at > ?", LATEST_TERMINAL_HOURS.hours.ago)
     .collect(&:value).uniq
   end
   
-  def self.older_terminals
-    where("global_settings.key like ?", "#{TERMINAL_ID}%")
+  def self.older_terminals current_outlet
+    current_outlet.global_settings.where("global_settings.key like ?", "#{TERMINAL_ID}\\_%")
     .where("global_settings.value not like ?", "NT%")
     .where("updated_at <= ?", LATEST_TERMINAL_HOURS.hours.ago)
     .collect(&:value).uniq
   end
   
-  def self.remove_all_terminal_ids
-    where("global_settings.key like ?", "#{TERMINAL_ID}%").each(&:destroy)
+  def self.remove_all_terminal_ids current_outlet    
+    current_outlet.global_settings.where("global_settings.key like ?", "#{TERMINAL_ID}\\_%").each(&:destroy)
   end
   
-  def self.next_order_number
+  def self.next_order_number current_outlet
     GlobalSetting.transaction do
-      @gs = find_or_create_by_key(:key => LAST_ORDER_ID.to_s, :value => 0, :label_text => LABEL_MAP[LAST_ORDER_ID], :lock => true)
+      @gs = current_outlet.global_settings.where("global_settings.key = ?", LAST_ORDER_ID.to_s).lock(true).first
       @gs.save!
     
       @gs.reload
@@ -652,11 +668,11 @@ class GlobalSetting < ActiveRecord::Base
     return 1..7
   end
   
-  def self.course_options
+  def self.course_options current_outlet
     @options = [["None", -1]]
     
     course_vals.each do |val|
-      @options << [GlobalSetting.parsed_setting_for(GlobalSetting::COURSE_LABEL, {:course_val => val}), val]
+      @options << [GlobalSetting.parsed_setting_for(GlobalSetting::COURSE_LABEL, current_outlet, {:course_val => val}), val]
     end
     
     @options
@@ -670,8 +686,27 @@ class GlobalSetting < ActiveRecord::Base
     (Time.now.to_f * 1000).to_i
   end
   
-  def self.terminal_id_for fingerprint
-    GlobalSetting.setting_for GlobalSetting::TERMINAL_ID, {:fingerprint => fingerprint}
+  def self.terminal_id_for fingerprint, current_outlet
+    GlobalSetting.setting_for GlobalSetting::TERMINAL_ID, current_outlet, {:fingerprint => fingerprint}
+  end
+  
+  def self.clear_dup_keys_gs current_outlet
+    logger.info "Clearing DUP keys gs for #{current_outlet.id}"
+    
+    current_outlet.global_settings.order("created_at desc, id desc").group_by(&:key).each do |gs_key, gs_set|
+      if gs_set.size > 1
+        #we have duplicates
+        @del_count = gs_set.size - 1
+	
+        logger.info "Found #{gs_set.size} duplicate keys for Key: #{gs_key} Label: '#{gs_set.first.label_text}'. Removing #{@del_count} duplicates!"
+	
+        gs_set.each do |gs|
+          break if @del_count == 0
+          gs.destroy
+          @del_count -= 1
+        end
+      end
+    end
   end
   
   #these properties are for particular properties in the db
@@ -699,15 +734,21 @@ class GlobalSetting < ActiveRecord::Base
   CUSTOMER_MENU_SCREEN = 3
   
   #min and max values for polling in seconds
-  POLLING_MIN_SECONDS = 1
-  POLLING_MAX_SECONDS = 5
+  POLLING_MIN_SECONDS = 10
+  POLLING_MAX_SECONDS = 120
+  
+  #screen resolutions
+  SCREEN_RESOLUTION_NORMAL = "1024x768"
+  SCREEN_RESOLUTION_1360x786 = "1360x786"
 end
+
+
 
 # == Schema Information
 #
 # Table name: global_settings
 #
-#  id                :integer(4)      not null, primary key
+#  id                :integer(8)      not null, primary key
 #  key               :string(255)
 #  value             :text
 #  label_text        :string(255)
@@ -717,5 +758,6 @@ end
 #  logo_updated_at   :datetime
 #  created_at        :datetime
 #  updated_at        :datetime
+#  outlet_id         :integer(8)
 #
 

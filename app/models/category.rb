@@ -1,4 +1,6 @@
 class Category < ActiveRecord::Base
+  belongs_to :outlet
+  
   has_many :products, :conditions => "products.is_deleted = false", :dependent => :nullify  
   has_many :products_including_deleted, :class_name => "Product", :dependent => :nullify 
   
@@ -7,7 +9,8 @@ class Category < ActiveRecord::Base
   
   belongs_to :parent_category, :class_name => "Category"
 
-  validates :name, :presence => true, :uniqueness => true
+  validates :name, :presence => true
+  validates_uniqueness_of :name, :case_sensitive => false, :scope => :outlet_id
   
   #for will_paginate
   cattr_reader :per_page
@@ -69,7 +72,51 @@ class Category < ActiveRecord::Base
     write_attribute("kitchen_screens", kitchen_screens_val)
   end
   
+  def blocked_printing_to_terminal? id_safe_terminal_name
+    @blocked_printers_string = read_attribute("blocked_printers")
+    
+    if @blocked_printers_string
+      @blocked_printers_string.split(",").each do |terminal_name|
+        return true if id_safe_terminal_name == terminal_name
+      end
+    end
+    
+    return false
+  end
+  
+  def blocked_printers=(blocked_printers_array)
+    
+    #remove any empty strings from the selected_printers_array
+    blocked_printers_array.delete("")
+    
+    if blocked_printers_array.size == 0
+      blocked_printers_val = ""
+    elsif blocked_printers_array.size == 1
+      blocked_printers_val = blocked_printers_array[0].to_s
+    else
+      blocked_printers_val = blocked_printers_array.join(",")
+    end
+    
+    write_attribute("blocked_printers", blocked_printers_val)
+  end
+  
+  def self.options_for_select
+    @options = []
+    
+    @options << ["Any", -1]
+    
+    all.each do |c|
+      @options << [c.name, c.id]
+    end
+    
+    @options
+  end
+  
 end
+
+
+
+
 
 
 
@@ -80,17 +127,20 @@ end
 #
 # Table name: categories
 #
-#  id                                       :integer(4)      not null, primary key
+#  id                                       :integer(8)      not null, primary key
 #  name                                     :string(255)
-#  parent_category_id                       :integer(4)
+#  parent_category_id                       :integer(8)
 #  description                              :string(255)
 #  created_at                               :datetime
 #  updated_at                               :datetime
-#  tax_rate_id                              :integer(4)
+#  tax_rate_id                              :integer(8)
 #  printers                                 :string(255)     default("")
-#  order_item_addition_grid_id              :integer(4)
+#  order_item_addition_grid_id              :integer(8)
 #  order_item_addition_grid_id_is_mandatory :boolean(1)      default(FALSE)
-#  course_num                               :integer(4)      default(0)
+#  course_num                               :integer(4)      default(-1)
 #  kitchen_screens                          :string(255)     default("")
+#  blocked_printers                         :string(255)
+#  prompt_for_covers                        :boolean(1)      default(FALSE)
+#  outlet_id                                :integer(8)
 #
 

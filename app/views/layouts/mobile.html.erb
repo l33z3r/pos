@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%= stylesheet_links "/jqtouch/jqtouch", "/jqtouch/themes/apple/theme", "mobile/", :cache => "cache/mobile", :recursive => true %>
-
     <!-- include the head form the large interface -->
     <%= render :partial => "/partials/interfaces/large_screen/common_head" %>
 
-    <%= javascript_include_tag "/jqtouch/jqtouch", "mobile/mobile", "mobile/mobile_login_functions", "mobile/mobile_util" %>
-
-    <!-- load the js shared between medium and mobile for use on android devices -->
-    <%= javascript_include_tag "interfaces/shared/mobile_device" %>
+    <%= render :partial => "/partials/mobile_assets" %>
 
   </head>
 

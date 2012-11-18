@@ -3,6 +3,7 @@ var currentMenuPageId;
 var currentMenuSubPageId;
 
 var menuItemDoubleMode = false;
+var menuItemHalfMode = false;
 var productInfoPopupMode = false;
 var menuItemStandardPriceOverrideMode = false;
 var currentMenuItemQuantity = "";
@@ -44,6 +45,7 @@ var globalPriceLevel = null;
 var globalPriceLevelKey = "global_price_level";
 
 var lastOrderSentTime = null;
+var lastOrderTable = null;
 
 var lastSaleObj;
 
@@ -51,6 +53,10 @@ var mandatoryFooterMessageHTML = null;
 
 //this is used to hold the master 
 var masterOrdersUserId = -1;
+
+var tableOrderItemsToMerge = null;
+
+var sendOrderAfterCovers = false;
 
 function getCurrentOrder() {
     if(selectedTable == 0) {
@@ -62,7 +68,13 @@ function getCurrentOrder() {
     return null;
 }
 
+//this stores the newly synced items so we can build an order to print if we are the print delegate
+var newlySyncedItems; 
+
 function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployeeID, terminalEmployee, tableOrderDataJSON) {
+    //data types need to be cast
+    convertOrderItemStringsToBooleans(tableOrderDataJSON);
+    
     //save the current users table order to reload it after sync
     var savedTableID = selectedTable;
     var savedServiceCharge = serviceCharge;
@@ -71,11 +83,6 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
     for(var i = 0; i < employees.length; i++) {
         nextUserIDToSyncWith = employees[i].id;
         
-        //skip if terminal and user same
-        //        if(recvdTerminalID == terminalID && terminalEmployeeID == nextUserIDToSyncWith) {
-        //            continue;
-        //        }
-        
         if(!userHasUniqueTableOrder(nextUserIDToSyncWith, tableID)) {
             continue;
         }
@@ -83,17 +90,27 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
         doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith);
     }
     
-    //sync the master orders array if its not a table 0 order
-    if(tableID != 0) {
-        doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, masterOrdersUserId);
-    }
+    //sync the master orders array 
+    doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, masterOrdersUserId);
     
     if(inKitchenContext()) {
         renderReceipt(tableID);
-    }
+    } 
     
-    if(lastSyncTableOrderTime > lastPrintCheckTime) {
-        checkForItemsToPrint(tableOrderDataJSON, tableOrderDataJSON.items, terminalEmployee, recvdTerminalID);
+    if(printDelegateTerminalID == terminalID && recvdTerminalID != terminalID && tableOrderDataJSON.needsPrintDelegate) {
+        if(lastSyncTableOrderTime > lastPrintCheckTime) {
+            
+            //load the synced order
+            getTableOrderFromStorage(current_user_id, tableID);
+    
+            //copy it
+            var copiedOrder = {};
+
+            var copiedOrderForPrintCheck = $.extend(true, copiedOrder, tableOrders[tableID]);        
+            copiedOrderForPrintCheck.items = newlySyncedItems;
+            
+            checkForItemsToPrint(copiedOrderForPrintCheck, terminalEmployee);
+        }
     }
     
     if(tableID != 0) {
@@ -118,74 +135,17 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
 function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith) {
     //the order is in json form, we need to turn it back into an array
     syncOrderItems = new Array();
+    newlySyncedItems = new Array();
     
     for(var itemKey in tableOrderDataJSON.items) {
         var theItem = tableOrderDataJSON.items[itemKey];
-        
-        //make sure the data types are converted correctly
-        if(theItem.product.show_price_on_receipt) {
-            theItem.product.show_price_on_receipt = (theItem.product.show_price_on_receipt.toString() == "true" ? true : false);   
-        }
-        
-        if(theItem.showServerAddedText) {
-            theItem.showServerAddedText = (theItem.showServerAddedText.toString() == "true" ? true : false);   
-        }
-        
-        if(theItem.product.hide_on_printed_receipt) {
-            theItem.product.hide_on_printed_receipt = (theItem.product.hide_on_printed_receipt.toString() == "true" ? true : false);   
-        }
-        
-        if(theItem.product.category_id == "null") {
-            theItem.product.category_id = null;
-        }
-        
-        if(theItem.is_course) {
-            theItem.is_course = (theItem.is_course.toString() == "true" ? true : false);   
-        }
-        
-        if(theItem.show_course_label) {
-            theItem.show_course_label = (theItem.show_course_label.toString() == "true" ? true : false);   
-        }
-        
-        if(theItem.is_void) {
-            theItem.is_void = (theItem.is_void.toString() == "true" ? true : false);   
-        }
-        
-        
-        
-        
-        //this is only untill we have the new code deployed for a while we can be sure that clientName will be present on newly created orders
-        if(typeof(theItem.is_double) != 'undefined') {
-            theItem.is_double = (theItem.is_double.toString() == "true" ? true : false);
-        } else {
-            theItem.is_double = false;
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        var copiedOrderItem = {};
-        //console.log("OIAITEMS: " + theItem.oia_items + " " + (theItem.oia_items.length>0));
-        
+
         if(typeof(theItem.oia_items) != "undefined") {
             //we must convert the oia_items hash to an array (the server turned our array into some indexed hash)
             var newOIAItems = new Array();
         
             for(var oiaItemKey in theItem.oia_items) {
                 var nextOIA = theItem.oia_items[oiaItemKey];
-                
-                //console.log("copying oia " + oiaItemKey + " " + nextOIA);
-                //console.log(nextUserIDToSyncWith + " Is add " + nextOIA.description + " " + nextOIA.is_add.toString() + " " + (nextOIA.is_add.toString() == "true"));
                 
                 //make sure the data types are converted correctly
                 nextOIA.is_add = (nextOIA.is_add.toString() == "true" ? true : false);
@@ -195,20 +155,26 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
                 nextOIA.is_addable = (nextOIA.is_addable.toString() == "true" ? true : false);
                 
                 nextOIA.abs_charge = parseFloat(nextOIA.abs_charge);
-                //console.log("converted abs_charge: " + nextOIA.abs_charge);
+                
                 newOIAItems.push(nextOIA);
             }
         
             theItem.oia_items = newOIAItems;
         }
     
-        var copiedOrderItemForStore = $.extend(true, copiedOrderItem, theItem);
+        var copiedOrderItem = {};
+        var copiedOrderItem2 = {};
         
-        copiedOrderItemForStore.synced = "true";
+        var copiedOrderItemForStore = $.extend(true, copiedOrderItem, theItem);
+        var copiedOrderItemForPrint = $.extend(true, copiedOrderItem2, theItem);
+        
+        if(!copiedOrderItemForStore.synced) {
+            newlySyncedItems.push(copiedOrderItemForPrint);
+            copiedOrderItemForStore.synced = "true";
+        }
+        
         syncOrderItems.push(copiedOrderItemForStore);
     }
-    
-    //    alert("Order for sync has " + syncOrderItems.length + " items. About to sync with existing " + tableOrders[tableID].items.length + " items");
     
     getTableOrderFromStorage(nextUserIDToSyncWith, tableID);
     
@@ -217,7 +183,6 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     for(var i=0;i<existingOrderItems.length;i++) {
         if(existingOrderItems[i].synced) {
-            //            alert("deleting already synced item " + i + " " + existingOrderItems[i].synced);
             existingOrderItems.splice(i, 1);
             i--;
         }
@@ -262,7 +227,6 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     //copy over the order number
     tableOrders[tableID].order_num = tableOrderDataJSON.order_num;
-    //alert("OrderNum: " + tableOrders[tableID].order_num);
     
     //copy over the client name
     var clientName = tableOrderDataJSON.client_name;
@@ -273,7 +237,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     if(clientName.length > 0) {
         $('#table_label_' + tableID).html(tables[tableID].label + " (" + clientName + ")");
     }
-    
+        
     //copy over the covers
     var covers = tableOrderDataJSON.covers;
     tableOrders[tableID].covers = covers;
@@ -289,6 +253,11 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     //copy over the cashback
     if(typeof tableOrderDataJSON.cashback != 'undefined') {
         tableOrders[tableID].cashback = parseFloat(tableOrderDataJSON.cashback);
+    }
+    
+    //copy over the void order id if there is one
+    if(typeof tableOrderDataJSON.void_order_id != 'undefined') {
+        tableOrders[tableID].void_order_id = tableOrderDataJSON.void_order_id;
     }
     
     //copy over the courses array
@@ -315,23 +284,51 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     }
 }
 
-function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID) {
-    var itemsToPrint = new Array();
+function checkForItemsToPrint(order, serverNickname) {
+    if(!inLargeInterface()) {
+        niceAlert("Not yet implemented for mobiles!");
+        return;
+    }
     
-    for(var itemKey in items) {
-        var theItem = items[itemKey];
+    var printerOrders = {};
+    var items = order.items;
+    
+    for(i=0; i<items.length; i++) {
+        var theItem = items[i];
         
         //we only want to print items from the order that are new i.e. not synced on the other terminal yet
-        var isItemSynced = (theItem.synced === 'true');
+        var isItemSynced = theItem.synced;
+        var isItemVoid = theItem.is_void;
         
-        if(!isItemSynced && !theItem.is_void) {
+        if(!isItemSynced && !isItemVoid) {
             var itemPrinters = theItem.product.printers;
             
             if((typeof itemPrinters != "undefined") && itemPrinters.length > 0) {
+                //are we allowed print from this terminal
+                var blockedPrinter = false;
+                var itemBlockedPrinters = theItem.product.blocked_printers;
+                
+                if((typeof itemBlockedPrinters != "undefined") && itemBlockedPrinters.length > 0) {
+                    var blockedPrintersArray = itemBlockedPrinters.split(",");
+                    blockedPrinter = $.inArray(terminalID.toLowerCase(), blockedPrintersArray) != -1;
+                }
+                
+                if(blockedPrinter) {
+                    continue;
+                }
+                
+                //now loop through the printer ids
                 var printersArray = itemPrinters.split(",");
                 
-                if($.inArray(terminalID.toLowerCase(), printersArray) != -1) {
-                    itemsToPrint.push(theItem);
+                for(j=0; j<printersArray.length; j++) {
+                    var nextPrinterID = printersArray[j];
+                    
+                    //lazy init
+                    if(typeof(printerOrders[nextPrinterID]) == 'undefined') {
+                        printerOrders[nextPrinterID] = new Array();
+                    }
+                    
+                    printerOrders[nextPrinterID].push(theItem);
                 }
             } else {
                 //check category printers
@@ -341,10 +338,32 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
                     var categoryPrinters = categories[categoryId].printers;
             
                     if((typeof categoryPrinters != "undefined") && categoryPrinters.length > 0) {
+                        //are we allowed print from this terminal
+                        var blockedCategoryPrinter = false;
+                        var categoryBlockedPrinters = categories[categoryId].blocked_printers;
+                
+                        if((typeof categoryBlockedPrinters != "undefined") && categoryBlockedPrinters.length > 0) {
+                            var blockedCategoryPrintersArray = categoryBlockedPrinters.split(",");
+                
+                            blockedCategoryPrinter = $.inArray(terminalID.toLowerCase(), blockedCategoryPrintersArray) != -1;
+                        }
+                
+                        if(blockedCategoryPrinter) {
+                            continue;
+                        }
+                        
+                        //now loop through the printer ids
                         var categoryPrintersArray = categoryPrinters.split(",");
                 
-                        if($.inArray(terminalID.toLowerCase(), categoryPrintersArray) != -1) {
-                            itemsToPrint.push(theItem);
+                        for(j=0; j<categoryPrintersArray.length; j++) {
+                            nextPrinterID = categoryPrintersArray[j];
+                    
+                            //lazy init
+                            if(typeof(printerOrders[nextPrinterID]) == 'undefined') {
+                                printerOrders[nextPrinterID] = new Array();
+                            }
+                    
+                            printerOrders[nextPrinterID].push(theItem);
                         }
                     }
                 }
@@ -352,14 +371,69 @@ function checkForItemsToPrint(orderJSON, items, serverNickname, recvdTerminalID)
         }
     }
     
-    var itemsToPrintOrder = {
-        'items' : itemsToPrint
+    for(var printerID in printerOrders) {
+        var itemsToPrint = printerOrders[printerID];
+        
+        var itemsToPrintOrder = {
+            'items' : itemsToPrint
+        }
+        
+        doAutoCoursing(itemsToPrintOrder);
+            
+        printItemsFromOrder(printerID, serverNickname, order, itemsToPrint);
     }
-    
-    doAutoCoursing(itemsToPrintOrder);
-    
-    if(itemsToPrint.length > 0 && inLargeInterface()) {
-        printItemsFromOrder(serverNickname, recvdTerminalID, orderJSON, itemsToPrint);
+}
+
+function convertOrderItemStringsToBooleans(tableOrderDataJSON) {
+    for(var itemKey in tableOrderDataJSON.items) {
+        var theItem = tableOrderDataJSON.items[itemKey];
+        
+        if(theItem.synced) {
+            theItem.synced = (theItem.synced.toString() == "true" ? true : false);   
+        }
+        
+        //make sure the data types are converted correctly
+        if(theItem.product.show_price_on_receipt) {
+            theItem.product.show_price_on_receipt = (theItem.product.show_price_on_receipt.toString() == "true" ? true : false);   
+        }
+        
+        if(theItem.showServerAddedText) {
+            theItem.showServerAddedText = (theItem.showServerAddedText.toString() == "true" ? true : false);   
+        }
+        
+        if(theItem.product.hide_on_printed_receipt) {
+            theItem.product.hide_on_printed_receipt = (theItem.product.hide_on_printed_receipt.toString() == "true" ? true : false);   
+        }
+        
+        if(theItem.product.category_id == "null") {
+            theItem.product.category_id = null;
+        }
+        
+        if(theItem.is_course) {
+            theItem.is_course = (theItem.is_course.toString() == "true" ? true : false);   
+        }
+        
+        if(theItem.show_course_label) {
+            theItem.show_course_label = (theItem.show_course_label.toString() == "true" ? true : false);   
+        }
+        
+        if(theItem.is_void) {
+            theItem.is_void = (theItem.is_void.toString() == "true" ? true : false);   
+        }
+        
+        //this is only untill we have the new code deployed for a while we can be sure that double_price will be present on newly created orders
+        if(typeof(theItem.is_double) != 'undefined') {
+            theItem.is_double = (theItem.is_double.toString() == "true" ? true : false);
+        } else {
+            theItem.is_double = false;
+        }
+        
+        //this is only untill we have the new code deployed for a while we can be sure that half_price will be present on newly created orders
+        if(typeof(theItem.is_half) != 'undefined') {
+            theItem.is_half = (theItem.is_half.toString() == "true" ? true : false);
+        } else {
+            theItem.is_half = false;
+        }
     }
 }
 
@@ -438,6 +512,11 @@ function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCou
     }
     
     targetOrderItem.is_void = is_void;
+    
+    //add the employee who voided the item
+    if(targetOrderItem.is_void) {
+        targetOrderItem.void_employee_id = current_user_id;
+    }
     
     if(targetOrderItem.pre_discount_price) {
         targetOrderItem.pre_discount_price = newPricePerUnit * newQuantity;
@@ -564,6 +643,7 @@ function initTouchRecpts() {
     $('.large_interface #till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #login_till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #totals_till_roll').touchScroll(receiptScrollerOpts);
+    $('.large_interface #delivery_till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #reports_center_till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #reports_left_till_roll').touchScroll(receiptScrollerOpts);
     $('.large_interface #float_till_roll').touchScroll(receiptScrollerOpts);
@@ -588,11 +668,16 @@ function buildOrderItem(product, amount) {
     
     var productPrice = product.price;
     var isDouble = false;
+    var isHalf = false;
     
     if(menuItemDoubleMode) {
         productPrice = product.double_price;
         isDouble = true;
         setMenuItemDoubleMode(false);
+    } else if(menuItemHalfMode) {
+        productPrice = product.half_price;
+        isHalf = true;
+        setMenuItemHalfMode(false);
     } else if(menuItemStandardPriceOverrideMode) {
         productPrice = product.price;
         setMenuItemStandardPriceOverrideMode(false);
@@ -612,6 +697,7 @@ function buildOrderItem(product, amount) {
         'tax_rate':taxRate,
         'product_price':productPrice,
         'is_double':isDouble,
+        'is_half':isHalf,
         'total_price':totalProductPrice,
         'is_void':false
     }
@@ -889,8 +975,10 @@ function doTransferTable(tableFrom, tableTo) {
     }
         
     if($.inArray(tableTo.toString(), activeTableIDS) != -1) {
-        niceAlert("This table is occupied, please choose another.");
-        return;
+        getTableOrderFromStorage(current_user_id, tableTo);
+        
+        //copy the array (http://www.xenoveritas.org/blog/xeno/the-correct-way-to-clone-javascript-arrays)
+        tableOrderItemsToMerge = tableOrders[tableTo].items.slice(0);
     }
         
     transferOrderInProgress = true;
@@ -908,6 +996,7 @@ function doTransferTable(tableFrom, tableTo) {
     $.ajax({
         type: 'POST',
         url: '/transfer_order',
+        error: transferOrderError,
         data: {
             table_from_id : tableFrom,
             table_from_order_num : getCurrentOrder().order_num,

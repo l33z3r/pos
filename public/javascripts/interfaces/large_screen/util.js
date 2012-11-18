@@ -143,6 +143,8 @@ function setStatusMessage(message, hide, shake) {
         statusEl = $('#menu_screen_status_message');
     } else if(currentScreenIsTables()) {
         statusEl = $('#tables_screen_status_message');
+    } else if(currentScreenIsDelivery()) {
+        statusEl = $('#delivery_screen_status_message');
     } else if(currentScreenIsTotals()) {
         statusEl = $('#totals_screen_status_message');
     } else if(inKitchenContext()) {
@@ -188,6 +190,10 @@ function hideStatusMessage() {
         statusEl = $('#menu_screen_status_message');
     } else if(currentScreenIsTables()) {
         statusEl = $('#tables_screen_status_message');
+    } else if(currentScreenIsDelivery()) {
+        statusEl = $('#delivery_screen_status_message');
+    } else if(currentScreenIsTotals()) {
+        statusEl = $('#totals_screen_status_message');
     } else if(inKitchenContext()) {
         statusEl = $('#kitchen_screen_status_message');
     } else {
@@ -204,6 +210,22 @@ function showLoginScreen() {
     clearNavTitle();
     hideAllScreens();
     $('#landing').show();
+    
+    //if a user has items on their table 0 receipt show it on their logo
+    var userIDS = getClockedInUsersIDS();
+
+    for (var i = 0; i < userIDS.length; i++) {
+        var nextUserID = userIDS[i];
+        
+        var nextTable0Order = getOrderFromStorage(nextUserID);
+        
+        if(nextTable0Order && nextTable0Order.items && nextTable0Order.items.length > 0) {
+            $('#employee_box_' + nextUserID).addClass("has_active_t0_items");
+        } else {
+            $('#employee_box_' + nextUserID).removeClass("has_active_t0_items");
+        }
+    }
+    
     loginRecptScroll();
 }
 
@@ -219,7 +241,7 @@ function showMenuScreen() {
     
     if(menuScreenType == RESTAURANT_MENU_SCREEN) {
         //show the shortcut dropdown
-        $('#menu_screen_shortcut_dropdown_container').show();   
+        initMenuScreenNavItems();
     } else if(menuScreenType == RETAIL_MENU_SCREEN) {
         //show the shortcut dropdown
         $('#menu_screen_shortcut_dropdown_container').show();   
@@ -230,8 +252,6 @@ function showMenuScreen() {
 }
 
 function showTablesScreen() {
-    
-    
     setNavTitle("Table Selection");
     
     $('#nav_back_link').unbind();
@@ -251,6 +271,25 @@ function showTablesScreen() {
         
     $('#table_select_screen').show();
     initTableSelectScreen();
+}
+
+function showUtilPaymentScreen() {
+    setNavTitle("Make Payment");
+    
+    $('#nav_back_link').unbind();
+    
+    showNavBackLinkMenuScreen();
+    
+    $('#nav_back_link').click(function() {
+        cancelUtilPayment();
+    });
+    
+    hideAllScreens();
+    
+    //hide the dropdown menu
+    $('#menu_screen_shortcut_dropdown_container').hide();
+        
+    $('#util_payment_screen').show();
 }
 
 function showSplitBillScreen() {
@@ -277,6 +316,12 @@ function showTotalsScreen() {
     setNavTitle("Sub Total");
     hideAllScreens();
     $('#total_screen').show();
+}
+
+function showDeliveryScreen() {
+    setNavTitle("Receive Delivery");
+    hideAllScreens();
+    $('#delivery_screen').show();
 }
 
 function showMoreOptionsScreen() {
@@ -310,17 +355,22 @@ function hideAllScreens() {
     //make sure the keyboard from the add note screen is hidden
     resetKeyboard();
     
+    //make sure dropdowns get closed
+    menuScreenShortcutSelectMenu.closeMenu();
+    tableSelectMenu.closeMenu();
+    
     $('#landing').hide();
     $('#menu_screen').hide();
     $('#table_select_screen').hide();
     $('#total_screen').hide();
+    $('#delivery_screen').hide();
+    $('#util_payment_screen').hide();
     $('#more_options').hide();
     $('#cash_reports_screen').hide();
     $('#float_screen').hide();
     $('#mobile_screen').hide();
     $('#previous_cash_reports_screen').hide();
     $('#split_bill_screen').hide();
-
 }
 
 function currentScreenIsMenu() {
@@ -333,6 +383,14 @@ function currentScreenIsLogin() {
 
 function currentScreenIsTotals() {
     return $('#total_screen').is(":visible");
+}
+
+function currentScreenIsDelivery() {
+    return $('#delivery_screen').is(":visible");
+}
+
+function currentScreenIsUtilPayment() {
+    return $('#util_payment_screen').is(":visible");
 }
 
 function currentScreenIsCashReports() {
@@ -414,9 +472,19 @@ function showUtilKeyboard() {
     $('#util_keyboard_container').slideDown(300);
 }
 
+var lastActiveElementInputCallback = null;
+
+function setUtilKeyboardCallback(callbackFunction) {
+    lastActiveElementInputCallback = callbackFunction;
+}
+
 function doWriteToLastActiveInput(val) {
     if(lastActiveElement) {
-        lastActiveElement.val(lastActiveElement.val() + val);
+        doKeyboardInput(lastActiveElement, val);
+        
+        if(lastActiveElementInputCallback) {
+            lastActiveElementInputCallback.call();
+        }
     }
 }
 
@@ -427,10 +495,13 @@ function doTabLastActiveInput() {
 }
 
 function doDeleteCharLastActiveInput() {
-    oldVal = lastActiveElement.val();
-    newVal = oldVal.substring(0, oldVal.length - 1);
-    
-    lastActiveElement.val(newVal);
+    if(lastActiveElement) {
+        doKeyboardInputCancel(lastActiveElement);
+        
+        if(lastActiveElementInputCallback) {
+            lastActiveElementInputCallback.call();
+        }
+    }
 }
 
 $.fn.focusNextInputField = function() {
@@ -541,8 +612,10 @@ function getLastReceiptItem() {
 function hideAllMenuSubScreens() {
     $('#menu_container').hide();
     
-    $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').removeClass("selected");
+    $('.button[id=sales_button_' + modifyOrderItemButtonID + '], .button[id=admin_screen_button_' + modifyOrderItemButtonID + ']').removeClass("selected");
     $('#order_item_additions').hide();
+    
+    $('#cash_out_subscreen').hide();
 }
 
 function currentMenuSubscreenIsMenu() {
@@ -551,6 +624,10 @@ function currentMenuSubscreenIsMenu() {
 
 function currentMenuSubscreenIsModifyOrderItem() {
     return $('#order_item_additions').is(":visible");
+}
+
+function currentMenuSubscreenIsCashOutSubscreen() {
+    return $('#cash_out_subscreen').is(":visible");
 }
 
 function initNoteScreenKeyboard() {
@@ -568,7 +645,7 @@ function initNoteScreenKeyboard() {
         "top":pos.top + "px"
     } );
     
-    $('#close_keyboard_link').hide();
+    hideUtilKeyboardCloseButton();
 
     $("#util_keyboard_container").show();
 }
@@ -584,7 +661,7 @@ function resetKeyboard() {
         "left" : "0px"
     } );
     
-    $('#close_keyboard_link').show();
+    showUtilKeyboardCloseButton();
     $("#util_keyboard_container").hide();
 }
 
@@ -601,7 +678,7 @@ function placeUtilKeyboard(keyboardPlaceHolderEl) {
         "top":pos.top + "px"
     } );
     
-    $('#close_keyboard_link').hide();
+    hideUtilKeyboardCloseButton();
 
     $("#util_keyboard_container").show();
 }
@@ -641,10 +718,21 @@ function postSetConnectionStatus(connected) {
     
     if(!connected) {
         color = "#FF0000";
+        
+        //if we are offline and the init sequence has not completed then we are operating in offline mode
+        if(!callHomePollInitSequenceComplete) {
+            callHomePollInitSequenceComplete = true;
+            
+            //hide the spinner at the top nav
+            $('#loading_orders_spinner').hide();
+            $('#table_select_container_loading_message').hide();
+            $('#table_select_container').show();
+            $('#table_screen_button').show();                
+        }
     }
     
     //we must be offline, so set the connection status light
-    $('#connection_status').css("background-color", color);
+    $('#connection_status').css("background-color", color);                    
 }
 
 function initModifierGrid() {
@@ -714,4 +802,212 @@ function hideLicenceExpiredScreen() {
     } catch (e) {
         
     }
+}
+
+function initTrainingModeFromCookie() {
+    if(getRawCookie(inTrainingModeCookieName) == null) {
+        var exdays = 365 * 100;
+        setRawCookie(inTrainingModeCookieName, false, exdays);
+    }
+    
+    var turnOn = getRawCookie(inTrainingModeCookieName) === "true";
+    setTrainingMode(turnOn);
+}
+
+function hideUtilKeyboardCloseButton() {
+    $('#close_keyboard_link').hide();
+    $('#util_keyboard_inner_container').height("230px");
+}
+
+function showUtilKeyboardCloseButton() {
+    $('#close_keyboard_link').show();
+    $('#util_keyboard_inner_container').height("260px");    
+}
+
+function checkForFirefox() {
+    var ua = $.browser;
+    
+    if (typeof(ua.mozilla) == 'undefined') {
+        niceAlert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software!");
+        return false;
+    }
+    
+    return true;
+}
+
+function checkForClueyPlugin() {
+    if(!checkForFirefox()) {
+        return false;
+    }
+    
+    if(typeof(cluey_ff_ext) == 'undefined') {
+        var clueyExtensionDownloadPopup= function() {
+            var title = "Cluey Addon Not Found";
+        
+            hideNiceAlert();
+        
+            ModalPopups.Alert('niceAlertContainer',
+                title, "<div id='nice_alert' class='licence_expired_header'>Cluey Firefox Extension Not Found. You can download it by clicking OK. You must then install it via firefox.</div>",
+                {
+                    width: 360,
+                    height: 310,
+                    okButtonText: 'Download',
+                    onOk: "goToNewWindow(\"/firefox_extensions/cluey_ff_extension.xpi\");hideNiceAlert();"
+                });
+        };
+        
+        indicateActionRequired(clueyExtensionDownloadPopup);
+        
+        return false;
+    } else {
+        
+        if(!clueyPluginInitialized) {
+            console.log("Setting cluey prefs in plugin");
+            cluey_ff_ext.setClueyPrefs();
+            
+            clueyPluginInitialized = true;
+        }
+        
+        return true;
+    }
+}
+
+function checkForJSPrintSetupPlugin() {
+    //using the jsprint library
+    //http://jsprintsetup.mozdev.org/reference.html
+    if(typeof(jsPrintSetup) == 'undefined') {
+        var jsPrintExtensionDownloadPopup = function() {
+            var title = "jsPrintSetup Firefox Addon Not Found";
+        
+            hideNiceAlert();
+        
+            ModalPopups.Alert('niceAlertContainer',
+                title, "<div id='nice_alert' class='licence_expired_header'>jsPrintSetup Firefox Addon Not Found. You can download it by clicking OK. You must then install it via firefox.</div>",
+                {
+                    width: 360,
+                    height: 310,
+                    okButtonText: 'Download',
+                    onOk: "goToNewWindow(\"/firefox_extensions/jsprintsetup-0.9.2.xpi\");hideNiceAlert();"
+                });
+        };
+        
+        indicateActionRequired(jsPrintExtensionDownloadPopup);
+        
+        return false;
+    } else {
+        return true;
+    }
+}
+
+var localPrinters;
+var newLocalPrinters = new Array();
+var notFoundPrinterIDs = new Array();
+
+function checkForUninstalledPrinters() {
+    
+    var printersString = jsPrintSetup.getPrintersList();
+    
+    if(printersString != null) {
+        localPrinters = printersString.split(",");
+    } else {
+        //maybe the plugin permissions have not been given yet
+        localPrinters = new Array();
+    }
+    
+    console.log("Found " + localPrinters.length + " local printers");
+    
+    for(i=0; i<localPrinters.length; i++) {
+        var nextLocalPrinterNetworkPath = localPrinters[i].toLowerCase();
+        localPrinters[i] = nextLocalPrinterNetworkPath;
+        
+        console.log("Local Printer " + (i+1) + ": " + nextLocalPrinterNetworkPath);
+        
+        if($.inArray(nextLocalPrinterNetworkPath, printerNetworkPaths) == -1) {
+            newLocalPrinters.push(nextLocalPrinterNetworkPath);
+        }
+    }
+    
+    console.log("Got " + printers.length + " system printers");
+    
+    for(i=0; i<printers.length; i++) {
+        //make sure to compare with the unescaped network path
+        var nextSystemPrinterNetworkPath = printers[i].network_path.toLowerCase();
+        
+        console.log("System Printer " + (i+1) + ": " + printers[i].network_path.toLowerCase());
+        
+        for(j=0; j<localPrinters.length; j++) {
+            console.log("LP " + (j+1) + ": " + localPrinters[j]);
+        }
+    
+        if($.inArray(nextSystemPrinterNetworkPath, localPrinters) == -1) {
+            notFoundPrinterIDs.push(printers[i].id);
+        }
+    }
+    
+    console.log("There are " + newLocalPrinters.length + " new local printers on your system");
+    
+    for(i=0; i<newLocalPrinters.length; i++) {
+        var nextNewLocalPrinterNetworkPath = newLocalPrinters[i].toLowerCase();        
+        console.log("New Local Printer " + (i+1) + ": " + nextNewLocalPrinterNetworkPath);
+    }
+    
+    console.log("There are " + notFoundPrinterIDs.length + " printers not found on your system");
+    
+    var notFoundPrintersNetworkPaths = new Array();
+    
+    for(i=0; i<notFoundPrinterIDs.length; i++) {
+        var nextNotFoudnPrinter = printersByID[notFoundPrinterIDs[i]];
+        var nextNotFoudnPrinterNetworkPath = nextNotFoudnPrinter.network_path.toLowerCase();        
+        console.log("Not Found Printer " + (i+1) + ": " + nextNotFoudnPrinterNetworkPath);
+        notFoundPrintersNetworkPaths.push(nextNotFoudnPrinterNetworkPath);
+    }
+    
+    var localPrinter = printersByID[localPrinterID];
+    
+    if(localPrinter) {
+        if($.inArray(localPrinter.network_path.toLowerCase(), localPrinters) == -1) {
+            notFoundPrinterIDs.push(localPrinter.id);
+        }
+    }
+    
+    if(notFoundPrintersNetworkPaths.length > 0) {
+        var title = "Printers Not Installed";
+        
+        indicateActionRequired(function() {
+            niceAlert("Warning... The following printers are not installed on this terminal: " + notFoundPrintersNetworkPaths.join(","), title);
+        });
+        
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function generateBrowserSessionId() {
+    generatedBrowserSessionId = Math.uuid();
+    storeKeyValue(browserSessionIdStorageKey, generatedBrowserSessionId);
+    
+    console.log("Set browser session id to: " + generatedBrowserSessionId);
+}
+
+function checkForDuplicateBrowserSession() {
+    
+    var storedBrowserSessionId = retrieveStorageValue(browserSessionIdStorageKey);
+    
+    if(generatedBrowserSessionId != storedBrowserSessionId) {
+        niceAlert("Another browser tab is open for the cluey app. This tab will now close.");
+        window.close();
+    }
+}
+
+var actionFunction = null;
+
+function indicateActionRequired(functionToPerform) {
+    actionFunction = functionToPerform;
+    $('.sales_resources_reload_indicator').show();
+}
+
+function actionRequiredClicked() {
+    $('.sales_resources_reload_indicator').hide();
+    actionFunction.call();    
 }

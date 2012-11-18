@@ -25,7 +25,7 @@ previous_cash_totals_data_html = "";
 <% end %>
 
 <% if !@last_z_total %>
-  previous_cash_totals_data_html = "<div class='data_table_header'>No Previous Z Total Found!</div>" + clearHTML;
+  previous_cash_totals_data_html += "<div class='data_table_header'>No Previous Z Total Found!</div>" + clearHTML;
 <% end %>
 
 $('#float_till_roll').html(previous_cash_totals_data_html);

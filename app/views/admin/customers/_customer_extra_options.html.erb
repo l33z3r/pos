@@ -25,65 +25,78 @@
       </div>
       <div class="field">
         <div class="label">Current Balance</div>
-        <%= f.text_field :current_balance %>
+        <%= f.text_field :current_balance, :value => print_credit_balance(@customer.current_balance), :disabled => true %>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
         <div class="label">Credit available</div>
-        <%= f.text_field :credit_available %>
+        <%= f.text_field :credit_available, :value => print_money(@customer.credit_available), :disabled => true %>
         <div class="clear">&nbsp;</div>
       </div>
-    </div>
+      <% if @customer.is_normal_customer? %>
+        <div class="field">
+          <div class="label">Make Payment</div>
+          <div class="small_button" data-onpress="makeCustomerPaymentAdminShortcut(<%= @customer.id %>)">Make Payment</div>
+          <div class="clear">&nbsp;</div>
+        </div>
+      <% end %>
+      </div>
     <div class="right_col">
-      
+
     </div>
   </div>
-  
+
   <div id="loyalty_tab_content" class="tab_content" style="display: none;">
     <div class="left_col">
       <div class="field">
         <div class="label">Customer Number</div>
         <%= f.text_field :customer_number %>
+        <input type="radio" id="generate_card_code" name="generate_card_code" checked="true"
+               value="customer_number" onclick="doToggleGenerateSwipeCardCode(this);"/>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
-        <div class="label">Swipe Card Code (Auto Generated)</div>
+        <div class="label">Swipe Card Code</div>
         <%= f.text_field :swipe_card_code, :disabled => true %>
+        <input type="radio" id="generate_card_code" name="generate_card_code" 
+               value="swipe_card" onclick="doToggleGenerateSwipeCardCode(this);"/>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
         <div class="label">Available Points</div>
         <%= f.text_field :available_points, :disabled => true %>
+        <div class="button" id="enable_edit_loyalty_points_button"
+             onclick="enableEditLoyaltyPoints();">Edit</div>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
         <div class="label">Loyalty Level</div>
-        <%= f.collection_select :loyalty_level_id, LoyaltyLevel.all, :id, :label, 
-            :prompt => "Select a Loyalty Level" %>
+        <%= f.collection_select :loyalty_level_id, current_outlet.loyalty_levels.all, :id, :label, 
+          :prompt => "Select a Loyalty Level" %>
         <div class="clear">&nbsp;</div>
       </div>
     </div>
     <div class="right_col">
-      
+
     </div>
   </div>
-  
+
   <div id="history_tab_content" class="tab_content" style="display: none;">
     <div class="left_col">
-      
+
     </div>
     <div class="right_col">
-      
+
     </div>
   </div>
-  
+
   <div id="options_tab_content" class="tab_content" style="display: none;">
     <div class="left_col">
-      
+
     </div>
     <div class="right_col">
-      
+
     </div>
   </div>
-  
+
 </div>

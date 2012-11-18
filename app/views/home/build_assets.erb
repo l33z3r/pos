@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <%= render "/partials/interfaces/medium_screen/assets" %>
+    <%= render "/partials/interfaces/large_screen/assets" %>
+    <%= render "/partials/mobile_assets" %>
+    
+    <%= javascript_include_tag "admin_js/admin" %>
+    
+    <%= stylesheet_links "accounts/", :recursive => true, :cache => "cache/accounts" %>
+    <%= javascript_include_tag "rails", "accounts/application", :cache => "cache/accounts" %>
+  </head>
+  
+  <body>
+    <h1>Assets!</h1>
+  </body>
+</html>

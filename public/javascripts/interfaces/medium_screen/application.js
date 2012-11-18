@@ -22,6 +22,12 @@ $(function(){
 });
     
 function doGlobalInit() {
+    //if no user is set, fo to main login screen
+    if(!current_user_id) {
+        goToMainMenu();
+        return;
+    }
+    
     //allow scroll for dev
     if(inDevMode()) {
         $('body').css("overflow", "scroll");
@@ -30,7 +36,8 @@ function doGlobalInit() {
     if(showPrintFrame) {
         $('#wrapper').height(1770);
         $('#body').height(1770);
-        $('#printFrame').width(300).height(800);
+        $('#printFrame').width(600).height(1800);
+        $('#printFrame').css("overflow", "scroll");
     }
     
     //need to set the scroll content holder width
@@ -79,6 +86,11 @@ function doGlobalInit() {
     clueyScheduler();
 }
 
+//this gets called from the polling when a terminal is not yet set
+function showTerminalSelectDialog() {
+    niceAlert("Please select from the following list of terminals:");
+}
+
 function doSubmitSettings() {
     showSpinner();
     $('#settings_form').submit();
@@ -87,4 +99,16 @@ function doSubmitSettings() {
 function doScheduledTasks() {
     //this is called on at regular intervals
     pingHome();
+}
+
+function cacheDownloadReset() {
+    $('body').removeClass("cache_update");
+    $('#cache_status').text("");
+    $('#cache_status').hide();
+}
+
+function cacheDownloadStarted() {
+    $('body').addClass("cache_update");
+    $('#cache_status').show();
+    $('#cache_status').text("Cache DL: 0%");
 }

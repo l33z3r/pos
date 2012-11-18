@@ -1,5 +1,7 @@
 class Product < ActiveRecord::Base
 
+  belongs_to :outlet
+  
   PRODUCT_IMAGE_DIRECTORY = "#{Rails.root}/public/images/product_images/*"
   
   has_attached_file :product_image, PAPERCLIP_STORAGE_OPTIONS.merge(:styles => { :medium => "300x300>", :thumb => "115x60>" })
@@ -12,16 +14,19 @@ class Product < ActiveRecord::Base
   belongs_to :order_item_addition_grid
   
   belongs_to :modifier_category
-  has_many :order_items
+  has_many :order_items  
   has_many :menu_items, :dependent => :destroy
   
-  has_many :stock_transactions, :order => "CREATED_AT"
+  has_many :stock_transactions, :order => "CREATED_AT, ID"
   
   belongs_to :menu_page_1, :class_name => "MenuPage"
   belongs_to :menu_page_2, :class_name => "MenuPage"
   
-  validates :name, :presence => true, :uniqueness => true
-  validates :upc, :uniqueness => true, :allow_blank => true
+  validates :name, :presence => true
+  validates_uniqueness_of :name, :case_sensitive => false, :scope => :outlet_id
+  
+  validates_uniqueness_of :upc, :case_sensitive => false, :scope => :outlet_id, :allow_blank => true
+  
   validates :category_id, :numericality => true, :allow_blank => true
   validates :size, :numericality => {:greater_than_or_equal_to => 0}, :allow_blank => true
   validates :price, :presence => true, :numericality => {:greater_than_or_equal_to => 0}
@@ -93,24 +98,24 @@ class Product < ActiveRecord::Base
     end
   end
   
-  def self.categoryless
-    where(:category_id => nil).where(:is_deleted => false)
+  def self.categoryless current_outlet
+    current_outlet.products.where(:category_id => nil).where(:is_deleted => false)
   end
   
-  def self.non_deleted 
-    where(:is_deleted => false).order(:name)
+  def self.non_deleted current_outlet
+    current_outlet.products.where(:is_deleted => false).order(:name)
   end
   
-  def sales_tax_rate
+  def get_sales_tax_rate current_outlet
     if tax_rate_id.blank?
       if category_id
         if category.tax_rate_id.blank?
-          TaxRate.load_default.rate
+          TaxRate.load_default(current_outlet).rate
         else
           category.tax_rate.rate
         end
       else
-        TaxRate.load_default.rate
+        TaxRate.load_default(current_outlet).rate
       end
     else
       tax_rate.rate
@@ -198,29 +203,61 @@ class Product < ActiveRecord::Base
     write_attribute("kitchen_screens", kitchen_screens_val)
   end
   
+  def blocked_printing_to_terminal? id_safe_terminal_name
+    @blocked_printers_string = read_attribute("blocked_printers")
+    
+    if @blocked_printers_string
+      @blocked_printers_string.split(",").each do |terminal_name|
+        return true if id_safe_terminal_name == terminal_name
+      end
+    end
+    
+    return false
+  end
+  
+  def blocked_printers=(blocked_printers_array)
+    
+    #remove any empty strings from the selected_printers_array
+    blocked_printers_array.delete("")
+    
+    if blocked_printers_array.size == 0
+      blocked_printers_val = ""
+    elsif blocked_printers_array.size == 1
+      blocked_printers_val = blocked_printers_array[0].to_s
+    else
+      blocked_printers_val = blocked_printers_array.join(",")
+    end
+    
+    write_attribute("blocked_printers", blocked_printers_val)
+  end
+  
   def decrement_stock quantity
     @qpc = read_attribute("quantity_per_container")
     
     @qis = read_attribute("quantity_in_stock")
+    
+    @decrement_val = 0
     
     if @qpc > 0
       logger.info "!!!! decrementing #{name} by #{quantity} with qtypct: #{@qpc}"
       @decrement_val = quantity/@qpc
       decrement!(:quantity_in_stock, @decrement_val)
     end
+    
+    @decrement_val
   end
   
   def last_stock_transaction
     stock_transactions
   end
   
-  def self.product_options_for_select product_id
+  def self.product_options_for_select product_id, current_outlet
     @options = []
     
     #the none option
     @options << ["None", "0"]
     
-    Product.non_deleted.each do |p|
+    Product.non_deleted(current_outlet).each do |p|
       #product cant be its own ingredient
       next if product_id == p.id
       
@@ -232,7 +269,6 @@ class Product < ActiveRecord::Base
   
   def set_image
     @product_name_normalised = self.name.downcase.gsub(" ", "-")
-    @product_name_parts = self.name.downcase.split(" ")
     
     @found_image = false
     
@@ -307,14 +343,19 @@ end
 
 
 
+
+
+
+
+
 # == Schema Information
 #
 # Table name: products
 #
-#  id                                       :integer(4)      not null, primary key
+#  id                                       :integer(8)      not null, primary key
 #  brand                                    :string(255)
 #  name                                     :string(255)
-#  category_id                              :integer(4)
+#  category_id                              :integer(8)
 #  description                              :string(255)
 #  size                                     :float           default(1.0), not null
 #  unit                                     :string(255)
@@ -327,9 +368,9 @@ end
 #  product_image_content_type               :string(255)
 #  product_image_file_size                  :integer(4)
 #  product_image_updated_at                 :datetime
-#  modifier_category_id                     :integer(4)
-#  tax_rate_id                              :integer(4)
-#  parent_product_id                        :integer(4)
+#  modifier_category_id                     :integer(8)
+#  tax_rate_id                              :integer(8)
+#  parent_product_id                        :integer(8)
 #  printers                                 :string(255)     default("")
 #  quantity_in_stock                        :float           default(0.0)
 #  code_num                                 :integer(4)
@@ -379,10 +420,13 @@ end
 #  double_price                             :float           default(0.0), not null
 #  display_image                            :string(255)
 #  hide_on_printed_receipt                  :boolean(1)      default(FALSE)
-#  order_item_addition_grid_id              :integer(4)
+#  order_item_addition_grid_id              :integer(8)
 #  order_item_addition_grid_id_is_mandatory :boolean(1)      default(FALSE)
-#  course_num                               :integer(4)      default(0)
+#  course_num                               :integer(4)      default(-1)
 #  is_stock_item                            :boolean(1)      default(TRUE)
 #  kitchen_screens                          :string(255)     default("")
+#  half_price                               :float           default(0.0)
+#  blocked_printers                         :string(255)
+#  outlet_id                                :integer(8)
 #
 

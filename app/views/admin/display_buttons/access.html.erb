@@ -1,6 +1,6 @@
 <% 
-DisplayButtonRole.ensure_super_user_access 
-DisplayButtonRole.ensure_hidden_buttons_restricted
+DisplayButtonRole.ensure_super_user_access current_outlet
+DisplayButtonRole.ensure_hidden_buttons_restricted current_outlet
 %>
 
 <% content_for :admin_subnav_links_right do %>
@@ -16,13 +16,13 @@ DisplayButtonRole.ensure_hidden_buttons_restricted
     <div id="display_button_list_tabs" class="vtabs display_button_list_tabs">
       <div>
         <ul>
-          <% DisplayButtonGroup.all_with_empty.each do |dbg| %>
+          <% DisplayButtonGroup.all_with_empty(current_outlet).each do |dbg| %>
             <li><a id="<%= dbg.name.gsub(" ", "_") %>_link" href="#<%= dbg.name.gsub(" ", "_") %>_options"><%= dbg.name %></a></li>
           <% end %>
         </ul>
       </div>
       <div>
-        <% DisplayButtonGroup.all_with_empty.each do |dbg| %>
+        <% DisplayButtonGroup.all_with_empty(current_outlet).each do |dbg| %>
 
           <div id="#<%= dbg.name.gsub(" ", "_") %>_options">
             <div class="jscrollpane">
@@ -38,7 +38,7 @@ DisplayButtonRole.ensure_hidden_buttons_restricted
                     <thead>
                       <tr>
                         <th width="100">&nbsp;</th>
-                        <% Role.find(:all, :order => :id).each do |role| %>
+                        <% current_outlet.roles.find(:all, :order => :id).each do |role| %>
                           <th width="70">&nbsp;</th>
                           <th width="70">&nbsp;</th>
                         <% end %>
@@ -49,13 +49,13 @@ DisplayButtonRole.ensure_hidden_buttons_restricted
                     <tbody>
                       <tr>
                         <td><b>Button</b></td>
-                        <% Role.find(:all, :order => :id).each do |role| %>
+                        <% current_outlet.roles.find(:all, :order => :id).each do |role| %>
                           <td colspan="2" align="center"><b><%=role.name%></b></td>
                         <% end %>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
-                        <% Role.find(:all, :order => :id).each do |role| %>
+                        <% current_outlet.roles.find(:all, :order => :id).each do |role| %>
                           <td>
                             Access?
                           </td>
@@ -65,20 +65,20 @@ DisplayButtonRole.ensure_hidden_buttons_restricted
 
                       <% dbg.display_buttons.each do |db| %>
 
-                        <% next if ButtonMapper::RESTRICTED_BUTTON_IDS.include?(db.perm_id) %>
+                        <% next if ButtonMapper::RESTRICTED_BUTTON_IDS.include?(db.perm_id) or ButtonMapper::HIDDEN_BUTTON_IDS.include?(db.perm_id) %>
 
                         <tr>
-                          <td><%= db.button_text %></td>
-                          <% Role.find(:all, :order => :id).each do |role| %>
-                            <% dbr = DisplayButtonRole.find_or_create_by_display_button_id_and_role_id(db.id, role.id) %>
+                          <td><%= button_text db %></td>
+                          <% current_outlet.roles.find(:all, :order => :id).each do |role| %>
+                            <% dbr = DisplayButtonRole.find_or_create_by_outlet_id_and_display_button_id_and_role_id(current_outlet.id, db.id, role.id) %>
                             <td align="center">
-                              <% if role.id != Role::SUPER_USER_ROLE_ID %>
-                                <%= check_box_tag "#{db.button_text}_#{role.name}", dbr.show_on_admin_screen, dbr.show_on_admin_screen,
+                              <% if role.id != Role::super_user_role_id(current_outlet) %>
+                                <%= check_box_tag "#{button_text db}_#{role.name}", shown_on_admin_screen?(dbr), shown_on_admin_screen?(dbr),
                                   :onchange => "displayButtonRoleAdminScreenSelect(#{dbr.id}, this.checked);" %>
                               <% end %>
                             </td>
                             <td align="center">
-                              <%= check_box_tag "#{db.button_text}_#{role.name}", dbr.passcode_required, dbr.passcode_required,
+                              <%= check_box_tag "#{button_text db}_#{role.name}", dbr.passcode_required, dbr.passcode_required,
                                 :onchange => "displayButtonRoleAdminScreenSelectPasscode(#{dbr.id}, this.checked);" %>
                             </td>
                           <% end %>

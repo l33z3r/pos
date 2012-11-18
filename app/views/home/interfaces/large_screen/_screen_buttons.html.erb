@@ -1,10 +1,10 @@
 <% dbrs.each_with_index do |dbr, index| %>
-  <% if index != 0 and index % 8 == 0 %><div class="clear">&nbsp;</div><% end %>
+  <% if index != 0 and index % @menu_screen_buttons_per_row == 0 %><div class="clear">&nbsp;</div><% end %>
   <div id="sales_button_<%=dbr.display_button.perm_id%>" 
        class="button" data-onpress="<%= button_action dbr.display_button %>">
     <div class="icon">
       <%= button_icon dbr.display_button %>
     </div>
-    <div class="button_name"><%=dbr.display_button.button_text%></div>
+    <div class="button_name"><%= button_text dbr.display_button %></div>
   </div>
 <% end %>

@@ -1,0 +1,11 @@
+<h1>Info For Outlet <%= @outlet.name %></h1>
+
+<h2>Terminals:</h2>
+
+<% @outlet.outlet_terminals.each do |terminal| %>
+  <%= terminal.name %></br>
+<% end %>
+
+</br></br></br>
+
+<%= link_to "Add Terminal", new_terminal_accounts_outlet_path(@outlet) %>

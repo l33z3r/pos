@@ -18,9 +18,20 @@
 # Remember that products can be stored as order_item_additions and will not have a line in order_item to represent the sale of that item
 #
 #
+# VOIDS:
+# The is_void column in the order model is used when the order is replaced by another one. 
+# The void_order_id of the order that replaced it points back to the original order that is marked as is_void.
+# This is_void on order model is not used when you void items on the till roll. 
+# There is an is_void on the order_item that is used for this purpose. 
+# If all items are voided on an order, the is_void column will still be true, unless that order is reopened and replaced by another. 
+# Basically, the is_void in here is not used for voided items, but for re-opened ones.
+# 
+#
 
 
 class Order < ActiveRecord::Base
+  belongs_to :outlet
+  
   has_many :order_items
   belongs_to :employee
   belongs_to :table_info
@@ -34,7 +45,7 @@ class Order < ActiveRecord::Base
   has_one :replacement_order, :class_name => "Order", :foreign_key => "void_order_id"
   
   has_one :client_transaction
-  
+  has_one :customer_transaction
   has_one :customer_points_allocation
   
   #for will_paginate
@@ -45,16 +56,13 @@ class Order < ActiveRecord::Base
     total + cashback + service_charge
   end
   
-  def self.next_order_num
-    GlobalSetting.next_order_number
+  def self.next_order_num current_outlet
+    GlobalSetting.next_order_number current_outlet
   end
   
   def is_replacement?
     void_order != nil
   end
-
-
-
 end
 
 
@@ -66,8 +74,8 @@ end
 #
 # Table name: orders
 #
-#  id                    :integer(4)      not null, primary key
-#  employee_id           :integer(4)
+#  id                    :integer(8)      not null, primary key
+#  employee_id           :integer(8)
 #  total                 :float
 #  payment_type          :string(255)
 #  amount_tendered       :float
@@ -75,7 +83,7 @@ end
 #  num_persons           :integer(4)
 #  created_at            :datetime
 #  updated_at            :datetime
-#  table_info_id         :integer(4)
+#  table_info_id         :integer(8)
 #  discount_percent      :float
 #  pre_discount_price    :float
 #  terminal_id           :string(255)
@@ -84,10 +92,14 @@ end
 #  global_sales_tax_rate :float
 #  service_charge        :float
 #  cashback              :float
-#  void_order_id         :integer(4)
+#  void_order_id         :integer(8)
 #  is_void               :boolean(1)      default(FALSE)
 #  order_num             :integer(8)
 #  split_payments        :text(2147483647
 #  client_name           :string(255)     default(""), not null
+#  time_started          :string(255)
+#  training_mode_sale    :boolean(1)      default(FALSE)
+#  room_id               :integer(8)
+#  outlet_id             :integer(8)
 #
 

@@ -7,14 +7,17 @@ class TableInfoTest < ActiveSupport::TestCase
   end
 end
 
+
+
 # == Schema Information
 #
 # Table name: table_infos
 #
-#  id             :integer(4)      not null, primary key
+#  id             :integer(8)      not null, primary key
 #  perm_id        :string(255)
-#  room_object_id :integer(4)
+#  room_object_id :integer(8)
 #  created_at     :datetime
 #  updated_at     :datetime
+#  outlet_id      :integer(8)
 #
 

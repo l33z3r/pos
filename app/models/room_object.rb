@@ -1,22 +1,6 @@
-# == Schema Information
-# Schema version: 20110510063013
-#
-# Table name: room_objects
-#
-#  id          :integer(4)      not null, primary key
-#  object_type :string(255)
-#  permid      :string(255)
-#  label       :string(255)
-#  room_id     :integer(4)
-#  grid_x      :integer(4)
-#  grid_y      :integer(4)
-#  grid_x_size :integer(4)
-#  grid_y_size :integer(4)
-#  created_at  :datetime
-#  updated_at  :datetime
-#
-
 class RoomObject < ActiveRecord::Base
+  belongs_to :outlet
+  
   belongs_to :room
   has_one :table_info, :dependent => :destroy
   
@@ -73,13 +57,13 @@ class RoomObject < ActiveRecord::Base
     @available_objects
   end
   
-  def self.new_from_permid permid
+  def self.new_from_permid permid, current_outlet
     @parts = permid.split("_")
     @object_type = @parts.first
     @grid_x_size = @parts.second
     @grid_y_size = @parts.third
     
-    @new_room_object = RoomObject.new({:object_type => @object_type, :grid_x_size => @grid_x_size, 
+    @new_room_object = RoomObject.new({:outlet_id => current_outlet.id, :object_type => @object_type, :grid_x_size => @grid_x_size, 
         :grid_y_size => @grid_y_size, :permid => permid, :label => permid})
     
     @new_room_object
@@ -107,3 +91,23 @@ class RoomObject < ActiveRecord::Base
   end
   
 end
+
+
+# == Schema Information
+#
+# Table name: room_objects
+#
+#  id          :integer(8)      not null, primary key
+#  object_type :string(255)
+#  permid      :string(255)
+#  label       :string(255)
+#  room_id     :integer(8)
+#  grid_x      :integer(4)
+#  grid_y      :integer(4)
+#  grid_x_size :integer(4)
+#  grid_y_size :integer(4)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  outlet_id   :integer(8)
+#
+

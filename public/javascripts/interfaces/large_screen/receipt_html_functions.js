@@ -29,9 +29,9 @@ function fetchOrderReceiptHTML(order) {
 }
 
 //this fetches the html for the order receipt that gets printed
-function printItemsFromOrder(serverNickname, terminalID, orderJSON, items) {
+function printItemsFromOrder(printerID, serverNickname, order, items) {
     var allOrderItemsReceiptHTML = "<div class='order_receipt'>";
-    allOrderItemsReceiptHTML += getPrintedOrderReceiptHeader(serverNickname, terminalID, orderJSON);
+    allOrderItemsReceiptHTML += getPrintedOrderReceiptHeader(serverNickname, order);
 
     for(var i=0; i<items.length; i++) {
         var item = items[i];
@@ -40,7 +40,7 @@ function printItemsFromOrder(serverNickname, terminalID, orderJSON, items) {
     
     allOrderItemsReceiptHTML += "</div>";
     
-    printReceipt(allOrderItemsReceiptHTML, false);
+    printReceipt(allOrderItemsReceiptHTML, false, printerID);
 }
 
 function getLineItemHTMLForPrintedOrderReceipt(orderItem) {
@@ -56,6 +56,8 @@ function getLineItemHTMLForPrintedOrderReceipt(orderItem) {
         
     if(orderItem.is_double) {
         lineItemHTMLForOrder += "Double ";
+    } else if(orderItem.is_half) {
+        lineItemHTMLForOrder += halfMeasureLabel + " ";
     }
         
     lineItemHTMLForOrder += orderItem.product.name + "</div>";
@@ -94,10 +96,10 @@ function getLineItemHTMLForPrintedOrderReceipt(orderItem) {
     return lineItemHTMLForOrder;
 }
 
-function getPrintedOrderReceiptHeader(serverNickname, terminalID, orderJSON) {
+function getPrintedOrderReceiptHeader(serverNickname, order) {
     var headerHTML = "<div id='order_receipt_header'>";
     
-    var orderNum = orderJSON.order_num;
+    var orderNum = order.order_num;
     
     if(typeof(orderNum) != 'undefined') {
         headerHTML += "<div class='order_num'>ORDER NO: " + orderNum + "</div>" + clearHTML;
@@ -105,7 +107,7 @@ function getPrintedOrderReceiptHeader(serverNickname, terminalID, orderJSON) {
     
     headerHTML += "<div class='data_table'>";
     
-    var tableLabel = orderJSON.table;
+    var tableLabel = order.table;
     headerHTML += "<div class='label'>Table:</div><div class='data'>" + tableLabel + "</div>" + clearHTML;
     
     headerHTML += "<div class='label'>Order By:</div><div class='data'>" + serverNickname + "</div>" + clearHTML;

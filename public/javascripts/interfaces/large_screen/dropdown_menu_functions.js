@@ -9,7 +9,7 @@ function menuScreenDropdownItemSelected(index, name) {
         finishStockTakeMode();
     }
     
-    if(index.startsWith("1")) {
+    if(index.startsWith("1-")) {
         var displayID = index.substring(2);
         
         showLoadingDiv("Loading Menu...");
@@ -27,7 +27,7 @@ function menuScreenDropdownItemSelected(index, name) {
             }
         });
         return;
-    } else if(index.startsWith("2")) {
+    } else if(index.startsWith("2-")) {
         var priceLevel = index.substring(2);
         
         setGlobalPriceLevel(priceLevel);
@@ -58,7 +58,25 @@ function menuScreenDropdownItemSelected(index, name) {
     } else if(index == 8) {
         goToAddCustomer();
         return;
-    }
+    } else if(index == 9) {
+        //make sure this user has permissions for this
+        if(typeof(display_button_passcode_permissions[parseInt(deliveryButtonID)]) != 'undefined') {
+            startDeliveryMode();
+        } else {
+            niceAlert("You do not have permission to take a delivery!");
+        }
+        
+        return;
+    } else if(index == 10) {
+        //make sure this user has permissions for this
+        if(typeof(display_button_passcode_permissions[parseInt(cashOutButtonID)]) != 'undefined') {
+            showCashOutSubscreen();
+        } else {
+            niceAlert("You do not have permission to pay expenses!");
+        }
+        
+        return;
+    } 
     
     setShortcutDropdownDefaultText();
 }
@@ -68,6 +86,16 @@ function setShortcutDropdownDefaultText() {
 }
 
 function startPriceChangeMode() {
+    if(!appOnline) {
+        niceAlert("Server cannot be contacted. Changing prices is disabled until connection re-established.");
+        return;
+    }
+    
+    if(inStockTakeMode) {
+        niceAlert("Please finish checking stock first!");
+        return;
+    }
+    
     //change the screen to stocktake mode
     inPriceChangeMode = true;
         
@@ -88,7 +116,7 @@ function finishPriceChangeMode() {
     showLoadingDiv("Loading new prices...");
     
     //reload the products
-    $.getScript('/javascripts/products.js', priceChangeModeComplete);
+    doReloadSalesResources(priceChangeModeComplete);
 }
 
 function priceChangeModeComplete() {   
@@ -107,6 +135,8 @@ function priceChangeModeComplete() {
     $('#menu_items_container .price_change').hide();
     
     setShortcutDropdownDefaultText();
+    
+    requestReload();
 }
 
 var currentPriceChangeProductId = null;
@@ -131,6 +161,16 @@ function loadPriceChangeReceiptArea(productId, menuItemId) {
 }
 
 function startStockTakeMode() {
+    if(!appOnline) {
+        niceAlert("Server cannot be contacted. Stock mode is disabled until connection re-established.");
+        return;
+    }
+    
+    if(inPriceChangeMode) {
+        niceAlert("Please finish changing prices first!");
+        return;
+    }
+    
     //change the screen to stocktake mode
     inStockTakeMode = true;
         
@@ -159,8 +199,11 @@ function finishStockTakeMode() {
         
     //hide stock take divs
     $('#menu_items_container .stock_count').hide();
+    $('#stock_take_new_amount_input').attr("disabled", true);
     
     setShortcutDropdownDefaultText();
+    
+    requestReload();
 }
 
 function loadPriceDivs(pageNum, subPageId) {
@@ -220,6 +263,7 @@ function loadStockTakeReceiptArea(productId, menuItemId) {
     currentStockMenuItemId = menuItemId;
     
     $('#stock_take_new_amount_input').attr("disabled", false);
+    $('#stock_take_new_amount_input').val("");
     
     currentStockTakeProductId = productId;
     

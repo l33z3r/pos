@@ -1,0 +1,11 @@
+<h1>Outlets</h1>
+
+This is your list of outlets</br></br></br></br>
+
+<% @outlets.each do |outlet| %>
+  Name: <%= link_to outlet.name, accounts_outlet_path(outlet) %> <%= link_to "(Go To POS)", root_url(:subdomain => "#{outlet.name}-#{outlet.cluey_account.name}"), :target => "_blank" %></br>
+<% end %>
+
+</br></br></br></br>
+
+<%= link_to "New Outlet", new_accounts_outlet_path %>

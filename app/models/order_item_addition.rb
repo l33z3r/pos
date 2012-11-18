@@ -1,4 +1,6 @@
 class OrderItemAddition < ActiveRecord::Base
+  belongs_to :outlet
+  
   belongs_to :order_item_addition_grid
   belongs_to :follow_on_grid, :class_name => "OrderItemAdditionGrid"
   belongs_to :product
@@ -16,12 +18,15 @@ end
 
 
 
+
+
+
 # == Schema Information
 #
 # Table name: order_item_additions
 #
-#  id                          :integer(4)      not null, primary key
-#  order_item_addition_grid_id :integer(4)
+#  id                          :integer(8)      not null, primary key
+#  order_item_addition_grid_id :integer(8)
 #  description                 :string(255)
 #  add_charge                  :float
 #  minus_charge                :float
@@ -34,9 +39,10 @@ end
 #  created_at                  :datetime
 #  updated_at                  :datetime
 #  background_color_2          :string(255)
-#  hide_on_receipt             :boolean(1)      default(FALSE)
-#  is_addable                  :boolean(1)      default(TRUE)
-#  follow_on_grid_id           :integer(4)
-#  product_id                  :integer(4)
+#  hide_on_receipt             :boolean(1)      default(TRUE)
+#  is_addable                  :boolean(1)      default(FALSE)
+#  follow_on_grid_id           :integer(8)
+#  product_id                  :integer(8)
+#  outlet_id                   :integer(8)
 #
 

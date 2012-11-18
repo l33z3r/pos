@@ -1,16 +1,6 @@
-# == Schema Information
-# Schema version: 20110512185508
-#
-# Table name: table_infos
-#
-#  id             :integer(4)      not null, primary key
-#  perm_id        :string(255)
-#  room_object_id :integer(4)
-#  created_at     :datetime
-#  updated_at     :datetime
-#
-
 class TableInfo < ActiveRecord::Base
+  belongs_to :outlet
+  
   GHOST_TABLE = TableInfo.new({:id => 0, :perm_id => 0})
   
   belongs_to :room_object, :dependent => :destroy
@@ -38,3 +28,17 @@ class TableInfo < ActiveRecord::Base
     end
   end
 end
+
+
+# == Schema Information
+#
+# Table name: table_infos
+#
+#  id             :integer(8)      not null, primary key
+#  perm_id        :string(255)
+#  room_object_id :integer(8)
+#  created_at     :datetime
+#  updated_at     :datetime
+#  outlet_id      :integer(8)
+#
+

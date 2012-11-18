@@ -1,4 +1,6 @@
 class Ingredient < ActiveRecord::Base
+  belongs_to :outlet
+  
   belongs_to :product
   belongs_to :ingredient_product, :class_name => "Product", :foreign_key => "ingredient_product_id"  
   
@@ -8,16 +10,20 @@ class Ingredient < ActiveRecord::Base
 end
 
 
+
+
+
 # == Schema Information
 #
 # Table name: ingredients
 #
-#  id                    :integer(4)      not null, primary key
-#  product_id            :integer(4)
-#  ingredient_product_id :integer(4)
-#  quantity_numerator    :integer(4)      default(1)
-#  quantity_denominator  :integer(4)      default(1)
+#  id                    :integer(8)      not null, primary key
+#  product_id            :integer(8)
+#  ingredient_product_id :integer(8)
+#  quantity_numerator    :float           default(1.0)
+#  quantity_denominator  :float           default(1.0)
 #  created_at            :datetime
 #  updated_at            :datetime
+#  outlet_id             :integer(8)
 #
 

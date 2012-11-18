@@ -18,12 +18,10 @@ function initMcDropDowns() {
 function hideAllMenuSubScreens() {
     $('#menu_container').hide();
 
-
-
-    $('.button[id=sales_button_' + tablesButtonID + ']').removeClass("selected");
+    $('.button[id=sales_button_' + tablesButtonID + '], .button[id=admin_screen_button_' + tablesButtonID + ']').removeClass("selected");
     $('#table_screen').hide();
     
-    $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').removeClass("selected");
+    $('.button[id=sales_button_' + modifyOrderItemButtonID + '], .button[id=admin_screen_button_' + tablesButtonID + ']').removeClass("selected");
     $('#oia_subscreen').hide();
 }
 
@@ -81,14 +79,11 @@ function getLastReceiptItem() {
 }
 
 function postSetConnectionStatus(connected) {
-    var color = "#E0E0E0";
-    
     if(!connected) {
-        color = "#FF0000";
+        $('body').addClass("disconnected");
+    } else {
+        $('body').removeClass("connected");
     }
-    
-    //we must be offline, so set the connection status light
-    $('body').css("background-color", color);
 }
 
 function kickMenuScrollers() {
@@ -160,4 +155,9 @@ function initModifierGrid() {
     var newHeight = roundNumberDown(parseFloat(panelHeight)/modifierGridYSize, 0) - 6;
     
     $('div#order_item_additions .grid_row .grid_item').css("height", newHeight + "px");
+}
+
+//for mobile we can just force a reload rather than prompting
+function indicateSalesResourcesReloadRequired(reloadTerminalId) {
+    promptReloadSalesResources(reloadTerminalId);
 }

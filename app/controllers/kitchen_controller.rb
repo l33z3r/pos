@@ -2,7 +2,7 @@ class KitchenController < ApplicationController
   def index
     #auto log in as the first user in the db so that you can go steaight to the kitchen screen without loging in
     if !current_employee
-      @emp = Employee.chef_user
+      @emp = Employee.chef_user current_outlet
       do_login(@emp.id)
     end
   end
@@ -13,13 +13,13 @@ class KitchenController < ApplicationController
     @terminal_id = params[:terminal_id]
     @employee_id = params[:employee_id]
     
-    @table_info = TableInfo.find_by_id(@table_id)
-    @employee = Employee.find_by_id(@employee_id)
+    @table_info = current_outlet.table_infos.find_by_id(@table_id)
+    @employee = current_outlet.employees.find_by_id(@employee_id)
     
     @notification_sent = false
     
     if @table_info and @employee      
-      TerminalSyncData.request_notify_order_ready @order_num, @employee_id, @terminal_id, @table_info 
+      TerminalSyncData.request_notify_order_ready @order_num, @employee_id, @terminal_id, @table_info, current_outlet 
       @notification_sent = true
     end
   end

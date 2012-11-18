@@ -6,7 +6,7 @@ if Rails.env == "production"
   #Paperclip.options[:command_path] = "/usr/bin"
 end 
 
-if Rails.env == "production_heroku"
+if Rails.env == "heroku_staging" or Rails.env == "heroku_production"
   Paperclip.options[:command_path] = "/usr/bin"
 end
 

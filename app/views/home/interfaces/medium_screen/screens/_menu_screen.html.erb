@@ -18,7 +18,7 @@
           <div class="icon">
             <%= button_icon db %>
           </div>
-          <div class="button_name"><%=db.button_text%></div>
+          <div class="button_name"><%= button_text db %></div>
         </div>
 
         <% if index == 1 %> <div class="clear">&nbsp;</div> <% end %>
@@ -40,6 +40,7 @@
   <%= render "/home/interfaces/medium_screen/screens/menu_subscreens/menu_items_screen" %>
   <%= render "/home/interfaces/medium_screen/screens/menu_subscreens/order_item_additions_screen" %>
   <%= render "/home/interfaces/medium_screen/screens/menu_subscreens/table_screen" %>
+  <%= render "/home/interfaces/medium_screen/screens/menu_subscreens/covers_screen" %>
   <%= render "/home/interfaces/medium_screen/screens/menu_subscreens/edit_price_screen" %>
   <%= render "/home/interfaces/medium_screen/screens/menu_subscreens/add_note_screen" %>
 

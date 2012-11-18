@@ -4,12 +4,12 @@
         <div id="sales_button_<%= @tables_button.id %>" style="max-height: 97px" class="button" onclick="swipeToMenu();setScreenOrder('false');showTablesSubscreen()"><div class="icon">
             <%= button_icon @tables_button %>
           </div>
-          <div class="button_name"><%= @tables_button.button_text %></div></div>
+          <div class="button_name"><%= button_text @tables_button %></div></div>
 
         <div id="sales_button_<%= @order_button.id %>" class="button" onclick="setInitScreen('false');<%= button_action @order_button %>"><div class="icon">
             <%= button_icon @order_button %>
           </div>
-          <div class="button_name"><%= @order_button.button_text %></div></div>
+          <div class="button_name"><%= button_text @order_button %></div></div>
         </div>
       <div class="header_label" id="table_name">Table</div>
     </div>
@@ -161,7 +161,7 @@
     <div class="clear">&nbsp;</div>
 
     <% GlobalSetting.course_vals.each do |course_val| %>
-      <% @gs = GlobalSetting.setting_for GlobalSetting::COURSE_LABEL, {:course_val => course_val} %>
+      <% @gs = GlobalSetting.setting_for GlobalSetting::COURSE_LABEL, current_outlet, {:course_val => course_val} %>
       <div class="course_label course_label_<%=course_val%>" onclick="applyCourseFromPopup(<%=course_val%>);"><br><%= @gs.value %></div>
       <div class="clear">&nbsp;</div>
     <% end %>

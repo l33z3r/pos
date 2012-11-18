@@ -18,6 +18,17 @@ var splitBillTableNumber;
 
 var lastTableZeroOrder;
 
+var creditCardChargeCallback = null;
+
+var manualCoversPrompt = true;
+
+var inTrainingMode = false;
+
+var highlightedCover = true;
+
+var inCashOutMode = false;
+var cashOutKeypadString = "";
+        
 //this function is called from application.js on page load
 function initMenu() {
     initMenuScreenType();
@@ -55,6 +66,24 @@ function initMenu() {
     setTimeout(callForwardButtonFunction, 500);
 }
 
+function initMenuScreenNavItems() {
+    //show the red x 
+    $('#nav_save_button').show();
+
+    //show the shortcut dropdown
+    $('#menu_screen_shortcut_dropdown_container').show();
+
+    $('#e_name').show();
+    
+    if(current_user_id == clueyUserId) {
+        $('#nav_util_button_clear_reload').show();
+        $('#nav_util_button_reset_timestamp').show();        
+    } else {
+        $('#nav_util_button_clear_reload').hide();
+        $('#nav_util_button_reset_timestamp').hide();
+    }
+}
+
 function callForwardButtonFunction() {
     //now if there is a forward function call from the admin function shortcut screen
     var forwardFunctionButtonId = getRawCookie(salesInterfaceForwardFunctionCookieName);
@@ -67,6 +96,14 @@ function callForwardButtonFunction() {
     
         //delete the cookie
         setRawCookie(salesInterfaceForwardFunctionCookieName, "", -365);
+    } else {
+        //you can also execute arbitrary code
+        var codeToExecute = getRawCookie(salesInterfaceForwardJSExecuteCookieName);
+    
+        eval(codeToExecute);
+        
+        //delete the cookie
+        setRawCookie(salesInterfaceForwardJSExecuteCookieName, "", -365);
     }
 }
 
@@ -77,7 +114,7 @@ $(window).load(function(){
 
 function initMenuScreenType() {
     if(menuScreenType == RESTAURANT_MENU_SCREEN) {
-    //nothing needed here    
+        performScreenResolutionCSSMods();    
     } else if(menuScreenType == RETAIL_MENU_SCREEN) {
         //hide the table select box
         $('#table_screen_button, #table_select_container').hide();
@@ -85,7 +122,7 @@ function initMenuScreenType() {
         $('#upc_code_lookup_container').show();
         
         $('#scan_upc').keyup(function(e) {
-            if(e.keyCode == 13) {
+            if(getEventKeyCode(e) == 13) {
                 productScanned();
             }
         });
@@ -123,15 +160,15 @@ function scanFocusPoll() {
     }
 }
     
-function scanFocusLoginPoll() {
-    if (lastActiveElement.attr("id") == "num") {
-        $('#num').select();
-        sendCursorToEnd($('#num').val())
-        $('#num').focus();
-        setTimeout(scanFocusLoginPoll, 1000);
-        return;
-    }
-}
+//function scanFocusLoginPoll() {
+//    if (lastActiveElement.attr("id") == "num") {
+//        $('#num').select();
+//        sendCursorToEnd($('#num').val())
+//        $('#num').focus();
+//        setTimeout(scanFocusLoginPoll, 1000);
+//        return;
+//    }
+//}
 
 function sendCursorToEnd(obj) {
     var value = obj
@@ -183,6 +220,10 @@ function menuScreenKeypadClick(val) {
         $('#display_button_passcode_show').html($('#display_button_passcode_show').html() + "*");
     } else if(inStockTakeMode) {
         $('#stock_take_new_amount_input').val($('#stock_take_new_amount_input').val() + val);
+    } else if(inCashOutMode) {
+        cashOutKeypadString += val;
+        currentCashOutAmount = cashOutKeypadString;
+        $('#cash_out_amount').html(currency(cashOutKeypadString/100.0));
     } else if(inPriceChangeMode) {
         $('#price_change_new_price_input').val($('#price_change_new_price_input').val() + val);
     } else if(menuScreenType == RETAIL_MENU_SCREEN) {
@@ -209,7 +250,9 @@ function menuScreenKeypadClick(val) {
 }
 
 function menuScreenKeypadClickCancel() {
-    if(inStockTakeMode) {
+    if(inCashOutMode) {
+        cashOutAmountCancelClicked();
+    } else if(inStockTakeMode) {
         $('#stock_take_new_amount_input').val("");
     } else if(inPriceChangeMode) {
         $('#price_change_new_price_input').val("");
@@ -218,6 +261,8 @@ function menuScreenKeypadClickCancel() {
     } else {
         if(menuItemDoubleMode) {
             setMenuItemDoubleMode(false);
+        } else if(menuItemHalfMode) {
+            setMenuItemHalfMode(false);
         }
         
         if(menuItemStandardPriceOverrideMode) {
@@ -231,7 +276,9 @@ function menuScreenKeypadClickCancel() {
 }
 
 function menuScreenKeypadClickDecimal() {
-    if(inStockTakeMode) {
+    if(inCashOutMode) {
+        return;
+    } else if(inStockTakeMode) {
         $('#stock_take_new_amount_input').val($('#stock_take_new_amount_input').val() + ".");
     } else if(inPriceChangeMode) {
         $('#price_change_new_price_input').val($('#price_change_new_price_input').val() + ".");
@@ -347,6 +394,13 @@ function doSelectMenuItem(productId, menuItemId, element) {
     if(menuItemDoubleMode && (product.double_price == 0)) {
         niceAlert("Price has not been set for a double of this item.");
         setMenuItemDoubleMode(false);
+        return;
+    }
+    
+    //if half and no price set
+    if (menuItemHalfMode && (product.half_price == 0)) {
+        niceAlert("Price has not been set for a half of this item.");
+        setMenuItemHalfMode(false);
         return;
     }
     
@@ -583,10 +637,12 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
     
     orderHTML += "<div class='name' data-course_num='" + orderItem.product.course_num + "'>" + notSyncedMarker + " ";
 
-    if(orderItem.is_double) {
+    if (orderItem.is_double) {
         orderHTML += "Double ";
+    } else if (orderItem.is_half) {
+        orderHTML += halfMeasureLabel + " ";
     }
-        
+    
     orderHTML += orderItem.product.name + "</div>";
 
     orderItemTotalPriceText = number_to_currency(itemPriceWithoutModifier, {
@@ -717,53 +773,16 @@ function doSelectReceiptItem(orderItemEl) {
     //make sure the modifier grids are closed
     switchToMenuItemsSubscreen();
     
-    //are we allowed to view the discount button
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(discountButtonID)]) != 'undefined') {
-        $('#discount_button').show();
-    } else {
-        $('#discount_button').hide();
-    }
+    var buttons = [
+    [discountButtonID, $('#discount_button')], 
+    [changePriceButtonID, $('#price_editor')],
+    [removeItemButtonID, $('#delete_button')],
+    [oiaButtonID, $('#oia_button')],
+    [courseNumButtonID, $('#course_button')],
+    [voidOrderItemButtonID, $('#void_order_item_button')],
+    ];
     
-    //are we allowed to view the change price controls
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(changePriceButtonID)]) != 'undefined') {
-        $('#price_editor').show();
-    } else {
-        $('#price_editor').hide();
-    }
-    
-    //are we allowed to delete an item
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(removeItemButtonID)]) != 'undefined') {
-        $('#delete_button').show();
-    } else {
-        $('#delete_button').hide();
-    }
-    
-    //are we allowed to oia an item
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(oiaButtonID)]) != 'undefined') {
-        $('#oia_button').show();
-    } else {
-        $('#oia_button').hide();
-    }
-    
-    //are we allowed to view the course num controls
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(courseNumButtonID)]) != 'undefined') {
-        $('#course_button').show();
-    } else {
-        $('#course_button').hide();
-    }
-    
-    //are we allowed to view the void item controls
-    //we are if the button id is present in this array
-    if(typeof(display_button_passcode_permissions[parseInt(voidOrderItemButtonID)]) != 'undefined') {
-        $('#void_order_item_button').show();
-    } else {
-        $('#void_order_item_button').hide();
-    }
+    hideRestrictedButtons(buttons);
     
     //save the currently opened dialog
     currentSelectedReceiptItemEl = orderItemEl;
@@ -844,20 +863,16 @@ function doSelectReceiptItem(orderItemEl) {
     currentQuantity = orderItemEl.children('.amount').html();
     $('#' + popupId).find('.quantity').val(currentQuantity);
     
-    $('#' + popupId).find('.quantity').focus();
+    $('#' + popupId).find('.quantity').focus().select();
     
     keypadPosition = $('#' + popupId).find('.edit_order_item_popup_keypad_container');
     
     clickFunction = function(val) {
-        currentVal = lastActiveElement.val();
-        newVal = currentVal.toString() + val;
-        lastActiveElement.val(newVal);
+        doKeyboardInput(lastActiveElement, val);
     };
     
     cancelFunction = function() {
-        oldVal = lastActiveElement.val();
-        newVal = oldVal.substring(0, oldVal.length - 1);
-        lastActiveElement.val(newVal);
+        doKeyboardInputCancel(lastActiveElement);
     };
     
     setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
@@ -866,6 +881,19 @@ function doSelectReceiptItem(orderItemEl) {
     registerPopupClickHandler($('#' + popupId), closeEditOrderItem);
     
     return $('#' + popupId);
+}
+
+function hideRestrictedButtons(buttons) {
+    for(var i = 0; i < buttons.length; i++) {
+        var buttonId = parseInt(buttons[i][0]);
+        var buttonEl = buttons[i][1];
+        
+        if(typeof(display_button_passcode_permissions[buttonId]) != 'undefined') {
+            buttonEl.show();
+        } else {
+            buttonEl.hide();
+        }
+    }
 }
 
 function editOrderItemIncreaseQuantity() {
@@ -928,7 +956,7 @@ function saveEditOrderItem() {
     targetInputQuantityEl = $('#' + popupId).find('.quantity');
     newQuantity = parseFloat(targetInputQuantityEl.val());
     
-    if(isNaN(newQuantity) || newQuantity == 0) {
+    if(isNaN(newQuantity) || newQuantity <= 0) {
         newQuantity = 1;
     }
     
@@ -1010,6 +1038,18 @@ function tableScreenSelectTable(tableId) {
     
     tableSelectMenu.setValue(tableId);
     doSelectTable(tableId);
+    
+    manualCallHomePoll();
+}
+
+function transferOrderError() {
+    hideNiceAlert();        
+    $('#tables_screen_status_message').hide();
+    inTransferOrderMode = false;
+    transferOrderInProgress = false;
+    showMenuScreen();
+    niceAlert("Error transferring order. Server might be down!");
+    return;
 }
 
 function loadReceipt(order, doScroll) {
@@ -1041,21 +1081,21 @@ function loadReceipt(order, doScroll) {
 }
 
 function storeDallasKeyVal(e) {
-    if (e.keyCode == 13){
+    if (getEventKeyCode(e) == 13){
         var newVal = $('#user_passcode').val().substring(3,15);
         $('#user_passcode').val(newVal);
     }
-    if (e.keyCode == 117){
+    if (getEventKeyCode(e) == 117){
         $('#user_passcode').val("u");
     }
-    if (e.keyCode == 97){
+    if (getEventKeyCode(e) == 97){
         $('#user_passcode').val("a");
     }
 }
 
 function nullOnEnter(event){
-    if(event.keyCode==13){
-        event.keyCode = null;
+    if(getEventKeyCode(event) == 13){
+        setEventKeyCode(event, null);
         return;
     }
 }
@@ -1074,6 +1114,10 @@ function menuRecptScroll() {
 
 function totalsRecptScroll() {
     recptScroll("totals_");
+}
+
+function deliveryRecptScroll() {
+    recptScroll("delivery_");
 }
 
 function reportsRecptScroll() {
@@ -1115,14 +1159,23 @@ function clearOrder(selectedTable) {
         clearOrderInStorage(current_user_id);
         currentOrder = null;
     } else {
-        clearTableOrderInStorage(current_user_id, selectedTable);
-    //dont need to worry about clearing memory as it is read in from cookie which now no longer exists
+        for (var i = 0; i < employees.length; i++) {
+            clearTableOrderInStorage(employees[i].id, selectedTable);
+        }
+    
+        //clear the master orders array
+        clearTableOrderInStorage(masterOrdersUserId, selectedTable);
     }
     
     clearReceipt();
 }
 
 function doTotal(applyDefaultServiceCharge) {
+    if(!appOnline && offlineOrderDelegateTerminal != terminalID) {
+        niceAlert("App is in offline mode. Please use terminal " + offlineOrderDelegateTerminal + " to cash out table orders");
+        return;
+    }
+    
     if(!callHomePollInitSequenceComplete) {
         niceAlert("Downloading data from server, please wait.");
         return;
@@ -1186,6 +1239,7 @@ function doTotal(applyDefaultServiceCharge) {
     $('#totals_tendered_box').addClass("selected");
     
     resetLoyaltyCustomer();
+    resetCustomerSelect();
 }
 
 var cashSaleInProcess = false;
@@ -1198,20 +1252,35 @@ function doTotalFinal() {
         return;
     }
     
-    //check that we have not just made an order, if so, we must wait before cashing out as it causes problems
+    if(!appOnline && selectedTable != 0 && offlineOrderDelegateTerminal != terminalID) {
+        niceAlert("App is in offline mode. Please use terminal " + offlineOrderDelegateTerminal + " to cash out table orders");
+        return;
+    }
+    
+    //check that we have not just made an order, if so, we must wait before cashing out as we lose orders as the get cleared before they reach the kitchen screen
     //but we allow table 0 orders to be cashed out regardless
     var now = clueyTimestamp();
     
-    //if we are on table 0 and we are not processing table 0 orders, then we can skip this check
-    if((selectedTable != 0 || isProcessingTable0Orders) && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
+    
+    
+    
+    
+    
+    
+    //TODO: //this solution might not be good enough as you can go to another order and hit order then come back and cash this one out
+    //
+    //
+    //
+    //
+    //
+    //if we are trying to cash out an order that we just hit "order" for, then wait for the polling amount so others can download the order
+    if(selectedTable != 0 && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
         showLoadingDiv("Waiting on previous sale to finish processing...");
         setTimeout(doTotalFinal, 1000);
         return;
     }
     
     hideLoadingDiv();
-    
-    cashSaleInProcess = true;
     
     if(currentOrderEmpty()) {
         setStatusMessage("No order present to total!", true, true);
@@ -1221,6 +1290,8 @@ function doTotalFinal() {
     if(!ensureLoggedIn()) {
         return;
     }
+    
+    cashSaleInProcess = true;
     
     var isSplitBill = false;
     
@@ -1234,8 +1305,12 @@ function doTotalFinal() {
         tableInfoLabel = "None";
         isTableOrder = false;
         
+        isTableZeroOrder = true;
+            
         if(isProcessingTable0Orders) {
-            isTableZeroOrder = true;
+            //we need to show a loading div while we process the table 0 order as we 
+            //cannot allow the user to switch to a different table or the doSyncTable() will never be called for this table 0 order
+            showLoadingDiv("Sending Order...");
         }
             
         //copy the order to distribute through system after processing
@@ -1265,15 +1340,25 @@ function doTotalFinal() {
             tableInfoLabel = tables[tableInfoId].label;
         }
 
-        //TODO: pick up num persons
-        numPersons = totalOrder.covers;
+        numPersons = parseInt(totalOrder.covers);
+        
+        //make sure it has not got its initial -1 value, or a negative value
+        if(numPersons < 0) {
+            numPersons = 0;
+        }
     }
 
     if(!paymentMethod) {
         paymentMethod = defaultPaymentMethod;
     }
     
-    totalOrder.time = clueyTimestamp();
+    if(typeof(totalOrder.time) == 'undefined') {
+        totalOrder.time = clueyTimestamp();
+    }
+    
+    //need to copy time into time_started var
+    var orderStartTime = totalOrder.time;
+        
     totalOrder.payment_method = paymentMethod;
     
     //set the service charge again in case it was changed on the totals screen
@@ -1310,20 +1395,19 @@ function doTotalFinal() {
     } else {
         for(var pm in splitPayments) {
             //make sure there is an amount in this payment type
-            if(parseFloat(splitPayments[pm]) <= 0) {
+            //unless it is the last payment type in the array as we must have at least one entry in this array
+            if((parseFloat(splitPayments[pm]) <= 0) && (sizeOfHash(splitPayments) > 1)) {
                 delete splitPayments[pm];
                 continue;
             }
         
             var pmId = getPaymentMethodId(pm);
         
-            if(paymentMethods[pmId].open_cash_drawer){
+            if(paymentMethods[pmId].open_cash_drawer) {
                 doOpenCashDrawer = true;
             }
         }
     }
-    
-    console.log("opening cash drawer: " + doOpenCashDrawer);
     
     if(doOpenCashDrawer) {
         openCashDrawer();
@@ -1351,7 +1435,9 @@ function doTotalFinal() {
     order_num = totalOrder.order_num
     
     orderData = {
+        'order_details' : totalOrder,
         'order_num' : order_num,
+        'time_started' : orderStartTime,
         'employee_id' : current_user_id,
         'total' : orderTotal,
         'tax_chargable' : taxChargable,
@@ -1367,11 +1453,11 @@ function doTotalFinal() {
         'table_info_label' : tableInfoLabel,
         'discount_percent' : discountPercent,
         'pre_discount_price' : preDiscountPrice,
-        'order_details' : totalOrder,
         'terminal_id' : terminalID,
         'void_order_id' : totalOrder.void_order_id,
         'is_split_bill' : isSplitBill,
-        'split_payments' : splitPayments
+        'split_payments' : splitPayments,
+        'is_training_mode_sale' : inTrainingMode
     }
     
     sendOrderToServer(orderData);
@@ -1413,13 +1499,36 @@ function doTotalFinal() {
     tableSelectMenu.setValue(0);
     doSelectTable(0);
     
+    mandatoryFooterMessageHTML = "";
+
+    var loyalty = totalOrder.loyalty;
+    
+    //print loyalty points earned
+    if(loyalty) {
+        var customerName = loyalty.customer_name;
+        var customerNumber = loyalty.customer_number;
+        var pointsEarned = loyalty.points_earned;
+        
+        mandatoryFooterMessageHTML += clearHTML + "<div id='loyalty_receipt_info'>";
+        
+        mandatoryFooterMessageHTML += "<div class='header'>Loyalty Info:</div>" + clearHTML;
+        
+        mandatoryFooterMessageHTML += "<div class='label'>Customer Name:</div><div class='data'>" + customerName + "</div>" + clearHTML;
+        mandatoryFooterMessageHTML += "<div class='label'>Customer Number:</div><div class='data'>" + customerNumber + "</div>" + clearHTML;
+        mandatoryFooterMessageHTML += "<div class='label'>Points Earned:</div><div class='data'>" + pointsEarned + "</div>" + clearHTML;
+        
+        mandatoryFooterMessageHTML += "</div>" + clear30HTML;
+    }
+
     totalOrder = null;
     currentTotalFinal = 0;
 
     //now print the receipt
     if(paymentIntegrationId == zalionPaymentIntegrationId && selectedRoomNumber != null && selectedFolioName != null) {
         //always print
-        mandatoryFooterMessageHTML = clearHTML + "<div id='zalion_receipt_info'>";
+        mandatoryFooterMessageHTML += clearHTML + "<div id='zalion_receipt_info'>";
+        
+        mandatoryFooterMessageHTML += "<div class='header'>Room Charge Info:</div>" + clearHTML;
         
         mandatoryFooterMessageHTML += "<div class='label'>Room Number:</div><div class='data'>" + selectedRoomNumber + "</div>" + clearHTML;
         mandatoryFooterMessageHTML += "<div class='label'>Client Name:</div><div class='data'>" + selectedFolioName + "</div>" + clearHTML;
@@ -1453,14 +1562,13 @@ function orderSentToServerCallback(orderData, errorOccured) {
         
         //first see if its table 0 and send into system orders
         //a null test is to see if table 0
-        if(isTableZeroOrder) {
+        if(isTableZeroOrder && isProcessingTable0Orders) {
             doSyncTableOrder();
+            hideLoadingDiv();
         }
-        
-        //reload the customers as their points/credit may need updating
-        $.getScript('/javascripts/customers.js');
     } else {
-        niceAlert("There was an error cashing out the last order, the server could not process it. It will automatically resend itself, please do not cash out on another terminal!");
+        hideLoadingDiv();
+        setStatusMessage("Order saved offline. Will sync with server when connection re-established.");
     }
     
     cashSaleInProcess = false;
@@ -1482,11 +1590,19 @@ function loadAfterSaleScreen() {
     }
 }
 
+var send_order_xhr = null;
+var sendOrderToServerTimeoutSeconds = 8;
+
 function sendOrderToServer(orderData) {
-    $.ajax({
+    var timeoutMillis = sendOrderToServerTimeoutSeconds * 1000;
+    
+    send_order_xhr = $.ajax({
         type: 'POST',
         url: '/order',
+        timeout: timeoutMillis,
         error: function() {
+            //            !userAbortedXHR(send_order_xhr)
+
             storeOrderForLaterSend(orderData);
             orderSentToServerCallback(orderData, true);
         },
@@ -1660,16 +1776,13 @@ function showDiscountPopup(receiptItem) {
     keypadPosition = $('#' + popupId).find('.discount_popup_keypad_container');
     
     clickFunction = function(val) {
-        currentVal = $('#' + popupId).find('#discount_percent_input').val();
-        if(currentVal == 0) currentVal = "";
-        newVal = currentVal.toString() + val;
-        $('#' + popupId).find('#discount_percent_input').val(newVal);
+        var inputEl = $('#' + popupId).find('#discount_percent_input');
+        doKeyboardInput(inputEl, val);
     };
     
     cancelFunction = function() {
-        oldVal = $('#' + popupId).find('#discount_percent_input').val();
-        newVal = oldVal.substring(0, oldVal.length - 1);
-        $('#' + popupId).find('#discount_percent_input').val(newVal);
+        var inputEl = $('#' + popupId).find('#discount_percent_input');
+        doKeyboardInputCancel(inputEl);
     };
     
     setUtilKeypad(keypadPosition, clickFunction, cancelFunction);
@@ -1927,7 +2040,7 @@ function doOpenOIANoteScreen() {
     
     $('#oia_tab_note').addClass("selected");
     
-    $('.button[id=sales_button_' + addNoteButtonID + ']').addClass("selected");
+    $('.button[id=sales_button_' + addNoteButtonID + '], .button[id=admin_screen_button_' + addNoteButtonID + ']').addClass("selected");
     
     $('#oia_container').hide();
     $('#add_note').show();
@@ -1979,6 +2092,7 @@ function doSaveNote() {
     var absCharge = charge;
     
     addOIAToOrderItem(order, orderItem, desc, absCharge, 0, 0, noteChargeIsPlus, true, false, false, -1, -1);
+    toggleModifyOrderItemScreen();
     
     clearNoteInputs();
     
@@ -2042,8 +2156,15 @@ function renderActiveTables() {
             
                     //mark the tables screen also
                     $('#table_label_' + nextTableID).addClass("active");
+                
+                    getTableOrderFromStorage(clueyUserId, nextTableID);
+                
+                    var tableOrder = tableOrders[nextTableID];
+                    
+                    if(tableOrder.client_name.length > 0) {
+                        $('#table_label_' + nextTableID).html(tables[nextTableID].label + " (" + tableOrder.client_name + ")");
+                    }
                 } else {
-            
                     $(element).removeClass("active");
                     $('#table_label_' + nextTableID).removeClass("active");
                 }
@@ -2068,12 +2189,12 @@ function postDoSyncTableOrder() {
     
     //clean up after transfer order mode
     if(inTransferOrderMode) {
-        hideNiceAlert();
-        setStatusMessage("Order Transfered.");
+        hideNiceAlert();        
         $('#tables_screen_status_message').hide();
         inTransferOrderMode = false;
         tableScreenSelectTable(selectedTable);
-        showMenuScreen();
+        loadAfterSaleScreen();
+        setStatusMessage("Order Transfered.");
         return;
     } else if(inTransferOrderItemMode) {
         finishTransferOrderItem();
@@ -2109,16 +2230,18 @@ function finishDoSyncTableOrder() {
     orderReceiptHTML = fetchOrderReceiptHTML(lastSyncedOrder);
     setLoginReceipt("Last Order", orderReceiptHTML);
     loginRecptUpdate();
+    
+    manualCallHomePoll();
 }
 
 function toggleModifyOrderItemScreen() {
     if(currentMenuSubscreenIsMenu()) {
-        $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').addClass("selected");
+        $('.button[id=sales_button_' + modifyOrderItemButtonID + '], .button[id=admin_screen_button_' + modifyOrderItemButtonID + ']').addClass("selected");
         showModifyOrderItemScreen();
     } else {
         resetKeyboard();
-        $('.button[id=sales_button_' + addNoteButtonID + ']').removeClass("selected");
-        $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').removeClass("selected");
+        $('.button[id=sales_button_' + addNoteButtonID + '], .button[id=admin_screen_button_' + addNoteButtonID + ']').removeClass("selected");
+        $('.button[id=sales_button_' + modifyOrderItemButtonID + '], .button[id=admin_screen_button_' + modifyOrderItemButtonID + ']').removeClass("selected");
         switchToMenuItemsSubscreen();
     }
 }
@@ -2145,7 +2268,7 @@ function switchToModifyOrderItemSubscreen() {
         resetKeyboard();
         hideAllMenuSubScreens();
         
-        $('.button[id=sales_button_' + modifyOrderItemButtonID + ']').addClass("selected");
+        $('.button[id=sales_button_' + modifyOrderItemButtonID + '], .button[id=admin_screen_button_' + modifyOrderItemButtonID + ']').addClass("selected");
         $('#order_item_additions').show();
         $('#order_item_additions #add_note').hide();
         
@@ -2478,34 +2601,147 @@ function clearMenuScreenInput() {
 
 function performCustomerScreenCSSMods() {
     //resize menu items
-        $('#items .item').height(133);
-        $('#items .item').width(176);
-        $('#items .item').css("margin", "3px");
-        $('#items .item .item_pic').height(116);
-        $('#items .item .item_pic img').height(90);
-        $('#items .item .item_pic img').css("max-height", "90px");
-        $('#items .item .item_pic img').css("max-width", "172px");
-        $('#items .item .item_pic img').css("margin-top", "5px");
+    $('#items .item').height(133);
+    $('#items .item').width(176);
+    $('#items .item').css("margin", "3px");
+    $('#items .item .item_pic').height(116);
+    $('#items .item .item_pic img').height(90);
+    $('#items .item .item_pic img').css("max-height", "90px");
+    $('#items .item .item_pic img').css("max-width", "172px");
+    $('#items .item .item_pic img').css("margin-top", "5px");
         
-        $('#items .menu_item_spacer').height(135);
-        $('#items .menu_item_spacer').width(178);
-        $('#items .menu_item_spacer').css("margin", "3px");
+    $('#items .menu_item_spacer').height(135);
+    $('#items .menu_item_spacer').width(178);
+    $('#items .menu_item_spacer').css("margin", "3px");
         
-        $('#items .item .item_name').css("width", "172px");
-        $('#items .item .item_name').css("font-size", "16px");
-        $('#items .item .item_name').css("bottom", "7px");
+    $('#items .item .item_name').css("width", "172px");
+    $('#items .item .item_name').css("font-size", "16px");
+    $('#items .item .item_name').css("bottom", "7px");
         
-        $('div#menu_screen div#menu_pages_container div#menu_container').height(631);
-        $('div#menu_screen div#menu_items_container').height(563);
-        $('div#menu_screen div#order_item_additions').height(631);
-        $('div#menu_screen div#order_item_additions div.oia_container').height(558);
-        $('div#menu_screen div#menu_buttons').height(79);
+    $('div#menu_screen div#menu_pages_container div#menu_container').height(631);
+    $('div#menu_screen div#menu_items_container').height(563);
+    $('div#menu_screen div#order_item_additions').height(631);
+    $('div#menu_screen div#order_item_additions div.oia_container').height(558);
+    $('div#menu_screen div#menu_buttons').height(79);
         
-        //hide the table select box
-        $('#table_screen_button, #table_select_container').hide();
+    //hide the table select box
+    $('#table_screen_button, #table_select_container').hide();
         
-        $('#box_label_container').show();
+    $('#box_label_container').show();
         
-        //hide the shortcut dropdown
-        $('#menu_screen_shortcut_dropdown_container').hide();
+    //hide the shortcut dropdown
+    $('#menu_screen_shortcut_dropdown_container').hide();
+}
+
+function performScreenResolutionCSSMods() {
+    //set resolutions
+    if(currentResolution == normalResolution) {
+    //normal screen, nothing to do
+    } else if (currentResolution == resolution1360x786) {
+        $('#wrapper').css("width", "1366px");
+        $('#menu_screen #menu_pages_container').css("width", "1090px");
+    }
+}
+
+function doAutoCovers() {
+    promptAddCovers();
+}
+
+function setCashOutDescription(cashOutPresetId) {
+    var presetLabel = null;
+    
+    for(var i=0; i<cashOutPresets.length; i++) {
+        var nextPreset = cashOutPresets[i];
+            
+        if(cashOutPresetId == nextPreset.id) {
+            presetLabel = nextPreset.label;
+        }
+    }
+            
+    $('#cash_out_description').val(presetLabel);
+}
+
+function cashOutCancelClicked() {
+    inCashOutMode = false;
+    $('#cash_out_description').val("");
+    $('#cash_out_amount').val("");
+    cashOutKeypadString = "";
+    currentCashOutAmount = 0;
+    showMenuScreen();
+}
+
+var currentCashOutDescription = null;
+var currentCashOutAmount = null;
+    
+function cashOutFinish() {
+    currentCashOutDescription = $('#cash_out_description').val();
+    
+    if(currentCashOutDescription.length == 0) {
+        niceAlert("Please enter a description!");
+        return;
+    }
+    
+    //must divide the amount by 100 so it is not recorded as cents
+    $.ajax({
+        type: 'POST',
+        url: '/cash_out',
+        complete: function() {
+            setStatusMessage("Expense has been entered!");
+        },
+        data: {
+            description : currentCashOutDescription,
+            amount : (currentCashOutAmount/100)
+        }
+    });
+    
+    //print receipt
+    var cashOutReceiptContent = getCashOutReceiptHTML();
+    
+    printReceipt(cashOutReceiptContent, false);
+    
+    $('#cash_out_description').val("");
+    $('#cash_out_amount').val("");
+    inCashOutMode = false;
+    
+    cashOutKeypadString = "";
+    currentCashOutDescription = currentCashOutAmount = null;
+    currentCashOutAmount = 0;
+    
+    showMenuScreen();
+}
+
+function cashOutAmountCancelClicked() {
+    cashOutKeypadString = "";
+    currentCashOutAmount = 0;
+    $('#cash_out_amount').html(currency(0));    
+}
+
+function getCashOutReceiptHTML() {
+    var cashOutTillRollHTML = "<div class='cash_out_till_roll'>";
+    
+    cashOutTillRollHTML += fetchBusinessInfoHeaderHTML() + clearHTML; 
+    cashOutTillRollHTML += "<div class='cash_out_till_roll_heading'>Paid Expense</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "<div class='cash_out_till_roll_header'>";
+    
+    cashOutTillRollHTML += "<div class='nickname'>Entered By: " + current_user_nickname + "</div>";
+    
+    var timestamp = utilFormatDate(new Date(clueyTimestamp()));
+    
+    cashOutTillRollHTML += "<div class='timestamp'>" + timestamp + "</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "<div class='description_header'>Description</div>";
+    cashOutTillRollHTML += "<div class='amount_header'>Amount</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "<div class='data_table'>";
+    
+    cashOutTillRollHTML += "<div class='label'>" + currentCashOutDescription + "</div><div class='data'>" + currency(currentCashOutAmount/100) + "</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "<div id='cash_out_footer_message'>Please Attatch To Receipt</div>" + clearHTML;
+    
+    cashOutTillRollHTML += "</div>" + clearHTML;
+    
+    return cashOutTillRollHTML;
 }

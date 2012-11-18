@@ -2,7 +2,7 @@ class Admin::DisplaysController < Admin::AdminController
   cache_sweeper :display_sweeper
   
   def index
-    @displays = Display.all
+    @displays = current_outlet.displays.all
   end
 
   def new
@@ -12,19 +12,24 @@ class Admin::DisplaysController < Admin::AdminController
   def create
     @display = Display.new(params[:display])
 
+    @display.outlet_id = current_outlet.id
+    
     if @display.save!
       #give the display an initial 2 pages
-      @page_1 = @display.menu_pages.build({:name => "Favourites", :page_num => 1})
-      @page_2 = @display.menu_pages.build({:name => "Page 2", :page_num => 2})
+      @page_1 = @display.menu_pages.build({:outlet_id => current_outlet.id, :name => "Favourites", :page_num => 1})
+      @page_2 = @display.menu_pages.build({:outlet_id => current_outlet.id, :name => "Page 2", :page_num => 2})
 
       @page_1.save!
       @page_2.save!
 
       (1..16).each do |num|
-        @page_1.menu_items.build({:order_num => num}).save!
-        @page_2.menu_items.build({:order_num => num}).save!
+        @page_1.menu_items.build({:outlet_id => current_outlet.id, :order_num => num}).save!
+        @page_2.menu_items.build({:outlet_id => current_outlet.id, :order_num => num}).save!
       end
       
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       redirect_to(builder_admin_display_path(@display), :notice => 'Display was successfully created.')
     else
       render :action => "new"
@@ -32,9 +37,12 @@ class Admin::DisplaysController < Admin::AdminController
   end
   
   def update
-    @display = Display.find(params[:id])
+    @display = current_outlet.displays.find(params[:id])
 
     if @display.update_attributes(params[:display])
+      #send a reload request to other terminals
+      request_sales_resources_reload @terminal_id
+    
       flash[:notice] = 'Display was successfully updated.'
       redirect_to :action => "index"
     else
@@ -44,13 +52,13 @@ class Admin::DisplaysController < Admin::AdminController
   end
   
   def duplicate
-    @display_to_dup = Display.find(params[:id])
-    @new_display = Display.new({:name => "#{@display_to_dup.name} (Copied: #{Time.now.to_s(:short)})"})
+    @display_to_dup = current_outlet.displays.find(params[:id])
+    @new_display = Display.new({:outlet_id => current_outlet.id, :name => "#{@display_to_dup.name} (Copied: #{Time.now.to_s(:short)})"})
     
     @new_display.save!
     
     @display_to_dup.menu_pages.each do |mp|
-      @new_page = @new_display.menu_pages.build({:name => mp.name, :page_num => mp.page_num})
+      @new_page = @new_display.menu_pages.build({:outlet_id => current_outlet.id, :name => mp.name, :page_num => mp.page_num})
       @new_page.save!
       
       if mp.embedded_display
@@ -58,37 +66,46 @@ class Admin::DisplaysController < Admin::AdminController
         @new_page.save!
       else
         mp.menu_items.each do |mi|
-          @new_menu_item = @new_page.menu_items.build({:product_id => mi.product_id, :order_num => mi.order_num})
+          @new_menu_item = @new_page.menu_items.build({:outlet_id => current_outlet.id, :product_id => mi.product_id, :order_num => mi.order_num})
           @new_menu_item.save!
         end
       end
     end
+    
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
     
     redirect_to(admin_displays_path, :notice => 'Display was successfully duplicated.')
   end
 
   def destroy
     #Don't allow deleting of last one
-    if Display.all.size == 1
+    if current_outlet.displays.all.size == 1
       flash[:notice] = "You must have at least one display!"
       redirect_to admin_displays_url
       return
     end
     
-    @display = Display.find(params[:id])
+    @display = current_outlet.displays.find(params[:id])
     @display.destroy
 
     #force load default in case it was destroyed
-    Display.load_default
+    Display.load_default(current_outlet)
+    
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
     
     redirect_to(admin_displays_url, :notice => 'Display was deleted.')
   end
 
   def rename_display
-    @display = Display.find(params[:id])
+    @display = current_outlet.displays.find(params[:id])
     
     @display.name = params[:name]
     @display.save!
+    
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
     
     render :json => {:success => true}.to_json
   end
@@ -96,17 +113,17 @@ class Admin::DisplaysController < Admin::AdminController
   #where the building gets done (mostly via ajax)
   #try to use as much ajax as possible here
   def builder
-    @display = Display.find(params[:id])
-    @displays = Display.all
+    @display = current_outlet.displays.find(params[:id])
+    @displays = current_outlet.displays.all
   end
 
   #when a product is dragged to a square
   def place_product
-    @product = Product.find_by_id(params[:product_id])
+    @product = current_outlet.products.find_by_id(params[:product_id])
 
     @menu_item_id = params[:menu_item_id]
 
-    @display = Display.find(params[:id])
+    @display = current_outlet.displays.find(params[:id])
     
     if @menu_item_id == "-1"
       @menu_page_num = params[:menu_page_num]
@@ -118,7 +135,7 @@ class Admin::DisplaysController < Admin::AdminController
         @next_order_num = @menu_page.menu_items.last.order_num + 1
       end
 
-      @menu_item = MenuItem.create({:menu_page_id => @menu_page.id, :order_num => @next_order_num})
+      @menu_item = MenuItem.create({:outlet_id => current_outlet.id, :menu_page_id => @menu_page.id, :order_num => @next_order_num})
       
       if @product
         #we are replacing
@@ -127,7 +144,7 @@ class Admin::DisplaysController < Admin::AdminController
       end
       
     else
-      @menu_item = MenuItem.find(@menu_item_id)
+      @menu_item = current_outlet.menu_items.find(@menu_item_id)
       
       if @product
         #we are replacing
@@ -145,9 +162,12 @@ class Admin::DisplaysController < Admin::AdminController
           mi.save
         end
         
-        @new_menu_item = MenuItem.create({:menu_page_id => @menu_item.menu_page_id, :order_num => @order_num})
+        @new_menu_item = MenuItem.create({:outlet_id => current_outlet.id, :menu_page_id => @menu_item.menu_page_id, :order_num => @order_num})
       end
     end
+    
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
     
     @menu_item.save!
   end
@@ -155,19 +175,26 @@ class Admin::DisplaysController < Admin::AdminController
   #a menu_item is removed from the grid
   #must redraw the whole grid
   def delete_menu_item
-    @menu_item = MenuItem.find(params[:menu_item_id])
+    @menu_item = current_outlet.menu_items.find(params[:menu_item_id])
 
     MenuItem.delete_menu_item @menu_item
 
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     render :json => {:success => true}.to_json
   end
 
   def create_menu_page
-    @display = Display.find(params[:id])
+    @display = current_outlet.displays.find(params[:id])
 
-    @next_page_num = @display.menu_pages.last.page_num + 1
+    if @display.menu_pages.length > 0
+      @next_page_num = @display.menu_pages.last.page_num + 1
+    else 
+      @next_page_num = 1
+    end
     
-    @new_page = @display.menu_pages.build({:name => "Page #{@next_page_num}", :page_num => @next_page_num})
+    @new_page = @display.menu_pages.build({:outlet_id => current_outlet.id, :name => "Page #{@next_page_num}", :page_num => @next_page_num})
     @new_page.save!
     
     @embedded_display_id = params[:embedded_display_id]
@@ -183,7 +210,7 @@ class Admin::DisplaysController < Admin::AdminController
       end
       
       #make sure that this display has no nested one
-      @embedded_display = Display.find(@embedded_display_id)
+      @embedded_display = current_outlet.displays.find(@embedded_display_id)
       
       if @embedded_display.has_nested
         @new_page.destroy
@@ -196,18 +223,22 @@ class Admin::DisplaysController < Admin::AdminController
       end
     else
       (1..16).each do |num|
-        @new_page.menu_items.build({:order_num => num}).save!
+        @new_page.menu_items.build({:outlet_id => current_outlet.id, :order_num => num}).save!
       end
     end
     
     #save again after build
     @new_page.save!
+    
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     flash[:notice] = "Page Created"
     redirect_to builder_admin_display_path(@display)
   end
 
   def delete_menu_page
-    @display = Display.find(params[:id])
+    @display = current_outlet.displays.find(params[:id])
 
     @menu_page = @display.menu_pages.find(params[:menu_page_id])
 
@@ -221,49 +252,61 @@ class Admin::DisplaysController < Admin::AdminController
     
     @menu_page.destroy
 
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     redirect_to(builder_admin_display_path(@display), :notice => 'Page Deleted.')
   end
 
   def rename_menu_page
-    @display = Display.find(params[:id])
+    @display = current_outlet.displays.find(params[:id])
 
     @menu_page = @display.menu_pages.find(params[:menu_page_id])
 
     @menu_page.name = params[:new_name]
     @menu_page.save!
 
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     render :json => {:success => true}.to_json
   end
   
   def rename_menu_item
-    @display = Display.find(params[:id])
+    @display = current_outlet.displays.find(params[:id])
 
     @menu_item = @display.menu_items.find(params[:menu_item_id])
 
     @menu_item.product.name = params[:new_name]
     @menu_item.product.save!
 
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     render :json => {:success => true}.to_json
   end
 
   def default
-    @old_default_display = Display.load_default
+    @old_default_display = Display.load_default(current_outlet)
     @old_default_display.is_default = false
     @old_default_display.save
 
-    @new_default_display = Display.find(params[:id])
+    @new_default_display = current_outlet.displays.find(params[:id])
     @new_default_display.is_default = true
     @new_default_display.save
 
+    #send a reload request to other terminals
+    request_sales_resources_reload @terminal_id
+    
     render :json => {:success => true}.to_json
   end
   
   def public
-    @old_public_display = Display.load_public
+    @old_public_display = Display.load_public(current_outlet)
     @old_public_display.is_public = false
     @old_public_display.save
 
-    @new_public_display = Display.find(params[:id])
+    @new_public_display = current_outlet.displays.find(params[:id])
     @new_public_display.is_public = true
     @new_public_display.save
 

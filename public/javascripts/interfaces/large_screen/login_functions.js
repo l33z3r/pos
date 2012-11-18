@@ -1,3 +1,39 @@
+var breakUserIDS = null;
+var clockedInUserIDS = null;
+
+var loginActionInProcess = false;
+
+function initUsers() {
+    initClockedInUsers();
+    initBreakUsers();
+}
+
+function initClockedInUsers() {
+    clockedInUserIDS = getClockedInUsersIDS();
+
+    for (var i = 0; i < employees.length; i++) {
+        var currentEmployee = employees[i];
+        
+        if(($.inArray(currentEmployee.id.toString(), clockedInUserIDS) != -1)) {
+            currentEmployee.clocked_in = true;            
+            $('#employee_box_' + currentEmployee.id).show();
+        } 
+    }
+}
+
+function initBreakUsers() {
+    breakUserIDS = getBreakUsersIDS();
+    
+    //TODO: grey out users icons
+    for (var i = 0; i < employees.length; i++) {
+        var currentEmployee = employees[i]
+        
+        if(($.inArray(currentEmployee.id.toString(), breakUserIDS) != -1)) {
+            $('#employee_box_' + currentEmployee.id).addClass("on_break");
+        } 
+    }
+}
+
 function doQuickLogin(user_id) {
 
     //load the users index in the array
@@ -40,49 +76,9 @@ function loginScreenKeypadClick(val) {
     $('#num').val(newVal);
 }
 
-function loginScreenKeyboardClick(e) {
-
-    if (e.keyCode == 13) {
-        if ($('#num').val().substring(0, 2) == 'aa'){
-            var newval = $('#num').val().substring(3, 15);
-            $('#num').val(newval);
-            $('#clockincode_show').html("**********");
-            doDallasLogin(newval);
-        }
-        else {
-            $('#num').val("")
-            $('#clockincode_show').html("");
-        }
-    } else if (e.keyCode == 117) {
-        $('#num').val("u");
-    }
-    else if (e.keyCode == 97) {
-        $('#num').val("a");
-    } else {
-        var newVal = $('#num').val().toString() + String.fromCharCode(e.keyCode);
-        $('#clockincode_show').html($('#clockincode_show').html() + "*");
-    }
-}
-
 function doCancelLoginKeypad() {
     $('#clockincode_show').html("");
     $('#num').val("");
-}
-
-function forceLogin(user_id) {
-    for (var i = 0; i < employees.length; i++) {
-        id = employees[i].id;
-        if (id == user_id) {
-            user_index = i;
-            break;
-        }
-    }
-
-    var nickname = employees[user_index].nickname;
-    var is_admin = employees[user_index].is_admin;
-    var passcode = employees[user_index].passcode;
-
-    loginSuccess(user_id, nickname, is_admin, passcode);
 }
 
 function doDallasLogin() {
@@ -101,7 +97,20 @@ function doDallasLogin() {
             nickname = employees[i].nickname;
 
             if (employees[i]['clocked_in']) {
-                id = employees[i].id
+                id = employees[i].id;                
+                
+                if(userOnBreak(id)) {
+                    setStatusMessage("User is on break!");
+                    clearClockinCode();
+                    return;
+                }
+                
+                if(!employeeForID(id).login_allowed) {
+                    setStatusMessage("User not allowed login!");
+                    clearClockinCode();
+                    return;
+                }
+    
                 is_admin = employees[i].is_admin;
                 loginSuccess(id, nickname, is_admin, passcode);
                 return;
@@ -116,7 +125,7 @@ function doDallasLogin() {
     loginFailure();
 }
 
-function doLogin() {
+function doLogin() {        
     entered_code = $('#num').val();
 
     if (current_user_id != null) {
@@ -131,10 +140,23 @@ function doLogin() {
         if (entered_code == passcode) {
             nickname = employees[i].nickname;
 
-
             if (employees[i]['clocked_in']) {
+                //only allow dallas code login if it is set
                 if (employees[i].dallas_code == ""){
-                    id = employees[i].id
+                    id = employees[i].id;
+                    
+                    if(userOnBreak(id)) {
+                        setStatusMessage("User is on break!");
+                        clearClockinCode();
+                        return;
+                    }
+                    
+                    if(!employeeForID(id).login_allowed) {
+                        setStatusMessage("User not allowed login!");
+                        clearClockinCode();
+                        return;
+                    }
+    
                     is_admin = employees[i].is_admin;
                     loginSuccess(id, nickname, is_admin, passcode);
                 }else {
@@ -159,7 +181,11 @@ function doLogout() {
         return;
     }
 
+    var id_for_logout = current_user_id;
+    
     current_user_id = null;
+
+    storeActiveUserID(null);
 
     showLoginScreen();
 
@@ -172,18 +198,22 @@ function doLogout() {
     //hide the shortcut dropdown
     $('#menu_screen_shortcut_dropdown_container').hide();
 
+    //hide the nav controls
+    $('#nav_util_button_clear_reload').hide();
+    $('#nav_util_button_reset_timestamp').hide();
+        
     $('#e_name').hide();
+    
+    $('#num').blur();
 
     //send ajax logout
     $.ajax({
         type: 'POST',
-        url: '/logout'
+        url: '/logout',
+        data: {
+            employee_id : id_for_logout
+        }
     });
-    setTimeout(function(){
-
-        $('#num').focus();
-        scanFocusLoginPoll();
-    }, 1000);
 }
 
 function doClockin() {
@@ -237,6 +267,12 @@ function doClockout() {
                 return;
             }
 
+            if(userOnBreak(id)) {
+                setStatusMessage("User is on break!");
+                clearClockinCode();
+                return;
+            }
+    
             //mark the user as clocked out
             employees[i]['clocked_in'] = false;
 
@@ -251,14 +287,20 @@ function doClockout() {
 function clockinSuccess(id, nickname) {
     clearClockinCode();
 
+    addClockedInUser(id);
+    
+    if(employeeForID(id).login_allowed) {
+        $('#employee_box_' + id).show();
+    }
+
     setStatusMessage(nickname + " clocked in successfully!");
 
-    //send ajax logout
+    //send ajax clockin
     $.ajax({
         type: 'POST',
         url: '/clockin',
         data: {
-            id : id
+            employee_id : id
         }
     });
 }
@@ -266,6 +308,9 @@ function clockinSuccess(id, nickname) {
 function clockoutSuccess(id, nickname) {
     clearClockinCode();
 
+    removeClockedInUser(id);
+    $('#employee_box_' + id).hide();
+    
     setStatusMessage(nickname + " clocked out successfully!");
 
     //send ajax clockout
@@ -273,28 +318,30 @@ function clockoutSuccess(id, nickname) {
         type: 'POST',
         url: '/clockout',
         data: {
-            id : id
+            employee_id : id
         }
     });
 }
 
 function loginSuccess(id, nickname, is_admin, passcode) {
-    //send ajax login
-    $.ajax({
-        type: 'POST',
-        url: '/login',
-        data: {
-            id : id
-        }
-    });
-
-    showingPassCodeDialog = false;
-
     current_user_id = id;
     last_user_id = current_user_id;
     current_user_nickname = nickname;
     current_user_is_admin = is_admin;
     current_user_passcode = passcode;
+    
+    storeActiveUserID(current_user_id);
+    
+    //send ajax login
+    $.ajax({
+        type: 'POST',
+        url: '/login',
+        data: {
+            employee_id : id
+        }
+    });
+
+    showingPassCodeDialog = false;
 
     //set the username in the menu
     $('#e_name').html(nickname);
@@ -303,13 +350,7 @@ function loginSuccess(id, nickname, is_admin, passcode) {
 
     showMenuScreen();
 
-    //show the red x 
-    $('#nav_save_button').show();
-
-    //show the shortcut dropdown
-    $('#menu_screen_shortcut_dropdown_container').show();
-
-    $('#e_name').show();
+    initMenuScreenNavItems();    
 
     loadCurrentOrder();
 
@@ -343,6 +384,8 @@ function loginSuccess(id, nickname, is_admin, passcode) {
     } else {
         $('#split_bill_select_item').hide();
     }
+    
+    manualCallHomePoll();
 }
 
 function clockinFailure() {
@@ -371,5 +414,108 @@ function clearClockinCode() {
     $('#clockincode_show').html("");
 }
 
+function doBreak() {
+    entered_code = $('#num').val();
 
+    if (current_user_id != null) {
+        //already logged in
+        displayError("You are already logged in. Please log out!");
+        return;
+    }
 
+    for (var i = 0; i < employees.length; i++) {
+        passcode = employees[i].passcode;
+
+        if (entered_code == passcode) {
+            nickname = employees[i].nickname;
+
+            if (employees[i]['clocked_in']) {                
+                id = employees[i].id;
+                
+                if(userOnBreak(id)) {
+                    breakOutSuccess(id, nickname);
+                } else {
+                    breakInSuccess(id, nickname);
+                }
+                
+                return;
+            } else {
+                setStatusMessage("User " + nickname + " is not clocked in!", true, true);
+                clearClockinCode();
+                return;
+            }
+        }
+    }
+
+    doBreakFailure();
+}
+
+function breakInSuccess(id, nickname) {
+    clearClockinCode();
+
+    setStatusMessage(nickname + " started break!");
+
+    //send ajax break in
+    $.ajax({
+        type: 'POST',
+        url: '/break_in',
+        data: {
+            id : id
+        }
+    });
+    
+    addBreakUser(id);
+    
+    //grey out their name
+    $('#employee_box_' + id).addClass("on_break");
+}
+
+function breakOutSuccess(id, nickname) {
+    clearClockinCode();
+
+    setStatusMessage(nickname + " finished break!");
+
+    //send ajax clockout
+    $.ajax({
+        type: 'POST',
+        url: '/break_out',
+        data: {
+            id : id
+        }
+    });
+    
+    removeBreakUser(id);
+    
+    //ungrey their name
+    $('#employee_box_' + id).removeClass("on_break");
+}
+
+function doBreakFailure() {
+    //set an error message in the flash area
+    setStatusMessage("Wrong pass code!", true, true);
+
+    clearClockinCode();
+}
+
+function userOnBreak(userId) {
+    var breakUserIDS = getBreakUsersIDS();
+    return $.inArray(userId.toString(), breakUserIDS) != -1;
+}
+
+function getWorkReportDataTable(work_report_data) {
+    var work_report_data_html = "<div class='data_table'>";
+    
+    for(var i=0; i<work_report_data.length; i++) {
+        var show_currency = work_report_data[i][2];
+        
+        var wider_date_column = work_report_data[i][3];
+        var widerDateColumnClass = wider_date_column ? " date" : ""
+        
+        work_report_data_html += "<div class='label" + widerDateColumnClass + "'>" + work_report_data[i][0] + "</div>";
+        work_report_data_html += "<div class='data" + widerDateColumnClass + "'>" + (show_currency && (!isNaN( parseFloat(work_report_data[i][1]))) ? currency(work_report_data[i][1]) : work_report_data[i][1]) + "</div>" + clearHTML;
+    }
+    
+    work_report_data_html += "</div>";
+    
+    return work_report_data_html;
+}

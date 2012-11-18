@@ -2,19 +2,29 @@
   <table id="customer_list" class="admin_table">
     <thead>
       <tr>
+        <th width="160">Account No.</th>
         <th width="160">Customer Name</th>
-        <th width="160">Customer Number</th>
+        <th width="160">Credit Limit</th>
         <th width="130">Balance</th>
-        <th width="130">Points</th>
+        <th width="130">LoyaltyPoints</th>
+        <% if !params[:search][:customer_type_in].include?(Customer::LOYALTY) %>
+          <th width="160">Make Payment</th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
       <% @customers.each do |customer| %>
         <tr id="customer_id_<%=customer.id%>">
+          <td><%= link_to customer.account_number, edit_admin_customer_path(customer) %></td>
           <td><%= link_to customer.name, edit_admin_customer_path(customer) %></td>
-          <td><%= customer.customer_number %></td>
-          <td><%= print_money customer.current_balance %></td>
+          <td><%= print_money customer.credit_limit %></td>
+          <td><%= print_credit_balance customer.current_balance %></td>
           <td><%= customer.available_points %></td>
+          <% if !params[:search][:customer_type_in].include?(Customer::LOYALTY) %>
+            <td>
+              <div class="small_button" data-onpress="makeCustomerPaymentAdminShortcut(<%= customer.id %>)">Make Payment</div>
+            </td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>

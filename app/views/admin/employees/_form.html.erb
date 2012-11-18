@@ -68,7 +68,7 @@
     </div>
     <div class="field">
       <%= f.label :role_id %><br />
-      <%= f.collection_select :role_id, Role.find(:all), :id, :name, :prompt => "Select a Role" %>
+      <%= f.collection_select :role_id, current_outlet.roles.find(:all), :id, :name, :prompt => "Select a Role" %>
     </div>
     <div id="actions">
       <%= f.submit %>
