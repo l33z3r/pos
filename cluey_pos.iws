@@ -14,10 +14,7 @@
     <option name="historyRevisionsNumber" value="4" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54a8a260-c178-4ce3-883c-3e317bc82f2c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/sales/export_excel.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/sales/export_excel.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/staff/export_excel.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/staff/export_excel.html.erb" />
-    </list>
+    <list default="true" id="54a8a260-c178-4ce3-883c-3e317bc82f2c" name="Default" comment="" />
     <ignored path="cluey_pos.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -74,10 +71,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="export_excel.html.erb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="export_excel.html.erb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/reports/sales/export_excel.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="61" column="58" selection-start="2979" selection-end="2979" vertical-scroll-proportion="0.5229084">
+            <state line="61" column="58" selection-start="2979" selection-end="2979" vertical-scroll-proportion="-21.875">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="database.yml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/config/database.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="38" column="17" selection-start="850" selection-end="850" vertical-scroll-proportion="0.5544747">
               <folding />
             </state>
           </provider>
@@ -976,13 +982,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/database.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="17" selection-start="850" selection-end="850" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/reports/staff/export_excel.html.erb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="25" column="65" selection-start="0" selection-end="12479" vertical-scroll-proportion="-0.625">
@@ -999,7 +998,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/reports/sales/export_excel.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="61" column="58" selection-start="2979" selection-end="2979" vertical-scroll-proportion="0.5229084">
+        <state line="61" column="58" selection-start="2979" selection-end="2979" vertical-scroll-proportion="-21.875">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/database.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="17" selection-start="850" selection-end="850" vertical-scroll-proportion="0.5544747">
           <folding />
         </state>
       </provider>
