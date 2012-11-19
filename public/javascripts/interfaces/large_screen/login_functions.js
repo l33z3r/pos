@@ -519,3 +519,33 @@ function getWorkReportDataTable(work_report_data) {
     
     return work_report_data_html;
 }
+
+function chefKitchenLogin() {
+    var chefEmployee = null;
+    
+    for (var i = 0; i < employees.length; i++) {
+        var id = employees[i].id;
+        
+        if (id == chefUserId) {
+            chefEmployee = employees[i];
+            break;
+        }
+    }
+    
+    current_user_id = chefEmployee.id;
+    last_user_id = current_user_id;
+    current_user_nickname = chefEmployee.nickname;
+    current_user_is_admin = chefEmployee.is_admin;
+    current_user_passcode = chefEmployee.passcode;
+    
+    storeActiveUserID(current_user_id);
+    
+    //send ajax login
+    $.ajax({
+        type: 'POST',
+        url: '/login',
+        data: {
+            employee_id : chefEmployee.id
+        }
+    });
+}

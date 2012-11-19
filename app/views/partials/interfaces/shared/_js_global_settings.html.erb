@@ -197,6 +197,7 @@
   var globalAutoPromptForCovers = <%= GlobalSetting.parsed_setting_for GlobalSetting::PROMPT_FOR_COVERS, current_outlet %>;
   
   var clueyUserId = <%= Employee.cluey_user(current_outlet).id %>;
+  var chefUserId = <%= Employee.chef_user(current_outlet).id %>;
   
   var printLocalDeliveryReceipts = <%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_LOCAL_RECIEVE_DELIVERY, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
   

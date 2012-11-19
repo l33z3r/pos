@@ -12,6 +12,12 @@ var operationInProgress = false;
 var showAllKitchenOrders = false;
 
 function initKitchen() {
+    if(!current_user_id) {
+        alert("auto login chef");
+        
+        chefKitchenLogin();
+    }
+    
     //hide the red x 
     $('#nav_save_button').hide();
         
