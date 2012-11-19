@@ -1,6 +1,6 @@
 class KitchenController < ApplicationController
   def index
-    #auto log in as the first user in the db so that you can go steaight to the kitchen screen without loging in
+    #auto log in as the first user in the db so that you can go steaight to the kitchen screen without logging in
     if !current_employee
       @emp = Employee.chef_user current_outlet
       do_login(@emp.id)
