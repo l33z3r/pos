@@ -161,7 +161,7 @@ function getSalesResourceFromStorage(key) {
     if(salesResourceStorageData != null) {
         return JSON.parse(salesResourceStorageData);
     } else {
-        niceAlert("Cannot load sales resource (" + key + ") from local storage!");
+        niceAlert("Cannot load sales resource (" + key + ") from local storage");
         return null;
     }
 }

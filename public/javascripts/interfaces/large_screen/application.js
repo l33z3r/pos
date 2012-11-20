@@ -23,12 +23,12 @@ function doGlobalInit() {
     if(!inMobileContext()) { 
         //we don't check for firefox here anymore as it is done in the controller
         //if(checkForFirefox()) {   
-            if(checkForClueyPlugin()) {
-                if(checkForJSPrintSetupPlugin()) {
-                    checkForUninstalledPrinters();
-                }
+        if(checkForClueyPlugin()) {
+            if(checkForJSPrintSetupPlugin()) {
+                checkForUninstalledPrinters();
             }
-        //}
+        }
+    //}
     }
     
     initUsers();
@@ -56,7 +56,7 @@ function doGlobalInit() {
             $('#printFrame').css("overflow", "scroll");
         }
 
-        $('body').css("overflow", "scroll");
+        //$('body').css("overflow", "scroll");
     }
 
     initUIElements();
@@ -170,6 +170,18 @@ function doGlobalInit() {
     clueyScheduler();
     
     initTrainingModeFromCookie(); 
+    
+    $('.slide-out-div').tabSlideOut({
+        tabHandle: '.handle',                              //class of the element that will be your tab
+        pathToTabImage: '/images/cluey_icon.png',          //path to the image for the tab *required*
+        imageHeight: '122px',                               //height of tab image *required*
+        imageWidth: '40px',                               //width of tab image *required*    
+        tabLocation: 'right',                               //side of screen where tab lives, top, right, bottom, or left
+        speed: 300,                                        //speed of animation
+        action: 'click',                                   //options: 'click' or 'hover', action to trigger animation
+        topPos: '5px',                                   //position from the top
+        fixedPosition: false                               //options: true makes it stick(fixed position) on scroll
+    });
 }
 
 //this gets called from the polling when a terminal is not yet set
@@ -188,7 +200,7 @@ function showTerminalSelectDialog() {
         
         showingTerminalSelectDialog = true;
     
-    var title = "Subscription Reached!";
+        var title = "Subscription Reached";
         var message = "You have only paid for " + outletTerminals.length + " terminal(s), which have all been assigned. You can create more terminals in the accounts section. Click OK to be redirected.";
         
         ModalPopups.Alert('niceAlertContainer',
@@ -323,7 +335,7 @@ function displayButtonPasscodeEntered() {
         displayButtonForwardFunction.call();
         displayButtonForwardFunction = null;
     } else {
-        setStatusMessage("Passcode Incorrect, try again!");
+        setStatusMessage("Passcode Incorrect, try again");
         $('#display_button_passcode').val('');
         $('#display_button_passcode_show').html('');
     }

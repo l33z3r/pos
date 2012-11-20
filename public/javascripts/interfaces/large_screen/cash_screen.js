@@ -106,7 +106,7 @@ function finishSale() {
         
         //make sure the change cannot be greater than the cash amount
         if(change >= totalCashAmount) {
-            niceAlert("Change cannot be greater than or equal the cash amount!");
+            niceAlert("Change cannot be greater than or equal the cash amount");
             return;
         }
     }
@@ -121,7 +121,7 @@ function resetTendered() {
 
 function cashOutCancel() {
     if(disallowCancelSaleCC) {
-        niceAlert("You cannot cancel this sale, as the card transaction has already been processed!");
+        niceAlert("You cannot cancel this sale, as the card transaction has already been processed");
         return;
     }
     
@@ -157,7 +157,7 @@ function paymentMethodSelected(pm_id) {
         }
     } else if(accountPaymentMethodSelected && splitPayments[paymentMethod] > 0) {
         if(disallowCancelSaleCC) {
-            niceAlert("You cannot charge to an account, as a card transaction has already been processed!");
+            niceAlert("You cannot charge to an account, as a card transaction has already been processed");
             return;
         }
         
@@ -172,7 +172,7 @@ function paymentMethodSelected(pm_id) {
     
     if(loyaltyPaymentMethodSelected) {
         if(!totalOrder.loyalty) {
-            niceAlert("Please swipe the customers loyalty card first!");
+            niceAlert("Please swipe the customers loyalty card first");
             loyaltyPaymentMethodSelected = false;
             return;
         }
@@ -195,16 +195,16 @@ function paymentMethodSelected(pm_id) {
         var pointsUsedInCurrencyPennies = 0;
         
         if(availablePoints <=0) {
-            niceAlert("This customer has no available loyalty points!");
+            niceAlert("This customer has no available loyalty points");
             loyaltyPaymentMethodSelected = false;
             return;
         } else if(availablePoints < amountOutstandingInPoints) {
-            niceAlert("Not have enough loyalty points to cover the whole sale!" + 
+            niceAlert("Not have enough loyalty points to cover the whole sale" + 
                 " " + amountOutstandingInPoints + " points needed. Other payment methods must be used to cover the difference");
             var pointsUsed = availablePoints;
             pointsUsedInCurrencyPennies = (pointsUsed/loyaltyPointsPerCurrencyUnit) * 100;
         } else {
-            niceAlert(amountOutstandingInPoints + " of this customers loyalty points will be used to cover this sale!");
+            niceAlert(amountOutstandingInPoints + " of this customers loyalty points will be used to cover this sale");
             pointsUsedInCurrencyPennies = (amountOutstandingInPoints/loyaltyPointsPerCurrencyUnit) * 100;
         }
         
@@ -542,7 +542,7 @@ function cashScreenChargeCreditCard(amount) {
     }
     
     if(totalOrder.card_charge) {
-        niceAlert("You have already processed a card transaction for this sale!");
+        niceAlert("You have already processed a card transaction for this sale");
         return;
     }
     
@@ -683,13 +683,13 @@ var loyaltyCardListenerHandler = function(event) {
         $(window).unbind('keypress', loyaltyCardListenerHandler);
                     
         if(current_user_id == null) {
-            setStatusMessage("You are not logged in!", true, true);
+            setStatusMessage("You are not logged in", true, true);
             return;
         }
     
         //have to check this as the card can be swiped on menu screen
         if(currentOrderEmpty()) {
-            setStatusMessage("No order present!", true, true);
+            setStatusMessage("No order present", true, true);
             return;
         }
                     
@@ -707,7 +707,7 @@ var loyaltyCardListenerHandler = function(event) {
                         
             addLoyaltyCustomerToTotalOrder(loyaltyCustomersByCode[fullLoyaltyCardCode]);                        
         } else {
-            niceAlert("Customer Not Found!");
+            niceAlert("Customer Not Found");
         }
         
         loyaltyCardCode = "";
@@ -906,7 +906,7 @@ function addCustomerToOrder(c_id) {
         return;
     }
     
-    console.log("Adding customer " + customerName + " to order!");
+    console.log("Adding customer " + customerName + " to order");
     
     $('#totals_screen_select_customer_container').hide();
     $('#payment_options_money_info_container').show();

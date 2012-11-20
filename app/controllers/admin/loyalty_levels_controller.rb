@@ -22,7 +22,7 @@ class Admin::LoyaltyLevelsController < Admin::AdminController
       #send a reload request to other terminals
       request_sales_resources_reload @terminal_id
     
-      flash[:notice] = "Loyalty Levels Updated!"
+      flash[:notice] = "Loyalty Levels Updated"
       redirect_to admin_global_settings_path
     else
       render admin_global_settings_path
@@ -32,7 +32,7 @@ class Admin::LoyaltyLevelsController < Admin::AdminController
   def destroy
     #Don't allow deleting of last one
     if current_outlet.loyalty_levels.all.size == 1
-      flash[:notice] = "You must have at least one loyalty level!"
+      flash[:notice] = "You must have at least one loyalty level"
       redirect_to admin_global_settings_path
       return
     end
@@ -43,7 +43,7 @@ class Admin::LoyaltyLevelsController < Admin::AdminController
     #send a reload request to other terminals
     request_sales_resources_reload @terminal_id
     
-    flash[:notice] = "Loyalty Level Deleted!"
+    flash[:notice] = "Loyalty Level Deleted"
     redirect_to admin_global_settings_path
   end
   

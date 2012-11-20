@@ -120,9 +120,6 @@ Pos::Application.routes.draw do
   match 'break_out' => "home#break_out", :via => :post
   match 'print_work_report' => "home#print_work_report", :via => :post
   
-  #sync info page
-  get 'sync_info' => "admin/home#sync_info"
-  
   # admin homepage
   match 'admin' => "admin/home#index"
 

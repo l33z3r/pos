@@ -17,7 +17,7 @@ function makeCustomerPayment(customerId) {
     var customer = creditCustomers[customerId];
     
     if(!customer) {
-        niceAlert("This customer is not registered for accounts!");
+        niceAlert("This customer is not registered for accounts");
         return;
     }
     
@@ -195,7 +195,7 @@ function cancelUtilPayment() {
 
 function finishUtilPayment() {
     if(utilPaymentInProgress) {
-        niceAlert("There is a payment in progress, please wait!");
+        niceAlert("There is a payment in progress, please wait");
         return;
     }
     
@@ -210,7 +210,7 @@ function finishUtilPayment() {
     }
     
     utilPaymentInProgress = true;
-    showLoadingDiv("Processing... Please Wait!");
+    showLoadingDiv("Processing... Please wait");
     
     utilPaymentResponse.card_charged = utilPaymentCardCharged;
     utilPaymentResponse.amount_tendered = utilPaymentCashTendered;

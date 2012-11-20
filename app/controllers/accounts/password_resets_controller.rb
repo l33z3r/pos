@@ -23,7 +23,7 @@ class Accounts::PasswordResetsController < Accounts::ApplicationController
     @cluey_account = ClueyAccount.find_by_password_reset_token(params[:id])
     
     if !@cluey_account
-      flash[:error] = "Password Reset Request Not Found!"
+      flash[:error] = "Password Reset Request Not Found"
       redirect_to account_log_in_path
       return
     end
@@ -43,7 +43,7 @@ class Accounts::PasswordResetsController < Accounts::ApplicationController
         @cluey_account.password_reset_token = nil
         @cluey_account.save
         
-        redirect_to account_log_in_path, :notice => "Password has been reset!"
+        redirect_to account_log_in_path, :notice => "Password has been reset"
       else
         render :edit
       end

@@ -67,6 +67,10 @@ function callHomePoll() {
         return;
     }
     
+    if(pollInProgress) {
+        return;
+    }
+    
     //load/store the timestamp for table sync
     if(lastSyncTableOrderTime == null) {
         //read it from web db
@@ -178,8 +182,10 @@ function callHomePollComplete() {
             finishedLoadingKitchenScreen();
         } else if(inLargeInterface()) {
         //we do manual polling now
+        //setTimeout(callHomePoll, pollingAmount);
         } else if(inMediumInterface()) {
-            setTimeout(callHomePoll, pollingAmount);
+            //we do manual polling now
+            //setTimeout(callHomePoll, pollingAmount);
         }                
     }
 }
@@ -251,7 +257,7 @@ function linkTerminal(outletTerminalName) {
         error: function() {
             hideNiceAlert();
         
-            var message = "Error Linking Terminal!";
+            var message = "Error Linking Terminal";
         
             ModalPopups.Alert('niceAlertContainer',
                 title, "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
@@ -284,7 +290,7 @@ function unlinkTerminal() {
         url: "/unlink_terminal",
         type : "POST",
         error: function() {
-            niceAlert("Error Unlinking Terminal!");
+            niceAlert("Error Unlinking Terminal");
         },
         complete: function() {
             hideNiceAlert();

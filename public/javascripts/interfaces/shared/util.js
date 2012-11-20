@@ -1020,7 +1020,7 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
 }
 
 function promptReloadSalesResources(reloadTerminalId) {
-    var message = "Your POS data has been changed by " + reloadTerminalId + ", click OK to pick up the new data!";
+    var message = "Your POS data has been changed by " + reloadTerminalId + ", click OK to pick up the new data";
     var okFuncCall = "doReloadSalesResources();";
         
     ModalPopups.Alert('niceAlertContainer',

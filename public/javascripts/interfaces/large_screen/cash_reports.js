@@ -165,7 +165,7 @@ var currentTotalType = null;
 
 function doCashTotalReport(total_type, commit) {
     if(cashTotalInOperation) {
-        niceAlert("Cash Total is in operation, please wait!");
+        niceAlert("Cash Total is in operation, please wait");
         return;
     }
     
@@ -211,8 +211,8 @@ function doCashTotalReport(total_type, commit) {
             commit : commit
         },
         error: function() {
-            niceAlert("An error has occured!");
-            $('#cash_total_data_table_container').html("Error!");
+            niceAlert("An error has occured");
+            $('#cash_total_data_table_container').html("Error");
         }, 
         complete: function() {
             cashTotalInOperation = false;
@@ -227,7 +227,7 @@ function doCashTotalReport(total_type, commit) {
 
 function saveCashReportCoinCount() {
     if(cashTotalInOperation) {
-        niceAlert("Cash Total is in operation, please wait!");
+        niceAlert("Cash Total is in operation, please wait");
         return;
     }
     
@@ -258,7 +258,7 @@ function cashReportsScreenKeypadClickTab() {
 
 function finishCashTotal() {
     if(cashTotalInOperation) {
-        niceAlert("Cash Total is in operation, please wait!");
+        niceAlert("Cash Total is in operation, please wait");
         return;
     }
     
@@ -292,7 +292,7 @@ function saveFloatCoinCount() {
     
     floatTotal = 0;
     showMenuScreen();
-    setStatusMessage("Float Added!");
+    setStatusMessage("Float added");
 }
 
 function cancelFloatCoinCount() {

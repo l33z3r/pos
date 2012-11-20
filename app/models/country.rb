@@ -84,6 +84,42 @@ class Country < ActiveRecord::Base
     @default_small_currency_symbol
   end
   
+  def self.get_split_bill_button_name outlet
+    @current_country_id = outlet.cluey_account.country_id 
+      
+    if @current_country_id == Country::IE_COUNTRY_ID
+      @default_split_bill_button_name = "Split Bill"
+    elsif @current_country_id == Country::GB_COUNTRY_ID
+      @default_split_bill_button_name = "Split Bill"
+    elsif @current_country_id == Country::US_COUNTRY_ID
+      @default_split_bill_button_name = "Split Check"
+    elsif @current_country_id == Country::AU_COUNTRY_ID
+      @default_split_bill_button_name = "Split Check"
+    else
+      @default_split_bill_button_name = "Split Bill"
+    end
+      
+    @default_split_bill_button_name
+  end
+  
+  def self.get_z_total_button_name outlet
+    @current_country_id = outlet.cluey_account.country_id 
+      
+    if @current_country_id == Country::IE_COUNTRY_ID
+      @default_z_total__button_name = "Z Total"
+    elsif @current_country_id == Country::GB_COUNTRY_ID
+      @default_z_total__button_name = "Z Total"
+    elsif @current_country_id == Country::US_COUNTRY_ID
+      @default_z_total__button_name = "End Of Day Z"
+    elsif @current_country_id == Country::AU_COUNTRY_ID
+      @default_z_total__button_name = "End Of Day Z"
+    else
+      @default_z_total__button_name = "Z Total"
+    end
+      
+    @default_z_total__button_name
+  end
+  
 end
 # == Schema Information
 #

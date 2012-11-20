@@ -1,7 +1,7 @@
 <% if !@error %>
   terminalID = "<%=@outlet_terminal_name%>";
   $('#terminal_id').html(terminalID);
-  niceAlert("This terminal is now linked as <%=@outlet_terminal_name%>!");
+  niceAlert("This terminal is now linked as <%=@outlet_terminal_name%>");
 <% else %>
-  niceAlert("Error, terminal not found or already assigned!");
+  niceAlert("Error, terminal not found or already assigned");
 <% end %>

@@ -399,7 +399,7 @@ function storeDelivery() {
 
 function showFinishDeliverySubScreen() {
     if(currentDelivery.items.length == 0) {
-        niceAlert("No Delivery Items Present!");
+        niceAlert("No Delivery Items Present");
         return;
     }
     
@@ -446,7 +446,7 @@ function promptFinishDelivery() {
 
 function doFinishDelivery() {
     if(receiveDeliveryInProcess) {
-        niceAlert("Processing, please wait!");
+        niceAlert("Processing, please wait");
         return;
     }
     
@@ -472,7 +472,7 @@ function doFinishDelivery() {
             if(t==="timeout") {
                 niceAlert("Processing the delivery has timed out. Please check in Reports if the delivery was recorded before retrying.");
             } else {
-                niceAlert("Error finishing delivery!");
+                niceAlert("Error finishing delivery");
             }
         },
         success: function() {
@@ -505,7 +505,7 @@ function deliverySentToServerCallback() {
     $('#delivery_till_roll').html("");
     
     resetDeliveryProductSelect();
-    niceAlert("Delivery Complete!");
+    niceAlert("Delivery Complete");
     
     receiveDeliveryInProcess = false;
     
@@ -529,12 +529,12 @@ function doCancelDelivery() {
     currentDelivery = null;
     storeDelivery();
     resetDeliveryProductSelect();
-    niceAlert("Delivery Canceled!");
+    niceAlert("Delivery Canceled");
 }
 
 function deleteLastDeliveryItem() {
     if(currentDelivery.items.length == 0) {
-        niceAlert("No Delivery Items Present!");
+        niceAlert("No Delivery Items Present");
         return;
     }
     
@@ -575,7 +575,7 @@ var changeDeliveryItemCostPricePopupAnchor;
 
 function promptChangeDeliveryItemCostPrice() {
     if(currentDelivery.items.length == 0) {
-        niceAlert("No Delivery Items Present!");
+        niceAlert("No Delivery Items Present");
         return;
     }
     
@@ -689,7 +689,7 @@ var addDeliveryItemNotePopupAnchor;
 
 function promptAddDeliveryItemNote() {
     if(currentDelivery.items.length == 0) {
-        niceAlert("No Delivery Items Present!");
+        niceAlert("No Delivery Items Present");
         return;
     }
     

@@ -32,7 +32,7 @@ class Admin::PaymentMethodsController < Admin::AdminController
     
     flash[:notice] = "Payment Methods Updated! Note that the default payment method has been set to cash as the one you chose is not eligible for default"
       else 
-        flash[:notice] = "Payment Methods Updated!"
+        flash[:notice] = "Payment Methods Updated"
       end
       
       #make sure that the payment methods that are used in shortcut buttons are still eligable
@@ -59,7 +59,7 @@ class Admin::PaymentMethodsController < Admin::AdminController
   def destroy
     #Don't allow deleting of last one
     if current_outlet.payment_methods.all.size == 1
-      flash[:notice] = "You must have at least one payment method!"
+      flash[:notice] = "You must have at least one payment method"
       redirect_to admin_global_settings_path
       return
     end
@@ -84,7 +84,7 @@ class Admin::PaymentMethodsController < Admin::AdminController
     #send a reload request to other terminals
     request_sales_resources_reload @terminal_id
     
-    flash[:notice] = "Payment Method Deleted!"
+    flash[:notice] = "Payment Method Deleted"
     redirect_to admin_global_settings_path
   end
   

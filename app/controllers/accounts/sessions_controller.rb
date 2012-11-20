@@ -31,7 +31,7 @@ class Accounts::SessionsController < Accounts::ApplicationController
         }
       end
       
-      redirect_to accounts_accounts_path, :notice => "Logged In Successfully!"
+      redirect_to accounts_accounts_path, :notice => "Login Successful"
     else
       flash.now[:error] = "Invalid email or password"
       render "new"
@@ -42,7 +42,7 @@ class Accounts::SessionsController < Accounts::ApplicationController
     session[:current_cluey_account_id] = nil
     cookies.delete :login_auth_token, :domain => ".#{APP_DOMAIN}"
     cookies.delete :accounts_login_auth_token, :domain => "#{current_cluey_account.name}.#{APP_DOMAIN}"
-    redirect_to account_log_in_path, :notice => "Logged out!"
+    redirect_to account_log_in_path, :notice => "Logged out"
   end
   
   private 

@@ -7,7 +7,7 @@ function orderButtonPressed() {
     var order = getCurrentOrder();
 
     if (currentOrderEmpty()) {
-        setStatusMessage("No order present!", true, true);
+        setStatusMessage("No order present", true, true);
         return;
     }
 
@@ -100,10 +100,10 @@ function doSyncTableOrder() {
     }
 
     if (selectedTable == previousOrderTableNum) {
-        setStatusMessage("Not valid for reopened orders!");
+        setStatusMessage("Not valid for reopened orders");
         return;
     } else if (selectedTable == tempSplitBillTableNum) {
-        setStatusMessage("Not valid for split orders!");
+        setStatusMessage("Not valid for split orders");
         return;
     } else if (selectedTable == 0) {
         if (!isTableZeroOrder) {
@@ -247,7 +247,7 @@ function quickSale() {
 
 function doQuickSale() {
     if (currentOrderEmpty()) {
-        setStatusMessage("No order present to total!", true, true);
+        setStatusMessage("No order present to total", true, true);
         return;
     }
 
@@ -283,7 +283,7 @@ function printBillPressed() {
     }
     
     if(!orderSynced) {
-        niceAlert("You cannot print a bill until you order all items on the receipt. You can also delete unordered items!");
+        niceAlert("You cannot print a bill until you order all items on the receipt. You can also delete unordered items");
         return;
     }
     
@@ -292,7 +292,7 @@ function printBillPressed() {
 
 function printBill() {
     if (currentOrderEmpty()) {
-        setStatusMessage("No order present!", true, true);
+        setStatusMessage("No order present", true, true);
         return;
     }
 
@@ -450,13 +450,13 @@ function deleteCurrentOrder() {
     }
     
     if (selectedTable == previousOrderTableNum) {
-        setStatusMessage("Not valid for reopened orders!");
+        setStatusMessage("Not valid for reopened orders");
         return;
     } else if (selectedTable == tempSplitBillTableNum) {
-        setStatusMessage("Not valid for split orders!");
+        setStatusMessage("Not valid for split orders");
         return;
     } else if (selectedTable == 0) {
-        setStatusMessage("Only valid for table orders!");
+        setStatusMessage("Only valid for table orders");
         return;
     }
 
@@ -483,7 +483,7 @@ function deleteCurrentOrder() {
 
 function chargeCardShortcut() {
     if (currentOrderEmpty()) {
-        setStatusMessage("No order present!", true, true);
+        setStatusMessage("No order present", true, true);
         return;
     }
 

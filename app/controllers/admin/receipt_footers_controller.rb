@@ -16,7 +16,7 @@ class Admin::ReceiptFootersController < Admin::AdminController
     @receipt_footers = ReceiptFooter.update(params[:receipt_footers].keys, params[:receipt_footers].values).reject { |p| p.errors.empty? }
     
     if @receipt_footers.empty?
-      flash[:notice] = "Receipt Footers Updated!"
+      flash[:notice] = "Receipt Footers Updated"
       redirect_to admin_global_settings_path
     else
       render admin_global_settings_path
@@ -27,7 +27,7 @@ class Admin::ReceiptFootersController < Admin::AdminController
     @receipt_footer = current_outlet.receipt_footers.find(params[:id])
     @receipt_footer.destroy
 
-    flash[:notice] = "Receipt Footer Deleted!"
+    flash[:notice] = "Receipt Footer Deleted"
     redirect_to admin_global_settings_path
   end
 end

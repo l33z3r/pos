@@ -229,7 +229,7 @@ function updateSelectedGridItem() {
     var minusCharge = $('#minus_charge_input').val();
     
     if(isNaN(addCharge) || isNaN(minusCharge)) {
-        setStatusMessage("Please enter numbers for both add charge and minus charge!");
+        setStatusMessage("Please enter numbers for both add charge and minus charge");
         return;
     }
     

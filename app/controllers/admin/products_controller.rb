@@ -186,7 +186,7 @@ class Admin::ProductsController < Admin::AdminController
   def edit
     @hide_admin_header = true
     @product = current_outlet.products.find(params[:id])
-    (12 - @product.ingredients.length).times { @product.ingredients.build }
+    (12 - @product.ingredients.count).times { @product.ingredients.build }
   end
 
   def create

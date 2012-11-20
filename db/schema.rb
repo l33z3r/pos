@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121116113636) do
+ActiveRecord::Schema.define(:version => 20121120104128) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id",         :limit => 8
@@ -527,7 +527,7 @@ ActiveRecord::Schema.define(:version => 20121116113636) do
     t.string   "label"
     t.string   "network_path"
     t.integer  "paper_width_mm",              :default => 80
-    t.integer  "font_size",                   :default => 11
+    t.integer  "font_size",                   :default => 13
     t.datetime "created_at"
     t.datetime "updated_at"
   end

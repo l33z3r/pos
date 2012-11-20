@@ -683,7 +683,9 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
             
             oia_is_add = orderItem.oia_items[j].is_add;
             
-            orderHTML += clearHTML + "<div class='oia " + (orderItem.oia_items[j].hide_on_receipt ? "hide_on_receipt" : "") + "'>";
+            var hideOnReciptCSSClass = (orderItem.oia_items[j].hide_on_receipt && orderItem.oia_items[j].abs_charge == 0) ? "hide_on_receipt" : "";
+
+            orderHTML += clearHTML + "<div class='oia " + hideOnReciptCSSClass + "'>";
             
             orderHTML += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>";
             
@@ -1048,7 +1050,7 @@ function transferOrderError() {
     inTransferOrderMode = false;
     transferOrderInProgress = false;
     showMenuScreen();
-    niceAlert("Error transferring order. Server might be down!");
+    niceAlert("Error transferring order. Server might be down");
     return;
 }
 
@@ -1182,7 +1184,7 @@ function doTotal(applyDefaultServiceCharge) {
     }
     
     if(currentOrderEmpty()) {
-        setStatusMessage("No order present to sub-total!", true, true);
+        setStatusMessage("No order present to sub-total", true, true);
         return;
     }
     
@@ -1270,7 +1272,7 @@ function doTotalFinal() {
     hideLoadingDiv();
     
     if(currentOrderEmpty()) {
-        setStatusMessage("No order present to total!", true, true);
+        setStatusMessage("No order present to total", true, true);
         return;
     }
     
@@ -1689,7 +1691,7 @@ function showDiscountPopup(receiptItem) {
     currentSelectedReceiptItemEl = receiptItem;
     
     if(currentOrderEmpty()) {
-        setStatusMessage("No order present to discount!");
+        setStatusMessage("No order present to discount");
         return;
     }
     
@@ -2042,7 +2044,7 @@ function doSaveNote() {
     var charge = $('#charge_input').val();
     
     if(isNaN(charge)) {
-        setStatusMessage("Please enter a number for charge!");
+        setStatusMessage("Please enter a number for charge");
         return false;
     }
     
@@ -2057,14 +2059,14 @@ function doSaveNote() {
     }
     
     if(noteInput.length == 0) {
-        setStatusMessage("Please enter some text for this note!");
+        setStatusMessage("Please enter some text for this note");
         return false;
     }
     
     currentSelectedReceiptItemEl = getSelectedOrLastReceiptItem();
     
     if(!currentSelectedReceiptItemEl) {
-        setStatusMessage("There are no receipt items!");
+        setStatusMessage("There are no receipt items");
         return false;
     }
     
@@ -2428,7 +2430,7 @@ function doSplitOrderItem(orderLine, reverse) {
     } else {
         //we are removing an item, so make sure that it is not the last one on the original order
         if(!reverse && orderFrom.items.length == 1) {
-            niceAlert("You cannot remove the last item from the original order!");
+            niceAlert("You cannot remove the last item from the original order");
             return;
         }
         
@@ -2664,7 +2666,7 @@ function cashOutFinish() {
     currentCashOutDescription = $('#cash_out_description').val();
     
     if(currentCashOutDescription.length == 0) {
-        niceAlert("Please enter a description!");
+        niceAlert("Please enter a description");
         return;
     }
     
@@ -2673,7 +2675,7 @@ function cashOutFinish() {
         type: 'POST',
         url: '/cash_out',
         complete: function() {
-            setStatusMessage("Expense has been entered!");
+            setStatusMessage("Expense has been entered");
         },
         data: {
             description : currentCashOutDescription,

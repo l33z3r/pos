@@ -5461,3 +5461,22 @@ div#delivery_note_popup_markup_container div#delivery_note_input_container texta
 }
 
 /* End Delivery Note Popup Markup */
+
+/* Spotify Slide Out */
+
+div#spotify_content_contianer {
+    height: 1px;
+}
+
+.slide-out-div {
+    z-index: 99;
+    padding: 1px;
+    width: 1000px;
+    height: 710px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    border: 3px solid #4297D7;
+    background-color: #FFF;
+}
+
+/* End Spotify Slide Out */

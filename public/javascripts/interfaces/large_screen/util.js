@@ -453,7 +453,7 @@ var toggleKeyboardEnable = true;
 
 function toggleUtilKeyboard() {
     if(!toggleKeyboardEnable) {
-        setStatusMessage("Toggling Keyboard disabled for this screen!");
+        setStatusMessage("Toggling Keyboard disabled for this screen");
         return;
     }
     
@@ -590,7 +590,7 @@ function getSelectedOrLastReceiptItem() {
         currentSelectedReceiptItemEl = $('#till_roll > div.order_line:last');
     
         if(currentSelectedReceiptItemEl.length == 0) {
-            setStatusMessage("There are no receipt items!");
+            setStatusMessage("There are no receipt items");
             return null;
         }
     }
@@ -602,7 +602,7 @@ function getLastReceiptItem() {
     lastReceiptItemEl = $('#till_roll > div.order_line:last');
     
     if(lastReceiptItemEl.length == 0) {
-        setStatusMessage("There are no receipt items!");
+        setStatusMessage("There are no receipt items");
         return null;
     }
     
@@ -831,7 +831,7 @@ function checkForFirefox() {
     
     if(!isiPad) {
         if (typeof(ua.mozilla) == 'undefined') {
-            niceAlert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software!");
+            niceAlert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software");
             return false;
         }
     }

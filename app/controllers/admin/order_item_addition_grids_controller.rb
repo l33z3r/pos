@@ -30,7 +30,7 @@ class Admin::OrderItemAdditionGridsController < Admin::AdminController
   def destroy
     #Don't allow deleting of last one
     if current_outlet.order_item_addition_grids.all.size == 1
-      flash[:notice] = "You must have at least one modifier grid!"
+      flash[:notice] = "You must have at least one modifier grid"
       redirect_to admin_order_item_addition_grids_url
       return
     end

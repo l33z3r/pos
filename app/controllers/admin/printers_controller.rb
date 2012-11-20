@@ -22,7 +22,7 @@ class Admin::PrintersController < Admin::AdminController
       #send a reload request to other terminals
       request_sales_resources_reload @terminal_id
     
-      flash[:notice] = "Printers Updated!"
+      flash[:notice] = "Printers Updated"
       redirect_to admin_global_settings_path
     else
       render admin_global_settings_path
@@ -36,7 +36,7 @@ class Admin::PrintersController < Admin::AdminController
     #send a reload request to other terminals
     request_sales_resources_reload @terminal_id
     
-    flash[:notice] = "Printer Deleted!"
+    flash[:notice] = "Printer Deleted"
     redirect_to admin_global_settings_path
   end
   

@@ -34,7 +34,7 @@ class Admin::GlobalSettingsController < Admin::AdminController
         redirect_to :action => "index"
       end
     else
-      flash[:notice] = "No settings were changed!"
+      flash[:notice] = "No settings were changed"
       redirect_to :action => "index"
     end
   end

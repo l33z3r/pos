@@ -219,6 +219,9 @@ class GlobalSetting < ActiveRecord::Base
     when AUTO_PRINT_RECEIPT
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => AUTO_PRINT_RECEIPT.to_s, :value => "false", :label_text => LABEL_MAP[AUTO_PRINT_RECEIPT])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when RECEIPT_MESSAGE
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => RECEIPT_MESSAGE.to_s, :value => "Thank you for your custom", :label_text => LABEL_MAP[RECEIPT_MESSAGE])
+      @gs.parsed_value = @gs.value
     when SMALL_CURRENCY_SYMBOL
       @default_small_currency_symbol = Country.get_default_national_small_currency_symbol current_outlet
       
@@ -284,7 +287,7 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => TAX_NUMBER.to_s, :value => "", :label_text => LABEL_MAP[TAX_NUMBER])
       @gs.parsed_value = @gs.value
     when PRINT_VAT_RECEIPT
-      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => PRINT_VAT_RECEIPT.to_s, :value => "true", :label_text => LABEL_MAP[PRINT_VAT_RECEIPT])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => PRINT_VAT_RECEIPT.to_s, :value => "false", :label_text => LABEL_MAP[PRINT_VAT_RECEIPT])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when MENU_SCREEN_TYPE
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{MENU_SCREEN_TYPE.to_s}_#{args[:fingerprint]}", :value => 1, :label_text => LABEL_MAP[MENU_SCREEN_TYPE])
@@ -365,10 +368,10 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{POLLING_INTERVAL_SECONDS.to_s}", :value => 20, :label_text => LABEL_MAP[POLLING_INTERVAL_SECONDS])
       @gs.parsed_value = @gs.value.to_i
     when PROCESS_TABLE_0_ORDERS
-      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => PROCESS_TABLE_0_ORDERS.to_s, :value => "true", :label_text => LABEL_MAP[PROCESS_TABLE_0_ORDERS])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => PROCESS_TABLE_0_ORDERS.to_s, :value => "false", :label_text => LABEL_MAP[PROCESS_TABLE_0_ORDERS])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when LOYALTY_CARD_PREFIX
-      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => LOYALTY_CARD_PREFIX.to_s, :value => "%ICR", :label_text => LABEL_MAP[LOYALTY_CARD_PREFIX])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => LOYALTY_CARD_PREFIX.to_s, :value => "%CLU", :label_text => LABEL_MAP[LOYALTY_CARD_PREFIX])
       @gs.parsed_value = @gs.value
     when ENABLE_LOYALTY_REDEMPTION
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => ENABLE_LOYALTY_REDEMPTION.to_s, :value => "true", :label_text => LABEL_MAP[ENABLE_LOYALTY_REDEMPTION])
@@ -386,7 +389,7 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => HALF_MEASURE_LABEL.to_s, :value => "Half", :label_text => LABEL_MAP[HALF_MEASURE_LABEL])
       @gs.parsed_value = @gs.value
     when SHOW_CHARGE_CARD_BUTTON
-      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => SHOW_CHARGE_CARD_BUTTON.to_s, :value => "true", :label_text => LABEL_MAP[SHOW_CHARGE_CARD_BUTTON])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => SHOW_CHARGE_CARD_BUTTON.to_s, :value => "false", :label_text => LABEL_MAP[SHOW_CHARGE_CARD_BUTTON])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
     when ALLOW_ZALION_SPLIT_PAYMENTS
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => ALLOW_ZALION_SPLIT_PAYMENTS.to_s, :value => "false", :label_text => LABEL_MAP[ALLOW_ZALION_SPLIT_PAYMENTS])
@@ -414,7 +417,7 @@ class GlobalSetting < ActiveRecord::Base
       @gs.parsed_value = (@gs.value == "yes" ? true : false)    
     when TIMEKEEPING_TERMINAL
       
-      if GlobalSetting.all_terminals(current_outlet).length > 0
+      if GlobalSetting.all_terminals(current_outlet).count > 0
 	@timekeeping_terminal = GlobalSetting.all_terminals(current_outlet).first
       else 
 	@timekeeping_terminal = ""

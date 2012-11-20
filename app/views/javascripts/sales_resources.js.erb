@@ -172,6 +172,11 @@ var employees = new Array();
   }
 
   employees.push(employee_info);
+  
+  //make sure all users are clocked in
+  if(typeof(initClockedInUsers) != "undefined") {
+    initClockedInUsers();
+  }
 
 <% end -%>
 

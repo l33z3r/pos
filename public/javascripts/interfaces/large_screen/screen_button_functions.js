@@ -14,7 +14,7 @@ function checkAllOrdersClosedForCashTotal() {
     var allOrdersClosed = (!currentOrder || currentOrder.items.length == 0) && getActiveTableIDS().length == 0;
     
     if(!allOrdersClosed) {
-        setStatusMessage("All Orders Must Be Closed!", true, true);
+        setStatusMessage("All Orders Must Be Closed", true, true);
         return false;
     }
     
@@ -23,7 +23,7 @@ function checkAllOrdersClosedForCashTotal() {
 
 function printCurrentReceipt() {
     if(currentOrderEmpty()) {
-        setStatusMessage("No order present to print!");
+        setStatusMessage("No order present to print");
         return;
     }
     
@@ -57,7 +57,7 @@ function doPrintLastReceipt(withVat) {
 
 function promptForServiceCharge() {
     if(currentOrderEmpty()) {
-        setStatusMessage("No order present!", true, true);
+        setStatusMessage("No order present", true, true);
         return;
     }
     
@@ -185,7 +185,7 @@ function setDefaultServiceChargeButtonSelected(popupEl, percentage) {
 
 function promptForCashback() {
     if(currentOrderEmpty()) {
-        setStatusMessage("No order present!", true, true);
+        setStatusMessage("No order present", true, true);
         return;
     }
     
@@ -368,7 +368,7 @@ function openCashDrawer() {
     try {
         cluey_ff_ext.openCashDrawer(cashDrawerComPort, cashDrawerCode);
     } catch(ex) {
-        setStatusMessage("Error opening cash drawer!");
+        setStatusMessage("Error opening cash drawer");
     }
 }
 
@@ -382,7 +382,7 @@ function promptAddNameToTable() {
     }    
     
     if(selectedTable == 0 || selectedTable == -1) {
-        setStatusMessage("Only valid for table orders!");
+        setStatusMessage("Only valid for table orders");
         return;
     }
     
@@ -482,7 +482,7 @@ function startSplitBillMode() {
     }
     
     if(selectedTable == 0 || selectedTable == previousOrderTableNum) {
-        setStatusMessage("Only valid for table orders!");
+        setStatusMessage("Only valid for table orders");
         return;
     }
     
@@ -653,7 +653,7 @@ function promptVoidAllOrderItems() {
     }
     
     if(currentOrderEmpty()) {
-        setStatusMessage("No order present!", true, true);
+        setStatusMessage("No order present", true, true);
         return;
     }
     
@@ -695,7 +695,7 @@ function promptAddCovers() {
     }    
     
     if(selectedTable == -1) {
-        setStatusMessage("Only valid for table orders!");
+        setStatusMessage("Only valid for table orders");
         return;
     }
     

@@ -19,7 +19,7 @@ function doMobileLogin() {
     
     if(current_user_id != null) {
         //already logged in
-        displayMobileError("You are already logged in. Please log out!");
+        displayMobileError("You are already logged in. Please log out");
         return;
     }
 
@@ -69,7 +69,7 @@ function mobileLoginSuccess(id, nickname, is_admin, passcode) {
 
 function mobileLoginFailure() {
     //set an error message in the flash area
-    setMobileStatusMessage("Wrong Pin Code!");
+    setMobileStatusMessage("Wrong Pin Code");
 
     clearMobileLoginCode();
 }
@@ -91,7 +91,7 @@ function doMobileLogout() {
 
     storeActiveUserID(null);
 
-    setMobileStatusMessage("Logged Out!");
+    setMobileStatusMessage("Logged Out");
 
     showMobileLoginScreen();
     

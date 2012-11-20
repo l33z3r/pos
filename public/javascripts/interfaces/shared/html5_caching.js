@@ -72,7 +72,7 @@ $(appCache).bind(
         console.log("All files downloaded");
         
         //this is the first dl of the cache so we must do some things
-        setStatusMessage("Sales interface has been saved for offline use!");
+        setStatusMessage("Sales interface has been saved for offline use");
         cacheDownloading = false;
         cacheDownloadReset();
     }

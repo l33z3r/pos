@@ -286,7 +286,7 @@ class HomeController < ApplicationController
       
       @all_orders.each do |order|
         
-        @all_order_items_sold_quantity += order.order_items.length
+        @all_order_items_sold_quantity += order.order_items.count
         @all_order_items_sold_amount += order.total
           
         @payment_types = order.split_payments

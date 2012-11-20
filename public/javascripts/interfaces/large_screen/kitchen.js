@@ -339,7 +339,7 @@ function orderComplete(tableID) {
 
 function sendCourseCheck(orderLine) {
     if(operationInProgress) {
-        niceAlert("Please wait, operation in progress!");
+        niceAlert("Please wait, operation in progress");
         return;
     }
     
@@ -415,7 +415,7 @@ function sendCourseCheck(orderLine) {
 
 function hideTableOrder(tableID) {
     if(operationInProgress) {
-        niceAlert("Please wait, operation in progress!");
+        niceAlert("Please wait, operation in progress");
         return;
     }
     

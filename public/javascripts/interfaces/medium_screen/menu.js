@@ -507,14 +507,14 @@ function doSaveNote() {
         }
 
         if (noteInput.length == 0) {
-            setStatusMessage("Please enter some text for this note!");
+            setStatusMessage("Please enter some text for this note");
             return false;
         }
 
         currentSelectedReceiptItemEl = getLastReceiptItem();
 
         if (!currentSelectedReceiptItemEl) {
-            setStatusMessage("There are no receipt items!");
+            setStatusMessage("There are no receipt items");
             return false;
         }
 
@@ -925,7 +925,9 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
         for (var j = 0; j < orderItem.oia_items.length; j++) {
             oia_is_add = orderItem.oia_items[j].is_add;
 
-            orderHTML += clearHTML + "<div class='oia " + (orderItem.oia_items[j].hide_on_receipt ? "hide_on_receipt" : "") + "'>";
+            var hideOnReciptCSSClass = (orderItem.oia_items[j].hide_on_receipt && orderItem.oia_items[j].abs_charge == 0) ? "hide_on_receipt" : "";
+
+            orderHTML += clearHTML + "<div class='oia " + hideOnReciptCSSClass + "'>";
 
             orderHTML += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>";
 
@@ -1067,6 +1069,8 @@ function postDoSyncTableOrder() {
 
     //    showTablesSubscreen();
     tableScreenBack();
+    
+    manualCallHomePoll();
 }
 
 function showModifyOrderItemScreen() {
@@ -1170,7 +1174,7 @@ function showCoversSubscreen() {
             $('#table_screen').hide();
             $('#covers_screen').show();
         } else {
-            $('#table_number_show').html("No Such Table!");
+            $('#table_number_show').html("No Such Table");
             $('#table_num').val('')
             $('#table_screen').show();
             $('#covers_screen').hide();
@@ -1327,7 +1331,7 @@ function doSubmitTableNumber() {
     //    clearTableNumberEntered();
 
     if (!table_info) {
-        $('#table_number_show').html("No Such Table!");
+        $('#table_number_show').html("No Such Table");
         $('#table_num').val('')
         return;
     }
@@ -1366,7 +1370,7 @@ function transferOrderError() {
     inTransferOrderMode = false;
     transferOrderInProgress = false;
     showMenuItemsSubscreen();
-    setStatusMessage("Error transfering order. Server might be down!");
+    setStatusMessage("Error transfering order. Server might be down");
     return;
 }
 
@@ -1383,6 +1387,8 @@ function postDoSelectTable() {
     var theLabel = "Table " + current_table_label;
     $('.button[id=sales_button_' + tablesButtonID + '] .button_name').html(theLabel);
     $('#receipt_screen #header #table_name').html(theLabel);
+    
+    manualCallHomePoll();
 }
 
 function orderItemAdditionTabSelected(oiagId) {
@@ -1412,12 +1418,12 @@ function clearSelectedOIATabs() {
 function writeTotalToReceipt(order, orderTotal) {
     if (!order) return;
 
-    console.log("Write total to receipt NYI!");
+    console.log("Write total to receipt NYI");
 }
 
 function tableScreenBack() {
     if (selectedTable == 0) {
-        $('#table_number_show').html("Enter a Table!");
+        $('#table_number_show').html("Enter a Table");
         return;
     }
     showMenuItemsSubscreen();

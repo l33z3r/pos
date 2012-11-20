@@ -59,7 +59,7 @@ function getSelectedOrLastReceiptItem() {
         currentSelectedReceiptItemEl = $('#menu_screen_till_roll > div.order_line:last');
     
         if(currentSelectedReceiptItemEl.length == 0) {
-            setStatusMessage("There are no receipt items!");
+            setStatusMessage("There are no receipt items");
             return null;
         }
     }
@@ -71,7 +71,7 @@ function getLastReceiptItem() {
     lastReceiptItemEl = $('#menu_screen_till_roll > div.order_line:last');
     
     if(lastReceiptItemEl.length == 0) {
-        setStatusMessage("There are no receipt items!");
+        setStatusMessage("There are no receipt items");
         return null;
     }
     
@@ -130,7 +130,7 @@ function showTablesScreen() {
 }
 
 function showMoreOptionsScreen() {
-    alert("functions button pressed!");
+    alert("functions button pressed");
 }
 
 function goToMainMenu() {
