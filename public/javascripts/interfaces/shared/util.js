@@ -667,8 +667,12 @@ function inDevMode() {
     return railsEnvironment == 'development';
 }
 
-function inProdMode() {
-    return railsEnvironment != 'development';
+function inHerokuStagingMode() {
+    return railsEnvironment == 'heroku_staging';
+}
+
+function inHerokuProductionMode() {
+    return railsEnvironment == 'heroku_production';
 }
 
 function inKioskMode() {

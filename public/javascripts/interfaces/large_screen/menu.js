@@ -1264,11 +1264,11 @@ function doTotalFinal() {
     var now = clueyTimestamp();
     
     //if we are trying to cash out an order that we just hit "order" for, then wait for the polling amount so others can download the order
-    if(selectedTable != 0 && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
-        niceAlert("Waiting on previous order to be synced across system, please try again in " + (pollingAmount/1000) + " seconds");
-        return;
-    }
-    
+    //    if(selectedTable != 0 && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
+    //        niceAlert("Waiting on previous order to be synced across system, please try again in " + (pollingAmount/1000) + " seconds");
+    //        return;
+    //    }
+    //    
     hideLoadingDiv();
     
     if(currentOrderEmpty()) {
@@ -2164,10 +2164,14 @@ function renderActiveTables() {
 var afterSplitBillSyncCallback;
 
 function postDoSyncTableOrder() {
+    //we dont want to do anything more if this is a table 0 order.
+    //then we have to reset the isTableZeroOrder variable
     if(isTableZeroOrder) {
         //reset this var
         isTableZeroOrder = false;
         return;
+    } else {
+        isTableZeroOrder = false;
     }
     
     clearLoginReceipt();

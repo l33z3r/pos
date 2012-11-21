@@ -171,17 +171,19 @@ function doGlobalInit() {
     
     initTrainingModeFromCookie(); 
     
-    $('.slide-out-div').tabSlideOut({
-        tabHandle: '.handle',                              //class of the element that will be your tab
-        pathToTabImage: '/images/cluey_icon.png',          //path to the image for the tab *required*
-        imageHeight: '122px',                               //height of tab image *required*
-        imageWidth: '40px',                               //width of tab image *required*    
-        tabLocation: 'right',                               //side of screen where tab lives, top, right, bottom, or left
-        speed: 300,                                        //speed of animation
-        action: 'click',                                   //options: 'click' or 'hover', action to trigger animation
-        topPos: '5px',                                   //position from the top
-        fixedPosition: false                               //options: true makes it stick(fixed position) on scroll
-    });
+    if(!inHerokuProductionMode()) {
+        $('.slide-out-div').tabSlideOut({
+            tabHandle: '.handle',                              //class of the element that will be your tab
+            pathToTabImage: '/images/cluey_icon.png',          //path to the image for the tab *required*
+            imageHeight: '122px',                               //height of tab image *required*
+            imageWidth: '40px',                               //width of tab image *required*    
+            tabLocation: 'right',                               //side of screen where tab lives, top, right, bottom, or left
+            speed: 300,                                        //speed of animation
+            action: 'click',                                   //options: 'click' or 'hover', action to trigger animation
+            topPos: '5px',                                   //position from the top
+            fixedPosition: false                               //options: true makes it stick(fixed position) on scroll
+        });
+    }
 }
 
 //this gets called from the polling when a terminal is not yet set

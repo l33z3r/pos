@@ -9,7 +9,7 @@ class ApplicationController < AppBaseController
   
   helper_method :e, :is_cluey_user?, :cluey_pw_used?, :current_employee, :print_money, :print_credit_balance
   helper_method :mobile_device?, :all_terminals, :all_printers, :all_servers, :current_interface
-  helper_method :development_mode?, :production_mode?, :server_ip, :now_local_millis
+  helper_method :development_mode?, :heroku_staging_mode?, :heroku_production_mode?, :server_ip, :now_local_millis
   
   before_filter :load_global_vars, :except => [:ping, :cache_manifest, :build_assets, :force_error]
   
@@ -263,8 +263,12 @@ class ApplicationController < AppBaseController
     Rails.env == "development"
   end
   
-  def production_mode?
-    Rails.env == "production" or Rails.env == "production_heroku"
+  def heroku_staging_mode?
+    Rails.env == "heroku_staging"
+  end
+  
+  def heroku_production_mode?
+    Rails.env == "heroku_production"
   end
   
   rescue_from StandardError do |exception|
