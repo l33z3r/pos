@@ -45,7 +45,7 @@ function doGlobalInit() {
         showLoadingDiv()
     });
 
-    if (true) {//inKioskMode()) {
+    if (inKioskMode()) {
         //to run chrome in kiosk mode, use this command in linux (google-chrome --kiosk http://localhost:3000)
         registerDisallowRightClick();
     } else {
