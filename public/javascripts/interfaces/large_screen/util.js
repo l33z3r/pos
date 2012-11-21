@@ -1016,23 +1016,14 @@ function actionRequiredClicked() {
     actionFunction.call();    
 }
 
+var inFullScreen = false;
+
 function toggleFullScreen() {
-    if ((document.fullScreenElement && document.fullScreenElement !== null) ||    // alternative standard method
-        (!document.mozFullScreenElement && !document.webkitFullScreenElement)) {  // current working methods
-        if (document.documentElement.requestFullScreen) {
-            document.documentElement.requestFullScreen();
-        } else if (document.documentElement.mozRequestFullScreen) {
-            document.documentElement.mozRequestFullScreen();
-        } else if (document.documentElement.webkitRequestFullScreen) {
-            document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-        }
-    } else {
-        if (document.cancelFullScreen) {
-            document.cancelFullScreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.webkitCancelFullScreen) {
-            document.webkitCancelFullScreen();
-        }
+    inFullScreen = !inFullScreen;
+    
+    try {
+        cluey_ff_ext.toggleFullScreen(inFullScreen);
+    } catch(ex) {
+        setStatusMessage("Error entering fullscreen mode");
     }
 }

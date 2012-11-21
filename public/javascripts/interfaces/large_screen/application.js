@@ -56,7 +56,7 @@ function doGlobalInit() {
             $('#printFrame').css("overflow", "scroll");
         }
 
-        $('body').css("overflow", "scroll");
+        $('html').css("overflow-y", "scroll");
     }
     
     initUIElements();

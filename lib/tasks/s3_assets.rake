@@ -1,5 +1,4 @@
 require 's3'
-require 's3_cache_control'
 require 'digest/md5'
 require 'mime/types'
 
@@ -120,6 +119,9 @@ namespace :assets do
           ## mime-type. `obj.save` will upload and store the file to S3.
           obj = bucket.objects.build(remote_file)
           obj.content = open(file)
+          
+          #set no cache header
+          obj.cache_control = "no-cache"
           
           if file.ends_with? ".js"
             obj.content_type = "text/javascript"
