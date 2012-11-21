@@ -141,12 +141,15 @@ function callHomePoll() {
         url: callHomeURL,
         type : "POST",
         dataType: 'script',
-        success: callHomePollComplete,
-        error: function() {
-            setTimeout(callHomePoll, 20000);
-        },
-        complete: function() {
+        success: function() {
+            //this cant go in a complete handler as it gets called too late
             pollInProgress = false;
+            callHomePollComplete();
+        },
+        error: function() {
+            //this cant go in a complete handler as it gets called too late
+            pollInProgress = false;
+            setTimeout(callHomePoll, 20000);
         },
         data : {
             lastInterfaceReloadTime : lastInterfaceReloadTime,

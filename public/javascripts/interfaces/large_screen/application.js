@@ -45,7 +45,7 @@ function doGlobalInit() {
         showLoadingDiv()
     });
 
-    if (inKioskMode()) {
+    if (true) {//inKioskMode()) {
         //to run chrome in kiosk mode, use this command in linux (google-chrome --kiosk http://localhost:3000)
         registerDisallowRightClick();
     } else {
@@ -56,9 +56,9 @@ function doGlobalInit() {
             $('#printFrame').css("overflow", "scroll");
         }
 
-        //$('body').css("overflow", "scroll");
+        $('body').css("overflow", "scroll");
     }
-
+    
     initUIElements();
 
     initAdminTables();

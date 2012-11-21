@@ -8,6 +8,12 @@ Main stylesheet.
 
 /* Global Styles */
 
+/* need to explicitly set no scroll as the pull out tab plugin sets the y to scroll */
+html {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
 body {
     margin: 0px;
     padding: 0px;
