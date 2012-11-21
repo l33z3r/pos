@@ -1,4 +1,5 @@
 require 's3'
+require 's3_cache_control'
 require 'digest/md5'
 require 'mime/types'
 
