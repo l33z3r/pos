@@ -200,7 +200,7 @@ totalOrder=null;currentTotalFinal=0;if(paymentIntegrationId==zalionPaymentIntegr
 customFooterId=null;}
 function orderSentToServerCallback(orderData,errorOccured){if(!errorOccured){if(paymentIntegrationId==zalionPaymentIntegrationId&&selectedRoomNumber!=null&&selectedFolioNumber!=null){orderData['charged_room']={selected_room_number:selectedRoomNumber,selected_folio_number:selectedFolioNumber,selected_folio_name:selectedFolioName,payment_integration_type_id:paymentIntegrationId}
 doChargeRoom(orderData);}
-if(isTableZeroOrder&&isProcessingTable0Orders){doSyncTableOrder();hideLoadingDiv();}}else{hideLoadingDiv();setStatusMessage("Order saved offline. Will sync with server when connection re-established");}
+if(isTableZeroOrder){if(isProcessingTable0Orders){doSyncTableOrder();hideLoadingDiv();}else{isTableZeroOrder=false;}}}else{hideLoadingDiv();setStatusMessage("Order saved offline. Will sync with server when connection re-established");}
 cashSaleInProcess=false;}
 function loadAfterSaleScreen(){hideAllScreens();if(defaultHomeScreen==LOGIN_SCREEN){doLogout();}else if(defaultHomeScreen==MENU_SCREEN){showMenuScreen();}else if(defaultHomeScreen==TABLES_SCREEN){showTablesScreen();}else{doLogout();}}
 var send_order_xhr=null;var sendOrderToServerTimeoutSeconds=8;function sendOrderToServer(orderData){var timeoutMillis=sendOrderToServerTimeoutSeconds*1000;send_order_xhr=$.ajax({type:'POST',url:'/order',timeout:timeoutMillis,error:function(){storeOrderForLaterSend(orderData);orderSentToServerCallback(orderData,true);},success:function(){orderSentToServerCallback(orderData,false);},data:{order:orderData}});}
@@ -260,7 +260,7 @@ function renderMenuItemButtonDimensions(){var button_border=1;var button_margin=
 +(button_margin*2*(width_factor-1))
 +(button_border*2*(width_factor-1)));});}
 function renderActiveTables(){var activeTableIDS=getActiveTableIDS();$("#table_select").children('li').children('ul').children('li').each(function(id,element){if(typeof($(element).attr('rel'))!='undefined'){nextTableID=$(element).attr('rel').toString();if($.inArray(nextTableID,activeTableIDS)!=-1){$(element).addClass("active");$('#table_label_'+nextTableID).addClass("active");getTableOrderFromStorage(clueyUserId,nextTableID);var tableOrder=tableOrders[nextTableID];if(tableOrder.client_name.length>0){$('#table_label_'+nextTableID).html(tables[nextTableID].label+" ("+tableOrder.client_name+")");}}else{$(element).removeClass("active");$('#table_label_'+nextTableID).removeClass("active");}}});}
-var afterSplitBillSyncCallback;function postDoSyncTableOrder(){if(isTableZeroOrder){isTableZeroOrder=false;return;}else{isTableZeroOrder=false;}
+var afterSplitBillSyncCallback;function postDoSyncTableOrder(){if(isTableZeroOrder){isTableZeroOrder=false;return;}
 clearLoginReceipt();doSelectTable(selectedTable);if(inTransferOrderMode){hideNiceAlert();$('#tables_screen_status_message').hide();inTransferOrderMode=false;tableScreenSelectTable(selectedTable);loadAfterSaleScreen();setStatusMessage("Order Transferred");return;}else if(inTransferOrderItemMode){finishTransferOrderItem();return;}else if(inSplitBillMode){inSplitBillMode=false;showMenuScreen();$('#split_bill_select_item').show();tableSelectMenu.setValue(tempSplitBillTableNum);doSelectTable(tempSplitBillTableNum);if(afterSplitBillSyncCallback){afterSplitBillSyncCallback();}
 return;}
 if(!doAutoLoginAfterSync){loadAfterSaleScreen();}
