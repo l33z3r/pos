@@ -302,7 +302,8 @@ function deleteRawCookie(c_name){var exdays=-1*365*100;setRawCookie(c_name,null,
 String.prototype.startsWith=function(str){return(this.indexOf(str)===0);};String.prototype.endsWith=function(suffix){return this.indexOf(suffix,this.length-suffix.length)!==-1;};String.prototype.contains=function(str){return(this.indexOf(str)!=-1);};String.prototype.splice=function(idx,rem,s){return(this.slice(0,idx)+s+this.slice(idx+Math.abs(rem)));};function utilFormatDate(date){return formatDate(date,defaultJSDateFormat);}
 function utilFormatTime(date){return formatDate(date,defaultJSTimeFormat);}
 function inDevMode(){return railsEnvironment=='development';}
-function inProdMode(){return railsEnvironment!='development';}
+function inHerokuStagingMode(){return railsEnvironment=='heroku_staging';}
+function inHerokuProductionMode(){return railsEnvironment=='heroku_production';}
 function inKioskMode(){return kioskMode&&!overrideKiosk&&!inMobileContext();}
 function pauseScript(ms){ms+=new Date().getTime();while(new Date()<ms){}}
 function firstServerID(order){if(orderEmpty(order)){return"";}
