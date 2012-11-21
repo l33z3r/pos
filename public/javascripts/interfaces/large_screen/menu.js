@@ -1551,9 +1551,13 @@ function orderSentToServerCallback(orderData, errorOccured) {
         
         //first see if its table 0 and send into system orders
         //a null test is to see if table 0
-        if(isTableZeroOrder && isProcessingTable0Orders) {
-            doSyncTableOrder();
-            hideLoadingDiv();
+        if(isTableZeroOrder) {
+            if(isProcessingTable0Orders) {
+                doSyncTableOrder();
+                hideLoadingDiv();
+            } else {
+                isTableZeroOrder = false;
+            }
         }
     } else {
         hideLoadingDiv();
@@ -2164,14 +2168,10 @@ function renderActiveTables() {
 var afterSplitBillSyncCallback;
 
 function postDoSyncTableOrder() {
-    //we dont want to do anything more if this is a table 0 order.
-    //then we have to reset the isTableZeroOrder variable
     if(isTableZeroOrder) {
         //reset this var
         isTableZeroOrder = false;
         return;
-    } else {
-        isTableZeroOrder = false;
     }
     
     clearLoginReceipt();
