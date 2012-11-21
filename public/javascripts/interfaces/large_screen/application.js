@@ -211,7 +211,7 @@ function showTerminalSelectDialog() {
                 width: 360,
                 height: 310,
                 okButtonText: 'Ok',
-                onOk: "goTo(outletTerminalsURL);"
+                onOk: "showingTerminalSelectDialog=false;goTo(outletTerminalsURL);"
             });
         
         return;
