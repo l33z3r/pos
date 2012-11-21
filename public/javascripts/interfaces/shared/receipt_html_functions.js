@@ -151,7 +151,7 @@ function printContent(content, printerID) {
     console.log("Attempting to print to printer " + printerID);
     
     if (printerProgressListener.printing) {
-        console.log("Waiting 500 ms for previous print job to complete.");
+        console.log("Waiting 500 ms for previous print job to complete");
         
         setTimeout(function(){
             printContent(content, printerID)

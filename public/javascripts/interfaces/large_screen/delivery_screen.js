@@ -470,7 +470,7 @@ function doFinishDelivery() {
             hideLoadingDiv();
             
             if(t==="timeout") {
-                niceAlert("Processing the delivery has timed out. Please check in Reports if the delivery was recorded before retrying.");
+                niceAlert("Processing the delivery has timed out. Please check in Reports if the delivery was recorded before retrying");
             } else {
                 niceAlert("Error finishing delivery");
             }

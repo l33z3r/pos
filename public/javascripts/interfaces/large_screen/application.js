@@ -201,7 +201,7 @@ function showTerminalSelectDialog() {
         showingTerminalSelectDialog = true;
     
         var title = "Subscription Reached";
-        var message = "You have only paid for " + outletTerminals.length + " terminal(s), which have all been assigned. You can create more terminals in the accounts section. Click OK to be redirected.";
+        var message = "You have only paid for " + outletTerminals.length + " terminal(s), which have all been assigned. You can create more terminals in the accounts section. Click OK to be redirected";
         
         ModalPopups.Alert('niceAlertContainer',
             title, "<div id='nice_alert' class='nice_alert'>" + message + "</div>",

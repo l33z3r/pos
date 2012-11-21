@@ -107,7 +107,7 @@ $(appCache).bind(
     function(event) {
         //if we are offline, there is no need to display the error notice
         if(appOnline) {
-            niceAlert("An error occurred while downloading the latest cache. You may be using a stale version. Try reloading the app.");
+            niceAlert("An error occurred while downloading the latest cache. You may be using a stale version. Try reloading the app");
         
             //reset some things
             cacheDownloading = false;

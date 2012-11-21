@@ -162,7 +162,7 @@ function loadPriceChangeReceiptArea(productId, menuItemId) {
 
 function startStockTakeMode() {
     if(!appOnline) {
-        niceAlert("Server cannot be contacted. Stock mode is disabled until connection re-established.");
+        niceAlert("Server cannot be contacted. Stock mode is disabled until connection re-established");
         return;
     }
     
@@ -256,7 +256,7 @@ var oldStockValue = null;
 function loadStockTakeReceiptArea(productId, menuItemId) {
     //if this is not a stock item, then ignore
     if(!products[productId].is_stock_item) {
-        setStatusMessage("This is not a stock item.");
+        setStatusMessage("This is not a stock item");
         return;
     }
     

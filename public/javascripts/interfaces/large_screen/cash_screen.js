@@ -73,7 +73,7 @@ function finishSale() {
 
     if(cashTendered < totalAmountInclCashback) {
         if(loyaltyPaymentMethodSelected) {
-            niceAlert("Not enough loyalty points to cover the whole sale! Other payment methods must be used to cover the difference.");
+            niceAlert("Not enough loyalty points to cover the whole sale! Other payment methods must be used to cover the difference");
             return;
         }
         
@@ -98,7 +98,7 @@ function finishSale() {
         }
         
         if(!positiveCashAmount) {
-            niceAlert("You cannot enter an amount (" + currency(cashTendered) + ") above the total (" + currency(totalAmountInclCashback) + "), if you are not taking a cash payment, as you cannot issue change without cash.");
+            niceAlert("You cannot enter an amount (" + currency(cashTendered) + ") above the total (" + currency(totalAmountInclCashback) + "), if you are not taking a cash payment, as you cannot issue change without cash");
             return;
         }
         
@@ -151,7 +151,7 @@ function paymentMethodSelected(pm_id) {
         if(!allowedZalionSplitPayments) {
             splitPayments = {};
         } else {
-            var warningMessage = paymentMethod + " must be the last payment method used if splitting a payment (Enter zero to cancel).";
+            var warningMessage = paymentMethod + " must be the last payment method used if splitting a payment (Enter zero to cancel)";
             niceAlert(warningMessage);
             return;
         }
@@ -279,7 +279,7 @@ function paymentMethodSelected(pm_id) {
                 url: '/forward_zalion_roomfile_request',
                 error: function() {
                     hideLoadingDiv();
-                    niceAlert("Error Getting Zalion Data.", false, false);
+                    niceAlert("Error Getting Zalion Data", false, false);
                     splitPayments = {};
                     paymentMethodSelected(getPaymentMethodId(defaultPaymentMethod));
                 },
@@ -317,7 +317,7 @@ function doRoomNumberLookup() {
     roomNumber = parseInt(roomNumber);
     
     if(isNaN(roomNumber)) {
-        niceAlert("Please enter a valid room number.");
+        niceAlert("Please enter a valid room number");
         return;
     }
     
@@ -348,7 +348,7 @@ function doRoomNumberLookup() {
         
         $('#name_list').html(folioTableHTML);
     } else {
-        niceAlert("Room " + roomNumber + " not found.");
+        niceAlert("Room " + roomNumber + " not found");
         totalsScreenKeypadClickCancel();
         return;
     }
@@ -495,7 +495,7 @@ function doChargeRoom(orderData) {
                     setStatusMessage("Error Charging to Zalion", false, false);
                 },
                 success: function() {
-                    setStatusMessage("Room successfully charged.", false, false);                   
+                    setStatusMessage("Room successfully charged", false, false);                   
                 },
                 data: {
                     zalion_charge_request_url : zalion_charge_request_url,
@@ -575,12 +575,12 @@ function chargeCreditCard(amount) {
     
     var creditCardChargeRequestURL = 'http://' + creditCardChargeServiceIP + ':8080/ClueyWebSocketServices/cc_txn';
     
-    var message = "Sending " + currency(amount) + " to card terminal.";
+    var message = "Sending " + currency(amount) + " to card terminal";
     
     hideNiceAlert();
     
     ModalPopups.Alert('niceAlertContainer',
-        "Card Terminal Request In Progress...", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
+        "Card Terminal Request In Progress..", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
         {
             width: 360,
             height: 280,
@@ -594,7 +594,7 @@ function chargeCreditCard(amount) {
         error: function() {
             if (!userAbortedXHR(cc_txn_xhr)) {
                 hideNiceAlert();
-                niceAlert("Error charging card! Make sure card service is running and settings are correct.", false, false);
+                niceAlert("Error charging card! Make sure card service is running and settings are correct", false, false);
             }
         },
         complete: function() {
@@ -637,26 +637,26 @@ function cashScreenCreditCardChargeCallback(creditCardChargeResponseCode, errorM
         disallowCancelSaleCC = true;
         paymentMethodSelected(getPaymentMethodId(defaultPaymentMethod));
     } else if(creditCardChargeResponseCode == 2) {
-        message = "Charge has been declined.";
+        message = "Charge has been declined";
         niceAlert(message);
     } else if(creditCardChargeResponseCode == 3) {
-        message = "Card charge canceled.";
+        message = "Card charge canceled";
         niceAlert(message);
     } else if(creditCardChargeResponseCode == 4) {
-        message = "Request timed out. Please try again.";
+        message = "Request timed out. Please try again";
         niceAlert(message);
     } else if(creditCardChargeResponseCode == 5) {
-        message = "Unknown response from card terminal.";
+        message = "Unknown response from card terminal";
         niceAlert(message);
     } else if(creditCardChargeResponseCode == 6) {
-        message = "Communication Error, please make sure the credit card terminal is not in use and all settings are set correctly.";
+        message = "Communication Error, please make sure the credit card terminal is not in use and all settings are set correctly";
         niceAlert(message);
     } else {
         //unknown error
         if(errorMessage != null) {
             message = "Error: " + errorMessage;
         } else {
-            message = "An unknown error occured.";
+            message = "An unknown error occured";
         }
         
         niceAlert(message);
@@ -673,7 +673,7 @@ function cancelChargeCreditCard() {
     cc_txn_xhr.abort();
     
     hideNiceAlert();
-    niceAlert("Card charge canceled. Make sure to cancel the transaction on the terminal also.");
+    niceAlert("Card charge canceled. Make sure to cancel the transaction on the terminal also");
 }
 
 //this gets executed when a loyalty card is used

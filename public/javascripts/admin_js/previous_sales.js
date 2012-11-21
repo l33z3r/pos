@@ -338,7 +338,7 @@ function fetchPreviousSalesReceiptHeaderHTML(order) {
 
 function printPreviousSale() {
     if(!totalOrder) {
-        setStatusMessage("Please select a closed order to print.");
+        setStatusMessage("Please select a closed order to print");
         return;
     }
     

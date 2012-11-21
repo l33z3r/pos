@@ -51,7 +51,7 @@ function doPrintLastReceipt(withVat) {
         
         printReceipt(content, true);
     } else {
-        niceAlert("No Last Sale Found.");
+        niceAlert("No Last Sale Found");
     }  
 }
 
@@ -377,7 +377,7 @@ var addTableNamePopupAnchor;
 
 function promptAddNameToTable() {
     if(!callHomePollInitSequenceComplete) {
-        niceAlert("Downloading data from server, please wait.");
+        niceAlert("Downloading data from server, please wait");
         return;
     }    
     
@@ -470,12 +470,12 @@ function saveAddNameToTable() {
 
 function startSplitBillMode() {
     if(!appOnline) {
-        niceAlert("Server cannot be contacted. Split bill is disabled until connection re-established.");
+        niceAlert("Server cannot be contacted. Split bill is disabled until connection re-established");
         return;
     }
     
     if(haveSplitBillOrder(current_user_id)) {
-        niceAlert("You must deal with the split order that is currently open. Please select it from the menu and either transfer it to a table or cash it out.");
+        niceAlert("You must deal with the split order that is currently open. Please select it from the menu and either transfer it to a table or cash it out");
         tableSelectMenu.setValue(tempSplitBillTableNum);
         doSelectTable(tempSplitBillTableNum);
         return;
@@ -501,7 +501,7 @@ function startSplitBillMode() {
     }
     
     if(!orderSynced) {
-        niceAlert("All items in the order must be ordered before you can split bill. You can also delete un-ordered items.");
+        niceAlert("All items in the order must be ordered before you can split bill. You can also delete un-ordered items");
         return;
     }
     
@@ -547,7 +547,7 @@ function exitApp() {
 
 function tablesButtonPressed() {
     if (!callHomePollInitSequenceComplete) {
-        niceAlert("Downloading data from server, please wait.");
+        niceAlert("Downloading data from server, please wait");
         return;
     }
     
@@ -567,7 +567,7 @@ function doTablesButtonPressed() {
             var table = getTableForLabel(tableLabelToSwitchTo);
             
             if(table == null) {
-                setStatusMessage("Table " + tableLabelToSwitchTo + " does not exist.");
+                setStatusMessage("Table " + tableLabelToSwitchTo + " does not exist");
                 //reset the quantity
                 currentMenuItemQuantity = "";
                 $('#menu_screen_input_show').html("");
@@ -669,7 +669,7 @@ function promptVoidAllOrderItems() {
     }
     
     if(!allItemsSynced) {
-        niceAlert("You can only void all items after they have been order. You can delete unordered items.");
+        niceAlert("You can only void all items after they have been order. You can delete unordered items");
         return;        
     }
     
@@ -690,7 +690,7 @@ var addCoversPopupAnchor;
 
 function promptAddCovers() {
     if(!callHomePollInitSequenceComplete) {
-        niceAlert("Downloading data from server, please wait.");
+        niceAlert("Downloading data from server, please wait");
         return;
     }    
     

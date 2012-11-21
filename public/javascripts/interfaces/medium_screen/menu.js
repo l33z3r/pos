@@ -126,14 +126,14 @@ function doSelectMenuItem(productId, element) {
 
     //if double and no price set
     if (menuItemDoubleMode && (product.double_price == 0)) {
-        niceAlert("Price has not been set for a double of this item.");
+        niceAlert("Price has not been set for a double of this item");
         setMenuItemDoubleMode(false);
         return;
     }
 
     //if half and no price set
     if (menuItemHalfMode && (product.half_price == 0)) {
-        niceAlert("Price has not been set for a half of this item.");
+        niceAlert("Price has not been set for a half of this item");
         setMenuItemHalfMode(false);
         return;
     }
@@ -1056,7 +1056,7 @@ function postDoSyncTableOrder() {
     //clean up after transfer order mode
     if (inTransferOrderMode) {
         hideLoadingDiv();
-        setStatusMessage("Order Transfered.");
+        setStatusMessage("Order Transferred");
         inTransferOrderMode = false;
         $('#table_num').val(tables[selectedTable].label);
         doSubmitTableNumber();
@@ -1338,7 +1338,7 @@ function doSubmitTableNumber() {
 
     if (inTransferOrderMode) {
         if (transferOrderInProgress) {
-            niceAlert("Transfer table order in progress, please wait.");
+            niceAlert("Transfer table order in progress, please wait");
             return;
         }
 

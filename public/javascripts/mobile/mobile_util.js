@@ -90,7 +90,7 @@ function renderMobileActiveTableList() {
 
 function checkInitDataDownload() {
     if(!callHomePollInitSequenceComplete) {
-        niceAlert("Downloading data from server, please wait.");
+        niceAlert("Downloading data from server, please wait");
         return false;
     }
     

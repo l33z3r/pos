@@ -36,7 +36,7 @@ function updateGridName() {
     var newName = $('#grid_name_input').val();
     
     if(newName.length < 1) {
-        alert("Please Enter a valid name.");
+        alert("Please Enter a valid name");
         return;
     }
     
@@ -56,7 +56,7 @@ function cellSelected(x, y) {
     }
     
     if(updateInProgress) {
-        alert("Cell update in progress, please wait before selecting another cell.");
+        alert("Cell update in progress, please wait before selecting another cell");
         return;
     } 
     
@@ -318,7 +318,7 @@ function deleteGridItem(gridX, gridY) {
     window.event.stopPropagation();
     
     if(updateInProgress) {
-        alert("Please wait, updating cell.");
+        alert("Please wait, updating cell");
         return;
     }
     

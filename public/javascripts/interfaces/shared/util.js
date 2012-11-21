@@ -997,7 +997,7 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
     var timeoutSeconds = 5;
     
     if(hardReload) {
-        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
+        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds";
         okFuncCall = "doClearAndReload();";
         
         ModalPopups.Alert('niceAlertContainer',
@@ -1046,7 +1046,7 @@ function alertCacheReloadRequest() {
     
     var timeoutSeconds = 5;
     
-    var message = "New cache downloaded! App will reload in " + timeoutSeconds + " seconds.";
+    var message = "New cache downloaded! App will reload in " + timeoutSeconds + " seconds";
     var okFuncCall = "doReload(false);";
     
     ModalPopups.Alert('niceAlertContainer',
@@ -1161,11 +1161,11 @@ function setConnectionStatus(connected) {
 }
 
 function appOfflinePopup() {
-    niceAlert("Server cannot be contacted. App will operate in restricted mode. Some features may not be available.");
+    niceAlert("Server cannot be contacted. App will operate in restricted mode. Some features may not be available");
 }
 
 function cacheDownloadingPopup() {
-    niceAlert("The cache is downloading. App will operate in restricted mode. Some features may not be available.");
+    niceAlert("The cache is downloading. App will operate in restricted mode. Some features may not be available");
 }
 
 //function to force a button to be clicked that works with both advanced touch and non

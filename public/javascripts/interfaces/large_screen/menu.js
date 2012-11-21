@@ -392,14 +392,14 @@ function doSelectMenuItem(productId, menuItemId, element) {
     
     //if double and no price set
     if(menuItemDoubleMode && (product.double_price == 0)) {
-        niceAlert("Price has not been set for a double of this item.");
+        niceAlert("Price has not been set for a double of this item");
         setMenuItemDoubleMode(false);
         return;
     }
     
     //if half and no price set
     if (menuItemHalfMode && (product.half_price == 0)) {
-        niceAlert("Price has not been set for a half of this item.");
+        niceAlert("Price has not been set for a half of this item");
         setMenuItemHalfMode(false);
         return;
     }
@@ -1012,7 +1012,7 @@ function tableScreenSelectTable(tableId) {
         }
         
         if(transferOrderInProgress) {
-            niceAlert("Transfer table order in progress, please wait.");
+            niceAlert("Transfer table order in progress, please wait");
             return;
         }
         
@@ -1026,7 +1026,7 @@ function tableScreenSelectTable(tableId) {
         }
         
         if(transferOrderItemInProgress) {
-            niceAlert("Transfer table order item in progress, please wait.");
+            niceAlert("Transfer table order item in progress, please wait");
             return;
         }
         
@@ -1179,7 +1179,7 @@ function doTotal(applyDefaultServiceCharge) {
     }
     
     if(!callHomePollInitSequenceComplete) {
-        niceAlert("Downloading data from server, please wait.");
+        niceAlert("Downloading data from server, please wait");
         return;
     }
     
@@ -1250,7 +1250,7 @@ function doTotalFinal() {
     //as we now send orders when a cash out is done for table 0, 
     //we must halt here if there is an order in progress, otherwise we would lose this order
     if(cashSaleInProcess || orderInProcess) {
-        niceAlert("There is an order being processed, please wait.");
+        niceAlert("There is an order being processed, please wait");
         return;
     }
     
@@ -1265,7 +1265,7 @@ function doTotalFinal() {
     
     //if we are trying to cash out an order that we just hit "order" for, then wait for the polling amount so others can download the order
     if(selectedTable != 0 && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
-        niceAlert("Waiting on previous order to be synced across system, please try again in " + (pollingAmount/1000) + " seconds.");
+        niceAlert("Waiting on previous order to be synced across system, please try again in " + (pollingAmount/1000) + " seconds");
         return;
     }
     
@@ -1557,7 +1557,7 @@ function orderSentToServerCallback(orderData, errorOccured) {
         }
     } else {
         hideLoadingDiv();
-        setStatusMessage("Order saved offline. Will sync with server when connection re-established.");
+        setStatusMessage("Order saved offline. Will sync with server when connection re-established");
     }
     
     cashSaleInProcess = false;
@@ -2183,7 +2183,7 @@ function postDoSyncTableOrder() {
         inTransferOrderMode = false;
         tableScreenSelectTable(selectedTable);
         loadAfterSaleScreen();
-        setStatusMessage("Order Transfered.");
+        setStatusMessage("Order Transferred");
         return;
     } else if(inTransferOrderItemMode) {
         finishTransferOrderItem();
@@ -2484,7 +2484,7 @@ function splitBillShortcutTransfer() {
 
 function splitBillEmptyItems() {
     if(splitBillOrderTo.items.length == 0) {
-        niceAlert("Please transfer over some items first.");
+        niceAlert("Please transfer over some items first");
         return true;
     }
     

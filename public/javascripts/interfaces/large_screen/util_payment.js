@@ -82,7 +82,7 @@ function makeCustomerPayment(customerId) {
                 setStatusMessage("Error Sending Payment To Server", false, false);
             },
             success: function() {
-                setStatusMessage("Payment successfully recorded.", false, false);
+                setStatusMessage("Payment successfully recorded", false, false);
                 showMenuScreen();
                 
                 printReceipt(currentPaymentReceiptHTML, true);
@@ -325,26 +325,26 @@ function utilPaymentScreenCreditCardChargeCallback(creditCardChargeResponseCode,
         
         finishUtilPayment();
     } else if(creditCardChargeResponseCode == 2) {
-        message = "Charge has been declined.";
+        message = "Charge has been declined";
         niceAlert(message);
     } else if(creditCardChargeResponseCode == 3) {
-        message = "Card charge canceled.";
+        message = "Card charge canceled";
         niceAlert(message);
     } else if(creditCardChargeResponseCode == 4) {
-        message = "Request timed out. Please try again.";
+        message = "Request timed out. Please try again";
         niceAlert(message);
     } else if(creditCardChargeResponseCode == 5) {
-        message = "Unknown response from card terminal.";
+        message = "Unknown response from card terminal";
         niceAlert(message);
     } else if(creditCardChargeResponseCode == 6) {
-        message = "Communication Error, please make sure the credit card terminal is not in use and all settings are set correctly.";
+        message = "Communication Error, please make sure the credit card terminal is not in use and all settings are set correctly";
         niceAlert(message);
     } else {
         //unknown error
         if(errorMessage != null) {
             message = "Error: " + errorMessage;
         } else {
-            message = "An unknown error occured.";
+            message = "An unknown error occured";
         }
         
         niceAlert(message);
