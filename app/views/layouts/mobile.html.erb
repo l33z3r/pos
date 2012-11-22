@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html <%= development_mode? ? "" : "manifest='cache_manifest'" %>>
   <head>
     <!-- include the head form the large interface -->
     <%= render :partial => "/partials/interfaces/large_screen/common_head" %>
