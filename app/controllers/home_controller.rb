@@ -4,7 +4,8 @@ class HomeController < ApplicationController
   
   #main screen including the login overlay
   def index
-    perform_interface_specific_actions
+    session[:current_interface] = LARGE_INTERFACE
+    do_large_interface_actions
           
     #now the actions common to all interfaces
     do_common_interface_actions
@@ -12,6 +13,16 @@ class HomeController < ApplicationController
   
   def force_error
     1/0
+  end
+  
+  def medium_home
+    session[:current_interface] = MEDIUM_INTERFACE
+    do_medium_interface_actions
+          
+    #now the actions common to all interfaces
+    do_common_interface_actions
+    
+    render :action => "index"
   end
   
   def mobile_index
@@ -874,16 +885,6 @@ class HomeController < ApplicationController
     @employees = Employee.all_active current_outlet
     @display = TerminalDisplayLink.load_display_for_terminal @terminal_id, current_outlet
     @rooms = current_outlet.rooms.all
-  end
-  
-  def perform_interface_specific_actions
-    if current_interface_large?
-      do_large_interface_actions
-    elsif current_interface_medium?
-      do_medium_interface_actions
-    else
-      do_large_interface_actions
-    end
   end
   
   def do_large_interface_actions

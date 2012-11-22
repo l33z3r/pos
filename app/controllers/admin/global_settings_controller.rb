@@ -29,7 +29,7 @@ class Admin::GlobalSettingsController < Admin::AdminController
         redirect_to :action => "index"
       elsif current_interface_medium?
         #if we are on the medium interface, we want the mbl to be the entry point
-        redirect_to home_path
+        redirect_to mbl_path
       else
         redirect_to :action => "index"
       end

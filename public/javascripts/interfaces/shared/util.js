@@ -998,22 +998,12 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
     //must write the last reload time to cookie here so that the reload message does not keep popping up
     writeLastReloadTimeCookie();
     
-    var timeoutSeconds = 5;
-    
     if(hardReload) {
-        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds";
-        okFuncCall = "doClearAndReload();";
-        
-        ModalPopups.Alert('niceAlertContainer',
-            "Please Reload Screen", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
-            {
-                width: 360,
-                height: 280,
-                okButtonText: 'Reload Now',
-                onOk: okFuncCall
-            });
-        
-        setTimeout(okFuncCall, timeoutSeconds * 1000);
+        if(!callHomePollInitSequenceComplete) {
+            performHardReloadAtCallHomePollInitSequenceComplete = true;
+        } else {
+            alertHardReloadRequest();
+        }
     } else {
         var functionToPerform = function() {
             promptReloadSalesResources(reloadTerminalId);
@@ -1021,6 +1011,24 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
         
         indicateActionRequired(functionToPerform);
     }
+}
+
+function alertHardReloadRequest() {
+    var timeoutSeconds = 5;
+    
+    var message = "A hard reset has been requested. Screen will reload in " + timeoutSeconds + " seconds";
+    var okFuncCall = "doClearAndReload();";
+        
+    ModalPopups.Alert('niceAlertContainer',
+        "Please Reload Screen", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
+        {
+            width: 360,
+            height: 280,
+            okButtonText: 'Reload Now',
+            onOk: okFuncCall
+        });
+        
+    setTimeout(okFuncCall, timeoutSeconds * 1000);
 }
 
 function promptReloadSalesResources(reloadTerminalId) {

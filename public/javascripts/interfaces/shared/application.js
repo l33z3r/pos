@@ -169,6 +169,7 @@ function manualCallHomePoll() {
 }
 
 var immediateCallHome = false;
+var performHardReloadAtCallHomePollInitSequenceComplete = false;
 
 function callHomePollComplete() {
     if(immediateCallHome) {
@@ -177,6 +178,12 @@ function callHomePollComplete() {
         if(!callHomePollInitSequenceComplete) {
             callHomePollInitSequenceComplete = true;
             callHomePollInitSequenceCompleteHook();
+            
+            //do we need to do a hard reload after the init sequence?
+            //we don't do this to mobile as that does it itself at startup
+            if(performHardReloadAtCallHomePollInitSequenceComplete && !inMediumInterface()) {
+                alertHardReloadRequest();
+            }
         }
         
         //show the receipts now that they are all rendered
@@ -187,6 +194,7 @@ function callHomePollComplete() {
         //we do manual polling now
         //setTimeout(callHomePoll, pollingAmount);
         } else if(inMediumInterface()) {
+            swipeToMenu();
             //we do manual polling now
             //setTimeout(callHomePoll, pollingAmount);
         }                

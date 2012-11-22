@@ -465,27 +465,7 @@ class ApplicationController < AppBaseController
   end
   
   def current_interface
-    
-    return @current_interface if @current_interface
-    
-    #set it from param i=X
-    if params[:i]
-      if params[:i] == SMALL_INTERFACE
-        session[:current_interface] = SMALL_INTERFACE
-      elsif params[:i] == MEDIUM_INTERFACE
-        session[:current_interface] = MEDIUM_INTERFACE
-      else
-        session[:current_interface] = LARGE_INTERFACE
-      end
-    end
-    
-    if session[:current_interface]
-      @current_interface = session[:current_interface]
-    else
-      @current_interface = LARGE_INTERFACE
-    end
-    
-    return @current_interface
+    session[:current_interface]
   end
   
   def current_interface_large?

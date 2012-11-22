@@ -135,7 +135,7 @@ function showMoreOptionsScreen() {
 
 function goToMainMenu() {
     showSpinner();
-    goTo('/mbl#menu');
+    alert("this is meant to go to /manager now");
 }
 
 function showGlobalSettingsPage() {

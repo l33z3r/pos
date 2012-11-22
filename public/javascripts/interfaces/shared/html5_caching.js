@@ -89,6 +89,7 @@ $(appCache).bind(
         // Swap out the old cache.
         appCache.swapCache();
         cacheDownloadReset();
+        cacheDownloading = false;
         indicateActionRequired(alertCacheReloadRequest);
     }
     );

@@ -78,7 +78,8 @@ Pos::Application.routes.draw do
   post "kitchen/order_ready"
   
   #routes for mobile app
-  match 'mbl' => "home#mobile_index"
+  match 'manager' => "home#mobile_index"
+  match 'mbl' => "home#medium_home"
   match 'last_receipt_for_terminal' => "home#last_receipt_for_terminal"
   match 'last_receipt_for_server' => "home#last_receipt_for_server"
   match 'last_receipt_for_table' => "home#last_receipt_for_table"
