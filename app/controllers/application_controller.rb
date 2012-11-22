@@ -311,7 +311,8 @@ class ApplicationController < AppBaseController
         @path = home_path @forward_params
       end
       
-      redirect_to @path
+      redirect_to @path 
+      return
     end
   end
   
