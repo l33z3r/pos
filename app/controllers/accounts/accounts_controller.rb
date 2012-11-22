@@ -1,6 +1,6 @@
 class Accounts::AccountsController < Accounts::ApplicationController
   skip_before_filter :setup_for_master_subdomain, :ensure_logged_in, 
-    :only => [:new, :create, :account_not_found, :activate, :contact, :help, :privacy, :terms, :browser_not_supported, :pricing]
+    :only => [:new, :create, :account_not_found, :outlet_not_found, :activate, :contact, :help, :privacy, :terms, :browser_not_supported, :pricing]
   
   before_filter :do_setup_for_master_subdomain_if_not_signup_subdomain, :only => [:new, :create]
     
@@ -21,6 +21,12 @@ class Accounts::AccountsController < Accounts::ApplicationController
 
   def account_not_found
     flash.now[:error] = "Account not found!"
+    @cluey_account = ClueyAccount.new
+    render "new"
+  end
+  
+  def outlet_not_found
+    flash.now[:error] = "Outlet not found!"
     @cluey_account = ClueyAccount.new
     render "new"
   end
@@ -92,7 +98,7 @@ class Accounts::AccountsController < Accounts::ApplicationController
   end
   
   def choose_layout
-    @accounts_logged_out_layout_action_array = ["new", "create", "account_not_found", "contact", "help", "privacy", "terms", "browser_not_supported", "pricing"]
+    @accounts_logged_out_layout_action_array = ["new", "create", "account_not_found", "outlet_not_found", "contact", "help", "privacy", "terms", "browser_not_supported", "pricing"]
     
     if @accounts_logged_out_layout_action_array.include? action_name
       return "accounts_logged_out"

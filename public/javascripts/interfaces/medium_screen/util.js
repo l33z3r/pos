@@ -161,3 +161,7 @@ function initModifierGrid() {
 function indicateSalesResourcesReloadRequired(reloadTerminalId) {
     promptReloadSalesResources(reloadTerminalId);
 }
+
+function indicateActionRequired(functionToPerform) {
+    functionToPerform.call();
+}

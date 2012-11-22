@@ -12,6 +12,7 @@ Pos::Application.routes.draw do
     resources :accounts, :only => [:new, :create, :index] do
       collection do
         get 'account_not_found'
+        get 'outlet_not_found'
         get 'activate'
         get 'contact'
         get 'privacy'

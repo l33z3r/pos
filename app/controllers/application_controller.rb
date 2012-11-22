@@ -578,7 +578,7 @@ class ApplicationController < AppBaseController
           end 
           
           #login required
-          authenticate_or_request_with_http_basic do |username, password|
+          authenticate_or_request_with_http_basic "Enter username and password for outlet: #{@o}" do |username, password|
             logger.info "#{username} #{password}"
                                  
             @username_matches = outlet.username == username
@@ -597,11 +597,10 @@ class ApplicationController < AppBaseController
         end
       end
     
-      flash[:error] = "Outlet #{@outlet_name} not found for account #{@account_name}!"
-      redirect_to welcome_url
+      redirect_to outlet_not_found_accounts_accounts_url(:subdomain => "signup")
       return
     else
-      redirect_to welcome_url
+      redirect_to outlet_not_found_accounts_accounts_url(:subdomain => "signup")
       return
     end
     
