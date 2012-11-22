@@ -6,6 +6,7 @@ class HomeController < ApplicationController
   def index
     check_for_firefox
     session[:current_interface] = LARGE_INTERFACE
+    check_reset_session
     do_large_interface_actions
           
     #now the actions common to all interfaces
@@ -18,6 +19,7 @@ class HomeController < ApplicationController
   
   def medium_home
     session[:current_interface] = MEDIUM_INTERFACE
+    check_reset_session
     do_medium_interface_actions
           
     #now the actions common to all interfaces
