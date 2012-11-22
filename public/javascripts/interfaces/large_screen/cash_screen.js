@@ -711,6 +711,7 @@ var loyaltyCardListenerHandler = function(event) {
         }
         
         loyaltyCardCode = "";
+        inLoyaltyCardListenerMode = false;
         return;
     }
                        

@@ -14,6 +14,8 @@ var browserSessionIdStorageKey = "browser_session_id";
 
 var clueyPluginInitialized = false;
 
+var inLoyaltyCardListenerMode = false;
+
 $(function() {
     doGlobalInit();
 });
@@ -98,9 +100,16 @@ function doGlobalInit() {
         
         //listener for the loyalty card swipe
         $(window).keySequenceDetector(loyaltyCardPrefix, function() {
+            //this is so we dont respond to the delimiter while listening for the input code
+            if(inLoyaltyCardListenerMode) {
+                return;
+            }
+            
             console.log("listening for loyalty card");
             //reset the code
             loyaltyCardCode = "";
+                
+            inLoyaltyCardListenerMode = true;
                 
             $(window).bind('keypress', loyaltyCardListenerHandler);
         });
