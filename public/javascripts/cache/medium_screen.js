@@ -246,7 +246,7 @@ function hideMenuKeypad(){menuKeypadShowing=false;$('#menu_keypad').slideUp(300)
 function doScroll(scrollLeftValue){if(scrollLeftValue<0||scrollLeftValue>(pageWidth*numPages-1)){return false;}
 $("#content-scroll").animate({scrollLeft:scrollLeftValue},scrollSpeed);return true;}
 function swipeToReceipt(){if(currentScreenIsReceipt)return;clearAllPageFlags();doScroll((receiptPageNum-1)*pageWidth);currentScreenIsReceipt=true;}
-function swipeToMenu(){if(!callHomePollInitSequenceComplete){alert("swipe!");niceAlert("Downloading data from server, please wait");return;}
+function swipeToMenu(){if(!callHomePollInitSequenceComplete){niceAlert("Downloading data from server, please wait");return;}
 if(currentScreenIsMenu)return;clearAllPageFlags();doScroll((menuPageNum-1)*pageWidth);currentScreenIsMenu=true;setTimeout(function(){doMenuPageSelect(currentMenuPage,currentMenuPageId);},500);}
 function swipeToFunctions(){if(currentScreenIsFunctions)return;clearAllPageFlags();doScroll((functionsPageNum-1)*pageWidth);currentScreenIsFunctions=true;}
 function swipeToSettings(){if(currentScreenIsSettings)return;clearAllPageFlags();doScroll((settingsPageNum-1)*pageWidth);currentScreenIsSettings=true;}
