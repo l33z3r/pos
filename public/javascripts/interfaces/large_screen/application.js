@@ -98,6 +98,7 @@ function doGlobalInit() {
         
         //listener for the loyalty card swipe
         $(window).keySequenceDetector(loyaltyCardPrefix, function() {
+            console.log("listening for loyalty card");
             //reset the code
             loyaltyCardCode = "";
                 

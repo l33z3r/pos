@@ -110,7 +110,7 @@ function initSalesResources() {
         storeSalesResourceInStorage(non_deleted_productsStorageKey, non_deleted_products);
         storeSalesResourceInStorage(stock_productsStorageKey, stock_products);
     } else {
-        console.log("loading proudcts from storage");
+        console.log("loading products from storage");
         products = getSalesResourceFromStorage(productsStorageKey);
         products_by_upc = getSalesResourceFromStorage(products_by_upcStorageKey);        
         non_deleted_products = getSalesResourceFromStorage(non_deleted_productsStorageKey); 
@@ -145,7 +145,7 @@ function initSalesResources() {
     if(typeof(tables) != "undefined") {
         storeSalesResourceInStorage(tablesStorageKey, tables);
     } else {
-        console.log("loading button tables from storage");
+        console.log("loading tables from storage");
         tables = getSalesResourceFromStorage(tablesStorageKey);        
     }
 }

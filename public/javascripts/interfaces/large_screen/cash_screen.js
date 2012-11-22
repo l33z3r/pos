@@ -694,7 +694,7 @@ var loyaltyCardListenerHandler = function(event) {
         }
                     
         //strip off the ending question mark
-        loyaltyCardCode = loyaltyCardCode.substring(0, 8);
+        //loyaltyCardCode = loyaltyCardCode.substring(0, 8);
                         
         var fullLoyaltyCardCode = loyaltyCardPrefix + loyaltyCardCode;
         
@@ -715,6 +715,7 @@ var loyaltyCardListenerHandler = function(event) {
     }
                        
     loyaltyCardCode += String.fromCharCode(getEventKeyCode(event));
+    console.log(loyaltyCardCode);
 }
 
 function addLoyaltyCustomerToTotalOrder(customer) {
