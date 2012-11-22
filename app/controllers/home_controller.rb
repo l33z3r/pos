@@ -4,6 +4,7 @@ class HomeController < ApplicationController
   
   #main screen including the login overlay
   def index
+    check_for_firefox
     session[:current_interface] = LARGE_INTERFACE
     do_large_interface_actions
           

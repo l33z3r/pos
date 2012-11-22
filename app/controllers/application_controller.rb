@@ -2,7 +2,6 @@ class ApplicationController < AppBaseController
   before_filter :setup_for_subdomain, :except => [:ping, :build_assets, :force_error]
   before_filter :set_outlet_time_zone
   
-  before_filter :check_for_firefox, :except => [:ping, :build_assets, :force_error]
   before_filter :set_current_employee, :except => [:ping, :cache_manifest, :build_assets, :force_error]
 
   before_filter :check_reset_session, :except => [:ping, :cache_manifest, :build_assets, :force_error]
