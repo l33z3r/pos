@@ -4,16 +4,14 @@ class ApplicationController < AppBaseController
   
   before_filter :set_current_employee, :except => [:ping, :cache_manifest, :build_assets, :force_error]
 
+  before_filter :check_reset_session, :except => [:ping, :cache_manifest, :build_assets, :force_error]
+  
   helper_method :e, :is_cluey_user?, :cluey_pw_used?, :current_employee, :print_money, :print_credit_balance
   helper_method :mobile_device?, :all_terminals, :all_printers, :all_servers, :current_interface
   helper_method :development_mode?, :heroku_staging_mode?, :heroku_production_mode?, :server_ip, :now_local_millis
   
   before_filter :load_global_vars, :except => [:ping, :cache_manifest, :build_assets, :force_error]
   
-  LARGE_INTERFACE = "large"
-  MEDIUM_INTERFACE = "medium"
-  SMALL_INTERFACE = "small"
-      
   include ActionView::Helpers::NumberHelper
   
   def cluey_pw_used?
@@ -311,8 +309,7 @@ class ApplicationController < AppBaseController
         @path = home_path @forward_params
       end
       
-      redirect_to @path 
-      return
+      redirect_to @path
     end
   end
   
@@ -467,11 +464,11 @@ class ApplicationController < AppBaseController
   end
   
   def current_interface_large?
-    current_interface == LARGE_INTERFACE
+    current_interface == GlobalSetting::LARGE_INTERFACE
   end
   
   def current_interface_medium?
-    current_interface == MEDIUM_INTERFACE
+    current_interface == GlobalSetting::MEDIUM_INTERFACE
   end
   
   def setup_for_subdomain

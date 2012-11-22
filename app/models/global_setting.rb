@@ -773,6 +773,10 @@ class GlobalSetting < ActiveRecord::Base
   #screen resolutions
   SCREEN_RESOLUTION_NORMAL = "1024x768"
   SCREEN_RESOLUTION_1360x786 = "1360x786"
+  
+  LARGE_INTERFACE = "large"
+  MEDIUM_INTERFACE = "medium"
+  SMALL_INTERFACE = "small"
 end
 
 

@@ -1,12 +1,14 @@
 class HomeController < ApplicationController
+  prepend_before_filter :set_interface_large, :only => [:index]
+  prepend_before_filter :set_interface_medium, :only => [:medium_home]
+  
   skip_before_filter :set_current_employee, :only => [:login, :logout, :clockin, :clockout]
   cache_sweeper :product_sweeper  
   
   #main screen including the login overlay
   def index
     check_for_firefox
-    session[:current_interface] = LARGE_INTERFACE
-    check_reset_session
+    
     do_large_interface_actions
           
     #now the actions common to all interfaces
@@ -18,8 +20,6 @@ class HomeController < ApplicationController
   end
   
   def medium_home
-    session[:current_interface] = MEDIUM_INTERFACE
-    check_reset_session
     do_medium_interface_actions
           
     #now the actions common to all interfaces
@@ -979,6 +979,14 @@ class HomeController < ApplicationController
     #@@terminal_id_gs is set in a before filter in application controller
     @terminal_id_gs.updated_at = Time.now
     @terminal_id_gs.save
+  end
+  
+  def set_interface_large
+    session[:current_interface] = GlobalSetting::LARGE_INTERFACE
+  end
+  
+  def set_interface_medium
+    session[:current_interface] = GlobalSetting::MEDIUM_INTERFACE
   end
 
 end
