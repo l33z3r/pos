@@ -5,7 +5,7 @@
                Sales
             </div> <br>
             <div class="report_tab" onclick="window.location = '/reports/stocks'">
-                Stock
+                Products
             </div><br>
             <div class="report_tab" onclick="window.location = '/reports/payments'">
                Payments
@@ -14,7 +14,10 @@
             <div class="report_tab" onclick="window.location = '/reports/staff'">
                 Staff
             </div>
-
+    <br>
+    <div class="report_tab" onclick="window.location = '/reports/customers'">
+        Customers
+    </div>
 </div>
 <div id="reports_container">
 
@@ -29,19 +32,20 @@
                             <div class="dropdown_container">
                                 <div class="label">Report Type</div>
                                 <select id="search_type_select" onchange="setSearchType($(this).val())">
-                                    <option value="0">Best Sellers</option>
-                                    <option value="1">Worst Sellers</option>
-                                    <option value="2">Sales by Day</option>
-                                    <option value="3">Sales by Week</option>
-                                    <option value="4">Sales by Month</option>
-                                    <option value="5">Sales by Year</option>
-                                    <option value="6">Sales by Product</option>
-                                    <option value="7">Sales by Category</option>
+                                    <option value="0">Full Report</option>
+                                    <option value="1">Best Sellers</option>
+                                    <option value="2">Worst Sellers</option>
+                                    <option value="3">Sales by Day</option>
+                                    <option value="4">Sales by Week</option>
+                                    <option value="5">Sales by Month</option>
+                                    <option value="6">Sales by Year</option>
+                                    <option value="7">Sales by Product</option>
+                                    <option value="8">Sales by Category</option>
                                 </select>
                             </div>
-                            <div class="dropdown_container" style="margin-left: 30px;max-width:120px;">
+                            <div class="dropdown_container" style="margin-left: 30px;min-width:120px;max-width:120px;">
                                 <div class="label">Terminal</div>
-                                <select onchange="addTerminalFilter($(this).val())">
+                                <select style="min-width:120px;max-width:120px;" onchange="addTerminalFilter($(this).val())">
                                     <option value="">All Terminals</option>
                                     <% @all_terminals.each do |terminal_id| %>
                                         <option value="<%= terminal_id %>"><%= terminal_id %></option>
