@@ -81,6 +81,14 @@ function getLastReceiptItem() {
 function postSetConnectionStatus(connected) {
     if(!connected) {
         $('body').addClass("disconnected");
+        
+        //if we are offline and the init sequence has not completed then we are operating in offline mode
+        if(!callHomePollInitSequenceComplete) {
+            callHomePollInitSequenceComplete = true;
+            
+            //hide the spinner at the top nav
+            $('#loading_orders_spinner').hide();             
+        }
     } else {
         $('body').removeClass("connected");
     }
