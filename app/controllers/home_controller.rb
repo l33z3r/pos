@@ -896,8 +896,13 @@ class HomeController < ApplicationController
     @options_screen_buttons_map = {}
     
     current_outlet.roles.each do |role|
-      @menu_screen_buttons_map[role.id] = DisplayButtonRole.menu_screen_buttons_for_role(current_outlet, role.id)
-      @options_screen_buttons_map[role.id] = DisplayButtonRole.admin_screen_buttons_for_role(current_outlet, role.id)
+      #remove the hidden buttons
+      @menu_screen_dbrs = DisplayButtonRole.menu_screen_buttons_for_role(current_outlet, role.id)
+      @menu_screen_buttons_map[role.id] = DisplayButtonRole.remove_hidden_buttons @menu_screen_dbrs
+      
+      #remove the hidden buttons
+      @options_screen_dbrs = DisplayButtonRole.admin_screen_buttons_for_role(current_outlet, role.id)
+      @options_screen_buttons_map[role.id] = DisplayButtonRole.remove_hidden_buttons @options_screen_dbrs
     end 
     
     @customer_letter_query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from customers where customer_type in ('#{Customer::NORMAL}', '#{Customer::BOTH}') and is_active = true and outlet_id = #{current_outlet.id} group by substr(name,1,1)")

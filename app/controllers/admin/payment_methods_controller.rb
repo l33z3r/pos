@@ -9,9 +9,10 @@ class Admin::PaymentMethodsController < Admin::AdminController
       #send a reload request to other terminals
     request_sales_resources_reload @terminal_id
     
-    redirect_to admin_global_settings_path, :notice => 'Payment Method was successfully created.'
+    redirect_to admin_global_settings_path(:section => "payment_methods"), :notice => 'Payment Method was successfully created.'
     else
-      render :action => admin_global_settings_path
+      flash[:error] = "Error creating payment method: #{@payment_method.errors.full_messages}"
+      redirect_to admin_global_settings_path(:section => "payment_methods")
     end
   end
 
@@ -50,9 +51,10 @@ class Admin::PaymentMethodsController < Admin::AdminController
         end
       end
       
-      redirect_to admin_global_settings_path
+      redirect_to admin_global_settings_path(:section => "payment_methods")
     else
-      render admin_global_settings_path
+      flash[:error] = "Error updating payment method"
+      redirect_to admin_global_settings_path(:section => "payment_methods")
     end
   end
 
@@ -60,7 +62,7 @@ class Admin::PaymentMethodsController < Admin::AdminController
     #Don't allow deleting of last one
     if current_outlet.payment_methods.all.size == 1
       flash[:notice] = "You must have at least one payment method"
-      redirect_to admin_global_settings_path
+      redirect_to admin_global_settings_path(:section => "payment_methods")
       return
     end
     
@@ -85,7 +87,7 @@ class Admin::PaymentMethodsController < Admin::AdminController
     request_sales_resources_reload @terminal_id
     
     flash[:notice] = "Payment Method Deleted"
-    redirect_to admin_global_settings_path
+    redirect_to admin_global_settings_path(:section => "payment_methods")
   end
   
   def default

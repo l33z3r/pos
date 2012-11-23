@@ -65,7 +65,8 @@ DisplayButtonRole.ensure_hidden_buttons_restricted current_outlet
 
                       <% dbg.display_buttons.each do |db| %>
 
-                        <% next if ButtonMapper::RESTRICTED_BUTTON_IDS.include?(db.perm_id) or ButtonMapper::HIDDEN_BUTTON_IDS.include?(db.perm_id) %>
+                        <!-- we allow the user to see the ButtonMapper::HIDDEN_BUTTON_IDS here so they can set access control on them -->
+                        <% next if ButtonMapper::RESTRICTED_BUTTON_IDS.include?(db.perm_id) %>
 
                         <tr>
                           <td><%= button_text db %></td>

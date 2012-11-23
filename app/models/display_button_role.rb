@@ -8,7 +8,6 @@ class DisplayButtonRole < ActiveRecord::Base
     @dbrs = current_outlet.display_button_roles.where("role_id = ?", role_id).where("show_on_admin_screen = ?", true).where("display_buttons.perm_id != #{ButtonMapper::MORE_OPTIONS_BUTTON}").includes(:display_button)
     
     @dbrs = DisplayButtonRole.remove_unused_pm_shortcut_buttons @dbrs, current_outlet
-    DisplayButtonRole.remove_hidden_buttons @dbrs
     
     @dbrs
   end
@@ -20,7 +19,6 @@ class DisplayButtonRole < ActiveRecord::Base
           or (display_buttons.perm_id = #{ButtonMapper::MORE_OPTIONS_BUTTON} and role_id = #{Role::super_user_role_id(current_outlet)}))")
     
     DisplayButtonRole.remove_unused_pm_shortcut_buttons @dbrs, current_outlet
-    DisplayButtonRole.remove_hidden_buttons @dbrs
     
     @dbrs
   end
@@ -61,7 +59,6 @@ class DisplayButtonRole < ActiveRecord::Base
   end
   
   def self.remove_hidden_buttons dbrs
-    #take out the payment shortcut buttons if they have an id of 0
     @hidden_buttons = ButtonMapper::HIDDEN_BUTTON_IDS
     
     dbrs.keep_if do |dbr|
