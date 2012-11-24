@@ -394,7 +394,8 @@ function preventImageDrag(event){if(event.preventDefault){event.preventDefault()
 function preventOfflineHref(){if(!appOnline){appOfflinePopup();return false;}
 if(cacheDownloading){cacheDownloadingPopup();return false;}
 return true;}
-var pingTimeoutSeconds=20;var pingTimeoutMillis=pingTimeoutSeconds*1000;function pingHome(){$.ajax({url:"/ping?t="+new Date().getTime(),type:"GET",timeout:pingTimeoutMillis,success:function(){setConnectionStatus(true);},error:function(){setConnectionStatus(false);}});}
+var pingTimeoutSeconds=20;var pingTimeoutMillis=pingTimeoutSeconds*1000;var pingHomeInProgress=false;function pingHome(){if(pingHomeInProgress){return;}
+pingHomeInProgress=true;$.ajax({url:"/ping?t="+new Date().getTime(),type:"GET",timeout:pingTimeoutMillis,complete:function(){pingHomeInProgress=false;},success:function(){setConnectionStatus(true);},error:function(){setConnectionStatus(false);}});}
 function linkTerminal(outletTerminalName){showLoadingDiv("Linking terminal to "+outletTerminalName);$.ajax({url:"/link_terminal",type:"POST",error:function(){hideNiceAlert();var message="Error Linking Terminal";ModalPopups.Alert('niceAlertContainer',title,"<div id='nice_alert' class='nice_alert'>"+message+"</div>",{width:360,height:310,okButtonText:'Ok',onOk:"doReload(false)"});},complete:function(){showingTerminalSelectDialog=false;},data:{outletTerminalName:outletTerminalName}});}
 function unlinkTerminal(){var answer=confirm("Are you sure?");if(!answer){return;}
 showLoadingDiv("Unlinking terminal");$.ajax({url:"/unlink_terminal",type:"POST",error:function(){niceAlert("Error Unlinking Terminal");},complete:function(){hideNiceAlert();regenerateTerminalFingerprintCookie();}});}
