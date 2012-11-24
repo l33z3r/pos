@@ -405,7 +405,7 @@ class HomeController < ApplicationController
     @employee_id = params[:employee_id]
     @employee = current_outlet.employees.find(@employee_id)
     
-    @employee.last_login = Time.now
+    @employee.last_login = Time.zone.now
     
     update_last_active @employee
 
@@ -416,7 +416,7 @@ class HomeController < ApplicationController
     @employee_id = params[:employee_id]
     @employee = current_outlet.employees.find(@employee_id)
     
-    @employee.last_logout = Time.now
+    @employee.last_logout = Time.zone.now
     
     update_last_active @employee
 
@@ -951,7 +951,7 @@ class HomeController < ApplicationController
   end
   
   def update_last_active employee
-    employee.last_active = Time.now
+    employee.last_active = Time.zone.now
     employee.save!
   end
   
@@ -982,7 +982,7 @@ class HomeController < ApplicationController
   #it allows us to see what terminals are currently active
   def update_terminal_timestamp
     #@@terminal_id_gs is set in a before filter in application controller
-    @terminal_id_gs.updated_at = Time.now
+    @terminal_id_gs.updated_at = Time.zone.now
     @terminal_id_gs.save
   end
   

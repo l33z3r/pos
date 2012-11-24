@@ -90,7 +90,7 @@ function postSetConnectionStatus(connected) {
             $('#loading_orders_spinner').hide();             
         }
     } else {
-        $('body').removeClass("connected");
+        $('body').removeClass("disconnected");
     }
 }
 

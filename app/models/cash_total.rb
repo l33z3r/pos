@@ -58,7 +58,7 @@ class CashTotal < ActiveRecord::Base
       @cash_total_data[:business_info_data] = {}
       @cash_total_data[:business_info_data]["#{total_type} Report Number:"] = @next_report_num
       @cash_total_data[:business_info_data]["Terminal:"] = terminal_id
-      @cash_total_data[:business_info_data]["Date:"] = Time.now.strftime(GlobalSetting.default_date_format(current_outlet))
+      @cash_total_data[:business_info_data]["Date:"] = Time.zone.now.strftime(GlobalSetting.default_date_format(current_outlet))
       @cash_total_data[:business_info_data]["Performed By:"] = employee.nickname
     
       #insert a row if commit is true
@@ -319,7 +319,7 @@ class CashTotal < ActiveRecord::Base
       @customer_txns = current_outlet.customer_transactions.where("transaction_type = ?", CustomerTransaction::SETTLEMENT)
       .where("terminal_id = ?", terminal_id)
       .where("created_at >= ?", @last_z_total_time)
-      .where("created_at <= ?", Time.now)
+      .where("created_at <= ?", Time.zone.now)
     
       @customer_txns.all.each do |ct|
         @transaction_amount = ct.actual_amount
@@ -357,7 +357,7 @@ class CashTotal < ActiveRecord::Base
     
     @cash_outs = current_outlet.cash_outs.where("terminal_id = ?", terminal_id)
     .where("created_at >= ?", @last_z_total_time)
-    .where("created_at <= ?", Time.now)
+    .where("created_at <= ?", Time.zone.now)
     
     @serialized_cash_outs = []
     

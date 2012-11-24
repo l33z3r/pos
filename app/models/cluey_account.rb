@@ -73,7 +73,7 @@ class ClueyAccount < ActiveRecord::Base
   
   # Activates the user in the database.
   def activate
-    self.activated_at = Time.now.utc
+    self.activated_at = Time.zone.now.utc
     self.activation_code = nil
     save
   end

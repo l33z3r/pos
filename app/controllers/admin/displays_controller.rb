@@ -53,7 +53,7 @@ class Admin::DisplaysController < Admin::AdminController
   
   def duplicate
     @display_to_dup = current_outlet.displays.find(params[:id])
-    @new_display = Display.new({:outlet_id => current_outlet.id, :name => "#{@display_to_dup.name} (Copied: #{Time.now.to_s(:short)})"})
+    @new_display = Display.new({:outlet_id => current_outlet.id, :name => "#{@display_to_dup.name} (Copied: #{Time.zone.now.to_s(:short)})"})
     
     @new_display.save!
     

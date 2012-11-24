@@ -242,12 +242,12 @@ function preventOfflineHref() {
     return true;
 }
 
-var pingTimeoutSeconds = 60;
+var pingTimeoutSeconds = 20;
 var pingTimeoutMillis = pingTimeoutSeconds * 1000;
 
 function pingHome() {
     $.ajax({
-        url: "/ping",
+        url: "/ping?t=" + new Date().getTime(),
         type : "GET",
         timeout: pingTimeoutMillis,
         success: function() {
