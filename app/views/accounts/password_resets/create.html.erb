@@ -1,5 +1,7 @@
-<% if @success %>
-  An email has been sent to <%= @entered_email %> with password reset instructions.
-<% else %>
-  Email address <%= @entered_email %> is not valid for account <%= @cluey_account.name %> 
-<% end %>
+<div class="header">Password Reset Email Sent</div>
+
+<div class="main_content">
+  <p>
+    An email has been sent to <%= @entered_email %> with password reset instructions.
+  </p>
+</div>

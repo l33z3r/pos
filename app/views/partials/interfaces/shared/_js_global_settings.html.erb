@@ -73,7 +73,7 @@
   var CUSTOMER_MENU_SCREEN = <%= GlobalSetting::CUSTOMER_MENU_SCREEN %>;
   
   //this is for the order ready notifications on mobile
-  var lastOrderReadyNotificationTime = <%= now_millis %>;
+  var lastOrderReadyNotificationTime = <%= now_local_millis %>;
   
   var autoPrintReceipt = <%= @auto_print_receipt %>;
   
@@ -150,7 +150,7 @@
   var allDevicesOrderNotification = <%= GlobalSetting.parsed_setting_for GlobalSetting::All_DEVICES_ORDER_NOTIFICATION, current_outlet %>;
   
   //these variables are used to get a syncronised time on each device
-  var serverCounterStartTimeMillis = <%= now_millis %>;
+  var serverCounterStartTimeMillis = <%= now_local_millis %>;
   var counterStartTimeMillis = new Date().getTime();
   
   //payment integration IDs
@@ -197,6 +197,7 @@
   var globalAutoPromptForCovers = <%= GlobalSetting.parsed_setting_for GlobalSetting::PROMPT_FOR_COVERS, current_outlet %>;
   
   var clueyUserId = <%= Employee.cluey_user(current_outlet).id %>;
+  var chefUserId = <%= Employee.chef_user(current_outlet).id %>;
   
   var printLocalDeliveryReceipts = <%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_LOCAL_RECIEVE_DELIVERY, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
   

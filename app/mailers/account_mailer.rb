@@ -1,12 +1,12 @@
 class AccountMailer < ActionMailer::Base
-  MAILER_FROM_ADDRESS = "support@#{APP_DOMAIN}"
+  MAILER_FROM_ADDRESS = "support@#{APP_DOMAIN + APP_PORT}"
 
   def welcome cluey_account
     @subject        = "Welcome to Cluey!"
     @body['cluey_account']   = cluey_account
     @from           = MAILER_FROM_ADDRESS
     @recipients     = cluey_account.email
-    @host = "#{cluey_account.name}-#{default_url_options[:host]}"
+    @host = "#{cluey_account.name}.-#{default_url_options[:host]}"
     content_type "text/html"
   end
   
@@ -15,7 +15,7 @@ class AccountMailer < ActionMailer::Base
     @body['cluey_account']   = cluey_account
     @from           = MAILER_FROM_ADDRESS
     @recipients     = cluey_account.email
-    @host = "#{cluey_account.name}-#{default_url_options[:host]}"
+    @host = "#{cluey_account.name}.#{default_url_options[:host]}"
     content_type "text/html"
   end
   
@@ -24,7 +24,7 @@ class AccountMailer < ActionMailer::Base
     @body['cluey_account']   = cluey_account
     @from           = MAILER_FROM_ADDRESS
     @recipients     = cluey_account.email
-    @host = "#{cluey_account.name}-#{default_url_options[:host]}"
+    @host = "#{cluey_account.name}.#{default_url_options[:host]}"
     content_type "text/html"
   end
   

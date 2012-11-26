@@ -1,0 +1,33 @@
+<%- @hide_header_logo = true %>
+
+<div id="not_firefox_page">
+  <div id="left_column">
+    <%= image_tag "accounts/header_logo.png", :class => "cluey_logo" %>
+
+    <div id="girl_1_container">
+      <%= image_tag "accounts/girl_1.png", :class => "girl_1" %>
+    </div>
+  </div>
+
+  <div id="right_column">
+    <div id="header_1">
+      Sorry, but your browser is not supported.
+    </div>
+
+    <div id="ff_blurb_container">
+      <div id="text">
+        You need to use Firefox which is a very popular browser.</br>
+        It is available for your computer for free.</br>
+        Click below to install.</br>
+      </div>
+
+      <%= image_tag "accounts/firefox_brand.png" %>
+
+      <div id="download_link">
+        <%= link_to "Download", "http://www.mozilla.org/en-US/firefox/new" %>
+      </div>
+    </div>
+
+    <%= link_to "OK", "http://www.mozilla.org/en-US/firefox/new", :id => "ok_button", :class => "big_blue_button_1" %>
+
+  </div>

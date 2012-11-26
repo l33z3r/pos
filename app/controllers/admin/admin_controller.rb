@@ -8,6 +8,7 @@ class Admin::AdminController < ApplicationController
   
   def load_more_options_buttons_for_role
     @more_options_buttons_dbrs = DisplayButtonRole.admin_screen_buttons_for_role(current_outlet, current_employee.role.id)
+    @more_options_buttons_dbrs = DisplayButtonRole.remove_hidden_buttons @more_options_buttons_dbrs
   end
   
   def check_logged_in

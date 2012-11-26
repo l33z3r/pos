@@ -39,7 +39,7 @@ function menuScreenDropdownItemSelected(index, name) {
         if(typeof(display_button_passcode_permissions[parseInt(priceChangeButtonID)]) != 'undefined') {
             startPriceChangeMode();
         } else {
-            niceAlert("You do not have permission to change prices!");
+            niceAlert("You do not have permission to change prices");
         }
         
         return;
@@ -63,7 +63,7 @@ function menuScreenDropdownItemSelected(index, name) {
         if(typeof(display_button_passcode_permissions[parseInt(deliveryButtonID)]) != 'undefined') {
             startDeliveryMode();
         } else {
-            niceAlert("You do not have permission to take a delivery!");
+            niceAlert("You do not have permission to take a delivery");
         }
         
         return;
@@ -72,7 +72,7 @@ function menuScreenDropdownItemSelected(index, name) {
         if(typeof(display_button_passcode_permissions[parseInt(cashOutButtonID)]) != 'undefined') {
             showCashOutSubscreen();
         } else {
-            niceAlert("You do not have permission to pay expenses!");
+            niceAlert("You do not have permission to pay expenses");
         }
         
         return;
@@ -92,7 +92,7 @@ function startPriceChangeMode() {
     }
     
     if(inStockTakeMode) {
-        niceAlert("Please finish checking stock first!");
+        niceAlert("Please finish checking stock first");
         return;
     }
     
@@ -162,12 +162,12 @@ function loadPriceChangeReceiptArea(productId, menuItemId) {
 
 function startStockTakeMode() {
     if(!appOnline) {
-        niceAlert("Server cannot be contacted. Stock mode is disabled until connection re-established.");
+        niceAlert("Server cannot be contacted. Stock mode is disabled until connection re-established");
         return;
     }
     
     if(inPriceChangeMode) {
-        niceAlert("Please finish changing prices first!");
+        niceAlert("Please finish changing prices first");
         return;
     }
     
@@ -220,21 +220,21 @@ function loadPriceDivs(pageNum, subPageId) {
 
 function updatePrice() {
     if(currentPriceChangeProductId == null) {
-        setStatusMessage("Please select a product!", true, true);
+        setStatusMessage("Please select a product", true, true);
         return;
     }
     
     new_price_string = $('#price_change_new_price_input').val();
     
     if(isNaN(new_price_string)) {
-        setStatusMessage("Please enter a number!", true, true);
+        setStatusMessage("Please enter a number", true, true);
         return;
     }
 
     new_price = parseFloat(new_price_string);
     
     if(oldPriceValue == new_price) {
-        setStatusMessage("Please enter a new amount!", true, true);
+        setStatusMessage("Please enter a new amount", true, true);
         return;
     } else {
         $.ajax({
@@ -256,7 +256,7 @@ var oldStockValue = null;
 function loadStockTakeReceiptArea(productId, menuItemId) {
     //if this is not a stock item, then ignore
     if(!products[productId].is_stock_item) {
-        setStatusMessage("This is not a stock item.");
+        setStatusMessage("This is not a stock item");
         return;
     }
     
@@ -291,21 +291,21 @@ function loadStockDivs(pageNum, subPageId) {
 
 function updateStock(type) {
     if(currentStockTakeProductId == null) {
-        setStatusMessage("Please select a product!", true, true);
+        setStatusMessage("Please select a product", true, true);
         return;
     }
     
     new_amount_string = $('#stock_take_new_amount_input').val();
     
     if(isNaN(new_amount_string)) {
-        setStatusMessage("Please enter a number!", true, true);
+        setStatusMessage("Please enter a number", true, true);
         return;
     }
 
     new_amount = parseFloat(new_amount_string);
     
     if(oldStockValue == new_amount) {
-        setStatusMessage("Please enter a new amount!", true, true);
+        setStatusMessage("Please enter a new amount", true, true);
         return;
     } else {
         $.ajax({

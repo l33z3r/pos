@@ -22,7 +22,7 @@ class Admin::TaxRatesController < Admin::AdminController
       #send a reload request to other terminals
       request_sales_resources_reload @terminal_id
     
-      flash[:notice] = "Tax Rates Updated!"
+      flash[:notice] = "Tax Rates Updated"
       redirect_to admin_global_settings_path
     else
       render admin_global_settings_path
@@ -32,7 +32,7 @@ class Admin::TaxRatesController < Admin::AdminController
   def destroy
     #Don't allow deleting of last one
     if current_outlet.tax_rates.all.size == 1
-      flash[:notice] = "You must have at least one tax rate!"
+      flash[:notice] = "You must have at least one tax rate"
       redirect_to admin_global_settings_path
       return
     end
@@ -43,7 +43,7 @@ class Admin::TaxRatesController < Admin::AdminController
     #send a reload request to other terminals
     request_sales_resources_reload @terminal_id
     
-    flash[:notice] = "Tax Rate Deleted!"
+    flash[:notice] = "Tax Rate Deleted"
     redirect_to admin_global_settings_path
   end
   

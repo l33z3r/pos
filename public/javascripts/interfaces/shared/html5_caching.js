@@ -72,7 +72,7 @@ $(appCache).bind(
         console.log("All files downloaded");
         
         //this is the first dl of the cache so we must do some things
-        setStatusMessage("Sales interface has been saved for offline use!");
+        setStatusMessage("Sales interface has been saved for offline use");
         cacheDownloading = false;
         cacheDownloadReset();
     }
@@ -89,6 +89,7 @@ $(appCache).bind(
         // Swap out the old cache.
         appCache.swapCache();
         cacheDownloadReset();
+        cacheDownloading = false;
         indicateActionRequired(alertCacheReloadRequest);
     }
     );
@@ -107,7 +108,7 @@ $(appCache).bind(
     function(event) {
         //if we are offline, there is no need to display the error notice
         if(appOnline) {
-            niceAlert("An error occurred while downloading the latest cache. You may be using a stale version. Try reloading the app.");
+            niceAlert("An error occurred while downloading the latest cache. You may be using a stale version. Try reloading the app");
         
             //reset some things
             cacheDownloading = false;

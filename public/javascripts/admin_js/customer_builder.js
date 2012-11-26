@@ -164,9 +164,15 @@ function doToggleGenerateSwipeCardCode(radioEl) {
     if(selectedVal == "swipe_card") {
         $('#customer_swipe_card_code').attr("disabled", false);
         $('#customer_customer_number').attr("disabled", true);
+        
+        $('#blank_customer_customer_number').attr("disabled", false);
+        $('#blank_customer_swipe_card_code').attr("disabled", true);
     } else {
         $('#customer_swipe_card_code').attr("disabled", true);
         $('#customer_customer_number').attr("disabled", false);
+                
+        $('#blank_customer_customer_number').attr("disabled", true);
+        $('#blank_customer_swipe_card_code').attr("disabled", false);
     }
 }
 

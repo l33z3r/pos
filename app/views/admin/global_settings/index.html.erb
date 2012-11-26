@@ -41,8 +41,8 @@
           <li><a id="payment_methods_section_link" href="#payment_methods_section">Payment Methods</a></li>
           <li><a id="receipt_footers_section_link" href="#receipt_footers_section">Receipt Footers</a></li>
           <li><a id="tax_rates_section_link" href="#tax_rates_section">Sales Tax Rates</a></li>
-          <li><a id="loyalty_levels_section_link" href="#loyalty_levels_section">Loyalty Levels</a></li>
-          <li><a id="cash_out_presets_section_link" href="#cash_out_presets_section">Cash Out Presets</a></li>
+          <li><a id="loyalty_levels_section_link" href="#loyalty_levels_section">Loyalty</a></li>
+          <li><a id="cash_out_presets_section_link" href="#cash_out_presets_section">Expenses Pre-sets</a></li>
           <li><a id="discounts_section_link" href="#discounts_section_section">Discounts</a></li>
           <li><a id="coursing_section_link" href="#coursing_section">Coursing</a></li>
           <li><a id="price_level_labels_section_link" href="#coursing_section">Price Levels</a></li>
@@ -947,7 +947,7 @@
 
         <div class="container" id="#cash_out_presets_section">
           <div class="jscrollpane">
-            <h4>Current Cash Out Presets</h4>
+            <h4>Current Expenses Pre-sets</h4>
 
             <%= form_tag update_multiple_admin_cash_out_presets_path do %>
 
@@ -979,7 +979,7 @@
 
             <% end %>
 
-            <h4>New Cash Out Preset</h4>
+            <h4>New Expenses Pre-set</h4>
 
             <%= form_for [:admin, CashOutPreset.new] do |f| %>
 
@@ -1807,54 +1807,6 @@
                     </td>
                     <td class="text_align_left">
                       <input type="text" value="<%= request.remote_ip %>" size="30" disabled="true"/>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Global Authentication Required?</td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::AUTHENTICATION_REQUIRED, current_outlet %>
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
-                      <div class="label">Yes</div>
-                      <div class="clear">&nbsp;</div>
-
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
-                      <div class="label">No</div>
-                      <div class="clear">&nbsp;</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Local Authentication Required?</td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::LOCAL_AUTHENTICATION_REQUIRED, current_outlet %>
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="true" <%= @gs.parsed_value ? "checked" : "" %>/>
-                      <div class="label">Yes</div>
-                      <div class="clear">&nbsp;</div>
-
-                      <input type="radio" name="global_settings[<%=@gs.id%>][value]" 
-                             value="false" <%= !@gs.parsed_value ? "checked" : "" %>/>
-                      <div class="label">No</div>
-                      <div class="clear">&nbsp;</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>App HTTP Authentication Username</td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::HTTP_AUTH_USERNAME, current_outlet %>
-                      <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.text_field :value %>
-                      <% end %>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>App HTTP Authentication Password</td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::HTTP_AUTH_PASSWORD, current_outlet %>
-                      <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.text_field :value %>
-                      <% end %>
                     </td>
                   </tr>
                   <tr>

@@ -4,7 +4,6 @@ Pos::Application.routes.draw do
   match "build_assets" => "home#build_assets"
   
   #cluey account routes
-  match 'welcome' => "accounts/accounts#welcome", :as => "welcome"
   get "account_log_out" => "accounts/sessions#destroy", :as => "account_log_out"    
   get "account_log_in" => "accounts/sessions#new", :as => "account_log_in"
   get "account_sign_up" => "accounts/accounts#new", :as => "account_sign_up"
@@ -12,7 +11,14 @@ Pos::Application.routes.draw do
   namespace :accounts do
     resources :accounts, :only => [:new, :create, :index] do
       collection do
+        get 'account_not_found'
+        get 'outlet_not_found'
         get 'activate'
+        get 'contact'
+        get 'privacy'
+        get 'terms' 
+        get 'browser_not_supported'
+        get 'pricing'
       end
     end
     
@@ -27,6 +33,10 @@ Pos::Application.routes.draw do
     end
     
     resources :reports, :only => [:index]
+  end
+  
+  namespace :cluey_admin do
+    resources :sessions, :only => [:new, :create, :destroy]
   end
 
   #js error logging
@@ -68,7 +78,8 @@ Pos::Application.routes.draw do
   post "kitchen/order_ready"
   
   #routes for mobile app
-  match 'mbl' => "home#mobile_index"
+  match 'manager' => "home#mobile_index"
+  match 'mbl' => "home#medium_home"
   match 'last_receipt_for_terminal' => "home#last_receipt_for_terminal"
   match 'last_receipt_for_server' => "home#last_receipt_for_server"
   match 'last_receipt_for_table' => "home#last_receipt_for_table"
@@ -110,9 +121,6 @@ Pos::Application.routes.draw do
   match 'break_in' => "home#break_in", :via => :post
   match 'break_out' => "home#break_out", :via => :post
   match 'print_work_report' => "home#print_work_report", :via => :post
-  
-  #sync info page
-  get 'sync_info' => "admin/home#sync_info"
   
   # admin homepage
   match 'admin' => "admin/home#index"

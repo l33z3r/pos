@@ -1,4 +1,6 @@
 class Customer < ActiveRecord::Base
+  include AccountsHelper
+  
   belongs_to :outlet
   
   has_many :customer_points
@@ -30,6 +32,8 @@ class Customer < ActiveRecord::Base
   attr_accessor :is_loyalty_customer
   attr_accessor :is_normal_customer
   
+  before_save :generate_customer_number_or_swipe_card_code
+  
   def self.customer_type_options_for_select
     @options = []
     
@@ -40,40 +44,33 @@ class Customer < ActiveRecord::Base
     @options
   end
   
-  def customer_number=(c_num)
-    if c_num.blank?
-      @card_code = ""  
-    else
-      @swipe_card_prefix = GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_CARD_PREFIX, current_outlet
+  def generate_customer_number_or_swipe_card_code
+    if self.swipe_card_code.blank?
+      #we must load current outlet manually here as we do not have access to session data
+      @current_outlet = Outlet.find_by_id self.outlet_id
+      @swipe_card_prefix = GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_CARD_PREFIX, @current_outlet
     
       @customer_number_prefix = "10000000"
     
-      @end_index = @customer_number_prefix.length - c_num.length - 1
-      @card_code = @swipe_card_prefix + @customer_number_prefix[0..@end_index] + c_num + "?C"
-    end
-    
-    write_attribute("swipe_card_code", @card_code)
-    write_attribute("customer_number", c_num)
-  end
-  
-  def swipe_card_code=(card_code)
-    if card_code.blank?
-      @customer_number = nil
+      @customer_number = self.customer_number.to_s
+      
+      @end_index = @customer_number_prefix.length - @customer_number.length - 1
+      @card_code = @swipe_card_prefix + @customer_number_prefix[0..@end_index] + @customer_number + "?C"
+      
+      self.swipe_card_code = @card_code
     else
-      @swipe_card_prefix = GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_CARD_PREFIX, current_outlet
-    
+      #we must load current outlet manually here as we do not have access to session data
+      @current_outlet = Outlet.find_by_id self.outlet_id
+      @swipe_card_prefix = GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_CARD_PREFIX, @current_outlet
+      
       @customer_number_prefix = "10000000"
     
       @start_index = @swipe_card_prefix.length + 1
       @end_index = @start_index + @customer_number_prefix.length - 2
       
-      @customer_number = card_code[@start_index..@end_index]
-    end
-    
-    write_attribute("swipe_card_code", card_code)
-    
-    if @customer_number
-      write_attribute("customer_number", @customer_number)
+      @customer_number = self.swipe_card_code[@start_index..@end_index]
+      
+      self.customer_number = @customer_number
     end
   end
   

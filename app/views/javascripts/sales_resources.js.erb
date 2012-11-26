@@ -122,7 +122,7 @@ var loyaltyCustomersByCode = {};
   if(customer_info.is_loyalty_customer) {
   loyaltyCustomers[customer_info.id] = customer_info;
 
-  var loyaltyCardCodeStripped = customer_info.swipe_card_code.substring(0, 12);
+  var loyaltyCardCodeStripped = customer_info.swipe_card_code;//.substring(0, 12);
 
   loyaltyCustomersByCode[loyaltyCardCodeStripped] = customer_info;
   }
@@ -172,6 +172,11 @@ var employees = new Array();
   }
 
   employees.push(employee_info);
+  
+  //make sure all users are clocked in
+  if(typeof(initClockedInUsers) != "undefined") {
+    initClockedInUsers();
+  }
 
 <% end -%>
 

@@ -101,15 +101,15 @@ function viewByServerClicked(){if(checkInitDataDownload()){jQT.goTo('#server_lis
 function mobileLoginScreenKeypadClick(val){newVal=$('#num').val().toString()+val;$('#clockincode_show').html($('#clockincode_show').html()+"*");$('#num').val(newVal);}
 function doCancelMobileLoginKeypad(){$('#clockincode_show').html("");$('#num').val("");}
 function doMobileLogin(){if(typeof(employees)=="undefined"){setMobileStatusMessage("Please wait while employee list loads");return;}
-entered_code=$('#num').val();if(current_user_id!=null){displayMobileError("You are already logged in. Please log out!");return;}
+entered_code=$('#num').val();if(current_user_id!=null){displayMobileError("You are already logged in. Please log out");return;}
 for(var i=0;i<employees.length;i++){passcode=employees[i].passcode;if(entered_code==passcode){nickname=employees[i].nickname;id=employees[i].id
 is_admin=employees[i].is_admin;mobileLoginSuccess(id,nickname,is_admin,passcode);return;}}
 mobileLoginFailure();}
 function mobileLoginSuccess(id,nickname,is_admin,passcode){current_user_id=id;current_user_nickname=nickname;current_user_is_admin=is_admin;current_user_passcode=passcode;storeActiveUserID(current_user_id);$.ajax({type:'POST',url:'/login',data:{employee_id:id}});$('#e_name').html(nickname);$('#e_name').show();hideMobileStatusMessage();showMobileMenuScreen();clearMobileLoginCode();}
-function mobileLoginFailure(){setMobileStatusMessage("Wrong Pin Code!");clearMobileLoginCode();}
+function mobileLoginFailure(){setMobileStatusMessage("Wrong Pin Code");clearMobileLoginCode();}
 function clearMobileLoginCode(){$('#num').val("");$('#clockincode_show').html("");}
 function doMobileLogout(){if(current_user_id==null){return;}
-var id_for_logout=current_user_id;current_user_id=null;storeActiveUserID(null);setMobileStatusMessage("Logged Out!");showMobileLoginScreen();clearMobileLoginCode();$.ajax({type:'POST',url:'/logout',data:{employee_id:id_for_logout}});}
+var id_for_logout=current_user_id;current_user_id=null;storeActiveUserID(null);setMobileStatusMessage("Logged Out");showMobileLoginScreen();clearMobileLoginCode();$.ajax({type:'POST',url:'/logout',data:{employee_id:id_for_logout}});}
 function setMobileStatusMessage(message,hide){if(typeof hide=="undefined"){hide=true;}
 hide=false;if(currentScreenIsMobileLogin()){statusEl=$('#login_screen_status_message')}else if(currentScreenIsMobileMenu()){statusEl=$('#menu_screen_status_message');}else{statusEl=$('#menu_screen_status_message')}
 afterFunction=null;if(hide){afterFunction=function(){setTimeout(function(){statusEl.fadeOut();},5000);};}
@@ -126,5 +126,5 @@ function clearTerminalRecpt(){$('#mobile_terminal_till_roll').html("");}
 function clearServerRecpt(){$('#mobile_server_till_roll').html("");}
 function clearTableRecpt(){$('#mobile_table_till_roll').html("");}
 function renderMobileActiveTableList(){var tableIDS=getActiveTableIDS();$('ul li.table_list_item').each(function(){$(this).hide();});for(var i=0;i<tableIDS.length;i++){console.log("Open order in table "+tableIDS[i]);$('#table_'+tableIDS[i]+'_list_item').show();}}
-function checkInitDataDownload(){if(!callHomePollInitSequenceComplete){niceAlert("Downloading data from server, please wait.");return false;}
+function checkInitDataDownload(){if(!callHomePollInitSequenceComplete){niceAlert("Downloading data from server, please wait");return false;}
 return true;}

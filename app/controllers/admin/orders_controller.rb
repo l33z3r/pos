@@ -4,8 +4,8 @@ class Admin::OrdersController < Admin::AdminController
     @all_terminals = all_terminals
     @all_servers = all_servers
     
-    @todaysDateFormatted = Date.today.strftime("%d-%m-%Y")
-    @tomorrowsDateFormatted = Date.tomorrow.midnight.strftime("%d-%m-%Y")
+    @todaysDateFormatted = Time.zone.now.strftime("%d-%m-%Y")
+    @tomorrowsDateFormatted = (Time.zone.now + 1.day).midnight.strftime("%d-%m-%Y")
     
     #do we have date search params?
     if params[:search] and params[:search][:created_at_lte] and !params[:search][:created_at_lte].empty?

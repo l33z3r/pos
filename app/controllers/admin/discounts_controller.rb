@@ -22,7 +22,7 @@ class Admin::DiscountsController < Admin::AdminController
       #send a reload request to other terminals
       request_sales_resources_reload @terminal_id
     
-      flash[:notice] = "Discounts Updated!"
+      flash[:notice] = "Discounts Updated"
       redirect_to admin_global_settings_path
     else
       render admin_global_settings_path
@@ -36,7 +36,7 @@ class Admin::DiscountsController < Admin::AdminController
     @discount = current_outlet.discounts.find(params[:id])
     @discount.destroy
 
-    flash[:notice] = "Discount Deleted!"
+    flash[:notice] = "Discount Deleted"
     redirect_to admin_global_settings_path
   end
   

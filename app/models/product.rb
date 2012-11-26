@@ -137,7 +137,7 @@ class Product < ActiveRecord::Base
   end
   
   def mark_as_deleted
-    self.name += "_deleted_#{Time.now.to_i}"
+    self.name += "_deleted_#{Time.zone.now.to_i}"
     self.is_deleted = true
     save!
     

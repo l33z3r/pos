@@ -67,6 +67,10 @@ function callHomePoll() {
         return;
     }
     
+    if(pollInProgress) {
+        return;
+    }
+    
     //load/store the timestamp for table sync
     if(lastSyncTableOrderTime == null) {
         //read it from web db
@@ -123,6 +127,8 @@ function callHomePoll() {
         currentTerminalRecptHTML = getCurrentRecptHTML();
     }
     
+    startClock();
+    
     currentTableLabel = "";
     
     if(selectedTable != previousOrderTableNum && selectedTable != tempSplitBillTableNum && selectedTable != 0) {
@@ -135,12 +141,15 @@ function callHomePoll() {
         url: callHomeURL,
         type : "POST",
         dataType: 'script',
-        success: callHomePollComplete,
-        error: function() {
-            setTimeout(callHomePoll, 5000);
-        },
-        complete: function() {
+        success: function() {
+            //this cant go in a complete handler as it gets called too late
             pollInProgress = false;
+            callHomePollComplete();
+        },
+        error: function() {
+            //this cant go in a complete handler as it gets called too late
+            pollInProgress = false;
+            setTimeout(callHomePoll, 20000);
         },
         data : {
             lastInterfaceReloadTime : lastInterfaceReloadTime,
@@ -160,6 +169,7 @@ function manualCallHomePoll() {
 }
 
 var immediateCallHome = false;
+var performHardReloadAtCallHomePollInitSequenceComplete = false;
 
 function callHomePollComplete() {
     if(immediateCallHome) {
@@ -168,6 +178,12 @@ function callHomePollComplete() {
         if(!callHomePollInitSequenceComplete) {
             callHomePollInitSequenceComplete = true;
             callHomePollInitSequenceCompleteHook();
+            
+            //do we need to do a hard reload after the init sequence?
+            //we don't do this to mobile as that does it itself at startup
+            if(performHardReloadAtCallHomePollInitSequenceComplete && !inMediumInterface()) {
+                alertHardReloadRequest();
+            }
         }
         
         //show the receipts now that they are all rendered
@@ -176,8 +192,11 @@ function callHomePollComplete() {
             finishedLoadingKitchenScreen();
         } else if(inLargeInterface()) {
         //we do manual polling now
+        //setTimeout(callHomePoll, pollingAmount);
         } else if(inMediumInterface()) {
-            setTimeout(callHomePoll, pollingAmount);
+            swipeToMenu();
+            //we do manual polling now
+            //setTimeout(callHomePoll, pollingAmount);
         }                
     }
 }
@@ -223,12 +242,12 @@ function preventOfflineHref() {
     return true;
 }
 
-var pingTimeoutSeconds = 60;
+var pingTimeoutSeconds = 20;
 var pingTimeoutMillis = pingTimeoutSeconds * 1000;
 
 function pingHome() {
     $.ajax({
-        url: "/ping",
+        url: "/ping?t=" + new Date().getTime(),
         type : "GET",
         timeout: pingTimeoutMillis,
         success: function() {
@@ -249,7 +268,7 @@ function linkTerminal(outletTerminalName) {
         error: function() {
             hideNiceAlert();
         
-            var message = "Error Linking Terminal!";
+            var message = "Error Linking Terminal";
         
             ModalPopups.Alert('niceAlertContainer',
                 title, "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
@@ -282,7 +301,7 @@ function unlinkTerminal() {
         url: "/unlink_terminal",
         type : "POST",
         error: function() {
-            niceAlert("Error Unlinking Terminal!");
+            niceAlert("Error Unlinking Terminal");
         },
         complete: function() {
             hideNiceAlert();

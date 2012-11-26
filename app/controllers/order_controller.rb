@@ -105,7 +105,7 @@ class OrderController < ApplicationController
       
     if @table
       @order_num = params[:order_num]
-      do_request_clear_table_order @terminal_id, now_millis, @table_id, @order_num, e
+      do_request_clear_table_order @terminal_id, now_local_millis, @table_id, @order_num, e
     end
     
     render :json => {:success => true}.to_json
@@ -134,7 +134,7 @@ class OrderController < ApplicationController
     
         if @table_from
           @table_from_order_num = params[:table_from_order_num] 
-          do_request_clear_table_order @terminal_id, now_millis, @table_from_id, @table_from_order_num, e
+          do_request_clear_table_order @terminal_id, now_local_millis, @table_from_id, @table_from_order_num, e
         else
           @error = true
         end
@@ -151,9 +151,16 @@ class OrderController < ApplicationController
       @order_params = order_params
       @order_details = @order_params.delete(:order_details)
     
+      #convert the time_started timestamp to a date
+      @time_started_utc_millis = GlobalSetting.local_millis_to_utc_millis(@order_params["time_started"])
+      @new_order_time_started = Time.zone.at(@time_started_utc_millis/1000)
+      
+      @order_params.delete(:time_started)
+      @order_params[:date_started] = @new_order_time_started
+      
       #make sure we have not already cashed this order out. 
       #We use a combination of terminal ID and time started to uniquely identify orders
-      @existing_order = current_outlet.orders.where("terminal_id = ?", @terminal_id).where("time_started = ?", order_params["time_started"])
+      @existing_order = current_outlet.orders.where("terminal_id = ?", @terminal_id).where("date_started = ?", @new_order_time_started)
       
       if !@existing_order.empty?
         #simply ignore the order
@@ -273,8 +280,9 @@ class OrderController < ApplicationController
         @order_item.tax_rate = item[:tax_rate]
       
         #the time it was added to the order
-        @order_item.time_added = item[:time_added]
-
+        @time_added_utc_millis = GlobalSetting.local_millis_to_utc_millis(item[:time_added])
+        @order_item.date_added = Time.zone.at(@time_added_utc_millis/1000)
+        
         #do we want to show the serveraddeditem text
         @order_item.show_server_added_text = item[:showServerAddedText]
       
@@ -385,7 +393,7 @@ class OrderController < ApplicationController
       #only do this if that table still exists!
       if @order.is_table_order and @table_info and !@is_split_bill_order
         @employee_id = @order_params['employee_id']
-        do_request_clear_table_order @terminal_id, now_millis, @order.table_info_id, @order.order_num, @employee_id
+        do_request_clear_table_order @terminal_id, now_local_millis, @order.table_info_id, @order.order_num, @employee_id
         
         #record the room number in the order
         @order.room_id = @table_info.room_object.room.id

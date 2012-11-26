@@ -14,6 +14,7 @@ var activeUserIDCookieName = "current_user_id";
 var serverCounterStartTimeMillis = null;
 var counterStartTimeMillis = null;
 var clueyTimestampInitializedFromServer = false;
+var clueyTimestampStorageKey = "last_initialized_cluey_timestamp";
 
 function isTouchDevice() {
     return !disableAdvancedTouch;
@@ -474,6 +475,19 @@ function storeActiveTableIDS(activeTableIDS) {
     storeKeyValue(activeTableIDSStorageKey, activeTableIDSString);
 }
 
+function storeCurrentClueyTimestamp() {
+    var clueyTimestampJSON = {
+        "clueyTimestamp" : clueyTimestamp(),
+        "localTimestamp" : new Date().getTime()
+    }
+    
+    storeKeyJSONValue(clueyTimestampStorageKey, clueyTimestampJSON);
+}
+
+function getCurrentClueyTimestamp() {
+    return retrieveStorageJSONValue(clueyTimestampStorageKey);
+}
+
 function addActiveTable(tableID) {
     activeTableIDS = getActiveTableIDS();
     
@@ -653,8 +667,12 @@ function inDevMode() {
     return railsEnvironment == 'development';
 }
 
-function inProdMode() {
-    return railsEnvironment != 'development';
+function inHerokuStagingMode() {
+    return railsEnvironment == 'heroku_staging';
+}
+
+function inHerokuProductionMode() {
+    return railsEnvironment == 'heroku_production';
 }
 
 function inKioskMode() {
@@ -914,24 +932,56 @@ function initClueyTimestampFromServer(serverStartTimeMillis) {
         clueyTimestampInitializedFromServer = true;
         serverCounterStartTimeMillis = serverStartTimeMillis;
         counterStartTimeMillis = new Date().getTime();
+        
+        //store the cluey timestamp and the local time so that we can figure out the clueyTimestamp if we are offline next time
+        storeCurrentClueyTimestamp();
+        
         startClock();
     }
 }
 
+//this returns a timestamp in the users timezone NOT in UTC
 function clueyTimestamp() {
     if(clueyTimestampInitializedFromServer) {
-    return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
-    } else 
-        return new Date().getTime();
+        return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
+    } else {
+        //load the stored clueyTimestamp and work out the dates by subtracting the local time from the stored local time
+        var nowLocalMillis = new Date().getTime();
+        
+        var currentClueyTimestampJSON = getCurrentClueyTimestamp();
+        
+        //if we have never stored a timestamp
+        if(currentClueyTimestampJSON == null) {
+            return 0;
+        }
+        
+        var storedClueyTimestamp = currentClueyTimestampJSON.clueyTimestamp;
+        var storedLocalTimestamp = currentClueyTimestampJSON.localTimestamp;
+        
+        var offlineClueyTimestamp = nowLocalMillis - storedLocalTimestamp + storedClueyTimestamp
+        
+        return offlineClueyTimestamp;
+    }
 }
 
+var currentClockEl = null;
+
 function startClock() {
+    //remove the old clock so that two clocks are not running
+    if(currentClockEl) {
+        currentClockEl.remove();
+    }
+    
+    //insert the clock
+    $("div#clock").append("<span id='jq_clock'></span>");
+    currentClockEl = $("div#clock span#jq_clock");
+    
     //start the clock in the nav bar
-        $("div#clock").clock({
-            "calendar" : "false",
-            "format" : clockFormat,
-            "timestamp" : clueyTimestamp()
-        });
+    $("span#jq_clock").clock({
+        "calendar" : "false",
+        "format" : clockFormat,
+        "timestamp" : clueyTimestamp()
+    });
 }
 
 var ignoreReloadRequest = false;
@@ -948,22 +998,12 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
     //must write the last reload time to cookie here so that the reload message does not keep popping up
     writeLastReloadTimeCookie();
     
-    var timeoutSeconds = 5;
-    
     if(hardReload) {
-        message = "A hard reset has been requested by " + reloadTerminalId + ". Screen will reload in " + timeoutSeconds + " seconds.";
-        okFuncCall = "doClearAndReload();";
-        
-        ModalPopups.Alert('niceAlertContainer',
-            "Please Reload Screen", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
-            {
-                width: 360,
-                height: 280,
-                okButtonText: 'Reload Now',
-                onOk: okFuncCall
-            });
-        
-        setTimeout(okFuncCall, timeoutSeconds * 1000);
+        if(!callHomePollInitSequenceComplete) {
+            performHardReloadAtCallHomePollInitSequenceComplete = true;
+        } else {
+            alertHardReloadRequest();
+        }
     } else {
         var functionToPerform = function() {
             promptReloadSalesResources(reloadTerminalId);
@@ -973,8 +1013,26 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
     }
 }
 
+function alertHardReloadRequest() {
+    var timeoutSeconds = 5;
+    
+    var message = "A hard reset has been requested. Screen will reload in " + timeoutSeconds + " seconds";
+    var okFuncCall = "doClearAndReload();";
+        
+    ModalPopups.Alert('niceAlertContainer',
+        "Please Reload Screen", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
+        {
+            width: 360,
+            height: 280,
+            okButtonText: 'Reload Now',
+            onOk: okFuncCall
+        });
+        
+    setTimeout(okFuncCall, timeoutSeconds * 1000);
+}
+
 function promptReloadSalesResources(reloadTerminalId) {
-    var message = "Your POS data has been changed by " + reloadTerminalId + ", click OK to pick up the new data!";
+    var message = "Your POS data has been changed by " + reloadTerminalId + ", click OK to pick up the new data";
     var okFuncCall = "doReloadSalesResources();";
         
     ModalPopups.Alert('niceAlertContainer',
@@ -1000,7 +1058,7 @@ function alertCacheReloadRequest() {
     
     var timeoutSeconds = 5;
     
-    var message = "New cache downloaded! App will reload in " + timeoutSeconds + " seconds.";
+    var message = "New cache downloaded! App will reload in " + timeoutSeconds + " seconds";
     var okFuncCall = "doReload(false);";
     
     ModalPopups.Alert('niceAlertContainer',
@@ -1115,11 +1173,11 @@ function setConnectionStatus(connected) {
 }
 
 function appOfflinePopup() {
-    niceAlert("Server cannot be contacted. App will operate in restricted mode. Some features may not be available.");
+    niceAlert("Server cannot be contacted. App will operate in restricted mode. Some features may not be available");
 }
 
 function cacheDownloadingPopup() {
-    niceAlert("The cache is downloading. App will operate in restricted mode. Some features may not be available.");
+    niceAlert("The cache is downloading. App will operate in restricted mode. Some features may not be available");
 }
 
 //function to force a button to be clicked that works with both advanced touch and non

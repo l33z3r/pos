@@ -3,7 +3,7 @@ require 'digest/sha1'
 class ClueyAccount < ActiveRecord::Base
   has_many :outlets
   
-  attr_accessible :name, :email, :password, :password_confirmation, :email_confirmation
+  attr_accessible :first_name, :last_name, :country_id, :name, :email, :password, :password_confirmation, :email_confirmation, :time_zone
   
   attr_accessor :password
   before_save :encrypt_password
@@ -14,6 +14,9 @@ class ClueyAccount < ActiveRecord::Base
   validates :name, :presence => true
   validates_uniqueness_of :name, :case_sensitive => false
   validates_format_of :name, :with => /^[-a-z]+$/i, :message => "must only contain characters from the alphabet"
+  
+  validates :first_name, :presence => true
+  validates :last_name, :presence => true
   
   validates :email, :presence => true   
   validates_uniqueness_of :email, :case_sensitive => false
@@ -27,6 +30,8 @@ class ClueyAccount < ActiveRecord::Base
   validate :name_not_reserved
  
   has_many :customers, :through => :outlets
+  
+  belongs_to :country
   
   RESERVED_NAMES = [
     "help", "login", "signup", "support", "www", "demo"
@@ -68,7 +73,7 @@ class ClueyAccount < ActiveRecord::Base
   
   # Activates the user in the database.
   def activate
-    self.activated_at = Time.now.utc
+    self.activated_at = Time.zone.now.utc
     self.activation_code = nil
     save
   end
@@ -105,6 +110,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: cluey_accounts
@@ -122,5 +128,8 @@ end
 #  password_reset_token         :string(255)
 #  password_reset_sent_at       :datetime
 #  login_crossdomain_auth_token :string(255)
+#  first_name                   :string(255)     not null
+#  last_name                    :string(255)     not null
+#  country_id                   :integer(4)      not null
 #
 

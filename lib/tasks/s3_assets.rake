@@ -11,7 +11,7 @@ namespace :assets do
     puts "-----> Building assets..."
   
     paths.each do |path|
-      FileUtils.rm(Dir.glob(path + "*")) if File.exist?(path)
+      FileUtils.rm_rf(Dir.glob(path + "*")) if File.exist?(path)
     end
 
     ActionController::Base.perform_caching = true
@@ -76,6 +76,7 @@ namespace :assets do
       #Select some files in the public directory to sync
       all_files = Dir.glob("public/images/**/*") | Dir.glob("public/javascripts/**/*") | Dir.glob("public/stylesheets/**/*") 
       all_files |= Dir.glob("public/firefox_extensions/**/*") | Dir.glob("public/jqtouch") | Dir.glob("public/files/**/*") | Dir.glob("public/sounds/**/*")
+      all_files << "public/install/cluey.apk"
       all_files << "public/404.html"
       all_files << "public/422.html" 
       all_files << "public/500.html" 
@@ -118,6 +119,9 @@ namespace :assets do
           ## mime-type. `obj.save` will upload and store the file to S3.
           obj = bucket.objects.build(remote_file)
           obj.content = open(file)
+          
+          #set no cache header
+          obj.cache_control = "no-cache"
           
           if file.ends_with? ".js"
             obj.content_type = "text/javascript"

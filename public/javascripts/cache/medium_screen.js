@@ -10,7 +10,7 @@ function disableFormElements(form){form.find('input[data-disable-with], button[d
 function enableFormElements(form){form.find('input[data-disable-with]:disabled, button[data-disable-with]:disabled').each(function(){var element=$(this),method=element.is('button')?'html':'val';if(element.data('ujs:enable-with'))element[method](element.data('ujs:enable-with'));element.removeAttr('disabled');});}
 function allowAction(element){var message=element.data('confirm');return!message||(fire(element,'confirm')&&confirm(message));}
 function requiredValuesMissing(form){var missing=false;form.find('input[name][required]').each(function(){if(!$(this).val())missing=true;});return missing;}
-$('a[data-confirm], a[data-method], a[data-remote]').live('click.rails',function(e){var link=$(this);if(!allowAction(link))return false;if(link.data('remote')!=undefined){handleRemote(link);return false;}else if(link.data('method')){handleMethod(link);return false;}});$('form').live('submit.rails',function(e){var form=$(this),remote=form.data('remote')!=undefined;if(!allowAction(form))return false;if(requiredValuesMissing(form))return!remote;if(remote){handleRemote(form);return false;}else{setTimeout(function(){disableFormElements(form)},13);}});$('form input[type=submit], form input[type=image], form button[type=submit], form button:not([type])').live('click.rails',function(){var button=$(this);if(!allowAction(button))return false;var name=button.attr('name'),data=name?{name:name,value:button.val()}:null;button.closest('form').data('ujs:submit-button',data);});$('form').live('ajax:beforeSend.rails',function(event){if(this==event.target)disableFormElements($(this));});$('form').live('ajax:complete.rails',function(event){if(this==event.target)enableFormElements($(this));});})(jQuery);var numPages=4;var receiptPageNum=1;var menuPageNum=2;var functionsPageNum=3;var settingsPageNum=4;var currentScreenIsMenu=false;var currentScreenIsReceipt=false;var currentScreenIsFunctions=false;var currentScreenIsSettings=false;var screenSlideSpeed=300;var screenSlideDelayAmount=screenSlideSpeed+80;var pageWidth=480;var scrollSpeed=600;$(function(){doGlobalInit();});function doGlobalInit(){if(!current_user_id){goToMainMenu();return;}
+$('a[data-confirm], a[data-method], a[data-remote]').live('click.rails',function(e){var link=$(this);if(!allowAction(link))return false;if(link.data('remote')!=undefined){handleRemote(link);return false;}else if(link.data('method')){handleMethod(link);return false;}});$('form').live('submit.rails',function(e){var form=$(this),remote=form.data('remote')!=undefined;if(!allowAction(form))return false;if(requiredValuesMissing(form))return!remote;if(remote){handleRemote(form);return false;}else{setTimeout(function(){disableFormElements(form)},13);}});$('form input[type=submit], form input[type=image], form button[type=submit], form button:not([type])').live('click.rails',function(){var button=$(this);if(!allowAction(button))return false;var name=button.attr('name'),data=name?{name:name,value:button.val()}:null;button.closest('form').data('ujs:submit-button',data);});$('form').live('ajax:beforeSend.rails',function(event){if(this==event.target)disableFormElements($(this));});$('form').live('ajax:complete.rails',function(event){if(this==event.target)enableFormElements($(this));});})(jQuery);var numPages=4;var receiptPageNum=1;var menuPageNum=2;var functionsPageNum=3;var settingsPageNum=4;var currentScreenIsMenu=false;var currentScreenIsReceipt=false;var currentScreenIsFunctions=false;var currentScreenIsSettings=false;var screenSlideSpeed=300;var screenSlideDelayAmount=screenSlideSpeed+80;var pageWidth=480;var scrollSpeed=600;$(function(){doGlobalInit();});function doGlobalInit(){if(!current_user_id){current_user_id=employees[0].id;current_user_nickname=employees[0].nickname;current_user_is_admin=employees[0].is_admin;current_user_passcode=employees[0].passcode;storeActiveUserID(current_user_id);$.ajax({type:'POST',url:'/login',data:{employee_id:current_user_id}});}
 if(inDevMode()){$('body').css("overflow","scroll");}
 if(showPrintFrame){$('#wrapper').height(1770);$('#body').height(1770);$('#printFrame').width(600).height(1800);$('#printFrame').css("overflow","scroll");}
 $('#content-holder').width(pageWidth*numPages);setFingerPrintCookie();if(isTouchDevice()){initTouch();initTouchRecpts();var menuScrollerOpts={elastic:false,momentum:false};$('#menu_items_scroller').touchScroll(menuScrollerOpts);$('#menu_pages_scroller').touchScroll(menuScrollerOpts);setTimeout(kickMenuScrollers,2000);}
@@ -37,8 +37,8 @@ function doMenuPageSelect(pageNum,pageId){$('#menu_pages_container .page').remov
 $('#menu_items_'+pageNum+' div.subpages div.subpage').show();$('.embedded_pages_'+pageNum+' .subitems').hide();currentMenuPage=pageNum;currentMenuPageId=pageId;}
 function doSubMenuPageSelect(parentPageNum,pageId){$('#menu_items_'+parentPageNum+' div.subpages div.subpage').hide();$('#sub_menu_items_'+pageId).show();currentMenuPage=parentPageNum;currentMenuPageId=pageId;currentMenuSubPageId=pageId;}
 function doSelectMenuItem(productId,element){if(!ensureLoggedIn()){return;}
-currentOrder=getCurrentOrder();var productToCopy=products[productId];var copiedProduct={};var product=$.extend(true,copiedProduct,productToCopy);if(menuItemDoubleMode&&(product.double_price==0)){niceAlert("Price has not been set for a double of this item.");setMenuItemDoubleMode(false);return;}
-if(menuItemHalfMode&&(product.half_price==0)){niceAlert("Price has not been set for a half of this item.");setMenuItemHalfMode(false);return;}
+currentOrder=getCurrentOrder();var productToCopy=products[productId];var copiedProduct={};var product=$.extend(true,copiedProduct,productToCopy);if(menuItemDoubleMode&&(product.double_price==0)){niceAlert("Price has not been set for a double of this item");setMenuItemDoubleMode(false);return;}
+if(menuItemHalfMode&&(product.half_price==0)){niceAlert("Price has not been set for a half of this item");setMenuItemHalfMode(false);return;}
 if(currentMenuItemQuantity==""||currentMenuItemQuantity=="0")
 currentMenuItemQuantity="1";if(currentMenuItemQuantity.indexOf(".")!=-1){if(currentMenuItemQuantity.length-currentMenuItemQuantity.indexOf(".")==1){currentMenuItemQuantity="1";}}
 currentSelectedMenuItemElement=element;closeEditOrderItem();amount=currentMenuItemQuantity;currentMenuItemQuantity="";buildOrderItem(product,amount);setModifierGridIdForProduct(product);if(orderItem.product.prompt_price){showPricePopup();}
@@ -75,8 +75,8 @@ function focusIt(){$('.note_input').focus();}
 function showChargeNotePopup(){$('#add_note_screen').hide();$('#add_charge_screen').show();$('.note_charge').focus();}
 var noteChargeIsPlus=true;function doSaveNote(){if($('.note_input').val()==""){clearNoteInputs();$('#add_note_screen').hide();switchToMenuItemsSubscreen();$('.note_input').val('');$('.note_charge').val('');$('.display_charge').val('');}else{if($('.note_charge').val()!=""){var charge=$('.note_charge').val();}else{charge='0';}
 var noteInput=$('.note_input').val();noteInput=$.trim(noteInput);if(noteInput.length==0&&charge==0){doCancelNote();return true;}
-if(noteInput.length==0){setStatusMessage("Please enter some text for this note!");return false;}
-currentSelectedReceiptItemEl=getLastReceiptItem();if(!currentSelectedReceiptItemEl){setStatusMessage("There are no receipt items!");return false;}
+if(noteInput.length==0){setStatusMessage("Please enter some text for this note");return false;}
+currentSelectedReceiptItemEl=getLastReceiptItem();if(!currentSelectedReceiptItemEl){setStatusMessage("There are no receipt items");return false;}
 var order=getCurrentOrder();var itemNumber=currentSelectedReceiptItemEl.data("item_number");var orderItem=order.items[itemNumber-1];var desc=noteInput;var absCharge=charge;addOIAToOrderItem(order,orderItem,desc,absCharge,0,0,noteChargeIsPlus,true,false,false,-1,-1);clearNoteInputs();$('#add_note_screen').hide();switchToMenuItemsSubscreen();$('.note_input').val('');$('.note_charge').val('');$('.display_charge').val('');}
 return true;}
 function doCancelNote(){clearNoteInputs();}
@@ -108,7 +108,7 @@ orderHTML+=orderItem.product.name+"</div>";orderItemTotalPriceText=number_to_cur
 if(orderItem.modifier){orderHTML+="<div class='clear'>&nbsp;</div>";orderHTML+="<div class='modifier_name'>"+orderItem.modifier.name+"</div>";modifierPriceWithoutDiscount=orderItem.modifier.price*orderItem.amount;if(haveDiscount){modifierPrice=modifierPriceWithoutDiscount-((modifierPriceWithoutDiscount*orderItem.discount_percent)/100);}else{modifierPrice=modifierPriceWithoutDiscount;}
 if(orderItem.modifier.price>0){modifierPriceText=number_to_currency(modifierPrice,{precision:2});orderHTML+="<div class='modifier_price'>"+modifierPriceText+"</div>";}
 orderHTML+=clearHTML;}
-if(orderItem.oia_items){for(var j=0;j<orderItem.oia_items.length;j++){oia_is_add=orderItem.oia_items[j].is_add;orderHTML+=clearHTML+"<div class='oia "+(orderItem.oia_items[j].hide_on_receipt?"hide_on_receipt":"")+"'>";orderHTML+="<div class='oia_name "+(orderItem.oia_items[j].is_note?"note":"")+"'>";if(!orderItem.oia_items[j].is_note){if(orderItem.oia_items[j].is_addable){orderHTML+=oia_is_add?"Add ":"No ";}}
+if(orderItem.oia_items){for(var j=0;j<orderItem.oia_items.length;j++){oia_is_add=orderItem.oia_items[j].is_add;var hideOnReciptCSSClass=(orderItem.oia_items[j].hide_on_receipt&&orderItem.oia_items[j].abs_charge==0)?"hide_on_receipt":"";orderHTML+=clearHTML+"<div class='oia "+hideOnReciptCSSClass+"'>";orderHTML+="<div class='oia_name "+(orderItem.oia_items[j].is_note?"note":"")+"'>";if(!orderItem.oia_items[j].is_note){if(orderItem.oia_items[j].is_addable){orderHTML+=oia_is_add?"Add ":"No ";}}
 orderHTML+=orderItem.oia_items[j].description+"</div>";if(orderItem.oia_items[j].abs_charge!=0){oiaPriceWithoutDiscount=orderItem.oia_items[j].abs_charge*orderItem.amount;if(haveDiscount&&oia_is_add){oiaPrice=oiaPriceWithoutDiscount-((oiaPriceWithoutDiscount*orderItem.discount_percent)/100);}else{oiaPrice=oiaPriceWithoutDiscount;}
 orderHTML+="<div class='oia_price'>"+(!oia_is_add?"-":"")+currency(oiaPrice,false)+"</div>";}
 orderHTML+="</div>"+clearHTML;}}
@@ -125,8 +125,8 @@ if(orderTotal!=null){writeTotalToReceipt(order,orderTotal);}
 if(doScroll){menuRecptScroll();}
 if(currentSelectedReceiptItemEl){var selectedReceiptItemNumber=currentSelectedReceiptItemEl.data("item_number");currentSelectedReceiptItemEl=$('#menu_screen_till_roll div[data-item_number='+selectedReceiptItemNumber+']');}}
 function clearReceipt(){setReceiptsHTML("");}
-function postDoSyncTableOrder(){doSelectTable(selectedTable);if(inTransferOrderMode){hideLoadingDiv();setStatusMessage("Order Transfered.");inTransferOrderMode=false;$('#table_num').val(tables[selectedTable].label);doSubmitTableNumber();return;}
-setStatusMessage("Order Sent");vibrate();tableScreenBack();}
+function postDoSyncTableOrder(){doSelectTable(selectedTable);if(inTransferOrderMode){hideLoadingDiv();setStatusMessage("Order Transferred");inTransferOrderMode=false;$('#table_num').val(tables[selectedTable].label);doSubmitTableNumber();return;}
+setStatusMessage("Order Sent");vibrate();tableScreenBack();manualCallHomePoll();}
 function showModifyOrderItemScreen(){switchToModifyOrderItemSubscreen();}
 function switchToMenuItemsSubscreen(){if(currentScreenIsMenu){showMenuItemsSubscreen();}}
 function showMenuItemsSubscreen(){hideAllMenuSubScreens();$('#menu_screen #buttons_container').show();$('#menu_screen #cluey_logo').hide();$('#menu_container').show();setTimeout(function(){doMenuPageSelect(currentMenuPage,currentMenuPageId);},500);}
@@ -136,7 +136,7 @@ $('.button[id=sales_button_'+tablesButtonID+'], .button[id=admin_screen_button_'
 function showCoversSubscreen(){hideAllMenuSubScreens();if($('#table_num').val().toString()==''||$('#table_num').val().toString()==0||$('#table_num').val().toString()==-1){if(initScreenDefault=="false"){$('#menu_screen #buttons_container').hide();$('#menu_screen #cluey_logo').show();initScreenDefault="true";}
 $('.button[id=sales_button_'+tablesButtonID+'], .button[id=admin_screen_button_'+tablesButtonID+']').addClass("selected");checkForCovers();$('#table_screen').hide();$('#covers_screen').show();}else{var table_label=$('#table_num').val().toString();table_info=getTableForLabel(table_label);if(table_info){key="user_"+current_user_id+"_table_"+table_info.id+"_current_order";storageData=retrieveStorageValue(key);tableOrderDataJSON=null;if(storageData!=null){tableOrderDataJSON=JSON.parse(storageData);}else{if(current_user_id!=masterOrdersUserId){var masterOrderKey="user_"+masterOrdersUserId+"_table_"+table_info.id+"_current_order";storageData=retrieveStorageValue(masterOrderKey);if(storageData!=null){tableOrderDataJSON=JSON.parse(storageData);}}}
 checkForCovers();if(initScreenDefault=="false"){$('#menu_screen #buttons_container').hide();$('#menu_screen #cluey_logo').show();initScreenDefault="true";}
-$('.button[id=sales_button_'+tablesButtonID+'], .button[id=admin_screen_button_'+tablesButtonID+']').addClass("selected");$('#table_screen').hide();$('#covers_screen').show();}else{$('#table_number_show').html("No Such Table!");$('#table_num').val('')
+$('.button[id=sales_button_'+tablesButtonID+'], .button[id=admin_screen_button_'+tablesButtonID+']').addClass("selected");$('#table_screen').hide();$('#covers_screen').show();}else{$('#table_number_show').html("No Such Table");$('#table_num').val('')
 $('#table_screen').show();$('#covers_screen').hide();}}}
 function tableNumberSelectKeypadClick(val){var newVal=$('#table_num').val().toString()+val;$('#table_number_show').html(newVal);$('#table_num').val(newVal);}
 function coverNumberSelectKeypadClick(val){$("#covers_num").removeClass('highlighted');if(highlightedCover){$('#covers_num').val(val);}else{var newVal=$('#covers_num').val().toString()+val;$('#covers_num').val(newVal);}
@@ -155,21 +155,21 @@ function setInitScreen(value){initScreenDefault=value;}
 function swipeToNote(){if(selectedTable==0){niceAlert("Please select a table first");return;}else{setInitScreen('true');$('#edit_price_screen').hide();showAddNotePopup()}}
 function swipeToCovers(){if(selectedTable==0){niceAlert("Please select a table first");return;}else{swipeToMenu();hideAllMenuSubScreens();showCoversSubscreen();}}
 function doSubmitTableNumber(){if(!ensureLoggedIn()){return;}
-var table_label=$('#table_num').val().toString();table_info=getTableForLabel(table_label);if(!table_info){$('#table_number_show').html("No Such Table!");$('#table_num').val('')
+var table_label=$('#table_num').val().toString();table_info=getTableForLabel(table_label);if(!table_info){$('#table_number_show').html("No Such Table");$('#table_num').val('')
 return;}
-if(inTransferOrderMode){if(transferOrderInProgress){niceAlert("Transfer table order in progress, please wait.");return;}
+if(inTransferOrderMode){if(transferOrderInProgress){niceAlert("Transfer table order in progress, please wait");return;}
 doTransferTable(selectedTable,table_info.id);clearTableNumberEntered()
 return;}
 current_table_label=table_label;doSelectTable(table_info.id);clearTableNumberEntered();if(menuScreenDefault=="true"){showMenuItemsSubscreen();}else{showMenuItemsSubscreen();swipeToReceipt();menuScreenDefault="true"}}
-function transferOrderError(){hideNiceAlert();inTransferOrderMode=false;transferOrderInProgress=false;showMenuItemsSubscreen();setStatusMessage("Error transfering order. Server might be down!");return;}
+function transferOrderError(){hideNiceAlert();inTransferOrderMode=false;transferOrderInProgress=false;showMenuItemsSubscreen();setStatusMessage("Error transfering order. Server might be down");return;}
 function removeTableClass(table_class){$('.button').removeClass("selected");}
 function clearTableNumberEntered(){$('#table_num').val("");$('#table_number_show').html("");}
-function postDoSelectTable(){var theLabel="Table "+current_table_label;$('.button[id=sales_button_'+tablesButtonID+'] .button_name').html(theLabel);$('#receipt_screen #header #table_name').html(theLabel);}
+function postDoSelectTable(){var theLabel="Table "+current_table_label;$('.button[id=sales_button_'+tablesButtonID+'] .button_name').html(theLabel);$('#receipt_screen #header #table_name').html(theLabel);manualCallHomePoll();}
 function orderItemAdditionTabSelected(oiagId){if(!oiagId){oiagId=$('#oia_tabs .oia_tab').first().data("oiag_id");}
 clearSelectedOIATabs();$('#oia_tab_'+oiagId).addClass("selected");$('.oia_container').hide();modifierGridXSize=$('#oiag_'+oiagId).data("grid_x_size");modifierGridYSize=$('#oiag_'+oiagId).data("grid_y_size");initModifierGrid();$('#oiag_'+oiagId).show();setOrderItemAdditionsGridState();}
 function clearSelectedOIATabs(){$('#oia_tabs .tab').removeClass("selected");}
-function writeTotalToReceipt(order,orderTotal){if(!order)return;console.log("Write total to receipt NYI!");}
-function tableScreenBack(){if(selectedTable==0){$('#table_number_show').html("Enter a Table!");return;}
+function writeTotalToReceipt(order,orderTotal){if(!order)return;console.log("Write total to receipt NYI");}
+function tableScreenBack(){if(selectedTable==0){$('#table_number_show').html("Enter a Table");return;}
 showMenuItemsSubscreen();}
 function doReceiveOrderReady(employee_id,terminal_id,table_id,order_num,table_label){hidePreviousOrderReadyPopup();if(employee_id==current_user_id||allDevicesOrderNotification){vibrateConstant();var orderReadyText;if(table_id.toString()=="0"){orderReadyText="Order #"+order_num;}else{orderReadyText="Order #"+order_num+" for table "+table_label;}
 ModalPopups.Alert('niceAlertContainer','Order Ready!',"<div id='nice_alert'>"+orderReadyText+" is ready</div>",{okButtonText:'OK',onOk:'orderReadyOKClicked()',width:400,height:250});}}
@@ -190,19 +190,20 @@ function currentMenuSubscreenIsTableScreen(){return $('#table_screen').is(":visi
 var utliKeypadClickFunction;var utilKeypadCancelFunction;function setUtilKeypad(position,clickFunction,cancelFunction){$(position).html($('#util_keypad_container').html());utliKeypadClickFunction=clickFunction;utilKeypadCancelFunction=cancelFunction;}
 function utilKeypadClick(val){utliKeypadClickFunction(val);}
 function doCancelUtilKeypad(){utilKeypadCancelFunction();}
-function getSelectedOrLastReceiptItem(){if(!currentSelectedReceiptItemEl){currentSelectedReceiptItemEl=$('#menu_screen_till_roll > div.order_line:last');if(currentSelectedReceiptItemEl.length==0){setStatusMessage("There are no receipt items!");return null;}}
+function getSelectedOrLastReceiptItem(){if(!currentSelectedReceiptItemEl){currentSelectedReceiptItemEl=$('#menu_screen_till_roll > div.order_line:last');if(currentSelectedReceiptItemEl.length==0){setStatusMessage("There are no receipt items");return null;}}
 return currentSelectedReceiptItemEl;}
-function getLastReceiptItem(){lastReceiptItemEl=$('#menu_screen_till_roll > div.order_line:last');if(lastReceiptItemEl.length==0){setStatusMessage("There are no receipt items!");return null;}
+function getLastReceiptItem(){lastReceiptItemEl=$('#menu_screen_till_roll > div.order_line:last');if(lastReceiptItemEl.length==0){setStatusMessage("There are no receipt items");return null;}
 return lastReceiptItemEl;}
-function postSetConnectionStatus(connected){if(!connected){$('body').addClass("disconnected");}else{$('body').removeClass("connected");}}
+function postSetConnectionStatus(connected){if(!connected){$('body').addClass("disconnected");if(!callHomePollInitSequenceComplete){callHomePollInitSequenceComplete=true;$('#loading_orders_spinner').hide();}}else{$('body').removeClass("disconnected");}}
 function kickMenuScrollers(){if($('#menu_items_scroller:visible').length>0&&$('#menu_pages_scroller:visible').length>0){$('#menu_items_scroller').touchScroll('update');currentHeight=$('#menu_items_scroller').height();scrollHeight=$('#menu_items_scroller').attr('scrollHeight');newHeight=scrollHeight-currentHeight;$('#menu_items_scroller').touchScroll('setPosition',0);$('#menu_pages_scroller').touchScroll('update');currentHeight=$('#menu_pages_scroller').height();scrollHeight=$('#menu_pages_scroller').attr('scrollHeight');newHeight=scrollHeight-currentHeight;$('#menu_pages_scroller').touchScroll('setPosition',0);}
 if($('#oia_tabs:visible').length>0){$('#oia_tabs').touchScroll('update');currentHeight=$('#oia_tabs').height();scrollHeight=$('#oia_tabs').attr('scrollHeight');newHeight=scrollHeight-currentHeight;$('#oia_tabs').touchScroll('setPosition',0);}}
 function showTablesScreen(){if(currentMenuSubscreenIsTableScreen()){hideAllMenuSubScreens();showMenuItemsSubscreen();}else{showTablesSubscreen();}}
-function showMoreOptionsScreen(){alert("functions button pressed!");}
-function goToMainMenu(){showSpinner();goTo('/mbl#menu');}
+function showMoreOptionsScreen(){alert("functions button pressed");}
+function goToMainMenu(){showSpinner();alert("this is meant to go to /manager now");}
 function showGlobalSettingsPage(){swipeToSettings();}
 function initModifierGrid(){var rowWidth=$('div#order_item_additions').css("width");var newWidth=roundNumberDown(parseFloat(rowWidth)/modifierGridXSize,0)-5;$('div#order_item_additions .grid_row .grid_item').css("width",newWidth+"px");var panelHeight=$('div#oia_subscreen').css("height");var newHeight=roundNumberDown(parseFloat(panelHeight)/modifierGridYSize,0)-6;$('div#order_item_additions .grid_row .grid_item').css("height",newHeight+"px");}
 function indicateSalesResourcesReloadRequired(reloadTerminalId){promptReloadSalesResources(reloadTerminalId);}
+function indicateActionRequired(functionToPerform){functionToPerform.call();}
 function initTouch(){new NoClickDelay(document.body);$('#wrapper').swipe({minSwipeLength:250,swipeRight:function(){swipeRightHandler();},swipeUp:function(){swipeUpHandler();},swipeLeft:function(){swipeLeftHandler();},swipeDown:function(){swipeDownHandler();}});}
 var thisClickTarget=null;var lastClickTarget=null;var thisClickTimestamp=0;var lastClickTimestamp=0;var cancelFollowClick=false;function NoClickDelay(el){this.element=el;this.element.addEventListener('touchstart',this,false);$('.key').each(function(){var el=$(this);var clickhandler=el.attr("onclick");el.attr("onclick","return false;");el.click(function(e){cancelFollowClick=false;thisClickTarget=el;thisClickTimestamp=Date.now();if(thisClickTarget==lastClickTarget&&thisClickTimestamp-lastClickTimestamp<500){e.preventDefault();e.stopPropagation();cancelFollowClick=true;return false;}else{lastClickTarget=thisClickTarget;lastClickTimestamp=thisClickTimestamp;}});if(clickhandler){el.click(function(e){if(!cancelFollowClick){clickhandler();}});}});}
 NoClickDelay.prototype={handleEvent:function(e){switch(e.type){case'touchstart':this.onTouchStart(e);break;case'touchmove':this.onTouchMove(e);break;case'touchend':this.onTouchEnd(e);break;}},onTouchStart:function(e){this.theTarget=document.elementFromPoint(e.targetTouches[0].clientX,e.targetTouches[0].clientY);targetIsSelectElement=this.theTarget.tagName=="SELECT";targetIsInputElement=this.theTarget.tagName=="INPUT";if(!targetIsSelectElement&&!targetIsInputElement){e.preventDefault();if(this.theTarget.nodeType==3){this.theTarget=theTarget.parentNode;}
@@ -245,7 +246,7 @@ function hideMenuKeypad(){menuKeypadShowing=false;$('#menu_keypad').slideUp(300)
 function doScroll(scrollLeftValue){if(scrollLeftValue<0||scrollLeftValue>(pageWidth*numPages-1)){return false;}
 $("#content-scroll").animate({scrollLeft:scrollLeftValue},scrollSpeed);return true;}
 function swipeToReceipt(){if(currentScreenIsReceipt)return;clearAllPageFlags();doScroll((receiptPageNum-1)*pageWidth);currentScreenIsReceipt=true;}
-function swipeToMenu(){if(!callHomePollInitSequenceComplete){niceAlert("Downloading data from server, please wait.");return;}
+function swipeToMenu(){if(!callHomePollInitSequenceComplete){niceAlert("Downloading data from server, please wait");return;}
 if(currentScreenIsMenu)return;clearAllPageFlags();doScroll((menuPageNum-1)*pageWidth);currentScreenIsMenu=true;setTimeout(function(){doMenuPageSelect(currentMenuPage,currentMenuPageId);},500);}
 function swipeToFunctions(){if(currentScreenIsFunctions)return;clearAllPageFlags();doScroll((functionsPageNum-1)*pageWidth);currentScreenIsFunctions=true;}
 function swipeToSettings(){if(currentScreenIsSettings)return;clearAllPageFlags();doScroll((settingsPageNum-1)*pageWidth);currentScreenIsSettings=true;}

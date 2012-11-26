@@ -47,7 +47,15 @@ module ApplicationHelper
     if pm.has_logo?
       image_tag pm.logo.url(:thumb)
     elsif show_default
-      image_tag "default_payment_method_image.png"
+      if pm.name == PaymentMethod::LOYALTY_PAYMENT_METHOD_NAME
+        image_tag "loyalty_pm_icon.png"
+      elsif pm.name == PaymentMethod::CASH_PAYMENT_METHOD_NAME
+        image_tag "cash_pm_icon.png"
+      elsif pm.name == PaymentMethod::ACCOUNT_PAYMENT_METHOD_NAME
+        image_tag "account_pm_icon.png"
+      else
+        image_tag "default_payment_method_image.png"
+      end      
     end
   end
 

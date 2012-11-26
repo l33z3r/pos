@@ -159,7 +159,7 @@ function parsePreviousOrder(previousOrderJSON) {
 function initReopenOrderButton(is_void) {
     if(is_void) {
         reOpenOrderHandler = function() {
-            setStatusMessage("Cannot re-open a void order!");
+            setStatusMessage("Cannot re-open a void order");
         };
     } else {
         reOpenOrderHandler = reOpenOrder;
@@ -338,7 +338,7 @@ function fetchPreviousSalesReceiptHeaderHTML(order) {
 
 function printPreviousSale() {
     if(!totalOrder) {
-        setStatusMessage("Please select a closed order to print.");
+        setStatusMessage("Please select a closed order to print");
         return;
     }
     

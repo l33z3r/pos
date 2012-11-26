@@ -59,7 +59,7 @@ function getSelectedOrLastReceiptItem() {
         currentSelectedReceiptItemEl = $('#menu_screen_till_roll > div.order_line:last');
     
         if(currentSelectedReceiptItemEl.length == 0) {
-            setStatusMessage("There are no receipt items!");
+            setStatusMessage("There are no receipt items");
             return null;
         }
     }
@@ -71,7 +71,7 @@ function getLastReceiptItem() {
     lastReceiptItemEl = $('#menu_screen_till_roll > div.order_line:last');
     
     if(lastReceiptItemEl.length == 0) {
-        setStatusMessage("There are no receipt items!");
+        setStatusMessage("There are no receipt items");
         return null;
     }
     
@@ -81,8 +81,16 @@ function getLastReceiptItem() {
 function postSetConnectionStatus(connected) {
     if(!connected) {
         $('body').addClass("disconnected");
+        
+        //if we are offline and the init sequence has not completed then we are operating in offline mode
+        if(!callHomePollInitSequenceComplete) {
+            callHomePollInitSequenceComplete = true;
+            
+            //hide the spinner at the top nav
+            $('#loading_orders_spinner').hide();             
+        }
     } else {
-        $('body').removeClass("connected");
+        $('body').removeClass("disconnected");
     }
 }
 
@@ -130,12 +138,12 @@ function showTablesScreen() {
 }
 
 function showMoreOptionsScreen() {
-    alert("functions button pressed!");
+    alert("functions button pressed");
 }
 
 function goToMainMenu() {
     showSpinner();
-    goTo('/mbl#menu');
+    alert("this is meant to go to /manager now");
 }
 
 function showGlobalSettingsPage() {
@@ -160,4 +168,8 @@ function initModifierGrid() {
 //for mobile we can just force a reload rather than prompting
 function indicateSalesResourcesReloadRequired(reloadTerminalId) {
     promptReloadSalesResources(reloadTerminalId);
+}
+
+function indicateActionRequired(functionToPerform) {
+    functionToPerform.call();
 }

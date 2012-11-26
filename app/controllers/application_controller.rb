@@ -1,22 +1,17 @@
 class ApplicationController < AppBaseController
   before_filter :setup_for_subdomain, :except => [:ping, :build_assets, :force_error]
+  before_filter :set_outlet_time_zone
+  
   before_filter :set_current_employee, :except => [:ping, :cache_manifest, :build_assets, :force_error]
 
-  
-  #before_filter :http_basic_authenticate
-  
   before_filter :check_reset_session, :except => [:ping, :cache_manifest, :build_assets, :force_error]
   
   helper_method :e, :is_cluey_user?, :cluey_pw_used?, :current_employee, :print_money, :print_credit_balance
   helper_method :mobile_device?, :all_terminals, :all_printers, :all_servers, :current_interface
-  helper_method :development_mode?, :production_mode?, :server_ip, :now_millis
+  helper_method :development_mode?, :heroku_staging_mode?, :heroku_production_mode?, :server_ip, :now_local_millis
   
   before_filter :load_global_vars, :except => [:ping, :cache_manifest, :build_assets, :force_error]
   
-  LARGE_INTERFACE = "large"
-  MEDIUM_INTERFACE = "medium"
-  SMALL_INTERFACE = "small"
-      
   include ActionView::Helpers::NumberHelper
   
   def cluey_pw_used?
@@ -69,7 +64,7 @@ class ApplicationController < AppBaseController
   def request_reload_app terminal_id
     #update the cache_manifest
     @timestamp_setting = GlobalSetting.setting_for GlobalSetting::RELOAD_HTML5_CACHE_TIMESTAMP, current_outlet
-    @timestamp_setting.value = now_millis
+    @timestamp_setting.value = now_local_millis
     @timestamp_setting.save
   end
   
@@ -153,7 +148,7 @@ class ApplicationController < AppBaseController
       
       @sync_data = {:terminal_id => terminal_id, :order_data => table_order_data, :table_id => table_id, :serving_employee_id => employee_id}.to_yaml
       
-      @time = now_millis
+      @time = now_local_millis
       
       #make sure the time is at least 2 milliseconds after the last sync so that it gets picked up ok
       if @last_table_order_sync
@@ -263,8 +258,12 @@ class ApplicationController < AppBaseController
     Rails.env == "development"
   end
   
-  def production_mode?
-    Rails.env == "production" or Rails.env == "production_heroku"
+  def heroku_staging_mode?
+    Rails.env == "heroku_staging"
+  end
+  
+  def heroku_production_mode?
+    Rails.env == "heroku_production"
   end
   
   rescue_from StandardError do |exception|
@@ -456,49 +455,24 @@ class ApplicationController < AppBaseController
     current_outlet.employees.all.collect(&:nickname)
   end
   
-  def now_millis
-    GlobalSetting.now_millis
+  def now_local_millis
+    GlobalSetting.now_local_millis
   end
   
   def current_interface
-    
-    return @current_interface if @current_interface
-    
-    #set it from param i=X
-    if params[:i]
-      if params[:i] == SMALL_INTERFACE
-        session[:current_interface] = SMALL_INTERFACE
-      elsif params[:i] == MEDIUM_INTERFACE
-        session[:current_interface] = MEDIUM_INTERFACE
-      else
-        session[:current_interface] = LARGE_INTERFACE
-      end
-    end
-    
-    if session[:current_interface]
-      @current_interface = session[:current_interface]
-    else
-      @current_interface = LARGE_INTERFACE
-    end
-    
-    return @current_interface
+    session[:current_interface]
   end
   
   def current_interface_large?
-    current_interface == LARGE_INTERFACE
+    current_interface == GlobalSetting::LARGE_INTERFACE
   end
   
   def current_interface_medium?
-    current_interface == MEDIUM_INTERFACE
+    current_interface == GlobalSetting::MEDIUM_INTERFACE
   end
   
   def setup_for_subdomain
     @subdomain = request.subdomain
-    
-    if @subdomain == "www"
-      redirect_to welcome_path
-      return
-    end
     
     if @subdomain == "signup"
       redirect_to account_sign_up_url
@@ -509,7 +483,17 @@ class ApplicationController < AppBaseController
     @subdomain_parts = @subdomain.split("-")
     
     if @subdomain_parts.length == 1
+      @account_name = @subdomain_parts[0]    
+    
+      @account = ClueyAccount.find_by_name @account_name
+    
+      if !@account
+        redirect_to account_not_found_accounts_accounts_url(:subdomain => "signup")
+        return
+      end
+      
       redirect_to accounts_accounts_path
+      
       return
     elsif @subdomain_parts.length == 2
       #accessing an outlet
@@ -520,7 +504,7 @@ class ApplicationController < AppBaseController
     
       if !@account
         flash[:error] = "Account #{@account_name} not found!"
-        redirect_to welcome_url
+        redirect_to root_url(:subdomain => "signup")
         return
       end
              
@@ -563,13 +547,13 @@ class ApplicationController < AppBaseController
             
             if @url_auth_ok
               logger.info "!!!!!!!!!!!!!!!!!!!!!!!LOGGED IN WITH USERNAME/PASSWORD IN URL"
-                set_current_outlet outlet
+              set_current_outlet outlet
               return true
             end
           end 
           
           #login required
-          authenticate_or_request_with_http_basic do |username, password|
+          authenticate_or_request_with_http_basic "Enter username and password for outlet: #{@o}" do |username, password|
             logger.info "#{username} #{password}"
                                  
             @username_matches = outlet.username == username
@@ -588,14 +572,33 @@ class ApplicationController < AppBaseController
         end
       end
     
-      flash[:error] = "Outlet #{@outlet_name} not found for account #{@account_name}!"
-      redirect_to welcome_url
+      redirect_to outlet_not_found_accounts_accounts_url(:subdomain => "signup")
       return
     else
-      redirect_to welcome_url
+      redirect_to outlet_not_found_accounts_accounts_url(:subdomain => "signup")
       return
     end
     
+  end
+  
+  def check_for_firefox   
+    if current_interface_large?
+      #check for firefox
+      #we also allow android and ipad
+      @test_for_chrome = "Chrome"
+      @test_for_firefox = "Firefox"
+      @test_for_android = "Android"
+      @test_for_ipad = "iPad"
+      
+      @user_agent = request.user_agent
+      puts "UA: #{@user_agent}"
+      @is_firefox_or_ipad = @user_agent.include?(@test_for_firefox) or @user_agent.include?(@test_for_ipad) and @user_agent.include?(@test_for_android)
+    
+      if !@is_firefox_or_ipad
+        redirect_to browser_not_supported_accounts_accounts_url(:subdomain => current_outlet.cluey_account.name)
+        return
+      end
+    end
   end
   
   def set_current_outlet outlet
@@ -605,6 +608,14 @@ class ApplicationController < AppBaseController
       OutletBuilder::build_outlet_seed_data(outlet.id)
       outlet.has_seed_data = true
       outlet.save
+    end
+  end
+  
+  private
+  
+  def set_outlet_time_zone
+    if current_outlet
+      Time.zone = current_outlet.time_zone
     end
   end
 

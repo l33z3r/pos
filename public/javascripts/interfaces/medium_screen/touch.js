@@ -99,7 +99,7 @@ function swipeToReceipt() {
 
 function swipeToMenu() {
     if(!callHomePollInitSequenceComplete) {
-        niceAlert("Downloading data from server, please wait.");
+        niceAlert("Downloading data from server, please wait");
         return;
     }
     

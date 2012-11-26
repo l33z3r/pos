@@ -25,7 +25,7 @@ class Admin::DisplayButtonsController < Admin::AdminController
       #send a reload request to other terminals
       request_sales_resources_reload @terminal_id
     
-      flash[:notice] = "Buttons updated!"
+      flash[:notice] = "Buttons updated"
       redirect_to edit_multiple_admin_display_buttons_path
     else
       render :action => "edit_multiple"
@@ -38,7 +38,7 @@ class Admin::DisplayButtonsController < Admin::AdminController
     #send a reload request to other terminals
     request_sales_resources_reload @terminal_id
     
-    flash[:notice] = "Button Group created!"
+    flash[:notice] = "Button Group created"
     render :json => {:success => true}.to_json
   end
 
@@ -49,7 +49,7 @@ class Admin::DisplayButtonsController < Admin::AdminController
       #send a reload request to other terminals
       request_sales_resources_reload @terminal_id
     
-      flash[:notice] = "Button Groups updated!"
+      flash[:notice] = "Button Groups updated"
       redirect_to edit_multiple_admin_display_buttons_path
     else
       render :action => "edit_multiple"
@@ -63,7 +63,7 @@ class Admin::DisplayButtonsController < Admin::AdminController
     #send a reload request to other terminals
     request_sales_resources_reload @terminal_id
     
-    flash[:notice] = "Button Group deleted!"
+    flash[:notice] = "Button Group deleted"
     render :json => {:success => true}.to_json
   end
   

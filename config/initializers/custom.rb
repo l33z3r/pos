@@ -55,6 +55,9 @@ Recaptcha.configure do |config|
 end
 
 APP_DOMAIN = CUSTOM_CONFIG['domain_name']
+APP_PORT = CUSTOM_CONFIG['domain_port'] ? ":" + CUSTOM_CONFIG['domain_port'].to_s : ""
+
+DEFAULT_TIME_ZONE_NAME = Time.zone.name
 
 require "net/http"
 require "uri"

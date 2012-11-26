@@ -22,10 +22,23 @@ $(function(){
 });
     
 function doGlobalInit() {
-    //if no user is set, fo to main login screen
+    //auto login for now until we sort out a pin screen
     if(!current_user_id) {
-        goToMainMenu();
-        return;
+        current_user_id = employees[0].id;
+        current_user_nickname = employees[0].nickname;
+        current_user_is_admin = employees[0].is_admin;
+        current_user_passcode = employees[0].passcode;
+    
+        storeActiveUserID(current_user_id);
+    
+        //send ajax login
+        $.ajax({
+            type: 'POST',
+            url: '/login',
+            data: {
+                employee_id : current_user_id
+            }
+        });
     }
     
     //allow scroll for dev

@@ -53,7 +53,7 @@ class Admin::DisplaysController < Admin::AdminController
   
   def duplicate
     @display_to_dup = current_outlet.displays.find(params[:id])
-    @new_display = Display.new({:outlet_id => current_outlet.id, :name => "#{@display_to_dup.name} (Copied: #{Time.now.to_s(:short)})"})
+    @new_display = Display.new({:outlet_id => current_outlet.id, :name => "#{@display_to_dup.name} (Copied: #{Time.zone.now.to_s(:short)})"})
     
     @new_display.save!
     
@@ -81,7 +81,7 @@ class Admin::DisplaysController < Admin::AdminController
   def destroy
     #Don't allow deleting of last one
     if current_outlet.displays.all.size == 1
-      flash[:notice] = "You must have at least one display!"
+      flash[:notice] = "You must have at least one display"
       redirect_to admin_displays_url
       return
     end
@@ -188,7 +188,7 @@ class Admin::DisplaysController < Admin::AdminController
   def create_menu_page
     @display = current_outlet.displays.find(params[:id])
 
-    if @display.menu_pages.length > 0
+    if @display.menu_pages.count > 0
       @next_page_num = @display.menu_pages.last.page_num + 1
     else 
       @next_page_num = 1

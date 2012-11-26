@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121101160833) do
+ActiveRecord::Schema.define(:version => 20121120104128) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id",         :limit => 8
@@ -111,6 +111,15 @@ ActiveRecord::Schema.define(:version => 20121101160833) do
     t.string   "password_reset_token"
     t.datetime "password_reset_sent_at"
     t.string   "login_crossdomain_auth_token"
+    t.string   "first_name",                                     :null => false
+    t.string   "last_name",                                      :null => false
+    t.integer  "country_id",                                     :null => false
+    t.string   "time_zone",                                      :null => false
+  end
+
+  create_table "countries", :force => true do |t|
+    t.string "iso"
+    t.string "name"
   end
 
   create_table "customer_points_allocations", :force => true do |t|
@@ -409,7 +418,6 @@ ActiveRecord::Schema.define(:version => 20121101160833) do
     t.float    "pre_discount_price"
     t.float    "tax_rate"
     t.string   "terminal_id"
-    t.string   "time_added"
     t.boolean  "show_server_added_text",                       :default => false
     t.string   "product_name"
     t.boolean  "is_double",                                    :default => false
@@ -419,6 +427,7 @@ ActiveRecord::Schema.define(:version => 20121101160833) do
     t.integer  "void_employee_id",       :limit => 8
     t.boolean  "is_refund",                                    :default => false
     t.integer  "outlet_id",              :limit => 8
+    t.datetime "date_added"
   end
 
   add_index "order_items", ["employee_id"], :name => "index_order_items_on_employee_id"
@@ -449,10 +458,10 @@ ActiveRecord::Schema.define(:version => 20121101160833) do
     t.integer  "order_num",             :limit => 8
     t.text     "split_payments",        :limit => 2147483647
     t.string   "client_name",                                 :default => "",    :null => false
-    t.string   "time_started"
     t.boolean  "training_mode_sale",                          :default => false
     t.integer  "room_id",               :limit => 8
     t.integer  "outlet_id",             :limit => 8
+    t.datetime "date_started"
   end
 
   add_index "orders", ["employee_id"], :name => "index_orders_on_employee_id"
@@ -478,6 +487,7 @@ ActiveRecord::Schema.define(:version => 20121101160833) do
     t.boolean  "has_seed_data",                 :default => false
     t.string   "password_salt"
     t.boolean  "is_active",                     :default => true
+    t.string   "time_zone",                                        :null => false
   end
 
   create_table "payment_methods", :force => true do |t|
@@ -519,7 +529,7 @@ ActiveRecord::Schema.define(:version => 20121101160833) do
     t.string   "label"
     t.string   "network_path"
     t.integer  "paper_width_mm",              :default => 80
-    t.integer  "font_size",                   :default => 11
+    t.integer  "font_size",                   :default => 13
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -679,6 +689,12 @@ ActiveRecord::Schema.define(:version => 20121101160833) do
   end
 
   add_index "shift_timestamps", ["outlet_id"], :name => "index_shift_timestamps_on_outlet_id"
+
+  create_table "states", :force => true do |t|
+    t.string  "name"
+    t.integer "country_id"
+    t.string  "iso"
+  end
 
   create_table "stock_transactions", :force => true do |t|
     t.integer  "product_id",       :limit => 8

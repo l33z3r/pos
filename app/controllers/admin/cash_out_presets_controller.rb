@@ -22,7 +22,7 @@ class Admin::CashOutPresetsController < Admin::AdminController
       #send a reload request to other terminals
       request_sales_resources_reload @terminal_id
     
-      flash[:notice] = "Cash Out Presets Updated!"
+      flash[:notice] = "Cash Out Presets Updated"
       redirect_to admin_global_settings_path
     else
       render admin_global_settings_path
@@ -36,7 +36,7 @@ class Admin::CashOutPresetsController < Admin::AdminController
     #send a reload request to other terminals
     request_sales_resources_reload @terminal_id
     
-    flash[:notice] = "Cash Out Preset Deleted!"
+    flash[:notice] = "Cash Out Preset Deleted"
     redirect_to admin_global_settings_path
   end
 end

@@ -65,7 +65,7 @@ function doQuickLogin(user_id) {
         $('#num').val(login_code);
         doLogin();
     } else {
-        setStatusMessage("Enter PIN!", false, true);
+        setStatusMessage("Enter PIN", false, true);
     }
     $('#num').focus();
 }
@@ -86,7 +86,7 @@ function doDallasLogin() {
 
     if (current_user_id != null) {
         //already logged in
-        displayError("You are already logged in. Please log out!");
+        displayError("You are already logged in. Please log out");
         return;
     }
 
@@ -100,13 +100,13 @@ function doDallasLogin() {
                 id = employees[i].id;                
                 
                 if(userOnBreak(id)) {
-                    setStatusMessage("User is on break!");
+                    setStatusMessage("User is on break");
                     clearClockinCode();
                     return;
                 }
                 
                 if(!employeeForID(id).login_allowed) {
-                    setStatusMessage("User not allowed login!");
+                    setStatusMessage("User not allowed login");
                     clearClockinCode();
                     return;
                 }
@@ -115,7 +115,7 @@ function doDallasLogin() {
                 loginSuccess(id, nickname, is_admin, passcode);
                 return;
             } else {
-                setStatusMessage("User " + nickname + " is not clocked in!", true, true);
+                setStatusMessage("User " + nickname + " is not clocked in", true, true);
                 clearClockinCode();
                 return;
             }
@@ -130,7 +130,7 @@ function doLogin() {
 
     if (current_user_id != null) {
         //already logged in
-        displayError("You are already logged in. Please log out!");
+        displayError("You are already logged in. Please log out");
         return;
     }
 
@@ -146,13 +146,13 @@ function doLogin() {
                     id = employees[i].id;
                     
                     if(userOnBreak(id)) {
-                        setStatusMessage("User is on break!");
+                        setStatusMessage("User is on break");
                         clearClockinCode();
                         return;
                     }
                     
                     if(!employeeForID(id).login_allowed) {
-                        setStatusMessage("User not allowed login!");
+                        setStatusMessage("User not allowed login");
                         clearClockinCode();
                         return;
                     }
@@ -165,7 +165,7 @@ function doLogin() {
                 }
                 return;
             } else {
-                setStatusMessage("User " + nickname + " is not clocked in!", true, true);
+                setStatusMessage("User " + nickname + " is not clocked in", true, true);
                 clearClockinCode();
                 return;
             }
@@ -234,7 +234,7 @@ function doClockin() {
 
         if (entered_code == clockinCode) {
             if (employees[i]['clocked_in']) {
-                setStatusMessage(nickname + " is already clocked in!");
+                setStatusMessage(nickname + " is already clocked in");
                 clearClockinCode();
                 return;
             }
@@ -268,7 +268,7 @@ function doClockout() {
             }
 
             if(userOnBreak(id)) {
-                setStatusMessage("User is on break!");
+                setStatusMessage("User is on break");
                 clearClockinCode();
                 return;
             }
@@ -293,7 +293,7 @@ function clockinSuccess(id, nickname) {
         $('#employee_box_' + id).show();
     }
 
-    setStatusMessage(nickname + " clocked in successfully!");
+    setStatusMessage(nickname + " clocked in successfully");
 
     //send ajax clockin
     $.ajax({
@@ -311,7 +311,7 @@ function clockoutSuccess(id, nickname) {
     removeClockedInUser(id);
     $('#employee_box_' + id).hide();
     
-    setStatusMessage(nickname + " clocked out successfully!");
+    setStatusMessage(nickname + " clocked out successfully");
 
     //send ajax clockout
     $.ajax({
@@ -390,21 +390,21 @@ function loginSuccess(id, nickname, is_admin, passcode) {
 
 function clockinFailure() {
     //set an error message in the flash area
-    setStatusMessage("Wrong clock in code!", true, true);
+    setStatusMessage("Wrong clock in code", true, true);
 
     clearClockinCode();
 }
 
 function clockoutFailure() {
     //set an error message in the flash area
-    setStatusMessage("You are either not clocked in, or entered the wrong code!", true, true);
+    setStatusMessage("You are either not clocked in, or entered the wrong code", true, true);
 
     clearClockinCode();
 }
 
 function loginFailure() {
     //set an error message in the flash area
-    setStatusMessage("Wrong pass code!", true, true);
+    setStatusMessage("Wrong pass code", true, true);
 
     clearClockinCode();
 }
@@ -419,7 +419,7 @@ function doBreak() {
 
     if (current_user_id != null) {
         //already logged in
-        displayError("You are already logged in. Please log out!");
+        displayError("You are already logged in. Please log out");
         return;
     }
 
@@ -440,7 +440,7 @@ function doBreak() {
                 
                 return;
             } else {
-                setStatusMessage("User " + nickname + " is not clocked in!", true, true);
+                setStatusMessage("User " + nickname + " is not clocked in", true, true);
                 clearClockinCode();
                 return;
             }
@@ -453,7 +453,7 @@ function doBreak() {
 function breakInSuccess(id, nickname) {
     clearClockinCode();
 
-    setStatusMessage(nickname + " started break!");
+    setStatusMessage(nickname + " started break");
 
     //send ajax break in
     $.ajax({
@@ -473,7 +473,7 @@ function breakInSuccess(id, nickname) {
 function breakOutSuccess(id, nickname) {
     clearClockinCode();
 
-    setStatusMessage(nickname + " finished break!");
+    setStatusMessage(nickname + " finished break");
 
     //send ajax clockout
     $.ajax({
@@ -492,7 +492,7 @@ function breakOutSuccess(id, nickname) {
 
 function doBreakFailure() {
     //set an error message in the flash area
-    setStatusMessage("Wrong pass code!", true, true);
+    setStatusMessage("Wrong pass code", true, true);
 
     clearClockinCode();
 }
@@ -518,4 +518,34 @@ function getWorkReportDataTable(work_report_data) {
     work_report_data_html += "</div>";
     
     return work_report_data_html;
+}
+
+function chefKitchenLogin() {
+    var chefEmployee = null;
+    
+    for (var i = 0; i < employees.length; i++) {
+        var id = employees[i].id;
+        
+        if (id == chefUserId) {
+            chefEmployee = employees[i];
+            break;
+        }
+    }
+    
+    current_user_id = chefEmployee.id;
+    last_user_id = current_user_id;
+    current_user_nickname = chefEmployee.nickname;
+    current_user_is_admin = chefEmployee.is_admin;
+    current_user_passcode = chefEmployee.passcode;
+    
+    storeActiveUserID(current_user_id);
+    
+    //send ajax login
+    $.ajax({
+        type: 'POST',
+        url: '/login',
+        data: {
+            employee_id : chefEmployee.id
+        }
+    });
 }

@@ -1,17 +1,566 @@
-/* 
-    Document   : style
-    Created on : 17-Aug-2012, 11:16:17
-    Author     : lee
-    Description:
-        Purpose of the stylesheet follows.
-*/
+/* Reset CSS */
 
-/* 
-   TODO customize this sample style
-   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
-*/
+html, body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
 
-root { 
+/* End Reset CSS */
+
+html {
+    color: #797979;
+    font-size: 13px;
+    font-family: Verdana;
+}
+
+a {
+    text-decoration: none;
+    color: #797979;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+div#wrapper {
+    min-width: 960px;
+    max-width: 1260px;
+    margin: 10px auto;
+    background-color: #FFF;
+}
+
+div#header {
+    background: -moz-linear-gradient(#F2F2F2, #E4E4E4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F2F2F2), to(#E4E4E4));
+    height: 40px;
+    padding: 10px;
+}
+
+div#header div#header_logo {
+    float: left;
+}
+
+div#header div#header_logo img {
+    width: 180px;
+}
+
+div#header div#navigation {
+    color: #797979;
+    float: right;
+    margin-top: 5px;
+}
+
+div#header div#navigation a {
+    margin: 0px 5px;
+}
+
+div#content {
+
+}
+
+div#footer {
+    margin-top: 50px;
+    border-top: 1px solid red;
+    padding-top: 10px;
+    text-align: right;
+    font-size: 11px;
+}
+
+div#content div#left_column {
+    float: left;
+    width: 50%;
+}
+
+div#content div#right_column {
+    float: left;
+    width: 50%;
+}
+
+/* Logged out layout */
+
+div#signin_popup_markup {
+    display: none;
+}
+
+div#signin_popup_container input#account_name {
+    float: left;
+    text-align: right;
+    padding-right: 5px;
+    border: 1px solid #333;
+    height: 20px;
+    -moz-border-radius: 7px;
+    border-radius: 3px;
+    font-size: 18px;
+    width: 180px;
+}
+
+div#signin_popup_container {
+    background-color: #E4E4E4;
+    width: 310px;
+    height: 90px;
+    padding: 15px;
+    text-align: center;
+}
+
+div#signin_popup_container div#domain {
+    float: left;
+    color: #333;
+    font-size: 18px;
+    margin-left: 4px;
+    margin-top: 1px;
+}
+
+div#signin_popup_container div#go_to_account_button {
+    width: 150px;
+    margin-top: 15px;
+}
+
+/* End logged out layout */
+
+/* Signup Page */
+
+div#signup_page {
+    color: #333;    
+}
+
+div#signup_page img.cluey_logo {
+    margin: 50px auto 30px auto;
     display: block;
 }
 
+div#signup_page div#girl_1_container {
+    background-color: #E4E4E4;
+    width: 303px;   
+    margin: auto;
+}
+
+div#signup_page img.girl_1 {
+    margin: 10px;
+}
+
+div#signup_page div#header_1 {
+    font-size: 20px;
+    margin-top: 30px;
+    color: #000;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+div#signup_page div#header_2 {
+    font-size: 20px;
+    color: #797979;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+div#signup_page form div#fields_container {
+    width: 470px;
+    margin: auto;
+}
+
+div#signup_page form {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+div#signup_page form div#fields_container div.field {
+    margin: 6px 0px;
+}
+
+div#signup_page form div#fields_container div.label {
+    margin-top: 2px;
+    float: left;
+    width: 45%;
+    text-align: right;
+    margin-right: 10px;
+}
+
+div#signup_page form div#fields_container input,
+div#signup_page form div#fields_container select {
+    float: left;
+    width: 45%;
+    cursor: pointer;
+}
+
+div#signup_page form div#fields_container div.submit {
+    text-align: center;
+    margin-top: 20px;
+}
+
+div#signup_page form div#fields_container div.submit input {
+    width: 200px;
+    margin-left: 200px;
+}
+
+div#signup_page div#terms_blurb {
+    text-align: center;
+    color: #797979;
+    margin-top: 30px;
+}
+
+/* End Signup Page */
+
+/* Login Page */
+
+div#login_page {
+    color: #333;    
+}
+
+div#login_page img.cluey_logo {
+    margin: 50px auto 30px auto;
+    display: block;
+}
+
+div#login_page div#girl_1_container {
+    background-color: #E4E4E4;
+    width: 303px;   
+    margin: auto;
+}
+
+div#login_page img.girl_1 {
+    margin: 10px;
+}
+
+div#login_page div#header_1 {
+    font-size: 20px;
+    margin-top: 30px;
+    color: #000;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+div#login_page form div#fields_container {
+    width: 470px;
+    margin: auto;
+}
+
+div#login_page form {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+div#login_page form div#fields_container div.field {
+    margin: 6px 0px;
+}
+
+div#login_page form div#fields_container div.label {
+    margin-top: 2px;
+    float: left;
+    width: 45%;
+    text-align: right;
+    margin-right: 10px;
+}
+
+div#login_page form div#fields_container input {
+    float: left;
+    width: 45%;
+    cursor: pointer;
+}
+
+div#login_page form div#fields_container div.submit {
+    text-align: center;
+    margin-top: 20px;
+}
+
+div#login_page form div#fields_container div.submit input {
+    width: 200px;
+    margin-left: 200px;
+}
+
+div#login_page div#forgot_password_link {
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* End Login Page */
+
+/* Forgot Password Page */
+
+div#forgot_password_page {
+    color: #333;    
+}
+
+div#forgot_password_page img.cluey_logo {
+    margin: 50px auto 30px auto;
+    display: block;
+}
+
+div#forgot_password_page div#girl_1_container {
+    background-color: #E4E4E4;
+    width: 303px;   
+    margin: auto;
+}
+
+div#forgot_password_page img.girl_1 {
+    margin: 10px;
+}
+
+div#forgot_password_page div#header_1 {
+    font-size: 20px;
+    margin-top: 70px;
+    color: #000;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+div#forgot_password_page form div#fields_container {
+    width: 470px;
+    margin: auto;
+}
+
+div#forgot_password_page div#explain {
+    text-align: center;
+    margin-top: 30px;
+}
+
+div#forgot_password_page form {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+div#forgot_password_page form div#fields_container div.field {
+    margin: 6px 0px;
+}
+
+div#forgot_password_page form div#fields_container div.label {
+    margin-top: 2px;
+    float: left;
+    width: 45%;
+    text-align: right;
+    margin-right: 10px;
+}
+
+div#forgot_password_page form div#fields_container input {
+    float: left;
+    width: 45%;
+    cursor: pointer;
+}
+
+div#forgot_password_page form div#fields_container div.submit {
+    text-align: center;
+    margin-top: 20px;
+}
+
+div#forgot_password_page form div#fields_container div.submit input {
+    width: 200px;
+    margin-left: 200px;
+}
+
+div#reset_password_page {
+    color: #333;    
+}
+
+div#reset_password_page img.cluey_logo {
+    margin: 50px auto 30px auto;
+    display: block;
+}
+
+div#reset_password_page div#girl_1_container {
+    background-color: #E4E4E4;
+    width: 303px;   
+    margin: auto;
+}
+
+div#reset_password_page img.girl_1 {
+    margin: 10px;
+}
+
+div#reset_password_page div#header_1 {
+    font-size: 20px;
+    margin-top: 30px;
+    color: #000;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+div#reset_password_page form div#fields_container {
+    width: 470px;
+    margin: auto;
+}
+
+div#reset_password_page form {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+div#reset_password_page form div#fields_container div.field {
+    margin: 6px 0px;
+}
+
+div#reset_password_page form div#fields_container div.label {
+    margin-top: 2px;
+    float: left;
+    width: 45%;
+    text-align: right;
+    margin-right: 10px;
+}
+
+div#reset_password_page form div#fields_container input {
+    float: left;
+    width: 45%;
+    cursor: pointer;
+}
+
+div#reset_password_page form div#fields_container div.submit {
+    text-align: center;
+    margin-top: 20px;
+}
+
+div#reset_password_page form div#fields_container div.submit input {
+    width: 200px;
+    margin-left: 200px;
+}
+
+/* End Forgot Password Page */
+
+/* Not firefox page */
+
+div#not_firefox_page {
+    color: #333;    
+}
+
+div#not_firefox_page img.cluey_logo {
+    margin: 50px auto 30px auto;
+    display: block;
+}
+
+div#not_firefox_page div#girl_1_container {
+    background-color: #E4E4E4;
+    width: 303px;   
+    margin: auto;
+}
+
+div#not_firefox_page img.girl_1 {
+    margin: 10px;
+}
+
+div#not_firefox_page div#header_1 {
+    font-size: 20px;
+    margin-top: 30px;
+    color: #000;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+div#not_firefox_page div#ff_blurb_container {
+    border: 1px solid #333;
+    width: 450px;
+    margin: 30px auto;
+    text-align: center;
+    padding: 20px;
+}
+
+div#not_firefox_page div#ff_blurb_container div#text {
+    width: 400px;
+    margin: 0px auto 20px auto;
+    font-size: 14px;
+}
+
+div#not_firefox_page div#ff_blurb_container div#download_link {
+    font-size: 17px;
+    margin-top: 10px;
+}
+
+div#not_firefox_page a#ok_button {
+    width: 150px;
+    margin-left: 200px;
+}
+
+/* End not firefox page */
+
+/* Static Pages */
+
+div#content div.header {
+    font-size: 18px;
+    margin: 20px 0px;
+}
+
+/* End Static Pages */
+
+/* Util */
+
+div.clear {
+    clear: both;
+    height: 1px;
+}
+
+div.field_with_errors input {
+    border: 1px solid red;
+}
+
+form div.error_messages {
+    width: 470px;    
+    margin: auto;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    border: 1px solid red;
+    padding: 10px;
+    background-color: #E4E4E4;
+    margin-bottom: 20px;
+}
+
+input.big_blue_button_1,
+div.big_blue_button_1,
+a.big_blue_button_1 {
+    padding: 15px;
+    border: 1px solid #333;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    box-shadow: 0px 1px 0px #777;
+    background-color: #12409D;
+    font-size: 15px;
+    color: #FFF;
+    cursor: pointer;
+    display: block;
+    text-align: center;
+}
+
+a.big_blue_button_1:hover {
+    text-decoration: none;
+}
+
+div#flash div#flash_error {
+    color: red;
+    text-align: center;
+    border: 2px solid red;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    width: 300px;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #E4E4E4;
+}
+
+div#flash div#flash_notice {
+    color: #12409D;
+    text-align: center;
+    border: 2px solid #12409D;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    width: 300px;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #E4E4E4;
+}
+
+div#flash div#flash_positive {
+    color: #12409D;
+    text-align: center;
+    border: 2px solid #12409D;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    width: 300px;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #E4E4E4;
+}
+
+/* Generic Popup Styling */
+
+div.jquerybubblepopup table td.jquerybubblepopup-top-middle {
+    border-spacing: 0px;
+    line-height: 0em;
+}
+
+/* End Util */

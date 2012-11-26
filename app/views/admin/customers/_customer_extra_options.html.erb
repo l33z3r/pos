@@ -53,6 +53,7 @@
         <%= f.text_field :customer_number %>
         <input type="radio" id="generate_card_code" name="generate_card_code" checked="true"
                value="customer_number" onclick="doToggleGenerateSwipeCardCode(this);"/>
+        <%= f.hidden_field :customer_number, :id => "blank_customer_customer_number", :value => "", :disabled => true %>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">
@@ -60,6 +61,7 @@
         <%= f.text_field :swipe_card_code, :disabled => true %>
         <input type="radio" id="generate_card_code" name="generate_card_code" 
                value="swipe_card" onclick="doToggleGenerateSwipeCardCode(this);"/>
+        <%= f.hidden_field :swipe_card_code, :id => "blank_customer_swipe_card_code", :value => "" %>
         <div class="clear">&nbsp;</div>
       </div>
       <div class="field">

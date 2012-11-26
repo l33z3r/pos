@@ -1,5 +1,7 @@
 class OutletBuilder
   def self.build_outlet_seed_data outlet_id
+    @outlet = Outlet.find_by_id outlet_id
+    
     @super_user_role = Role.find_or_create_by_outlet_id_and_name({:outlet_id => outlet_id, :name => "Administrator"})
 
     @admin_employee = Employee.find_or_create_by_outlet_id_and_nickname({:outlet_id => outlet_id, :nickname => "admin", :staff_id => "1111", :name => "admin", 
@@ -25,7 +27,7 @@ class OutletBuilder
     #
     #
     #Display Buttons and Roles
-    @display_buttons_map = OutletBuilder::display_buttons_map
+    @display_buttons_map = OutletBuilder::display_buttons_map @outlet
     
     #now create the buttons and also init a button role for admin user
     @display_buttons_map.each do |perm_id, button_text|
@@ -61,10 +63,10 @@ class OutletBuilder
     #
     #Taxes and Payment Methods ETC
     @cash_payment_method = PaymentMethod.find_or_create_by_outlet_id_and_name(:outlet_id => outlet_id, :name => PaymentMethod::CASH_PAYMENT_METHOD_NAME, :payment_integration_id => 0, :open_cash_drawer => true, :is_default => true)
-    @loyalty_payment_method = PaymentMethod.find_or_create_by_outlet_id_and_name(:outlet_id => outlet_id, :name => PaymentMethod::LOYALTY_PAYMENT_METHOD_NAME, :payment_integration_id => 0, :open_cash_drawer => false, :is_default => false)
+    @loyalty_payment_method = PaymentMethod.find_or_create_by_outlet_id_and_name(:outlet_id => outlet_id, :name => PaymentMethod::LOYALTY_PAYMENT_METHOD_NAME, :payment_integration_id => 0, :open_cash_drawer => false, :is_default => false, :is_active => false)
     @account_payment_method = PaymentMethod.find_or_create_by_outlet_id_and_name(:outlet_id => outlet_id, :name => PaymentMethod::ACCOUNT_PAYMENT_METHOD_NAME, :payment_integration_id => 0, :open_cash_drawer => false, :is_default => false)
 
-    @default_tax_rate = TaxRate.find_or_create_by_outlet_id_and_name(:outlet_id => outlet_id, :name => "default", :rate => 12, :is_default => true)
+    @default_tax_rate = TaxRate.find_or_create_by_outlet_id_and_name(:outlet_id => outlet_id, :name => "default", :rate => 20, :is_default => true)
 
     @default_discount_rate = Discount.find_or_create_by_outlet_id_and_name(:outlet_id => outlet_id, :name => "default", :percent => "10", :is_default => true)
 
@@ -122,20 +124,24 @@ class OutletBuilder
     @default_terminal.save
   end
   
-  def self.display_buttons_map
-    return [[1, "X Total"],[2, "Z Total"],[3, "X/Z Options"], [4, "Z Options"], [5, "Employees"],
-      [6, "Employee Roles"], [7, "Products"], [8, "Categories"], [9, "Displays"], [10, "Sales Screen"],
+  def self.display_buttons_map outlet
+    #some of the button names are location dependant
+    @split_bill_button_name = Country.get_split_bill_button_name outlet
+    @z_total_button_name = Country.get_z_total_button_name outlet
+    
+    return [[1, "X Total"],[2, @z_total_button_name],[3, "X/Z Options"], [4, "Z Options"], [5, "Employees"],
+      [6, "Employee Roles"], [7, "Products"], [8, "Categories"], [9, "Displays"], [10, "Sales Buttons"],
       [11, "Access Control"], [12, "Modifier Categories"], [13, "Room Design"], [14, "Cash"],
       [15, "Sub-Total"], [16, "Wait"], [17, "Functions"], [18, "Button Names"], [19, "Tables"],
       [20, "System Settings"], [21, "Themes"], [22, "Discount"], [23, "Clients"], [24, "Waste"],
       [25, "Free"], [26, "Change Price"], [27, "Float"], [28, "No Sale"], [29, "Refund"],
       [30, "Remove Item"], [31, "Add Note"], [32, "Change Waiter"], [33, "Printers"], [34, "Transfer"],
-      [35, "Standard Price"], [36, "Stock Take"], [37, "Delivery"], [38, "Cash Out"], [39, "Receipt Setup"],
+      [35, "Standard Price"], [36, "Stock Take"], [37, "Delivery"], [38, "Expenses"], [39, "Receipt Setup"],
       [40, "Payment Methods"], [41, "Gift Voucher"], [42, "Order Types"], [43, "Set Up Discounts"],
       [44, "Print Receipt"], [45, "Order"], [46, "Service Charge"], [47, "Previous Sales"], [48, "Modify"],
       [49, "Modifier Grids"], [50, "Current Orders"], [51, "Manage Terminals"], [52, "Print Bill"], [53, "Course"],
       [54, "Kitchen Screen"], [55, "X/Z History"], [56, "Double"], [57, "Table Name"], [58, "Reports"], 
-      [59, "Split Bill"], [60, "Exit App"], [61, "Void Item"], [62, "Void All Items"], [63, "Delete Order"], 
+      [59, @split_bill_button_name], [60, "Exit App"], [61, "Void Item"], [62, "Void All Items"], [63, "Delete Order"], 
       [64, "Change Prices"], [65, "Charge Card"], [66, "Covers"], [67, "Product Info"], 
       [68, "Customers"], [69, "Loyalty Customers"], [70, "Half"], [71, "Payment Method Button 1"], 
       [72, "Payment Method Button 2"], [73, "Payment Method Button 3"], [74, "Training Mode"], [75, "Change Cost Price"],

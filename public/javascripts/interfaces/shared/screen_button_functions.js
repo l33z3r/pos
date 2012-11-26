@@ -7,7 +7,7 @@ function orderButtonPressed() {
     var order = getCurrentOrder();
 
     if (currentOrderEmpty()) {
-        setStatusMessage("No order present!", true, true);
+        setStatusMessage("No order present", true, true);
         return;
     }
 
@@ -90,20 +90,20 @@ function doSyncTableOrder() {
     }
 
     if (!callHomePollInitSequenceComplete) {
-        niceAlert("Downloading data from server, please wait.");
+        niceAlert("Downloading data from server, please wait");
         return;
     }
 
     if (orderInProcess) {
-        niceAlert("There is an order being processed, please wait.");
+        niceAlert("There is an order being processed, please wait");
         return;
     }
 
     if (selectedTable == previousOrderTableNum) {
-        setStatusMessage("Not valid for reopened orders!");
+        setStatusMessage("Not valid for reopened orders");
         return;
     } else if (selectedTable == tempSplitBillTableNum) {
-        setStatusMessage("Not valid for split orders!");
+        setStatusMessage("Not valid for split orders");
         return;
     } else if (selectedTable == 0) {
         if (!isTableZeroOrder) {
@@ -126,7 +126,7 @@ function doSyncTableOrder() {
 
         order = tableOrders[selectedTable];
         if (order.items.length == 0) {
-            setStatusMessage("No items present in current table order.");
+            setStatusMessage("No items present in current table order");
             return;
         }
     }
@@ -135,7 +135,7 @@ function doSyncTableOrder() {
         checkForItemsToPrint(order, current_user_nickname);
     }
     
-    setStatusMessage("Sending Order.");
+    setStatusMessage("Sending Order");
 
     orderInProcess = true;
 
@@ -214,12 +214,12 @@ function syncTableOrderFail() {
         transferOrderItemInProgress = false;
         inTransferOrderItemMode = false;
         showMenuScreen();
-        niceAlert("Error, Server may be down. You may need to hit order again for both tables to ensure that the changes are system wide.");
+        niceAlert("Error, Server may be down. You may need to hit order again for both tables to ensure that the changes are system wide");
     } else if(inSplitBillMode) {
         cancelSplitBillMode();
         tableSelectMenu.setValue(tempSplitBillTableNum);
         doSelectTable(tempSplitBillTableNum);
-        niceAlert("Error, Server may be down. You may need to hit order again for the original table to ensure that the changes are system wide.");
+        niceAlert("Error, Server may be down. You may need to hit order again for the original table to ensure that the changes are system wide");
         $('#split_bill_select_item').show();
     } else {
         niceAlert("Order not sent, no connection, please try again");
@@ -228,7 +228,7 @@ function syncTableOrderFail() {
 
 function retryTableOrder() {
     orderInProcess = false;
-    niceAlert("An order for this table was sent at the same time, PLEASE SEND ORDER AGAIN.");
+    niceAlert("An order for this table was sent at the same time, PLEASE SEND ORDER AGAIN");
 }
 
 function removeLastOrderItem() {
@@ -247,7 +247,7 @@ function quickSale() {
 
 function doQuickSale() {
     if (currentOrderEmpty()) {
-        setStatusMessage("No order present to total!", true, true);
+        setStatusMessage("No order present to total", true, true);
         return;
     }
 
@@ -283,7 +283,7 @@ function printBillPressed() {
     }
     
     if(!orderSynced) {
-        niceAlert("You cannot print a bill until you order all items on the receipt. You can also delete unordered items!");
+        niceAlert("You cannot print a bill until you order all items on the receipt. You can also delete unordered items");
         return;
     }
     
@@ -292,7 +292,7 @@ function printBillPressed() {
 
 function printBill() {
     if (currentOrderEmpty()) {
-        setStatusMessage("No order present!", true, true);
+        setStatusMessage("No order present", true, true);
         return;
     }
 
@@ -322,19 +322,19 @@ function applyDefaultServiceChargePercent() {
 
 function startTransferOrderMode() {
     if(!appOnline) {
-        niceAlert("Server cannot be contacted. Transfering orders is disabled until connection re-established.");
+        niceAlert("Server cannot be contacted. Transfering orders is disabled until connection re-established");
         return;
     }
     
     if (!callHomePollInitSequenceComplete) {
-        niceAlert("Downloading data from server, please wait.");
+        niceAlert("Downloading data from server, please wait");
         return;
     }
 
     var order = getCurrentOrder();
 
     if (order == null || order.items.length == 0) {
-        setStatusMessage("No items present in current table order.");
+        setStatusMessage("No items present in current table order");
         return;
     }
 
@@ -349,32 +349,32 @@ function startTransferOrderMode() {
     }
 
     if (!orderSynced && selectedTable != 0) {
-        niceAlert("All items in the order must be ordered before you can transfer. You can also delete un-ordered items.");
+        niceAlert("All items in the order must be ordered before you can transfer. You can also delete un-ordered items");
         return;
     }
 
     inTransferOrderMode = true;
 
     showTablesScreen();
-    setStatusMessage("Please choose a free table to transfer this order to.", false, false);
+    setStatusMessage("Please choose a free table to transfer this order to", false, false);
 }
 
 function startTransferOrderItemMode() {
     if(!appOnline) {
-        niceAlert("Server cannot be contacted. Transfering orders is disabled until connection re-established.");
+        niceAlert("Server cannot be contacted. Transfering orders is disabled until connection re-established");
         return;
     }
     
     if (!callHomePollInitSequenceComplete) {
-        niceAlert("Downloading data from server, please wait.");
+        niceAlert("Downloading data from server, please wait");
         return;
     }
 
     if (selectedTable == previousOrderTableNum) {
-        niceAlert("Not valid for reopened orders! You must transfer the whole order to a table.");
+        niceAlert("Not valid for reopened orders! You must transfer the whole order to a table");
         return;
     } else if (selectedTable == tempSplitBillTableNum) {
-        niceAlert("Not valid for split orders! You must transfer the whole order to a table.");
+        niceAlert("Not valid for split orders! You must transfer the whole order to a table");
         return;
     }
 
@@ -384,7 +384,7 @@ function startTransferOrderItemMode() {
     var order = getCurrentOrder();
 
     if (!order.items[itemNumber - 1]['synced']) {
-        niceAlert("Only ordered items can be transfered.");
+        niceAlert("Only ordered items can be transfered");
         return;
     }
 
@@ -392,7 +392,7 @@ function startTransferOrderItemMode() {
 
     hideBubblePopup(editItemPopupAnchor);
     showTablesScreen();
-    setStatusMessage("Please choose a table to transfer this order item to.", false, false);
+    setStatusMessage("Please choose a table to transfer this order item to", false, false);
 }
 
 function toggleMenuItemDoubleMode() {
@@ -445,18 +445,18 @@ function setMenuItemStandardPriceOverrideMode(turnOn) {
 
 function deleteCurrentOrder() {
     if(!appOnline) {
-        niceAlert("Server cannot be contacted. Deleting orders across the system is disabled until connection re-established.");
+        niceAlert("Server cannot be contacted. Deleting orders across the system is disabled until connection re-established");
         return;
     }
     
     if (selectedTable == previousOrderTableNum) {
-        setStatusMessage("Not valid for reopened orders!");
+        setStatusMessage("Not valid for reopened orders");
         return;
     } else if (selectedTable == tempSplitBillTableNum) {
-        setStatusMessage("Not valid for split orders!");
+        setStatusMessage("Not valid for split orders");
         return;
     } else if (selectedTable == 0) {
-        setStatusMessage("Only valid for table orders!");
+        setStatusMessage("Only valid for table orders");
         return;
     }
 
@@ -471,7 +471,7 @@ function deleteCurrentOrder() {
             type: 'POST',
             url: '/delete_table_order',
             complete: function() {
-                niceAlert("Order has been deleted from the system.");
+                niceAlert("Order has been deleted from the system");
             },
             data: {
                 table_id : selectedTable,
@@ -483,7 +483,7 @@ function deleteCurrentOrder() {
 
 function chargeCardShortcut() {
     if (currentOrderEmpty()) {
-        setStatusMessage("No order present!", true, true);
+        setStatusMessage("No order present", true, true);
         return;
     }
 

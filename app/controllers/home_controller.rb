@@ -1,10 +1,15 @@
 class HomeController < ApplicationController
+  prepend_before_filter :set_interface_large, :only => [:index]
+  prepend_before_filter :set_interface_medium, :only => [:medium_home]
+  
   skip_before_filter :set_current_employee, :only => [:login, :logout, :clockin, :clockout]
   cache_sweeper :product_sweeper  
   
   #main screen including the login overlay
   def index
-    perform_interface_specific_actions
+    check_for_firefox
+    
+    do_large_interface_actions
           
     #now the actions common to all interfaces
     do_common_interface_actions
@@ -12,6 +17,15 @@ class HomeController < ApplicationController
   
   def force_error
     1/0
+  end
+  
+  def medium_home
+    do_medium_interface_actions
+          
+    #now the actions common to all interfaces
+    do_common_interface_actions
+    
+    render :action => "index"
   end
   
   def mobile_index
@@ -286,7 +300,7 @@ class HomeController < ApplicationController
       
       @all_orders.each do |order|
         
-        @all_order_items_sold_quantity += order.order_items.length
+        @all_order_items_sold_quantity += order.order_items.count
         @all_order_items_sold_amount += order.total
           
         @payment_types = order.split_payments
@@ -391,7 +405,7 @@ class HomeController < ApplicationController
     @employee_id = params[:employee_id]
     @employee = current_outlet.employees.find(@employee_id)
     
-    @employee.last_login = Time.now
+    @employee.last_login = Time.zone.now
     
     update_last_active @employee
 
@@ -402,7 +416,7 @@ class HomeController < ApplicationController
     @employee_id = params[:employee_id]
     @employee = current_outlet.employees.find(@employee_id)
     
-    @employee.last_logout = Time.now
+    @employee.last_logout = Time.zone.now
     
     update_last_active @employee
 
@@ -876,24 +890,19 @@ class HomeController < ApplicationController
     @rooms = current_outlet.rooms.all
   end
   
-  def perform_interface_specific_actions
-    if current_interface_large?
-      do_large_interface_actions
-    elsif current_interface_medium?
-      do_medium_interface_actions
-    else
-      do_large_interface_actions
-    end
-  end
-  
   def do_large_interface_actions
     #load the buttons for roles
     @menu_screen_buttons_map = {}
     @options_screen_buttons_map = {}
     
     current_outlet.roles.each do |role|
-      @menu_screen_buttons_map[role.id] = DisplayButtonRole.menu_screen_buttons_for_role(current_outlet, role.id)
-      @options_screen_buttons_map[role.id] = DisplayButtonRole.admin_screen_buttons_for_role(current_outlet, role.id)
+      #remove the hidden buttons
+      @menu_screen_dbrs = DisplayButtonRole.menu_screen_buttons_for_role(current_outlet, role.id)
+      @menu_screen_buttons_map[role.id] = DisplayButtonRole.remove_hidden_buttons @menu_screen_dbrs
+      
+      #remove the hidden buttons
+      @options_screen_dbrs = DisplayButtonRole.admin_screen_buttons_for_role(current_outlet, role.id)
+      @options_screen_buttons_map[role.id] = DisplayButtonRole.remove_hidden_buttons @options_screen_dbrs
     end 
     
     @customer_letter_query = ActiveRecord::Base.connection.execute("select substr(name,1,1) as letter from customers where customer_type in ('#{Customer::NORMAL}', '#{Customer::BOTH}') and is_active = true and outlet_id = #{current_outlet.id} group by substr(name,1,1)")
@@ -942,7 +951,7 @@ class HomeController < ApplicationController
   end
   
   def update_last_active employee
-    employee.last_active = Time.now
+    employee.last_active = Time.zone.now
     employee.save!
   end
   
@@ -973,8 +982,16 @@ class HomeController < ApplicationController
   #it allows us to see what terminals are currently active
   def update_terminal_timestamp
     #@@terminal_id_gs is set in a before filter in application controller
-    @terminal_id_gs.updated_at = Time.now
+    @terminal_id_gs.updated_at = Time.zone.now
     @terminal_id_gs.save
+  end
+  
+  def set_interface_large
+    session[:current_interface] = GlobalSetting::LARGE_INTERFACE
+  end
+  
+  def set_interface_medium
+    session[:current_interface] = GlobalSetting::MEDIUM_INTERFACE
   end
 
 end

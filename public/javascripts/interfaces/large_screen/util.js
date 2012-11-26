@@ -453,7 +453,7 @@ var toggleKeyboardEnable = true;
 
 function toggleUtilKeyboard() {
     if(!toggleKeyboardEnable) {
-        setStatusMessage("Toggling Keyboard disabled for this screen!");
+        setStatusMessage("Toggling Keyboard disabled for this screen");
         return;
     }
     
@@ -590,7 +590,7 @@ function getSelectedOrLastReceiptItem() {
         currentSelectedReceiptItemEl = $('#till_roll > div.order_line:last');
     
         if(currentSelectedReceiptItemEl.length == 0) {
-            setStatusMessage("There are no receipt items!");
+            setStatusMessage("There are no receipt items");
             return null;
         }
     }
@@ -602,7 +602,7 @@ function getLastReceiptItem() {
     lastReceiptItemEl = $('#till_roll > div.order_line:last');
     
     if(lastReceiptItemEl.length == 0) {
-        setStatusMessage("There are no receipt items!");
+        setStatusMessage("There are no receipt items");
         return null;
     }
     
@@ -827,9 +827,13 @@ function showUtilKeyboardCloseButton() {
 function checkForFirefox() {
     var ua = $.browser;
     
-    if (typeof(ua.mozilla) == 'undefined') {
-        niceAlert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software!");
-        return false;
+    var isiPad = navigator.userAgent.match(/iPad/i) != null
+    
+    if(!isiPad) {
+        if (typeof(ua.mozilla) == 'undefined') {
+            niceAlert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software");
+            return false;
+        }
     }
     
     return true;
@@ -1010,4 +1014,16 @@ function indicateActionRequired(functionToPerform) {
 function actionRequiredClicked() {
     $('.sales_resources_reload_indicator').hide();
     actionFunction.call();    
+}
+
+var inFullScreen = false;
+
+function toggleFullScreen() {
+    inFullScreen = !inFullScreen;
+    
+    try {
+        cluey_ff_ext.toggleFullScreen(inFullScreen);
+    } catch(ex) {
+        setStatusMessage("Error entering fullscreen mode");
+    }
 }

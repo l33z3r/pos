@@ -27,7 +27,7 @@ class Admin::RolesController < Admin::AdminController
     if @role.save
       
       #build role permissions
-      @display_buttons_map = OutletBuilder::display_buttons_map
+      @display_buttons_map = OutletBuilder::display_buttons_map current_outlet
       
       #now create the buttons and also init a button role for admin user
       @display_buttons_map.each do |perm_id, button_text|
@@ -101,7 +101,7 @@ class Admin::RolesController < Admin::AdminController
     @editing_super_user = (Role::super_user_role_id(current_outlet) == @role.id)
     
     if @editing_super_user
-      redirect_to([:admin, @role], :flash => {:error => "You cannot edit the Administrator Role!"}) and return
+      redirect_to([:admin, @role], :flash => {:error => "You cannot edit the Administrator Role"}) and return
     end
   end
   
@@ -111,7 +111,7 @@ class Admin::RolesController < Admin::AdminController
     @editing_employee = (Role::employee_role_id(current_outlet) == @role.id)
     
     if @editing_employee
-      redirect_to([:admin, @role], :flash => {:error => "You cannot edit the Employee Role!"}) and return
+      redirect_to([:admin, @role], :flash => {:error => "You cannot edit the Employee Role"}) and return
     end
   end
   

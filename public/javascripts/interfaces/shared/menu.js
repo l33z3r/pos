@@ -286,7 +286,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
 
 function checkForItemsToPrint(order, serverNickname) {
     if(!inLargeInterface()) {
-        niceAlert("Not yet implemented for mobiles!");
+        niceAlert("Not yet implemented for mobiles");
         return;
     }
     
@@ -901,12 +901,12 @@ function removeSelectedOrderItem() {
     var item = order.items[itemNumber - 1];
 
     if(item.is_void) {
-        niceAlert("You cannot remove an item that is void.");
+        niceAlert("You cannot remove an item that is void");
         return;
     }
     
     if(item.synced && selectedTable != 0 && !inTransferOrderItemMode) {
-        niceAlert("You cannot remove an item that has already been ordered. You can only void this item.");
+        niceAlert("You cannot remove an item that has already been ordered. You can only void this item");
         return;
     }
 
@@ -970,7 +970,7 @@ function doTransferTable(tableFrom, tableTo) {
     //alert(activeTableIDS + " " + $.inArray(tableId.toString(), activeTableIDS));
         
     if(tableTo.toString() == tableFrom) {
-        niceAlert("You cannot transfer to the same table, please choose another.");
+        niceAlert("You cannot transfer to the same table, please choose another");
         return;
     }
         
@@ -987,7 +987,7 @@ function doTransferTable(tableFrom, tableTo) {
     //included here as it is non breaking for medium interface
     $('#nav_back_link').unbind();
     $('#nav_back_link').click(function() {
-        niceAlert("Transfer table order in progress, please wait.");
+        niceAlert("Transfer table order in progress, please wait");
         return;
     });
        
@@ -1009,7 +1009,7 @@ var savedTableTo;
 
 function doTransferOrderItem(tableFrom, tableTo) {
     if(tableTo.toString() == tableFrom) {
-        niceAlert("You cannot transfer to the same table, please choose another.");
+        niceAlert("You cannot transfer to the same table, please choose another");
         return;
     }
         
@@ -1020,7 +1020,7 @@ function doTransferOrderItem(tableFrom, tableTo) {
     //included here as it is non breaking for medium interface
     $('#nav_back_link').unbind();
     $('#nav_back_link').click(function() {
-        niceAlert("Transfer table order item in progress, please wait.");
+        niceAlert("Transfer table order item in progress, please wait");
         return;
     });
      
@@ -1107,7 +1107,7 @@ function finishTransferOrderItem() {
     doAutoLoginAfterSync = true;
     doSyncTableOrder();
     hideNiceAlert();
-    setStatusMessage("Order Item Transfered.");
+    setStatusMessage("Order Item Transfered");
 }
 
 function testForMandatoryModifier(product) {

@@ -12,6 +12,12 @@ var operationInProgress = false;
 var showAllKitchenOrders = false;
 
 function initKitchen() {
+    if(!current_user_id) {
+        alert("auto login chef");
+        
+        chefKitchenLogin();
+    }
+    
     //hide the red x 
     $('#nav_save_button').hide();
         
@@ -333,7 +339,7 @@ function orderComplete(tableID) {
 
 function sendCourseCheck(orderLine) {
     if(operationInProgress) {
-        niceAlert("Please wait, operation in progress!");
+        niceAlert("Please wait, operation in progress");
         return;
     }
     
@@ -409,7 +415,7 @@ function sendCourseCheck(orderLine) {
 
 function hideTableOrder(tableID) {
     if(operationInProgress) {
-        niceAlert("Please wait, operation in progress!");
+        niceAlert("Please wait, operation in progress");
         return;
     }
     

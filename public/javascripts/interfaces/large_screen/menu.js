@@ -392,14 +392,14 @@ function doSelectMenuItem(productId, menuItemId, element) {
     
     //if double and no price set
     if(menuItemDoubleMode && (product.double_price == 0)) {
-        niceAlert("Price has not been set for a double of this item.");
+        niceAlert("Price has not been set for a double of this item");
         setMenuItemDoubleMode(false);
         return;
     }
     
     //if half and no price set
     if (menuItemHalfMode && (product.half_price == 0)) {
-        niceAlert("Price has not been set for a half of this item.");
+        niceAlert("Price has not been set for a half of this item");
         setMenuItemHalfMode(false);
         return;
     }
@@ -683,7 +683,9 @@ function getOrderItemReceiptHTML(orderItem, includeNonSyncedStyling, includeOnCl
             
             oia_is_add = orderItem.oia_items[j].is_add;
             
-            orderHTML += clearHTML + "<div class='oia " + (orderItem.oia_items[j].hide_on_receipt ? "hide_on_receipt" : "") + "'>";
+            var hideOnReciptCSSClass = (orderItem.oia_items[j].hide_on_receipt && orderItem.oia_items[j].abs_charge == 0) ? "hide_on_receipt" : "";
+
+            orderHTML += clearHTML + "<div class='oia " + hideOnReciptCSSClass + "'>";
             
             orderHTML += "<div class='oia_name " + (orderItem.oia_items[j].is_note ? "note" : "") + "'>";
             
@@ -1010,7 +1012,7 @@ function tableScreenSelectTable(tableId) {
         }
         
         if(transferOrderInProgress) {
-            niceAlert("Transfer table order in progress, please wait.");
+            niceAlert("Transfer table order in progress, please wait");
             return;
         }
         
@@ -1024,7 +1026,7 @@ function tableScreenSelectTable(tableId) {
         }
         
         if(transferOrderItemInProgress) {
-            niceAlert("Transfer table order item in progress, please wait.");
+            niceAlert("Transfer table order item in progress, please wait");
             return;
         }
         
@@ -1048,7 +1050,7 @@ function transferOrderError() {
     inTransferOrderMode = false;
     transferOrderInProgress = false;
     showMenuScreen();
-    niceAlert("Error transferring order. Server might be down!");
+    niceAlert("Error transferring order. Server might be down");
     return;
 }
 
@@ -1177,12 +1179,12 @@ function doTotal(applyDefaultServiceCharge) {
     }
     
     if(!callHomePollInitSequenceComplete) {
-        niceAlert("Downloading data from server, please wait.");
+        niceAlert("Downloading data from server, please wait");
         return;
     }
     
     if(currentOrderEmpty()) {
-        setStatusMessage("No order present to sub-total!", true, true);
+        setStatusMessage("No order present to sub-total", true, true);
         return;
     }
     
@@ -1248,7 +1250,7 @@ function doTotalFinal() {
     //as we now send orders when a cash out is done for table 0, 
     //we must halt here if there is an order in progress, otherwise we would lose this order
     if(cashSaleInProcess || orderInProcess) {
-        niceAlert("There is an order being processed, please wait.");
+        niceAlert("There is an order being processed, please wait");
         return;
     }
     
@@ -1261,29 +1263,16 @@ function doTotalFinal() {
     //but we allow table 0 orders to be cashed out regardless
     var now = clueyTimestamp();
     
-    
-    
-    
-    
-    
-    
-    //TODO: //this solution might not be good enough as you can go to another order and hit order then come back and cash this one out
-    //
-    //
-    //
-    //
-    //
     //if we are trying to cash out an order that we just hit "order" for, then wait for the polling amount so others can download the order
-    if(selectedTable != 0 && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
-        showLoadingDiv("Waiting on previous sale to finish processing...");
-        setTimeout(doTotalFinal, 1000);
-        return;
-    }
-    
+    //    if(selectedTable != 0 && lastOrderSentTime != null && ((now - lastOrderSentTime) < (pollingAmount + 2000))) {
+    //        niceAlert("Waiting on previous order to be synced across system, please try again in " + (pollingAmount/1000) + " seconds");
+    //        return;
+    //    }
+    //    
     hideLoadingDiv();
     
     if(currentOrderEmpty()) {
-        setStatusMessage("No order present to total!", true, true);
+        setStatusMessage("No order present to total", true, true);
         return;
     }
     
@@ -1562,13 +1551,17 @@ function orderSentToServerCallback(orderData, errorOccured) {
         
         //first see if its table 0 and send into system orders
         //a null test is to see if table 0
-        if(isTableZeroOrder && isProcessingTable0Orders) {
-            doSyncTableOrder();
-            hideLoadingDiv();
+        if(isTableZeroOrder) {
+            if(isProcessingTable0Orders) {
+                doSyncTableOrder();
+                hideLoadingDiv();
+            } else {
+                isTableZeroOrder = false;
+            }
         }
     } else {
         hideLoadingDiv();
-        setStatusMessage("Order saved offline. Will sync with server when connection re-established.");
+        setStatusMessage("Order saved offline. Will sync with server when connection re-established");
     }
     
     cashSaleInProcess = false;
@@ -1702,7 +1695,7 @@ function showDiscountPopup(receiptItem) {
     currentSelectedReceiptItemEl = receiptItem;
     
     if(currentOrderEmpty()) {
-        setStatusMessage("No order present to discount!");
+        setStatusMessage("No order present to discount");
         return;
     }
     
@@ -2055,7 +2048,7 @@ function doSaveNote() {
     var charge = $('#charge_input').val();
     
     if(isNaN(charge)) {
-        setStatusMessage("Please enter a number for charge!");
+        setStatusMessage("Please enter a number for charge");
         return false;
     }
     
@@ -2070,14 +2063,14 @@ function doSaveNote() {
     }
     
     if(noteInput.length == 0) {
-        setStatusMessage("Please enter some text for this note!");
+        setStatusMessage("Please enter some text for this note");
         return false;
     }
     
     currentSelectedReceiptItemEl = getSelectedOrLastReceiptItem();
     
     if(!currentSelectedReceiptItemEl) {
-        setStatusMessage("There are no receipt items!");
+        setStatusMessage("There are no receipt items");
         return false;
     }
     
@@ -2194,7 +2187,7 @@ function postDoSyncTableOrder() {
         inTransferOrderMode = false;
         tableScreenSelectTable(selectedTable);
         loadAfterSaleScreen();
-        setStatusMessage("Order Transfered.");
+        setStatusMessage("Order Transferred");
         return;
     } else if(inTransferOrderItemMode) {
         finishTransferOrderItem();
@@ -2441,7 +2434,7 @@ function doSplitOrderItem(orderLine, reverse) {
     } else {
         //we are removing an item, so make sure that it is not the last one on the original order
         if(!reverse && orderFrom.items.length == 1) {
-            niceAlert("You cannot remove the last item from the original order!");
+            niceAlert("You cannot remove the last item from the original order");
             return;
         }
         
@@ -2495,7 +2488,7 @@ function splitBillShortcutTransfer() {
 
 function splitBillEmptyItems() {
     if(splitBillOrderTo.items.length == 0) {
-        niceAlert("Please transfer over some items first.");
+        niceAlert("Please transfer over some items first");
         return true;
     }
     
@@ -2677,7 +2670,7 @@ function cashOutFinish() {
     currentCashOutDescription = $('#cash_out_description').val();
     
     if(currentCashOutDescription.length == 0) {
-        niceAlert("Please enter a description!");
+        niceAlert("Please enter a description");
         return;
     }
     
@@ -2686,7 +2679,7 @@ function cashOutFinish() {
         type: 'POST',
         url: '/cash_out',
         complete: function() {
-            setStatusMessage("Expense has been entered!");
+            setStatusMessage("Expense has been entered");
         },
         data: {
             description : currentCashOutDescription,
