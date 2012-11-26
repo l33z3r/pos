@@ -56,10 +56,10 @@ class Reports::SalesController < Admin::AdminController
 
   def export_excel
     headers['Content-Type'] = "application/vnd.ms-excel"
-    headers['Content-Disposition'] = 'attachment; filename="'+@business_name+' Report-' + session[:search_type_label] + '-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
+    headers['Content-Disposition'] = 'attachment; filename="'+current_outlet.name+' Report-' + session[:search_type_label] + '-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
     headers['Cache-Control'] = ''
     sales_search
-    @products = Product.all
+    @products = current_outlet.products.all
   end
 
 
@@ -88,7 +88,7 @@ class Reports::SalesController < Admin::AdminController
       session[:product] = ''
     elsif params[:search][:dropdown_type] == 'product' && params[:search][:dropdown_id] != ''
       if session[:category] == ''
-        @products = Product.all.sort_by { |p| p.name.downcase }
+        @products = current_outlet.products.all.sort_by { |p| p.name.downcase }
       else
         @products = Product.find_all_by_category_id(session[:category]).sort_by { |p| p.name.downcase }
       end
@@ -97,10 +97,10 @@ class Reports::SalesController < Admin::AdminController
     elsif params[:search][:dropdown_type] == 'category' && params[:search][:dropdown_id] == ''
       session[:category] = ''
       session[:product] = ''
-      @products = Product.all.sort_by { |p| p.name.downcase }
+      @products = current_outlet.products.all.sort_by { |p| p.name.downcase }
     else
       session[:product] = ''
-      @products = Product.all.sort_by { |p| p.name.downcase }
+      @products = current_outlet.products.all.sort_by { |p| p.name.downcase }
     end
   end
 

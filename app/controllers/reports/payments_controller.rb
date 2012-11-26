@@ -32,8 +32,8 @@ class Reports::PaymentsController < Admin::AdminController
 
     session[:current_page] = 1
 
-    @opening_time = GlobalSetting.parsed_setting_for GlobalSetting::EARLIEST_OPENING_HOUR
-    @closing_time = GlobalSetting.parsed_setting_for GlobalSetting::LATEST_CLOSING_HOUR
+    @opening_time = GlobalSetting.parsed_setting_for GlobalSetting::EARLIEST_OPENING_HOUR, current_outlet
+    @closing_time = GlobalSetting.parsed_setting_for GlobalSetting::LATEST_CLOSING_HOUR, current_outlet
 
     @selected_from_date = Time.now
     @selected_to_date = Time.now
@@ -42,7 +42,7 @@ class Reports::PaymentsController < Admin::AdminController
     @current_product = nil
     @all_terminals = all_terminals
       #sales_search
-    @products = Product.all.sort_by { |p| p.name.downcase }
+    @products = current_outlet.products.all.sort_by { |p| p.name.downcase }
 
   end
 
@@ -58,7 +58,7 @@ class Reports::PaymentsController < Admin::AdminController
 
   def export_excel
     headers['Content-Type'] = "application/vnd.ms-excel"
-    headers['Content-Disposition'] = 'attachment; filename="'+@business_name+' Payment Report-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
+    headers['Content-Disposition'] = 'attachment; filename="'+current_outlet.name+' Payment Report-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
     headers['Cache-Control'] = ''
     payments_search
   end
@@ -240,6 +240,7 @@ class Reports::PaymentsController < Admin::AdminController
       else
         where << " and o.training_mode_sale = 0"
       end
+      where << " and o.outlet_id = #{current_outlet.id}"
       if session[:search_type] == :day
       where << " group by #{session[:search_type]}(o.created_at) order by o.created_at asc"
       else
@@ -272,6 +273,7 @@ class Reports::PaymentsController < Admin::AdminController
       else
         where << " and o.training_mode_sale = 0"
       end
+      where << " and o.outlet_id = #{current_outlet.id}"
 
       query = Order.paginate_by_sql(where, :page=>session[:current_page], :per_page=> 100)
 

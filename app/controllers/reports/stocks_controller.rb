@@ -31,7 +31,7 @@ class Reports::StocksController < Admin::AdminController
     session[:training_mode] = false
     @current_category = nil
     @current_product = nil
-    @products_drop = Product.all
+    @products_drop = current_outlet.products.all
 
     @opening_time = GlobalSetting.parsed_setting_for GlobalSetting::EARLIEST_OPENING_HOUR, current_outlet
 
@@ -53,7 +53,7 @@ class Reports::StocksController < Admin::AdminController
 
   def stocks_print
     stocks_search
-    @products_drop = Product.all
+    @products_drop = current_outlet.products.all
 
 
     respond_to do |format|
@@ -64,7 +64,7 @@ class Reports::StocksController < Admin::AdminController
 
     def export_excel
     headers['Content-Type'] = "application/vnd.ms-excel"
-    headers['Content-Disposition'] = 'attachment; filename="'+@business_name+' Stock Report-' + session[:search_type_label] + '-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
+    headers['Content-Disposition'] = 'attachment; filename="'+current_outlet.name+' Stock Report-' + session[:search_type_label] + '-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
     headers['Cache-Control'] = ''
     stocks_search
   end
@@ -79,7 +79,7 @@ class Reports::StocksController < Admin::AdminController
       session[:product] = ''
     elsif params[:search][:dropdown_type] == 'product' && params[:search][:dropdown_id] != ''
       if session[:category] == ''
-         @products_drop = Product.all
+         @products_drop = current_outlet.products.all
       else
         @products_drop = Product.find_all_by_category_id(session[:category])
       end
@@ -88,10 +88,10 @@ class Reports::StocksController < Admin::AdminController
     elsif params[:search][:dropdown_type] == 'category' && params[:search][:dropdown_id] == ''
       session[:category] = ''
       session[:product] = ''
-      @products_drop = Product.all
+      @products_drop = current_outlet.products.all
     else
       session[:product] = ''
-      @products_drop = Product.all
+      @products_drop = current_outlet.products.all
     end
   end
 
@@ -188,6 +188,7 @@ class Reports::StocksController < Admin::AdminController
       if session[:category] == '' && session[:product] != ''
         where << " and p.id = #{session[:product]}"
       end
+      where << " and st.outlet_id = #{current_outlet.id}"
       if session[:search_type] == :by_trans_type
         where << " group by st.transaction_type"
       end
@@ -221,6 +222,7 @@ class Reports::StocksController < Admin::AdminController
       if session[:category] == '' && session[:product] != ''
         where << " and p.id = #{session[:product]}"
       end
+      where << " and st.outlet_id = #{current_outlet.id}"
       if session[:search_type] == :by_trans_type
         where << " group by st.transaction_type"
       end
