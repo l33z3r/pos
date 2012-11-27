@@ -70,6 +70,11 @@ function addTerminalFilter(terminal_id) {
     setStockParams();
 }
 
+function addGlancesTerminalFilter(terminal_id) {
+    terminalId = terminal_id;
+    setGlancesParams();
+}
+
 function addHourFromFilter(hour) {
     hour_from = hour;
 //    runGlancesSearch();
@@ -111,16 +116,16 @@ function setDateParams(set_date, isManual) {
     $('#date_to').val(set_date.split(',')[1]);
     selectedFromDate = set_date.split(',')[0];
     selectedToDate = set_date.split(',')[1];
-    if (isManual) {
-        setReportParams();
-        setStockParams();
-    }
+//    if (isManual) {
+//        setReportParams();
+//        setStockParams();
+//    }
 
 }
 
 function updateDateParams(set_date, date_type) {
     var olddate = new Date(set_date);
-    var subbed = new Date(olddate - 1*60*60*1000);
+    var subbed = new Date(olddate - 1 * 60 * 60 * 1000);
     var newtime = subbed.getFullYear() + "-" + (parseInt(subbed.getMonth()) + 1) + "-" + subbed.getDate() + " " + subbed.getHours() + ":" + subbed.getMinutes()
     if (date_type == 'from') {
         selectedFromDate = newtime;
@@ -175,99 +180,15 @@ function runGlancesSearch() {
     $("#at_a_glance_results").html("Loading...");
     $.ajax({
         type: 'GET',
-        url: '/reports/glances/glances_search',
-        data: {
-            "search[created_at_gt]" : selectedFromDate,
-            "search[created_at_lt]" : selectedToDate,
-            "search[terminal_id_equals]" : terminalId,
-            "search2[hour_from]" : hour_from,
-            "search2[hour_to]" : hour_to
-        }
-    });
-}
-
-function runSalesSearch() {
-    if (!$('#refine_button').is('.selected')) {
-    $("#report_sales_results").html("Loading...");
-    $('#refine_button').addClass("selected");
-    if ($('#product_search').val() != '') {
-        $.ajax({
-            type: 'GET',
-            url: '/reports/sales/load_dropdown',
-            data: {
-                "search[search_product]" : $('#product_search').val(),
-                "search[dropdown_type]" : '',
-                "search[dropdown_id]" : ''
-            }
-        }).done(function() {
-                $.ajax({
-                    type: 'GET',
-                    url: '/reports/sales/sales_search',
-                    data: {
-                        "search[created_at_gt]" : selectedFromDate,
-                        "search[created_at_lt]" : selectedToDate,
-                        "search[terminal_id_equals]" : terminalId,
-                        "search2[hour_from]" : hour_from,
-                        "search2[hour_to]" : hour_to
-                    }
-                });
-            });
-    } else {
-
-        $.ajax({
-            type: 'GET',
-            url: '/reports/sales/set_params',
-            data: {
-                "search[search_type]" : search_type,
-                "search[category]" : $('#category_id_equals').val(),
-                "search[product]" : $('#product_id_equals').val(),
-                "search[from_date]" : selectedFromDate,
-                "search[to_date]" : selectedToDate,
-                "search[terminal]" : terminalId,
-                "search[select_type]" : select_type,
-                "search[training_mode]" : inTrainingMode
-            }
-        }).done(function() {
-                $.ajax({
-                    type: 'GET',
-                    url: '/reports/sales/sales_search',
-                    data: {
-                        "search[created_at_gt]" : selectedFromDate,
-                        "search[created_at_lt]" : selectedToDate,
-                        "search[terminal_id_equals]" : terminalId,
-                        "search2[hour_from]" : hour_from,
-                        "search2[hour_to]" : hour_to
-                    }
-                });
-            });
-    }
-    }
-
-
-
-}
-
-function runStocksSearch() {
-    if (!$('#refine_button_stock').is('.selected')) {
-    $("#report_stocks_results").html("Loading...");
-    $('#refine_button_stock').addClass("selected");
-    $.ajax({
-        type: 'GET',
-        url: '/reports/stocks/set_params',
+        url: '/reports/glances/set_params',
         data: {
             "search[search_type]" : search_type,
-            "search[category]" : $('#category_id_equals').val(),
-            "search[product]" : $('#product_id_equals').val(),
-            "search[from_date]" : selectedFromDate,
-            "search[to_date]" : selectedToDate,
-            "search[terminal]" : terminalId,
-            "search[select_type]" : select_type,
-            "search[training_mode]" : inTrainingMode
+            "search[terminal]" : terminalId
         }
     }).done(function() {
             $.ajax({
                 type: 'GET',
-                url: '/reports/stocks/stocks_search',
+                url: '/reports/glances/glances_search',
                 data: {
                     "search[created_at_gt]" : selectedFromDate,
                     "search[created_at_lt]" : selectedToDate,
@@ -275,8 +196,129 @@ function runStocksSearch() {
                     "search2[hour_from]" : hour_from,
                     "search2[hour_to]" : hour_to
                 }
-            });
-        });
+            });});
+}
+
+function runSalesSearch() {
+    if (!$('#refine_button').is('.selected')) {
+        $("#report_sales_results").html("Loading...");
+        $('#refine_button').addClass("selected");
+        if ($('#product_search').val() != '') {
+            $.ajax({
+                type: 'GET',
+                url: '/reports/sales/load_dropdown',
+                data: {
+                    "search[search_product]" : $('#product_search').val(),
+                    "search[dropdown_type]" : '',
+                    "search[dropdown_id]" : ''
+                }
+            }).done(function() {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/reports/sales/sales_search',
+                        data: {
+                            "search[created_at_gt]" : selectedFromDate,
+                            "search[created_at_lt]" : selectedToDate,
+                            "search[terminal_id_equals]" : terminalId,
+                            "search2[hour_from]" : hour_from,
+                            "search2[hour_to]" : hour_to
+                        }
+                    });
+                });
+        } else {
+
+            $.ajax({
+                type: 'GET',
+                url: '/reports/sales/set_params',
+                data: {
+                    "search[search_type]" : search_type,
+                    "search[category]" : $('#category_id_equals').val(),
+                    "search[product]" : $('#product_id_equals').val(),
+                    "search[from_date]" : selectedFromDate,
+                    "search[to_date]" : selectedToDate,
+                    "search[terminal]" : terminalId,
+                    "search[select_type]" : select_type,
+                    "search[training_mode]" : inTrainingMode
+                }
+            }).done(function() {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/reports/sales/sales_search',
+                        data: {
+                            "search[created_at_gt]" : selectedFromDate,
+                            "search[created_at_lt]" : selectedToDate,
+                            "search[terminal_id_equals]" : terminalId,
+                            "search2[hour_from]" : hour_from,
+                            "search2[hour_to]" : hour_to
+                        }
+                    });
+                });
+        }
+    }
+}
+
+function runStocksSearch() {
+    if (!$('#refine_button_stock').is('.selected')) {
+        $("#report_stocks_results").html("Loading...");
+        $('#refine_button_stock').addClass("selected");
+        if ($('#delivery_search').val() != '') {
+
+            $('#date_preselect').attr('selectedIndex', 9);
+            setDateParams($('#date_preselect').val(), false);
+//            $('#category_id_equals').attr('selectedIndex', 0);
+//            $('#product_id_equals').attr('selectedIndex', 0);
+
+            $.ajax({
+                type: 'GET',
+                url: '/reports/stocks/load_dropdown',
+                data: {
+                    "search[search_delivery]" : $('#delivery_search').val(),
+                    "search[dropdown_type]" : '',
+                    "search[dropdown_id]" : ''
+                }
+            }).done(function() {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/reports/stocks/stocks_search',
+                        data: {
+                            "search[created_at_gt]" : selectedFromDate,
+                            "search[created_at_lt]" : selectedToDate,
+                            "search[terminal_id_equals]" : terminalId,
+                            "search2[hour_from]" : hour_from,
+                            "search2[hour_to]" : hour_to
+                        }
+                    });
+                });
+
+        } else {
+            $.ajax({
+                type: 'GET',
+                url: '/reports/stocks/set_params',
+                data: {
+                    "search[search_type]" : search_type,
+                    "search[category]" : $('#category_id_equals').val(),
+                    "search[product]" : $('#product_id_equals').val(),
+                    "search[from_date]" : selectedFromDate,
+                    "search[to_date]" : selectedToDate,
+                    "search[terminal]" : terminalId,
+                    "search[select_type]" : select_type,
+                    "search[training_mode]" : inTrainingMode
+                }
+            }).done(function() {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/reports/stocks/stocks_search',
+                        data: {
+                            "search[created_at_gt]" : selectedFromDate,
+                            "search[created_at_lt]" : selectedToDate,
+                            "search[terminal_id_equals]" : terminalId,
+                            "search2[hour_from]" : hour_from,
+                            "search2[hour_to]" : hour_to
+                        }
+                    });
+                });
+        }
+
     }
 }
 
@@ -295,6 +337,22 @@ function setReportParams() {
             "search[to_date]" : selectedToDate,
             "search[terminal]" : terminalId,
             "search[training_mode]" : inTrainingMode
+
+        }
+    });
+}
+
+function setGlancesParams() {
+
+    select_type = ''
+
+    $.ajax({
+        type: 'GET',
+        url: '/reports/glances/set_params',
+        data: {
+            "search[search_type]" : search_type,
+            "search[terminal]" : terminalId
+
 
         }
     });
@@ -388,12 +446,31 @@ function setStockSearchType(interval_selected) {
             break;
         case '1':
             search_type = 'by_product';
+            $('#string_search_box').hide();
+            $('#to_date').show();
+            $('#from_date').show();
+            $('#date_select').show();
             break;
         case '2':
             search_type = 'by_category';
+            $('#string_search_box').hide();
+            $('#to_date').show();
+            $('#from_date').show();
+            $('#date_select').show();
             break;
         case '3':
-            search_type = 'by_trans_type';
+            search_type = 'by_delivery';
+            $('#string_search_box').show();
+            $('#to_date').show();
+            $('#from_date').show();
+            $('#date_select').show();
+            break;
+        case '4':
+            search_type = 'by_valuation';
+            $('#string_search_box').hide();
+            $('#to_date').hide();
+            $('#from_date').hide();
+            $('#date_select').hide();
             break;
 
     }
@@ -415,51 +492,101 @@ function setSearchTerm(drop_type) {
             }
         });
     }
-
-
 }
+
+function setStockSearchTerm(drop_type) {
+    $('#category_id_equals').val('Any')
+    $('#product_id_equals').val('Any')
+
+    if (drop_type == '') {
+        $.ajax({
+            type: 'GET',
+            url: '/reports/stocks/load_dropdown',
+            data: {
+                "search[search_delivery]" : $('#delivery_search').val(),
+                "search[dropdown_type]" : '',
+                "search[dropdown_id]" : ''
+            }
+        });
+    }
+}
+
+function setGlancesSearchType(interval_selected) {
+    switch (interval_selected) {
+        case '0':
+            search_type = 'today';
+
+            break;
+    }
+    switch (interval_selected) {
+        case '1':
+            search_type = 'yesterday';
+
+            break;
+    }
+    switch (interval_selected) {
+        case '2':
+            search_type = 'this_week';
+
+            break;
+    }
+    switch (interval_selected) {
+        case '3':
+            search_type = 'last_week';
+
+            break;
+    }
+    setGlancesParams();
+};
+
 
 function setSearchType(interval_selected) {
     switch (interval_selected) {
         case '0':
-            search_type = 'best_seller';
+            search_type = 'full_report';
             $('#product_dropdown').hide();
             $('#product_search').val('');
             $('#string_search_box').hide();
             break;
         case '1':
-            search_type = 'worst_seller';
+            search_type = 'best_seller';
             $('#product_dropdown').hide();
             $('#product_search').val('');
             $('#string_search_box').hide();
             break;
         case '2':
+            search_type = 'worst_seller';
+            $('#product_dropdown').hide();
+            $('#product_search').val('');
+            $('#string_search_box').hide();
+            break;
+        case '3':
             search_type = 'day';
             $('#product_dropdown').show();
             $('#string_search_box').show();
             break;
-        case '3':
+        case '4':
             search_type = 'week';
             $('#product_dropdown').show();
             $('#string_search_box').show();
             break;
-        case '4':
+        case '5':
             search_type = 'month';
             $('#product_dropdown').show();
             $('#string_search_box').show();
             break;
-        case '5':
+        case '6':
             search_type = 'year';
             $('#product_dropdown').show();
             $('#string_search_box').show();
             break;
-        case '6':
+        case '7':
             search_type = 'by_product';
             $('#product_dropdown').hide();
             $('#product_search').val('');
             $('#string_search_box').hide();
             break;
-        case '7':
+        case '8':
             search_type = 'by_category';
             $('#product_dropdown').hide();
             $('#product_search').val('');
@@ -477,33 +604,33 @@ function setSearchSelect(set_type) {
         $('#date_preselect').attr('selectedIndex', 10);
         $('#category_id_equals').attr('selectedIndex', 0);
         $('#product_id_equals').attr('selectedIndex', 0);
-        search_type = 'best_seller';
+        search_type = 'full_report';
         setDateParams($('#date_preselect').val(), false);
         select_type = set_type
     }
     if (set_type == 0) {
-        $('#search_type_select').attr('selectedIndex', 2);
+        $('#search_type_select').attr('selectedIndex', 3);
         $('#date_preselect').attr('selectedIndex', 2);
         search_type = 'day';
         setDateParams($('#date_preselect').val(), false);
         select_type = set_type
     }
     if (set_type == 1) {
-        $('#search_type_select').attr('selectedIndex', 0);
+        $('#search_type_select').attr('selectedIndex', 1);
         $('#date_preselect').attr('selectedIndex', 3);
         search_type = 'best_seller';
         setDateParams($('#date_preselect').val(), false);
         select_type = set_type
     }
     if (set_type == 2) {
-        $('#search_type_select').attr('selectedIndex', 4);
+        $('#search_type_select').attr('selectedIndex', 5);
         $('#date_preselect').attr('selectedIndex', 4);
         search_type = 'month';
         setDateParams($('#date_preselect').val(), false);
         select_type = set_type
     }
     if (set_type == 3) {
-        $('#search_type_select').attr('selectedIndex', 0);
+        $('#search_type_select').attr('selectedIndex', 7);
         $('#date_preselect').attr('selectedIndex', 2);
         search_type = 'best_seller';
         setDateParams($('#date_preselect').val(), false);
@@ -531,9 +658,13 @@ function setSearchSelect(set_type) {
 
 function setStockSelect(set_type) {
     if (set_type == -1) {
+        $('#string_search_box').hide();
+        $('#to_date').show();
+        $('#from_date').show();
+        $('#date_select').show();
         $('#sales_items_graph').hide();
         $('#search_type_select').attr('selectedIndex', 0);
-        $('#date_preselect').attr('selectedIndex', 10);
+        $('#date_preselect').attr('selectedIndex', 0);
         $('#category_id_equals').attr('selectedIndex', 0);
         $('#category_id_equals').attr('selectedIndex', 0);
         $('#product_id_equals').attr('selectedIndex', 0);
