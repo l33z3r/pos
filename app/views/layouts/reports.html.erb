@@ -4,7 +4,7 @@
     <% unless params[:action] == "export_excel" %>
     <%= render :partial => "/partials/interfaces/large_screen/common_head" %>
     <%= javascript_include_tag "rails", "reports/reports.js", :cache => "cache/reports" %>
-    <%= javascript_include_tag "reports/payment_reports.js", "reports/staff_reports.js" %>
+    <%= javascript_include_tag "reports/payment_reports.js", "reports/staff_reports.js", "reports/delivery_reports.js", "reports/customer_reports.js" %>
     <%= javascript_include_tag :high_charts %>
   </head>
   <% end %>

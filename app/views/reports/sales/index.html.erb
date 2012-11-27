@@ -5,7 +5,7 @@
                Sales
             </div> <br>
             <div class="report_tab" onclick="window.location = '/reports/stocks'">
-                Stock
+                Products
             </div><br>
             <div class="report_tab" onclick="window.location = '/reports/payments'">
                Payments
@@ -14,7 +14,10 @@
             <div class="report_tab" onclick="window.location = '/reports/staff'">
                 Staff
             </div>
-
+    <br>
+    <div class="report_tab" onclick="window.location = '/reports/customers'">
+        Customers
+    </div>
 </div>
 <div id="reports_container">
 
@@ -29,44 +32,45 @@
                             <div class="dropdown_container">
                                 <div class="label">Report Type</div>
                                 <select id="search_type_select" onchange="setSearchType($(this).val())">
-                                    <option value="0">Best Sellers</option>
-                                    <option value="1">Worst Sellers</option>
-                                    <option value="2">Sales by Day</option>
-                                    <option value="3">Sales by Week</option>
-                                    <option value="4">Sales by Month</option>
-                                    <option value="5">Sales by Year</option>
-                                    <option value="6">Sales by Product</option>
-                                    <option value="7">Sales by Category</option>
+                                    <option value="0">Full Report</option>
+                                    <option value="1">Best Sellers</option>
+                                    <option value="2">Worst Sellers</option>
+                                    <option value="3">Sales by Day</option>
+                                    <option value="4">Sales by Week</option>
+                                    <option value="5">Sales by Month</option>
+                                    <option value="6">Sales by Year</option>
+                                    <option value="7">Sales by Product</option>
+                                    <option value="8">Sales by Category</option>
                                 </select>
                             </div>
-                            <div class="dropdown_container" style="margin-left: 30px;max-width:120px;">
+                            <div class="dropdown_container" style="margin-left: 40px;width:120px;">
                                 <div class="label">Terminal</div>
-                                <select onchange="addTerminalFilter($(this).val())">
+                                <select style="min-width:120px;max-width:120px;" onchange="addTerminalFilter($(this).val())">
                                     <option value="">All Terminals</option>
                                     <% @all_terminals.each do |terminal_id| %>
                                         <option value="<%= terminal_id %>"><%= terminal_id %></option>
                                     <% end %>
                                 </select>
                             </div>
-                            <% currtime = Time.now.beginning_of_day + 5.hours %>
-                            <% lastyear = Time.now - 1.year %>
-                            <% yesterday = Time.now - 1.day %>
-                            <% lastweek = Time.now - 7.days %>
-                            <% lastmonth = Time.now - 1.month %>
+                            <% currtime = Time.zone.now.beginning_of_day + 5.hours %>
+                            <% lastyear = Time.zone.now - 1.year %>
+                            <% yesterday = Time.zone.now - 1.day %>
+                            <% lastweek = Time.zone.now - 7.days %>
+                            <% lastmonth = Time.zone.now - 1.month %>
                             <div class="dropdown_container">
                                 <div class="label">Date</div>
                                 <select id="date_preselect" onchange="setDateParams($(this).val(), true)" style="width: 120px">
-                                    <option value="<%= Time.now.beginning_of_day + @opening_time.hours %>,<%= Time.now.end_of_day + @opening_time.hours %>">Today</option>
+                                    <option value="<%= Time.zone.now.beginning_of_day + @opening_time.hours %>,<%= Time.zone.now.end_of_day + @opening_time.hours %>">Today</option>
                                     <option value="<%= yesterday.beginning_of_day + @opening_time.hours %>,<%= yesterday.end_of_day + @opening_time.hours %>">Yesterday</option>
-                                    <option value="<%= Time.now.beginning_of_week + @opening_time.hours %>,<%= Time.now %>">This Week</option>
-                                    <option value="<%= Time.now.beginning_of_month + @opening_time.hours %>,<%= Time.now %>">This Month
+                                    <option value="<%= Time.zone.now.beginning_of_week + @opening_time.hours %>,<%= Time.zone.now %>">This Week</option>
+                                    <option value="<%= Time.zone.now.beginning_of_month + @opening_time.hours %>,<%= Time.zone.now %>">This Month
                                     </option>
-                                    <option value="<%= Time.now.beginning_of_year + @opening_time.hours  %>,<%= Time.now %>">This Year to Date
+                                    <option value="<%= Time.zone.now.beginning_of_year + @opening_time.hours  %>,<%= Time.zone.now %>">This Year to Date
                                     </option>
                                     <option value="<%= lastweek.beginning_of_week + @opening_time.hours %>,<%= lastweek.end_of_week + @opening_time.hours %>">Last
                                         Week
                                     </option>
-                                    <option selected="yes" value="<%= Time.now - 30.days %>,<%= Time.now %>">Last 30
+                                    <option selected="yes" value="<%= Time.zone.now - 30.days %>,<%= Time.zone.now %>">Last 30
                                         Days
                                     </option>
                                     <option value="<%= lastmonth.beginning_of_month + @opening_time.hours %>,<%= lastmonth.end_of_month + @opening_time.hours %>">Last
@@ -75,19 +79,19 @@
                                     <option value="<%= lastyear.beginning_of_day + @opening_time.hours %>,<%= lastyear.end_of_day + @opening_time.hours %>">This Day
                                         Last Year
                                     </option>
-                                    <option value="<%= Time.now.beginning_of_year - 2.years + @opening_time.hours %>,<%= Time.now %>">All Time</option>
+                                    <option value="<%= Time.zone.now.beginning_of_year - 2.years + @opening_time.hours %>,<%= Time.zone.now %>">All Time</option>
                                     <option value=""></option>
                                 </select>
                             </div>
                             <div id="days">
-                                <div class="dropdown_container">
+                                <div class="dropdown_container" style="width: 160px;">
                                     <div class="label">Date From</div>
                                     <div class="input_date">
                                         <input type="text" size="13" onchange="updateDateParams($(this).val(), 'from')" readonly="readonly" id="date_from" name="date_from"
                                                value="<%= @selected_from_date.to_date.strftime("%Y-%m-%d %H:%M") %>"/>
                                     </div>
                                 </div>
-                                <div class="dropdown_container">
+                                <div class="dropdown_container" style="margin-left: 65px;">
                                     <div class="label">Date To</div>
                                     <div class="input_date">
                                         <input type="text" size="13" onchange="updateDateParams($(this).val(), 'to')" readonly="readonly" id="date_to" name="date_to"
@@ -121,7 +125,7 @@
 
                 </div>
 
-                <div id="report_sales_results">
+                <div id="report_sales_results" style="height: 700px;">
                     <%= render 'sales_tab' %>
                 </div>
 

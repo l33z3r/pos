@@ -127,7 +127,7 @@ class Admin::ProductsController < Admin::AdminController
         #attatch an image
         p.set_image
         p.save
-        p.reload
+        #p.reload
       end
 
       #build the categories

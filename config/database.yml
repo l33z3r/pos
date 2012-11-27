@@ -37,23 +37,3 @@ production:
   username: pos
   password: pospos1
   host: localhost
-  
-heroku_staging:
-  adapter: mysql2
-  encoding: utf8
-  reconnect: true
-  database: pos_production
-  pool: 5
-  username: pos
-  password: pospos1
-  host: localhost
-  
-heroku_production:
-  adapter: mysql2
-  encoding: utf8
-  reconnect: true
-  database: pos_production
-  pool: 5
-  username: pos
-  password: pospos1
-  host: localhost

@@ -146,8 +146,9 @@ ActiveRecord::Schema.define(:version => 20121120104128) do
     t.datetime "updated_at"
     t.integer  "payment_id",       :limit => 8
     t.string   "terminal_id"
-    t.integer  "outlet_id",        :limit => 8
+    t.integer  "refund_order_id"
     t.float    "closing_balance",               :default => 0.0,  :null => false
+    t.integer  "outlet_id",        :limit => 8
   end
 
   add_index "customer_transactions", ["outlet_id"], :name => "index_customer_transactions_on_outlet_id"
@@ -424,6 +425,7 @@ ActiveRecord::Schema.define(:version => 20121120104128) do
     t.boolean  "is_void",                                      :default => false
     t.boolean  "is_half",                                      :default => false
     t.integer  "void_employee_id",       :limit => 8
+    t.boolean  "is_refund",                                    :default => false
     t.integer  "outlet_id",              :limit => 8
     t.datetime "date_added"
   end
@@ -703,9 +705,9 @@ ActiveRecord::Schema.define(:version => 20121120104128) do
     t.string   "note"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "order_item_id",    :limit => 8
     t.integer  "delivery_id",      :limit => 8
     t.boolean  "is_return",                     :default => false
-    t.integer  "order_item_id",    :limit => 8
     t.integer  "outlet_id",        :limit => 8
   end
 

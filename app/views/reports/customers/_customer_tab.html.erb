@@ -1,0 +1,369 @@
+<% if session[:preselect] != -1 %>
+    <% unless params[:action] == "customer_print" %>
+        <div id="options_menu">
+            <div class="option" onclick="setCustomerSelect(-1)" class="print_box">
+                <div style="float: left;"><img src="/images/button_logos/home.png" alt="Print" width="24" height="24"/>
+                </div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Home  |</span></div>
+            </div>
+            <div class="option" onclick="window.location = '/reports/customers/customer_print'" class="print_box">
+                <div style="float: left;"><img src="/images/button_logos/print.png" alt="Print" width="24" height="24"/>
+                </div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Print  |</span></div>
+            </div>
+            <div class="option" onclick="window.location = '/reports/customers/export_excel'" class="excel_box">
+                <div style="float: left;">
+                    <img src="/images/button_logos/excel.png" alt="Export to Excel" width="24" height="24"/></div>
+                <div style="float: left; margin-top: 6px;margin-left: 2px">
+                    <span style="font-weight: bold; margin-top: -3px;">  Excel </span></div>
+            </div>
+        </div>
+    <% end %>
+    <div id="customer_items_graph" style="display: none">
+        <div id="spacer" style="height:70px;"></div>
+    </div>
+
+
+    <div id="customer_items">
+    <% if params[:action] == "customer_print" %>
+        <h3>Customers Report <%= Time.zone.now.strftime("%B %d, %Y") %></h3>
+    <% end %>
+
+    <% if session[:search_type] == :customer %>
+
+        <table id="report_table" class="admin_table" style="width: 100%">
+            <thead>
+
+            <th class="header">Date</th>
+            <th class="header">Time</th>
+            <th class="header">Customer</th>
+            <th class="header">Transaction</th>
+            <th class="header">Ref. Number</th>
+            <th class="header">Debit</th>
+            <th class="header">Credit</th>
+            <th class="header">Balance</th>
+            </thead>
+
+
+            <% last_balance = 0 %>
+            <% last_id = 0 %>
+            <% current_balance = 0 %>
+            <% @orders.each_with_index do |week, i| %>
+
+                <% @customer = Customer.find_by_id(week.customer_id) %>
+                <% opening_record = CustomerTransaction.find_by_sql("select ct.* from customer_transactions ct where ct.id < #{week.id} and ct.customer_id = '#{session[:customer]}'").last %>
+
+                <tbody>
+
+                <% if week == @orders.first && week.closing_balance != nil %>
+
+                    <tr>
+                        <td style="text-align: left; ">
+                            <b>Opening Balance:</b>
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left;">
+                            <%= @customer.name %>
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left; ">
+                        </td>
+                        <td style="text-align: right; ">
+                        </td>
+                        <td style="text-align: right;">
+                            <% if week.is_credit %>
+                                <% last_balance = week.closing_balance + week.abs_amount %>
+                            <% else %>
+                                <% last_balance = week.closing_balance - week.abs_amount %>
+                            <% end %>
+                            <%= print_money(last_balance) %>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                    </tr>
+                <% end %>
+                <tr class="<%= cycle("even", "odd") %>">
+                    <td style="text-align: left; ">
+                        <%= week.created_at.strftime("%d/%m/%Y") %>
+                    </td>
+                    <td style="text-align: left;">
+                        <%= week.created_at.strftime("%H:%M") %>
+                    </td>
+                    <td style="text-align: left;">
+                        <%= @customer.name %>
+                    </td>
+                    <td style="text-align: left;">
+                        <% if week.transaction_type == "settlement" %>Payment
+                        <% else %>Charge
+                        <% end %>
+                    </td>
+                    <td style="text-align: left; ">
+                        <% if week.transaction_type == "charge" %><%= Order.find_by_id(week.order_id).order_num %>
+                        <% end %>
+                    </td>
+                    <td style="text-align: right; ">
+                        <% if week.transaction_type == "charge" %>
+                            <% last_balance = last_balance + week.actual_amount %><%= print_money(week.actual_amount) %>
+                        <% end %>
+                    </td>
+                    <td style="text-align: right;">
+                        <% if week.transaction_type == "settlement" %>
+                            <% last_balance = last_balance + week.actual_amount %><%= print_money(week.actual_amount.abs) %>
+                        <% end %>
+                    </td>
+
+                    <% last_id = @customer.id %>
+                    <% current_balance = @customer.current_balance %>
+
+                    <td style="text-align: right;">
+                        <%= print_money(last_balance) %>
+                    </td>
+
+                </tr>
+                <% if week == @orders.last %>
+
+                    <tr>
+                        <td style="text-align: left; ">
+                            <b>Current Balance:</b>
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left; ">
+                        </td>
+                        <td style="text-align: right; ">
+                        </td>
+                        <td style="text-align: right;">
+                            <b><%= print_money(@customer.current_balance) %></b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                    </tr>
+
+
+                <% end %>
+
+            <% end %>
+
+            </tbody>
+        </table>
+
+    <% else %>
+
+
+        <table id="report_table" class="admin_table" style="width: 100%">
+            <thead>
+            <th class="header">Date</th>
+            <th class="header">Time</th>
+            <th class="header">Customer</th>
+            <th class="header">Transaction</th>
+            <th class="header">Ref. Number</th>
+            <th class="header">Debit</th>
+            <th class="header">Credit</th>
+            <th class="header">Balance</th>
+            </thead>
+
+
+            <% last_balance = 0 %>
+            <% last_id = 0 %>
+            <% current_balance = 0 %>
+            <% @orders.each_with_index do |week, i| %>
+
+                <% @customer = Customer.find_by_id(week.customer_id) %>
+
+
+                <tbody>
+                <% if last_id != @customer.id && week != @orders.first %>
+
+                    <tr class="<%= cycle("even", "odd") %>">
+                        <td style="text-align: left; ">
+                            <b>Current Balance:</b>
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left; ">
+                        </td>
+                        <td style="text-align: right; ">
+                        </td>
+                        <td style="text-align: right;">
+                            <b><%= print_money(@customer.current_balance) %></b>
+                        </td>
+                    </tr>
+                    <% last_balance = 0 %>
+                    <tr class="<%= cycle("even", "odd") %>">
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                    </tr>
+                <% end %>
+                <% opening_record = CustomerTransaction.find_by_sql("select ct.* from customer_transactions ct where ct.id < #{week.id} and ct.customer_id = '#{@customer.id.to_s}'").last %>
+                <% if last_id != @customer.id && week.closing_balance != nil %>
+                    <tr class="<%= cycle("even", "odd") %>">
+                        <td style="text-align: left; ">
+                            <b>Opening Balance:</b>
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left;">
+                            <%= @customer.name %>
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left; ">
+                        </td>
+                        <td style="text-align: right; ">
+                        </td>
+                        <td style="text-align: right;">
+
+                            <% if week.is_credit %>
+                                <% last_balance = week.closing_balance + week.abs_amount %>
+                            <% else %>
+                                <% last_balance = week.closing_balance - week.abs_amount %>
+                            <% end %>
+                            <%= print_money(last_balance) %>
+                        </td>
+                    </tr>
+
+                <% end %>
+                <tr class="<%= cycle("even", "odd") %>">
+
+                    <td style="text-align: left; ">
+                        <%= week.created_at.strftime("%d/%m/%Y") %>
+                    </td>
+                    <td style="text-align: left;">
+                        <%= week.created_at.strftime("%H:%M") %>
+                    </td>
+                    <td style="text-align: left;">
+                        <%= @customer.name %>
+                    </td>
+                    <td style="text-align: left;">
+                        <% if week.transaction_type == "settlement" %>Payment
+                        <% else %>Charge
+                        <% end %>
+                    </td>
+                    <td style="text-align: left; ">
+                        <% if week.transaction_type == "charge" %><%= Order.find_by_id(week.order_id).order_num %>
+                        <% end %>
+                    </td>
+                    <td style="text-align: right; ">
+                        <% if week.transaction_type == "charge" %>
+                            <% last_balance = last_balance + week.actual_amount %><%= print_money(week.actual_amount) %>
+                        <% end %>
+                    </td>
+                    <td style="text-align: right;">
+                        <% if week.transaction_type == "settlement" %>
+                            <% last_balance = last_balance + week.actual_amount %><%= print_money(week.actual_amount.abs) %>
+                        <% end %>
+                    </td>
+
+                    <% last_id = @customer.id %>
+                    <% current_balance = @customer.current_balance %>
+
+
+                    <td style="text-align: right;">
+                        <%= print_money(last_balance) %>
+                    </td>
+                </tr>
+                <% if week == @orders.last %>
+
+                    <tr class="<%= cycle("even", "odd") %>">
+                        <td style="text-align: left; ">
+                            <b>Current Balance:</b>
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left;">
+                        </td>
+                        <td style="text-align: left; ">
+                        </td>
+                        <td style="text-align: right; ">
+                        </td>
+                        <td style="text-align: right;">
+                            <b><%= print_money(@customer.current_balance) %></b>
+                        </td>
+                    </tr>
+                    <tr class="<%= cycle("even", "odd") %>">
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                        <td style="height:0px; padding: 0px; border-top: solid #000 1px"></td>
+                    </tr>
+
+                <% end %>
+
+            <% end %>
+
+
+            </tbody>
+        </table>
+        </div>
+
+    <% end %>
+<% else %>
+    <div id="saved_items">
+        <div id="saved_items_container" style="margin-left: 200px;">
+            <div onclick="setCustomerSelect(0)" class="saved_report_button">
+                <div class="b_text" style="margin-top: 12px"><b>Customer Transactions This Week</b></div>
+            </div>
+            <div onclick="setCustomerSelect(1)" class="saved_report_button">
+                <div class="b_text" style="margin-top: 12px"><b>Customer Transactions From Last Week</b></div>
+            </div>
+            <div onclick="setCustomerSelect(2)" class="saved_report_button">
+                <div class="b_text" style="margin-top: 12px"><b>Customer Transactions This Year</b></div>
+            </div>
+        </div>
+    </div>
+<% end %>
+<script type="text/javascript">
+    $('#refine_button').removeClass("selected");
+</script>
+

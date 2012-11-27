@@ -19,7 +19,7 @@ class Reports::GlancesController < Admin::AdminController
   def glances_search
     @opening_time = GlobalSetting.parsed_setting_for GlobalSetting::EARLIEST_OPENING_HOUR
     @closing_time = GlobalSetting.parsed_setting_for GlobalSetting::LATEST_CLOSING_HOUR
-    @selected_from_date = Date.today.midnight + @opening_time.hours
+    @selected_from_date = Time.zone.now.midnight + @opening_time.hours
     @selected_to_date = Date.tomorrow.midnight + @closing_time.hours
     @all_terminals = all_terminals
    # get_sales_data
@@ -102,8 +102,8 @@ class Reports::GlancesController < Admin::AdminController
   end
 
   def calculate_summary
-    date_to = Date.today.tomorrow.midnight + @closing_time.hours
-    date_from = Date.today.prev_day(6).midnight + @opening_time.hours
+    date_to = Time.zone.now.tomorrow.midnight + @closing_time.hours
+    date_from = Time.zone.now.prev_day(6).midnight + @opening_time.hours
     @summary_orders = Order.where("created_at >= ? AND created_at < ? AND is_void = ?", date_from, date_to, false)
     for order in @summary_orders
       #check if the order is of the past day after 24 hs
@@ -116,11 +116,11 @@ class Reports::GlancesController < Admin::AdminController
       @sales_last_7_days[order.created_at.to_date.to_s][1] += order.total
       @sales_last_7_days_total += order.total
     end
-    if @sales_last_7_days[Date.today.to_s] 
-      @sales_last_7_days[Date.today.to_s][0] = "Today"
+    if @sales_last_7_days[Time.zone.now.to_s]
+      @sales_last_7_days[Time.zone.now.to_s][0] = "Today"
     end
-    if @sales_last_7_days[Date.today.prev_day(1).to_s]
-      @sales_last_7_days[Date.today.prev_day(1).to_s][0] = "Yesterday"
+    if @sales_last_7_days[Time.zone.now.prev_day(1).to_s]
+      @sales_last_7_days[Time.zone.now.prev_day(1).to_s][0] = "Yesterday"
     end
   end
 
