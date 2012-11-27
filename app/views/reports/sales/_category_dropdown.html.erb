@@ -1,5 +1,5 @@
 <div class="dropdown_container" style="width: 140px;">
     <div class="label">Category</div>
-    <%= collection_select :category_id, :equals, Category.find(:all).sort_by{|p| p.name.downcase}, :id, :name, options = {:include_blank => "Any", :selected => @current_category}, {:onchange => "loadDropDown('category')", :style=>'width:120px'} %>
+    <%= collection_select :category_id, :equals, current_outlet.categories.all.sort_by{|p| p.name.downcase}, :id, :name, options = {:include_blank => "Any", :selected => @current_category}, {:onchange => "loadDropDown('category')", :style=>'width:120px'} %>
     <div class="clear">&nbsp;</div>
 </div>

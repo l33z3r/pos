@@ -1,5 +1,5 @@
 <div class="dropdown_container">
                             <div class="label">Menu</div>
-                            <%= collection_select :menu_page_1_id, :equals, MenuPage.find(:all), :id, :name, options = {:include_blank => "Any", :selected => @session_menu}, {:class=>'dropdown_sel'} %>
+                            <%= collection_select :menu_page_1_id, :equals, current_outlet.menu_pages.all, :id, :name, options = {:include_blank => "Any", :selected => @session_menu}, {:class=>'dropdown_sel'} %>
                             <div class="clear">&nbsp;</div>
                         </div>
