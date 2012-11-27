@@ -2,6 +2,7 @@
 <html>
   <head>
     <% unless params[:action] == "export_excel" %>
+    <%= render :partial => "/partials/interfaces/large_screen/common_head" %>
     <%= render "/partials/reports/assets" %>
   </head>
   <% end %>
