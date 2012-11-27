@@ -226,13 +226,19 @@ function callHomePollComplete() {
         if(inKitchenContext() && !kitchenScreenInitialized) {
             kitchenScreenInitialized = true;
             finishedLoadingKitchenScreen();
+            setTimeout(callHomePoll, pollingAmount);
         } else if(inLargeInterface()) {
-        //we do manual polling now
-        //setTimeout(callHomePoll, pollingAmount);
+            //we do manual polling now unless there is a kitchen screen
+            if(enablePollingForKitchenScreen) {
+                setTimeout(callHomePoll, pollingAmount);
+            }
         } else if(inMediumInterface()) {
             swipeToMenu();
-        //we do manual polling now
-        //setTimeout(callHomePoll, pollingAmount);
+            
+            //we do manual polling now unless there is a kitchen screen
+            if(enablePollingForKitchenScreen) {
+                setTimeout(callHomePoll, pollingAmount);
+            }
         }                
     }
 }
