@@ -994,11 +994,10 @@ function generateBrowserSessionId() {
     console.log("Set browser session id to: " + generatedBrowserSessionId);
 }
 
-function checkForDuplicateBrowserSession() {
-    
+function checkForDuplicateBrowserSession() {    
     var storedBrowserSessionId = retrieveStorageValue(browserSessionIdStorageKey);
     
-    if(generatedBrowserSessionId != storedBrowserSessionId) {
+    if(storedBrowserSessionId != null && generatedBrowserSessionId != storedBrowserSessionId) {
         niceAlert("Another browser tab is open for the cluey app. This tab will now close.");
         window.close();
     }

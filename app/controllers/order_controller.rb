@@ -75,7 +75,7 @@ class OrderController < ApplicationController
         #this order has already been cashed, so do nothing...
         logger.info "Order has already been cashed. Ignoring..."
         @error = true
-        @message = "This order (##{@order_num}) has already been cashed"
+        @message = "This order (##{@order_num}) has already been cashed out"
         render and return
       end
     end

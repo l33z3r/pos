@@ -161,7 +161,14 @@ function doReload(resetSession) {
     showSpinner();
     
     if(resetSession) {
-        reload_location = "/";
+        if(inLargeInterface()) {
+            reload_location = "/";
+        } else if(inMediumInterface()) {
+            reload_location = "/mbl";
+        } else {
+            reload_location = "/";
+        }
+        
         reload_location += "?reset_session=true";
         window.location = reload_location;
     } else {
@@ -188,7 +195,7 @@ function doClearAndReload() {
     callHome = false;
     
     showSpinner();
-    clearLocalStorageAndCookies();
+    clearClueyStorageAndCookies();
     doReload(true);
 }
 
@@ -201,21 +208,27 @@ var salesInterfaceForwardJSExecuteCookieName = "sales_interface_forward_js_execu
 var inTrainingModeCookieName = "in_training_mode";
 
 //deletes everything but the fingerprint cookie
-function clearLocalStorageAndCookies() {
+function clearClueyStorageAndCookies() {
     //clear the local and session web storage
     var nextKey = null;
     
-    //must record the loop length first as it will change during the course of the loop
-    var loopLength = localStorage.length;
+    var keysToRemove = new Array();
     
-    for (var i = 0; i < loopLength; i++){
-        nextKey = localStorage.key(i);
-
+    for (var i = 0; i < clueyStorage.length; i++){
+        nextKey = clueyStorage.key(i);
+        
         if(nextKey == breakUserIDSSStorageKey || nextKey == clockedInUserIDSSStorageKey) {
             continue;
         }
         
-        localStorage.removeItem(nextKey);
+        keysToRemove.push(nextKey);                
+    }
+    
+    for(j=0; j<keysToRemove.length; j++) {
+        var nextKeyToRemove = keysToRemove[j];
+        //alert("removing key: " + nextKeyToRemove);
+        clueyStorage.removeItem(nextKeyToRemove);
+    //localStorage.removeItem(nextKeyToRemove);
     }
     
     //now clear cookies
@@ -328,7 +341,8 @@ function getTableOrderFromStorage(current_user_id, selectedTable) {
 
 function userHasUniqueTableOrder(userID, tableID) {
     var key = "user_" + userID + "_table_" + tableID + "_current_order";
-    return localStorage.getItem(key) != null;
+    return clueyStorage.getItem(key) != null;
+//return localStorage.getItem(key) != null;
 }
 
 function clearTableOrderInStorage(current_user_id, selectedTable) {
@@ -432,16 +446,19 @@ function buildInitialOrder() {
 }
 
 function storeKeyValue(key, value) {
-    return localStorage.setItem(key, value);
+    return clueyStorage.setItem(key, value);
+//return localStorage.setItem(key, value);
 }
 
 function retrieveStorageValue(key) {
-    return localStorage.getItem(key);
+    return clueyStorage.getItem(key);
+//return localStorage.getItem(key);
 }
 
 function storeKeyJSONValue(key, value) {
     JSONValue = JSON.stringify(value);
-    return localStorage.setItem(key, JSONValue);
+    return clueyStorage.setItem(key, JSONValue);
+//return localStorage.setItem(key, JSONValue);
 }
 
 function retrieveStorageJSONValue(key) {
@@ -454,13 +471,12 @@ function retrieveStorageJSONValue(key) {
 }
 
 function deleteStorageValue(key) {
-    return localStorage.removeItem(key);
+    return clueyStorage.removeItem(key);
+//return localStorage.removeItem(key);
 }
 
 function getActiveTableIDS() {
     activeTableIDSString = retrieveStorageValue(activeTableIDSStorageKey);
-    
-    //alert("got active table ids " + activeTableIDSString);
     
     if(activeTableIDSString) {
         return activeTableIDSString.split(",");
@@ -471,7 +487,6 @@ function getActiveTableIDS() {
 
 function storeActiveTableIDS(activeTableIDS) {
     activeTableIDSString = activeTableIDS.join(",");
-    //alert("Storing active table ids " + activeTableIDSString);
     storeKeyValue(activeTableIDSStorageKey, activeTableIDSString);
 }
 
@@ -850,8 +865,12 @@ function niceAlert(message, title) {
     $(window).bind('keypress', hideNiceAlertListener);
 }
 
-function hideNiceAlert() {
-    if(showingTerminalSelectDialog) {
+function hideNiceAlert(force) {
+    if(typeof(force) == "undefined") {
+        force = false;
+    }
+    
+    if(showingTerminalSelectDialog && !force) {
         return;
     }
     
@@ -992,8 +1011,15 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
         return;
     }
     
+    //dont process reloads in manager interface
+    if(inMobileContext()) {
+        return;
+    }
+    
     //hide any previous popups
-    hideNiceAlert();
+    var force = true;
+    
+    hideNiceAlert(force);
     
     //must write the last reload time to cookie here so that the reload message does not keep popping up
     writeLastReloadTimeCookie();
@@ -1005,11 +1031,15 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
             alertHardReloadRequest();
         }
     } else {
-        var functionToPerform = function() {
-            promptReloadSalesResources(reloadTerminalId);
-        };
+        if(!callHomePollInitSequenceComplete) {
+            //do nothing
+        } else {
+            var functionToPerform = function() {
+                promptReloadSalesResources(reloadTerminalId);
+            };
         
-        indicateActionRequired(functionToPerform);
+            indicateActionRequired(functionToPerform);
+        }
     }
 }
 
@@ -1033,7 +1063,7 @@ function alertHardReloadRequest() {
 
 function promptReloadSalesResources(reloadTerminalId) {
     var message = "Your POS data has been changed by " + reloadTerminalId + ", click OK to pick up the new data";
-    var okFuncCall = "doReloadSalesResources();";
+    var okFuncCall = "hideNiceAlert();doReloadSalesResources();";
         
     ModalPopups.Alert('niceAlertContainer',
         "Click OK To Refresh", "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
@@ -1147,7 +1177,9 @@ function showLoadingDiv(optionalText) {
     if(inAndroidWrapper()) {
         showSpinner();
     } else {
-        hideNiceAlert();
+        var force = true;
+        
+        hideNiceAlert(force);
     
         ModalPopups.Indicator("niceAlertContainer",
             "Loading...",
@@ -1319,4 +1351,45 @@ function requestReload() {
             console.log("Reload request sent to server!");
         }
     });
+}
+
+function AndroidInterfacedStorage() {
+    this.clear = function() {
+        var returnVal = clueyAndroidJSInterface.clearStorage();
+        this.length = this.keysLength();
+        return returnVal;
+    };
+    
+    this.setItem = function(key, value) {
+        console.log("storing: " + key + " - " + value);
+        var returnVal = clueyAndroidJSInterface.storeInStorage(key, value);
+        this.length = this.keysLength();
+        return returnVal;
+    };
+        
+    this.getItem = function(key) {
+        console.log("retrieving: " + key);
+        var returnVal = clueyAndroidJSInterface.getFromStorage(key);
+        this.length = this.keysLength();
+        return returnVal;
+    };
+        
+    this.removeItem = function(key) {
+        console.log("removing: " + key);
+        var returnVal = clueyAndroidJSInterface.removeFromStorage(key);
+        this.length = this.keysLength();
+        return returnVal;
+    };
+        
+    this.keysLength = function() {
+        var keys = clueyAndroidJSInterface.storageKeysString().split(",");
+        return keys.length;
+    };
+        
+    this.key = function(index) {
+        var keys = clueyAndroidJSInterface.storageKeysString().split(",");
+        return keys[index];
+    };
+        
+    this.length = this.keysLength();
 }

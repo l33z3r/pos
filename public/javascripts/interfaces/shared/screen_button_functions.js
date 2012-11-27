@@ -183,6 +183,9 @@ function doSyncTableOrder() {
             lastSyncTableOrderTime : lastSyncTableOrderTime
         }
     });
+    
+    //send the order data over tcp to the server
+    //cluey_ff_ext.connectToServer(JSON.stringify(tableOrderData));
 }
 
 function finishSyncTableOrder() {

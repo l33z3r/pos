@@ -20,7 +20,7 @@ $(function() {
     doGlobalInit();
 });
 
-function doGlobalInit() {
+function doGlobalInit() {        
     //make sure we have all compatible plugins etc
     if(!inMobileContext()) { 
         //we don't check for firefox here anymore as it is done in the controller
@@ -194,66 +194,6 @@ function doGlobalInit() {
             fixedPosition: false                               //options: true makes it stick(fixed position) on scroll
         });
     }
-}
-
-//this gets called from the polling when a terminal is not yet set
-function showTerminalSelectDialog() {
-    //must wait on js resources to load
-    if(typeof(outletTerminals) == "undefined") {
-        return;
-    }
-    
-    if(showingTerminalSelectDialog) {
-        return;
-    }
-    
-    if(availableOutletTerminals.length == 0) {
-        hideNiceAlert();
-        
-        showingTerminalSelectDialog = true;
-    
-        var title = "Subscription Reached";
-        var message = "You have only paid for " + outletTerminals.length + " terminal(s), which have all been assigned. You can create more terminals in the accounts section. Click OK to be redirected";
-        
-        ModalPopups.Alert('niceAlertContainer',
-            title, "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
-            {
-                width: 360,
-                height: 310,
-                okButtonText: 'Ok',
-                onOk: "showingTerminalSelectDialog=false;goTo(outletTerminalsURL);"
-            });
-        
-        return;
-    }
-     
-    var dropdownMarkup = "<select id='terminal_select_dropdown'>";
-    
-    for(i=0; i<availableOutletTerminals.length; i++) {
-        dropdownMarkup += "<option value='" + availableOutletTerminals[i].name + "'>" + availableOutletTerminals[i].name + "</option>";
-    }
-    
-    dropdownMarkup += "</select>";
-    
-    title = "Please select a terminal:";
-        
-    var terminalSelectMarkup = "<div id='nice_alert' class='nice_alert'>" + dropdownMarkup + "</div>";
-    
-    hideNiceAlert();
-    
-    ModalPopups.Alert('niceAlertContainer',
-        title, terminalSelectMarkup,
-        {
-            width: 360,
-            height: 200,
-            okButtonText: 'Ok',
-            onOk: "terminalSelected()"
-        });
-}
-
-function terminalSelected() {
-    var selectedTerminal = $('select#terminal_select_dropdown option:selected').val();
-    linkTerminal(selectedTerminal);
 }
 
 function showInitialScreen() {
