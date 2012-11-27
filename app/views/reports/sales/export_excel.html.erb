@@ -26,7 +26,7 @@
 
     <div id="sales_items">
     <% if params[:action] == "sales_print" %>
-        <h3>Sales Report <%= Time.now.strftime("%B %d, %Y") %></h3>
+        <h3>Sales Report <%= Time.zone.now.strftime("%B %d, %Y") %></h3>
     <% end %>
 
     <% if (@s_type == :best_seller) || (@s_type == :worst_seller) || (@s_type == :by_product) || (@s_type == :by_category) %>

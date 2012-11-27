@@ -24,8 +24,8 @@ class Reports::StocksController < Admin::AdminController
     session[:category] = ''
     session[:product] = ''
     session[:show_zeros] = false
-    session[:from_date] = Time.now - 30.days
-    session[:to_date] = Time.now
+    session[:from_date] = Time.zone.now - 30.days
+    session[:to_date] = Time.zone.now
     session[:terminal] = ''
     session[:search_type_label] = 'Product'
     session[:training_mode] = false
@@ -36,8 +36,8 @@ class Reports::StocksController < Admin::AdminController
     @opening_time = GlobalSetting.parsed_setting_for GlobalSetting::EARLIEST_OPENING_HOUR, current_outlet
 
 
-    @selected_from_date = Time.now
-    @selected_to_date = Time.now
+    @selected_from_date = Time.zone.now
+    @selected_to_date = Time.zone.now
     @all_terminals = all_terminals
 
     session[:preselect] = -1
@@ -64,7 +64,7 @@ class Reports::StocksController < Admin::AdminController
 
     def export_excel
     headers['Content-Type'] = "application/vnd.ms-excel"
-    headers['Content-Disposition'] = 'attachment; filename="'+current_outlet.name+' Stock Report-' + session[:search_type_label] + '-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
+    headers['Content-Disposition'] = 'attachment; filename="'+current_outlet.name+' Stock Report-' + session[:search_type_label] + '-' + Time.zone.now.strftime("%B %d, %Y").to_s + '.xls"'
     headers['Cache-Control'] = ''
     stocks_search
   end

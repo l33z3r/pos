@@ -1,5 +1,5 @@
 <div class="dropdown_container">
-    <div style="margin-left: 40px;">
+    <div style="margin-left: 25px;">
     <div class="label">Product</div>
     <%= collection_select :product_id, :equals, @products_drop, :id, :name, options = {:include_blank => "Any", :selected => @current_product}, {:onchange => "loadDropDown('product')", :style=>'width:110px'} %>
     <div class="clear">&nbsp;</div>

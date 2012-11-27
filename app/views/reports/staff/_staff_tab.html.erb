@@ -28,7 +28,7 @@
 
     <div id="staff_items" >
         <% if params[:action] == "staff_print" %>
-            <h3>Staffs Report <%= Time.now.strftime("%B %d, %Y") %></h3>
+            <h3>Staffs Report <%= Time.zone.now.strftime("%B %d, %Y") %></h3>
         <% end %>
 
         <% if (@s_type == :day) || (@s_type == :month) || (@s_type == :week) || (@s_type == :year) %>
@@ -273,13 +273,13 @@
     <div id="saved_items">
         <div id="saved_items_container" style="margin-left: 200px;">
             <div onclick="setStaffSelect(0)" class="saved_report_button">
-                <div class="b_text" style="margin-top: 19px"><b>Times By Employee This Week</b></div>
+                <div class="b_text" style="margin-top: 12px"><b>Times By Employee This Week</b></div>
             </div>
             <div onclick="setStaffSelect(1)" class="saved_report_button">
-                <div class="b_text" style="margin-top: 19px"><b>Times By Employee From Last Week</b></div>
+                <div class="b_text" style="margin-top: 12px"><b>Times By Employee From Last Week</b></div>
             </div>
             <div onclick="setStaffSelect(2)" class="saved_report_button">
-                <div class="b_text"><b>Times By Employee This Year</b></div>
+                <div class="b_text" style="margin-top: 12px"><b>Times By Employee This Year</b></div>
             </div>
         </div>
     </div>

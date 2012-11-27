@@ -9,7 +9,7 @@
 
     <div id="customer_items">
     <% if params[:action] == "customer_print" %>
-        <h3>Customers Report <%= Time.now.strftime("%B %d, %Y") %></h3>
+        <h3>Customers Report <%= Time.zone.now.strftime("%B %d, %Y") %></h3>
     <% end %>
 
     <% if session[:search_type] == :customer %>

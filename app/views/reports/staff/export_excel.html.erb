@@ -6,7 +6,7 @@
 
     <div id="staff_items" >
         <% if params[:action] == "staff_print" %>
-            <h3>Staffs Report <%= Time.now.strftime("%B %d, %Y") %></h3>
+            <h3>Staffs Report <%= Time.zone.now.strftime("%B %d, %Y") %></h3>
         <% end %>
 
         <% if (@s_type == :day) || (@s_type == :month) || (@s_type == :week) || (@s_type == :year) %>

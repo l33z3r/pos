@@ -26,7 +26,7 @@
 
     <div id="payments_items" >
         <% if params[:action] == "payments_print" %>
-            <h3>Payments Report <%= Time.now.strftime("%B %d, %Y") %></h3>
+            <h3>Payments Report <%= Time.zone.now.strftime("%B %d, %Y") %></h3>
         <% end %>
 
         <% if (@s_type == :day) || (@s_type == :month) || (@s_type == :week) || (@s_type == :year) %>

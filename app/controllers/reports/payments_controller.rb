@@ -21,8 +21,8 @@ class Reports::PaymentsController < Admin::AdminController
     session[:payment_type] = ''
     session[:terminal] = ''
     session[:search_product] = ''
-    session[:from_date] = Time.now - 30.days
-    session[:to_date] = Time.now
+    session[:from_date] = Time.zone.now - 30.days
+    session[:to_date] = Time.zone.now
     session[:terminal] = ''
     session[:employee] = ''
     session[:discounts_only] = false
@@ -35,8 +35,8 @@ class Reports::PaymentsController < Admin::AdminController
     @opening_time = GlobalSetting.parsed_setting_for GlobalSetting::EARLIEST_OPENING_HOUR, current_outlet
     @closing_time = GlobalSetting.parsed_setting_for GlobalSetting::LATEST_CLOSING_HOUR, current_outlet
 
-    @selected_from_date = Time.now
-    @selected_to_date = Time.now
+    @selected_from_date = Time.zone.now
+    @selected_to_date = Time.zone.now
 
     @current_method = nil
     @current_product = nil
@@ -58,7 +58,7 @@ class Reports::PaymentsController < Admin::AdminController
 
   def export_excel
     headers['Content-Type'] = "application/vnd.ms-excel"
-    headers['Content-Disposition'] = 'attachment; filename="'+current_outlet.name+' Payment Report-' + Time.now.strftime("%B %d, %Y").to_s + '.xls"'
+    headers['Content-Disposition'] = 'attachment; filename="'+current_outlet.name+' Payment Report-' + Time.zone.now.strftime("%B %d, %Y").to_s + '.xls"'
     headers['Cache-Control'] = ''
     payments_search
   end

@@ -4663,6 +4663,7 @@ div#reports_container #sales_items{
     overflow: auto;
     border:  1px solid black;
     border-radius: 10px;
+    float: left;
     width: 100%;
     height: 553px;
 }
@@ -4671,6 +4672,7 @@ div#reports_container #staff_items{
     overflow: auto;
     border:  1px solid black;
     border-radius: 10px;
+    float: left;
     width: 100%;
     height: 553px;
 }
@@ -4679,14 +4681,26 @@ div#reports_container #stock_items{
     overflow: auto;
     border:  1px solid black;
     border-radius: 10px;
+    float: left;
     width: 100%;
     height: 553px;
+
 }
 
 div#reports_container #payments_items{
     overflow: auto;
     border:  1px solid black;
     border-radius: 10px;
+    float: left;
+    width: 100%;
+    height: 553px;
+}
+
+div#reports_container #customer_items{
+    overflow: auto;
+    border:  1px solid black;
+    border-radius: 10px;
+    float: left;
     width: 100%;
     height: 553px;
 }
@@ -4842,7 +4856,7 @@ div#reports_container  div#report_sales_filters #refine_button{
     width: 103px;
     height: 64px;
     float: left;
-    margin-left: 80px;
+    margin-left: 180px;
 }
 
 div#reports_container  div#report_sales_filters #refine_button.selected{

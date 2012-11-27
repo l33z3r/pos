@@ -24,14 +24,14 @@
 
 
 
-    <div id="sales_items">
     <% if params[:action] == "sales_print" %>
-        <h3>Sales Report <%= Time.now.strftime("%B %d, %Y") %></h3>
+        <h3>Sales Report <%= Time.zone.now.strftime("%B %d, %Y") %></h3>
     <% end %>
+    <div id="sales_items">
 
     <% if (@s_type == :best_seller) || (@s_type == :worst_seller) || (@s_type == :by_product) || (@s_type == :by_category) %>
-
-        <table id="report_table" class="admin_table" style="width: 100%;">
+        <div style="float: left">
+        <table id="report_table" class="admin_table" style="width: 900px;">
             <thead>
             <% if session[:search_type] != :by_category %>
                 <th class="header">Product</th>
@@ -132,9 +132,10 @@
             </tr>
             </tbody>
         </table>
-
+        </div>
     <% elsif session[:search_type] == :full_report %>
-        <table id="report_table" class="admin_table" style="width: 100%;">
+        <div style="float: left">
+        <table id="report_table" class="admin_table" style="width: 900px;">
             <thead>
 
             <th class="header">Category</th>
@@ -224,7 +225,9 @@
             </tr>
             </tbody>
         </table>
-        <table id="report_table" class="admin_table" style="width: 100%;">
+        </div>
+        <div style="float: left">
+        <table id="report_table" class="admin_table" style="width: 900px;">
             <thead>
             <th class="header">Product</th>
             <th class="header">Category</th>
@@ -303,9 +306,10 @@
             </tr>
             </tbody>
         </table>
+        </div>
     <% else %>
-
-        <table id="report_table" class="admin_table" style="width: 100%">
+        <div style="float: left">
+        <table id="report_table" class="admin_table" style="width: 900px">
             <thead>
             <th class="header">Date</th>
             <th class="header">Day</th>
@@ -398,6 +402,8 @@
         </div>
 
     <% end %>
+    </div>
+
 <% else %>
     <div id="saved_items">
         <div id="saved_items_container">
