@@ -5485,7 +5485,8 @@ div#delivery_note_popup_markup_container div#delivery_note_input_container texta
 /* Spotify Slide Out */
 
 div#spotify_content_contianer {
-    height: 1px;
+    height: 0px;
+    overflow: hidden;
 }
 
 .slide-out-div {
