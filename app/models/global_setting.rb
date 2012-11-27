@@ -95,6 +95,7 @@ class GlobalSetting < ActiveRecord::Base
   LOCAL_PRINTER_ID = 76
   PRINT_DELEGATE_TERMINAL_ID = 77
   OFFLINE_ORDER_DELEGATE_TERMINAL_ID = 78
+  ENABLE_POLLING_FOR_KITCHEN_SCREEN = 79
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -174,7 +175,8 @@ class GlobalSetting < ActiveRecord::Base
     CASH_DRAWER_CODE => "Cash Drawer Code",
     LOCAL_PRINTER_ID => "Local Printer ID",
     PRINT_DELEGATE_TERMINAL_ID => "Print Delegate Terminal ID",
-    OFFLINE_ORDER_DELEGATE_TERMINAL_ID => "Offline Order Delegate Terminal ID"
+    OFFLINE_ORDER_DELEGATE_TERMINAL_ID => "Offline Order Delegate Terminal ID",
+    ENABLE_POLLING_FOR_KITCHEN_SCREEN => "Enable Polling For Kitchen Screen"
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -365,7 +367,7 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{CREDIT_CARD_TERMINAL_PORT.to_s}_#{args[:fingerprint]}", :value => "25000", :label_text => LABEL_MAP[CREDIT_CARD_TERMINAL_PORT])
       @gs.parsed_value = @gs.value.to_i
     when POLLING_INTERVAL_SECONDS
-      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{POLLING_INTERVAL_SECONDS.to_s}", :value => 20, :label_text => LABEL_MAP[POLLING_INTERVAL_SECONDS])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{POLLING_INTERVAL_SECONDS.to_s}", :value => 5, :label_text => LABEL_MAP[POLLING_INTERVAL_SECONDS])
       @gs.parsed_value = @gs.value.to_i
     when PROCESS_TABLE_0_ORDERS
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => PROCESS_TABLE_0_ORDERS.to_s, :value => "false", :label_text => LABEL_MAP[PROCESS_TABLE_0_ORDERS])
@@ -440,6 +442,9 @@ class GlobalSetting < ActiveRecord::Base
     when LOCAL_PRINTER_ID
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{LOCAL_PRINTER_ID.to_s}_#{args[:fingerprint]}", :value => -1, :label_text => LABEL_MAP[LOCAL_PRINTER_ID])
       @gs.parsed_value = @gs.value.to_i
+     when ENABLE_POLLING_FOR_KITCHEN_SCREEN
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => ENABLE_POLLING_FOR_KITCHEN_SCREEN.to_s, :value => "false", :label_text => LABEL_MAP[ENABLE_POLLING_FOR_KITCHEN_SCREEN])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property, current_outlet
       @gs.parsed_value = @gs.value
@@ -564,6 +569,9 @@ class GlobalSetting < ActiveRecord::Base
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     when ALLOW_REOPEN_ORDER_AFTER_Z
+      new_value = (value == "true" ? "yes" : "no")
+      write_attribute("value", new_value)
+    when ENABLE_POLLING_FOR_KITCHEN_SCREEN
       new_value = (value == "true" ? "yes" : "no")
       write_attribute("value", new_value)
     else
@@ -767,7 +775,7 @@ class GlobalSetting < ActiveRecord::Base
   CUSTOMER_MENU_SCREEN = 3
   
   #min and max values for polling in seconds
-  POLLING_MIN_SECONDS = 10
+  POLLING_MIN_SECONDS = 5
   POLLING_MAX_SECONDS = 120
   
   #screen resolutions

@@ -844,7 +844,8 @@ class HomeController < ApplicationController
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/plugin_libs_1.js"
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/plugin_libs_2.js"
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/shared.js"
-    @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/modal_popups_libs.js"
+    @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/reports.js"
+    
 
     #
     ##
