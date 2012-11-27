@@ -325,7 +325,7 @@ class GlobalSetting < ActiveRecord::Base
       #ipad ua using kiosk: Mozilla/5.0 (iPad; U; CPU OS 5_0_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A405 Safari/7534.48.3
       
       @test_for_chrome = "Chrome"
-      @test_for_firefox = "Mozilla"
+      @test_for_firefox = "Firefox"
       @test_for_android = "Android"
       @test_for_ipad = "iPad"
       

@@ -13,8 +13,6 @@ var showAllKitchenOrders = false;
 
 function initKitchen() {
     if(!current_user_id) {
-        alert("auto login chef");
-        
         chefKitchenLogin();
     }
     
@@ -92,7 +90,8 @@ function renderReceipt(tableID) {
         //delete the html for that kitchen div if it is table 0
         if(table0Order) {
             $('#kitchen_receipt_container_' + tableID).remove();
-            localStorage.removeItem("kitchen_orders_saved_table_0_order_" + tableID);
+            clueyStorage.removeItem("kitchen_orders_saved_table_0_order_" + tableID);
+            //localStorage.removeItem("kitchen_orders_saved_table_0_order_" + tableID);
         }
         
         operationInProgress = false;
@@ -431,7 +430,8 @@ function hideTableOrder(tableID) {
     //remove it from saved table 0 orders
     if(tableID.startsWith(table0TidPrefix)) {
         $('#kitchen_receipt_container_' + tableID).remove();
-        localStorage.removeItem("kitchen_orders_saved_table_0_order_" + tableID);
+        clueyStorage.removeItem("kitchen_orders_saved_table_0_order_" + tableID);
+        //localStorage.removeItem("kitchen_orders_saved_table_0_order_" + tableID);
         
         //TODO: only delete enough to keep a certain amount in the buffer
         //the same amount that is kept on the server
@@ -618,16 +618,23 @@ function stripProducts(order) {
 function saveTable0Order(order, id) {
     var key = "kitchen_orders_saved_table_0_order_" + id;
     var val = JSON.stringify(order);
-    localStorage.setItem(key, val);
+    clueyStorage.setItem(key, val);
+    //localStorage.setItem(key, val);
 }
 
 function loadSavedTable0Orders() {
-    Object.keys(localStorage).forEach(function(key) {
-        if (/^kitchen_orders_saved_table_0_order_/.test(key)) {
-            tableOrders[0] = JSON.parse(localStorage.getItem(key));
+    var nextKey = null;
+    
+    var loopLength = clueyStorage.length;
+    
+    for (var i = 0; i < loopLength; i++){
+        nextKey = clueyStorage.key(i);
+
+        if (/^kitchen_orders_saved_table_0_order_/.test(nextKey)) {
+            tableOrders[0] = JSON.parse(clueyStorage.getItem(nextKey));
             renderReceipt(0);
         }
-    });
+    }
 }
 
 function deleteTable0CourseChecks() {

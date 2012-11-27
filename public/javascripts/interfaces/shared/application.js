@@ -1,3 +1,11 @@
+var clueyStorage;
+
+if(inAndroidWrapper()) {
+    clueyStorage = new AndroidInterfacedStorage();        
+} else {
+    clueyStorage = localStorage;
+}
+
 var current_user_id;
 var last_user_id;
 
@@ -27,6 +35,34 @@ var showingTerminalSelectDialog = false;
 
 //the following hack is to get over eventX eventY being deprecated in new builds of chrome
 $.event.props = $.event.props.join('|').replace('layerX|layerY|', '').split('|');
+
+//function testLocalStorageLimit(num) {
+//    var oneK = "################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################";
+//    
+//    var oneM = "";
+//    
+//    for (var i = 0; i < 1000; i++) {
+//        oneM += oneK;
+//    }
+//    
+//    try {
+//        for (var i = 0; i < 5; i++) {
+//            console.log("stored " + num + "v" + i);
+//            clueyStorage.setItem(num + "v" + i, oneM);
+//        }
+//    } catch (e) {
+//        var result = "storage length: " + clueyStorage.length * 1024 + " bytes<br>" + e.toString() + "<br><br>";
+//        for (var key in e) {
+//            if (e.hasOwnProperty(key)) {
+//                result += key + ": " + e[key] + "<br>";
+//            }
+//        }
+//
+//        alert("RES: " + result);
+//    }
+//    
+//    //alert("Successfully stored " + i + "kb");
+//}
 
 $(function() {
     initSalesResources();
@@ -195,8 +231,8 @@ function callHomePollComplete() {
         //setTimeout(callHomePoll, pollingAmount);
         } else if(inMediumInterface()) {
             swipeToMenu();
-            //we do manual polling now
-            //setTimeout(callHomePoll, pollingAmount);
+        //we do manual polling now
+        //setTimeout(callHomePoll, pollingAmount);
         }                
     }
 }
@@ -214,6 +250,71 @@ function callHomePollInitSequenceCompleteHook() {
         $('#table_select_container').show();
         $('#table_screen_button').show();            
     }
+}
+
+//this gets called from the polling when a terminal is not yet set
+function showTerminalSelectDialog() {    
+    //must wait on js resources to load
+    if(typeof(outletTerminals) == "undefined") {
+        return;
+    }
+    
+    //dont process terminal select in manager interface
+    if(inMobileContext()) {
+        return;
+    }
+    
+    if(showingTerminalSelectDialog) {
+        return;
+    }
+    
+    if(availableOutletTerminals.length == 0) {
+        hideNiceAlert();
+        
+        showingTerminalSelectDialog = true;
+    
+        var title = "Subscription Reached";
+        var message = "You have only paid for " + outletTerminals.length + " terminal(s), which have all been assigned. You can create more terminals in the accounts section. Click OK to be redirected";
+        
+        ModalPopups.Alert('niceAlertContainer',
+            title, "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
+            {
+                width: 360,
+                height: 310,
+                okButtonText: 'Ok',
+                onOk: "showingTerminalSelectDialog=false;goTo(outletTerminalsURL);"
+            });
+        
+        return;
+    }
+     
+    var dropdownMarkup = "<select id='terminal_select_dropdown'>";
+    
+    for(i=0; i<availableOutletTerminals.length; i++) {
+        dropdownMarkup += "<option value='" + availableOutletTerminals[i].name + "'>" + availableOutletTerminals[i].name + "</option>";
+    }
+    
+    dropdownMarkup += "</select>";
+    
+    title = "Please select a terminal:";
+        
+    var terminalSelectMarkup = "<div id='nice_alert' class='nice_alert'>" + dropdownMarkup + "</div>";
+    
+    hideNiceAlert();
+    
+    ModalPopups.Alert('niceAlertContainer',
+        title, terminalSelectMarkup,
+        {
+            width: 360,
+            height: 200,
+            okButtonText: 'Ok',
+            onOk: "terminalSelected()"
+        });
+}
+
+function terminalSelected() {
+    var selectedTerminal = $('select#terminal_select_dropdown option:selected').val();
+    linkTerminal(selectedTerminal);
 }
 
 function clueyScheduler() {
@@ -244,12 +345,22 @@ function preventOfflineHref() {
 
 var pingTimeoutSeconds = 20;
 var pingTimeoutMillis = pingTimeoutSeconds * 1000;
+var pingHomeInProgress= false;
 
 function pingHome() {
+    if(pingHomeInProgress) {
+        return;
+    }
+    
+    pingHomeInProgress = true;
+    
     $.ajax({
         url: "/ping?t=" + new Date().getTime(),
         type : "GET",
         timeout: pingTimeoutMillis,
+        complete: function() {
+            pingHomeInProgress = false;  
+        },
         success: function() {
             setConnectionStatus(true);
         },

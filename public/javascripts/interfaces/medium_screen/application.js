@@ -99,11 +99,6 @@ function doGlobalInit() {
     clueyScheduler();
 }
 
-//this gets called from the polling when a terminal is not yet set
-function showTerminalSelectDialog() {
-    niceAlert("Please select from the following list of terminals:");
-}
-
 function doSubmitSettings() {
     showSpinner();
     $('#settings_form').submit();
