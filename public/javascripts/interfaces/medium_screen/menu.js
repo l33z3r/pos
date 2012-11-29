@@ -1508,7 +1508,7 @@ function hideOrderReadyPopup() {
 }
 
 function displayDropdownSelected(selectedDisplayId) {
-    showSpinner();
+    showLoadingDiv();
 
     //do ajax request and then reload
     $.ajax({

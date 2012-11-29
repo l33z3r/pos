@@ -56,7 +56,7 @@ function customerBuilderShowMoreOptionsShortcut() {
 }
 
 function customerBuilderOkClicked() {
-    showSpinner();
+    showLoadingDiv();
     $('#customer_builder_form').submit();
 }
 

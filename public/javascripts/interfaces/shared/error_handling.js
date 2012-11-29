@@ -60,5 +60,5 @@ window.onerror = function(error, url, lineNumber) {
         data : errorData
     });
     
-    hideSpinner();
+    hideLoadingDiv();
 }

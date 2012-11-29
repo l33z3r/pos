@@ -32,7 +32,7 @@ function goTo(place) {
         return false;
     }
     
-    showSpinner();
+    showLoadingDiv();
     window.location = place;
     return false;
 }
@@ -42,7 +42,7 @@ function goToNewWindow(place) {
 }
 
 function postTo(path, params) {
-    showSpinner();
+    showLoadingDiv();
     
     var form = document.createElement("form");
     
@@ -158,7 +158,7 @@ function doReload(resetSession) {
     
     var reload_location;
     
-    showSpinner();
+    showLoadingDiv();
     
     if(resetSession) {
         if(inLargeInterface()) {
@@ -194,7 +194,7 @@ function resetOrderTimestamp() {
 function doClearAndReload() {
     callHome = false;
     
-    showSpinner();
+    showLoadingDiv();
     clearClueyStorageAndCookies();
     doReload(true);
 }
@@ -1174,21 +1174,17 @@ function showLoadingDiv(optionalText) {
         text = optionalText;
     }
     
-//    if(inAndroidWrapper()) {
-//        showSpinner();
-//    } else {
-        var force = true;
+    var force = true;
         
-        hideNiceAlert(force);
+    hideNiceAlert(force);
     
-        ModalPopups.Indicator("niceAlertContainer",
-            "Loading...",
-            "<div id='nice_alert' class='nice_alert'>" + text + "</div>",
-            { 
-                width: 360,
-                height: 280
-            } );
-    //}
+    ModalPopups.Indicator("niceAlertContainer",
+        "Loading...",
+        "<div id='nice_alert' class='nice_alert'>" + text + "</div>",
+        { 
+            width: 360,
+            height: 280
+        } );
 }
 
 function hideLoadingDiv() {

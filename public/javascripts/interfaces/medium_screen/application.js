@@ -101,7 +101,7 @@ function doGlobalInit() {
 }
 
 function doSubmitSettings() {
-    showSpinner();
+    showLoadingDiv();
     $('#settings_form').submit();
 }
 
