@@ -270,10 +270,10 @@ function setFingerPrintCookie() {
     }
 }
 
-function regenerateTerminalFingerprintCookie() {
+function regenerateTerminalFingerprintCookie(reloadPath) {
     setRawCookie(terminalFingerPrintCookieName, "", -365);
     setFingerPrintCookie()
-    goTo("/");
+    goTo(reloadPath);
 }
 
 function storeOrderInStorage(current_user_id, order_to_store) {
@@ -1019,8 +1019,6 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
     //hide any previous popups
     var force = true;
     
-    hideNiceAlert(force);
-    
     //must write the last reload time to cookie here so that the reload message does not keep popping up
     writeLastReloadTimeCookie();
     
@@ -1028,16 +1026,18 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
         if(!callHomePollInitSequenceComplete) {
             performHardReloadAtCallHomePollInitSequenceComplete = true;
         } else {
+            hideNiceAlert(force);
             alertHardReloadRequest();
         }
     } else {
         if(!callHomePollInitSequenceComplete) {
-            //do nothing
+        //do nothing
         } else {
             var functionToPerform = function() {
                 promptReloadSalesResources(reloadTerminalId);
             };
         
+            hideNiceAlert(force);
             indicateActionRequired(functionToPerform);
         }
     }
@@ -1392,4 +1392,38 @@ function AndroidInterfacedStorage() {
     };
         
     this.length = this.keysLength();
+}
+
+function getAvailableOutletTerminals(terminalType) {
+    var availableOutletTerminalsForType = new Array();
+    
+    for(i=0; i<availableOutletTerminals.length; i++) {
+        if(availableOutletTerminals[i].terminal_type == terminalType) {
+            availableOutletTerminalsForType.push(availableOutletTerminals[i]);
+        }
+    }
+    
+    return availableOutletTerminalsForType;
+}
+
+function getAllOutletTerminals(terminalType) {
+    var allOutletTerminalsForType = new Array();
+    
+    for(i=0; i<outletTerminals.length; i++) {
+        if(outletTerminals[i].terminal_type == terminalType) {
+            allOutletTerminalsForType.push(outletTerminals[i]);
+        }
+    }
+    
+    return allOutletTerminalsForType;
+}
+
+function getTerminalTypeForName(terminalName) {
+    for(i=0; i<outletTerminals.length; i++) {
+        if(outletTerminals[i].name == terminalName) {
+            return outletTerminals[i].terminal_type;
+        }
+    }
+    
+    return null;
 }

@@ -53,4 +53,20 @@ class Accounts::OutletsController < Accounts::ApplicationController
     end
   end
   
+  def unlink_terminal
+    @outlet = current_cluey_account.outlets.find(params[:id])
+    @terminal_name = params[:terminal_name]
+    
+    @outlet_terminal = @outlet.outlet_terminals.find_by_name @terminal_name
+    
+    @terminal_id_gs = GlobalSetting.terminal_id_gs_for_terminal_name @terminal_name, @outlet
+    
+    @outlet_terminal.unlink_terminal @terminal_id_gs
+    
+    TerminalSyncData.request_reload_app "Master Account", @outlet 
+    
+    flash[:notice] = "Terminal #{@outlet_terminal.name} unlinked"
+    redirect_to accounts_outlet_path(@outlet)
+  end
+  
 end

@@ -377,7 +377,7 @@ var addTableNamePopupAnchor;
 
 function promptAddNameToTable() {
     if(!callHomePollInitSequenceComplete) {
-        niceAlert("Downloading data from server, please wait");
+        niceAlert("Downloading Orders. Please Wait");
         return;
     }    
     
@@ -547,7 +547,7 @@ function exitApp() {
 
 function tablesButtonPressed() {
     if (!callHomePollInitSequenceComplete) {
-        niceAlert("Downloading data from server, please wait");
+        niceAlert("Downloading Orders. Please Wait");
         return;
     }
     
@@ -690,7 +690,7 @@ var addCoversPopupAnchor;
 
 function promptAddCovers() {
     if(!callHomePollInitSequenceComplete) {
-        niceAlert("Downloading data from server, please wait");
+        niceAlert("Downloading Orders. Please Wait");
         return;
     }    
     

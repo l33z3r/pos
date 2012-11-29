@@ -351,7 +351,7 @@ class ApplicationController < AppBaseController
     @terminal_fingerprint = request.cookies["terminal_fingerprint"]
     
     if(@terminal_fingerprint)
-      @terminal_id_gs = GlobalSetting.terminal_id_for @terminal_fingerprint, current_outlet
+      @terminal_id_gs = GlobalSetting.terminal_id_gs_for_fingerprint @terminal_fingerprint, current_outlet
       @terminal_id = @terminal_id_gs.parsed_value
     else
       @terminal_id = "Initializing"
@@ -574,7 +574,7 @@ class ApplicationController < AppBaseController
       @test_for_ipad = "iPad"
       
       @user_agent = request.user_agent
-      puts "UA: #{@user_agent}"
+      
       @is_firefox_or_ipad = @user_agent.include?(@test_for_firefox) or @user_agent.include?(@test_for_ipad) and @user_agent.include?(@test_for_android)
     
       if !@is_firefox_or_ipad

@@ -1,39 +1,29 @@
-
-<div id="table_screen">
-<div class="table_tab_container">
-<div id="number_tab" class="table_tab_selected selected" onclick="showTablesSubscreen();">Tables</div>
-<div id="cover_tab" class="table_tab_selected" onclick="showCoversSubscreen();">Covers</div>
-</div>
+<div id="pin_screen">
   <div id="header">
-
-    <div id="back_button" class="small_button" onclick="tableScreenBack();">Back</div>
-
-    <div class="title">Enter Table</div>
-    
-    <div id="options_button" class="small_button" onclick="swipeToFunctions();">Options</div>
+    <div class="title">Enter Pin</div>
 
     <div class="clear">&nbsp;</div>
   </div>
 
-  <div id="keypad_container">
+  <div id="pin_keypad_container">
     
     <div class="clear">&nbsp;</div>
     
-    <div id="entered_table_number_container">
-      <div id="table_number_show"></div>
-      <%= hidden_field_tag :table_num, nil, :id => :table_num, :size => "18" %>
+    <div id="entered_pin_number_container">
+      <div id="pin_number_show"></div>
+      <%= hidden_field_tag :pin_num, nil, :id => :pin_num, :size => "18" %>
     </div>
 
-    <div id="keypad" class="keypad">
-      <div id="keys" class="keys">
+    <div id="pin_keypad" class="keypad">
+      <div id="pin_keys" class="keys">
         <% [[7,9],[4,6],[1,3]].each do |x,y| %>
           <% (x..y).each do |num| %>
-            <div id="num_<%= num %>" class="key" onclick="tableNumberSelectKeypadClick(<%=num%>)"><%= num %></div>
+            <div id="num_<%= num %>" class="key" onclick="pinKeypadClick(<%=num%>)"><%= num %></div>
           <% end %>
         <% end %>
-        <div class="cancel_key" class="key" onclick="doCanceltableNumberSelectKeypad()">C</div>
-        <div id="num_0" class="key" onclick="tableNumberSelectKeypadClick(0)">0</div>
-        <div class="go_key" class="key" onclick="doSubmitTableNumber($('#table_num').val());">OK</div>
+        <div class="pin_cancel_key" class="key" onclick="doCancelPinNumberSelectKeypad()">C</div>
+        <div id="pin_num_0" class="key" onclick="pinKeypadClick(0)">0</div>
+        <div class="go_key" class="key" onclick="doSubmitPinNumber();">OK</div>
       </div>
     </div>
   </div>

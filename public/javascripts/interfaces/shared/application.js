@@ -14,8 +14,6 @@ var current_user_is_admin;
 var current_user_passcode;
 var current_user_role_id;
 
-var kitchenScreenInitialized = false;
-
 var lastActiveElement;
 
 var callHomePollInitSequenceComplete = false;
@@ -220,42 +218,38 @@ function callHomePollComplete() {
             if(performHardReloadAtCallHomePollInitSequenceComplete && !inMediumInterface()) {
                 alertHardReloadRequest();
             }
+        } else {
+            if(enablePollingForKitchenScreen) {
+                setTimeout(callHomePoll, pollingAmount);
+            }
         }
-        
-        //show the receipts now that they are all rendered
-        if(inKitchenContext() && !kitchenScreenInitialized) {
-            kitchenScreenInitialized = true;
-            finishedLoadingKitchenScreen();
-            setTimeout(callHomePoll, pollingAmount);
-        } else if(inLargeInterface()) {
-            //we do manual polling now unless there is a kitchen screen
-            if(enablePollingForKitchenScreen) {
-                setTimeout(callHomePoll, pollingAmount);
-            }
-        } else if(inMediumInterface()) {
-            swipeToMenu();
-            
-            //we do manual polling now unless there is a kitchen screen
-            if(enablePollingForKitchenScreen) {
-                setTimeout(callHomePoll, pollingAmount);
-            }
-        }                
+    
+        //are we on the previous sales screen?
+        //update the open orders tab
+        checkUpdateOpenOrdersScreen();
     }
 }
 
 //this is called when the first load of orders are loaded
 function callHomePollInitSequenceCompleteHook() {
-    //are we on the previous sales screen?
-    checkUpdateOpenOrdersScreen();
-    
     //hide the spinner at the top nav
     $('#loading_orders_spinner').hide();
-        
-    if(inLargeInterface()) {
+    
+    if(inKitchenContext()) {
+        //show the receipts now that they are all rendered
+        finishedLoadingKitchenScreen();
+    } else if(inLargeInterface()) {
         $('#table_select_container_loading_message').hide();
         $('#table_select_container').show();
-        $('#table_screen_button').show();            
+        $('#table_screen_button').show();
+    } else if(inMediumInterface()) {
+        //do nothing
+        hideLoadingDiv();
     }
+    
+    //once the init sequence has completed we want to do a home poll 
+    //to make sure that the user selects from the list of terminals they have paid for
+    callHomePoll();
 }
 
 //this gets called from the polling when a terminal is not yet set
@@ -274,19 +268,41 @@ function showTerminalSelectDialog() {
         return;
     }
     
-    if(availableOutletTerminals.length == 0) {
+    //there are 3 types now, so do a different thing for each
+    var availableOutletTerminalsForType;
+    var allOutletTerminalsForType;
+    var terminalTypeLabel;
+        
+    if(inKitchenContext()) {
+        availableOutletTerminalsForType = getAvailableOutletTerminals(TERMINAL_TYPE_KITCHEN);
+        allOutletTerminalsForType = getAllOutletTerminals(TERMINAL_TYPE_KITCHEN);
+        terminalTypeLabel = "kitchen screen";
+    } else if(inLargeInterface()) {
+        availableOutletTerminalsForType = getAvailableOutletTerminals(TERMINAL_TYPE_NORMAL);
+        allOutletTerminalsForType = getAllOutletTerminals(TERMINAL_TYPE_NORMAL);
+        terminalTypeLabel = "terminal";
+    } else if(inMediumInterface()) {
+        availableOutletTerminalsForType = getAvailableOutletTerminals(TERMINAL_TYPE_MOBILE);
+        allOutletTerminalsForType = getAllOutletTerminals(TERMINAL_TYPE_MOBILE);
+        terminalTypeLabel = "mobile";
+    } else {
+        niceAlert("Invalid terminal type");
+        return;
+    }
+
+    if(availableOutletTerminalsForType.length == 0) {
         hideNiceAlert();
         
         showingTerminalSelectDialog = true;
     
         var title = "Subscription Reached";
-        var message = "You have only paid for " + outletTerminals.length + " terminal(s), which have all been assigned. You can create more terminals in the accounts section. Click OK to be redirected";
+        var message = "You have only paid for " + allOutletTerminalsForType.length + " " + terminalTypeLabel + "(s), which have all been assigned. You can create more " + terminalTypeLabel + "s in the accounts section. Click OK to be redirected";
         
         ModalPopups.Alert('niceAlertContainer',
             title, "<div id='nice_alert' class='nice_alert'>" + message + "</div>",
             {
-                width: 360,
-                height: 310,
+                width: 400,
+                height: 380,
                 okButtonText: 'Ok',
                 onOk: "showingTerminalSelectDialog=false;goTo(outletTerminalsURL);"
             });
@@ -296,8 +312,8 @@ function showTerminalSelectDialog() {
      
     var dropdownMarkup = "<select id='terminal_select_dropdown'>";
     
-    for(i=0; i<availableOutletTerminals.length; i++) {
-        dropdownMarkup += "<option value='" + availableOutletTerminals[i].name + "'>" + availableOutletTerminals[i].name + "</option>";
+    for(i=0; i<availableOutletTerminalsForType.length; i++) {
+        dropdownMarkup += "<option value='" + availableOutletTerminalsForType[i].name + "'>" + availableOutletTerminalsForType[i].name + "</option>";
     }
     
     dropdownMarkup += "</select>";
@@ -405,24 +421,14 @@ function linkTerminal(outletTerminalName) {
     });
 }
 
-function unlinkTerminal() {
-    var answer = confirm("Are you sure?");
+function testTerminalTypeValid() {
+    var assignedTerminalType = getTerminalTypeForName(terminalID);
     
-    if (!answer) {
-        return;
+    if(inKitchenContext() && assignedTerminalType != TERMINAL_TYPE_KITCHEN) {
+        niceAlert("You cannot access the kitchen screen without a valid terminal type");
+    } else if(inLargeInterface() && assignedTerminalType != TERMINAL_TYPE_NORMAL) {
+        niceAlert("You cannot access the sales screen without a valid terminal type");
+    } else if(inMediumInterface() && assignedTerminalType != TERMINAL_TYPE_MOBILE) {
+        niceAlert("You cannot access the mobile without a valid terminal type");
     }
-    
-    showLoadingDiv("Unlinking terminal");
-    
-    $.ajax({
-        url: "/unlink_terminal",
-        type : "POST",
-        error: function() {
-            niceAlert("Error Unlinking Terminal");
-        },
-        complete: function() {
-            hideNiceAlert();
-            regenerateTerminalFingerprintCookie();
-        }
-    });
 }

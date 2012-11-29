@@ -111,6 +111,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: cluey_accounts
@@ -131,5 +132,6 @@ end
 #  first_name                   :string(255)     not null
 #  last_name                    :string(255)     not null
 #  country_id                   :integer(4)      not null
+#  time_zone                    :string(255)     not null
 #
 

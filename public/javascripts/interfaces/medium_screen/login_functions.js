@@ -1,30 +1,22 @@
-function mobileLoginScreenKeypadClick(val) {
-    newVal = $('#num').val().toString() + val;
-    $('#clockincode_show').html($('#clockincode_show').html() + "*");
-    $('#num').val(newVal);
+function pinKeypadClick(val) {
+    var newVal = $('#pin_number_show').html().toString() + val;
+    $('#pin_number_show').html(newVal);
 }
 
-function doCancelMobileLoginKeypad() {
-    $('#clockincode_show').html("");
-    $('#num').val("");
+function doCancelPinNumberSelectKeypad() {
+    clearMobileLoginCode();
 }
 
-function doMobileLogin() {
-    if(typeof(employees) == "undefined") {
-        setMobileStatusMessage("Please wait while employee list loads");
+function doSubmitPinNumber() {
+    if(!callHomePollInitSequenceComplete) {
+        niceAlert("Downloading Orders. Please Wait.");
         return;
     }
     
-    entered_code = $('#num').val();
+    var entered_code = $('#pin_number_show').html();
     
-    if(current_user_id != null) {
-        //already logged in
-        displayMobileError("You are already logged in. Please log out");
-        return;
-    }
-
     for (var i = 0; i < employees.length; i++) {
-        passcode = employees[i].passcode;
+        var passcode = employees[i].passcode;
         
         if(entered_code == passcode) {
             nickname = employees[i].nickname;
@@ -56,45 +48,31 @@ function mobileLoginSuccess(id, nickname, is_admin, passcode) {
         }
     });
     
-    //set the username in the menu
-    $('#e_name').html(nickname);
-    $('#e_name').show();
+    $('#logged_in_user_nickname').html(current_user_nickname);
 
-    hideMobileStatusMessage();
-    
-    showMobileMenuScreen();
-    
+    showTablesSubscreen();
     clearMobileLoginCode();
 }
 
 function mobileLoginFailure() {
-    //set an error message in the flash area
-    setMobileStatusMessage("Wrong Pin Code");
-
+    niceAlert("Wrong Pin Code");
     clearMobileLoginCode();
 }
 
 function clearMobileLoginCode() {
-    $('#num').val("");
-    $('#clockincode_show').html("");
+    $('#pin_number_show').html("");
 }
 
-function doMobileLogout() {
-    if(current_user_id == null) {
-        //not logged in
-        return;
-    }
-
+function mobileLogout() {
+    swipeToMenu();
+    showPinSubscreen();
+    
     var id_for_logout = current_user_id;
 
     current_user_id = null;
 
     storeActiveUserID(null);
 
-    setMobileStatusMessage("Logged Out");
-
-    showMobileLoginScreen();
-    
     clearMobileLoginCode();
 
     //send ajax logout

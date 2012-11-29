@@ -3,7 +3,9 @@
 This is your list of outlets</br></br></br></br>
 
 <% @outlets.each do |outlet| %>
-  Name: <%= link_to outlet.name, accounts_outlet_path(outlet) %> <%= link_to "(Go To POS)", root_url(:subdomain => "#{outlet.name}-#{outlet.cluey_account.name}"), :target => "_blank" %></br>
+  Name: <%= link_to outlet.name, accounts_outlet_path(outlet) %> 
+  <%= link_to "(Go To POS)", root_url(:subdomain => "#{outlet.name}-#{outlet.cluey_account.name}"), :target => "_blank" %>  
+  </br>
 <% end %>
 
 </br></br></br></br>

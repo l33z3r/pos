@@ -12,6 +12,7 @@ Main stylesheet.
 html {
     overflow-x: hidden;
     overflow-y: hidden;
+    background-color: #e0e0e0;
 }
 
 body {
@@ -638,8 +639,13 @@ div.global_status_message {
     display: none;
 }
 
+div#menu_screen div.sales_resources_reload_indicator { 
+    line-height: 0px;
+}
+
 div#menu_screen div.sales_resources_reload_indicator img {
-    height: 23px;
+    height: 22px;
+    margin-top: 1px;
 }
 
 div#landing div.sales_resources_reload_indicator {
@@ -656,6 +662,8 @@ div#landing div.sales_resources_reload_indicator img {
 div.sales_resources_reload_indicator {
     display: none;
     cursor: pointer;
+    float: left;
+    margin-left: 10px;
 }
 
 div#receipt_keypad_container div#receipt_container {
@@ -5501,3 +5509,40 @@ div#spotify_content_contianer {
 }
 
 /* End Spotify Slide Out */
+
+/* Screen Resolution 1360x786 Mods */
+
+div#wrapper.resolution1360x786 {
+    width: 1366px;
+}
+
+div#wrapper.resolution1360x786 #menu_screen #menu_pages_container {
+    width: 1090px
+}
+
+div#wrapper.resolution1360x786 div#total_screen div#payment_options_money_info_container{
+    width: 1077px;
+}
+
+div#wrapper.resolution1360x786 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container {
+    width: 932px;
+}
+
+div#wrapper.resolution1360x786 div#landing div#active_users_buttons_container {
+    width: 1077px;
+}
+
+div#wrapper.resolution1360x786 div#cash_reports_screen div#receipt_report_container {
+    width: 1035px;
+}
+
+div#wrapper.resolution1360x786 div#reports_left_receipt_container {
+    width: 600px;
+    margin-right: 50px;
+}
+
+div#wrapper.resolution1360x786 div#float_screen div#coin_counter_container {
+    width: 1027px;
+}
+
+/* End Screen Resolution 1360x786 Mods */

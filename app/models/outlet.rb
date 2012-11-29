@@ -81,6 +81,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: outlets
@@ -95,5 +96,6 @@ end
 #  has_seed_data    :boolean(1)      default(FALSE)
 #  password_salt    :string(255)
 #  is_active        :boolean(1)      default(TRUE)
+#  time_zone        :string(255)     not null
 #
 

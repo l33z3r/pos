@@ -22,17 +22,9 @@
               Unlink This Mobile?
             </td>
             <td class="text_align_left">
-              <div id="delete_terminal_fingerprint_cookie_button" class="button" data-onpress="unlinkTerminal()">
+              <div id="unlink_terminal_button" class="button" onclick="unlinkMobile()">
                 Unlink
               </div>
-            </td>
-          </tr>
-          <tr>
-            <td class="label">
-              Your IP Address
-            </td>
-            <td class="data text_align_left">
-              <input type="text" value="<%= request.remote_ip %>" disabled="true"/>
             </td>
           </tr>
           <tr>

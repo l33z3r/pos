@@ -1,9 +1,15 @@
-<h1>Info For Outlet <%= @outlet.name %></h1>
+<h1>Info For Outlet: <%= @outlet.name.titleize %></h1>
 
 <h2>Terminals:</h2>
 
 <% @outlet.outlet_terminals.each do |terminal| %>
-  <%= terminal.name %></br>
+  <%= terminal.name %> 
+
+  <% if terminal.assigned %> 
+    <a href="#" onclick="unlinkTerminal(<%= @outlet.id %>, '<%= terminal.name %>')">(Unlink)</a>
+  <% end %>
+
+  </br>
 <% end %>
 
 </br></br></br>
