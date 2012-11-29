@@ -253,7 +253,11 @@ function callHomePollInitSequenceCompleteHook() {
 }
 
 //this gets called from the polling when a terminal is not yet set
-function showTerminalSelectDialog() {    
+function showTerminalSelectDialog() {
+    if (!callHomePollInitSequenceComplete) {
+        return;
+    }
+    
     //must wait on js resources to load
     if(typeof(outletTerminals) == "undefined") {
         return;
@@ -290,11 +294,11 @@ function showTerminalSelectDialog() {
         return;
     }
 
+    hideNiceAlert();
+        
     showingTerminalSelectDialog = true;
     
     if(availableOutletTerminalsForType.length == 0) {
-        hideNiceAlert();
-        
         var title = "Subscription Reached";
         var message = "You have only paid for " + allOutletTerminalsForType.length + " " + terminalTypeLabel + "(s), which have all been assigned. You can create more " + terminalTypeLabel + "s in the accounts section. Click OK to be redirected";
         
@@ -321,8 +325,6 @@ function showTerminalSelectDialog() {
     title = "Please select a terminal:";
         
     var terminalSelectMarkup = "<div id='nice_alert' class='nice_alert'>" + dropdownMarkup + "</div>";
-    
-    hideNiceAlert();
     
     ModalPopups.Alert('niceAlertContainer',
         title, terminalSelectMarkup,
