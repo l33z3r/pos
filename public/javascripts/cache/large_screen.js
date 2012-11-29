@@ -41,6 +41,8 @@ function initAdminTables(){$('.admin_table thead tr th:first').addClass('first')
 function doScheduledTasks(){rollDate();testShowLicenceExpiredScreen();trySendOutstandingOrdersToServer();pingHome();checkForDuplicateBrowserSession();}
 function cacheDownloadReset(){$('nav#main_nav').removeClass("cache_update");$('#cache_status').text("");$('#cache_status').hide();}
 function cacheDownloadStarted(){$('nav#main_nav').addClass("cache_update");$('#cache_status').show();$('#cache_status').text("Cache DL: 0%");}
+function unlinkTerminal(){var answer=confirm("Are you sure?");if(!answer){return;}
+showLoadingDiv("Unlinking terminal");$.ajax({url:"/unlink_terminal",type:"POST",error:function(){niceAlert("Error Unlinking Terminal");},complete:function(){hideNiceAlert();doReloadSalesResources(callHomePoll);}});}
 var currentTotalFinal=0;var currentOrderJSON;var tableSelectMenu=null;var menuScreenShortcutSelectMenu=null;var defaultShortcutDropdownText="Menu";var editItemPopupAnchor;var doAutoLoginAfterSync=false;var inSplitBillMode=false;var splitBillOrderFrom;var splitBillOrderTo;var splitBillTableNumber;var lastTableZeroOrder;var creditCardChargeCallback=null;var manualCoversPrompt=true;var inTrainingMode=false;var highlightedCover=true;var inCashOutMode=false;var cashOutKeypadString="";function initMenu(){initMenuScreenType();loadFirstMenuPage();currentMenuPage=1;currentMenuSubPageId=null;currentOrder=new Array();loadCurrentOrder();displayLastReceipt();initOptionButtons();var storedGlobalPriceLevel=retrieveStorageValue(globalPriceLevelKey);if(storedGlobalPriceLevel==null){storedGlobalPriceLevel=1;}else{storedGlobalPriceLevel=parseInt(storedGlobalPriceLevel);}
 setGlobalPriceLevel(storedGlobalPriceLevel);if(!enableLoyaltyCardRedemption){$("#loyalty_payment_method_button").hide();}
 setTimeout("menuRecptScroll()",1000);setTimeout(callForwardButtonFunction,500);}
@@ -164,7 +166,7 @@ function clearOrder(selectedTable){if(selectedTable==0){clearOrderInStorage(curr
 clearTableOrderInStorage(masterOrdersUserId,selectedTable);}
 clearReceipt();}
 function doTotal(applyDefaultServiceCharge){if(!appOnline&&offlineOrderDelegateTerminal!=terminalID){niceAlert("App is in offline mode. Please use terminal "+offlineOrderDelegateTerminal+" to cash out table orders");return;}
-if(!callHomePollInitSequenceComplete){niceAlert("Downloading data from server, please wait");return;}
+if(!callHomePollInitSequenceComplete){niceAlert("Downloading Orders. Please Wait.");return;}
 if(currentOrderEmpty()){setStatusMessage("No order present to sub-total",true,true);return;}
 if(!ensureLoggedIn()){return;}
 if(applyDefaultServiceCharge){applyDefaultServiceChargePercent();}
@@ -302,7 +304,7 @@ function closeProductInfoPopup(){if(productInfoPopupEl){hideBubblePopup(productI
 function productInfoAddItemToOrder(){setProductInfoPopup(false);doSelectMenuItem(currentProductInfoPopupProductId,null,null);setProductInfoPopup(true);closeProductInfoPopup();}
 function clearMenuScreenInput(){currentMenuItemQuantity="";$('#menu_screen_input_show').html("");}
 function performCustomerScreenCSSMods(){$('#items .item').height(133);$('#items .item').width(176);$('#items .item').css("margin","3px");$('#items .item .item_pic').height(116);$('#items .item .item_pic img').height(90);$('#items .item .item_pic img').css("max-height","90px");$('#items .item .item_pic img').css("max-width","172px");$('#items .item .item_pic img').css("margin-top","5px");$('#items .menu_item_spacer').height(135);$('#items .menu_item_spacer').width(178);$('#items .menu_item_spacer').css("margin","3px");$('#items .item .item_name').css("width","172px");$('#items .item .item_name').css("font-size","16px");$('#items .item .item_name').css("bottom","7px");$('div#menu_screen div#menu_pages_container div#menu_container').height(631);$('div#menu_screen div#menu_items_container').height(563);$('div#menu_screen div#order_item_additions').height(631);$('div#menu_screen div#order_item_additions div.oia_container').height(558);$('div#menu_screen div#menu_buttons').height(79);$('#table_screen_button, #table_select_container').hide();$('#box_label_container').show();$('#menu_screen_shortcut_dropdown_container').hide();}
-function performScreenResolutionCSSMods(){if(currentResolution==normalResolution){}else if(currentResolution==resolution1360x786){$('#wrapper').css("width","1366px");$('#menu_screen #menu_pages_container').css("width","1090px");}}
+function performScreenResolutionCSSMods(){if(currentResolution==normalResolution){}else if(currentResolution==resolution1360x786){$('#wrapper').addClass("resolution1360x786");}}
 function doAutoCovers(){promptAddCovers();}
 function setCashOutDescription(cashOutPresetId){var presetLabel=null;for(var i=0;i<cashOutPresets.length;i++){var nextPreset=cashOutPresets[i];if(cashOutPresetId==nextPreset.id){presetLabel=nextPreset.label;}}
 $('#cash_out_description').val(presetLabel);}
@@ -441,11 +443,7 @@ function initTrainingModeFromCookie(){if(getRawCookie(inTrainingModeCookieName)=
 var turnOn=getRawCookie(inTrainingModeCookieName)==="true";setTrainingMode(turnOn);}
 function hideUtilKeyboardCloseButton(){$('#close_keyboard_link').hide();$('#util_keyboard_inner_container').height("230px");}
 function showUtilKeyboardCloseButton(){$('#close_keyboard_link').show();$('#util_keyboard_inner_container').height("260px");}
-function checkForFirefox(){var ua=$.browser;var isiPad=navigator.userAgent.match(/iPad/i)!=null
-if(!isiPad){if(typeof(ua.mozilla)=='undefined'){niceAlert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software");return false;}}
-return true;}
-function checkForClueyPlugin(){if(!checkForFirefox()){return false;}
-if(typeof(cluey_ff_ext)=='undefined'){var clueyExtensionDownloadPopup=function(){var title="Cluey Addon Not Found";hideNiceAlert();ModalPopups.Alert('niceAlertContainer',title,"<div id='nice_alert' class='licence_expired_header'>Cluey Firefox Extension Not Found. You can download it by clicking OK. You must then install it via firefox.</div>",{width:360,height:310,okButtonText:'Download',onOk:"goToNewWindow(\"/firefox_extensions/cluey_ff_extension.xpi\");hideNiceAlert();"});};indicateActionRequired(clueyExtensionDownloadPopup);return false;}else{if(!clueyPluginInitialized){console.log("Setting cluey prefs in plugin");cluey_ff_ext.setClueyPrefs();clueyPluginInitialized=true;}
+function checkForClueyPlugin(){if(typeof(cluey_ff_ext)=='undefined'){var clueyExtensionDownloadPopup=function(){var title="Cluey Addon Not Found";hideNiceAlert();ModalPopups.Alert('niceAlertContainer',title,"<div id='nice_alert' class='licence_expired_header'>Cluey Firefox Extension Not Found. You can download it by clicking OK. You must then install it via firefox.</div>",{width:360,height:310,okButtonText:'Download',onOk:"goToNewWindow(\"/firefox_extensions/cluey_ff_extension.xpi\");hideNiceAlert();"});};indicateActionRequired(clueyExtensionDownloadPopup);return false;}else{if(!clueyPluginInitialized){console.log("Setting cluey prefs in plugin");cluey_ff_ext.setClueyPrefs();clueyPluginInitialized=true;}
 return true;}}
 function checkForJSPrintSetupPlugin(){if(typeof(jsPrintSetup)=='undefined'){var jsPrintExtensionDownloadPopup=function(){var title="jsPrintSetup Firefox Addon Not Found";hideNiceAlert();ModalPopups.Alert('niceAlertContainer',title,"<div id='nice_alert' class='licence_expired_header'>jsPrintSetup Firefox Addon Not Found. You can download it by clicking OK. You must then install it via firefox.</div>",{width:360,height:310,okButtonText:'Download',onOk:"goToNewWindow(\"/firefox_extensions/jsprintsetup-0.9.2.xpi\");hideNiceAlert();"});};indicateActionRequired(jsPrintExtensionDownloadPopup);return false;}else{return true;}}
 var localPrinters;var newLocalPrinters=new Array();var notFoundPrinterIDs=new Array();function checkForUninstalledPrinters(){var printersString=jsPrintSetup.getPrintersList();if(printersString!=null){localPrinters=printersString.split(",");}else{localPrinters=new Array();}
@@ -748,7 +746,7 @@ function showAddNoteToOrderItemScreen(){order=getCurrentOrder();currentSelectedR
 function showGlobalSettingsPage(){goTo('/admin/global_settings');}
 function openCashDrawer(){if(!checkForClueyPlugin()){return;}
 try{cluey_ff_ext.openCashDrawer(cashDrawerComPort,cashDrawerCode);}catch(ex){setStatusMessage("Error opening cash drawer");}}
-var addTableNamePopupEl;var addTableNamePopupAnchor;function promptAddNameToTable(){if(!callHomePollInitSequenceComplete){niceAlert("Downloading data from server, please wait");return;}
+var addTableNamePopupEl;var addTableNamePopupAnchor;function promptAddNameToTable(){if(!callHomePollInitSequenceComplete){niceAlert("Downloading Orders. Please Wait");return;}
 if(selectedTable==0||selectedTable==-1){setStatusMessage("Only valid for table orders");return;}
 var popupHTML=$("#name_table_popup_markup").html();addTableNamePopupAnchor=$('#receipt');if(addTableNamePopupAnchor.HasBubblePopup()){addTableNamePopupAnchor.RemoveBubblePopup();}
 addTableNamePopupAnchor.CreateBubblePopup();addTableNamePopupAnchor.ShowBubblePopup({position:'right',align:'top',tail:{align:'middle'},innerHtml:popupHTML,innerHtmlStyle:{'text-align':'left'},themeName:'all-grey',themePath:'/images/jquerybubblepopup-theme',alwaysVisible:false},false);addTableNamePopupAnchor.FreezeBubblePopup();var popupId=addTableNamePopupAnchor.GetBubblePopupID();addTableNamePopupEl=$('#'+popupId);var tableOrder=getCurrentOrder();if(tableOrder.client_name){addTableNamePopupEl.find('input').val(tableOrder.client_name);}
@@ -766,7 +764,7 @@ if(!orderSynced){niceAlert("All items in the order must be ordered before you ca
 inSplitBillMode=true;splitBillTableNumber=selectedTable;var copiedOrder={};var theCopiedOrder=$.extend(true,copiedOrder,order);splitBillOrderFrom=theCopiedOrder;splitBillOrderTo=buildInitialOrder();splitBillOrderTo.split_bill_table_num=splitBillTableNumber;showSplitBillScreen();$('#split_bill_from_receipt_header').html("Table "+selectedTable);loadSplitBillReceipts();}
 function changeCourseNum(){var receiptItem=getSelectedOrLastReceiptItem();if(receiptItem){showCoursePopupFromEditDialog();}}
 function exitApp(){var doIt=confirm("Are you sure?");if(doIt){window.open('','_self','');window.close();}}
-function tablesButtonPressed(){if(!callHomePollInitSequenceComplete){niceAlert("Downloading data from server, please wait");return;}
+function tablesButtonPressed(){if(!callHomePollInitSequenceComplete){niceAlert("Downloading Orders. Please Wait");return;}
 unorderedItemsPopup('doTablesButtonPressed();',true);}
 function doTablesButtonPressed(){if(currentMenuItemQuantity.length>0){var tableLabelToSwitchTo=parseInt(Math.round(currentMenuItemQuantity));var tableID;if(tableLabelToSwitchTo==0){tableID=0;}else{var table=getTableForLabel(tableLabelToSwitchTo);if(table==null){setStatusMessage("Table "+tableLabelToSwitchTo+" does not exist");currentMenuItemQuantity="";$('#menu_screen_input_show').html("");return;}
 tableID=table.id;}
@@ -782,7 +780,7 @@ if(currentOrderEmpty()){setStatusMessage("No order present",true,true);return;}
 var order=getCurrentOrder();var allItemsSynced=true;for(var i=0;i<order.items.length;i++){var item=order.items[i];if(!item.synced){allItemsSynced=false;break;}}
 if(!allItemsSynced){niceAlert("You can only void all items after they have been order. You can delete unordered items");return;}
 ModalPopups.Confirm('niceAlertContainer','Void All?',"<div id='nice_alert'>Are you sure you want to void all items and cash this order out?</div>",{yesButtonText:'Yes',noButtonText:'No',onYes:"voidAllOrderItems()",onNo:"hideNiceAlert();",width:400,height:250});}
-var addCoversPopupEl;var addCoversPopupAnchor;function promptAddCovers(){if(!callHomePollInitSequenceComplete){niceAlert("Downloading data from server, please wait");return;}
+var addCoversPopupEl;var addCoversPopupAnchor;function promptAddCovers(){if(!callHomePollInitSequenceComplete){niceAlert("Downloading Orders. Please Wait");return;}
 if(selectedTable==-1){setStatusMessage("Only valid for table orders");return;}
 if(currentOrder==null){currentOrder=buildInitialOrder();}
 var popupHTML=$("#add_covers_popup_markup").html();addCoversPopupAnchor=$('#receipt');if(addCoversPopupAnchor.HasBubblePopup()){addCoversPopupAnchor.RemoveBubblePopup();}

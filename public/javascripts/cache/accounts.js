@@ -14,4 +14,8 @@ $('a[data-confirm], a[data-method], a[data-remote]').live('click.rails',function
 signInPopupAnchor.CreateBubblePopup();var signInPopupHTML=$("#signin_popup_markup").html();signInPopupAnchor.ShowBubblePopup({position:'bottom',align:'right',tail:{align:'right'},innerHtml:signInPopupHTML,innerHtmlStyle:{'text-align':'left'},themeName:'all-grey',themePath:'/images/jquerybubblepopup-theme',alwaysVisible:false},false);signInPopupAnchor.FreezeBubblePopup();signInPopupID=signInPopupAnchor.GetBubblePopupID();$(window).bind('keypress',function(event){if(event.keyCode==13){goToAccountsPage();}});}
 function goToAccountsPage(){var accountName=$('#'+signInPopupID).find('#account_name').val();if(accountName.length==0){niceAlert("Please Enter An Account Name");return;}
 window.location="http://"+accountName+"."+APP_DOMAIN+APP_PORT+"/account_log_in";}
-function niceAlert(msg){alert(msg);}
+function niceAlert(msg){alert(msg+" niceAlert NYI!!!!!");}
+function showLoadingDiv(msg){alert(msg+" showLoadingDiv NYI!!!!");}
+function unlinkTerminal(outletId,terminalName){var postURL="/accounts/outlets/"+outletId+"/unlink_terminal";var params={terminal_name:terminalName};postTo(postURL,params);}
+function postTo(path,params){var form=document.createElement("form");form.setAttribute("method","post");form.setAttribute("action",path);for(var key in params){if(params.hasOwnProperty(key)){var hiddenField=document.createElement("input");hiddenField.setAttribute("type","hidden");hiddenField.setAttribute("name",key);hiddenField.setAttribute("value",params[key]);form.appendChild(hiddenField);}}
+document.body.appendChild(form);form.submit();}
