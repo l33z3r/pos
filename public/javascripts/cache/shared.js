@@ -356,8 +356,8 @@ function checkUpdateOpenOrdersScreen(){var onPreviousSalesScreen=$('#admin_order
 function ensureLoggedIn(){if(current_user_id==null){hideNiceAlert();var message="You have been logged out, please log in again";ModalPopups.Alert('niceAlertContainer',"Logged Out","<div id='nice_alert' class='nice_alert'>"+message+"</div>",{width:360,height:280,okButtonText:'Ok',onOk:"doReload(false)"});return false;}
 return true;}
 function showLoadingDiv(optionalText){if(typeof(optionalText)=="undefined"){text="Please Wait...";}else{text=optionalText;}
-if(inAndroidWrapper()){showSpinner();}else{var force=true;hideNiceAlert(force);ModalPopups.Indicator("niceAlertContainer","Loading...","<div id='nice_alert' class='nice_alert'>"+text+"</div>",{width:360,height:280});}}
-function hideLoadingDiv(){if(inAndroidWrapper()){hideSpinner();}else{hideNiceAlert();}}
+var force=true;hideNiceAlert(force);ModalPopups.Indicator("niceAlertContainer","Loading...","<div id='nice_alert' class='nice_alert'>"+text+"</div>",{width:360,height:280});}
+function hideLoadingDiv(){hideNiceAlert();}
 function setConnectionStatus(connected){appOnline=connected;postSetConnectionStatus(connected);}
 function appOfflinePopup(){niceAlert("Server cannot be contacted. App will operate in restricted mode. Some features may not be available");}
 function cacheDownloadingPopup(){niceAlert("The cache is downloading. App will operate in restricted mode. Some features may not be available");}
