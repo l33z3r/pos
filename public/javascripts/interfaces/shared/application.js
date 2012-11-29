@@ -337,6 +337,7 @@ function showTerminalSelectDialog() {
 }
 
 function terminalSelected() {
+    showingTerminalSelectDialog = false;
     var selectedTerminal = $('select#terminal_select_dropdown option:selected').val();
     linkTerminal(selectedTerminal);
 }
