@@ -1174,9 +1174,9 @@ function showLoadingDiv(optionalText) {
         text = optionalText;
     }
     
-    if(inAndroidWrapper()) {
-        showSpinner();
-    } else {
+//    if(inAndroidWrapper()) {
+//        showSpinner();
+//    } else {
         var force = true;
         
         hideNiceAlert(force);
@@ -1188,15 +1188,11 @@ function showLoadingDiv(optionalText) {
                 width: 360,
                 height: 280
             } );
-    }
+    //}
 }
 
 function hideLoadingDiv() {
-    if(inAndroidWrapper()) {
-        hideSpinner();
-    } else {
-        hideNiceAlert();
-    }
+    hideNiceAlert();
 }
 
 function setConnectionStatus(connected) {

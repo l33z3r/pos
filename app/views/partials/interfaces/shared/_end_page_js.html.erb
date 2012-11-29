@@ -4,6 +4,9 @@
 <% end %>
 
 <script type="text/javascript">
-  hideSpinner();
-  hideAndroidKeyboard();
+  //this hides the loading spinner in the android app
+  if(inAndroidWrapper()) {
+    hideLoadingDiv();
+    hideAndroidKeyboard();
+  }
 </script>
