@@ -290,11 +290,11 @@ function showTerminalSelectDialog() {
         return;
     }
 
+    showingTerminalSelectDialog = true;
+    
     if(availableOutletTerminalsForType.length == 0) {
         hideNiceAlert();
         
-        showingTerminalSelectDialog = true;
-    
         var title = "Subscription Reached";
         var message = "You have only paid for " + allOutletTerminalsForType.length + " " + terminalTypeLabel + "(s), which have all been assigned. You can create more " + terminalTypeLabel + "s in the accounts section. Click OK to be redirected";
         
