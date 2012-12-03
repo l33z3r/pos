@@ -149,7 +149,7 @@
             <% total_vat = 0 %>
             <% total_net = 0 %>
             <% total_item_count = 0 %>
-            <% @categories.each do |week| %>
+            <% current_outlet.categories.each do |week| %>
                 <% product = Product.find_by_id(week.product_id) %>
                 <% total_items = week.quantity %>
                 <% gross_sales = 0 %>
