@@ -1,6 +1,6 @@
 var clueyStorage;
 
-if(inAndroidWrapper()) {
+if(typeof clueyAndroidJSInterface != "undefined") {
     clueyStorage = new AndroidInterfacedStorage();        
 } else {
     clueyStorage = localStorage;
