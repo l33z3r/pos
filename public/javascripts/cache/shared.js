@@ -386,7 +386,7 @@ function getAllOutletTerminals(terminalType){var allOutletTerminalsForType=new A
 return allOutletTerminalsForType;}
 function getTerminalTypeForName(terminalName){for(i=0;i<outletTerminals.length;i++){if(outletTerminals[i].name==terminalName){return outletTerminals[i].terminal_type;}}
 return null;}
-var clueyStorage;if(inAndroidWrapper()){clueyStorage=new AndroidInterfacedStorage();}else{clueyStorage=localStorage;}
+var clueyStorage;if(typeof clueyAndroidJSInterface!="undefined"){clueyStorage=new AndroidInterfacedStorage();}else{clueyStorage=localStorage;}
 var current_user_id;var last_user_id;var current_user_nickname;var current_user_is_admin;var current_user_passcode;var current_user_role_id;var lastActiveElement;var callHomePollInitSequenceComplete=false;var callHome=true;var currentPollObj=null;var pollInProgress=false;var lastSyncTableOrderTime=null;var lastSyncKey="last_sync_table_order_time";var lastInterfaceReloadTime=null;var lastPrintCheckTime=null;var scheduledTasksIntervalSeconds=10;var showingTerminalSelectDialog=false;$.event.props=$.event.props.join('|').replace('layerX|layerY|','').split('|');$(function(){initSalesResources();current_user_id=fetchActiveUserID();if(current_user_id){for(var i=0;i<employees.length;i++){var nextId=employees[i].id;if(nextId.toString()==current_user_id){last_user_id=current_user_id;current_user_nickname=employees[i].nickname;current_user_is_admin=employees[i].is_admin;current_user_passcode=employees[i].passcode;current_user_role_id=employees[i].role_id;}}}
 $('img').live("mousedown",preventImageDrag);$('a').live("click",preventOfflineHref);if(!inDevMode()){startCacheUpdateCheckPoll();}});function callHomePoll(){if(!callHome){setTimeout(callHomePoll,5000);return;}
 if(pollInProgress){return;}
