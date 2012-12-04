@@ -29,6 +29,7 @@ Pos::Application.routes.draw do
       member do
         get 'new_terminal'
         post 'create_terminal'
+        post 'unlink_terminal'
       end
     end
     

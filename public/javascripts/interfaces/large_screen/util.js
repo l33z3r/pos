@@ -824,26 +824,23 @@ function showUtilKeyboardCloseButton() {
     $('#util_keyboard_inner_container').height("260px");    
 }
 
-function checkForFirefox() {
-    var ua = $.browser;
-    
-    var isiPad = navigator.userAgent.match(/iPad/i) != null
-    
-    if(!isiPad) {
-        if (typeof(ua.mozilla) == 'undefined') {
-            niceAlert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software");
-            return false;
-        }
-    }
-    
-    return true;
-}
+//we don't check for firefox here anymore as it is done in the controller        
+//function checkForFirefox() {
+//    var ua = $.browser;
+//    
+//    var isiPad = navigator.userAgent.match(/iPad/i) != null
+//    
+//    if(!isiPad) {
+//        if (typeof(ua.mozilla) == 'undefined') {
+//            niceAlert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software");
+//            return false;
+//        }
+//    }
+//    
+//    return true;
+//}
 
 function checkForClueyPlugin() {
-    if(!checkForFirefox()) {
-        return false;
-    }
-    
     if(typeof(cluey_ff_ext) == 'undefined') {
         var clueyExtensionDownloadPopup= function() {
             var title = "Cluey Addon Not Found";

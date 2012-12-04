@@ -1616,7 +1616,7 @@ div.admin div#edit_global_settings section#global_settings div#actions input[typ
     font-weight: bold;
 }
 
-div.admin div#edit_global_settings section#global_settings div#delete_terminal_fingerprint_cookie_button {
+div.admin div#edit_global_settings section#global_settings div#unlink_terminal_button {
     width: 150px;
     max-width: 150px;
     height: 40px;

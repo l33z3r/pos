@@ -727,8 +727,12 @@ class GlobalSetting < ActiveRecord::Base
     local_millis
   end
   
-  def self.terminal_id_for fingerprint, current_outlet
+  def self.terminal_id_gs_for_fingerprint fingerprint, current_outlet
     GlobalSetting.setting_for GlobalSetting::TERMINAL_ID, current_outlet, {:fingerprint => fingerprint}
+  end
+  
+  def self.terminal_id_gs_for_terminal_name terminal_name, current_outlet
+    current_outlet.global_settings.where("global_settings.key like '#{TERMINAL_ID}\\_%'").where("global_settings.value = ?", terminal_name).first
   end
   
   def self.clear_dup_keys_gs current_outlet

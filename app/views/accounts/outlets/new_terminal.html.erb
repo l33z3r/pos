@@ -18,6 +18,11 @@
     <%= f.label :name, :label => "Terminal Name" %><br />
     <%= f.text_field :name %>
   </p>
+  
+  <p>
+    <%= f.label :terminal_type, :label => "Terminal Type" %><br />
+    <%= f.select :terminal_type, options_for_select(OutletTerminal.terminal_types_for_select, @outlet_terminal.terminal_type) %>
+  </p>
 
   <p class="button"><%= f.submit "Create Terminal" %></p>
 <% end %>

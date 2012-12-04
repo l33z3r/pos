@@ -23,14 +23,11 @@ $(function() {
 function doGlobalInit() {        
     //make sure we have all compatible plugins etc
     if(!inMobileContext()) { 
-        //we don't check for firefox here anymore as it is done in the controller
-        //if(checkForFirefox()) {   
         if(checkForClueyPlugin()) {
             if(checkForJSPrintSetupPlugin()) {
                 checkForUninstalledPrinters();
             }
         }
-    //}
     }
     
     initUsers();
@@ -467,4 +464,26 @@ function cacheDownloadStarted() {
     $('nav#main_nav').addClass("cache_update");
     $('#cache_status').show();
     $('#cache_status').text("Cache DL: 0%");
+}
+
+function unlinkTerminal() {
+    var answer = confirm("Are you sure?");
+    
+    if (!answer) {
+        return;
+    }
+    
+    showLoadingDiv("Unlinking terminal");
+    
+    $.ajax({
+        url: "/unlink_terminal",
+        type : "POST",
+        error: function() {
+            niceAlert("Error Unlinking Terminal");
+        },
+        complete: function() {
+            hideNiceAlert();
+           doReloadSalesResources(callHomePoll);
+        }
+    });
 }

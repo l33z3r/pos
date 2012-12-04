@@ -23,10 +23,16 @@ function hideAllMenuSubScreens() {
     
     $('.button[id=sales_button_' + modifyOrderItemButtonID + '], .button[id=admin_screen_button_' + tablesButtonID + ']').removeClass("selected");
     $('#oia_subscreen').hide();
+    
+    $('#pin_screen').hide();
 }
 
 function currentMenuSubscreenIsMenu() {
     return $('#menu_container').is(":visible");
+}
+
+function currentMenuSubscreenIsPin() {
+    return $('#pin_screen').is(":visible");
 }
 
 function currentMenuSubscreenIsModifyOrderItem() {
@@ -139,11 +145,6 @@ function showTablesScreen() {
 
 function showMoreOptionsScreen() {
     alert("functions button pressed");
-}
-
-function goToMainMenu() {
-    showSpinner();
-    alert("this is meant to go to /manager now");
 }
 
 function showGlobalSettingsPage() {

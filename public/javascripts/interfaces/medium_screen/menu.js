@@ -17,8 +17,13 @@ function initMenu() {
     currentOrder = new Array();
 
     $('#table_num_holder').html("Select Table");
-    showTablesSubscreen();
-
+    
+    if(current_user_id != null) {
+        showTablesSubscreen();
+    } else {
+        showPinSubscreen();
+    }
+    
     initModifierGrid();
 }
 
@@ -1127,6 +1132,15 @@ function showTablesSubscreen() {
     $('#table_screen').show();
 }
 
+function showPinSubscreen() {
+    hideAllMenuSubScreens();
+
+    $('#menu_screen #buttons_container').hide();
+    $('#menu_screen #cluey_logo').show();
+        
+    $('#pin_screen').show();
+}
+
 function showCoversSubscreen() {
     hideAllMenuSubScreens();
     if ($('#table_num').val().toString() == '' || $('#table_num').val().toString() == 0 || $('#table_num').val().toString() == -1) {
@@ -1494,7 +1508,7 @@ function hideOrderReadyPopup() {
 }
 
 function displayDropdownSelected(selectedDisplayId) {
-    showSpinner();
+    showLoadingDiv();
 
     //do ajax request and then reload
     $.ajax({
@@ -1509,33 +1523,6 @@ function displayDropdownSelected(selectedDisplayId) {
         }
     });
 
-}
-
-//this function also exists in the mobile.js file, and is copied here for 
-//convinience so we have a shortcut on the mobile interface
-function logoutShortcut() {
-    if(current_user_id == null) {
-        //not logged in
-        return;
-    }
-
-    showLoadingDiv();
-
-    var id_for_logout = current_user_id;
-
-    current_user_id = null;
-
-    storeActiveUserID(null);
-
-    //send ajax logout
-    $.ajax({
-        type: 'POST',
-        url: '/logout',
-        complete: goToMainMenu,
-        data: {
-            employee_id : id_for_logout
-        }
-    });
 }
 
 function doAutoCovers() {

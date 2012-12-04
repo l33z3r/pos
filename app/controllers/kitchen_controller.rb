@@ -1,4 +1,6 @@
 class KitchenController < ApplicationController
+  prepend_before_filter :set_interface_large
+  
   def index
   end
   

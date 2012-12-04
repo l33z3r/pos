@@ -167,7 +167,7 @@ function getSalesResourceFromStorage(key) {
 }
 
 function doReloadSalesResources(callback) {
-    showLoadingDiv("Reloading Sales Resources, Please Wait...");
+    showLoadingDiv("Reloading Sales Resources, Please Wait");
     
     var complete = function() {
         initSalesResources();

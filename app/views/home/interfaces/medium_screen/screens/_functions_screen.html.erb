@@ -24,7 +24,7 @@
   </div>
 
   <div id="welcome_message">
-    Welcome <%= session[:current_employee_nickname] %>
+    Welcome <span id="logged_in_user_nickname"></span>
   </div>
 
   <div id="functions_buttons_container">
@@ -47,14 +47,6 @@
       </div>
     <% end %>
 
-    <div id="main_menu_button" 
-         class="button" onclick="goToMainMenu();">
-      <div class="icon">
-        <%= image_tag "/images/button_logos/main_menu.png" %>
-      </div>
-      <div class="button_name">Main Menu</div>
-    </div>
-
     <div id="sales_button_<%=@global_settings_button.id%>" 
          class="button" onclick="<%= button_action @global_settings_button %>">
       <div class="icon">
@@ -63,14 +55,14 @@
       <div class="button_name"><%= button_text @global_settings_button %></div>
     </div>
 
-    <div class="clear">&nbsp;</div>
-
     <div class="button" onclick="doClearAndReload();">
       <div class="icon">
         <%= image_tag "/images/button_logos/clear_refresh.png" %>
       </div>
       <div class="button_name">Clear</div>
     </div>
+
+    <div class="clear">&nbsp;</div>
 
     <div id="main_menu_button"
          class="button" onclick="swipeToNote();">
@@ -104,7 +96,7 @@
       <div class="button_name">Exit</div>
     </div>
 
-    <div class="button" onclick="logoutShortcut();">
+    <div class="button" onclick="mobileLogout();">
       <div class="icon">
         <%= image_tag "/images/button_logos/manage_users_button.png" %>
       </div>

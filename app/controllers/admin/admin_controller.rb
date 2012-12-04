@@ -1,4 +1,5 @@
 class Admin::AdminController < ApplicationController
+  prepend_before_filter :set_interface_large
   before_filter :check_logged_in
   before_filter :load_more_options_buttons_for_role
 

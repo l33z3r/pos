@@ -90,7 +90,7 @@ function doSyncTableOrder() {
     }
 
     if (!callHomePollInitSequenceComplete) {
-        niceAlert("Downloading data from server, please wait");
+        niceAlert("Downloading Orders. Please Wait");
         return;
     }
 
@@ -330,7 +330,7 @@ function startTransferOrderMode() {
     }
     
     if (!callHomePollInitSequenceComplete) {
-        niceAlert("Downloading data from server, please wait");
+        niceAlert("Downloading Orders. Please Wait");
         return;
     }
 
@@ -369,7 +369,7 @@ function startTransferOrderItemMode() {
     }
     
     if (!callHomePollInitSequenceComplete) {
-        niceAlert("Downloading data from server, please wait");
+        niceAlert("Downloading Orders. Please Wait");
         return;
     }
 

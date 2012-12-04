@@ -669,7 +669,7 @@ class HomeController < ApplicationController
     @error = false
     
     if @outlet_terminal and !@outlet_terminal.assigned
-      @terminal_id_gs = GlobalSetting.terminal_id_for @terminal_fingerprint, current_outlet
+      @terminal_id_gs = GlobalSetting.terminal_id_gs_for_fingerprint @terminal_fingerprint, current_outlet
       @outlet_terminal.link_terminal @terminal_id_gs
     else
       @error = true
@@ -677,7 +677,7 @@ class HomeController < ApplicationController
   end
   
   def unlink_terminal
-    @terminal_id_gs = GlobalSetting.terminal_id_for @terminal_fingerprint, current_outlet
+    @terminal_id_gs = GlobalSetting.terminal_id_gs_for_fingerprint @terminal_fingerprint, current_outlet
     @outlet_terminal = current_outlet.outlet_terminals.find_by_name @terminal_id
     
     @outlet_terminal.unlink_terminal @terminal_id_gs
@@ -884,7 +884,7 @@ class HomeController < ApplicationController
   end
 
   private
-
+  
   def do_common_interface_actions
     @employees = Employee.all_active current_outlet
     @display = TerminalDisplayLink.load_display_for_terminal @terminal_id, current_outlet
@@ -985,14 +985,6 @@ class HomeController < ApplicationController
     #@@terminal_id_gs is set in a before filter in application controller
     @terminal_id_gs.updated_at = Time.zone.now
     @terminal_id_gs.save
-  end
-  
-  def set_interface_large
-    session[:current_interface] = GlobalSetting::LARGE_INTERFACE
-  end
-  
-  def set_interface_medium
-    session[:current_interface] = GlobalSetting::MEDIUM_INTERFACE
   end
 
 end

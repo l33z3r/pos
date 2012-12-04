@@ -91,6 +91,10 @@
   
   var terminalID = "<%=@terminal_id%>";
   
+  var TERMINAL_TYPE_NORMAL = <%= OutletTerminal::TERMINAL_TYPE_NORMAL %>;
+  var TERMINAL_TYPE_MOBILE = <%= OutletTerminal::TERMINAL_TYPE_MOBILE %>;
+  var TERMINAL_TYPE_KITCHEN = <%= OutletTerminal::TERMINAL_TYPE_KITCHEN %>;
+  
   var pollingAmount = <%= GlobalSetting.parsed_setting_for GlobalSetting::POLLING_INTERVAL_SECONDS, current_outlet %> * 1000;
   var pollingMinSeconds = <%= GlobalSetting::POLLING_MIN_SECONDS %>;
   var pollingMaxSeconds = <%= GlobalSetting::POLLING_MAX_SECONDS %>;

@@ -15,25 +15,78 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="54a8a260-c178-4ce3-883c-3e317bc82f2c" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/javascripts/cache/accounts.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/javascripts/cache/accounts/jq_libs.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/javascripts/cache/accounts/modal_popups_libs.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/javascripts/cache/accounts/plugin_libs_1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/javascripts/cache/accounts/plugin_libs_2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/javascripts/cache/jq_libs.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/javascripts/cache/large_screen.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/javascripts/cache/medium_screen.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/javascripts/cache/mobile.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/javascripts/cache/mobile_device.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/javascripts/cache/modal_popups_libs.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/javascripts/cache/plugin_libs_1.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/javascripts/cache/plugin_libs_2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/javascripts/cache/reports.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/javascripts/cache/shared.js" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_pin_screen.html.erb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/migrate/20121128101847_add_terminal_type_to_outlet_terminals.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/cache/accounts.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/cache/large_screen.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/cache/medium_screen.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/cache/reports.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/cache/shared.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/login_functions.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/accounts/outlets_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/accounts/outlets_controller.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/accounts/sessions_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/accounts/sessions_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/admin/admin_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/admin/admin_controller.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/app_base_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/app_base_controller.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/application_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/application_controller.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/home_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/home_controller.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/kitchen_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/kitchen_controller.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/cluey_account.rb" afterPath="$PROJECT_DIR$/app/models/cluey_account.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/global_setting.rb" afterPath="$PROJECT_DIR$/app/models/global_setting.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/order.rb" afterPath="$PROJECT_DIR$/app/models/order.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/order_item.rb" afterPath="$PROJECT_DIR$/app/models/order_item.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/outlet.rb" afterPath="$PROJECT_DIR$/app/models/outlet.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/outlet_terminal.rb" afterPath="$PROJECT_DIR$/app/models/outlet_terminal.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/printer.rb" afterPath="$PROJECT_DIR$/app/models/printer.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/accounts/outlets/index.html.erb" afterPath="$PROJECT_DIR$/app/views/accounts/outlets/index.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/accounts/outlets/new_terminal.html.erb" afterPath="$PROJECT_DIR$/app/views/accounts/outlets/new_terminal.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/accounts/outlets/show.html.erb" afterPath="$PROJECT_DIR$/app/views/accounts/outlets/show.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/admin/global_settings/index.html.erb" afterPath="$PROJECT_DIR$/app/views/admin/global_settings/index.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/call_home.js.erb" afterPath="$PROJECT_DIR$/app/views/home/call_home.js.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_functions_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_functions_screen.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_menu_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_menu_screen.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_settings_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/_settings_screen.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_table_screen.html.erb" afterPath="$PROJECT_DIR$/app/views/home/interfaces/medium_screen/screens/menu_subscreens/_table_screen.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/home/mobile_screens/_menu.html.erb" afterPath="$PROJECT_DIR$/app/views/home/mobile_screens/_menu.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/javascripts/sales_resources.js.erb" afterPath="$PROJECT_DIR$/app/views/javascripts/sales_resources.js.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/partials/interfaces/medium_screen/_assets.html.erb" afterPath="$PROJECT_DIR$/app/views/partials/interfaces/medium_screen/_assets.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/partials/interfaces/shared/_end_page_js.html.erb" afterPath="$PROJECT_DIR$/app/views/partials/interfaces/shared/_end_page_js.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/partials/interfaces/shared/_js_global_settings.html.erb" afterPath="$PROJECT_DIR$/app/views/partials/interfaces/shared/_js_global_settings.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/customers/index.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/customers/index.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/payments/_employee_dropdown.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/payments/_employee_dropdown.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/reports/staff/_employee_dropdown.html.erb" afterPath="$PROJECT_DIR$/app/views/reports/staff/_employee_dropdown.html.erb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cluey_pos.iws" afterPath="$PROJECT_DIR$/cluey_pos.iws" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/database.yml" afterPath="$PROJECT_DIR$/config/database.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/routes.rb" afterPath="$PROJECT_DIR$/config/routes.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/schema.rb" afterPath="$PROJECT_DIR$/db/schema.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/accounts/util.js" afterPath="$PROJECT_DIR$/public/javascripts/accounts/util.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/admin_js/customer_builder.js" afterPath="$PROJECT_DIR$/public/javascripts/admin_js/customer_builder.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/admin_js/previous_sales.js" afterPath="$PROJECT_DIR$/public/javascripts/admin_js/previous_sales.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/admin_js/product_builder.js" afterPath="$PROJECT_DIR$/public/javascripts/admin_js/product_builder.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/application.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/application.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/menu.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/screen_button_functions.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/screen_button_functions.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/util.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/large_screen/util.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/application.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/application.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/menu.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/touch.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/touch.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/util.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/medium_screen/util.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/shared/application.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/shared/application.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/shared/error_handling.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/shared/error_handling.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/shared/menu.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/shared/menu.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/shared/sales_resources.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/shared/sales_resources.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/shared/screen_button_functions.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/shared/screen_button_functions.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/interfaces/shared/util.js" afterPath="$PROJECT_DIR$/public/javascripts/interfaces/shared/util.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/stylesheets/admin/admin_style.css" afterPath="$PROJECT_DIR$/public/stylesheets/admin/admin_style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/stylesheets/cache/large_screen_styles.css" afterPath="$PROJECT_DIR$/public/stylesheets/cache/large_screen_styles.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/stylesheets/cache/medium_screen_styles.css" afterPath="$PROJECT_DIR$/public/stylesheets/cache/medium_screen_styles.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/stylesheets/interfaces/large_screen/style.css" afterPath="$PROJECT_DIR$/public/stylesheets/interfaces/large_screen/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/stylesheets/interfaces/medium_screen/style.css" afterPath="$PROJECT_DIR$/public/stylesheets/interfaces/medium_screen/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/spec/models/outlet_terminal_spec.rb" afterPath="$PROJECT_DIR$/spec/models/outlet_terminal_spec.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/spec/models/printer_spec.rb" afterPath="$PROJECT_DIR$/spec/models/printer_spec.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/fixtures/order_items.yml" afterPath="$PROJECT_DIR$/test/fixtures/order_items.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/fixtures/orders.yml" afterPath="$PROJECT_DIR$/test/fixtures/orders.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unit/order_item_test.rb" afterPath="$PROJECT_DIR$/test/unit/order_item_test.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unit/order_test.rb" afterPath="$PROJECT_DIR$/test/unit/order_test.rb" />
     </list>
     <ignored path="cluey_pos.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -91,28 +144,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="util.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/util.js">
+      <file leaf-file-name="index.html.erb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/reports/customers/index.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="69" column="45" selection-start="1811" selection-end="1811" vertical-scroll-proportion="0.2188716">
+            <state line="17" column="44" selection-start="412" selection-end="412" vertical-scroll-proportion="-10.625">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="application.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/application.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="15" selection-start="34" selection-end="34" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sessions_controller.rb" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="sessions_controller.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/accounts/sessions_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="86" selection-start="1137" selection-end="1137" vertical-scroll-proportion="0.0">
+            <state line="26" column="38" selection-start="917" selection-end="917" vertical-scroll-proportion="0.28294572">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="database.yml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/database.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="21" column="58" selection-start="580" selection-end="580" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -131,9 +184,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/views/reports/stocks/_category_dropdown.html.erb" />
-        <option value="$PROJECT_DIR$/app/views/reports/payments/_employee_dropdown.html.erb" />
-        <option value="$PROJECT_DIR$/app/views/reports/payments/_payment_type_dropdown.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/customers/_employee_dropdown.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/stocks/_menu_dropdown.html.erb" />
         <option value="$PROJECT_DIR$/app/views/reports/staff/_staff_type_dropdown.html.erb" />
@@ -143,10 +193,13 @@
         <option value="$PROJECT_DIR$/app/views/reports/customers/_menu_dropdown.html.erb" />
         <option value="$PROJECT_DIR$/public/javascripts/reports/reports.js" />
         <option value="$PROJECT_DIR$/app/views/reports/sales/index.html.erb" />
-        <option value="$PROJECT_DIR$/config/database.yml" />
         <option value="$PROJECT_DIR$/app/views/reports/sales/_sales_tab.html.erb" />
-        <option value="$PROJECT_DIR$/app/controllers/accounts/sessions_controller.rb" />
         <option value="$PROJECT_DIR$/public/javascripts/interfaces/shared/util.js" />
+        <option value="$PROJECT_DIR$/app/views/reports/payments/_employee_dropdown.html.erb" />
+        <option value="$PROJECT_DIR$/app/views/reports/staff/_employee_dropdown.html.erb" />
+        <option value="$PROJECT_DIR$/app/controllers/accounts/sessions_controller.rb" />
+        <option value="$PROJECT_DIR$/config/database.yml" />
+        <option value="$PROJECT_DIR$/app/views/reports/customers/index.html.erb" />
       </list>
     </option>
   </component>
@@ -248,28 +301,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="javascripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cluey_pos" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pos" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="javascripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="reports" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -550,6 +581,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cluey_pos" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pos" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="models" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -940,12 +989,12 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24147727" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24098672" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22800222" sideWeight="0.75852275" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22800222" sideWeight="0.7590133" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1011,36 +1060,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/views/reports/payments/_menu_dropdown.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="105" selection-start="196" selection-end="196" vertical-scroll-proportion="-1.25" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/payments/_employee_dropdown.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/customers/_menu_dropdown.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="105" selection-start="196" selection-end="196" vertical-scroll-proportion="-1.25" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/customers/_employee_dropdown.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/customers/_customer_tab.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="146" column="40" selection-start="7055" selection-end="7055" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/database.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="49" selection-start="321" selection-end="321" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/reports/sales/_category_dropdown.html.erb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4" column="48" selection-start="393" selection-end="393" vertical-scroll-proportion="0.0" />
@@ -1049,11 +1068,6 @@
     <entry file="file://$PROJECT_DIR$/app/views/reports/sales/index.html.erb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="115" column="39" selection-start="7627" selection-end="7627" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/reports/staff/_employee_dropdown.html.erb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="45" selection-start="382" selection-end="382" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/large_screen/util.js">
@@ -1076,23 +1090,73 @@
         <state line="557" column="57" selection-start="16573" selection-end="16573" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/accounts/sessions_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="86" selection-start="1137" selection-end="1137" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/application.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="2" column="15" selection-start="34" selection-end="34" vertical-scroll-proportion="0.0">
-          <folding />
+          <folding>
+            <marker date="1354550358000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1354550358000" expanded="true" signature="-1:-1" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/util.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="45" selection-start="1811" selection-end="1811" vertical-scroll-proportion="0.2188716">
+        <state line="64" column="45" selection-start="1744" selection-end="1744" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/reports/customers/_employee_dropdown.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/reports/payments/_employee_dropdown.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="180" selection-start="278" selection-end="278" vertical-scroll-proportion="-1.25">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/reports/staff/_employee_dropdown.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="28" selection-start="489" selection-end="489" vertical-scroll-proportion="-2.5">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/javascripts/interfaces/shared/sales_resources.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="78" selection-start="821" selection-end="821" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/javascripts/sales_resources.js.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="91" selection-start="466" selection-end="466" vertical-scroll-proportion="-12.5">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/reports/customers/index.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="44" selection-start="412" selection-end="412" vertical-scroll-proportion="-10.625">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/database.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="58" selection-start="580" selection-end="580" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/accounts/sessions_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="38" selection-start="917" selection-end="917" vertical-scroll-proportion="0.28294572">
           <folding />
         </state>
       </provider>

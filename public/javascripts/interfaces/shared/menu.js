@@ -286,7 +286,7 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
 
 function checkForItemsToPrint(order, serverNickname) {
     if(!inLargeInterface()) {
-        niceAlert("Not yet implemented for mobiles");
+        console.log("checkForItemsToPrint() not yet implemented for mobiles");
         return;
     }
     

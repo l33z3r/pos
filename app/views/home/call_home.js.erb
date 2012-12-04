@@ -50,6 +50,9 @@ immediateCallHome = false;
 //if the terminal name starts with the "NT%" prefix, then we have not selected a terminal yet
 <% if cookies["terminal_id_set"] and @terminal_id.starts_with? "NT#" %>
   showTerminalSelectDialog();
+  <% else %>
+  //we have an id set, now just make sure it is the right terminal type
+  testTerminalTypeValid();
 <% end %>
 
 <% if @order_ready_notification %>

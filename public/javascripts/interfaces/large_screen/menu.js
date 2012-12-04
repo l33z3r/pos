@@ -1179,7 +1179,7 @@ function doTotal(applyDefaultServiceCharge) {
     }
     
     if(!callHomePollInitSequenceComplete) {
-        niceAlert("Downloading data from server, please wait");
+        niceAlert("Downloading Orders. Please Wait.");
         return;
     }
     
@@ -2631,8 +2631,26 @@ function performScreenResolutionCSSMods() {
     if(currentResolution == normalResolution) {
     //normal screen, nothing to do
     } else if (currentResolution == resolution1360x786) {
-        $('#wrapper').css("width", "1366px");
-        $('#menu_screen #menu_pages_container').css("width", "1090px");
+        $('#wrapper').addClass("resolution1360x786");
+        
+//        //menu screen
+//        $('#wrapper').css("width", "1366px");
+//        $('#menu_screen #menu_pages_container').css("width", "1090px");
+//        
+//        //subtotal screen
+//        $('div#total_screen div#payment_options_money_info_container').css("width", "1077px");
+//        $('div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container').css("width", "932px");
+//        
+//        //login screen
+//        $('div#landing div#active_users_buttons_container').css("width", "1077px");
+//        
+//        //x & z total screen
+//        $('div#cash_reports_screen div#receipt_report_container').css("width", "1035px");
+//        $('div#reports_left_receipt_container').css("width", "600px");
+//        $('div#reports_left_receipt_container').css("margin-right", "50px");
+//        
+//        //float screen
+//        $('div#float_screen div#coin_counter_container').css("width", "1027px");
     }
 }
 

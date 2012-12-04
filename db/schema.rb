@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121120104128) do
+ActiveRecord::Schema.define(:version => 20121128101847) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id",         :limit => 8
@@ -470,11 +470,12 @@ ActiveRecord::Schema.define(:version => 20121120104128) do
   add_index "orders", ["void_order_id"], :name => "index_orders_on_void_order_id"
 
   create_table "outlet_terminals", :force => true do |t|
-    t.integer  "outlet_id",  :limit => 8
+    t.integer  "outlet_id",     :limit => 8
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "assigned",                :default => false
+    t.boolean  "assigned",                   :default => false
+    t.integer  "terminal_type",              :default => 1,     :null => false
   end
 
   create_table "outlets", :force => true do |t|

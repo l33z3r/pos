@@ -14,7 +14,7 @@ function productBuilderShowMoreOptionsShortcut() {
 }
 
 function productBuilderOkClicked() {
-    showSpinner();
+    showLoadingDiv();
     $('#product_builder_form').submit();
 }
 

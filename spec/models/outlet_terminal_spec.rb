@@ -6,15 +6,17 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: outlet_terminals
 #
-#  id         :integer(8)      not null, primary key
-#  outlet_id  :integer(8)
-#  name       :string(255)
-#  created_at :datetime
-#  updated_at :datetime
-#  assigned   :boolean(1)      default(FALSE)
+#  id            :integer(8)      not null, primary key
+#  outlet_id     :integer(8)
+#  name          :string(255)
+#  created_at    :datetime
+#  updated_at    :datetime
+#  assigned      :boolean(1)      default(FALSE)
+#  terminal_type :integer(4)      default(1), not null
 #
 

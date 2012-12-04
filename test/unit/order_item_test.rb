@@ -17,6 +17,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: order_items
@@ -35,7 +36,6 @@ end
 #  pre_discount_price     :float
 #  tax_rate               :float
 #  terminal_id            :string(255)
-#  time_added             :string(255)
 #  show_server_added_text :boolean(1)      default(FALSE)
 #  product_name           :string(255)
 #  is_double              :boolean(1)      default(FALSE)
@@ -44,5 +44,6 @@ end
 #  is_half                :boolean(1)      default(FALSE)
 #  void_employee_id       :integer(8)
 #  outlet_id              :integer(8)
+#  date_added             :datetime
 #
 
