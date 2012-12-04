@@ -5,7 +5,7 @@
 
 <script type="text/javascript">
   //this hides the loading div in the android app
-  if(inAndroidWrapper()) {
+  if(typeof clueyAndroidJSInterface != "undefined") {
     hideSpinner();
     hideLoadingDiv();
     hideAndroidKeyboard();
