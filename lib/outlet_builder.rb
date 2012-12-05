@@ -5,8 +5,7 @@ class OutletBuilder
     @super_user_role = Role.find_or_create_by_outlet_id_and_name({:outlet_id => outlet_id, :name => "Administrator"})
 
     @admin_employee = Employee.find_or_create_by_outlet_id_and_nickname({:outlet_id => outlet_id, :nickname => "admin", :staff_id => "1111", :name => "admin", 
-        :passcode => "1111", :clockin_code => "1111", :address => "admin address", :telephone => "admin telephone",
-        :hourly_rate => "1", :overtime_rate => "1", :role_id => @super_user_role.id})
+        :passcode => "1111", :clockin_code => "1111", :hourly_rate => "1", :overtime_rate => "1", :role_id => @super_user_role.id})
 
     @cluey_employee = Employee.find_or_create_by_outlet_id_and_nickname({:outlet_id => outlet_id, :nickname => "cluey", :staff_id => "-1", :name => "cluey", 
         :passcode => "999", :clockin_code => "999", :address => "cluey", :telephone => "cluey",
