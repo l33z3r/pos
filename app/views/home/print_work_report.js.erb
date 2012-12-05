@@ -29,49 +29,49 @@ var work_report_html = "<div id='work_report_data_table'>";
 
   work_report_data = new Array();
 
-  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, {:report_section => WorkReport::RS_TOTAL_ITEMS_ORDERED} %>
+  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, current_outlet, {:report_section => WorkReport::RS_TOTAL_ITEMS_ORDERED} %>
 
   <% if @gs.parsed_value %>
     work_report_data.push(new Array('Total Items Ordered', '<%= @report_data[:all_order_items_ordered_quantity] %>', false, false));
   <% end %>
 
-  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, {:report_section => WorkReport::RS_TOTAL_ITEMS_SOLD} %>
+  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, current_outlet, {:report_section => WorkReport::RS_TOTAL_ITEMS_SOLD} %>
 
   <% if @gs.parsed_value %>
     work_report_data.push(new Array('Total Items Sold', '<%= @report_data[:all_order_items_sold_quantity] %>', false, false));
   <% end %>
 
-  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, {:report_section => WorkReport::RS_VOIDED_ITEMS_QUANTITY} %>
+  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, current_outlet, {:report_section => WorkReport::RS_VOIDED_ITEMS_QUANTITY} %>
 
   <% if @gs.parsed_value %>
     work_report_data.push(new Array('Voided Items Quantity', '<%= @report_data[:void_order_items_quantity] %>', false, false));
   <% end %>
 
-  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, {:report_section => WorkReport::RS_VOIDED_ITEMS_AMOUNT} %>
+  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, current_outlet, {:report_section => WorkReport::RS_VOIDED_ITEMS_AMOUNT} %>
 
   <% if @gs.parsed_value %>
     work_report_data.push(new Array('Voided Items Amount', '<%= @report_data[:void_order_items_amount] %>', true, false));
   <% end %>
 
-  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, {:report_section => WorkReport::RS_TOTAL_ORDERS_AMOUNT} %>
+  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, current_outlet, {:report_section => WorkReport::RS_TOTAL_ORDERS_AMOUNT} %>
 
   <% if @gs.parsed_value %>
     work_report_data.push(new Array('Total Orders Amount', '<%= @report_data[:all_order_items_ordered_amount] %>', true, false));
   <% end %>
 
-  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, {:report_section => WorkReport::RS_DISCOUNTS_GIVEN} %>
+  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, current_outlet, {:report_section => WorkReport::RS_DISCOUNTS_GIVEN} %>
 
   <% if @gs.parsed_value %>
     work_report_data.push(new Array('Discounts Given', '<%= @report_data[:total_discounts] %>', true, false));
   <% end %>
 
-  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, {:report_section => WorkReport::RS_AVG_ORDER_PRICE} %>
+  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, current_outlet, {:report_section => WorkReport::RS_AVG_ORDER_PRICE} %>
 
   <% if @gs.parsed_value %>
     work_report_data.push(new Array('Average Order Price', '<%= @report_data[:all_order_items_ordered_avg] %>', true, false));
   <% end %>
 
-  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, {:report_section => WorkReport::RS_AVG_SALE_PRICE} %>
+  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, current_outlet, {:report_section => WorkReport::RS_AVG_SALE_PRICE} %>
 
   <% if @gs.parsed_value %>
     work_report_data.push(new Array('Average Sale Price', '<%= @report_data[:all_order_items_sold_avg] %>', true, false));
@@ -80,13 +80,13 @@ var work_report_html = "<div id='work_report_data_table'>";
   work_report_html += getWorkReportDataTable(work_report_data) + clearHTML;
 
   work_report_data = new Array();
-  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, {:report_section => WorkReport::RS_TOTAL_CASH_ENTERED} %>
+  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, current_outlet, {:report_section => WorkReport::RS_TOTAL_CASH_ENTERED} %>
 
   <% if @gs.parsed_value %>
     work_report_data.push(new Array('Total Cash Entered', '<%= @report_data[:total_cash] %>', true, false));
   <% end %>
 
-  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, {:report_section => WorkReport::RS_TOTAL_PAYMENTS_ENTERED} %>
+  <% @gs = GlobalSetting.setting_for GlobalSetting::WORK_REPORT_OPTION, current_outlet, {:report_section => WorkReport::RS_TOTAL_PAYMENTS_ENTERED} %>
 
   <% if @gs.parsed_value %>
     work_report_data.push(new Array('Total Payments Entered', '<%= @report_data[:total_payments] %>', true, false));
