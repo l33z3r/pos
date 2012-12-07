@@ -708,8 +708,8 @@ class GlobalSetting < ActiveRecord::Base
   end
   
   def get_system_wide_update_type
-    logger.info "!!!!! #{self.key} - #{SYSTEM_WIDE_UPDATE_MAP[self.key.to_i]}"
-    return SYSTEM_WIDE_UPDATE_MAP[self.key.to_i]
+    logger.info "!!!!! #{self.key} - #{SYSTEM_WIDE_UPDATE_MAP[self.key.split("_").first.to_i]}"
+    return SYSTEM_WIDE_UPDATE_MAP[self.key.split("_").first.to_i]
   end
   
   #this is just a shortcut method
