@@ -63,6 +63,7 @@ $.event.props = $.event.props.join('|').replace('layerX|layerY|', '').split('|')
 //}
 
 $(function() {
+    initJSGlobalSettings();
     initSalesResources();
 
     current_user_id = fetchActiveUserID();
@@ -92,6 +93,25 @@ $(function() {
     if(!inDevMode()) {
         //start checking for cache updates
         startCacheUpdateCheckPoll();
+    }
+    
+    if(systemWideUpdatePromptRequired != SYSTEM_WIDE_UPDATE_TYPE_NONE) {
+        var reloadPromptPopup = function() {
+            hideNiceAlert();
+        
+            ModalPopups.Confirm('niceAlertContainer',
+                "System Reload Required", "<div id='nice_alert'>You have changed some data on your system, do you want to isue a reload to the other terminals?</div>",
+                {
+                    yesButtonText: 'Yes',
+                    noButtonText: 'No',
+                    onYes: "requestReload(systemWideUpdatePromptRequired);hideNiceAlert();",
+                    onNo: "hideNiceAlert();",
+                    width: 400,
+                    height: 250
+                });
+        };
+        
+        indicateActionRequired(reloadPromptPopup);
     }
 });
     
@@ -337,7 +357,6 @@ function showTerminalSelectDialog() {
 }
 
 function terminalSelected() {
-    showingTerminalSelectDialog = false;
     var selectedTerminal = $('select#terminal_select_dropdown option:selected').val();
     linkTerminal(selectedTerminal);
 }
@@ -402,6 +421,7 @@ function linkTerminal(outletTerminalName) {
         url: "/link_terminal",
         type : "POST",
         error: function() {
+            showingTerminalSelectDialog = false;
             hideNiceAlert();
         
             var message = "Error Linking Terminal";
@@ -414,9 +434,6 @@ function linkTerminal(outletTerminalName) {
                     okButtonText: 'Ok',
                     onOk: "doReload(false)"
                 });
-        },
-        complete: function() {
-            showingTerminalSelectDialog = false;
         },
         data : {
             outletTerminalName : outletTerminalName

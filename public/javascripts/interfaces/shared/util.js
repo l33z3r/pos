@@ -1033,12 +1033,16 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
         if(!callHomePollInitSequenceComplete) {
         //do nothing
         } else {
-            var functionToPerform = function() {
-                promptReloadSalesResources(reloadTerminalId);
-            };
+            if(reloadTerminalId == terminalID) {
+            //ignore
+            } else {
+                var functionToPerform = function() {
+                    promptReloadSalesResources(reloadTerminalId);
+                };
         
-            hideNiceAlert(force);
-            indicateActionRequired(functionToPerform);
+                hideNiceAlert(force);
+                indicateActionRequired(functionToPerform);
+            }
         }
     }
 }
@@ -1335,11 +1339,15 @@ function fetchActiveUserID() {
     return getRawCookie(activeUserIDCookieName);
 }
 
-function requestReload() {
+function requestReload(reloadType) {
     $.ajax({
         type: 'POST',
-        url: '/request_terminal_reload',        
+        url: '/request_terminal_reload', 
+        data: {
+            reload_type : reloadType  
+        },
         success: function() {
+            systemWideUpdatePromptRequired = SYSTEM_WIDE_UPDATE_TYPE_NONE;
             console.log("Reload request sent to server!");
         }
     });

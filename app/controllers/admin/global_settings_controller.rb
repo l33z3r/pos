@@ -15,13 +15,15 @@ class Admin::GlobalSettingsController < Admin::AdminController
   end
 
   def update_multiple
-    @global_settings = GlobalSetting.update(params[:global_settings].keys, params[:global_settings].values).reject { |p| p.errors.empty? }
+    @global_settings = GlobalSetting.update(params[:global_settings].keys, params[:global_settings].values)
     
-    if @global_settings.empty?
+    if @global_settings.reject{ |p| p.errors.empty? }.empty?
       #have to manually set the service charge button label to the global value
       @service_charge_button = current_outlet.display_buttons.find_by_perm_id(ButtonMapper::SERVICE_CHARGE_BUTTON)
       @service_charge_button.button_text = GlobalSetting.parsed_setting_for GlobalSetting::SERVICE_CHARGE_LABEL, current_outlet
       @service_charge_button.save
+      
+      GlobalSetting.check_for_system_wide_update_required @global_settings, current_outlet, @terminal_fingerprint
       
       #this action is also used in the medium interface, so we have to conditionally redirect
       #what is the entry point for each interface?

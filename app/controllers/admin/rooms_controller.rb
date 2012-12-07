@@ -16,8 +16,7 @@ class Admin::RoomsController < Admin::AdminController
     @room.outlet_id = current_outlet.id
     
     if @room.save
-      #send a reload request to other terminals
-      request_sales_resources_reload @terminal_id
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
     
       redirect_to([:builder, :admin, @room], :notice => 'Room was successfully created.')
     else
@@ -29,8 +28,7 @@ class Admin::RoomsController < Admin::AdminController
     @room.name = params[:name]
     @room.save!
     
-    #send a reload request to other terminals
-    request_sales_resources_reload @terminal_id
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
     
     render :json => {:success => true}.to_json
   end
@@ -67,8 +65,7 @@ class Admin::RoomsController < Admin::AdminController
         @room_object.grid_x = @grid_x
         @room_object.grid_y = @grid_y
         
-        #send a reload request to other terminals
-        request_sales_resources_reload @terminal_id
+        set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
     
         #need to save here to generate an id
         @room_object.save!
@@ -88,8 +85,7 @@ class Admin::RoomsController < Admin::AdminController
     @room.grid_resolution =  params[:grid_resolution]
     @room.save!
     
-    #send a reload request to other terminals
-    request_sales_resources_reload @terminal_id
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
     
     render :json => {:success => true}.to_json
   end
@@ -101,8 +97,7 @@ class Admin::RoomsController < Admin::AdminController
       @room.grid_y_size = params[:new_y]
     end
     
-    #send a reload request to other terminals
-    request_sales_resources_reload @terminal_id
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
     
     @room.save!
   end
@@ -158,9 +153,7 @@ class Admin::RoomsController < Admin::AdminController
       @table_info.save!
     end
     
-    #send a reload request to other terminals
-    request_sales_resources_reload @terminal_id
-    
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
   end
   
   def remove_table
@@ -194,16 +187,13 @@ class Admin::RoomsController < Admin::AdminController
       TerminalSyncData.remove_sync_data_for_table @table_id, current_outlet
     end
     
-    #send a reload request to other terminals
-    request_sales_resources_reload @terminal_id
-    
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
   end
   
   def remove_wall
     current_outlet.room_objects.find(params[:wall_id]).destroy
     
-    #send a reload request to other terminals
-    request_sales_resources_reload @terminal_id
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
     
     render :json => {:success => true}.to_json
   end
@@ -213,8 +203,7 @@ class Admin::RoomsController < Admin::AdminController
     
     @room.update_attributes(params[:room])
     
-    #send a reload request to other terminals
-    request_sales_resources_reload @terminal_id
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
     
     redirect_to admin_rooms_url
   end
@@ -254,8 +243,7 @@ class Admin::RoomsController < Admin::AdminController
       @notice = "Please close all tables for this room before you delete it"
     end
 
-    #send a reload request to other terminals
-    request_sales_resources_reload @terminal_id
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
     
     flash[:notice] = @notice
     redirect_to admin_rooms_url

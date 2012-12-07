@@ -25,7 +25,7 @@ function doGlobalInit() {
     if(!inMobileContext()) { 
         if(checkForClueyPlugin()) {
             if(checkForJSPrintSetupPlugin()) {
-                checkForUninstalledPrinters();
+                //checkForUninstalledPrinters();
             }
         }
     }
@@ -461,6 +461,7 @@ function cacheDownloadReset() {
 }
 
 function cacheDownloadStarted() {
+    cancelIndicateActionRequired();
     $('nav#main_nav').addClass("cache_update");
     $('#cache_status').show();
     $('#cache_status').text("Cache DL: 0%");

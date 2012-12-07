@@ -6,8 +6,7 @@ class Admin::DiscountsController < Admin::AdminController
     @discount.outlet_id = current_outlet.id
     
     if @discount.save
-      #send a reload request to other terminals
-      request_sales_resources_reload @terminal_id
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
     
       redirect_to admin_global_settings_path, :notice => 'Discount was successfully created.'
     else
@@ -19,8 +18,7 @@ class Admin::DiscountsController < Admin::AdminController
     @discounts = Discount.update(params[:discounts].keys, params[:discounts].values).reject { |p| p.errors.empty? }
     
     if @discounts.empty?
-      #send a reload request to other terminals
-      request_sales_resources_reload @terminal_id
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
     
       flash[:notice] = "Discounts Updated"
       redirect_to admin_global_settings_path
@@ -30,8 +28,7 @@ class Admin::DiscountsController < Admin::AdminController
   end
 
   def destroy
-    #send a reload request to other terminals
-    request_sales_resources_reload @terminal_id
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
     
     @discount = current_outlet.discounts.find(params[:id])
     @discount.destroy

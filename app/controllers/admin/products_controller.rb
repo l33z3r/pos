@@ -165,8 +165,7 @@ class Admin::ProductsController < Admin::AdminController
         end
       end
 
-      #send a reload request to other terminals
-      request_sales_resources_reload @terminal_id
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
     
       flash[:notice] = "CSV Import Successful! #{@product_count} new products, #{@category_count} new categories and #{@department_count} new departments have been added to the database."
       redirect_to admin_products_path
@@ -202,8 +201,7 @@ class Admin::ProductsController < Admin::AdminController
     if @product.save
       update_menus_for_product @product, @new_menu_1_id, @old_menu_1_id, @new_menu_2_id, @old_menu_2_id
       
-      #send a reload request to other terminals
-      request_sales_resources_reload @terminal_id
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
     
       redirect_to(admin_products_url, :notice => 'Product was successfully created.')
     else
@@ -228,8 +226,7 @@ class Admin::ProductsController < Admin::AdminController
 
       update_menus_for_product @product, @new_menu_1_id, @old_menu_1_id, @new_menu_2_id, @old_menu_2_id
 
-      #send a reload request to other terminals
-      request_sales_resources_reload @terminal_id
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
     
       #we may have came to this page directly from the menu builder screen
       #we want to store the fact, so that when we update the product, we go back to that screen
@@ -301,10 +298,9 @@ class Admin::ProductsController < Admin::AdminController
     @product.price = params[:price]
     @product.save!
 
-    #send a reload request to other terminals
-      request_sales_resources_reload @terminal_id
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
     
-      render :json => {:success => true}.to_json
+    render :json => {:success => true}.to_json
   end
 
   def search
@@ -340,10 +336,9 @@ class Admin::ProductsController < Admin::AdminController
     @product = current_outlet.products.find(params[:id])
     @product.mark_as_deleted
 
-    #send a reload request to other terminals
-      request_sales_resources_reload @terminal_id
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
     
-      render :json => {:success => true}.to_json
+    render :json => {:success => true}.to_json
   end
 
   private

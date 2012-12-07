@@ -509,7 +509,7 @@ function deliverySentToServerCallback() {
     
     receiveDeliveryInProcess = false;
     
-    requestReload();
+    requestReload(SYSTEM_WIDE_UPDATE_TYPE_SOFT);
 }
 
 function promptCancelDelivery() {

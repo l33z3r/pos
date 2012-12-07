@@ -59,6 +59,10 @@ class OrderController < ApplicationController
   def cash_total_history
     @last_z_total, @previous_floats = CashTotal.floats_since_last_z_total @terminal_id, current_outlet
     @previous_x_totals = CashTotal.all_cash_totals CashTotal::X_TOTAL, @terminal_id, current_outlet
+    
+    @previous_floats_and_x_totals = @previous_floats | @previous_x_totals
+    @previous_floats_and_x_totals.sort! { |a, b| a.created_at <=> b.created_at }
+    @previous_floats_and_x_totals.reverse!
   end
   
   def sync_table_order

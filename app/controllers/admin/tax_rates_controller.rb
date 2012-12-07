@@ -6,8 +6,7 @@ class Admin::TaxRatesController < Admin::AdminController
     @tax_rate.outlet_id = current_outlet.id
     
     if @tax_rate.save
-      #send a reload request to other terminals
-      request_sales_resources_reload @terminal_id
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
     
       redirect_to admin_global_settings_path, :notice => 'Tax Rate was successfully created.'
     else
@@ -19,8 +18,7 @@ class Admin::TaxRatesController < Admin::AdminController
     @tax_rates = TaxRate.update(params[:tax_rates].keys, params[:tax_rates].values).reject { |p| p.errors.empty? }
     
     if @tax_rates.empty?
-      #send a reload request to other terminals
-      request_sales_resources_reload @terminal_id
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
     
       flash[:notice] = "Tax Rates Updated"
       redirect_to admin_global_settings_path
@@ -40,8 +38,7 @@ class Admin::TaxRatesController < Admin::AdminController
     @tax_rate = current_outlet.tax_rates.find(params[:id])
     @tax_rate.destroy
 
-    #send a reload request to other terminals
-    request_sales_resources_reload @terminal_id
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
     
     flash[:notice] = "Tax Rate Deleted"
     redirect_to admin_global_settings_path
@@ -56,8 +53,7 @@ class Admin::TaxRatesController < Admin::AdminController
     @new_default_tax_rate.is_default = true
     @new_default_tax_rate.save
 
-    #send a reload request to other terminals
-    request_sales_resources_reload @terminal_id
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
     
     render :json => {:success => true}.to_json
   end

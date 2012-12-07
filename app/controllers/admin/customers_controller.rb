@@ -130,8 +130,7 @@ class Admin::CustomersController < Admin::AdminController
     @customer.outlet_id = current_outlet.id
     
     if @customer.save
-      #send a reload request to other terminals
-      request_sales_resources_reload @terminal_id
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
     
       redirect_to(admin_customers_url, :notice => 'Customer was successfully created.')
     else
@@ -156,8 +155,7 @@ class Admin::CustomersController < Admin::AdminController
             :amount => @points_change_amount, :loyalty_level_percent => @customer.loyalty_level.percent})
       end
     
-      #send a reload request to other terminals
-      request_sales_resources_reload @terminal_id
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
     
       redirect_to(admin_customers_url, :notice => 'Customer was successfully updated.')
     else

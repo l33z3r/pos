@@ -8,7 +8,6 @@ class GlobalSetting < ActiveRecord::Base
   
   validates :key, :presence => true
   
-  
   validates :label_text, :presence => true
   
   #this is a semantic value built from the raw value, depending on the property
@@ -96,6 +95,7 @@ class GlobalSetting < ActiveRecord::Base
   PRINT_DELEGATE_TERMINAL_ID = 77
   OFFLINE_ORDER_DELEGATE_TERMINAL_ID = 78
   ENABLE_POLLING_FOR_KITCHEN_SCREEN = 79
+  SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED = 80
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -176,8 +176,96 @@ class GlobalSetting < ActiveRecord::Base
     LOCAL_PRINTER_ID => "Local Printer ID",
     PRINT_DELEGATE_TERMINAL_ID => "Print Delegate Terminal ID",
     OFFLINE_ORDER_DELEGATE_TERMINAL_ID => "Offline Order Delegate Terminal ID",
-    ENABLE_POLLING_FOR_KITCHEN_SCREEN => "Enable Polling For Kitchen Screen"
+    ENABLE_POLLING_FOR_KITCHEN_SCREEN => "Enable Polling For Kitchen Screen",
+    SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED => "Do We Need To Show A Prompt To Trigger A Reload?"
   }
+  
+  SYSTEM_WIDE_UPDATE_NONE = 0
+  SYSTEM_WIDE_UPDATE_SOFT = 1
+  SYSTEM_WIDE_UPDATE_HARD = 2
+  
+  SYSTEM_WIDE_UPDATE_MAP = {
+    BUSINESS_NAME => SYSTEM_WIDE_UPDATE_HARD, 
+    ADDRESS => SYSTEM_WIDE_UPDATE_NONE,
+    TELEPHONE => SYSTEM_WIDE_UPDATE_NONE,
+    FAX => SYSTEM_WIDE_UPDATE_NONE,
+    EMAIL => SYSTEM_WIDE_UPDATE_NONE,
+    LOGO => SYSTEM_WIDE_UPDATE_NONE,
+    TERMINAL_ID => SYSTEM_WIDE_UPDATE_SOFT,
+    CURRENCY_SYMBOL => SYSTEM_WIDE_UPDATE_HARD, 
+    BYPASS_PIN => SYSTEM_WIDE_UPDATE_SOFT,
+    DEFAULT_HOME_SCREEN => SYSTEM_WIDE_UPDATE_SOFT,
+    AUTO_PRINT_RECEIPT => SYSTEM_WIDE_UPDATE_SOFT,
+    RECEIPT_MESSAGE => SYSTEM_WIDE_UPDATE_SOFT,
+    SMALL_CURRENCY_SYMBOL => SYSTEM_WIDE_UPDATE_HARD,
+    THEME => SYSTEM_WIDE_UPDATE_HARD,
+    DEFAULT_POST_LOGIN_SCREEN => SYSTEM_WIDE_UPDATE_SOFT, 
+    CLOCK_FORMAT => SYSTEM_WIDE_UPDATE_HARD, 
+    TAX_CHARGABLE => SYSTEM_WIDE_UPDATE_SOFT,
+    GLOBAL_TAX_RATE => SYSTEM_WIDE_UPDATE_SOFT,
+    SERVICE_CHARGE_LABEL => SYSTEM_WIDE_UPDATE_HARD, 
+    CASH_TOTAL_OPTION => SYSTEM_WIDE_UPDATE_NONE,
+    TAX_LABEL => SYSTEM_WIDE_UPDATE_HARD,
+    DO_BEEP => SYSTEM_WIDE_UPDATE_SOFT,
+    LAST_ORDER_ID => SYSTEM_WIDE_UPDATE_NONE, 
+    RELOAD_HTML5_CACHE_TIMESTAMP => SYSTEM_WIDE_UPDATE_NONE,
+    WEBSOCKET_IP => SYSTEM_WIDE_UPDATE_NONE,
+    CURRENCY_NOTES_IMAGES => SYSTEM_WIDE_UPDATE_HARD, 
+    ORDER_RECEIPT_WIDTH => SYSTEM_WIDE_UPDATE_NONE,
+    AUTHENTICATION_REQUIRED => SYSTEM_WIDE_UPDATE_NONE,
+    LOCAL_AUTHENTICATION_REQUIRED => SYSTEM_WIDE_UPDATE_NONE,
+    All_DEVICES_ORDER_NOTIFICATION => SYSTEM_WIDE_UPDATE_SOFT,
+    DEFAULT_SERVICE_CHARGE_PERCENT => SYSTEM_WIDE_UPDATE_SOFT,
+    TAX_NUMBER => SYSTEM_WIDE_UPDATE_SOFT,
+    PRINT_VAT_RECEIPT => SYSTEM_WIDE_UPDATE_SOFT,
+    MENU_SCREEN_TYPE => SYSTEM_WIDE_UPDATE_HARD,
+    WINDOWS_PRINTER_MARGINS => SYSTEM_WIDE_UPDATE_NONE,
+    EARLIEST_OPENING_HOUR => SYSTEM_WIDE_UPDATE_SOFT,
+    LATEST_CLOSING_HOUR => SYSTEM_WIDE_UPDATE_SOFT,
+    BUSINESS_INFO_MESSAGE => SYSTEM_WIDE_UPDATE_SOFT,
+    BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL => SYSTEM_WIDE_UPDATE_SOFT,
+    ZALION_ROOM_CHARGE_SERVICE_IP => SYSTEM_WIDE_UPDATE_NONE,
+    COURSE_LABEL => SYSTEM_WIDE_UPDATE_HARD, 
+    PRINTER_LEFT_MARGIN => SYSTEM_WIDE_UPDATE_NONE,
+    DISABLE_ADVANCED_TOUCH => SYSTEM_WIDE_UPDATE_NONE,
+    HTTP_AUTH_USERNAME => SYSTEM_WIDE_UPDATE_NONE,
+    HTTP_AUTH_PASSWORD => SYSTEM_WIDE_UPDATE_NONE,
+    CASH_DRAWER_IP_ADDRESS => SYSTEM_WIDE_UPDATE_NONE,
+    PRICE_LEVEL_LABEL => SYSTEM_WIDE_UPDATE_HARD,
+    USE_WHITE_SPACE_MOBILE_MENUS => SYSTEM_WIDE_UPDATE_HARD,
+    USE_WHITE_SPACE_DESKTOP_MENUS => SYSTEM_WIDE_UPDATE_HARD,
+    SHOW_LICENCE_EXPIRED_SCREEN => SYSTEM_WIDE_UPDATE_SOFT,
+    CREDIT_CARD_CHARGE_SERVICE_IP => SYSTEM_WIDE_UPDATE_SOFT,
+    CREDIT_CARD_TERMINAL_IP => SYSTEM_WIDE_UPDATE_SOFT,
+    CREDIT_CARD_TERMINAL_PORT => SYSTEM_WIDE_UPDATE_SOFT,
+    POLLING_INTERVAL_SECONDS => SYSTEM_WIDE_UPDATE_SOFT,
+    PROCESS_TABLE_0_ORDERS => SYSTEM_WIDE_UPDATE_SOFT,
+    LOYALTY_CARD_PREFIX => SYSTEM_WIDE_UPDATE_SOFT,
+    ENABLE_LOYALTY_REDEMPTION => SYSTEM_WIDE_UPDATE_HARD,
+    LOYALTY_POINTS_PER_CURRENCY_UNIT => SYSTEM_WIDE_UPDATE_SOFT,
+    USE_WSS_CASH_DRAWER => SYSTEM_WIDE_UPDATE_NONE,
+    USE_WSS_RECEIPT_PRINTER => SYSTEM_WIDE_UPDATE_NONE,
+    HALF_MEASURE_LABEL => SYSTEM_WIDE_UPDATE_HARD,
+    SHOW_CHARGE_CARD_BUTTON => SYSTEM_WIDE_UPDATE_HARD,
+    ALLOW_ZALION_SPLIT_PAYMENTS => SYSTEM_WIDE_UPDATE_SOFT,
+    SCREEN_RESOLUTION => SYSTEM_WIDE_UPDATE_NONE,
+    PM_SHORTCUT_ID => SYSTEM_WIDE_UPDATE_HARD,
+    PROMPT_FOR_COVERS => SYSTEM_WIDE_UPDATE_SOFT,
+    DEDUCT_STOCK_DURING_TRAINING_MODE => SYSTEM_WIDE_UPDATE_NONE,
+    WORK_REPORT_OPTION => SYSTEM_WIDE_UPDATE_NONE,
+    WORK_REPORT_FOOTER_TEXT => SYSTEM_WIDE_UPDATE_SOFT,
+    PRINT_WORK_REPORT => SYSTEM_WIDE_UPDATE_NONE,
+    TIMEKEEPING_TERMINAL => SYSTEM_WIDE_UPDATE_SOFT,
+    ALLOW_REOPEN_ORDER_AFTER_Z => SYSTEM_WIDE_UPDATE_NONE, 
+    PRINT_LOCAL_RECIEVE_DELIVERY => SYSTEM_WIDE_UPDATE_SOFT, 
+    CASH_DRAWER_COM_PORT => SYSTEM_WIDE_UPDATE_NONE,
+    CASH_DRAWER_CODE => SYSTEM_WIDE_UPDATE_NONE,
+    LOCAL_PRINTER_ID => SYSTEM_WIDE_UPDATE_NONE,
+    PRINT_DELEGATE_TERMINAL_ID => SYSTEM_WIDE_UPDATE_SOFT,
+    OFFLINE_ORDER_DELEGATE_TERMINAL_ID => SYSTEM_WIDE_UPDATE_SOFT,
+    ENABLE_POLLING_FOR_KITCHEN_SCREEN => SYSTEM_WIDE_UPDATE_HARD,
+    SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED => SYSTEM_WIDE_UPDATE_NONE
+    }
   
   LATEST_TERMINAL_HOURS = 24
   
@@ -445,6 +533,9 @@ class GlobalSetting < ActiveRecord::Base
      when ENABLE_POLLING_FOR_KITCHEN_SCREEN
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => ENABLE_POLLING_FOR_KITCHEN_SCREEN.to_s, :value => "false", :label_text => LABEL_MAP[ENABLE_POLLING_FOR_KITCHEN_SCREEN])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED.to_s}_#{args[:fingerprint]}", :value => SYSTEM_WIDE_UPDATE_NONE, :label_text => LABEL_MAP[SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED])
+      @gs.parsed_value = @gs.value.to_i
     else
       @gs = load_setting property, current_outlet
       @gs.parsed_value = @gs.value
@@ -608,9 +699,17 @@ class GlobalSetting < ActiveRecord::Base
       elsif key.starts_with? "#{LOCAL_PRINTER_ID.to_s}_"
         new_value = value.to_i
         write_attribute("value", new_value)
+      elsif key.starts_with? "#{SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED.to_s}_"
+        new_value = value.to_i
+        write_attribute("value", new_value)      
       end
     
     end
+  end
+  
+  def get_system_wide_update_type
+    logger.info "!!!!! #{self.key} - #{SYSTEM_WIDE_UPDATE_MAP[self.key.to_i]}"
+    return SYSTEM_WIDE_UPDATE_MAP[self.key.to_i]
   end
   
   #this is just a shortcut method
@@ -754,6 +853,28 @@ class GlobalSetting < ActiveRecord::Base
     end
   end
   
+  def self.check_for_system_wide_update_required global_settings, outlet, terminal_fingerprint
+    @system_wide_update_type = GlobalSetting::SYSTEM_WIDE_UPDATE_NONE
+      
+      #test for a reload prompt
+      global_settings.each do |gs|
+        if gs.previous_changes[:value]
+          @next_system_wide_update_type = gs.get_system_wide_update_type
+          
+          if @next_system_wide_update_type > @system_wide_update_type
+            @system_wide_update_type = @next_system_wide_update_type
+          end
+        end
+      end
+      
+      @update_gs = GlobalSetting.setting_for GlobalSetting::SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED, outlet, {:fingerprint => terminal_fingerprint}
+      
+      if @update_gs.parsed_value < @system_wide_update_type
+	@update_gs.value = @system_wide_update_type
+	@update_gs.save
+      end
+  end    
+  
   #these properties are for particular properties in the db
   
   #properties for home screen
@@ -809,4 +930,3 @@ end
 #  updated_at        :datetime
 #  outlet_id         :integer(8)
 #
-

@@ -1007,9 +1007,17 @@ function indicateActionRequired(functionToPerform) {
     $('.sales_resources_reload_indicator').show();
 }
 
+function cancelIndicateActionRequired() {
+    actionFunction = null;
+    $('.sales_resources_reload_indicator').hide();
+}
+
 function actionRequiredClicked() {
     $('.sales_resources_reload_indicator').hide();
-    actionFunction.call();    
+    
+    if(actionFunction != null) {
+        actionFunction.call();    
+    }
 }
 
 var inFullScreen = false;
