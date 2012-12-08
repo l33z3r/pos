@@ -874,6 +874,15 @@ function hideNiceAlert(force) {
         return;
     }
     
+    if(showingTerminalSelectDialog) {
+        if(force) {
+            //force the dialog to show
+            showingTerminalSelectDialog = false;
+        } else {
+            return;
+        }
+    }
+    
     try {
         if(hideNiceAlertListener != null) {
             $(window).unbind('keypress', hideNiceAlertListener);
