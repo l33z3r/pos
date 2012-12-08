@@ -337,6 +337,7 @@ hideNiceAlert();if(typeof title=="undefined"){title="Notice";}
 ModalPopups.Alert('niceAlertContainer',title,"<div id='nice_alert' class='nice_alert'>"+message+"</div>",{width:360,height:310,okButtonText:'Ok',onOk:"hideNiceAlert()"});hideNiceAlertListener=function(event){if(getEventKeyCode(event)==13){hideNiceAlert();}};$(window).bind('keypress',hideNiceAlertListener);}
 function hideNiceAlert(force){if(typeof(force)=="undefined"){force=false;}
 if(showingTerminalSelectDialog&&!force){return;}
+if(showingTerminalSelectDialog){if(force){showingTerminalSelectDialog=false;}else{return;}}
 try{if(hideNiceAlertListener!=null){$(window).unbind('keypress',hideNiceAlertListener);}
 ModalPopups.Close('niceAlertContainer');}catch(e){}}
 jQuery.fn.extend({slideRightShow:function(){return this.each(function(){$(this).show('slide',{direction:'right'},screenSlideSpeed);});},slideLeftHide:function(){return this.each(function(){$(this).hide('slide',{direction:'left'},screenSlideSpeed);});},slideRightHide:function(){return this.each(function(){$(this).hide('slide',{direction:'right'},screenSlideSpeed);});},slideLeftShow:function(){return this.each(function(){$(this).show('slide',{direction:'left'},screenSlideSpeed);});}});function initPressedCSS(){var startEventName="mousedown";var stopEventName="mouseup";var cancelEventName="mouseout"
