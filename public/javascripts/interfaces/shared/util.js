@@ -1357,7 +1357,7 @@ function requestReload(reloadType) {
         },
         success: function() {
             systemWideUpdatePromptRequired = SYSTEM_WIDE_UPDATE_TYPE_NONE;
-            console.log("Reload request sent to server!");
+            niceAlert("Reload request sent to server");
         }
     });
 }
