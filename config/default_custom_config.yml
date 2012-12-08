@@ -26,6 +26,8 @@ test:
   google_translate_api_key: AIzaSyBTUOHzAlYtVL8xP9NHh9WsQmMijzws2x4
   in_kiosk_mode: false
 
+#THIS ENVIRONMENT IS FOR THE OLD CLUEY INSTALLS
+#NOT USED ANYMORE
 production:
   domain_name: lvh.me
   domain_port: 3000
