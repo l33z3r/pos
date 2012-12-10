@@ -1,4 +1,4 @@
-class AppBaseController < ActionController::Base  
+  class AppBaseController < ActionController::Base  
   include AccountsHelper
   include UrlHelper
   

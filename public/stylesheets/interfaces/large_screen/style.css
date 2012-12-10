@@ -648,6 +648,13 @@ div#menu_screen div.sales_resources_reload_indicator img {
     margin-top: 1px;
 }
 
+div#menu_screen div.sales_resources_reload_indicator div.sales_resources_reload_indicator_num_msgs {
+    font-weight: bold;
+    float: right;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
 div#landing div.sales_resources_reload_indicator {
     float: right;
     margin-top: -66px;
@@ -657,6 +664,12 @@ div#landing div.sales_resources_reload_indicator img {
     height: 50px;
     margin-top: 2px;
     margin-right: 10px;
+}
+
+div#landing div.sales_resources_reload_indicator div.sales_resources_reload_indicator_num_msgs {
+    font-weight: bold;
+    float: right;
+    font-size: 15px;
 }
 
 div.sales_resources_reload_indicator {
