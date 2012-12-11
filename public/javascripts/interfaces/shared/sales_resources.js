@@ -170,7 +170,9 @@ function doReloadSalesResources(callback) {
     showLoadingDiv("Reloading Sales Resources, Please Wait");
     
     var complete = function() {
+        initJSGlobalSettings();
         initSalesResources();
+        
         hideLoadingDiv();
         
         if(typeof(callback) != "undefined") {

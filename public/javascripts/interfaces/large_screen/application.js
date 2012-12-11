@@ -461,6 +461,7 @@ function cacheDownloadReset() {
 }
 
 function cacheDownloadStarted() {
+    hideIndicateActionRequired();
     $('nav#main_nav').addClass("cache_update");
     $('#cache_status').show();
     $('#cache_status').text("Cache DL: 0%");

@@ -38,7 +38,7 @@
 
     <% @functions_display_buttons.each_with_index do |db, index| %>
       <% if (index+1) != 0 and (index+1) % 4 == 0 %><div class="clear">&nbsp;</div><% end %>
-      <div id="sales_button_<%=db.id%>" 
+      <div id="sales_button_<%=db.perm_id%>" 
            class="button" onclick="<%= button_action db %>">
         <div class="icon">
           <%= button_icon db %>
@@ -47,7 +47,7 @@
       </div>
     <% end %>
 
-    <div id="sales_button_<%=@global_settings_button.id%>" 
+    <div id="sales_button_<%=@global_settings_button.perm_id%>" 
          class="button" onclick="<%= button_action @global_settings_button %>">
       <div class="icon">
         <%= button_icon @global_settings_button %>

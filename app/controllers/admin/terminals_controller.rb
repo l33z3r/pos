@@ -19,6 +19,8 @@ class Admin::TerminalsController < Admin::AdminController
       @tld.save!
     end
     
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
+    
     render :json => {:success => true}.to_json
   end
 

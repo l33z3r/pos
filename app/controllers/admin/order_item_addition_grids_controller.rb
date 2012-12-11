@@ -15,6 +15,8 @@ class Admin::OrderItemAdditionGridsController < Admin::AdminController
     @oiag.outlet_id = current_outlet.id
     
     if @oiag.save
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
+      
       redirect_to([:builder, :admin, @oiag], :notice => 'Grid was successfully created.')
     else
       render :action => "new"
@@ -38,6 +40,8 @@ class Admin::OrderItemAdditionGridsController < Admin::AdminController
     @oiag = current_outlet.order_item_addition_grids.find(params[:id])
     @oiag.destroy
 
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
+      
     redirect_to(admin_order_item_addition_grids_url, :notice => 'Grid was deleted.')
   end
 
@@ -50,6 +54,8 @@ class Admin::OrderItemAdditionGridsController < Admin::AdminController
     @new_default_order_item_addition_grid.is_default = true
     @new_default_order_item_addition_grid.save
 
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
+      
     render :json => {:success => true}.to_json
   end
   
@@ -71,6 +77,9 @@ class Admin::OrderItemAdditionGridsController < Admin::AdminController
     @oiag.grid_y_size = new_height
     
     @oiag.save!
+  
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
+      
   end
   
   def rename
@@ -81,6 +90,8 @@ class Admin::OrderItemAdditionGridsController < Admin::AdminController
     
     @oiag.save!
     
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
+      
     render :json => {:success => true}.to_json
   end
   
@@ -111,6 +122,9 @@ class Admin::OrderItemAdditionGridsController < Admin::AdminController
     @item.follow_on_grid_id = params[:followOnGridId]
     
     @item.save!
+  
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
+      
   end
   
   def delete_item
@@ -122,6 +136,9 @@ class Admin::OrderItemAdditionGridsController < Admin::AdminController
     
     if @item
       @item.destroy
+      
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
+      
     end
   end
   

@@ -572,12 +572,13 @@ class ApplicationController < AppBaseController
       @test_for_firefox = "Firefox"
       @test_for_android = "Android"
       @test_for_ipad = "iPad"
+      @test_for_ipad_atomic = "AppleWebKit"
       
       @user_agent = request.user_agent
       
-      @is_firefox_or_ipad = @user_agent.include?(@test_for_firefox) or @user_agent.include?(@test_for_ipad) and @user_agent.include?(@test_for_android)
+      @is_firefox_or_ipad_or_android = @user_agent.include?(@test_for_firefox) or @user_agent.include?(@test_for_ipad) or @user_agent.include?(@test_for_ipad_atomic) or @user_agent.include?(@test_for_android)
     
-      if !@is_firefox_or_ipad
+      if !@is_firefox_or_ipad_or_android
         redirect_to browser_not_supported_accounts_accounts_url(:subdomain => current_outlet.cluey_account.name)
         return
       end
@@ -595,6 +596,12 @@ class ApplicationController < AppBaseController
   end
   
   private
+  
+  def set_system_wide_update_prompt_required update_type
+    @update_gs = GlobalSetting.setting_for GlobalSetting::SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED, current_outlet, {:fingerprint => @terminal_fingerprint}
+    @update_gs.value = update_type
+    @update_gs.save
+  end
   
   def set_outlet_time_zone
     if current_outlet

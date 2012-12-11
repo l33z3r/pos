@@ -136,7 +136,7 @@ function priceChangeModeComplete() {
     
     setShortcutDropdownDefaultText();
     
-    requestReload();
+    requestReload(SYSTEM_WIDE_UPDATE_TYPE_SOFT);
 }
 
 var currentPriceChangeProductId = null;
@@ -203,7 +203,7 @@ function finishStockTakeMode() {
     
     setShortcutDropdownDefaultText();
     
-    requestReload();
+    requestReload(SYSTEM_WIDE_UPDATE_TYPE_SOFT);
 }
 
 function loadPriceDivs(pageNum, subPageId) {

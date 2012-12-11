@@ -1,3 +1,5 @@
+var actionMessageQueue = new Array();
+
 function havePreviousOrder(current_user_id) {
     var key = "user_" + current_user_id + "_table_" + previousOrderTableNum + "_current_order";
     var data = retrieveStorageValue(key);
@@ -1000,16 +1002,35 @@ function checkForDuplicateBrowserSession() {
     }
 }
 
-var actionFunction = null;
-
 function indicateActionRequired(functionToPerform) {
-    actionFunction = functionToPerform;
+    actionMessageQueue.push(functionToPerform);
     $('.sales_resources_reload_indicator').show();
+    
+    if(actionMessageQueue.length > 1) {
+        $('.sales_resources_reload_indicator_num_msgs').html(actionMessageQueue.length);
+    } else {
+        $('.sales_resources_reload_indicator_num_msgs').html("");
+    }
+}
+
+function hideIndicateActionRequired() {
+    $('.sales_resources_reload_indicator').hide();
 }
 
 function actionRequiredClicked() {
-    $('.sales_resources_reload_indicator').hide();
-    actionFunction.call();    
+    var actionFunction = actionMessageQueue.splice(0, 1)[0];
+    
+    if(actionMessageQueue.length > 1) {
+        $('.sales_resources_reload_indicator_num_msgs').html(actionMessageQueue.length);
+    } else {
+        $('.sales_resources_reload_indicator_num_msgs').html("");
+    }
+    
+    if(actionMessageQueue.length == 0) {
+        $('.sales_resources_reload_indicator').hide();
+    }
+   
+    actionFunction.call();
 }
 
 var inFullScreen = false;

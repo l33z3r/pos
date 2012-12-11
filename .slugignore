@@ -1,3 +1,8 @@
+nbproject
 test
 spec
 public/install
+public/images
+public/system
+.git
+log

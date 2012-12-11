@@ -874,6 +874,15 @@ function hideNiceAlert(force) {
         return;
     }
     
+    if(showingTerminalSelectDialog) {
+        if(force) {
+            //force the dialog to show
+            showingTerminalSelectDialog = false;
+        } else {
+            return;
+        }
+    }
+    
     try {
         if(hideNiceAlertListener != null) {
             $(window).unbind('keypress', hideNiceAlertListener);
@@ -1033,12 +1042,16 @@ function alertReloadRequest(reloadTerminalId, hardReload) {
         if(!callHomePollInitSequenceComplete) {
         //do nothing
         } else {
-            var functionToPerform = function() {
-                promptReloadSalesResources(reloadTerminalId);
-            };
+            if(reloadTerminalId == terminalID) {
+            //ignore
+            } else {
+                var functionToPerform = function() {
+                    promptReloadSalesResources(reloadTerminalId);
+                };
         
-            hideNiceAlert(force);
-            indicateActionRequired(functionToPerform);
+                hideNiceAlert(force);
+                indicateActionRequired(functionToPerform);
+            }
         }
     }
 }
@@ -1335,12 +1348,16 @@ function fetchActiveUserID() {
     return getRawCookie(activeUserIDCookieName);
 }
 
-function requestReload() {
+function requestReload(reloadType) {
     $.ajax({
         type: 'POST',
-        url: '/request_terminal_reload',        
+        url: '/request_terminal_reload', 
+        data: {
+            reload_type : reloadType  
+        },
         success: function() {
-            console.log("Reload request sent to server!");
+            systemWideUpdatePromptRequired = SYSTEM_WIDE_UPDATE_TYPE_NONE;
+            niceAlert("Reload request sent to server");
         }
     });
 }

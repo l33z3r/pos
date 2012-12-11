@@ -17,7 +17,7 @@ $(window).bind(
     function(event) {
         setConnectionStatus(navigator.onLine);
     }
-);
+    );
  
 // List for checking events. This gets fired when the browser
 // is checking for an udpated manifest file or is attempting
@@ -71,8 +71,12 @@ $(appCache).bind(
     function(event) {
         console.log("All files downloaded");
         
-        //this is the first dl of the cache so we must do some things
-        setStatusMessage("Sales interface has been saved for offline use");
+        //don't show this message on mobile if we are still downloading orders as it interferes
+        if(inLargeInterface() || (inMediumInterface() && callHomePollInitSequenceComplete)) {
+            //this is the first dl of the cache so we must do some things
+            setStatusMessage("Sales interface has been saved for offline use");
+        }
+        
         cacheDownloading = false;
         cacheDownloadReset();
     }

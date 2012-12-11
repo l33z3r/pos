@@ -21,8 +21,7 @@ class Admin::CategoriesController < Admin::AdminController
     @category.outlet_id = current_outlet.id
     
     if @category.save
-      #send a reload request to other terminals
-      request_sales_resources_reload @terminal_id
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
     
       redirect_to(admin_categories_url, :notice => 'Category was successfully created.')
     else
@@ -34,8 +33,7 @@ class Admin::CategoriesController < Admin::AdminController
     @category = current_outlet.categories.find(params[:id])
 
     if @category.update_attributes(params[:category])
-      #send a reload request to other terminals
-      request_sales_resources_reload @terminal_id
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
     
       redirect_to(admin_categories_url, :notice => 'Category was successfully updated.')
     else
@@ -47,8 +45,7 @@ class Admin::CategoriesController < Admin::AdminController
     @category = current_outlet.categories.find(params[:id])
     @category.destroy
 
-    #send a reload request to other terminals
-    request_sales_resources_reload @terminal_id
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
     
     redirect_to(admin_categories_url, :notice => 'Category was successfully deleted.')
   end

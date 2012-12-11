@@ -33,7 +33,8 @@ gem 'jbuilder', '0.3.2'
 gem 'prawn', '0.12.0'
 gem 'prawnto' , '0.1.1'
 
-gem 'newrelic_rpm'
+gem 'newrelic_rpm', '3.5.3.25'
+
 gem "recaptcha", '0.3.4', :require => "recaptcha/rails"
 
 #lock down on version of tzinfo gem

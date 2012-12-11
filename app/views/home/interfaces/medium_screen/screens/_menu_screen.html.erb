@@ -13,7 +13,7 @@
     <div id="buttons_container">
 
       <% @display_buttons.each_with_index do |db, index| %>
-        <div id="sales_button_<%=db.id%>"
+        <div id="sales_button_<%=db.perm_id%>"
              class="button" onclick="<%= button_action db %>">
           <div class="icon">
             <%= button_icon db %>

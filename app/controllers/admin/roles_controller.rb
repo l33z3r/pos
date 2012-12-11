@@ -71,6 +71,8 @@ class Admin::RolesController < Admin::AdminController
         @role.save
       end
     
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
+      
       redirect_to([:admin, @role], :notice => 'Role was successfully updated.')
     else
       render :action => "edit"
@@ -82,7 +84,9 @@ class Admin::RolesController < Admin::AdminController
     @role.pin_required = params[:checked]
     @role.save!
     
-    render :json => {:success => true}.to_json
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
+      
+      render :json => {:success => true}.to_json
   end
   
   def login_allowed_for_role
@@ -90,7 +94,9 @@ class Admin::RolesController < Admin::AdminController
     @role.login_allowed = params[:checked]
     @role.save!
     
-    render :json => {:success => true}.to_json
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
+      
+      render :json => {:success => true}.to_json
   end
   
   private

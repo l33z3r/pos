@@ -22,8 +22,7 @@ class Admin::EmployeesController < Admin::AdminController
     @employee.outlet_id = current_outlet.id
     
     if @employee.save
-      #send a reload request to other terminals
-      request_sales_resources_reload @terminal_id
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
     
       redirect_to([:admin, @employee], :notice => 'Employee was successfully created.')
     else
@@ -40,8 +39,7 @@ class Admin::EmployeesController < Admin::AdminController
     end
     
     if @employee.update_attributes(params[:employee])
-      #send a reload request to other terminals
-      request_sales_resources_reload @terminal_id
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
     
       redirect_to([:admin, @employee], :notice => 'Employee was successfully updated.')
     else
@@ -53,8 +51,7 @@ class Admin::EmployeesController < Admin::AdminController
     @employee = current_outlet.employees.find(params[:id])
     @employee.destroy
 
-    #send a reload request to other terminals
-    request_sales_resources_reload @terminal_id
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
     
     redirect_to(admin_employees_url)
   end

@@ -173,10 +173,10 @@ var employees = new Array();
   }
 
   employees.push(employee_info);
-  
+
   //make sure all users are clocked in
   if(typeof(initClockedInUsers) != "undefined") {
-    initClockedInUsers();
+  initClockedInUsers();
   }
 
 <% end -%>
@@ -363,3 +363,218 @@ prompt_for_client_name : false
   rooms['<%=room.id%>'] = room_info;
 
 <% end -%>
+
+//build a big hash of global settings data
+var globalSettingsMap = {};
+
+globalSettingsMap['currentInterface'] = "<%= current_interface %>";
+
+globalSettingsMap['bypassPin'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::BYPASS_PIN, current_outlet %>;
+
+globalSettingsMap['bypassOpenOrdersForCashTotal'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::BYPASS_OPEN_ORDERS_FOR_CASH_TOTAL, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
+
+var gsClockFormat = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CLOCK_FORMAT, current_outlet %>";
+globalSettingsMap['clockFormat'] = gsClockFormat;
+
+var gsDefaultJSDateFormat = "";
+var gsDefaultJSTimeFormat = "";
+
+if(gsClockFormat == "12") {
+gsDefaultJSDateFormat = "hh:mm dd/MM/yyyy";
+gsDefaultJSTimeFormat = "hh:mm";
+} else {
+gsDefaultJSDateFormat = "HH:mm dd/MM/yyyy";
+gsDefaultJSTimeFormat = "HH:mm";
+}
+
+globalSettingsMap['defaultJSDateFormat'] = gsDefaultJSDateFormat;
+globalSettingsMap['defaultJSTimeFormat'] = gsDefaultJSTimeFormat;
+
+globalSettingsMap['showLicenceExpiredScreen'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::SHOW_LICENCE_EXPIRED_SCREEN, current_outlet %>;
+
+globalSettingsMap['taxChargable'] = <%= @tax_chargable %>;
+
+globalSettingsMap['taxLabel'] = "<%= @tax_label %>";
+
+globalSettingsMap['globalTaxRate'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::GLOBAL_TAX_RATE, current_outlet %>;
+
+globalSettingsMap['printVatReceipt'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_VAT_RECEIPT, current_outlet %>;
+
+globalSettingsMap['taxNumber'] = "<%= GlobalSetting.parsed_setting_for GlobalSetting::TAX_NUMBER, current_outlet %>";
+
+globalSettingsMap['serviceChargeLabel'] = "<%= @service_charge_label %>";
+
+globalSettingsMap['globalDefaultServiceChargePercent'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_SERVICE_CHARGE_PERCENT, current_outlet %>;
+
+globalSettingsMap['defaultPaymentMethod'] = "<%= PaymentMethod.load_default(current_outlet).name.downcase %>";
+
+globalSettingsMap['cashPaymentMethodName'] = "<%= PaymentMethod::CASH_PAYMENT_METHOD_NAME %>";
+globalSettingsMap['loyaltyPaymentMethodName'] = "<%= PaymentMethod::LOYALTY_PAYMENT_METHOD_NAME %>";
+globalSettingsMap['accountPaymentMethodName'] = "<%= PaymentMethod::ACCOUNT_PAYMENT_METHOD_NAME %>";
+
+globalSettingsMap['dynamicCurrencySymbol'] = "<%= @currency_symbol %>";
+
+globalSettingsMap['defaultHomeScreen'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_HOME_SCREEN, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
+globalSettingsMap['defaultPostLoginScreen'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::DEFAULT_POST_LOGIN_SCREEN, current_outlet %>;
+globalSettingsMap['LOGIN_SCREEN'] = <%= GlobalSetting::LOGIN_SCREEN %>;
+globalSettingsMap['MENU_SCREEN'] = <%= GlobalSetting::MENU_SCREEN %>;
+globalSettingsMap['TABLES_SCREEN'] = <%= GlobalSetting::TABLES_SCREEN %>;
+
+globalSettingsMap['menuScreenType'] = <%= @menu_screen_type %>;
+globalSettingsMap['RESTAURANT_MENU_SCREEN'] = <%= GlobalSetting::RESTAURANT_MENU_SCREEN %>;
+globalSettingsMap['RETAIL_MENU_SCREEN'] = <%= GlobalSetting::RETAIL_MENU_SCREEN %>;
+globalSettingsMap['CUSTOMER_MENU_SCREEN'] = <%= GlobalSetting::CUSTOMER_MENU_SCREEN %>;
+
+globalSettingsMap['lastOrderReadyNotificationTime'] = <%= now_local_millis %>;
+
+globalSettingsMap['autoPrintReceipt'] = <%= @auto_print_receipt %>;
+
+globalSettingsMap['receiptMessage'] = "<%= raw escape_javascript((GlobalSetting.parsed_setting_for(GlobalSetting::RECEIPT_MESSAGE, current_outlet))) %>";
+
+var gsCustomReceiptFooters = {};
+
+<% current_outlet.receipt_footers.all.each do |rf| %>
+  gsCustomReceiptFooters[<%=rf.id%>] = {"name" : "<%=rf.name%>", "content" : "<%= raw escape_javascript(rf.content) %>"};
+<% end %>
+
+globalSettingsMap['customReceiptFooters'] = gsCustomReceiptFooters;
+
+globalSettingsMap['businessInfoMessage'] = "<%= raw escape_javascript((GlobalSetting.parsed_setting_for(GlobalSetting::BUSINESS_INFO_MESSAGE, current_outlet))) %>";
+
+globalSettingsMap['defaultDiscountPercent'] = "<%= Discount.load_default(current_outlet).percent %>";
+
+globalSettingsMap['terminalID'] = "<%=@terminal_id%>";
+
+globalSettingsMap['TERMINAL_TYPE_NORMAL'] = <%= OutletTerminal::TERMINAL_TYPE_NORMAL %>;
+globalSettingsMap['TERMINAL_TYPE_MOBILE'] = <%= OutletTerminal::TERMINAL_TYPE_MOBILE %>;
+globalSettingsMap['TERMINAL_TYPE_KITCHEN'] = <%= OutletTerminal::TERMINAL_TYPE_KITCHEN %>;
+
+globalSettingsMap['pollingAmount'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::POLLING_INTERVAL_SECONDS, current_outlet %> * 1000;
+globalSettingsMap['pollingMinSeconds'] = <%= GlobalSetting::POLLING_MIN_SECONDS %>;
+globalSettingsMap['pollingMaxSeconds'] = <%= GlobalSetting::POLLING_MAX_SECONDS %>;
+
+globalSettingsMap['using_mobile'] = <%= mobile_device? ? "true" : "false" %>;
+
+globalSettingsMap['doBeep'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::DO_BEEP, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
+
+globalSettingsMap['railsEnvironment'] = "<%= ENV['RAILS_ENV'] %>";
+
+globalSettingsMap['kioskMode'] = <%= CUSTOM_CONFIG["in_kiosk_mode"] %>;
+globalSettingsMap['overrideKiosk'] = <%= params["override_kiosk"] or params["ok"] ? true : false %>;
+
+globalSettingsMap['showPrintFrame'] = <%= params["show_print_frame"] or params["spf"] ? true : false %>;
+
+globalSettingsMap['business_name'] = "<%= @business_name %>";
+globalSettingsMap['business_address'] = "<%= @business_address %>";
+globalSettingsMap['business_telephone'] = "<%= @business_telephone %>";
+globalSettingsMap['business_fax'] = "<%= @business_fax %>";
+globalSettingsMap['business_email_address'] = "<%= @business_email_address %>";
+
+<% @display = Display.load_default(current_outlet) unless @display %>
+
+globalSettingsMap['selectedDisplayId'] = <%= @display.id %>;
+
+globalSettingsMap['modifyOrderItemButtonID'] = "<%= ButtonMapper::MODIFY_ORDER_ITEM_BUTTON %>";
+globalSettingsMap['addNoteButtonID'] = "<%= ButtonMapper::ADD_NOTE_BUTTON %>";
+globalSettingsMap['tablesButtonID'] = "<%= ButtonMapper::TABLES_BUTTON %>";
+globalSettingsMap['discountButtonID'] = "<%= ButtonMapper::DISCOUNT_BUTTON %>";
+globalSettingsMap['changePriceButtonID'] = "<%= ButtonMapper::CHANGE_PRICE_BUTTON %>";
+globalSettingsMap['removeItemButtonID'] = "<%= ButtonMapper::REMOVE_ITEM_BUTTON %>";
+globalSettingsMap['toggleMenuItemDoubleModeButtonID'] = "<%= ButtonMapper::TOGGLE_MENU_ITEM_DOUBLE_BUTTON %>";
+globalSettingsMap['toggleMenuItemHalfModeButtonID'] = "<%= ButtonMapper::TOGGLE_MENU_ITEM_HALF_BUTTON %>";
+globalSettingsMap['toggleMenuItemStandardPriceOverrideModeButtonID'] = "<%= ButtonMapper::TOGGLE_MENU_ITEM_STANDARD_PRICE_OVERRIDE_BUTTON %>";
+globalSettingsMap['oiaButtonID'] = "<%= ButtonMapper::MODIFY_ORDER_ITEM_BUTTON %>";
+globalSettingsMap['courseNumButtonID'] = "<%= ButtonMapper::COURSE_BUTTON %>";
+globalSettingsMap['voidOrderItemButtonID'] = "<%= ButtonMapper::VOID_ORDER_ITEM_BUTTON %>";
+globalSettingsMap['priceChangeButtonID'] = "<%= ButtonMapper::CHANGE_PRICES_BUTTON %>";
+globalSettingsMap['toggleProductInfoButtonID'] = "<%= ButtonMapper::PRODUCT_INFO_POPUP_BUTTON %>";
+globalSettingsMap['toggleTrainingModeButtonID'] = "<%= ButtonMapper::TRAINING_MODE_TOGGLE_BUTTON %>";
+globalSettingsMap['deliveryButtonID'] = "<%= ButtonMapper::DELIVERY_BUTTON %>";
+globalSettingsMap['changeCostPriceButtonID'] = "<%= ButtonMapper::CHANGE_COST_PRICE_BUTTON %>";
+globalSettingsMap['editLoyaltyPointsButtonID'] = "<%= ButtonMapper::EDIT_LOYALTY_POINTS_BUTTON %>";
+globalSettingsMap['cashOutButtonID'] = "<%= ButtonMapper::CASH_OUT_BUTTON %>";
+
+globalSettingsMap['updateStockType'] = <%= StockTransaction::STOCK_UPDATE %>;
+globalSettingsMap['transferStockType'] = <%= StockTransaction::STOCK_TRANSFER %>;
+
+globalSettingsMap['localPrinterID'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::LOCAL_PRINTER_ID, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
+
+globalSettingsMap['creditCardChargeServiceIP'] = "<%= @credit_card_charge_service_ip %>";
+globalSettingsMap['creditCardTerminalIP'] = "<%= @credit_card_terminal_ip %>";
+globalSettingsMap['creditCardTerminalPort'] = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, current_outlet, {:fingerprint => @terminal_fingerprint} %>";
+
+globalSettingsMap['allDevicesOrderNotification'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::All_DEVICES_ORDER_NOTIFICATION, current_outlet %>;
+
+//these variables are used to get a syncronised time on each device
+globalSettingsMap['serverCounterStartTimeMillis'] = <%= now_local_millis %>;
+globalSettingsMap['counterStartTimeMillis'] = new Date().getTime();
+
+//payment integration IDs
+globalSettingsMap['zalionPaymentIntegrationId'] = <%= PaymentMethod::PAYMENT_INTEGRATION_ZALION %>;
+
+globalSettingsMap['zalionChargeRoomServiceIP'] = "<%= @zalion_charge_room_service_ip %>";
+
+globalSettingsMap['disableAdvancedTouch'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::DISABLE_ADVANCED_TOUCH, current_outlet, {:fingerprint => @terminal_fingerprint, :user_agent => request.user_agent} %>;
+
+//enumerate the course labels
+var gsCourseLabels = {};
+
+<% GlobalSetting.course_options(current_outlet).each do |label, course_val| %>
+  gsCourseLabels[<%=course_val%>] = "<%=label%>";
+<% end %>
+
+globalSettingsMap['courseLabels'] = gsCourseLabels;
+
+globalSettingsMap['isProcessingTable0Orders'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::PROCESS_TABLE_0_ORDERS, current_outlet %>;
+
+globalSettingsMap['loyaltyCardPrefix'] = "<%= GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_CARD_PREFIX, current_outlet %>";
+globalSettingsMap['enableLoyaltyCardRedemption'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::ENABLE_LOYALTY_REDEMPTION, current_outlet %>;
+globalSettingsMap['loyaltyPointsPerCurrencyUnit'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_POINTS_PER_CURRENCY_UNIT, current_outlet %>;
+
+globalSettingsMap['halfMeasureLabel'] = "<%= GlobalSetting.parsed_setting_for GlobalSetting::HALF_MEASURE_LABEL, current_outlet %>";
+
+globalSettingsMap['allowedZalionSplitPayments'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::ALLOW_ZALION_SPLIT_PAYMENTS, current_outlet %>;
+
+globalSettingsMap['currentResolution'] = "<%= @currentResolution %>";
+globalSettingsMap['normalResolution'] = "<%= @normalResolution %>";
+globalSettingsMap['resolution1360x786'] = "<%= @resolution1360x786 %>";
+
+globalSettingsMap['cashDrawerComPort'] = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CASH_DRAWER_COM_PORT, current_outlet, {:fingerprint => @terminal_fingerprint} %>";
+globalSettingsMap['cashDrawerCode'] = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CASH_DRAWER_CODE, current_outlet, {:fingerprint => @terminal_fingerprint} %>";
+
+var gsPmShortcut1ID = <%= GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, current_outlet, {:shortcut_num => 1} %>;
+var gsPmShortcut2ID = <%= GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, current_outlet, {:shortcut_num => 2} %>;
+var gsPmShortcut3ID = <%= GlobalSetting.parsed_setting_for GlobalSetting::PM_SHORTCUT_ID, current_outlet, {:shortcut_num => 3} %>;
+
+globalSettingsMap['pmShortcut1ID'] = gsPmShortcut1ID;
+globalSettingsMap['pmShortcut2ID'] = gsPmShortcut2ID;
+globalSettingsMap['pmShortcut3ID'] = gsPmShortcut3ID;
+
+var gsPmShortcutMap = {};
+
+gsPmShortcutMap[1] = gsPmShortcut1ID;
+gsPmShortcutMap[2] = gsPmShortcut2ID;
+gsPmShortcutMap[3] = gsPmShortcut3ID;
+
+globalSettingsMap['pmShortcutMap'] = gsPmShortcutMap;
+
+globalSettingsMap['globalAutoPromptForCovers'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::PROMPT_FOR_COVERS, current_outlet %>;
+
+globalSettingsMap['clueyUserId'] = <%= Employee.cluey_user(current_outlet).id %>;
+globalSettingsMap['chefUserId'] = <%= Employee.chef_user(current_outlet).id %>;
+
+globalSettingsMap['printLocalDeliveryReceipts'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_LOCAL_RECIEVE_DELIVERY, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
+
+globalSettingsMap['printDelegateTerminalID'] = "<%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_DELEGATE_TERMINAL_ID, current_outlet %>";
+globalSettingsMap['offlineOrderDelegateTerminal'] = "<%= GlobalSetting.parsed_setting_for GlobalSetting::OFFLINE_ORDER_DELEGATE_TERMINAL_ID, current_outlet %>";
+
+globalSettingsMap['accountsURL'] = "<%= @accounts_url %>";
+globalSettingsMap['outletTerminalsURL'] = "<%= @outlet_terminals_url %>";
+
+globalSettingsMap['enablePollingForKitchenScreen'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::ENABLE_POLLING_FOR_KITCHEN_SCREEN, current_outlet %>;
+
+globalSettingsMap['SYSTEM_WIDE_UPDATE_TYPE_NONE'] = <%= GlobalSetting::SYSTEM_WIDE_UPDATE_NONE %>;
+globalSettingsMap['SYSTEM_WIDE_UPDATE_TYPE_SOFT'] = <%= GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT %>;
+globalSettingsMap['SYSTEM_WIDE_UPDATE_TYPE_HARD'] = <%= GlobalSetting::SYSTEM_WIDE_UPDATE_HARD %>;
+    
+globalSettingsMap['systemWideUpdatePromptRequired'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED, current_outlet, {:fingerprint => @terminal_fingerprint} %>;

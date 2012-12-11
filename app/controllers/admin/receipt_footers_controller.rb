@@ -6,6 +6,8 @@ class Admin::ReceiptFootersController < Admin::AdminController
     @receipt_footer.outlet_id = current_outlet.id
     
     if @receipt_footer.save
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
+      
       redirect_to admin_global_settings_path, :notice => 'Receipt Footer was successfully created.'
     else
       render :action => admin_global_settings_path
@@ -19,6 +21,8 @@ class Admin::ReceiptFootersController < Admin::AdminController
       flash[:notice] = "Receipt Footers Updated"
       redirect_to admin_global_settings_path
     else
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
+      
       render admin_global_settings_path
     end
   end
@@ -27,6 +31,8 @@ class Admin::ReceiptFootersController < Admin::AdminController
     @receipt_footer = current_outlet.receipt_footers.find(params[:id])
     @receipt_footer.destroy
 
+    set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
+      
     flash[:notice] = "Receipt Footer Deleted"
     redirect_to admin_global_settings_path
   end

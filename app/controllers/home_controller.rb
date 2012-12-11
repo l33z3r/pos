@@ -232,10 +232,25 @@ class HomeController < ApplicationController
   end
   
   def request_terminal_reload
-    request_reload_app @terminal_id
+    @reload_type = params[:reload_type].to_i
     
-    flash[:notice] = "Reload Request Sent To All Terminals"
-    redirect_to :back
+    if @reload_type == GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
+      request_reload_app @terminal_id
+    elsif @reload_type == GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
+      request_sales_resources_reload @terminal_id
+    else
+      #do nothing
+    end
+    
+    #reset the setting to no update
+    @update_gs = GlobalSetting.setting_for GlobalSetting::SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED, current_outlet, {:fingerprint => @terminal_fingerprint}
+      
+    if @update_gs.parsed_value > GlobalSetting::SYSTEM_WIDE_UPDATE_NONE
+      @update_gs.value = GlobalSetting::SYSTEM_WIDE_UPDATE_NONE
+      @update_gs.save
+    end
+      
+    render :json => {:success => true}.to_json
   end
   
   def clear_all_fragment_caches
@@ -671,6 +686,8 @@ class HomeController < ApplicationController
     if @outlet_terminal and !@outlet_terminal.assigned
       @terminal_id_gs = GlobalSetting.terminal_id_gs_for_fingerprint @terminal_fingerprint, current_outlet
       @outlet_terminal.link_terminal @terminal_id_gs
+      
+      request_sales_resources_reload @terminal_id           
     else
       @error = true
     end
@@ -843,6 +860,7 @@ class HomeController < ApplicationController
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/medium_screen.js"
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/plugin_libs_1.js"
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/plugin_libs_2.js"
+    @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/modal_popups_libs.js"
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/shared.js"
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/reports.js"
     

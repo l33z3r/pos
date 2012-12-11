@@ -56,8 +56,7 @@ class DeliveryController < ApplicationController
       
       end
     
-      #send a reload request to other terminals
-      request_sales_resources_reload @terminal_id
+      set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
     
       render :json => {:success => true}.to_json
     end
