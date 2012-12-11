@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>We're sorry, but something went wrong (500)</title>
+        <style type="text/css">
+            body { background-color: #fff; color: #666; text-align: center; font-family: arial, sans-serif; }
+            div.dialog {
+                width: 25em;
+                height: 15em;
+                padding: 0 4em;
+                margin: 4em auto 0 auto;
+                border: 1px solid #ccc;
+                border-right-color: #999;
+                border-bottom-color: #999;
+            }
+            h1 { font-size: 100%; color: #f00; line-height: 1.5em; }
+            div#options_button { display:inline-block; }
+            nav#main_nav { height: 20px; }
+        </style>
+        <link rel="stylesheet" type="text/css" href="stylesheets/interfaces/large_screen/style.css" />
+        <script type="text/javascript" language="javascript">
+            function goTo(place){
+                window.location = place;
+                return false;
+            }
+        </script>
+        </head>
+
+    <body>
+        <!-- This file lives in public/500.html -->
+        <div id="wrapper" class="wrapper large_interface">
+            <div id="body">
+                <div id="content_container">
+                    <nav id="main_nav"></nav>
+                    <div class="dialog">
+                        <h1>We're sorry, but something went wrong.</h1>
+                        <p>We've been notified about this issue and we'll take a look at it shortly. </p>
+
+                        <div id="options_button" class="button" onclick="goTo('/home')">
+                            <div class="icon">
+                                <img src="/images/button_logos/reopen_order.png" />
+                            </div>
+                            <div class="button_name">Go to Sales Screen</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
