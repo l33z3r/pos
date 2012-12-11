@@ -1,1 +1,0 @@
-cat open_cash_drawer_code.txt > /dev/usb/lp0
