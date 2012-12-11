@@ -1,0 +1,201 @@
+/* 
+    Document   : menu_builder
+    Created on : 5-May-2011, 20:19:01
+    Author     : Lee
+    Description:
+        For the room builder interface grid.
+*/
+
+div#room_builder {
+    width: 1000px;
+    margin: auto;
+}
+
+div#room_builder div#header {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+div#room_builder div#header div#room_name {
+    font-weight: bold;
+    font-size: 14px;
+    float: left;
+}
+
+div#room_builder div#header a#rename_link {
+    float: left;
+    margin-left: 8px;
+    text-decoration: none;
+}
+
+div#room_builder div#header a#delete_link {
+    float: left;
+    margin-left: 8px;
+    text-decoration: none;
+}
+
+div#room_builder div#options {
+    display: inline-block;
+    padding-top: 5px;
+}
+
+div#room_builder div#main_builder_section {
+    width: 1000px;
+    height: 590px;
+    overflow-y: scroll;
+}
+
+div#room_builder div#main_builder_section div#loading_message {
+    margin: auto;
+    display: none;
+    position: absolute;
+    z-index: 2;
+    background-color: #FFF;
+    margin-left: 300px;
+    margin-top: 100px;
+    padding: 5px 10px;
+    border: 1px solid #CCC;
+    font-size: 17px;
+    font-weight: bold;
+    width: 350px;
+    padding-top: 80px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+div#room_builder div#options div#resolution_slider_label {
+    float: left;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+div#room_builder div#options div#resolution_slider {
+    width: 300px;
+    float: left;
+    margin-top: 1px;
+}
+
+div#room_builder div#options div#resolution_slider a.ui-slider-handle {
+    cursor: pointer;
+}
+
+div#room_builder div#options div#dimensions {
+    float: left;
+    margin-left: 10px;
+}
+
+div#room_builder div#options div#dimensions div {
+    float: left;
+}
+
+div#room_builder div#options div#dimensions div.label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+div#room_builder div#options div#dimensions div input {
+    width: 30px;
+    margin-top: -4px;
+    margin-right: 5px;
+}
+
+div#room_builder div#main_builder_section h4 {
+    text-align: left;
+}
+
+div#room_builder div#tree_container div#objects_tree {
+    display: inline-block;
+}
+
+div#room_builder div#tree_container div#objects_tree div.room_object {
+    display: table-cell;
+    vertical-align: middle;
+    margin: 5px;
+    height: 40px;
+}
+
+div#room_builder div#tree_container div#objects_tree div.room_object {
+    text-align: center;
+    height: 40px;
+    width: 40px;
+    padding-right: 5px;
+}
+
+div#room_builder div#tree_container div#objects_tree div.room_object a {
+    z-index: 100;
+}
+
+div#room_builder div#grid {
+    margin: auto;
+    display: inline-block;
+    border-top: 1px solid #CCC;
+    border-left: 1px solid #CCC;
+}
+
+div#room_builder div#grid div.grid_square {
+    width: 60px;
+    height: 60px;
+    border-right: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
+    float: left;
+    display: block;
+}
+
+div#room_builder div#grid div.grid_row {
+    width: -moz-max-content;
+    clear: both;
+}
+
+div#room_builder div#grid div.grid_square div.grid_graphic {
+    position: absolute;
+    cursor: pointer;
+}
+
+/* Table Info Popup */
+
+div.table_info_popup {
+    width: 120px;
+    height: 60px;
+    text-align: left;
+}
+
+div.table_info_popup div.info {
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 18px;
+    margin-right: 5px;
+    float: left;
+}
+
+div.table_info_popup div.rename {
+    float: left;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+div.table_info_popup div.delete {
+    cursor: pointer;
+    text-decoration: underline;
+    float: left;
+}
+
+div.table_info_popup div.cancel {
+    float: right;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+div.wall_info_popup div.delete {
+    cursor: pointer;
+    text-decoration: underline;
+    float: left;
+}
+
+div.wall_info_popup div.cancel {
+    float: right;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-left: 10px;
+}
+
+/* Table Info Popup */

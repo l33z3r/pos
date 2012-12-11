@@ -1,0 +1,408 @@
+/* 
+    Document   : menu_builder
+    Created on : 15-Apr-2011, 10:34:01
+    Author     : Lee
+    Description:
+        For the menu builder interface grid.
+*/
+
+/* Main Menu Screen */
+
+div#display_builder {
+    width: 1000px;
+    margin: auto;
+}
+
+div#display_builder div#builder {
+    height: 600px;
+    overflow-y: auto;
+}
+
+div#display_builder::-webkit-scrollbar {
+    width: 40px;
+}
+
+/* Track */
+div#display_builder::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+/* Handle */
+div#display_builder::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1)); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+
+div#display_builder::-webkit-scrollbar-thumb:window-inactive {
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1)); 
+}
+
+div#display_builder::-webkit-scrollbar-button:start:decrement,
+div#display_builder::-webkit-scrollbar-button:end:increment {
+    display: block;
+    height: 40px;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+
+div#display_builder::-webkit-scrollbar-button:vertical:increment{
+    background:no-repeat url("/images/arrow_down.png") 10px 10px;
+}
+
+div#display_builder::-webkit-scrollbar-button:vertical:decrement{
+    background:no-repeat url("/images/arrow_up.png") 10px 10px;
+}
+
+div#display_builder::-webkit-scrollbar-button:horizontal:increment{
+    background:no-repeat url("/images/arrow_right.png") 10px 10px;
+}
+
+div#display_builder::-webkit-scrollbar-button:horizontal:decrement{
+    background:no-repeat url("/images/arrow_left.png") 10px 10px;
+}
+
+div#display_builder div#builder div#grid {
+    position: relative;
+}
+
+div#display_builder div#header {
+    display: inline-block;
+    margin: 10px 0px;
+}
+
+div#display_builder div#header div#display_name {
+    font-weight: bold;
+    font-size: 14px;
+    float: left;
+}
+
+div#display_builder div#header a#rename_link {
+    float: left;
+    margin-left: 8px;
+    text-decoration: none;
+}
+
+div#display_builder div#header input#display_name_input {
+    float: left;
+}
+
+div#display_builder div#header a#delete_link {
+    float: left;
+    margin-left: 8px;
+    text-decoration: none;
+}
+
+div#display_builder div#menu_pages_container {
+    position: fixed;
+    top: 153px;
+    width: 740px;
+    overflow: hidden;
+    margin-left: 220px
+}
+
+div#display_builder div#menu_pages_container div#pages {
+    padding-left: 2px;
+    border-spacing: 2px;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container {
+    height: 480px;
+    padding-top: 4px;
+    background-color: #E0E0E0;
+}
+
+div#display_builder div#menu_pages_container div#pages  {
+    border-spacing: 2px;
+    margin-bottom: -3px;
+    background-color: #B4B4B4;
+}
+
+div#display_builder div#menu_pages_container div#pages div.page {
+    position: relative;
+    margin: 1px;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    height: 55px;
+    width: 88px;
+    min-width: 88px;
+    cursor: pointer;
+    border: 1px solid #AAA;
+    top-lcursor: pointer;
+    -moz-border-top-left-radius: 7px;
+    -moz-border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    background-color: #F8F8F8;
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
+}
+
+div#display_builder div#menu_pages_container div#pages div.delete_link {
+    position: absolute;
+    top: 2px;
+    margin-left: 71px;
+    padding: 1px 3px;
+    cursor: pointer;
+}
+
+div#display_builder div#menu_pages_container div#pages div.delete_link a {
+    color: red;
+    text-decoration: none;
+}
+
+div#display_builder div#menu_pages_container div#pages div.selected {
+    border-bottom-width: 0px;
+    background-color: #E0E0E0;
+    background: -moz-linear-gradient(#F8F8F8, #E0E0E0) repeat scroll 0 0 transparent;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F8F8F8), to(#E0E0E0));
+}
+
+div#display_builder div#menu_pages_container div#pages div.page div.name {
+    font-size: 13px;
+    color: black;
+    text-decoration: none;
+    padding: 4px;
+}
+
+div#display_builder div#menu_pages_container div#pages div.page.new_page div.name {
+    text-decoration: underline;
+}
+
+div#display_builder div#menu_pages_container div#pages div.page div.name a:hover {
+    background-color: transparent;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items {
+    text-align: left;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item_container {
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+    border: 1px solid #CCC;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background-color: #FFF;
+    margin: 1px;
+    box-shadow: 0 1px 0 #777777;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item {
+    position: relative;
+    height: 92px;
+    width: 88px;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.delete_link {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    padding: 1px 3px;
+    cursor: pointer;
+    color: red;
+    text-decoration: none;
+    background-color: #FFF;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_pic {
+    padding-top: 2px;
+    cursor: pointer;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_pic img {
+    height: 56px;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.drag_message {
+    font-size: 13px;
+    text-decoration: none;
+    text-align: center;
+    background-color: #FFF;
+    padding: 25px 2px 5px 2px;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.loading_message {
+    font-size: 14px;
+    text-decoration: none;
+    text-align: center;
+    background-color: #FFF;
+    padding: 15px 2px;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.item div.item_name {
+    position: absolute;
+    font-size: 11px;
+    text-decoration: none;
+    background-color: #FFF;
+    padding: 1px;
+    bottom: 0px;
+    width: 82px;
+    cursor: pointer;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.new_item {
+
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#items div.new_item div.item_name {
+    font-size: 11px;
+    background-color: #FFF;
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+
+div#display_builder div#menu_pages_container div#builder_menu_items_container div#embedded_display_message {
+    padding: 40px;
+    width: 540px;
+    margin: 100px auto 0px auto;
+    border: 2px solid #000;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    background-color: #FFF;
+    color: #000;
+    text-align: center;
+}
+
+div#display_builder {
+    width: 1000px;
+    margin: auto;
+}
+
+div#display_builder div#tree_container {
+    width: 210px;
+    float: left;
+}
+
+div#display_builder ul#products_tree,
+div#display_builder ul#products_tree ul {
+    list-style-type: none;
+    padding-left: 1px;
+}
+
+div#display_builder ul#products_tree li ul li{
+    text-align: left;
+    margin: 12px 1px;
+}
+
+div#display_builder ul#products_tree li ul ul li {
+    text-align: left;
+    margin: 5px 1px;
+    padding: 2px;
+    border: 1px solid #777;
+    background-color: #FFF;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+div#display_builder ul#products_tree li ul li a,
+div#display_builder ul#products_tree li ul li ul li a {
+    text-decoration: none;
+}
+
+div#display_builder ul#products_tree li ul li a {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+div#display_builder ul#products_tree li ul li ul li a {
+    font-weight: normal;
+}
+
+div#display_builder ul#products_tree div.image_container {
+    width: 40px;
+    float: left;
+    border: 1px solid #000;
+    margin: 0px 10px 0px 0px;
+}
+
+div#display_builder ul#products_tree div.select_product {
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 100;
+}
+
+div#display_builder ul#products_tree div.select_product img {
+    max-width: 34px;
+    max-height: 34px;
+}
+
+div#display_builder ul#products_tree div.name {
+    text-align: left;
+    float: left;
+    width: 110px;
+}
+
+div#display_builder ul#products_tree .menuTree:before {
+    content: "+ ";
+}
+
+div#display_builder ul#products_tree .expanded:before {
+    content: "- ";
+}
+
+div#display_builder ul#products_tree .collapsed {
+    display: none;
+}
+
+/* New Menu Page Popup */
+
+
+div#new_menu_page_popup_content {
+    display: none;
+}
+
+div#new_menu_page_popup_container {
+
+}
+
+div#new_menu_page_popup_container div.header {
+    font-weight: bold;
+    font-size: 14px;
+    padding: 5px;
+}
+
+div#new_menu_page_popup_container div#selection {
+    padding: 5px;
+    margin-top: 10px;
+}
+
+div#new_menu_page_popup_container div#selection div.menu_type {
+    margin: 15px 3px;
+}
+
+div#new_menu_page_popup_container div#selection div.menu_type div.label {
+    float: left;
+    width: 170px;
+}
+
+div#new_menu_page_popup_container div#selection div.menu_type div.data {
+    float: left;
+    margin-top: -4px;
+    text-align: center;
+}
+
+div#new_menu_page_popup_container div#selection div.menu_type div.data select {
+    max-width: 90px;
+    width: 90px;
+    padding: 3px;
+}
+
+div#new_menu_page_popup_container div#selection div.menu_type div.data.create {
+    margin-top: -8px;
+}
+
+div#new_menu_page_popup_container div#selection div.menu_type div.data div.button {
+    height: 30px;
+    max-width: 90px;
+    width: 90px;
+}
+
+/* End New Menu Page Popup */
+
+/* End Menu Builder  */
+
+
+

@@ -1,0 +1,224 @@
+div#modifier_grid_builder {
+
+}
+
+div#modifier_grid_builder ::-webkit-scrollbar {
+    width: 40px;
+}
+
+/* Track */
+div#modifier_grid_builder ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+/* Handle */
+div#modifier_grid_builder ::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1)); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+
+div#modifier_grid_builder ::-webkit-scrollbar-thumb:window-inactive {
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1)); 
+}
+
+div#modifier_grid_builder ::-webkit-scrollbar-button:start:decrement,
+div#modifier_grid_builder ::-webkit-scrollbar-button:end:increment {
+    display: block;
+    height: 40px;
+    background: -webkit-gradient(linear, left top, left bottom, from(#E7E7E7), to(#C1C1C1));
+}
+
+div#modifier_grid_builder ::-webkit-scrollbar-button:vertical:increment{
+    background:no-repeat url("/images/arrow_down.png") 10px 10px;
+}
+
+div#modifier_grid_builder ::-webkit-scrollbar-button:vertical:decrement{
+    background:no-repeat url("/images/arrow_up.png") 10px 10px;
+}
+
+div#modifier_grid_builder ::-webkit-scrollbar-button:horizontal:increment{
+    background:no-repeat url("/images/arrow_right.png") 10px 10px;
+}
+
+div#modifier_grid_builder ::-webkit-scrollbar-button:horizontal:decrement{
+    background:no-repeat url("/images/arrow_left.png") 10px 10px;
+}
+
+div#modifier_grid_builder div#builder_action_buttons {
+    border-spacing: 7px;
+    padding-left: 12px;
+    width: 100px;
+    float: left;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_renamer {
+    width: 85px;
+    height: 100px;
+    background-color: #555;
+    padding: 3px;
+    text-align: center;
+    margin-top: 15px;
+    border: 1px solid #000;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_renamer div.button {
+    height: 25px;
+    color: #333;
+    font-weight: normal;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_renamer * {
+    color: #FFF;
+    font-weight: bold;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_renamer input {
+    color: #333;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_renamer div.top_label {
+    padding: 4px;
+    margin-bottom: 5px;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_resizer {
+    width: 85px;
+    height: 90px;
+    background-color: #555;
+    padding: 3px;
+    text-align: center;
+    margin-top: 15px;
+    border: 1px solid #000;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_resizer * {
+    color: #FFF;
+    font-weight: bold;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_resizer input {
+    float: left;
+    color: #333;
+    font-weight: normal;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_resizer div.top_label {
+    padding: 4px;
+    margin-bottom: 5px;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_resizer div#four_by_four {
+    margin-bottom: 5px;
+}
+
+div#modifier_grid_builder div#builder_action_buttons div#grid_resizer div.label {
+    margin-top: 5px;
+    margin-left: 3px;
+    float: left;
+}
+
+div#modifier_grid_builder div#builder {
+    text-align: center;
+    width: 905px;
+    height: 731px;
+    margin-top: 6px;
+    float: left;
+    background-color: #555;
+}
+
+div#modifier_grid_builder div#builder div#grid_scroller {
+    height: 310px;
+    overflow: scroll;
+    border: 1px solid #222;
+    background: #E0E0E0;
+} 
+
+div#modifier_grid_builder div#builder div#grid_scroller div#grid {
+
+}
+
+div#modifier_grid_builder div#builder div#grid div.oia {
+    float: left;
+    width: 120px;
+    height: 80px;
+    border: 2px solid #222;
+    cursor: pointer;
+    background: #FFF;
+}
+
+div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container {
+    height: 70px;
+    padding: 5px;
+    position: relative;
+}
+
+div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container div.delete_link {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    padding: 1px 3px;
+    cursor: pointer;
+    color: red;
+    text-decoration: none;
+}
+
+div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container div.name {
+    margin-top: 3px;
+    line-height: 100%;
+}
+
+div#modifier_grid_builder div#builder div#grid div.oia div.grid_item_container div.charge {
+    bottom: 4px;
+    width: 100%;
+    position: absolute;
+}
+
+div#modifier_grid_builder div#builder div#grid div.oia.selected {
+    border: 2px solid #E36C0A;
+}
+
+div#modifier_grid_builder div#builder div#grid_item_inputs {
+    border: 1px solid #222;
+    height: 120px;
+    width: 895px;
+    margin: auto;
+    margin-top: 5px;
+}
+
+div#modifier_grid_builder div#builder div#grid_item_inputs>div {
+    width: 143px;
+    float: left;
+    padding: 1px 3px;
+}
+
+div#modifier_grid_builder div#builder div#grid_item_inputs div.top_label {
+    color: #FFF;
+    font-weight: bold;
+    padding: 1px;
+}
+
+div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box {
+    background-color: #FFF;
+    border: 1px solid #222; 
+    width: 130px;
+    height: 25px;
+    padding: 5px;
+}
+
+div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box input,
+div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box select {
+    width: 125px;
+}
+
+div#modifier_grid_builder div#builder div#grid_item_inputs div.input_box div.iPhoneCheckContainer {
+    margin-left: 26px;
+}
+
+div#modifier_grid_builder div#keyboard {
+    height: 270px;
+    width: 688px;
+    margin-left: 100px;
+    margin-top: 5px;
+}
