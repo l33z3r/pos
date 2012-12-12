@@ -242,3 +242,4 @@ heroku_staging:
   <<: *default_settings
   monitor_mode: true
   app_name: Cluey (Staging)
+
