@@ -157,7 +157,6 @@ class Reports::StaffController < Admin::AdminController
     end
     if params[:search][:dropdown_type] == 'discounts_only'
       session[:discounts_only] = params[:search][:dropdown_id]
-      logger.debug "**********************************************************************************************************  #{params[:search][:dropdown_id]}"
     end
     render :nothing => true
   end
@@ -217,6 +216,7 @@ class Reports::StaffController < Admin::AdminController
       if session[:employee] != ''
         where << " and wr.employee_id = '#{session[:employee]}'"
       end
+      where << " and wr.outlet_id = #{current_outlet.id}"
       where << " order by wr.employee_id asc"
     else
       where = "select wr.id, wr.created_at, SUM(shift_seconds) shift_seconds, SUM(break_seconds) break_seconds, SUM(payable_seconds) payable_seconds, SUM(hourly_rate) hourly_rate, SUM(cost) cost, DATE_FORMAT(wr.created_at,'%Y-%m-%d') as created_day from work_reports wr"
