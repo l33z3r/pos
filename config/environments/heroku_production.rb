@@ -48,4 +48,6 @@ Pos::Application.configure do
   
   #enable this for html5 caching
   ENV["RAILS_ASSET_ID"] = ""
+  
+  config.middleware.use "ForceSSL"
 end
