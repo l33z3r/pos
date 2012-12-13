@@ -156,7 +156,8 @@ var menuScreenDefault="true";var initScreenDefault="false";function setScreenOrd
 function setInitScreen(value){initScreenDefault=value;}
 function swipeToNote(){if(selectedTable==0){niceAlert("Please select a table first");return;}else{setInitScreen('true');$('#edit_price_screen').hide();showAddNotePopup()}}
 function swipeToCovers(){if(selectedTable==0){niceAlert("Please select a table first");return;}else{swipeToMenu();hideAllMenuSubScreens();showCoversSubscreen();}}
-function doSubmitTableNumber(){if(!ensureLoggedIn()){return;}
+function doSubmitTableNumber(){if(!callHomePollInitSequenceComplete){niceAlert("Downloading Orders. Please Wait");return;}
+if(!ensureLoggedIn()){return;}
 var table_label=$('#table_num').val().toString();table_info=getTableForLabel(table_label);if(!table_info){$('#table_number_show').html("No Such Table");$('#table_num').val('')
 return;}
 if(inTransferOrderMode){if(transferOrderInProgress){niceAlert("Transfer table order in progress, please wait");return;}
