@@ -268,20 +268,12 @@ function callHomePollInitSequenceCompleteHook() {
 
 //this gets called from the polling when a terminal is not yet set
 function showTerminalSelectDialog() {
-    if (!callHomePollInitSequenceComplete) {
-        return;
-    }
-    
-    //must wait on js resources to load
-    if(typeof(outletTerminals) == "undefined") {
-        return;
-    }
-    
     //dont process terminal select in manager interface
     if(inMobileContext()) {
         return;
     }
     
+    //just to be sure, make sure we need to show the dialog
     if(showingTerminalSelectDialog) {
         return;
     }
@@ -336,7 +328,7 @@ function showTerminalSelectDialog() {
     
     dropdownMarkup += "</select>";
     
-    title = "Please select a terminal:";
+    title = "Please name this terminal:";
         
     var terminalSelectMarkup = "<div id='nice_alert' class='nice_alert'>" + dropdownMarkup + "</div>";
     
@@ -409,7 +401,22 @@ function pingHome() {
 }
 
 function linkTerminal(outletTerminalName) {
-    showLoadingDiv("Linking terminal to " + outletTerminalName);
+    //
+    //
+    //
+    //
+    //
+    //manually hide and load a new message so we dont interfere with showingTerminalSelectDialog Variable
+    ModalPopups.Close('niceAlertContainer');
+    
+    ModalPopups.Indicator("niceAlertContainer",
+        "Loading...",
+        "<div id='nice_alert' class='nice_alert'>Linking terminal to " + outletTerminalName + "</div>",
+        { 
+            width: 360,
+            height: 280
+        } );
+    
     
     $.ajax({
         url: "/link_terminal",
