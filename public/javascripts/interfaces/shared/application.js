@@ -252,19 +252,13 @@ function callHomePollComplete() {
 
 //this is called when the first load of orders are loaded
 function callHomePollInitSequenceCompleteHook() {
-    //hide the spinner at the top nav
-    $('#loading_orders_spinner').hide();
-    
     if(inKitchenContext()) {
+        $('#loading_orders_spinner').hide();
         //show the receipts now that they are all rendered
         finishedLoadingKitchenScreen();
-    } else if(inLargeInterface()) {
-        $('#table_select_container_loading_message').hide();
-        $('#table_select_container').show();
-        $('#table_screen_button').show();
-    } else if(inMediumInterface()) {
-        //do nothing
-        hideLoadingDiv();
+    } else {
+        //this function is implemented for both large and medium interfaces
+        performCallHomePollInitSequenceComplete();
     }
     
     //once the init sequence has completed we want to do a home poll 

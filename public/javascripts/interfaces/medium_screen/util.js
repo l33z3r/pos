@@ -91,13 +91,17 @@ function postSetConnectionStatus(connected) {
         //if we are offline and the init sequence has not completed then we are operating in offline mode
         if(!callHomePollInitSequenceComplete) {
             callHomePollInitSequenceComplete = true;
-            
-            //hide the spinner at the top nav
-            $('#loading_orders_spinner').hide();             
+            performCallHomePollInitSequenceComplete();
         }
     } else {
         $('body').removeClass("disconnected");
     }
+}
+
+function performCallHomePollInitSequenceComplete() {
+    //hide the spinner at the top nav
+    $('#loading_orders_spinner').hide();  
+    hideLoadingDiv();
 }
 
 function kickMenuScrollers() {
