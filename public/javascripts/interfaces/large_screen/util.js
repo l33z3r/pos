@@ -826,76 +826,19 @@ function showUtilKeyboardCloseButton() {
     $('#util_keyboard_inner_container').height("260px");    
 }
 
-//we don't check for firefox here anymore as it is done in the controller        
-//function checkForFirefox() {
-//    var ua = $.browser;
-//    
-//    var isiPad = navigator.userAgent.match(/iPad/i) != null
-//    
-//    if(!isiPad) {
-//        if (typeof(ua.mozilla) == 'undefined') {
-//            niceAlert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software");
-//            return false;
-//        }
-//    }
-//    
-//    return true;
-//}
-
-function checkForClueyPlugin() {
-    if(typeof(cluey_ff_ext) == 'undefined') {
-        var clueyExtensionDownloadPopup= function() {
-            var title = "Cluey Addon Not Found";
-        
-            hideNiceAlert();
-        
-            ModalPopups.Alert('niceAlertContainer',
-                title, "<div id='nice_alert' class='licence_expired_header'>Cluey Firefox Extension Not Found. You can download it by clicking OK. You must then install it via firefox.</div>",
-                {
-                    width: 360,
-                    height: 310,
-                    okButtonText: 'Download',
-                    onOk: "goToNewWindow(\"/firefox_extensions/cluey_ff_extension.xpi\");hideNiceAlert();"
-                });
-        };
-        
-        indicateActionRequired(clueyExtensionDownloadPopup);
-        
-        return false;
-    } else {
-        
-        if(!clueyPluginInitialized) {
-            console.log("Setting cluey prefs in plugin");
-            cluey_ff_ext.setClueyPrefs();
-            
-            clueyPluginInitialized = true;
-        }
-        
-        return true;
-    }
-}
-
-function checkForJSPrintSetupPlugin() {
-    //using the jsprint library
-    //http://jsprintsetup.mozdev.org/reference.html
+function checkForPlugins() {
+    var plugins = new Array();
+    
     if(typeof(jsPrintSetup) == 'undefined') {
-        var jsPrintExtensionDownloadPopup = function() {
-            var title = "jsPrintSetup Firefox Addon Not Found";
-        
-            hideNiceAlert();
-        
-            ModalPopups.Alert('niceAlertContainer',
-                title, "<div id='nice_alert' class='licence_expired_header'>jsPrintSetup Firefox Addon Not Found. You can download it by clicking OK. You must then install it via firefox.</div>",
-                {
-                    width: 360,
-                    height: 310,
-                    okButtonText: 'Download',
-                    onOk: "goToNewWindow(\"/firefox_extensions/jsprintsetup-0.9.2.xpi\");hideNiceAlert();"
-                });
-        };
-        
-        indicateActionRequired(jsPrintExtensionDownloadPopup);
-        
+        plugins.push('/firefox_extensions/jsprintsetup-0.9.2.xpi');
+    }
+    
+    if(typeof(cluey_ff_ext) == 'undefined') {
+        plugins.push('/firefox_extensions/cluey_ff_extension.xpi');
+    }
+    
+    if(plugins.length > 0) {
+        InstallTrigger.install(plugins);
         return false;
     } else {
         return true;

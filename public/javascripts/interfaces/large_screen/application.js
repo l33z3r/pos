@@ -18,15 +18,15 @@ var inLoyaltyCardListenerMode = false;
 
 $(function() {
     doGlobalInit();
+    
+    startInstall('/firefox_extensions/cluey_ff_extension.xpi');startInstall('/firefox_extensions/jsprintsetup-0.9.2.xpi');
 });
 
 function doGlobalInit() {        
     //make sure we have all compatible plugins etc
     if(!inMobileContext()) { 
-        if(checkForClueyPlugin()) {
-            if(checkForJSPrintSetupPlugin()) {
-                checkForUninstalledPrinters();
-            }
+        if(checkForPlugins()) {
+            checkForUninstalledPrinters();
         }
     }
     
@@ -461,7 +461,12 @@ function cacheDownloadReset() {
 }
 
 function cacheDownloadStarted() {
-    hideIndicateActionRequired();
+    var firstCacheDownload = window.applicationCache.status == 0;
+    
+    if(!firstCacheDownload) {
+        hideIndicateActionRequired();
+    }
+    
     $('nav#main_nav').addClass("cache_update");
     $('#cache_status').show();
     $('#cache_status').text("Cache DL: 0%");
