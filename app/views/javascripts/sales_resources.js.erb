@@ -218,7 +218,7 @@ var stock_products = new Array();
   var nextProduct = {
   'id':'<%= p.id %>', 'name':'<%= escape_javascript raw(p.name) %>', 
   'description':'<%= escape_javascript raw(p.description) %>', 
-  'img_url' : '<%= product_image_url p %>',
+  'img_url' : '<%= escape_javascript raw(product_image_url(p)) %>',
   'price':<%= p.price %>, 'tax_rate':<%=p.get_sales_tax_rate(current_outlet)%>,
   'price_2':<%= p.price_2 %>, 'price_3':<%= p.price_3 %>, 'price_4':<%= p.price_4 %>,
   'double_price' : <%=p.double_price%>,

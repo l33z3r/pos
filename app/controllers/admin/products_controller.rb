@@ -118,7 +118,8 @@ class Admin::ProductsController < Admin::AdminController
           @product_errors << "Product #{var}: #{error}"
         end
         
-        @csv_validation_errors[@product_count] = {
+        #add 1 to account for unused 1st line
+        @csv_validation_errors[@product_count + 1] = {
           :row_data => row,
           :errors => @product_errors
         }
