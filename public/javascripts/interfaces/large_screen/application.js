@@ -18,8 +18,6 @@ var inLoyaltyCardListenerMode = false;
 
 $(function() {
     doGlobalInit();
-    
-    startInstall('/firefox_extensions/cluey_ff_extension.xpi');startInstall('/firefox_extensions/jsprintsetup-0.9.2.xpi');
 });
 
 function doGlobalInit() {        

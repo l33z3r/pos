@@ -103,17 +103,26 @@ class Admin::ProductsController < Admin::AdminController
       @products.each do |p|
         if p.name == @new_product.name
           @name_taken = true
-          @new_product.errors.add "name", "is already taken"
         end
       end
 
       if !@new_product.valid? or @name_taken
         @validation_passed = false
 
+        #need to manually add in a name taken error
+        @new_product.errors.add(:name, "is a duplicate of another product")
+        
+        @product_errors = []
+        
+        @new_product.errors.each do |var, error|
+          @product_errors << "Product #{var}: #{error}"
+        end
+        
         @csv_validation_errors[@product_count] = {
           :row_data => row,
-          :errors => @new_product.errors
+          :errors => @product_errors
         }
+                    
       end
 
       @products << @new_product
