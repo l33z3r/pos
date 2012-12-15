@@ -144,7 +144,7 @@ function printContent(content, printerID) {
         return;
     }
     
-    if(!checkForClueyPlugin() || !checkForJSPrintSetupPlugin()) {
+    if(!checkForPlugins()) {
         return;
     }
     

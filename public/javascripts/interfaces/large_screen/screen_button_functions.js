@@ -361,7 +361,7 @@ function showGlobalSettingsPage() {
 }
 
 function openCashDrawer() {
-    if(!checkForClueyPlugin()) {
+    if(!checkForPlugins()) {
         return;
     }
     

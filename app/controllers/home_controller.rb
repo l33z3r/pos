@@ -698,7 +698,7 @@ class HomeController < ApplicationController
     @outlet_terminal = current_outlet.outlet_terminals.find_by_name @terminal_id
     
     request_sales_resources_reload @terminal_id
-    
+      
     @outlet_terminal.unlink_terminal @terminal_id_gs    
     
     render :json => {:success => true}.to_json
