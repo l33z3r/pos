@@ -444,7 +444,7 @@ content+=clear30HTML+"<div class='the_dots'>.  .  .</div>";return content;}
 var printerProgressListener={stateIsRequest:false,printing:false,QueryInterface:function(aIID){if(aIID.equals(Components.interfaces.nsIWebProgressListener)||aIID.equals(Components.interfaces.nsISupportsWeakReference)||aIID.equals(Components.interfaces.nsISupports))
 return this;throw Components.results.NS_NOINTERFACE;},onStateChange:function(aWebProgress,aRequest,aStateFlags,aStatus){console.log('State Change -> State Flags:'+aStateFlags+' Status:'+aStatus);if(aStateFlags==262160){this.printing=false;}
 return 0;},onLocationChange:function(aWebProgress,aRequest,aLocation){return 0;},onProgressChange:function(aWebProgress,aRequest,aCurSelfProgress,aMaxSelfProgress,aCurTotalProgress,aMaxTotalProgress){this.printing=true;},onStatusChange:function(aWebProgress,aRequest,aStateFlags,aStatus){},onSecurityChange:function(aWebProgress,aRequest,aState){}};function printContent(content,printerID){if(inMediumInterface()){niceAlert("Printing is not yet supported for the cloud on mobiles except for ordering");return;}
-if(!checkForClueyPlugin()||!checkForJSPrintSetupPlugin()){return;}
+if(!checkForPlugins()){return;}
 console.log("Attempting to print to printer "+printerID);if(printerProgressListener.printing){console.log("Waiting 500 ms for previous print job to complete");setTimeout(function(){printContent(content,printerID)},500);return;}
 var printer;if(printerID){printer=printersByID[printerID];}else{if(localPrinterID==-1){niceAlert("You have not set a local receipt printer for this terminal");return}
 printer=printersByID[localPrinterID];}
