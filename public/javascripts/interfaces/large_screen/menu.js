@@ -1405,7 +1405,7 @@ function doTotalFinal() {
     //do up the subtotal and total and retrieve the receipt html for both the login screen and for print
     receiptHTML = fetchFinalReceiptHTML(false, true, false);
     printReceiptHTML = fetchFinalReceiptHTML(true, false, printVatReceipt);
-        
+      
     setLoginReceipt("Last Sale", receiptHTML);
     
     if(taxChargable) {

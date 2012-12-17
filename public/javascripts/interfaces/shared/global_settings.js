@@ -276,7 +276,7 @@ function populateSettingsFromMap(map) {
 
     customReceiptFooters = map['customReceiptFooters'];
 
-    businessInfoMessage = map['customReceiptFooters'];
+    businessInfoMessage = map['businessInfoMessage'];
 
     defaultDiscountPercent = map['defaultDiscountPercent'];
 
