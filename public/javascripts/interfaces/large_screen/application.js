@@ -25,13 +25,7 @@ function doGlobalInit() {
     if(!inMobileContext()) { 
         if(checkForPlugins()) {
             checkForUninstalledPrinters();
-            
-            //initialize the cash drawer settings file if it doesn't exist
-            try {
-                cluey_ff_ext.initializeCashDrawerSettings(comPortModeString);
-            } catch(ex) {
-                setStatusMessage("Error setting cash drawer port settings");
-            }
+            setCashDrawerComPortSettings();
         }
     }
     

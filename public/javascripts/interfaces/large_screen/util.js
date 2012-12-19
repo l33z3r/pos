@@ -985,6 +985,21 @@ function checkForUninstalledPrinters() {
     }
 }
 
+function setCashDrawerComPortSettings() {
+    var cashDrawerSettingsSuccessfullyInitialized;
+            
+    //initialize the cash drawer settings file if it doesn't exist
+    try {
+        cashDrawerSettingsSuccessfullyInitialized = cluey_ff_ext.initializeCashDrawerSettings(cashDrawerComPort, comPortModeString);
+    } catch(ex) {
+        cashDrawerSettingsSuccessfullyInitialized = false;                
+    }
+            
+    if(!cashDrawerSettingsSuccessfullyInitialized) {
+        setStatusMessage("Error setting cash drawer port settings");
+    }
+}
+
 function generateBrowserSessionId() {
     generatedBrowserSessionId = Math.uuid();
     storeKeyValue(browserSessionIdStorageKey, generatedBrowserSessionId);
