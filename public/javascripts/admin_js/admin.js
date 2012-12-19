@@ -594,7 +594,7 @@ function initLocalPrinterListDropdown() {
     }
 }
 
-function unlockComPortModeEditor() {
+function unlockComPortEditor() {
     //initialize the cash drawer settings file if it doesn't exist
     try {
         cluey_ff_ext.clearCashDrawerSettings();
@@ -603,4 +603,5 @@ function unlockComPortModeEditor() {
     }
     
     $('#com_port_settings_editor').attr("disabled", false);
+    $('#com_port_editor').attr("disabled", false);
 }
