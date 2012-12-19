@@ -96,6 +96,7 @@ class GlobalSetting < ActiveRecord::Base
   OFFLINE_ORDER_DELEGATE_TERMINAL_ID = 78
   ENABLE_POLLING_FOR_KITCHEN_SCREEN = 79
   SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED = 80
+  COM_PORT_MODE_STRING = 81
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -177,7 +178,8 @@ class GlobalSetting < ActiveRecord::Base
     PRINT_DELEGATE_TERMINAL_ID => "Print Delegate Terminal ID",
     OFFLINE_ORDER_DELEGATE_TERMINAL_ID => "Offline Order Delegate Terminal ID",
     ENABLE_POLLING_FOR_KITCHEN_SCREEN => "Enable Polling For Kitchen Screen",
-    SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED => "Do We Need To Show A Prompt To Trigger A Reload?"
+    SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED => "Do We Need To Show A Prompt To Trigger A Reload?",
+    COM_PORT_MODE_STRING => "Com Port Mode String"
   }
   
   SYSTEM_WIDE_UPDATE_NONE = 0
@@ -536,6 +538,9 @@ class GlobalSetting < ActiveRecord::Base
     when SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED.to_s}_#{args[:fingerprint]}", :value => SYSTEM_WIDE_UPDATE_NONE, :label_text => LABEL_MAP[SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED])
       @gs.parsed_value = @gs.value.to_i
+    when COM_PORT_MODE_STRING
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{COM_PORT_MODE_STRING.to_s}_#{args[:fingerprint]}", :value => "mode COM1:96,n,8,1", :label_text => LABEL_MAP[COM_PORT_MODE_STRING])
+      @gs.parsed_value = @gs.value    
     else
       @gs = load_setting property, current_outlet
       @gs.parsed_value = @gs.value

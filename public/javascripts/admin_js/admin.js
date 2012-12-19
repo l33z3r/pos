@@ -593,3 +593,14 @@ function initLocalPrinterListDropdown() {
         $("#printer_network_path").append("<option value='" + nextLocalPrinterName + "'>" + nextLocalPrinterName + "</option>");
     }
 }
+
+function unlockComPortModeEditor() {
+    //initialize the cash drawer settings file if it doesn't exist
+    try {
+        cluey_ff_ext.clearCashDrawerSettings();
+    } catch(ex) {
+        setStatusMessage("Error clearing cash drawer port settings");
+    }
+    
+    $('#com_port_settings_editor').attr("disabled", false);
+}

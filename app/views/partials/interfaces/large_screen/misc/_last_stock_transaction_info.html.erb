@@ -20,7 +20,7 @@
     <div class="clear_top_margin_5">&nbsp;</div>
 
     <div class="label">Date:</div>
-    <div class="value"><%=st.created_at.strftime(GlobalSetting.default_date_format, current_outlet)%></div>
+    <div class="value"><%=st.created_at.strftime(GlobalSetting.default_date_format(current_outlet))%></div>
     <div class="clear_top_margin_5">&nbsp;</div>
 
     <div class="label">Transaction Type:</div>

@@ -578,3 +578,5 @@ globalSettingsMap['SYSTEM_WIDE_UPDATE_TYPE_SOFT'] = <%= GlobalSetting::SYSTEM_WI
 globalSettingsMap['SYSTEM_WIDE_UPDATE_TYPE_HARD'] = <%= GlobalSetting::SYSTEM_WIDE_UPDATE_HARD %>;
     
 globalSettingsMap['systemWideUpdatePromptRequired'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
+
+globalSettingsMap['comPortModeString'] = "<%= GlobalSetting.parsed_setting_for GlobalSetting::COM_PORT_MODE_STRING, current_outlet, {:fingerprint => @terminal_fingerprint} %>";

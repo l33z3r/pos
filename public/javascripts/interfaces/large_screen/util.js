@@ -838,6 +838,13 @@ function checkForPlugins() {
     
     if(typeof(cluey_ff_ext) == 'undefined') {
         plugins.push('/firefox_extensions/cluey_ff_extension.xpi');
+    } else {
+        if(!clueyPluginInitialized) {
+            console.log("Setting cluey prefs in plugin");
+            cluey_ff_ext.setClueyPrefs();
+            
+            clueyPluginInitialized = true;
+        }
     }
     
     if(plugins.length > 0) {
@@ -847,6 +854,52 @@ function checkForPlugins() {
         return true;
     }
 }
+
+// simple check for the plugin's existence
+//	function isPluginRegistered() {
+//		navigator.plugins.refresh(false);
+//		var mimetype = navigator.mimeTypes["application/x-3amlabs-raversion"];
+//		if (mimetype && mimetype.enabledPlugin)
+//			return true;
+//		return false;
+//	}
+//
+//	// try to parse for the version in the name of the plugin
+//	function getPluginVersion(){
+//		navigator.plugins.refresh(false);
+//		var mimetype = navigator.mimeTypes["application/x-3amlabs-raversion"];
+//
+//		if (mimetype && mimetype.enabledPlugin){
+//			var name = mimetype.enabledPlugin.name;
+//			var regexp = "[0-9.]+\\b";
+//			
+//			var re = new RegExp(regexp);
+//			var m = re.exec(name);
+//
+//			if ( (m != null) && ( m.length == 1 ) ) {
+//				return m[0];
+//			} else {
+//				return "";
+//			}
+//		}
+//		return "";
+//	}
+//
+//	function isUpdateNeeded( current, required ){
+//		var cur_array = current.split('.');
+//		var req_array = required.split('.');
+//
+//
+//		if ( ( cur_array.length != 4 ) || ( req_array.length != 4 ) ){
+//			return false;
+//		}
+//
+//		var cur = 1000*1000*1000*parseInt(cur_array[0]) + 1000*1000*parseInt(cur_array[1]) + 1000*parseInt(cur_array[2]) + parseInt(cur_array[3]);
+//		var req = 1000*1000*1000*parseInt(req_array[0]) + 1000*1000*parseInt(req_array[1]) + 1000*parseInt(req_array[2]) + parseInt(req_array[3]);
+//
+//		if ( cur < req ) return true;
+//		return false;
+//	}
 
 var localPrinters;
 var newLocalPrinters = new Array();
