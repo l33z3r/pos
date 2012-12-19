@@ -539,7 +539,7 @@ class GlobalSetting < ActiveRecord::Base
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED.to_s}_#{args[:fingerprint]}", :value => SYSTEM_WIDE_UPDATE_NONE, :label_text => LABEL_MAP[SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED])
       @gs.parsed_value = @gs.value.to_i
     when COM_PORT_MODE_STRING
-      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{COM_PORT_MODE_STRING.to_s}_#{args[:fingerprint]}", :value => "mode COM1:96,n,8,1", :label_text => LABEL_MAP[COM_PORT_MODE_STRING])
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{COM_PORT_MODE_STRING.to_s}_#{args[:fingerprint]}", :value => "96,n,8,1", :label_text => LABEL_MAP[COM_PORT_MODE_STRING])
       @gs.parsed_value = @gs.value    
     else
       @gs = load_setting property, current_outlet
