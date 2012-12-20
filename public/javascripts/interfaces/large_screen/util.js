@@ -996,7 +996,7 @@ function setCashDrawerComPortSettings() {
     }
             
     if(!cashDrawerSettingsSuccessfullyInitialized) {
-        setStatusMessage("Error setting cash drawer port settings");
+        console.log("Error setting cash drawer port settings");
     }
 }
 

@@ -321,6 +321,22 @@ function checkForUniqueTerminalName() {
 }
 
 function makeBiggerAdminTableLinks() {
+    console.log("NYI for firefox: makeBiggerAdminTableLinks()");
+    return;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     $('table.admin_table td a').each(function() {
         var aEl = $(this);
         var tdEl = aEl.parent();
