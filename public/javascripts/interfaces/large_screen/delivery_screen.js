@@ -835,6 +835,7 @@ function saveEditDeliveryItem() {
     
     deliveryItem.amount = newQuantity;
     
+    calculateDeliveryTotal();
     storeDelivery();
     redrawDeliveryReceipt();    
     closeEditDeliveryItem();
