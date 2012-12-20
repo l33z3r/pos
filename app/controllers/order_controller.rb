@@ -2,6 +2,11 @@ class OrderController < ApplicationController
 
   def create
     @success = create_order(params[:order])
+    
+    if !@success
+      render :json => {:success => false}.to_json
+      return
+    end
   end
 
   def create_outstanding
@@ -166,245 +171,248 @@ class OrderController < ApplicationController
       #We use a combination of terminal ID and time started to uniquely identify orders
       @existing_order = current_outlet.orders.where("terminal_id = ?", @terminal_id).where("date_started = ?", @new_order_time_started)
       
+      @success = true
+      
       if !@existing_order.empty?
         #simply ignore the order
         logger.info "Ignoring existing order"
-        return true
-      end
+        @success = false
+      else
       
-      @card_charge_details = @order_details.delete(:card_charge)
+        @card_charge_details = @order_details.delete(:card_charge)
     
-      @is_split_bill_order_param = @order_params.delete(:is_split_bill)
-      @is_training_mode_sale_order_param = @order_params.delete(:is_training_mode_sale)
+        @is_split_bill_order_param = @order_params.delete(:is_split_bill)
+        @is_training_mode_sale_order_param = @order_params.delete(:is_training_mode_sale)
       
-      @loyalty_details = @order_details.delete(:loyalty)
-      @customer_details = @order_details.delete(:customer)
+        @loyalty_details = @order_details.delete(:loyalty)
+        @customer_details = @order_details.delete(:customer)
     
-      @is_split_bill_order = @is_split_bill_order_param == "true"      
+        @is_split_bill_order = @is_split_bill_order_param == "true"      
     
-      @order = Order.new(@order_params)
+        @order = Order.new(@order_params)
     
-      @order.outlet_id = current_outlet.id
+        @order.outlet_id = current_outlet.id
       
-      #pick up if this is a training mode sale or not      
-      @is_training_mode_sale = @is_training_mode_sale_order_param == "true"
-      @order.training_mode_sale = @is_training_mode_sale
+        #pick up if this is a training mode sale or not      
+        @is_training_mode_sale = @is_training_mode_sale_order_param == "true"
+        @order.training_mode_sale = @is_training_mode_sale
       
-      @deduct_stock_during_training_mode = GlobalSetting.parsed_setting_for GlobalSetting::DEDUCT_STOCK_DURING_TRAINING_MODE, current_outlet
+        @deduct_stock_during_training_mode = GlobalSetting.parsed_setting_for GlobalSetting::DEDUCT_STOCK_DURING_TRAINING_MODE, current_outlet
       
-      if(!Employee.find_by_id(@order.employee_id))
-        #employee id not set correctly, so just grab the last active employee
-        @order.employee_id = Employee.order("last_active desc").first
-      end
-    
-      if !@order.order_num or @order.order_num.to_s.length == 0
-        @order.order_num = Order.next_order_num current_outlet
-      end
-    
-      #is this a re initiailised previous order?
-      if @order.void_order_id
-        @order_to_void = current_outlet.orders.find(@order.void_order_id)
-        @order_to_void.is_void = true
-        @order_to_void.save
-      end
-
-      @order_saved = @order.save
-      @order.reload
-
-      @order_item_saved = true
-
-      #build order items
-      @order_details[:items].each do |index, item|
-        @order_item = @order.order_items.build
-        
-        @order_item.outlet_id = current_outlet.id
-        
-        @order_item.employee_id = item[:serving_employee_id]
-
-        @order_item.product_id = item[:product][:id]
-        @order_item.product_name = item[:product][:name]
-
-        @order_item.quantity = item[:amount]
-        @order_item.total_price = item[:total_price]
-
-        @order_item.terminal_id = item[:terminal_id]
-      
-        #modifier
-        if item[:modifier]
-          @order_item.modifier_name = item[:modifier][:name]
-          @order_item.modifier_price = item[:modifier][:price]
+        if(!Employee.find_by_id(@order.employee_id))
+          #employee id not set correctly, so just grab the last active employee
+          @order.employee_id = Employee.order("last_active desc").first
         end
-      
-        @order_item.is_void = item[:is_void] == "true"
-        
-        if @order_item.is_void
-          @order_item.void_employee_id = item[:void_employee_id]
+    
+        if !@order.order_num or @order.order_num.to_s.length == 0
+          @order.order_num = Order.next_order_num current_outlet
         end
+    
+        #is this a re initiailised previous order?
+        if @order.void_order_id
+          @order_to_void = current_outlet.orders.find(@order.void_order_id)
+          @order_to_void.is_void = true
+          @order_to_void.save
+        end
+
+        @order_saved = @order.save
+        @order.reload
+
+        @order_item_saved = true
+
+        #build order items
+        @order_details[:items].each do |index, item|
+          @order_item = @order.order_items.build
         
-        #oias
-        if item[:oia_items]
-          item[:oia_items].each do |index, oia|
-            if !@is_training_mode_sale or @deduct_stock_during_training_mode
-              if !@order_item.is_void and oia[:product_id] != "-1" and !oia[:product_id].blank?
-                #decrement stock for this oia product
-                @oia_stock_usage = @order_item.quantity.to_f
+          @order_item.outlet_id = current_outlet.id
+        
+          @order_item.employee_id = item[:serving_employee_id]
+
+          @order_item.product_id = item[:product][:id]
+          @order_item.product_name = item[:product][:name]
+
+          @order_item.quantity = item[:amount]
+          @order_item.total_price = item[:total_price]
+
+          @order_item.terminal_id = item[:terminal_id]
       
-                if @order_item.is_double
-                  @oia_stock_usage *= 2
-                elsif @order_item.is_half
-                  @oia_stock_usage /= 2
+          #modifier
+          if item[:modifier]
+            @order_item.modifier_name = item[:modifier][:name]
+            @order_item.modifier_price = item[:modifier][:price]
+          end
+      
+          @order_item.is_void = item[:is_void] == "true"
+        
+          if @order_item.is_void
+            @order_item.void_employee_id = item[:void_employee_id]
+          end
+        
+          #oias
+          if item[:oia_items]
+            item[:oia_items].each do |index, oia|
+              if !@is_training_mode_sale or @deduct_stock_during_training_mode
+                if !@order_item.is_void and oia[:product_id] != "-1" and !oia[:product_id].blank?
+                  #decrement stock for this oia product
+                  @oia_stock_usage = @order_item.quantity.to_f
+      
+                  if @order_item.is_double
+                    @oia_stock_usage *= 2
+                  elsif @order_item.is_half
+                    @oia_stock_usage /= 2
+                  end
+      
+                  @oia_product = current_outlet.products.find_by_id(oia[:product_id])
+      
+                  @old_stock_amount = @oia_product.quantity_in_stock
+                  @actual_stock_usage = @oia_product.decrement_stock @oia_stock_usage
+                
+                  #build a stock_transaction
+                  @st = @order_item.stock_transactions.build(:outlet_id => current_outlet.id, :transaction_type => StockTransaction::SALE, 
+                    :employee_id => @order_item.employee_id, :product_id => @oia_product.id,
+                    :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
+              
+                  @st.save
                 end
+              end
+            end
+        
+            #store this hash of oia items
+            @order_item.oia_data = item[:oia_items]
+          end
       
-                @oia_product = current_outlet.products.find_by_id(oia[:product_id])
+          #discount
+          if item[:discount_percent]
+            @order_item.discount_percent = item[:discount_percent]
+            @order_item.pre_discount_price = item[:pre_discount_price]
+          end
       
-                @old_stock_amount = @oia_product.quantity_in_stock
-                @actual_stock_usage = @oia_product.decrement_stock @oia_stock_usage
-                
+          #tax rate
+          @order_item.tax_rate = item[:tax_rate]
+      
+          #the time it was added to the order
+          @time_added_utc_millis = GlobalSetting.local_millis_to_utc_millis(item[:time_added])
+          @order_item.date_added = Time.zone.at(@time_added_utc_millis/1000)
+        
+          #do we want to show the serveraddeditem text
+          @order_item.show_server_added_text = item[:showServerAddedText]
+      
+          @order_item.is_double = item[:is_double]
+          @order_item.is_half = item[:is_half]
+      
+          @item_stock_usage = @order_item.quantity.to_f
+      
+          if @order_item.is_double
+            @item_stock_usage *= 2
+          elsif @order_item.is_half
+            @item_stock_usage /= 2
+          end
+      
+          if !@is_training_mode_sale or @deduct_stock_during_training_mode
+            if !@order_item.is_void
+              #decrement the stock for this item
+              if @order_item.product.is_stock_item
+                @old_stock_amount = @order_item.product.quantity_in_stock
+                @actual_stock_usage = @order_item.product.decrement_stock @item_stock_usage
+              
                 #build a stock_transaction
                 @st = @order_item.stock_transactions.build(:outlet_id => current_outlet.id, :transaction_type => StockTransaction::SALE, 
-                  :employee_id => @order_item.employee_id, :product_id => @oia_product.id,
+                  :employee_id => @order_item.employee_id, :product_id => @order_item.product.id,
                   :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
               
                 @st.save
               end
-            end
-          end
-        
-          #store this hash of oia items
-          @order_item.oia_data = item[:oia_items]
-        end
-      
-        #discount
-        if item[:discount_percent]
-          @order_item.discount_percent = item[:discount_percent]
-          @order_item.pre_discount_price = item[:pre_discount_price]
-        end
-      
-        #tax rate
-        @order_item.tax_rate = item[:tax_rate]
-      
-        #the time it was added to the order
-        @time_added_utc_millis = GlobalSetting.local_millis_to_utc_millis(item[:time_added])
-        @order_item.date_added = Time.zone.at(@time_added_utc_millis/1000)
-        
-        #do we want to show the serveraddeditem text
-        @order_item.show_server_added_text = item[:showServerAddedText]
-      
-        @order_item.is_double = item[:is_double]
-        @order_item.is_half = item[:is_half]
-      
-        @item_stock_usage = @order_item.quantity.to_f
-      
-        if @order_item.is_double
-          @item_stock_usage *= 2
-        elsif @order_item.is_half
-          @item_stock_usage /= 2
-        end
-      
-        if !@is_training_mode_sale or @deduct_stock_during_training_mode
-          if !@order_item.is_void
-            #decrement the stock for this item
-            if @order_item.product.is_stock_item
-              @old_stock_amount = @order_item.product.quantity_in_stock
-              @actual_stock_usage = @order_item.product.decrement_stock @item_stock_usage
-              
-              #build a stock_transaction
-              @st = @order_item.stock_transactions.build(:outlet_id => current_outlet.id, :transaction_type => StockTransaction::SALE, 
-                :employee_id => @order_item.employee_id, :product_id => @order_item.product.id,
-                :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
-              
-              @st.save
-            end
             
-            #decrement the ingredient stock
-            @order_item.product.ingredients.each do |ingredient|
-              if ingredient.product.is_stock_item
-                @old_stock_amount = ingredient.product.quantity_in_stock
+              #decrement the ingredient stock
+              @order_item.product.ingredients.each do |ingredient|
+                if ingredient.product.is_stock_item
+                  @old_stock_amount = ingredient.product.quantity_in_stock
               
-                @ingredient_usage = ingredient.stock_usage
-                @actual_stock_usage = ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
+                  @ingredient_usage = ingredient.stock_usage
+                  @actual_stock_usage = ingredient.product.decrement_stock @item_stock_usage * @ingredient_usage
                 
-                #build a stock_transaction
-                @st = @order_item.stock_transactions.build(:outlet_id => current_outlet.id, :transaction_type => StockTransaction::SALE, 
-                  :employee_id => @order_item.employee_id, :product_id => ingredient.product.id,
-                  :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
+                  #build a stock_transaction
+                  @st = @order_item.stock_transactions.build(:outlet_id => current_outlet.id, :transaction_type => StockTransaction::SALE, 
+                    :employee_id => @order_item.employee_id, :product_id => ingredient.product.id,
+                    :old_amount => @old_stock_amount, :change_amount => (-1 * @actual_stock_usage))
               
-                @st.save
+                  @st.save
+                end
               end
             end
           end
+        
+          #this happens for every item
+          @order_item_saved = @order_item_saved and @order_item.save
         end
-        
-        #this happens for every item
-        @order_item_saved = @order_item_saved and @order_item.save
-      end
       
-      #record a card charge if there was one
-      if @card_charge_details
-        @card_charge_payment_method = @card_charge_details[:paymentMethod]
-        @card_charge_amount = @card_charge_details[:amount]
-        @card_charge_reference_number = @card_charge_details[:reference_number]
+        #record a card charge if there was one
+        if @card_charge_details
+          @card_charge_payment_method = @card_charge_details[:paymentMethod]
+          @card_charge_amount = @card_charge_details[:amount]
+          @card_charge_reference_number = @card_charge_details[:reference_number]
         
-        CardTransaction.create({
-            :outlet_id => current_outlet.id,
-            :order_id => @order.id, 
-            :payment_method => @card_charge_payment_method, 
-            :amount => @card_charge_amount,
-            :reference_number => @card_charge_reference_number})
-      end
+          CardTransaction.create({
+              :outlet_id => current_outlet.id,
+              :order_id => @order.id, 
+              :payment_method => @card_charge_payment_method, 
+              :amount => @card_charge_amount,
+              :reference_number => @card_charge_reference_number})
+        end
       
-      #was the loyalty system used
-      if @loyalty_details
-        @loyalty_customer = current_outlet.customers.find_by_id(@loyalty_details[:customer_id])
+        #was the loyalty system used
+        if @loyalty_details
+          @loyalty_customer = current_outlet.customers.find_by_id(@loyalty_details[:customer_id])
         
-        if @loyalty_customer
-          if @order_details[:split_payments][:loyalty]
-            @points_per_currency_unit = GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_POINTS_PER_CURRENCY_UNIT, current_outlet
-            @points_used_this_sale = @order_details[:split_payments][:loyalty].to_f * @points_per_currency_unit
+          if @loyalty_customer
+            if @order_details[:split_payments][:loyalty]
+              @points_per_currency_unit = GlobalSetting.parsed_setting_for GlobalSetting::LOYALTY_POINTS_PER_CURRENCY_UNIT, current_outlet
+              @points_used_this_sale = @order_details[:split_payments][:loyalty].to_f * @points_per_currency_unit
             
-            @loyalty_customer.decrement!(:available_points, @points_used_this_sale.to_f)
+              @loyalty_customer.decrement!(:available_points, @points_used_this_sale.to_f)
             
+              CustomerPointsAllocation.create({:outlet_id => current_outlet.id, :customer_id => @loyalty_customer.id, :order_id => @order.id, 
+                  :allocation_type => CustomerPointsAllocation::SALE_REDUCE, :amount => @points_used_this_sale * -1, 
+                  :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
+            end
+          
+            @points_earned = @loyalty_details[:points_earned]
             CustomerPointsAllocation.create({:outlet_id => current_outlet.id, :customer_id => @loyalty_customer.id, :order_id => @order.id, 
-                :allocation_type => CustomerPointsAllocation::SALE_REDUCE, :amount => @points_used_this_sale * -1, 
+                :allocation_type => CustomerPointsAllocation::SALE_EARN, :amount => @points_earned, 
                 :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
+          
+            @loyalty_customer.increment!(:available_points, @points_earned.to_f)
           end
-          
-          @points_earned = @loyalty_details[:points_earned]
-          CustomerPointsAllocation.create({:outlet_id => current_outlet.id, :customer_id => @loyalty_customer.id, :order_id => @order.id, 
-              :allocation_type => CustomerPointsAllocation::SALE_EARN, :amount => @points_earned, 
-              :loyalty_level_percent => @loyalty_customer.loyalty_level.percent})
-          
-          @loyalty_customer.increment!(:available_points, @points_earned.to_f)
+        end
+      
+        if @customer_details
+          @customer = current_outlet.customers.find_by_id(@customer_details[:customer_id])
+        
+          @customer.current_balance = @customer.current_balance + @order.total 
+          @customer.save
+        
+          CustomerTransaction.create({:outlet_id => current_outlet.id, :transaction_type => CustomerTransaction::CHARGE,
+              :order_id => @order.id, :customer_id => @customer.id, :terminal_id => @terminal_id,
+              :abs_amount => @order.total, :actual_amount => @order.total, 
+              :is_credit => false, :closing_balance => @customer.current_balance
+            })
+        end
+    
+        @table_info = current_outlet.table_infos.find_by_id(@order.table_info_id)
+    
+        #must tell all terminals that this order is cleared
+        #only do this if that table still exists!
+        if @order.is_table_order and @table_info and !@is_split_bill_order
+          @employee_id = @order_params['employee_id']
+          do_request_clear_table_order @terminal_id, now_local_millis, @order.table_info_id, @order.order_num, @employee_id
+        
+          #record the room number in the order
+          @order.room_id = @table_info.room_object.room.id
+          @order.save
         end
       end
       
-      if @customer_details
-        @customer = current_outlet.customers.find_by_id(@customer_details[:customer_id])
-        
-        @customer.current_balance = @customer.current_balance + @order.total 
-        @customer.save
-        
-        CustomerTransaction.create({:outlet_id => current_outlet.id, :transaction_type => CustomerTransaction::CHARGE,
-            :order_id => @order.id, :customer_id => @customer.id, :terminal_id => @terminal_id,
-            :abs_amount => @order.total, :actual_amount => @order.total, 
-            :is_credit => false, :closing_balance => @customer.current_balance
-          })
-      end
-    
-      @table_info = current_outlet.table_infos.find_by_id(@order.table_info_id)
-    
-      #must tell all terminals that this order is cleared
-      #only do this if that table still exists!
-      if @order.is_table_order and @table_info and !@is_split_bill_order
-        @employee_id = @order_params['employee_id']
-        do_request_clear_table_order @terminal_id, now_local_millis, @order.table_info_id, @order.order_num, @employee_id
-        
-        #record the room number in the order
-        @order.room_id = @table_info.room_object.room.id
-        @order.save
-      end
-
-      @success = @order_saved and @order_item_saved
+      @success = @success and @order_saved and @order_item_saved
     
       @success
     end
