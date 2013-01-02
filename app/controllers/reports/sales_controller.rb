@@ -345,6 +345,7 @@ class Reports::SalesController < Admin::AdminController
     else
       where << " and o.training_mode_sale = 0"
     end
+    where << " and oi.outlet_id = #{current_outlet.id}"
     where << " group by p.category_id order by p.name asc"
     query = OrderItem.find_by_sql(where)
   end

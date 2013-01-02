@@ -60,26 +60,26 @@
                             <div class="dropdown_container">
                                 <div class="label">Date</div>
                                 <select id="date_preselect" onchange="setDateParams($(this).val(), true)" style="width: 120px">
-                                    <option value="<%= Time.zone.now.beginning_of_day + @opening_time.hours %>,<%= Time.zone.now.end_of_day + @opening_time.hours %>">Today</option>
-                                    <option value="<%= yesterday.beginning_of_day + @opening_time.hours %>,<%= yesterday.end_of_day + @opening_time.hours %>">Yesterday</option>
-                                    <option value="<%= Time.zone.now.beginning_of_week + @opening_time.hours %>,<%= Time.zone.now %>">This Week</option>
-                                    <option value="<%= Time.zone.now.beginning_of_month + @opening_time.hours %>,<%= Time.zone.now %>">This Month
+                                    <option value="<%= (Time.zone.now.beginning_of_day + @opening_time.hours).strftime("%Y-%m-%d %H:%M:%S") %>,<%= (Time.zone.now.end_of_day + @opening_time.hours).strftime("%Y-%m-%d %H:%M:%S") %>">Today</option>
+                                    <option value="<%= (yesterday.beginning_of_day + @opening_time.hours).strftime("%Y-%m-%d %H:%M:%S") %>,<%= (yesterday.end_of_day + @opening_time.hours).strftime("%Y-%m-%d %H:%M:%S") %>">Yesterday</option>
+                                    <option value="<%= (Time.zone.now.beginning_of_week + @opening_time.hours).strftime("%Y-%m-%d %H:%M:%S") %>,<%= (Time.zone.now).strftime("%Y-%m-%d %H:%M:%S") %>">This Week</option>
+                                    <option value="<%= (Time.zone.now.beginning_of_month + @opening_time.hours).strftime("%Y-%m-%d %H:%M:%S") %>,<%= (Time.zone.now).strftime("%Y-%m-%d %H:%M:%S") %>">This Month
                                     </option>
-                                    <option value="<%= Time.zone.now.beginning_of_year + @opening_time.hours  %>,<%= Time.zone.now %>">This Year to Date
+                                    <option value="<%= (Time.zone.now.beginning_of_year + @opening_time.hours).strftime("%Y-%m-%d %H:%M:%S")  %>,<%= (Time.zone.now).strftime("%Y-%m-%d %H:%M:%S") %>">This Year to Date
                                     </option>
-                                    <option value="<%= lastweek.beginning_of_week + @opening_time.hours %>,<%= lastweek.end_of_week + @opening_time.hours %>">Last
+                                    <option value="<%= (lastweek.beginning_of_week + @opening_time.hours).strftime("%Y-%m-%d %H:%M:%S") %>,<%= (lastweek.end_of_week + @opening_time.hours).strftime("%Y-%m-%d %H:%M:%S") %>">Last
                                         Week
                                     </option>
-                                    <option selected="yes" value="<%= Time.zone.now - 30.days %>,<%= Time.zone.now %>">Last 30
+                                    <option selected="yes" value="<%= (Time.zone.now - 30.days).strftime("%Y-%m-%d %H:%M:%S") %>,<%= (Time.zone.now).strftime("%Y-%m-%d %H:%M:%S") %>">Last 30
                                         Days
                                     </option>
-                                    <option value="<%= lastmonth.beginning_of_month + @opening_time.hours %>,<%= lastmonth.end_of_month + @opening_time.hours %>">Last
+                                    <option value="<%= (lastmonth.beginning_of_month + @opening_time.hours).strftime("%Y-%m-%d %H:%M:%S") %>,<%= (lastmonth.end_of_month + @opening_time.hours).strftime("%Y-%m-%d %H:%M:%S") %>">Last
                                         Month
                                     </option>
-                                    <option value="<%= lastyear.beginning_of_day + @opening_time.hours %>,<%= lastyear.end_of_day + @opening_time.hours %>">This Day
+                                    <option value="<%= (lastyear.beginning_of_day + @opening_time.hours).strftime("%Y-%m-%d %H:%M:%S") %>,<%= (lastyear.end_of_day + @opening_time.hours).strftime("%Y-%m-%d %H:%M:%S") %>">This Day
                                         Last Year
                                     </option>
-                                    <option value="<%= Time.zone.now.beginning_of_year - 2.years + @opening_time.hours %>,<%= Time.zone.now %>">All Time</option>
+                                    <option value="<%= (Time.zone.now.beginning_of_year - 2.years + @opening_time.hours).strftime("%Y-%m-%d %H:%M:%S") %>,<%= (Time.zone.now).strftime("%Y-%m-%d %H:%M:%S") %>">All Time</option>
                                     <option value=""></option>
                                 </select>
                             </div>

@@ -260,7 +260,7 @@ function setStaffSelect(set_type) {
 }
 
 function updateStaffDateParams(set_date, date_type) {
-    var olddate = new Date(set_date);
+    var olddate = new Date(set_date.replace(/-/g,"/"));
     var subbed = new Date(olddate - 1*60*60*1000);
     var newtime = subbed.getFullYear() + "-" + (parseInt(subbed.getMonth()) + 1) + "-" + subbed.getDate() + " " + subbed.getHours() + ":" + subbed.getMinutes()
     if (date_type == 'from') {

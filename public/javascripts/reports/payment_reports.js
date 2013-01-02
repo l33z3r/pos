@@ -65,7 +65,6 @@ function runPaymentsSearch() {
     if (!$('#refine_button').is('.selected')) {
     $("#report_payments_results").html("Loading...");
     $('#refine_button').addClass("selected");
-
     $.ajax({
         type: 'GET',
         url: '/reports/payments/set_params',
@@ -260,7 +259,7 @@ function setPaymentSelect(set_type) {
 }
 
 function updatePaymentDateParams(set_date, date_type) {
-    var olddate = new Date(set_date);
+    var olddate = new Date(set_date.replace(/-/g,"/"));
     var subbed = new Date(olddate - 1*60*60*1000);
     var newtime = subbed.getFullYear() + "-" + (parseInt(subbed.getMonth()) + 1) + "-" + subbed.getDate() + " " + subbed.getHours() + ":" + subbed.getMinutes()
     if (date_type == 'from') {

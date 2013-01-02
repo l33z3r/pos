@@ -156,7 +156,6 @@ class Reports::PaymentsController < Admin::AdminController
     end
     if params[:search][:dropdown_type] == 'discounts_only'
       session[:discounts_only] = params[:search][:dropdown_id]
-      logger.debug "**********************************************************************************************************  #{params[:search][:dropdown_id]}"
     end
     render :nothing => true
   end
@@ -210,13 +209,13 @@ class Reports::PaymentsController < Admin::AdminController
 
   def get_payments_data
 
-    @selected_from_date = session[:from_date].to_s
-    @selected_to_date = session[:to_date].to_s
+    @selected_from_date = Time.zone.parse(session[:from_date].to_s).to_s
+    @selected_to_date = Time.zone.parse(session[:to_date].to_s).to_s
 
     if (session[:search_type] == :day || session[:search_type] == :month || session[:search_type] == :year || session[:search_type] == :week)
 
       if session[:search_type] == :day
-      where = "select o.id, o.created_at, DATE_FORMAT(o.created_at,'%Y-%m-%d') as created_day, o.discount_percent, sum(o.pre_discount_price-o.total) pre_discount_price, sum(total) total from orders o"
+      where = "select o.id, o.created_at, DATE_FORMAT(o.created_at,'%Y-%m-%d') as created_day, o.discount_percent, o.order_num, sum(o.pre_discount_price-o.total) pre_discount_price, sum(total) total from orders o"
       else
       where = "select o.id, o.created_at, o.discount_percent, sum(o.pre_discount_price-o.total) pre_discount_price, sum(total) total from orders o"
       end
@@ -251,7 +250,7 @@ class Reports::PaymentsController < Admin::AdminController
     end
 
     if session[:search_type] == :transaction_list
-      where = "select o.id, o.created_at, o.discount_percent, o.pre_discount_price, o.total, o.payment_type, o.terminal_id, o.employee_id from orders o"
+      where = "select o.id, o.created_at, o.discount_percent, o.pre_discount_price, o.order_num, o.total, o.payment_type, o.terminal_id, o.employee_id from orders o"
 
       if session[:terminal] != ''
         where << " where o.created_at <= '#{@selected_to_date}' and o.created_at >= '#{@selected_from_date}' and o.is_void = 0 and o.terminal_id = '#{session[:terminal]}'"

@@ -2,7 +2,7 @@ $(function() {
     setReportsDatePickers();
 });
 
-var selectedFromDate;
+var selectedFromDate = "";
 var selectedToDate;
 var search_type;
 var terminalId;
@@ -17,22 +17,23 @@ var select_type = '';
 function setReportsDatePickers() {
     $('#date_select_container').find('#date_from').datetimepicker({
         dateFormat: 'yy-mm-dd',
-        defaultDate: '01/01/01',
+//        defaultDate: '01/01/01',
         timeFormat: 'hh:mm',
 //        showTimezone: true,
 //        timezone: "+0100",
         addSliderAccess: true,
         sliderAccessArgs: { touchonly: false }
 //        onSelect: function(dateText, inst) {
-//            $('#date_preselect').attr('selectedIndex', 10);
-//            $('#date_select_container').find('#date_to').datepicker("option", "minDate", dateText);
-//            selectedFromDate = dateText;
-//            setReportParams();
-//            setStockParams();
+////            $('#date_preselect').attr('selectedIndex', 10);
+////            $('#date_select_container').find('#date_to').datepicker("option", "minDate", dateText);
+//            selectedFromDate = "magic";
+//            alert(selectedFromDate)
+////            alert(selectedFromDate)
+////            setStockParams();
 //
-//            if ($('#date_select_container').find('#date_to').val() != "") {
-////                runGlancesSearch();
-//            }
+////            if ($('#date_select_container').find('#date_to').val() != "") {
+//////                runGlancesSearch();
+////            }
 //        }
 
     });
@@ -124,8 +125,9 @@ function setDateParams(set_date, isManual) {
 }
 
 function updateDateParams(set_date, date_type) {
-    var olddate = new Date(set_date);
+    var olddate = new Date(set_date.replace(/-/g,"/"));
     var subbed = new Date(olddate - 1 * 60 * 60 * 1000);
+//    alert(olddate)
     var newtime = subbed.getFullYear() + "-" + (parseInt(subbed.getMonth()) + 1) + "-" + subbed.getDate() + " " + subbed.getHours() + ":" + subbed.getMinutes()
     if (date_type == 'from') {
         selectedFromDate = newtime;
@@ -261,36 +263,35 @@ function runStocksSearch() {
     if (!$('#refine_button_stock').is('.selected')) {
         $("#report_stocks_results").html("Loading...");
         $('#refine_button_stock').addClass("selected");
-        if ($('#delivery_search').val() != '') {
-
-            $('#date_preselect').attr('selectedIndex', 9);
-            setDateParams($('#date_preselect').val(), false);
-//            $('#category_id_equals').attr('selectedIndex', 0);
-//            $('#product_id_equals').attr('selectedIndex', 0);
-
-            $.ajax({
-                type: 'GET',
-                url: '/reports/stocks/load_dropdown',
-                data: {
-                    "search[search_delivery]" : $('#delivery_search').val(),
-                    "search[dropdown_type]" : '',
-                    "search[dropdown_id]" : ''
-                }
-            }).done(function() {
-                    $.ajax({
-                        type: 'GET',
-                        url: '/reports/stocks/stocks_search',
-                        data: {
-                            "search[created_at_gt]" : selectedFromDate,
-                            "search[created_at_lt]" : selectedToDate,
-                            "search[terminal_id_equals]" : terminalId,
-                            "search2[hour_from]" : hour_from,
-                            "search2[hour_to]" : hour_to
-                        }
-                    });
-                });
-
-        } else {
+//        if ($('#delivery_search').val() != '') {
+//
+////            $('#date_preselect').attr('selectedIndex', 9);
+////            setDateParams($('#date_preselect').val(), false);
+////            $('#category_id_equals').attr('selectedIndex', 0);
+////            $('#product_id_equals').attr('selectedIndex', 0);
+//            $.ajax({
+//                type: 'GET',
+//                url: '/reports/stocks/load_dropdown',
+//                data: {
+//                    "search[search_delivery]" : $('#delivery_search').val(),
+//                    "search[dropdown_type]" : '',
+//                    "search[dropdown_id]" : ''
+//                }
+//            }).done(function() {
+//                    $.ajax({
+//                        type: 'GET',
+//                        url: '/reports/stocks/stocks_search',
+//                        data: {
+//                            "search[created_at_gt]" : selectedFromDate,
+//                            "search[created_at_lt]" : selectedToDate,
+//                            "search[terminal_id_equals]" : terminalId,
+//                            "search2[hour_from]" : hour_from,
+//                            "search2[hour_to]" : hour_to
+//                        }
+//                    });
+//                });
+//
+//        } else {
             $.ajax({
                 type: 'GET',
                 url: '/reports/stocks/set_params',
@@ -304,6 +305,7 @@ function runStocksSearch() {
                     "search[select_type]" : select_type,
                     "search[training_mode]" : inTrainingMode
                 }
+
             }).done(function() {
                     $.ajax({
                         type: 'GET',
@@ -317,7 +319,8 @@ function runStocksSearch() {
                         }
                     });
                 });
-        }
+//        }
+
 
     }
 }

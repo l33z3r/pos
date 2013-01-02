@@ -24,8 +24,8 @@ class Reports::StocksController < Admin::AdminController
     session[:category] = ''
     session[:product] = ''
     session[:show_zeros] = false
-    session[:from_date] = Time.zone.now - 30.days
-    session[:to_date] = Time.zone.now
+    #session[:from_date] = Time.zone.now - 30.days
+    #session[:to_date] = Time.zone.now
     session[:terminal] = ''
     session[:search_type_label] = 'Product'
     session[:training_mode] = false
