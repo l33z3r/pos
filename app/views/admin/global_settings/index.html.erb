@@ -1459,8 +1459,23 @@
                     <td class="text_align_left">
                       <% @gs = GlobalSetting.setting_for GlobalSetting::CASH_DRAWER_COM_PORT, current_outlet, {:fingerprint => @terminal_fingerprint} %>
                       <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.text_field :value %>
+                        <%= f.text_field :value, :id => "com_port_editor", :disabled => true %>
                       <% end %>
+                      
+                      <div class="small_button" onclick="unlockComPortEditor()">Unlock (Advanced Users Only)</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Cash Drawer Com Port Mode
+                    </td>
+                    <td class="text_align_left">
+                      <% @gs = GlobalSetting.setting_for GlobalSetting::COM_PORT_MODE_STRING, current_outlet, {:fingerprint => @terminal_fingerprint} %>
+                      <%= fields_for "global_settings[]", @gs do |f| %>
+                        <%= f.text_field :value, :id => "com_port_settings_editor", :disabled => true %>
+                      <% end %>
+                      
+                      <div class="small_button" onclick="unlockComPortEditor()">Unlock (Advanced Users Only)</div>
                     </td>
                   </tr>
                   <tr>

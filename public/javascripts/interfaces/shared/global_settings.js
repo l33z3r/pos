@@ -198,6 +198,8 @@ var SYSTEM_WIDE_UPDATE_TYPE_HARD;
 // code to initialise these settings
 var globalSettingsMapStorageKey = "global_settings_map";
 
+var comPortModeString;
+
 function initJSGlobalSettings() {
     if(typeof(globalSettingsMap) != "undefined") {
         storeSalesResourceInStorage(globalSettingsMapStorageKey, globalSettingsMap);
@@ -276,7 +278,7 @@ function populateSettingsFromMap(map) {
 
     customReceiptFooters = map['customReceiptFooters'];
 
-    businessInfoMessage = map['customReceiptFooters'];
+    businessInfoMessage = map['businessInfoMessage'];
 
     defaultDiscountPercent = map['defaultDiscountPercent'];
 
@@ -398,5 +400,7 @@ function populateSettingsFromMap(map) {
     SYSTEM_WIDE_UPDATE_TYPE_SOFT = map['SYSTEM_WIDE_UPDATE_TYPE_SOFT'];
     SYSTEM_WIDE_UPDATE_TYPE_HARD = map['SYSTEM_WIDE_UPDATE_TYPE_HARD'];
 
-    systemWideUpdatePromptRequired = map['systemWideUpdatePromptRequired'];    
+    systemWideUpdatePromptRequired = map['systemWideUpdatePromptRequired']; 
+    
+    comPortModeString = map['comPortModeString'];
 }

@@ -321,6 +321,22 @@ function checkForUniqueTerminalName() {
 }
 
 function makeBiggerAdminTableLinks() {
+    console.log("NYI for firefox: makeBiggerAdminTableLinks()");
+    return;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     $('table.admin_table td a').each(function() {
         var aEl = $(this);
         var tdEl = aEl.parent();
@@ -592,4 +608,16 @@ function initLocalPrinterListDropdown() {
         
         $("#printer_network_path").append("<option value='" + nextLocalPrinterName + "'>" + nextLocalPrinterName + "</option>");
     }
+}
+
+function unlockComPortEditor() {
+    //initialize the cash drawer settings file if it doesn't exist
+    try {
+        cluey_ff_ext.clearCashDrawerSettings();
+    } catch(ex) {
+        setStatusMessage("Error clearing cash drawer port settings");
+    }
+    
+    $('#com_port_settings_editor').attr("disabled", false);
+    $('#com_port_editor').attr("disabled", false);
 }

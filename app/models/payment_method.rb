@@ -115,6 +115,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: payment_methods
@@ -128,7 +129,7 @@ end
 #  logo_updated_at        :datetime
 #  created_at             :datetime
 #  updated_at             :datetime
-#  payment_integration_id :integer(8)
+#  payment_integration_id :integer(8)      default(0), not null
 #  receipt_footer_id      :integer(8)
 #  open_cash_drawer       :boolean(1)      default(TRUE)
 #  is_active              :boolean(1)      default(TRUE)

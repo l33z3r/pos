@@ -25,9 +25,9 @@
                   CSV Line <%=key%>
                 </td>
                 <td>
-                  <%map[:errors].each do |var, error|%>
+                  <% map[:errors].each do |error_desc| %>
                     <div class="error_line">
-                      Product <%=var%>: <%=error%>
+                      <%= error_desc %>
                     </div>
                   <% end %>
                 </td>

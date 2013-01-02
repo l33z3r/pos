@@ -1332,7 +1332,11 @@ function swipeToCovers() {
 }
 
 function doSubmitTableNumber() {
-    //    $('.table_tab_container').hide();
+    if (!callHomePollInitSequenceComplete) {
+        niceAlert("Downloading Orders. Please Wait");
+        return;
+    }
+    
     if (!ensureLoggedIn()) {
         return;
     }

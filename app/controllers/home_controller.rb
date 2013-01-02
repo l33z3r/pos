@@ -687,7 +687,7 @@ class HomeController < ApplicationController
       @terminal_id_gs = GlobalSetting.terminal_id_gs_for_fingerprint @terminal_fingerprint, current_outlet
       @outlet_terminal.link_terminal @terminal_id_gs
       
-      request_sales_resources_reload @terminal_id           
+      request_sales_resources_reload @outlet_terminal.name           
     else
       @error = true
     end
@@ -697,9 +697,9 @@ class HomeController < ApplicationController
     @terminal_id_gs = GlobalSetting.terminal_id_gs_for_fingerprint @terminal_fingerprint, current_outlet
     @outlet_terminal = current_outlet.outlet_terminals.find_by_name @terminal_id
     
-    @outlet_terminal.unlink_terminal @terminal_id_gs
-    
     request_sales_resources_reload @terminal_id
+      
+    @outlet_terminal.unlink_terminal @terminal_id_gs    
     
     render :json => {:success => true}.to_json
   end

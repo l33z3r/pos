@@ -47,7 +47,7 @@ heroku_staging:
   use_s3: true
   s3_public_bucket_name: cluey_staging
   s3_user_uploads_bucket_name: cluey_staging_user_uploads
-  s3_user_uploads_asset_host: http://cluey_staging_user_uploads.s3.amazonaws.com
+  s3_user_uploads_asset_host: https://cluey_staging_user_uploads.s3.amazonaws.com
   s3_access_key_id: AKIAICNSMYJPXRM2ENDQ
   s3_secret_access_key: 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
   recaptcha_public_key: 6LfpZ9USAAAAAGtq7QkhGraD3_6Spb6tSnAIL4rI
@@ -61,7 +61,7 @@ heroku_production:
   use_s3: true
   s3_public_bucket_name: cluey
   s3_user_uploads_bucket_name: cluey_user_uploads
-  s3_user_uploads_asset_host: http://cluey_user_uploads.s3.amazonaws.com
+  s3_user_uploads_asset_host: https://cluey_user_uploads.s3.amazonaws.com
   s3_access_key_id: AKIAICNSMYJPXRM2ENDQ
   s3_secret_access_key: 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
   recaptcha_public_key: 6LfqZ9USAAAAALbZX6WnfPDXWt-cF6Rq7Jw08w6r

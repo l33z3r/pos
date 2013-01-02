@@ -23,10 +23,9 @@ $(function() {
 function doGlobalInit() {        
     //make sure we have all compatible plugins etc
     if(!inMobileContext()) { 
-        if(checkForClueyPlugin()) {
-            if(checkForJSPrintSetupPlugin()) {
-                checkForUninstalledPrinters();
-            }
+        if(checkForPlugins()) {
+            checkForUninstalledPrinters();
+            setCashDrawerComPortSettings();
         }
     }
     
@@ -461,7 +460,12 @@ function cacheDownloadReset() {
 }
 
 function cacheDownloadStarted() {
-    hideIndicateActionRequired();
+    var firstCacheDownload = window.applicationCache.status == 0;
+    
+    if(!firstCacheDownload) {
+        hideIndicateActionRequired();
+    }
+    
     $('nav#main_nav').addClass("cache_update");
     $('#cache_status').show();
     $('#cache_status').text("Cache DL: 0%");
@@ -484,7 +488,7 @@ function unlinkTerminal() {
         },
         complete: function() {
             hideNiceAlert();
-           doReloadSalesResources(callHomePoll);
+            doReloadSalesResources(callHomePoll);
         }
     });
 }

@@ -724,17 +724,20 @@ function postSetConnectionStatus(connected) {
         //if we are offline and the init sequence has not completed then we are operating in offline mode
         if(!callHomePollInitSequenceComplete) {
             callHomePollInitSequenceComplete = true;
-            
-            //hide the spinner at the top nav
-            $('#loading_orders_spinner').hide();
-            $('#table_select_container_loading_message').hide();
-            $('#table_select_container').show();
-            $('#table_screen_button').show();                
+            performCallHomePollInitSequenceComplete();                
         }
     }
     
     //we must be offline, so set the connection status light
     $('#connection_status').css("background-color", color);                    
+}
+
+function performCallHomePollInitSequenceComplete() {
+    //hide the spinner at the top nav
+    $('#loading_orders_spinner').hide();
+    $('#table_select_container_loading_message').hide();
+    $('#table_select_container').show();
+    $('#table_screen_button').show();
 }
 
 function initModifierGrid() {
@@ -826,81 +829,77 @@ function showUtilKeyboardCloseButton() {
     $('#util_keyboard_inner_container').height("260px");    
 }
 
-//we don't check for firefox here anymore as it is done in the controller        
-//function checkForFirefox() {
-//    var ua = $.browser;
-//    
-//    var isiPad = navigator.userAgent.match(/iPad/i) != null
-//    
-//    if(!isiPad) {
-//        if (typeof(ua.mozilla) == 'undefined') {
-//            niceAlert("You must use the firefox web browser in order to print receipts and operate cash drawers within the Cluey software");
-//            return false;
-//        }
-//    }
-//    
-//    return true;
-//}
-
-function checkForClueyPlugin() {
+function checkForPlugins() {
+    var plugins = new Array();
+    
+    if(typeof(jsPrintSetup) == 'undefined') {
+        plugins.push('/firefox_extensions/jsprintsetup-0.9.2.xpi');
+    }
+    
     if(typeof(cluey_ff_ext) == 'undefined') {
-        var clueyExtensionDownloadPopup= function() {
-            var title = "Cluey Addon Not Found";
-        
-            hideNiceAlert();
-        
-            ModalPopups.Alert('niceAlertContainer',
-                title, "<div id='nice_alert' class='licence_expired_header'>Cluey Firefox Extension Not Found. You can download it by clicking OK. You must then install it via firefox.</div>",
-                {
-                    width: 360,
-                    height: 310,
-                    okButtonText: 'Download',
-                    onOk: "goToNewWindow(\"/firefox_extensions/cluey_ff_extension.xpi\");hideNiceAlert();"
-                });
-        };
-        
-        indicateActionRequired(clueyExtensionDownloadPopup);
-        
-        return false;
+        plugins.push('/firefox_extensions/cluey_ff_extension.xpi');
     } else {
-        
         if(!clueyPluginInitialized) {
             console.log("Setting cluey prefs in plugin");
             cluey_ff_ext.setClueyPrefs();
             
             clueyPluginInitialized = true;
         }
-        
-        return true;
     }
-}
-
-function checkForJSPrintSetupPlugin() {
-    //using the jsprint library
-    //http://jsprintsetup.mozdev.org/reference.html
-    if(typeof(jsPrintSetup) == 'undefined') {
-        var jsPrintExtensionDownloadPopup = function() {
-            var title = "jsPrintSetup Firefox Addon Not Found";
-        
-            hideNiceAlert();
-        
-            ModalPopups.Alert('niceAlertContainer',
-                title, "<div id='nice_alert' class='licence_expired_header'>jsPrintSetup Firefox Addon Not Found. You can download it by clicking OK. You must then install it via firefox.</div>",
-                {
-                    width: 360,
-                    height: 310,
-                    okButtonText: 'Download',
-                    onOk: "goToNewWindow(\"/firefox_extensions/jsprintsetup-0.9.2.xpi\");hideNiceAlert();"
-                });
-        };
-        
-        indicateActionRequired(jsPrintExtensionDownloadPopup);
-        
+    
+    if(plugins.length > 0) {
+        InstallTrigger.install(plugins);
         return false;
     } else {
         return true;
     }
 }
+
+// simple check for the plugin's existence
+//	function isPluginRegistered() {
+//		navigator.plugins.refresh(false);
+//		var mimetype = navigator.mimeTypes["application/x-3amlabs-raversion"];
+//		if (mimetype && mimetype.enabledPlugin)
+//			return true;
+//		return false;
+//	}
+//
+//	// try to parse for the version in the name of the plugin
+//	function getPluginVersion(){
+//		navigator.plugins.refresh(false);
+//		var mimetype = navigator.mimeTypes["application/x-3amlabs-raversion"];
+//
+//		if (mimetype && mimetype.enabledPlugin){
+//			var name = mimetype.enabledPlugin.name;
+//			var regexp = "[0-9.]+\\b";
+//			
+//			var re = new RegExp(regexp);
+//			var m = re.exec(name);
+//
+//			if ( (m != null) && ( m.length == 1 ) ) {
+//				return m[0];
+//			} else {
+//				return "";
+//			}
+//		}
+//		return "";
+//	}
+//
+//	function isUpdateNeeded( current, required ){
+//		var cur_array = current.split('.');
+//		var req_array = required.split('.');
+//
+//
+//		if ( ( cur_array.length != 4 ) || ( req_array.length != 4 ) ){
+//			return false;
+//		}
+//
+//		var cur = 1000*1000*1000*parseInt(cur_array[0]) + 1000*1000*parseInt(cur_array[1]) + 1000*parseInt(cur_array[2]) + parseInt(cur_array[3]);
+//		var req = 1000*1000*1000*parseInt(req_array[0]) + 1000*1000*parseInt(req_array[1]) + 1000*parseInt(req_array[2]) + parseInt(req_array[3]);
+//
+//		if ( cur < req ) return true;
+//		return false;
+//	}
 
 var localPrinters;
 var newLocalPrinters = new Array();
@@ -983,6 +982,21 @@ function checkForUninstalledPrinters() {
         return false;
     } else {
         return true;
+    }
+}
+
+function setCashDrawerComPortSettings() {
+    var cashDrawerSettingsSuccessfullyInitialized;
+            
+    //initialize the cash drawer settings file if it doesn't exist
+    try {
+        cashDrawerSettingsSuccessfullyInitialized = cluey_ff_ext.initializeCashDrawerSettings(cashDrawerComPort, comPortModeString);
+    } catch(ex) {
+        cashDrawerSettingsSuccessfullyInitialized = false;                
+    }
+            
+    if(!cashDrawerSettingsSuccessfullyInitialized) {
+        console.log("Error setting cash drawer port settings");
     }
 }
 
