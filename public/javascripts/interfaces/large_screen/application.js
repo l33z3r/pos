@@ -190,6 +190,10 @@ function doGlobalInit() {
             fixedPosition: false                               //options: true makes it stick(fixed position) on scroll
         });
     }
+    
+    //if we have just changed the terminal name, then the terminal header might have the old name
+    //so we just have this here to avoid the headache
+    $('#terminal_id').html(terminalID);
 }
 
 function showInitialScreen() {

@@ -1,0 +1,5 @@
+STAFF_ID, NAME, NICKNAME, CLOCKIN_CODE, LOGIN_CODE, ADDRESS, TELEPHONE, HOURLY_RATE, OVERTIME_RATE, ROLE
+1, John Smith, Jonny, 1, 1, 2 Bloomfield Avenue, 00353858765648, 10, 12, Manager
+2, Fred Smith, Freddie, 2, 2, 3 Bloomfield Avenue, 00353853543648, 10, 12, Manager
+3, Mary Boyle, Susie, 3, 3, 6 Mask Cresent, 00353834732648, 8, 10, Employee
+4, Rachel Mc Govern, Rachel, 4, 4, 7 Belvue Avenue, 00353859876543, 10, 12, Employee

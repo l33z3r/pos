@@ -145,7 +145,13 @@ Pos::Application.routes.draw do
       end
     end
        
-    resources :employees
+    resources :employees do
+      collection do
+        get 'csv_import'
+        post 'csv_upload'
+      end
+    end
+    
     resources :categories
     resources :modifier_categories
     resources :orders, :only => [:index] do

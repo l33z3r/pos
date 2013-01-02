@@ -94,7 +94,30 @@ class Admin::ProductsController < Admin::AdminController
       if @category_name
         @categories[@category_name] << @new_product
       end
+      
+      
+      
+      
+      
+      #      #menus
+      #      @menu_name = ProductCSVMapper::menu_from_row row
+      #      @submenu_name = ProductCSVMapper::submenu_from_row row
+      #
+      #      if @menu_name and !@menus[@menu_name]
+      #        @menus[@menu_name] = {
+      #          :type => MENU_TYPE_NORMAL,
+      #          :
+      #        }
+      #      end
+      #
+      #      if @category_name and !@categories[@category_name]
+      #        @categories[@category_name] = []
+      #      end
 
+      
+      
+      
+      
       #validate the product
       logger.info "!!!VALID? #{@new_product.valid?}"
 
@@ -108,9 +131,11 @@ class Admin::ProductsController < Admin::AdminController
 
       if !@new_product.valid? or @name_taken
         @validation_passed = false
-
+        
         #need to manually add in a name taken error
-        @new_product.errors.add(:name, "is a duplicate of another product")
+        if @name_taken
+          @new_product.errors.add(:name, "is a duplicate of another product")
+        end
         
         @product_errors = []
         

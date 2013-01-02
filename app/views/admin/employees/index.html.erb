@@ -7,6 +7,13 @@
     </div>
     <div class="button_name">Add Employee</div>
   </div>
+
+  <div class="button" data-onpress="goTo('<%= csv_import_admin_employees_path %>');">
+    <div class="icon">
+      <%= image_tag "/images/button_logos/import_employees_button.png" %>
+    </div>
+    <div class="button_name">Import Employees</div>
+  </div>
 <% end %>
 
 <div id="admin_employee_list">
@@ -20,7 +27,7 @@
     </div>
 
     <table class="admin_table" id="employee_list"">
-      <thead>
+           <thead>
         <tr>
           <th width="80">Avatar</th>
           <th width="25">ID</th>

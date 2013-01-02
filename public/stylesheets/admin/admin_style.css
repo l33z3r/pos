@@ -300,6 +300,76 @@ div#edit_employee section#form_container form div#actions input {
     float: right;
 }
 
+div#import_employees section#form_container {
+    margin: auto;
+    text-align: center;
+}
+
+div#import_employees section#form_container h3 {
+    width: 250px;
+    margin: auto;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+div#import_employees section#form_container div#fields {
+    width: 250px;
+    margin: auto;
+}
+
+div#import_employees section#form_container form div {
+    text-align: left;
+}
+
+div#import_employees section#form_container form div#actions a {
+    float: right;
+}
+
+div#import_employees section#form_container form div#actions input {
+    float: right;
+}
+
+div#import_employees section#form_container div#errors_container {
+    max-height: 510px;
+    margin-bottom: 15px;
+    overflow-y: scroll;
+}
+
+div#import_employees section#form_container div#upload_again_button {
+    float: right;
+    margin-right: 80px;
+    height: 50px;
+    padding-top: 20px;
+}
+
+div#import_employees section#form_container div#guidelines {
+    padding: 10px;
+    width: 540px;
+    margin: auto;
+    margin-bottom: 30px;
+    border: 2px solid #000;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    background-color: #FFF;
+    color: #000;
+    text-align: left;
+    font-size: 16px;
+    line-height: 17px;
+}
+
+div#import_employees section#form_container div#guidelines li {
+    margin: 8px 3px;
+}
+
+div#import_employees section#form_container div#errors_container table#csv_error_list {
+    width: 900px;
+}
+
+div#import_employees section#form_container div#errors_container table#csv_error_list td div.error_line {
+    text-align: left;
+    padding: 2px;
+}
+
 /* End Admin Users Page */
 
 /* Admin Products Page */
