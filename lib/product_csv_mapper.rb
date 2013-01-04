@@ -19,13 +19,28 @@ class ProductCSVMapper
   COST_PRICE_INDEX = 16
   UNIT_INDEX = 17
   SIZE_INDEX = 18
+  MENU_INDEX = 19
+  SUBMENU_INDEX = 20
   
-  def self.product_from_row row, current_outlet
-    @new_product = Product.new
+  IMPORT_TYPE_NONE = 1
+  IMPORT_TYPE_CREATE = 2
+  IMPORT_TYPE_ADD_TO_SUBMENU = 3
+  
+  def self.product_from_row row, current_outlet, overwrite_existing_products
+    @new_product_name = name_from_row row
+    
+    #check for existing
+    @existing_product = current_outlet.products.where("name = ?", @new_product_name).first
+      
+    if @existing_product and overwrite_existing_products
+      @new_product = @existing_product
+    else
+      @new_product = Product.new
+    end    
       
     @new_product.outlet_id = current_outlet.id
     
-    @new_product.name = name_from_row row
+    @new_product.name = @new_product_name
     @new_product.brand = brand_from_row row
     @new_product.description = description_from_row row
       
@@ -181,6 +196,14 @@ class ProductCSVMapper
   
   def self.unit_from_row row
     get_index row, UNIT_INDEX
+  end
+  
+  def self.menu_from_row row
+    get_index row, MENU_INDEX
+  end
+  
+   def self.submenu_from_row row
+    get_index row, SUBMENU_INDEX
   end
   
   def self.size_from_row row

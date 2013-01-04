@@ -21,6 +21,16 @@ class Display < ActiveRecord::Base
     display
   end
   
+  def self.set_default display_id, current_outlet
+    @old_default_display = Display.load_default current_outlet
+    @old_default_display.is_default = false
+    @old_default_display.save
+
+    @new_default_display = current_outlet.displays.find display_id
+    @new_default_display.is_default = true
+    @new_default_display.save
+  end
+  
   def self.load_public current_outlet
     display = current_outlet.displays.find_by_is_public(true)
 

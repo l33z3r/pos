@@ -932,7 +932,7 @@ div#import_products section#form_container h3 {
 }
 
 div#import_products section#form_container div#fields {
-    width: 250px;
+    width: 430px;
     margin: auto;
 }
 
@@ -972,8 +972,8 @@ div#import_products section#form_container div#guidelines {
     background-color: #FFF;
     color: #000;
     text-align: left;
-    font-size: 16px;
-    line-height: 17px;
+    font-size: 13px;
+    line-height: 15px;
 }
 
 div#import_products section#form_container div#guidelines li {
@@ -987,6 +987,13 @@ div#import_products section#form_container div#errors_container table#csv_error_
 div#import_products section#form_container div#errors_container table#csv_error_list td div.error_line {
     text-align: left;
     padding: 2px;
+}
+
+div#import_products section#form_container div#import_options input#new_menu_name,
+div#import_products section#form_container div#import_options select#submenu {
+    float: right;
+    width: 200px;
+    margin-top: 2px;
 }
 
 /* End Admin Products Page */

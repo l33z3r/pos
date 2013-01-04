@@ -76,13 +76,54 @@
             <b>
               DEPARTMENT, CATEGORY, NAME , BRAND, DESCRIPTION, PRICE, DOUBLE_PRICE, HALF_PRICE 
               CODE_NUM, UPC, PRICE_2, PRICE_3, PRICE_4, MARGIN_PERCENT, ITEMS_PER_UNIT, 
-              QUANTITY_PER_CONTAINER, COST_PRICE, UNIT, SIZE
+              QUANTITY_PER_CONTAINER, COST_PRICE, UNIT, SIZE, MENU, SUBMENU
             </b>
           </li>
       </div>
 
       <% form_tag(csv_upload_admin_products_path, :multipart => true) do %>
         <div id="fields">
+          
+          <div class="field">
+            <label>Overwrite Existing Products?</label><br/>
+            <%= check_box_tag :overwrite_existing_products, true, true %>
+          </div>
+          
+          <div id="import_options" class="field">
+            <label>Import Menus?</label>
+            <div class="clear">&nbsp;</div>
+
+            <input type="radio" name="menu_import_type" value="<%= ProductCSVMapper::IMPORT_TYPE_NONE %>" 
+                   onclick="$('#submenu').attr('disabled', true);$('#new_menu_name').attr('disabled', true);"/>
+            No
+
+            <div class="clear">&nbsp;</div>
+
+            <input type="radio" name="menu_import_type" checked="true" value="<%= ProductCSVMapper::IMPORT_TYPE_CREATE %>" 
+                   onclick="$('#submenu').attr('disabled', true);$('#new_menu_name').attr('disabled', false);"/>
+            Create New:
+
+            <input type="text" name="new_menu_name" id="new_menu_name"
+                   value="Imported Menu <%= Time.zone.now.to_s(:short) %>"/>
+            <div class="clear">&nbsp;</div>
+
+            <input type="radio" name="menu_import_type" value="<%= ProductCSVMapper::IMPORT_TYPE_ADD_TO_SUBMENU %>" 
+                   onclick="$('#submenu').attr('disabled', false);$('#new_menu_name').attr('disabled', true);"/>
+            Add Products To Sub Menu:
+
+            <select id="submenu" name="submenu_id" disabled="true">
+              <% current_outlet.displays.all.each do |display| %>
+                <optgroup label="<%= display.name %>">
+                  <% display.menu_pages.each do |mp| %>
+                    <option value="<%= mp.id %>"><%= mp.name %></option>
+                  <% end %>
+                </optgroup>
+              <% end %>
+            </select>
+          </div>
+
+          <div class="clear">&nbsp;</div>
+
           <div class="field">
             <label>Select CSV File</label><br/>
             <%= file_field_tag :dump_file %>

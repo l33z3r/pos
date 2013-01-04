@@ -1,6 +1,9 @@
 class Admin::ProductsController < Admin::AdminController
   cache_sweeper :product_sweeper
 
+  MENU_TYPE_NORMAL = 1
+  MENU_TYPE_EMBEDDED = 2
+  
   def index
     respond_to do |format|
       
@@ -52,10 +55,20 @@ class Admin::ProductsController < Admin::AdminController
   end
 
   def csv_upload
+    if !params[:dump_file]
+      flash.now[:error] = "You did not supply a CSV file."
+      render :csv_import
+      return
+    end
+    
+    @overwrite_existing_products = params[:overwrite_existing_products]
+    
     @product_count = 0
     @category_count = 0
     @department_count = 0
 
+    @menus = {}
+    
     @products = []
 
     @csv_validation_errors = {}
@@ -85,7 +98,7 @@ class Admin::ProductsController < Admin::AdminController
         @categories[@category_name] = []
       end
 
-      @new_product = ProductCSVMapper::product_from_row row, current_outlet
+      @new_product = ProductCSVMapper::product_from_row row, current_outlet, @overwrite_existing_products
 
       if @department_name and @category_name
         @departments[@department_name] << @category_name
@@ -95,32 +108,44 @@ class Admin::ProductsController < Admin::AdminController
         @categories[@category_name] << @new_product
       end
       
+      #menus
+      @menu_name = ProductCSVMapper::menu_from_row row
+      @submenu_name = ProductCSVMapper::submenu_from_row row
       
+      if @menu_name and !@menus[@menu_name]
+        if @submenu_name
+          @menus[@menu_name] = {
+            :type => MENU_TYPE_EMBEDDED,
+            :pages => {}
+          }
+        else
+          @menus[@menu_name] = {
+            :type => MENU_TYPE_NORMAL,
+            :products => []
+          }
+        end
+      end
       
+      if @menus[@menu_name][:type] == MENU_TYPE_EMBEDDED
+        if @submenu_name
+          if !@menus[@menu_name][:pages][@submenu_name]
+            @menus[@menu_name][:pages][@submenu_name] = []
+          end
+        
+          @menus[@menu_name][:pages][@submenu_name] << @new_product
+        end
+      elsif @menus[@menu_name][:type] == MENU_TYPE_NORMAL
+        @menus[@menu_name][:products] << @new_product
+      end
       
-      
-      #      #menus
-      #      @menu_name = ProductCSVMapper::menu_from_row row
-      #      @submenu_name = ProductCSVMapper::submenu_from_row row
-      #
-      #      if @menu_name and !@menus[@menu_name]
-      #        @menus[@menu_name] = {
-      #          :type => MENU_TYPE_NORMAL,
-      #          :
-      #        }
-      #      end
-      #
-      #      if @category_name and !@categories[@category_name]
-      #        @categories[@category_name] = []
-      #      end
-
-      
-      
-      
+      if @category_name and !@categories[@category_name]
+        @categories[@category_name] = []
+      end
       
       #validate the product
       logger.info "!!!VALID? #{@new_product.valid?}"
-
+      
+      #check for a duplicate in the csv
       @name_taken = false
 
       @products.each do |p|
@@ -134,7 +159,7 @@ class Admin::ProductsController < Admin::AdminController
         
         #need to manually add in a name taken error
         if @name_taken
-          @new_product.errors.add(:name, "is a duplicate of another product")
+          @new_product.errors.add(:name, "is a duplicate of another product in the csv")
         end
         
         @product_errors = []
@@ -200,6 +225,65 @@ class Admin::ProductsController < Admin::AdminController
         end
       end
 
+      @menu_import_type = params[:menu_import_type].to_i
+    
+      if @menu_import_type == ProductCSVMapper::IMPORT_TYPE_NONE
+        #do nothing
+      elsif @menu_import_type == ProductCSVMapper::IMPORT_TYPE_CREATE
+        @new_menu_name = params[:new_menu_name]
+        
+        @new_display = Display.create({:outlet_id => current_outlet.id, :name => @new_menu_name})        
+        @new_display.save!
+        Display.set_default @new_display.id, current_outlet
+        
+        @menus.each do |menu_name, submenu_hash|
+          @new_page = @new_display.menu_pages.build({:outlet_id => current_outlet.id, :name => menu_name, :page_num => (@new_display.menu_pages.count + 1)})
+          @new_page.save!
+          
+          if submenu_hash[:type] == MENU_TYPE_EMBEDDED
+            @new_embedded_display = Display.create({:outlet_id => current_outlet.id, :name => "#{menu_name} Embedded"})
+            @new_embedded_display.save!
+            
+            submenu_hash[:pages].each do |submenu_name, products|
+              @new_subpage = @new_embedded_display.menu_pages.build({:outlet_id => current_outlet.id, :name => submenu_name, 
+                  :page_num => @new_embedded_display.menu_pages.count + 1})
+              @new_subpage.save!
+              
+              #simply add menu items to the page now
+              products.each_with_index do |p, index|
+                @new_subpage.menu_items.build({:outlet_id => current_outlet.id, 
+                    :product_id => p.id, :order_num => (index + 1)}).save!
+              end
+            end
+            
+            @new_page.embedded_display_id = @new_embedded_display.id
+            @new_page.save!
+          elsif submenu_hash[:type] == MENU_TYPE_NORMAL
+            #simply add menu items to the page now
+            submenu_hash[:products].each_with_index do |p, index|
+              @new_page.menu_items.build({:outlet_id => current_outlet.id, 
+                  :product_id => p.id, :order_num => (index + 1)}).save!
+            end
+          end
+        end
+      elsif @menu_import_type == ProductCSVMapper::IMPORT_TYPE_ADD_TO_SUBMENU
+        @submenu_id = params[:submenu_id]
+        
+        @page_to_add_to = MenuPage.find_by_id @submenu_id
+        
+        if @page_to_add_to
+          @page_product_ids = @page_to_add_to.menu_items.map(&:product_id)
+            
+          @products.each do |p|
+            #make sure it is not already on this menu
+            if !@page_product_ids.include? p.id
+              @page_to_add_to.menu_items.build({:outlet_id => current_outlet.id, 
+                  :product_id => p.id, :order_num => (@page_to_add_to.menu_items.count + 1)}).save!
+            end
+          end
+        end
+      end
+    
       set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT
     
       flash[:notice] = "CSV Import Successful! #{@product_count} new products, #{@category_count} new categories and #{@department_count} new departments have been added to the database."

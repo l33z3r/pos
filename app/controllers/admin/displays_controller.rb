@@ -276,14 +276,9 @@ class Admin::DisplaysController < Admin::AdminController
   end
 
   def default
-    @old_default_display = Display.load_default(current_outlet)
-    @old_default_display.is_default = false
-    @old_default_display.save
-
-    @new_default_display = current_outlet.displays.find(params[:id])
-    @new_default_display.is_default = true
-    @new_default_display.save
-
+    @new_default_display_id = params[:id]
+    Display.set_default @new_default_display_id, current_outlet
+    
     set_system_wide_update_prompt_required GlobalSetting::SYSTEM_WIDE_UPDATE_HARD
     
     render :json => {:success => true}.to_json
