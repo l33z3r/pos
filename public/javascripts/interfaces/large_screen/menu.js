@@ -574,12 +574,18 @@ function testForPricePrompt(orderItem) {
     }
 }
 
-function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
+function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick, includeServerAddedText, groupItems) {
+    //this prevents a huge receipt
+    if(groupItems) {
+        orderItems = groupOrderItems(order);
+    } else {
+        orderItems = order.items;
+    }
+    
     allOrderItemsReceiptHTML = "";
 
-    for(var i=0; i<order.items.length; i++) {
-        item = order.items[i];
-        allOrderItemsReceiptHTML += getOrderItemReceiptHTML(order.items[i], includeNonSyncedStyling, includeOnClick, includeServerAddedText);
+    for(var i=0; i<orderItems.length; i++) {
+        allOrderItemsReceiptHTML += getOrderItemReceiptHTML(orderItems[i], includeNonSyncedStyling, includeOnClick, includeServerAddedText);
     }
     
     return allOrderItemsReceiptHTML;
@@ -1064,7 +1070,7 @@ function loadReceipt(order, doScroll) {
     var orderTotal = order.total;
     orderItems = order.items;
 
-    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(order);
+    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(order, true, true, true, false);
     $('#till_roll').html($('#till_roll').html() + allOrderItemsRecptHTML);
 
     if(orderTotal != null) {
@@ -1403,8 +1409,8 @@ function doTotalFinal() {
     }
     
     //do up the subtotal and total and retrieve the receipt html for both the login screen and for print
-    receiptHTML = fetchFinalReceiptHTML(false, true, false);
-    printReceiptHTML = fetchFinalReceiptHTML(true, false, printVatReceipt);
+    receiptHTML = fetchFinalReceiptHTML(false, true, false, false);
+    printReceiptHTML = fetchFinalReceiptHTML(true, false, printVatReceipt, printSummaryReceipt);
       
     setLoginReceipt("Last Sale", receiptHTML);
     
@@ -2372,7 +2378,7 @@ function splitBillScreenKeypadClickCancel() {
 
 function loadSplitBillReceipts() {
     //ORDER FROM
-    var orderFromReceiptHTML = getAllOrderItemsReceiptHTML(splitBillOrderFrom, false, false, true);
+    var orderFromReceiptHTML = getAllOrderItemsReceiptHTML(splitBillOrderFrom, false, false, true, false);
     $('#split_bill_from_till_roll').html(orderFromReceiptHTML);
     
     $('#split_bill_from_till_roll .order_line').each(function() {
@@ -2390,7 +2396,7 @@ function loadSplitBillReceipts() {
     $('#split_bill_from_total_value').html(currency(splitBillOrderFrom.total));
     
     //ORDER TO
-    var orderToReceiptHTML = getAllOrderItemsReceiptHTML(splitBillOrderTo, false, false, true);
+    var orderToReceiptHTML = getAllOrderItemsReceiptHTML(splitBillOrderTo, false, false, true, false);
     $('#split_bill_to_till_roll').html(orderToReceiptHTML);
     
     $('#split_bill_to_till_roll .order_line').each(function() {

@@ -1,0 +1,8 @@
+<% if @gs.parsed_value %>
+  $('#toggle_print_summary_receipt_button').addClass('selected');
+<% else %>
+  $('#toggle_print_summary_receipt_button').removeClass('selected');
+<% end %>
+
+printSummaryReceipt = <%=@gs.parsed_value%>;
+togglePrintSummaryReceiptInProgress = false;

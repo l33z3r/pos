@@ -1365,3 +1365,88 @@ function setOrderItemAdditionsGridState() {
         }
     }
 }
+
+var itemHash;
+
+function groupOrderItems(order) {
+    //make a copy of the orders items and re-arrange them
+    var copiedOrder = {};
+
+    var copiedOrderForRearrange = $.extend(true, copiedOrder, order);
+    var orderItems = copiedOrderForRearrange.items;
+    
+    itemHash = {};
+    var itemKey;
+    var item;
+    
+    //do the grouping
+    for(var i=0; i<orderItems.length; i++) {
+        item = orderItems[i];
+        
+        //make up a hash key from all the vars
+        //        'amount':amount,
+        //        'product':product,
+        //        'tax_rate':taxRate,
+        //        'product_price':productPrice,
+        //        'is_double':isDouble,
+        //        'is_half':isHalf,
+        //        'total_price':totalProductPrice,
+        //        'is_void':false
+        //        
+        //        'description' : desc,
+        //            'abs_charge' : absCharge,
+        //            'is_add' : oiaIsAdd, 
+        //            'is_note' : isNote,
+        //            'hide_on_receipt' : hideOnReceipt,
+        //            'is_addable' : isAddable,
+        //            'product_id' : productId
+        //            
+        //            currentOrderItem['modifier'] = {
+        //        'id':modifierId,
+        //        'name':modifierName,
+        //        'price':modifierPrice
+        itemKey = item.product.name + item.product_price + item.is_double + item.is_half + item.is_void;
+        
+        var oia;
+        
+        if(item.oia_items) {
+            for(var j=0; j<item.oia_items.length; j++) {
+                oia = item.oia_items[j];
+            
+                itemKey += oia.description + oia.abs_charge + oia.is_add + oia.is_note + oia.hide_on_receipt + oia.is_addable + oia.product_id;
+            }
+        }
+        
+        //also include the modifier if there is one
+        if(item.modifier) {
+            itemKey += item.modfier.id + item.modfier.name + item.modfier.price;
+        }
+        
+        itemKey = itemKey.replace(/ /g, "-");
+        
+        //console.log("itemKey: " + itemKey);
+
+        if(!itemHash[itemKey]) {
+            itemHash[itemKey] = {
+                count : parseInt(item.amount),
+                item : item
+            }
+        } else {
+            itemHash[itemKey].count += parseInt(item.amount);
+            //console.log(itemHash[itemKey].count);
+        }
+    } 
+    
+    var newItems = new Array();
+    var newItem;
+    
+    for(newItemKey in itemHash) {
+        newItem = itemHash[newItemKey].item;
+        newItem.amount = itemHash[newItemKey].count;
+        newItems.push(newItem);
+    }
+         
+    orderItems = newItems;
+         
+    return orderItems;    
+}

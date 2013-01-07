@@ -145,7 +145,7 @@ function parsePreviousOrder(previousOrderJSON) {
     
     voidOrderInfoHTML += clearHTML;
     
-    setPreviousSaleReceipt(voidOrderInfoHTML + fetchFinalReceiptHTML(false, true, printVatReceipt));
+    setPreviousSaleReceipt(voidOrderInfoHTML + fetchFinalReceiptHTML(false, true, printVatReceipt, false));
     
     //enable the "re-open order" button
     $('#continue_order_button').hide();
@@ -282,7 +282,7 @@ function loadOpenTableOrder(table_id) {
     
     var orderHTML = fetchPreviousSalesReceiptHeaderHTML(totalOrder);
     
-    orderHTML += getAllOrderItemsReceiptHTML(currentSelectedOpenTableOrder, false, false, true);
+    orderHTML += getAllOrderItemsReceiptHTML(currentSelectedOpenTableOrder, false, false, true, false);
     
     setPreviousSaleReceipt(orderHTML);
     
@@ -342,6 +342,6 @@ function printPreviousSale() {
         return;
     }
     
-    printReceiptHTML = fetchFinalReceiptHTML(true, false, printVatReceipt);
+    printReceiptHTML = fetchFinalReceiptHTML(true, false, printVatReceipt, printSummaryReceipt);
     printReceipt(printReceiptHTML, true);
 }

@@ -310,6 +310,7 @@ Pos::Application.routes.draw do
     post 'toggle_cash_total_option' => "global_settings#toggle_cash_total_option"
     post 'update_show_report_in_cash_total' => "global_settings#update_show_report_in_cash_total"
     post 'toggle_print_receipt' => "global_settings#toggle_print_receipt"
+    post 'toggle_print_summary_receipt' => "global_settings#toggle_print_summary_receipt"
     
     #dynamic css that picks up styles from the styles in the settings table
     get 'custom_themes' => "custom_themes#index"

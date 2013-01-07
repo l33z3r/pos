@@ -53,8 +53,8 @@ function fetchLastRoomID(user_id) {
 
 function printReceipt(content, printRecptMessage, printerID) {
     var receiptContent = receiptContentSetup(content, printRecptMessage);
-    printContent(receiptContent, printerID);
-}
+    printContent(receiptContent, printerID);   
+}        
 
 //this causes a local print resulting in a popup
 function printLocalReceipt(content, printRecptMessage) {
@@ -99,7 +99,7 @@ function receiptContentSetup(content, printRecptMessage) {
 //see here for code for listener: https://www.mozdev.org/bugs/show_bug.cgi?id=24359#c4
 var printerProgressListener = {
     stateIsRequest:false,
-        printing: false,
+    printing: false,
     QueryInterface : function(aIID) {
         if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
             aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
@@ -125,19 +125,22 @@ var printerProgressListener = {
     onProgressChange : function(aWebProgress, aRequest,
         aCurSelfProgress, aMaxSelfProgress,
         aCurTotalProgress, aMaxTotalProgress){
-//        alert('Self Current:'+aCurSelfProgress+' Self Max:'+aMaxSelfProgress
-//            +' Total Current:'+aCurTotalProgress+' Total Max:'+aMaxTotalProgress);
+        //        alert('Self Current:'+aCurSelfProgress+' Self Max:'+aMaxSelfProgress
+        //            +' Total Current:'+aCurTotalProgress+' Total Max:'+aMaxTotalProgress);
         
         this.printing = true;
     },
    
     onStatusChange : function(aWebProgress, aRequest, aStateFlags, aStatus) {
-//        alert('Status Change -> State Flags:'+aStateFlags+' Status:'+aStatus);
+    //        alert('Status Change -> State Flags:'+aStateFlags+' Status:'+aStatus);
     },
     onSecurityChange : function(aWebProgress, aRequest, aState){}
 //    onLinkIconAvailable : function(a){}
 };
     
+var showPrintWindow = false;
+var printWin;
+
 function printContent(content, printerID) {
     if(inMediumInterface()) {
         niceAlert("Printing is not yet supported for the cloud on mobiles except for ordering");
@@ -147,6 +150,21 @@ function printContent(content, printerID) {
     if(!checkForPlugins()) {
         return;
     }
+    
+    //set the frame content
+    $('#printFrame').contents().find('#till_roll').html(content);
+    
+    //this is used for developer purposes only and this var can only be set in the console
+    if(showPrintWindow) {
+        printWin = window.open("", "printWin", "height=500, width=320,toolbar=no,scrollbars=yes,menubar=no");
+        var printFrameContent = $('#printFrame').contents().find("html").html();
+        printWin.document.write(printFrameContent);
+        
+        //make it scrollable
+        $(printWin.document).contents().find('body').css("overflow", "scroll");
+        
+        return;
+    } 
     
     console.log("Attempting to print to printer " + printerID);
     
@@ -229,19 +247,17 @@ function printContent(content, printerID) {
     //register the progress listener
     jsPrintSetup.setPrintProgressListener(printerProgressListener);
         
-    // Do Print 
-    $('#printFrame').contents().find('#till_roll').html(content);
-    
     //set some printer settings
     var mmToPixelFactor = 3.779527559;
     var paperWidth = printer.paper_width_mm * mmToPixelFactor;
     $('#printFrame').contents().find('body').width(paperWidth + "px");
     $('#printFrame').contents().find('body').css("font-size", printer.font_size + "px");
     
+    // Do Print 
     jsPrintSetup.printWindow(printFrame);
 }
 
-function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, includeVatBreakdown) {
+function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, includeVatBreakdown, groupItems) {
     if(typeof(includeBusinessInfo) == 'undefined') {
         includeBusinessInfo = false;
     }
@@ -258,7 +274,7 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, incl
     
     finalReceiptHTML += fetchFinalReceiptHeaderHTML();
     
-    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(totalOrder, false, false, includeServerAddedText);
+    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(totalOrder, false, false, includeServerAddedText, groupItems);
     
     finalReceiptHTML += clearHTML + allOrderItemsRecptHTML;
     

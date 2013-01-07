@@ -94,8 +94,6 @@ var railsEnvironment;
 var kioskMode;
 var overrideKiosk;
 
-var showPrintFrame;
-
 //business info
 var business_name;
 var business_address;
@@ -200,6 +198,8 @@ var globalSettingsMapStorageKey = "global_settings_map";
 
 var comPortModeString;
 
+var printSummaryReceipt;
+
 function initJSGlobalSettings() {
     if(typeof(globalSettingsMap) != "undefined") {
         storeSalesResourceInStorage(globalSettingsMapStorageKey, globalSettingsMap);
@@ -301,8 +301,6 @@ function populateSettingsFromMap(map) {
     kioskMode = map['kioskMode'];
     overrideKiosk = map['overrideKiosk'];
 
-    showPrintFrame = map['showPrintFrame'];
-
     //business info
     business_name = map['business_name'];
     business_address = map['business_address'];
@@ -403,4 +401,6 @@ function populateSettingsFromMap(map) {
     systemWideUpdatePromptRequired = map['systemWideUpdatePromptRequired']; 
     
     comPortModeString = map['comPortModeString'];
+    
+    printSummaryReceipt = globalSettingsMap['printSummaryReceipt'];
 }

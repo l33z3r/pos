@@ -97,6 +97,7 @@ class GlobalSetting < ActiveRecord::Base
   ENABLE_POLLING_FOR_KITCHEN_SCREEN = 79
   SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED = 80
   COM_PORT_MODE_STRING = 81
+  PRINT_SUMMARY_RECEIPT = 82
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -179,7 +180,8 @@ class GlobalSetting < ActiveRecord::Base
     OFFLINE_ORDER_DELEGATE_TERMINAL_ID => "Offline Order Delegate Terminal ID",
     ENABLE_POLLING_FOR_KITCHEN_SCREEN => "Enable Polling For Kitchen Screen",
     SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED => "Do We Need To Show A Prompt To Trigger A Reload?",
-    COM_PORT_MODE_STRING => "Com Port Mode String"
+    COM_PORT_MODE_STRING => "Com Port Mode String",
+    PRINT_SUMMARY_RECEIPT => "Print Summary Receipt"
   }
   
   SYSTEM_WIDE_UPDATE_NONE = 0
@@ -267,8 +269,9 @@ class GlobalSetting < ActiveRecord::Base
     OFFLINE_ORDER_DELEGATE_TERMINAL_ID => SYSTEM_WIDE_UPDATE_SOFT,
     ENABLE_POLLING_FOR_KITCHEN_SCREEN => SYSTEM_WIDE_UPDATE_HARD,
     SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED => SYSTEM_WIDE_UPDATE_NONE,
-    COM_PORT_MODE_STRING => SYSTEM_WIDE_UPDATE_NONE
-    }
+    COM_PORT_MODE_STRING => SYSTEM_WIDE_UPDATE_NONE,
+    PRINT_SUMMARY_RECEIPT => SYSTEM_WIDE_UPDATE_NONE
+  }
   
   LATEST_TERMINAL_HOURS = 24
   
@@ -542,6 +545,9 @@ class GlobalSetting < ActiveRecord::Base
     when COM_PORT_MODE_STRING
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{COM_PORT_MODE_STRING.to_s}_#{args[:fingerprint]}", :value => "96,n,8,1", :label_text => LABEL_MAP[COM_PORT_MODE_STRING])
       @gs.parsed_value = @gs.value    
+    when PRINT_SUMMARY_RECEIPT
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{PRINT_SUMMARY_RECEIPT.to_s}_#{args[:fingerprint]}", :value => "true", :label_text => LABEL_MAP[PRINT_SUMMARY_RECEIPT])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
     else
       @gs = load_setting property, current_outlet
       @gs.parsed_value = @gs.value
@@ -708,6 +714,9 @@ class GlobalSetting < ActiveRecord::Base
       elsif key.starts_with? "#{SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED.to_s}_"
         new_value = value.to_i
         write_attribute("value", new_value)      
+      elsif key.starts_with? "#{PRINT_SUMMARY_RECEIPT.to_s}_"
+        new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
       end
     
     end
@@ -954,3 +963,4 @@ end
 #  outlet_id         :integer(8)
 #
 
+    

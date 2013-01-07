@@ -297,7 +297,15 @@
       </div>
 
       <div id="totals_screen_misc_buttons_right">
-        <% @gs = GlobalSetting.setting_for GlobalSetting::AUTO_PRINT_RECEIPT, current_outlet %>
+        <% @gs = GlobalSetting.setting_for GlobalSetting::PRINT_SUMMARY_RECEIPT, current_outlet, {:fingerprint => @terminal_fingerprint} %>
+        <div class="button <%= @gs.parsed_value %> <%= @gs.parsed_value ? 'selected' : '' %>" id="toggle_print_summary_receipt_button" data-onpress="togglePrintSummaryReceipt()">
+          <div class="icon">
+            <img src="/images/button_logos/detailed_receipt_button.png" id="toggle_print_summary_receipt_button_img"/>
+          </div>
+          <div class="button_name">Summary Receipt</div>
+        </div>
+
+<% @gs = GlobalSetting.setting_for GlobalSetting::AUTO_PRINT_RECEIPT, current_outlet %>
         <div class="button <%= @gs.parsed_value ? 'selected' : '' %>" id="toggle_print_receipt_button" data-onpress="togglePrintReceipt()">
           <div class="icon">
             <img src="/images/<%= @gs.parsed_value ? 'toggle_receipt_on_button.png' : 'toggle_receipt_off_button.png' %>" id="toggle_print_receipt_button_img"/>

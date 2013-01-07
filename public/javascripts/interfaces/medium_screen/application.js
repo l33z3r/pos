@@ -22,35 +22,10 @@ $(function(){
 });
     
 function doGlobalInit() {
-    //auto login for now until we sort out a pin screen
-//    if(!current_user_id) {
-//        current_user_id = employees[0].id;
-//        current_user_nickname = employees[0].nickname;
-//        current_user_is_admin = employees[0].is_admin;
-//        current_user_passcode = employees[0].passcode;
-//    
-//        storeActiveUserID(current_user_id);
-//    
-//        //send ajax login
-//        $.ajax({
-//            type: 'POST',
-//            url: '/login',
-//            data: {
-//                employee_id : current_user_id
-//            }
-//        });
-//    }
-    
+   
     //allow scroll for dev
     if(inDevMode()) {
         $('body').css("overflow", "scroll");
-    }
-    
-    if(showPrintFrame) {
-        $('#wrapper').height(1770);
-        $('#body').height(1770);
-        $('#printFrame').width(600).height(1800);
-        $('#printFrame').css("overflow", "scroll");
     }
     
     //need to set the scroll content holder width

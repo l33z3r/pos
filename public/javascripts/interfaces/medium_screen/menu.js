@@ -825,12 +825,18 @@ function showEditPopupInit() {
     showEditPopup(receiptItem);
 }
 
-function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick, includeServerAddedText) {
+function getAllOrderItemsReceiptHTML(order, includeNonSyncedStyling, includeOnClick, includeServerAddedText, groupItems) {
+    //this prevents a huge receipt
+    if(groupItems) {
+        orderItems = groupOrderItems(order);
+    } else {
+        orderItems = order.items;
+    }
+    
     allOrderItemsReceiptHTML = "";
 
-    for (var i = 0; i < order.items.length; i++) {
-        item = order.items[i];
-        allOrderItemsReceiptHTML += getOrderItemReceiptHTML(order.items[i], includeNonSyncedStyling, includeOnClick, includeServerAddedText);
+    for (var i = 0; i < orderItems.length; i++) {
+        allOrderItemsReceiptHTML += getOrderItemReceiptHTML(orderItems[i], includeNonSyncedStyling, includeOnClick, includeServerAddedText);
     }
 
     return allOrderItemsReceiptHTML;

@@ -462,8 +462,6 @@ globalSettingsMap['railsEnvironment'] = "<%= ENV['RAILS_ENV'] %>";
 globalSettingsMap['kioskMode'] = <%= CUSTOM_CONFIG["in_kiosk_mode"] %>;
 globalSettingsMap['overrideKiosk'] = <%= params["override_kiosk"] or params["ok"] ? true : false %>;
 
-globalSettingsMap['showPrintFrame'] = <%= params["show_print_frame"] or params["spf"] ? true : false %>;
-
 globalSettingsMap['business_name'] = "<%= @business_name %>";
 globalSettingsMap['business_address'] = "<%= @business_address %>";
 globalSettingsMap['business_telephone'] = "<%= @business_telephone %>";
@@ -580,3 +578,5 @@ globalSettingsMap['SYSTEM_WIDE_UPDATE_TYPE_HARD'] = <%= GlobalSetting::SYSTEM_WI
 globalSettingsMap['systemWideUpdatePromptRequired'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
 
 globalSettingsMap['comPortModeString'] = "<%= GlobalSetting.parsed_setting_for GlobalSetting::COM_PORT_MODE_STRING, current_outlet, {:fingerprint => @terminal_fingerprint} %>";
+
+globalSettingsMap['printSummaryReceipt'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_SUMMARY_RECEIPT, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
