@@ -14,6 +14,15 @@ class Admin::GlobalSettingsController < Admin::AdminController
     @gs = GlobalSetting.setting_for GlobalSetting::AUTO_PRINT_RECEIPT
   end
 
+  def toggle_print_summary_receipt
+    @gs = GlobalSetting.setting_for GlobalSetting::PRINT_SUMMARY_RECEIPT, {:fingerprint => @terminal_fingerprint}
+    @gs.value = (!@gs.parsed_value).to_s
+    @gs.save!
+    
+    #must reload the setting
+    @gs = GlobalSetting.setting_for GlobalSetting::PRINT_SUMMARY_RECEIPT, {:fingerprint => @terminal_fingerprint}
+  end
+
   def update_multiple
     @global_settings = GlobalSetting.update(params[:global_settings].keys, params[:global_settings].values).reject { |p| p.errors.empty? }
     

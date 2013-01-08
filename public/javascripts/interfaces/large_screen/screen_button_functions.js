@@ -47,7 +47,7 @@ function doPrintLastReceipt(withVat) {
         var includeBusinessInfo = true;
         var includeServerAddedText = false;
         
-        var content = fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, withVat);
+        var content = fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, withVat, printSummaryReceipt);
         
         printReceipt(content, true);
     } else {

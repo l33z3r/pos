@@ -201,4 +201,6 @@
   var clueyUserId = <%= Employee.cluey_user.id %>;
   
   var printLocalDeliveryReceipts = <%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_LOCAL_RECIEVE_DELIVERY, {:fingerprint => @terminal_fingerprint} %>;
+  
+  var printSummaryReceipt = <%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_SUMMARY_RECEIPT, {:fingerprint => @terminal_fingerprint} %>;
 </script>

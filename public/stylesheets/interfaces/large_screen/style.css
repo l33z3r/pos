@@ -3271,12 +3271,11 @@ div#total_screen div#payment_options_money_info_container div#totals_screen_misc
 div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons_container div#totals_screen_misc_buttons_left {
     border-spacing: 7px;
     float: left;
-    padding-left: 30px;
 }
 
 div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons_container div#totals_screen_misc_buttons_left div.button {
-    width: 95px;
-    max-width: 95px;
+    width: 85px;
+    max-width: 85px;
 }
 
 div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons_container div#totals_screen_misc_buttons_right {

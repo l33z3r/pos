@@ -256,7 +256,7 @@ function printBill() {
     //don't print vat on this receipt
     var printVat = false;
 
-    printReceipt(fetchFinalReceiptHTML(true, false, printVat), true);
+    printReceipt(fetchFinalReceiptHTML(true, false, printVat, printSummaryReceipt), true);
 }
 
 function applyDefaultServiceChargePercent() {

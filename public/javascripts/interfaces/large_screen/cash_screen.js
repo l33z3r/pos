@@ -543,6 +543,22 @@ function togglePrintReceipt() {
     });
 }
 
+var togglePrintSummaryReceiptInProgress = false;
+
+function togglePrintSummaryReceipt() {
+    if(togglePrintSummaryReceiptInProgress) {
+        niceAlert("Please wait, request pending");
+        return;
+    }
+    
+    togglePrintSummaryReceiptInProgress = true;
+    
+    $.ajax({
+        type: 'POST',
+        url: '/admin/toggle_print_summary_receipt.js'
+    });
+}
+
 var cardChargeInProgress = false;
 var cc_txn_xhr = null;
 var currentCardChargeAmount = 0;

@@ -96,8 +96,23 @@ function receiptContentSetup(content, printRecptMessage) {
     return content;
 }
 
+var showPrintWindow = false;
+var printWin;
+
 function printContent(content) {
     $('#printFrame').contents().find('#till_roll').html(content);
+    
+    //this is used for developer purposes only and this var can only be set in the console
+    if(showPrintWindow) {
+        printWin = window.open("", "printWin", "height=500, width=320,toolbar=no,scrollbars=yes,menubar=no");
+        var printFrameContent = $('#printFrame').contents().find("html").html();
+        printWin.document.write(printFrameContent);
+        
+        //make it scrollable
+        $(printWin.document).contents().find('body').css("overflow", "scroll");
+        
+        return;
+    }
     
     if(usingPrintService) {
         var content_with_css = "<!DOCTYPE html [<!ENTITY nbsp \"&#160;\"><!ENTITY amp \"&#38;\">]>\n<html>"
@@ -218,7 +233,7 @@ function printContent(content) {
 
 }
 
-function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, includeVatBreakdown) {
+function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, includeVatBreakdown, groupItems) {
     if(typeof(includeBusinessInfo) == 'undefined') {
         includeBusinessInfo = false;
     }
@@ -235,7 +250,7 @@ function fetchFinalReceiptHTML(includeBusinessInfo, includeServerAddedText, incl
     
     finalReceiptHTML += fetchFinalReceiptHeaderHTML();
     
-    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(totalOrder, false, false, includeServerAddedText);
+    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(totalOrder, false, false, includeServerAddedText, groupItems);
     
     finalReceiptHTML += clearHTML + allOrderItemsRecptHTML;
     

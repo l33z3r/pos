@@ -4,7 +4,7 @@ function fetchOrderReceiptHTML(order) {
     
     orderReceiptHTML = fetchFinalReceiptHeaderHTML();
     
-    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(currentOrder, false, false, true);
+    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(currentOrder, false, false, true, false);
     
     orderReceiptHTML += clearHTML + allOrderItemsRecptHTML;
     
@@ -152,7 +152,7 @@ function fetchCashScreenReceiptTotalsDataTable() {
 
 function fetchCashScreenReceiptHTML() {
     var cashScreenReceiptHTML = fetchCashScreenReceiptHeaderHTML() + clearHTML;
-    cashScreenReceiptHTML += getAllOrderItemsReceiptHTML(totalOrder, false, false, true) + clearHTML;
+    cashScreenReceiptHTML += getAllOrderItemsReceiptHTML(totalOrder, false, false, true, false) + clearHTML;
     
     return cashScreenReceiptHTML;
 }
