@@ -1037,7 +1037,7 @@ function loadReceipt(order, doScroll) {
     var orderTotal = order.total;
     orderItems = order.items;
 
-    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(order);
+    allOrderItemsRecptHTML = getAllOrderItemsReceiptHTML(order, true, true, true, false);
     setReceiptsHTML(getCurrentRecptHTML() + allOrderItemsRecptHTML)
 
     if (orderTotal != null) {
