@@ -12,8 +12,8 @@ var order=null;if(!isTableZeroOrder&&!ensureLoggedIn()){return;}
 if(!callHomePollInitSequenceComplete){niceAlert("Downloading Orders. Please Wait");return;}
 if(orderInProcess){niceAlert("There is an order being processed, please wait");return;}
 if(selectedTable==previousOrderTableNum){setStatusMessage("Not valid for reopened orders");return;}else if(selectedTable==tempSplitBillTableNum){setStatusMessage("Not valid for split orders");return;}else if(selectedTable==0){if(!isTableZeroOrder){setStatusMessage("You must move this order to a table");startTransferOrderMode();return;}else{lastOrderSaleText="Last Sale";order=lastTableZeroOrder;for(var i=0;i<order.items.length;i++){order.items[i].synced=false;}}}else{lastOrderSaleText="Last Order";order=tableOrders[selectedTable];if(order.items.length==0){setStatusMessage("No items present in current table order");return;}}
-if(inLargeInterface()){checkForItemsToPrint(order,current_user_nickname);}
-setStatusMessage("Sending Order");orderInProcess=true;lastSyncedOrder=order;order.table=tables[selectedTable].label;var checkForShowServerAddedText=true;for(var j=0;j<order.items.length;j++){if(checkForShowServerAddedText&&!order.items[j].synced&&!order.items[j].is_void){order.items[j].showServerAddedText=true;checkForShowServerAddedText=false;}}
+order.table=tables[selectedTable].label;if(inLargeInterface()){checkForItemsToPrint(order,current_user_nickname);}
+setStatusMessage("Sending Order");orderInProcess=true;lastSyncedOrder=order;var checkForShowServerAddedText=true;for(var j=0;j<order.items.length;j++){if(checkForShowServerAddedText&&!order.items[j].synced&&!order.items[j].is_void){order.items[j].showServerAddedText=true;checkForShowServerAddedText=false;}}
 var copiedOrder={};var copiedOrderForSend=$.extend(true,copiedOrder,order);if(inMediumInterface()){copiedOrderForSend.needsPrintDelegate=true;}
 tableOrderData={tableID:selectedTable,orderData:copiedOrderForSend}
 var userId=current_user_id;if(isTableZeroOrder){userId=last_user_id;}

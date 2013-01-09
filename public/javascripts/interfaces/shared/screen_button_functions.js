@@ -131,6 +131,8 @@ function doSyncTableOrder() {
         }
     }
     
+    order.table = tables[selectedTable].label;
+
     if(inLargeInterface()) {
         checkForItemsToPrint(order, current_user_nickname);
     }
@@ -140,8 +142,6 @@ function doSyncTableOrder() {
     orderInProcess = true;
 
     lastSyncedOrder = order;
-
-    order.table = tables[selectedTable].label;
 
     //add the serverAddedText to the first non synced item
     var checkForShowServerAddedText = true;

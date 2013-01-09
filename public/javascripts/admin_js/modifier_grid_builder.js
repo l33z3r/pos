@@ -314,8 +314,8 @@ function showBGColorPicker() {
     bgColorPicker.addChangeListener(bgColorPickerChanged);
 }
 
-function deleteGridItem(gridX, gridY) {
-    window.event.stopPropagation();
+function deleteGridItem(gridX, gridY, event) {
+    event.stopPropagation();
     
     if(updateInProgress) {
         alert("Please wait, updating cell");
