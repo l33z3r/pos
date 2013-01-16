@@ -144,6 +144,7 @@ class HomeController < ApplicationController
     @page_num = params[:page_num].to_i
     @sub_page_id = params[:sub_page_id].to_i
     
+    
     @display = TerminalDisplayLink.load_display_for_terminal @terminal_id, current_outlet
     
     @price_map = {}
