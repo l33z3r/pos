@@ -12,9 +12,6 @@
 
     <div id="buttons_container">
 
-      <!-- load a default display if none set -->
-      <% @display = Display.load_default(current_outlet) unless @display %>
-
       <% @display_buttons.each_with_index do |db, index| %>
         <div id="sales_button_<%=db.perm_id%>"
              class="button" onclick="<%= button_action db %>">
