@@ -474,6 +474,13 @@ class ApplicationController < AppBaseController
   def setup_for_subdomain
     @subdomain = request.subdomain
     
+    #@subdomain = "cluey-cluey"
+    
+    
+    
+    
+    
+    
     if @subdomain == "signup"
       redirect_to account_sign_up_url
       return
@@ -521,6 +528,13 @@ class ApplicationController < AppBaseController
           #check if we have the cross domain login auth token cookie that was 
           #set in the accounts pages to allow a login from those pages without a prompt here
           @login_auth_token = cookies[:login_auth_token]
+          
+          #@login_auth_token = "2FDHRE8dhudhU3PJMfc8A"
+          
+          
+          
+          
+          
           
           if @login_auth_token
             @auth_token_cluey_account = ClueyAccount.find_by_login_crossdomain_auth_token @login_auth_token

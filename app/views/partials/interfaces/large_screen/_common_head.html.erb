@@ -4,9 +4,6 @@
 
 <%= csrf_meta_tag %>
 
-<!-- load a default display if none set -->
-<% @display = Display.load_default(current_outlet) unless @display %>
-
 <script type="text/javascript">
   //if we pass this param, we clear our local data, this is mainly used in the mobile app
   <% if params[:reset_local_storage] == "true" %>

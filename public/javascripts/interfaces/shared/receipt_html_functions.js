@@ -143,6 +143,9 @@ var printWin;
 
 function printContent(content, printerID) {
     if(inMediumInterface()) {
+        //        var remoteHostname = "trinity";
+        //        var receiptContentJSON = content + "\n";
+        //        printReceiptRemote(remoteHostname, receiptContentJSON);
         niceAlert("Printing is not yet supported for the cloud on mobiles except for ordering");
         return;
     }
@@ -158,7 +161,8 @@ function printContent(content, printerID) {
     if(showPrintWindow) {
         printWin = window.open("", "printWin", "height=500, width=320,toolbar=no,scrollbars=yes,menubar=no");
         var printFrameContent = $('#printFrame').contents().find("html").html();
-        printWin.document.write(printFrameContent);
+        
+        $(printWin.document.body).html(printFrameContent);
         
         //make it scrollable
         $(printWin.document).contents().find('body').css("overflow", "scroll");

@@ -62,6 +62,18 @@ function getAndroidFingerPrint() {
 
 function updateApp() {
     if(inAndroidWrapper()) {        
-        clueyAndroidJSInterface.updateApp()
+        clueyAndroidJSInterface.updateApp();
+    }
+}
+
+function makeSumupPayment(amount) {
+    if(inAndroidWrapper()) {
+        clueyAndroidJSInterface.chargeWithSumup(amount);
+    }
+}
+
+function printReceiptRemote(remoteHostname, receiptContentJSON) { 
+    if(inAndroidWrapper()) {
+        clueyAndroidJSInterface.printReceiptRemote(remoteHostname, receiptContentJSON);
     }
 }

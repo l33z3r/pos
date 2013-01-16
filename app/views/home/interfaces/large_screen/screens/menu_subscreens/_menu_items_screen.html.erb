@@ -1,6 +1,9 @@
 <%#TODO: NEED TO CACHE BASED OFF THE TERMINAL ID SOMEHOW, OR FINGERPRINT%>
 <%# cache("menu_items_screen") do %>
 
+<!-- load a default display if none set -->
+<% @display = Display.load_default(current_outlet) unless @display %>
+
 <div id="menu_container">
   <div id="pages">
     <% @display.menu_pages.each do |page| %>

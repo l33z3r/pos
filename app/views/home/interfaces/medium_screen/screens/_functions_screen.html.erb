@@ -103,6 +103,15 @@
       <div class="button_name">Logout</div>
     </div>
 
+    <% if current_outlet.id == 4 %>
+      <div class="button" onclick="makeSumupPayment(getCurrentOrder().total);">
+        <div class="icon">
+          <%= image_tag "/images/button_logos/sumup.png" %>
+        </div>
+        <div class="button_name">Sumup</div>
+      </div>
+    <% end %>
+
     <div class="clear">&nbsp;</div>
 
   </div>
