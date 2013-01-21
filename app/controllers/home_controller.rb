@@ -865,6 +865,7 @@ class HomeController < ApplicationController
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/shared.js"
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/reports.js"
     
+    @files << "/blank_receipt_for_print"
 
     #
     ##

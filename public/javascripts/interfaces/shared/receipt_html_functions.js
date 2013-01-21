@@ -192,11 +192,12 @@ function printContent(content, printerID) {
             return
         }
         
-        printer = printersByID[localPrinterID];
+        printerID = localPrinterID;
+        printer = printersByID[printerID];
     }
         
     if(!printer) {
-        niceAlert("No printer found with id " + localPrinterID);
+        niceAlert("No printer found with id " + printerID);
         return;
     }
     
