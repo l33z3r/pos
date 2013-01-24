@@ -289,6 +289,7 @@ function checkForItemsToPrint(order, serverNickname) {
         console.log("checkForItemsToPrint() not yet implemented for mobiles");
         return;
     }
+    alert("checking items");
     
     var printerOrders = {};
     var items = order.items;
@@ -365,6 +366,43 @@ function checkForItemsToPrint(order, serverNickname) {
                     
                             printerOrders[nextPrinterID].push(theItem);
                         }
+                    } else {
+                        //check parent category printers
+                        var parentCategoryId = categories[categoryId].parent_category_id;
+            
+                        if(parentCategoryId != null) {
+                            var parentCategoryPrinters = categories[parentCategoryId].printers;
+                            
+                            if((typeof parentCategoryPrinters != "undefined") && parentCategoryPrinters.length > 0) {
+                                //are we allowed print from this terminal
+                                var blockedParentCategoryPrinter = false;
+                                var parentCategoryBlockedPrinters = categories[parentCategoryId].blocked_printers;
+                
+                                if((typeof parentCategoryBlockedPrinters != "undefined") && parentCategoryBlockedPrinters.length > 0) {
+                                    var blockedParentCategoryPrintersArray = parentCategoryBlockedPrinters.split(",");
+                
+                                    blockedParentCategoryPrinter = $.inArray(terminalID.toLowerCase(), blockedParentCategoryPrintersArray) != -1;
+                                }
+                
+                                if(blockedParentCategoryPrinter) {
+                                    continue;
+                                }
+                        
+                                //now loop through the printer ids
+                                var parentCategoryPrintersArray = parentCategoryPrinters.split(",");
+                
+                                for(j=0; j<parentCategoryPrintersArray.length; j++) {
+                                    nextPrinterID = parentCategoryPrintersArray[j];
+                    
+                                    //lazy init
+                                    if(typeof(printerOrders[nextPrinterID]) == 'undefined') {
+                                        printerOrders[nextPrinterID] = new Array();
+                                    }
+                    
+                                    printerOrders[nextPrinterID].push(theItem);
+                                }
+                            }
+                        }       
                     }
                 }
             }
@@ -1433,7 +1471,7 @@ function groupOrderItems(order) {
             }
         } else {
             itemHash[itemKey].count += parseInt(item.amount);
-            //console.log(itemHash[itemKey].count);
+        //console.log(itemHash[itemKey].count);
         }
     } 
     
