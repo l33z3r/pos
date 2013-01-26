@@ -289,7 +289,6 @@ function checkForItemsToPrint(order, serverNickname) {
         console.log("checkForItemsToPrint() not yet implemented for mobiles");
         return;
     }
-    alert("checking items");
     
     var printerOrders = {};
     var items = order.items;
@@ -410,6 +409,14 @@ function checkForItemsToPrint(order, serverNickname) {
     }
     
     for(var printerID in printerOrders) {
+        if($.inArray(printersByID[printerID].printer_type, systemPrinterTypesArray) != -1) {
+            //this is a system printer that may not have been assigned yet
+            if(!printersByID[printerID].in_use) {
+                niceAlert("You are trying to print items to a kitchen or bar printer that is not yet set up.");
+                continue;
+            }
+        }
+        
         var itemsToPrint = printerOrders[printerID];
         
         var itemsToPrintOrder = {

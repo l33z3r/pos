@@ -47,20 +47,57 @@ var printers = new Array();
 var printerNetworkPaths = new Array();
 var printersByID  = {};
 
-<% current_outlet.printers.all.each do |printer|-%>
+<% current_outlet.printers.where("printer_type != ?", Printer::LOCAL).each do |printer|-%>
+
+  <% next if !printer.in_use? %>
+
   printer_info = {
   id : '<%= printer.id %>',
   label : '<%= printer.label.downcase %>',
-  network_path : '<%= escape_javascript(printer.network_path) %>',
+  local_printer : '<%= escape_javascript(printer.local_printer) %>',
+  owner_fingerprint : '<%= printer.owner_fingerprint %>',
+  network_share_name : '<%= escape_javascript(printer.network_share_name) %>',
   paper_width_mm: '<%= printer.paper_width_mm %>',
-  font_size: '<%= printer.font_size %>'
+  font_size: '<%= printer.font_size %>',
+  printer_type : <%= printer.printer_type %>, 
+  in_use : <%= printer.in_use? ? "true" : "false" %>
   }
 
   printers.push(printer_info);
-  printerNetworkPaths.push('<%= escape_javascript(printer.network_path) %>');
+  printerNetworkPaths.push('<%= escape_javascript(printer.network_share_name) %>');
   printersByID[printer_info.id] = printer_info;
 
 <% end -%>
+
+<% 
+if @terminal_fingerprint 
+  #lazy init create local printer object
+  @local_printer = current_outlet.printers.where("printer_type = ?", Printer::LOCAL).where("owner_fingerprint = ?", @terminal_fingerprint).first
+
+  if !@local_printer
+    @local_printer = Printer.new
+    @local_printer.outlet_id = current_outlet.id
+    @local_printer.printer_type = Printer::LOCAL
+    @local_printer.local_printer = ""
+    @local_printer.network_share_name = ""
+    @local_printer.label = Printer.label_for_printer_type(Printer::LOCAL)
+    @local_printer.owner_fingerprint = @terminal_fingerprint
+    @local_printer.save!
+  end
+end  
+%>
+
+var localPrinter = {
+id : '<%= @local_printer.id %>',
+label : '<%= @local_printer.label.downcase %>',
+local_printer : '<%= escape_javascript(@local_printer.local_printer) %>',
+owner_fingerprint : '<%= @local_printer.owner_fingerprint %>',
+network_share_name : '<%= escape_javascript(@local_printer.network_share_name) %>',
+paper_width_mm: '<%= @local_printer.paper_width_mm %>',
+font_size: '<%= @local_printer.font_size %>',
+printer_type : <%= @local_printer.printer_type %>, 
+in_use : <%= @local_printer.in_use? ? "true" : "false" %>
+};
 
 //
 //
@@ -495,8 +532,6 @@ globalSettingsMap['cashOutButtonID'] = "<%= ButtonMapper::CASH_OUT_BUTTON %>";
 globalSettingsMap['updateStockType'] = <%= StockTransaction::STOCK_UPDATE %>;
 globalSettingsMap['transferStockType'] = <%= StockTransaction::STOCK_TRANSFER %>;
 
-globalSettingsMap['localPrinterID'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::LOCAL_PRINTER_ID, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
-
 globalSettingsMap['creditCardChargeServiceIP'] = "<%= @credit_card_charge_service_ip %>";
 globalSettingsMap['creditCardTerminalIP'] = "<%= @credit_card_terminal_ip %>";
 globalSettingsMap['creditCardTerminalPort'] = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CREDIT_CARD_TERMINAL_PORT, current_outlet, {:fingerprint => @terminal_fingerprint} %>";
@@ -569,14 +604,23 @@ globalSettingsMap['offlineOrderDelegateTerminal'] = "<%= GlobalSetting.parsed_se
 globalSettingsMap['accountsURL'] = "<%= @accounts_url %>";
 globalSettingsMap['outletTerminalsURL'] = "<%= @outlet_terminals_url %>";
 
+globalSettingsMap['terminal_fingerprint'] = "<%= @terminal_fingerprint %>";
+
 globalSettingsMap['enablePollingForKitchenScreen'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::ENABLE_POLLING_FOR_KITCHEN_SCREEN, current_outlet %>;
 
 globalSettingsMap['SYSTEM_WIDE_UPDATE_TYPE_NONE'] = <%= GlobalSetting::SYSTEM_WIDE_UPDATE_NONE %>;
 globalSettingsMap['SYSTEM_WIDE_UPDATE_TYPE_SOFT'] = <%= GlobalSetting::SYSTEM_WIDE_UPDATE_SOFT %>;
 globalSettingsMap['SYSTEM_WIDE_UPDATE_TYPE_HARD'] = <%= GlobalSetting::SYSTEM_WIDE_UPDATE_HARD %>;
-    
+
 globalSettingsMap['systemWideUpdatePromptRequired'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
 
 globalSettingsMap['comPortModeString'] = "<%= GlobalSetting.parsed_setting_for GlobalSetting::COM_PORT_MODE_STRING, current_outlet, {:fingerprint => @terminal_fingerprint} %>";
 
 globalSettingsMap['printSummaryReceipt'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::PRINT_SUMMARY_RECEIPT, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
+
+globalSettingsMap['PRINTER_TYPE_LOCAL'] = <%= Printer::LOCAL %>;
+globalSettingsMap['PRINTER_TYPE_KITCHEN_1'] = <%= Printer::KITCHEN_1 %>;
+globalSettingsMap['PRINTER_TYPE_BAR_1'] = <%= Printer::BAR_1 %>;
+globalSettingsMap['PRINTER_TYPE_KITCHEN_2'] = <%= Printer::KITCHEN_2 %>;
+globalSettingsMap['PRINTER_TYPE_BAR_2'] = <%= Printer::BAR_2 %>;
+globalSettingsMap['PRINTER_TYPE_OTHER'] = <%= Printer::OTHER %>;

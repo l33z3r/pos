@@ -183,33 +183,35 @@ function printContent(content, printerID) {
     }
     
     var printer;
+    var printerPath;
     
     if(printerID) {
         printer = printersByID[printerID];
+        
+        if(!printer) {
+            niceAlert("No printer found with id " + printerID);
+            return;
+        }
+    
+        printerPath = printer.network_share_name.toLowerCase();
+    
     } else {
-        if(localPrinterID == -1) {
+        if(!localPrinter.in_use) {
             niceAlert("You have not set a local receipt printer for this terminal");
             return
         }
         
-        printerID = localPrinterID;
-        printer = printersByID[printerID];
-    }
-        
-    if(!printer) {
-        niceAlert("No printer found with id " + printerID);
-        return;
+        printer = localPrinter;
+        printerPath = printer.local_printer.toLowerCase();
     }
     
-    var printerNetworkPath = printer.network_path.toLowerCase();
-    
-    if($.inArray(printerNetworkPath, localPrinters) == -1) {
+    if($.inArray(printerPath, localPrinters) == -1) {
         var title = "Printer Not Installed";
         
         hideNiceAlert();
         
         ModalPopups.Alert('niceAlertContainer',
-            title, "<div id='nice_alert' class='licence_expired_header'>You are trying to print to a printer that is not installed on this terminal: " + printerNetworkPath + "</div>",
+            title, "<div id='nice_alert' class='licence_expired_header'>You are trying to print to a printer that is not installed on this terminal: " + printerPath + "</div>",
             {
                 width: 360,
                 height: 310,
@@ -220,9 +222,9 @@ function printContent(content, printerID) {
         return;
     }
     
-    console.log("Printing to printer: " + printerNetworkPath);
+    console.log("Printing to printer: " + printerPath);
     jsPrintSetup.refreshOptions();
-    jsPrintSetup.setPrinter(printerNetworkPath);
+    jsPrintSetup.setPrinter(printerPath);
         
     // set top margins in millimeters
     jsPrintSetup.setOption('marginTop', 0);

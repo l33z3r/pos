@@ -448,7 +448,9 @@ class ApplicationController < AppBaseController
   end
   
   def all_printers
-    current_outlet.printers
+    current_outlet.printers.where("printer_type != ?", Printer::LOCAL)
+    .where("printer_type != ?", Printer::KITCHEN_2)
+    .where("printer_type != ?", Printer::BAR_2)
   end
   
   def all_servers

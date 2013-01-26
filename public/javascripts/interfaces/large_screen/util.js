@@ -918,13 +918,33 @@ function checkForUninstalledPrinters() {
     
     console.log("Found " + localPrinters.length + " local printers");
     
+    //    for(i=0; i<localPrinters.length; i++) {
+    //        var nextLocalPrinterNetworkPath = localPrinters[i].toLowerCase();
+    //        localPrinters[i] = nextLocalPrinterNetworkPath;
+    //        
+    //        console.log("Local Printer " + (i+1) + ": " + nextLocalPrinterNetworkPath);
+    //        
+    //        if($.inArray(nextLocalPrinterNetworkPath, printerNetworkPaths) == -1) {
+    //            newLocalPrinters.push(nextLocalPrinterNetworkPath);
+    //        }
+    //    }
+    
     for(i=0; i<localPrinters.length; i++) {
         var nextLocalPrinterNetworkPath = localPrinters[i].toLowerCase();
         localPrinters[i] = nextLocalPrinterNetworkPath;
         
         console.log("Local Printer " + (i+1) + ": " + nextLocalPrinterNetworkPath);
         
-        if($.inArray(nextLocalPrinterNetworkPath, printerNetworkPaths) == -1) {
+        var isNew = true;
+        
+        for(j=0; j<printers.length; j++) {
+            if(nextLocalPrinterNetworkPath == printers[j].local_printer && printers[j].owner_fingerprint == terminal_fingerprint) {
+                isNew = false;
+                break;
+            }
+        }
+        
+        if(isNew) {
             newLocalPrinters.push(nextLocalPrinterNetworkPath);
         }
     }
@@ -933,15 +953,22 @@ function checkForUninstalledPrinters() {
     
     for(i=0; i<printers.length; i++) {
         //make sure to compare with the unescaped network path
-        var nextSystemPrinterNetworkPath = printers[i].network_path.toLowerCase();
+        var nextSystemPrinterNetworkPath = printers[i].network_share_name.toLowerCase();
         
-        console.log("System Printer " + (i+1) + ": " + printers[i].network_path.toLowerCase());
+        console.log("System Printer " + (i+1) + ": " + printers[i].network_share_name.toLowerCase());
         
         for(j=0; j<localPrinters.length; j++) {
             console.log("LP " + (j+1) + ": " + localPrinters[j]);
         }
     
-        if($.inArray(nextSystemPrinterNetworkPath, localPrinters) == -1) {
+        var isLocal = false;
+    
+        //first check if it is a local printer
+        if(printers[i].owner_fingerprint == terminal_fingerprint && $.inArray(printers[i].local_printer, localPrinters) != -1) {
+            isLocal = true;
+        }
+    
+        if(!isLocal && $.inArray(nextSystemPrinterNetworkPath, localPrinters) == -1) {
             notFoundPrinterIDs.push(printers[i].id);
         }
     }
@@ -958,17 +985,15 @@ function checkForUninstalledPrinters() {
     var notFoundPrintersNetworkPaths = new Array();
     
     for(i=0; i<notFoundPrinterIDs.length; i++) {
-        var nextNotFoudnPrinter = printersByID[notFoundPrinterIDs[i]];
-        var nextNotFoudnPrinterNetworkPath = nextNotFoudnPrinter.network_path.toLowerCase();        
-        console.log("Not Found Printer " + (i+1) + ": " + nextNotFoudnPrinterNetworkPath);
-        notFoundPrintersNetworkPaths.push(nextNotFoudnPrinterNetworkPath);
+        var nextNotFoundPrinter = printersByID[notFoundPrinterIDs[i]];
+        var nextNotFoundPrinterNetworkPath = nextNotFoundPrinter.network_share_name.toLowerCase();        
+        console.log("Not Found Printer " + (i+1) + ": " + nextNotFoundPrinterNetworkPath);
+        notFoundPrintersNetworkPaths.push(nextNotFoundPrinterNetworkPath);
     }
     
-    var localPrinter = printersByID[localPrinterID];
-    
-    if(localPrinter) {
-        if($.inArray(localPrinter.network_path.toLowerCase(), localPrinters) == -1) {
-            notFoundPrinterIDs.push(localPrinter.id);
+    if(localPrinter.in_use) {
+        if($.inArray(localPrinter.local_printer.toLowerCase(), localPrinters) == -1) {
+            notFoundPrintersNetworkPaths.push(localPrinter.local_printer);
         }
     }
     

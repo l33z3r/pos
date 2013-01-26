@@ -21,6 +21,7 @@ class ProductCSVMapper
   SIZE_INDEX = 18
   MENU_INDEX = 19
   SUBMENU_INDEX = 20
+  PRINTERS_INDEX = 21
   
   IMPORT_TYPE_NONE = 1
   IMPORT_TYPE_CREATE = 2
@@ -66,6 +67,18 @@ class ProductCSVMapper
     
     #unit size
     @new_product.size = size_from_row row
+    
+    #parse out the printers
+    @parsed_printers_symbols = printers_from_row(row)
+    
+    @printer_ids = []
+    
+    @parsed_printers_symbols.each do |sym|
+      @printer = Printer.get_printer_for_symbol sym, current_outlet
+      @printer_ids << @printer.id
+    end
+    
+    @new_product.selected_printers = @printer_ids
     
     @new_product
   end
@@ -214,6 +227,18 @@ class ProductCSVMapper
     end
     
     return size
+  end
+  
+  def self.printers_from_row row
+    printers = get_index row, PRINTERS_INDEX
+    
+    if printers.blank?
+      printers = []
+    else
+      printers = printers.split(" ")
+    end
+    
+    return printers
   end
   
   def self.get_index row, index

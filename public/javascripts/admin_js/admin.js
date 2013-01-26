@@ -601,13 +601,33 @@ function initTinyMCE() {
     });
 }
 
-function initLocalPrinterListDropdown() {
+function initLocalPrinterListDropdown(selectedPriner) {
+    var isSelectedText;
+    
+    //list off local printers 
+    for(i=0; i<localPrinters.length; i++) {
+        var nextLocalPrinterName = localPrinters[i].toLowerCase();
+        
+        isSelectedText = nextLocalPrinterName == selectedPriner ? "selected" : "";
+        
+        $("#local_printer_select").append("<option value='" + nextLocalPrinterName + "' " + isSelectedText + ">" + nextLocalPrinterName + "</option>");
+    }
+}
+
+function initUnaddedLocalPrinterListDropdown() {
     //list off local printers that are not already in the system
     for(i=0; i<newLocalPrinters.length; i++) {
         var nextLocalPrinterName = newLocalPrinters[i].toLowerCase();
         
-        $("#printer_network_path").append("<option value='" + nextLocalPrinterName + "'>" + nextLocalPrinterName + "</option>");
+        $(".local_unadded_printers_select").append("<option value='" + nextLocalPrinterName + "'>" + nextLocalPrinterName + "</option>");
     }
+}
+
+function editPrinter(printerNum) {
+    $("#printer_" + printerNum + "_local_printer_input").hide();
+    $("#printer_" + printerNum + "_local_printer_select").show();
+    $("#printer_" + printerNum + "_owner_fingerprint_input").removeAttr('disabled');
+    $("#printer_" + printerNum + "_network_share_name_input").removeAttr('disabled');
 }
 
 function unlockComPortEditor() {

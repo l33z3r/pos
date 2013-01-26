@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121214104414) do
+ActiveRecord::Schema.define(:version => 20130125110436) do
 
   create_table "card_transactions", :force => true do |t|
     t.integer  "order_id",         :limit => 8
@@ -524,13 +524,16 @@ ActiveRecord::Schema.define(:version => 20121214104414) do
   add_index "payments", ["outlet_id"], :name => "index_payments_on_outlet_id"
 
   create_table "printers", :force => true do |t|
-    t.integer  "outlet_id",      :limit => 8
+    t.integer  "outlet_id",          :limit => 8
     t.string   "label"
-    t.string   "network_path"
-    t.integer  "paper_width_mm",              :default => 80
-    t.integer  "font_size",                   :default => 13
+    t.string   "local_printer"
+    t.integer  "paper_width_mm",                  :default => 80
+    t.integer  "font_size",                       :default => 13
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "owner_fingerprint"
+    t.integer  "printer_type"
+    t.string   "network_share_name"
   end
 
   create_table "products", :force => true do |t|

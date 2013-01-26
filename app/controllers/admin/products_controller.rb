@@ -126,7 +126,7 @@ class Admin::ProductsController < Admin::AdminController
         end
       end
       
-      if @menus[@menu_name][:type] == MENU_TYPE_EMBEDDED
+      if @menu_name and @menus[@menu_name][:type] == MENU_TYPE_EMBEDDED
         if @submenu_name
           if !@menus[@menu_name][:pages][@submenu_name]
             @menus[@menu_name][:pages][@submenu_name] = []
@@ -134,7 +134,7 @@ class Admin::ProductsController < Admin::AdminController
         
           @menus[@menu_name][:pages][@submenu_name] << @new_product
         end
-      elsif @menus[@menu_name][:type] == MENU_TYPE_NORMAL
+      elsif @menu_name and @menus[@menu_name][:type] == MENU_TYPE_NORMAL
         @menus[@menu_name][:products] << @new_product
       end
       

@@ -127,8 +127,6 @@ var cashOutButtonID;
 var updateStockType;
 var transferStockType;
 
-var localPrinterID;
-
 var creditCardChargeServiceIP;
 var creditCardTerminalIP;
 var creditCardTerminalPort;
@@ -185,6 +183,8 @@ var offlineOrderDelegateTerminal;
 var accountsURL;
 var outletTerminalsURL;
 
+var terminal_fingerprint;
+
 var enablePollingForKitchenScreen;
 
 var systemWideUpdatePromptRequired;
@@ -199,6 +199,8 @@ var globalSettingsMapStorageKey = "global_settings_map";
 var comPortModeString;
 
 var printSummaryReceipt;
+
+var systemPrinterTypesArray;
 
 function initJSGlobalSettings() {
     if(typeof(globalSettingsMap) != "undefined") {
@@ -334,8 +336,6 @@ function populateSettingsFromMap(map) {
     updateStockType = map['updateStockType'];
     transferStockType = map['transferStockType'];
 
-    localPrinterID = map['localPrinterID'];
-
     creditCardChargeServiceIP = map['creditCardChargeServiceIP'];
     creditCardTerminalIP = map['creditCardTerminalIP'];
     creditCardTerminalPort = map['creditCardTerminalIP'];
@@ -392,6 +392,8 @@ function populateSettingsFromMap(map) {
     accountsURL = map['accountsURL'];
     outletTerminalsURL = map['outletTerminalsURL'];
 
+    terminal_fingerprint = map['terminal_fingerprint'];
+
     enablePollingForKitchenScreen = map['outletTerminalsURL'];
     
     SYSTEM_WIDE_UPDATE_TYPE_NONE = map['SYSTEM_WIDE_UPDATE_TYPE_NONE'];
@@ -403,4 +405,17 @@ function populateSettingsFromMap(map) {
     comPortModeString = map['comPortModeString'];
     
     printSummaryReceipt = globalSettingsMap['printSummaryReceipt'];
+    
+    PRINTER_TYPE_LOCAL = map['PRINTER_TYPE_LOCAL'];
+    PRINTER_TYPE_KITCHEN_1 = map['PRINTER_TYPE_KITCHEN_1'];
+    PRINTER_TYPE_BAR_1 = map['PRINTER_TYPE_BAR_1'];
+    PRINTER_TYPE_KITCHEN_2 = map['PRINTER_TYPE_KITCHEN_2'];
+    PRINTER_TYPE_BAR_2 = map['PRINTER_TYPE_BAR_2'];
+    PRINTER_TYPE_OTHER = map['PRINTER_TYPE_OTHER'];
+    
+    systemPrinterTypesArray = new Array();
+    systemPrinterTypesArray.push(PRINTER_TYPE_KITCHEN_1);
+    systemPrinterTypesArray.push(PRINTER_TYPE_BAR_1);
+    systemPrinterTypesArray.push(PRINTER_TYPE_KITCHEN_2);
+    systemPrinterTypesArray.push(PRINTER_TYPE_BAR_2);
 }

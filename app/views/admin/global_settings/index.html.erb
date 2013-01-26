@@ -11,7 +11,10 @@
 <% content_for :head do %>
   <script type="text/javascript">
     $(function() {
-      initLocalPrinterListDropdown();
+      initUnaddedLocalPrinterListDropdown();
+      
+      <% @lp = current_outlet.printers.where("printer_type = ?", Printer::LOCAL).first %>
+      initLocalPrinterListDropdown("<%=@lp.local_printer%>");
     });
   </script>
 <% end %>
@@ -1458,17 +1461,6 @@
                   </tr>
                   <tr>
                     <td>
-                      Local Receipt Printer
-                    </td>
-                    <td class="text_align_left">
-                      <% @gs = GlobalSetting.setting_for GlobalSetting::LOCAL_PRINTER_ID, current_outlet, {:fingerprint => @terminal_fingerprint} %>
-                      <%= fields_for "global_settings[]", @gs do |f| %>
-                        <%= f.select :value, options_for_select(Printer.options_for_select(current_outlet), @gs.parsed_value) %>
-                      <% end %>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
                       Cash Drawer Com Port
                     </td>
                     <td class="text_align_left">
@@ -1476,7 +1468,7 @@
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value, :id => "com_port_editor", :disabled => true %>
                       <% end %>
-                      
+
                       <div class="small_button" onclick="unlockComPortEditor()">Unlock (Advanced Users Only)</div>
                     </td>
                   </tr>
@@ -1489,7 +1481,7 @@
                       <%= fields_for "global_settings[]", @gs do |f| %>
                         <%= f.text_field :value, :id => "com_port_settings_editor", :disabled => true %>
                       <% end %>
-                      
+
                       <div class="small_button" onclick="unlockComPortEditor()">Unlock (Advanced Users Only)</div>
                     </td>
                   </tr>
@@ -1627,7 +1619,7 @@
 
             <div class="clear">&nbsp;</div>
 
-            <h4>Current Printers</h4>
+            <h4>Receipt Printer</h4>
 
             <%= form_tag update_multiple_admin_printers_path do %>
 
@@ -1636,8 +1628,156 @@
               <table id="global_settings_list" class="admin_table">
                 <thead>
                   <tr>
-                    <th width="140">Label</th>
-                    <th width="140">Network Path</th>
+                    <th width="70">Local Printer</th>
+                    <th width="170">Paper Width (MM)</th>
+                    <th width="150">Font Size</th>              
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <%= fields_for "printers[]", @lp do |f| %>
+                    <tr>
+                      <td>
+                        <select name="printers[<%=@lp.id%>][local_printer]" id="local_printer_select">
+                          <option value=''>None</option>
+                        </select>
+                      </td>                  
+
+                      <td><%= f.text_field :paper_width_mm, :size => 4 %></td>
+                      <td><%= f.text_field :font_size, :size => 4 %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Save" %>
+              </div>
+
+            <% end %>
+              
+              <div class="clear">&nbsp;</div>
+              
+            <h4>Kitchen Orders Printer</h4>
+
+            <%= form_tag update_multiple_admin_printers_path do %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="70">Label</th>
+                    <th width="70">Local Printer</th>
+                    <th width="70">Network Share Name</th>
+                    <th width="170">Paper Width (MM)</th>
+                    <th width="150">Font Size</th>              
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <% @kp1 = current_outlet.printers.where("printer_type = ?", Printer::KITCHEN_1).first %>
+
+                  <%= fields_for "printers[]", @kp1 do |f| %>
+                    <tr>
+                      <td><%= f.text_field :label, :size => 17, :disabled => true %></td>
+
+                      <td>
+                        <input type="text" style="display: <%= @kp1.in_use? ? "" : "none" %>" id="printer_1_local_printer_input"
+                               onclick="editPrinter(1);" value="<%=@kp1.local_printer%>"/>
+
+                        <select name="printers[<%=@kp1.id%>][local_printer]" class="local_unadded_printers_select"  id="printer_1_local_printer_select"
+                                style="display: <%= @kp1.in_use? ? "none" : "" %>">
+                          <option value=''>None</option>
+                        </select>
+                                <%= f.hidden_field :owner_fingerprint, :value => @terminal_fingerprint, :id => "printer_1_owner_fingerprint_input", :disabled => @kp1.in_use? %>
+                      </td>                  
+
+                      <td><%= f.text_field :network_share_name, :size => 17, :id => "printer_1_network_share_name_input", :disabled => @kp1.in_use? %></td>
+                      <td><%= f.text_field :paper_width_mm, :size => 4 %></td>
+                      <td><%= f.text_field :font_size, :size => 4 %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Save" %>
+              </div>
+
+            <% end %>
+
+            <div class="clear">&nbsp;</div>
+
+            <h4>Bar Orders Printer</h4>
+
+            <%= form_tag update_multiple_admin_printers_path do %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="70">Label</th>
+                    <th width="70">Local Printer</th>
+                    <th width="70">Network Share Name</th>
+                    <th width="170">Paper Width (MM)</th>
+                    <th width="150">Font Size</th>              
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <% @bp1 = current_outlet.printers.where("printer_type = ?", Printer::BAR_1).first %>
+
+                  <%= fields_for "printers[]", @bp1 do |f| %>
+                    <tr>
+                      <td><%= f.text_field :label, :size => 17, :disabled => true %></td>
+
+                      <td>
+                        <input type="text" style="display: <%= @bp1.in_use? ? "" : "none" %>" id="printer_1_local_printer_input"
+                               onclick="editPrinter(2);" value="<%=@bp1.local_printer%>"/>
+
+                        <select name="printers[<%=@bp1.id%>][local_printer]" class="local_unadded_printers_select"  id="printer_2_local_printer_select"
+                                style="display: <%= @bp1.in_use? ? "none" : "" %>">
+                        <option value=''>None</option>
+                        </select>
+                                <%= f.hidden_field :owner_fingerprint, :value => @terminal_fingerprint, :id => "printer_2_owner_fingerprint_input", :disabled => @bp1.in_use? %>
+                      </td>                  
+
+                      <td><%= f.text_field :network_share_name, :size => 17, :id => "printer_2_network_share_name_input", :disabled => @bp1.in_use? %></td>
+                      <td><%= f.text_field :paper_width_mm, :size => 4 %></td>
+                      <td><%= f.text_field :font_size, :size => 4 %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <div id="actions">
+                <%= submit_tag "Save" %>
+              </div>
+
+            <% end %>
+
+            <div class="clear">&nbsp;</div>
+
+            <h4>Other Printers</h4>
+
+            <%= form_tag update_multiple_admin_printers_path do %>
+
+              <div class="clear_top_margin_10">&nbsp;</div>
+
+              <table id="global_settings_list" class="admin_table">
+                <thead>
+                  <tr>
+                    <th width="70">Label</th>
+                    <th width="70">Local Printer</th>
+                    <th width="70">Network Share Name</th>
                     <th width="170">Paper Width (MM)</th>
                     <th width="150">Font Size</th>
                     <th width="150">Delete</th>                    
@@ -1645,11 +1785,12 @@
                 </thead>
 
                 <tbody>
-                  <% current_outlet.printers.all(:order => :label).each do |pr| %>
+                  <% current_outlet.printers.where("printer_type = ?", Printer::OTHER).order("label").each do |pr| %>
                     <%= fields_for "printers[]", pr do |f| %>
                       <tr>
-                        <td><%= f.text_field :label %></td>
-                        <td><%= f.text_field :network_path, :disabled => true %></td>
+                        <td><%= f.text_field :label, :size => 17 %></td>
+                        <td><%= f.text_field :local_printer, :size => 17, :disabled => true %></td>
+                        <td><%= f.text_field :network_share_name, :size => 17, :disabled => true %></td>
                         <td><%= f.text_field :paper_width_mm, :size => 4 %></td>
                         <td><%= f.text_field :font_size, :size => 4 %></td>
                         <td><%= link_to "Delete", admin_printer_path(pr), :method => :delete, :confirm => "Are You Sure?" %></td>
@@ -1667,7 +1808,9 @@
 
             <% end %>
 
-            <h4>New Printer</h4>
+            <div class="clear">&nbsp;</div>
+
+            <h4>Add New Printer</h4>
 
             <%= form_for [:admin, Printer.new] do |f| %>
 
@@ -1676,22 +1819,27 @@
               <table id="global_settings_list" class="admin_table">
                 <thead>
                   <tr>
-                    <th width="140">Label</th>
-                    <th width="140">Network Path</th>
+                    <th width="70">Label</th>
+                    <th width="70">Local Printer</th>
+                    <th width="70">Network Share Name</th>
                     <th width="170">Paper Width (MM)</th>
                     <th width="150">Font Size</th>
-                    <th width="150">Delete</th> 
                   </tr>
                 </thead>
 
                 <tbody>
                   <tr>
                     <td>
-                      <%= f.text_field :label %>
+                      <%= f.text_field :label, :size => 17 %>
+                      <%= f.hidden_field :printer_type, :value => Printer::OTHER %>
+                      <%= f.hidden_field :owner_fingerprint, :value => @terminal_fingerprint %>
                     </td>
                     <td>
-                      <!-- this gets build via js -->
-                      <%= f.select :network_path, [] %>
+                      <!-- this gets built with js -->
+                      <select name="printer[local_printer]" class="local_unadded_printers_select"></select>
+                    </td>
+                    <td>
+                      <%= f.text_field :network_share_name, :size => 17 %>
                     </td>
                     <td>
                       <%= f.text_field :paper_width_mm, :size => 4 %>
