@@ -49,8 +49,6 @@ var printersByID  = {};
 
 <% current_outlet.printers.where("printer_type != ?", Printer::LOCAL).each do |printer|-%>
 
-  <% next if !printer.in_use? %>
-
   printer_info = {
   id : '<%= printer.id %>',
   label : '<%= printer.label.downcase %>',
