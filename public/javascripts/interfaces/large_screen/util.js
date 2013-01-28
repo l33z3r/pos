@@ -952,6 +952,10 @@ function checkForUninstalledPrinters() {
     console.log("Got " + printers.length + " system printers");
     
     for(i=0; i<printers.length; i++) {
+        if(!printers[i].in_use) {
+            continue;
+        }
+    
         //make sure to compare with the unescaped network path
         var nextSystemPrinterNetworkPath = printers[i].network_share_name.toLowerCase();
         

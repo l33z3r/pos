@@ -85,17 +85,34 @@ if @terminal_fingerprint
 end  
 %>
 
-var localPrinter = {
-id : '<%= @local_printer.id %>',
-label : '<%= @local_printer.label.downcase %>',
-local_printer : '<%= escape_javascript(@local_printer.local_printer) %>',
-owner_fingerprint : '<%= @local_printer.owner_fingerprint %>',
-network_share_name : '<%= escape_javascript(@local_printer.network_share_name) %>',
-paper_width_mm: '<%= @local_printer.paper_width_mm %>',
-font_size: '<%= @local_printer.font_size %>',
-printer_type : <%= @local_printer.printer_type %>, 
-in_use : <%= @local_printer.in_use? ? "true" : "false" %>
-};
+var localPrinter;
+
+//if we have no TF yet, then just mock up a local printer object for now
+<% if @local_printer %>
+  localPrinter = {
+  id : '<%= @local_printer.id %>',
+  label : '<%= @local_printer.label.downcase %>',
+  local_printer : '<%= escape_javascript(@local_printer.local_printer) %>',
+  owner_fingerprint : '<%= @local_printer.owner_fingerprint %>',
+  network_share_name : '<%= escape_javascript(@local_printer.network_share_name) %>',
+  paper_width_mm: '<%= @local_printer.paper_width_mm %>',
+  font_size: '<%= @local_printer.font_size %>',
+  printer_type : <%= @local_printer.printer_type %>, 
+  in_use : <%= @local_printer.in_use? ? "true" : "false" %>
+  };
+<% else %>
+  localPrinter = {
+  id : '-1',
+  label : '',
+  local_printer : '',
+  owner_fingerprint : '',
+  network_share_name : '',
+  paper_width_mm: '80',
+  font_size: '13',
+  printer_type : <%= Printer::LOCAL %>, 
+  in_use : false
+  };
+<% end %>
 
 //
 //
