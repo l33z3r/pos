@@ -627,7 +627,17 @@ function editPrinter(printerNum) {
     $("#printer_" + printerNum + "_local_printer_input").hide();
     $("#printer_" + printerNum + "_local_printer_select").show();
     $("#printer_" + printerNum + "_owner_fingerprint_input").removeAttr('disabled');
+    
     $("#printer_" + printerNum + "_network_share_name_input").removeAttr('disabled');
+    
+    var myHostName; 
+    
+    try {
+        myHostName = cluey_ff_ext.myHostName();
+        $("#printer_" + printerNum + "_network_share_name_input").val("\\\\" + myHostName + "\\");
+    } catch(ex) {
+        console.log("Error getting local hostname");
+    }
 }
 
 function unlockComPortEditor() {

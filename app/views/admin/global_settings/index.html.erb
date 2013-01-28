@@ -13,7 +13,7 @@
     $(function() {
       initUnaddedLocalPrinterListDropdown();
       
-      <% @lp = current_outlet.printers.where("printer_type = ?", Printer::LOCAL).first %>
+      <% @lp = current_outlet.printers.where("printer_type = ?", Printer::LOCAL).where("owner_fingerprint = ?", @terminal_fingerprint).first %>
       initLocalPrinterListDropdown("<%=@lp.local_printer%>");
     });
   </script>
