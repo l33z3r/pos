@@ -2,7 +2,7 @@ class Printer < ActiveRecord::Base
   belongs_to :outlet
   
   validates :label, :presence => true
-  validates_uniqueness_of :label, :case_sensitive => false, :scope => :outlet_id
+  validates_uniqueness_of :label, :case_sensitive => false, :scope => [:outlet_id, :owner_fingerprint]
   
   validates_uniqueness_of :network_share_name, :case_sensitive => false, :scope => :outlet_id, :allow_blank => true
   
