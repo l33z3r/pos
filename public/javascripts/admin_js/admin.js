@@ -666,7 +666,7 @@ function setVisibleCashDrawerOptions(triggerViaPrinter) {
 }
 
 function triggerCashDrawerPrinterOptionChanged() {
-    triggerViaPrinter = $('#trigger_via_printer option:selected').val() == "yes";
+    triggerViaPrinter = $('#trigger_via_printer option:selected').val() == "true";
     setVisibleCashDrawerOptions(triggerViaPrinter);
 }
 

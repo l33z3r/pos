@@ -1647,8 +1647,8 @@
                     </td>
                     <td class="text_align_left">
                       <select onchange="triggerCashDrawerPrinterOptionChanged()" id="trigger_via_printer">
-                        <option value="yes" <%= @cash_drawer_via_printer_gs.parsed_value ? 'selected' : '' %>>Yes</option>
-                        <option value="no" <%= !@cash_drawer_via_printer_gs.parsed_value ? 'selected' : '' %>>No</option>
+                        <option value="true" <%= @cash_drawer_via_printer_gs.parsed_value ? 'selected' : '' %>>Yes</option>
+                        <option value="false" <%= !@cash_drawer_via_printer_gs.parsed_value ? 'selected' : '' %>>No</option>
                       </select>
                     </td>
                   </tr>
