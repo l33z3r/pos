@@ -14,7 +14,7 @@
       initUnaddedLocalPrinterListDropdown();
       
       <% @lp = current_outlet.printers.where("printer_type = ?", Printer::LOCAL).where("owner_fingerprint = ?", @terminal_fingerprint).first %>
-      initLocalPrinterListDropdown("<%=@lp.local_printer%>");
+      initLocalPrinterListDropdown("<%=escape_javascript @lp.local_printer%>");
       
       <% @cash_drawer_via_printer_gs = GlobalSetting.setting_for GlobalSetting::TRIGGER_CASH_DRAWER_VIA_PRINTER, current_outlet, {:fingerprint => @terminal_fingerprint} %>
       initCashDrawerOptions(<%=@cash_drawer_via_printer_gs.parsed_value%>);

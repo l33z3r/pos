@@ -26,6 +26,10 @@ function doGlobalInit() {
         if(checkForPlugins()) {
             checkForUninstalledPrinters();
             setCashDrawerComPortSettings();
+            
+            if(triggerCashDrawerViaPrinter) {
+                setCashDrawerMapLPTPortSettings();
+            }
         }
     }
     

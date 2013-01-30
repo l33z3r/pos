@@ -1029,6 +1029,21 @@ function setCashDrawerComPortSettings() {
     }
 }
 
+function setCashDrawerMapLPTPortSettings() {
+    var cashDrawerMapLPTPortSettingsSuccessfullyInitialized;
+            
+    //initialize the cash drawer map lpt port settings file if it doesn't exist
+    try {
+        cashDrawerMapLPTPortSettingsSuccessfullyInitialized = cluey_ff_ext.initializeMapLPTPort(cashDrawerViaPrinterMappedPort, cashDrawerLocalPrinterShareName);
+    } catch(ex) {
+        cashDrawerMapLPTPortSettingsSuccessfullyInitialized = false;                
+    }
+            
+    if(!cashDrawerMapLPTPortSettingsSuccessfullyInitialized) {
+        console.log("Error setting cash drawer map lpt port settings");
+    }
+}
+
 function generateBrowserSessionId() {
     generatedBrowserSessionId = Math.uuid();
     storeKeyValue(browserSessionIdStorageKey, generatedBrowserSessionId);

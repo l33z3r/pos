@@ -641,7 +641,6 @@ function editPrinter(printerNum) {
 }
 
 function unlockComPortEditor() {
-    //initialize the cash drawer settings file if it doesn't exist
     try {
         cluey_ff_ext.clearCashDrawerSettings();
     } catch(ex) {
