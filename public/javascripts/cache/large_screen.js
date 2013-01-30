@@ -758,7 +758,8 @@ function changePriceLastOrderItem(){order=getCurrentOrder();currentSelectedRecei
 function showAddNoteToOrderItemScreen(){order=getCurrentOrder();currentSelectedReceiptItemEl=getSelectedOrLastReceiptItem();if(currentSelectedReceiptItemEl){if(currentScreenIsMenu()){if(currentMenuSubscreenIsModifyOrderItem()){if(doSaveNote()){$('.button[id=sales_button_'+addNoteButtonID+'], .button[id=admin_screen_button_'+addNoteButtonID+']').removeClass("selected");resetKeyboard();switchToMenuItemsSubscreen();}}else{hideAllMenuSubScreens();$('#order_item_additions').show();doOpenOIANoteScreen();}}}}
 function showGlobalSettingsPage(){goTo('/admin/global_settings');}
 function openCashDrawer(){if(!checkForPlugins()){return;}
-try{cluey_ff_ext.openCashDrawer(cashDrawerComPort,cashDrawerCode);}catch(ex){setStatusMessage("Error opening cash drawer");}}
+var port;if(triggerCashDrawerViaPrinter){port=cashDrawerViaPrinterMappedPort;}else{port=cashDrawerComPort;}
+try{cluey_ff_ext.openCashDrawer(port,cashDrawerCode);}catch(ex){setStatusMessage("Error opening cash drawer");}}
 var addTableNamePopupEl;var addTableNamePopupAnchor;function promptAddNameToTable(){if(!callHomePollInitSequenceComplete){niceAlert("Downloading Orders. Please Wait");return;}
 if(selectedTable==0||selectedTable==-1){setStatusMessage("Only valid for table orders");return;}
 var popupHTML=$("#name_table_popup_markup").html();addTableNamePopupAnchor=$('#receipt');if(addTableNamePopupAnchor.HasBubblePopup()){addTableNamePopupAnchor.RemoveBubblePopup();}
