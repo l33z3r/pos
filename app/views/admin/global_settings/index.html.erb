@@ -1646,7 +1646,7 @@
                       Trigger Cash Drawer Via Printer?
                     </td>
                     <td class="text_align_left">
-                      <select onchange="triggerCashDrawerPrinterOptionChanged()" id="trigger_via_printer">
+                      <select name="global_settings[<%=@cash_drawer_via_printer_gs.id%>][value]" onchange="triggerCashDrawerPrinterOptionChanged()" id="trigger_via_printer">
                         <option value="true" <%= @cash_drawer_via_printer_gs.parsed_value ? 'selected' : '' %>>Yes</option>
                         <option value="false" <%= !@cash_drawer_via_printer_gs.parsed_value ? 'selected' : '' %>>No</option>
                       </select>
