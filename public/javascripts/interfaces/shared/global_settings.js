@@ -161,6 +161,10 @@ var currentResolution;
 var normalResolution;
 var resolution1360x786;
 
+var triggerCashDrawerViaPrinter;
+var cashDrawerViaPrinterMappedPort;
+var cashDrawerLocalPrinterShareName;
+
 var cashDrawerComPort;
 var cashDrawerCode;
 
@@ -369,6 +373,11 @@ function populateSettingsFromMap(map) {
     currentResolution = map['currentResolution'];
     normalResolution = map['normalResolution'];
     resolution1360x786 = map['resolution1360x786'];
+
+    triggerCashDrawerViaPrinter = map['triggerCashDrawerViaPrinter'];
+
+    cashDrawerViaPrinterMappedPort = map['cashDrawerViaPrinterMappedPort'];
+    cashDrawerLocalPrinterShareName = map['cashDrawerLocalPrinterShareName'];
 
     cashDrawerComPort = map['cashDrawerComPort'];
     cashDrawerCode = map['cashDrawerCode'];

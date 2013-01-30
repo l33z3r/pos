@@ -651,3 +651,33 @@ function unlockComPortEditor() {
     $('#com_port_settings_editor').attr("disabled", false);
     $('#com_port_editor').attr("disabled", false);
 }
+
+function initCashDrawerOptions(triggerViaPrinter) {
+    setVisibleCashDrawerOptions(triggerViaPrinter);
+}
+
+function setVisibleCashDrawerOptions(triggerViaPrinter) {
+    if(triggerViaPrinter) {
+        $('.via_printer_cash_drawer_option').show();
+        $('.direct_cash_drawer_option').hide();
+    } else {
+        $('.via_printer_cash_drawer_option').hide();
+        $('.direct_cash_drawer_option').show();
+    }
+}
+
+function triggerCashDrawerPrinterOptionChanged() {
+    triggerViaPrinter = $('#trigger_via_printer option:selected').val() == "yes";
+    setVisibleCashDrawerOptions(triggerViaPrinter);
+}
+
+function unlockMappedPrinterPortEditor() {
+    try {
+        cluey_ff_ext.clearCashDrawerViaPrinterSettings();
+    } catch(ex) {
+        setStatusMessage("Error clearing cash drawer printer settings");
+    }
+    
+    $('#mapped_printer_port_settings_editor').attr("disabled", false);
+    $('#cash_drawer_local_printer_share_name_editor').attr("disabled", false);
+}

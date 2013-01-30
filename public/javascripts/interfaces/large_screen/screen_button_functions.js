@@ -365,8 +365,16 @@ function openCashDrawer() {
         return;
     }
     
+    var port;
+    
+    if(triggerCashDrawerViaPrinter) {
+        port = cashDrawerViaPrinterMappedPort;
+    } else {
+        port = cashDrawerComPort;
+    }
+    
     try {
-        cluey_ff_ext.openCashDrawer(cashDrawerComPort, cashDrawerCode);
+        cluey_ff_ext.openCashDrawer(port, cashDrawerCode);
     } catch(ex) {
         setStatusMessage("Error opening cash drawer");
     }

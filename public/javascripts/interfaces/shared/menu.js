@@ -415,7 +415,7 @@ function checkForItemsToPrint(order, serverNickname) {
                 niceAlert("You are trying to print items to a kitchen or bar printer that is not yet set up.");
                 continue;
             }
-        }
+        }       
         
         var itemsToPrint = printerOrders[printerID];
         

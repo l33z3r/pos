@@ -98,6 +98,9 @@ class GlobalSetting < ActiveRecord::Base
   SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED = 80
   COM_PORT_MODE_STRING = 81
   PRINT_SUMMARY_RECEIPT = 82
+  TRIGGER_CASH_DRAWER_VIA_PRINTER = 83
+  CASH_DRAWER_VIA_PRINTER_MAPPED_PORT = 84
+  CASH_DRAWER_LOCAL_PRINTER_SHARE_NAME = 85
   
   LABEL_MAP = {
     BUSINESS_NAME => "Business Name", 
@@ -181,7 +184,10 @@ class GlobalSetting < ActiveRecord::Base
     ENABLE_POLLING_FOR_KITCHEN_SCREEN => "Enable Polling For Kitchen Screen",
     SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED => "Do We Need To Show A Prompt To Trigger A Reload?",
     COM_PORT_MODE_STRING => "Com Port Mode String",
-    PRINT_SUMMARY_RECEIPT => "Print Summary Receipt"
+    PRINT_SUMMARY_RECEIPT => "Print Summary Receipt",
+    TRIGGER_CASH_DRAWER_VIA_PRINTER => "Trigger Cash Drawer Via Printer",
+    CASH_DRAWER_VIA_PRINTER_MAPPED_PORT => "Cash Drawer Via Printer Mapped Port",
+  CASH_DRAWER_LOCAL_PRINTER_SHARE_NAME => "Cash Drawer Local Printer Share Name"
   }
   
   SYSTEM_WIDE_UPDATE_NONE = 0
@@ -270,7 +276,10 @@ class GlobalSetting < ActiveRecord::Base
     ENABLE_POLLING_FOR_KITCHEN_SCREEN => SYSTEM_WIDE_UPDATE_HARD,
     SYSTEM_WIDE_UPDATE_PROMPT_REQUIRED => SYSTEM_WIDE_UPDATE_NONE,
     COM_PORT_MODE_STRING => SYSTEM_WIDE_UPDATE_NONE,
-    PRINT_SUMMARY_RECEIPT => SYSTEM_WIDE_UPDATE_NONE
+    PRINT_SUMMARY_RECEIPT => SYSTEM_WIDE_UPDATE_NONE,
+    TRIGGER_CASH_DRAWER_VIA_PRINTER => SYSTEM_WIDE_UPDATE_NONE,
+    CASH_DRAWER_VIA_PRINTER_MAPPED_PORT => SYSTEM_WIDE_UPDATE_NONE,
+  CASH_DRAWER_LOCAL_PRINTER_SHARE_NAME => SYSTEM_WIDE_UPDATE_NONE
   }
   
   LATEST_TERMINAL_HOURS = 24
@@ -548,6 +557,15 @@ class GlobalSetting < ActiveRecord::Base
     when PRINT_SUMMARY_RECEIPT
       @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{PRINT_SUMMARY_RECEIPT.to_s}_#{args[:fingerprint]}", :value => "true", :label_text => LABEL_MAP[PRINT_SUMMARY_RECEIPT])
       @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when TRIGGER_CASH_DRAWER_VIA_PRINTER
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{TRIGGER_CASH_DRAWER_VIA_PRINTER.to_s}_#{args[:fingerprint]}", :value => "false", :label_text => LABEL_MAP[TRIGGER_CASH_DRAWER_VIA_PRINTER])
+      @gs.parsed_value = (@gs.value == "yes" ? true : false)
+    when CASH_DRAWER_VIA_PRINTER_MAPPED_PORT
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{CASH_DRAWER_VIA_PRINTER_MAPPED_PORT.to_s}_#{args[:fingerprint]}", :value => "LPT1", :label_text => LABEL_MAP[CASH_DRAWER_VIA_PRINTER_MAPPED_PORT])
+      @gs.parsed_value = @gs.value
+    when CASH_DRAWER_LOCAL_PRINTER_SHARE_NAME
+      @gs = find_or_create_by_outlet_id_and_key(:outlet_id => current_outlet.id, :key => "#{CASH_DRAWER_LOCAL_PRINTER_SHARE_NAME.to_s}_#{args[:fingerprint]}", :value => "shared printer", :label_text => LABEL_MAP[CASH_DRAWER_LOCAL_PRINTER_SHARE_NAME])
+      @gs.parsed_value = @gs.value
     else
       @gs = load_setting property, current_outlet
       @gs.parsed_value = @gs.value
@@ -715,6 +733,9 @@ class GlobalSetting < ActiveRecord::Base
         new_value = value.to_i
         write_attribute("value", new_value)      
       elsif key.starts_with? "#{PRINT_SUMMARY_RECEIPT.to_s}_"
+        new_value = (value == "true" ? "yes" : "no")
+        write_attribute("value", new_value)
+      elsif key.starts_with? "#{TRIGGER_CASH_DRAWER_VIA_PRINTER.to_s}_"
         new_value = (value == "true" ? "yes" : "no")
         write_attribute("value", new_value)
       end

@@ -587,6 +587,11 @@ globalSettingsMap['currentResolution'] = "<%= @currentResolution %>";
 globalSettingsMap['normalResolution'] = "<%= @normalResolution %>";
 globalSettingsMap['resolution1360x786'] = "<%= @resolution1360x786 %>";
 
+globalSettingsMap['triggerCashDrawerViaPrinter'] = <%= GlobalSetting.parsed_setting_for GlobalSetting::TRIGGER_CASH_DRAWER_VIA_PRINTER, current_outlet, {:fingerprint => @terminal_fingerprint} %>;
+
+globalSettingsMap['cashDrawerViaPrinterMappedPort'] = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CASH_DRAWER_VIA_PRINTER_MAPPED_PORT, current_outlet, {:fingerprint => @terminal_fingerprint} %>";
+globalSettingsMap['cashDrawerLocalPrinterShareName'] = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CASH_DRAWER_LOCAL_PRINTER_SHARE_NAME, current_outlet, {:fingerprint => @terminal_fingerprint} %>";
+
 globalSettingsMap['cashDrawerComPort'] = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CASH_DRAWER_COM_PORT, current_outlet, {:fingerprint => @terminal_fingerprint} %>";
 globalSettingsMap['cashDrawerCode'] = "<%= GlobalSetting.parsed_setting_for GlobalSetting::CASH_DRAWER_CODE, current_outlet, {:fingerprint => @terminal_fingerprint} %>";
 

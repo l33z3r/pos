@@ -193,8 +193,12 @@ function printContent(content, printerID) {
             return;
         }
     
-        printerPath = printer.network_share_name.toLowerCase();
-    
+        //check if it is a local printer, if so, then use the local_printer variable as the path
+        if(printer.owner_fingerprint == terminal_fingerprint) {
+            printerPath = printer.local_printer;
+        } else {
+            printerPath = printer.network_share_name.toLowerCase();   
+        }        
     } else {
         if(!localPrinter.in_use) {
             niceAlert("You have not set a local receipt printer for this terminal");
@@ -256,8 +260,14 @@ function printContent(content, printerID) {
         
     //set some printer settings
     var mmToPixelFactor = 3.779527559;
-    var paperWidth = printer.paper_width_mm * mmToPixelFactor;
-    $('#printFrame').contents().find('body').width(paperWidth + "px");
+    var paperWidthPixels = printer.paper_width_mm * mmToPixelFactor;
+    
+    var marginWidthMM = 4;
+    var marginWidthPixels = marginWidthMM * mmToPixelFactor;
+    
+    var receiptContentWidthPixels = paperWidthPixels - marginWidthPixels;
+    
+    $('#printFrame').contents().find('body').width(receiptContentWidthPixels + "px");
     $('#printFrame').contents().find('body').css("font-size", printer.font_size + "px");
     
     // Do Print 
