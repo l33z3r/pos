@@ -12,9 +12,10 @@
   <script type="text/javascript">
     $(function() {
       initUnaddedLocalPrinterListDropdown();
+      initAllLocalPrinterListDropdown();
       
       <% @lp = current_outlet.printers.where("printer_type = ?", Printer::LOCAL).where("owner_fingerprint = ?", @terminal_fingerprint).first %>
-      initLocalPrinterListDropdown("<%=escape_javascript @lp.local_printer%>");
+      initLocalReceiptPrinterListDropdown("<%=escape_javascript @lp.local_printer%>");
       
       <% @cash_drawer_via_printer_gs = GlobalSetting.setting_for GlobalSetting::TRIGGER_CASH_DRAWER_VIA_PRINTER, current_outlet, {:fingerprint => @terminal_fingerprint} %>
       initCashDrawerOptions(<%=@cash_drawer_via_printer_gs.parsed_value%>);
@@ -1727,12 +1728,6 @@
               </div>
 
             <% end %>
-              
-              
-                  
-                  
-                  
-                  
                   
               <div class="clear">&nbsp;</div>
               
@@ -1764,7 +1759,7 @@
                         <input type="text" style="display: <%= @kp1.in_use? ? "" : "none" %>" id="printer_1_local_printer_input"
                                onclick="editPrinter(1);" value="<%=@kp1.local_printer%>"/>
 
-                        <select name="printers[<%=@kp1.id%>][local_printer]" class="local_unadded_printers_select"  id="printer_1_local_printer_select"
+                        <select name="printers[<%=@kp1.id%>][local_printer]" class="all_local_printers_select"  id="printer_1_local_printer_select"
                                 style="display: <%= @kp1.in_use? ? "none" : "" %>">
                           <option value=''>None</option>
                         </select>
@@ -1817,7 +1812,7 @@
                         <input type="text" style="display: <%= @bp1.in_use? ? "" : "none" %>" id="printer_1_local_printer_input"
                                onclick="editPrinter(2);" value="<%=@bp1.local_printer%>"/>
 
-                        <select name="printers[<%=@bp1.id%>][local_printer]" class="local_unadded_printers_select"  id="printer_2_local_printer_select"
+                        <select name="printers[<%=@bp1.id%>][local_printer]" class="all_local_printers_select"  id="printer_2_local_printer_select"
                                 style="display: <%= @bp1.in_use? ? "none" : "" %>">
                         <option value=''>None</option>
                         </select>

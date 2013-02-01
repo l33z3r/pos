@@ -601,7 +601,7 @@ function initTinyMCE() {
     });
 }
 
-function initLocalPrinterListDropdown(selectedPriner) {
+function initLocalReceiptPrinterListDropdown(selectedPriner) {
     var isSelectedText;
     
     //list off local printers 
@@ -620,6 +620,15 @@ function initUnaddedLocalPrinterListDropdown() {
         var nextLocalPrinterName = newLocalPrinters[i].toLowerCase();
         
         $(".local_unadded_printers_select").append("<option value='" + nextLocalPrinterName + "'>" + nextLocalPrinterName + "</option>");
+    }
+}
+
+function initAllLocalPrinterListDropdown() {
+    //list off all local printers
+    for(i=0; i<localPrinters.length; i++) {
+        var nextLocalPrinterName = newLocalPrinters[i].toLowerCase();
+        
+        $(".all_local_printers_select").append("<option value='" + nextLocalPrinterName + "'>" + nextLocalPrinterName + "</option>");
     }
 }
 
