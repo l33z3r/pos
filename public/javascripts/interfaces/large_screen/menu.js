@@ -2735,7 +2735,7 @@ function getCashOutReceiptHTML() {
     
     cashOutTillRollHTML += "</div>" + clearHTML;
     
-    cashOutTillRollHTML += "<div id='cash_out_footer_message'>Please Attatch To Receipt</div>" + clearHTML;
+    cashOutTillRollHTML += "<div id='cash_out_footer_message'>Please attatch to receipt</div>" + clearHTML;
     
     cashOutTillRollHTML += "</div>" + clearHTML;
     
