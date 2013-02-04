@@ -78,7 +78,7 @@ if @terminal_fingerprint
     @local_printer.printer_type = Printer::LOCAL
     @local_printer.local_printer = ""
     @local_printer.network_share_name = ""
-    @local_printer.label = @terminal_id + " " + Printer.label_for_printer_type(Printer::LOCAL)
+    @local_printer.label = Printer.label_for_printer_type(Printer::LOCAL)
     @local_printer.owner_fingerprint = @terminal_fingerprint
     @local_printer.save!
   end

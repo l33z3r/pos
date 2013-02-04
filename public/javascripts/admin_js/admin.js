@@ -626,7 +626,7 @@ function initUnaddedLocalPrinterListDropdown() {
 function initAllLocalPrinterListDropdown() {
     //list off all local printers
     for(i=0; i<localPrinters.length; i++) {
-        var nextLocalPrinterName = newLocalPrinters[i].toLowerCase();
+        var nextLocalPrinterName = localPrinters[i].toLowerCase();
         
         $(".all_local_printers_select").append("<option value='" + nextLocalPrinterName + "'>" + nextLocalPrinterName + "</option>");
     }
