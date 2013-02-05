@@ -199,12 +199,12 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     tableOrders[tableID].items = newOrderItems;
     
     //re number the items
-    for(var z=0;i<tableOrders[tableID].items.length;z++) {
+    for(var z=0;z<tableOrders[tableID].items.length;z++) {
         tableOrders[tableID].items[z].itemNumber = z + 1;
     }
     
     //re-apply the discounts
-    for(var z=0;i<tableOrders[tableID].items.length;z++) {
+    for(var z=0;z<tableOrders[tableID].items.length;z++) {
         applyExistingDiscountToOrderItem(tableOrders[tableID], tableOrders[tableID].items[z].itemNumber);
     }
     
