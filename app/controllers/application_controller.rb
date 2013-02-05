@@ -476,13 +476,6 @@ class ApplicationController < AppBaseController
   def setup_for_subdomain
     @subdomain = request.subdomain
     
-    @subdomain = "cluey-cluey"
-    
-    
-    
-    
-    
-    
     if @subdomain == "signup"
       redirect_to account_sign_up_url
       return
@@ -531,7 +524,7 @@ class ApplicationController < AppBaseController
           #set in the accounts pages to allow a login from those pages without a prompt here
           @login_auth_token = cookies[:login_auth_token]
           
-          @login_auth_token = "2FDHRE8dhudhU3PJMfc8A"
+          #@login_auth_token = "2FDHRE8dhudhU3PJMfc8A"
           
           
           
