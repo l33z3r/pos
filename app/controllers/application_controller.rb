@@ -476,7 +476,7 @@ class ApplicationController < AppBaseController
   def setup_for_subdomain
     @subdomain = request.subdomain
     
-    #@subdomain = "cluey-cluey"
+    @subdomain = "cluey-cluey"
     
     
     
@@ -531,7 +531,7 @@ class ApplicationController < AppBaseController
           #set in the accounts pages to allow a login from those pages without a prompt here
           @login_auth_token = cookies[:login_auth_token]
           
-          #@login_auth_token = "2FDHRE8dhudhU3PJMfc8A"
+          @login_auth_token = "2FDHRE8dhudhU3PJMfc8A"
           
           
           
@@ -588,11 +588,10 @@ class ApplicationController < AppBaseController
       @test_for_firefox = "Firefox"
       @test_for_android = "Android"
       @test_for_ipad = "iPad"
-      @test_for_ipad_atomic = "AppleWebKit"
       
       @user_agent = request.user_agent
       
-      @is_firefox_or_ipad_or_android = @user_agent.include?(@test_for_firefox) or @user_agent.include?(@test_for_ipad) or @user_agent.include?(@test_for_ipad_atomic) or @user_agent.include?(@test_for_android)
+      @is_firefox_or_ipad_or_android = @user_agent.include?(@test_for_firefox) || @user_agent.include?(@test_for_ipad) || @user_agent.include?(@test_for_android)
     
       if !@is_firefox_or_ipad_or_android
         redirect_to browser_not_supported_accounts_accounts_url(:subdomain => current_outlet.cluey_account.name)

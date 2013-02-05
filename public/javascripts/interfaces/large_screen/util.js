@@ -830,6 +830,12 @@ function showUtilKeyboardCloseButton() {
 }
 
 function checkForPlugins() {
+    //if we access from ipad etc, then we must check so we dont trip up
+    if(typeof(InstallTrigger) == 'undefined') {
+        console.log("Cannot find InstallTrigger, must not be firefox, skipping plugin check.");
+        return;
+    }
+        
     var plugins = new Array();
     
     if(typeof(jsPrintSetup) == 'undefined') {
