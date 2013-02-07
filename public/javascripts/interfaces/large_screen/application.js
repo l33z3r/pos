@@ -16,6 +16,8 @@ var clueyPluginInitialized = false;
 
 var inLoyaltyCardListenerMode = false;
 
+var appLastUsedTimestamp; 
+
 $(function() {
     doGlobalInit();
 });
@@ -170,6 +172,14 @@ function doGlobalInit() {
     //this prevents multiple tabs opening
     generateBrowserSessionId();
     
+    //initialize var before clueyScheduler()
+    appLastUsedTimestamp = clueyTimestamp();
+    
+    //we want to record the last time the app was used for a few different reason
+    $("body").click(function() {
+        appLastUsedTimestamp = clueyTimestamp();
+    });
+    
     clueyScheduler();
     
     initTrainingModeFromCookie(); 
@@ -190,7 +200,7 @@ function doGlobalInit() {
     
     //if we have just changed the terminal name, then the terminal header might have the old name
     //so we just have this here to avoid the headache
-    $('#terminal_id').html(terminalID);
+    $('#terminal_id').html(terminalID);        
 }
 
 function showInitialScreen() {
@@ -452,6 +462,7 @@ function doScheduledTasks() {
     trySendOutstandingOrdersToServer();
     pingHome();
     checkForDuplicateBrowserSession();
+    checkNeedScreenReload();
 }
 
 function cacheDownloadReset() {

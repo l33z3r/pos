@@ -809,6 +809,52 @@ function hideLicenceExpiredScreen() {
     }
 }
 
+var lastForcedScreenReloadTime = 0;
+var threeHoursMillis = 3 * 60 * 60 * 1000;
+var sixHoursMillis = 6 * 60 * 60 * 1000;
+var oneMinMillis = 60 * 1000;
+
+var appLastUsedTimestamp;
+var lastForcedScreenReloadTimeStorageKey = "lastForcedScreenReloadTime";
+
+
+function checkNeedScreenReload() {
+    if(lastForcedScreenReloadTime == 0) {
+        //load from localStorage
+        var storedLastForcedScreenReloadTime = retrieveStorageValue(lastForcedScreenReloadTimeStorageKey);
+        
+        if(storedLastForcedScreenReloadTime) {
+            lastForcedScreenReloadTime = parseInt(storedLastForcedScreenReloadTime);
+        } else {
+            lastForcedScreenReloadTime = clueyTimestamp();
+        }
+    }
+    
+    var now = clueyTimestamp();
+        
+    //console.log("screen has not been reloaded in " + parseInt((now - lastForcedScreenReloadTime) / 1000) + " seconds");
+        
+    if((now - lastForcedScreenReloadTime) >= threeHoursMillis) {
+        
+        //console.log("screen idle for: " + parseInt((now - appLastUsedTimestamp) / 1000) + " seconds");
+        
+        //test when the terminal has last been used
+        if(now - appLastUsedTimestamp >= oneMinMillis || (now - lastForcedScreenReloadTime) >= sixHoursMillis) {
+            lastForcedScreenReloadTime = now;
+            
+            //save lastForcedScreenReloadTime in localStorage
+            storeKeyValue(lastForcedScreenReloadTimeStorageKey, lastForcedScreenReloadTime);
+        
+            forceScreenReload();
+        } 
+    }
+}
+
+function forceScreenReload() {
+    showLoadingDiv("Updating... Please Wait");
+    window.location.reload();
+}
+
 function initTrainingModeFromCookie() {
     if(getRawCookie(inTrainingModeCookieName) == null) {
         var exdays = 365 * 100;
@@ -833,7 +879,7 @@ function checkForPlugins() {
     //if we access from ipad etc, then we must check so we dont trip up
     if(typeof(InstallTrigger) == 'undefined') {
         console.log("Cannot find InstallTrigger, must not be firefox, skipping plugin check.");
-        return;
+        return false;
     }
         
     var plugins = new Array();
