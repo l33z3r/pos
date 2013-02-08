@@ -403,7 +403,7 @@ function populateSettingsFromMap(map) {
 
     terminal_fingerprint = map['terminal_fingerprint'];
 
-    enablePollingForKitchenScreen = map['outletTerminalsURL'];
+    enablePollingForKitchenScreen = map['enablePollingForKitchenScreen'];
     
     SYSTEM_WIDE_UPDATE_TYPE_NONE = map['SYSTEM_WIDE_UPDATE_TYPE_NONE'];
     SYSTEM_WIDE_UPDATE_TYPE_SOFT = map['SYSTEM_WIDE_UPDATE_TYPE_SOFT'];
