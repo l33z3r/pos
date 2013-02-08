@@ -43,7 +43,7 @@ class Accounts::AccountsController < Accounts::ApplicationController
       tzc = TZInfo::Country.get(@cluey_account.country.iso)
       
       #choose the first in the list, it can be changed later if the user wishes
-      @cluey_account.time_zone = tzc.zone_names.first
+      @cluey_account.time_zone = ActiveSupport::TimeZone::MAPPING.select {|k, v| v == tzc.zone_names.first }.keys.first
     rescue 
       @cluey_account.time_zone = DEFAULT_TIME_ZONE_NAME
     end
