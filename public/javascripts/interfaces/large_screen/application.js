@@ -480,7 +480,7 @@ function cacheDownloadStarted() {
     
     $('nav#main_nav').addClass("cache_update");
     $('#cache_status').show();
-    $('#cache_status').text("Cache DL: 0%");
+    $('#cache_status').text("Sync: 0%");
 }
 
 function unlinkTerminal() {

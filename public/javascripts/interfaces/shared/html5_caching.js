@@ -193,7 +193,7 @@ function displayProgress() {
         
         // We have the total number of files, so output the
         // running total as a function of the known total.
-        $("#cache_status").text("Cache DL: " + percentComplete + "%");
+        $("#cache_status").text("Sync: " + percentComplete + "%");
     }
 }
 
