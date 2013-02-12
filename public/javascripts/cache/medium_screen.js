@@ -17,7 +17,7 @@ menuSelectMenu.setValue(selectedDisplayId);showLoadingDiv("Downloading Orders. P
 function doSubmitSettings(){showLoadingDiv();$('#settings_form').submit();}
 function doScheduledTasks(){pingHome();}
 function cacheDownloadReset(){$('body').removeClass("cache_update");$('#cache_status').text("");$('#cache_status').hide();}
-function cacheDownloadStarted(){$('body').addClass("cache_update");$('#cache_status').show();$('#cache_status').text("Cache DL: 0%");}
+function cacheDownloadStarted(){$('body').addClass("cache_update");$('#cache_status').show();$('#cache_status').text("Sync: 0%");}
 function unlinkMobile(){var answer=confirm("Are you sure?");if(!answer){return;}
 showLoadingDiv("Unlinking Mobile");$.ajax({url:"/unlink_terminal",type:"POST",error:function(){niceAlert("Error Unlinking Mobile");},complete:function(){hideNiceAlert();doReloadSalesResources(callHomePoll);}});}
 var current_table_label=null;var menuKeypadShowing=false;var roomSelectMenu=null;var menuSelectMenu=null;var highlightedCover=true;function initMenu(){$('#menu_pages_container .page').first().click();currentMenuPage=1;currentMenuSubPageId=null;currentOrder=new Array();$('#table_num_holder').html("Select Table");if(current_user_id!=null){showTablesSubscreen();}else{showPinSubscreen();}
