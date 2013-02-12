@@ -55,11 +55,13 @@ function doDallasLogout() {
     
     var order = getCurrentOrder();
     
+    if(order) {
     for(var i=0; i<order.items.length; i++) {
         if(!order.items[i].synced) {
             orderSynced = false;
             break;
         }
+    }
     }
     
     //if there are unordered items, we automatically order them
