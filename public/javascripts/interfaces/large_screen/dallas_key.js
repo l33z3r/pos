@@ -65,7 +65,6 @@ function doDallasLogout() {
     //if there are unordered items, we automatically order them
     if(!orderSynced && selectedTable != 0 && selectedTable != previousOrderTableNum && selectedTable != tempSplitBillTableNum) {
         performDallasLogoutAfterOrder = true;
-        niceAlert("");
         
         //display a verbose message (cant use niceAlert)
         hideNiceAlert();

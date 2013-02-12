@@ -4,7 +4,7 @@ class TerminalDisplayLink < ActiveRecord::Base
   belongs_to :display
   
   def self.for_terminal terminal_id, current_outlet
-    @res = current_outlet.terminal_display_links("terminal_id = ?", terminal_id)
+    @res = current_outlet.terminal_display_links.where("terminal_id = ?", terminal_id)
     
     @res.size == 0 ? nil : @res.first
   end
