@@ -55,10 +55,13 @@ function doDallasLogout() {
     
     var order = getCurrentOrder();
     
-    for(var i=0; i<order.items.length; i++) {
-        if(!order.items[i].synced) {
-            orderSynced = false;
-            break;
+    //order will be null if no items ordered for table 0
+    if(order) {    
+        for(var i=0; i<order.items.length; i++) {
+            if(!order.items[i].synced) {
+                orderSynced = false;
+                break;
+            }
         }
     }
     
