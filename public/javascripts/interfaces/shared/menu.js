@@ -217,7 +217,6 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
     
     //re number the items
     for(var z=0;z<tableOrders[tableID].items.length;z++) {
-        console.log("renumbering item " + z + " " + tableOrders[tableID].items[z].product.name);
         tableOrders[tableID].items[z].itemNumber = z + 1;
     }
     
