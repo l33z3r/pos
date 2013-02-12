@@ -2210,9 +2210,18 @@ function postDoSyncTableOrder() {
         return;
     }
     
-    if(!doAutoLoginAfterSync) {
-        //pick up the default home screen and load it
-        loadAfterSaleScreen();
+   if(!doAutoLoginAfterSync) {
+        //was the dallas key pulled out while the order was being processed
+        if(performDallasLogoutAfterOrder) {
+            //reset it
+            performDallasLogoutAfterOrder = false;
+            
+            console.log("Performing delayed dallas logout.");
+            doLogout();
+        } else {
+            //pick up the default home screen and load it
+            loadAfterSaleScreen();   
+        }                
     }
     
     doAutoLoginAfterSync = false;
