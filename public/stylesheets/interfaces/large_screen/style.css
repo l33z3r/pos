@@ -1458,7 +1458,7 @@ div#split_bill_screen div#split_bill_receipt_keypad_container {
 }
 
 div#split_bill_screen div#split_bill_receipt_keypad_container div#split_bill_from_receipt_header {
-    ackground: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(#D8D8D8, #B4B4B4) repeat scroll 0 0 transparent;
     background: -webkit-gradient(linear, left top, left bottom, from(#D8D8D8), to(#B4B4B4));
     border: 1px solid #AAA;
     font-weight: bold;

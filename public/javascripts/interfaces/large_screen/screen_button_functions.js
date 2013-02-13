@@ -531,7 +531,7 @@ function startSplitBillMode() {
     
     showSplitBillScreen();
     
-    $('#split_bill_from_receipt_header').html("Table " + selectedTable);
+    $('#split_bill_from_receipt_header').html("Table " + tables[selectedTable].label);
     
     loadSplitBillReceipts();
 }   
