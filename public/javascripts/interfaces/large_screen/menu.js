@@ -2508,6 +2508,10 @@ function splitBillEmptyItems() {
 }
 
 function finishSplitBillMode() {
+    if(splitBillEmptyItems()) {
+        return;
+    }
+    
     //store it and then populate tableOrders
     //then we can access it at tableOrders[tempSplitBillTableNum]
     storeTableOrderInStorage(current_user_id, tempSplitBillTableNum, splitBillOrderTo);    
