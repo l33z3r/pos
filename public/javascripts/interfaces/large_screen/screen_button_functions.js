@@ -494,6 +494,12 @@ function startSplitBillMode() {
         return;
     }
     
+    if(currentOrderEmpty()) {
+        niceAlert("You cannot split out an empty order");
+        return;
+        
+    }
+    
     afterSplitBillSyncCallback = null;
     
     var order = getCurrentOrder();

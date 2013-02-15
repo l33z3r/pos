@@ -132,6 +132,10 @@ function doSyncTableOrder() {
     }
     
     order.table = tables[selectedTable].label;
+    
+    if(order.table == "0") {
+        order.table = "Cash Sale";
+    }
 
     if(inLargeInterface()) {
         checkForItemsToPrint(order, current_user_nickname);

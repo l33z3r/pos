@@ -180,6 +180,9 @@ function doGlobalInit() {
         appLastUsedTimestamp = clueyTimestamp();
     });
     
+    //initialize the time that the screen loaded
+    lastScreenReloadTime = clueyTimestamp();
+    
     clueyScheduler();
     
     initTrainingModeFromCookie(); 

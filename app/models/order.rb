@@ -35,6 +35,8 @@ class Order < ActiveRecord::Base
   has_many :order_items
   belongs_to :employee
   belongs_to :table_info
+  
+  has_many :order_payments
 
   serialize :split_payments
   

@@ -101,14 +101,19 @@ function getPrintedOrderReceiptHeader(serverNickname, order) {
     
     var orderNum = order.order_num;
     
+    var tableLabel = order.table;
+    
+    if(tableLabel == 0) {
+        tableLabel = "Cash Sale";        
+    }
+    
     if(typeof(orderNum) != 'undefined') {
-        headerHTML += "<div class='order_num'>ORDER NO: " + orderNum + "</div>" + clearHTML;
+        headerHTML += "<div class='order_num'>Table: " + tableLabel + "</div>" + clearHTML;
     }
     
     headerHTML += "<div class='data_table'>";
     
-    var tableLabel = order.table;
-    headerHTML += "<div class='label'>Table:</div><div class='data'>" + tableLabel + "</div>" + clearHTML;
+    headerHTML += "<div class='label'>ORDER NO:</div><div class='data'>" + orderNum + "</div>" + clearHTML;
     
     headerHTML += "<div class='label'>Order By:</div><div class='data'>" + serverNickname + "</div>" + clearHTML;
     

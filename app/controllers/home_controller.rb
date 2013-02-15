@@ -319,7 +319,12 @@ class HomeController < ApplicationController
         @all_order_items_sold_quantity += order.order_items.count
         @all_order_items_sold_amount += order.total
           
-        @payment_types = order.split_payments
+        @payment_types = {}
+        
+        #build a hashmap of payment types for this order
+        order.order_payments.each do |op|
+          @payment_types[op.payment_method] = op.amount
+        end
         
         if @payment_types and @payment_types.length > 0
           @payment_types.each do |pt, amount|

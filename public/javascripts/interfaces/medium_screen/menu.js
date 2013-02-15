@@ -1078,8 +1078,8 @@ function postDoSyncTableOrder() {
     //vibrate!
     vibrate();
 
-    //    showTablesSubscreen();
-    tableScreenBack();
+    showTablesSubscreen();
+    //tableScreenBack();
     
     manualCallHomePoll();
 }

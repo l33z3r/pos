@@ -59,6 +59,7 @@ class Outlet < ActiveRecord::Base
   has_many :terminal_sync_data, :class_name => "TerminalSyncData", :foreign_key => "outlet_id"
   has_many :work_reports   
   has_many :printers
+  has_many :order_payments
   
   before_save :downcase_fields
   

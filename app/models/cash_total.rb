@@ -270,8 +270,13 @@ class CashTotal < ActiveRecord::Base
         #increase covers 
         @total_covers += order.num_persons
         
-        #sales by payment type calculated from split payments array
-        @payment_types = order.split_payments
+        #sales by payment type calculated from order_payments table
+        @payment_types = {}
+        
+        #build a hashmap of payment types for this order
+        order.order_payments.each do |op|
+          @payment_types[op.payment_method] = op.amount
+        end
         
         if @payment_types and @payment_types.length > 0
           @payment_types.each do |pt, amount|

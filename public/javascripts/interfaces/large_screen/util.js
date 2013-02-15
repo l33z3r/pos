@@ -809,41 +809,29 @@ function hideLicenceExpiredScreen() {
     }
 }
 
-var lastForcedScreenReloadTime = 0;
+var lastScreenReloadTime;
 var threeHoursMillis = 3 * 60 * 60 * 1000;
 var sixHoursMillis = 6 * 60 * 60 * 1000;
 var oneMinMillis = 60 * 1000;
 
 var appLastUsedTimestamp;
-var lastForcedScreenReloadTimeStorageKey = "lastForcedScreenReloadTime";
 
 
 function checkNeedScreenReload() {
-    if(lastForcedScreenReloadTime == 0) {
-        //load from localStorage
-        var storedLastForcedScreenReloadTime = retrieveStorageValue(lastForcedScreenReloadTimeStorageKey);
-        
-        if(storedLastForcedScreenReloadTime) {
-            lastForcedScreenReloadTime = parseInt(storedLastForcedScreenReloadTime);
-        } else {
-            lastForcedScreenReloadTime = clueyTimestamp();
-        }
-    }
-    
     var now = clueyTimestamp();
         
-    //console.log("screen has not been reloaded in " + parseInt((now - lastForcedScreenReloadTime) / 1000) + " seconds");
+    //console.log("screen has not been reloaded in " + parseInt((now - lastScreenReloadTime) / 1000) + " seconds");
         
-    if((now - lastForcedScreenReloadTime) >= threeHoursMillis) {
+    if((now - lastScreenReloadTime) >= threeHoursMillis) {
         
         //console.log("screen idle for: " + parseInt((now - appLastUsedTimestamp) / 1000) + " seconds");
         
         //test when the terminal has last been used
-        if(now - appLastUsedTimestamp >= oneMinMillis || (now - lastForcedScreenReloadTime) >= sixHoursMillis) {
-            lastForcedScreenReloadTime = now;
+        if(now - appLastUsedTimestamp >= oneMinMillis || (now - lastScreenReloadTime) >= sixHoursMillis) {
+            lastScreenReloadTime = now;
             
-            //save lastForcedScreenReloadTime in localStorage
-            storeKeyValue(lastForcedScreenReloadTimeStorageKey, lastForcedScreenReloadTime);
+            //save lastScreenReloadTime in localStorage
+            storeKeyValue(lastScreenReloadTimeStorageKey, lastScreenReloadTime);
         
             forceScreenReload();
         } 

@@ -40,7 +40,7 @@
     <div id="empty_orders">
       <% Room.all.each do |room|%>
         <% room.table_infos.each do |table_info| %>
-          <%= render "kitchen_div", :table_id => table_info.id, :perm_id => table_info.perm_id %>
+          <%= render "kitchen_div", :table_id => table_info.id, :perm_id => "T #{table_info.perm_id}" %>
         <% end %>
       <% end %>
     </div>

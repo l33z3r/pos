@@ -345,6 +345,16 @@ class OrderController < ApplicationController
           #this happens for every item
           @order_item_saved = @order_item_saved and @order_item.save
         end
+        
+        #build order payment items
+        @order_details[:split_payments].each do |pm, pm_amount|
+          @op = OrderPayment.new
+          @op.outlet_id = current_outlet.id
+          @op.order = @order
+          @op.payment_method = pm
+          @op.amount = pm_amount
+          @op.save!
+        end
       
         #record a card charge if there was one
         if @card_charge_details
