@@ -8,6 +8,7 @@ class CreateOrderPayments < ActiveRecord::Migration
       t.timestamps
     end    
     
+    execute("ALTER TABLE order_payments MODIFY column id BIGINT")
     execute("ALTER TABLE order_payments MODIFY column order_id BIGINT")
     execute("ALTER TABLE order_payments MODIFY column outlet_id BIGINT")
     
