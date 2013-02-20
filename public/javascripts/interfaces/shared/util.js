@@ -200,6 +200,8 @@ function doClearAndReload() {
 }
 
 var terminalFingerPrintCookieName = "terminal_fingerprint";
+var terminalFingerPrintLocalStorageKeyName = "terminal_fingerprint";
+
 var sessionIdCookieName = "_session_id";
 var lastReloadCookieName = "last_reload_time";
 var lastPrintCheckCookieName = "last_print_check_time";
@@ -252,8 +254,19 @@ function clearClueyStorageAndCookies() {
 //uses the fingerprint library with md5 hash
 function setFingerPrintCookie() {
     if(getRawCookie(terminalFingerPrintCookieName) == null) {
+        var localStoredTerminalFingerprint = getStorageValue(terminalFingerPrintLocalStorageKeyName);
         
-        var uuid;
+        if(localStoredTerminalFingerprint) {
+            //restore the cookie from the stored version
+            c_value = localStoredTerminalFingerprint;
+        
+        //100 year expiry, but will really end up in year 2038 due to limitations in browser
+        exdays = 365 * 100;
+    
+        setRawCookie(terminalFingerPrintCookieName, c_value, exdays);
+        } else {
+            //generate a new cookie from the stored value
+            var uuid;
         
         if(inAndroidWrapper()) {
             uuid = "android_device_" + getAndroidFingerPrint();
@@ -267,12 +280,16 @@ function setFingerPrintCookie() {
         exdays = 365 * 100;
     
         setRawCookie(terminalFingerPrintCookieName, c_value, exdays);
+        
+        //back it up in local storage
+        storeKeyValue(terminalFingerPrintLocalStorageKeyName, c_value);
+        }        
     }
 }
 
 function regenerateTerminalFingerprintCookie(reloadPath) {
     setRawCookie(terminalFingerPrintCookieName, "", -365);
-    setFingerPrintCookie()
+    setFingerPrintCookie();
     goTo(reloadPath);
 }
 
