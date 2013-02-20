@@ -13,7 +13,7 @@ class Admin::OrdersController < Admin::AdminController
       @selected_to_date = params[:search][:created_at_lte]
       
       #must push the "to" date forward a day to match today
-      params[:search][:created_at_lte] = @selected_to_date.to_date.tomorrow.midnight
+      params[:search][:created_at_lte] = @selected_to_date.to_date.tomorrow.midnight.strftime("%d-%m-%Y")
     else
       if !params[:search]
         params[:search] = {}
