@@ -254,41 +254,42 @@ function clearClueyStorageAndCookies() {
 //uses the fingerprint library with md5 hash
 function setFingerPrintCookie() {
     if(getRawCookie(terminalFingerPrintCookieName) == null) {
-        var localStoredTerminalFingerprint = getStorageValue(terminalFingerPrintLocalStorageKeyName);
+        var localStoredTerminalFingerprint = retrieveStorageValue(terminalFingerPrintLocalStorageKeyName);
         
         if(localStoredTerminalFingerprint) {
             //restore the cookie from the stored version
             c_value = localStoredTerminalFingerprint;
         
-        //100 year expiry, but will really end up in year 2038 due to limitations in browser
-        exdays = 365 * 100;
+            //100 year expiry, but will really end up in year 2038 due to limitations in browser
+            exdays = 365 * 100;
     
-        setRawCookie(terminalFingerPrintCookieName, c_value, exdays);
+            setRawCookie(terminalFingerPrintCookieName, c_value, exdays);
         } else {
             //generate a new cookie from the stored value
             var uuid;
         
-        if(inAndroidWrapper()) {
-            uuid = "android_device_" + getAndroidFingerPrint();
-        } else {
-            uuid = Math.uuid();
-        }
+            if(inAndroidWrapper()) {
+                uuid = "android_device_" + getAndroidFingerPrint();
+            } else {
+                uuid = Math.uuid();
+            }
         
-        c_value = uuid;
+            c_value = uuid;
         
-        //100 year expiry, but will really end up in year 2038 due to limitations in browser
-        exdays = 365 * 100;
+            //100 year expiry, but will really end up in year 2038 due to limitations in browser
+            exdays = 365 * 100;
     
-        setRawCookie(terminalFingerPrintCookieName, c_value, exdays);
+            setRawCookie(terminalFingerPrintCookieName, c_value, exdays);
         
-        //back it up in local storage
-        storeKeyValue(terminalFingerPrintLocalStorageKeyName, c_value);
+            //back it up in local storage
+            storeKeyValue(terminalFingerPrintLocalStorageKeyName, c_value);
         }        
     }
 }
 
 function regenerateTerminalFingerprintCookie(reloadPath) {
     setRawCookie(terminalFingerPrintCookieName, "", -365);
+    deleteStorageValue(terminalFingerPrintLocalStorageKeyName);
     setFingerPrintCookie();
     goTo(reloadPath);
 }
@@ -464,18 +465,15 @@ function buildInitialOrder() {
 
 function storeKeyValue(key, value) {
     return clueyStorage.setItem(key, value);
-//return localStorage.setItem(key, value);
 }
 
 function retrieveStorageValue(key) {
     return clueyStorage.getItem(key);
-//return localStorage.getItem(key);
 }
 
 function storeKeyJSONValue(key, value) {
     JSONValue = JSON.stringify(value);
     return clueyStorage.setItem(key, JSONValue);
-//return localStorage.setItem(key, JSONValue);
 }
 
 function retrieveStorageJSONValue(key) {
@@ -489,7 +487,6 @@ function retrieveStorageJSONValue(key) {
 
 function deleteStorageValue(key) {
     return clueyStorage.removeItem(key);
-//return localStorage.removeItem(key);
 }
 
 function getActiveTableIDS() {
