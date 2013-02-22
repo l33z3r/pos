@@ -820,19 +820,11 @@ var appLastUsedTimestamp;
 function checkNeedScreenReload() {
     var now = clueyTimestamp();
         
-    //console.log("screen has not been reloaded in " + parseInt((now - lastScreenReloadTime) / 1000) + " seconds");
+    //lastScreenReloadTime is set when the page is loaded first
         
     if((now - lastScreenReloadTime) >= threeHoursMillis) {
-        
-        //console.log("screen idle for: " + parseInt((now - appLastUsedTimestamp) / 1000) + " seconds");
-        
         //test when the terminal has last been used
         if(now - appLastUsedTimestamp >= oneMinMillis || (now - lastScreenReloadTime) >= sixHoursMillis) {
-            lastScreenReloadTime = now;
-            
-            //save lastScreenReloadTime in localStorage
-            storeKeyValue(lastScreenReloadTimeStorageKey, lastScreenReloadTime);
-        
             forceScreenReload();
         } 
     }
