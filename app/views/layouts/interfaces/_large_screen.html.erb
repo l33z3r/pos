@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html <%= development_mode? ? "" : "manifest='cache_manifest'" %>>
+<html <%= development_mode? ? "" : raw("manifest='cache_manifest'") %>>
 
   <head>
     <%= render :partial => "/partials/interfaces/large_screen/common_head" %>
   </head>
   <body> 
-
     <div id="wrapper" class="wrapper large_interface">
       <div id="body">
         <div id="content_container">
