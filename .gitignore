@@ -4,3 +4,4 @@ nbproject/*
 public/system/
 config/custom_config.yml
 config/database.yml
+.idea

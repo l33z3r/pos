@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.5'
+gem 'rails', '3.0.19'
 
 gem 'mysql2', '0.2.6'
 
@@ -8,7 +8,7 @@ gem 'mysql2', '0.2.6'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 #had an issue with arel auto updating and breaking code, so sticking to 2.0.9
-gem 'arel', '2.0.9'
+gem 'arel', '2.0.10'
 
 gem 'rake', '0.8.7'
 
