@@ -983,9 +983,13 @@ function initClueyTimestampFromServer(serverStartTimeMillis) {
 }
 
 //this returns a timestamp in the users timezone NOT in UTC
+//the reasoning behind this is so that the timestamps are not depending on the local timezone or time
 function clueyTimestamp() {
     if(clueyTimestampInitializedFromServer) {
-        return (new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis;
+        var cts = ((new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis);
+        //adjust for the users local timezone
+        cts +=  new Date().getTimezoneOffset() * 60 * 1000;
+        return cts;
     } else {
         //load the stored clueyTimestamp and work out the dates by subtracting the local time from the stored local time
         var nowLocalMillis = new Date().getTime();
