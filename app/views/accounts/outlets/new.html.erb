@@ -33,7 +33,7 @@
   </p>
     <%= f.hidden_field :time_zone %>
   
-  <div id="captcha_section"><%= recaptcha_tags %></div>
+  <div id="captcha_section"><%= recaptcha_tags :ssl => true %></div>
   
   <p class="button"><%= f.submit "Create Outlet" %></p>
 <% end %>

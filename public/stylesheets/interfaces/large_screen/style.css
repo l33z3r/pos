@@ -3942,7 +3942,7 @@ div#table_select_screen div#room_layout div.room_object div.selected_table {
 
 div.pagination_links {
     clear: both;
-    margin: 9px 0px;
+    margin-top: 20px;
 }
 
 div.pagination_links div.links {

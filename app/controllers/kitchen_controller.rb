@@ -23,7 +23,7 @@ class KitchenController < ApplicationController
   
   def table_0_kitchen_div
     @id = params[:id]
-    render :partial => "kitchen_div", :locals => { :table_id => @id, :perm_id => "Sale" }
+    render :partial => "kitchen_div", :locals => { :table_id => @id, :perm_id => "Cash Sale" }
   end
 
 end
