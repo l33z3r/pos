@@ -9,6 +9,7 @@ var expensesStorageKey = "sales_resources_cash_out_presets";
 var printersStorageKey = "sales_resources_printers";
 var printerNetworkPathsStorageKey = "sales_resources_printer_network_paths";
 var printersByIDStorageKey = "sales_resources_printers_by_id";
+var localPrinterStorageKey = "sales_resources_local_printer";
 
 var outletTerminalsStorageKey = "sales_resources_outlet_terminals";
 var assignedOutletTerminalsStorageKey = "sales_resources_assigned_outlet_terminals";
@@ -53,6 +54,13 @@ function initSalesResources() {
         printers = getSalesResourceFromStorage(printersStorageKey);
         printerNetworkPaths = getSalesResourceFromStorage(printerNetworkPathsStorageKey);        
         printersByID = getSalesResourceFromStorage(printersByIDStorageKey); 
+    }
+    
+    if(typeof(localPrinter) != "undefined") {
+        storeSalesResourceInStorage(localPrinterStorageKey, localPrinter);
+    } else {
+        console.log("loading local printer from storage");
+        localPrinter = getSalesResourceFromStorage(localPrinterStorageKey); 
     }
     
     //OUTLET TERMINALS

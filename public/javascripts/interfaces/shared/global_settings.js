@@ -206,6 +206,8 @@ var printSummaryReceipt;
 
 var systemPrinterTypesArray;
 
+var localPrinter;
+
 function initJSGlobalSettings() {
     if(typeof(globalSettingsMap) != "undefined") {
         storeSalesResourceInStorage(globalSettingsMapStorageKey, globalSettingsMap);
