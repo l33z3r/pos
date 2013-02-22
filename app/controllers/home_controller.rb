@@ -716,10 +716,10 @@ class HomeController < ApplicationController
   # So the client knows when to refresh its cache.
   def cache_manifest
   
-#    if development_mode?
-#      raise ActionController::RoutingError.new('Not Found')
-#      return
-#    end
+    if development_mode?
+      raise ActionController::RoutingError.new('Not Found')
+      return
+    end
   
     @files = ["CACHE MANIFEST\n\n"]
 

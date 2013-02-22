@@ -475,7 +475,6 @@ class ApplicationController < AppBaseController
   
   def setup_for_subdomain
     @subdomain = request.subdomain
-    @subdomain = "cluey-cluey"
     
     if @subdomain == "signup"
       redirect_to account_sign_up_url
