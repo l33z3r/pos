@@ -68,3 +68,4 @@ heroku_production:
   recaptcha_private_key: 6LfqZ9USAAAAADhQS_TYLldT-Ohnglt8-N5DaoCW
   google_translate_api_key: AIzaSyBTUOHzAlYtVL8xP9NHh9WsQmMijzws2x4
   in_kiosk_mode: true
+  <%= ENV["NEW_RELIC_LICENSE_KEY"] %>
