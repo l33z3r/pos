@@ -864,11 +864,14 @@ class HomeController < ApplicationController
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/jq_libs.js"
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/large_screen.js"
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/medium_screen.js"
-    @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/plugin_libs_1.js"
+    @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/plugin_libs_1.js"    
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/plugin_libs_2.js"
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/modal_popups_libs.js"
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/shared.js"
     @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/cache/reports.js"
+    
+    #must include this seperate
+    @files << "#{Rails.application.config.action_controller.asset_host}/javascripts/plugins/tiny_mce/tiny_mce.js"
     
     @files << "/blank_receipt_for_print"
 

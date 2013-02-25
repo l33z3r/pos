@@ -364,7 +364,6 @@ function getTableOrderFromStorage(current_user_id, selectedTable) {
 function userHasUniqueTableOrder(userID, tableID) {
     var key = "user_" + userID + "_table_" + tableID + "_current_order";
     return clueyStorage.getItem(key) != null;
-//return localStorage.getItem(key) != null;
 }
 
 function clearTableOrderInStorage(current_user_id, selectedTable) {
