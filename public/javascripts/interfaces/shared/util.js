@@ -264,6 +264,10 @@ function setFingerPrintCookie() {
             exdays = 365 * 100;
     
             setRawCookie(terminalFingerPrintCookieName, c_value, exdays);
+            
+            //must reload the screen now to properly restore the cookie
+            showLoadingDiv("Restoring Terminal Info. Please Wait");
+            window.location.reload();
         } else {
             //generate a new cookie from the stored value
             var uuid;
