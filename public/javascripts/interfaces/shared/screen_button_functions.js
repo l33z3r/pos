@@ -154,6 +154,12 @@ function doSyncTableOrder() {
     for (var j = 0; j < order.items.length; j++) {
         if (checkForShowServerAddedText && !order.items[j].synced && !order.items[j].is_void) {
             order.items[j].showServerAddedText = true;
+            
+            //record the time that the additional items were ordered
+            for(var k = j; k < order.items.length; k++) {
+                order.items[j].time_added = clueyTimestamp();
+            }
+            
             checkForShowServerAddedText = false;
         }
     }

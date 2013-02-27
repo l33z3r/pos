@@ -3336,9 +3336,9 @@ div#total_screen div#payment_options_money_info_container div#totals_screen_misc
     float: right;
 }
 
-div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons_container div#totals_screen_misc_buttons_right div#toggle_print_receipt_button {
-    max-width: 120px;
-    width: 120px;
+div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons_container div#totals_screen_misc_buttons_right div.button {
+    width: 85px;
+    max-width: 85px;
 }
 
 div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons_container div#totals_screen_misc_buttons_right div#toggle_print_receipt_button img {
@@ -3346,11 +3346,6 @@ div#total_screen div#payment_options_money_info_container div#totals_screen_misc
     max-height: 30px;
     width: 65px;
     max-width: 65px;
-}
-
-div#total_screen div#payment_options_money_info_container div#totals_screen_misc_buttons_container div#totals_screen_misc_buttons_right div#toggle_print_receipt_button {
-    max-width: 120px;
-    width: 120px;
 }
 
 div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container div#tendered_popout div#tendered_data_tables_container div#client_customer_section {

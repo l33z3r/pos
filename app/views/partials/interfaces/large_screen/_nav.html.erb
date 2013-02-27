@@ -4,7 +4,7 @@
   <div id="admin_nav_back_link" style="display: none;" onclick="history.go(-1);">< Back</div>
 
   <div id="business_name"><%=@business_name%></div>
-  <div id="e_name" <%= session[:current_employee_nickname] ? "" : "style='display: none;'" %>><%= session[:current_employee_nickname] %></div>
+  <div id="e_name"></div>
   <div id="terminal_id"><%= @terminal_id %></div>
   <div id="date"></div>
   <div id="clock"></div>

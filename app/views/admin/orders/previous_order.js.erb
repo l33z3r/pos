@@ -12,6 +12,9 @@
     var orderItem = <%= raw(order_item.to_json) %>.order_item;
     orderItem.product = <%= raw(order_item.product.to_json) %>.product;
 
+    //we need to set the time_added var
+    orderItem.time_added = <%= (order_item.date_added.to_f * 1000).to_i %>;
+    
     //copy the tax rate from the order item over to the product
     orderItem.product.tax_rate = orderItem.tax_rate;
     orderItem.modifier = {'name' : '<%= raw(order_item.modifier_name) %>', 'price' : '<%= raw(order_item.modifier_price) %>'};

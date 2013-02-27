@@ -6,6 +6,9 @@ function initAdminScreen() {
     //hide the red x 
     $('#nav_save_button').hide();
     
+    //set the users name
+    $('#e_name').html(current_user_nickname);
+    
     //hide the shortcut dropdown
     $('#menu_screen_shortcut_dropdown_container').hide();
     
@@ -321,22 +324,6 @@ function checkForUniqueTerminalName() {
 }
 
 function makeBiggerAdminTableLinks() {
-    console.log("NYI for firefox: makeBiggerAdminTableLinks()");
-    return;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     $('table.admin_table td a').each(function() {
         var aEl = $(this);
         var tdEl = aEl.parent();

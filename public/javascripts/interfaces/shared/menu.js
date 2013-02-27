@@ -765,8 +765,7 @@ function buildOrderItem(product, amount) {
     orderItem['terminal_id'] = terminalID;
     
     //either way we want to store the user id
-    orderItem['serving_employee_id'] = current_user_id;
-    orderItem['time_added'] = clueyTimestamp();
+    orderItem['serving_employee_id'] = current_user_id;    
 
     currentOrderItem = orderItem;
 }

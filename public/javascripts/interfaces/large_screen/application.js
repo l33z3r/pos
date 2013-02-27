@@ -175,7 +175,7 @@ function doGlobalInit() {
     //initialize var before clueyScheduler()
     appLastUsedTimestamp = clueyTimestamp();
     
-    //we want to record the last time the app was used for a few different reason
+    //we want to record the last time the app was used for a few different reasons
     $("body").click(function() {
         appLastUsedTimestamp = clueyTimestamp();
     });

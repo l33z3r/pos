@@ -48,6 +48,10 @@ function yesterdayButtonClicked() {
     var yesterdayDate = constructedDate;
     selectedFromDate = formatDate(yesterdayDate, "dd-MM-yyyy");
     selectedToDate = formatDate(yesterdayDate, "dd-MM-yyyy");
+    
+    $('#date_from').val(selectedFromDate);
+    $('#date_to').val(selectedToDate);
+    
     runCashTotalSearch();
 }
 
@@ -58,7 +62,11 @@ function last7daysButtonClicked() {
     var toDate = new Date();
     toDate.setDate(new Date().getDate());
     selectedToDate = formatDate(toDate, "dd-MM-yyyy");
-    runCashTotalSearch();
+    
+    $('#date_from').val(selectedFromDate);
+    $('#date_to').val(selectedToDate);
+    
+    runCashTotalSearch();        
 }
 
 function runCashTotalSearch(){

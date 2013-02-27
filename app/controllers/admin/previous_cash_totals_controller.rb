@@ -1,7 +1,8 @@
 class Admin::PreviousCashTotalsController < Admin::AdminController
 
   def index
-    @selected_to_date = @selected_from_date = Time.zone.now
+    @selected_from_date = Time.zone.now.strftime("%d-%m-%Y")
+    @selected_to_date = Time.zone.now.strftime("%d-%m-%Y")
   end
 
   def cash_total_search
@@ -18,7 +19,6 @@ class Admin::PreviousCashTotalsController < Admin::AdminController
     @cash_total = current_outlet.cash_totals.search(params[:search]).order("created_at "+@order)
     @cash_total = @cash_total.paginate :page => params[:page], :per_page => 20
     @all_terminals = all_terminals
-    @cash_total = CashTotal.all.paginate :page => params[:page], :per_page => 20
   end
 
   def previous_cash_total

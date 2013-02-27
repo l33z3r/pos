@@ -1377,6 +1377,9 @@ function doTotalFinal() {
     //need to set the split_payments on the order for the receipt
     totalOrder.split_payments = splitPayments;
     
+    //record the time it was cashed out
+    var cashedOutTime = clueyTimestamp();
+    
     //open cash drawer explicitly if it is set to do 
     //so on a payment method basis
     //as the printer will not trigger it here
@@ -1452,7 +1455,8 @@ function doTotalFinal() {
         'void_order_id' : totalOrder.void_order_id,
         'is_split_bill' : isSplitBill,
         'split_payments' : splitPayments,
-        'is_training_mode_sale' : inTrainingMode
+        'is_training_mode_sale' : inTrainingMode,
+        'cashed_out_time' : cashedOutTime
     }
     
     sendOrderToServer(orderData);

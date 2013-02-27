@@ -160,6 +160,10 @@ class OrderController < ApplicationController
       @order_params = order_params
       @order_details = @order_params.delete(:order_details)
     
+      #convert the cashed out time to utc millis in the users local time
+      @order_cashed_out_time_utc_millis = GlobalSetting.local_millis_to_utc_millis(@order_params.delete(:cashed_out_time))
+      @order_cashed_out_time = Time.zone.at(@order_cashed_out_time_utc_millis/1000)
+      
       #convert the time_started timestamp to a date
       @time_started_utc_millis = GlobalSetting.local_millis_to_utc_millis(@order_params["time_started"])
       @new_order_time_started = Time.zone.at(@time_started_utc_millis/1000)
@@ -215,6 +219,10 @@ class OrderController < ApplicationController
           @order_to_void.save
         end
 
+        #overwrite the created_at and updated_at times to be the actual time the sale was finished on the terminal
+        #this is to stop orders that have been cashed out in offline mode all having the same created_at time once they are flushed to the server
+        @order.created_at = @order.updated_at = @order_cashed_out_time
+        
         @order_saved = @order.save
         @order.reload
 
@@ -341,6 +349,10 @@ class OrderController < ApplicationController
               end
             end
           end
+        
+          #overwrite the created_at and updated_at times to be the actual time the sale was finished on the terminal
+          #this is to stop orders that have been cashed out in offline mode all having the same created_at time once they are flushed to the server
+          @order_item.created_at = @order_item.updated_at = @order_cashed_out_time
         
           #this happens for every item
           @order_item_saved = @order_item_saved and @order_item.save

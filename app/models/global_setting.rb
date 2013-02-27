@@ -187,7 +187,7 @@ class GlobalSetting < ActiveRecord::Base
     PRINT_SUMMARY_RECEIPT => "Print Summary Receipt",
     TRIGGER_CASH_DRAWER_VIA_PRINTER => "Trigger Cash Drawer Via Printer",
     CASH_DRAWER_VIA_PRINTER_MAPPED_PORT => "Cash Drawer Via Printer Mapped Port",
-  CASH_DRAWER_LOCAL_PRINTER_SHARE_NAME => "Cash Drawer Local Printer Share Name"
+    CASH_DRAWER_LOCAL_PRINTER_SHARE_NAME => "Cash Drawer Local Printer Share Name"
   }
   
   SYSTEM_WIDE_UPDATE_NONE = 0
@@ -947,41 +947,3 @@ class GlobalSetting < ActiveRecord::Base
   MEDIUM_INTERFACE = "medium"
   SMALL_INTERFACE = "small"
 end
-
-
-
-# == Schema Information
-#
-# Table name: global_settings
-#
-#  id                :integer(8)      not null, primary key
-#  key               :string(255)
-#  value             :text
-#  label_text        :string(255)
-#  logo_file_name    :string(255)
-#  logo_content_type :string(255)
-#  logo_file_size    :integer(4)
-#  logo_updated_at   :datetime
-#  created_at        :datetime
-#  updated_at        :datetime
-#  outlet_id         :integer(8)
-#
-
-# == Schema Information
-#
-# Table name: global_settings
-#
-#  id                :integer(8)      not null, primary key
-#  key               :string(255)
-#  value             :text
-#  label_text        :string(255)
-#  logo_file_name    :string(255)
-#  logo_content_type :string(255)
-#  logo_file_size    :integer(4)
-#  logo_updated_at   :datetime
-#  created_at        :datetime
-#  updated_at        :datetime
-#  outlet_id         :integer(8)
-#
-
-    

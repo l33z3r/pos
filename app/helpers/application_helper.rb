@@ -136,10 +136,6 @@ module ApplicationHelper
     end
     link_to_function("New Modifier", "addModifierFields(this, \"#{escape_javascript(fields)}\")")
   end
-
-  def is_admin?
-    session[:current_employee_admin] == 1
-  end
   
   def coin_label_for val
     val = val.to_i
