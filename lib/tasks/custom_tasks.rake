@@ -62,6 +62,22 @@ task :delete_historical_data => :environment do
   puts "Deleting #{@deliveries.length} deliveries"
   @deliveries.each(&:destroy)
   
+  @cash_outs = @outlet.cash_outs.all
+  puts "Deleting #{@cash_outs.length} cash_outs"
+  @cash_outs.each(&:destroy)
+  
+  @order_payments = @outlet.order_payments.all
+  puts "Deleting #{@order_payments.length} order_payments"
+  @order_payments.each(&:destroy)
+  
+  @shift_timestamps = @outlet.shift_timestamps.all
+  puts "Deleting #{@shift_timestamps.length} shift_timestamps"
+  @shift_timestamps.each(&:destroy)
+  
+  @work_reports = @outlet.work_reports.all
+  puts "Deleting #{@work_reports.length} work_reports"
+  @work_reports.each(&:destroy)
+  
   puts "Clearing duplicate global_settings keys"
   GlobalSetting.clear_dup_keys_gs @outlet
   

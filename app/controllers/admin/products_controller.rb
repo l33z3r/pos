@@ -241,7 +241,7 @@ class Admin::ProductsController < Admin::AdminController
           @new_page.save!
           
           if submenu_hash[:type] == MENU_TYPE_EMBEDDED
-            @new_embedded_display = Display.create({:outlet_id => current_outlet.id, :name => "#{menu_name} Embedded"})
+            @new_embedded_display = Display.create({:outlet_id => current_outlet.id, :name => "#{menu_name} Embedded #{Time.zone.now}"})
             @new_embedded_display.save!
             
             submenu_hash[:pages].each do |submenu_name, products|

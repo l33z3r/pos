@@ -879,9 +879,11 @@ class GlobalSetting < ActiveRecord::Base
         @del_count = gs_set.size - 1
 	
         logger.info "Found #{gs_set.size} duplicate keys for Key: #{gs_key} Label: '#{gs_set.first.label_text}'. Removing #{@del_count} duplicates!"
+	puts "Found #{gs_set.size} duplicate keys for Key: #{gs_key} Label: '#{gs_set.first.label_text}'. Removing #{@del_count} duplicates!"
 	
         gs_set.each do |gs|
           break if @del_count == 0
+	  puts gs.id
           gs.destroy
           @del_count -= 1
         end

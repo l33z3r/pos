@@ -22,7 +22,11 @@ gem "meta_search", "1.0.5"
 
 gem 'lazy_high_charts', '1.1.5'
 
+#we have 2 S3 gems, the first is used while running the app
+#load this in production
 gem 'aws-s3', '0.6.2'
+#only use this when running the rake task that syncs assets with S3
+#gem 's3', '0.3.7'
 
 #smurf for minifying js and css
 gem 'smurf', '1.0.8'
@@ -74,11 +78,6 @@ group :development, :test do
   gem "rspec-rails", "2.6.1"
   gem 'ruby-debug19'
   gem "mongrel", '1.2.0.pre2'
-end
-
-#this is only used in development to sync assets with s3
-group :build_assets do
-  gem 's3', '0.3.7'
 end
 
 group :heroku_staging, :heroku_production do
