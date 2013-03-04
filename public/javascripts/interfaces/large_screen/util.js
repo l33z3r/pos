@@ -816,12 +816,10 @@ var oneMinMillis = 60 * 1000;
 
 var appLastUsedTimestamp;
 
-
 function checkNeedScreenReload() {
     var now = clueyTimestamp();
         
-    //lastScreenReloadTime is set when the page is loaded first
-        
+    //lastScreenReloadTime is set when the page is loaded first        
     if((now - lastScreenReloadTime) >= threeHoursMillis) {
         //test when the terminal has last been used
         if(now - appLastUsedTimestamp >= oneMinMillis || (now - lastScreenReloadTime) >= sixHoursMillis) {

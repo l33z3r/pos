@@ -124,13 +124,17 @@ class OutletBuilder
     
     #printers
     for printer_type in [Printer::KITCHEN_1, Printer::BAR_1, Printer::KITCHEN_2, Printer::BAR_2] do
-      @p = Printer.new
-      @p.outlet_id = outlet_id
-      @p.printer_type = printer_type
-      @p.local_printer = ""
-      @p.network_share_name = ""
-      @p.label = Printer.label_for_printer_type(printer_type)
-      @p.save!
+      @p = Printer.where("outlet_id = ?", outlet_id).where("printer_type = ?", Printer::KITCHEN_1).first
+      
+      if !@p
+        @p = Printer.new
+        @p.outlet_id = outlet_id
+        @p.printer_type = printer_type
+        @p.local_printer = ""
+        @p.network_share_name = ""
+        @p.label = Printer.label_for_printer_type(printer_type)
+        @p.save!
+      end
     end
   end
   
