@@ -2327,6 +2327,8 @@ function doReceiveOrderReady(employee_id, terminal_id, table_id, order_num, tabl
                 width: 400,
                 height: 250
             } );
+            
+            doBeepSound();
     }
 }
 

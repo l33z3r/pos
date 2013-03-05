@@ -26,7 +26,7 @@ gem 'lazy_high_charts', '1.1.5'
 #load this in production
 gem 'aws-s3', '0.6.2'
 #only use this when running the rake task that syncs assets with S3
-gem 's3', '0.3.7'
+#gem 's3', '0.3.7'
 
 #smurf for minifying js and css
 gem 'smurf', '1.0.8'

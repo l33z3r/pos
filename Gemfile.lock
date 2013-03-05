@@ -84,7 +84,6 @@ GEM
     prawnto (0.1.1)
       prawn
       rails (>= 2.1)
-    proxies (0.2.1)
     rack (1.2.8)
     rack-mount (0.6.14)
       rack (>= 1.0.0)
@@ -132,8 +131,6 @@ GEM
     ruby-rc4 (0.1.5)
     ruby_core_source (0.1.5)
       archive-tar-minitar (>= 0.5.2)
-    s3 (0.3.7)
-      proxies
     smurf (1.0.8)
     thin (1.5.0)
       daemons (>= 1.0.9)
@@ -174,7 +171,6 @@ DEPENDENCIES
   recaptcha (= 0.3.4)
   rspec-rails (= 2.6.1)
   ruby-debug19
-  s3 (= 0.3.7)
   smurf (= 1.0.8)
   thin (= 1.5.0)
   tzinfo (= 0.3.33)

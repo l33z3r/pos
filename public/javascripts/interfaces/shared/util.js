@@ -1247,41 +1247,12 @@ function userAbortedXHR(xhr) {
     return !xhr.getAllResponseHeaders();
 }
 
-//HTML5 AUDIO BEEP
-var playHTML5Audio = false;
- 
-function initBeep() {
-    playHTML5Audio = isHTML5AudioSupported();
-    
-    var els = $("div.button, div.small_button, div.item, div.key, div.go_key, div.cancel_key, div.employee_box, \n\
-        div.mobile_button, div.page, #table_screen_button, div#nav_util_button, input[type='submit']");
-    
-    els.live("click", doBeepSound);
-}
-
-function isHTML5AudioSupported() {
-    var a = document.createElement('audio');
-    return !!(a.canPlayType && a.canPlayType('audio/mpeg;').replace(/no/, ''));
-}
-
 function doBeepSound() {
     playSound('/sounds/beep.mp3');
 }
 
 function playSound(url) {
-    if(playHTML5Audio) {
-        var snd = new Audio(url);
-        snd.load();
-        snd.play();
-    } else {
-        $("#sound").remove();
-        var sound = $("<embed id='sound' type='audio/mpeg' />");
-        sound.attr('src', url);
-        sound.attr('loop', false);
-        sound.attr('hidden', true);
-        sound.attr('autostart', true);
-        $('body').append(sound);
-    }
+    $.playSound(url);
 }
 
 function setEventyKeyCode(e, code) {
