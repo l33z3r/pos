@@ -147,10 +147,6 @@ function doGlobalInit() {
         }
     });
 
-    if (doBeep) {
-        initBeep();
-    }
-
     //start calling home
     callHomePoll();
 
