@@ -1033,8 +1033,19 @@ function userAbortedXHR(xhr) {
     return !xhr.getAllResponseHeaders();
 }
 
+function initBeep() {
+    var els = $("div.button, div.small_button, div.item, div.key, div.go_key, div.cancel_key, div.employee_box, \n\
+        div.mobile_button, div.page, #table_screen_button, div#nav_util_button, input[type='submit']");
+    
+    els.live("click", doBeepSound);
+}
+
 function doBeepSound() {
     playSound('/sounds/beep.mp3');
+}
+
+function doMultiBeepSound() {
+    playSound('/sounds/multibeep.mp3');
 }
 
 function playSound(url) {

@@ -2320,7 +2320,7 @@ function doReceiveOrderReady(employee_id, terminal_id, table_id, order_num, tabl
                 height: 250
             } );
             
-            doBeepSound();
+            doMultiBeepSound();
     }
 }
 
