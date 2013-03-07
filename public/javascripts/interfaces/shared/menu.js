@@ -188,30 +188,8 @@ function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee
         }
     }
     
-    //now merge the two based on time added
-    newOrderItems = new Array();
-    syncOrderItemsIndex = 0;
-    existingOrderItemsIndex = 0;
-    
-    loopLength = syncOrderItems.length + existingOrderItems.length;
-    
-    for(var i=0;i<loopLength;i++) {
-        if(syncOrderItemsIndex == syncOrderItems.length) {
-            //there are no more items left in syncOrderItems
-            newOrderItems.push(existingOrderItems[existingOrderItemsIndex]);
-            existingOrderItemsIndex++;
-        } else if(existingOrderItemsIndex == existingOrderItems.length) {
-            //there are no more items left in existingOrderItems
-            newOrderItems.push(syncOrderItems[syncOrderItemsIndex]);
-            syncOrderItemsIndex++;
-        } else if(syncOrderItems[syncOrderItemsIndex].time_added <= existingOrderItems[existingOrderItemsIndex].time_added) {
-            newOrderItems.push(syncOrderItems[syncOrderItemsIndex]);
-            syncOrderItemsIndex++;
-        } else if(syncOrderItems[syncOrderItemsIndex].time_added > existingOrderItems[existingOrderItemsIndex].time_added) {
-            newOrderItems.push(existingOrderItems[existingOrderItemsIndex]);
-            existingOrderItemsIndex++;
-        }
-    }
+    //now merge the two
+    newOrderItems = syncOrderItems.concat(existingOrderItems);
     
     tableOrders[tableID].items = newOrderItems;
     
