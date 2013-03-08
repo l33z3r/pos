@@ -63,3 +63,4 @@ DEFAULT_TIME_ZONE_NAME = Time.zone.name
 
 require "net/http"
 require "uri"
+require 'iconv'
