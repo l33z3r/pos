@@ -70,8 +70,8 @@ function yesterdayButtonClicked() {
 function forceDateSubmit(fromDate, toDate) {
     $('#search_created_at_gte').val(fromDate);
     $('#search_created_at_lte').val(toDate);
-    $('#date_from').val(date);
-    $('#date_to').val(date);
+    $('#date_from').val(fromDate);
+    $('#date_to').val(toDate);
     
     showLoadingDiv();
     $('#order_search').submit();
