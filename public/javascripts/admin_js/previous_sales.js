@@ -46,26 +46,34 @@ function addServerFilter(server_nickname) {
 }
 
 function todayButtonClicked() {
-    var todayDate = formatDate(new Date(), "dd-MM-yyyy");
-    forceDateSubmit(todayDate);
+    constructedDate = new Date();
+    constructedDate.setDate(new Date().getDate() + 1);
+    var tomorrowDate = constructedDate;
+    var tomorrowDateFormatted = formatDate(tomorrowDate, "dd-MM-yyyy");
+    
+    var todayDateFormatted = formatDate(new Date(), "dd-MM-yyyy");
+    
+    forceDateSubmit(todayDateFormatted, tomorrowDateFormatted);
 }
 
 function yesterdayButtonClicked() {
     constructedDate = new Date();
     constructedDate.setDate(new Date().getDate() - 1);
     var yesterdayDate = constructedDate;
-    
     var yesterdayDateFormatted = formatDate(yesterdayDate, "dd-MM-yyyy");
-    forceDateSubmit(yesterdayDateFormatted);
+    
+    var todayDateFormatted = formatDate(new Date(), "dd-MM-yyyy");
+    
+    forceDateSubmit(yesterdayDateFormatted, todayDateFormatted);
 }
 
-function forceDateSubmit(date) {
-    $('#search_created_at_gte').val(date);
-    $('#search_created_at_lte').val(date);
+function forceDateSubmit(fromDate, toDate) {
+    $('#search_created_at_gte').val(fromDate);
+    $('#search_created_at_lte').val(toDate);
     $('#date_from').val(date);
     $('#date_to').val(date);
     
-    showSpinner();
+    showLoadingDiv();
     $('#order_search').submit();
 }
 

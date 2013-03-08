@@ -11,9 +11,6 @@ class Admin::OrdersController < Admin::AdminController
     if params[:search] and params[:search][:created_at_lte] and !params[:search][:created_at_lte].empty?
       @selected_from_date = params[:search][:created_at_gte]
       @selected_to_date = params[:search][:created_at_lte]
-      
-      #must push the "to" date forward a day to match today
-      params[:search][:created_at_lte] = @selected_to_date.to_date.tomorrow.midnight.strftime("%d-%m-%Y")
     else
       if !params[:search]
         params[:search] = {}
