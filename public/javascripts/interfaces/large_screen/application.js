@@ -22,7 +22,14 @@ $(function() {
     doGlobalInit();
 });
 
-function doGlobalInit() {        
+function doGlobalInit() {
+    if(currentOutletId == 23) {
+        $('div#total_screen div#payment_options_money_info_container div#tender_section div#money_helper_section').width(205);
+        $('div#total_screen div#payment_options_money_info_container div#tender_section div#take_tendered_container').width(520);
+        $('div#total_screen div#payment_options_money_info_container div#tender_section div#money_helper_section div.money').width(170);
+        $('div#total_screen div#payment_options_money_info_container div#tender_section div#money_helper_section div.money img').width(190);
+    }
+  
     //make sure we have all compatible plugins etc
     if(!inMobileContext()) { 
         if(checkForPlugins()) {

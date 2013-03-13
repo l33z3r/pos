@@ -208,6 +208,8 @@ var systemPrinterTypesArray;
 
 var localPrinter;
 
+var currentOutletId;
+
 function initJSGlobalSettings() {
     if(typeof(globalSettingsMap) != "undefined") {
         storeSalesResourceInStorage(globalSettingsMapStorageKey, globalSettingsMap);
@@ -429,4 +431,6 @@ function populateSettingsFromMap(map) {
     systemPrinterTypesArray.push(PRINTER_TYPE_BAR_1);
     systemPrinterTypesArray.push(PRINTER_TYPE_KITCHEN_2);
     systemPrinterTypesArray.push(PRINTER_TYPE_BAR_2);
+    
+    currentOutletId = map['currentOutletId'];
 }
