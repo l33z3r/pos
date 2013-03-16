@@ -208,8 +208,6 @@ module ApplicationHelper
   def money_image_button amount
     @html = ""
     
-    @currency_note_image_setting = "dollars"
-    
     @image_path = "#{amount}#{@currency_note_image_setting}.jpg"
     
     if FileTest.exists?(RAILS_ROOT + "/public/images/#{@image_path}")
