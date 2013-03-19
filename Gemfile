@@ -24,7 +24,7 @@ gem 'lazy_high_charts', '1.1.5'
 
 #we have 2 S3 gems, the first is used while running the app
 #load this in production
-gem 'aws-s3', '0.6.2'
+gem 'aws-s3', '0.6.2' 
 #only use this when running the rake task that syncs assets with S3
 #gem 's3', '0.3.7'
 
