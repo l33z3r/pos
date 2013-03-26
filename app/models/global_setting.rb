@@ -938,7 +938,7 @@ class GlobalSetting < ActiveRecord::Base
   CUSTOMER_MENU_SCREEN = 3
   
   #min and max values for polling in seconds
-  POLLING_MIN_SECONDS = 5
+  POLLING_MIN_SECONDS = 2
   POLLING_MAX_SECONDS = 120
   
   #screen resolutions
