@@ -3,6 +3,8 @@ var orderInProcess = false;
 
 var isTableZeroOrder = false;
 
+var orderHistory;
+
 function orderButtonPressed() {
     if (!appOnline) {
         niceAlert("Cannot contact server, ordering is disabled until connection re-established!");
@@ -125,6 +127,23 @@ function doSyncTableOrder() {
 
     if (isTableZeroOrder) {
         userId = last_user_id;
+    }
+    
+    //if it is not a table 0 order store it in a historical hashed array in case it goes missing
+    //this is a workaround for a bug we cannot find
+    if(!isTableZeroOrder) {
+        var tableNum = tables[selectedTable].label;
+        
+        if(!orderHistory[tableNum]) {
+            orderHistory[tableNum] = new Array();
+        } else {
+            if(orderHistory[tableNum].length >= 20) {
+                orderHistory[tableNum].splice(0, 1);
+            }
+        }
+    
+        orderHistory[tableNum].push(copiedOrderForSend);
+        storeOrderHistory();
     }
 
     $.ajax({

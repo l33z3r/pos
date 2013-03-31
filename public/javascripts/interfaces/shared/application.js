@@ -56,6 +56,9 @@ $(function() {
     
     //make sure all links only work when app online.
     $('a').live("click", preventOfflineHref);
+    
+    //load up order history 
+    loadOrderHistory();
 });
     
 function callHomePoll() {

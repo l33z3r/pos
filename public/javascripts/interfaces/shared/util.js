@@ -303,6 +303,22 @@ function getTableOrderFromStorage(current_user_id, selectedTable) {
     parseAndFillTableOrderJSON(tableOrderDataJSON);
 }
 
+var orderHistoryStorageKey = "order_history";
+    
+function storeOrderHistory() {
+    var value = JSON.stringify(orderHistory);
+    
+    return storeKeyValue(orderHistoryStorageKey, value);
+}
+
+function loadOrderHistory() {
+    if(retrieveStorageValue(orderHistoryStorageKey) != null) {
+        orderHistory = JSON.parse(retrieveStorageValue(orderHistoryStorageKey));
+    } else {
+        orderHistory = {};
+    }
+}
+
 function userHasUniqueTableOrder(userID, tableID) {
     var key = "user_" + userID + "_table_" + tableID + "_current_order";
     return localStorage.getItem(key) != null;
