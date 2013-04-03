@@ -1441,7 +1441,7 @@ function groupOrderItems(order) {
         
         //also include the modifier if there is one
         if(item.modifier) {
-            itemKey += item.modfier.id + item.modfier.name + item.modfier.price;
+            itemKey += item.modifier.id + item.modifier.name + item.modifier.price;
         }
         
         itemKey = itemKey.replace(/ /g, "-");
