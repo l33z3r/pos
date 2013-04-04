@@ -58,6 +58,8 @@ var tableOrderItemsToMerge = null;
 
 var sendOrderAfterCovers = false;
 
+var orderHistory;
+
 function getCurrentOrder() {
     if(selectedTable == 0) {
         return currentOrder;
@@ -120,6 +122,28 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
     
     //if we are looking at the open orders page, then update them
     checkUpdateOpenOrdersScreen();
+    
+    //if it is not a table 0 order store it in a historical hashed array in case it goes missing
+    //this is a workaround for a bug we cannot find
+    if(tableID != 0) {
+        var tableNum = tables[tableID].label;
+        
+        if(!orderHistory[tableNum]) {
+            orderHistory[tableNum] = new Array();
+        } else {
+            if(orderHistory[tableNum].length >= 20) {
+                orderHistory[tableNum].splice(0, 1);
+            }
+        }
+    
+        getTableOrderFromStorage(masterOrdersUserId, tableID);
+        
+        var copiedOrder = {};
+        var copiedOrderForSave = $.extend(true, copiedOrder, tableOrders[tableID]);
+    
+        orderHistory[tableNum].push(copiedOrderForSave);
+        storeOrderHistory();
+    }
 }
 
 function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith) {
@@ -531,15 +555,15 @@ function modifyOrderItem(order, itemNumber, newQuantity, newPricePerUnit, newCou
     }
     
     //now set the refund price
-//    if(targetOrderItem.is_refund) {
-//        if(targetOrderItem.total_price > 0) {
-//            targetOrderItem.total_price = -1 * targetOrderItem.total_price;
-//        }
-//        
-//        if(targetOrderItem.pre_discount_price && targetOrderItem.pre_discount_price > 0) {
-//            targetOrderItem.pre_discount_price = -1 * targetOrderItem.pre_discount_price;
-//        }
-//    }
+    //    if(targetOrderItem.is_refund) {
+    //        if(targetOrderItem.total_price > 0) {
+    //            targetOrderItem.total_price = -1 * targetOrderItem.total_price;
+    //        }
+    //        
+    //        if(targetOrderItem.pre_discount_price && targetOrderItem.pre_discount_price > 0) {
+    //            targetOrderItem.pre_discount_price = -1 * targetOrderItem.pre_discount_price;
+    //        }
+    //    }
     
     applyExistingDiscountToOrderItem(order, itemNumber);
     calculateOrderTotal(order);
@@ -1409,7 +1433,7 @@ function groupOrderItems(order) {
         
         //also include the modifier if there is one
         if(item.modifier) {
-             itemKey += item.modifier.id + item.modifier.name + item.modifier.price;
+            itemKey += item.modifier.id + item.modifier.name + item.modifier.price;
         }
         
         itemKey = itemKey.replace(/ /g, "-");
@@ -1423,7 +1447,7 @@ function groupOrderItems(order) {
             }
         } else {
             itemHash[itemKey].count += parseInt(item.amount);
-            //console.log(itemHash[itemKey].count);
+        //console.log(itemHash[itemKey].count);
         }
     } 
     
