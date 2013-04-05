@@ -11,6 +11,27 @@ var loyaltyCardCode = "";
 
 $(function() {
     doGlobalInit();
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    orderHistory = {};
+    storeOrderHistory();
 });
 
 function doGlobalInit() {

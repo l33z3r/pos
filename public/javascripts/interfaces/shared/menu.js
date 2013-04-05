@@ -125,25 +125,25 @@ function doReceiveTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalE
     
     //if it is not a table 0 order store it in a historical hashed array in case it goes missing
     //this is a workaround for a bug we cannot find
-    if(tableID != 0) {
-        var tableNum = tables[tableID].label;
-        
-        if(!orderHistory[tableNum]) {
-            orderHistory[tableNum] = new Array();
-        } else {
-            if(orderHistory[tableNum].length >= 20) {
-                orderHistory[tableNum].splice(0, 1);
-            }
-        }
-    
-        getTableOrderFromStorage(masterOrdersUserId, tableID);
-        
-        var copiedOrder = {};
-        var copiedOrderForSave = $.extend(true, copiedOrder, tableOrders[tableID]);
-    
-        orderHistory[tableNum].push(copiedOrderForSave);
-        storeOrderHistory();
-    }
+//    if(tableID != 0) {
+//        var tableNum = tables[tableID].label;
+//        
+//        if(!orderHistory[tableNum]) {
+//            orderHistory[tableNum] = new Array();
+//        } else {
+//            if(orderHistory[tableNum].length >= 20) {
+//                orderHistory[tableNum].splice(0, 1);
+//            }
+//        }
+//    
+//        getTableOrderFromStorage(masterOrdersUserId, tableID);
+//        
+//        var copiedOrder = {};
+//        var copiedOrderForSave = $.extend(true, copiedOrder, tableOrders[tableID]);
+//    
+//        orderHistory[tableNum].push(copiedOrderForSave);
+//        storeOrderHistory();
+//    }
 }
 
 function doTableOrderSync(recvdTerminalID, tableID, tableLabel, terminalEmployee, tableOrderDataJSON, nextUserIDToSyncWith) {
