@@ -84,7 +84,7 @@ function deliveryScreenKeypadClick(val) {
     } else {
         //make sure you cannot enter a 2nd decimal place number
         if(currentDeliveryItemQuantity.indexOf(".") != -1) {
-            if(currentDeliveryItemQuantity.length - currentDeliveryItemQuantity.indexOf(".") > 1) {
+            if(currentDeliveryItemQuantity.length - currentDeliveryItemQuantity.indexOf(".") > 2) {
                 return;
             }
         }
