@@ -991,7 +991,7 @@ function clueyTimestamp() {
     if(clueyTimestampInitializedFromServer) {
         var cts = ((new Date().getTime() - counterStartTimeMillis) + serverCounterStartTimeMillis);
         //adjust for the users local timezone
-        cts +=  new Date().getTimezoneOffset() * 60 * 1000;
+        //cts +=  new Date().getTimezoneOffset() * 60 * 1000;
         return cts;
     } else {
         //load the stored clueyTimestamp and work out the dates by subtracting the local time from the stored local time

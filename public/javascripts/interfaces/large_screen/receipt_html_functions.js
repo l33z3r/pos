@@ -164,8 +164,10 @@ function fetchCashScreenReceiptHeaderHTML() {
     var headerHTML = "<div class='data_table'>";
     headerHTML += "<div class='label'>Server:</div><div class='data'>" + current_user_nickname + "</div>" + clearHTML;
     
-    timestamp = utilFormatDate(new Date(parseInt(orderStartTime(totalOrder))));
-    headerHTML += "<div class='time label'>Time Started:</div><div class='time data'>" + timestamp + "</div>" + clearHTML;
+    if(typeof orderStartTime(totalOrder) != "undefined") {
+        timestamp = utilFormatDate(new Date(parseInt(orderStartTime(totalOrder))));
+        headerHTML += "<div class='time label'>Time Started:</div><div class='time data'>" + timestamp + "</div>" + clearHTML;
+    }
     
     if(selectedTable!=0) {
         selectedTableLabel = tables[selectedTable].label;
