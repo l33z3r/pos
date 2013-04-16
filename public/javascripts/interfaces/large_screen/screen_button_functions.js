@@ -361,6 +361,14 @@ function showGlobalSettingsPage() {
 }
 
 function openCashDrawer() {
+    //temp solution to print a slip of paper and trigger the drawer
+    var triggerViaPrintedSlip = (currentOutletId == 30);
+    
+    if(triggerViaPrintedSlip) {
+        printContent("<span style='font-size:1;text-align:center;'>--- Open Cash Drawer ---</span>");
+        return;
+    }
+    
     if(!checkForPlugins()) {
         return;
     }
