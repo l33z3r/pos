@@ -768,7 +768,7 @@ currentSelectedReceiptItemEl=null;}
 function changePriceLastOrderItem(){order=getCurrentOrder();currentSelectedReceiptItemEl=getSelectedOrLastReceiptItem();if(currentSelectedReceiptItemEl){var popup=doSelectReceiptItem(currentSelectedReceiptItemEl);popup.find('.price').focus().select();}}
 function showAddNoteToOrderItemScreen(){order=getCurrentOrder();currentSelectedReceiptItemEl=getSelectedOrLastReceiptItem();if(currentSelectedReceiptItemEl){if(currentScreenIsMenu()){if(currentMenuSubscreenIsModifyOrderItem()){if(doSaveNote()){$('.button[id=sales_button_'+addNoteButtonID+'], .button[id=admin_screen_button_'+addNoteButtonID+']').removeClass("selected");resetKeyboard();switchToMenuItemsSubscreen();}}else{hideAllMenuSubScreens();$('#order_item_additions').show();doOpenOIANoteScreen();}}}}
 function showGlobalSettingsPage(){goTo('/admin/global_settings');}
-function openCashDrawer(){var triggerViaPrintedSlip=(currentOutletId==30);if(triggerViaPrintedSlip){printContent("<span style='font-size:1;text-align:center;'>--- Open Cash Drawer ---</span>");return;}
+function openCashDrawer(){var triggerViaPrintedSlip=(currentOutletId==30);if(triggerViaPrintedSlip){printContent("<div style='font-size:1;text-align:center;'>--- Open Cash Drawer ---</div>");return;}
 if(!checkForPlugins()){return;}
 var port;if(triggerCashDrawerViaPrinter){port=cashDrawerViaPrinterMappedPort;}else{port=cashDrawerComPort;}
 try{cluey_ff_ext.openCashDrawer(port,cashDrawerCode);}catch(ex){setStatusMessage("Error opening cash drawer");}}
