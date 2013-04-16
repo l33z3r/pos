@@ -365,7 +365,7 @@ function openCashDrawer() {
     var triggerViaPrintedSlip = (currentOutletId == 30);
     
     if(triggerViaPrintedSlip) {
-        printContent("<span style='font-size:1;text-align:center;'>--- Open Cash Drawer ---</span>");
+        printContent("<div style='font-size:1;text-align:center;'>--- Open Cash Drawer ---</div>");
         return;
     }
     
