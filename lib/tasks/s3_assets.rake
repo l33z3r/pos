@@ -1,5 +1,5 @@
 #uncomment the following when trying to run the script to sync assets
-#require 's3'
+require 's3'
 
 require 'digest/md5'
 require 'mime/types'
