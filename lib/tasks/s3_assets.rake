@@ -1,5 +1,5 @@
 #uncomment the following when trying to run the script to sync assets
-#require 's3'
+require 's3'
 
 require 'digest/md5'
 require 'mime/types'
@@ -53,6 +53,7 @@ namespace :assets do
     prod_env = ENV['prod_env']
     require "#{RAILS_ROOT}/config/initializers/custom"
 
+    puts "!!!syncing to #{prod_env}"
     AWS_ACCESS_KEY_ID = YAML_CONFIG_FILE[prod_env]["s3_access_key_id"]
     AWS_SECRET_ACCESS_KEY = YAML_CONFIG_FILE[prod_env]["s3_secret_access_key"]
     AWS_BUCKET = YAML_CONFIG_FILE[prod_env]["s3_public_bucket_name"]

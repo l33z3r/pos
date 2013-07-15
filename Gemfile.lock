@@ -32,10 +32,6 @@ GEM
     annotate (2.4.0)
     archive-tar-minitar (0.5.2)
     arel (2.0.10)
-    aws-s3 (0.6.2)
-      builder
-      mime-types
-      xml-simple
     bcrypt-ruby (3.0.1)
     blankslate (2.1.2.4)
     builder (2.1.2)
@@ -84,6 +80,7 @@ GEM
     prawnto (0.1.1)
       prawn
       rails (>= 2.1)
+    proxies (0.2.1)
     rack (1.2.8)
     rack-mount (0.6.14)
       rack (>= 1.0.0)
@@ -131,6 +128,8 @@ GEM
     ruby-rc4 (0.1.5)
     ruby_core_source (0.1.5)
       archive-tar-minitar (>= 0.5.2)
+    s3 (0.3.7)
+      proxies
     smurf (1.0.8)
     thin (1.5.0)
       daemons (>= 1.0.9)
@@ -143,7 +142,6 @@ GEM
     ttfunk (1.0.3)
     tzinfo (0.3.33)
     will_paginate (3.0.pre2)
-    xml-simple (1.1.2)
 
 PLATFORMS
   ruby
@@ -151,7 +149,6 @@ PLATFORMS
 DEPENDENCIES
   annotate (= 2.4.0)
   arel (= 2.0.10)
-  aws-s3 (= 0.6.2)
   bcrypt-ruby (= 3.0.1)
   blankslate (= 2.1.2.4)
   faker
@@ -171,6 +168,7 @@ DEPENDENCIES
   recaptcha (= 0.3.4)
   rspec-rails (= 2.6.1)
   ruby-debug19
+  s3 (= 0.3.7)
   smurf (= 1.0.8)
   thin (= 1.5.0)
   tzinfo (= 0.3.33)
