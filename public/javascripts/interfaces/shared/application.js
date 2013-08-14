@@ -209,7 +209,7 @@ function preventOfflineHref() {
 
 function pingHome() {
     $.ajax({
-        url: "/ping",
+        url: "/ping" + new Date().getTime(),
         type : "GET",
         success: function() {
             setConnectionStatus(true);
